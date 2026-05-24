@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christian Culture - Ekosystem Osobistego Uświęcenia</title>
+    <meta name="description" content="Nowoczesna platforma Christian Culture. Słuchaj trzech stacji radiowych online (Radio PL, Radio Global, Biblia Audio) oraz pobierz nasze aplikacje mobilne.">
+    
+    <!-- Google Fonts: Cinzel (Headers) and Montserrat (UI & Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700;800&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- SECTION A: HEADER -->
+    <header class="main-header" id="mainHeader">
+        <div class="header-container">
+            <!-- Left Side: Hamburger Menu & Logo -->
+            <div class="header-left">
+                <button class="hamburger-menu" id="hamburgerBtn" aria-label="Otwórz menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <div class="brand-logo">
+                    <a href="#" class="logo-link">
+                        <span class="logo-top">CHRISTIAN</span>
+                        <span class="logo-bottom">CULTURE</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Side: User Profile -->
+            <div class="header-right">
+                <button class="profile-button" id="profileBtn" aria-label="Profil użytkownika">
+                    <div class="avatar-ring">
+                        <svg class="profile-avatar" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- SIDE DRAWER NAVIGATION -->
+    <div class="side-drawer" id="sideDrawer">
+        <button class="drawer-close" id="drawerCloseBtn" aria-label="Zamknij menu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="drawer-content">
+            <h2 class="drawer-brand">CHRISTIAN CULTURE</h2>
+            <nav class="drawer-nav">
+                <a href="#" class="drawer-link active"><i class="fa-solid fa-house"></i> Strona Główna</a>
+                <a href="#radio-player-anchor" class="drawer-link" id="navRadioLink"><i class="fa-solid fa-radio"></i> Radio Internetowe</a>
+                <a href="#apps-section" class="drawer-link"><i class="fa-solid fa-mobile-screen-button"></i> Nasze Aplikacje</a>
+                <a href="#social-channels" class="drawer-link"><i class="fa-solid fa-share-nodes"></i> Sieć YouTube & Spotify</a>
+                <a href="#support-store" class="drawer-link"><i class="fa-solid fa-heart"></i> Wsparcie & Sklep</a>
+                <a href="#app-ads-link" class="drawer-link"><i class="fa-solid fa-certificate"></i> AdMob Weryfikacja</a>
+            </nav>
+            <div class="drawer-footer">
+                <p>&copy; 2026 Christian Culture</p>
+                <p class="drawer-sub">Elevating Faith</p>
+            </div>
+        </div>
+    </div>
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+
+    <!-- SECTION B: GŁÓWNY HERO BANNER -->
+    <section class="hero-section">
+        <!-- Golden Mandala SVG Background -->
+        <div class="mandala-bg-container">
+            <svg class="mandala-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <radialGradient id="goldGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" stop-color="#f3e5ab" stop-opacity="0.25" />
+                        <stop offset="100%" stop-color="#d4af37" stop-opacity="0" />
+                    </radialGradient>
+                </defs>
+                <circle cx="100" cy="100" r="95" fill="url(#goldGlow)" />
+                <!-- Mandala Rings -->
+                <circle cx="100" cy="100" r="90" fill="none" stroke="#d4af37" stroke-width="0.3" stroke-opacity="0.3" stroke-dasharray="1, 2" />
+                <circle cx="100" cy="100" r="75" fill="none" stroke="#d4af37" stroke-width="0.5" stroke-opacity="0.4" />
+                <circle cx="100" cy="100" r="60" fill="none" stroke="#d4af37" stroke-width="0.4" stroke-opacity="0.3" stroke-dasharray="3, 1" />
+                <circle cx="100" cy="100" r="45" fill="none" stroke="#d4af37" stroke-width="0.6" stroke-opacity="0.5" />
+                <!-- Rays & Geometric shapes -->
+                <g stroke="#d4af37" stroke-width="0.3" stroke-opacity="0.4">
+                    <line x1="100" y1="5" x2="100" y2="195" />
+                    <line x1="5" y1="100" x2="195" y2="100" />
+                    <line x1="33" y1="33" x2="167" y2="167" />
+                    <line x1="33" y1="167" x2="167" y2="33" />
+                </g>
+                <!-- Detailed Petals -->
+                <g fill="none" stroke="#d4af37" stroke-width="0.4" stroke-opacity="0.6" class="mandala-petals">
+                    <!-- 12 Petal shapes rotated -->
+                    <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" />
+                    <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(30 100 100)" />
+                    <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(60 100 100)" />
+                    <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(90 100 100)" />
+                    <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(120 100 100)" />
+                    <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(150 100 100)" />
+                    <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(180 100 100)" />
+                    <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(210 100 100)" />
+                    <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(240 100 100)" />
+                    <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(270 100 100)" />
+                    <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(300 100 100)" />
+                    <path d="M100,55 C90,75 90,85 100,100 C110,85 110,75 100,55 Z" transform="rotate(330 100 100)" />
+                </g>
+                <circle cx="100" cy="100" r="10" fill="none" stroke="#d4af37" stroke-width="0.8" stroke-opacity="0.8" />
+                <circle cx="100" cy="100" r="3" fill="#f3e5ab" />
+            </svg>
+        </div>
+
+        <div class="hero-container">
+            <!-- Left Column: Character Image (masked) -->
+            <div class="hero-image-col">
+                <img src="./CC CR+J.png" alt="Christian Culture - Portret" class="hero-character-img">
+            </div>
+            
+            <!-- Right Column: Branding Typography -->
+            <div class="hero-text-col">
+                <h1 class="hero-title">CHRISTIAN CULTURE</h1>
+                <p class="hero-subtitle">EKOSYSTEM OSOBISTEGO UŚWIĘCENIA</p>
+                <div class="gold-divider"></div>
+                <p class="hero-description">
+                    Witaj w przestrzeni nowej kultury chrześcijańskiej. Doświadczaj wiary na co dzień dzięki trzem stacjom radiowym z muzyką ambient i Słowem Bożym bezpośrednio w przeglądarce oraz pobierz nasze dedykowane aplikacje mobilne wspierające Twój rozwój duchowy.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#radio-player-anchor" class="btn btn-gold scroll-to"><i class="fa-solid fa-play"></i> Słuchaj Radia</a>
+                    <a href="#apps-section" class="btn btn-outline scroll-to"><i class="fa-solid fa-mobile-screen-button"></i> Nasze Aplikacje</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION D: NASZE APLIKACJE (SHOWCASE) -->
+    <section class="apps-section" id="apps-section">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Zasoby Mobilne</span>
+                <h2 class="section-title">POBIERZ NASZE APLIKACJE</h2>
+                <div class="gold-divider centered"></div>
+                <p class="section-subtitle">
+                    Przenieś ekosystem Christian Culture na swój smartfon i korzystaj z nowoczesnych narzędzi formacyjnych, gdziekolwiek jesteś.
+                </p>
+              <div class="apps-grid">
+                <!-- App Card 1: Christian Culture -->
+                <div class="app-card">
+                    <div class="app-card-glow"></div>
+                    <div class="app-card-content">
+                        <a href="https://play.google.com/store/apps/details?id=pl.cclite.app&hl=pl" target="_blank" class="app-icon-link">
+                            <div class="app-icon-wrapper">
+                                <img src="./Aplikacja Christian Culture.png" alt="Logo Christian Culture App" class="app-icon">
+                            </div>
+                        </a>
+                        <h3 class="app-name">Christian Culture</h3>
+                        <p class="app-tagline">Twój codzienny asystent wiary</p>
+                        <p class="app-desc">
+                            Codzienne słowo Boże z powiadomieniami na ekranie blokady, cyfrowa ścieżka formacji w Akademii Pielgrzyma oraz zaawansowany asystent AI udzielający odpowiedzi w oparciu o Pismo Święte.
+                        </p>
+                        <div class="app-download-links">
+                            <a href="https://play.google.com/store/apps/details?id=pl.cclite.app&hl=pl" target="_blank" class="download-badge play-store-badge">
+                                <i class="fa-brands fa-google-play"></i>
+                                <span class="badge-text">
+                                     <span class="badge-sub">Pobierz z</span>
+                                     <span class="badge-main">Google Play</span>
+                                </span>
+                            </a>
+                            <a href="#" class="download-badge app-store-badge disabled-link" title="Wkrótce w App Store">
+                                <i class="fa-brands fa-apple"></i>
+                                <span class="badge-text">
+                                     <span class="badge-sub">Pobierz w</span>
+                                     <span class="badge-main">App Store</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App Card 2: CC Light -->
+                <div class="app-card">
+                    <div class="app-card-glow gold-purple"></div>
+                    <div class="app-card-content">
+                        <a href="https://play.google.com/store/apps/details?id=com.aistudio.cclight.fkcjxp&hl=pl" target="_blank" class="app-icon-link">
+                            <div class="app-icon-wrapper">
+                                <img src="./Aplikacja CC Lite.jpg" alt="Logo CC Light App" class="app-icon">
+                            </div>
+                        </a>
+                        <h3 class="app-name">CC Light</h3>
+                        <p class="app-tagline">Słowo Boże i radio w wersji Lite</p>
+                        <p class="app-desc">
+                            Szybki, wydajny i lekki dostęp do trzech stacji radiowych Christian Culture oraz najważniejszych rozważań biblijnych. Minimalne zużycie baterii i transferu danych.
+                        </p>
+                        <div class="app-download-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.aistudio.cclight.fkcjxp&hl=pl" target="_blank" class="download-badge play-store-badge">
+                                <i class="fa-brands fa-google-play"></i>
+                                <span class="badge-text">
+                                     <span class="badge-sub">Pobierz z</span>
+                                     <span class="badge-main">Google Play</span>
+                                </span>
+                            </a>
+                            <a href="#" class="download-badge app-store-badge disabled-link" title="Wkrótce w App Store">
+                                <i class="fa-brands fa-apple"></i>
+                                <span class="badge-text">
+                                     <span class="badge-sub">Pobierz w</span>
+                                     <span class="badge-main">App Store</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App Card 3: Ambient Sleep -->
+                <div class="app-card">
+                    <div class="app-card-glow blue-purple"></div>
+                    <div class="app-card-content">
+                        <a href="https://play.google.com/store/apps/details?id=com.aistudio.ambientsleep.yzkcjw&hl=pl" target="_blank" class="app-icon-link">
+                            <div class="app-icon-wrapper">
+                                <img src="./Aplikacja Ambient Sleep.jpg" alt="Logo Ambient Sleep App" class="app-icon">
+                            </div>
+                        </a>
+                        <h3 class="app-name">Ambient Sleep</h3>
+                        <p class="app-tagline">Wyciszenie, relaksacja i sen</p>
+                        <p class="app-desc">
+                            Stwórz idealne warunki do wieczornej modlitwy i odpoczynku. Aplikacja oferuje wysokiej jakości dźwięki natury (deszcz, ognisko) połączone z kojącymi tłami muzycznymi.
+                        </p>
+                        <div class="app-download-links">
+                            <a href="https://play.google.com/store/apps/details?id=com.aistudio.ambientsleep.yzkcjw&hl=pl" target="_blank" class="download-badge play-store-badge">
+                                <i class="fa-brands fa-google-play"></i>
+                                <span class="badge-text">
+                                     <span class="badge-sub">Pobierz z</span>
+                                     <span class="badge-main">Google Play</span>
+                                </span>
+                            </a>
+                            <a href="#" class="download-badge app-store-badge disabled-link" title="Wkrótce w App Store">
+                                <i class="fa-brands fa-apple"></i>
+                                <span class="badge-text">
+                                     <span class="badge-sub">Pobierz w</span>
+                                     <span class="badge-main">App Store</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App Card 4: GPT dla Jezusa -->
+                <div class="app-card">
+                    <div class="app-card-glow blue-purple"></div>
+                    <div class="app-card-content">
+                        <a href="https://chatgpt.com/g/g-683a0f4c86108191b0633a08b8b28580-gpt-dla-jezusa" target="_blank" class="app-icon-link">
+                            <div class="app-icon-wrapper" style="border-color: var(--gold-light);">
+                                <img src="./Aplikacja Christian Culture.png" alt="Logo GPT dla Jezusa AI" class="app-icon" style="filter: hue-rotate(45deg);">
+                            </div>
+                        </a>
+                        <h3 class="app-name">GPT Dla Jezusa</h3>
+                        <p class="app-tagline" style="color: var(--gold-light);">Asystent Sztucznej Inteligencji</p>
+                        <p class="app-desc">
+                            Zadawaj pytania i pogłębiaj swoją wiedzę religijną. Autorski asystent AI, wyszkolony, by odpowiadać na pytania o wiarę i Pismo Święte w duchu chrześcijańskim.
+                        </p>
+                        <div class="app-download-links">
+                            <a href="https://chatgpt.com/g/g-683a0f4c86108191b0633a08b8b28580-gpt-dla-jezusa" target="_blank" class="download-badge play-store-badge" style="border-color: var(--gold-primary); background: rgba(212, 175, 55, 0.08);">
+                                <i class="fa-solid fa-robot" style="color: var(--gold-primary);"></i>
+                                <span class="badge-text">
+                                     <span class="badge-sub">Uruchom narzędzie</span>
+                                     <span class="badge-main" style="color: var(--gold-light); font-size: 0.75rem;">GPT Dla Jezusa</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION E: STRUMIENIE SOCIAL MEDIA (SPOTIFY & YOUTUBE) -->
+    <section class="social-channels-section" id="social-channels">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Nasze Media</span>
+                <h2 class="section-title">KANAŁY STRUMIENIOWE</h2>
+                <div class="gold-divider centered"></div>
+                <p class="section-subtitle">
+                    Słuchaj naszych rozważań, konferencji i muzyki na najpopularniejszych platformach. Wybierz jeden z naszych wiodących kanałów na YouTube lub Spotify.
+                </p>
+            </div>
+            
+            <!-- Featured YouTube Channels Sub-section -->
+            <div class="featured-channels-header">
+                <h3 class="sub-section-title">Kluczowe Kanały YouTube</h3>
+                <div class="gold-divider-sub"></div>
+            </div>
+            
+            <div class="featured-channels-grid">
+                <!-- Channel 1: CC MEN -->
+                <div class="featured-channel-card men-card">
+                    <div class="channel-card-glow"></div>
+                    <div class="channel-icon-circle">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h4>CC MEN</h4>
+                    <span class="channel-handle">@CCMen7</span>
+                    <p class="channel-description">Męska strona formacji duchowej. Wyzwania, konferencje, świadectwa i budowanie tożsamości w świetle Ewangelii.</p>
+                    <a href="https://youtube.com/@CCMen7" target="_blank" class="btn-channel btn-channel-men">
+                        <i class="fa-brands fa-youtube"></i> Subskrybuj
+                    </a>
+                </div>
+
+                <!-- Channel 2: CC WOMEN -->
+                <div class="featured-channel-card women-card">
+                    <div class="channel-card-glow"></div>
+                    <div class="channel-icon-circle">
+                        <i class="fa-solid fa-venus"></i>
+                    </div>
+                    <h4>CC WOMEN</h4>
+                    <span class="channel-handle">@CCWomen7</span>
+                    <p class="channel-description">Duchowość, inspiracje i rozwój dla kobiet. Powołanie, budowanie relacji, codzienna formacja oraz piękno kobiecego serca.</p>
+                    <a href="https://youtube.com/@CCWomen7" target="_blank" class="btn-channel btn-channel-women">
+                        <i class="fa-brands fa-youtube"></i> Subskrybuj
+                    </a>
+                </div>
+
+                <!-- Channel 3: Personality Plus -->
+                <div class="featured-channel-card personality-card">
+                    <div class="channel-card-glow"></div>
+                    <div class="channel-icon-circle">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h4>Personality Plus</h4>
+                    <span class="channel-handle">@bibliaaudiocc</span>
+                    <p class="channel-description">Rozwój osobisty z perspektywy wiary. Odkryj swój temperament, talenty i powołanie do pełni chrześcijańskiego życia.</p>
+                    <a href="https://youtube.com/@bibliaaudiocc?si=eCmuMbEAgx7cHsjz" target="_blank" class="btn-channel btn-channel-personality">
+                        <i class="fa-brands fa-youtube"></i> Subskrybuj
+                    </a>
+                </div>
+            </div>
+            
+            <div class="social-grid">
+                <!-- Spotify Card -->
+                <div class="social-card spotify-card">
+                    <div class="social-card-icon">
+                        <i class="fa-brands fa-spotify"></i>
+                    </div>
+                    <h3 class="social-card-title">Spotify Podcasts</h3>
+                    <p class="social-card-text">
+                        Znajdziesz tu codzienne rozważania, audiobooki biblijne, podcasty oraz playlisty z muzyką ambient, która pomoże Ci w modlitwie i skupieniu.
+                    </p>
+                    <a href="https://open.spotify.com" target="_blank" class="btn btn-spotify"><i class="fa-brands fa-spotify"></i> Słuchaj na Spotify</a>
+                </div>
+                
+                <!-- YouTube Card -->
+                <div class="social-card youtube-card">
+                    <div class="social-card-icon">
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                    <h3 class="social-card-title">Sieć Kanałów YouTube</h3>
+                    <p class="social-card-text">
+                        Nasz projekt tworzy szeroką sieć kanałów tematycznych na YouTube. Wybierz kanał, aby oglądać codzienne rozważania wideo, muzykę lub programy:
+                    </p>
+                    <div class="youtube-channels-list">
+                        <a href="https://youtube.com/@bibliaaudiocc?si=eCmuMbEAgx7cHsjz" target="_blank" class="yt-channel-item">
+                            <i class="fa-brands fa-youtube"></i> Personality Plus
+                        </a>
+                        <a href="https://youtube.com/@CCMen7" target="_blank" class="yt-channel-item">
+                            <i class="fa-brands fa-youtube"></i> CC MEN
+                        </a>
+                        <a href="https://youtube.com/@CCWomen7" target="_blank" class="yt-channel-item">
+                            <i class="fa-brands fa-youtube"></i> CC WOMEN
+                        </a>
+                        <a href="https://youtube.com/@ChristianCultureTV" target="_blank" class="yt-channel-item">
+                            <i class="fa-brands fa-youtube"></i> CC TV
+                        </a>
+                        <a href="https://youtube.com/@RadioChristianCulture" target="_blank" class="yt-channel-item">
+                            <i class="fa-brands fa-youtube"></i> Radio CC
+                        </a>
+                        <a href="https://youtube.com/@ToDlaCiebieGramy" target="_blank" class="yt-channel-item">
+                            <i class="fa-brands fa-youtube"></i> RCC TV 24
+                        </a>
+                        <a href="https://youtube.com/@TopSeven_CC" target="_blank" class="yt-channel-item">
+                            <i class="fa-brands fa-youtube"></i> Top Seven CC
+                        </a>
+                        <a href="https://youtube.com/@CCNations" target="_blank" class="yt-channel-item">
+                            <i class="fa-brands fa-youtube"></i> CC Nations
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION F: SKLEP & WSPARCIE MISJI (SUPPORT & STORE) -->
+    <section class="support-store-section" id="support-store">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Wspieraj Dzieło</span>
+                <h2 class="section-title">WSPARCIE MISJI & SKLEP</h2>
+                <div class="gold-divider centered"></div>
+                <p class="section-subtitle">
+                    Nasza misja dociera do tysięcy ludzi każdego dnia dzięki Waszemu zaangażowaniu. Dołącz do naszej społeczności wspierających lub odwiedź nasz sklep z dedykowanymi produktami.
+                </p>
+            </div>
+            
+            <div class="support-grid">
+                <!-- Support Card 1: Patronite -->
+                <div class="support-card patronite">
+                    <div class="support-card-glow"></div>
+                    <div class="support-card-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                    <h3 class="support-title">Zostań Patronem</h3>
+                    <p class="support-desc">Wspieraj nas regularnie za pośrednictwem portalu Patronite i zyskaj dostęp do ekskluzywnych materiałów, wcześniejszych nagrań oraz zamkniętej grupy.</p>
+                    <a href="https://patronite.pl/osobowoscplus" target="_blank" class="btn btn-gold btn-block"><i class="fa-solid fa-heart"></i> Patronite.pl</a>
+                </div>
+                
+                <!-- Support Card 2: Zrzutka -->
+                <div class="support-card zrzutka">
+                    <div class="support-card-glow"></div>
+                    <div class="support-card-icon"><i class="fa-solid fa-wallet"></i></div>
+                    <h3 class="support-title">Szybki Przelew</h3>
+                    <p class="support-desc">Przekaż jednorazową darowiznę na cele statutowe, rozwój technologiczny aplikacji oraz realizację nowych nagrań audiobooków biblijnych.</p>
+                    <a href="https://zrzutka.pl/3bbxzn" target="_blank" class="btn btn-gold btn-block"><i class="fa-solid fa-circle-dollar-to-slot"></i> Zrzutka.pl</a>
+                </div>
+                
+                <!-- Support Card 3: Sklep -->
+                <div class="support-card store">
+                    <div class="support-card-glow"></div>
+                    <div class="support-card-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+                    <h3 class="support-title">Odwiedź Nasz Sklep</h3>
+                    <p class="support-desc">Kupuj unikalne koszulki, bluzy, kubki i gadżety z motywami Christian Culture. Cały zysk wspiera misję szerzenia kultury chrześcijańskiej.</p>
+                    <a href="https://my-store-1009741.creator-spring.com" target="_blank" class="btn btn-outline btn-block"><i class="fa-solid fa-cart-shopping"></i> Sklep Online</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ANCHOR FOR SCROLLING -->
+    <div id="radio-player-anchor"></div>
+
+    <!-- SECTION C: DOLNY PANEL ODTWARZACZA (RADIO PLAYER BAR) -->
+    <section class="radio-player-bar" id="radioPlayerBar">
+        <div class="player-container">
+            
+            <!-- Left Side: Station Info & Selector -->
+            <div class="player-left">
+                <div class="station-thumbnail-container">
+                    <img src="./Aplikacja Christian Culture.png" id="playerStationLogo" class="station-thumbnail-img" alt="Logo stacji">
+                </div>
+                <div class="station-details">
+                    <div class="station-selection-dropdown">
+                        <button class="station-select-btn" id="stationDropdownBtn">
+                            <span id="activeStationName">RADIO PL</span> <i class="fa-solid fa-chevron-up"></i>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div class="station-dropdown-menu" id="stationDropdownMenu">
+                            <button class="dropdown-item active" data-station-id="poland">
+                                <span class="dot pl-accent"></span> Radio PL
+                            </button>
+                            <button class="dropdown-item" data-station-id="global">
+                                <span class="dot global-accent"></span> Radio Global
+                            </button>
+                            <button class="dropdown-item" data-station-id="biblia_audio">
+                                <span class="dot biblia-accent"></span> Radio Biblia (Audio)
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Scrolling / Real-time Track Title -->
+                    <div class="track-scroller-container">
+                        <span class="track-title" id="playerTrackTitle">Wczytywanie informacji o utworze...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Center: Waveform Visualization -->
+            <div class="player-center">
+                <!-- Custom Canvas for highly performant and CORS-safe visualizer -->
+                <canvas id="visualizerCanvas" class="visualizer-canvas"></canvas>
+            </div>
+            
+            <!-- Right Side: Controls (Play/Pause, Mute, Volume) -->
+            <div class="player-right">
+                <!-- Status/Buffering Indicator -->
+                <div class="player-status" id="playerStatusText">Wyciszony</div>
+                
+                <!-- Play/Pause Button with circular border and glow -->
+                <button class="play-btn" id="playBtn" aria-label="Odtwarzaj">
+                    <i class="fa-solid fa-play" id="playIcon"></i>
+                </button>
+                
+                <!-- Volume Control -->
+                <div class="volume-container">
+                    <button class="volume-btn" id="volumeBtn" aria-label="Wycisz/Włącz dźwięk">
+                        <i class="fa-solid fa-volume-high" id="volumeIcon"></i>
+                    </button>
+                    <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider" aria-label="Suwak głośności">
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- LOGIN / PROFILE MODAL -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-header">
+                <i class="fa-solid fa-circle-user modal-user-icon"></i>
+                <h2>Profil Pielgrzyma</h2>
+                <p>Zaloguj się do swojego konta Christian Culture</p>
+            </div>
+            <form class="modal-form" id="loginForm" onsubmit="event.preventDefault();">
+                <div class="input-group">
+                    <label for="loginEmail">Adres E-mail</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="loginEmail" placeholder="twoj@email.com" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="loginPassword">Hasło</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox"> Zapamiętaj mnie
+                    </label>
+                    <a href="#" class="forgot-pass-link">Zapomniałeś hasła?</a>
+                </div>
+                <button type="submit" class="btn btn-gold btn-block">Zaloguj się</button>
+            </form>
+            <div class="modal-footer">
+                <p>Nie masz konta? <a href="#" class="register-link">Zarejestruj się teraz</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden AdMob App-Ads link verification block (for SEO/indexing convenience) -->
+    <div style="display:none;" id="app-ads-link">
+        <a href="app-ads.txt">AdMob Verification Link</a>
+    </div>
+
+    <!-- JavaScript Execution -->
+    <script src="app.js"></script>
+</body>
+</html>
