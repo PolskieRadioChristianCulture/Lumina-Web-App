@@ -55,6 +55,7 @@ let activeStation = STATIONS.poland;
 let isPlaying = false;
 let isMuted = false;
 let previousVolume = 0.8;
+let metadataEventSource = null;
 
 // DOM Elements
 const audio = new Audio();
@@ -90,9 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Setup initial station details
     selectStation("poland");
     
-    // Start track title rotator
-    updateTrackTitle();
-    setInterval(updateTrackTitle, 5000); // Check for song rotation every 5s
+    // Check and keep fallback loop alive
+    setInterval(updateLocalTrackTitleFallback, 15000);
     
     // Resize Visualizer Canvas
     resizeCanvas();
@@ -226,7 +226,8 @@ function selectStation(stationId) {
     // Change player CSS accent color dynamically
     document.documentElement.style.setProperty('--player-accent', station.accentColors[0]);
     
-    updateTrackTitle();
+    // Connect to Zeno.fm live metadata EventSource
+    connectStationMetadata(stationId);
     
     if (wasPlaying) {
         // Smoothly fade out, switch source, and fade back in
@@ -375,12 +376,68 @@ function updateVolumeIcon(vol) {
     }
 }
 
-// 7. TRACK METADATA AUTOMATION (MATCHING MOBILE APP RULES)
-function updateTrackTitle() {
-    const stationId = activeStation.id;
-    const tracksList = activeStation.tracks;
+// 7. REAL-TIME TRACK METADATA AUTOMATION (VIA ZENO.FM SSE)
+function connectStationMetadata(stationId) {
+    // Close previous EventSource connection if it exists
+    if (metadataEventSource) {
+        metadataEventSource.close();
+        metadataEventSource = null;
+    }
     
-    // Songs change every 180s synchronously using time index
+    const station = STATIONS[stationId];
+    if (!station) return;
+    
+    // Set placeholder tracker text initially
+    playerTrackTitle.textContent = "Wczytywanie informacji o utworze...";
+    
+    // Get mount ID from streamUrl (last segment of the URL)
+    const mountId = station.streamUrl.split('/').pop();
+    const sseUrl = `https://api.zeno.fm/mounts/metadata/subscribe/${mountId}`;
+    
+    try {
+        metadataEventSource = new EventSource(sseUrl);
+        
+        metadataEventSource.onmessage = function(event) {
+            try {
+                const data = JSON.parse(event.data);
+                if (data && data.streamTitle) {
+                    const cleanTitle = data.streamTitle.trim();
+                    if (cleanTitle && playerTrackTitle.textContent !== cleanTitle) {
+                        playerTrackTitle.textContent = cleanTitle;
+                    }
+                }
+            } catch (e) {
+                console.error("Error parsing Zeno.fm metadata event:", e);
+            }
+        };
+        
+        metadataEventSource.onerror = function(err) {
+            console.warn("EventSource metadata connection lost. Switching to local fallback.");
+            if (metadataEventSource) {
+                metadataEventSource.close();
+                metadataEventSource = null;
+            }
+            updateLocalTrackTitleFallback();
+        };
+    } catch (error) {
+        console.error("Failed to initialize Zeno.fm metadata EventSource:", error);
+        updateLocalTrackTitleFallback();
+    }
+}
+
+function updateLocalTrackTitleFallback() {
+    // Do not run fallback if active EventSource is successfully running
+    if (metadataEventSource && metadataEventSource.readyState === EventSource.OPEN) {
+        return;
+    }
+    
+    const tracksList = activeStation.tracks;
+    if (!tracksList || tracksList.length === 0) {
+        playerTrackTitle.textContent = activeStation.name + " - Transmisja na żywo";
+        return;
+    }
+    
+    // Fallback: cycle local mock tracks every 180 seconds based on current epoch time
     const secondEpoch = Math.floor(Date.now() / 1000);
     const idx = Math.floor((secondEpoch / 180) % tracksList.length);
     const currentSong = tracksList[idx];
