@@ -1569,10 +1569,38 @@ button {
 
 .social-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 3rem;
-    max-width: 960px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    max-width: 1200px;
     margin: 0 auto;
+}
+
+.linktree-card .social-card-icon {
+    color: rgba(67, 230, 96, 0.6);
+    filter: drop-shadow(0 0 10px rgba(67, 230, 96, 0.15));
+}
+
+.btn-linktree {
+    background: #25d366;
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25);
+}
+
+.btn-linktree:hover {
+    background: #20ba59;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+}
+
+.linktree-card:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(37, 211, 102, 0.15);
+}
+
+.linktree-card:hover .social-card-icon {
+    color: #25d366;
+    filter: drop-shadow(0 0 15px rgba(37, 211, 102, 0.5));
+    transform: scale(1.08);
 }
 
 .social-card {
@@ -1808,6 +1836,11 @@ button {
 }
 
 @media (max-width: 1023px) {
+    .social-grid {
+        grid-template-columns: 1fr;
+        max-width: 560px;
+        gap: 2rem;
+    }
     .support-grid {
         grid-template-columns: repeat(2, 1fr);
     }

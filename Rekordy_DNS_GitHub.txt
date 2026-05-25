@@ -1,0 +1,54 @@
+REKORDY DNS DLA DOMENY POLSKIERADIO.CC
+
+Aby Twoja domena wyświetlała nową stronę z GitHuba, zaloguj się do panelu rejestratora domeny (tam gdzie ją kupiłeś, np. cyberfolks.pl, nazwa.pl, ovh.pl), przejdź do konfiguracji rekordów DNS i ustaw poniższe wartości.
+
+⚠️ UWAGA: Przed dodaniem nowych rekordów, skasuj stare rekordy typu A oraz CNAME dla hostów "@" (lub pustego) oraz "www", aby nie powodowały konfliktów.
+
+======================================================================
+1. REKORDY DLA DOMENY GŁÓWNEJ (bez www - np. polskieradio.cc)
+======================================================================
+Dodaj cztery osobne rekordy typu A:
+
+Rekord A (1):
+----------------------------
+Typ: A
+Nazwa / Host: @ (lub zostaw puste)
+Wartość / IP: 185.199.108.153
+
+Rekord A (2):
+----------------------------
+Typ: A
+Nazwa / Host: @ (lub zostaw puste)
+Wartość / IP: 185.199.109.153
+
+Rekord A (3):
+----------------------------
+Typ: A
+Nazwa / Host: @ (lub zostaw puste)
+Wartość / IP: 185.199.110.153
+
+Rekord A (4):
+----------------------------
+Typ: A
+Nazwa / Host: @ (lub zostaw puste)
+Wartość / IP: 185.199.111.153
+
+
+======================================================================
+2. REKORD DLA SUBDOMENY Z www (np. www.polskieradio.cc)
+======================================================================
+Dodaj jeden rekord typu CNAME:
+
+Rekord CNAME:
+----------------------------
+Typ: CNAME
+Nazwa / Host: www
+Wartość / Cel: polskieradiochristianculture.github.io
+
+
+======================================================================
+Co zrobić po zapisaniu zmian u rejestratora?
+======================================================================
+1. Zmiana rekordów DNS w sieci potrzebuje zwykle od 15 minut do kilku godzin na rozprzestrzenienie się (propagację).
+2. Gdy to nastąpi, wejdź na GitHubie w: Settings -> Pages i upewnij się, że Twoja domena jest wpisana w polu "Custom domain".
+3. Zaznacz opcję "Enforce HTTPS", aby Twoja strona miała bezpieczne połączenie (kłódeczkę SSL).
