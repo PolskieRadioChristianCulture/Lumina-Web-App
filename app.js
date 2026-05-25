@@ -79,8 +79,9 @@ const sideDrawer = document.getElementById("sideDrawer");
 const drawerCloseBtn = document.getElementById("drawerCloseBtn");
 const drawerOverlay = document.getElementById("drawerOverlay");
 
-const profileBtn = document.getElementById("profileBtn");
-const profileModal = document.getElementById("profileModal");
+const smsBtn = document.getElementById("smsBtn");
+const navSmsLink = document.getElementById("navSmsLink");
+const smsModal = document.getElementById("smsModal");
 const modalCloseBtn = document.getElementById("modalCloseBtn");
 
 const visualizerCanvas = document.getElementById("visualizerCanvas");
@@ -129,19 +130,32 @@ document.querySelectorAll(".drawer-link").forEach(link => {
     });
 });
 
-// Profile Login Modal Toggle
-profileBtn.addEventListener("click", () => {
-    profileModal.classList.add("active");
-});
+// SMS Subscription Modal Toggle
+if (smsBtn && smsModal) {
+    smsBtn.addEventListener("click", () => {
+        smsModal.classList.add("active");
+    });
+}
 
-const closeModal = () => {
-    profileModal.classList.remove("active");
+if (navSmsLink && smsModal) {
+    navSmsLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        smsModal.classList.add("active");
+    });
+}
+
+const closeSmsModal = () => {
+    if (smsModal) smsModal.classList.remove("active");
 };
 
-modalCloseBtn.addEventListener("click", closeModal);
-profileModal.addEventListener("click", (e) => {
-    if (e.target === profileModal) closeModal();
-});
+if (modalCloseBtn) {
+    modalCloseBtn.addEventListener("click", closeSmsModal);
+}
+if (smsModal) {
+    smsModal.addEventListener("click", (e) => {
+        if (e.target === smsModal) closeSmsModal();
+    });
+}
 
 // 5. RADIO PLAYER CONTROLS & EVENT LISTENERS
 

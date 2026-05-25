@@ -41,13 +41,11 @@
                 </div>
             </div>
             
-            <!-- Right Side: User Profile -->
+            <!-- Right Side: SMS Subscription -->
             <div class="header-right">
-                <button class="profile-button" id="profileBtn" aria-label="Profil użytkownika">
+                <button class="sms-button" id="smsBtn" aria-label="Subskrypcje SMS/MMS" title="Bezpłatne Subskrypcje SMS/MMS">
                     <div class="avatar-ring">
-                        <svg class="profile-avatar" viewBox="0 0 24 24">
-                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                        </svg>
+                        <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 1.15rem;"></i>
                     </div>
                 </button>
             </div>
@@ -64,10 +62,12 @@
             <nav class="drawer-nav">
                 <a href="#" class="drawer-link active"><i class="fa-solid fa-house"></i> Strona Główna</a>
                 <a href="#radio-player-anchor" class="drawer-link" id="navRadioLink"><i class="fa-solid fa-radio"></i> Radio Internetowe</a>
+                <a href="#" class="drawer-link" id="navSmsLink"><i class="fa-solid fa-comment-sms"></i> Subskrypcje SMS</a>
                 <a href="#apps-section" class="drawer-link"><i class="fa-solid fa-mobile-screen-button"></i> Nasze Aplikacje</a>
                 <a href="#social-channels" class="drawer-link"><i class="fa-solid fa-share-nodes"></i> Sieć YouTube & Spotify</a>
                 <a href="https://linktr.ee/christianculture" target="_blank" class="drawer-link"><i class="fa-solid fa-address-card"></i> Wizytówka Linktree</a>
                 <a href="#support-store" class="drawer-link"><i class="fa-solid fa-heart"></i> Wsparcie & Sklep</a>
+                <a href="#contact-section" class="drawer-link"><i class="fa-solid fa-envelope"></i> Kontakt</a>
                 <a href="#app-ads-link" class="drawer-link"><i class="fa-solid fa-certificate"></i> AdMob Weryfikacja</a>
             </nav>
             <div class="drawer-footer">
@@ -519,40 +519,28 @@
         </div>
     </section>
 
-    <!-- LOGIN / PROFILE MODAL -->
-    <div class="modal-overlay" id="profileModal">
+    <!-- SMS/MMS SUBSCRIPTION MODAL -->
+    <div class="modal-overlay" id="smsModal">
         <div class="modal-content">
-            <button class="modal-close" id="modalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+            <button class="modal-close" id="modalCloseBtn" aria-label="Zamknij"><i class="fa-solid fa-xmark"></i></button>
             <div class="modal-header">
-                <i class="fa-solid fa-circle-user modal-user-icon"></i>
-                <h2>Profil Pielgrzyma</h2>
-                <p>Zaloguj się do swojego konta Christian Culture</p>
+                <i class="fa-solid fa-comment-sms modal-user-icon"></i>
+                <h2>Bezpłatne Subskrypcje SMS/MMS</h2>
+                <p>Subskrybuj Chrześcijańskie Inspiracje</p>
             </div>
-            <form class="modal-form" id="loginForm" onsubmit="event.preventDefault();">
-                <div class="input-group">
-                    <label for="loginEmail">Adres E-mail</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-envelope"></i>
-                        <input type="email" id="loginEmail" placeholder="twoj@email.com" required>
-                    </div>
+            <div class="modal-sms-content">
+                <div class="sms-instructions-card">
+                    <p class="sms-instruction-text">Wyślij SMS o treści:</p>
+                    <div class="sms-keyword-badge">Inspiracje</div>
+                    <p class="sms-instruction-text">na numer:</p>
+                    <div class="sms-number-badge">783 478 280</div>
                 </div>
-                <div class="input-group">
-                    <label for="loginPassword">Hasło</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" id="loginPassword" placeholder="••••••••" required>
-                    </div>
+                
+                <div class="sms-info-box">
+                    <p class="sms-disclaimer">
+                        <i class="fa-solid fa-circle-info"></i> Usługa dostępna tylko na terenie PL i tylko dla użytkowników korzystających z usług polskich operatorów komórkowych. Koszt wysłania SMS według stawek Twojego operatora.
+                    </p>
                 </div>
-                <div class="form-options">
-                    <label class="remember-me">
-                        <input type="checkbox"> Zapamiętaj mnie
-                    </label>
-                    <a href="#" class="forgot-pass-link">Zapomniałeś hasła?</a>
-                </div>
-                <button type="submit" class="btn btn-gold btn-block">Zaloguj się</button>
-            </form>
-            <div class="modal-footer">
-                <p>Nie masz konta? <a href="#" class="register-link">Zarejestruj się teraz</a></p>
             </div>
         </div>
     </div>

@@ -165,8 +165,8 @@ button {
     color: var(--gold-primary);
 }
 
-/* Profile button in right corner */
-.profile-button {
+/* SMS button in right corner */
+.sms-button {
     background: transparent;
     border: none;
 }
@@ -183,20 +183,13 @@ button {
     transition: var(--transition-smooth);
 }
 
-.profile-avatar {
-    width: 20px;
-    height: 20px;
-    fill: var(--gold-primary);
-    transition: var(--transition-smooth);
-}
-
-.profile-button:hover .avatar-ring {
+.sms-button:hover .avatar-ring {
     background: var(--gold-primary);
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
 }
 
-.profile-button:hover .profile-avatar {
-    fill: var(--bg-deep-black);
+.sms-button:hover .avatar-ring i {
+    color: var(--bg-deep-black) !important;
 }
 
 /* 3. SIDE DRAWER NAVIGATION */
@@ -1156,24 +1149,74 @@ button {
     text-decoration: underline;
 }
 
-.modal-footer {
+/* SMS Modal Styling */
+.modal-sms-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.sms-instructions-card {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    margin-top: 2rem;
+    box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.03);
+}
+
+.sms-instruction-text {
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.5);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    padding-top: 1.5rem;
-}
-
-.register-link {
-    color: var(--gold-primary);
     font-weight: 700;
-    transition: var(--transition-fast);
+    color: var(--text-muted-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0.5rem 0;
 }
 
-.register-link:hover {
+.sms-keyword-badge {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 700;
     color: var(--gold-light);
-    text-decoration: underline;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1.5px dashed var(--gold-primary);
+    padding: 0.5rem 2rem;
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+}
+
+.sms-number-badge {
+    font-family: var(--font-sans);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-pure-white);
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.sms-info-box {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 1rem;
+}
+
+.sms-disclaimer {
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.45);
+    text-align: center;
+}
+
+.sms-disclaimer i {
+    color: var(--gold-primary);
+    margin-right: 0.25rem;
 }
 
 /* 8. RESPONSIVENESS & ADAPTATION MOBILE (RWD) */
