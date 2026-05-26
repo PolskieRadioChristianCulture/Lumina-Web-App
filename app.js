@@ -573,7 +573,8 @@ document.querySelectorAll('.scroll-to').forEach(anchor => {
 // 10. HERO PLAY BUTTON AUTO-PLAY LOGIC
 const heroPlayBtn = document.getElementById("heroPlayBtn");
 if (heroPlayBtn) {
-    heroPlayBtn.addEventListener("click", () => {
+    heroPlayBtn.addEventListener("click", (e) => {
+        e.preventDefault();
         // Auto-play the radio stream if it is currently paused
         if (!isPlaying) {
             playRadio();
