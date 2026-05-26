@@ -569,3 +569,33 @@ document.querySelectorAll('.scroll-to').forEach(anchor => {
         }
     });
 });
+
+// 10. HERO PLAY BUTTON AUTO-PLAY LOGIC
+const heroPlayBtn = document.getElementById("heroPlayBtn");
+if (heroPlayBtn) {
+    heroPlayBtn.addEventListener("click", () => {
+        // Auto-play the radio stream if it is currently paused
+        if (!isPlaying) {
+            playRadio();
+        }
+    });
+}
+
+// 11. FLOATING BACK TO TOP BUTTON LOGIC
+const backToTopBtn = document.getElementById("backToTopBtn");
+if (backToTopBtn) {
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+            backToTopBtn.classList.add("visible");
+        } else {
+            backToTopBtn.classList.remove("visible");
+        }
+    });
+
+    backToTopBtn.addEventListener("click", () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    });
+}
