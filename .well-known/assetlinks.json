@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.aistudio.cclight.fkcjxp",
+      "sha256_cert_fingerprints": [
+        "33:A0:0A:B4:2D:CE:25:B1:D0:AF:0E:05:58:37:D4:5E:B5:0E:13:CF:E8:DB:E6:11:1C:7A:81:B0:F9:DB:D6:A6"
+      ]
+    }
+  }
+]
