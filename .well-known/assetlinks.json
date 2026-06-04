@@ -1,0 +1,28 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.aistudio.cclight.fkcjxp",
+      "sha256_cert_fingerprints": [
+        "33:A0:0A:B4:2D:CE:25:B1:D0:AF:0E:05:58:37:D4:5E:B5:0E:13:CF:E8:DB:E6:11:1C:7A:81:B0:F9:DB:D6:A6"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "pl.cclite.app",
+      "sha256_cert_fingerprints": [
+        "4E:96:85:B4:11:49:9D:9F:3F:16:7A:8B:3C:0E:3B:76:22:E0:D0:97:70:60:E4:0B:29:78:0B:B2:39:C4:91:DD"
+      ]
+    }
+  }
+]
