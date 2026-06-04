@@ -93,8 +93,66 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 `;
             } else {
-                contentBox.innerHTML = '<p class="dzj-error">Brak danych na dzisiaj.</p>';
-                titleBox.textContent = "Szukam dzisiejszego słowa...";
+                titleBox.textContent = "☀️ Lato ku Bożej chwale";
+                dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+
+                const rawContent = `Dzień czwarty – Taktyka Oczyszczenia Linii Zaopatrzenia
+
+Żaden oddział nie przetrwa na froncie, jeśli jego linie zaopatrzenia zostaną odcięte lub zanieczyszczone przez wroga. W walce duchowej Twoim zaopatrzeniem jest czysta prawda, która karmi Twoje serce. Oddanie Bogu chwały wymaga dziś od Ciebie radykalnego przeglądu tego, czym się karmisz. Jeśli pozwalasz, aby do Twojego umysłu sączyły się kłamstwa, plotki, toksyczne wiadomości lub bezwartościowe treści, Twoja siła do działania natychmiast spada. Czas odciąć dopływ duchowej trucizny i podłączyć się pod jedyne, niezawodne źródło życia.
+
+Jezus mówi dziś do Ciebie:
+„Wy już jesteście czyści dzięki słowu, które do was powiedziałem.” (Ewangelia według świętego Jana, rozdział piętnasty, werset trzeci)
+
+**Zadanie Taktyczne:**
+Przeprowadź dziś radykalną selekcję informacji. Wyłącz na cały dzień źródła, które przynoszą Ci niepokój, gniew lub skłaniają do grzechu. Zamiast tego przeznacz ten czas na uważne przeczytanie jednego rozdziału Pisma Świętego. Oczyść swoje linie zaopatrzenia.
+
+W Christian Culture subskrypcje i aplikacje są dla Ciebie zawsze bezpłatne.
+
+**Modlitwa Bojowa:**
+„Jezu, staję przed Tobą, by uporządkować moje wnętrze. Przepraszam za chwile, gdy karmiłem umysł rzeczami, które oddalały mnie od Ciebie. Oczyszczaj mnie Swoim Słowem i daj mi pragnienie szukania wyłącznie tego, co buduje, umacnia i przynosi chwałę Twojemu świętemu Imieniu.”
+
+**Rozkaz Dnia (Zadbaj o wzrost):**
+Otwórz swoje serce na działanie we wspólnocie. Wejdź do letniej bazy ludzi z pasją, zintegruj swoje siły z innymi i zacznij działać w zorganizowanym zespole, który ramię w ramię idzie drogą formacji i realnego wpływu na świat.
+
+**Błogosławieństwo:**
+Niech Pan zastępów strzeże dziś Twojego umysłu i serca przed wszelkimi kłamstwami nieprzyjaciela. Niech Jego prawda napełni Cię świeżą mądrością, czystością myśli i niezłomną siłą do realizowania Jego woli.
+
+Dobrego dnia! Podaj dalej.`;
+
+                let formattedContent = rawContent
+                    .replace(/\n\n/g, '</p><p class="mt-4">')
+                    .replace(/\n/g, '<br/>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                
+                contentBox.innerHTML = `
+                    <div class="dzj-text-content">
+                        <p>${formattedContent}</p>
+                    </div>
+                    
+                    <!-- YouTube Video Section -->
+                    <div class="dzj-youtube-section">
+                        <div class="dzj-youtube-header">
+                            <i class="fa-solid fa-heart"></i>
+                            <span>POSŁUCHAJ HYMNU</span>
+                        </div>
+                        <div class="dzj-youtube-container">
+                            <iframe 
+                                src="https://www.youtube.com/embed/wKfdQrKwYtw?si=IrRVVy4LlgUqtnTq" 
+                                title="Dobrze, że jesteś - Hymn" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen
+                            ></iframe>
+                        </div>
+                    </div>
+
+                    <!-- SMS CTA -->
+                    <div class="dzj-sms-cta">
+                        <p class="dzj-sms-title"><i class="fa-solid fa-share-nodes"></i> Bądź na bieżąco</p>
+                        <p class="dzj-sms-text">Jeśli Twój frontowy system powiadomień jeszcze nie działa, wyślij darmowy SMS o treści <strong>Inspiracje</strong> na numer <strong class="dzj-sms-number">783 478 280</strong>, by codziennie odbierać to Słowo na swój telefon!</p>
+                    </div>
+                `;
             }
         } catch (e) {
             console.error("Błąd pobierania rozważania:", e);
