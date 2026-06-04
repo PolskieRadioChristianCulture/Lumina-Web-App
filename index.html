@@ -65,6 +65,7 @@
             <h2 class="drawer-brand">CHRISTIAN CULTURE</h2>
             <nav class="drawer-nav">
                 <a href="#" class="drawer-link active"><i class="fa-solid fa-house"></i> Strona Główna</a>
+                <a href="#" class="drawer-link" id="navDzjLink" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-heart"></i> DOBRZE, ŻE JESTEŚ</a>
                 <a href="#radio-player-anchor" class="drawer-link scroll-to" id="navRadioLink"><i class="fa-solid fa-radio"></i> Radio Internetowe</a>
                 <a href="#" class="drawer-link" id="navSmsLink"><i class="fa-solid fa-comment-sms"></i> Subskrypcje SMS</a>
                 <a href="#apps-section" class="drawer-link scroll-to"><i class="fa-solid fa-mobile-screen-button"></i> Nasze Aplikacje</a>
@@ -617,7 +618,31 @@
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 
-    <!-- JavaScript Execution -->
+    <!-- MODAL DOBRZE, ZE JESTES -->
+    <div id="dzjModal" class="dzj-modal-wrapper">
+        <div class="dzj-modal-overlay" id="dzjModalOverlay"></div>
+        <div class="dzj-modal-content">
+            <button class="dzj-close-top" id="dzjCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="dzj-header">
+                <div class="dzj-logo-wrapper">
+                    <img src="icon.png" alt="Christian Culture Logo">
+                </div>
+                <div class="dzj-date-badge">
+                    <i class="fa-solid fa-calendar"></i> <span id="dzjDate">Ładowanie...</span>
+                </div>
+                <h2 id="dzjTitle" class="dzj-title">Szukam dzisiejszego słowa...</h2>
+            </div>
+            <div class="dzj-body" id="dzjContentBox">
+                <!-- Content gets injected by JS -->
+            </div>
+            <div class="dzj-footer">
+                <button class="dzj-close-bottom" id="dzjCloseFooterBtn">ZAMKNIJ OKNO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="app.js"></script>
+    <script type="module" src="dobrzezejestes.js"></script>
 </body>
 </html>
