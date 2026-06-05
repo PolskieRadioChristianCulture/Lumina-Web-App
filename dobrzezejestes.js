@@ -68,6 +68,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         <p>${formattedContent}</p>
                     </div>
                     
+                    <!-- Przycisk Udostępnij -->
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button onclick="if(navigator.share){navigator.share({title: doc.title || 'Inspiracja na dziś', text: 'Zobacz to niezwykłe codzienne rozważanie Christian Culture:', url: window.location.href}).catch(console.error);}" style="background: #E2B859; color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(226, 184, 89, 0.4); font-family: inherit;">
+                            <i class="fa-solid fa-share-nodes"></i> UDOSTĘPNIJ ROZWAŻANIE
+                        </button>
+                    </div>
+                    
                     <!-- YouTube Video Section -->
                     <div class="dzj-youtube-section">
                         <div class="dzj-youtube-header">
@@ -127,6 +134,13 @@ Dobrego dnia! Podaj dalej.`;
                 contentBox.innerHTML = `
                     <div class="dzj-text-content">
                         <p>${formattedContent}</p>
+                    </div>
+                    
+                    <!-- Przycisk Udostępnij -->
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button onclick="if(navigator.share){navigator.share({title: 'Lato ku Bożej chwale', text: 'Złap dzisiejsze potężne rozważanie od Christian Culture:', url: window.location.href}).catch(console.error);}" style="background: #E2B859; color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(226, 184, 89, 0.4); font-family: inherit;">
+                            <i class="fa-solid fa-share-nodes"></i> UDOSTĘPNIJ ROZWAŻANIE
+                        </button>
                     </div>
                     
                     <!-- YouTube Video Section -->
