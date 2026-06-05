@@ -96,26 +96,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 titleBox.textContent = "☀️ Lato ku Bożej chwale";
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
-                const rawContent = `Dzień czwarty – Taktyka Oczyszczenia Linii Zaopatrzenia
+                const rawContent = `Dzień piąty – Taktyka Niezłomnego Przymierza i Braterskiego Wsparcia
 
-Żaden oddział nie przetrwa na froncie, jeśli jego linie zaopatrzenia zostaną odcięte lub zanieczyszczone przez wroga. W walce duchowej Twoim zaopatrzeniem jest czysta prawda, która karmi Twoje serce. Oddanie Bogu chwały wymaga dziś od Ciebie radykalnego przeglądu tego, czym się karmisz. Jeśli pozwalasz, aby do Twojego umysłu sączyły się kłamstwa, plotki, toksyczne wiadomości lub bezwartościowe treści, Twoja siła do działania natychmiast spada. Czas odciąć dopływ duchowej trucizny i podłączyć się pod jedyne, niezawodne źródło życia.
+Żaden żołnierz na nowoczesnym polu walki nie walczy w pojedynkę, ponieważ samotny wojownik staje się łatwym celem dla nieprzyjaciela. Siła armii tkwi w niezłomnym przymierzu, wzajemnej asekuracji i zaufaniu do ludzi, którzy idą ramię w ramię w tym samym kierunku. Oddanie Bogu chwały wymaga dziś od Ciebie porzucenia duchowego samotnictwa. Twoje codzienne zwycięstwo jest ściśle powiązane z tym, jakimi ludźmi się otaczasz i komu pozwalasz osłaniać swoje plecy w chwilach kryzysu. Czas połączyć siły i wejść w zorganizowane działanie.
 
 Jezus mówi dziś do Ciebie:
-„Wy już jesteście czyści dzięki słowu, które do was powiedziałem.” (Ewangelia według świętego Jana, rozdział piętnasty, werset trzeci)
+„Dalej, zaprawdę, powiadam wam: Jeśli dwaj z was na ziemi zgodnie o coś prosić będą, otrzymają to od mojego Ojca, który jest w niebie. Bo gdzie są dwaj lub trzej zebrani w imię moje, tam jestem pośród nich.” (Ewangelia według świętego Mateusza, rozdział osiemnasty, wersety od dziewiętnastego do dwudziestego)
 
 **Zadanie Taktyczne:**
-Przeprowadź dziś radykalną selekcję informacji. Wyłącz na cały dzień źródła, które przynoszą Ci niepokój, gniew lub skłaniają do grzechu. Zamiast tego przeznacz ten czas na uważne przeczytanie jednego rozdziału Pisma Świętego. Oczyść swoje linie zaopatrzenia.
+Odszukaj dziś w swoim otoczeniu przynajmniej jedną osobę wierzącą i wykonaj wobec niej konkretny gest wsparcia. Może to być krótka wiadomość z zapewnieniem o modlitwie, szczera rozmowa lub wspólne zaplanowanie dobrego działania. Zbuduj i zabezpiecz swoje duchowe przymierze.
 
 W Christian Culture subskrypcje i aplikacje są dla Ciebie zawsze bezpłatne.
 
 **Modlitwa Bojowa:**
-„Jezu, staję przed Tobą, by uporządkować moje wnętrze. Przepraszam za chwile, gdy karmiłem umysł rzeczami, które oddalały mnie od Ciebie. Oczyszczaj mnie Swoim Słowem i daj mi pragnienie szukania wyłącznie tego, co buduje, umacnia i przynosi chwałę Twojemu świętemu Imieniu.”
+„Jezu, dziękuję Ci, że nie powołałeś mnie do samotnej walki. Daj mi pokorę i mądrość, bym potrafił budować silne, Boże relacje z innymi. Chcę ramię w ramię z moimi braćmi i siostrami tworzyć front, który przyniesie realną chwałę Twojemu świętemu Imieniu.”
 
 **Rozkaz Dnia (Zadbaj o wzrost):**
 Otwórz swoje serce na działanie we wspólnocie. Wejdź do letniej bazy ludzi z pasją, zintegruj swoje siły z innymi i zacznij działać w zorganizowanym zespole, który ramię w ramię idzie drogą formacji i realnego wpływu na świat.
 
 **Błogosławieństwo:**
-Niech Pan zastępów strzeże dziś Twojego umysłu i serca przed wszelkimi kłamstwami nieprzyjaciela. Niech Jego prawda napełni Cię świeżą mądrością, czystością myśli i niezłomną siłą do realizowania Jego woli.
+Niech Pan zastępów błogosławi dziś Twoim relacjom i zsyła na Twoją drogę wiernych towarzyszy walki. Niech Jego pokój jednoczy Wasze serca, a Jego moc niech czyni Wasze wspólne działania całkowicie niezniszczalnymi dla wroga.
 
 Dobrego dnia! Podaj dalej.`;
 
