@@ -16,15 +16,17 @@ const db = getFirestore(app, "ai-studio-be1ade58-95a0-4035-8abe-2b3fd74793b6");
 
 window.shareDzjContent = function() {
     const textToShare = window.currentDzjTitle + "\n\n" + window.currentDzjText;
+    const shareUrl = window.location.origin + window.location.pathname + "?dzj=true";
+    
     if(navigator.share) {
         navigator.share({
             title: window.currentDzjTitle,
             text: textToShare,
-            url: window.location.href
+            url: shareUrl
         }).catch(console.error);
     } else {
         if(navigator.clipboard) {
-            navigator.clipboard.writeText(textToShare + "\n\n" + window.location.href)
+            navigator.clipboard.writeText(textToShare + "\n\n" + shareUrl)
                 .then(() => alert('Treść rozważania została skopiowana do schowka!'))
                 .catch(console.error);
         } else {
@@ -212,4 +214,9 @@ Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
     if (closeBtn) closeBtn.addEventListener("click", closeModal);
     if (closeFooterBtn) closeFooterBtn.addEventListener("click", closeModal);
     if (modalOverlay) modalOverlay.addEventListener("click", closeModal);
+
+    // Auto-open modal if URL contains ?dzj=true
+    if (window.location.search.includes('dzj=true')) {
+        openModal();
+    }
 });
