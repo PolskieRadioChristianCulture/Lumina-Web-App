@@ -103,28 +103,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 titleBox.textContent = "☀️ Lato ku Bożej chwale";
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
-                const rawContent = `Dzień piąty – Taktyka Niezłomnego Przymierza i Braterskiego Wsparcia
+                const rawContent = `Dzień 6 – Taktyka Wiernego Podporządkowania Rozkazom.
 
-Żaden żołnierz na nowoczesnym polu walki nie walczy w pojedynkę, ponieważ samotny wojownik staje się łatwym celem dla nieprzyjaciela. Siła armii tkwi w niezłomnym przymierzu, wzajemnej asekuracji i zaufaniu do ludzi, którzy idą ramię w ramię w tym samym kierunku. Oddanie Bogu chwały wymaga dziś od Ciebie porzucenia duchowego samotnictwa. Twoje codzienne zwycięstwo jest ściśle powiązane z tym, jakimi ludźmi się otaczasz i komu pozwalasz osłaniać swoje plecy w chwilach kryzysu. Czas połączyć siły i wejść w zorganizowane działanie.
+Żaden oddział nie wygra potyczki, jeśli żołnierze ignorują wytyczne dowództwa i walczą według własnego uznania. Samowola na froncie prowadzi do chaosu i porażki. Oddanie Bogu chwały wymaga dziś od Ciebie pełnego i natychmiastowego podporządkowania swoich planów pod Jego wolę. Kiedy uciszasz własne ego, ambicje i lęki, a w zamian wybierasz proste posłuszeństwo Słowu Bożemu, zyskujesz pełne wsparcie i ochronę z nieba. Prawdziwa siła nie wynika z Twoich własnych pomysłów, ale z wierności rozkazom Najwyższego Dowódcy.
 
 Jezus mówi dziś do Ciebie:
-„Dalej, zaprawdę, powiadam wam: Jeśli dwaj z was na ziemi zgodnie o coś prosić będą, otrzymają to od mojego Ojca, który jest w niebie. Bo gdzie są dwaj lub trzej zebrani w imię moje, tam jestem pośród nich.” (Ewangelia według świętego Mateusza, rozdział osiemnasty, wersety od dziewiętnastego do dwudziestego)
+„Jeśli Mnie miłujecie, będziecie zachowywać moje przykazania.” (Jana 14,15)
 
 **Zadanie Taktyczne:**
-Odszukaj dziś w swoim otoczeniu przynajmniej jedną osobę wierzącą i wykonaj wobec niej konkretny gest wsparcia. Może to być krótka wiadomość z zapewnieniem o modlitwie, szczera rozmowa lub wspólne zaplanowanie dobrego działania. Zbuduj i zabezpiecz swoje duchowe przymierze.
+Zidentyfikuj dziś jedną sytuację, w której masz tendencję do robienia rzeczy po swojemu, wbrew Bożym zasadom. Świadomie zrezygnuj z własnego planu i postąp dokładnie tak, jak nakazuje Ewangelia. Podporządkuj swój strach Jego rozkazom.
 
-W Christian Culture subskrypcje i aplikacje są dla Ciebie zawsze bezpłatne.
+W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 **Modlitwa Bojowa:**
-„Jezu, dziękuję Ci, że nie powołałeś mnie do samotnej walki. Daj mi pokorę i mądrość, bym potrafił budować silne, Boże relacje z innymi. Chcę ramię w ramię z moimi braćmi i siostrami tworzyć front, który przyniesie realną chwałę Twojemu świętemu Imieniu.”
+„Jezu, mój Najwyższy Dowódco, przyznaję, że zbyt często chcę działać na własną rękę, ufając tylko swojemu umysłowi. Przepraszam za każdą samowolę. Dziś staję przed Tobą w pełnej gotowości i proszę – wydaj rozkaz, a ja go wykonam. Niech Twoja wola stanie się moim absolutnym priorytetem, a posłuszeństwo moją największą siłą.”
 
 **Rozkaz Dnia (Zadbaj o wzrost):**
-Otwórz swoje serce na działanie we wspólnocie. Wejdź do letniej bazy ludzi z pasją, zintegruj swoje siły z innymi i zacznij działać w zorganizowanym zespole, który ramię w ramię idzie drogą formacji i realnego wpływu na świat.
+Wejdź do letniej bazy ludzi z pasją!
 
 **Błogosławieństwo:**
-Niech Pan zastępów błogosławi dziś Twoim relacjom i zsyła na Twoją drogę wiernych towarzyszy walki. Niech Jego pokój jednoczy Wasze serca, a Jego moc niech czyni Wasze wspólne działania całkowicie niezniszczalnymi dla wroga.
+Niech Pan zastępów strzeże dziś Twojego umysłu i serca. Niech Jego prawda napełni Cię świętą mądrością i niezłomną siłą do realizowania Jego woli.
 
-Dobrego dnia! Podaj dalej.`;
+Dobrej nocy! PODAJ DALEJ 🔴
+www.polskieradio.cc | www.cclite.pl
+Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
+
 
                 let formattedContent = rawContent
                     .replace(/\n\n/g, '</p><p class="mt-4">')
