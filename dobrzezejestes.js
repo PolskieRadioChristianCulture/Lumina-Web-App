@@ -14,8 +14,28 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app, "ai-studio-be1ade58-95a0-4035-8abe-2b3fd74793b6");
 
+window.shareDzjContent = function() {
+    const textToShare = window.currentDzjTitle + "\n\n" + window.currentDzjText;
+    if(navigator.share) {
+        navigator.share({
+            title: window.currentDzjTitle,
+            text: textToShare,
+            url: window.location.href
+        }).catch(console.error);
+    } else {
+        if(navigator.clipboard) {
+            navigator.clipboard.writeText(textToShare + "\n\n" + window.location.href)
+                .then(() => alert('Treść rozważania została skopiowana do schowka!'))
+                .catch(console.error);
+        } else {
+            alert('Twoja przeglądarka nie wspiera systemowego udostępniania.');
+        }
+    }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     const dzjBtn = document.getElementById("navDzjLink");
+    const dzjIconBtn = document.getElementById("navDzjIconBtn");
     const modal = document.getElementById("dzjModal");
     const closeBtn = document.getElementById("dzjCloseBtn");
     const closeFooterBtn = document.getElementById("dzjCloseFooterBtn");
@@ -58,6 +78,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 titleBox.textContent = doc.title || "Codzienna Inspiracja";
                 dateBox.textContent = dateStr;
 
+                window.currentDzjTitle = titleBox.textContent;
+                window.currentDzjText = doc.content || "Brak treści na dziś.";
+
                 let formattedContent = (doc.content || "Brak treści na dziś.")
                     .replace(/\n\n/g, '</p><p class="mt-4">')
                     .replace(/\n/g, '<br/>')
@@ -70,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     <!-- Przycisk Udostępnij -->
                     <div style="text-align: center; margin: 20px 0;">
-                        <button onclick="if(navigator.share){navigator.share({title: doc.title || 'Inspiracja na dziś', text: 'Zobacz to niezwykłe codzienne rozważanie Christian Culture:', url: window.location.href}).catch(console.error);}" style="background: #E2B859; color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(226, 184, 89, 0.4); font-family: inherit;">
+                        <button onclick="window.shareDzjContent()" style="background: #E2B859; color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(226, 184, 89, 0.4); font-family: inherit;">
                             <i class="fa-solid fa-share-nodes"></i> UDOSTĘPNIJ ROZWAŻANIE
                         </button>
                     </div>
@@ -128,6 +151,8 @@ Dobrej nocy! PODAJ DALEJ 🔴
 www.polskieradio.cc | www.cclite.pl
 Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
 
+                window.currentDzjTitle = titleBox.textContent;
+                window.currentDzjText = rawContent;
 
                 let formattedContent = rawContent
                     .replace(/\n\n/g, '</p><p class="mt-4">')
@@ -141,7 +166,7 @@ Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
                     
                     <!-- Przycisk Udostępnij -->
                     <div style="text-align: center; margin: 20px 0;">
-                        <button onclick="if(navigator.share){navigator.share({title: 'Lato ku Bożej chwale', text: 'Złap dzisiejsze potężne rozważanie od Christian Culture:', url: window.location.href}).catch(console.error);}" style="background: #E2B859; color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(226, 184, 89, 0.4); font-family: inherit;">
+                        <button onclick="window.shareDzjContent()" style="background: #E2B859; color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(226, 184, 89, 0.4); font-family: inherit;">
                             <i class="fa-solid fa-share-nodes"></i> UDOSTĘPNIJ ROZWAŻANIE
                         </button>
                     </div>
@@ -183,6 +208,7 @@ Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
     };
 
     if (dzjBtn) dzjBtn.addEventListener("click", (e) => { e.preventDefault(); openModal(); });
+    if (dzjIconBtn) dzjIconBtn.addEventListener("click", (e) => { e.preventDefault(); openModal(); });
     if (closeBtn) closeBtn.addEventListener("click", closeModal);
     if (closeFooterBtn) closeFooterBtn.addEventListener("click", closeModal);
     if (modalOverlay) modalOverlay.addEventListener("click", closeModal);
