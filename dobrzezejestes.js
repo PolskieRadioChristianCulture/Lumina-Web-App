@@ -128,26 +128,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 titleBox.textContent = "☀️ Lato ku Bożej chwale";
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
-                const rawContent = `Dzień 6 – Taktyka Wiernego Podporządkowania Rozkazom.
+                const rawContent = `Dzień 11 – Taktyka Rozwijania Przewagi i Unikania Pułapek Rozluźnienia.
 
-Żaden oddział nie wygra potyczki, jeśli żołnierze ignorują wytyczne dowództwa i walczą według własnego uznania. Samowola na froncie prowadzi do chaosu i porażki. Oddanie Bogu chwały wymaga dziś od Ciebie pełnego i natychmiastowego podporządkowania swoich planów pod Jego wolę. Kiedy uciszasz własne ego, ambicje i lęki, a w zamian wybierasz proste posłuszeństwo Słowu Bożemu, zyskujesz pełne wsparcie i ochronę z nieba. Prawdziwa siła nie wynika z Twoich własnych pomysłów, ale z wierności rozkazom Najwyższego Dowódcy.
+W porządku biblijnym czwartek to 5 dzień tygodnia. Na froncie to faza, gdy po przełamaniu środka tygodnia zyskujesz przewagę. Zagrożeniem staje się przedwczesne rozluźnienie i odliczanie dni do końca powierzonych zadań. Wróg zastawia wtedy ukryte pułapki, licząc na nieuwagę wojowników. Oddanie Bogu chwały wymaga pełnej koncentracji i rozwijania natarcia. Zamiast zwalniać, dociśnij rygor modlitwy i zaangażowania, by utrzymać inicjatywę na całym froncie.
 
 Jezus mówi dziś do Ciebie:
-„Jeśli Mnie miłujecie, będziecie zachowywać moje przykazania.” (Jana 14,15)
+„Bądźcie trzeźwi! Czuwajcie! Przeciwnik wasz, diabeł, jak lew ryczący krąży szukając kogo pożreć. Mocni w wierze przeciwstawcie się jemu!” (1 Piotra 5,8-9)
 
 **Zadanie Taktyczne:**
-Zidentyfikuj dziś jedną sytuację, w której masz tendencję do robienia rzeczy po swojemu, wbrew Bożym zasadom. Świadomie zrezygnuj z własnego planu i postąp dokładnie tak, jak nakazuje Ewangelia. Podporządkuj swój strach Jego rozkazom.
+Nie pozwól sobie dziś na skróty w zadaniach duchowych i zawodowych. Gdy poczujesz pokusę, by odpuścić precyzję lub przełożyć obowiązki na później, zareaguj natychmiastowym, sumiennym działaniem. Zniszcz pułapkę rozluźnienia przez wierność szczegółom.
 
 W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 **Modlitwa Bojowa:**
-„Jezu, mój Najwyższy Dowódco, przyznaję, że zbyt często chcę działać na własną rękę, ufając tylko swojemu umysłowi. Przepraszam za każdą samowolę. Dziś staję przed Tobą w pełnej gotowości i proszę – wydaj rozkaz, a ja go wykonam. Niech Twoja wola stanie się moim absolutnym priorytetem, a posłuszeństwo moją największą siłą.”
+„Jezu, staję na linii frontu w 5 dniu tygodnia i odrzucam beztroskę. Walka wciąż trwa. Daj mi trzeźwość umysłu, czujność i siłę do rozwijania Bożego natarcia w każdym obszarze mojego życia, ku Twojej chwale.”
 
-**Rozkaz Dnia (Zadbaj o wzrost):**
-Wejdź do letniej bazy ludzi z pasją!
+**Baza i wzrost (Zadbaj o wzrost):**
+Wejdź do zespołu ludzi z pasją!
 
 **Błogosławieństwo:**
-Niech Pan zastępów strzeże dziś Twojego umysłu i serca. Niech Jego prawda napełni Cię świętą mądrością i niezłomną siłą do realizowania Jego woli.
+Niech Pan zastępów napełni Cię dziś duchem walki i wiernością. Niech Jego mądrość obnaża pułapki nieprzyjaciela, a Jego ramię niech daje Ci pełną przewagę nad słabością.
 
 Dobrej nocy! PODAJ DALEJ 🔴
 www.polskieradio.cc | www.cclite.pl
