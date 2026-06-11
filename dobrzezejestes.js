@@ -84,7 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.currentDzjText = doc.content || "Brak treści na dziś.";
 
                 let formattedContent = (doc.content || "Brak treści na dziś.")
-                    .replace(/(https?:\/\/[^\s\n<]+)/g, '<a href="$1" target="_blank" style="color: #E2B859; text-decoration: underline;">$1</a>')
+                    .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
+                        const href = url.startsWith('http') ? url : 'https://' + url;
+                        return `<a href="${href}" target="_blank" style="color: #E2B859; text-decoration: underline;">${url}</a>`;
+                    })
                     .replace(/\n\n/g, '</p><p class="mt-4">')
                     .replace(/\n/g, '<br/>')
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -158,7 +161,10 @@ Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
                 window.currentDzjText = rawContent;
 
                 let formattedContent = rawContent
-                    .replace(/(https?:\/\/[^\s\n<]+)/g, '<a href="$1" target="_blank" style="color: #E2B859; text-decoration: underline;">$1</a>')
+                    .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
+                        const href = url.startsWith('http') ? url : 'https://' + url;
+                        return `<a href="${href}" target="_blank" style="color: #E2B859; text-decoration: underline;">${url}</a>`;
+                    })
                     .replace(/\n\n/g, '</p><p class="mt-4">')
                     .replace(/\n/g, '<br/>')
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
