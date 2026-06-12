@@ -132,29 +132,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 titleBox.textContent = "☀️ Lato ku Bożej chwale";
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
-                const rawContent = `Dzień 11 – Taktyka Rozwijania Przewagi i Unikania Pułapek Rozluźnienia.
+                const rawContent = `Dzień 12 - Taktyka Ostatniej Prostej i Zabezpieczenia Owoców Walki.
 
-W porządku biblijnym czwartek to 5 dzień tygodnia. Na froncie to faza, gdy po przełamaniu środka tygodnia zyskujesz przewagę. Zagrożeniem staje się przedwczesne rozluźnienie i odliczanie dni do końca powierzonych zadań. Wróg zastawia wtedy ukryte pułapki, licząc na nieuwagę wojowników. Oddanie Bogu chwały wymaga pełnej koncentracji i rozwijania natarcia. Zamiast zwalniać, dociśnij rygor modlitwy i zaangażowania, by utrzymać inicjatywę na całym froncie.
+W porządku biblijnym piątek to 6 dzień tygodnia. Na froncie to moment ostatniej prostej przed końcem cyklu zadań, gdy zmęczenie osiąga najwyższy punkt. Wróg doskonale wie, kiedy opadasz z sił i liczy na Twoje błędy na samej linii mety. Oddanie Bogu chwały wymaga dziś taktyki potężnego finiszu. Nie czas, by składać broń lub pozwolić, by nagromadzone zmęczenie zniszczyło to, co budowałeś przez cały tydzień. Zmobilizuj siły i zabezpiecz owoce swojej wierności.
 
 Jezus mówi dziś do Ciebie:
-„Bądźcie trzeźwi! Czuwajcie! Przeciwnik wasz, diabeł, jak lew ryczący krąży szukając kogo pożreć. Mocni w wierze przeciwstawcie się jemu!” (1 Piotra 5,8-9)
+"To wam powiedziawszy, aby radość moja w was była i aby radość wasza była pełna." (Jana 15,11)
 
 **Zadanie Taktyczne:**
-Nie pozwól sobie dziś na skróty w zadaniach duchowych i zawodowych. Gdy poczujesz pokusę, by odpuścić precyzję lub przełożyć obowiązki na później, zareaguj natychmiastowym, sumiennym działaniem. Zniszcz pułapkę rozluźnienia przez wierność szczegółom.
+Wykrzesz z siebie dziś maksymalną cierpliwość w pracy i w domu. Gdy poczujesz zniecierpliwienie, nie reaguj nerwowością. Dokończ wszystkie rozpoczęte w tym tygodniu sprawy z absolutną precyzją. Dociśnij rygor i nie odpuszczaj na samej mecie.
 
 W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 **Modlitwa Bojowa:**
-„Jezu, staję na linii frontu w 5 dniu tygodnia i odrzucam beztroskę. Walka wciąż trwa. Daj mi trzeźwość umysłu, czujność i siłę do rozwijania Bożego natarcia w każdym obszarze mojego życia, ku Twojej chwale.”
+"Jezu, staję na linii frontu w 6 dniu tygodnia. Przynoszę Ci moje zmęczenie i proszę o nadprzyrodzony zastrzyk sił. Daj mi wytrwałość, abym z podniesioną głową dokończył powierzone zadania i przyniósł pełną chwałę Twojemu Imieniu."
 
-**Baza i wzrost (Zadbaj o wzrost):**
-Wejdź do zespołu ludzi z pasją!
-
-**Błogosławieństwo:**
-Niech Pan zastępów napełni Cię dziś duchem walki i wiernością. Niech Jego mądrość obnaża pułapki nieprzyjaciela, a Jego ramię niech daje Ci pełną przewagę nad słabością.
+**Baza i wzrost:** https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 - Wejdź do zespołu ludzi z pasją!
 
 Dobrej nocy! PODAJ DALEJ 🔴
 www.polskieradio.cc | www.cclite.pl
+Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
 Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
 
                 window.currentDzjTitle = titleBox.textContent;
