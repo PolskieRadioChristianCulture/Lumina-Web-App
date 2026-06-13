@@ -132,26 +132,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 titleBox.textContent = "☀️ Lato ku Bożej chwale";
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
-                const rawContent = `Dzień 12 - Taktyka Ostatniej Prostej i Zabezpieczenia Owoców Walki.
+                const rawContent = `Dzień 13 – Taktyka Świętego Szabatu i Całkowitego Złożenia Broni.
 
-W porządku biblijnym piątek to 6 dzień tygodnia. Na froncie to moment ostatniej prostej przed końcem cyklu zadań, gdy zmęczenie osiąga najwyższy punkt. Wróg doskonale wie, kiedy opadasz z sił i liczy na Twoje błędy na samej linii mety. Oddanie Bogu chwały wymaga dziś taktyki potężnego finiszu. Nie czas, by składać broń lub pozwolić, by nagromadzone zmęczenie zniszczyło to, co budowałeś przez cały tydzień. Zmobilizuj siły i zabezpiecz owoce swojej wierności.
+W porządku biblijnym sobota to 7 dzień tygodnia – święty Szabat. To strategiczny czas zaprojektowany przez Stwórcę na całkowite złożenie broni, zatrzymanie trudu i wejście w Boży odpoczynek. Wróg chce, abyś był niewolnikiem ciągłej pogoni i pracy bez końca. Oddanie Bogu chwały w Szabat polega na zamanifestowaniu zaufania, że to Pan utrzymuje Twoje życie, a nie Twój własny wysiłek. Czas zatrzymać bieg i odpocząć w Jego Obecności.
 
 Jezus mówi dziś do Ciebie:
-"To wam powiedziawszy, aby radość moja w was była i aby radość wasza była pełna." (Jana 15,11)
+„To Szabat jest dla człowieka, a nie człowiek dla Szabatu. Zatem Syn Człowieczy jest Panem także Szabatu.” (Marka 2,27-28)
 
 **Zadanie Taktyczne:**
-Wykrzesz z siebie dziś maksymalną cierpliwość w pracy i w domu. Gdy poczujesz zniecierpliwienie, nie reaguj nerwowością. Dokończ wszystkie rozpoczęte w tym tygodniu sprawy z absolutną precyzją. Dociśnij rygor i nie odpuszczaj na samej mecie.
+Odsuń dziś od siebie wszelką pracę zawodową, ciężki trud i codzienne zabieganie. Przeznacz ten 7 dzień na świętowanie, budowanie relacji z najbliższymi i spokojną modlitwę. Pozwól ciału i duchowi na pełną regenerację pod okiem Najwyższego Dowódcy.
 
 W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 **Modlitwa Bojowa:**
-"Jezu, staję na linii frontu w 6 dniu tygodnia. Przynoszę Ci moje zmęczenie i proszę o nadprzyrodzony zastrzyk sił. Daj mi wytrwałość, abym z podniesioną głową dokończył powierzone zadania i przyniósł pełną chwałę Twojemu Imieniu."
+„Jezu, Ty jesteś Panem mojego odpoczynku. W tym 7 dniu tygodnia świadomie składam broń i zatrzymuję trud. Ufam, że Ty troszczysz się o moje sprawy. Oczyszczam umysł z napięć, wchodząc z radością w Twój święty pokój.”
 
-**Baza i wzrost:** https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 - Wejdź do zespołu ludzi z pasją!
+**Baza i wzrost:** Wejdź do zespołu ludzi z pasją!
 
 Dobrej nocy! PODAJ DALEJ 🔴
 www.polskieradio.cc | www.cclite.pl
-Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
 Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
 
                 window.currentDzjTitle = titleBox.textContent;
