@@ -627,6 +627,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const decalogueModalOverlay = document.getElementById("decalogueModalOverlay");
     const decalogueCloseBtn = document.getElementById("decalogueCloseBtn");
     const navDecalogueLink = document.getElementById("navDecalogueLink");
+    const headerDecalogueBtn = document.getElementById("headerDecalogueBtn");
     const decalogueContentBox = document.querySelector("#decalogueContentBox .decalogue-list");
     
     // Render Dekalog list
@@ -667,6 +668,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     if(navDecalogueLink) navDecalogueLink.addEventListener("click", openDecalogue);
+    if(headerDecalogueBtn) headerDecalogueBtn.addEventListener("click", openDecalogue);
     if(decalogueCloseBtn) decalogueCloseBtn.addEventListener("click", closeDecalogue);
     if(decalogueModalOverlay) decalogueModalOverlay.addEventListener("click", closeDecalogue);
     
