@@ -600,3 +600,104 @@ if (backToTopBtn) {
         });
     });
 }
+
+// 12. DECALOGUE MODAL LOGIC
+const BIBLE_DECALOGUE = [
+  { num: "1", text: "I mówił Pan wszystkie te słowa:" },
+  { num: "2", text: "„Jam jest Pan, Bóg twój, którym cię wywiódł z ziemi egipskiej, z domu niewoli." },
+  { num: "3", text: "Nie będziesz miał bogów cudzych przede mną." },
+  { num: "4", text: "Nie uczynisz sobie obrazu rytego ani żadnej podobizny tego, co jest na niebie w górze i co na ziemi nisko, ani z tych rzeczy, które są w wodach pod ziemią." },
+  { num: "5", text: "Nie będziesz się im kłaniał ani służył. Ja jestem Pan, Bóg twój, mocny, zawistny, karzący nieprawość ojców na synach do trzeciego i czwartego pokolenia tych, którzy mnie nienawidzą," },
+  { num: "6", text: "a czyniący miłosierdzie tysiącom tych, którzy mię miłują i strzegą przykazań moich." },
+  { num: "7", text: "Nie będziesz brał imienia Pana, Boga twego, nadaremno; bo nie będzie miał Pan za niewinnego tego, który by wziął imię Pana, Boga swego, nadaremno." },
+  { num: "8", text: "Pamiętaj, abyś dzień sobotni święcił." },
+  { num: "9", text: "Sześć dni robić będziesz i będziesz wykonywał wszystkie roboty twoje;" },
+  { num: "10", text: "ale dnia siódmego sabat Pana, Boga twego, jest: nie będziesz wykonywał weń żadnej roboty, ty i syn twój, i córka twoja, sługa twój i służebnica twoja, bydlę twoje i gość, który jest między bramami twymi." },
+  { num: "11", text: "Przez sześć dni bowiem czynił Pan niebo i ziemię, i morze, i wszystko, co w nich jest, a odpoczął dnia siódmego; i dlatego pobłogosławił Pan dniowi sobotniemu i poświęcił go." },
+  { num: "12", text: "Czcij ojca twego i matkę twoją, abyś długo żył na ziemi, którą Pan, Bóg twój, da tobie." },
+  { num: "13", text: "Nie będziesz zabijał." },
+  { num: "14", text: "Nie będziesz cudzołożył." },
+  { num: "15", text: "Nie będziesz kradzieży czynił." },
+  { num: "16", text: "Nie będziesz mówił fałszywego świadectwa przeciw bliźniemu twemu." },
+  { num: "17", text: "Nie będziesz pożądał domu bliźniego twego, ani będziesz pragnął żony jego, ani sługi, ani służebnicy, ani wołu, ani osła, ani żadnej rzeczy, która jego jest”." }
+];
+
+document.addEventListener("DOMContentLoaded", () => {
+    const decalogueModal = document.getElementById("decalogueModal");
+    const decalogueModalOverlay = document.getElementById("decalogueModalOverlay");
+    const decalogueCloseBtn = document.getElementById("decalogueCloseBtn");
+    const navDecalogueLink = document.getElementById("navDecalogueLink");
+    const decalogueContentBox = document.querySelector("#decalogueContentBox .decalogue-list");
+    
+    // Render Dekalog list
+    if (decalogueContentBox) {
+        BIBLE_DECALOGUE.forEach(item => {
+            const div = document.createElement("div");
+            div.style.display = "flex";
+            div.style.gap = "1rem";
+            div.style.padding = "1rem";
+            div.style.background = "rgba(255,255,255,0.02)";
+            div.style.borderRadius = "0.75rem";
+            div.style.border = "1px solid rgba(255,255,255,0.05)";
+            
+            const numSpan = document.createElement("span");
+            numSpan.style.color = "#C5A059";
+            numSpan.style.fontWeight = "900";
+            numSpan.style.minWidth = "25px";
+            numSpan.innerText = item.num + ".";
+            
+            const textP = document.createElement("p");
+            textP.style.margin = "0";
+            textP.innerText = item.text;
+            
+            div.appendChild(numSpan);
+            div.appendChild(textP);
+            decalogueContentBox.appendChild(div);
+        });
+    }
+
+    const openDecalogue = (e) => {
+        if(e) e.preventDefault();
+        if(decalogueModal) decalogueModal.style.display = "flex";
+        if(typeof closeDrawer === "function") closeDrawer();
+    };
+
+    const closeDecalogue = () => {
+        if(decalogueModal) decalogueModal.style.display = "none";
+    };
+
+    if(navDecalogueLink) navDecalogueLink.addEventListener("click", openDecalogue);
+    if(decalogueCloseBtn) decalogueCloseBtn.addEventListener("click", closeDecalogue);
+    if(decalogueModalOverlay) decalogueModalOverlay.addEventListener("click", closeDecalogue);
+    
+    // Copy and Share functionality
+    const getDecalogueText = () => {
+        return "DEKALOG (DZIESIĘCIORO PRZYKAZAŃ)\nwedług tekstu: Pismo Święte Starego i Nowego Testamentu, wyd. 1962\n\n" + 
+            BIBLE_DECALOGUE.map(v => `${v.num} ${v.text}`).join('\n');
+    };
+
+    const btnCopy = document.getElementById("btnCopyDecalogue");
+    if (btnCopy) {
+        btnCopy.addEventListener("click", () => {
+            navigator.clipboard.writeText(getDecalogueText()).then(() => {
+                alert("Skopiowano do schowka!");
+            }).catch(err => {
+                console.error("Błąd kopiowania:", err);
+            });
+        });
+    }
+
+    const btnShare = document.getElementById("btnShareDecalogue");
+    if (btnShare) {
+        btnShare.addEventListener("click", () => {
+            const text = getDecalogueText();
+            if (navigator.share) {
+                navigator.share({ title: 'Dekalog', text: text }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert("Skopiowano do schowka! (Udostępnianie natywne nie jest obsługiwane na tym urządzeniu)");
+                });
+            }
+        });
+    }
+});

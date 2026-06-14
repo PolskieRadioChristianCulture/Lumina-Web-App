@@ -132,23 +132,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 titleBox.textContent = "☀️ Lato ku Bożej chwale";
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
-                let rawContent = `Dzień 14 – Taktyka Pierwszego Uderzenia i Nowej Ofensywy Duchowej.
+                const rawContent = `Dzień 13 – Taktyka Świętego Szabatu i Całkowitego Złożenia Broni.
 
-W porządku biblijnym niedziela otwiera nowy czas i jest 1 dniem tygodnia – momentem wyjścia z bazy i przejęcia inicjatywy. Żaden sprawny oddział nie zwleka z działaniem, gdy wróg próbuje zasiać chaos czy rozleniwienie. Oddanie Bogu chwały na początku tygodnia to strategiczne uderzenie, które nadaje kierunek kolejnym dniom służby. Chrystus zmartwychwstał o świcie pierwszego dnia, miażdżąc potęgę grzechu. Stań do dzisiejszych zadań jako zwycięzca pod sztandarem Pana.
+W porządku biblijnym sobota to 7 dzień tygodnia – święty Szabat. To strategiczny czas zaprojektowany przez Stwórcę na całkowite złożenie broni, zatrzymanie trudu i wejście w Boży odpoczynek. Wróg chce, abyś był niewolnikiem ciągłej pogoni i pracy bez końca. Oddanie Bogu chwały w Szabat polega na zamanifestowaniu zaufania, że to Pan utrzymuje Twoje życie, a nie Twój własny wysiłek. Czas zatrzymać bieg i odpocząć w Jego Obecności.
 
 Jezus mówi dziś do Ciebie:
-„Po upływie szabatu, o świcie pierwszego dnia tygodnia, przyszła Maria Magdalena i druga Maria obejrzeć grób. A oto powstało wielkie trzęsienie ziemi...” (Mateusza 28,1-2)
+„To Szabat jest dla człowieka, a nie człowiek dla Szabatu. Zatem Syn Człowieczy jest Panem także Szabatu.” (Marka 2,27-28)
 
 **Zadanie Taktyczne:**
-Zabezpiecz ten 1 dzień tygodnia przed przypadkowością. Wyznacz konkretny, nienaruszalny czas na modlitwę, Pismo Święte i udział we Mszy św. Przejmij duchową kontrolę nad nadchodzącym czasem, narzucając dyscyplinę na samym starcie kampanii.
+Odsuń dziś od siebie wszelką pracę zawodową, ciężki trud i codzienne zabieganie. Przeznacz ten 7 dzień na świętowanie, budowanie relacji z najbliższymi i spokojną modlitwę. Pozwól ciału i duchowi na pełną regenerację pod okiem Najwyższego Dowódcy.
 
 W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 **Modlitwa Bojowa:**
-„Jezu, staję przed Tobą w 1 dniu tygodnia. Uwielbiam Cię za Twoje zmartwychwstanie i ogłaszam Twoje zwycięstwo nad moim życiem. Przejmij dowództwo nad moimi planami, aby każdy krok przynosił Ci chwałę.”
+„Jezu, Ty jesteś Panem mojego odpoczynku. W tym 7 dniu tygodnia świadomie składam broń i zatrzymuję trud. Ufam, że Ty troszczysz się o moje sprawy. Oczyszczam umysł z napięć, wchodząc z radością w Twój święty pokój.”
 
-**Rozkaz Dnia (Zadbaj o wzrost):**
-Wejdź do zespołu ludzi z pasją!
+**Baza i wzrost:** Wejdź do zespołu ludzi z pasją!
 
 Dobrej nocy! PODAJ DALEJ 🔴
 www.polskieradio.cc | www.cclite.pl

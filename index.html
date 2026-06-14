@@ -85,6 +85,7 @@
                 <a href="privacy.html" class="drawer-link"><i class="fa-solid fa-user-shield"></i> Polityka Prywatności</a>
                 <a href="general-safety.html" class="drawer-link"><i class="fa-solid fa-shield-halved"></i> Standardy Bezpieczeństwa</a>
                 <a href="lumina-safety.html" class="drawer-link"><i class="fa-solid fa-child-reaching"></i> Ochrona Dzieci (Lumina)</a>
+                <a href="#" class="drawer-link" id="navDecalogueLink" style="color: var(--gold-primary);"><i class="fa-solid fa-book-open"></i> Dekalog</a>
             </nav>
             <div class="drawer-footer">
                 <p>&copy; 2026 Christian Culture</p>
@@ -625,6 +626,45 @@
     <button class="back-to-top" id="backToTopBtn" aria-label="Przewiń do góry">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
+
+    <!-- MODAL DEKALOG -->
+    <div id="decalogueModal" class="dzj-modal-wrapper" style="z-index: 10000; display: none;">
+        <div class="dzj-modal-overlay" id="decalogueModalOverlay"></div>
+        <div class="dzj-modal-content" style="max-height: 90vh; overflow-y: auto; background: linear-gradient(135deg, #111, #0a0a0a); border: 1px solid rgba(212, 175, 55, 0.2);">
+            <button class="dzj-close-top" id="decalogueCloseBtn" style="color: #fff;"><i class="fa-solid fa-xmark"></i></button>
+            <div class="dzj-header" style="background: none; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 1rem;">
+                <div class="dzj-logo-wrapper" style="box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);">
+                    <img src="icon.png" alt="Christian Culture Logo" style="filter: brightness(1.2);">
+                </div>
+                <h2 class="dzj-title" style="color: #d4af37; font-family: 'Cinzel', serif; letter-spacing: 0.1em; text-transform: uppercase;">Dekalog</h2>
+                <p style="color: #a0a0a0; font-size: 0.85rem; margin-top: 5px;">DZIESIĘCIORO PRZYKAZAŃ</p>
+            </div>
+            <div class="dzj-body" id="decalogueContentBox" style="color: #eaeaea; font-family: 'Montserrat', sans-serif; line-height: 1.6; padding: 20px;">
+                <!-- Content will be injected by JS or hardcoded here -->
+                <div class="decalogue-list" style="display: flex; flex-direction: column; gap: 15px;">
+                    <!-- Items -->
+                </div>
+                
+                <div class="mt-12 p-8 text-center" style="margin-top: 3rem; padding: 2rem; background: rgba(197,160,89,0.05); border: 1px solid rgba(197,160,89,0.2); border-radius: 1.5rem;">
+                    <p style="color: #C5A059; font-style: italic; font-size: 1.125rem; font-family: 'Lora', serif;">
+                        "Ja jestem Pan, Bóg twój, którym cię wywiódł z ziemi egipskiej, z domu niewoli."
+                    </p>
+                    <p style="font-size: 0.625rem; font-weight: 900; color: #71717a; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 1rem;">
+                        Księga Wyjścia 20,1-17 (Wyd. 1962)
+                    </p>
+                    
+                    <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+                        <button id="btnCopyDecalogue" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-weight: bold; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s;">
+                            <i class="fa-solid fa-copy"></i> Kopiuj
+                        </button>
+                        <button id="btnShareDecalogue" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: #C5A059; color: black; font-weight: 900; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border: none; box-shadow: 0 0 20px rgba(197,160,89,0.3); transition: all 0.3s;">
+                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL DOBRZE, ZE JESTES -->
     <div id="dzjModal" class="dzj-modal-wrapper">
