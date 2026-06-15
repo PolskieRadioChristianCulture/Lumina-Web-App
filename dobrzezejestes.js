@@ -12,7 +12,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app, "ai-studio-be1ade58-95a0-4035-8abe-2b3fd74793b6");
+const db = getFirestore(app);
 
 window.shareDzjContent = function() {
     const textToShare = window.currentDzjTitle + "\n\n" + window.currentDzjText;
