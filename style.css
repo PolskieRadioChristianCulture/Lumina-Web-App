@@ -1388,7 +1388,7 @@ button {
     
     /* Mobile Player layout - Compact & Unclipped */
     .radio-player-bar {
-        height: 105px;
+        height: 115px;
         padding: 0.4rem 0;
     }
     
@@ -1432,6 +1432,7 @@ button {
         gap: 0.75rem;
         border-top: 1px solid rgba(212, 175, 55, 0.08);
         padding-top: 0.35rem;
+        padding-bottom: 10px;
     }
     
     .player-status {
