@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
             
-            const q = query(collection(db, "web_inspirations"), orderBy("timestamp", "desc"), limit(1));
+            const q = query(collection(db, "morning_inspirations"), orderBy("timestamp", "desc"), limit(1));
             const snap = await getDocs(q);
 
             if (!snap.empty) {
@@ -81,9 +81,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 dateBox.textContent = dateStr;
 
                 window.currentDzjTitle = titleBox.textContent;
-                window.currentDzjText = doc.content || "Brak treści na dziś.";
+                window.currentDzjText = doc.contentWeb || doc.content || "Brak treści na dziś.";
 
-                let formattedContent = (doc.content || "Brak treści na dziś.")
+                let formattedContent = (doc.contentWeb || doc.content || "Brak treści na dziś.")
                     .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
                         const href = url.startsWith('http') ? url : 'https://' + url;
                         return `<a href="${href}" target="_blank" style="color: #E2B859; text-decoration: underline;">${url}</a>`;
