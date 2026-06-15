@@ -132,25 +132,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 titleBox.textContent = "☀️ Lato ku Bożej chwale";
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
-                let rawContent = `Dzień 14 – Taktyka Pierwszego Uderzenia i Nowej Ofensywy Duchowej.
+                let rawContent = `Dzień 15 – Taktyka Synostwa i Tożsamości Dziedzica.
 
-W porządku biblijnym niedziela otwiera nowy czas i jest 1 dniem tygodnia – momentem wyjścia z bazy i przejęcia inicjatywy. Żaden sprawny oddział nie zwleka z działaniem, gdy wróg próbuje zasiać chaos czy rozleniwienie. Oddanie Bogu chwały na początku tygodnia to strategiczne uderzenie, które nadaje kierunek kolejnym dniom służby. Chrystus zmartwychwstał o świcie pierwszego dnia, miażdżąc potęgę grzechu. Stań do dzisiejszych zadań jako zwycięzca pod sztandarem Pana.
+Twoja walka na duchowym froncie nie opiera się na niewolniczym strachu, ale na głębokiej, zażyłej relacji z Ojcem. Wróg robi wszystko, abyś poczuł się jak osamotniony sierota, który musi sam walczyć o przetrwanie w świecie. Oddanie Bogu chwały wymaga dziś radykalnego przyjęcia tożsamości syna i córki. Kiedy stajesz przed Bogiem z absolutnym zaufaniem dziecka, zyskujesz natychmiastowy dostęp do całego zaopatrzenia, ochrony i dziedzictwa Królestwa. Jesteś dzieckiem Najwyższego – Twoje bezpieczeństwo jest w pełni zagwarantowane u Ojca.
 
 Jezus mówi dziś do Ciebie:
-„Po upływie szabatu, o świcie pierwszego dnia tygodnia, przyszła Maria Magdalena i druga Maria obejrzeć grób. A oto powstało wielkie trzęsienie ziemi...” (Mateusza 28,1-2)
+„Nie jesteś już niewolnikiem, lecz synem. Jeżeli zaś synem, to i dziedzicem z woli Bożej.” (Galatów 4,7)
 
 **Zadanie Taktyczne:**
-Zabezpiecz ten 1 dzień tygodnia przed przypadkowością. Wyznacz konkretny, nienaruszalny czas na modlitwę, Pismo Święte i udział we Mszy św. Przejmij duchową kontrolę nad nadchodzącym czasem, narzucając dyscyplinę na samym starcie kampanii.
+Porzuć dziś myślenie w kategoriach niewolnika, który musi zasłużyć na akceptację. Spędź wolną chwilę na prostej modlitwie wdzięczności, dziękując Ojcu za Jego miłość i stałą opiekę. Podejmuj codzienne decyzje z pozycji królewskiego dziedzica.
 
 W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 **Modlitwa Bojowa:**
-„Jezu, staję przed Tobą w 1 dniu tygodnia. Uwielbiam Cię za Twoje zmartwychwstanie i ogłaszam Twoje zwycięstwo nad moim życiem. Przejmij dowództwo nad moimi planami, aby każdy krok przynosił Ci chwałę.”
+„Ojcze, dziękuję Ci, że mogę nazwać Cię moim Tatą. Odrzucam kłamstwa nieprzyjaciela o samotności. Przyjmuję dziś moją tożsamość dziecka Bożego i chcę działać ze świadomością, że Twoje potężne ramię zawsze mnie osłania, ku Twojej chwale.”
 
-**Rozkaz Dnia (Zadbaj o wzrost):**
-Wejdź do zespołu ludzi z pasją!
+Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
 
-Dobrej nocy! PODAJ DALEJ 🔴
+PODAJ DALEJ 🔴
 www.polskieradio.cc | www.cclite.pl
 Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
 
