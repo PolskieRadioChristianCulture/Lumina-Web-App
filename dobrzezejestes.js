@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
             
-            const q = query(collection(db, "morning_inspirations"), orderBy("timestamp", "desc"), limit(1));
+            const q = query(collection(db, "web_inspirations"), orderBy("timestamp", "desc"), limit(1));
             const snap = await getDocs(q);
 
             if (!snap.empty) {
