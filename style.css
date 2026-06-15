@@ -255,6 +255,7 @@ button {
     display: flex;
     flex-direction: column;
     transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow-y: auto;
 }
 
 .side-drawer.active {

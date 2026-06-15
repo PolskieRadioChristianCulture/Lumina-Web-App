@@ -632,6 +632,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Render Dekalog list
     if (decalogueContentBox) {
+        decalogueContentBox.innerHTML = "";
         BIBLE_DECALOGUE.forEach(item => {
             const div = document.createElement("div");
             div.style.display = "flex";
@@ -659,12 +660,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const openDecalogue = (e) => {
         if(e) e.preventDefault();
-        if(decalogueModal) decalogueModal.style.display = "flex";
+        if(decalogueModal) {
+            decalogueModal.style.display = "flex";
+            setTimeout(() => { decalogueModal.classList.add("open"); }, 10);
+            document.body.style.overflow = "hidden";
+        }
         if(typeof closeDrawer === "function") closeDrawer();
     };
 
     const closeDecalogue = () => {
-        if(decalogueModal) decalogueModal.style.display = "none";
+        if(decalogueModal) {
+            decalogueModal.classList.remove("open");
+            document.body.style.overflow = "";
+            setTimeout(() => { decalogueModal.style.display = "none"; }, 300);
+        }
     };
 
     if(navDecalogueLink) navDecalogueLink.addEventListener("click", openDecalogue);
