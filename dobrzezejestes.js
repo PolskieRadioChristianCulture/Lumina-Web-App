@@ -132,20 +132,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 titleBox.textContent = "☀️ Lato ku Bożej chwale";
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
-                let rawContent = `Dzień 15 – Taktyka Synostwa i Tożsamości Dziedzica.
+                let rawContent = `Dzień 16 – Taktyka Ojcowskiej Korekty i Wychowania do Zwycięstwa.
 
-Twoja walka na duchowym froncie nie opiera się na niewolniczym strachu, ale na głębokiej, zażyłej relacji z Ojcem. Wróg robi wszystko, abyś poczuł się jak osamotniony sierota, który musi sam walczyć o przetrwanie w świecie. Oddanie Bogu chwały wymaga dziś radykalnego przyjęcia tożsamości syna i córki. Kiedy stajesz przed Bogiem z absolutnym zaufaniem dziecka, zyskujesz natychmiastowy dostęp do całego zaopatrzenia, ochrony i dziedzictwa Królestwa. Jesteś dzieckiem Najwyższego – Twoje bezpieczeństwo jest w pełni zagwarantowane u Ojca.
+Formacja na duchowym froncie wymaga gotowości do przyjmowania nauki. Wróg próbuje wmówić Ci, że każde napomnienie w sumieniu, trudność czy potknięcie to dowód odrzucenia przez Boga. Oddanie Bogu chwały wymaga dziś odrzucenia tego kłamstwa i przyjęcia ojcowskiej korekty z pełną ufnością. Ziemski dowódca szkoli żołnierza, by ten zwyciężył na polu bitwy. Twój Niebiański Ojciec wychowuje Cię, ponieważ jesteś Jego synem i córką. Każde Boże upomnienie to dowód miłości i przygotowanie do triumfu.
 
 Jezus mówi dziś do Ciebie:
-„Nie jesteś już niewolnikiem, lecz synem. Jeżeli zaś synem, to i dziedzicem z woli Bożej.” (Galatów 4,7)
+„Trwajcież w karności! Bóg obchodzi się z wami jak z synami. Bo jakiż to syn, którego by ojciec nie karcił? Jeśli jesteście bez karcenia (...) to jesteście bękartami, a nie synami.” (Hebrajczyków 12,7-8)
 
 **Zadanie Taktyczne:**
-Porzuć dziś myślenie w kategoriach niewolnika, który musi zasłużyć na akceptację. Spędź wolną chwilę na prostej modlitwie wdzięczności, dziękując Ojcu za Jego miłość i stałą opiekę. Podejmuj codzienne decyzje z pozycji królewskiego dziedzica.
+Zrób krótki przegląd obszarów, w których ostatnio odpuściłeś dyscyplinę. Zamiast uciekać przed Bogiem w poczucie winy, stań przed Ojcem w prawdzie. Przyjmij Jego korektę, wyciągnij wnioski i skoryguj swoje codzienne działania na froncie.
 
 W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 **Modlitwa Bojowa:**
-„Ojcze, dziękuję Ci, że mogę nazwać Cię moim Tatą. Odrzucam kłamstwa nieprzyjaciela o samotności. Przyjmuję dziś moją tożsamość dziecka Bożego i chcę działać ze świadomością, że Twoje potężne ramię zawsze mnie osłania, ku Twojej chwale.”
+„Ojcze, dziękuję, że mnie wychowujesz i nie pozwalasz mi trwać w marazmie. Przyjmuję Twoją ojcowską korektę z ufnością dziecka. Daj mi pokorę, bym uczył się na błędach i z pełną dyscypliną realizował Twoje rozkazy, przynosząc Ci chwałę.”
 
 Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
 
