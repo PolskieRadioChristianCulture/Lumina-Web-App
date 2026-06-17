@@ -1,18 +1,5 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-import { getFirestore, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  projectId: "gen-lang-client-0094354839",
-  appId: "1:553245611022:web:5ae303f1fe0d6d16f8985f",
-  apiKey: "AIzaSyBDuwM3vB5elVsTgFw6xKkwbqEUCT--h7c",
-  authDomain: "gen-lang-client-0094354839.firebaseapp.com",
-  storageBucket: "gen-lang-client-0094354839.firebasestorage.app",
-  messagingSenderId: "553245611022",
-  measurementId: "G-P5L6Q1MXRL"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+import { db } from "./firebase-config.js";
+import { collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
 window.shareDzjContent = function() {
     const textToShare = window.currentDzjTitle + "\n\n" + window.currentDzjText;
@@ -132,20 +119,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 titleBox.textContent = "☀️ Lato ku Bożej chwale";
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
-                let rawContent = `Dzień 16 – Taktyka Ojcowskiej Korekty i Wychowania do Zwycięstwa.
+                let rawContent = `Dzień 17 – Taktyka Stałego Dostępu i Otwartych Drzwi Ojca.
 
-Formacja na duchowym froncie wymaga gotowości do przyjmowania nauki. Wróg próbuje wmówić Ci, że każde napomnienie w sumieniu, trudność czy potknięcie to dowód odrzucenia przez Boga. Oddanie Bogu chwały wymaga dziś odrzucenia tego kłamstwa i przyjęcia ojcowskiej korekty z pełną ufnością. Ziemski dowódca szkoli żołnierza, by ten zwyciężył na polu bitwy. Twój Niebiański Ojciec wychowuje Cię, ponieważ jesteś Jego synem i córką. Każde Boże upomnienie to dowód miłości i przygotowanie do triumfu.
+Na ziemskim froncie dostęp do najwyższego dowództwa wymaga przejścia przez całą strukturę pośredników. W Królestwie Bożym panuje zupełnie inny porządek – drzwi do gabinetu Twojego Ojca są dla Ciebie zawsze otwarte. Wróg próbuje wmawiać Ci, że Twoje codzienne prośby i zmagania są dalekie lub mało istotne dla Stwórcy. To kłamstwo ma odciąć Cię od bazy zaopatrzenia. Twój Niebiański Ojciec słucha Twojego głosu z zażyłością taty, który dba o swojego syna i córkę. Masz pełne prawo wchodzić w Jego Obecność w każdym momencie, bez lęku i bez stukania.
 
 Jezus mówi dziś do Ciebie:
-„Trwajcież w karności! Bóg obchodzi się z wami jak z synami. Bo jakiż to syn, którego by ojciec nie karcił? Jeśli jesteście bez karcenia (...) to jesteście bękartami, a nie synami.” (Hebrajczyków 12,7-8)
+„Nie otrzymaliście ducha niewoli, by znowu żyć w zastraszeniu, ale otrzymaliście Ducha przybrania za synów, w którym możemy wołać: Abba, Ojcze! Sam Duch wspiera swym świadectwem naszego ducha, że jesteśmy dziećmi Bożymi.” (Rzymian 8,15-16)
 
 **Zadanie Taktyczne:**
-Zrób krótki przegląd obszarów, w których ostatnio odpuściłeś dyscyplinę. Zamiast uciekać przed Bogiem w poczucie winy, stań przed Ojcem w prawdzie. Przyjmij Jego korektę, wyciągnij wnioski i skoryguj swoje codzienne działania na froncie.
+Wejdź dziś w modlitwę z absolutną śmiałością dziecka. Odrzuć sztuczne bariery i odległe formuły. Opowiedz Ojcu prostymi słowami o planach na dzisiejszy dzień, wyzwaniach zawodowych i domowych troskach. Uruchom procedurę stałego kontaktu z niebiańskim sztabem.
 
 W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 **Modlitwa Bojowa:**
-„Ojcze, dziękuję, że mnie wychowujesz i nie pozwalasz mi trwać w marazmie. Przyjmuję Twoją ojcowską korektę z ufnością dziecka. Daj mi pokorę, bym uczył się na błędach i z pełną dyscypliną realizował Twoje rozkazy, przynosząc Ci chwałę.”
+„Abba, mój Kochający Ojcze. Staję przed Tobą z wdzięcznością, że jestem Twoim dzieckiem. Odrzucam strach i kłamstwa nieprzyjaciela o Twojej domniemanej obojętności. Wołam do Ciebie w pełnym zaufaniu, wiedząc, że słuchasz mnie i osłaniasz moje plecy, ku Twojej chwale.”
 
 Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
 
