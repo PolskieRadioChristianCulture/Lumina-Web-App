@@ -119,26 +119,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 titleBox.textContent = "☀️ Lato ku Bożej chwale";
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
-                let rawContent = `Dzień 17 – Taktyka Stałego Dostępu i Otwartych Drzwi Ojca.
+                let rawContent = `### Raport Taktyczny - 17 Czerwca 2026
 
-Na ziemskim froncie dostęp do najwyższego dowództwa wymaga przejścia przez całą strukturę pośredników. W Królestwie Bożym panuje zupełnie inny porządek – drzwi do gabinetu Twojego Ojca są dla Ciebie zawsze otwarte. Wróg próbuje wmawiać Ci, że Twoje codzienne prośby i zmagania są dalekie lub mało istotne dla Stwórcy. To kłamstwo ma odciąć Cię od bazy zaopatrzenia. Twój Niebiański Ojciec słucha Twojego głosu z zażyłością taty, który dba o swojego syna i córkę. Masz pełne prawo wchodzić w Jego Obecność w każdym momencie, bez lęku i bez stukania.
+Baza główna nadaje. Dzisiejsza misja skupia się na uzbrojeniu Twojego umysłu i zabezpieczeniu perymetru przed atakami dezinformacyjnymi wroga. Każdego dnia na froncie zderzasz się z presją świata, ale Pismo mówi jasno: "Bóg nie dał nam ducha lęku, ale mocy, miłości i trzeźwego myślenia". 
 
-Jezus mówi dziś do Ciebie:
-„Nie otrzymaliście ducha niewoli, by znowu żyć w zastraszeniu, ale otrzymaliście Ducha przybrania za synów, w którym możemy wołać: Abba, Ojcze! Sam Duch wspiera swym świadectwem naszego ducha, że jesteśmy dziećmi Bożymi.” (Rzymian 8,15-16)
+Taktyka na dziś:
+Zidentyfikuj jeden obszar w swoim życiu, w którym wróg próbuje zasiać chaos lub zwątpienie. Użyj Tarczy Wiary i Miecza Ducha (Słowa Bożego), aby odeprzeć ten atak. Jesteś żołnierzem Królestwa, a Twój Dowódca już odniósł zwycięstwo.
 
-**Zadanie Taktyczne:**
-Wejdź dziś w modlitwę z absolutną śmiałością dziecka. Odrzuć sztuczne bariery i odległe formuły. Opowiedz Ojcu prostymi słowami o planach na dzisiejszy dzień, wyzwaniach zawodowych i domowych troskach. Uruchom procedurę stałego kontaktu z niebiańskim sztabem.
+Zadanie Taktyczne:
+Wyślij ten meldunek do przynajmniej jednego towarzysza broni, który może potrzebować dzisiaj wsparcia na swoim odcinku frontu. Razem trzymamy linię!
 
-W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
-
-**Modlitwa Bojowa:**
-„Abba, mój Kochający Ojcze. Staję przed Tobą z wdzięcznością, że jestem Twoim dzieckiem. Odrzucam strach i kłamstwa nieprzyjaciela o Twojej domniemanej obojętności. Wołam do Ciebie w pełnym zaufaniu, wiedząc, że słuchasz mnie i osłaniasz moje plecy, ku Twojej chwale.”
-
-Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
-
-PODAJ DALEJ 🔴
-www.polskieradio.cc | www.cclite.pl
-Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
+Panie Zastępów, błogosław nam w dzisiejszych zmaganiach. Daj nam przenikliwość, odwagę i siłę, byśmy skutecznie realizowali misję Christian Culture dla Twojej chwały. Amen! 🔥✝️`;
 
                 window.currentDzjTitle = titleBox.textContent;
                 window.currentDzjText = rawContent;
