@@ -4,8 +4,12 @@
  * Funkcje: Sterowanie 3 stacjami radiowymi, RWD, Canvas Visualizer, Modale
  */
 
+import { db } from "./firebase-config.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
 // 1. STATIONS DATA CONFIGURATION
-const STATIONS = {
+// Fallback stations if Firebase fetch fails
+let STATIONS = {
     poland: {
         id: "poland",
         name: "RADIO PL",
@@ -88,7 +92,20 @@ const visualizerCanvas = document.getElementById("visualizerCanvas");
 const canvasCtx = visualizerCanvas.getContext("2d");
 
 // 3. INITIALIZATION
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const adminDoc = await getDoc(doc(db, "admin", "radioCC"));
+        if (adminDoc.exists()) {
+            const data = adminDoc.data();
+            if (data.STATIONS) {
+                STATIONS = data.STATIONS;
+                console.log("Loaded STATIONS configuration from Firebase");
+            }
+        }
+    } catch (e) {
+        console.error("Failed to load STATIONS from Firebase, using fallback", e);
+    }
+    
     // Setup initial station details
     selectStation("poland");
     
