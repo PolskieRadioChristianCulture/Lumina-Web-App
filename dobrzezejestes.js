@@ -120,20 +120,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
                 let rawContent = `☀️ Lato ku Bożej chwale
-Dzień 17 – Taktyka Stałego Dostępu i Otwartych Drzwi Ojca.
+Dzień 19 – Taktyka Ojcowskiego Zaopatrzenia i Bezpieczeństwa w Domu.
 
-Na ziemskim froncie dostęp do najwyższego dowództwa wymaga przejścia przez całą strukturę pośredników. W Królestwie Bożym panuje zupełnie inny porządek – drzwi do gabinetu Twojego Ojca są dla Ciebie zawsze otwarte. Wróg próbuje wmawiać Ci, że Twoje codzienne prośby i zmagania są dalekie lub mało istotne dla Stwórcy. To kłamstwo ma odciąć Cię od bazy zaopatrzenia. Twój Niebiański Ojciec słucha Twojego głosu z zażyłością taty, który dba o swojego syna i córkę. Masz pełne prawo wchodzić w Jego Obecność w każdym momencie, bez lęku i bez stukania.
+Prawdziwy ojciec bierze na siebie odpowiedzialność za utrzymanie i ochronę swojej rodziny. W relacji z Niebiańskim Ojcem jesteś synem i córką, a nie osamotnionym najemnikiem, który musi sam walczyć o przetrwanie. Wróg próbuje zasiać w Twoim sercu paraliżujący lęk o finanse, pracę i jutro, by uwięzić Cię w trybie ciągłego niepokoju. Oddanie Bogu chwały wymaga dziś stanięcia w prawdzie: Twój Tata wie, czego potrzebujesz, zanim Go poprosisz. Kiedy na pierwszym miejscu stawiasz Jego Królestwo, niebiańska logistyka zabezpiecza Twoje kroki.
 
 Jezus mówi dziś do Ciebie:
-„Nie otrzymaliście ducha niewoli, by znowu żyć w zastraszeniu, ale otrzymaliście Ducha przybrania za synów, w którym możemy wołać: Abba, Ojcze! Sam Duch wspiera swym świadectwem naszego ducha, że jesteśmy dziećmi Bożymi.” (Rzymian 8,15-16)
+„Nie troszczcie się więc zbytnio (...) Przecież Ojciec wasz niebieski wie, że tego wszystkiego potrzebujecie. Starajcie się naprzód o Królestwo Boga i o Jego sprawiedliwość, a to wszystko będzie wam dodane." (Mateusza 6,31-33)
 
 Zadanie Taktyczne:
-Wejdź dziś w modlitwę z absolutną śmiałością dziecka. Odrzuć sztuczne bariery i odległe formuły. Opowiedz Ojcu prostymi słowami o planach na dzisiejszy dzień, wyzwaniach zawodowych i domowych troskach. Uruchom procedurę stałego kontaktu z niebiańskim sztabem.
+Zdemaskuj i odrzuć dziś każdą myśl pełną lęku o byt i stabilność finansową. Gdy pojawi się niepokój, ogłoś w sercu Bożą opiekę. Wykonuj swoje zadania zawodowe i rodzinne z pozycji ufności dziecka, które wie, że jego dom jest pod stałym nadzorem Najwyższego Dowódcy.
 
 W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 Modlitwa Bojowa:
-„Abba, mój Kochający Ojcze. Staję przed Tobą z wdzięcznością, że jestem Twoim dzieckiem. Odrzucam strach i kłamstwa nieprzyjaciela o Twojej domniemanej obojętności. Wołam do Ciebie w pełnym zaufaniu, wiedząc, że słuchasz mnie i osłaniasz moje plecy, ku Twojej chwale.”
+„Ojcze, dziękuję, że jesteś moim Zaopatrzycielem. Odrzucam ducha lęku o jutro i fałszywą konieczność radzenia sobie bez Ciebie. Wybieram dziś szukanie Twojego Królestwa i Twojej sprawiedliwości w moich działaniach. Ufam, że Twoja ojcowska dłoń zabezpiecza mój front, ku Twojej chwale."
 
 Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
 
