@@ -120,20 +120,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
                 let rawContent = `☀️ Lato ku Bożej chwale
-Dzień 19 – Taktyka Ojcowskiego Zaopatrzenia i Bezpieczeństwa w Domu.
+Dzień 20 – Taktyka Dziedziczenia Charakteru i Naśladowania Ojca.
 
-Prawdziwy ojciec bierze na siebie odpowiedzialność za utrzymanie i ochronę swojej rodziny. W relacji z Niebiańskim Ojcem jesteś synem i córką, a nie osamotnionym najemnikiem, który musi sam walczyć o przetrwanie. Wróg próbuje zasiać w Twoim sercu paraliżujący lęk o finanse, pracę i jutro, by uwięzić Cię w trybie ciągłego niepokoju. Oddanie Bogu chwały wymaga dziś stanięcia w prawdzie: Twój Tata wie, czego potrzebujesz, zanim Go poprosisz. Kiedy na pierwszym miejscu stawiasz Jego Królestwo, niebiańska logistyka zabezpiecza Twoje kroki.
+Na froncie nie reprezentujesz samego siebie – jesteś żywą wizytówką swojego Niebiańskiego Ojca. Wróg próbuje narzucić Ci standardy tego świata, takie jak nienawiść, odwet, egoizm czy małostkowość, by zneutralizować Twój duchowy wpływ. Oddanie Bogu chwały wymaga dziś radykalnej taktyki naśladowania Ojca w Jego doskonałości. Miłość, którą masz nieść, to nie słabość, ale potężna broń niszcząca strategię nieprzyjaciela. Kiedy odpowiadasz dobrem i modlitwą na ataki, manifestujesz królewskie synostwo i córka Królestwa przejmuje inicjatywę na polu walki.
 
 Jezus mówi dziś do Ciebie:
-„Nie troszczcie się więc zbytnio (...) Przecież Ojciec wasz niebieski wie, że tego wszystkiego potrzebujecie. Starajcie się naprzód o Królestwo Boga i o Jego sprawiedliwość, a to wszystko będzie wam dodane." (Mateusza 6,31-33)
+„Miłujcie waszych nieprzyjaciół i módlcie się za tych, którzy was prześladują, abyście się stali synami Ojca waszego, który jest w niebie. (...) Bądźcie więc wy doskonali, jak doskonały jest Ojciec wasz niebieski.” (Mateusza 5,44.48)
 
 Zadanie Taktyczne:
-Zdemaskuj i odrzuć dziś każdą myśl pełną lęku o byt i stabilność finansową. Gdy pojawi się niepokój, ogłoś w sercu Bożą opiekę. Wykonuj swoje zadania zawodowe i rodzinne z pozycji ufności dziecka, które wie, że jego dom jest pod stałym nadzorem Najwyższego Dowódcy.
+Przełam dziś schematy starej natury w relacjach zawodowych i domowych. Gdy napotkasz opór, złośliwość lub niesprawiedliwą ocenę, nie reaguj agresją ani fochem. Podejmij decyzję o zachowaniu najwyższych standardów etycznych i duchowych. Działaj z pozycji autorytetu i klasy swojego Niebiańskiego Ojca.
 
 W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 Modlitwa Bojowa:
-„Ojcze, dziękuję, że jesteś moim Zaopatrzycielem. Odrzucam ducha lęku o jutro i fałszywą konieczność radzenia sobie bez Ciebie. Wybieram dziś szukanie Twojego Królestwa i Twojej sprawiedliwości w moich działaniach. Ufam, że Twoja ojcowska dłoń zabezpiecza mój front, ku Twojej chwale."
+„Ojcze Niebieski, dziękuję za przywilej reprezentowania Twojego Imienia. Odrzucam małość, gniew i chęć odwetu. Proszę o łaskę naśladowania Twojej doskonałości in moich dzisiejszych reakcjach. Niech moje życie na froncie odzwierciedla Twój charakter, przynosząc Ci pełną chwałę.”
 
 Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
 
