@@ -120,20 +120,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
                 let rawContent = `☀️ Lato ku Bożej chwale
-Dzień 20 – Taktyka Dziedziczenia Charakteru i Naśladowania Ojca.
+Dzień 21 – Taktyka Słuchania Głosu i Bezpieczeństwa w Ramionach Ojca.
 
-Na froncie nie reprezentujesz samego siebie – jesteś żywą wizytówką swojego Niebiańskiego Ojca. Wróg próbuje narzucić Ci standardy tego świata, takie jak nienawiść, odwet, egoizm czy małostkowość, by zneutralizować Twój duchowy wpływ. Oddanie Bogu chwały wymaga dziś radykalnej taktyki naśladowania Ojca w Jego doskonałości. Miłość, którą masz nieść, to nie słabość, ale potężna broń niszcząca strategię nieprzyjaciela. Kiedy odpowiadasz dobrem i modlitwą na ataki, manifestujesz królewskie synostwo i córka Królestwa przejmuje inicjatywę na polu walki.
+Twój sukces na duchowym froncie zależy od tego, jak precyzyjnie potrafisz wychwycić strategiczne instrukcje Dowództwa. Wróg od rana próbuje zalać Twój umysł chaosem informacji, lękiem o jutro i poczuciem niepewności, by sparaliżować Twoje działania. Oddanie Bogu chwały wymaga dziś wejścia w zażyłą relację syna i córki z Niebiańskim Tatą. Jako Jego dziecko rozpoznajesz Jego głos i idziesz za Nim. Pamiętaj, że stoisz na pozycji absolutnego bezpieczeństwa – Twój Ojciec jest większy od wszystkich i nikt nie jest w stanie wyrwać Cię z Jego potężnej dłoni.
 
 Jezus mówi dziś do Ciebie:
-„Miłujcie waszych nieprzyjaciół i módlcie się za tych, którzy was prześladują, abyście się stali synami Ojca waszego, który jest w niebie. (...) Bądźcie więc wy doskonali, jak doskonały jest Ojciec wasz niebieski.” (Mateusza 5,44.48)
+„Moje owce słuchają mego głosu, a Ja znam je i idą za Mną. (...) I nikt nie może ich wyrwać z ręki mego Ojca.” (Jana 10,27.29)
 
 Zadanie Taktyczne:
-Przełam dziś schematy starej natury w relacjach zawodowych i domowych. Gdy napotkasz opór, złośliwość lub niesprawiedliwą ocenę, nie reaguj agresją ani fochem. Podejmij decyzję o zachowaniu najwyższych standardów etycznych i duchowych. Działaj z pozycji autorytetu i klasy swojego Niebiańskiego Ojca.
+Odetnij się dziś od szumu informacyjnego i natłoku zbędnych bodźców. Przeznacz czas na krótką modlitwę w ciszy, skupiając się wyłącznie na Słowie Boga. Podejmij dzisiejsze wyzwania zawodowe i rodzinne ze świadomością, że Twój front jest trwale i bezpiecznie zabezpieczony przez Niebiańskiego Ojca.
 
 W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 Modlitwa Bojowa:
-„Ojcze Niebieski, dziękuję za przywilej reprezentowania Twojego Imienia. Odrzucam małość, gniew i chęć odwetu. Proszę o łaskę naśladowania Twojej doskonałości in moich dzisiejszych reakcjach. Niech moje życie na froncie odzwierciedla Twój charakter, przynosząc Ci pełną chwałę.”
+„Ojcze, dziękuję za Twoją bliskość i ochronę. Uciszam w sercu hałas świata, by słuchać Twoich wytycznych. Odrzucam strach i wątpliwości podsuwane przez nieprzyjaciela. Wybieram pełne zaufanie Twojej dłoni, która trzyma mnie mocno i bezpiecznie, przynosząc Ci chwałę każdym moim czynem.”
 
 Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
 
