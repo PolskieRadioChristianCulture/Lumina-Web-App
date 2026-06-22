@@ -120,20 +120,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 dateBox.textContent = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
 
                 let rawContent = `☀️ Lato ku Bożej chwale
-Dzień 21 – Taktyka Słuchania Głosu i Bezpieczeństwa w Ramionach Ojca.
+Dzień 22 – Taktyka Dziedzictwa i Stałej Obecności przy Ojcu.
 
-Twój sukces na duchowym froncie zależy od tego, jak precyzyjnie potrafisz wychwycić strategiczne instrukcje Dowództwa. Wróg od rana próbuje zalać Twój umysł chaosem informacji, lękiem o jutro i poczuciem niepewności, by sparaliżować Twoje działania. Oddanie Bogu chwały wymaga dziś wejścia w zażyłą relację syna i córki z Niebiańskim Tatą. Jako Jego dziecko rozpoznajesz Jego głos i idziesz za Nim. Pamiętaj, że stoisz na pozycji absolutnego bezpieczeństwa – Twój Ojciec jest większy od wszystkich i nikt nie jest w stanie wyrwać Cię z Jego potężnej dłoni.
+Sukces na duchowym froncie wymaga odrzucenia mentalności sługi i przyjęcia serca dojrzałego dziedzica. Wróg robi wszystko, abyś w codziennych zmaganiach czuł się pominięty, zazdrosny o sukcesy innych lub odcięty od zasobów, co ma zrodzić frustrację i bunt. Oddanie Bogu chwały polega dziś na przyjęciu prawdy, którą Ojciec kieruje do swojego syna i córki: wszystko, co należy do Boga, jest już Twoją własnością przez wiarę. Jesteś stale przy Nim, a to zapewnia Ci nieograniczony dostęp do siły i pokoju potrzebnych do wygrania dzisiejszych bitew.
 
 Jezus mówi dziś do Ciebie:
-„Moje owce słuchają mego głosu, a Ja znam je i idą za Mną. (...) I nikt nie może ich wyrwać z ręki mego Ojca.” (Jana 10,27.29)
+„Moje dziecko, ty zawsze jesteś ze mną i wszystko moje do ciebie należy.” (Łukasza 15,31)
 
 Zadanie Taktyczne:
-Odetnij się dziś od szumu informacyjnego i natłoku zbędnych bodźców. Przeznacz czas na krótką modlitwę w ciszy, skupiając się wyłącznie na Słowie Boga. Podejmij dzisiejsze wyzwania zawodowe i rodzinne ze świadomością, że Twój front jest trwale i bezpiecznie zabezpieczony przez Niebiańskiego Ojca.
+Odrzuć dziś wszelkie porównywanie się z innymi oraz narzekanie na trudności materialne czy zawodowe. Stań w prawdzie o swoim duchowym zaopatrzeniu. Podejmując codzienne decyzje i realizuj obowiązki z pozycji królewskiego dziedzica, który nie musi niczego udowadniać, bo jego pozycja u Ojca jest nienaruszalna.
 
 W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 Modlitwa Bojowa:
-„Ojcze, dziękuję za Twoją bliskość i ochronę. Uciszam w sercu hałas świata, by słuchać Twoich wytycznych. Odrzucam strach i wątpliwości podsuwane przez nieprzyjaciela. Wybieram pełne zaufanie Twojej dłoni, która trzyma mnie mocno i bezpiecznie, przynosząc Ci chwałę każdym moim czynem.”
+„Ojcze Niebieski, dziękuję za przywilej stałej obecności w Twoim gabinecie dowodzenia. Odrzucam kłamstwa nieprzyjaciela o braku i opuszczeniu. Wybieram świadomość, że wszystko, co Twoje, należy do mnie. Daj mi siłę i mądrość, bym reprezentował Twoje Królestwo na froncie z najwyższą klasą, ku Twojej chwale.”
 
 Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
 
