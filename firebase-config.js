@@ -2,13 +2,13 @@ import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebase
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  projectId: "gen-lang-client-0094354839",
-  appId: "1:553245611022:web:5ae303f1fe0d6d16f8985f",
-  apiKey: "AIzaSyBDuwM3vB5elVsTgFw6xKkwbqEUCT--h7c",
-  authDomain: "gen-lang-client-0094354839.firebaseapp.com",
-  storageBucket: "gen-lang-client-0094354839.firebasestorage.app",
-  messagingSenderId: "553245611022",
-  measurementId: "G-P5L6Q1MXRL"
+  projectId: "cc-mission-control",
+  appId: "1:519207260358:web:d875a610f438ecad2c47c7",
+  apiKey: "AIzaSyDou1gYyuJnuF2WocXEqglfRPqqwMm0Ge4",
+  authDomain: "cc-mission-control.firebaseapp.com",
+  storageBucket: "cc-mission-control.firebasestorage.app",
+  messagingSenderId: "519207260358",
+  measurementId: ""
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
