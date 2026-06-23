@@ -115,7 +115,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 let formattedContent = rawContent
                     .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
                         const href = url.startsWith('http') ? url : 'https://' + url;
-                        return `<a href="${href}" target="_blank" style="color: #E2B859; text-decoration: underline;">${url}</a>`;
+                        let label = url;
+                        if (url.includes('chat.whatsapp.com')) {
+                            label = 'Dołącz do grupy WhatsApp';
+                        } else if (url.includes('play.google.com')) {
+                            label = 'Nasze Aplikacje w Google Play';
+                        } else if (url.includes('polskieradio.cc')) {
+                            label = 'Polskie Radio CC';
+                        } else if (url.includes('cclite.pl')) {
+                            label = 'Portal CC Lite';
+                        } else {
+                            try {
+                                const urlObj = new URL(href);
+                                label = urlObj.hostname;
+                            } catch (e) {
+                                label = 'Otwórz odnośnik';
+                            }
+                        }
+                        return `<a href="${href}" target="_blank" style="color: #E2B859; text-decoration: underline; font-weight: bold;">${label}</a>`;
                     })
                     .replace(/\n\n/g, '</p><p class="mt-4">')
                     .replace(/\n/g, '<br/>')
@@ -157,7 +174,24 @@ Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
             let formattedContent = rawContent
                 .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
                     const href = url.startsWith('http') ? url : 'https://' + url;
-                    return `<a href="${href}" target="_blank" style="color: #E2B859; text-decoration: underline;">${url}</a>`;
+                    let label = url;
+                    if (url.includes('chat.whatsapp.com')) {
+                        label = 'Dołącz do grupy WhatsApp';
+                    } else if (url.includes('play.google.com')) {
+                        label = 'Nasze Aplikacje w Google Play';
+                    } else if (url.includes('polskieradio.cc')) {
+                        label = 'Polskie Radio CC';
+                    } else if (url.includes('cclite.pl')) {
+                        label = 'Portal CC Lite';
+                    } else {
+                        try {
+                            const urlObj = new URL(href);
+                            label = urlObj.hostname;
+                        } catch (e) {
+                            label = 'Otwórz odnośnik';
+                        }
+                    }
+                    return `<a href="${href}" target="_blank" style="color: #E2B859; text-decoration: underline; font-weight: bold;">${label}</a>`;
                 })
                 .replace(/\n\n/g, '</p><p class="mt-4">')
                 .replace(/\n/g, '<br/>')
