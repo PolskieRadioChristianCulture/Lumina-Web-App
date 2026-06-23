@@ -2349,3 +2349,66 @@ button {
 }
 @keyframes dzj-spin { to { transform: rotate(360deg); } }
 .dzj-error { text-align: center; color: #ef4444; }
+
+/* ====================================================
+   DAILY REFLECTION SECTION
+   ==================================================== */
+.daily-reflection-section {
+    padding: 100px 0;
+    background: var(--bg-deep-black);
+    position: relative;
+}
+
+.daily-reflection-section .section-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.daily-reflection-section .reflection-card {
+    background: rgba(20, 20, 20, 0.6);
+    border: 1px solid var(--border-gold-low);
+    border-radius: 24px;
+    padding: 40px;
+    margin-top: 40px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.daily-reflection-section .reflection-body {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #e0e0e0;
+    font-weight: 300;
+}
+
+.daily-reflection-section .reflection-body p {
+    margin-bottom: 20px;
+}
+
+.daily-reflection-section .reflection-body p:last-child {
+    margin-bottom: 0;
+}
+
+.daily-reflection-section .reflection-body strong {
+    color: #fff;
+    font-weight: 600;
+}
+
+.daily-reflection-section .dzj-youtube-section {
+    margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+    .daily-reflection-section {
+        padding: 60px 0;
+    }
+    .daily-reflection-section .reflection-card {
+        padding: 24px;
+    }
+    .daily-reflection-section .reflection-body {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+}

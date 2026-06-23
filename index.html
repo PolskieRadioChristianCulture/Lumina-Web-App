@@ -160,6 +160,75 @@
                     <a href="#apps-section" class="btn btn-outline scroll-to"><i class="fa-solid fa-mobile-screen-button"></i> Nasze Aplikacje</a>
                 </div>
             </div>
+    </section>
+
+    <!-- SECTION C: CODZIENNE ROZWAŻANIE (DOBRZE, ŻE JESTEŚ) -->
+    <section class="daily-reflection-section" id="dailyReflectionSection">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Dobrze, że jesteś</span>
+                <h2 class="section-title" id="homepageDzjTitle">ŁADOWANIE ROZWAŻANIA...</h2>
+                <div class="gold-divider centered"></div>
+                <div class="dzj-date-badge" style="display: inline-block; margin: 10px auto; padding: 6px 16px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--border-gold-low); border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: var(--gold-primary); letter-spacing: 0.05em;">
+                    <i class="fa-solid fa-calendar"></i> <span id="homepageDzjDate">Szukam...</span>
+                </div>
+            </div>
+            
+            <div class="reflection-card">
+                <div class="reflection-body" id="homepageDzjContent">
+                    <div class="dzj-loading" style="text-align: center; padding: 40px 0;">
+                        <div class="dzj-spinner" style="width: 40px; height: 40px; border: 3px solid rgba(212, 175, 55, 0.2); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto;"></div>
+                        <p style="color: var(--text-muted-gold); font-size: 0.9rem; font-weight: bold; letter-spacing: 0.1em;">Pobieranie z chmury...</p>
+                    </div>
+                </div>
+
+                <!-- Przycisk Udostępnij -->
+                <div style="text-align: center; margin: 30px 0 15px 0;">
+                    <button onclick="window.shareDzjContent()" style="background: var(--gold-primary); color: #000; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(226, 184, 89, 0.4); font-family: inherit; font-size: 0.85rem; letter-spacing: 0.05em; transition: var(--transition-smooth);">
+                        <i class="fa-solid fa-share-nodes"></i> UDOSTĘPNIJ ROZWAŻANIE
+                    </button>
+                </div>
+
+                <!-- YouTube Video Section -->
+                <div class="dzj-youtube-section" style="margin-top: 40px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border-gold-low); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    <div class="dzj-youtube-header" style="background: rgba(212, 175, 55, 0.05); padding: 12px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border-gold-low);">
+                        <i class="fa-solid fa-heart" style="color: var(--gold-primary);"></i>
+                        <span style="font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; color: var(--gold-primary);">POSŁUCHAJ HYMNU</span>
+                    </div>
+                    <div class="dzj-youtube-container" style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0;">
+                        <iframe 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+                            src="https://www.youtube.com/embed/wKfdQrKwYtw?si=IrRVVy4LlgUqtnTq" 
+                            title="Dobrze, że jesteś - Hymn" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" 
+                            allowfullscreen
+                        ></iframe>
+                    </div>
+                </div>
+
+                <!-- SMS CTA -->
+                <div class="dzj-sms-cta" style="margin-top: 40px; padding: 25px; background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(0,0,0,0.4)); border: 1px solid var(--border-gold-low); border-radius: 16px;">
+                    <p class="dzj-sms-title" style="font-size: 0.85rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-comment-sms"></i> Bądź na bieżąco</p>
+                    <p class="dzj-sms-text" style="font-size: 0.9rem; color: #ccc; line-height: 1.6;">Jeśli Twój frontowy system powiadomień jeszcze nie działa, wyślij darmowy SMS o treści <strong>Inspiracje</strong> na numer <strong style="color: #fff; font-size: 1.1rem;">783 478 280</strong>, by codziennie odbierać to Słowo na swój telefon!</p>
+                </div>
+            </div>
+
+            <!-- Compliant AdSense Banner -->
+            <div class="adsense-container" style="margin: 50px auto 20px auto; max-width: 728px; text-align: center;">
+                <span style="display: block; font-size: 0.55rem; font-weight: 800; color: rgba(255,255,255,0.2); letter-spacing: 0.2em; margin-bottom: 10px; text-transform: uppercase;">REKLAMA</span>
+                <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-gold-low); border-radius: 12px; padding: 10px; min-height: 90px; display: flex; align-items: center; justify-content: center;">
+                    <ins class="adsbygoogle"
+                         style="display:block; width: 100%;"
+                         data-ad-client="ca-pub-6762200025251358"
+                         data-ad-slot="9876543210"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            </div>
         </div>
     </section>
 
