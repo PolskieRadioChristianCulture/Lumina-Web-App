@@ -74,6 +74,9 @@ let isPlaying = false;
 let isMuted = false;
 let previousVolume = 0.8;
 let metadataEventSource = null;
+let globalPlaylist = [];
+let totalDuration = 0;
+let globalBibleTimer = null;
 
 // DOM Elements
 const audio = new Audio();
@@ -277,13 +280,23 @@ function selectStation(stationId) {
     if (wasPlaying) {
         // Smoothly fade out, switch source, and fade back in
         fadeAudioOut(() => {
-            setAudioSource(station.streamUrl);
+            if (stationId === "global_biblia") {
+                audio.src = "";
+            } else {
+                setAudioSource(station.streamUrl);
+            }
             playRadio();
         });
     } else {
-        setAudioSource(station.streamUrl);
-        updatePlayerUI(false);
-        playerStatusText.textContent = "Gotowy";
+        if (stationId === "global_biblia") {
+            audio.src = "";
+            updatePlayerUI(false);
+            playerStatusText.textContent = "Gotowy";
+        } else {
+            setAudioSource(station.streamUrl);
+            updatePlayerUI(false);
+            playerStatusText.textContent = "Gotowy";
+        }
     }
 }
 
@@ -293,14 +306,39 @@ function setAudioSource(url) {
     audio.load();
 }
 
-function playRadio() {
+async function playRadio() {
     isPlaying = true;
     updatePlayerUI(true);
     playerStatusText.textContent = "Łączenie...";
     
-    // If audio element was reset, reload the active stream url
-    if (!audio.src || audio.src === window.location.href) {
-        audio.src = activeStation.streamUrl;
+    if (activeStation.id === "global_biblia") {
+        await loadGlobalPlaylist();
+        if (globalPlaylist.length > 0) {
+            const epochSeconds = Math.floor(Date.now() / 1000);
+            let remaining = epochSeconds % totalDuration;
+            let targetIndex = 0;
+            let seekSeconds = 0;
+            for (let i = 0; i < globalPlaylist.length; i++) {
+                if (remaining < globalPlaylist[i].duration) {
+                    targetIndex = i;
+                    seekSeconds = remaining;
+                    break;
+                }
+                remaining -= globalPlaylist[i].duration;
+            }
+            const currentTrack = globalPlaylist[targetIndex];
+            if (!audio.src.includes(currentTrack.name)) {
+                audio.src = currentTrack.url;
+                audio.load();
+            }
+            audio.currentTime = seekSeconds;
+            playerTrackTitle.textContent = `${currentTrack.bookName} - Chapter ${currentTrack.chapter}`;
+        }
+    } else {
+        // If audio element was reset, reload the active stream url
+        if (!audio.src || audio.src === window.location.href || audio.src.includes(".mp3")) {
+            audio.src = activeStation.streamUrl;
+        }
     }
     
     const playPromise = audio.play();
@@ -395,6 +433,13 @@ audio.addEventListener("error", (e) => {
     }
 });
 
+audio.addEventListener("ended", () => {
+    if (activeStation.id === "global_biblia") {
+        playRadio();
+    }
+});
+
+
 // Update play/pause buttons visually
 function updatePlayerUI(playing) {
     if (playing) {
@@ -421,12 +466,68 @@ function updateVolumeIcon(vol) {
     }
 }
 
+async function loadGlobalPlaylist() {
+    if (globalPlaylist.length > 0) return;
+    try {
+        const res = await fetch("./playlist.json");
+        globalPlaylist = await res.json();
+        totalDuration = globalPlaylist.reduce((acc, item) => acc + item.duration, 0);
+    } catch (e) {
+        console.error("Failed to load playlist.json", e);
+    }
+}
+
+async function updateGlobalBibleRadioState() {
+    await loadGlobalPlaylist();
+    if (globalPlaylist.length === 0) return;
+    
+    const epochSeconds = Math.floor(Date.now() / 1000);
+    let remaining = epochSeconds % totalDuration;
+    let targetIndex = 0;
+    let seekSeconds = 0;
+    for (let i = 0; i < globalPlaylist.length; i++) {
+        if (remaining < globalPlaylist[i].duration) {
+            targetIndex = i;
+            seekSeconds = remaining;
+            break;
+        }
+        remaining -= globalPlaylist[i].duration;
+    }
+    const currentTrack = globalPlaylist[targetIndex];
+    
+    const expectedTitle = `${currentTrack.bookName} - Chapter ${currentTrack.chapter}`;
+    if (playerTrackTitle.textContent !== expectedTitle) {
+        playerTrackTitle.textContent = expectedTitle;
+    }
+    
+    if (isPlaying && activeStation.id === "global_biblia") {
+        if (!audio.src.includes(currentTrack.name)) {
+            console.log("Switching to next chapter:", currentTrack.name);
+            audio.src = currentTrack.url;
+            audio.load();
+            audio.currentTime = seekSeconds;
+            audio.play().catch(e => console.error(e));
+        }
+    }
+}
+
 // 7. REAL-TIME TRACK METADATA AUTOMATION (VIA ZENO.FM SSE)
 function connectStationMetadata(stationId) {
+    if (globalBibleTimer) {
+        clearInterval(globalBibleTimer);
+        globalBibleTimer = null;
+    }
     // Close previous EventSource connection if it exists
     if (metadataEventSource) {
         metadataEventSource.close();
         metadataEventSource = null;
+    }
+    
+    if (stationId === "global_biblia") {
+        playerTrackTitle.textContent = "Wczytywanie informacji o utworze...";
+        updateGlobalBibleRadioState();
+        globalBibleTimer = setInterval(updateGlobalBibleRadioState, 5000);
+        return;
     }
     
     const station = STATIONS[stationId];
