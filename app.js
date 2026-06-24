@@ -51,6 +51,20 @@ let STATIONS = {
             "List do Rzymian - Łaska i Wiara",
             "Apokalipsa św. Jana - Końcowe Zwycięstwo"
         ]
+    },
+    global_biblia: {
+        id: "global_biblia",
+        name: "GLOBAL BIBLIA",
+        streamUrl: "https://stream.zeno.fm/gn3uhltrrytuv",
+        accentColors: ["#D4AF37", "#FFDF7A"], // Gold Premium to Gold Glow
+        logo: "./Logo Globalna Biblia Audio.jpg",
+        tracks: [
+            "Gospel of Matthew - Chapter 1",
+            "Gospel of Mark - Chapter 1",
+            "Gospel of Luke - Chapter 1",
+            "Gospel of John - Chapter 1",
+            "Revelation - Chapter 22"
+        ]
     }
 };
 

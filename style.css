@@ -21,6 +21,8 @@
     --color-global-2: #C026FF;
     --color-biblia-1: #FFB300;
     --color-biblia-2: #9F4DFF;
+    --color-global-biblia-1: #D4AF37;
+    --color-global-biblia-2: #FFDF7A;
     
     /* Current Player Accent (dynamic) */
     --player-accent: var(--gold-primary);
@@ -891,6 +893,7 @@ button {
 .pl-accent { background-color: var(--color-poland-1); }
 .global-accent { background-color: var(--color-global-1); }
 .biblia-accent { background-color: var(--color-biblia-1); }
+.global-biblia-accent { background-color: var(--color-global-biblia-1); }
 
 /* Horizontal scrolling track title */
 .track-scroller-container {
