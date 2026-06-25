@@ -147,20 +147,20 @@ document.addEventListener("DOMContentLoaded", () => {
             const defaultTitle = "☀️ Lato ku Bożej chwale";
             const defaultDate = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
             const rawContent = `☀️ Lato ku Bożej chwale
-Dzień 22 – Taktyka Dziedzictwa i Stałej Obecności przy Ojcu.
+Dzień 25 – Taktyka Synowskiej Wierności i Odrzucenia Pozorów Walki.
 
-Sukces na duchowym froncie wymaga odrzucenia mentalności sługi i przyjęcia serca dojrzałego dziedzica. Wróg robi wszystko, abyś w codziennych zmaganiach czuł się pominięty, zazdrosny o sukcesy innych lub odcięty od zasobów, co ma zrodzić frustrację i bunt. Oddanie Bogu chwały polega dziś na przyjęciu prawdy, którą Ojciec kieruje do swojego syna i córki: wszystko, co należy do Boga, jest już Twoją własnością przez wiarę. Jesteś stale przy Nim, a to zapewnia Ci nieograniczony dostęp do siły i pokoju potrzebnych do wygrania dzisiejszych bitew.
+Zwycięstwo na duchowym froncie wymaga dziś stanięcia w pełnej autentyczności. Wróg próbuje namówić Cię na budowanie wyłącznie zewnętrznych pozorów – na posługiwanie się pięknymi hasłami i deklaracjami wiary, które nie przekładają się na realną dyscyplinę i czyny. Oddanie Bogu chwały wymaga odrzucenia tej iluzji. Twój Niebiański Ojciec nie szuka pustych słów, ale pragnie serca posłusznego syna i córki, którzy wypełniają Jego wolę na polu walki. Prawdziwa moc w Królestwie rodzi się z codziennej wierności ojcowskim wytycznym.
 
 Jezus mówi dziś do Ciebie:
-„Moje dziecko, ty zawsze jesteś ze mną i wszystko moje do ciebie należy.” (Łukasza 15,31)
+„Nie każdy, kto mówi Mi: Panie, Panie!, wejdzie do królestwa niebieskiego, lecz ten, kto spełnia wolę mojego Ojca, który jest w niebie.” (Mateusza 7,21)
 
 Zadanie Taktyczne:
-Odrzuć dziś wszelkie porównywanie się z innymi oraz narzekanie na trudności materialne czy zawodowe. Stań w prawdzie o swoim duchowym zaopatrzeniu. Podejmując codzienne decyzje i realizuj obowiązki z pozycji królewskiego dziedzica, który nie musi niczego udowadniać, bo jego pozycja u Ojca jest nienaruszalna.
+Zdemaskuj dziś w swoim życiu wszelkie obszary powierzchowności. Zamień deklaracje na fakty – w pracy zawodowej, obowiązkach domowych i modlitwie osobistej dociśnij rygor i odrzuć chodzenie na skróty. Podejmuj codzienne wyzwania z pozycji klasy i rzetelności godnej dziecka Króla.
 
 W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 Modlitwa Bojowa:
-„Ojcze Niebieski, dziękuję za przywilej stałej obecności w Twoim gabinecie dowodzenia. Odrzucam kłamstwa nieprzyjaciela o braku i opuszczeniu. Wybieram świadomość, że wszystko, co Twoje, należy do mnie. Daj mi siłę i mądrość, bym reprezentował Twoje Królestwo na froncie z najwyższą klasą, ku Twojej chwale.”
+„Ojcze Niebieski, dziękuję, że badasz moje serce i znasz moje intencje. Odrzucam ducha obłudy i puste deklaracje. Wybieram dziś drogę realnego posłuszeństwa Twojemu Słowu. Daj mi siłę, by moje czyny w pracy i w domu były żywym dowodem mojej miłości do Ciebie i przynosiły Ci pełną chwałę.”
 
 Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
 
