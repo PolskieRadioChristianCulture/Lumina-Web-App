@@ -47,8 +47,8 @@
             
             <!-- Right Side: SMS Subscription -->
             <div class="header-right">
-                <!-- Google Translate Dropdown (Hidden) -->
-                <div id="google_translate_element" style="display: none !important;"></div>
+                <!-- Google Translate Dropdown (Rendered off-screen so Google Translate initializes properly) -->
+                <div id="google_translate_element" style="position: absolute; left: -9999px; top: -9999px; visibility: hidden;"></div>
                 
                 <div style="display: flex; align-items: center; gap: 6px;">
                     <span class="dzj-new-text" style="color: #ff3b30; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; text-shadow: 0 0 10px rgba(255, 59, 48, 0.6); margin-right: 4px;">NEW</span>
@@ -797,12 +797,25 @@
 
             if (langBtn && langText) {
                 langBtn.addEventListener('click', () => {
-                    const select = document.querySelector('.goog-te-combo');
+                    let select = document.querySelector('.goog-te-combo');
+                    
                     if (!select) {
-                        alert("Wczytywanie modułu tłumaczeń... Spróbuj ponownie za chwilę.");
+                        // Try waiting 500ms for async load
+                        setTimeout(() => {
+                            select = document.querySelector('.goog-te-combo');
+                            if (select) {
+                                toggleSelect(select);
+                            } else {
+                                alert("Moduł tłumaczeń Google nie załadował się jeszcze. Upewnij się, że nie blokujesz skryptów Google Translate w przeglądarce.");
+                            }
+                        }, 500);
                         return;
                     }
                     
+                    toggleSelect(select);
+                });
+
+                function toggleSelect(select) {
                     if (select.value === 'en') {
                         select.value = 'pl';
                     } else {
@@ -810,7 +823,7 @@
                     }
                     select.dispatchEvent(new Event('change'));
                     updateLangUI();
-                });
+                }
 
                 function updateLangUI() {
                     const select = document.querySelector('.goog-te-combo');
