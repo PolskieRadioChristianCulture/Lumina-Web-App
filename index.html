@@ -47,6 +47,9 @@
             
             <!-- Right Side: SMS Subscription -->
             <div class="header-right">
+                <!-- Google Translate Dropdown -->
+                <div id="google_translate_element"></div>
+                
                 <div style="display: flex; align-items: center; gap: 6px;">
                     <span class="dzj-new-text" style="color: #ff3b30; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; text-shadow: 0 0 10px rgba(255, 59, 48, 0.6); margin-right: 4px;">NEW</span>
                     <button class="sms-button" id="navDzjIconBtn" aria-label="Dobrze, że jesteś" title="Dzisiejsze Rozważanie">
@@ -771,6 +774,17 @@
     </div>
 
     <!-- Scripts -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'pl',
+                includedLanguages: 'en,pl',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="module" src="app.js?v=3"></script>
     <script type="module" src="dobrzezejestes.js?v=6"></script>
 </body>
