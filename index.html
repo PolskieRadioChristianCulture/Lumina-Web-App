@@ -795,51 +795,36 @@
             const langBtn = document.getElementById('langToggleBtn');
             const langText = document.getElementById('langToggleText');
 
+            // Function to check if translated to English (based on Google Translate cookie)
+            function isEnglish() {
+                return document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen');
+            }
+
+            // Sync button label on load
+            if (isEnglish()) {
+                langText.textContent = 'PL';
+                langBtn.title = 'Przełącz na język polski';
+            } else {
+                langText.textContent = 'EN';
+                langBtn.title = 'Switch to English';
+            }
+
             if (langBtn && langText) {
                 langBtn.addEventListener('click', () => {
-                    let select = document.querySelector('.goog-te-combo');
-                    
-                    if (!select) {
-                        // Try waiting 500ms for async load
-                        setTimeout(() => {
-                            select = document.querySelector('.goog-te-combo');
-                            if (select) {
-                                toggleSelect(select);
-                            } else {
-                                alert("Moduł tłumaczeń Google nie załadował się jeszcze. Upewnij się, że nie blokujesz skryptów Google Translate w przeglądarce.");
-                            }
-                        }, 500);
-                        return;
-                    }
-                    
-                    toggleSelect(select);
-                });
-
-                function toggleSelect(select) {
-                    if (select.value === 'en') {
-                        select.value = 'pl';
+                    if (isEnglish()) {
+                        // Switch back to Polish by clearing the cookies
+                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.polskieradio.cc";
+                        document.cookie = "googtrans=/pl/pl; path=/";
+                        document.cookie = "googtrans=/pl/pl; path=/; domain=.polskieradio.cc";
                     } else {
-                        select.value = 'en';
+                        // Switch to English
+                        document.cookie = "googtrans=/pl/en; path=/";
+                        document.cookie = "googtrans=/pl/en; path=/; domain=.polskieradio.cc";
                     }
-                    select.dispatchEvent(new Event('change'));
-                    updateLangUI();
-                }
-
-                function updateLangUI() {
-                    const select = document.querySelector('.goog-te-combo');
-                    if (select) {
-                        if (select.value === 'en') {
-                            langText.textContent = 'PL';
-                            langBtn.title = 'Przełącz na język polski';
-                        } else {
-                            langText.textContent = 'EN';
-                            langBtn.title = 'Switch to English';
-                        }
-                    }
-                }
-
-                // Periodically sync UI
-                setInterval(updateLangUI, 1000);
+                    // Reload the page to let Google Translate apply the translation immediately
+                    window.location.reload();
+                });
             }
         });
     </script>
