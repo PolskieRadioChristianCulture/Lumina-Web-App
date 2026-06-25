@@ -20,6 +20,29 @@
     
     <!-- Custom Style Sheet -->
     <link rel="stylesheet" href="style.css?v=4">
+    <style>
+        /* Aggressive Google Translate Banner and Offsets Hider */
+        iframe.goog-te-banner-frame,
+        .goog-te-banner-frame,
+        .goog-te-banner-frame.skiptranslate,
+        iframe[id*="goog"],
+        iframe[class*="goog"],
+        #goog-gt-tt,
+        .goog-te-balloon-frame {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+        }
+        body {
+            top: 0px !important;
+            position: static !important;
+        }
+        html {
+            margin-top: 0px !important;
+        }
+    </style>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="icon.png">
