@@ -831,12 +831,12 @@
             function cleanGoogleBanner() {
                 const banner = document.querySelector('.goog-te-banner-frame') || document.querySelector('iframe[class*="goog"]') || document.querySelector('iframe[id*="goog"]');
                 if (banner) {
-                    banner.style.display = 'none';
-                    banner.style.visibility = 'hidden';
+                    banner.style.setProperty('display', 'none', 'important');
+                    banner.style.setProperty('visibility', 'hidden', 'important');
                 }
-                document.body.style.top = '0px';
-                document.body.style.position = 'static';
-                document.documentElement.style.marginTop = '0px';
+                document.body.style.setProperty('top', '0px', 'important');
+                document.body.style.setProperty('position', 'static', 'important');
+                document.documentElement.style.setProperty('margin-top', '0px', 'important');
             }
             cleanGoogleBanner();
             setInterval(cleanGoogleBanner, 300);
