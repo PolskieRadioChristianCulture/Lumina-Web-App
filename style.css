@@ -972,6 +972,7 @@ button {
     font-size: 1.1rem;
     transition: var(--transition-smooth);
     box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+    flex-shrink: 0;
 }
 
 .play-btn:hover {
