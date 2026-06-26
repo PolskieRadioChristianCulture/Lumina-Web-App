@@ -1,4 +1,4 @@
-/* ----------------------------------------------------
+﻿/* ----------------------------------------------------
    CHRISTIAN CULTURE - CUSTOM STYLING SYSTEM
    DESIGN SYSTEM: PREMIUM BLACK & GOLD AESTHETIC
 ---------------------------------------------------- */
@@ -200,15 +200,6 @@ button {
     gap: 8px;
 }
 
-.dzj-new-text {
-    color: #ff3b30;
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    animation: pulse-new-text 1.5s infinite;
-    text-shadow: 0 0 10px rgba(255, 59, 48, 0.6);
-    margin-right: 2px;
-}
 
 .dzj-logo-btn {
     width: 40px;
@@ -237,8 +228,6 @@ button {
     transform: scale(1.05);
 }
 
-@keyframes pulse-new-text {
-    0% { opacity: 1; }
     50% { opacity: 0.4; }
     100% { opacity: 1; }
 }
