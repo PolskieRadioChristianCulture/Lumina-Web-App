@@ -147,20 +147,20 @@ document.addEventListener("DOMContentLoaded", () => {
             const defaultTitle = "☀️ Lato ku Bożej chwale";
             const defaultDate = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
             const rawContent = `☀️ Lato ku Bożej chwale
-Dzień 25 – Taktyka Synowskiej Wierności i Odrzucenia Pozorów Walki.
+Dzień 26 – Taktyka Synowskiej Śmiałości i Dotyku Ojcowskiej Miłości.
 
-Zwycięstwo na duchowym froncie wymaga dziś stanięcia w pełnej autentyczności. Wróg próbuje namówić Cię na budowanie wyłącznie zewnętrznych pozorów – na posługiwanie się pięknymi hasłami i deklaracjami wiary, które nie przekładają się na realną dyscyplinę i czyny. Oddanie Bogu chwały wymaga odrzucenia tej iluzji. Twój Niebiański Ojciec nie szuka pustych słów, ale pragnie serca posłusznego syna i córki, którzy wypełniają Jego wolę na polu walki. Prawdziwa moc w Królestwie rodzi się z codziennej wierności ojcowskim wytycznym.
+Zwycięstwo na duchowym froncie wymaga dziś przełamania wstydu i fałszywego dystansu wobec Boga. Wróg próbuje wykorzystać Twoje słabości i potknięcia, wmawiając Ci, że jesteś zbyt nieczysty, by stanąć przed obliczem Stwórcy. Oddanie Bogu chwały polega na radykalnym odrzuceniu tego oskarżenia. Twój Niebiański Ojciec nie brzydzi się Twoimi ranami – On wyciąga rękę, by dotknąć Twojej codzienności i przynieść Ci natychmiastowe oczyszczenie. Jako Jego syn i córka masz pełne prawo przychodzić do bazy dowodzenia w każdym stanie, szukając ratunku i odnowienia sił.
 
 Jezus mówi dziś do Ciebie:
-„Nie każdy, kto mówi Mi: Panie, Panie!, wejdzie do królestwa niebieskiego, lecz ten, kto spełnia wolę mojego Ojca, który jest w niebie.” (Mateusza 7,21)
+„A oto zbliżył się trędowaty, upadł przed Nim i prosił Go: Panie, jeśli chcesz, możesz mnie oczyścić. Jezus wyciągnął rękę, dotknął go i rzekł: Chcę, bądź oczyszczony! I natychmiast został oczyszczony z trądu." (Mateusza 8,2-3)
 
 Zadanie Taktyczne:
-Zdemaskuj dziś w swoim życiu wszelkie obszary powierzchowności. Zamień deklaracje na fakty – w pracy zawodowej, obowiązkach domowych i modlitwie osobistej dociśnij rygor i odrzuć chodzenie na skróty. Podejmuj codzienne wyzwania z pozycji klasy i rzetelności godnej dziecka Króla.
+Zdemaskuj dziś wszelkie mechanizmy duchowej ucieczki i ukrywania się przed Bogiem. Jeśli odczuwasz ciężar w sumieniu, stań natychmiast w prawdzie przed Ojcem na modlitwie. Przyjmij Jego przebaczenie i realizuj swoje obowiązki zawodowe, społeczne oraz rodzinne z pozycji człowieka wolnego, podniesionego przez Bożą miłość.
 
 W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
 
 Modlitwa Bojowa:
-„Ojcze Niebieski, dziękuję, że badasz moje serce i znasz moje intencje. Odrzucam ducha obłudy i puste deklaracje. Wybieram dziś drogę realnego posłuszeństwa Twojemu Słowu. Daj mi siłę, by moje czyny w pracy i w domu były żywym dowodem mojej miłości do Ciebie i przynosiły Ci pełną chwałę.”
+„Ojcze Niebieski, dziękuję, że Twoja miłość jest większa niż moje słabości. Odrzucam potępienie podsuwane przez nieprzyjaciela. Upadam przed Tobą z ufnością dziecka i proszę o Twój oczyszczający dotyk. Napełnij mnie siłą i mądrością, by moje dzisiejsze działania były wolne od strachu i przynosiły Ci pełną chwałę."
 
 Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
 
