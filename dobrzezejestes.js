@@ -1,4 +1,4 @@
-﻿import { db } from "./firebase-config.js";
+import { db } from "./firebase-config.js";
 import { collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
 window.shareDzjContent = function() {
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const loadReflectionData = async () => {
         try {
-            const q = query(collection(db, "web_inspirations"), orderBy("timestamp", "desc"), limit(1));
+            const q = query(collection(db, "web_inspirations"), orderBy("date", "desc"), limit(1));
             const snap = await getDocs(q);
 
             if (!snap.empty) {
