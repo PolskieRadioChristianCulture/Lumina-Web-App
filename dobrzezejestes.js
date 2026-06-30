@@ -241,10 +241,18 @@ Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
     if (modalOverlay) modalOverlay.addEventListener("click", closeModal);
 
     // Initial fetch to load page reflection
-    loadReflectionData();
-
-    // Auto-scroll to section if URL contains ?dzj=true
-    if (window.location.search.includes('dzj=true')) {
-        setTimeout(scrollToSection, 500);
-    }
+    loadReflectionData().then(() => {
+        // Auto-scroll to section if URL contains ?dzj=true
+        if (window.location.search.includes('dzj=true')) {
+            setTimeout(scrollToSection, 300);
+        } else if (window.location.hash) {
+            // Re-apply hash scroll after dynamic content shifted the layout
+            setTimeout(() => {
+                const target = document.querySelector(window.location.hash);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 300);
+        }
+    });
 });
