@@ -583,8 +583,8 @@
     <div class="vignette-overlay"></div>
     <canvas id="visualizerCanvas"></canvas>
 
-    <!-- Autoplay blocker bypass overlay -->
-    <div id="interactiveOverlay">
+    <!-- Autoplay blocker bypass overlay (starts hidden; only shown if autoplay is blocked) -->
+    <div id="interactiveOverlay" class="hidden">
         <button class="play-trigger-btn" onclick="initializeStream()">Uruchom Studio Biblia Audio</button>
         <p class="play-trigger-desc"> SCENA EMISYJNA 24/7 DLA OBS STUDIO </p>
     </div>
@@ -1145,7 +1145,9 @@
             
             // Direct native playout bypasses CORS restriction
             streamAudio.play().catch(e => {
-                console.warn("Autoplay block:", e);
+                console.warn("Autoplay block. Showing overlay button:", e);
+                // Show the click-to-play overlay only if the browser blocked autoplay
+                document.getElementById('interactiveOverlay').classList.remove('hidden');
             });
             
             initializeBackground(); // Try loading video first, otherwise fallback to slideshow
@@ -1369,9 +1371,8 @@
                 }
             }, 6000); // Shift every 6 seconds
             
-            if (window.obsStudio || navigator.userAgent.includes('OBS')) {
-                setTimeout(initializeStream, 1500);
-            }
+            // Trigger stream initialization automatically on load
+            setTimeout(initializeStream, 500);
         });
     </script>
 </body>
