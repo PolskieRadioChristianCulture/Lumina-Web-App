@@ -1081,32 +1081,46 @@
         }
 
         function initializeBackground() {
-            // Attempt to load the local video source
-            v1.src = videoSrc;
-            v2.src = videoSrc;
-            v1.load();
-            v2.load();
+            // Check if running locally via file:// protocol
+            const isLocalFile = window.location.protocol === 'file:';
+            
+            if (isLocalFile) {
+                try {
+                    // Attempt to load the local video source
+                    v1.src = videoSrc;
+                    v2.src = videoSrc;
+                    v1.load();
+                    v2.load();
 
-            // Set up test playing timeout (if video takes more than 3 seconds to respond, use fallback)
-            let videoLoadTimeout = setTimeout(() => {
-                console.log("Video load timeout. Falling back to slideshow.");
+                    // Set up test playing timeout (if video takes more than 3 seconds to respond, use fallback)
+                    let videoLoadTimeout = setTimeout(() => {
+                        console.log("Video load timeout. Falling back to slideshow.");
+                        startSlideshowLoop();
+                    }, 3000);
+
+                    v1.addEventListener('canplaythrough', () => {
+                        clearTimeout(videoLoadTimeout);
+                        console.log("Local video source available. Disabling slideshow.");
+                        // Hide slideshow elements completely
+                        slideImg1.style.display = 'none';
+                        slideImg2.style.display = 'none';
+                        startVideoLoop();
+                    }, { once: true });
+
+                    v1.addEventListener('error', () => {
+                        clearTimeout(videoLoadTimeout);
+                        console.log("Video source failed to load. Initializing slideshow.");
+                        startSlideshowLoop();
+                    }, { once: true });
+                } catch (e) {
+                    console.warn("Security or loading exception while setting video src. Using slideshow fallback:", e);
+                    startSlideshowLoop();
+                }
+            } else {
+                // Running on production web server (http/https). Bypass video attempt entirely to avoid security block.
+                console.log("Running on web server. Automatically initializing slideshow background.");
                 startSlideshowLoop();
-            }, 3000);
-
-            v1.addEventListener('canplaythrough', () => {
-                clearTimeout(videoLoadTimeout);
-                console.log("Local video source available. Disabling slideshow.");
-                // Hide slideshow elements completely
-                slideImg1.style.display = 'none';
-                slideImg2.style.display = 'none';
-                startVideoLoop();
-            }, { once: true });
-
-            v1.addEventListener('error', () => {
-                clearTimeout(videoLoadTimeout);
-                console.log("Video source failed to load. Initializing slideshow.");
-                startSlideshowLoop();
-            }, { once: true });
+            }
         }
 
         // --- 9. AUDIENCE SIMULATOR ---
