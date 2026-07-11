@@ -1,4 +1,4 @@
-﻿/* ----------------------------------------------------
+/* ----------------------------------------------------
    CHRISTIAN CULTURE - CUSTOM STYLING SYSTEM
    DESIGN SYSTEM: PREMIUM BLACK & GOLD AESTHETIC
 ---------------------------------------------------- */
@@ -1962,8 +1962,8 @@ button {
 
 .contact-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
     max-width: 1200px;
     margin: 0 auto;
 }
