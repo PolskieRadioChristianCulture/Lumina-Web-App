@@ -773,6 +773,9 @@
                         // Filter double text, .WAV and inactive domain biblia.cclite.pl
                         title = title.replace(/_wav/gi, '').replace(/\.wav/gi, '');
                         title = title.replace(/biblia\.cclite\.pl/gi, '');
+                        // Filter out hardcoded Zeno.fm RDS version metadata string
+                        title = title.replace(/•\s*Wersja:\s*Biblia\s*Tysiąclecia/gi, '');
+                        title = title.replace(/Wersja:\s*Biblia\s*Tysiąclecia/gi, '');
                         // Strip trailing dashes or spaces
                         title = title.replace(/\s*-\s*$/, '').trim();
                         
