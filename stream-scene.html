@@ -1156,6 +1156,8 @@
         }
 
         // --- 10.5. MULTI-STATION SELECTOR & TRANSLATION ENGINE ---
+        let activeStationId = 'biblia_audio';
+
         function updateLanguage(lang) {
             currentLanguage = lang;
             
@@ -1167,8 +1169,6 @@
                     progressLabel: "Aktualny rozdział",
                     stationsTitle: "WYBIERZ STACJĘ",
                     footerVersionLbl: "Tytuł Audycji:",
-                    footerVersionValLbl: "Wersja:",
-                    footerVersionVal: "Biblia Tysiąclecia",
                     brandTitle: "BIBLIA AUDIO",
                     tickerText: `🙏 Możesz wspierać misję Christian Culture modlitwą, udostępniając i polecając nasze treści oraz poprzez cykliczny dar finansowy 🤍 Każde wsparcie pomaga nam docierać z Ewangelią dalej i tworzyć przestrzeń wzrostu duchowego dla tysięcy osób 🌱✨ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wspieraj Bożą misję: 👉 https://patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 Nr konta (Bank / Revolut): 48 2910 0006 0000 0000 0527 2629 &nbsp; z dopiskiem: „Dar misyjny” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌍 Wsparcie przez bezpieczny link Revolut: https://revolut.me/christianculture &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 BLIK: 537 147 043 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Dziękujemy za Twoje wsparcie, modlitwę i zaufanie. Razem budujemy Christian Culture — ku Bożej chwale i dla dobra ludzi 🔥✝️`,
                     slides: ["WSPARCIE", "PATRONITE", "MODLITWA", "DAR SERCA"]
@@ -1180,8 +1180,6 @@
                     progressLabel: "Current Chapter",
                     stationsTitle: "SELECT STATION",
                     footerVersionLbl: "Broadcast Title:",
-                    footerVersionValLbl: "Version:",
-                    footerVersionVal: "KJV Bible",
                     brandTitle: "AUDIO BIBLE",
                     tickerText: `🙏 You can support the Christian Culture mission with prayer, sharing and recommending our content, or through a regular financial gift 🤍 Every support helps us reach further with the Gospel and create a space for spiritual growth for thousands of people 🌱✨ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Support God's mission: 👉 https://patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 Account No. (Bank / Revolut): 48 2910 0006 0000 0000 0527 2629 &nbsp; with note: "Dar misyjny" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌍 Support via safe Revolut link: https://revolut.me/christianculture &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 BLIK: 537 147 043 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Thank you for your support, prayer, and trust. Together we build Christian Culture — for God's glory and the good of people 🔥✝️`,
                     slides: ["SUPPORT", "PATRONITE", "PRAYER", "DONATION"]
@@ -1206,8 +1204,26 @@
             
             // Translate footer
             document.getElementById('footerVersionLbl').textContent = active.footerVersionLbl;
-            document.getElementById('footerVersionValLbl').textContent = active.footerVersionValLbl;
-            document.getElementById('footerVersionVal').textContent = active.footerVersionVal;
+            
+            let versionLbl = "";
+            let versionVal = "";
+            
+            if (activeStationId === 'biblia_audio') {
+                versionLbl = (lang === 'en') ? "Translation:" : "Wersja:";
+                versionVal = (lang === 'en') ? "Gdansk Bible" : "Biblia Gdańska";
+            } else if (activeStationId === 'global_biblia') {
+                versionLbl = (lang === 'en') ? "Translation:" : "Wersja:";
+                versionVal = (lang === 'en') ? "KJV Bible" : "King James Version (KJV)";
+            } else if (activeStationId === 'poland') {
+                versionLbl = (lang === 'en') ? "Format:" : "Format:";
+                versionVal = (lang === 'en') ? "Internet Radio" : "Radio internetowe";
+            } else if (activeStationId === 'global') {
+                versionLbl = (lang === 'en') ? "Format:" : "Format:";
+                versionVal = (lang === 'en') ? "Internet Radio" : "Internet Radio";
+            }
+            
+            document.getElementById('footerVersionValLbl').textContent = versionLbl;
+            document.getElementById('footerVersionVal').textContent = versionVal;
             
             // Translate ticker (WSPARCIE)
             document.getElementById('marqueeText').innerHTML = active.tickerText;
@@ -1280,6 +1296,7 @@
         }
 
         function switchStation(stationId) {
+            activeStationId = stationId;
             const stationsConfig = {
                 poland: { mountId: 'vz96pvl3pnktv', lang: 'pl', logo: './Aplikacja Christian Culture.png' },
                 global: { mountId: 'umej2cuqncluv', lang: 'en', logo: './Aplikacja CC Lite.jpg' },
