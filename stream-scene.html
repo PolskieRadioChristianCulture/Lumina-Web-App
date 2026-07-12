@@ -699,7 +699,7 @@
                     <div>
                         <span id="footerVersionLbl">Tytuł Audycji:</span> <span id="footerTitle" style="color: #ffffff;">Ewangelia Jana 20</span> 
                         &nbsp;•&nbsp; 
-                        <span id="footerVersionValLbl">Wersja:</span> <span id="footerVersionVal" style="color: #ffffff;">Biblia Tysiąclecia</span>
+                        <span id="footerVersionValLbl">Wersja:</span> <span id="footerVersionVal" style="color: #ffffff;">Biblia Gdańska</span>
                     </div>
                     <div>polskieradio.cc | cclite.pl</div>
                 </div>
@@ -1152,6 +1152,7 @@
                 document.getElementById('interactiveOverlay').classList.remove('hidden');
             });
             
+            updateLanguage(currentLanguage);
             initializeBackground(); // Try loading video first, otherwise fallback to slideshow
             animateFallbackWaves();
             resetTrackTimer();
