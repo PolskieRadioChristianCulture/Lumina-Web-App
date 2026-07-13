@@ -843,4 +843,131 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // === GOOGLE REVIEWS WIDGET LOGIC ===
+    const reviewsTrack = document.getElementById("reviewsTrack");
+    const reviewsDots = document.getElementById("reviewsDots");
+    const prevBtn = document.getElementById("reviewsPrevBtn");
+    const nextBtn = document.getElementById("reviewsNextBtn");
+    
+    if (reviewsTrack) {
+        let currentIndex = 0;
+        let reviews = [];
+        let itemsPerView = 1;
+        
+        const updateItemsPerView = () => {
+            const width = window.innerWidth;
+            if (width >= 1024) {
+                itemsPerView = 3;
+            } else if (width >= 768) {
+                itemsPerView = 2;
+            } else {
+                itemsPerView = 1;
+            }
+        };
+        
+        const renderReviews = () => {
+            reviewsTrack.innerHTML = reviews.map(rev => `
+                <div class="review-card">
+                    <div class="review-card-inner">
+                        <div>
+                            <div class="review-header">
+                                <div class="review-avatar">${rev.avatar || rev.author.substring(0,2)}</div>
+                                <div class="review-meta">
+                                    <div class="review-author">${rev.author}</div>
+                                    <div class="review-date">${rev.date}</div>
+                                </div>
+                            </div>
+                            <div class="review-stars">
+                                ${Array(rev.rating).fill('<i class="fa-solid fa-star"></i>').join('')}
+                            </div>
+                            <p class="review-text">"${rev.text}"</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Render navigation dots
+            const totalDots = Math.max(1, reviews.length - itemsPerView + 1);
+            reviewsDots.innerHTML = Array(totalDots).fill(0).map((_, idx) => `
+                <div class="reviews-dot ${idx === currentIndex ? 'active' : ''}" data-index="${idx}"></div>
+            `).join('');
+            
+            // Attach dot click events
+            document.querySelectorAll(".reviews-dot").forEach(dot => {
+                dot.addEventListener("click", (e) => {
+                    currentIndex = parseInt(e.target.getAttribute("data-index"));
+                    slideCarousel();
+                });
+            });
+            
+            slideCarousel();
+        };
+        
+        const slideCarousel = () => {
+            const maxIndex = Math.max(0, reviews.length - itemsPerView);
+            if (currentIndex > maxIndex) currentIndex = maxIndex;
+            if (currentIndex < 0) currentIndex = 0;
+            
+            const cardWidth = reviewsTrack.querySelector(".review-card") ? reviewsTrack.querySelector(".review-card").getBoundingClientRect().width : 0;
+            reviewsTrack.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+            
+            // Update active dot
+            document.querySelectorAll(".reviews-dot").forEach((dot, idx) => {
+                if (idx === currentIndex) {
+                    dot.classList.add("active");
+                } else {
+                    dot.classList.remove("active");
+                }
+            });
+        };
+        
+        // Fetch reviews from local JSON
+        fetch('./reviews.json')
+            .then(res => res.json())
+            .then(data => {
+                reviews = data;
+                updateItemsPerView();
+                renderReviews();
+            })
+            .catch(err => {
+                console.error("Error loading reviews:", err);
+            });
+            
+        // Event listeners
+        if (prevBtn) {
+            prevBtn.addEventListener("click", () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    slideCarousel();
+                } else {
+                    currentIndex = Math.max(0, reviews.length - itemsPerView);
+                    slideCarousel();
+                }
+            });
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener("click", () => {
+                const maxIndex = Math.max(0, reviews.length - itemsPerView);
+                if (currentIndex < maxIndex) {
+                    currentIndex++;
+                    slideCarousel();
+                } else {
+                    currentIndex = 0;
+                    slideCarousel();
+                }
+            });
+        }
+        
+        window.addEventListener("resize", () => {
+            const oldItems = itemsPerView;
+            updateItemsPerView();
+            if (oldItems !== itemsPerView) {
+                renderReviews();
+            } else {
+                slideCarousel();
+            }
+        });
+    }
 });
