@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIVE STREAM - Biblia Audio - Christian Culture</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #030303;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+        }
+
+        /* Premium Background Slideshow & Video styling */
+        .bg-slideshow, .bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            transition: opacity 2.0s ease-in-out; /* Smooth 2s transition for fade effects */
+            filter: brightness(0.28) contrast(1.1) saturate(0.9); /* Cinematic styling and readability dimming */
+        }
+
+        /* Moving Nebula Background */
+        #nebulaCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            opacity: 0.9;
+        }
+
+        /* Overlay black gradient to maintain high contrast */
+        .vignette-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(100, 150, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(3, 3, 3, 0.1) 0%, rgba(3, 3, 3, 0.95) 100%);
+        }
+
+        /* Main Grid Layout - Portrait 9:16 */
+        .grid-layout {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            padding: 60px 50px 50px 50px;
+            display: grid;
+            grid-template-rows: auto 1fr auto auto; /* Single-column layout */
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        /* --- HEADER (Repositioned to 2 rows to fit 1080px width) --- */
+        .header {
+            grid-row: 1;
+            grid-column: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            row-gap: 25px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.12);
+            padding-bottom: 25px;
+        }
+
+        .brand-container {
+            grid-column: 1;
+            grid-row: 1;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-img {
+            width: 74px;
+            height: 74px;
+            border-radius: 18px;
+            border: 2px solid rgba(212, 175, 55, 0.8);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
+            object-fit: cover;
+        }
+
+        .brand-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #D4AF37;
+            background: linear-gradient(135deg, #FFEAA7, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #a0a0a0;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        /* Header Right Clock & Badge */
+        .header-right {
+            grid-column: 2;
+            grid-row: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .live-tag {
+            background: linear-gradient(135deg, #e53935, #990000);
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-weight: 900;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(229, 57, 53, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: pulse-badge 2.5s infinite;
+        }
+
+        .live-tag-dot {
+            width: 5px;
+            height: 5px;
+            background-color: #ffffff;
+            border-radius: 50%;
+        }
+
+        .time-display {
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -1px;
+            font-variant-numeric: tabular-nums;
+            line-height: 1.1;
+        }
+
+        .date-display {
+            font-size: 12px;
+            color: #D4AF37;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        /* --- MAIN PANEL (Bible Text Area - Centered for Vertical View) --- */
+        .main-panel {
+            grid-row: 2;
+            grid-column: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 15px;
+            padding-right: 0;
+            text-align: center;
+        }
+
+        .chapter-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 46px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            text-align: center;
+            height: 55px; /* Locked height */
+        }
+
+        .verses-block {
+            font-family: 'Playfair Display', serif;
+            font-size: 64px; /* Scaled up for mobile vertical viewing */
+            line-height: 1.6;
+            color: #e6e6e6;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+            max-width: 100%;
+            min-height: 600px; /* Ample vertical space for scripture reading */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .verse-num {
+            font-size: 44px;
+            vertical-align: super;
+            color: #D4AF37;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        /* Golden Highlighted Verse */
+        .highlight-text {
+            color: #e2b859;
+            font-weight: 700;
+            text-shadow: 0 0 12px rgba(226, 184, 89, 0.45);
+        }
+
+        /* --- SIDEBAR PANEL (App Card - Centered below scripture) --- */
+        .sidebar {
+            grid-row: 3;
+            grid-column: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 10px;
+        }
+
+        /* Glassmorphic App Box */
+        .app-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            padding: 40px 40px;
+            width: 100%;
+            max-width: 650px; /* Constrain wide card on vertical screens */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .app-card-title {
+            font-size: 19px; /* Increased from 15px */
+            letter-spacing: 1px;
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 30px; /* Increased spacing */
+        }
+
+        .qr-wrapper {
+            background-color: #ffffff;
+            padding: 14px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 220px;
+            height: 220px;
+        }
+
+        .app-card-desc {
+            font-size: 14px; /* Increased from 11px */
+            color: #8c8c8c;
+            margin-top: 22px;
+            line-height: 1.5;
+            font-weight: 500;
+            max-width: 320px; /* Adjusted to suit wider sidebar */
+        }
+
+        /* Horizontal divider */
+        .app-card-divider {
+            width: 90%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+            margin: 30px 0;
+        }
+
+        /* Local Progress Indicator */
+        .card-progress-container {
+            width: 90%;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .card-progress-track {
+            width: 100%;
+            height: 6px; /* Increased from 4px */
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .card-progress-bar {
+            height: 100%;
+            width: 45%; /* Match 45% mockup */
+            background-color: #D4AF37;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+        }
+
+        .card-progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px; /* Increased from 11px */
+            font-weight: 600;
+            color: #8c8c8c;
+        }
+
+        /* Live count */
+        .live-count-text {
+            font-size: 13px; /* Increased from 11px */
+            font-weight: 600;
+            color: #8c8c8c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .live-count-dot {
+            width: 5px;
+            height: 5px;
+            background-color: #00e676;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00e676;
+        }
+
+        /* --- DYNAMIC NEWS TICKER (MARQUEE) --- */
+        .info-marquee-container {
+            width: 100%;
+            height: 64px;
+            background: rgba(212, 175, 55, 0.03);
+            border-top: 1px solid rgba(212, 175, 55, 0.08);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .info-marquee-badge {
+            background: linear-gradient(115deg, #D4AF37, #FFEAA7, #D4AF37, #FFEAA7, #D4AF37);
+            background-size: 200% 100%;
+            color: #030303;
+            width: 170px; /* Locked width to prevent marquee shifting during transition */
+            min-width: 170px; /* Lock minimum width to prevent flex squishing */
+            flex-shrink: 0; /* Prevent flexbox from squeezing this container */
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            z-index: 15;
+            box-shadow: 8px 0 15px rgba(0,0,0,0.6);
+            animation: gold-shimmer-glow 4s linear infinite;
+        }
+
+        .badge-carousel {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1); /* Ultra premium bezier transition */
+        }
+
+        .badge-slide {
+            height: 64px; /* Matches marquee container height */
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        @keyframes gold-shimmer-glow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        .info-marquee-text-wrap {
+            flex-grow: 1;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .info-marquee-text {
+            display: inline-block; /* Inline block preserves layout context for flex centering and prevents collapse */
+            white-space: nowrap;
+            will-change: transform;
+            font-size: 26px;
+            color: #e0e0e0;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding-left: 20px;
+            animation: marquee-scroll 180s linear infinite;
+        }
+
+        @keyframes marquee-scroll {
+            0% { transform: translateX(1320px); } /* Start exactly at the right edge of the ticker window for instant slide-in */
+            100% { transform: translateX(-100%); }
+        }
+
+        /* --- HEADER STATIONS SELECTOR --- */
+        .header-stations {
+            display: flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 5px 8px;
+            backdrop-filter: blur(15px);
+        }
+
+        .header-stations .station-btn {
+            background: transparent;
+            border: none;
+            color: #8c8c8c;
+            border-radius: 12px;
+            padding: 8px 14px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            font-family: inherit;
+        }
+
+        .header-stations .station-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+
+        .header-stations .station-btn.active {
+            background: linear-gradient(135deg, #FFEAA7, #D4AF37);
+            color: #030303;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+        }
+
+        .header-stations .station-lang {
+            font-size: 9px;
+            font-weight: 900;
+            background: rgba(255, 255, 255, 0.1);
+            color: inherit;
+            padding: 2px 5px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .header-stations .station-btn.active .station-lang {
+            background: rgba(0, 0, 0, 0.12);
+            color: #030303;
+        }
+
+        .header-stations .station-name {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* --- FOOTER & BOTTOM PROGRESS BAR --- */
+        .footer {
+            grid-row: 4;
+            grid-column: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+        }
+
+        /* Full Width Bottom Progress Line */
+        .bottom-progress-line {
+            width: 100%;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.08);
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .bottom-progress-fill {
+            height: 100%;
+            width: 45%; /* Controlled by timer */
+            background-color: #D4AF37;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+        }
+
+        .footer-metadata {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding-top: 15px;
+            font-size: 12px;
+            color: #8c8c8c;
+            font-weight: 500;
+        }
+
+        .metadata-label {
+            font-weight: 600;
+        }
+
+        /* Autoplay Trigger Overlay for OBS */
+        #interactiveOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(3, 3, 3, 0.98);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
+        }
+
+        #interactiveOverlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .play-trigger-btn {
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            color: #000;
+            border: none;
+            padding: 20px 45px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            cursor: pointer;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
+        }
+
+        .play-trigger-desc {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #555;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        @keyframes pulse-badge {
+            0% { transform: scale(1); box-shadow: 0 0 12px rgba(229, 57, 53, 0.35); }
+            50% { transform: scale(1.03); box-shadow: 0 0 20px rgba(229, 57, 53, 0.65); }
+            100% { transform: scale(1); box-shadow: 0 0 12px rgba(229, 57, 53, 0.35); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Radio Stream Audio (src attribute placed directly on audio tag for dynamic hot-swapping; crossorigin removed to support external ebible.org MP3s) -->
+    <audio id="stream-audio" src="https://stream.zeno.fm/imo45hqnshyuv"></audio>
+
+    <!-- Video Background Loops (Dual player configuration; visible if local file is present) -->
+    <video muted playsinline id="bg-video-1" class="bg-video" style="opacity: 0;"></video>
+    <video muted playsinline id="bg-video-2" class="bg-video" style="opacity: 0;"></video>
+
+    <!-- Premium Background Slideshow (Dual image configuration; visible as fallback if video is missing) -->
+    <img id="bg-slideshow-1" class="bg-slideshow" style="opacity: 1;" src="bg_slideshow_1.png" alt="Background slide 1">
+    <img id="bg-slideshow-2" class="bg-slideshow" style="opacity: 0;" src="bg_slideshow_2.png" alt="Background slide 2">
+
+    <!-- Canvas Background & Filters -->
+    <canvas id="nebulaCanvas" style="display: none;"></canvas>
+    <div class="vignette-overlay"></div>
+    <canvas id="visualizerCanvas"></canvas>
+
+    <!-- Autoplay blocker bypass overlay (starts hidden; only shown if autoplay is blocked) -->
+    <div id="interactiveOverlay" class="hidden">
+        <button class="play-trigger-btn" onclick="initializeStream()">Uruchom Studio Biblia Audio</button>
+        <p class="play-trigger-desc"> SCENA EMISYJNA 24/7 DLA OBS STUDIO </p>
+    </div>
+
+    <!-- Scene Container (Auto-scales to fit viewport) -->
+    <div id="scene-wrapper" style="width: 1080px; height: 1920px; position: absolute; top: 0; left: 0; transform-origin: top left; overflow: hidden; z-index: 10;">
+        <div class="grid-layout">
+            <!-- Header -->
+            <header class="header">
+                <div class="brand-container">
+                    <img class="logo-img" src="./Logo Biblia Audio CC.jpg" alt="Logo">
+                    <div>
+                        <h1 class="brand-title">BIBLIA AUDIO</h1>
+                        <p class="brand-subtitle">Christian Culture Global</p>
+                    </div>
+                </div>
+                
+                <!-- Stations Selector (Header version) -->
+                <div class="header-stations">
+                    <button class="station-btn active" id="btn-biblia_audio" onclick="switchStation('biblia_audio')">
+                        <span class="station-lang">PL</span>
+                        <span class="station-name">Radio Biblia</span>
+                    </button>
+                    <button class="station-btn" id="btn-poland" onclick="switchStation('poland')">
+                        <span class="station-lang">PL</span>
+                        <span class="station-name">Radio PL</span>
+                    </button>
+                    <button class="station-btn" id="btn-global_biblia" onclick="switchStation('global_biblia')">
+                        <span class="station-lang">EN</span>
+                        <span class="station-name">Global Bible</span>
+                    </button>
+                    <button class="station-btn" id="btn-global" onclick="switchStation('global')">
+                        <span class="station-lang">EN</span>
+                        <span class="station-name">Radio Global</span>
+                    </button>
+                </div>
+                
+                <!-- Dynamic clock in header -->
+                <div class="header-right">
+                    <div class="live-tag">
+                        <div class="live-tag-dot"></div>
+                        <span id="liveTagText">Na Żywo</span>
+                    </div>
+                    <div class="time-display" id="clockTime">00:00:00</div>
+                    <div class="date-display" id="clockDate">PIĄTEK, 10 LIPCA</div>
+                </div>
+            </header>
+
+            <!-- Main Content (Scripture Display) -->
+            <main class="main-panel">
+                <h2 class="chapter-heading" id="chapterHeading">Ewangelia Jana 20</h2>
+                
+                <!-- Large Scripture Text Block -->
+                <div class="verses-block" id="versesContainer">
+                    <p>
+                        <span class="verse-num">1</span>Pierwszego dnia tygodnia, wczesnym rankiem, gdy jeszcze było ciemno, Maria Magdalena przyszła do grobu i <span class="highlight-text">zobaczyła, że kamień jest odsunięty od grobu.</span> <span class="verse-num">2</span>Pobiegła więc i przyszła do Szymona Piotra oraz do drugiego ucznia, którego Jezus miłował, i powiedziała do nich: «Zabrano Pana z grobu i nie wiemy, gdzie Go położono».
+                    </p>
+                </div>
+            </main>
+
+            <!-- Sidebar (App Card) -->
+            <aside class="sidebar">
+                <div class="app-card">
+                    <div class="app-card-title">Twoja Biblia w kieszeni</div>
+                    <div class="qr-wrapper" id="qrcode"></div>
+                    <p class="app-card-desc">Zeskanuj, aby słuchać i czytać w aplikacji.</p>
+                    
+                    <div class="app-card-divider"></div>
+
+                    <!-- Internal progress bar indicator -->
+                    <div class="card-progress-container">
+                        <div class="card-progress-track">
+                            <div class="card-progress-bar" id="cardProgressBar"></div>
+                        </div>
+                        <div class="card-progress-labels">
+                            <span>Aktualny rozdział</span>
+                            <span id="cardProgressLabel">45%</span>
+                        </div>
+                    </div>
+
+                    <!-- Audience count -->
+                    <div class="live-count-text">
+                        <div class="live-count-dot"></div>
+                        Dołącz do <span id="audienceCount" style="color: #ffffff; font-weight: 700;">1 547</span> osób słuchających teraz
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <!-- Live Marquee Info Bar -->
+                <div class="info-marquee-container">
+                    <div class="info-marquee-badge">
+                        <div class="badge-carousel" id="badgeCarousel">
+                            <div class="badge-slide">WSPARCIE</div>
+                            <div class="badge-slide">PATRONITE</div>
+                            <div class="badge-slide">MODLITWA</div>
+                            <div class="badge-slide">DAR SERCA</div>
+                        </div>
+                    </div>
+                    <div class="info-marquee-text-wrap">
+                        <span id="marqueeText" class="info-marquee-text">🙏 Możesz wspierać misję Christian Culture modlitwą, udostępniając i polecając nasze treści oraz poprzez cykliczny dar finansowy 🤍 Każde wsparcie pomaga nam docierać z Ewangelią dalej i tworzyć przestrzeń wzrostu duchowego dla tysięcy osób 🌱✨ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wspieraj Bożą misję: 👉 https://patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 Nr konta (Bank / Revolut): 48 2910 0006 0000 0000 0527 2629 &nbsp; z dopiskiem: „Dar misyjny” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌍 Wsparcie przez bezpieczny link Revolut: https://revolut.me/christianculture &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 BLIK: 537 147 043 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Dziękujemy za Twoje wsparcie, modlitwę i zaufanie. Razem budujemy Christian Culture — ku Bożej chwale i dla dobra ludzi 🔥✝️</span>
+                    </div>
+                </div>
+
+                <!-- Full-width audio progress bar -->
+                <div class="bottom-progress-line">
+                    <div class="bottom-progress-fill" id="bottomProgressFill"></div>
+                </div>
+                
+                <div class="footer-metadata">
+                    <div>
+                        <span id="footerVersionLbl">Tytuł Audycji:</span> <span id="footerTitle" style="color: #ffffff;">Ewangelia Jana 20</span> 
+                        &nbsp;•&nbsp; 
+                        <span id="footerVersionValLbl">Wersja:</span> <span id="footerVersionVal" style="color: #ffffff;">Biblia Gdańska</span>
+                    </div>
+                    <div>polskieradio.cc | cclite.pl</div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- QRCode script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        // --- 1. QR CODE GENERATION ---
+        new QRCode(document.getElementById("qrcode"), {
+            text: "https://play.google.com/store/search?q=christian+culture&c=apps&hl=pl",
+            width: 192, // Increased from 148 to fill the new wrapper cleanly
+            height: 192,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.M
+        });
+
+        // --- 2. HEADER DATE & TIME WIDGET ---
+        let currentLanguage = 'pl'; // 'pl' or 'en'
+        
+        function updateClock() {
+            const now = new Date();
+            
+            const hrs = String(now.getHours()).padStart(2, '0');
+            const mins = String(now.getMinutes()).padStart(2, '0');
+            const secs = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clockTime').textContent = `${hrs}:${mins}:${secs}`;
+            
+            const daysPL = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+            const monthsPL = ['Stycznia', 'Lutego', 'Marca', 'Kwietnia', 'Maja', 'Czerwca', 'Lipca', 'Sierpnia', 'Września', 'Października', 'Listopada', 'Grudnia'];
+            
+            const daysEN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const monthsEN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            const days = (currentLanguage === 'en') ? daysEN : daysPL;
+            const months = (currentLanguage === 'en') ? monthsEN : monthsPL;
+            
+            const dayName = days[now.getDay()].toUpperCase();
+            const dayNum = now.getDate();
+            const monthName = months[now.getMonth()].toUpperCase();
+            
+            document.getElementById('clockDate').textContent = `${dayName}, ${dayNum} ${monthName}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- 3. DYNAMIC METADATA FEED (Zeno.fm SSE) ---
+        let activeMountId = 'imo45hqnshyuv';
+        let metadataEventSource = null;
+
+        function subscribeMetadata() {
+            if (metadataEventSource) {
+                metadataEventSource.close();
+            }
+            const sseUrl = `https://api.zeno.fm/mounts/metadata/subscribe/${activeMountId}`;
+            
+            console.log("Subskrybuję metadane Zeno.fm:", sseUrl);
+            metadataEventSource = new EventSource(sseUrl);
+            
+            metadataEventSource.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    if (data && data.streamTitle) {
+                        // Filter file extensions like .wav, .mp3, etc.
+                        let title = data.streamTitle;
+                        title = title.replace(/\.(wav|mp3|ogg|flac|aac|m4a)$/i, '');
+                        // Filter double text, .WAV and inactive domain biblia.cclite.pl
+                        title = title.replace(/_wav/gi, '').replace(/\.wav/gi, '');
+                        title = title.replace(/biblia\.cclite\.pl/gi, '');
+                        // Filter out hardcoded Zeno.fm RDS version metadata string
+                        title = title.replace(/•?\s*Wersja:.*$/gi, '');
+                        // Strip trailing dashes or spaces
+                        title = title.replace(/\s*-\s*$/, '').trim();
+                        
+                        // Update DOM elements
+                        document.getElementById('chapterHeading').textContent = title;
+                        document.getElementById('footerTitle').textContent = title;
+                        
+                        // Fetch active chapter from Bible API dynamically based on RDS Title
+                        fetchBibleChapter(title);
+                        resetTrackTimer(); 
+                    }
+                } catch(e) {
+                    console.error("Błąd parsowania:", e);
+                }
+            };
+
+            metadataEventSource.onerror = function(err) {
+                metadataEventSource.close();
+                setTimeout(subscribeMetadata, 10000);
+            };
+        }
+
+        // --- 4. DYNAMIC SCRIPTURE TEXT PROVIDER & API FETCH ---
+        const bookMap = {
+            "rodzaju": 1, "rdz": 1, "genesis": 1, "gen": 1,
+            "wyjścia": 2, "wyj": 2, "exodus": 2, "ex": 2,
+            "kapłańska": 3, "kap": 3, "leviticus": 3, "lev": 3,
+            "liczb": 4, "lic": 4, "numbers": 4, "num": 4,
+            "powtórzonego": 5, "pwt": 5, "deuteronomy": 5, "deut": 5,
+            "jozuego": 6, "joz": 6, "joshua": 6, "josh": 6,
+            "sędziów": 7, "sęd": 7, "judges": 7, "judg": 7,
+            "ruty": 8, "rut": 8, "ruth": 8,
+            "samuela": 9, "sam": 9, "samuel": 9,
+            "królewska": 11, "król": 11, "kings": 11, "ki": 11,
+            "kronik": 13, "kron": 13, "chronicles": 13, "chron": 13,
+            "ezdrasza": 15, "ezd": 15, "ezra": 15,
+            "nehemiasza": 16, "neh": 16, "nehemiah": 16,
+            "estery": 17, "est": 17, "esther": 17,
+            "hioba": 18, "hiob": 18, "job": 18,
+            "psalm": 19, "ps": 19, "psalmy": 19, "psalms": 19,
+            "przypowieści": 20, "prz": 20, "proverbs": 20, "prov": 20,
+            "koheleta": 21, "koh": 21, "kaznodziei": 21, "ecclesiastes": 21, "eccl": 21,
+            "pieśń": 22, "pnp": 22, "song": 22,
+            "izajasza": 23, "iz": 23, "isaiah": 23, "isa": 23,
+            "jeremiasza": 24, "jer": 24, "jeremiah": 24, "jer": 24,
+            "lamentacje": 25, "lam": 25, "lamentations": 25,
+            "ezechiela": 26, "ez": 26, "ezekiel": 26, "ezek": 26,
+            "daniela": 27, "dan": 27, "daniel": 27,
+            "ozeasza": 28, "oz": 28, "hosea": 28, "hos": 28,
+            "joela": 29, "joel": 29,
+            "amosa": 30, "amos": 30,
+            "abdiasza": 31, "abd": 31, "obadiah": 31, "obad": 31,
+            "jonasza": 32, "jon": 32, "jonah": 32,
+            "micheasza": 33, "mich": 33, "micah": 33, "mic": 33,
+            "nahuma": 34, "nah": 34, "nahum": 34,
+            "habakuka": 35, "hab": 35, "habakkuk": 35, "hab": 35,
+            "sofoniasza": 36, "sof": 36, "zephaniah": 36, "zeph": 36,
+            "aggeusza": 37, "agg": 37, "haggai": 37, "hag": 37,
+            "zachariasza": 38, "zach": 38, "zechariah": 38, "zech": 38,
+            "malachiasza": 39, "mal": 39, "malachi": 39, "mal": 39,
+            "mateusza": 40, "mt": 40, "matthew": 40, "matt": 40,
+            "marka": 41, "mk": 41, "mark": 41,
+            "łukasza": 42, "łk": 42, "luke": 42, "luk": 42,
+            "jana": 43, "jn": 43, "jan": 43, "john": 43,
+            "dzieje": 44, "dz": 44, "acts": 44,
+            "rzymian": 45, "rz": 45, "romans": 45, "rom": 45,
+            "koryntian": 46, "corinthians": 46, "cor": 46,
+            "galatów": 48, "gal": 48, "galatians": 48,
+            "efezjan": 49, "ef": 49, "ephesians": 49, "eph": 49,
+            "filipian": 50, "fil": 50, "philippians": 50, "phil": 50,
+            "kolosan": 51, "kol": 51, "colossians": 51, "col": 51,
+            "tesaloniczan": 52, "tes": 52, "thessalonians": 52, "thess": 52,
+            "tymoteusza": 54, "tym": 54, "timothy": 54, "tim": 54,
+            "tytusa": 56, "tyt": 56, "titus": 56,
+            "filemona": 57, "fil": 57, "philemon": 57, "philem": 57,
+            "hebrajczyków": 58, "hebr": 58, "hebrews": 58, "heb": 58,
+            "jakuba": 59, "jak": 59, "james": 59, "jas": 59,
+            "piotra": 60, "piotr": 60, "peter": 60, "pet": 60,
+            "judy": 65, "juda": 65, "jude": 65,
+            "objawienie": 66, "apokalipsa": 66, "ap": 66, "revelation": 66, "rev": 66
+        };
+
+        const fallbackScriptureVerses = {
+            "pl": [
+                { num: 1, text: "Na początku było Słowo, a Słowo było u Boga, i Bogiem było Słowo." },
+                { num: 2, text: "Ono było na początku u Boga." },
+                { num: 3, text: "Wszystko przez Nie się stało, a bez Niego nic się nie stało, co się stało." },
+                { num: 4, text: "<span class=\"highlight-text\">W Nim było życie, a życie było światłością ludzi</span>, a światłość w ciemności świeci i ciemność jej nie ogarnęła." }
+            ],
+            "en": [
+                { num: 1, text: "In the beginning was the Word, and the Word was with God, and the Word was God." },
+                { num: 2, text: "The same was in the beginning with God." },
+                { num: 3, text: "All things were made by him; and without him was not any thing made that was made." },
+                { num: 4, text: "<span class=\"highlight-text\">In him was life; and the life was the light of men</span>, and the light shineth in darkness; and the darkness comprehended it not." }
+            ]
+        };
+
+        let currentVersesList = [...fallbackScriptureVerses["pl"]];
+        let currentDisplayedVerseNum = -1;
+        let lastTitle = "";
+
+        // Parse RDS Title to fetch Bible verses dynamically
+        async function fetchBibleChapter(title) {
+            const cleanTitle = title.toLowerCase();
+            
+            // Regex to find book name and chapter number (supports polish structures & english "chapter" or just spaces)
+            const match = cleanTitle.match(/(ewangelia\s+wg\s+św\.\s+|ewangelia\s+|list\s+do\s+|księga\s+|gospel\s+of\s+|book\s+of\s+|epistle\s+to\s+)?([a-ząęśćóżźń\s]+?)\s+(\d+)/);
+            if (!match) {
+                console.warn("Nie udało się sparsować tytułu RDS dla API:", title);
+                currentVersesList = [...fallbackScriptureVerses[currentLanguage]];
+                return;
+            }
+
+            const rawBookName = match[2].trim();
+            const chapterNum = match[3];
+            
+            // Map to Book ID
+            let bookId = null;
+            for (const key in bookMap) {
+                if (rawBookName.includes(key) || key.includes(rawBookName)) {
+                    bookId = bookMap[key];
+                    break;
+                }
+            }
+
+            if (!bookId) {
+                console.warn("Nieznana księga w RDS:", rawBookName);
+                currentVersesList = [...fallbackScriptureVerses[currentLanguage]];
+                return;
+            }
+
+            const translation = (currentLanguage === 'en') ? 'kjv' : 'polgdanska';
+            const apiUrl = `https://api.getbible.net/v2/${translation}/${bookId}/${chapterNum}.json`;
+            console.log(`Pobieram rozdział z API: ${apiUrl}`);
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error("Błąd sieci / brak rozdziału w API");
+                const data = await response.json();
+                
+                if (data && data.verses && data.verses.length > 0) {
+                    currentVersesList = data.verses.map(v => {
+                        // Strip HTML tags if any exist in the response
+                        let txt = v.text.replace(/<\/?[^>]+(>|$)/g, "");
+                        
+                        // Highlights in Polish and English
+                        if (txt.includes("kamień") || txt.includes("życie") || txt.includes("Słowo") || txt.includes("Pasterz") ||
+                            txt.includes("stone") || txt.includes("life") || txt.includes("Word") || txt.includes("Shepherd")) {
+                            txt = txt.replace(/(kamień jest odsunięty od grobu|życie było światłością ludzi|Słowo było u Boga|nie brak mi niczego|stone taken away|life was the light|Word was with God|not want)/gi, 
+                                '<span class="highlight-text">$1</span>');
+                        }
+                        
+                        return {
+                            num: v.verse,
+                            text: txt
+                        };
+                    });
+                    console.log(`Pomyślnie załadowano ${currentVersesList.length} wersetów z API.`);
+                    
+                    // Force update UI
+                    currentDisplayedVerseNum = -1;
+                    updateScriptureContent(title, 0);
+                }
+            } catch (err) {
+                console.error("Nie udało się pobrać tekstu z API, używam fallbacku:", err);
+                currentVersesList = [...fallbackScriptureVerses[currentLanguage]];
+            }
+        }
+
+        function updateScriptureContent(title, percent = 0) {
+            if (currentVersesList.length === 0) return;
+            
+            // Calculate active verse index based on progress percent
+            const index = Math.floor((percent / 100) * currentVersesList.length);
+            const activeVerse = currentVersesList[Math.min(index, currentVersesList.length - 1)];
+            
+            // Only update DOM if verse changed or station changed
+            if (activeVerse.num !== currentDisplayedVerseNum || title !== lastTitle) {
+                currentDisplayedVerseNum = activeVerse.num;
+                lastTitle = title;
+                
+                const container = document.getElementById('versesContainer');
+                container.style.opacity = 0;
+                
+                setTimeout(() => {
+                    container.innerHTML = `<p><span class="verse-num">${activeVerse.num}</span>${activeVerse.text}</p>`;
+                    container.style.opacity = 1;
+                }, 500);
+            }
+        }
+
+        // --- 7. SPOTIFY-LIKE PROGRESS BAR SIMULATION ---
+        let trackDuration = 280; // default length
+        let trackElapsed = 0;
+        let progressTimer = null;
+
+        function formatTime(secs) {
+            const mins = Math.floor(secs / 60);
+            const remainingSecs = secs % 60;
+            return `${mins}:${String(remainingSecs).padStart(2, '0')}`;
+        }
+
+        function startTrackTimer() {
+            if (progressTimer) clearInterval(progressTimer);
+            progressTimer = setInterval(() => {
+                if (trackElapsed < trackDuration) {
+                    trackElapsed++;
+                    const percent = (trackElapsed / trackDuration) * 100;
+                    
+                    // Update full width bottom progress bar
+                    document.getElementById('bottomProgressFill').style.width = `${percent}%`;
+                    
+                    // Update app card progress bar
+                    document.getElementById('cardProgressBar').style.width = `${percent}%`;
+                    document.getElementById('cardProgressLabel').textContent = `${Math.floor(percent)}%`;
+                    
+                    // Dynamically push progress change to update scripture text!
+                    const currentTitle = document.getElementById('chapterHeading').textContent;
+                    updateScriptureContent(currentTitle, percent);
+                } else {
+                    resetTrackTimer();
+                }
+            }, 1000);
+        }
+
+        function resetTrackTimer() {
+            trackDuration = Math.floor(Math.random() * 180) + 240; // 4 to 7 minutes
+            trackElapsed = 0;
+            startTrackTimer();
+        }
+
+              // --- 8. HYBRID BACKGROUND ENGINE (VIDEO LOOP WITH SLIDESHOW FALLBACK) ---
+        const backgroundSlides = [
+            "bg_slideshow_1.png",
+            "bg_slideshow_2.png",
+            "bg_slideshow_3.png"
+        ];
+        let currentSlideIndex = 0;
+        const slideImg1 = document.getElementById('bg-slideshow-1');
+        const slideImg2 = document.getElementById('bg-slideshow-2');
+        let activeSlideImg = slideImg1;
+        let inactiveSlideImg = slideImg2;
+        let slideshowInterval = null;
+
+        function startSlideshowLoop() {
+            if (slideshowInterval) return;
+            console.log("Starting slideshow loop.");
+            slideImg1.src = backgroundSlides[0];
+            slideImg2.src = backgroundSlides[1];
+            
+            slideshowInterval = setInterval(() => {
+                currentSlideIndex = (currentSlideIndex + 1) % backgroundSlides.length;
+                const nextSrc = backgroundSlides[currentSlideIndex];
+                
+                inactiveSlideImg.src = nextSrc;
+                activeSlideImg.style.opacity = 0;
+                inactiveSlideImg.style.opacity = 1;
+                
+                const temp = activeSlideImg;
+                activeSlideImg = inactiveSlideImg;
+                inactiveSlideImg = temp;
+            }, 10000); // Crossfade slideshow every 10 seconds
+        }
+
+        // Dual-loop video crossfader
+        const v1 = document.getElementById('bg-video-1');
+        const v2 = document.getElementById('bg-video-2');
+        const videoSrc = "file:///C:/Users/czark/Desktop/Tło LIVE/Projekt bez nazwy (33).mp4";
+        
+        let activeVideo = v1;
+        let inactiveVideo = v2;
+        let isTransitioning = false;
+
+        function checkVideoTime() {
+            const vid = this;
+            if (vid !== activeVideo) return;
+            const remainingTime = vid.duration - vid.currentTime;
+            
+            if (remainingTime <= 2.0 && !isTransitioning && vid.duration > 0) {
+                isTransitioning = true;
+                inactiveVideo.currentTime = 0;
+                inactiveVideo.play().then(() => {
+                    activeVideo.style.opacity = 0;
+                    inactiveVideo.style.opacity = 1;
+                    setTimeout(() => {
+                        activeVideo.pause();
+                        const temp = activeVideo;
+                        activeVideo = inactiveVideo;
+                        inactiveVideo = temp;
+                        isTransitioning = false;
+                    }, 1500);
+                }).catch(err => {
+                    console.warn("Crossfade play error:", err);
+                    isTransitioning = false;
+                });
+            }
+        }
+
+        function startVideoLoop() {
+            console.log("Starting video background loop.");
+            activeVideo.style.opacity = 1;
+            activeVideo.play().catch(e => console.warn(e));
+            
+            v1.addEventListener('timeupdate', checkVideoTime);
+            v2.addEventListener('timeupdate', checkVideoTime);
+        }
+
+        function initializeBackground() {
+            // Check if running locally via file:// protocol
+            const isLocalFile = window.location.protocol === 'file:';
+            
+            if (isLocalFile) {
+                try {
+                    // Attempt to load the local video source
+                    v1.src = videoSrc;
+                    v2.src = videoSrc;
+                    v1.load();
+                    v2.load();
+
+                    // Set up test playing timeout (if video takes more than 3 seconds to respond, use fallback)
+                    let videoLoadTimeout = setTimeout(() => {
+                        console.log("Video load timeout. Falling back to slideshow.");
+                        startSlideshowLoop();
+                    }, 3000);
+
+                    v1.addEventListener('canplaythrough', () => {
+                        clearTimeout(videoLoadTimeout);
+                        console.log("Local video source available. Disabling slideshow.");
+                        // Hide slideshow elements completely
+                        slideImg1.style.display = 'none';
+                        slideImg2.style.display = 'none';
+                        startVideoLoop();
+                    }, { once: true });
+
+                    v1.addEventListener('error', () => {
+                        clearTimeout(videoLoadTimeout);
+                        console.log("Video source failed to load. Initializing slideshow.");
+                        startSlideshowLoop();
+                    }, { once: true });
+                } catch (e) {
+                    console.warn("Security or loading exception while setting video src. Using slideshow fallback:", e);
+                    startSlideshowLoop();
+                }
+            } else {
+                // Running on production web server (http/https). Bypass video attempt entirely to avoid security block.
+                console.log("Running on web server. Automatically initializing slideshow background.");
+                startSlideshowLoop();
+            }
+        }
+
+        // --- 9. AUDIENCE SIMULATOR ---
+        let audience = 1547;
+        function updateAudience() {
+            const delta = Math.floor(Math.random() * 5) - 2;
+            audience = Math.max(1300, audience + delta);
+            document.getElementById('audienceCount').textContent = audience.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+        setInterval(updateAudience, 7000);
+
+        // --- 10. AUDIO INITIALIZATION (DIRECT PLAYOUT) ---
+        const streamAudio = document.getElementById('stream-audio');
+        const visCanvas = document.getElementById('visualizerCanvas');
+        const vCtx = visCanvas.getContext('2d');
+        
+        visCanvas.width = 1080;
+        visCanvas.height = 380;
+
+        function initializeStream() {
+            document.getElementById('interactiveOverlay').classList.add('hidden');
+            
+            // Direct native playout bypasses CORS restriction
+            streamAudio.play().catch(e => {
+                console.warn("Autoplay block. Showing overlay button:", e);
+                // Show the click-to-play overlay only if the browser blocked autoplay
+                document.getElementById('interactiveOverlay').classList.remove('hidden');
+            });
+            
+            updateLanguage(currentLanguage);
+            initializeBackground(); // Try loading video first, otherwise fallback to slideshow
+            animateFallbackWaves();
+            resetTrackTimer();
+        }
+
+        // --- 10.5. MULTI-STATION SELECTOR & TRANSLATION ENGINE ---
+        let activeStationId = 'biblia_audio';
+
+        function updateLanguage(lang) {
+            currentLanguage = lang;
+            
+            const t = {
+                pl: {
+                    live: "Na Żywo",
+                    appTitle: "Twoja Biblia w kieszeni",
+                    appDesc: "Zeskanuj, aby słuchać i czytać w aplikacji.",
+                    progressLabel: "Aktualny rozdział",
+                    stationsTitle: "WYBIERZ STACJĘ",
+                    footerVersionLbl: "Tytuł Audycji:",
+                    brandTitle: "BIBLIA AUDIO",
+                    tickerText: `🙏 Możesz wspierać misję Christian Culture modlitwą, udostępniając i polecając nasze treści oraz poprzez cykliczny dar finansowy 🤍 Każde wsparcie pomaga nam docierać z Ewangelią dalej i tworzyć przestrzeń wzrostu duchowego dla tysięcy osób 🌱✨ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wspieraj Bożą misję: 👉 https://patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 Nr konta (Bank / Revolut): 48 2910 0006 0000 0000 0527 2629 &nbsp; z dopiskiem: „Dar misyjny” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌍 Wsparcie przez bezpieczny link Revolut: https://revolut.me/christianculture &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 BLIK: 537 147 043 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Dziękujemy za Twoje wsparcie, modlitwę i zaufanie. Razem budujemy Christian Culture — ku Bożej chwale i dla dobra ludzi 🔥✝️`,
+                    slides: ["WSPARCIE", "PATRONITE", "MODLITWA", "DAR SERCA"]
+                },
+                en: {
+                    live: "LIVE",
+                    appTitle: "Your Bible in Pocket",
+                    appDesc: "Scan to listen and read in the app.",
+                    progressLabel: "Current Chapter",
+                    stationsTitle: "SELECT STATION",
+                    footerVersionLbl: "Broadcast Title:",
+                    brandTitle: "AUDIO BIBLE",
+                    tickerText: `🙏 You can support the Christian Culture mission with prayer, sharing and recommending our content, or through a regular financial gift 🤍 Every support helps us reach further with the Gospel and create a space for spiritual growth for thousands of people 🌱✨ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Support God's mission: 👉 https://patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 Account No. (Bank / Revolut): 48 2910 0006 0000 0000 0527 2629 &nbsp; with note: "Dar misyjny" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌍 Support via safe Revolut link: https://revolut.me/christianculture &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 BLIK: 537 147 043 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Thank you for your support, prayer, and trust. Together we build Christian Culture — for God's glory and the good of people 🔥✝️`,
+                    slides: ["SUPPORT", "PATRONITE", "PRAYER", "DONATION"]
+                }
+            };
+            
+            const active = t[lang];
+            
+            // Translate header elements
+            document.getElementById('liveTagText').textContent = active.live;
+            document.querySelector('.brand-title').textContent = active.brandTitle;
+            
+            // Translate sidebar card
+            document.querySelector('.app-card-title').textContent = active.appTitle;
+            document.querySelector('.app-card-desc').textContent = active.appDesc;
+            document.querySelector('.card-progress-labels span:first-child').textContent = active.progressLabel;
+            
+            // Audience live count translation
+            document.querySelector('.live-count-text').innerHTML = `<div class="live-count-dot"></div>` + 
+                (lang === 'en' ? `Join <span id="audienceCount" style="color: #ffffff; font-weight: 700;">${audience}</span> people listening now` 
+                               : `Dołącz do <span id="audienceCount" style="color: #ffffff; font-weight: 700;">${audience}</span> osób słuchających teraz`);
+            
+            // Translate footer
+            document.getElementById('footerVersionLbl').textContent = active.footerVersionLbl;
+            
+            let versionLbl = "";
+            let versionVal = "";
+            
+            if (activeStationId === 'biblia_audio') {
+                versionLbl = (lang === 'en') ? "Translation:" : "Wersja:";
+                versionVal = (lang === 'en') ? "Gdansk Bible" : "Biblia Gdańska";
+            } else if (activeStationId === 'global_biblia') {
+                versionLbl = (lang === 'en') ? "Translation:" : "Wersja:";
+                versionVal = (lang === 'en') ? "KJV Bible" : "King James Version (KJV)";
+            } else if (activeStationId === 'poland') {
+                versionLbl = (lang === 'en') ? "Format:" : "Format:";
+                versionVal = (lang === 'en') ? "Internet Radio" : "Radio internetowe";
+            } else if (activeStationId === 'global') {
+                versionLbl = (lang === 'en') ? "Format:" : "Format:";
+                versionVal = (lang === 'en') ? "Internet Radio" : "Internet Radio";
+            }
+            
+            document.getElementById('footerVersionValLbl').textContent = versionLbl;
+            document.getElementById('footerVersionVal').textContent = versionVal;
+            
+            // Translate ticker (WSPARCIE)
+            document.getElementById('marqueeText').innerHTML = active.tickerText;
+            
+            const slides = document.querySelectorAll('.badge-slide');
+            slides.forEach((slide, idx) => {
+                slide.textContent = active.slides[idx];
+            });
+            
+            // Trigger clock refresh immediately
+            updateClock();
+        }
+
+        // --- 10.7. SIMULATED LIVE PLAYLIST ENGINE FOR GLOBAL BIBLE ---
+        let globalPlaylist = [{"name":"01_01_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_01_Matthew.mp3","bookName":"Matthew","chapter":1,"duration":229,"size":1825367},{"name":"01_02_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_02_Matthew.mp3","bookName":"Matthew","chapter":2,"duration":230,"size":1836442},{"name":"01_03_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_03_Matthew.mp3","bookName":"Matthew","chapter":3,"duration":161,"size":1285781},{"name":"01_04_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_04_Matthew.mp3","bookName":"Matthew","chapter":4,"duration":233,"size":1860057},{"name":"01_05_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_05_Matthew.mp3","bookName":"Matthew","chapter":5,"duration":402,"size":3214663},{"name":"01_06_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_06_Matthew.mp3","bookName":"Matthew","chapter":6,"duration":303,"size":2420122},{"name":"01_07_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_07_Matthew.mp3","bookName":"Matthew","chapter":7,"duration":234,"size":1871969},{"name":"01_08_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_08_Matthew.mp3","bookName":"Matthew","chapter":8,"duration":309,"size":2464426},{"name":"01_09_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_09_Matthew.mp3","bookName":"Matthew","chapter":9,"duration":346,"size":2763685},{"name":"01_10_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_10_Matthew.mp3","bookName":"Matthew","chapter":10,"duration":333,"size":2659614},{"name":"01_11_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_11_Matthew.mp3","bookName":"Matthew","chapter":11,"duration":257,"size":2049812},{"name":"01_12_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_12_Matthew.mp3","bookName":"Matthew","chapter":12,"duration":446,"size":3562615},{"name":"01_13_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_13_Matthew.mp3","bookName":"Matthew","chapter":13,"duration":508,"size":4060195},{"name":"01_14_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_14_Matthew.mp3","bookName":"Matthew","chapter":14,"duration":289,"size":2308110},{"name":"01_15_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_15_Matthew.mp3","bookName":"Matthew","chapter":15,"duration":323,"size":2580620},{"name":"01_16_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_16_Matthew.mp3","bookName":"Matthew","chapter":16,"duration":264,"size":2109580},{"name":"01_17_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_17_Matthew.mp3","bookName":"Matthew","chapter":17,"duration":260,"size":2078651},{"name":"01_18_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_18_Matthew.mp3","bookName":"Matthew","chapter":18,"duration":302,"size":2414063},{"name":"01_19_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_19_Matthew.mp3","bookName":"Matthew","chapter":19,"duration":282,"size":2250014},{"name":"01_20_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_20_Matthew.mp3","bookName":"Matthew","chapter":20,"duration":287,"size":2288257},{"name":"01_21_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_21_Matthew.mp3","bookName":"Matthew","chapter":21,"duration":432,"size":3454990},{"name":"01_22_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_22_Matthew.mp3","bookName":"Matthew","chapter":22,"duration":323,"size":2576022},{"name":"01_23_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_23_Matthew.mp3","bookName":"Matthew","chapter":23,"duration":336,"size":2686363},{"name":"01_24_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_24_Matthew.mp3","bookName":"Matthew","chapter":24,"duration":377,"size":3009446},{"name":"01_25_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_25_Matthew.mp3","bookName":"Matthew","chapter":25,"duration":336,"size":2680512},{"name":"01_26_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_26_Matthew.mp3","bookName":"Matthew","chapter":26,"duration":647,"size":5173221},{"name":"01_27_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_27_Matthew.mp3","bookName":"Matthew","chapter":27,"duration":556,"size":4444300},{"name":"01_28_Matthew.mp3","url":"https://ebible.org/eng-web/mp3/01_28_Matthew.mp3","bookName":"Matthew","chapter":28,"duration":178,"size":1422455},{"name":"02_01_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_01_Mark.mp3","bookName":"Mark","chapter":1,"duration":346,"size":2766191},{"name":"02_02_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_02_Mark.mp3","bookName":"Mark","chapter":2,"duration":245,"size":1955141},{"name":"02_03_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_03_Mark.mp3","bookName":"Mark","chapter":3,"duration":248,"size":1980845},{"name":"02_04_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_04_Mark.mp3","bookName":"Mark","chapter":4,"duration":333,"size":2659611},{"name":"02_05_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_05_Mark.mp3","bookName":"Mark","chapter":5,"duration":336,"size":2683853},{"name":"02_06_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_06_Mark.mp3","bookName":"Mark","chapter":6,"duration":440,"size":3512666},{"name":"02_07_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_07_Mark.mp3","bookName":"Mark","chapter":7,"duration":301,"size":2404656},{"name":"02_08_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_08_Mark.mp3","bookName":"Mark","chapter":8,"duration":306,"size":2447288},{"name":"02_09_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_09_Mark.mp3","bookName":"Mark","chapter":9,"duration":425,"size":3393756},{"name":"02_10_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_10_Mark.mp3","bookName":"Mark","chapter":10,"duration":459,"size":3668147},{"name":"02_11_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_11_Mark.mp3","bookName":"Mark","chapter":11,"duration":271,"size":2161822},{"name":"02_12_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_12_Mark.mp3","bookName":"Mark","chapter":12,"duration":400,"size":3197734},{"name":"02_13_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_13_Mark.mp3","bookName":"Mark","chapter":13,"duration":319,"size":2545299},{"name":"02_14_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_14_Mark.mp3","bookName":"Mark","chapter":14,"duration":598,"size":4783471},{"name":"02_15_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_15_Mark.mp3","bookName":"Mark","chapter":15,"duration":344,"size":2751771},{"name":"02_16_Mark.mp3","url":"https://ebible.org/eng-web/mp3/02_16_Mark.mp3","bookName":"Mark","chapter":16,"duration":164,"size":1309603},{"name":"03_01_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_01_Luke.mp3","bookName":"Luke","chapter":1,"duration":594,"size":4747108},{"name":"03_02_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_02_Luke.mp3","bookName":"Luke","chapter":2,"duration":398,"size":3182896},{"name":"03_03_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_03_Luke.mp3","bookName":"Luke","chapter":3,"duration":340,"size":2716872},{"name":"03_04_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_04_Luke.mp3","bookName":"Luke","chapter":4,"duration":398,"size":3181433},{"name":"03_05_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_05_Luke.mp3","bookName":"Luke","chapter":5,"duration":335,"size":2675285},{"name":"03_06_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_06_Luke.mp3","bookName":"Luke","chapter":6,"duration":451,"size":3600228},{"name":"03_07_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_07_Luke.mp3","bookName":"Luke","chapter":7,"duration":458,"size":3663549},{"name":"03_08_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_08_Luke.mp3","bookName":"Luke","chapter":8,"duration":526,"size":4206060},{"name":"03_09_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_09_Luke.mp3","bookName":"Luke","chapter":9,"duration":545,"size":4352973},{"name":"03_10_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_10_Luke.mp3","bookName":"Luke","chapter":10,"duration":405,"size":3235559},{"name":"03_11_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_11_Luke.mp3","bookName":"Luke","chapter":11,"duration":509,"size":4067298},{"name":"03_12_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_12_Luke.mp3","bookName":"Luke","chapter":12,"duration":503,"size":4020277},{"name":"03_13_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_13_Luke.mp3","bookName":"Luke","chapter":13,"duration":319,"size":2550524},{"name":"03_14_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_14_Luke.mp3","bookName":"Luke","chapter":14,"duration":276,"size":2204872},{"name":"03_15_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_15_Luke.mp3","bookName":"Luke","chapter":15,"duration":253,"size":2016581},{"name":"03_16_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_16_Luke.mp3","bookName":"Luke","chapter":16,"duration":287,"size":2290135},{"name":"03_17_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_17_Luke.mp3","bookName":"Luke","chapter":17,"duration":299,"size":2385848},{"name":"03_18_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_18_Luke.mp3","bookName":"Luke","chapter":18,"duration":334,"size":2671105},{"name":"03_19_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_19_Luke.mp3","bookName":"Luke","chapter":19,"duration":350,"size":2795657},{"name":"03_20_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_20_Luke.mp3","bookName":"Luke","chapter":20,"duration":346,"size":2760130},{"name":"03_21_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_21_Luke.mp3","bookName":"Luke","chapter":21,"duration":281,"size":2243115},{"name":"03_22_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_22_Luke.mp3","bookName":"Luke","chapter":22,"duration":547,"size":4372408},{"name":"03_23_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_23_Luke.mp3","bookName":"Luke","chapter":23,"duration":429,"size":3424894},{"name":"03_24_Luke.mp3","url":"https://ebible.org/eng-web/mp3/03_24_Luke.mp3","bookName":"Luke","chapter":24,"duration":363,"size":2896176},{"name":"04_01_John.mp3","url":"https://ebible.org/eng-web/mp3/04_01_John.mp3","bookName":"John","chapter":1,"duration":423,"size":3378083},{"name":"04_02_John.mp3","url":"https://ebible.org/eng-web/mp3/04_02_John.mp3","bookName":"John","chapter":2,"duration":192,"size":1531539},{"name":"04_03_John.mp3","url":"https://ebible.org/eng-web/mp3/04_03_John.mp3","bookName":"John","chapter":3,"duration":305,"size":2435376},{"name":"04_04_John.mp3","url":"https://ebible.org/eng-web/mp3/04_04_John.mp3","bookName":"John","chapter":4,"duration":445,"size":3552163},{"name":"04_05_John.mp3","url":"https://ebible.org/eng-web/mp3/04_05_John.mp3","bookName":"John","chapter":5,"duration":375,"size":2993978},{"name":"04_06_John.mp3","url":"https://ebible.org/eng-web/mp3/04_06_John.mp3","bookName":"John","chapter":6,"duration":568,"size":4541681},{"name":"04_07_John.mp3","url":"https://ebible.org/eng-web/mp3/04_07_John.mp3","bookName":"John","chapter":7,"duration":397,"size":3170566},{"name":"04_08_John.mp3","url":"https://ebible.org/eng-web/mp3/04_08_John.mp3","bookName":"John","chapter":8,"duration":530,"size":4234063},{"name":"04_09_John.mp3","url":"https://ebible.org/eng-web/mp3/04_09_John.mp3","bookName":"John","chapter":9,"duration":368,"size":2936509},{"name":"04_10_John.mp3","url":"https://ebible.org/eng-web/mp3/04_10_John.mp3","bookName":"John","chapter":10,"duration":307,"size":2452512},{"name":"04_11_John.mp3","url":"https://ebible.org/eng-web/mp3/04_11_John.mp3","bookName":"John","chapter":11,"duration":444,"size":3551745},{"name":"04_12_John.mp3","url":"https://ebible.org/eng-web/mp3/04_12_John.mp3","bookName":"John","chapter":12,"duration":419,"size":3344228},{"name":"04_13_John.mp3","url":"https://ebible.org/eng-web/mp3/04_13_John.mp3","bookName":"John","chapter":13,"duration":324,"size":2584796},{"name":"04_14_John.mp3","url":"https://ebible.org/eng-web/mp3/04_14_John.mp3","bookName":"John","chapter":14,"duration":280,"size":2232248},{"name":"04_15_John.mp3","url":"https://ebible.org/eng-web/mp3/04_15_John.mp3","bookName":"John","chapter":15,"duration":227,"size":1812408},{"name":"04_16_John.mp3","url":"https://ebible.org/eng-web/mp3/04_16_John.mp3","bookName":"John","chapter":16,"duration":291,"size":2326289},{"name":"04_17_John.mp3","url":"https://ebible.org/eng-web/mp3/04_17_John.mp3","bookName":"John","chapter":17,"duration":240,"size":1918987},{"name":"04_18_John.mp3","url":"https://ebible.org/eng-web/mp3/04_18_John.mp3","bookName":"John","chapter":18,"duration":382,"size":3053538},{"name":"04_19_John.mp3","url":"https://ebible.org/eng-web/mp3/04_19_John.mp3","bookName":"John","chapter":19,"duration":400,"size":3199823},{"name":"04_20_John.mp3","url":"https://ebible.org/eng-web/mp3/04_20_John.mp3","bookName":"John","chapter":20,"duration":274,"size":2191079},{"name":"04_21_John.mp3","url":"https://ebible.org/eng-web/mp3/04_21_John.mp3","bookName":"John","chapter":21,"duration":275,"size":2198811},{"name":"05_01_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_01_Acts.mp3","bookName":"Acts","chapter":1,"duration":255,"size":2039778},{"name":"05_02_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_02_Acts.mp3","bookName":"Acts","chapter":2,"duration":386,"size":3084676},{"name":"05_03_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_03_Acts.mp3","bookName":"Acts","chapter":3,"duration":235,"size":1875938},{"name":"05_04_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_04_Acts.mp3","bookName":"Acts","chapter":4,"duration":309,"size":2467559},{"name":"05_05_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_05_Acts.mp3","bookName":"Acts","chapter":5,"duration":373,"size":2977887},{"name":"05_06_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_06_Acts.mp3","bookName":"Acts","chapter":6,"duration":154,"size":1228728},{"name":"05_07_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_07_Acts.mp3","bookName":"Acts","chapter":7,"duration":436,"size":3485080},{"name":"05_08_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_08_Acts.mp3","bookName":"Acts","chapter":8,"duration":335,"size":2679046},{"name":"05_09_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_09_Acts.mp3","bookName":"Acts","chapter":9,"duration":389,"size":3104738},{"name":"05_10_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_10_Acts.mp3","bookName":"Acts","chapter":10,"duration":422,"size":3371396},{"name":"05_11_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_11_Acts.mp3","bookName":"Acts","chapter":11,"duration":253,"size":2021388},{"name":"05_12_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_12_Acts.mp3","bookName":"Acts","chapter":12,"duration":250,"size":1999028},{"name":"05_13_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_13_Acts.mp3","bookName":"Acts","chapter":13,"duration":469,"size":3746097},{"name":"05_14_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_14_Acts.mp3","bookName":"Acts","chapter":14,"duration":249,"size":1989415},{"name":"05_15_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_15_Acts.mp3","bookName":"Acts","chapter":15,"duration":358,"size":2862531},{"name":"05_16_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_16_Acts.mp3","bookName":"Acts","chapter":16,"duration":380,"size":3035148},{"name":"05_17_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_17_Acts.mp3","bookName":"Acts","chapter":17,"duration":338,"size":2703080},{"name":"05_18_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_18_Acts.mp3","bookName":"Acts","chapter":18,"duration":269,"size":2145522},{"name":"05_19_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_19_Acts.mp3","bookName":"Acts","chapter":19,"duration":409,"size":3270041},{"name":"05_20_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_20_Acts.mp3","bookName":"Acts","chapter":20,"duration":333,"size":2660448},{"name":"05_21_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_21_Acts.mp3","bookName":"Acts","chapter":21,"duration":404,"size":3229290},{"name":"05_22_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_22_Acts.mp3","bookName":"Acts","chapter":22,"duration":278,"size":2220337},{"name":"05_23_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_23_Acts.mp3","bookName":"Acts","chapter":23,"duration":334,"size":2666926},{"name":"05_24_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_24_Acts.mp3","bookName":"Acts","chapter":24,"duration":232,"size":1848353},{"name":"05_25_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_25_Acts.mp3","bookName":"Acts","chapter":25,"duration":273,"size":2183975},{"name":"05_26_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_26_Acts.mp3","bookName":"Acts","chapter":26,"duration":287,"size":2292017},{"name":"05_27_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_27_Acts.mp3","bookName":"Acts","chapter":27,"duration":394,"size":3145490},{"name":"05_28_Acts.mp3","url":"https://ebible.org/eng-web/mp3/05_28_Acts.mp3","bookName":"Acts","chapter":28,"duration":314,"size":2509565},{"name":"06_01_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_01_Romans.mp3","bookName":"Romans","chapter":1,"duration":294,"size":2347608},{"name":"06_02_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_02_Romans.mp3","bookName":"Romans","chapter":2,"duration":238,"size":1900391},{"name":"06_03_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_03_Romans.mp3","bookName":"Romans","chapter":3,"duration":235,"size":1875941},{"name":"06_04_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_04_Romans.mp3","bookName":"Romans","chapter":4,"duration":217,"size":1730282},{"name":"06_05_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_05_Romans.mp3","bookName":"Romans","chapter":5,"duration":192,"size":1533423},{"name":"06_06_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_06_Romans.mp3","bookName":"Romans","chapter":6,"duration":184,"size":1470311},{"name":"06_07_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_07_Romans.mp3","bookName":"Romans","chapter":7,"duration":221,"size":1760793},{"name":"06_08_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_08_Romans.mp3","bookName":"Romans","chapter":8,"duration":328,"size":2620117},{"name":"06_09_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_09_Romans.mp3","bookName":"Romans","chapter":9,"duration":290,"size":2312917},{"name":"06_10_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_10_Romans.mp3","bookName":"Romans","chapter":10,"duration":195,"size":1557456},{"name":"06_11_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_11_Romans.mp3","bookName":"Romans","chapter":11,"duration":322,"size":2572679},{"name":"06_12_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_12_Romans.mp3","bookName":"Romans","chapter":12,"duration":172,"size":1368747},{"name":"06_13_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_13_Romans.mp3","bookName":"Romans","chapter":13,"duration":148,"size":1180039},{"name":"06_14_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_14_Romans.mp3","bookName":"Romans","chapter":14,"duration":234,"size":1868208},{"name":"06_15_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_15_Romans.mp3","bookName":"Romans","chapter":15,"duration":286,"size":2284287},{"name":"06_16_Romans.mp3","url":"https://ebible.org/eng-web/mp3/06_16_Romans.mp3","bookName":"Romans","chapter":16,"duration":175,"size":1398213},{"name":"07_01_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_01_1Corinthians.mp3","bookName":"1Corinthians","chapter":1,"duration":241,"size":1927148},{"name":"07_02_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_02_1Corinthians.mp3","bookName":"1Corinthians","chapter":2,"duration":148,"size":1182344},{"name":"07_03_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_03_1Corinthians.mp3","bookName":"1Corinthians","chapter":3,"duration":187,"size":1493724},{"name":"07_04_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_04_1Corinthians.mp3","bookName":"1Corinthians","chapter":4,"duration":183,"size":1462168},{"name":"07_05_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_05_1Corinthians.mp3","bookName":"1Corinthians","chapter":5,"duration":121,"size":961035},{"name":"07_06_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_06_1Corinthians.mp3","bookName":"1Corinthians","chapter":6,"duration":183,"size":1463631},{"name":"07_07_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_07_1Corinthians.mp3","bookName":"1Corinthians","chapter":7,"duration":345,"size":2757424},{"name":"07_08_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_08_1Corinthians.mp3","bookName":"1Corinthians","chapter":8,"duration":116,"size":927807},{"name":"07_09_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_09_1Corinthians.mp3","bookName":"1Corinthians","chapter":9,"duration":231,"size":1847108},{"name":"07_10_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_10_1Corinthians.mp3","bookName":"1Corinthians","chapter":10,"duration":248,"size":1978975},{"name":"07_11_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_11_1Corinthians.mp3","bookName":"1Corinthians","chapter":11,"duration":251,"size":2001544},{"name":"07_12_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_12_1Corinthians.mp3","bookName":"1Corinthians","chapter":12,"duration":227,"size":1810537},{"name":"07_13_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_13_1Corinthians.mp3","bookName":"1Corinthians","chapter":13,"duration":118,"size":936793},{"name":"07_14_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_14_1Corinthians.mp3","bookName":"1Corinthians","chapter":14,"duration":330,"size":2632245},{"name":"07_15_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_15_1Corinthians.mp3","bookName":"1Corinthians","chapter":15,"duration":440,"size":3515393},{"name":"07_16_1Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/07_16_1Corinthians.mp3","bookName":"1Corinthians","chapter":16,"duration":161,"size":1284117},{"name":"08_01_2Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/08_01_2Corinthians.mp3","bookName":"2Corinthians","chapter":1,"duration":227,"size":1814090},{"name":"08_02_2Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/08_02_2Corinthians.mp3","bookName":"2Corinthians","chapter":2,"duration":150,"size":1197391},{"name":"08_03_2Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/08_03_2Corinthians.mp3","bookName":"2Corinthians","chapter":3,"duration":152,"size":1214318},{"name":"08_04_2Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/08_04_2Corinthians.mp3","bookName":"2Corinthians","chapter":4,"duration":162,"size":1295193},{"name":"08_05_2Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/08_05_2Corinthians.mp3","bookName":"2Corinthians","chapter":5,"duration":193,"size":1543670},{"name":"08_06_2Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/08_06_2Corinthians.mp3","bookName":"2Corinthians","chapter":6,"duration":157,"size":1254442},{"name":"08_07_2Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/08_07_2Corinthians.mp3","bookName":"2Corinthians","chapter":7,"duration":179,"size":1429776},{"name":"08_08_2Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/08_08_2Corinthians.mp3","bookName":"2Corinthians","chapter":8,"duration":212,"size":1691628},{"name":"08_09_2Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/08_09_2Corinthians.mp3","bookName":"2Corinthians","chapter":9,"duration":153,"size":1221633},{"name":"08_10_2Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/08_10_2Corinthians.mp3","bookName":"2Corinthians","chapter":10,"duration":175,"size":1396548},{"name":"08_11_2Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/08_11_2Corinthians.mp3","bookName":"2Corinthians","chapter":11,"duration":295,"size":2357019},{"name":"08_12_2Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/08_12_2Corinthians.mp3","bookName":"2Corinthians","chapter":12,"duration":237,"size":1893920},{"name":"08_13_2Corinthians.mp3","url":"https://ebible.org/eng-web/mp3/08_13_2Corinthians.mp3","bookName":"2Corinthians","chapter":13,"duration":133,"size":1063644},{"name":"09_01_Galatians.mp3","url":"https://ebible.org/eng-web/mp3/09_01_Galatians.mp3","bookName":"Galatians","chapter":1,"duration":190,"size":1516081},{"name":"09_02_Galatians.mp3","url":"https://ebible.org/eng-web/mp3/09_02_Galatians.mp3","bookName":"Galatians","chapter":2,"duration":227,"size":1808861},{"name":"09_03_Galatians.mp3","url":"https://ebible.org/eng-web/mp3/09_03_Galatians.mp3","bookName":"Galatians","chapter":3,"duration":270,"size":2155558},{"name":"09_04_Galatians.mp3","url":"https://ebible.org/eng-web/mp3/09_04_Galatians.mp3","bookName":"Galatians","chapter":4,"duration":254,"size":2028708},{"name":"09_05_Galatians.mp3","url":"https://ebible.org/eng-web/mp3/09_05_Galatians.mp3","bookName":"Galatians","chapter":5,"duration":214,"size":1710223},{"name":"09_06_Galatians.mp3","url":"https://ebible.org/eng-web/mp3/09_06_Galatians.mp3","bookName":"Galatians","chapter":6,"duration":159,"size":1270321},{"name":"10_01_Ephesians.mp3","url":"https://ebible.org/eng-web/mp3/10_01_Ephesians.mp3","bookName":"Ephesians","chapter":1,"duration":209,"size":1670517},{"name":"10_02_Ephesians.mp3","url":"https://ebible.org/eng-web/mp3/10_02_Ephesians.mp3","bookName":"Ephesians","chapter":2,"duration":197,"size":1574804},{"name":"10_03_Ephesians.mp3","url":"https://ebible.org/eng-web/mp3/10_03_Ephesians.mp3","bookName":"Ephesians","chapter":3,"duration":176,"size":1406993},{"name":"10_04_Ephesians.mp3","url":"https://ebible.org/eng-web/mp3/10_04_Ephesians.mp3","bookName":"Ephesians","chapter":4,"duration":267,"size":2131108},{"name":"10_05_Ephesians.mp3","url":"https://ebible.org/eng-web/mp3/10_05_Ephesians.mp3","bookName":"Ephesians","chapter":5,"duration":252,"size":2009900},{"name":"10_06_Ephesians.mp3","url":"https://ebible.org/eng-web/mp3/10_06_Ephesians.mp3","bookName":"Ephesians","chapter":6,"duration":210,"size":1673233},{"name":"11_01_Philippians.mp3","url":"https://ebible.org/eng-web/mp3/11_01_Philippians.mp3","bookName":"Philippians","chapter":1,"duration":258,"size":2062355},{"name":"11_02_Philippians.mp3","url":"https://ebible.org/eng-web/mp3/11_02_Philippians.mp3","bookName":"Philippians","chapter":2,"duration":237,"size":1890365},{"name":"11_03_Philippians.mp3","url":"https://ebible.org/eng-web/mp3/11_03_Philippians.mp3","bookName":"Philippians","chapter":3,"duration":209,"size":1671146},{"name":"11_04_Philippians.mp3","url":"https://ebible.org/eng-web/mp3/11_04_Philippians.mp3","bookName":"Philippians","chapter":4,"duration":206,"size":1644605},{"name":"12_01_Colossians.mp3","url":"https://ebible.org/eng-web/mp3/12_01_Colossians.mp3","bookName":"Colossians","chapter":1,"duration":267,"size":2128183},{"name":"12_02_Colossians.mp3","url":"https://ebible.org/eng-web/mp3/12_02_Colossians.mp3","bookName":"Colossians","chapter":2,"duration":210,"size":1677205},{"name":"12_03_Colossians.mp3","url":"https://ebible.org/eng-web/mp3/12_03_Colossians.mp3","bookName":"Colossians","chapter":3,"duration":213,"size":1700193},{"name":"12_04_Colossians.mp3","url":"https://ebible.org/eng-web/mp3/12_04_Colossians.mp3","bookName":"Colossians","chapter":4,"duration":163,"size":1297698},{"name":"13_01_1Thess.mp3","url":"https://ebible.org/eng-web/mp3/13_01_1Thess.mp3","bookName":"1Thess","chapter":1,"duration":98,"size":778389},{"name":"13_02_1Thess.mp3","url":"https://ebible.org/eng-web/mp3/13_02_1Thess.mp3","bookName":"1Thess","chapter":2,"duration":187,"size":1495189},{"name":"13_03_1Thess.mp3","url":"https://ebible.org/eng-web/mp3/13_03_1Thess.mp3","bookName":"1Thess","chapter":3,"duration":116,"size":922167},{"name":"13_04_1Thess.mp3","url":"https://ebible.org/eng-web/mp3/13_04_1Thess.mp3","bookName":"1Thess","chapter":4,"duration":156,"size":1242532},{"name":"13_05_1Thess.mp3","url":"https://ebible.org/eng-web/mp3/13_05_1Thess.mp3","bookName":"1Thess","chapter":5,"duration":177,"size":1408462},{"name":"14_01_2Thess.mp3","url":"https://ebible.org/eng-web/mp3/14_01_2Thess.mp3","bookName":"2Thess","chapter":1,"duration":112,"size":892910},{"name":"14_02_2Thess.mp3","url":"https://ebible.org/eng-web/mp3/14_02_2Thess.mp3","bookName":"2Thess","chapter":2,"duration":148,"size":1180466},{"name":"14_03_2Thess.mp3","url":"https://ebible.org/eng-web/mp3/14_03_2Thess.mp3","bookName":"2Thess","chapter":3,"duration":146,"size":1162284},{"name":"15_01_1Timothy.mp3","url":"https://ebible.org/eng-web/mp3/15_01_1Timothy.mp3","bookName":"1Timothy","chapter":1,"duration":195,"size":1555369},{"name":"15_02_1Timothy.mp3","url":"https://ebible.org/eng-web/mp3/15_02_1Timothy.mp3","bookName":"1Timothy","chapter":2,"duration":115,"size":913593},{"name":"15_03_1Timothy.mp3","url":"https://ebible.org/eng-web/mp3/15_03_1Timothy.mp3","bookName":"1Timothy","chapter":3,"duration":136,"size":1087255},{"name":"15_04_1Timothy.mp3","url":"https://ebible.org/eng-web/mp3/15_04_1Timothy.mp3","bookName":"1Timothy","chapter":4,"duration":139,"size":1110869},{"name":"15_05_1Timothy.mp3","url":"https://ebible.org/eng-web/mp3/15_05_1Timothy.mp3","bookName":"1Timothy","chapter":5,"duration":203,"size":1621615},{"name":"15_06_1Timothy.mp3","url":"https://ebible.org/eng-web/mp3/15_06_1Timothy.mp3","bookName":"1Timothy","chapter":6,"duration":212,"size":1688489},{"name":"16_01_2Timothy.mp3","url":"https://ebible.org/eng-web/mp3/16_01_2Timothy.mp3","bookName":"2Timothy","chapter":1,"duration":171,"size":1363944},{"name":"16_02_2Timothy.mp3","url":"https://ebible.org/eng-web/mp3/16_02_2Timothy.mp3","bookName":"2Timothy","chapter":2,"duration":217,"size":1728613},{"name":"16_03_2Timothy.mp3","url":"https://ebible.org/eng-web/mp3/16_03_2Timothy.mp3","bookName":"2Timothy","chapter":3,"duration":150,"size":1195924},{"name":"16_04_2Timothy.mp3","url":"https://ebible.org/eng-web/mp3/16_04_2Timothy.mp3","bookName":"2Timothy","chapter":4,"duration":180,"size":1438967},{"name":"17_01_Titus.mp3","url":"https://ebible.org/eng-web/mp3/17_01_Titus.mp3","bookName":"Titus","chapter":1,"duration":166,"size":1322980},{"name":"17_02_Titus.mp3","url":"https://ebible.org/eng-web/mp3/17_02_Titus.mp3","bookName":"Titus","chapter":2,"duration":135,"size":1075548},{"name":"17_03_Titus.mp3","url":"https://ebible.org/eng-web/mp3/17_03_Titus.mp3","bookName":"Titus","chapter":3,"duration":138,"size":1099371},{"name":"18_01_Philemon.mp3","url":"https://ebible.org/eng-web/mp3/18_01_Philemon.mp3","bookName":"Philemon","chapter":1,"duration":194,"size":1547427},{"name":"19_01_Hebrews.mp3","url":"https://ebible.org/eng-web/mp3/19_01_Hebrews.mp3","bookName":"Hebrews","chapter":1,"duration":141,"size":1122152},{"name":"19_02_Hebrews.mp3","url":"https://ebible.org/eng-web/mp3/19_02_Hebrews.mp3","bookName":"Hebrews","chapter":2,"duration":166,"size":1323609},{"name":"19_03_Hebrews.mp3","url":"https://ebible.org/eng-web/mp3/19_03_Hebrews.mp3","bookName":"Hebrews","chapter":3,"duration":149,"size":1188399},{"name":"19_04_Hebrews.mp3","url":"https://ebible.org/eng-web/mp3/19_04_Hebrews.mp3","bookName":"Hebrews","chapter":4,"duration":151,"size":1201982},{"name":"19_05_Hebrews.mp3","url":"https://ebible.org/eng-web/mp3/19_05_Hebrews.mp3","bookName":"Hebrews","chapter":5,"duration":117,"size":930727},{"name":"19_06_Hebrews.mp3","url":"https://ebible.org/eng-web/mp3/19_06_Hebrews.mp3","bookName":"Hebrews","chapter":6,"duration":155,"size":1236046},{"name":"19_07_Hebrews.mp3","url":"https://ebible.org/eng-web/mp3/19_07_Hebrews.mp3","bookName":"Hebrews","chapter":7,"duration":232,"size":1854835},{"name":"19_08_Hebrews.mp3","url":"https://ebible.org/eng-web/mp3/19_08_Hebrews.mp3","bookName":"Hebrews","chapter":8,"duration":144,"size":1148693},{"name":"19_09_Hebrews.mp3","url":"https://ebible.org/eng-web/mp3/19_09_Hebrews.mp3","bookName":"Hebrews","chapter":9,"duration":244,"size":1951383},{"name":"19_10_Hebrews.mp3","url":"https://ebible.org/eng-web/mp3/19_10_Hebrews.mp3","bookName":"Hebrews","chapter":10,"duration":307,"size":2453979},{"name":"19_11_Hebrews.mp3","url":"https://ebible.org/eng-web/mp3/19_11_Hebrews.mp3","bookName":"Hebrews","chapter":11,"duration":358,"size":2856892},{"name":"19_12_Hebrews.mp3","url":"https://ebible.org/eng-web/mp3/19_12_Hebrews.mp3","bookName":"Hebrews","chapter":12,"duration":264,"size":2108745},{"name":"19_13_Hebrews.mp3","url":"https://ebible.org/eng-web/mp3/19_13_Hebrews.mp3","bookName":"Hebrews","chapter":13,"duration":195,"size":1554949},{"name":"20_01_James.mp3","url":"https://ebible.org/eng-web/mp3/20_01_James.mp3","bookName":"James","chapter":1,"duration":232,"size":1848772},{"name":"20_02_James.mp3","url":"https://ebible.org/eng-web/mp3/20_02_James.mp3","bookName":"James","chapter":2,"duration":233,"size":1858176},{"name":"20_03_James.mp3","url":"https://ebible.org/eng-web/mp3/20_03_James.mp3","bookName":"James","chapter":3,"duration":159,"size":1269272},{"name":"20_04_James.mp3","url":"https://ebible.org/eng-web/mp3/20_04_James.mp3","bookName":"James","chapter":4,"duration":162,"size":1291633},{"name":"20_05_James.mp3","url":"https://ebible.org/eng-web/mp3/20_05_James.mp3","bookName":"James","chapter":5,"duration":200,"size":1593399},{"name":"21_01_1Peter.mp3","url":"https://ebible.org/eng-web/mp3/21_01_1Peter.mp3","bookName":"1Peter","chapter":1,"duration":248,"size":1978969},{"name":"21_02_1Peter.mp3","url":"https://ebible.org/eng-web/mp3/21_02_1Peter.mp3","bookName":"1Peter","chapter":2,"duration":236,"size":1885346},{"name":"21_03_1Peter.mp3","url":"https://ebible.org/eng-web/mp3/21_03_1Peter.mp3","bookName":"1Peter","chapter":3,"duration":221,"size":1763093},{"name":"21_04_1Peter.mp3","url":"https://ebible.org/eng-web/mp3/21_04_1Peter.mp3","bookName":"1Peter","chapter":4,"duration":189,"size":1506048},{"name":"21_05_1Peter.mp3","url":"https://ebible.org/eng-web/mp3/21_05_1Peter.mp3","bookName":"1Peter","chapter":5,"duration":133,"size":1059876},{"name":"22_01_2Peter.mp3","url":"https://ebible.org/eng-web/mp3/22_01_2Peter.mp3","bookName":"2Peter","chapter":1,"duration":206,"size":1640004},{"name":"22_02_2Peter.mp3","url":"https://ebible.org/eng-web/mp3/22_02_2Peter.mp3","bookName":"2Peter","chapter":2,"duration":238,"size":1903318},{"name":"22_03_2Peter.mp3","url":"https://ebible.org/eng-web/mp3/22_03_2Peter.mp3","bookName":"2Peter","chapter":3,"duration":202,"size":1613254},{"name":"23_01_1John.mp3","url":"https://ebible.org/eng-web/mp3/23_01_1John.mp3","bookName":"1John","chapter":1,"duration":107,"size":848806},{"name":"23_02_1John.mp3","url":"https://ebible.org/eng-web/mp3/23_02_1John.mp3","bookName":"1John","chapter":2,"duration":293,"size":2342801},{"name":"23_03_1John.mp3","url":"https://ebible.org/eng-web/mp3/23_03_1John.mp3","bookName":"1John","chapter":3,"duration":228,"size":1816172},{"name":"23_04_1John.mp3","url":"https://ebible.org/eng-web/mp3/23_04_1John.mp3","bookName":"1John","chapter":4,"duration":205,"size":1638749},{"name":"23_05_1John.mp3","url":"https://ebible.org/eng-web/mp3/23_05_1John.mp3","bookName":"1John","chapter":5,"duration":215,"size":1715026},{"name":"24_01_2John.mp3","url":"https://ebible.org/eng-web/mp3/24_01_2John.mp3","bookName":"2John","chapter":1,"duration":133,"size":1057577},{"name":"25_01_3John.mp3","url":"https://ebible.org/eng-web/mp3/25_01_3John.mp3","bookName":"3John","chapter":1,"duration":139,"size":1105015},{"name":"26_01_Jude.mp3","url":"https://ebible.org/eng-web/mp3/26_01_Jude.mp3","bookName":"Jude","chapter":1,"duration":278,"size":2223472},{"name":"27_01_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_01_Revelation.mp3","bookName":"Revelation","chapter":1,"duration":246,"size":1966642},{"name":"27_02_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_02_Revelation.mp3","bookName":"Revelation","chapter":2,"duration":296,"size":2367883},{"name":"27_03_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_03_Revelation.mp3","bookName":"Revelation","chapter":3,"duration":254,"size":2031007},{"name":"27_04_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_04_Revelation.mp3","bookName":"Revelation","chapter":4,"duration":151,"size":1200105},{"name":"27_05_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_05_Revelation.mp3","bookName":"Revelation","chapter":5,"duration":179,"size":1431027},{"name":"27_06_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_06_Revelation.mp3","bookName":"Revelation","chapter":6,"duration":225,"size":1799249},{"name":"27_07_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_07_Revelation.mp3","bookName":"Revelation","chapter":7,"duration":229,"size":1825163},{"name":"27_08_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_08_Revelation.mp3","bookName":"Revelation","chapter":8,"duration":170,"size":1356212},{"name":"27_09_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_09_Revelation.mp3","bookName":"Revelation","chapter":9,"duration":258,"size":2056085},{"name":"27_10_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_10_Revelation.mp3","bookName":"Revelation","chapter":10,"duration":136,"size":1086002},{"name":"27_11_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_11_Revelation.mp3","bookName":"Revelation","chapter":11,"duration":248,"size":1981688},{"name":"27_12_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_12_Revelation.mp3","bookName":"Revelation","chapter":12,"duration":203,"size":1617437},{"name":"27_13_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_13_Revelation.mp3","bookName":"Revelation","chapter":13,"duration":218,"size":1737600},{"name":"27_14_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_14_Revelation.mp3","bookName":"Revelation","chapter":14,"duration":263,"size":2100598},{"name":"27_15_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_15_Revelation.mp3","bookName":"Revelation","chapter":15,"duration":108,"size":862185},{"name":"27_16_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_16_Revelation.mp3","bookName":"Revelation","chapter":16,"duration":239,"size":1911471},{"name":"27_17_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_17_Revelation.mp3","bookName":"Revelation","chapter":17,"duration":220,"size":1753065},{"name":"27_18_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_18_Revelation.mp3","bookName":"Revelation","chapter":18,"duration":333,"size":2657110},{"name":"27_19_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_19_Revelation.mp3","bookName":"Revelation","chapter":19,"duration":290,"size":2318772},{"name":"27_20_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_20_Revelation.mp3","bookName":"Revelation","chapter":20,"duration":199,"size":1590270},{"name":"27_21_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_21_Revelation.mp3","bookName":"Revelation","chapter":21,"duration":326,"size":2605910},{"name":"27_22_Revelation.mp3","url":"https://ebible.org/eng-web/mp3/27_22_Revelation.mp3","bookName":"Revelation","chapter":22,"duration":299,"size":2385855}];
+        let totalDuration = 0;
+        let globalBibleTimer = null;
+
+        async function loadGlobalPlaylist() {
+            if (totalDuration > 0) return;
+            totalDuration = globalPlaylist.reduce((acc, item) => acc + item.duration, 0);
+            console.log(`Pomyślnie zainicjalizowano playlistę w locie: ${globalPlaylist.length} utworów, łączny czas: ${totalDuration}s`);
+        }
+
+        async function updateGlobalBibleRadioState() {
+            await loadGlobalPlaylist();
+            if (globalPlaylist.length === 0) return;
+            
+            const epochSeconds = Math.floor(Date.now() / 1000);
+            let remaining = epochSeconds % totalDuration;
+            let targetIndex = 0;
+            let seekSeconds = 0;
+            for (let i = 0; i < globalPlaylist.length; i++) {
+                if (remaining < globalPlaylist[i].duration) {
+                    targetIndex = i;
+                    seekSeconds = remaining;
+                    break;
+                }
+                remaining -= globalPlaylist[i].duration;
+            }
+            const currentTrack = globalPlaylist[targetIndex];
+            const expectedTitle = `${currentTrack.bookName} ${currentTrack.chapter}`;
+            
+            // Switch source if changed
+            if (!streamAudio.src.includes(currentTrack.name)) {
+                console.log("Switching simulated live track:", currentTrack.name);
+                const wasPlaying = !streamAudio.paused;
+                
+                streamAudio.src = currentTrack.url;
+                streamAudio.load();
+                streamAudio.currentTime = seekSeconds;
+                if (wasPlaying || document.getElementById('interactiveOverlay').classList.contains('hidden')) {
+                    streamAudio.play().catch(e => console.error(e));
+                }
+            }
+            
+            // Correct drift if browser shifts by more than 3 seconds
+            if (Math.abs(streamAudio.currentTime - seekSeconds) > 3.0) {
+                console.log("Correcting audio sync drift:", streamAudio.currentTime, "->", seekSeconds);
+                streamAudio.currentTime = seekSeconds;
+            }
+            
+            // Update title displays
+            if (document.getElementById('chapterHeading').textContent !== expectedTitle) {
+                document.getElementById('chapterHeading').textContent = expectedTitle;
+                document.getElementById('footerTitle').textContent = expectedTitle;
+                fetchBibleChapter(expectedTitle);
+                resetTrackTimer();
+            }
+        }
+
+        function switchStation(stationId) {
+            activeStationId = stationId;
+            const stationsConfig = {
+                poland: { mountId: 'vz96pvl3pnktv', lang: 'pl', logo: './Aplikacja Christian Culture.png' },
+                global: { mountId: 'umej2cuqncluv', lang: 'en', logo: './Aplikacja CC Lite.jpg' },
+                biblia_audio: { mountId: 'imo45hqnshyuv', lang: 'pl', logo: './Logo Biblia Audio CC.jpg' },
+                global_biblia: { mountId: 'gn3uhltrrytuv', lang: 'en', logo: './Logo Globalna Biblia Audio.jpg' }
+            };
+            
+            const config = stationsConfig[stationId];
+            if (!config) return;
+            
+            // Update active state class on selector buttons
+            document.querySelectorAll('.station-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${stationId}`).classList.add('active');
+            
+            // Switch branding logo in header
+            document.querySelector('.logo-img').src = config.logo;
+            
+            // Update UI texts to selected language
+            updateLanguage(config.lang);
+            
+            // Clear any active simulated playlist timers
+            if (globalBibleTimer) {
+                clearInterval(globalBibleTimer);
+                globalBibleTimer = null;
+            }
+            
+            if (stationId === 'global_biblia') {
+                // Connect simulated playlist engine
+                if (metadataEventSource) {
+                    metadataEventSource.close();
+                    metadataEventSource = null;
+                }
+                updateGlobalBibleRadioState();
+                globalBibleTimer = setInterval(updateGlobalBibleRadioState, 1000);
+            } else {
+                // Switch audio stream source and play if running
+                const wasPlaying = !streamAudio.paused;
+                streamAudio.src = `https://stream.zeno.fm/${config.mountId}`;
+                streamAudio.load(); // Force the HTML5 player to reload and buffer the new Zeno.fm stream source
+                if (wasPlaying) {
+                    streamAudio.play().catch(e => console.warn(e));
+                }
+                
+                // Reset metadata event source to follow the new mount
+                activeMountId = config.mountId;
+                subscribeMetadata();
+                
+                // Reset track timeline
+                resetTrackTimer();
+            }
+        }
+
+        // --- 11. DYNAMIC SCENE WRAPPER AUTO-SCALING ---
+        function resizeScene() {
+            const wrapper = document.getElementById('scene-wrapper');
+            if (!wrapper) return;
+            
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            const scaleX = windowWidth / 1080;
+            const scaleY = windowHeight / 1920;
+            
+            // Fit to screen preserving 9:16 aspect ratio
+            const scale = Math.min(scaleX, scaleY);
+            wrapper.style.transform = `scale(${scale})`;
+            
+            // Center the scene in the viewport
+            const leftOffset = (windowWidth - (1080 * scale)) / 2;
+            const topOffset = (windowHeight - (1920 * scale)) / 2;
+            wrapper.style.left = `${leftOffset}px`;
+            wrapper.style.top = `${topOffset}px`;
+        }
+
+        window.addEventListener('resize', resizeScene);
+
+        window.addEventListener('load', () => {
+            resizeScene();
+            // Start listening to metadata only after all variables and DOM are fully ready
+            subscribeMetadata();
+            
+            // --- 12. DYNAMIC VERTICAL BADGE CAROUSEL ---
+            let currentBadgeIndex = 0;
+            const badgeCarousel = document.getElementById('badgeCarousel');
+            setInterval(() => {
+                currentBadgeIndex = (currentBadgeIndex + 1) % 4; // 4 slides
+                if (badgeCarousel) {
+                    badgeCarousel.style.transform = `translateY(-${currentBadgeIndex * 64}px)`;
+                }
+            }, 6000); // Shift every 6 seconds
+            
+            // Trigger stream initialization automatically on load
+            setTimeout(initializeStream, 500);
+        });
+    </script>
+</body>
+</html>
