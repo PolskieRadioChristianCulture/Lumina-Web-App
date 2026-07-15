@@ -71,7 +71,7 @@
             z-index: 10;
             width: 100%;
             height: 100%;
-            padding: 60px 40px 40px 40px;
+            padding: 180px 230px 480px 80px; /* Safe Zone for YouTube Shorts overlays */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -355,7 +355,9 @@
             align-items: center;
             overflow: hidden;
             position: relative;
-            margin-bottom: 18px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            flex-shrink: 0;
         }
 
         .info-marquee-badge {
@@ -650,6 +652,21 @@
                 </div>
             </header>
 
+            <!-- Live Marquee Info Bar -->
+            <div class="info-marquee-container">
+                <div class="info-marquee-badge">
+                    <div class="badge-carousel" id="badgeCarousel">
+                        <div class="badge-slide">WSPARCIE</div>
+                        <div class="badge-slide">PATRONITE</div>
+                        <div class="badge-slide">MODLITWA</div>
+                        <div class="badge-slide">DAR SERCA</div>
+                    </div>
+                </div>
+                <div class="info-marquee-text-wrap">
+                    <span id="marqueeText" class="info-marquee-text">🙏 Możesz wspierać misję Christian Culture modlitwą, udostępniając i polecając nasze treści oraz poprzez cykliczny dar finansowy 🤍 Każde wsparcie pomaga nam docierać z Ewangelią dalej i tworzyć przestrzeń wzrostu duchowego dla tysięcy osób 🌱✨ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wspieraj Bożą misję: 👉 https://patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 Nr konta (Bank / Revolut): 48 2910 0006 0000 0000 0527 2629 &nbsp; z dopiskiem: „Dar misyjny” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌍 Wsparcie przez bezpieczny link Revolut: https://revolut.me/christianculture &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 BLIK: 537 147 043 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Dziękujemy za Twoje wsparcie, modlitwę i zaufanie. Razem budujemy Christian Culture — ku Bożej chwale i dla dobra ludzi 🔥✝️</span>
+                </div>
+            </div>
+
             <!-- Main Content (Scripture Display) -->
             <main class="main-panel">
                 <h2 class="chapter-heading" id="chapterHeading">Ewangelia Jana 20</h2>
@@ -692,20 +709,7 @@
 
             <!-- Footer -->
             <footer class="footer">
-                <!-- Live Marquee Info Bar -->
-                <div class="info-marquee-container">
-                    <div class="info-marquee-badge">
-                        <div class="badge-carousel" id="badgeCarousel">
-                            <div class="badge-slide">WSPARCIE</div>
-                            <div class="badge-slide">PATRONITE</div>
-                            <div class="badge-slide">MODLITWA</div>
-                            <div class="badge-slide">DAR SERCA</div>
-                        </div>
-                    </div>
-                    <div class="info-marquee-text-wrap">
-                        <span id="marqueeText" class="info-marquee-text">🙏 Możesz wspierać misję Christian Culture modlitwą, udostępniając i polecając nasze treści oraz poprzez cykliczny dar finansowy 🤍 Każde wsparcie pomaga nam docierać z Ewangelią dalej i tworzyć przestrzeń wzrostu duchowego dla tysięcy osób 🌱✨ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wspieraj Bożą misję: 👉 https://patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 Nr konta (Bank / Revolut): 48 2910 0006 0000 0000 0527 2629 &nbsp; z dopiskiem: „Dar misyjny” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌍 Wsparcie przez bezpieczny link Revolut: https://revolut.me/christianculture &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 BLIK: 537 147 043 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Dziękujemy za Twoje wsparcie, modlitwę i zaufanie. Razem budujemy Christian Culture — ku Bożej chwale i dla dobra ludzi 🔥✝️</span>
-                    </div>
-                </div>
+
 
                 <!-- Full-width audio progress bar -->
                 <div class="bottom-progress-line">
