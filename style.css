@@ -2714,3 +2714,146 @@ html {
     font-weight: 600;
     color: var(--text-pure-white);
 }
+
+/* 28. SIDE DRAWER - BIBLE PROMO CARD */
+.drawer-bible-promo {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(10, 10, 10, 0.95) 100%);
+    border: 1px solid var(--border-gold-low);
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: var(--transition-smooth);
+}
+
+.drawer-bible-promo:hover {
+    border-color: var(--gold-primary);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.15);
+    transform: translateY(-2px);
+}
+
+.bible-promo-badge {
+    display: inline-block;
+    background: var(--gold-primary);
+    color: #000;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border-radius: 20px;
+    margin-bottom: 0.75rem;
+}
+
+.bible-promo-title {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-pure-white);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+}
+
+.bible-promo-subtitle {
+    font-size: 0.8rem;
+    color: var(--gold-primary);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+}
+
+.bible-promo-image-wrapper {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0.75rem 0;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: var(--transition-smooth);
+}
+
+.bible-promo-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    transition: var(--transition-smooth);
+}
+
+.drawer-bible-promo:hover .bible-promo-image-wrapper {
+    border-color: var(--gold-primary);
+}
+
+.drawer-bible-promo:hover .bible-promo-img {
+    transform: scale(1.03);
+}
+
+.bible-promo-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1rem;
+}
+
+.sms-instruction {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px dashed rgba(212, 175, 55, 0.3);
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    color: #ccc;
+}
+
+.sms-instruction strong {
+    display: block;
+    color: var(--gold-primary);
+    font-size: 1rem;
+    margin-top: 2px;
+    letter-spacing: 0.05em;
+}
+
+.promo-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 8px;
+    transition: var(--transition-fast);
+    letter-spacing: 0.03em;
+}
+
+.promo-btn.call-btn {
+    background: var(--gold-primary);
+    color: #000;
+}
+
+.promo-btn.call-btn:hover {
+    background: var(--gold-light);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.promo-btn.sms-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.promo-btn.sms-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--gold-primary);
+    color: var(--gold-primary);
+}
+
+.bible-promo-footnote {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 0.85rem;
+    font-style: italic;
+}
