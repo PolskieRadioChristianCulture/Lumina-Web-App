@@ -683,9 +683,14 @@
             <!-- Sidebar (App Card) -->
             <aside class="sidebar">
                 <div class="app-card">
-                    <div class="app-card-title">Twoja Biblia w kieszeni</div>
-                    <div class="qr-wrapper" id="qrcode"></div>
-                    <p class="app-card-desc">Zeskanuj, aby słuchać i czytać w aplikacji.</p>
+                    <div class="app-card-title" id="sidebarCardTitle">Twoja Biblia w kieszeni</div>
+                    <div class="card-media-rotator" style="position: relative; width: 220px; height: 220px; display: flex; justify-content: center; align-items: center; margin-bottom: 5px;">
+                        <div class="qr-wrapper" id="qrcode" style="position: absolute; width: 220px; height: 220px; transition: opacity 1s ease-in-out; display: flex; justify-content: center; align-items: center; background-color: #ffffff; padding: 14px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); z-index: 2;"></div>
+                        <div class="ad-image-wrapper" id="adImage" style="position: absolute; width: 220px; height: 220px; transition: opacity 1s ease-in-out; opacity: 0; border-radius: 20px; overflow: hidden; border: 1.5px solid rgba(212, 175, 55, 0.5); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); pointer-events: none; background: #000; z-index: 1;">
+                            <img src="reklama_biblia.png" alt="Reklama Biblia UBG" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        </div>
+                    </div>
+                    <p class="app-card-desc" id="sidebarCardDesc">Zeskanuj, aby słuchać i czytać w aplikacji.</p>
                     
                     <div class="app-card-divider"></div>
 
@@ -1413,6 +1418,36 @@
                 }
             }, 6000); // Shift every 6 seconds
             
+            // --- 13. QR CODE & BIBLE AD ROTATION ---
+            let showQR = true;
+            const qrcodeEl = document.getElementById("qrcode");
+            const adImageEl = document.getElementById("adImage");
+            const cardTitleEl = document.getElementById("sidebarCardTitle");
+            const cardDescEl = document.getElementById("sidebarCardDesc");
+
+            setInterval(() => {
+                showQR = !showQR;
+                if (showQR) {
+                    qrcodeEl.style.opacity = "1";
+                    qrcodeEl.style.zIndex = "2";
+                    qrcodeEl.style.pointerEvents = "auto";
+                    adImageEl.style.opacity = "0";
+                    adImageEl.style.zIndex = "1";
+                    adImageEl.style.pointerEvents = "none";
+                    if (cardTitleEl) cardTitleEl.textContent = "Twoja Biblia w kieszeni";
+                    if (cardDescEl) cardDescEl.textContent = "Zeskanuj, aby słuchać i czytać w aplikacji.";
+                } else {
+                    qrcodeEl.style.opacity = "0";
+                    qrcodeEl.style.zIndex = "1";
+                    qrcodeEl.style.pointerEvents = "none";
+                    adImageEl.style.opacity = "1";
+                    adImageEl.style.zIndex = "2";
+                    adImageEl.style.pointerEvents = "auto";
+                    if (cardTitleEl) cardTitleEl.textContent = "Bezpłatne Pismo Święte";
+                    if (cardDescEl) cardDescEl.innerHTML = "Wyślij SMS: <strong>BIBLIA</strong> pod numer <strong>+48 530 736 155</strong><br><span style='font-size: 10px; opacity: 0.6; display: block; margin-top: 5px;'>* Zamawiający ponosi jedynie koszt przesyłki</span>";
+                }
+            }, 15000); // Shift every 15 seconds
+
             // Trigger stream initialization automatically on load
             setTimeout(initializeStream, 500);
         });
