@@ -251,6 +251,10 @@
             color: #ffffff;
             font-weight: 600;
             margin-bottom: 30px; /* Increased spacing */
+            height: 28px; /* Locked height to prevent shifting */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .qr-wrapper {
@@ -272,6 +276,11 @@
             line-height: 1.5;
             font-weight: 500;
             max-width: 320px; /* Adjusted to suit wider sidebar */
+            height: 72px; /* Locked height to fit up to 3 lines of text and prevent shifting */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         /* Horizontal divider */
