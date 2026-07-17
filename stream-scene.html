@@ -1403,6 +1403,39 @@
             const cardTitleEl = document.getElementById("sidebarCardTitle");
             const cardDescEl = document.getElementById("sidebarCardDesc");
 
+            // List of all promotional graphics copied to the project directory
+            const adImages = [
+                "reklamy/ChatGPT Image 17 lip 2026, 19_31_50.png",
+                "reklamy/Projekt bez nazwy (60).jpg",
+                "reklamy/Projekt bez nazwy (61).jpg",
+                "reklamy/Projekt bez nazwy (62).jpg",
+                "reklamy/Projekt bez nazwy (63).jpg",
+                "reklamy/Projekt bez nazwy (64).jpg",
+                "reklamy/Projekt bez nazwy (65).jpg",
+                "reklamy/Projekt bez nazwy (66).jpg",
+                "reklamy/Projekt bez nazwy (67).jpg",
+                "reklamy/Projekt bez nazwy (68).jpg",
+                "reklamy/Projekt bez nazwy (69).jpg",
+                "reklamy/Projekt bez nazwy (70).jpg",
+                "reklamy/Projekt bez nazwy (71).jpg",
+                "reklamy/Projekt bez nazwy (72).jpg",
+                "reklamy/Projekt bez nazwy (73).jpg",
+                "reklamy/Projekt bez nazwy (74).jpg",
+                "reklamy/Projekt bez nazwy (75).jpg",
+                "reklamy/Projekt bez nazwy (76).jpg",
+                "reklamy/Projekt bez nazwy (77).jpg",
+                "reklamy/Projekt bez nazwy (78).jpg",
+                "reklamy/Projekt bez nazwy (79).jpg",
+                "reklamy/Projekt bez nazwy (80).jpg",
+                "reklamy/Projekt bez nazwy (81).jpg",
+                "reklamy/Projekt bez nazwy (82).jpg",
+                "reklamy/Projekt bez nazwy (83).jpg",
+                "reklamy/Projekt bez nazwy (84).jpg",
+                "reklamy/Projekt bez nazwy (85).jpg",
+                "reklamy/ujVWP.jpg"
+            ];
+            let adIndex = 0;
+
             setInterval(() => {
                 showQR = !showQR;
                 if (showQR) {
@@ -1415,16 +1448,35 @@
                     if (cardTitleEl) cardTitleEl.textContent = "Twoja Biblia w kieszeni";
                     if (cardDescEl) cardDescEl.textContent = "Zeskanuj, aby słuchać i czytać w aplikacji.";
                 } else {
+                    const currentAd = adImages[adIndex];
+                    const adImgTag = adImageEl.querySelector("img");
+                    if (adImgTag) {
+                        adImgTag.src = currentAd;
+                    }
+
                     qrcodeEl.style.opacity = "0";
                     qrcodeEl.style.zIndex = "1";
                     qrcodeEl.style.pointerEvents = "none";
                     adImageEl.style.opacity = "1";
                     adImageEl.style.zIndex = "2";
                     adImageEl.style.pointerEvents = "auto";
-                    if (cardTitleEl) cardTitleEl.textContent = "Bezpłatne Pismo Święte";
-                    if (cardDescEl) cardDescEl.innerHTML = "Wyślij SMS: <strong>BIBLIA</strong><br>pod numer <strong style='white-space: nowrap;'>+48&nbsp;530&nbsp;736&nbsp;155</strong><br><span style='font-size: 10px; opacity: 0.6; display: block; margin-top: 5px;'>* Zamawiający ponosi jedynie koszt przesyłki</span>";
+
+                    // Customize description text depending on the ad type
+                    if (currentAd.includes("(60)") || currentAd.includes("(63)") || currentAd.includes("(74)") || currentAd.includes("(85)")) {
+                        if (cardTitleEl) cardTitleEl.textContent = "Bezpłatne Pismo Święte";
+                        if (cardDescEl) cardDescEl.innerHTML = "Wyślij SMS: <strong>BIBLIA</strong><br>pod numer <strong style='white-space: nowrap;'>+48&nbsp;530&nbsp;736&nbsp;155</strong><br><span style='font-size: 10px; opacity: 0.6; display: block; margin-top: 5px;'>* Bezpłatna przesyłka Nowego Testamentu</span>";
+                    } else if (currentAd.includes("ChatGPT") || currentAd.includes("ujVWP")) {
+                        if (cardTitleEl) cardTitleEl.textContent = "Aplikacja Biblia Audio";
+                        if (cardDescEl) cardDescEl.innerHTML = "Pobierz bezpłatną aplikację mobilną,<br>aby czytać i słuchać Pisma Świętego 24/7!";
+                    } else {
+                        if (cardTitleEl) cardTitleEl.textContent = "Wspieraj naszą misję";
+                        if (cardDescEl) cardDescEl.innerHTML = "🙏 Możesz wspierać misję Christian Culture modlitwą lub darem serca.<br>Szczegóły: <strong>patronite.pl/osobowoscplus</strong>";
+                    }
+
+                    // Move to the next ad for the next cycle
+                    adIndex = (adIndex + 1) % adImages.length;
                 }
-            }, 15000); // Shift every 15 seconds
+            }, 15000); // Rotate every 15 seconds
 
             // Trigger stream initialization automatically on load
             setTimeout(initializeStream, 500);
