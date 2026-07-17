@@ -1406,156 +1406,189 @@
             }, 6000); // Shift every 6 seconds
             
             // --- 13. QR CODE & BIBLE AD ROTATION ---
-            let showQR = true;
             const qrcodeEl = document.getElementById("qrcode");
             const adImageEl = document.getElementById("adImage");
             const cardTitleEl = document.getElementById("sidebarCardTitle");
             const cardDescEl = document.getElementById("sidebarCardDesc");
 
-            // List of all promotional graphics with customized texts matching their topics
-            const adObjects = [
+            // List of all promotional slides (QR code and ad graphics)
+            const adSlides = [
+                {
+                    type: "qr",
+                    title: "Twoja Biblia w kieszeni",
+                    desc: "Zeskanuj, aby słuchać i czytać w aplikacji."
+                },
                 {
                     src: "reklamy/ChatGPT Image 17 lip 2026, 19_31_50.png",
+                    type: "ad",
                     title: "Aplikacja Biblia Audio",
                     desc: "Słuchaj i czytaj Słowo Boże każdego dnia w naszej bezpłatnej aplikacji mobilnej!"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (60).jpg",
+                    type: "ad",
                     title: "Bezpłatne Pismo Święte",
                     desc: "Wyślij SMS: <strong>BIBLIA</strong> pod numer <strong>530 736 155</strong>.<br><span style='font-size: 10px; opacity: 0.6;'>* Bezpłatna wysyłka Nowego Testamentu</span>"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (61).jpg",
+                    type: "ad",
                     title: "Wsparcie Misji CC",
                     desc: "Twoje wsparcie pomaga nam docierać z Ewangelią dalej!<br>Szczegóły: <strong>patronite.pl/osobowoscplus</strong>"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (62).jpg",
+                    type: "ad",
                     title: "Nasza Oferta",
                     desc: "Poznaj nasze projekty, książki, audiobooki i aplikacje.<br>Odwiedź nas na <strong>christianculture.pl</strong>"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (63).jpg",
+                    type: "ad",
                     title: "Bezpłatne Pismo Święte",
                     desc: "Pismo Święte Nowego Testamentu za darmo dla każdego!<br>Wyślij SMS o treści <strong>BIBLIA</strong> pod <strong>530 736 155</strong>"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (64).jpg",
+                    type: "ad",
                     title: "Nasze Kanały na YT",
                     desc: "Subskrybuj nasze oficjalne kanały YouTube i oglądaj wartościowe filmy chrześcijańskie każdego dnia!"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (64).png",
+                    type: "ad",
                     title: "Kanały Partnerskie YT",
                     desc: "Polecamy kanały partnerskie na YT: <strong>Kasia Fedków</strong> | <strong>Studio Dobrego Słowa</strong> | <strong>Robert Łukasz Pio</strong>"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (65).jpg",
+                    type: "ad",
                     title: "Słuchaj nas na Spotify",
                     desc: "Znajdziesz nas na Spotify! Słuchaj Biblii Audio oraz codziennych rozważań w drodze do pracy czy szkoły."
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (66).jpg",
+                    type: "ad",
                     title: "Znajdź nas na TikTok",
                     desc: "Jesteśmy na TikToku! Obserwuj nasz profil, aby oglądać krótkie wideo, świadectwa i codzienne inspiracje."
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (67).jpg",
+                    type: "ad",
                     title: "Jesteśmy na Instagramie",
                     desc: "Śledź nas na Instagramie! Codzienne wersety biblijne, piękne grafiki i budujące relacje każdego dnia."
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (68).jpg",
+                    type: "ad",
                     title: "Platforma X (Twitter)",
                     desc: "Odwiedź nas na platformie X! Śledź najnowsze przemyślenia, wpisy i aktualności od Christian Culture."
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (69).jpg",
+                    type: "ad",
                     title: "Grupy na WhatsApp",
                     desc: "Dołącz do naszych grup na WhatsApp! Buduj relacje we wspólnocie, dziel się wiarą i wspólną modlitwą."
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (70).jpg",
+                    type: "ad",
                     title: "Kanały Nadawcze WA",
                     desc: "Mamy kanały nadawcze na WhatsApp! Subskrybuj, aby otrzymywać codzienne Słowo Boże bezpośrednio na telefon."
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (71).jpg",
+                    type: "ad",
                     title: "Jesteśmy na Messengerze",
                     desc: "Obserwuj nas na Messengerze i bądź w stałym kontakcie z naszą społecznością oraz mediami."
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (72).jpg",
+                    type: "ad",
                     title: "Obserwuj nas na Threads",
                     desc: "Jesteśmy na Threads! Obserwuj nasz profil, dołącz do wartościowych dyskusji i dziel się przemyśleniami."
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (73).jpg",
+                    type: "ad",
                     title: "Facebook Społeczność",
                     desc: "Poznaj nasze grupy i strony na Facebooku. Bądź częścią wielotysięcznej społeczności chrześcijańskiej!"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (74).jpg",
+                    type: "ad",
                     title: "Bezpłatne Pismo Święte",
                     desc: "Odbierz darmowy Nowy Testament. Wyślij SMS o treści <strong>BIBLIA</strong> pod numer <strong>530 736 155</strong>"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (75).jpg",
+                    type: "ad",
                     title: "Zaangażuj się!",
                     desc: "Pomóż nam docierać z Ewangelią do kolejnych serc: <strong>Subskrybuj * Komentuj * Udostępniaj</strong>!"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (76).jpg",
+                    type: "ad",
                     title: "Polecane Kanały YT",
                     desc: "Polecamy kanały partnerskie na YT: <strong>Kasia Fedków</strong> | <strong>Studio Dobrego Słowa</strong> | <strong>Robert Łukasz Pio</strong>"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (77).jpg",
+                    type: "ad",
                     title: "Słuchaj na Spotify",
                     desc: "Codzienne nagrania, podcasty i pełna wersja audio Pisma Świętego na Spotify. Wyszukaj: <strong>Biblia Audio CC</strong>"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (78).jpg",
+                    type: "ad",
                     title: "Wspieraj Bożą Misję",
                     desc: "💳 Darowizny (bank / Revolut / BLIK): nr konta w dolnym pasku.<br>Dziękujemy za każde wsparcie i modlitwę!"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (79).jpg",
+                    type: "ad",
                     title: "Jesteśmy na Instagramie",
                     desc: "Dołącz do obserwujących na Instagramie i karm się Słowem Bożym w nowoczesnej i pięknej formie."
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (80).jpg",
+                    type: "ad",
                     title: "TikTok Christian Culture",
                     desc: "Dynamiczne i wartościowe treści wideo dopasowane do młodego pokolenia. Znajdź nas i zaobserwuj!"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (81).jpg",
+                    type: "ad",
                     title: "Kanały Nadawcze WA",
                     desc: "Bądź częścią naszego kanału na WhatsApp. Codzienne inspiracje i rozważania bez zbędnego spamu."
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (82).jpg",
+                    type: "ad",
                     title: "WhatsApp Społeczność",
                     desc: "Dołącz do grup dyskusyjnych i modlitewnych na WhatsApp. Dziel się wiarą ze społecznością z całej Polski!"
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (83).jpg",
+                    type: "ad",
                     title: "Platforma X",
                     desc: "Śledź nasze konto na platformie X (dawny Twitter) i bierz udział w dyskusjach na tematy wiary i kultury."
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (84).jpg",
+                    type: "ad",
                     title: "Facebook Społeczność",
                     desc: "Dołącz do tysięcy osób na naszych stronach i grupach FB. Wymieniaj się myślami i módl się wspólnie."
                 },
                 {
                     src: "reklamy/Projekt bez nazwy (85).jpg",
+                    type: "ad",
                     title: "Darmowy Nowy Testament",
                     desc: "Wyślij SMS pod numer <strong>530 736 155</strong> o treści <strong>BIBLIA</strong>.<br><span style='font-size: 10px; opacity: 0.6;'>Dostawa pocztowa całkowicie gratis.</span>"
                 },
                 {
                     src: "reklamy/ujVWP.jpg",
+                    type: "ad",
                     title: "Aplikacja Biblia Audio",
                     desc: "Słuchaj Ewangelii w doskonałej adaptacji dźwiękowej.<br>Pobierz bezpłatnie ze sklepu Google Play / App Store!"
                 }
@@ -1563,21 +1596,19 @@
             let adIndex = 0;
 
             setInterval(() => {
-                showQR = !showQR;
-                if (showQR) {
+                const currentSlide = adSlides[adIndex];
+
+                if (currentSlide.type === "qr") {
                     qrcodeEl.style.opacity = "1";
                     qrcodeEl.style.zIndex = "2";
                     qrcodeEl.style.pointerEvents = "auto";
                     adImageEl.style.opacity = "0";
                     adImageEl.style.zIndex = "1";
                     adImageEl.style.pointerEvents = "none";
-                    if (cardTitleEl) cardTitleEl.textContent = "Twoja Biblia w kieszeni";
-                    if (cardDescEl) cardDescEl.textContent = "Zeskanuj, aby słuchać i czytać w aplikacji.";
                 } else {
-                    const currentAd = adObjects[adIndex];
                     const adImgTag = adImageEl.querySelector("img");
                     if (adImgTag) {
-                        adImgTag.src = currentAd.src;
+                        adImgTag.src = currentSlide.src;
                     }
 
                     qrcodeEl.style.opacity = "0";
@@ -1586,14 +1617,14 @@
                     adImageEl.style.opacity = "1";
                     adImageEl.style.zIndex = "2";
                     adImageEl.style.pointerEvents = "auto";
-
-                    // Update title and description dynamically from the ad object
-                    if (cardTitleEl) cardTitleEl.textContent = currentAd.title;
-                    if (cardDescEl) cardDescEl.innerHTML = currentAd.desc;
-
-                    // Move to the next ad for the next cycle
-                    adIndex = (adIndex + 1) % adObjects.length;
                 }
+
+                // Update title and description dynamically
+                if (cardTitleEl) cardTitleEl.textContent = currentSlide.title;
+                if (cardDescEl) cardDescEl.innerHTML = currentSlide.desc;
+
+                // Move to the next slide in sequence
+                adIndex = (adIndex + 1) % adSlides.length;
             }, 15000); // Rotate every 15 seconds
 
             // Trigger stream initialization automatically on load
