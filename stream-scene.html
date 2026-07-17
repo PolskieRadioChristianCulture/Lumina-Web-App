@@ -1403,37 +1403,153 @@
             const cardTitleEl = document.getElementById("sidebarCardTitle");
             const cardDescEl = document.getElementById("sidebarCardDesc");
 
-            // List of all promotional graphics copied to the project directory
-            const adImages = [
-                "reklamy/ChatGPT Image 17 lip 2026, 19_31_50.png",
-                "reklamy/Projekt bez nazwy (60).jpg",
-                "reklamy/Projekt bez nazwy (61).jpg",
-                "reklamy/Projekt bez nazwy (62).jpg",
-                "reklamy/Projekt bez nazwy (63).jpg",
-                "reklamy/Projekt bez nazwy (64).jpg",
-                "reklamy/Projekt bez nazwy (64).png",
-                "reklamy/Projekt bez nazwy (65).jpg",
-                "reklamy/Projekt bez nazwy (66).jpg",
-                "reklamy/Projekt bez nazwy (67).jpg",
-                "reklamy/Projekt bez nazwy (68).jpg",
-                "reklamy/Projekt bez nazwy (69).jpg",
-                "reklamy/Projekt bez nazwy (70).jpg",
-                "reklamy/Projekt bez nazwy (71).jpg",
-                "reklamy/Projekt bez nazwy (72).jpg",
-                "reklamy/Projekt bez nazwy (73).jpg",
-                "reklamy/Projekt bez nazwy (74).jpg",
-                "reklamy/Projekt bez nazwy (75).jpg",
-                "reklamy/Projekt bez nazwy (76).jpg",
-                "reklamy/Projekt bez nazwy (77).jpg",
-                "reklamy/Projekt bez nazwy (78).jpg",
-                "reklamy/Projekt bez nazwy (79).jpg",
-                "reklamy/Projekt bez nazwy (80).jpg",
-                "reklamy/Projekt bez nazwy (81).jpg",
-                "reklamy/Projekt bez nazwy (82).jpg",
-                "reklamy/Projekt bez nazwy (83).jpg",
-                "reklamy/Projekt bez nazwy (84).jpg",
-                "reklamy/Projekt bez nazwy (85).jpg",
-                "reklamy/ujVWP.jpg"
+            // List of all promotional graphics with customized texts matching their topics
+            const adObjects = [
+                {
+                    src: "reklamy/ChatGPT Image 17 lip 2026, 19_31_50.png",
+                    title: "Aplikacja Biblia Audio",
+                    desc: "Słuchaj i czytaj Słowo Boże każdego dnia w naszej bezpłatnej aplikacji mobilnej!"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (60).jpg",
+                    title: "Bezpłatne Pismo Święte",
+                    desc: "Wyślij SMS: <strong>BIBLIA</strong> pod numer <strong>530 736 155</strong>.<br><span style='font-size: 10px; opacity: 0.6;'>* Bezpłatna wysyłka Nowego Testamentu</span>"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (61).jpg",
+                    title: "Wsparcie Misji CC",
+                    desc: "Twoje wsparcie pomaga nam docierać z Ewangelią dalej!<br>Szczegóły: <strong>patronite.pl/osobowoscplus</strong>"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (62).jpg",
+                    title: "Nasza Oferta",
+                    desc: "Poznaj nasze projekty, książki, audiobooki i aplikacje.<br>Odwiedź nas na <strong>christianculture.pl</strong>"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (63).jpg",
+                    title: "Bezpłatne Pismo Święte",
+                    desc: "Pismo Święte Nowego Testamentu za darmo dla każdego!<br>Wyślij SMS o treści <strong>BIBLIA</strong> pod <strong>530 736 155</strong>"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (64).jpg",
+                    title: "Nasze Kanały na YT",
+                    desc: "Subskrybuj nasze oficjalne kanały YouTube i oglądaj wartościowe filmy chrześcijańskie każdego dnia!"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (64).png",
+                    title: "Kanały Partnerskie YT",
+                    desc: "Polecamy kanały partnerskie na YT: <strong>Kasia Fedków</strong> | <strong>Studio Dobrego Słowa</strong> | <strong>Robert Łukasz Pio</strong>"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (65).jpg",
+                    title: "Słuchaj nas na Spotify",
+                    desc: "Znajdziesz nas na Spotify! Słuchaj Biblii Audio oraz codziennych rozważań w drodze do pracy czy szkoły."
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (66).jpg",
+                    title: "Znajdź nas na TikTok",
+                    desc: "Jesteśmy na TikToku! Obserwuj nasz profil, aby oglądać krótkie wideo, świadectwa i codzienne inspiracje."
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (67).jpg",
+                    title: "Jesteśmy na Instagramie",
+                    desc: "Śledź nas na Instagramie! Codzienne wersety biblijne, piękne grafiki i budujące relacje każdego dnia."
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (68).jpg",
+                    title: "Platforma X (Twitter)",
+                    desc: "Odwiedź nas na platformie X! Śledź najnowsze przemyślenia, wpisy i aktualności od Christian Culture."
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (69).jpg",
+                    title: "Grupy na WhatsApp",
+                    desc: "Dołącz do naszych grup na WhatsApp! Buduj relacje we wspólnocie, dziel się wiarą i wspólną modlitwą."
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (70).jpg",
+                    title: "Kanały Nadawcze WA",
+                    desc: "Mamy kanały nadawcze na WhatsApp! Subskrybuj, aby otrzymywać codzienne Słowo Boże bezpośrednio na telefon."
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (71).jpg",
+                    title: "Jesteśmy na Messengerze",
+                    desc: "Obserwuj nas na Messengerze i bądź w stałym kontakcie z naszą społecznością oraz mediami."
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (72).jpg",
+                    title: "Obserwuj nas na Threads",
+                    desc: "Jesteśmy na Threads! Obserwuj nasz profil, dołącz do wartościowych dyskusji i dziel się przemyśleniami."
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (73).jpg",
+                    title: "Facebook Społeczność",
+                    desc: "Poznaj nasze grupy i strony na Facebooku. Bądź częścią wielotysięcznej społeczności chrześcijańskiej!"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (74).jpg",
+                    title: "Bezpłatne Pismo Święte",
+                    desc: "Odbierz darmowy Nowy Testament. Wyślij SMS o treści <strong>BIBLIA</strong> pod numer <strong>530 736 155</strong>"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (75).jpg",
+                    title: "Zaangażuj się!",
+                    desc: "Pomóż nam docierać z Ewangelią do kolejnych serc: <strong>Subskrybuj * Komentuj * Udostępniaj</strong>!"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (76).jpg",
+                    title: "Polecane Kanały YT",
+                    desc: "Polecamy kanały partnerskie na YT: <strong>Kasia Fedków</strong> | <strong>Studio Dobrego Słowa</strong> | <strong>Robert Łukasz Pio</strong>"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (77).jpg",
+                    title: "Słuchaj na Spotify",
+                    desc: "Codzienne nagrania, podcasty i pełna wersja audio Pisma Świętego na Spotify. Wyszukaj: <strong>Biblia Audio CC</strong>"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (78).jpg",
+                    title: "Wspieraj Bożą Misję",
+                    desc: "💳 Darowizny (bank / Revolut / BLIK): nr konta w dolnym pasku.<br>Dziękujemy za każde wsparcie i modlitwę!"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (79).jpg",
+                    title: "Jesteśmy na Instagramie",
+                    desc: "Dołącz do obserwujących na Instagramie i karm się Słowem Bożym w nowoczesnej i pięknej formie."
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (80).jpg",
+                    title: "TikTok Christian Culture",
+                    desc: "Dynamiczne i wartościowe treści wideo dopasowane do młodego pokolenia. Znajdź nas i zaobserwuj!"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (81).jpg",
+                    title: "Kanały Nadawcze WA",
+                    desc: "Bądź częścią naszego kanału na WhatsApp. Codzienne inspiracje i rozważania bez zbędnego spamu."
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (82).jpg",
+                    title: "WhatsApp Społeczność",
+                    desc: "Dołącz do grup dyskusyjnych i modlitewnych na WhatsApp. Dziel się wiarą ze społecznością z całej Polski!"
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (83).jpg",
+                    title: "Platforma X",
+                    desc: "Śledź nasze konto na platformie X (dawny Twitter) i bierz udział w dyskusjach na tematy wiary i kultury."
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (84).jpg",
+                    title: "Facebook Społeczność",
+                    desc: "Dołącz do tysięcy osób na naszych stronach i grupach FB. Wymieniaj się myślami i módl się wspólnie."
+                },
+                {
+                    src: "reklamy/Projekt bez nazwy (85).jpg",
+                    title: "Darmowy Nowy Testament",
+                    desc: "Wyślij SMS pod numer <strong>530 736 155</strong> o treści <strong>BIBLIA</strong>.<br><span style='font-size: 10px; opacity: 0.6;'>Dostawa pocztowa całkowicie gratis.</span>"
+                },
+                {
+                    src: "reklamy/ujVWP.jpg",
+                    title: "Aplikacja Biblia Audio",
+                    desc: "Słuchaj Ewangelii w doskonałej adaptacji dźwiękowej.<br>Pobierz bezpłatnie ze sklepu Google Play / App Store!"
+                }
             ];
             let adIndex = 0;
 
@@ -1449,10 +1565,10 @@
                     if (cardTitleEl) cardTitleEl.textContent = "Twoja Biblia w kieszeni";
                     if (cardDescEl) cardDescEl.textContent = "Zeskanuj, aby słuchać i czytać w aplikacji.";
                 } else {
-                    const currentAd = adImages[adIndex];
+                    const currentAd = adObjects[adIndex];
                     const adImgTag = adImageEl.querySelector("img");
                     if (adImgTag) {
-                        adImgTag.src = currentAd;
+                        adImgTag.src = currentAd.src;
                     }
 
                     qrcodeEl.style.opacity = "0";
@@ -1462,20 +1578,12 @@
                     adImageEl.style.zIndex = "2";
                     adImageEl.style.pointerEvents = "auto";
 
-                    // Customize description text depending on the ad type
-                    if (currentAd.includes("(60)") || currentAd.includes("(63)") || currentAd.includes("(74)") || currentAd.includes("(85)")) {
-                        if (cardTitleEl) cardTitleEl.textContent = "Bezpłatne Pismo Święte";
-                        if (cardDescEl) cardDescEl.innerHTML = "Wyślij SMS: <strong>BIBLIA</strong><br>pod numer <strong style='white-space: nowrap;'>+48&nbsp;530&nbsp;736&nbsp;155</strong><br><span style='font-size: 10px; opacity: 0.6; display: block; margin-top: 5px;'>* Bezpłatna przesyłka Nowego Testamentu</span>";
-                    } else if (currentAd.includes("ChatGPT") || currentAd.includes("ujVWP")) {
-                        if (cardTitleEl) cardTitleEl.textContent = "Aplikacja Biblia Audio";
-                        if (cardDescEl) cardDescEl.innerHTML = "Pobierz bezpłatną aplikację mobilną,<br>aby czytać i słuchać Pisma Świętego 24/7!";
-                    } else {
-                        if (cardTitleEl) cardTitleEl.textContent = "Wspieraj naszą misję";
-                        if (cardDescEl) cardDescEl.innerHTML = "🙏 Możesz wspierać misję Christian Culture modlitwą lub darem serca.<br>Szczegóły: <strong>patronite.pl/osobowoscplus</strong>";
-                    }
+                    // Update title and description dynamically from the ad object
+                    if (cardTitleEl) cardTitleEl.textContent = currentAd.title;
+                    if (cardDescEl) cardDescEl.innerHTML = currentAd.desc;
 
                     // Move to the next ad for the next cycle
-                    adIndex = (adIndex + 1) % adImages.length;
+                    adIndex = (adIndex + 1) % adObjects.length;
                 }
             }, 15000); // Rotate every 15 seconds
 
