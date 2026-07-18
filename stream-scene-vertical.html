@@ -608,8 +608,8 @@
     <video muted playsinline id="bg-video-2" class="bg-video" style="opacity: 0;"></video>
 
     <!-- Premium Background Slideshow (Dual image configuration; visible as fallback if video is missing) -->
-    <img id="bg-slideshow-1" class="bg-slideshow" style="opacity: 1;" src="bg_slideshow_1.png" alt="Background slide 1">
-    <img id="bg-slideshow-2" class="bg-slideshow" style="opacity: 0;" src="bg_slideshow_2.png" alt="Background slide 2">
+    <img id="bg-slideshow-1" class="bg-slideshow" style="opacity: 1;" src="bg_slideshow_1.jpg" alt="Background slide 1">
+    <img id="bg-slideshow-2" class="bg-slideshow" style="opacity: 0;" src="bg_slideshow_2.jpg" alt="Background slide 2">
 
     <!-- Canvas Background & Filters -->
     <canvas id="nebulaCanvas" style="display: none;"></canvas>
@@ -1048,9 +1048,9 @@
 
               // --- 8. HYBRID BACKGROUND ENGINE (VIDEO LOOP WITH SLIDESHOW FALLBACK) ---
         const backgroundSlides = [
-            "bg_slideshow_1.png",
-            "bg_slideshow_2.png",
-            "bg_slideshow_3.png"
+            "bg_slideshow_1.jpg",
+            "bg_slideshow_2.jpg",
+            "bg_slideshow_3.jpg"
         ];
         let currentSlideIndex = 0;
         const slideImg1 = document.getElementById('bg-slideshow-1');
