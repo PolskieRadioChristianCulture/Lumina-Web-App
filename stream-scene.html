@@ -82,11 +82,11 @@
             z-index: 10;
             width: 100%;
             height: 100%;
-            padding: 55px 70px 45px 70px;
+            padding: 30px 60px 20px 60px; /* Reduced paddings to prevent grid row overflow */
             display: grid;
-            grid-template-rows: 110px 1fr auto; /* Use auto so footer adapts to marquee height without clipping */
-            grid-template-columns: 1fr 480px; /* Increased from 430px to make the card wider */
-            gap: 35px;
+            grid-template-rows: 100px 1fr auto; /* Reduced header height slightly */
+            grid-template-columns: 1fr 480px;
+            gap: 20px; /* Reduced gap from 35px to fit all elements comfortably */
         }
 
         /* --- HEADER --- */
@@ -247,7 +247,7 @@
             backdrop-filter: blur(8px); /* Reduced from 25px to drastically improve OBS rendering speed */
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 28px;
-            padding: 40px 40px;
+            padding: 25px 30px; /* Reduced vertical padding to prevent card overflow */
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -263,7 +263,7 @@
             letter-spacing: 1px;
             color: #ffffff;
             font-weight: 600;
-            margin-bottom: 30px; /* Increased spacing */
+            margin-bottom: 20px; /* Reduced from 30px */
             height: 34px; /* Increased from 28px to fit larger font */
             display: flex;
             align-items: center;
@@ -285,7 +285,7 @@
         .app-card-desc {
             font-size: 18px; /* Increased from 14px for far-distance TV readability */
             color: #dcdcdc; /* Brighter gray for higher legibility/contrast */
-            margin-top: 22px;
+            margin-top: 15px; /* Reduced from 22px */
             line-height: 1.4;
             font-weight: 500;
             max-width: 380px; /* Slightly wider to accommodate larger text */
@@ -301,7 +301,7 @@
             width: 90%;
             height: 1px;
             background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
-            margin: 30px 0;
+            margin: 15px 0; /* Reduced from 30px 0 */
         }
 
         /* Local Progress Indicator */
