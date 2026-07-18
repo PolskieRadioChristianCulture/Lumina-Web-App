@@ -959,8 +959,37 @@
         };
 
         let currentVersesList = [...fallbackScriptureVerses["pl"]];
+        let currentTimeline = []; // Word-weighted timing intervals for verses
         let currentDisplayedVerseNum = -1;
         let lastTitle = "";
+
+        // Rebuild timeline triggers based on relative word count of each verse
+        function rebuildTimeline() {
+            if (currentVersesList.length === 0) {
+                currentTimeline = [];
+                return;
+            }
+            const wordsPerVerse = currentVersesList.map(v => {
+                const cleanText = v.text.replace(/<\/?[^>]+(>|$)/g, "");
+                const wordCount = cleanText.split(/\s+/).filter(w => w.length > 0).length || 1;
+                return { num: v.num, text: v.text, wordCount: wordCount };
+            });
+            const totalWords = wordsPerVerse.reduce((sum, v) => sum + v.wordCount, 0) || 1;
+            let cumulative = 0;
+            currentTimeline = wordsPerVerse.map(v => {
+                const share = v.wordCount / totalWords;
+                cumulative += share;
+                return {
+                    num: v.num,
+                    text: v.text,
+                    startPercent: (cumulative - share) * 100,
+                    endPercent: cumulative * 100
+                };
+            });
+        }
+        
+        // Build initial timeline for default verses
+        rebuildTimeline();
 
         // Parse RDS Title to fetch Bible verses dynamically
         async function fetchBibleChapter(title) {
@@ -1022,11 +1051,13 @@
                     
                     // Force update UI
                     currentDisplayedVerseNum = -1;
+                    rebuildTimeline(); // Pre-calculate weighted timeline triggers
                     updateScriptureContent(title, 0);
                 }
             } catch (err) {
                 console.error("Nie udało się pobrać tekstu z API, używam fallbacku:", err);
                 currentVersesList = [...fallbackScriptureVerses[currentLanguage]];
+                rebuildTimeline();
             }
         }
 
@@ -1049,9 +1080,8 @@
                 container.innerHTML = `<div class="credits-scroller" id="creditsScroller">${html}</div>`;
             }
 
-            // 2. Highlight active verse corresponding to elapsed progress percentage
-            const activeIndex = Math.min(Math.floor((percent / 100) * currentVersesList.length), currentVersesList.length - 1);
-            const activeVerse = currentVersesList[activeIndex];
+            // 2. Highlight active verse corresponding to elapsed progress percentage (via word-weighted timeline)
+            const activeVerse = currentTimeline.find(v => percent >= v.startPercent && percent <= v.endPercent) || currentTimeline[currentTimeline.length - 1];
 
             if (activeVerse && activeVerse.num !== currentDisplayedVerseNum) {
                 currentDisplayedVerseNum = activeVerse.num;
