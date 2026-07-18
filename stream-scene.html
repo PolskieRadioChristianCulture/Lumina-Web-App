@@ -231,11 +231,11 @@
 
         /* Glassmorphic App Box */
         .app-card {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(25px);
+            background: rgba(15, 15, 15, 0.85); /* Slightly darker background to keep contrast without high blur cost */
+            backdrop-filter: blur(8px); /* Reduced from 25px to drastically improve OBS rendering speed */
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 28px;
-            padding: 45px 35px; /* Increased from 35px 25px */
+            padding: 40px 40px;
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -243,6 +243,7 @@
             text-align: center;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
             position: relative;
+            transform: translate3d(0,0,0); /* Force GPU acceleration in CEF/OBS */
         }
 
         .app-card-title {
@@ -425,11 +426,12 @@
         .header-stations {
             display: flex;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(15, 15, 15, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 18px;
             padding: 5px 8px;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(8px); /* Reduced from 15px */
+            transform: translate3d(0,0,0); /* Force GPU acceleration */
         }
 
         .header-stations .station-btn {
