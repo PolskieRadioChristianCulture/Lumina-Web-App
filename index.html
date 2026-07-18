@@ -106,6 +106,7 @@
             <h2 class="drawer-brand">CHRISTIAN CULTURE</h2>
             <nav class="drawer-nav">
                 <a href="#" class="drawer-link active"><i class="fa-solid fa-house"></i> Strona Główna</a>
+                <a href="#" class="drawer-link" id="drawerShowLiveLink" onclick="restoreLiveStream(event)" style="display: none; color: #ff0000; font-weight: 700;"><i class="fa-solid fa-circle-play"></i> POKAŻ TRANSMISJĘ</a>
                 <a href="#" class="drawer-link" id="navDzjLink" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-heart"></i> DOBRZE, ŻE JESTEŚ</a>
                 <a href="#radio-player-anchor" class="drawer-link scroll-to" id="navRadioLink"><i class="fa-solid fa-radio"></i> Radio Internetowe</a>
                 <a href="stream-scene.html" target="_blank" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-tower-broadcast"></i> Nadawaj z Christian Culture</a>
@@ -249,6 +250,9 @@
                             // Immediately hide if user previously closed this specific stream
                             if (localStorage.getItem(storageKey) === "true") {
                                 if (box) box.style.display = "none";
+                                // Show restore link in side drawer if it exists
+                                const restoreLink = document.getElementById("drawerShowLiveLink");
+                                if (restoreLink) restoreLink.style.display = "flex";
                             }
                             
                             window.dismissLiveStream = function() {
@@ -259,7 +263,45 @@
                                     box.style.transform = "scale(0.95)";
                                     setTimeout(() => {
                                         box.style.display = "none";
+                                        // Show restore link in menu
+                                        const restoreLink = document.getElementById("drawerShowLiveLink");
+                                        if (restoreLink) restoreLink.style.display = "flex";
                                     }, 400);
+                                }
+                            };
+
+                            window.restoreLiveStream = function(e) {
+                                if (e) e.preventDefault();
+                                localStorage.removeItem(storageKey);
+                                
+                                // Hide restore link in menu
+                                const restoreLink = document.getElementById("drawerShowLiveLink");
+                                if (restoreLink) restoreLink.style.display = "none";
+                                
+                                // Show and fade-in the stream box
+                                if (box) {
+                                    box.style.display = "block";
+                                    box.style.opacity = "0";
+                                    box.style.transform = "scale(0.95)";
+                                    // Trigger reflow
+                                    box.offsetHeight;
+                                    box.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+                                    box.style.opacity = "1";
+                                    box.style.transform = "scale(1)";
+                                }
+                                
+                                // Scroll smoothly to the hero section top
+                                const heroSec = document.querySelector(".hero-section");
+                                if (heroSec) {
+                                    heroSec.scrollIntoView({ behavior: "smooth" });
+                                }
+                                
+                                // Close side drawer if open
+                                const drawer = document.getElementById("sideDrawer");
+                                const overlay = document.getElementById("drawerOverlay");
+                                if (drawer && drawer.classList.contains("open")) {
+                                    drawer.classList.remove("open");
+                                    if (overlay) overlay.classList.remove("active");
                                 }
                             };
                         })();
