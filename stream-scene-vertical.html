@@ -843,13 +843,13 @@
                         // Filter file extensions like .wav, .mp3, etc.
                         let title = data.streamTitle;
                         title = title.replace(/\.(wav|mp3|ogg|flac|aac|m4a)$/i, '');
-                        // Filter double text, .WAV and inactive domain biblia.cclite.pl
+                        // Filter double text, .WAV and inactive domain biblia.cclite.pl / cclite.pl / cclite
                         title = title.replace(/_wav/gi, '').replace(/\.wav/gi, '');
-                        title = title.replace(/biblia\.cclite\.pl/gi, '');
+                        title = title.replace(/biblia\.cclite\.pl/gi, '').replace(/cclite\.pl/gi, '').replace(/cclite/gi, '');
                         // Filter out hardcoded Zeno.fm RDS version metadata string
                         title = title.replace(/•?\s*Wersja:.*$/gi, '');
-                        // Strip trailing dashes or spaces
-                        title = title.replace(/\s*-\s*$/, '').trim();
+                        // Clean up multiple spaces or leading/trailing dashes and spaces
+                        title = title.replace(/\s*-\s*$/, '').replace(/^\s*-\s*/, '').replace(/\s+/g, ' ').trim();
                         
                         // Strip anything after underscore (inclusive) for clean display
                         title = title.split('_')[0].trim();
