@@ -1041,6 +1041,12 @@
             }
         }
 
+        function fixPolishOrphans(text) {
+            if (!text) return "";
+            // Replace spaces after single-letter Polish prepositions and conjunctions with non-breaking spaces (\u00A0)
+            return text.replace(/(\b[aiouwzksAIOUWZKS]\b)\s+/g, '$1\u00A0');
+        }
+
         function updateScriptureContent(title, percent = 0) {
             if (currentVersesList.length === 0) return;
             
@@ -1054,7 +1060,8 @@
 
                 let html = "";
                 currentVersesList.forEach(v => {
-                    html += `<div class="scrolling-verse" id="verse-${v.num}"><span class="verse-num">${v.num}</span>${v.text}</div>`;
+                    const cleanText = fixPolishOrphans(v.text);
+                    html += `<div class="scrolling-verse" id="verse-${v.num}"><span class="verse-num">${v.num}</span>${cleanText}</div>`;
                 });
                 
                 container.innerHTML = `<div class="credits-scroller" id="creditsScroller">${html}</div>`;
