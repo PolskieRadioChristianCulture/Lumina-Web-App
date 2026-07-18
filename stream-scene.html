@@ -611,8 +611,8 @@
         <p class="play-trigger-desc"> SCENA EMISYJNA 24/7 DLA OBS STUDIO </p>
     </div>
 
-    <!-- Scene Container (Auto-scales to fit viewport) -->
-    <div id="scene-wrapper" style="width: 1920px; height: 1080px; position: absolute; top: 0; left: 0; transform-origin: top left; overflow: hidden; z-index: 10;">
+    <!-- Scene Container (Auto-scales to fit viewport, starts hidden to prevent flash of unscaled content) -->
+    <div id="scene-wrapper" style="width: 1920px; height: 1080px; position: absolute; top: 0; left: 0; transform-origin: top left; overflow: hidden; z-index: 10; opacity: 0; transition: opacity 0.3s ease-in-out;">
         <div class="grid-layout">
             <!-- Header -->
             <header class="header">
@@ -1475,9 +1475,13 @@
             const topOffset = (windowHeight - (1080 * scale)) / 2;
             wrapper.style.left = `${leftOffset}px`;
             wrapper.style.top = `${topOffset}px`;
+            
+            // Smoothly reveal once scaled
+            wrapper.style.opacity = '1';
         }
 
         window.addEventListener('resize', resizeScene);
+        document.addEventListener('DOMContentLoaded', resizeScene);
 
         window.addEventListener('load', () => {
             resizeScene();
