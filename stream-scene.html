@@ -1210,6 +1210,41 @@
             vCtx.stroke();
         }
 
+        // --- 10.2. AUTOMATIC AUDIO WATCHDOG & SELF-HEALING ---
+        let lastAudioTime = 0;
+        let audioStallCount = 0;
+        const STALL_LIMIT = 4; // 4 checks * 5 seconds = 20 seconds of stall
+
+        setInterval(() => {
+            if (streamAudio && !streamAudio.paused) {
+                const currentAudioTime = streamAudio.currentTime;
+                
+                // If stream is supposedly playing but play time is not progressing
+                if (currentAudioTime === lastAudioTime) {
+                    audioStallCount++;
+                    console.warn("Watchdog: Audio stream stall detected (" + audioStallCount + "/" + STALL_LIMIT + ")");
+                    
+                    if (audioStallCount >= STALL_LIMIT) {
+                        console.error("Watchdog: Audio stalled for 20s. Reloading page to restore stream...");
+                        window.location.reload();
+                    }
+                } else {
+                    audioStallCount = 0;
+                    lastAudioTime = currentAudioTime;
+                }
+            }
+        }, 5000);
+
+        // Recover immediately from fatal loading errors
+        if (streamAudio) {
+            streamAudio.addEventListener('error', (e) => {
+                console.error("Watchdog: Fatal audio element error. Reloading page in 5 seconds...", e);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 5000);
+            });
+        }
+
         function initializeStream() {
             document.getElementById('interactiveOverlay').classList.add('hidden');
             
