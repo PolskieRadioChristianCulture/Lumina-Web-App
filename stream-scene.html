@@ -829,17 +829,17 @@
                         title = title.replace(/biblia\.cclite\.pl/gi, '').replace(/cclite\.pl/gi, '').replace(/cclite/gi, '');
                         // Filter out hardcoded Zeno.fm RDS version metadata string
                         title = title.replace(/•?\s*Wersja:.*$/gi, '');
-                        // Clean up multiple spaces or leading/trailing dashes and spaces
-                        title = title.replace(/\s*-\s*$/, '').replace(/^\s*-\s*/, '').replace(/\s+/g, ' ').trim();
+                        // Clean up multiple spaces or leading/trailing dashes and spaces (supports hyphen, en-dash, em-dash)
+                        title = title.replace(/\s*[-–—]\s*$/, '').replace(/^\s*[-–—]\s*/, '').replace(/\s+/g, ' ').trim();
                         
                         // Strip anything after underscore (inclusive) for clean display
                         title = title.split('_')[0].trim();
                         
                         // Update DOM elements
-                        const rdsParts = title.split('-');
+                        const rdsParts = title.split(/[-–—]/);
                         if (rdsParts.length > 1) {
                             const mainTitle = rdsParts[0].trim();
-                            const subTitle = rdsParts.slice(1).join('-').trim();
+                            const subTitle = rdsParts.slice(1).join(' ').trim(); // Join remaining parts with space, removing the dash
                             // Render main title in gold, and sub title on second line in white
                             document.getElementById('chapterHeading').innerHTML = `${mainTitle}<br><span style="font-size: 0.65em; font-weight: 600; color: #ffffff; opacity: 0.9; display: block; margin-top: 6px; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">${subTitle}</span>`;
                         } else {
