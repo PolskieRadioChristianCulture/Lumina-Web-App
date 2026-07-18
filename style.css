@@ -2857,3 +2857,10 @@ html {
     margin-top: 0.85rem;
     font-style: italic;
 }
+
+/* Hide Dobrze, że jesteś avatar button in header on mobile screens */
+@media (max-width: 767px) {
+    #navDzjIconBtn {
+        display: none !important;
+    }
+}
