@@ -272,11 +272,15 @@
         }
 
         .app-card-title {
-            font-size: 19px; /* Increased from 15px */
+            font-size: 24px; /* Increased from 19px for far-distance TV readability */
             letter-spacing: 1px;
             color: #ffffff;
             font-weight: 600;
             margin-bottom: 30px; /* Increased spacing */
+            height: 34px; /* Locked height to prevent shifting */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .qr-wrapper {
@@ -292,12 +296,17 @@
         }
 
         .app-card-desc {
-            font-size: 14px; /* Increased from 11px */
-            color: #8c8c8c;
+            font-size: 18px; /* Increased from 14px for far-distance TV readability */
+            color: #dcdcdc; /* Brighter gray for higher legibility/contrast */
             margin-top: 22px;
-            line-height: 1.5;
+            line-height: 1.4;
             font-weight: 500;
-            max-width: 320px; /* Adjusted to suit wider sidebar */
+            max-width: 420px; /* Wider limit on vertical layout cards */
+            height: 90px; /* Locked height to fit up to 3 lines of text and prevent shifting */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         /* Horizontal divider */
