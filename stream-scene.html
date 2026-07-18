@@ -84,7 +84,7 @@
             height: 100%;
             padding: 30px 60px 20px 60px; /* Reduced paddings to prevent grid row overflow */
             display: grid;
-            grid-template-rows: 100px 1fr auto; /* Reduced header height slightly */
+            grid-template-rows: 100px 1fr 130px; /* Locked footer row height to exactly 130px to prevent clipping */
             grid-template-columns: 1fr 480px;
             gap: 20px; /* Reduced gap from 35px to fit all elements comfortably */
         }
@@ -191,6 +191,7 @@
             justify-content: flex-start; /* Align to top to anchor positions */
             padding-top: 70px; /* Fixed spacing from header */
             padding-right: 60px;
+            min-height: 0; /* Prevent the container from forcing row expansion */
         }
 
         .chapter-heading {
@@ -252,6 +253,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 0; /* Prevent the container from forcing row expansion */
         }
 
         /* Glassmorphic App Box */
