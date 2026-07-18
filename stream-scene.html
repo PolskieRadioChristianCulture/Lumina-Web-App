@@ -206,33 +206,42 @@
 
         .verses-block {
             font-family: 'Playfair Display', serif;
-            font-size: 60px; /* Increased by another 10% (to 60px) for absolute mobile clarity */
-            line-height: 1.55; /* Adjusted for dense, elegant text block */
-            color: #e6e6e6;
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
             max-width: 1200px;
-            min-height: 460px; /* Increased to 460px to hold large 60px text comfortably */
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Center the verse text vertically inside the locked height */
-            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); /* Symmetrical, premium slide-fade */
-            transform: translateY(0);
-            will-change: transform, opacity;
+            height: 460px; /* Strict viewport height */
+            overflow: hidden; /* Hide verses outside window */
+            position: relative;
+            /* Fades text elegantly at the top and bottom of the scroller */
+            mask-image: linear-gradient(to bottom, transparent 0%, #000000 15%, #000000 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000000 15%, #000000 85%, transparent 100%);
         }
 
-        /* Vertical credits-like scroll transitions */
-        .verses-block.fade-out-up {
-            opacity: 0;
-            transform: translateY(-40px); /* Moves upward as it fades out */
+        .credits-scroller {
+            transition: transform 1s linear; /* Constant linear flow synchronized with playback updates */
+            will-change: transform;
+            padding-top: 120px; /* Offsets starting position so first verse reads nicely */
+            padding-bottom: 250px; /* Offsets end position so last verse rolls off screen */
         }
 
-        .verses-block.fade-in-down {
-            opacity: 0;
-            transform: translateY(40px); /* Pre-positions below for sliding up */
+        .scrolling-verse {
+            font-size: 46px; /* Optimized size to stack multiple verses together */
+            line-height: 1.55;
+            color: #ffffff;
+            opacity: 0.3; /* Default unread/past verses are dimmed */
+            margin-bottom: 35px;
+            transition: opacity 0.6s ease, color 0.6s ease, transform 0.6s ease;
+            transform: scale(0.96);
+            transform-origin: left center;
+        }
+
+        .scrolling-verse.active {
+            opacity: 1; /* Highlighted active reading verse */
+            color: #ffffff;
+            transform: scale(1.02); /* Pop out slightly */
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
         }
 
         .verse-num {
-            font-size: 40px; /* Increased by another 10% (to 40px) */
+            font-size: 32px;
             vertical-align: super;
             color: #D4AF37;
             font-weight: 700;
@@ -990,33 +999,49 @@
         function updateScriptureContent(title, percent = 0) {
             if (currentVersesList.length === 0) return;
             
-            // Calculate active verse index based on progress percent
-            const index = Math.floor((percent / 100) * currentVersesList.length);
-            const activeVerse = currentVersesList[Math.min(index, currentVersesList.length - 1)];
-            
-            // Only update DOM if verse changed or station changed
-            if (activeVerse.num !== currentDisplayedVerseNum || title !== lastTitle) {
-                currentDisplayedVerseNum = activeVerse.num;
+            const container = document.getElementById('versesContainer');
+            if (!container) return;
+
+            // 1. Rebuild and reset scroller only when title (audition/chapter) changes
+            if (title !== lastTitle) {
                 lastTitle = title;
+                currentDisplayedVerseNum = -1;
+
+                let html = "";
+                currentVersesList.forEach(v => {
+                    html += `<div class="scrolling-verse" id="verse-${v.num}"><span class="verse-num">${v.num}</span>${v.text}</div>`;
+                });
                 
-                const container = document.getElementById('versesContainer');
-                if (!container) return;
+                container.innerHTML = `<div class="credits-scroller" id="creditsScroller">${html}</div>`;
+            }
+
+            // 2. Highlight active verse corresponding to elapsed progress percentage
+            const activeIndex = Math.min(Math.floor((percent / 100) * currentVersesList.length), currentVersesList.length - 1);
+            const activeVerse = currentVersesList[activeIndex];
+
+            if (activeVerse && activeVerse.num !== currentDisplayedVerseNum) {
+                currentDisplayedVerseNum = activeVerse.num;
+
+                const allVerses = container.querySelectorAll('.scrolling-verse');
+                allVerses.forEach(el => el.classList.remove('active'));
                 
-                // 1. Slide up and fade out the old verse
-                container.classList.add('fade-out-up');
+                const activeEl = document.getElementById(`verse-${activeVerse.num}`);
+                if (activeEl) {
+                    activeEl.classList.add('active');
+                }
+            }
+
+            // 3. Scroll container smoothly according to play progress percentage
+            const scroller = document.getElementById('creditsScroller');
+            if (scroller) {
+                const H = container.clientHeight || 460;
+                const scrollHeight = scroller.scrollHeight;
                 
-                setTimeout(() => {
-                    // 2. Change content and instantly position it down (hidden)
-                    container.innerHTML = `<p><span class="verse-num">${activeVerse.num}</span>${activeVerse.text}</p>`;
-                    container.classList.remove('fade-out-up');
-                    container.classList.add('fade-in-down');
-                    
-                    // Force browser reflow to apply the start position instantly
-                    container.offsetHeight; 
-                    
-                    // 3. Slide up to centered position and fade in
-                    container.classList.remove('fade-in-down');
-                }, 800); // Matches the 0.8s transition duration
+                // Keep scroll value bound, scroll out completely at the end
+                const maxScroll = Math.max(0, scrollHeight - H + 80);
+                const scrollDistance = (percent / 100) * maxScroll;
+                
+                scroller.style.transform = `translateY(-${scrollDistance}px)`;
             }
         }
 
