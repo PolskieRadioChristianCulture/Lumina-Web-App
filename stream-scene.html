@@ -829,6 +829,9 @@
                         // Strip trailing dashes or spaces
                         title = title.replace(/\s*-\s*$/, '').trim();
                         
+                        // Strip anything after underscore (inclusive) for clean display
+                        title = title.split('_')[0].trim();
+                        
                         // Update DOM elements
                         document.getElementById('chapterHeading').textContent = title;
                         document.getElementById('footerTitle').textContent = title;
