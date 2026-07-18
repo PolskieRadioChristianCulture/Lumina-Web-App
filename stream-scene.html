@@ -984,7 +984,7 @@
             }
 
             const rawBookName = match[2].trim();
-            const chapterNum = match[3];
+            const chapterNum = parseInt(match[3], 10); // Parse as integer to strip leading zeros (e.g., "06" -> 6) to prevent API 404s
             
             // Map to Book ID
             let bookId = null;
