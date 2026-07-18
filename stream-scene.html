@@ -214,6 +214,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center; /* Center the verse text vertically inside the locked height */
+            transition: opacity 1.2s ease-in-out; /* Gentle cinematic fade transitions */
         }
 
         .verse-num {
@@ -983,13 +984,12 @@
                 currentDisplayedVerseNum = activeVerse.num;
                 lastTitle = title;
                 
-                const container = document.getElementById('versesContainer');
                 container.style.opacity = 0;
                 
                 setTimeout(() => {
                     container.innerHTML = `<p><span class="verse-num">${activeVerse.num}</span>${activeVerse.text}</p>`;
                     container.style.opacity = 1;
-                }, 500);
+                }, 1200); // 1.2s delay to wait for the smooth fade-out transition
             }
         }
 

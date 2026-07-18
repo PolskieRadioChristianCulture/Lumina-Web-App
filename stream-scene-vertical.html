@@ -226,6 +226,7 @@
             justify-content: center;
             text-align: center;
             flex-grow: 1;
+            transition: opacity 1.2s ease-in-out; /* Gentle cinematic fade transitions */
         }
 
         .verse-num {
@@ -1011,7 +1012,7 @@
                 setTimeout(() => {
                     container.innerHTML = `<p><span class="verse-num">${activeVerse.num}</span>${activeVerse.text}</p>`;
                     container.style.opacity = 1;
-                }, 500);
+                }, 1200); // 1.2s delay to wait for the smooth fade-out transition
             }
         }
 
