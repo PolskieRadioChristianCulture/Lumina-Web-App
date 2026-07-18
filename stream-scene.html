@@ -311,14 +311,15 @@
             font-size: 18px; /* Increased from 14px for far-distance TV readability */
             color: #dcdcdc; /* Brighter gray for higher legibility/contrast */
             margin-top: 15px; /* Reduced from 22px */
-            line-height: 1.4;
+            line-height: 1.45;
             font-weight: 500;
-            max-width: 380px; /* Slightly wider to accommodate larger text */
-            height: 90px; /* Increased from 72px to fit larger text lines */
+            max-width: 400px; /* Slightly wider to accommodate larger text */
+            min-height: 90px; /* Changed to min-height to prevent text from being pushed upwards */
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start; /* Align text from top to prevent overlapping with media above */
             align-items: center;
+            text-align: center;
         }
 
         /* Horizontal divider */
