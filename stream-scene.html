@@ -216,10 +216,8 @@
         }
 
         .credits-scroller {
-            transition: transform 1s linear; /* Constant linear flow synchronized with playback updates */
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); /* Premium ease-out centering animation */
             will-change: transform;
-            padding-top: 120px; /* Offsets starting position so first verse reads nicely */
-            padding-bottom: 250px; /* Offsets end position so last verse rolls off screen */
         }
 
         .scrolling-verse {
@@ -1028,20 +1026,19 @@
                 const activeEl = document.getElementById(`verse-${activeVerse.num}`);
                 if (activeEl) {
                     activeEl.classList.add('active');
-                }
-            }
 
-            // 3. Scroll container smoothly according to play progress percentage
-            const scroller = document.getElementById('creditsScroller');
-            if (scroller) {
-                const H = container.clientHeight || 460;
-                const scrollHeight = scroller.scrollHeight;
-                
-                // Keep scroll value bound, scroll out completely at the end
-                const maxScroll = Math.max(0, scrollHeight - H + 80);
-                const scrollDistance = (percent / 100) * maxScroll;
-                
-                scroller.style.transform = `translateY(-${scrollDistance}px)`;
+                    // 3. Smoothly center the active element in the vertical middle of the viewport H
+                    const scroller = document.getElementById('creditsScroller');
+                    if (scroller) {
+                        const H = container.clientHeight || 460;
+                        const activeTop = activeEl.offsetTop;
+                        const activeHeight = activeEl.offsetHeight || activeEl.clientHeight;
+                        
+                        // Distance calculation to center the active element vertically
+                        const scrollDistance = (activeTop + activeHeight / 2) - (H / 2);
+                        scroller.style.transform = `translateY(-${scrollDistance}px)`;
+                    }
+                }
             }
         }
 
