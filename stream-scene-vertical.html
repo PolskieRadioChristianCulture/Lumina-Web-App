@@ -226,7 +226,20 @@
             justify-content: center;
             text-align: center;
             flex-grow: 1;
-            transition: opacity 1.2s ease-in-out; /* Gentle cinematic fade transitions */
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); /* Symmetrical, premium slide-fade */
+            transform: translateY(0);
+            will-change: transform, opacity;
+        }
+
+        /* Vertical credits-like scroll transitions */
+        .verses-block.fade-out-up {
+            opacity: 0;
+            transform: translateY(-40px); /* Moves upward as it fades out */
+        }
+
+        .verses-block.fade-in-down {
+            opacity: 0;
+            transform: translateY(40px); /* Pre-positions below for sliding up */
         }
 
         .verse-num {
@@ -1007,12 +1020,23 @@
                 lastTitle = title;
                 
                 const container = document.getElementById('versesContainer');
-                container.style.opacity = 0;
+                if (!container) return;
+                
+                // 1. Slide up and fade out the old verse
+                container.classList.add('fade-out-up');
                 
                 setTimeout(() => {
+                    // 2. Change content and instantly position it down (hidden)
                     container.innerHTML = `<p><span class="verse-num">${activeVerse.num}</span>${activeVerse.text}</p>`;
-                    container.style.opacity = 1;
-                }, 1200); // 1.2s delay to wait for the smooth fade-out transition
+                    container.classList.remove('fade-out-up');
+                    container.classList.add('fade-in-down');
+                    
+                    // Force browser reflow to apply the start position instantly
+                    container.offsetHeight; 
+                    
+                    // 3. Slide up to centered position and fade in
+                    container.classList.remove('fade-in-down');
+                }, 800); // Matches the 0.8s transition duration
             }
         }
 
