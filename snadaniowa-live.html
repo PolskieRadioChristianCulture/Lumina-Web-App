@@ -18,9 +18,9 @@
             --gold-dark: #AA7C11;
             --bg-dark: #020203;
             --text-light: #ffffff;
-            --glass-bg: rgba(10, 12, 22, 0.5);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: rgba(0, 0, 0, 0.6);
+            --glass-bg: rgba(10, 14, 26, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-shadow: rgba(0, 0, 0, 0.65);
             --breakfast-accent: #FFCC00;
             --red-live: #E50914;
         }
@@ -50,18 +50,14 @@
             height: 100%;
             object-fit: cover;
             z-index: 1;
-            transition: opacity 2.0s ease-in-out;
-        }
-
-        .bg-video {
-            filter: brightness(0.68) contrast(1.05);
+            transition: opacity 1.5s ease-in-out;
         }
 
         .bg-image {
-            filter: brightness(1.0) contrast(1.02);
+            filter: brightness(0.92) contrast(1.02);
         }
 
-        /* --- CINEMATIC LIGHTING OVERLAYS --- */
+        /* --- OVERLAYS --- */
         .vignette-overlay {
             position: absolute;
             top: 0;
@@ -71,9 +67,8 @@
             z-index: 2;
             pointer-events: none;
             background: 
-                radial-gradient(circle at 80% 20%, rgba(255, 230, 150, 0.05) 0%, transparent 60%),
-                radial-gradient(circle at 10% 80%, rgba(100, 150, 255, 0.03) 0%, transparent 50%),
-                linear-gradient(to top, rgba(3, 3, 3, 0.75) 0%, transparent 20%, transparent 80%, rgba(3, 3, 3, 0.4) 100%);
+                radial-gradient(circle at 80% 20%, rgba(255, 220, 130, 0.04) 0%, transparent 60%),
+                linear-gradient(to top, rgba(3, 3, 3, 0.8) 0%, transparent 20%, transparent 80%, rgba(3, 3, 3, 0.4) 100%);
         }
 
         .sunbeams {
@@ -84,19 +79,19 @@
             height: 100%;
             z-index: 2;
             pointer-events: none;
-            background: linear-gradient(135deg, rgba(255, 220, 130, 0.12) 0%, transparent 55%);
+            background: linear-gradient(135deg, rgba(255, 220, 130, 0.08) 0%, transparent 55%);
             mix-blend-mode: screen;
             animation: drift-light 18s ease-in-out infinite alternate;
         }
 
-        /* --- MAIN VIEWPORT LAYOUT --- */
+        /* --- MAIN LAYOUT GRID --- */
         .emission-grid {
             position: relative;
             z-index: 3;
             width: 1920px;
             height: 1080px;
             display: grid;
-            grid-template-rows: 90px 1fr 85px;
+            grid-template-rows: 100px 1fr 85px;
             grid-template-columns: 1fr;
         }
 
@@ -106,7 +101,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 70px;
-            background: linear-gradient(to bottom, rgba(3, 3, 3, 0.6) 0%, transparent 100%);
+            background: linear-gradient(to bottom, rgba(3, 3, 3, 0.7) 0%, transparent 100%);
         }
 
         .header-brand {
@@ -114,8 +109,8 @@
             align-items: center;
             gap: 12px;
             font-family: 'Cinzel', serif;
-            font-size: 1.15rem;
-            font-weight: 800;
+            font-size: 1.25rem;
+            font-weight: 900;
             letter-spacing: 2px;
             color: #fff;
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
@@ -132,21 +127,20 @@
         }
 
         .tv-station-id {
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 800;
             letter-spacing: 3px;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.7);
             text-transform: uppercase;
-            text-shadow: 0 2px 4px #000;
         }
 
         .live-badge {
             background: var(--red-live);
             color: #fff;
-            padding: 5px 15px;
+            padding: 6px 16px;
             border-radius: 4px;
             font-weight: 900;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             letter-spacing: 2px;
             display: flex;
             align-items: center;
@@ -155,47 +149,50 @@
             animation: pulse-live 2.5s infinite;
         }
 
-        /* --- MAIN PANELS --- */
-        .main-viewport {
-            display: grid;
-            grid-template-columns: 450px 1fr;
-            padding: 15px 70px 0 70px;
-            gap: 50px;
-            align-items: start;
+        .live-badge i {
+            font-size: 0.55rem;
         }
 
-        /* LEFT COLUMN: FLOATING WIDGETS (CLOCK & WEATHER) */
+        /* --- MAIN VIEWPORT --- */
+        .main-viewport {
+            display: grid;
+            grid-template-columns: 440px 1fr;
+            padding: 0 70px;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* LEFT SIDEBAR */
         .left-panel {
             display: flex;
             flex-direction: column;
             gap: 25px;
-            margin-top: 50px;
         }
 
-        /* TV Schedule Widget (Program Dnia) */
+        /* Program Dnia Timeline */
         .schedule-widget {
             background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            border-top: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-top: 1.5px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
-            padding: 20px 24px;
+            padding: 24px;
             box-shadow: 0 15px 35px var(--glass-shadow);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
         }
 
         .widget-title {
             font-family: 'Cinzel', serif;
-            font-size: 0.95rem;
+            font-size: 1.0rem;
             font-weight: 900;
             color: var(--breakfast-accent);
             letter-spacing: 2px;
             text-transform: uppercase;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -204,14 +201,14 @@
         .schedule-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
         }
 
         .schedule-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 4px 0;
+            gap: 15px;
+            padding: 6px 0;
             border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
             transition: all 0.3s;
         }
@@ -225,20 +222,17 @@
             font-size: 0.8rem;
             font-weight: 900;
             color: var(--breakfast-accent);
-            background: rgba(255, 204, 0, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            min-width: 50px;
+            background: rgba(255, 204, 0, 0.12);
+            padding: 3px 8px;
+            border-radius: 5px;
+            min-width: 55px;
             text-align: center;
         }
 
         .schedule-name {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
             color: rgba(255,255,255,0.8);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .schedule-item.active {
@@ -248,7 +242,7 @@
         .schedule-item.active .schedule-time {
             background: var(--breakfast-accent);
             color: #000;
-            box-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
         }
 
         .schedule-item.active .schedule-name {
@@ -256,27 +250,26 @@
             font-weight: 800;
         }
 
-        /* Weather Forecast Widget */
+        /* Weather forecast Widget */
         .weather-widget {
             background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            border-top: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-top: 1.5px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
-            padding: 16px 24px;
+            padding: 20px 24px;
             box-shadow: 0 15px 35px var(--glass-shadow);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 80px;
+            height: 85px;
         }
 
         .weather-info {
             display: flex;
             flex-direction: column;
-            gap: 1px;
-            transition: all 0.5s ease;
+            gap: 2px;
         }
 
         .weather-city {
@@ -284,11 +277,11 @@
             font-weight: 800;
             color: var(--breakfast-accent);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
         }
 
         .weather-temp-desc {
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #fff;
             display: flex;
@@ -297,76 +290,34 @@
         }
 
         .weather-icon {
-            font-size: 2.0rem;
+            font-size: 2.2rem;
             color: #FFD700;
             animation: sun-spin 15s linear infinite;
         }
 
-        /* RIGHT PANEL: DYNAMICAL GRAPHICS CONTAINER */
+        /* RIGHT PANEL: MAIN FLOATING CANVAS CARD */
         .right-panel {
             width: 100%;
-            height: 800px;
+            height: 750px;
             position: relative;
-        }
-
-        /* --- GRAPHIC CARD (ADAPTIVE SYSTEM) --- */
-        .reflection-canvas-card {
-            position: absolute;
-            transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden;
-            box-shadow: 0 25px 60px var(--glass-shadow);
+            align-items: flex-end;
         }
 
-        /* Style A: Presenters Mode (Angled 3D TV Screen on Wall) */
-        body.mode-presenters .reflection-canvas-card {
-            left: 560px; /* Aligns exactly with right wall TV screen */
-            top: 25px;
-            width: 780px;
-            height: 485px;
-            background: rgba(10, 14, 28, 0.48);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1.5px solid rgba(255, 255, 255, 0.12);
-            border-radius: 20px;
-            transform: perspective(1200px) rotateY(-18.5deg) rotateX(1.2deg);
-            transform-origin: left center;
-            padding: 35px 40px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-        }
-
-        /* Style B: Close-up Mode (Centered Flat Card) */
-        body.mode-studio .reflection-canvas-card {
-            left: 280px;
-            top: 80px;
-            width: 900px;
-            height: 650px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px);
-            border: 1.5px solid rgba(255, 255, 255, 0.2);
-            border-radius: 36px;
-            transform: none;
-            padding: 45px 50px;
-        }
-
-        /* Card Widgets Header */
-        .card-header-widgets {
+        /* Clean clock and date outside the main card */
+        .card-clock-widget {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 15px;
-            margin-bottom: 10px;
-            transition: all 0.3s;
-        }
-
-        /* Auto-hide header widgets in 3D TV mode to maximize scripture space */
-        body.mode-presenters .card-header-widgets {
-            padding-bottom: 10px;
-            margin-bottom: 8px;
+            gap: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 10px 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            margin-bottom: 15px;
         }
 
         .card-clock-time {
@@ -378,43 +329,45 @@
             line-height: 1;
             display: flex;
             align-items: center;
-            gap: 4px;
-        }
-
-        body.mode-presenters .card-clock-time {
-            font-size: 1.8rem;
         }
 
         .card-clock-time span.sec {
             font-size: 1.2rem;
             color: var(--breakfast-accent);
             align-self: flex-start;
-            margin-top: 2px;
+            margin-left: 2px;
             font-weight: 700;
         }
 
         .card-clock-date {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.7);
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            margin-top: 2px;
+            border-left: 1.5px solid rgba(255, 255, 255, 0.2);
+            padding-left: 15px;
         }
 
-        .card-cycle-badge {
-            background: rgba(255, 204, 0, 0.1);
-            border: 1px solid var(--breakfast-accent);
-            color: var(--breakfast-accent);
-            font-size: 0.72rem;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 6px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        /* Clean card styling with gold-accent border */
+        .reflection-canvas-card {
+            background: rgba(10, 14, 28, 0.65);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1.5px solid var(--glass-border);
+            border-top: 2.5px solid var(--breakfast-accent);
+            border-radius: 28px;
+            padding: 40px 45px;
+            box-shadow: 0 20px 50px var(--glass-shadow);
+            width: 860px;
+            height: 610px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
         }
 
-        /* Slide text area */
+        /* Slide layout area */
         .canvas-slide-container {
             position: relative;
             flex: 1;
@@ -432,7 +385,7 @@
             justify-content: center;
             opacity: 0;
             transform: translateY(15px);
-            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
         }
 
@@ -443,7 +396,7 @@
         }
 
         .slide-tag {
-            font-size: 0.78rem;
+            font-size: 0.85rem;
             font-weight: 800;
             color: var(--breakfast-accent);
             text-transform: uppercase;
@@ -451,7 +404,7 @@
             margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .slide-tag::after {
@@ -464,32 +417,19 @@
         .slide-title {
             font-family: 'Cinzel', serif;
             font-size: 2.1rem;
-            font-weight: 800;
+            font-weight: 900;
             line-height: 1.25;
             color: #fff;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-            margin-bottom: 12px;
-            transition: font-size 0.3s;
-        }
-
-        /* Shrink title in presenters mode to fit angled screen */
-        body.mode-presenters .slide-title {
-            font-size: 1.6rem;
-            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 15px;
         }
 
         .slide-text {
-            font-size: 1.22rem;
+            font-size: 1.28rem;
             font-weight: 400;
-            line-height: 1.6;
+            line-height: 1.65;
             color: rgba(255, 255, 255, 0.95);
-            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
-            transition: font-size 0.3s;
-        }
-
-        body.mode-presenters .slide-text {
-            font-size: 1.05rem;
-            line-height: 1.5;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
         }
 
         .slide-text strong {
@@ -499,19 +439,14 @@
 
         /* Citation box */
         .bible-citation {
-            border-left: 4px solid var(--breakfast-accent);
+            border-left: 4.5px solid var(--breakfast-accent);
             padding: 12px 18px;
-            margin: 6px 0;
+            margin: 8px 0;
             font-style: italic;
             background: rgba(255, 204, 0, 0.04);
             border-radius: 0 12px 12px 0;
             line-height: 1.6;
             font-size: 1.15rem;
-        }
-
-        body.mode-presenters .bible-citation {
-            font-size: 0.98rem;
-            padding: 8px 14px;
         }
 
         /* Static Program Logo Slide */
@@ -525,27 +460,21 @@
         }
 
         .tv-logo-slide img {
-            max-width: 70%;
+            max-width: 65%;
             max-height: 80%;
             object-fit: contain;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5));
             animation: float-logo 4s ease-in-out infinite;
         }
 
-        /* Pagination & Footer */
+        /* Pagination & card footer */
         .canvas-card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
             padding-top: 15px;
-            margin-top: 8px;
-            transition: all 0.3s;
-        }
-
-        body.mode-presenters .canvas-card-footer {
-            padding-top: 8px;
-            margin-top: 5px;
+            margin-top: 10px;
         }
 
         .slide-pagination {
@@ -568,15 +497,19 @@
             box-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
         }
 
-        .card-footer-branding {
-            font-size: 0.68rem;
+        .card-cycle-badge {
+            background: rgba(255, 204, 0, 0.1);
+            border: 1px solid var(--breakfast-accent);
+            color: var(--breakfast-accent);
+            font-size: 0.72rem;
             font-weight: 800;
-            letter-spacing: 2px;
-            color: rgba(255, 255, 255, 0.35);
+            padding: 4px 12px;
+            border-radius: 6px;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* --- FOOTER MARQUEE --- */
+        /* --- FOOTER DYNAMIC TICKER --- */
         footer {
             display: grid;
             grid-template-columns: 240px 1fr;
@@ -633,6 +566,117 @@
             animation: marquee-scroll 55s linear infinite;
         }
 
+        /* --- OPERATOR CONTROL PANEL --- */
+        .operator-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(10, 10, 10, 0.98);
+            border: 2px solid var(--breakfast-accent);
+            border-radius: 16px;
+            padding: 20px;
+            z-index: 100;
+            width: 400px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            transform: translateX(-420px);
+            opacity: 0;
+        }
+
+        .operator-panel.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .panel-header {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--breakfast-accent);
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-panel-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 6px;
+        }
+
+        .control-group select, .control-group input {
+            width: 100%;
+            background: #181818;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            color: #fff;
+            padding: 8px 12px;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .control-btn {
+            background: var(--breakfast-accent);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 10px 15px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: #ffdb4d;
+        }
+
+        .toggle-panel-trigger {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 99;
+            background: rgba(10, 10, 10, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: rgba(255,255,255,0.7);
+            transition: all 0.3s;
+        }
+
+        .toggle-panel-trigger:hover {
+            color: var(--breakfast-accent);
+            background: rgba(10, 10, 10, 0.95);
+            border-color: var(--breakfast-accent);
+        }
+
         /* --- ANIMATIONS --- */
         @keyframes marquee-scroll {
             0% { transform: translate3d(0, 0, 0); }
@@ -657,14 +701,14 @@
 
         @keyframes float-logo {
             0% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-6px); }
             100% { transform: translateY(0); }
         }
     </style>
 </head>
-<body class="mode-presenters"> <!-- Initial mode matches presenters background -->
+<body>
 
-    <!-- Trigger Cog Panel -->
+    <!-- Cog settings Trigger -->
     <div class="toggle-panel-trigger" id="panelTriggerBtn" title="Panel Sterowania Programem">
         <i class="fa-solid fa-cog"></i>
     </div>
@@ -686,8 +730,8 @@
         <div class="control-group">
             <label for="bgImageSelect">Tło Programu (Obraz / Layout)</label>
             <select id="bgImageSelect">
-                <option value="breakfast_presenters.png">Prezenterki w Studio (Mockup)</option>
-                <option value="breakfast_studio.png">Studio Bliski Kadr (Kawa + Książka)</option>
+                <option value="breakfast_presenters.jpg">Prezenterki w Studio (Mockup)</option>
+                <option value="breakfast_studio.jpg">Studio Bliski Kadr (Kawa + Książka)</option>
                 <option value="breakfast_studio_alt.jpg">Alternatywne Tło Drewniane</option>
             </select>
         </div>
@@ -710,8 +754,8 @@
         <button class="control-btn" id="forceReloadBtn">Zatwierdź i Odśwież</button>
     </div>
 
-    <!-- Background Layer System -->
-    <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="breakfast_presenters.png" alt="Breakfast Studio">
+    <!-- Background Image -->
+    <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="breakfast_presenters.jpg" alt="Breakfast Studio">
     
     <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
     <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
@@ -740,7 +784,7 @@
         <!-- Main Viewport -->
         <main class="main-viewport">
             
-            <!-- Left Panel (Weather, Schedule & Widgets) -->
+            <!-- Left Sidebar -->
             <div class="left-panel">
                 
                 <!-- Floating Sunday agenda widget -->
@@ -776,23 +820,20 @@
 
             </div>
 
-            <!-- Right Panel (Canvas Graphics Card) -->
+            <!-- Right Panel (Info Board & Clock Widget) -->
             <div class="right-panel">
                 
-                <!-- Frog-glass Card (Mapped in 3D over background TV) -->
+                <!-- Floating Clock above the main card (Isolated to prevent overlaps) -->
+                <div class="card-clock-widget">
+                    <div class="card-clock-time">
+                        <span id="timeHour">11</span>:<span id="timeMin">30</span><span class="sec" id="timeSec">00</span>
+                    </div>
+                    <div class="card-clock-date" id="clockDateLabel">Niedziela, 19 Lipca</div>
+                </div>
+
+                <!-- Main Glass Card Container -->
                 <div class="reflection-canvas-card">
                     
-                    <!-- Header inside card -->
-                    <div class="card-header-widgets">
-                        <div class="widgets-left">
-                            <div class="card-clock-time">
-                                <span id="timeHour">09</span>:<span id="timeMin">30</span><span class="sec" id="timeSec">00</span>
-                            </div>
-                            <div class="card-clock-date" id="clockDateLabel">Niedziela, 19 Lipca</div>
-                        </div>
-                        <div class="card-cycle-badge" id="cycleBadge">Dzień 20 | LATO KU BOŻEJ CHWALE</div>
-                    </div>
-
                     <!-- Slide text content area -->
                     <div class="canvas-slide-container" id="slidesContainer">
                         <div class="canvas-slide active">
@@ -802,14 +843,12 @@
                         </div>
                     </div>
 
-                    <!-- Pagination and footer of card -->
+                    <!-- Footer of card -->
                     <div class="canvas-card-footer">
                         <div class="slide-pagination" id="slidePagination">
                             <!-- Dots loaded dynamically -->
                         </div>
-                        <div class="card-footer-branding">
-                            DOBRZE, ŻE JESTEŚ &copy; Christian Culture TV
-                        </div>
+                        <div class="card-cycle-badge" id="cycleBadge">Dzień 20 | LATO KU BOŻEJ CHWALE</div>
                     </div>
 
                 </div>
@@ -842,7 +881,7 @@
             let slideInterval = null;
             let slideDurationMs = 25000;
             
-            let customImgSrc = "breakfast_presenters.png";
+            let customImgSrc = "breakfast_presenters.jpg";
             let customVideoSrc = ""; 
 
             // DOM elements
@@ -927,17 +966,6 @@
                 slideDurationMs = parseInt(localStorage.getItem("dzj_stream_duration"), 10) * 1000;
                 slideDurationInput.value = slideDurationMs / 1000;
             }
-
-            // Apply body styling mode class based on selected background
-            function applyBodyModeClass() {
-                document.body.classList.remove("mode-presenters", "mode-studio");
-                if (customImgSrc.includes("presenters")) {
-                    document.body.classList.add("mode-presenters");
-                } else {
-                    document.body.classList.add("mode-studio");
-                }
-            }
-            applyBodyModeClass();
 
             // Save Operator config
             forceReloadBtn.addEventListener("click", () => {
@@ -1200,9 +1228,6 @@
                 const domSlides = document.querySelectorAll(".canvas-slide");
                 const domDots = document.querySelectorAll(".pagination-dot");
 
-                // Update initial Lower third plate
-                updateLowerThirds(structuredSlides[0]);
-
                 const schedItems = [
                     document.getElementById("sched-1"),
                     document.getElementById("sched-2"),
@@ -1218,12 +1243,10 @@
                     domSlides[activeSlideIndex].classList.add("active");
                     domDots[activeSlideIndex].classList.add("active");
 
-                    updateLowerThirds(structuredSlides[activeSlideIndex]);
-
                     // Highlight dynamic agenda items depending on current active slide
                     schedItems.forEach(item => item.classList.remove("active"));
                     if (activeSlideIndex < 4) {
-                        schedItems[0].classList.add("active"); // Słowo o poranku (Slides 0-3)
+                        schedItems[0].classList.add("active"); // Słowo o poranku
                     } else if (activeSlideIndex === 4) {
                         schedItems[1].classList.add("active"); // Zadanie Taktyczne
                     } else {
@@ -1231,23 +1254,6 @@
                     }
 
                 }, slideDurationMs);
-            }
-
-            function updateLowerThirds(slide) {
-                // In presenters mode, the TV screen does not have a separate lower third widget,
-                // so we update the card-l3-plate description elements
-                const cardL3 = document.getElementById("cardL3");
-                cardL3.style.opacity = "0.2";
-                cardL3.style.transform = "translateX(15px)";
-                cardL3.style.transition = "all 0.4s ease";
-
-                setTimeout(() => {
-                    document.getElementById("l3Title").textContent = slide.l3Title;
-                    document.getElementById("l3Desc").textContent = slide.l3Desc;
-
-                    cardL3.style.opacity = "1";
-                    cardL3.style.transform = "translateX(0)";
-                }, 400);
             }
 
             // Load local reflections database
