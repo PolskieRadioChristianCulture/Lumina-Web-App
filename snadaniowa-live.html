@@ -1294,31 +1294,95 @@
                 return imagePath;
             }
 
-            // Weather forecast city rotation simulation
-            const cities = [
-                { city: "WARSZAWA", desc: "☀️ 25°C / Słonecznie" },
-                { city: "KRAKÓW", desc: "🌤️ 26°C / Ciepły Wiatr" },
-                { city: "OSTROWIEC ŚW.", desc: "☀️ 24°C / Słonecznie" },
-                { city: "GDAŃSK", desc: "☀️ 23°C / Rześka Bryza" },
-                { city: "STALOWA WOLA", desc: "🌤️ 25°C / Słoneczny Dzień" },
-                { city: "WROCŁAW", desc: "☀️ 27°C / Bezchmurnie" },
-                { city: "POZNAŃ", desc: "☀️ 25°C / Ciepło i Czysto" }
-            ];
-            let cityIdx = 0;
-            setInterval(() => {
-                weatherBox.style.opacity = "0";
-                weatherBox.style.transform = "translateY(-10px)";
-                weatherBox.style.transition = "all 0.5s ease";
+            // Helper to get dynamic weather description and temperature based on time of day
+            function getDynamicWeatherForCity(city) {
+                const hour = new Date().getHours();
+                if (hour >= 5 && hour < 18) {
+                    // Daytime weather presets
+                    const dayPresets = {
+                        "WARSZAWA": "☀️ 25°C / Słonecznie",
+                        "KRAKÓW": "🌤️ 26°C / Ciepły Wiatr",
+                        "OSTROWIEC ŚW.": "☀️ 24°C / Słonecznie",
+                        "GDAŃSK": "🌤️ 22°C / Rześka Bryza",
+                        "STALOWA WOLA": "☀️ 25°C / Słoneczny Dzień",
+                        "WROCŁAW": "☀️ 27°C / Bezchmurnie",
+                        "POZNAŃ": "🌤️ 25°C / Ciepło i Czysto"
+                    };
+                    return dayPresets[city] || "☀️ 24°C / Słonecznie";
+                } else if (hour >= 18 && hour < 22) {
+                    // Evening weather presets
+                    const eveningPresets = {
+                        "WARSZAWA": "🌇 20°C / Pogodny Wieczór",
+                        "KRAKÓW": "🌇 21°C / Ciepły Zmierzch",
+                        "OSTROWIEC ŚW.": "☁️ 19°C / Rześki Wieczór",
+                        "GDAŃSK": "🌊 18°C / Rześki Wiatr",
+                        "STALOWA WOLA": "🌇 20°C / Spokojny Wieczór",
+                        "WROCŁAW": "🌇 22°C / Ciepły Zmierzch",
+                        "POZNAŃ": "🌇 20°C / Bezchmurnie"
+                    };
+                    return eveningPresets[city] || "🌇 20°C / Pogodny Wieczór";
+                } else {
+                    // Night weather presets (22:00 - 04:59)
+                    const nightPresets = {
+                        "WARSZAWA": "🌙 16°C / Gwieździsta Noc",
+                        "KRAKÓW": "🌙 17°C / Czyste Niebo",
+                        "OSTROWIEC ŚW.": "🌙 15°C / Chłodna Noc",
+                        "GDAŃSK": "🌙 14°C / Nadmorska Noc",
+                        "STALOWA WOLA": "🌙 15°C / Spokojna Noc",
+                        "WROCŁAW": "🌙 17°C / Ciepła Noc",
+                        "POZNAŃ": "🌙 16°C / Bezchmurnie"
+                    };
+                    return nightPresets[city] || "🌙 15°C / Spokojna Noc";
+                }
+            }
 
-                setTimeout(() => {
-                    cityIdx = (cityIdx + 1) % cities.length;
+            // Weather forecast city rotation simulation
+            const weatherCitiesList = ["WARSZAWA", "KRAKÓW", "OSTROWIEC ŚW.", "GDAŃSK", "STALOWA WOLA", "WROCŁAW", "POZNAŃ"];
+            let cityIdx = 0;
+
+            function updateWeatherDisplay() {
+                const cityName = weatherCitiesList[cityIdx];
+                const weatherBox = document.getElementById("weatherBox");
+                const weatherIcon = document.querySelector(".weather-icon");
+                if (weatherBox) {
+                    const desc = getDynamicWeatherForCity(cityName);
                     weatherBox.innerHTML = `
-                        <span class="weather-city">${cities[cityIdx].city}</span>
-                        <span class="weather-temp-desc">${cities[cityIdx].desc}</span>
+                        <span class="weather-city">${cityName}</span>
+                        <span class="weather-temp-desc">${desc}</span>
                     `;
-                    weatherBox.style.opacity = "1";
-                    weatherBox.style.transform = "translateY(0)";
-                }, 500);
+                    
+                    if (weatherIcon) {
+                        weatherIcon.className = "fa-solid weather-icon"; // Reset
+                        if (desc.includes("☀️")) {
+                            weatherIcon.classList.add("fa-sun");
+                        } else if (desc.includes("🌤️") || desc.includes("☁️")) {
+                            weatherIcon.classList.add("fa-cloud-sun");
+                        } else if (desc.includes("🌇") || desc.includes("🌊")) {
+                            weatherIcon.classList.add("fa-mountain-sun");
+                        } else if (desc.includes("🌙")) {
+                            weatherIcon.classList.add("fa-moon");
+                        } else {
+                            weatherIcon.classList.add("fa-cloud");
+                        }
+                    }
+                }
+            }
+            updateWeatherDisplay(); // Initial load run
+
+            setInterval(() => {
+                const weatherBox = document.getElementById("weatherBox");
+                if (weatherBox) {
+                    weatherBox.style.opacity = "0";
+                    weatherBox.style.transform = "translateY(-10px)";
+                    weatherBox.style.transition = "all 0.5s ease";
+
+                    setTimeout(() => {
+                        cityIdx = (cityIdx + 1) % weatherCitiesList.length;
+                        updateWeatherDisplay();
+                        weatherBox.style.opacity = "1";
+                        weatherBox.style.transform = "translateY(0)";
+                    }, 500);
+                }
             }, 8000);
 
             // Load saved settings
