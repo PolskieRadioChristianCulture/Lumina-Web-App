@@ -1246,15 +1246,22 @@
                         if (currentHour < 15) activeIndex = 0;
                         else if (currentHour === 15) activeIndex = 1;
                         else activeIndex = 2;
-                    } else if (currentHour >= 18 || currentHour < 5) {
-                        // Evening / Night program profile
+                    } else if (currentHour >= 18 && currentHour < 22) {
+                        // Evening program profile
                         times = ["19:30", "21:00", "22:00"];
                         names = ["Słowo na Wieczór", "Wieczorna Modlitwa", "Walka Duchowa"];
-                        if (currentHour >= 18 && currentHour < 21) activeIndex = 0;
+                        if (currentHour < 21) activeIndex = 0;
                         else if (currentHour === 21) activeIndex = 1;
                         else activeIndex = 2;
+                    } else if (currentHour >= 22 || currentHour < 5) {
+                        // Night program profile (22:00 - 05:00)
+                        times = ["22:30", "00:00", "01:30"];
+                        names = ["Słowo na Noc", "Nocne Czuwanie", "Walka Duchowa"];
+                        if (currentHour === 22 || currentHour === 23) activeIndex = 0;
+                        else if (currentHour === 0 || currentHour === 1) activeIndex = 1;
+                        else activeIndex = 2;
                     } else {
-                        // Morning profile active highlights
+                        // Morning profile active highlights (05:00 - 12:00)
                         if (currentHour < 11) activeIndex = 0;
                         else if (currentHour === 11) activeIndex = 1;
                         else activeIndex = 2;
