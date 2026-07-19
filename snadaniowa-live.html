@@ -1775,7 +1775,6 @@
                 }, 4000);
             }
 
-            // Real-time text adapter to customize greetings according to time of day
             function adaptTextToTimeOfDay(text) {
                 const hour = new Date().getHours();
                 let slotText = "w porannym paśmie";
@@ -1784,14 +1783,17 @@
                 if (hour >= 12 && hour < 18) {
                     slotText = "w popołudniowym paśmie";
                     greetingText = "Dzień dobry";
-                } else if (hour >= 18 || hour < 5) {
+                } else if (hour >= 18 && hour < 22) {
                     slotText = "w wieczornym paśmie";
+                    greetingText = "Dobry wieczór";
+                } else if (hour >= 22 || hour < 5) {
+                    slotText = "w nocnym paśmie";
                     greetingText = "Dobry wieczór";
                 }
 
                 return text
-                    .replace(/w porannym paśmie/gi, slotText)
-                    .replace(/Dzień dobry/gi, greetingText);
+                    .replace(/w porannym paśmie|w popołudniowym paśmie|w wieczornym paśmie|w nocnym paśmie/gi, slotText)
+                    .replace(/Dzień dobry|Dobry wieczór|Dobrej nocy/gi, greetingText);
             }
 
             // Render reflections into slides
