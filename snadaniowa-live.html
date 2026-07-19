@@ -1305,7 +1305,7 @@
                 }
 
                 // Check if text is a dialogue script
-                const isDialogue = text.includes("Noemi:") || text.includes("Sara:");
+                const isDialogue = text.includes("**Noemi") || text.includes("**Sara");
 
                 if (isDialogue) {
                     const slides = [];
@@ -1367,13 +1367,12 @@
                                 return;
                             }
 
-                            // Match "**Noemi (description):**" or "**Noemi:**"
-                            const speakerMatch = line.match(/^\*\*(Noemi|Sara|Głos Prowadzących|Noemi i Sara)(.*?)\*\*:(.*)/i);
+                            // Robust matching of speaker name, optional description and colon position
+                            const speakerMatch = line.match(/^\*\*(Noemi|Sara|Głos Prowadzących|Noemi i Sara)\s*(\(.*?\))?\s*(?::\*\*|\*\*:)\s*(.*)/i);
                             if (speakerMatch) {
                                 commitMessage();
                                 currentSender = speakerMatch[1].trim();
                                 if (speakerMatch[2] && speakerMatch[2].trim()) {
-                                    // Append description as smaller label if desired
                                     currentSender += " " + speakerMatch[2].trim();
                                 }
                                 currentMsgText = speakerMatch[3].trim();
