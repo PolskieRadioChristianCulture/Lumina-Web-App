@@ -411,6 +411,32 @@
             transform: none;
         }
 
+        /* --- EVENING / NIGHT LAYOUT OVERRIDES (Swapped columns to prevent presenter overlap) --- */
+        body.evening-layout .main-viewport {
+            grid-template-columns: 1fr 460px; /* Swaps panels (Agenda goes to the right) */
+        }
+
+        body.evening-layout .left-panel {
+            grid-column: 2; /* Move agenda/weather to the right column (covers the TV screen background) */
+        }
+
+        body.evening-layout .right-panel {
+            grid-column: 1; /* Move card/clock to the left column (covers the window background) */
+            align-items: flex-start;
+        }
+
+        body.evening-layout.mode-presenters .reflection-canvas-card {
+            left: 70px; /* Align to the far left (covers the window) */
+            width: 620px; /* Narrower to prevent overlapping Noemi's face */
+            height: 610px;
+            transform: none;
+        }
+
+        body.evening-layout.mode-presenters .card-clock-widget {
+            margin-right: auto;
+            margin-left: 70px; /* Align clock to the far left above the card */
+        }
+
         /* Slide layout area */
         .canvas-slide-container {
             position: relative;
@@ -1256,6 +1282,17 @@
             }
             runScheduleWidgetLoop();
 
+            // Helper to get dynamic background based on time of day
+            function getDynamicBackground(imagePath) {
+                const hour = new Date().getHours();
+                const isEveningOrNight = (hour >= 18 || hour < 5); // From 6 PM to 5 AM
+                
+                if (imagePath === "breakfast_presenters.jpg" && isEveningOrNight) {
+                    return "breakfast_presenters_evening.jpg";
+                }
+                return imagePath;
+            }
+
             // Weather forecast city rotation simulation
             const cities = [
                 { city: "WARSZAWA", desc: "☀️ 25°C / Słonecznie" },
@@ -1283,17 +1320,6 @@
                 }, 500);
             }, 8000);
 
-            // Helper to get dynamic background based on time of day
-            function getDynamicBackground(imagePath) {
-                const hour = new Date().getHours();
-                const isEveningOrNight = (hour >= 18 || hour < 5); // From 6 PM to 5 AM
-                
-                if (imagePath === "breakfast_presenters.jpg" && isEveningOrNight) {
-                    return "breakfast_presenters_evening.jpg";
-                }
-                return imagePath;
-            }
-
             // Load saved settings
             if (localStorage.getItem("dzj_stream_day")) {
                 currentDayIndex = parseInt(localStorage.getItem("dzj_stream_day"), 10);
@@ -1316,7 +1342,16 @@
 
             // Apply body styling mode class based on selected background
             function applyBodyModeClass() {
-                document.body.classList.remove("mode-presenters", "mode-studio");
+                document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout");
+                
+                // Determine if it is evening/night
+                const hour = new Date().getHours();
+                const isEveningOrNight = (hour >= 18 || hour < 5);
+                
+                if (isEveningOrNight) {
+                    document.body.classList.add("evening-layout");
+                }
+
                 if (customImgSrc.includes("presenters")) {
                     document.body.classList.add("mode-presenters");
                 } else {
@@ -1420,6 +1455,15 @@
                 if (agendaActive) {
                     agendaActive.textContent = reflection.title;
                     agendaActive.dataset.customized = "true";
+                }
+                cycleBadge.textContent = `Dzień ${dayNum} | ${cycleTitle}`;
+
+                const text = reflection.fullText;
+                
+                // Format the Sunday agenda widget dynamically
+                const agendaActiveText = document.getElementById("agendaActiveText");
+                if (agendaActiveText) {
+                    agendaActiveText.textContent = reflection.title;
                 }
                 cycleBadge.textContent = `Dzień ${dayNum} | ${cycleTitle}`;
 
