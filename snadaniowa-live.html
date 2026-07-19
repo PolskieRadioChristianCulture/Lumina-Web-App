@@ -1459,15 +1459,7 @@
                 cycleBadge.textContent = `Dzień ${dayNum} | ${cycleTitle}`;
 
                 const text = reflection.fullText;
-                
-                // Format the Sunday agenda widget dynamically
-                const agendaActiveText = document.getElementById("agendaActiveText");
-                if (agendaActiveText) {
-                    agendaActiveText.textContent = reflection.title;
-                }
-                cycleBadge.textContent = `Dzień ${dayNum} | ${cycleTitle}`;
 
-                const text = reflection.fullText;
                 
                 function cleanMarkdown(str) {
                     return str
