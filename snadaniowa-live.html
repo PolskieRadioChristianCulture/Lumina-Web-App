@@ -841,6 +841,52 @@
         </div>
     </div>
 
+    <!-- Toggle controls indicator -->
+    <div class="toggle-panel-trigger" id="panelTriggerBtn" title="Panel Sterowania Programem">
+        <i class="fa-solid fa-cog"></i>
+    </div>
+
+    <!-- Operator controls panel -->
+    <div class="operator-panel" id="operatorPanel">
+        <div class="panel-header">
+            <span>Sterowanie Programem</span>
+            <button class="close-panel-btn" id="closePanelBtn">&times;</button>
+        </div>
+        
+        <div class="control-group">
+            <label for="daySelect">Wybierz Rozważanie (Dzień)</label>
+            <select id="daySelect">
+                <!-- Days loaded dynamically -->
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="bgImageSelect">Tło Programu (Obraz / Layout)</label>
+            <select id="bgImageSelect">
+                <option value="breakfast_presenters.jpg">Prezenterki w Studio (Mockup)</option>
+                <option value="breakfast_studio.jpg">Studio Bliski Kadr (Kawa + Książka)</option>
+                <option value="breakfast_studio_alt.jpg">Alternatywne Tło Drewniane</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="bgVideoSelect">Alternatywne Tło Wideo (Lokalnie)</label>
+            <select id="bgVideoSelect">
+                <option value="">(Brak wideo - Użyj wybranego obrazu tła)</option>
+                <option value="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Projekt bez nazwy (55).mp4">Projekt bez nazwy (55).mp4</option>
+                <option value="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Christian Culture TV (1).mp4">Christian Culture TV (1).mp4</option>
+                <option value="file:///C:/Users/czark/Desktop/Tło LIVE/Projekt bez nazwy (33).mp4">Projekt bez nazwy (33).mp4</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="slideDuration">Czas Slajdu (sekundy)</label>
+            <input type="number" id="slideDuration" value="25" min="10" max="120">
+        </div>
+
+        <button class="control-btn" id="forceReloadBtn">Zatwierdź i Odśwież</button>
+    </div>
+
     <!-- Core Script -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
