@@ -418,11 +418,13 @@
 
         body.evening-layout .left-panel {
             grid-column: 2; /* Move agenda/weather to the right column (covers the TV screen background) */
+            grid-row: 1; /* Force to the first row to prevent vertical row-wrapping */
             margin-top: 60px; /* Reduced from 180px to prevent pushing the layout and cutting off the footer */
         }
 
         body.evening-layout .right-panel {
             grid-column: 1; /* Move card/clock to the left column (covers the window background) */
+            grid-row: 1; /* Force to the first row to prevent vertical row-wrapping */
             align-items: flex-start;
         }
 
