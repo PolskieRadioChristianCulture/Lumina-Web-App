@@ -552,7 +552,8 @@
         }
 
         .l3-ticker-header {
-            background: var(--breakfast-accent); /* Solid gold anchor matching logo */
+            position: relative;
+            background: linear-gradient(135deg, #FFCC00 0%, #FF9900 100%); /* Vibrant gold gradient */
             border-right: 1.5px solid rgba(255, 255, 255, 0.15);
             color: #000000; /* High contrast dark text */
             height: 100%;
@@ -562,21 +563,47 @@
             align-items: center;
             font-weight: 900;
             font-size: 1.35rem;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             z-index: 5;
             box-shadow: 5px 0 15px rgba(0, 0, 0, 0.15);
-            font-family: 'Cinzel', serif;
+            font-family: 'Outfit', sans-serif; /* Modern, clean sans-serif */
             line-height: 1.1;
+            overflow: hidden; /* Cut off shimmer outside bounds */
+        }
+
+        /* Metallic light sweep reflection */
+        .l3-ticker-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(
+                90deg, 
+                rgba(255, 255, 255, 0) 0%, 
+                rgba(255, 255, 255, 0.65) 50%, 
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-20deg);
+            animation: ticker-badge-shine 4s ease-in-out infinite;
+        }
+
+        @keyframes ticker-badge-shine {
+            0% { left: -150%; }
+            35% { left: 150%; }
+            100% { left: 150%; }
         }
 
         .l3-ticker-header span.edition {
             font-family: 'Outfit', sans-serif;
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             font-weight: 800;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             color: rgba(0, 0, 0, 0.7); /* Dark subtext */
             margin-top: 2px;
+            z-index: 6; /* Stay above the shimmer */
         }
 
         .ticker-marquee-wrap {
