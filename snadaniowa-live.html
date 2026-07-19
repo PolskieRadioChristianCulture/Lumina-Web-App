@@ -784,21 +784,21 @@
         }
 
         .chat-avatar {
-            width: 48px;
-            height: 48px;
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
-            border: 2px solid var(--breakfast-accent);
+            border: 2.5px solid var(--breakfast-accent);
             object-fit: cover;
             flex-shrink: 0;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         .chat-bubble {
-            max-width: 80%;
-            border-radius: 16px;
-            padding: 12px 16px;
-            font-size: 1.0rem;
-            line-height: 1.5;
+            max-width: 82%;
+            border-radius: 18px;
+            padding: 14px 20px;
+            font-size: 1.25rem;
+            line-height: 1.55;
             color: rgba(255, 255, 255, 0.95);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
             text-align: left;
@@ -1517,6 +1517,44 @@
                 }
             }
 
+            // Auto Scroll Chat function for long TV dialogue scripts
+            let autoScrollTimeout = null;
+            let autoScrollAnimationFrame = null;
+
+            function autoScrollChat(container, durationMs) {
+                // Clear any existing scroll animations/timeouts
+                if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
+                if (autoScrollAnimationFrame) cancelAnimationFrame(autoScrollAnimationFrame);
+
+                container.scrollTop = 0;
+
+                // Wait a moment for slide transition to settle (1.5s)
+                autoScrollTimeout = setTimeout(() => {
+                    const maxScroll = container.scrollHeight - container.clientHeight;
+                    if (maxScroll <= 0) return;
+
+                    const startTime = performance.now();
+                    const scrollDuration = durationMs - 4500; // Leave 4.5 seconds at the bottom
+
+                    function scrollStep(timestamp) {
+                        const elapsed = timestamp - startTime;
+                        const progress = Math.min(elapsed / scrollDuration, 1);
+                        
+                        // Smooth ease-in-out scrolling curve
+                        const easeProgress = progress < 0.5 
+                            ? 2 * progress * progress 
+                            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+                        container.scrollTop = maxScroll * easeProgress;
+
+                        if (progress < 1) {
+                            autoScrollAnimationFrame = requestAnimationFrame(scrollStep);
+                        }
+                    }
+                    autoScrollAnimationFrame = requestAnimationFrame(scrollStep);
+                }, 1500);
+            }
+
             // Render reflections into slides
             function renderReflection(reflection) {
                 const structuredSlides = buildSlides(reflection);
@@ -1577,6 +1615,19 @@
                 const domSlides = document.querySelectorAll(".canvas-slide");
                 const domDots = document.querySelectorAll(".pagination-dot");
 
+                // Scroll trigger helper for active slides
+                function triggerSlideScroll(index) {
+                    const activeSlide = domSlides[index];
+                    if (!activeSlide) return;
+                    const chatContainer = activeSlide.querySelector(".chat-container");
+                    if (chatContainer) {
+                        autoScrollChat(chatContainer, slideDurationMs);
+                    }
+                }
+
+                // Initial scroll for first slide
+                triggerSlideScroll(0);
+
                 slideInterval = setInterval(() => {
                     domSlides[activeSlideIndex].classList.remove("active");
                     domDots[activeSlideIndex].classList.remove("active");
@@ -1586,6 +1637,7 @@
                     domSlides[activeSlideIndex].classList.add("active");
                     domDots[activeSlideIndex].classList.add("active");
 
+                    triggerSlideScroll(activeSlideIndex);
                 }, slideDurationMs);
             }
 
