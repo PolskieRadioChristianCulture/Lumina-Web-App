@@ -434,6 +434,15 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            white-space: nowrap;
+        }
+
+        .slide-tag span {
+            flex-shrink: 0;
+        }
+
+        .slide-tag i {
+            flex-shrink: 0;
         }
 
         .slide-tag::after {
@@ -441,6 +450,7 @@
             flex: 1;
             height: 1px;
             background: linear-gradient(to right, var(--breakfast-accent), transparent);
+            margin-left: 10px;
         }
 
         .slide-title {
@@ -1272,7 +1282,7 @@
                     slideEl.className = `canvas-slide ${idx === 0 ? 'active' : ''}`;
                     
                     slideEl.innerHTML = `
-                        <div class="slide-tag"><i class="fa-solid fa-mug-hot"></i> ${slideData.tag}</div>
+                        <div class="slide-tag"><i class="fa-solid fa-mug-hot"></i> <span>${slideData.tag}</span></div>
                         <div class="slide-title">${slideData.title}</div>
                         <div class="slide-text">${slideData.text}</div>
                     `;
