@@ -18,9 +18,9 @@
             --gold-dark: #AA7C11;
             --bg-dark: #020203;
             --text-light: #ffffff;
-            --glass-bg: rgba(10, 14, 26, 0.65);
+            --glass-bg: rgba(10, 12, 22, 0.38); /* Unified premium transparent background */
             --glass-border: rgba(255, 255, 255, 0.12);
-            --glass-shadow: rgba(0, 0, 0, 0.65);
+            --glass-shadow: rgba(0, 0, 0, 0.5);
             --breakfast-accent: #FFCC00;
             --red-live: #E50914;
         }
@@ -65,7 +65,7 @@
         }
 
         .bg-image {
-            filter: brightness(0.92) contrast(1.02);
+            filter: brightness(0.95) contrast(1.02);
         }
 
         /* --- OVERLAYS --- */
@@ -178,14 +178,14 @@
             display: flex;
             flex-direction: column;
             gap: 25px;
-            margin-top: 180px;
+            margin-top: 180px; /* Kept low to stay clean */
         }
 
-        /* Program Dnia Timeline */
+        /* Program Dnia Timeline Widget */
         .schedule-widget {
-            background: rgba(10, 12, 22, 0.3);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             border-top: 1.5px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
@@ -264,9 +264,9 @@
 
         /* Weather forecast Widget */
         .weather-widget {
-            background: rgba(10, 12, 22, 0.3);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             border-top: 1.5px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
@@ -307,7 +307,7 @@
             animation: sun-spin 15s linear infinite;
         }
 
-        /* RIGHT PANEL: MAIN FLOATING CANVAS CARD */
+        /* RIGHT PANEL */
         .right-panel {
             width: 100%;
             height: 750px;
@@ -318,13 +318,13 @@
             align-items: flex-end;
         }
 
-        /* Clean clock and date outside the main card */
+        /* Floating Clock Widget */
         .card-clock-widget {
             display: flex;
             align-items: center;
             gap: 20px;
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             border-radius: 16px;
             padding: 10px 25px;
@@ -361,9 +361,9 @@
             padding-left: 15px;
         }
 
-        /* Clean card styling with gold-accent border */
+        /* --- REFLECTION GLASS CARD (ADAPTIVE FLAT LAYOUT) --- */
         .reflection-canvas-card {
-            background: rgba(10, 14, 28, 0.65);
+            background: var(--glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1.5px solid var(--glass-border);
@@ -371,12 +371,29 @@
             border-radius: 28px;
             padding: 40px 45px;
             box-shadow: 0 20px 50px var(--glass-shadow);
-            width: 860px;
-            height: 610px;
+            position: absolute;
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: relative;
+            overflow: hidden;
+        }
+
+        /* Flat overlays in all modes to ensure absolute readability */
+        body.mode-presenters .reflection-canvas-card {
+            left: 450px; /* Shift right to not block presenters */
+            top: 80px;
+            width: 860px;
+            height: 610px;
+            transform: none; /* Removed 3D rotation entirely */
+        }
+
+        body.mode-studio .reflection-canvas-card {
+            left: 280px; /* Centered layout */
+            top: 80px;
+            width: 900px;
+            height: 650px;
+            transform: none;
         }
 
         /* Slide layout area */
@@ -459,24 +476,6 @@
             border-radius: 0 12px 12px 0;
             line-height: 1.6;
             font-size: 1.15rem;
-        }
-
-        /* Static Program Logo Slide */
-        .tv-logo-slide {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-        }
-
-        .tv-logo-slide img {
-            max-width: 65%;
-            max-height: 80%;
-            object-fit: contain;
-            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5));
-            animation: float-logo 4s ease-in-out infinite;
         }
 
         /* Pagination & card footer */
@@ -1022,6 +1021,17 @@
                 slideDurationInput.value = slideDurationMs / 1000;
             }
 
+            // Apply body styling mode class based on selected background
+            function applyBodyModeClass() {
+                document.body.classList.remove("mode-presenters", "mode-studio");
+                if (customImgSrc.includes("presenters")) {
+                    document.body.classList.add("mode-presenters");
+                } else {
+                    document.body.classList.add("mode-studio");
+                }
+            }
+            applyBodyModeClass();
+
             // Save Operator config
             forceReloadBtn.addEventListener("click", () => {
                 localStorage.setItem("dzj_stream_day", daySelect.value);
@@ -1169,9 +1179,7 @@
                     }
                 });
 
-
-
-                // Slide 1: Welcome & Teaser
+                // Slide 1: Welcome & Teaser (Display immediately!)
                 slides.push({
                     type: "content",
                     tag: "Dzień dzisiejszy",
@@ -1249,19 +1257,11 @@
                     const slideEl = document.createElement("div");
                     slideEl.className = `canvas-slide ${idx === 0 ? 'active' : ''}`;
                     
-                    if (slideData.type === "logo") {
-                        slideEl.innerHTML = `
-                            <div class="tv-logo-slide">
-                                <img src="Projekt bez nazwy (64).png" alt="Dobrze, że jesteś logo">
-                            </div>
-                        `;
-                    } else {
-                        slideEl.innerHTML = `
-                            <div class="slide-tag"><i class="fa-solid fa-mug-hot"></i> ${slideData.tag}</div>
-                            <div class="slide-title">${slideData.title}</div>
-                            <div class="slide-text">${slideData.text}</div>
-                        `;
-                    }
+                    slideEl.innerHTML = `
+                        <div class="slide-tag"><i class="fa-solid fa-mug-hot"></i> ${slideData.tag}</div>
+                        <div class="slide-title">${slideData.title}</div>
+                        <div class="slide-text">${slideData.text}</div>
+                    `;
                     slidesContainer.appendChild(slideEl);
 
                     const dotEl = document.createElement("div");
