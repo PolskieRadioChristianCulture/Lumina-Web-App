@@ -62,10 +62,17 @@
             object-fit: cover;
             z-index: 1;
             transition: opacity 1.5s ease-in-out;
+            animation: ken-burns-zoom 36s ease-in-out infinite; /* Slow Ken Burns breathing effect */
         }
 
         .bg-image {
             filter: brightness(0.95) contrast(1.02);
+        }
+
+        @keyframes ken-burns-zoom {
+            0% { transform: scale(1.0); }
+            50% { transform: scale(1.08); } /* Gentle 8% zoom */
+            100% { transform: scale(1.0); }
         }
 
         /* --- OVERLAYS --- */
@@ -194,6 +201,9 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            transform: translateX(0);
+            opacity: 1;
+            transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out; /* Smooth transition for cyclical hiding */
         }
 
         .widget-title {
@@ -938,7 +948,7 @@
                 <div class="left-panel">
                     
                     <!-- Floating Sunday agenda widget -->
-                    <div class="schedule-widget">
+                    <div class="schedule-widget" id="scheduleWidget">
                         <div class="widget-title">
                             <span>PROGRAM DNIA</span>
                             <i class="fa-solid fa-list-ul" style="font-size: 0.85rem;"></i>
@@ -1177,6 +1187,27 @@
             }
             setInterval(updateClock, 1000);
             updateClock();
+
+            // Cyclical schedule widget show/hide loop (35s visible, 55s hidden)
+            function runScheduleWidgetLoop() {
+                const schedWidget = document.getElementById("scheduleWidget");
+                if (!schedWidget) return;
+                
+                setTimeout(() => {
+                    // Slide out to left and fade out
+                    schedWidget.style.opacity = "0";
+                    schedWidget.style.transform = "translateX(-50px)";
+                    
+                    setTimeout(() => {
+                        // Slide back in and fade in
+                        schedWidget.style.opacity = "1";
+                        schedWidget.style.transform = "translateX(0)";
+                        
+                        runScheduleWidgetLoop(); // Loop infinitely
+                    }, 55000); // Stay hidden for 55s
+                }, 35000); // Stay visible for 35s
+            }
+            runScheduleWidgetLoop();
 
             // Weather forecast city rotation simulation
             const cities = [
