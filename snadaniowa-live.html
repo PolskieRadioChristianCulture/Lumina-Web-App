@@ -534,40 +534,48 @@
         footer {
             display: grid;
             grid-template-columns: 240px 1fr;
-            background: rgba(255, 255, 255, 0.82); /* Bright, summery white-glass */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: linear-gradient(-45deg, 
+                rgba(255, 204, 0, 0.45), 
+                rgba(255, 115, 0, 0.35), 
+                rgba(0, 162, 255, 0.35), 
+                rgba(0, 75, 255, 0.35)
+            );
+            background-size: 400% 400%;
+            animation: logo-gradient-shift 15s ease infinite;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border-top: 3px solid var(--breakfast-accent);
             overflow: hidden;
             position: relative;
-            box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.3);
             height: 85px;
         }
 
         .l3-ticker-header {
-            background: var(--breakfast-accent);
-            color: #000000;
+            background: rgba(10, 12, 22, 0.88); /* Deep dark glass anchor */
+            border-right: 1.5px solid rgba(255, 255, 255, 0.08);
+            color: var(--breakfast-accent);
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             font-weight: 900;
-            font-size: 1.05rem;
+            font-size: 1.15rem;
             letter-spacing: 2px;
             text-transform: uppercase;
             z-index: 5;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
             font-family: 'Cinzel', serif;
             line-height: 1.1;
         }
 
         .l3-ticker-header span.edition {
             font-family: 'Outfit', sans-serif;
-            font-size: 0.62rem;
+            font-size: 0.65rem;
             font-weight: 800;
             letter-spacing: 1.5px;
-            color: rgba(0, 0, 0, 0.6);
+            color: rgba(255, 255, 255, 0.7);
             margin-top: 2px;
         }
 
@@ -581,12 +589,19 @@
         .ticker-marquee-text {
             display: inline-block;
             white-space: nowrap;
-            font-size: 1.15rem;
-            font-weight: 700;
+            font-size: 1.4rem; /* Increased font size for legibility */
+            font-weight: 800;
             letter-spacing: 0.5px;
-            color: #111111; /* Dark text for high contrast on light background */
+            color: #ffffff; /* Bright white text */
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
             padding-left: 100%;
             animation: marquee-scroll 55s linear infinite;
+        }
+
+        @keyframes logo-gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* --- OPERATOR CONTROL PANEL --- */
