@@ -1225,8 +1225,10 @@
                         tickerEdition.textContent = "WYDANIE PORANNE";
                     } else if (currentHour >= 12 && currentHour < 18) {
                         tickerEdition.textContent = "WYDANIE POPOŁUDNIOWE";
-                    } else {
+                    } else if (currentHour >= 18 && currentHour < 22) {
                         tickerEdition.textContent = "WYDANIE WIECZORNE";
+                    } else {
+                        tickerEdition.textContent = "WYDANIE NOCNE";
                     }
                 }
             }
