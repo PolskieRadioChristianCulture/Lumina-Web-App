@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niedzielny Poranek - Dobrze, że jesteś | Christian Culture TV</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #F3E5AB;
+            --gold-dark: #AA7C11;
+            --bg-dark: #030303;
+            --text-light: #ffffff;
+            --glass-bg: rgba(10, 10, 10, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: rgba(0, 0, 0, 0.5);
+            --breakfast-accent: #FFCC00;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+        }
+
+        /* --- BACKGROUND SYSTEM --- */
+        .bg-slideshow, .bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            transition: opacity 2.0s ease-in-out;
+            filter: brightness(0.4) contrast(1.05) saturate(0.95);
+        }
+
+        .vignette-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(255, 200, 100, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 90% 80%, rgba(100, 150, 255, 0.05) 0%, transparent 45%),
+                linear-gradient(to top, rgba(3, 3, 3, 0.95) 0%, rgba(3, 3, 3, 0.1) 40%, rgba(3, 3, 3, 0.1) 70%, rgba(3, 3, 3, 0.85) 100%);
+        }
+
+        /* --- GRID EMISSION CONTAINER --- */
+        .emission-grid {
+            position: relative;
+            z-index: 3;
+            width: 1920px;
+            height: 1080px;
+            display: grid;
+            grid-template-rows: 110px 1fr 100px;
+            grid-template-columns: 1fr;
+        }
+
+        /* --- HEADER AREA --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 60px;
+            background: linear-gradient(to bottom, rgba(3, 3, 3, 0.8) 0%, transparent 100%);
+        }
+
+        .header-logo-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-img-wrapper {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--gold-primary);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            background: #000;
+        }
+
+        .logo-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .program-title-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .program-main-tag {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--text-light);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .program-sub-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--breakfast-accent);
+            text-transform: uppercase;
+            margin-top: -2px;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        .live-indicator-badge {
+            background: #ff0000;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
+            animation: pulse-glow 2s infinite;
+        }
+
+        .live-indicator-badge i {
+            font-size: 0.55rem;
+        }
+
+        /* --- MAIN VIEWPORT --- */
+        .main-viewport {
+            display: grid;
+            grid-template-columns: 580px 1fr;
+            padding: 20px 60px 0 60px;
+            gap: 50px;
+            align-items: start;
+        }
+
+        /* --- LEFT SIDEBAR (CLOCK & LOWER THIRDS) --- */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* Breakfast Glass Widget */
+        .glass-clock-widget {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 0 15px 35px var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .clock-time {
+            font-size: 3.2rem;
+            font-weight: 900;
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -1px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .clock-time span.sec {
+            font-size: 1.8rem;
+            color: var(--breakfast-accent);
+            align-self: flex-start;
+            margin-top: 5px;
+        }
+
+        .clock-date {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.75);
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 10px;
+            text-transform: uppercase;
+        }
+
+        .cycle-badge {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1.5px solid var(--gold-primary);
+            color: var(--gold-light);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-top: 2px;
+            letter-spacing: 1px;
+        }
+
+        /* Breakfast TV Lower Thirds (Belki) */
+        .lower-thirds-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .l3-main-plate {
+            background: linear-gradient(90deg, #111 0%, rgba(20, 20, 20, 0.9) 70%, transparent 100%);
+            border-left: 6px solid var(--breakfast-accent);
+            padding: 18px 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            transform: translateX(-50px);
+            opacity: 0;
+            animation: slide-in-l3 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .l3-title {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--breakfast-accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
+        }
+
+        .l3-desc {
+            font-family: 'Cinzel', serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: 1px;
+            line-height: 1.25;
+        }
+
+        .l3-sub-plate {
+            background: linear-gradient(90deg, var(--gold-dark) 0%, rgba(170, 124, 17, 0.85) 70%, transparent 100%);
+            border-left: 6px solid #fff;
+            padding: 10px 24px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #fff;
+            text-transform: uppercase;
+            transform: translateX(-50px);
+            opacity: 0;
+            animation: slide-in-l3 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- RIGHT CONTENT CANVAS (GLASS CARD) --- */
+        .right-panel {
+            width: 100%;
+            height: 650px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .reflection-canvas-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 36px;
+            padding: 55px;
+            box-shadow: 0 25px 55px var(--glass-shadow);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas-slide-container {
+            position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .canvas-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .canvas-slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .slide-tag {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--breakfast-accent);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slide-tag::after {
+            content: '';
+            flex: 1;
+            height: 1.5px;
+            background: linear-gradient(to right, var(--breakfast-accent), transparent);
+        }
+
+        .slide-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.25;
+            color: #fff;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            margin-bottom: 25px;
+        }
+
+        .slide-text {
+            font-size: 1.45rem;
+            font-weight: 400;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.92);
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .slide-text strong {
+            color: var(--breakfast-accent);
+            font-weight: 700;
+        }
+
+        /* Special Citation Look */
+        .bible-citation {
+            border-left: 5px solid var(--breakfast-accent);
+            padding-left: 25px;
+            margin: 15px 0;
+            font-style: italic;
+            background: rgba(255, 204, 0, 0.05);
+            padding: 20px 25px;
+            border-radius: 0 20px 20px 0;
+        }
+
+        /* Footer inside Card */
+        .canvas-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 25px;
+            margin-top: 20px;
+        }
+
+        .slide-pagination {
+            display: flex;
+            gap: 8px;
+        }
+
+        .pagination-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .pagination-dot.active {
+            width: 28px;
+            border-radius: 4px;
+            background: var(--breakfast-accent);
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+        }
+
+        .card-footer-branding {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+        }
+
+        /* --- FOOTER (TICKER) --- */
+        footer {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(to top, rgba(3, 3, 3, 0.9) 0%, rgba(3, 3, 3, 0.5) 100%);
+            border-top: 1.5px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ticker-header-badge {
+            background: var(--breakfast-accent);
+            color: #000;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 35px;
+            font-weight: 900;
+            font-size: 1.05rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            z-index: 5;
+            box-shadow: 10px 0 25px rgba(0, 0, 0, 0.5);
+            font-family: 'Cinzel', serif;
+        }
+
+        .ticker-marquee-wrap {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .ticker-marquee-text {
+            display: inline-block;
+            white-space: nowrap;
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.85);
+            padding-left: 100%;
+            animation: marquee-scroll 45s linear infinite;
+        }
+
+        /* --- CONTROL OVERLAY --- */
+        .operator-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(10, 10, 10, 0.95);
+            border: 2px solid var(--breakfast-accent);
+            border-radius: 16px;
+            padding: 20px;
+            z-index: 100;
+            width: 380px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            transform: translateX(-400px);
+            opacity: 0;
+        }
+
+        .operator-panel.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .panel-header {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--breakfast-accent);
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-panel-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 6px;
+        }
+
+        .control-group select, .control-group input {
+            width: 100%;
+            background: #222;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            color: #fff;
+            padding: 8px 12px;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .control-btn {
+            background: var(--breakfast-accent);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 10px 15px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: #ffdb4d;
+        }
+
+        .toggle-panel-trigger {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 99;
+            background: rgba(10, 10, 10, 0.7);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: rgba(255,255,255,0.6);
+            transition: all 0.3s;
+        }
+
+        .toggle-panel-trigger:hover {
+            color: var(--breakfast-accent);
+            background: rgba(10, 10, 10, 0.9);
+            border-color: var(--breakfast-accent);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes marquee-scroll {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.4); opacity: 0.9; }
+            50% { box-shadow: 0 0 18px rgba(255, 0, 0, 0.8); opacity: 1; }
+            100% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.4); opacity: 0.9; }
+        }
+
+        @keyframes slide-in-l3 {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Toggle controls indicator -->
+    <div class="toggle-panel-trigger" id="panelTriggerBtn" title="Panel Sterowania Programem">
+        <i class="fa-solid fa-cog"></i>
+    </div>
+
+    <!-- Operator controls panel -->
+    <div class="operator-panel" id="operatorPanel">
+        <div class="panel-header">
+            <span>Sterowanie Programem</span>
+            <button class="close-panel-btn" id="closePanelBtn">&times;</button>
+        </div>
+        
+        <div class="control-group">
+            <label for="daySelect">Wybierz Rozważanie (Dzień)</label>
+            <select id="daySelect">
+                <!-- Days will be loaded dynamically -->
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="bgVideoSelect">Wideo w Tle (Ścieżka)</label>
+            <select id="bgVideoSelect">
+                <option value="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Projekt bez nazwy (55).mp4">Projekt bez nazwy (55).mp4 (Domyślny)</option>
+                <option value="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Christian Culture TV (1).mp4">Christian Culture TV (1).mp4</option>
+                <option value="file:///C:/Users/czark/Desktop/Tło LIVE/Projekt bez nazwy (33).mp4">Projekt bez nazwy (33).mp4</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="slideDuration">Czas Slajdu (sekundy)</label>
+            <input type="number" id="slideDuration" value="25" min="10" max="120">
+        </div>
+
+        <button class="control-btn" id="forceReloadBtn">Zatwierdź i Odśwież</button>
+    </div>
+
+    <!-- Background Crossfade System -->
+    <video id="bg-video-1" class="bg-video" style="opacity: 0;" muted playsinline></video>
+    <video id="bg-video-2" class="bg-video" style="opacity: 0;" muted playsinline></video>
+
+    <img id="bg-slideshow-1" class="bg-slideshow" style="opacity: 1;" src="bg_slideshow_1.jpg" alt="Background fallback 1">
+    <img id="bg-slideshow-2" class="bg-slideshow" style="opacity: 0;" src="bg_slideshow_2.jpg" alt="Background fallback 2">
+
+    <div class="vignette-overlay"></div>
+
+    <!-- Dynamic Canvas -->
+    <div class="emission-grid">
+        
+        <!-- Header -->
+        <header>
+            <div class="header-logo-group">
+                <div class="logo-img-wrapper">
+                    <!-- Dynamic local fallback to Dobrze Ze Jestes header image -->
+                    <img src="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Christian Culture TV.png" onerror="this.src='dzj-logo.jpg'" alt="Dobrze, że jesteś logo">
+                </div>
+                <div class="program-title-container">
+                    <div class="program-main-tag">Dobrze, że jesteś</div>
+                    <div class="program-sub-tag">Wydanie Niedzielne</div>
+                </div>
+            </div>
+            
+            <div class="live-indicator-badge">
+                <i class="fa-solid fa-circle"></i> TRANSMISJA LIVE
+            </div>
+        </header>
+
+        <!-- Main Viewport -->
+        <main class="main-viewport">
+            
+            <!-- Left Panel (Widgets & Belki) -->
+            <div class="left-panel">
+                
+                <!-- Digital Clock & Date Info -->
+                <div class="glass-clock-widget">
+                    <div class="clock-time">
+                        <span id="timeHour">09</span>:<span id="timeMin">30</span><span class="sec" id="timeSec">00</span>
+                    </div>
+                    <div class="clock-date" id="clockDateLabel">Niedziela, 19 Lipca</div>
+                    <div class="cycle-badge" id="cycleBadge">Dzień 20: Lato ku Bożej Chwale</div>
+                </div>
+
+                <!-- Lower Thirds (Śniadaniowe) -->
+                <div class="lower-thirds-container" id="lowerThirds">
+                    <div class="l3-main-plate" id="l3Main">
+                        <div class="l3-title" id="l3Title">SŁOWO O PORANKU</div>
+                        <div class="l3-desc" id="l3Desc">Zaczynamy niedzielne rozważanie</div>
+                    </div>
+                    <div class="l3-sub-plate" id="l3Sub">
+                        <i class="fa-solid fa-clock-rotate-left"></i> <span id="l3SubText">Program 24/7 Christian Culture</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Panel (Canvas Slide Card) -->
+            <div class="right-panel">
+                <div class="reflection-canvas-card">
+                    <div class="canvas-slide-container" id="slidesContainer">
+                        <!-- Slides will be loaded dynamically here -->
+                        <div class="canvas-slide active">
+                            <div class="slide-tag">Program Śniadaniowy</div>
+                            <div class="slide-title">Trwa ładowanie rozważań...</div>
+                            <div class="slide-text">Proszę czekać, system pobiera najnowszy katalog rozważań „Dobrze, że jesteś”...</div>
+                        </div>
+                    </div>
+
+                    <div class="canvas-card-footer">
+                        <div class="slide-pagination" id="slidePagination">
+                            <!-- Dots will be loaded dynamically -->
+                        </div>
+                        <div class="card-footer-branding" id="cardFooterBranding">
+                            DOBRZE, ŻE JESTEŚ &copy; 2026
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer Ticker -->
+        <footer>
+            <div class="ticker-header-badge">
+                INFO
+            </div>
+            <div class="ticker-marquee-wrap">
+                <span class="ticker-marquee-text" id="marqueeText">
+                    <span style="background: #FFCC00; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">NADAWAJ TĄ TRANSMISJĘ Z CHRISTIAN CULTURE - szczegóły na www.polskieradio.cc</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📖 BEZPŁATNA BIBLIA DLA KAŻDEGO — wyślij SMS o treści: <strong>BIBLIA</strong> pod numer <strong>530 736 155</strong>. Egzemplarz Pisma Świętego jest darmowy, zamawiający pokrywa jedynie koszt przesyłki! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 DOŁĄCZ NA WHATSAPP — buduj społeczność modlitewną i otrzymuj codzienne inspiracje bezpośrednio na telefon! Szczegóły w bocznej ramce &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 WESPRZYJ MISJĘ CHRISTIAN CULTURE — pomóż nam docierać z Ewangelią dalej! Szczegóły wsparcia na Patronite: patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Dziękujemy partnerom misji za każde wsparcie i modlitwę!
+                </span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Core logic script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // State
+            let reflectionsData = [];
+            let currentDayIndex = 0; // Index of the reflection currently displayed
+            let activeSlideIndex = 0;
+            let slideInterval = null;
+            let slideDurationMs = 25000;
+            let customVideoSrc = "file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Projekt bez nazwy (55).mp4";
+
+            // DOM elements
+            const opPanel = document.getElementById("operatorPanel");
+            const panelTriggerBtn = document.getElementById("panelTriggerBtn");
+            const closePanelBtn = document.getElementById("closePanelBtn");
+            const daySelect = document.getElementById("daySelect");
+            const bgVideoSelect = document.getElementById("bgVideoSelect");
+            const slideDurationInput = document.getElementById("slideDuration");
+            const forceReloadBtn = document.getElementById("forceReloadBtn");
+
+            const slidesContainer = document.getElementById("slidesContainer");
+            const slidePagination = document.getElementById("slidePagination");
+
+            const l3Title = document.getElementById("l3Title");
+            const l3Desc = document.getElementById("l3Desc");
+            const l3SubText = document.getElementById("l3SubText");
+            const cycleBadge = document.getElementById("cycleBadge");
+
+            // Operator panel toggling
+            panelTriggerBtn.addEventListener("click", () => opPanel.classList.add("visible"));
+            closePanelBtn.addEventListener("click", () => opPanel.classList.remove("visible"));
+
+            // Clock update loop
+            function updateClock() {
+                const now = new Date();
+                const hr = String(now.getHours()).padStart(2, '0');
+                const min = String(now.getMinutes()).padStart(2, '0');
+                const sec = String(now.getSeconds()).padStart(2, '0');
+                
+                document.getElementById("timeHour").textContent = hr;
+                document.getElementById("timeMin").textContent = min;
+                document.getElementById("timeSec").textContent = sec;
+
+                // Format Sunday breakfast TV style date:
+                const days = ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"];
+                const months = ["Stycznia", "Lutego", "Marca", "Kwietnia", "Maja", "Czerwca", "Lipca", "Sierpnia", "Września", "Października", "Listopada", "Grudnia"];
+                
+                document.getElementById("clockDateLabel").textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
+            }
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            // Load Config from localStorage
+            if (localStorage.getItem("dzj_stream_day")) {
+                currentDayIndex = parseInt(localStorage.getItem("dzj_stream_day"), 10);
+            }
+            if (localStorage.getItem("dzj_stream_video")) {
+                customVideoSrc = localStorage.getItem("dzj_stream_video");
+                bgVideoSelect.value = customVideoSrc;
+            }
+            if (localStorage.getItem("dzj_stream_duration")) {
+                slideDurationMs = parseInt(localStorage.getItem("dzj_stream_duration"), 10) * 1000;
+                slideDurationInput.value = slideDurationMs / 1000;
+            }
+
+            // Apply Operator override configurations
+            forceReloadBtn.addEventListener("click", () => {
+                const selectedDay = parseInt(daySelect.value, 10);
+                const selectedVideo = bgVideoSelect.value;
+                const selectedDur = parseInt(slideDurationInput.value, 10) * 1000;
+
+                localStorage.setItem("dzj_stream_day", selectedDay);
+                localStorage.setItem("dzj_stream_video", selectedVideo);
+                localStorage.setItem("dzj_stream_duration", selectedDur / 1000);
+
+                window.location.reload();
+            });
+
+            // Initialize Background Loop (Dual crossfading videos)
+            const v1 = document.getElementById("bg-video-1");
+            const v2 = document.getElementById("bg-video-2");
+            let activeVideo = v1;
+            let inactiveVideo = v2;
+            let isVideoTransitioning = false;
+
+            function checkVideoProgress() {
+                if (this !== activeVideo) return;
+                const remaining = this.duration - this.currentTime;
+                if (remaining <= 2.0 && !isVideoTransitioning && this.duration > 0) {
+                    isVideoTransitioning = true;
+                    inactiveVideo.currentTime = 0;
+                    inactiveVideo.play().then(() => {
+                        activeVideo.style.opacity = 0;
+                        inactiveVideo.style.opacity = 1;
+                        setTimeout(() => {
+                            activeVideo.pause();
+                            const temp = activeVideo;
+                            activeVideo = inactiveVideo;
+                            inactiveVideo = temp;
+                            isVideoTransitioning = false;
+                        }, 1500);
+                    }).catch(e => {
+                        console.warn(e);
+                        isVideoTransitioning = false;
+                    });
+                }
+            }
+
+            function initVideoBackground() {
+                const isLocal = window.location.protocol === "file:";
+                if (isLocal) {
+                    v1.src = customVideoSrc;
+                    v2.src = customVideoSrc;
+                    v1.load();
+                    v2.load();
+
+                    let videoTimeout = setTimeout(() => {
+                        console.warn("Video timed out. Using image fallback.");
+                        startFallbackSlideshow();
+                    }, 4000);
+
+                    v1.addEventListener("canplaythrough", () => {
+                        clearTimeout(videoTimeout);
+                        document.getElementById("bg-slideshow-1").style.display = "none";
+                        document.getElementById("bg-slideshow-2").style.display = "none";
+                        activeVideo.style.opacity = 1;
+                        activeVideo.play().catch(e => console.warn(e));
+                        v1.addEventListener("timeupdate", checkVideoProgress);
+                        v2.addEventListener("timeupdate", checkVideoProgress);
+                    }, { once: true });
+
+                    v1.addEventListener("error", () => {
+                        clearTimeout(videoTimeout);
+                        startFallbackSlideshow();
+                    }, { once: true });
+                } else {
+                    startFallbackSlideshow();
+                }
+            }
+
+            function startFallbackSlideshow() {
+                const slide1 = document.getElementById("bg-slideshow-1");
+                const slide2 = document.getElementById("bg-slideshow-2");
+                const slides = ["bg_slideshow_1.jpg", "bg_slideshow_2.jpg", "bg_slideshow_3.jpg"];
+                let idx = 0;
+                let active = slide1;
+                let inactive = slide2;
+
+                setInterval(() => {
+                    idx = (idx + 1) % slides.length;
+                    inactive.src = slides[idx];
+                    active.style.opacity = 0;
+                    inactive.style.opacity = 1;
+                    
+                    const temp = active;
+                    active = inactive;
+                    inactive = temp;
+                }, 12000);
+            }
+
+            // Parse & Format reflection paragraphs into structured slides
+            function buildSlides(reflection) {
+                if (!reflection) return;
+
+                // Cycle header clean tag
+                let cycleTitle = "Lato ku Bożej Chwale";
+                if (reflection.id.includes("wakacje") || reflection.fullText.includes("wakacje")) {
+                    cycleTitle = "Misja Wakacje";
+                }
+                cycleBadge.textContent = `${reflection.dayOfWeek} | ${cycleTitle}`;
+
+                const slides = [];
+
+                // Extract quote, zadanie and prayer/blessing from the full text
+                const text = reflection.fullText;
+                
+                // Helper to clean Markdown elements
+                function cleanMarkdown(str) {
+                    return str
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                        .trim();
+                }
+
+                // Split text into paragraphs
+                const rawParagraphs = text.split("\n").map(p => p.trim()).filter(p => p.length > 0);
+                
+                let introText = [];
+                let bibleQuote = "";
+                let zadanieText = "";
+                let modlitwaText = "";
+                let blogoslawienstwoText = "";
+
+                let captureState = "intro"; // intro, bible, zadanie, modlitwa, blogoslawienstwo
+
+                rawParagraphs.forEach(para => {
+                    const cleanPara = para.toLowerCase();
+                    if (cleanPara.startsWith("jezus mówi dziś") || cleanPara.startsWith("jezus mowila") || cleanPara.includes("jezus mówi")) {
+                        captureState = "bible";
+                        return;
+                    }
+                    if (cleanPara.startsWith("zadanie taktyczne:") || cleanPara.startsWith("zadanie:")) {
+                        captureState = "zadanie";
+                        return;
+                    }
+                    if (cleanPara.startsWith("modlitwa bojowa:") || cleanPara.startsWith("modlitwa:")) {
+                        captureState = "modlitwa";
+                        return;
+                    }
+                    if (cleanPara.startsWith("błogosławieństwo:") || cleanPara.startsWith("blogoslawienstwo:")) {
+                        captureState = "blogoslawienstwo";
+                        return;
+                    }
+                    if (cleanPara.includes("dziękuję, że jesteś") || cleanPara.startsWith("baza i wzrost") || cleanPara.startsWith("sms:") || cleanPara.startsWith("apps:")) {
+                        // ignore branding footers in main slides
+                        return;
+                    }
+
+                    // Append depending on current capture block
+                    if (captureState === "intro") {
+                        introText.push(para);
+                    } else if (captureState === "bible") {
+                        bibleQuote += para + " ";
+                    } else if (captureState === "zadanie") {
+                        zadanieText += para + " ";
+                    } else if (captureState === "modlitwa") {
+                        modlitwaText += para + " ";
+                    } else if (captureState === "blogoslawienstwo") {
+                        blogoslawienstwoText += para + " ";
+                    }
+                });
+
+                // Slide 1: Welcome & Teaser
+                slides.push({
+                    tag: "Dzień dzisiejszy",
+                    title: reflection.title,
+                    text: cleanMarkdown(reflection.teaser),
+                    l3Title: "ROZWAŻANIE DNIA",
+                    l3Desc: reflection.title,
+                    l3Sub: "DOBRZE, ŻE JESTEŚ"
+                });
+
+                // Slide 2+: Intro paragraphs (Max 2 paragraphs per slide for readability)
+                for (let i = 0; i < introText.length; i += 2) {
+                    const chunk = introText.slice(i, i + 2).join("<br><br>");
+                    slides.push({
+                        tag: "Słowo Wprowadzenia",
+                        title: "Duchowy Horyzont",
+                        text: cleanMarkdown(chunk),
+                        l3Title: "SŁOWO PORANKU",
+                        l3Desc: "Zatrzymaj się i posłuchaj",
+                        l3Sub: reflection.title
+                    });
+                }
+
+                // Slide Quote
+                if (bibleQuote) {
+                    slides.push({
+                        tag: "Słowo Pana",
+                        title: "Jezus mówi do Ciebie",
+                        text: `<div class="bible-citation">${cleanMarkdown(bibleQuote)}</div>`,
+                        l3Title: "SŁOWO Z EWANGELII",
+                        l3Desc: "Otwórz serce na Słowo",
+                        l3Sub: "Mówi do Ciebie Jezus"
+                    });
+                }
+
+                // Slide Zadanie Taktyczne
+                if (zadanieText) {
+                    slides.push({
+                        tag: "Zadanie Taktyczne",
+                        title: "Wejdź w działanie",
+                        text: `<strong>Twoja dzisiejsza misja:</strong><br>${cleanMarkdown(zadanieText)}`,
+                        l3Title: "MISJA PORANKA",
+                        l3Desc: "Czas na zadanie taktyczne",
+                        l3Sub: "Wytyczne Dowództwa"
+                    });
+                }
+
+                // Slide Modlitwa Bojowa / Błogosławieństwo
+                const finalTexts = [];
+                if (modlitwaText) finalTexts.push(`<strong>Modlitwa:</strong> ${cleanMarkdown(modlitwaText)}`);
+                if (blogoslawienstwoText) finalTexts.push(`<strong>Błogosławieństwo:</strong> ${cleanMarkdown(blogoslawienstwoText)}`);
+
+                if (finalTexts.length > 0) {
+                    slides.push({
+                        tag: "Oręż Modlitewny",
+                        title: "Zabezpiecz swój dzień",
+                        text: finalTexts.join("<br><br>"),
+                        l3Title: "MODLITWA & BŁOGOSŁAWIEŃSTWO",
+                        l3Desc: "Front Modlitewny",
+                        l3Sub: "Bóg osłania Twoje plecy"
+                    });
+                }
+
+                return slides;
+            }
+
+            // Render reflections database and update slides DOM
+            function renderReflection(reflection) {
+                const structuredSlides = buildSlides(reflection);
+                if (!structuredSlides || structuredSlides.length === 0) return;
+
+                // Clear old DOM
+                slidesContainer.innerHTML = "";
+                slidePagination.innerHTML = "";
+
+                structuredSlides.forEach((slideData, idx) => {
+                    // Create slide element
+                    const slideEl = document.createElement("div");
+                    slideEl.className = `canvas-slide ${idx === 0 ? 'active' : ''}`;
+                    slideEl.innerHTML = `
+                        <div class="slide-tag"><i class="fa-solid fa-sun"></i> ${slideData.tag}</div>
+                        <div class="slide-title">${slideData.title}</div>
+                        <div class="slide-text">${slideData.text}</div>
+                    `;
+                    slidesContainer.appendChild(slideEl);
+
+                    // Create pagination dot
+                    const dotEl = document.createElement("div");
+                    dotEl.className = `pagination-dot ${idx === 0 ? 'active' : ''}`;
+                    slidePagination.appendChild(dotEl);
+                });
+
+                // Init active slide index
+                activeSlideIndex = 0;
+
+                // Clear existing loop timer
+                if (slideInterval) clearInterval(slideInterval);
+
+                // Set up slide rotation loop
+                const domSlides = document.querySelectorAll(".canvas-slide");
+                const domDots = document.querySelectorAll(".pagination-dot");
+
+                // Show first slide Lower Thirds metadata instantly
+                updateLowerThirds(structuredSlides[0]);
+
+                slideInterval = setInterval(() => {
+                    // Transition out
+                    domSlides[activeSlideIndex].classList.remove("active");
+                    domDots[activeSlideIndex].classList.remove("active");
+
+                    activeSlideIndex = (activeSlideIndex + 1) % domSlides.length;
+
+                    // Transition in
+                    domSlides[activeSlideIndex].classList.add("active");
+                    domDots[activeSlideIndex].classList.add("active");
+
+                    // Update lower thirds dynamically
+                    updateLowerThirds(structuredSlides[activeSlideIndex]);
+                }, slideDurationMs);
+            }
+
+            function updateLowerThirds(slide) {
+                // Smoothly toggle lower thirds
+                const l3Container = document.getElementById("lowerThirds");
+                l3Container.style.opacity = "0.2";
+                l3Container.style.transform = "translateX(-20px)";
+                l3Container.style.transition = "all 0.5s ease";
+
+                setTimeout(() => {
+                    l3Title.textContent = slide.l3Title;
+                    l3Desc.textContent = slide.l3Desc;
+                    l3SubText.textContent = slide.l3Sub;
+
+                    l3Container.style.opacity = "1";
+                    l3Container.style.transform = "translateX(0)";
+                }, 500);
+            }
+
+            // Load reflections data from JSON
+            fetch("rozwazania_baza.json")
+                .then(res => res.json())
+                .then(data => {
+                    reflectionsData = data;
+                    if (reflectionsData.length === 0) return;
+
+                    // Populate Day select list
+                    daySelect.innerHTML = "";
+                    reflectionsData.forEach((ref, idx) => {
+                        const dayLabel = ref.id.replace("ref_day", "Dzień ").replace("ref_", "");
+                        const dateLabel = ref.date ? ` (${ref.date})` : "";
+                        const opt = document.createElement("option");
+                        opt.value = idx;
+                        opt.textContent = `${dayLabel}: ${ref.title}${dateLabel}`;
+                        daySelect.appendChild(opt);
+                    });
+
+                    // Match selector to saved indices
+                    if (currentDayIndex >= reflectionsData.length) {
+                        currentDayIndex = 0;
+                    }
+                    daySelect.value = currentDayIndex;
+
+                    // Fallback to today's date if no manual index is selected
+                    let matchedIdx = currentDayIndex;
+                    if (!localStorage.getItem("dzj_stream_day")) {
+                        const todayStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+                        const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
+                        if (foundIdx !== -1) {
+                            matchedIdx = foundIdx;
+                            daySelect.value = matchedIdx;
+                        }
+                    }
+
+                    // Render chosen reflection
+                    renderReflection(reflectionsData[matchedIdx]);
+                    initVideoBackground();
+                })
+                .catch(err => {
+                    console.error("Error loading reflections database:", err);
+                    document.querySelector(".slide-title").textContent = "Błąd Bazy Danych";
+                    document.querySelector(".slide-text").textContent = "Nie udało się wczytać pliku bazy rozważań rozwazania_baza.json. Upewnij się, że plik istnieje.";
+                });
+        });
+    </script>
+</body>
+</html>
