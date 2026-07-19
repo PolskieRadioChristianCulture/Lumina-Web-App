@@ -1175,9 +1175,46 @@
             panelTriggerBtn.addEventListener("click", () => opPanel.classList.add("visible"));
             closePanelBtn.addEventListener("click", () => opPanel.classList.remove("visible"));
 
+            let loadedDate = new Date().getDate();
+
             // Live Clock updates
             function updateClock() {
                 const now = new Date();
+                
+                // Auto-advance reflection at 00:00 (Midnight Crossing)
+                const currentDay = now.getDate();
+                if (currentDay !== loadedDate) {
+                    loadedDate = currentDay;
+                    
+                    // If a manual day selection is active in localStorage, increment it by 1
+                    if (localStorage.getItem("dzj_stream_day")) {
+                        let nextDay = (parseInt(localStorage.getItem("dzj_stream_day"), 10) + 1) % reflectionsData.length;
+                        localStorage.setItem("dzj_stream_day", nextDay);
+                        currentDayIndex = nextDay;
+                        if (daySelect) daySelect.value = nextDay;
+                    }
+                    
+                    // Reload matched index (either updated manual day or today's matching date)
+                    let matchedIdx = currentDayIndex;
+                    if (!localStorage.getItem("dzj_stream_day")) {
+                        const todayStr = now.toISOString().split('T')[0];
+                        const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
+                        if (foundIdx !== -1) {
+                            matchedIdx = foundIdx;
+                            if (daySelect) daySelect.value = matchedIdx;
+                        }
+                    }
+                    
+                    // Re-render reflection text and adapt layout if timezone changed background requirements
+                    if (reflectionsData[matchedIdx]) {
+                        renderReflection(reflectionsData[matchedIdx]);
+                        applyBodyModeClass();
+                        if (bgActiveImg) {
+                            bgActiveImg.src = getDynamicBackground(customImgSrc);
+                        }
+                    }
+                }
+
                 const hr = String(now.getHours()).padStart(2, '0');
                 const min = String(now.getMinutes()).padStart(2, '0');
                 const sec = String(now.getSeconds()).padStart(2, '0');
