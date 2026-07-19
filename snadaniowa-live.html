@@ -524,17 +524,20 @@
         footer {
             display: grid;
             grid-template-columns: 240px 1fr;
-            background: rgba(10, 12, 22, 0.95);
-            border-top: 2px solid var(--breakfast-accent);
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-top: 2px solid rgba(255, 204, 0, 0.35);
             overflow: hidden;
             position: relative;
-            box-shadow: 0 -12px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 -12px 30px rgba(0,0,0,0.4);
             height: 85px;
         }
 
         .l3-ticker-header {
-            background: var(--breakfast-accent);
-            color: #000;
+            background: rgba(255, 204, 0, 0.15);
+            border-right: 1.5px solid rgba(255, 255, 255, 0.08);
+            color: var(--breakfast-accent);
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -545,7 +548,6 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             z-index: 5;
-            box-shadow: 8px 0 20px rgba(0, 0, 0, 0.5);
             font-family: 'Cinzel', serif;
             line-height: 1.1;
         }
@@ -555,7 +557,7 @@
             font-size: 0.62rem;
             font-weight: 800;
             letter-spacing: 1.5px;
-            color: rgba(0, 0, 0, 0.6);
+            color: rgba(255, 255, 255, 0.7);
             margin-top: 2px;
         }
 
