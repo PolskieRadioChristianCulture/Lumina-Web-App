@@ -1574,6 +1574,25 @@
                 }, 4000);
             }
 
+            // Real-time text adapter to customize greetings according to time of day
+            function adaptTextToTimeOfDay(text) {
+                const hour = new Date().getHours();
+                let slotText = "w porannym paśmie";
+                let greetingText = "Dzień dobry";
+
+                if (hour >= 12 && hour < 18) {
+                    slotText = "w popołudniowym paśmie";
+                    greetingText = "Dzień dobry";
+                } else if (hour >= 18 || hour < 5) {
+                    slotText = "w wieczornym paśmie";
+                    greetingText = "Dobry wieczór";
+                }
+
+                return text
+                    .replace(/w porannym paśmie/gi, slotText)
+                    .replace(/Dzień dobry/gi, greetingText);
+            }
+
             // Render reflections into slides
             function renderReflection(reflection) {
                 const structuredSlides = buildSlides(reflection);
@@ -1602,12 +1621,15 @@
                             let avatar = isNoemi ? 'avatar_noemi.jpg' : (isSara ? 'avatar_sara.jpg' : '');
                             let senderClass = isNoemi ? 'noemi' : (isSara ? 'sara' : (isBoth ? 'both' : (isProduction ? 'production' : (isScripture ? 'both' : ''))));
                             
+                            // Adapt greeting and slot to time of day
+                            const adaptedText = adaptTextToTimeOfDay(msg.text);
+
                             chatHTML += `
                                 <div class="chat-bubble-row ${senderClass}">
                                     ${avatar ? `<img class="chat-avatar" src="${avatar}" alt="${msg.sender}">` : ''}
                                     <div class="chat-bubble">
                                         ${(!isProduction && !isScripture) ? `<div class="chat-sender-name">${msg.sender}</div>` : ''}
-                                        <div class="chat-message-text">${msg.text}</div>
+                                        <div class="chat-message-text">${adaptedText}</div>
                                     </div>
                                 </div>
                             `;
@@ -1618,7 +1640,7 @@
                         slideEl.innerHTML = `
                             <div class="slide-tag"><i class="fa-solid fa-mug-hot"></i> <span>${slideData.tag}</span></div>
                             <div class="slide-title">${slideData.title}</div>
-                            <div class="slide-text">${slideData.text}</div>
+                            <div class="slide-text">${adaptTextToTimeOfDay(slideData.text)}</div>
                         `;
                     }
                     slidesContainer.appendChild(slideEl);
