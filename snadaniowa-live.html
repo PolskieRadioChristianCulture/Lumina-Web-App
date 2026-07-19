@@ -418,6 +418,7 @@
 
         body.evening-layout .left-panel {
             grid-column: 2; /* Move agenda/weather to the right column (covers the TV screen background) */
+            margin-top: 60px; /* Reduced from 180px to prevent pushing the layout and cutting off the footer */
         }
 
         body.evening-layout .right-panel {
@@ -426,15 +427,15 @@
         }
 
         body.evening-layout.mode-presenters .reflection-canvas-card {
-            left: 70px; /* Align to the far left (covers the window) */
-            width: 620px; /* Narrower to prevent overlapping Noemi's face */
+            left: 0; /* Align to the left edge of right-panel (which is 70px from screen border) */
+            width: 510px; /* Fits exactly within the window width in the background picture */
             height: 610px;
             transform: none;
         }
 
         body.evening-layout.mode-presenters .card-clock-widget {
             margin-right: auto;
-            margin-left: 70px; /* Align clock to the far left above the card */
+            margin-left: 0; /* Align clock to the left edge of the text card */
         }
 
         /* Slide layout area */
