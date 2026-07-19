@@ -1162,22 +1162,60 @@
                 
                 document.getElementById("clockDateLabel").textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
 
-                // Real-time schedule highlights based on hour
+                // Real-time schedule highlights & program names based on hour of day
                 const currentHour = now.getHours();
                 const sched1 = document.getElementById("sched-1");
                 const sched2 = document.getElementById("sched-2");
                 const sched3 = document.getElementById("sched-3");
 
-                sched1.classList.remove("active");
-                sched2.classList.remove("active");
-                sched3.classList.remove("active");
+                if (sched1 && sched2 && sched3) {
+                    let times = ["09:30", "11:00", "12:00"];
+                    let names = ["Słowo o Poranku", "Zadanie Taktyczne", "Bojowa Modlitwa"];
+                    let activeIndex = 0;
 
-                if (currentHour < 11) {
-                    sched1.classList.add("active");
-                } else if (currentHour === 11) {
-                    sched2.classList.add("active");
-                } else {
-                    sched3.classList.add("active");
+                    if (currentHour >= 12 && currentHour < 18) {
+                        // Afternoon program profile
+                        times = ["13:30", "15:00", "16:30"];
+                        names = ["Słowo na Popołudnie", "Koronka do Miłosierdzia", "Zadanie Taktyczne"];
+                        if (currentHour < 15) activeIndex = 0;
+                        else if (currentHour === 15) activeIndex = 1;
+                        else activeIndex = 2;
+                    } else if (currentHour >= 18 || currentHour < 5) {
+                        // Evening / Night program profile
+                        times = ["19:30", "21:00", "22:00"];
+                        names = ["Słowo na Wieczór", "Wieczorna Modlitwa", "Walka Duchowa"];
+                        if (currentHour >= 18 && currentHour < 21) activeIndex = 0;
+                        else if (currentHour === 21) activeIndex = 1;
+                        else activeIndex = 2;
+                    } else {
+                        // Morning profile active highlights
+                        if (currentHour < 11) activeIndex = 0;
+                        else if (currentHour === 11) activeIndex = 1;
+                        else activeIndex = 2;
+                    }
+
+                    // Set dynamic times
+                    sched1.querySelector(".schedule-time").textContent = times[0];
+                    sched2.querySelector(".schedule-time").textContent = times[1];
+                    sched3.querySelector(".schedule-time").textContent = times[2];
+
+                    // Set secondary program names (Item 1 is handled dynamically by reflections)
+                    sched2.querySelector(".schedule-name").textContent = names[1];
+                    sched3.querySelector(".schedule-name").textContent = names[2];
+
+                    const agendaActiveText = document.getElementById("agendaActiveText");
+                    if (agendaActiveText && !agendaActiveText.dataset.customized) {
+                        agendaActiveText.textContent = names[0];
+                    }
+
+                    // Apply active highlight class
+                    sched1.classList.remove("active");
+                    sched2.classList.remove("active");
+                    sched3.classList.remove("active");
+
+                    if (activeIndex === 0) sched1.classList.add("active");
+                    else if (activeIndex === 1) sched2.classList.add("active");
+                    else if (activeIndex === 2) sched3.classList.add("active");
                 }
 
                 // Dynamic Edition Label Updates
@@ -1376,7 +1414,11 @@
                 const dayNum = dayNumMatch ? dayNumMatch[1] : (reflectionsData.indexOf(reflection) + 1);
                 
                 // Format the Sunday agenda widget dynamically
-                document.getElementById("agendaActiveText").textContent = reflection.title;
+                const agendaActive = document.getElementById("agendaActiveText");
+                if (agendaActive) {
+                    agendaActive.textContent = reflection.title;
+                    agendaActive.dataset.customized = "true";
+                }
                 cycleBadge.textContent = `Dzień ${dayNum} | ${cycleTitle}`;
 
                 const text = reflection.fullText;
