@@ -1243,6 +1243,7 @@
                 }
             }
 
+            // Background Init
             function initBackground() {
                 if (!customVideoSrc) {
                     bgActiveImg.style.opacity = 1;
@@ -1309,88 +1310,79 @@
 
                 if (isDialogue) {
                     const slides = [];
-                    // Parse section-by-section using ###
-                    const rawSections = text.split("###").map(s => s.trim()).filter(s => s.length > 0);
+                    const messages = [];
                     
-                    rawSections.forEach((sect) => {
-                        const lines = sect.split("\n").map(l => l.trim()).filter(l => l.length > 0);
-                        if (lines.length === 0) return;
+                    // Split dialogue script into individual lines instead of ### slides
+                    const rawLines = text.split("\n").map(s => s.trim()).filter(s => s.length > 0);
+                    
+                    let currentSender = "";
+                    let currentMsgText = "";
 
-                        // Find header title
-                        let headerTitle = "Rozmowa w Studio";
-                        let headerTag = "ROZMOWA";
-                        let firstLine = lines[0];
-
-                        if (firstLine.startsWith("**[") || firstLine.startsWith("[")) {
-                            const titleMatch = firstLine.match(/\[(.*?):(.*?)\]/);
-                            if (titleMatch) {
-                                headerTag = titleMatch[1].trim();
-                                headerTitle = titleMatch[2].trim();
-                            } else {
-                                headerTitle = firstLine.replace(/[\*\[\]]/g, "").trim();
-                            }
-                            lines.shift(); // Remove the header line
-                        }
-
-                        // Collect chat messages in this section
-                        const messages = [];
-                        let currentSender = "";
-                        let currentMsgText = "";
-
-                        function commitMessage() {
-                            if (currentSender && currentMsgText.trim()) {
-                                messages.push({
-                                    sender: currentSender,
-                                    text: cleanMarkdown(currentMsgText.trim())
-                                });
-                                currentMsgText = "";
-                            }
-                        }
-
-                        lines.forEach(line => {
-                            if (line.startsWith("[") && line.endsWith("]")) {
-                                commitMessage();
-                                messages.push({
-                                    sender: "PRODUKCJA",
-                                    text: `🎬 ${line.replace(/[\[\]]/g, "")}`
-                                });
-                                return;
-                            }
-
-                            if (line.startsWith(">")) {
-                                commitMessage();
-                                const citation = line.replace(/^>\s*/, "").trim();
-                                messages.push({
-                                    sender: "PISMO ŚWIĘTE",
-                                    text: `<div class="bible-citation">${cleanMarkdown(citation)}</div>`
-                                });
-                                return;
-                            }
-
-                            // Robust matching of speaker name, optional description and colon position
-                            const speakerMatch = line.match(/^\*\*(Noemi|Sara|Głos Prowadzących|Noemi i Sara)\s*(\(.*?\))?\s*(?::\*\*|\*\*:)\s*(.*)/i);
-                            if (speakerMatch) {
-                                commitMessage();
-                                currentSender = speakerMatch[1].trim();
-                                currentMsgText = speakerMatch[3].trim();
-                            } else {
-                                if (currentSender) {
-                                    currentMsgText += "\n" + line;
-                                }
-                            }
-                        });
-                        commitMessage();
-
-                        if (messages.length > 0) {
-                            slides.push({
-                                type: "chat",
-                                tag: headerTag,
-                                title: headerTitle,
-                                messages: messages,
-                                l3Title: headerTitle,
-                                l3Desc: headerTag
+                    function commitMessage() {
+                        if (currentSender && currentMsgText.trim()) {
+                            messages.push({
+                                sender: currentSender,
+                                text: cleanMarkdown(currentMsgText.trim())
                             });
+                            currentMsgText = "";
                         }
+                    }
+
+                    rawLines.forEach(line => {
+                        // Transform section tags into visual cues
+                        if (line.startsWith("###")) {
+                            commitMessage();
+                            const sectionTitle = line.replace(/###/g, "").replace(/[\*\[\]]/g, "").trim();
+                            messages.push({
+                                sender: "PRODUKCJA",
+                                text: `🎬 ${sectionTitle}`
+                            });
+                            return;
+                        }
+
+                        // Production notes
+                        if (line.startsWith("[") && line.endsWith("]")) {
+                            commitMessage();
+                            messages.push({
+                                sender: "PRODUKCJA",
+                                text: `🎬 ${line.replace(/[\[\]]/g, "")}`
+                            });
+                            return;
+                        }
+
+                        // Scripture citations
+                        if (line.startsWith(">")) {
+                            commitMessage();
+                            const citation = line.replace(/^>\s*/, "").trim();
+                            messages.push({
+                                sender: "PISMO ŚWIĘTE",
+                                text: `<div class="bible-citation">${cleanMarkdown(citation)}</div>`
+                            });
+                            return;
+                        }
+
+                        // Dialogue lines
+                        const speakerMatch = line.match(/^\*\*(Noemi|Sara|Głos Prowadzących|Noemi i Sara)\s*(\(.*?\))?\s*(?::\*\*|\*\*:)\s*(.*)/i);
+                        if (speakerMatch) {
+                            commitMessage();
+                            currentSender = speakerMatch[1].trim();
+                            currentMsgText = speakerMatch[3].trim();
+                        } else {
+                            if (currentSender) {
+                                currentMsgText += "\n" + line;
+                            }
+                        }
+                    });
+                    commitMessage();
+
+                    // Generate a single giant slide that loops
+                    slides.push({
+                        type: "chat",
+                        tag: "PROGRAM EMISYJNY TV",
+                        title: reflection.title,
+                        messages: messages,
+                        l3Title: reflection.title,
+                        l3Desc: "TELEWIZJA ŚNIADANIOWA"
                     });
 
                     return slides;
@@ -1514,42 +1506,45 @@
                 }
             }
 
-            // Auto Scroll Chat function for long TV dialogue scripts
+            // Prompter Scrolling System
             let autoScrollTimeout = null;
             let autoScrollAnimationFrame = null;
 
-            function autoScrollChat(container, durationMs) {
-                // Clear any existing scroll animations/timeouts
+            function scrollPrompter(container) {
                 if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
                 if (autoScrollAnimationFrame) cancelAnimationFrame(autoScrollAnimationFrame);
 
                 container.scrollTop = 0;
 
-                // Wait a moment for slide transition to settle (1.5s)
+                // Wait 4 seconds at the top before starting
                 autoScrollTimeout = setTimeout(() => {
-                    const maxScroll = container.scrollHeight - container.clientHeight;
+                    const scrollHeight = container.scrollHeight;
+                    const clientHeight = container.clientHeight;
+                    const maxScroll = scrollHeight - clientHeight;
                     if (maxScroll <= 0) return;
 
+                    // Steady teleprompter speed: ~25 pixels per second
+                    const speed = 25; 
+                    const duration = (maxScroll / speed) * 1000;
                     const startTime = performance.now();
-                    const scrollDuration = durationMs - 4500; // Leave 4.5 seconds at the bottom
 
-                    function scrollStep(timestamp) {
+                    function prompterStep(timestamp) {
                         const elapsed = timestamp - startTime;
-                        const progress = Math.min(elapsed / scrollDuration, 1);
+                        const progress = Math.min(elapsed / duration, 1);
                         
-                        // Smooth ease-in-out scrolling curve
-                        const easeProgress = progress < 0.5 
-                            ? 2 * progress * progress 
-                            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-
-                        container.scrollTop = maxScroll * easeProgress;
+                        container.scrollTop = maxScroll * progress;
 
                         if (progress < 1) {
-                            autoScrollAnimationFrame = requestAnimationFrame(scrollStep);
+                            autoScrollAnimationFrame = requestAnimationFrame(prompterStep);
+                        } else {
+                            // Reached the bottom! Pause for 6 seconds, then loop back to top
+                            autoScrollTimeout = setTimeout(() => {
+                                scrollPrompter(container);
+                            }, 6000);
                         }
                     }
-                    autoScrollAnimationFrame = requestAnimationFrame(scrollStep);
-                }, 1500);
+                    autoScrollAnimationFrame = requestAnimationFrame(prompterStep);
+                }, 4000);
             }
 
             // Render reflections into slides
@@ -1612,33 +1607,36 @@
                 const domSlides = document.querySelectorAll(".canvas-slide");
                 const domDots = document.querySelectorAll(".pagination-dot");
 
-                // Scroll trigger helper for active slides
+                // Prompter scrolling trigger
                 function triggerSlideScroll(index) {
                     const activeSlide = domSlides[index];
                     if (!activeSlide) return;
                     const chatContainer = activeSlide.querySelector(".chat-container");
                     if (chatContainer) {
-                        autoScrollChat(chatContainer, slideDurationMs);
+                        scrollPrompter(chatContainer);
                     }
                 }
 
-                // Initial scroll for first slide
+                // Initial scroll execution
                 triggerSlideScroll(0);
 
-                slideInterval = setInterval(() => {
-                    domSlides[activeSlideIndex].classList.remove("active");
-                    domDots[activeSlideIndex].classList.remove("active");
+                // Slide rotation only runs if there are multiple slides (standard text reflections)
+                if (domSlides.length > 1) {
+                    slideInterval = setInterval(() => {
+                        domSlides[activeSlideIndex].classList.remove("active");
+                        domDots[activeSlideIndex].classList.remove("active");
 
-                    activeSlideIndex = (activeSlideIndex + 1) % domSlides.length;
+                        activeSlideIndex = (activeSlideIndex + 1) % domSlides.length;
 
-                    domSlides[activeSlideIndex].classList.add("active");
-                    domDots[activeSlideIndex].classList.add("active");
+                        domSlides[activeSlideIndex].classList.add("active");
+                        domDots[activeSlideIndex].classList.add("active");
 
-                    triggerSlideScroll(activeSlideIndex);
-                }, slideDurationMs);
+                        triggerSlideScroll(activeSlideIndex);
+                    }, slideDurationMs);
+                }
             }
 
-            // Load local reflections database with cache buster
+            // Load database with cache buster
             fetch("rozwazania_baza.json?t=" + new Date().getTime())
                 .then(res => res.json())
                 .then(data => {
