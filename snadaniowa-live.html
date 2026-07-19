@@ -18,9 +18,9 @@
             --gold-dark: #AA7C11;
             --bg-dark: #020203;
             --text-light: #ffffff;
-            --glass-bg: rgba(10, 12, 22, 0.45);
+            --glass-bg: rgba(10, 12, 22, 0.5);
             --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: rgba(0, 0, 0, 0.55);
+            --glass-shadow: rgba(0, 0, 0, 0.6);
             --breakfast-accent: #FFCC00;
             --red-live: #E50914;
         }
@@ -41,7 +41,7 @@
             position: relative;
         }
 
-        /* --- BACKGROUND LAYERS --- */
+        /* --- BACKGROUND LAYER SYSTEM --- */
         .bg-layer {
             position: absolute;
             top: 0;
@@ -58,7 +58,7 @@
         }
 
         .bg-image {
-            filter: brightness(0.85) contrast(1.05);
+            filter: brightness(1.0) contrast(1.02);
         }
 
         /* --- CINEMATIC LIGHTING OVERLAYS --- */
@@ -71,9 +71,9 @@
             z-index: 2;
             pointer-events: none;
             background: 
-                radial-gradient(circle at 80% 20%, rgba(255, 230, 150, 0.08) 0%, transparent 60%),
-                radial-gradient(circle at 10% 80%, rgba(100, 150, 255, 0.05) 0%, transparent 50%),
-                linear-gradient(to top, rgba(3, 3, 3, 0.9) 0%, rgba(3, 3, 3, 0.1) 25%, rgba(3, 3, 3, 0.1) 75%, rgba(3, 3, 3, 0.8) 100%);
+                radial-gradient(circle at 80% 20%, rgba(255, 230, 150, 0.05) 0%, transparent 60%),
+                radial-gradient(circle at 10% 80%, rgba(100, 150, 255, 0.03) 0%, transparent 50%),
+                linear-gradient(to top, rgba(3, 3, 3, 0.75) 0%, transparent 20%, transparent 80%, rgba(3, 3, 3, 0.4) 100%);
         }
 
         .sunbeams {
@@ -84,12 +84,12 @@
             height: 100%;
             z-index: 2;
             pointer-events: none;
-            background: linear-gradient(135deg, rgba(255, 220, 130, 0.15) 0%, transparent 55%);
+            background: linear-gradient(135deg, rgba(255, 220, 130, 0.12) 0%, transparent 55%);
             mix-blend-mode: screen;
             animation: drift-light 18s ease-in-out infinite alternate;
         }
 
-        /* --- MAIN VIEWPORT GRID --- */
+        /* --- MAIN VIEWPORT LAYOUT --- */
         .emission-grid {
             position: relative;
             z-index: 3;
@@ -106,7 +106,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 70px;
-            background: linear-gradient(to bottom, rgba(3, 3, 3, 0.7) 0%, transparent 100%);
+            background: linear-gradient(to bottom, rgba(3, 3, 3, 0.6) 0%, transparent 100%);
         }
 
         .header-brand {
@@ -155,26 +155,21 @@
             animation: pulse-live 2.5s infinite;
         }
 
-        .live-badge i {
-            font-size: 0.55rem;
-        }
-
         /* --- MAIN PANELS --- */
         .main-viewport {
             display: grid;
-            grid-template-columns: 480px 1fr;
+            grid-template-columns: 450px 1fr;
             padding: 15px 70px 0 70px;
             gap: 50px;
-            align-items: center;
+            align-items: start;
         }
 
-        /* LEFT COLUMN: FLOATING INFO WIDGETS */
+        /* LEFT COLUMN: FLOATING WIDGETS (CLOCK & WEATHER) */
         .left-panel {
             display: flex;
             flex-direction: column;
-            gap: 30px;
-            height: 720px;
-            justify-content: center;
+            gap: 25px;
+            margin-top: 50px;
         }
 
         /* TV Schedule Widget (Program Dnia) */
@@ -184,23 +179,23 @@
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             border-top: 1.5px solid rgba(255, 255, 255, 0.15);
-            border-radius: 24px;
-            padding: 22px 26px;
+            border-radius: 20px;
+            padding: 20px 24px;
             box-shadow: 0 15px 35px var(--glass-shadow);
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .widget-title {
             font-family: 'Cinzel', serif;
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             font-weight: 900;
             color: var(--breakfast-accent);
             letter-spacing: 2px;
             text-transform: uppercase;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -209,14 +204,14 @@
         .schedule-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
         .schedule-item {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 6px 0;
+            gap: 12px;
+            padding: 4px 0;
             border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
             transition: all 0.3s;
         }
@@ -227,30 +222,33 @@
 
         .schedule-time {
             font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 900;
             color: var(--breakfast-accent);
-            background: rgba(255, 204, 0, 0.12);
-            padding: 3px 8px;
-            border-radius: 5px;
-            min-width: 55px;
+            background: rgba(255, 204, 0, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            min-width: 50px;
             text-align: center;
         }
 
         .schedule-name {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255,255,255,0.8);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .schedule-item.active {
-            transform: scale(1.02) translateX(5px);
+            transform: scale(1.02) translateX(4px);
         }
 
         .schedule-item.active .schedule-time {
             background: var(--breakfast-accent);
             color: #000;
-            box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+            box-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
         }
 
         .schedule-item.active .schedule-name {
@@ -258,92 +256,121 @@
             font-weight: 800;
         }
 
-        /* Weather City Forecast Widget */
+        /* Weather Forecast Widget */
         .weather-widget {
             background: var(--glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             border-top: 1.5px solid rgba(255, 255, 255, 0.15);
-            border-radius: 24px;
-            padding: 20px 26px;
+            border-radius: 20px;
+            padding: 16px 24px;
             box-shadow: 0 15px 35px var(--glass-shadow);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-            height: 90px;
+            height: 80px;
         }
 
         .weather-info {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 1px;
             transition: all 0.5s ease;
         }
 
         .weather-city {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 800;
             color: var(--breakfast-accent);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
         }
 
         .weather-temp-desc {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: #fff;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .weather-icon {
-            font-size: 2.2rem;
+            font-size: 2.0rem;
             color: #FFD700;
             animation: sun-spin 15s linear infinite;
         }
 
-        /* RIGHT COLUMN: MAIN CANVAS CARD */
+        /* RIGHT PANEL: DYNAMICAL GRAPHICS CONTAINER */
         .right-panel {
             width: 100%;
-            height: 720px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
-
-        .reflection-canvas-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px);
-            border: 1px solid var(--glass-border);
-            border-top: 2px solid rgba(255, 255, 255, 0.22);
-            border-radius: 36px;
-            padding: 45px 50px;
-            box-shadow: 0 30px 65px var(--glass-shadow);
-            width: 900px;
-            height: 700px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            height: 800px;
             position: relative;
         }
 
-        /* Widgets Header Inside Card */
+        /* --- GRAPHIC CARD (ADAPTIVE SYSTEM) --- */
+        .reflection-canvas-card {
+            position: absolute;
+            transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            box-shadow: 0 25px 60px var(--glass-shadow);
+        }
+
+        /* Style A: Presenters Mode (Angled 3D TV Screen on Wall) */
+        body.mode-presenters .reflection-canvas-card {
+            left: 560px; /* Aligns exactly with right wall TV screen */
+            top: 25px;
+            width: 780px;
+            height: 485px;
+            background: rgba(10, 14, 28, 0.48);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            transform: perspective(1200px) rotateY(-18.5deg) rotateX(1.2deg);
+            transform-origin: left center;
+            padding: 35px 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Style B: Close-up Mode (Centered Flat Card) */
+        body.mode-studio .reflection-canvas-card {
+            left: 280px;
+            top: 80px;
+            width: 900px;
+            height: 650px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 36px;
+            transform: none;
+            padding: 45px 50px;
+        }
+
+        /* Card Widgets Header */
         .card-header-widgets {
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 20px;
-            margin-bottom: 15px;
+            padding-bottom: 15px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        /* Auto-hide header widgets in 3D TV mode to maximize scripture space */
+        body.mode-presenters .card-header-widgets {
+            padding-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .card-clock-time {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 900;
             color: #fff;
             font-family: 'Inter', sans-serif;
@@ -354,8 +381,12 @@
             gap: 4px;
         }
 
+        body.mode-presenters .card-clock-time {
+            font-size: 1.8rem;
+        }
+
         .card-clock-time span.sec {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             color: var(--breakfast-accent);
             align-self: flex-start;
             margin-top: 2px;
@@ -363,28 +394,27 @@
         }
 
         .card-clock-date {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
         .card-cycle-badge {
-            background: rgba(255, 204, 0, 0.12);
-            border: 1.5px solid var(--breakfast-accent);
+            background: rgba(255, 204, 0, 0.1);
+            border: 1px solid var(--breakfast-accent);
             color: var(--breakfast-accent);
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             font-weight: 800;
-            padding: 6px 14px;
-            border-radius: 8px;
+            padding: 4px 10px;
+            border-radius: 6px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            letter-spacing: 1px;
         }
 
-        /* Slide layout area */
+        /* Slide text area */
         .canvas-slide-container {
             position: relative;
             flex: 1;
@@ -401,52 +431,65 @@
             flex-direction: column;
             justify-content: center;
             opacity: 0;
-            transform: translateY(18px) scale(0.99);
-            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(15px);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
         }
 
         .canvas-slide.active {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
             pointer-events: auto;
         }
 
         .slide-tag {
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             font-weight: 800;
             color: var(--breakfast-accent);
             text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-bottom: 12px;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .slide-tag::after {
             content: '';
             flex: 1;
-            height: 1.5px;
+            height: 1px;
             background: linear-gradient(to right, var(--breakfast-accent), transparent);
         }
 
         .slide-title {
             font-family: 'Cinzel', serif;
-            font-size: 2.3rem;
+            font-size: 2.1rem;
             font-weight: 800;
-            line-height: 1.3;
+            line-height: 1.25;
             color: #fff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
-            margin-bottom: 18px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            margin-bottom: 12px;
+            transition: font-size 0.3s;
+        }
+
+        /* Shrink title in presenters mode to fit angled screen */
+        body.mode-presenters .slide-title {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
         }
 
         .slide-text {
-            font-size: 1.25rem;
+            font-size: 1.22rem;
             font-weight: 400;
-            line-height: 1.7;
+            line-height: 1.6;
             color: rgba(255, 255, 255, 0.95);
-            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            transition: font-size 0.3s;
+        }
+
+        body.mode-presenters .slide-text {
+            font-size: 1.05rem;
+            line-height: 1.5;
         }
 
         .slide-text strong {
@@ -456,59 +499,88 @@
 
         /* Citation box */
         .bible-citation {
-            border-left: 4.5px solid var(--breakfast-accent);
-            padding: 15px 22px;
-            margin: 10px 0;
+            border-left: 4px solid var(--breakfast-accent);
+            padding: 12px 18px;
+            margin: 6px 0;
             font-style: italic;
             background: rgba(255, 204, 0, 0.04);
-            border-radius: 0 16px 16px 0;
-            line-height: 1.65;
-            font-size: 1.2rem;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.6;
+            font-size: 1.15rem;
         }
 
-        /* Pagination & card footer */
+        body.mode-presenters .bible-citation {
+            font-size: 0.98rem;
+            padding: 8px 14px;
+        }
+
+        /* Static Program Logo Slide */
+        .tv-logo-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .tv-logo-slide img {
+            max-width: 70%;
+            max-height: 80%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
+            animation: float-logo 4s ease-in-out infinite;
+        }
+
+        /* Pagination & Footer */
         .canvas-card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 20px;
-            margin-top: 10px;
+            padding-top: 15px;
+            margin-top: 8px;
+            transition: all 0.3s;
+        }
+
+        body.mode-presenters .canvas-card-footer {
+            padding-top: 8px;
+            margin-top: 5px;
         }
 
         .slide-pagination {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .pagination-dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
         }
 
         .pagination-dot.active {
-            width: 24px;
-            border-radius: 4px;
+            width: 20px;
+            border-radius: 3px;
             background: var(--breakfast-accent);
             box-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
         }
 
         .card-footer-branding {
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             font-weight: 800;
             letter-spacing: 2px;
             color: rgba(255, 255, 255, 0.35);
             text-transform: uppercase;
         }
 
-        /* --- DYNAMIC TV LOWER THIRD (Belka Śniadaniowa w stopce) --- */
+        /* --- FOOTER MARQUEE --- */
         footer {
             display: grid;
             grid-template-columns: 240px 1fr;
-            background: rgba(10, 12, 22, 0.92);
+            background: rgba(10, 12, 22, 0.95);
             border-top: 2px solid var(--breakfast-accent);
             overflow: hidden;
             position: relative;
@@ -553,123 +625,12 @@
         .ticker-marquee-text {
             display: inline-block;
             white-space: nowrap;
-            font-size: 1.18rem;
+            font-size: 1.15rem;
             font-weight: 700;
             letter-spacing: 1px;
             color: rgba(255, 255, 255, 0.95);
             padding-left: 100%;
             animation: marquee-scroll 55s linear infinite;
-        }
-
-        /* --- OPERATOR CONTROL PANEL --- */
-        .operator-panel {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(10, 10, 10, 0.98);
-            border: 2px solid var(--breakfast-accent);
-            border-radius: 16px;
-            padding: 20px;
-            z-index: 100;
-            width: 400px;
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-            transform: translateX(-420px);
-            opacity: 0;
-        }
-
-        .operator-panel.visible {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .panel-header {
-            font-family: 'Cinzel', serif;
-            font-size: 1.1rem;
-            font-weight: 900;
-            color: var(--breakfast-accent);
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .close-panel-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        .control-group {
-            margin-bottom: 15px;
-        }
-
-        .control-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 6px;
-        }
-
-        .control-group select, .control-group input {
-            width: 100%;
-            background: #181818;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 6px;
-            color: #fff;
-            padding: 8px 12px;
-            font-family: inherit;
-            font-size: 0.9rem;
-        }
-
-        .control-btn {
-            background: var(--breakfast-accent);
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            font-weight: 800;
-            text-transform: uppercase;
-            padding: 10px 15px;
-            width: 100%;
-            cursor: pointer;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            transition: background 0.2s;
-        }
-
-        .control-btn:hover {
-            background: #ffdb4d;
-        }
-
-        .toggle-panel-trigger {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 99;
-            background: rgba(10, 10, 10, 0.6);
-            border: 1px solid var(--glass-border);
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            color: rgba(255,255,255,0.7);
-            transition: all 0.3s;
-        }
-
-        .toggle-panel-trigger:hover {
-            color: var(--breakfast-accent);
-            background: rgba(10, 10, 10, 0.95);
-            border-color: var(--breakfast-accent);
         }
 
         /* --- ANIMATIONS --- */
@@ -690,14 +651,20 @@
         }
 
         @keyframes drift-light {
-            0% { transform: translate(-30px, -20px) rotate(-1deg) scale(1.0); }
-            100% { transform: translate(30px, 20px) rotate(1deg) scale(1.05); }
+            0% { transform: translate(-30px, -20px) rotate(-0.5deg) scale(1.0); }
+            100% { transform: translate(30px, 20px) rotate(0.5deg) scale(1.03); }
+        }
+
+        @keyframes float-logo {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0); }
         }
     </style>
 </head>
-<body>
+<body class="mode-presenters"> <!-- Initial mode matches presenters background -->
 
-    <!-- Panel Trigger Cog Button -->
+    <!-- Trigger Cog Panel -->
     <div class="toggle-panel-trigger" id="panelTriggerBtn" title="Panel Sterowania Programem">
         <i class="fa-solid fa-cog"></i>
     </div>
@@ -719,14 +686,14 @@
         <div class="control-group">
             <label for="bgImageSelect">Tło Programu (Obraz / Layout)</label>
             <select id="bgImageSelect">
-                <option value="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/ChatGPT Image 19 lip 2026, 10_21_44.png">Prezenterki w Studio (Mockup)</option>
-                <option value="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Christian Culture TV.png">Studio Bliski Kadr (Kawa + Książka)</option>
-                <option value="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Projekt bez nazwy (62).jpg">Alternatywne Tło Drewniane</option>
+                <option value="breakfast_presenters.png">Prezenterki w Studio (Mockup)</option>
+                <option value="breakfast_studio.png">Studio Bliski Kadr (Kawa + Książka)</option>
+                <option value="breakfast_studio_alt.jpg">Alternatywne Tło Drewniane</option>
             </select>
         </div>
 
         <div class="control-group">
-            <label for="bgVideoSelect">Wideo w Tle (OBS / Pętla lokalna)</label>
+            <label for="bgVideoSelect">Alternatywne Tło Wideo (Lokalnie)</label>
             <select id="bgVideoSelect">
                 <option value="">(Brak wideo - Użyj wybranego obrazu tła)</option>
                 <option value="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Projekt bez nazwy (55).mp4">Projekt bez nazwy (55).mp4</option>
@@ -743,17 +710,17 @@
         <button class="control-btn" id="forceReloadBtn">Zatwierdź i Odśwież</button>
     </div>
 
-    <!-- Background System -->
-    <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/ChatGPT Image 19 lip 2026, 10_21_44.png" alt="Breakfast Studio">
+    <!-- Background Layer System -->
+    <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="breakfast_presenters.png" alt="Breakfast Studio">
     
     <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
     <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
 
-    <!-- Warm sunbeams and vignettes overlays -->
+    <!-- Overlays -->
     <div class="vignette-overlay"></div>
     <div class="sunbeams"></div>
 
-    <!-- Main Grid Container -->
+    <!-- Emission Screen Grid -->
     <div class="emission-grid">
         
         <!-- Header -->
@@ -811,6 +778,8 @@
 
             <!-- Right Panel (Canvas Graphics Card) -->
             <div class="right-panel">
+                
+                <!-- Frog-glass Card (Mapped in 3D over background TV) -->
                 <div class="reflection-canvas-card">
                     
                     <!-- Header inside card -->
@@ -824,18 +793,12 @@
                         <div class="card-cycle-badge" id="cycleBadge">Dzień 20 | LATO KU BOŻEJ CHWALE</div>
                     </div>
 
-                    <!-- Lower third description inside card -->
-                    <div class="card-l3-plate" id="cardL3">
-                        <div class="card-l3-title" id="l3Title">GŁÓWNE ROZWAŻANIE</div>
-                        <div class="card-l3-desc" id="l3Desc">Trwa ładowanie programu...</div>
-                    </div>
-
                     <!-- Slide text content area -->
                     <div class="canvas-slide-container" id="slidesContainer">
                         <div class="canvas-slide active">
-                            <div class="slide-tag">Program Śniadaniowy</div>
-                            <div class="slide-title">Wczytywanie rozważań...</div>
-                            <div class="slide-text">System pobiera najnowszy katalog rozważań „Dobrze, że jesteś”...</div>
+                            <div class="tv-logo-slide">
+                                <img src="Projekt bez nazwy (64).png" alt="Dobrze, że jesteś logo">
+                            </div>
                         </div>
                     </div>
 
@@ -879,7 +842,7 @@
             let slideInterval = null;
             let slideDurationMs = 25000;
             
-            let customImgSrc = "file:///C:/Users/czark/Desktop/Dobrze, że jesteś/ChatGPT Image 19 lip 2026, 10_21_44.png";
+            let customImgSrc = "breakfast_presenters.png";
             let customVideoSrc = ""; 
 
             // DOM elements
@@ -895,8 +858,6 @@
             const slidesContainer = document.getElementById("slidesContainer");
             const slidePagination = document.getElementById("slidePagination");
 
-            const l3Title = document.getElementById("l3Title");
-            const l3Desc = document.getElementById("l3Desc");
             const cycleBadge = document.getElementById("cycleBadge");
             const bgActiveImg = document.getElementById("bg-img-active");
             const weatherBox = document.getElementById("weatherBox");
@@ -905,7 +866,7 @@
             panelTriggerBtn.addEventListener("click", () => opPanel.classList.add("visible"));
             closePanelBtn.addEventListener("click", () => opPanel.classList.remove("visible"));
 
-            // Clock Loop
+            // Live Clock updates
             function updateClock() {
                 const now = new Date();
                 const hr = String(now.getHours()).padStart(2, '0');
@@ -966,6 +927,17 @@
                 slideDurationMs = parseInt(localStorage.getItem("dzj_stream_duration"), 10) * 1000;
                 slideDurationInput.value = slideDurationMs / 1000;
             }
+
+            // Apply body styling mode class based on selected background
+            function applyBodyModeClass() {
+                document.body.classList.remove("mode-presenters", "mode-studio");
+                if (customImgSrc.includes("presenters")) {
+                    document.body.classList.add("mode-presenters");
+                } else {
+                    document.body.classList.add("mode-studio");
+                }
+            }
+            applyBodyModeClass();
 
             // Save Operator config
             forceReloadBtn.addEventListener("click", () => {
@@ -1114,8 +1086,19 @@
                     }
                 });
 
+                // Slide 0: Program Logo Czołówka
+                slides.push({
+                    type: "logo",
+                    tag: "Program Śniadaniowy",
+                    title: "",
+                    text: "",
+                    l3Title: "PROGRAM ŚNIADANIOWY",
+                    l3Desc: "Dobrze, że jesteś"
+                });
+
                 // Slide 1: Welcome & Teaser
                 slides.push({
+                    type: "content",
                     tag: "Dzień dzisiejszy",
                     title: reflection.title,
                     text: cleanMarkdown(reflection.teaser),
@@ -1127,6 +1110,7 @@
                 for (let i = 0; i < introText.length; i += 2) {
                     const chunk = introText.slice(i, i + 2).join("<br><br>");
                     slides.push({
+                        type: "content",
                         tag: "Słowo Wprowadzenia",
                         title: "Duchowy Horyzont",
                         text: cleanMarkdown(chunk),
@@ -1138,6 +1122,7 @@
                 // Slide Quote
                 if (bibleQuote) {
                     slides.push({
+                        type: "content",
                         tag: "Słowo Pana",
                         title: "Jezus mówi do Ciebie",
                         text: `<div class="bible-citation">${cleanMarkdown(bibleQuote)}</div>`,
@@ -1149,6 +1134,7 @@
                 // Slide Zadanie Taktyczne
                 if (zadanieText) {
                     slides.push({
+                        type: "content",
                         tag: "Zadanie Taktyczne",
                         title: "Praktyka i Czyn",
                         text: `<strong>Wytyczne do działania na dzisiaj:</strong><br>${cleanMarkdown(zadanieText)}`,
@@ -1164,6 +1150,7 @@
 
                 if (finalTexts.length > 0) {
                     slides.push({
+                        type: "content",
                         tag: "Zabezpieczenie Dnia",
                         title: "Oręż Modlitewny",
                         text: finalTexts.join("<br><br>"),
@@ -1186,11 +1173,20 @@
                 structuredSlides.forEach((slideData, idx) => {
                     const slideEl = document.createElement("div");
                     slideEl.className = `canvas-slide ${idx === 0 ? 'active' : ''}`;
-                    slideEl.innerHTML = `
-                        <div class="slide-tag"><i class="fa-solid fa-mug-hot"></i> ${slideData.tag}</div>
-                        <div class="slide-title">${slideData.title}</div>
-                        <div class="slide-text">${slideData.text}</div>
-                    `;
+                    
+                    if (slideData.type === "logo") {
+                        slideEl.innerHTML = `
+                            <div class="tv-logo-slide">
+                                <img src="Projekt bez nazwy (64).png" alt="Dobrze, że jesteś logo">
+                            </div>
+                        `;
+                    } else {
+                        slideEl.innerHTML = `
+                            <div class="slide-tag"><i class="fa-solid fa-mug-hot"></i> ${slideData.tag}</div>
+                            <div class="slide-title">${slideData.title}</div>
+                            <div class="slide-text">${slideData.text}</div>
+                        `;
+                    }
                     slidesContainer.appendChild(slideEl);
 
                     const dotEl = document.createElement("div");
@@ -1207,7 +1203,6 @@
                 // Update initial Lower third plate
                 updateLowerThirds(structuredSlides[0]);
 
-                // Track agenda schedule highlight
                 const schedItems = [
                     document.getElementById("sched-1"),
                     document.getElementById("sched-2"),
@@ -1227,33 +1222,35 @@
 
                     // Highlight dynamic agenda items depending on current active slide
                     schedItems.forEach(item => item.classList.remove("active"));
-                    if (activeSlideIndex < 3) {
-                        schedItems[0].classList.add("active"); // Słowo o poranku (Slides 0-2)
-                    } else if (activeSlideIndex === 3) {
-                        schedItems[1].classList.add("active"); // Zadanie Taktyczne (Slide 3)
+                    if (activeSlideIndex < 4) {
+                        schedItems[0].classList.add("active"); // Słowo o poranku (Slides 0-3)
+                    } else if (activeSlideIndex === 4) {
+                        schedItems[1].classList.add("active"); // Zadanie Taktyczne
                     } else {
-                        schedItems[2].classList.add("active"); // Modlitwa (Slide 4)
+                        schedItems[2].classList.add("active"); // Modlitwa
                     }
 
                 }, slideDurationMs);
             }
 
             function updateLowerThirds(slide) {
+                // In presenters mode, the TV screen does not have a separate lower third widget,
+                // so we update the card-l3-plate description elements
                 const cardL3 = document.getElementById("cardL3");
                 cardL3.style.opacity = "0.2";
                 cardL3.style.transform = "translateX(15px)";
                 cardL3.style.transition = "all 0.4s ease";
 
                 setTimeout(() => {
-                    l3Title.textContent = slide.l3Title;
-                    l3Desc.textContent = slide.l3Desc;
+                    document.getElementById("l3Title").textContent = slide.l3Title;
+                    document.getElementById("l3Desc").textContent = slide.l3Desc;
 
                     cardL3.style.opacity = "1";
                     cardL3.style.transform = "translateX(0)";
                 }, 400);
             }
 
-            // Load reflections data from database
+            // Load local reflections database
             fetch("rozwazania_baza.json")
                 .then(res => res.json())
                 .then(data => {
