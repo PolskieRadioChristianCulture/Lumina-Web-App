@@ -911,6 +911,24 @@
                 const months = ["Stycznia", "Lutego", "Marca", "Kwietnia", "Maja", "Czerwca", "Lipca", "Sierpnia", "Września", "Października", "Listopada", "Grudnia"];
                 
                 document.getElementById("clockDateLabel").textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
+
+                // Real-time schedule highlights based on hour
+                const currentHour = now.getHours();
+                const sched1 = document.getElementById("sched-1");
+                const sched2 = document.getElementById("sched-2");
+                const sched3 = document.getElementById("sched-3");
+
+                sched1.classList.remove("active");
+                sched2.classList.remove("active");
+                sched3.classList.remove("active");
+
+                if (currentHour < 11) {
+                    sched1.classList.add("active");
+                } else if (currentHour === 11) {
+                    sched2.classList.add("active");
+                } else {
+                    sched3.classList.add("active");
+                }
             }
             setInterval(updateClock, 1000);
             updateClock();
@@ -1231,18 +1249,9 @@
 
                     activeSlideIndex = (activeSlideIndex + 1) % domSlides.length;
 
+                    // Slides rotate cleanly without overriding clock logic
                     domSlides[activeSlideIndex].classList.add("active");
                     domDots[activeSlideIndex].classList.add("active");
-
-                    // Highlight dynamic agenda items depending on current active slide
-                    schedItems.forEach(item => item.classList.remove("active"));
-                    if (activeSlideIndex < 4) {
-                        schedItems[0].classList.add("active"); // Słowo o poranku
-                    } else if (activeSlideIndex === 4) {
-                        schedItems[1].classList.add("active"); // Zadanie Taktyczne
-                    } else {
-                        schedItems[2].classList.add("active"); // Modlitwa
-                    }
 
                 }, slideDurationMs);
             }
