@@ -1041,6 +1041,12 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             // Configuration & State
+            const todayDateStr = new Date().toISOString().split('T')[0];
+            if (localStorage.getItem("dzj_stream_saved_date") !== todayDateStr) {
+                localStorage.removeItem("dzj_stream_day");
+                localStorage.setItem("dzj_stream_saved_date", todayDateStr);
+            }
+
             let reflectionsData = [];
             let currentDayIndex = 0;
             let activeSlideIndex = 0;
@@ -1584,8 +1590,8 @@
                 }, slideDurationMs);
             }
 
-            // Load local reflections database
-            fetch("rozwazania_baza.json")
+            // Load local reflections database with cache buster
+            fetch("rozwazania_baza.json?t=" + new Date().getTime())
                 .then(res => res.json())
                 .then(data => {
                     reflectionsData = data;
