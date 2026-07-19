@@ -1243,6 +1243,17 @@
                 }, 500);
             }, 8000);
 
+            // Helper to get dynamic background based on time of day
+            function getDynamicBackground(imagePath) {
+                const hour = new Date().getHours();
+                const isEveningOrNight = (hour >= 18 || hour < 5); // From 6 PM to 5 AM
+                
+                if (imagePath === "breakfast_presenters.jpg" && isEveningOrNight) {
+                    return "breakfast_presenters_evening.jpg";
+                }
+                return imagePath;
+            }
+
             // Load saved settings
             if (localStorage.getItem("dzj_stream_day")) {
                 currentDayIndex = parseInt(localStorage.getItem("dzj_stream_day"), 10);
@@ -1250,7 +1261,9 @@
             if (localStorage.getItem("dzj_stream_image")) {
                 customImgSrc = localStorage.getItem("dzj_stream_image");
                 bgImageSelect.value = customImgSrc;
-                bgActiveImg.src = customImgSrc;
+                bgActiveImg.src = getDynamicBackground(customImgSrc);
+            } else {
+                bgActiveImg.src = getDynamicBackground(customImgSrc);
             }
             if (localStorage.getItem("dzj_stream_video")) {
                 customVideoSrc = localStorage.getItem("dzj_stream_video");
@@ -1315,6 +1328,7 @@
             // Background Init
             function initBackground() {
                 if (!customVideoSrc) {
+                    bgActiveImg.src = getDynamicBackground(customImgSrc);
                     bgActiveImg.style.opacity = 1;
                     return;
                 }
