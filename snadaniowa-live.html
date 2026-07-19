@@ -828,7 +828,7 @@
             <footer>
                 <div class="l3-ticker-header">
                     INFORMACJE
-                    <span class="edition">Wydanie Poranne</span>
+                    <span class="edition" id="tickerEditionLabel">Wydanie Poranne</span>
                 </div>
                 <div class="ticker-marquee-wrap">
                     <span class="ticker-marquee-text" id="marqueeText">
@@ -973,6 +973,18 @@
                     sched2.classList.add("active");
                 } else {
                     sched3.classList.add("active");
+                }
+
+                // Dynamic Edition Label Updates
+                const tickerEdition = document.getElementById("tickerEditionLabel");
+                if (tickerEdition) {
+                    if (currentHour >= 5 && currentHour < 12) {
+                        tickerEdition.textContent = "Wydanie Poranne";
+                    } else if (currentHour >= 12 && currentHour < 18) {
+                        tickerEdition.textContent = "Wydanie Popołudniowe";
+                    } else {
+                        tickerEdition.textContent = "Wydanie Wieczorne";
+                    }
                 }
             }
             setInterval(updateClock, 1000);
@@ -1210,7 +1222,7 @@
                         title: "Jezus mówi do Ciebie",
                         text: `<div class="bible-citation">${cleanMarkdown(bibleQuote)}</div>`,
                         l3Title: "SŁOWO Z PISMA ŚWIĘTEGO",
-                        l3Desc: "Ewangelia Poranka"
+                        l3Desc: (new Date().getHours() < 12 ? "Ewangelia Poranka" : (new Date().getHours() < 18 ? "Ewangelia na Popołudnie" : "Ewangelia na Wieczór"))
                     });
                 }
 
