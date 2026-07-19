@@ -1372,9 +1372,6 @@
                             if (speakerMatch) {
                                 commitMessage();
                                 currentSender = speakerMatch[1].trim();
-                                if (speakerMatch[2] && speakerMatch[2].trim()) {
-                                    currentSender += " " + speakerMatch[2].trim();
-                                }
                                 currentMsgText = speakerMatch[3].trim();
                             } else {
                                 if (currentSender) {
