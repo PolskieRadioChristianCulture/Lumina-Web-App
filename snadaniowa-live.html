@@ -1203,12 +1203,18 @@
                     }
                 });
 
+                function cleanTeaserText(str) {
+                    if (!str) return "";
+                    // Deduplicate "Dzień X - **Dzień X - " typo patterns
+                    return str.replace(/Dzień\s+(\d+)\s*-\s*\*?\*?Dzień\s+\1\s*-\s*\*?\*?/gi, "Dzień $1 - ");
+                }
+
                 // Slide 1: Welcome & Teaser (Display immediately!)
                 slides.push({
                     type: "content",
                     tag: "Dzień dzisiejszy",
                     title: reflection.title,
-                    text: cleanMarkdown(reflection.teaser),
+                    text: cleanMarkdown(cleanTeaserText(reflection.teaser)),
                     l3Title: "ROZWAŻANIE DNIA",
                     l3Desc: reflection.title
                 });
