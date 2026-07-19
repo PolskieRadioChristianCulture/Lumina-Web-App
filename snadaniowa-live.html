@@ -32,13 +32,24 @@
         }
 
         body, html {
-            width: 1920px;
-            height: 1080px;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
             background-color: var(--bg-dark);
             color: var(--text-light);
             font-family: 'Outfit', sans-serif;
-            position: relative;
+        }
+
+        /* --- AUTO-SCALING VIEWPORT WRAPPER --- */
+        #app-container {
+            width: 1920px;
+            height: 1080px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+            overflow: hidden;
+            background-color: var(--bg-dark);
         }
 
         /* --- BACKGROUND LAYER SYSTEM --- */
@@ -708,167 +719,125 @@
 </head>
 <body>
 
-    <!-- Cog settings Trigger -->
-    <div class="toggle-panel-trigger" id="panelTriggerBtn" title="Panel Sterowania Programem">
-        <i class="fa-solid fa-cog"></i>
-    </div>
+    <!-- Main Auto-Scaling Viewport wrapper -->
+    <div id="app-container">
 
-    <!-- Operator controls panel -->
-    <div class="operator-panel" id="operatorPanel">
-        <div class="panel-header">
-            <span>Sterowanie Programem</span>
-            <button class="close-panel-btn" id="closePanelBtn">&times;</button>
-        </div>
+        <!-- Background Image -->
+        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="breakfast_presenters.jpg" alt="Breakfast Studio">
         
-        <div class="control-group">
-            <label for="daySelect">Wybierz Rozważanie (Dzień)</label>
-            <select id="daySelect">
-                <!-- Days loaded dynamically -->
-            </select>
-        </div>
+        <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
+        <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
 
-        <div class="control-group">
-            <label for="bgImageSelect">Tło Programu (Obraz / Layout)</label>
-            <select id="bgImageSelect">
-                <option value="breakfast_presenters.jpg">Prezenterki w Studio (Mockup)</option>
-                <option value="breakfast_studio.jpg">Studio Bliski Kadr (Kawa + Książka)</option>
-                <option value="breakfast_studio_alt.jpg">Alternatywne Tło Drewniane</option>
-            </select>
-        </div>
+        <!-- Overlays -->
+        <div class="vignette-overlay"></div>
+        <div class="sunbeams"></div>
 
-        <div class="control-group">
-            <label for="bgVideoSelect">Alternatywne Tło Wideo (Lokalnie)</label>
-            <select id="bgVideoSelect">
-                <option value="">(Brak wideo - Użyj wybranego obrazu tła)</option>
-                <option value="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Projekt bez nazwy (55).mp4">Projekt bez nazwy (55).mp4</option>
-                <option value="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Christian Culture TV (1).mp4">Christian Culture TV (1).mp4</option>
-                <option value="file:///C:/Users/czark/Desktop/Tło LIVE/Projekt bez nazwy (33).mp4">Projekt bez nazwy (33).mp4</option>
-            </select>
-        </div>
-
-        <div class="control-group">
-            <label for="slideDuration">Czas Slajdu (sekundy)</label>
-            <input type="number" id="slideDuration" value="25" min="10" max="120">
-        </div>
-
-        <button class="control-btn" id="forceReloadBtn">Zatwierdź i Odśwież</button>
-    </div>
-
-    <!-- Background Image -->
-    <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="breakfast_presenters.jpg" alt="Breakfast Studio">
-    
-    <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
-    <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
-
-    <!-- Overlays -->
-    <div class="vignette-overlay"></div>
-    <div class="sunbeams"></div>
-
-    <!-- Emission Screen Grid -->
-    <div class="emission-grid">
-        
-        <!-- Header -->
-        <header>
-            <div class="header-brand">
-                <i class="fa-solid fa-mug-hot"></i> DOBRZE, ŻE JESTEŚ TV
-            </div>
+        <!-- Emission Screen Grid -->
+        <div class="emission-grid">
             
-            <div class="live-tag-container">
-                <div class="tv-station-id">PROGRAM 1 • CC</div>
-                <div class="live-badge">
-                    <i class="fa-solid fa-circle"></i> NA ŻYWO
+            <!-- Header -->
+            <header>
+                <div class="header-brand">
+                    <i class="fa-solid fa-mug-hot"></i> DOBRZE, ŻE JESTEŚ TV
                 </div>
-            </div>
-        </header>
-
-        <!-- Main Viewport -->
-        <main class="main-viewport">
-            
-            <!-- Left Sidebar -->
-            <div class="left-panel">
                 
-                <!-- Floating Sunday agenda widget -->
-                <div class="schedule-widget">
-                    <div class="widget-title">
-                        <span>PROGRAM DNIA</span>
-                        <i class="fa-solid fa-list-ul" style="font-size: 0.85rem;"></i>
-                    </div>
-                    <div class="schedule-list">
-                        <div class="schedule-item active" id="sched-1">
-                            <span class="schedule-time">09:30</span>
-                            <span class="schedule-name" id="agendaActiveText">Słowo o Poranku</span>
-                        </div>
-                        <div class="schedule-item" id="sched-2">
-                            <span class="schedule-time">11:00</span>
-                            <span class="schedule-name">Zadanie Taktyczne</span>
-                        </div>
-                        <div class="schedule-item" id="sched-3">
-                            <span class="schedule-time">12:00</span>
-                            <span class="schedule-name">Bojowa Modlitwa</span>
-                        </div>
+                <div class="live-tag-container">
+                    <div class="tv-station-id">PROGRAM 1 • CC</div>
+                    <div class="live-badge">
+                        <i class="fa-solid fa-circle"></i> NA ŻYWO
                     </div>
                 </div>
+            </header>
 
-                <!-- Weather city simulation widget -->
-                <div class="weather-widget">
-                    <div class="weather-info" id="weatherBox">
-                        <span class="weather-city">WARSZAWA</span>
-                        <span class="weather-temp-desc">☀️ 25°C / Słonecznie</span>
-                    </div>
-                    <i class="fa-solid fa-sun-plant-wilt weather-icon"></i>
-                </div>
-
-            </div>
-
-            <!-- Right Panel (Info Board & Clock Widget) -->
-            <div class="right-panel">
+            <!-- Main Viewport -->
+            <main class="main-viewport">
                 
-                <!-- Floating Clock above the main card (Isolated to prevent overlaps) -->
-                <div class="card-clock-widget">
-                    <div class="card-clock-time">
-                        <span id="timeHour">11</span>:<span id="timeMin">30</span><span class="sec" id="timeSec">00</span>
-                    </div>
-                    <div class="card-clock-date" id="clockDateLabel">Niedziela, 19 Lipca</div>
-                </div>
-
-                <!-- Main Glass Card Container -->
-                <div class="reflection-canvas-card">
+                <!-- Left Sidebar -->
+                <div class="left-panel">
                     
-                    <!-- Slide text content area -->
-                    <div class="canvas-slide-container" id="slidesContainer">
-                        <div class="canvas-slide active">
-                            <div class="tv-logo-slide">
-                                <img src="Projekt bez nazwy (64).png" alt="Dobrze, że jesteś logo">
+                    <!-- Floating Sunday agenda widget -->
+                    <div class="schedule-widget">
+                        <div class="widget-title">
+                            <span>PROGRAM DNIA</span>
+                            <i class="fa-solid fa-list-ul" style="font-size: 0.85rem;"></i>
+                        </div>
+                        <div class="schedule-list">
+                            <div class="schedule-item active" id="sched-1">
+                                <span class="schedule-time">09:30</span>
+                                <span class="schedule-name" id="agendaActiveText">Słowo o Poranku</span>
+                            </div>
+                            <div class="schedule-item" id="sched-2">
+                                <span class="schedule-time">11:00</span>
+                                <span class="schedule-name">Zadanie Taktyczne</span>
+                            </div>
+                            <div class="schedule-item" id="sched-3">
+                                <span class="schedule-time">12:00</span>
+                                <span class="schedule-name">Bojowa Modlitwa</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Footer of card -->
-                    <div class="canvas-card-footer">
-                        <div class="slide-pagination" id="slidePagination">
-                            <!-- Dots loaded dynamically -->
+                    <!-- Weather city simulation widget -->
+                    <div class="weather-widget">
+                        <div class="weather-info" id="weatherBox">
+                            <span class="weather-city">WARSZAWA</span>
+                            <span class="weather-temp-desc">☀️ 25°C / Słonecznie</span>
                         </div>
-                        <div class="card-cycle-badge" id="cycleBadge">Dzień 20 | LATO KU BOŻEJ CHWALE</div>
+                        <i class="fa-solid fa-sun-plant-wilt weather-icon"></i>
                     </div>
 
                 </div>
-            </div>
 
-        </main>
+                <!-- Right Panel (Info Board & Clock Widget) -->
+                <div class="right-panel">
+                    
+                    <!-- Floating Clock above the main card (Isolated to prevent overlaps) -->
+                    <div class="card-clock-widget">
+                        <div class="card-clock-time">
+                            <span id="timeHour">11</span>:<span id="timeMin">30</span><span class="sec" id="timeSec">00</span>
+                        </div>
+                        <div class="card-clock-date" id="clockDateLabel">Niedziela, 19 Lipca</div>
+                    </div>
 
-        <!-- Footer Ticker -->
-        <footer>
-            <div class="l3-ticker-header">
-                INFORMACJE
-                <span class="edition">Wydanie Poranne</span>
-            </div>
-            <div class="ticker-marquee-wrap">
-                <span class="ticker-marquee-text" id="marqueeText">
-                    <span style="background: #FFCC00; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">NADAWAJ TĄ TRANSMISJĘ Z CHRISTIAN CULTURE - szczegóły na www.polskieradio.cc</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📖 BEZPŁATNA BIBLIA DLA KAŻDEGO — wyślij SMS o treści: <strong>BIBLIA</strong> pod numer <strong>530 736 155</strong>. Egzemplarz Pisma Świętego jest darmowy, zamawiający pokrywa jedynie koszt przesyłki! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 DOŁĄCZ NA WHATSAPP — buduj społeczność modlitewną i otrzymuj codzienne inspiracje bezpośrednio na telefon! Szczegóły w bocznej ramce &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 WESPRZYJ MISJĘ CHRISTIAN CULTURE — pomóż nam docierać z Ewangelią dalej! Szczegóły wsparcia na Patronite: patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Dziękujemy partnerom misji za każde wsparcie i modlitwę!
-                </span>
-            </div>
-        </footer>
+                    <!-- Main Glass Card Container -->
+                    <div class="reflection-canvas-card">
+                        
+                        <!-- Slide text content area -->
+                        <div class="canvas-slide-container" id="slidesContainer">
+                            <div class="canvas-slide active">
+                                <div class="tv-logo-slide">
+                                    <img src="Projekt bez nazwy (64).png" alt="Dobrze, że jesteś logo">
+                                </div>
+                            </div>
+                        </div>
 
+                        <!-- Footer of card -->
+                        <div class="canvas-card-footer">
+                            <div class="slide-pagination" id="slidePagination">
+                                <!-- Dots loaded dynamically -->
+                            </div>
+                            <div class="card-cycle-badge" id="cycleBadge">Dzień 20 | LATO KU BOŻEJ CHWALE</div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </main>
+
+            <!-- Footer Ticker -->
+            <footer>
+                <div class="l3-ticker-header">
+                    INFORMACJE
+                    <span class="edition">Wydanie Poranne</span>
+                </div>
+                <div class="ticker-marquee-wrap">
+                    <span class="ticker-marquee-text" id="marqueeText">
+                        <span style="background: #FFCC00; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">NADAWAJ TĄ TRANSMISJĘ Z CHRISTIAN CULTURE - szczegóły na www.polskieradio.cc</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📖 BEZPŁATNA BIBLIA DLA KAŻDEGO — wyślij SMS o treści: <strong>BIBLIA</strong> pod numer <strong>530 736 155</strong>. Egzemplarz Pisma Świętego jest darmowy, zamawiający pokrywa jedynie koszt przesyłki! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 DOŁĄCZ NA WHATSAPP — buduj społeczność modlitewną i otrzymuj codzienne inspiracje bezpośrednio na telefon! Szczegóły w bocznej ramce &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 WESPRZYJ MISJĘ CHRISTIAN CULTURE — pomóż nam docierać z Ewangelią dalej! Szczegóły wsparcia na Patronite: patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Dziękujemy partnerom misji za każde wsparcie i modlitwę!
+                    </span>
+                </div>
+            </footer>
+
+        </div>
     </div>
 
     <!-- Core Script -->
@@ -900,6 +869,27 @@
             const cycleBadge = document.getElementById("cycleBadge");
             const bgActiveImg = document.getElementById("bg-img-active");
             const weatherBox = document.getElementById("weatherBox");
+
+            // Viewport Auto-Scaling Handler
+            function resizeViewport() {
+                const container = document.getElementById("app-container");
+                const targetW = 1920;
+                const targetH = 1080;
+                
+                const scaleX = window.innerWidth / targetW;
+                const scaleY = window.innerHeight / targetH;
+                const scale = Math.min(scaleX, scaleY);
+                
+                container.style.transform = `scale(${scale})`;
+                
+                // Center the container within window
+                const leftOffset = (window.innerWidth - (targetW * scale)) / 2;
+                const topOffset = (window.innerHeight - (targetH * scale)) / 2;
+                container.style.left = `${leftOffset}px`;
+                container.style.top = `${topOffset}px`;
+            }
+            window.addEventListener("resize", resizeViewport);
+            resizeViewport();
 
             // Operator panel toggles
             panelTriggerBtn.addEventListener("click", () => opPanel.classList.add("visible"));
