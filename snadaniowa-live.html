@@ -686,7 +686,7 @@
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border-top: 3px solid var(--breakfast-accent);
-            overflow: hidden;
+            overflow: visible; /* Changed to visible so logo can stick out top */
             position: relative;
             box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.3);
             height: 85px;
@@ -703,7 +703,7 @@
             font-family: 'Outfit', sans-serif; /* Modern, clean sans-serif */
             perspective: 1000px; /* Enable 3D perspective */
             padding: 0; /* Let the flipper card occupy full space */
-            overflow: hidden;
+            overflow: visible; /* Changed to visible to let logo pop out */
         }
 
         /* 3D Ticker Flipper Card */
@@ -713,6 +713,7 @@
             position: relative;
             transform-style: preserve-3d;
             transition: transform 1.0s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy news flip transition */
+            overflow: visible;
         }
 
         .ticker-flipper.flipped {
@@ -735,6 +736,7 @@
             background: transparent;
             z-index: 2;
             transform: rotateX(0deg);
+            overflow: visible; /* Let large logo stick out */
         }
 
         .flipper-back {
@@ -743,20 +745,24 @@
             transform: rotateX(180deg); /* Starts rotated */
             padding: 0 20px;
             gap: 12px;
+            overflow: hidden; /* Clip metadata shimmer inside back card */
         }
 
         /* Front: Large focal logo */
         .large-ticker-logo {
-            height: 52px; /* Centered large logo */
+            height: 115px; /* Extremely large centered logo */
             width: auto;
             object-fit: contain;
-            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+            /* Translate up to stick halfway out of the top of the ticker header, and translateZ to pop out in 3D */
+            transform: translateY(-18px) translateZ(35px);
             animation: logo-pulse 4s ease-in-out infinite;
+            z-index: 10;
         }
 
         @keyframes logo-pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            0%, 100% { transform: translateY(-18px) translateZ(35px) scale(1); }
+            50% { transform: translateY(-18px) translateZ(35px) scale(1.06); }
         }
 
         /* Back: Small logo and title texts */
@@ -771,6 +777,7 @@
             border: 1.5px solid rgba(0, 0, 0, 0.12);
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
             flex-shrink: 0;
+            z-index: 6;
         }
 
         .small-ticker-logo {
@@ -788,8 +795,8 @@
             z-index: 6;
         }
 
-        /* Metallic light sweep reflection */
-        .l3-ticker-header::after {
+        /* Metallic light sweep reflection inside back card only */
+        .flipper-back::after {
             content: '';
             position: absolute;
             top: 0;
@@ -804,6 +811,7 @@
             );
             transform: skewX(-20deg);
             animation: ticker-badge-shine 4s ease-in-out infinite;
+            z-index: 5;
         }
 
         @keyframes ticker-badge-shine {
