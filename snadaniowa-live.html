@@ -1603,24 +1603,15 @@
                     }
 
                     rawLines.forEach(line => {
-                        // Transform section tags into visual cues
+                        // Transform section tags into visual cues (Skip displaying to viewers)
                         if (line.startsWith("###")) {
                             commitMessage();
-                            const sectionTitle = line.replace(/###/g, "").replace(/[\*\[\]]/g, "").trim();
-                            messages.push({
-                                sender: "PRODUKCJA",
-                                text: `🎬 ${sectionTitle}`
-                            });
                             return;
                         }
 
-                        // Production notes
+                        // Production notes (Skip displaying to viewers)
                         if (line.startsWith("[") && line.endsWith("]")) {
                             commitMessage();
-                            messages.push({
-                                sender: "PRODUKCJA",
-                                text: `🎬 ${line.replace(/[\[\]]/g, "")}`
-                            });
                             return;
                         }
 
