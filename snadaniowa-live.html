@@ -832,15 +832,15 @@
             padding-right: 8px;
         }
 
-        /* Custom Scrollbar for Chat Feed */
-        .chat-container::-webkit-scrollbar {
+        /* Custom Scrollbar for Chat Feed and Text Wrappers */
+        .chat-container::-webkit-scrollbar, .slide-text-scroll-wrap::-webkit-scrollbar {
             width: 5px;
         }
-        .chat-container::-webkit-scrollbar-track {
+        .slide-text-scroll-wrap::-webkit-scrollbar-track, .chat-container::-webkit-scrollbar-track {
             background: rgba(255, 255, 255, 0.02);
             border-radius: 10px;
         }
-        .chat-container::-webkit-scrollbar-thumb {
+        .slide-text-scroll-wrap::-webkit-scrollbar-thumb, .chat-container::-webkit-scrollbar-thumb {
             background: rgba(255, 204, 0, 0.2);
             border-radius: 10px;
         }
@@ -1879,8 +1879,10 @@
                     } else {
                         slideEl.innerHTML = `
                             <div class="slide-tag"><i class="fa-solid fa-mug-hot"></i> <span>${slideData.tag}</span></div>
-                            <div class="slide-title">${slideData.title}</div>
-                            <div class="slide-text">${adaptTextToTimeOfDay(slideData.text)}</div>
+                            <div class="slide-text-scroll-wrap" style="flex: 1; overflow-y: auto; padding-right: 8px; margin-top: 10px; width: 100%;">
+                                <div class="slide-title" style="margin-bottom: 15px;">${slideData.title}</div>
+                                <div class="slide-text">${adaptTextToTimeOfDay(slideData.text)}</div>
+                            </div>
                         `;
                     }
                     slidesContainer.appendChild(slideEl);
@@ -1900,9 +1902,9 @@
                 function triggerSlideScroll(index) {
                     const activeSlide = domSlides[index];
                     if (!activeSlide) return;
-                    const chatContainer = activeSlide.querySelector(".chat-container");
-                    if (chatContainer) {
-                        scrollPrompter(chatContainer);
+                    const scrollContainer = activeSlide.querySelector(".chat-container") || activeSlide.querySelector(".slide-text-scroll-wrap");
+                    if (scrollContainer) {
+                        scrollPrompter(scrollContainer);
                     }
                 }
 
