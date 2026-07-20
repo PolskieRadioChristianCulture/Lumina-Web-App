@@ -1341,8 +1341,8 @@
                     if (isEveningOrNight) {
                         return "breakfast_presenters_evening.jpg";
                     } else {
-                        // Alternate daytime presenter backgrounds daily
-                        return isEvenDay ? "breakfast_presenters.jpg" : "breakfast_presenters_alt.jpg";
+                        // Alternate daytime presenter backgrounds daily (Load new image on even days so it is active today)
+                        return isEvenDay ? "breakfast_presenters_alt.jpg" : "breakfast_presenters.jpg";
                     }
                 }
                 return imagePath;
