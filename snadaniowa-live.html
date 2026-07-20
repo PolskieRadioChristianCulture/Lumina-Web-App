@@ -698,21 +698,71 @@
             border-right: 1.5px solid rgba(255, 255, 255, 0.15);
             color: #000000; /* High contrast dark text */
             height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 0 16px;
-            gap: 12px;
             z-index: 5;
             box-shadow: 5px 0 15px rgba(0, 0, 0, 0.15);
             font-family: 'Outfit', sans-serif; /* Modern, clean sans-serif */
-            overflow: hidden; /* Cut off shimmer outside bounds */
+            perspective: 1000px; /* Enable 3D perspective */
+            padding: 0; /* Let the flipper card occupy full space */
+            overflow: hidden;
         }
 
-        /* 3D Spinning Logo Container in Ticker */
-        .ticker-logo-container {
-            width: 48px;
-            height: 48px;
+        /* 3D Ticker Flipper Card */
+        .ticker-flipper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.0s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy news flip transition */
+        }
+
+        .ticker-flipper.flipped {
+            transform: rotateX(180deg); /* Vertical flip transition */
+        }
+
+        .flipper-front, .flipper-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Hide the back side when front is visible and vice versa */
+            -webkit-backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .flipper-front {
+            justify-content: center;
+            background: transparent;
+            z-index: 2;
+            transform: rotateX(0deg);
+        }
+
+        .flipper-back {
+            justify-content: flex-start;
+            background: transparent;
+            transform: rotateX(180deg); /* Starts rotated */
+            padding: 0 20px;
+            gap: 12px;
+        }
+
+        /* Front: Large focal logo */
+        .large-ticker-logo {
+            height: 52px; /* Centered large logo */
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2));
+            animation: logo-pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes logo-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Back: Small logo and title texts */
+        .ticker-logo-container-small {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: rgba(0, 0, 0, 0.08);
             display: flex;
@@ -721,30 +771,13 @@
             border: 1.5px solid rgba(0, 0, 0, 0.12);
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
             flex-shrink: 0;
-            perspective: 1000px; /* Perspective for 3D flip */
         }
 
-        .ticker-logo-spin {
-            width: 32px;
-            height: 32px;
+        .small-ticker-logo {
+            width: 28px;
+            height: 28px;
             object-fit: contain;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
-            transform-style: preserve-3d;
-            animation: premium-logo-rotation 12s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-        }
-
-        @keyframes premium-logo-rotation {
-            0%, 75% {
-                transform: rotateY(0deg) scale(1);
-            }
-            82% {
-                transform: rotateY(180deg) scale(1.18);
-                filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
-            }
-            90%, 100% {
-                transform: rotateY(360deg) scale(1);
-                filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
-            }
         }
 
         .ticker-header-text {
@@ -1230,12 +1263,21 @@
             <!-- Footer Ticker -->
             <footer>
                 <div class="l3-ticker-header">
-                    <div class="ticker-logo-container">
-                        <img src="Projekt bez nazwy (64).png" alt="Dobrze, że jesteś logo" class="ticker-logo-spin">
-                    </div>
-                    <div class="ticker-header-text">
-                        <span class="label">INFORMACJE</span>
-                        <span class="edition" id="tickerEditionLabel">WYDANIE PORANNE</span>
+                    <div class="ticker-flipper" id="tickerFlipper">
+                        <!-- FRONT SIDE: Centered large logo -->
+                        <div class="flipper-front">
+                            <img src="Projekt bez nazwy (64).png" alt="Dobrze, że jesteś logo" class="large-ticker-logo">
+                        </div>
+                        <!-- BACK SIDE: Text details (Small logo + Edition metadata) -->
+                        <div class="flipper-back">
+                            <div class="ticker-logo-container-small">
+                                <img src="Projekt bez nazwy (64).png" alt="Dobrze, że jesteś logo" class="small-ticker-logo">
+                            </div>
+                            <div class="ticker-header-text">
+                                <span class="label">INFORMACJE</span>
+                                <span class="edition" id="tickerEditionLabel">WYDANIE PORANNE</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="ticker-marquee-wrap">
@@ -2220,6 +2262,16 @@
                 }, 12000); // Rotate every 12 seconds
             }
 
+            // Dynamic Ticker Flipper Rotation (3D flip between large brand logo and edition text)
+            function initTickerFlipper() {
+                const flipper = document.getElementById("tickerFlipper");
+                if (!flipper) return;
+                
+                setInterval(() => {
+                    flipper.classList.toggle("flipped");
+                }, 8000); // Toggle flip state every 8 seconds
+            }
+
             // Load database with cache buster
             fetch("rozwazania_baza.json?t=" + new Date().getTime())
                 .then(res => res.json())
@@ -2257,6 +2309,7 @@
                     renderReflection(reflectionsData[matchedIdx]);
                     initBackground();
                     initCtaRotation();
+                    initTickerFlipper();
                 })
                 .catch(err => {
                     console.error("Error loading reflections:", err);
