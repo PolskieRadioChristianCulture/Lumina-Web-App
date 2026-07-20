@@ -376,7 +376,7 @@
             padding-left: 15px;
         }
 
-        /* --- REFLECTION GLASS CARD (BASE GLASS SYSTEM) --- */
+        /* --- REFLECTION GLASS CARD (ADAPTIVE FLAT LAYOUT) --- */
         .reflection-canvas-card {
             background: var(--glass-bg);
             backdrop-filter: blur(25px);
@@ -394,39 +394,48 @@
             overflow: hidden;
         }
 
+        /* Flat overlays in all modes to ensure absolute readability */
+        body.mode-presenters .reflection-canvas-card {
+            left: 450px; /* Shift right to not block presenters */
+            top: 80px;
+            width: 860px;
+            height: 610px;
+            transform: none; /* Removed 3D rotation entirely */
+        }
+
         body.mode-studio .reflection-canvas-card {
-            left: 280px; /* Centered layout for close-up view without presenters */
+            left: 280px; /* Centered layout */
             top: 80px;
             width: 900px;
             height: 650px;
             transform: none;
         }
 
-        /* --- PRESENTERS ON SCREEN LAYOUT (Swapped columns to prevent covering Noemi and Sara) --- */
-        body.mode-presenters .main-viewport {
+        /* --- EVENING / NIGHT LAYOUT OVERRIDES (Swapped columns to prevent presenter overlap) --- */
+        body.evening-layout .main-viewport {
             grid-template-columns: 1fr 460px; /* Swaps panels (Agenda goes to the right) */
         }
 
-        body.mode-presenters .left-panel {
+        body.evening-layout .left-panel {
             grid-column: 2; /* Move agenda/weather to the right column (covers the TV screen background) */
             grid-row: 1; /* Force to the first row to prevent vertical row-wrapping */
-            margin-top: 60px; /* Reduced to prevent pushing the layout and cutting off the footer */
+            margin-top: 60px; /* Reduced from 180px to prevent pushing the layout and cutting off the footer */
         }
 
-        body.mode-presenters .right-panel {
+        body.evening-layout .right-panel {
             grid-column: 1; /* Move card/clock to the left column (covers the window background) */
             grid-row: 1; /* Force to the first row to prevent vertical row-wrapping */
             align-items: flex-start;
         }
 
-        body.mode-presenters .reflection-canvas-card {
+        body.evening-layout.mode-presenters .reflection-canvas-card {
             left: 0; /* Align to the left edge of right-panel (which is 70px from screen border) */
             width: 510px; /* Fits exactly within the window width in the background picture */
             height: 610px;
             transform: none;
         }
 
-        body.mode-presenters .card-clock-widget {
+        body.evening-layout.mode-presenters .card-clock-widget {
             margin-right: auto;
             margin-left: 0; /* Align clock to the left edge of the text card */
         }
