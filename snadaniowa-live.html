@@ -1100,6 +1100,7 @@
             <label for="bgImageSelect">Tło Programu (Obraz / Layout)</label>
             <select id="bgImageSelect">
                 <option value="breakfast_presenters.jpg">Prezenterki w Studio (Auto-Rotacja)</option>
+                <option value="breakfast_presenters_forenoon.jpg">Przedpołudniowe Prezenterki (Mockup 3)</option>
                 <option value="breakfast_presenters_alt.jpg">Alternatywne Prezenterki (Mockup 2)</option>
                 <option value="breakfast_studio.jpg">Studio Bliski Kadr (Kawa + Książka)</option>
                 <option value="breakfast_studio_alt.jpg">Alternatywne Tło Drewniane</option>
@@ -1304,8 +1305,10 @@
                 // Dynamic Edition Label Updates
                 const tickerEdition = document.getElementById("tickerEditionLabel");
                 if (tickerEdition) {
-                    if (currentHour >= 5 && currentHour < 12) {
+                    if (currentHour >= 5 && currentHour < 9) {
                         tickerEdition.textContent = "WYDANIE PORANNE";
+                    } else if (currentHour >= 9 && currentHour < 12) {
+                        tickerEdition.textContent = "WYDANIE PRZEDPOŁUDNIOWE";
                     } else if (currentHour >= 12 && currentHour < 18) {
                         tickerEdition.textContent = "WYDANIE POPOŁUDNIOWE";
                     } else if (currentHour >= 18 && currentHour < 22) {
@@ -1343,14 +1346,17 @@
             function getDynamicBackground(imagePath) {
                 const now = new Date();
                 const hour = now.getHours();
-                const isEveningOrNight = (hour >= 18 || hour < 5); // From 6 PM to 5 AM
-                const isEvenDay = (now.getDate() % 2 === 0);
                 
                 if (imagePath === "breakfast_presenters.jpg") {
-                    if (isEveningOrNight) {
+                    if (hour >= 18 || hour < 5) {
+                        // Evening and Night background (18:00 - 05:00)
                         return "breakfast_presenters_evening.jpg";
+                    } else if (hour >= 9 && hour < 12) {
+                        // Forenoon / Late Morning background (09:00 - 12:00)
+                        return "breakfast_presenters_forenoon.jpg";
                     } else {
-                        // Alternate daytime presenter backgrounds daily (Load new image on even days so it is active today)
+                        // Normal morning / afternoon presenters background (alternating daily)
+                        const isEvenDay = (now.getDate() % 2 === 0);
                         return isEvenDay ? "breakfast_presenters_alt.jpg" : "breakfast_presenters.jpg";
                     }
                 }
