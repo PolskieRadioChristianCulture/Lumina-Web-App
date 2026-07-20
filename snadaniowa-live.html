@@ -396,11 +396,15 @@
 
         /* Flat overlays in all modes to ensure absolute readability */
         body.mode-presenters .reflection-canvas-card {
-            left: 450px; /* Shift right to not block presenters */
+            left: 690px; /* Shifted to the right to sit directly over the TV screen background */
             top: 80px;
-            width: 860px;
+            width: 530px; /* Narrower width to fit the TV screen and not overlap Sara */
             height: 610px;
             transform: none; /* Removed 3D rotation entirely */
+        }
+
+        body.mode-presenters .card-clock-widget {
+            margin-right: 40px; /* Align clock with the card's right edge */
         }
 
         body.mode-studio .reflection-canvas-card {
