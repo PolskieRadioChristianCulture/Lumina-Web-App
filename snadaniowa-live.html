@@ -1090,7 +1090,8 @@
         <div class="control-group">
             <label for="bgImageSelect">Tło Programu (Obraz / Layout)</label>
             <select id="bgImageSelect">
-                <option value="breakfast_presenters.jpg">Prezenterki w Studio (Mockup)</option>
+                <option value="breakfast_presenters.jpg">Prezenterki w Studio (Auto-Rotacja)</option>
+                <option value="breakfast_presenters_alt.jpg">Alternatywne Prezenterki (Mockup 2)</option>
                 <option value="breakfast_studio.jpg">Studio Bliski Kadr (Kawa + Książka)</option>
                 <option value="breakfast_studio_alt.jpg">Alternatywne Tło Drewniane</option>
             </select>
@@ -1329,13 +1330,20 @@
             }
             runScheduleWidgetLoop();
 
-            // Helper to get dynamic background based on time of day
+            // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
-                const hour = new Date().getHours();
+                const now = new Date();
+                const hour = now.getHours();
                 const isEveningOrNight = (hour >= 18 || hour < 5); // From 6 PM to 5 AM
+                const isEvenDay = (now.getDate() % 2 === 0);
                 
-                if (imagePath === "breakfast_presenters.jpg" && isEveningOrNight) {
-                    return "breakfast_presenters_evening.jpg";
+                if (imagePath === "breakfast_presenters.jpg") {
+                    if (isEveningOrNight) {
+                        return "breakfast_presenters_evening.jpg";
+                    } else {
+                        // Alternate daytime presenter backgrounds daily
+                        return isEvenDay ? "breakfast_presenters.jpg" : "breakfast_presenters_alt.jpg";
+                    }
                 }
                 return imagePath;
             }
