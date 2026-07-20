@@ -396,18 +396,18 @@
 
         /* Flat overlays in all modes to ensure absolute readability */
         body.mode-presenters .reflection-canvas-card {
-            right: 30px; /* Align perfectly with the clock's right edge, close to the screen border */
+            right: 50px; /* Align perfectly close to the right edge */
             left: auto; /* Override default left: 450px style */
             top: 80px;
-            width: 470px; /* Wider card to fit clock text on a single line and give more reading space */
+            width: 650px; /* Wide card to prevent narrow text wrapping, utilizing all TV screen space */
             height: 610px;
             transform: none; /* Removed 3D rotation entirely */
         }
 
         body.mode-presenters .card-clock-widget {
-            width: 470px; /* Set fixed width to match the card */
+            width: 650px; /* Set fixed width to match the card */
             box-sizing: border-box;
-            margin-right: 30px; /* Match right offset of the card */
+            margin-right: 50px; /* Match right offset of the card */
         }
 
         body.mode-studio .reflection-canvas-card {
