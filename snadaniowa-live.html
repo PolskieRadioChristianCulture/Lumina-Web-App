@@ -396,15 +396,18 @@
 
         /* Flat overlays in all modes to ensure absolute readability */
         body.mode-presenters .reflection-canvas-card {
-            left: 690px; /* Shifted to the right to sit directly over the TV screen background */
+            right: 80px; /* Align perfectly with the clock's right edge */
+            left: auto; /* Override default left: 450px style */
             top: 80px;
-            width: 490px; /* Slightly narrower to prevent overlapping the presenter */
+            width: 410px; /* Exact same width as the clock widget */
             height: 610px;
             transform: none; /* Removed 3D rotation entirely */
         }
 
         body.mode-presenters .card-clock-widget {
-            margin-right: 80px; /* Align clock with the card's right edge */
+            width: 410px; /* Set fixed width to match the card */
+            box-sizing: border-box;
+            margin-right: 80px; /* Match right offset of the card */
         }
 
         body.mode-studio .reflection-canvas-card {
