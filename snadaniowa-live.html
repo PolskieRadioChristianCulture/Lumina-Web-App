@@ -429,6 +429,7 @@
             padding: 12px 28px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.5);
             margin-bottom: 15px;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .card-clock-time {
@@ -1194,7 +1195,7 @@
                 <div class="right-panel">
                     
                     <!-- Floating Clock above the main card (Isolated to prevent overlaps) -->
-                    <div class="card-clock-widget">
+                    <div class="card-clock-widget" id="cardClockWidget">
                         <div class="card-clock-time">
                             <span id="timeHour">11</span>:<span id="timeMin">30</span><span class="sec" id="timeSec">00</span>
                         </div>
@@ -1540,6 +1541,27 @@
                 }, 35000); // Stay visible for 35s
             }
             runScheduleWidgetLoop();
+
+            // Cyclical clock widget show/hide loop (45s visible, 45s hidden)
+            function runClockWidgetLoop() {
+                const clockWidget = document.getElementById("cardClockWidget");
+                if (!clockWidget) return;
+                
+                setTimeout(() => {
+                    // Slide up and fade out
+                    clockWidget.style.opacity = "0";
+                    clockWidget.style.transform = "translateY(-20px)";
+                    
+                    setTimeout(() => {
+                        // Slide back down and fade in
+                        clockWidget.style.opacity = "1";
+                        clockWidget.style.transform = "translateY(0)";
+                        
+                        runClockWidgetLoop(); // Loop infinitely
+                    }, 45000); // Stay hidden for 45s
+                }, 45000); // Stay visible for 45s
+            }
+            runClockWidgetLoop();
 
             // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
