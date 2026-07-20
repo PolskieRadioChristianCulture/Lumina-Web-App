@@ -1517,6 +1517,15 @@
                         initBackground();
                     }
                 }
+
+                // Real-time dynamic background check (swaps backgrounds in the slideshow, etc.)
+                if (localStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || !localStorage.getItem("dzj_stream_image")) {
+                    const currentBg = getDynamicBackground("breakfast_presenters.jpg");
+                    const currentSrcFilename = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
+                    if (currentSrcFilename !== currentBg) {
+                        bgActiveImg.src = currentBg;
+                    }
+                }
             }
             setInterval(updateClock, 1000);
             updateClock();
@@ -1574,7 +1583,9 @@
                         return "breakfast_presenters_evening.jpg";
                     } else if (hour >= 9 && hour < 12) {
                         // Forenoon / Late Morning background (09:00 - 12:00)
-                        return "breakfast_presenters_forenoon.jpg";
+                        // Rotate between the two backgrounds every 3 minutes (based on current minutes)
+                        const slideIndex = Math.floor(now.getMinutes() / 3) % 2;
+                        return slideIndex === 0 ? "breakfast_presenters_forenoon.jpg" : "breakfast_presenters_forenoon_2.jpg";
                     } else {
                         // Normal morning / afternoon presenters background (alternating daily)
                         const isEvenDay = (now.getDate() % 2 === 0);
