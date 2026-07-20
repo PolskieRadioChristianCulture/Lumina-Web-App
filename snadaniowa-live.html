@@ -1252,31 +1252,41 @@
                     let names = ["Słowo o Poranku", "Zadanie Taktyczne", "Bojowa Modlitwa"];
                     let activeIndex = 0;
 
-                    if (currentHour >= 12 && currentHour < 18) {
-                        // Afternoon program profile
+                    if (currentHour >= 5 && currentHour < 9) {
+                        // Morning program profile (05:00 - 09:00)
+                        times = ["06:00", "07:00", "08:00"];
+                        names = ["Słowo o Poranku", "Zadanie Taktyczne", "Bojowa Modlitwa"];
+                        if (currentHour < 7) activeIndex = 0;
+                        else if (currentHour === 7) activeIndex = 1;
+                        else activeIndex = 2;
+                    } else if (currentHour >= 9 && currentHour < 12) {
+                        // Forenoon program profile (09:00 - 12:00)
+                        times = ["09:30", "10:30", "11:30"];
+                        names = ["Słowo na Przedpołudnie", "Zadanie Taktyczne", "Bojowa Modlitwa"];
+                        if (currentHour === 9 || currentHour === 10) activeIndex = 0;
+                        else if (currentHour === 11) {
+                            activeIndex = now.getMinutes() < 30 ? 1 : 2;
+                        }
+                    } else if (currentHour >= 12 && currentHour < 18) {
+                        // Afternoon program profile (12:00 - 18:00)
                         times = ["13:30", "15:00", "16:30"];
                         names = ["Słowo na Popołudnie", "Koronka do Miłosierdzia", "Zadanie Taktyczne"];
                         if (currentHour < 15) activeIndex = 0;
                         else if (currentHour === 15) activeIndex = 1;
                         else activeIndex = 2;
                     } else if (currentHour >= 18 && currentHour < 22) {
-                        // Evening program profile
-                        times = ["19:30", "21:00", "22:00"];
+                        // Evening program profile (18:00 - 22:00)
+                        times = ["19:30", "20:30", "21:30"];
                         names = ["Słowo na Wieczór", "Wieczorna Modlitwa", "Walka Duchowa"];
-                        if (currentHour < 21) activeIndex = 0;
-                        else if (currentHour === 21) activeIndex = 1;
+                        if (currentHour < 20) activeIndex = 0;
+                        else if (currentHour === 20) activeIndex = 1;
                         else activeIndex = 2;
-                    } else if (currentHour >= 22 || currentHour < 5) {
+                    } else {
                         // Night program profile (22:00 - 05:00)
                         times = ["22:30", "00:00", "01:30"];
                         names = ["Słowo na Noc", "Nocne Czuwanie", "Walka Duchowa"];
                         if (currentHour === 22 || currentHour === 23) activeIndex = 0;
                         else if (currentHour === 0 || currentHour === 1) activeIndex = 1;
-                        else activeIndex = 2;
-                    } else {
-                        // Morning profile active highlights (05:00 - 12:00)
-                        if (currentHour < 11) activeIndex = 0;
-                        else if (currentHour === 11) activeIndex = 1;
                         else activeIndex = 2;
                     }
 
