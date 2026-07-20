@@ -750,19 +750,19 @@
 
         /* Front: Large focal logo */
         .large-ticker-logo {
-            height: 115px; /* Extremely large centered logo */
+            height: 170px; /* Increased size by 50% (from 115px) */
             width: auto;
             object-fit: contain;
-            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
-            /* Translate up to stick halfway out of the top of the ticker header, and translateZ to pop out in 3D */
-            transform: translateY(-18px) translateZ(35px);
+            filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.45));
+            /* Translate up by -42px (halfway out of the top of the 85px ticker) and translateZ for 3D depth */
+            transform: translateY(-42px) translateZ(50px);
             animation: logo-pulse 4s ease-in-out infinite;
             z-index: 10;
         }
 
         @keyframes logo-pulse {
-            0%, 100% { transform: translateY(-18px) translateZ(35px) scale(1); }
-            50% { transform: translateY(-18px) translateZ(35px) scale(1.06); }
+            0%, 100% { transform: translateY(-42px) translateZ(50px) scale(1); }
+            50% { transform: translateY(-42px) translateZ(50px) scale(1.05); }
         }
 
         /* Back: Small logo and title texts */
