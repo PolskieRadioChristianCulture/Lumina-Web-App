@@ -793,6 +793,20 @@
             font-size: 1.85rem;
         }
 
+        /* Fix scrolling text jitter over blurred backgrounds */
+        .slide-text-scroll-wrap {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: scroll-position, transform;
+            -webkit-font-smoothing: subpixel-antialiased;
+        }
+        
+        .slide-text, .bible-citation, .slide-title {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-font-smoothing: subpixel-antialiased;
+        }
+
         /* Pagination & card footer */
         .canvas-card-footer {
             display: flex;
