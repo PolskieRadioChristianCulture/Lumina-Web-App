@@ -851,6 +851,33 @@
             height: 85px;
         }
 
+        .ticker-popup-tab {
+            position: absolute;
+            bottom: 85px; /* Appears right above the footer */
+            left: 50px;
+            background: #E50914; /* News red */
+            color: white;
+            padding: 8px 24px;
+            border-radius: 12px 12px 0 0;
+            font-weight: 900;
+            font-size: 1.25rem;
+            font-family: 'Outfit', sans-serif;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+            z-index: 4; /* Sits behind the ticker header */
+            box-shadow: 0 -4px 20px rgba(229, 9, 20, 0.5);
+            letter-spacing: 1px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-bottom: none;
+            text-transform: uppercase;
+        }
+
+        .ticker-popup-tab.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
         .l3-ticker-header {
             position: relative;
             background: linear-gradient(135deg, #FFCC00 0%, #FF9900 100%); /* Vibrant gold gradient */
@@ -1577,6 +1604,7 @@
 
             <!-- Footer Ticker -->
             <footer>
+                <div class="ticker-popup-tab" id="tickerPopupTab">ZA CHWILĘ...</div>
                 <div class="l3-ticker-header">
                     <div class="ticker-flipper" id="tickerFlipper">
                         <!-- FRONT SIDE: Centered large logo -->
@@ -2820,10 +2848,29 @@
             // Dynamic Ticker Flipper Rotation (3D flip between large brand logo and edition text)
             function initTickerFlipper() {
                 const flipper = document.getElementById("tickerFlipper");
+                const popupTab = document.getElementById("tickerPopupTab");
                 if (!flipper) return;
                 
+                const announcements = [
+                    "ZA CHWILĘ: POZDROWIENIA OD WIDZÓW 💬",
+                    "NASTĘPNE: SERWIS INFORMACYJNY 📰",
+                    "ZA CHWILĘ: OFERTA SPECJALNA 🎁",
+                    "NASTĘPNE: WESPRZYJ MISJĘ ❤️"
+                ];
+                let currentAnnIdx = 0;
+                
                 setInterval(() => {
-                    flipper.classList.toggle("flipped");
+                    const isFlipped = flipper.classList.toggle("flipped");
+                    
+                    if (isFlipped && popupTab) {
+                        popupTab.textContent = announcements[currentAnnIdx];
+                        currentAnnIdx = (currentAnnIdx + 1) % announcements.length;
+                        popupTab.classList.add("show");
+                        
+                        setTimeout(() => {
+                            popupTab.classList.remove("show");
+                        }, 4500); // Tab stays up for 4.5 seconds while logo is hidden
+                    }
                 }, 8000); // Toggle flip state every 8 seconds
             }
 
