@@ -1783,6 +1783,7 @@
                         console.error(`Error fetching weather for ${city}:`, err);
                     }
                 }
+                updateWeatherDisplay(); // Immediately render real weather after API fetch completes
             }
 
             // Helper to get dynamic weather description and temperature based on time of day (fallback or real)
