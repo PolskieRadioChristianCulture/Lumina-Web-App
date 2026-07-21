@@ -1263,6 +1263,112 @@
             opacity: 1; /* Appears only when operator hovers the mouse in the bottom-left corner */
         }
 
+        /* --- ZOOM AD OVERLAY --- */
+        .zoom-ad-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+            transition: opacity 1.2s ease, transform 1.2s ease;
+        }
+
+        .zoom-ad-overlay.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .zoom-poster-container {
+            width: 100%;
+            height: 520px; /* Square image to match width of left-panel */
+            flex-shrink: 0;
+            background: #000;
+        }
+
+        .zoom-poster {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Don't crop the poster, show full image */
+            object-position: top;
+        }
+
+        .zoom-details-box {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            flex: 1;
+            background: linear-gradient(135deg, rgba(20,20,20,0.8), rgba(40,40,40,0.8));
+        }
+
+        .zoom-qr-box {
+            width: 130px;
+            height: 130px;
+            background: #fff;
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+        
+        .zoom-qr-box img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .zoom-text-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .zoom-label {
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: var(--breakfast-accent);
+            letter-spacing: 2px;
+        }
+
+        .zoom-id, .zoom-pass {
+            font-size: 1.2rem;
+            color: #ddd;
+            font-weight: 500;
+        }
+
+        .zoom-id span, .zoom-pass span {
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        /* Fade-out class for standard widgets when Zoom ad is shown */
+        .left-panel-standard-widget {
+            transition: opacity 1s ease, transform 1s ease;
+            transform-origin: left center;
+        }
+        
+        .left-panel-standard-widget.hidden-for-ad {
+            opacity: 0 !important;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+
         /* --- ANIMATIONS --- */
         @keyframes marquee-scroll {
             0% { transform: translate3d(0, 0, 0); }
@@ -1455,8 +1561,25 @@
                 <!-- Left Sidebar -->
                 <div class="left-panel">
                     
+                    <!-- Zoom Ad Overlay (Hidden by default, triggered cyclically) -->
+                    <div class="zoom-ad-overlay" id="zoomAdOverlay">
+                        <div class="zoom-poster-container">
+                            <img src="Modlitwa_za_Polske.jpeg" alt="Modlitwa za Polskę" class="zoom-poster">
+                        </div>
+                        <div class="zoom-details-box">
+                            <div class="zoom-qr-box">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fus06web.zoom.us%2Fj%2F85696754457%3Fpwd%3DF2idw79Zxcusqbe6QqOAkSaeCmysfo.1" alt="Zoom QR Code">
+                            </div>
+                            <div class="zoom-text-info">
+                                <div class="zoom-label">OGŁOSZENIE SPECJALNE</div>
+                                <div class="zoom-id">MEETING ID: <span>856 9675 4457</span></div>
+                                <div class="zoom-pass">PASSCODE: <span>495780</span></div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Floating Sunday agenda widget -->
-                    <div class="schedule-widget" id="scheduleWidget">
+                    <div class="schedule-widget left-panel-standard-widget" id="scheduleWidget">
                         <div class="widget-title">
                             <span>PROGRAM DNIA</span>
                             <i class="fa-solid fa-clock-rotate-left" style="font-size: 0.9rem;"></i>
@@ -1478,7 +1601,7 @@
                     </div>
 
                     <!-- Weather + CTA + QR Group (Auto-aligns QR sidecar in CSS) -->
-                    <div class="weather-cta-group">
+                    <div class="weather-cta-group left-panel-standard-widget">
                         <div class="weather-cta-widgets">
                             <!-- Weather city simulation widget -->
                             <div class="weather-widget">
@@ -2774,6 +2897,43 @@
             initCtaRotation();
 
             // Features 4 & 6: International Calendar Day & Studio Atmospheric Lighting Day-Sync
+            // Zoom Ad Override Cycle Logic
+            function initZoomAdCycle() {
+                const zoomAdOverlay = document.getElementById("zoomAdOverlay");
+                const standardWidgets = document.querySelectorAll(".left-panel-standard-widget");
+                
+                if (!zoomAdOverlay || standardWidgets.length === 0) return;
+
+                // Show Ad Function
+                function showZoomAd() {
+                    // Hide standard widgets
+                    standardWidgets.forEach(widget => {
+                        widget.classList.add("hidden-for-ad");
+                    });
+                    
+                    // Show zoom ad with a slight delay so standard widgets fade out first
+                    setTimeout(() => {
+                        zoomAdOverlay.classList.add("show");
+                    }, 800);
+
+                    // Hide zoom ad after 20 seconds
+                    setTimeout(() => {
+                        zoomAdOverlay.classList.remove("show");
+                        
+                        // Bring standard widgets back after zoom ad fades out
+                        setTimeout(() => {
+                            standardWidgets.forEach(widget => {
+                                widget.classList.remove("hidden-for-ad");
+                            });
+                        }, 1000);
+                    }, 20000); // 20 seconds display time
+                }
+
+                // Initial cycle: Run every 7 minutes (420000 ms)
+                setInterval(showZoomAd, 420000);
+            }
+            initZoomAdCycle();
+
             function initDaySyncFeatures() {
                 const now = new Date();
                 const hour = now.getHours();
