@@ -1020,6 +1020,17 @@
             animation: marquee-scroll 220s linear infinite;
         }
 
+        .ticker-highlight-msg {
+            color: #FFD700; /* Vibrant Gold */
+            background: rgba(0, 0, 0, 0.35);
+            padding: 2px 16px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            font-weight: 900;
+            margin: 0 10px;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+        }
+
         @keyframes logo-gradient-shift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -1472,6 +1483,10 @@
                                     <div class="cta-slide">
                                         <div class="cta-title">PYTANIE PORANKA 💬</div>
                                         <div class="cta-text">Za co dziękujesz dziś Bogu?<br>Wyślij SMS pod <strong>+48 783 478 280</strong></div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">BĄDŹ NA ANTENIE! 📺</div>
+                                        <div class="cta-text" style="font-size: 0.9em; line-height: 1.3;">SMS na <strong>+48 783 478 280</strong><br>Wpisz: <strong>Pozdrowienia.Treść.Imię</strong> lub <strong>Modlitwa...</strong><br><span style="color: var(--breakfast-accent);">Wyemitujemy na dolnym pasku!</span></div>
                                     </div>
                                     <div class="cta-slide">
                                         <div class="cta-title">ZŁOTA MYŚL DNIA ✨</div>
@@ -2668,6 +2683,7 @@
                     "fa-comment-sms",
                     "fa-comment-sms",
                     "fa-comments",
+                    "fa-envelope-open-text",
                     "fa-quote-left",
                     "fa-calendar-check"
                 ];
