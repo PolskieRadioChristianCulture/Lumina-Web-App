@@ -1266,37 +1266,36 @@
 
         /* --- ZOOM AD OVERLAY --- */
         .zoom-ad-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: auto;
-            min-height: 100%;
-            z-index: 10;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 1040px;
+            height: 520px;
+            z-index: 100;
             background: var(--glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            box-shadow: 0 15px 35px var(--glass-shadow);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             overflow: hidden;
             opacity: 0;
             pointer-events: none;
-            transform: scale(0.95);
+            transform: translate(-50%, -50%) scale(0.95);
             transition: opacity 1.2s ease, transform 1.2s ease;
         }
 
         .zoom-ad-overlay.show {
             opacity: 1;
-            transform: scale(1);
+            transform: translate(-50%, -50%) scale(1);
             pointer-events: auto;
         }
 
         .zoom-poster-container {
-            width: 100%;
-            height: 520px; /* Square image to match width of left-panel */
+            width: 520px;
+            height: 520px; /* Square image */
             flex-shrink: 0;
             background: #000;
         }
@@ -1305,26 +1304,29 @@
             width: 100%;
             height: 100%;
             object-fit: contain; /* Don't crop the poster, show full image */
-            object-position: top;
+            object-position: center; /* Centered instead of top */
             transition: opacity 0.5s ease;
         }
 
         .zoom-details-box {
             display: flex;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 20px;
-            padding: 20px;
-            flex: 1;
-            background: linear-gradient(135deg, rgba(20,20,20,0.8), rgba(40,40,40,0.8));
+            padding: 30px;
+            width: 520px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(20,20,20,0.95), rgba(40,40,40,0.95));
         }
 
         .zoom-qr-box {
-            width: 130px;
-            height: 130px;
+            width: 250px; /* Huge QR code */
+            height: 250px;
             background: #fff;
-            padding: 8px;
+            padding: 12px;
             border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
             flex-shrink: 0;
         }
         
@@ -1336,19 +1338,20 @@
         .zoom-text-info {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             font-family: 'Outfit', sans-serif;
+            text-align: center;
         }
 
         .zoom-label {
             font-weight: 900;
-            font-size: 1.4rem;
+            font-size: 1.8rem;
             color: var(--breakfast-accent);
             letter-spacing: 2px;
         }
 
         .zoom-id, .zoom-pass {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: #ddd;
             font-weight: 500;
         }
@@ -1356,13 +1359,13 @@
         .zoom-id span, .zoom-pass span {
             color: #fff;
             font-weight: 800;
-            font-size: 1.5rem;
-            letter-spacing: 1px;
+            font-size: 1.6rem;
+            letter-spacing: 2px;
         }
 
         .zoom-date {
-            margin-top: 5px;
-            font-size: 1.25rem;
+            margin-top: 10px;
+            font-size: 1.4rem;
             color: #FFD700; /* Vibrant Gold */
             font-weight: 800;
             text-transform: uppercase;
