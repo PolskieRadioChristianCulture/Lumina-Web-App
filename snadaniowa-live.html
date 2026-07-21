@@ -62,7 +62,8 @@
             object-fit: cover;
             z-index: 1;
             transition: opacity 1.5s ease-in-out, filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            animation: ken-burns-zoom 36s ease-in-out infinite; /* Slow Ken Burns breathing effect */
+            animation: ken-burns-zoom 22s ease-in-out infinite alternate; /* Dynamic camera pan & zoom motion */
+            will-change: transform;
         }
 
         .bg-layer.blurred {
@@ -70,16 +71,29 @@
         }
 
         .bg-image {
-            filter: brightness(0.95) contrast(1.02);
+            filter: brightness(0.96) contrast(1.04);
         }
 
+        /* TV Broadcast Camera Motion (Pan, Tilt & Zoom) */
         @keyframes ken-burns-zoom {
-            0% { transform: scale(1.0); }
-            50% { transform: scale(1.08); } /* Gentle 8% zoom */
-            100% { transform: scale(1.0); }
+            0% {
+                transform: scale(1.0) translate(0px, 0px);
+            }
+            25% {
+                transform: scale(1.07) translate(-18px, -10px);
+            }
+            50% {
+                transform: scale(1.04) translate(12px, 8px);
+            }
+            75% {
+                transform: scale(1.09) translate(-10px, 12px);
+            }
+            100% {
+                transform: scale(1.0) translate(0px, 0px);
+            }
         }
 
-        /* --- OVERLAYS --- */
+        /* --- DYNAMIC STUDIO LIGHTING OVERLAYS --- */
         .vignette-overlay {
             position: absolute;
             top: 0;
@@ -89,7 +103,7 @@
             z-index: 2;
             pointer-events: none;
             background: 
-                radial-gradient(circle at 80% 20%, rgba(255, 220, 130, 0.04) 0%, transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(255, 220, 130, 0.05) 0%, transparent 60%),
                 linear-gradient(to top, rgba(3, 3, 3, 0.8) 0%, transparent 20%, transparent 80%, rgba(3, 3, 3, 0.4) 100%);
         }
 
@@ -101,9 +115,57 @@
             height: 100%;
             z-index: 2;
             pointer-events: none;
-            background: linear-gradient(135deg, rgba(255, 220, 130, 0.08) 0%, transparent 55%);
+            background: linear-gradient(135deg, rgba(255, 204, 0, 0.10) 0%, transparent 55%);
             mix-blend-mode: screen;
-            animation: drift-light 18s ease-in-out infinite alternate;
+            animation: drift-light 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes drift-light {
+            0% { opacity: 0.5; transform: scale(1) rotate(0deg); }
+            50% { opacity: 0.95; transform: scale(1.05) rotate(1deg); }
+            100% { opacity: 0.6; transform: scale(1) rotate(-1deg); }
+        }
+
+        /* Moving Studio Spotlight Ray Sweep */
+        .lighting-sweep {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            z-index: 2;
+            pointer-events: none;
+            background: linear-gradient(
+                45deg, 
+                transparent 40%, 
+                rgba(255, 204, 0, 0.06) 50%, 
+                transparent 60%
+            );
+            animation: light-sweep-motion 14s ease-in-out infinite;
+        }
+
+        @keyframes light-sweep-motion {
+            0% { transform: translateX(-30%) translateY(-30%); }
+            50% { transform: translateX(20%) translateY(20%); }
+            100% { transform: translateX(-30%) translateY(-30%); }
+        }
+
+        /* Pulsing Studio Ambient Light Aura */
+        .ambient-pulse-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 40%, rgba(255, 180, 0, 0.08), transparent 70%);
+            animation: ambient-glow 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes ambient-glow {
+            0% { opacity: 0.4; }
+            100% { opacity: 1.0; }
         }
 
         /* --- MAIN LAYOUT GRID --- */
@@ -1311,6 +1373,8 @@
         <!-- Overlays -->
         <div class="vignette-overlay"></div>
         <div class="sunbeams"></div>
+        <div class="lighting-sweep"></div>
+        <div class="ambient-pulse-layer"></div>
 
         <!-- Emission Screen Grid -->
         <div class="emission-grid">
@@ -1832,13 +1896,13 @@
                         return "breakfast_presenters_evening.jpg";
                     } else if (hour >= 9 && hour < 12) {
                         // Forenoon / Late Morning background (09:00 - 12:00)
-                        // Rotate between the two backgrounds every 3 minutes (based on current minutes)
-                        const slideIndex = Math.floor(now.getMinutes() / 3) % 2;
+                        // Rotate between the two backgrounds every 90 seconds (based on timestamp)
+                        const slideIndex = Math.floor(now.getTime() / 90000) % 2;
                         return slideIndex === 0 ? "breakfast_presenters_forenoon.jpg" : "breakfast_presenters_forenoon_2.jpg";
                     } else if (hour >= 5 && hour < 9) {
                         // Morning Program background (05:00 - 09:00)
-                        // Rotate between the two new morning backgrounds every 3 minutes
-                        const slideIndex = Math.floor(now.getMinutes() / 3) % 2;
+                        // Rotate between the two new morning backgrounds every 90 seconds
+                        const slideIndex = Math.floor(now.getTime() / 90000) % 2;
                         return slideIndex === 0 ? "breakfast_presenters_morning_1.png" : "breakfast_presenters_morning_2.jpg";
                     } else {
                         // Afternoon presenters background (12:00 - 18:00) (alternating daily)
