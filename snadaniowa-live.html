@@ -635,7 +635,7 @@
             border: 1.5px solid var(--glass-border);
             border-top: 2.5px solid var(--breakfast-accent);
             border-radius: 28px;
-            padding: 40px 45px;
+            padding: 30px 35px;
             box-shadow: 0 20px 50px var(--glass-shadow);
             position: absolute;
             transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -649,14 +649,14 @@
         body.mode-presenters .reflection-canvas-card {
             right: 70px; /* Align perfectly with header/footer grid padding (70px) */
             left: auto; /* Override default left: 450px style */
-            top: 180px; /* Lowered from 80px to align top edge EXACTLY with left-panel schedule widget */
-            width: 1180px; /* Fully utilizes right column viewport space */
-            height: 700px; /* Symmetrical height aligned with bottom ticker footer */
+            top: 180px; /* Aligned top edge with left-panel schedule widget */
+            width: 650px; /* Restored previous compact card width */
+            height: 530px; /* Bottom edge aligns EXACTLY with the bottom edge of the left CTA widget */
             transform: none; /* Flat overlay */
         }
 
         body.mode-presenters .card-clock-widget {
-            width: 1180px; /* Fixed width matching the reflection card */
+            width: 650px; /* Fixed width matching the 650px card */
             box-sizing: border-box;
             margin-right: 70px; /* Match right offset of the card (70px) */
         }
@@ -757,7 +757,7 @@
 
         .slide-title {
             font-family: 'Cinzel', serif;
-            font-size: 2.85rem; /* Enlarged for mobile readability */
+            font-size: 2.35rem; /* Enlarged for mobile readability */
             font-weight: 900;
             line-height: 1.25;
             color: #fff;
@@ -766,7 +766,7 @@
         }
 
         .slide-text {
-            font-size: 2.95rem; /* Enlarged for mobile readability */
+            font-size: 2.25rem; /* Enlarged for mobile readability */
             font-weight: 400;
             line-height: 1.65;
             color: rgba(255, 255, 255, 0.95);
@@ -787,7 +787,7 @@
             background: rgba(255, 204, 0, 0.04);
             border-radius: 0 12px 12px 0;
             line-height: 1.6;
-            font-size: 2.5rem; /* Enlarged for mobile readability */
+            font-size: 2.0rem; /* Enlarged for mobile readability */
         }
 
         /* Pagination & card footer */
