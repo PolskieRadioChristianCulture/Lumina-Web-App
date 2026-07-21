@@ -240,7 +240,7 @@
         /* --- MAIN VIEWPORT --- */
         .main-viewport {
             display: grid;
-            grid-template-columns: 460px 1fr;
+            grid-template-columns: 520px 1fr;
             padding: 0 70px;
             gap: 60px;
             align-items: center;
@@ -275,7 +275,7 @@
 
         .widget-title {
             font-family: 'Cinzel', serif;
-            font-size: 1.7rem; /* Further increased size */
+            font-size: 2.0rem; /* Increased for mobile readability */
             font-weight: 900;
             color: var(--breakfast-accent);
             letter-spacing: 2px;
@@ -308,18 +308,18 @@
 
         .schedule-time {
             font-family: 'Inter', sans-serif;
-            font-size: 1.4rem; /* Further increased size */
+            font-size: 1.65rem; /* Increased for mobile readability */
             font-weight: 900;
             color: var(--breakfast-accent);
             background: rgba(255, 204, 0, 0.12);
             padding: 4px 10px;
             border-radius: 5px;
-            min-width: 80px;
+            min-width: 90px;
             text-align: center;
         }
 
         .schedule-name {
-            font-size: 1.6rem; /* Further increased size */
+            font-size: 1.85rem; /* Increased for mobile readability */
             font-weight: 600;
             color: rgba(255,255,255,0.8);
         }
@@ -347,12 +347,12 @@
             border: 1px solid var(--glass-border);
             border-top: 1.5px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
-            padding: 20px 24px;
+            padding: 22px 28px;
             box-shadow: 0 15px 35px var(--glass-shadow);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 90px;
+            height: 105px;
         }
 
         .weather-info {
@@ -362,15 +362,15 @@
         }
 
         .weather-city {
-            font-size: 1.15rem; /* Increased size */
-            font-weight: 800;
+            font-size: 1.35rem; /* Enlarged for mobile readability */
+            font-weight: 850;
             color: var(--breakfast-accent);
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
         .weather-temp-desc {
-            font-size: 1.55rem; /* Increased size */
+            font-size: 1.85rem; /* Enlarged for mobile readability */
             font-weight: 700;
             color: #fff;
             display: flex;
@@ -379,7 +379,7 @@
         }
 
         .weather-icon {
-            font-size: 2.5rem; /* Increased size */
+            font-size: 3.0rem; /* Enlarged icon */
             color: #FFD700;
             animation: sun-spin 15s linear infinite;
         }
@@ -403,8 +403,8 @@
             position: absolute;
             top: 0; /* Auto-align exactly with the weather widget top! */
             bottom: 0; /* Auto-stretch exactly to the bottom of the CTA widget! */
-            left: 485px; /* Placed exactly next to the weather/CTA widget border */
-            width: 200px;
+            left: 545px; /* Placed next to the wider 520px left panel */
+            width: 230px; /* Enlarged width for larger QR scan area */
             background: var(--glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
@@ -433,11 +433,11 @@
 
         body.evening-layout .qr-sidecar {
             left: auto;
-            right: 485px; /* Position to the left side of the panel when panel shifts to the right column */
+            right: 545px; /* Position to the left side of the panel when panel shifts to the right column */
         }
 
         .sidecar-text {
-            font-size: 0.90rem;
+            font-size: 1.10rem; /* Enlarged for mobile readability */
             font-weight: 900;
             color: #ffffff;
             text-align: center;
@@ -450,8 +450,8 @@
         }
 
         .sidecar-qr-box {
-            width: 120px;
-            height: 120px;
+            width: 145px; /* Enlarged QR code box for mobile camera scanning */
+            height: 145px;
             background: #ffffff;
             border-radius: 10px;
             padding: 4px;
@@ -470,7 +470,7 @@
         }
 
         .sidecar-subtext {
-            font-size: 0.70rem;
+            font-size: 0.85rem; /* Enlarged for mobile readability */
             font-weight: 700;
             color: var(--breakfast-accent);
             margin-top: 6px;
@@ -485,15 +485,15 @@
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             border-radius: 18px;
-            padding: 10px 20px; /* Reduced vertical padding */
+            padding: 14px 22px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.4);
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 18px;
             font-family: 'Outfit', sans-serif;
             color: #ffffff;
             overflow: hidden;
-            height: 100px; /* Increased height to prevent text clipping */
+            height: 115px; /* Enlarged height to accommodate large text */
             box-sizing: border-box;
             margin-top: 15px;
             position: relative;
@@ -501,13 +501,13 @@
         }
         
         .cta-icon {
-            font-size: 1.8rem; /* Increased icon size */
+            font-size: 2.2rem; /* Enlarged icon size */
             color: var(--breakfast-accent);
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 44px; /* Increased icon dimensions */
-            height: 44px;
+            width: 52px; /* Enlarged icon dimensions */
+            height: 52px;
             background: rgba(255, 204, 0, 0.1);
             border-radius: 12px;
             flex-shrink: 0;
@@ -547,17 +547,17 @@
         }
 
         .cta-title {
-            font-size: 0.8rem; /* Slightly larger title font */
-            font-weight: 800;
-            color: rgba(255, 255, 255, 0.50);
+            font-size: 1.0rem; /* Enlarged title font */
+            font-weight: 850;
+            color: rgba(255, 255, 255, 0.60);
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 2px;
         }
 
         .cta-text {
-            font-size: 1.35rem; /* Optimized text font to prevent multi-line clipping */
-            font-weight: 700;
+            font-size: 1.55rem; /* Enlarged text font for mobile readability */
+            font-weight: 750;
             color: #ffffff;
             white-space: normal; /* Enable wrapping into two lines */
             line-height: 1.25;
@@ -727,8 +727,8 @@
         }
 
         .slide-tag {
-            font-size: 1.25rem; /* Increased size */
-            font-weight: 800;
+            font-size: 1.45rem; /* Enlarged for mobile readability */
+            font-weight: 850;
             color: var(--breakfast-accent);
             text-transform: uppercase;
             letter-spacing: 3px;
@@ -757,7 +757,7 @@
 
         .slide-title {
             font-family: 'Cinzel', serif;
-            font-size: 2.50rem; /* Increased size */
+            font-size: 2.85rem; /* Enlarged for mobile readability */
             font-weight: 900;
             line-height: 1.25;
             color: #fff;
@@ -766,7 +766,7 @@
         }
 
         .slide-text {
-            font-size: 2.6rem; /* Further increased size */
+            font-size: 2.95rem; /* Enlarged for mobile readability */
             font-weight: 400;
             line-height: 1.65;
             color: rgba(255, 255, 255, 0.95);
@@ -787,7 +787,7 @@
             background: rgba(255, 204, 0, 0.04);
             border-radius: 0 12px 12px 0;
             line-height: 1.6;
-            font-size: 2.2rem; /* Further increased size */
+            font-size: 2.5rem; /* Enlarged for mobile readability */
         }
 
         /* Pagination & card footer */
@@ -824,8 +824,8 @@
             background: rgba(255, 204, 0, 0.1);
             border: 1px solid var(--breakfast-accent);
             color: var(--breakfast-accent);
-            font-size: 1.0rem; /* Increased size */
-            font-weight: 800;
+            font-size: 1.20rem; /* Enlarged for mobile readability */
+            font-weight: 850;
             padding: 4px 12px;
             border-radius: 6px;
             text-transform: uppercase;
@@ -1013,7 +1013,7 @@
         .ticker-marquee-text {
             display: inline-block;
             white-space: nowrap;
-            font-size: 1.8rem; /* Further increased size */
+            font-size: 2.1rem; /* Enlarged for mobile legibility */
             font-weight: 800;
             letter-spacing: 0.5px;
             color: #ffffff; /* Bright white text */
