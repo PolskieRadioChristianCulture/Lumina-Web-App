@@ -61,8 +61,12 @@
             height: 100%;
             object-fit: cover;
             z-index: 1;
-            transition: opacity 1.5s ease-in-out;
+            transition: opacity 1.5s ease-in-out, filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             animation: ken-burns-zoom 36s ease-in-out infinite; /* Slow Ken Burns breathing effect */
+        }
+
+        .bg-layer.blurred {
+            filter: blur(25px) brightness(0.65); /* Dim + blur presenters in background */
         }
 
         .bg-image {
@@ -867,6 +871,72 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* --- TV BUMPER TRANSITION OVERLAY --- */
+        .tv-bumper-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1920px;
+            height: 1080px;
+            background: rgba(0, 0, 0, 0.45); /* Elegant dark glass wash */
+            z-index: 999; /* Stay on top of everything except control panel */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(8px); /* Subtle overall glass blur */
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .tv-bumper-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .bumper-content {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0.6) rotate(-15deg);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .tv-bumper-overlay.active .bumper-content {
+            transform: scale(1) rotate(0deg);
+        }
+
+        .bumper-logo {
+            height: 380px; /* Huge 170px-inspired prominent logo */
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.65));
+            animation: bumper-logo-spin 2.5s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes bumper-logo-spin {
+            0%, 100% { transform: scale(1) rotateY(0deg); }
+            50% { transform: scale(1.06) rotateY(180deg); }
+        }
+
+        .bumper-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 204, 0, 0.30) 0%, rgba(255, 115, 0, 0.05) 50%, rgba(0, 0, 0, 0) 70%);
+            border-radius: 50%;
+            z-index: 5;
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
+
         /* --- OPERATOR CONTROL PANEL --- */
         .operator-panel {
             position: absolute;
@@ -1298,6 +1368,14 @@
                     </span>
                 </div>
             </footer>
+
+            <!-- Full-Screen TV Bumper/Transition Overlay -->
+            <div id="tvBumperOverlay" class="tv-bumper-overlay">
+                <div class="bumper-content">
+                    <img src="Projekt bez nazwy (64).png" alt="Dobrze, że jesteś logo" class="bumper-logo">
+                    <div class="bumper-glow"></div>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -2281,15 +2359,41 @@
                 // Slide rotation only runs if there are multiple slides (standard text reflections)
                 if (domSlides.length > 1) {
                     slideInterval = setInterval(() => {
-                        domSlides[activeSlideIndex].classList.remove("active");
-                        domDots[activeSlideIndex].classList.remove("active");
+                        const bumper = document.getElementById("tvBumperOverlay");
+                        const activeBg = document.getElementById("bg-img-active");
+                        const bgVid1 = document.getElementById("bg-video-1");
+                        const bgVid2 = document.getElementById("bg-video-2");
 
-                        activeSlideIndex = (activeSlideIndex + 1) % domSlides.length;
+                        // 1. Trigger full-screen bumper and blur background presenters
+                        if (bumper) bumper.classList.add("active");
+                        if (activeBg) activeBg.classList.add("blurred");
+                        if (bgVid1) bgVid1.classList.add("blurred");
+                        if (bgVid2) bgVid2.classList.add("blurred");
 
-                        domSlides[activeSlideIndex].classList.add("active");
-                        domDots[activeSlideIndex].classList.add("active");
+                        // 2. Swap the slide content at 800ms (completely covered)
+                        setTimeout(() => {
+                            domSlides[activeSlideIndex].classList.remove("active");
+                            domDots[activeSlideIndex].classList.remove("active");
 
-                        triggerSlideScroll(activeSlideIndex);
+                            activeSlideIndex = (activeSlideIndex + 1) % domSlides.length;
+
+                            domSlides[activeSlideIndex].classList.add("active");
+                            domDots[activeSlideIndex].classList.add("active");
+
+                            triggerSlideScroll(activeSlideIndex);
+                        }, 800);
+
+                        // 3. Fade out bumper at 1800ms
+                        setTimeout(() => {
+                            if (bumper) bumper.classList.remove("active");
+                        }, 1800);
+
+                        // 4. Fully remove background blur at 2500ms
+                        setTimeout(() => {
+                            if (activeBg) activeBg.classList.remove("blurred");
+                            if (bgVid1) bgVid1.classList.remove("blurred");
+                            if (bgVid2) bgVid2.classList.remove("blurred");
+                        }, 2500);
                     }, slideDurationMs);
                 }
             }
