@@ -2227,13 +2227,17 @@
                 const marqueeTextEl = document.getElementById("marqueeText");
                 if (!marqueeTextEl) return;
                 
+                const greetingsText = `<span class="ticker-announcement">ZA CHWILĘ: GŁOS WIDZÓW 📺</span> <span class="ticker-highlight-msg">💬 Pozdrowienia: Pozdrawiam serdecznie Kasię, Zosię, Pawła, Roberta i Bartka :) niech dobry Bóg Was błogosławi Kochani! ~Czarek</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
+
                 const defaultMissionText = `
+                    ${greetingsText}
                     <span style="background: #FFCC00; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">WWW.POLSKIERADIO.CC | CCLITE.PL</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     📧 NAPISZ DO NAS: <strong>polskiercctv@gmail.com</strong> | <strong>radiochristianculture@gmail.com</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     📖 BEZPŁATNA BIBLIA DLA KAŻDEGO — wyślij SMS o treści: <strong>BIBLIA</strong> pod numer <strong>530 736 155</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     📱 DOŁĄCZ NA WHATSAPP — szczegóły w bocznej ramce &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     💳 WESPRZYJ MISJĘ — Patronite: patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                    🙏 Dziękujemy za każde wsparcie i modlitwę!
+                    🙏 Dziękujemy za każde wsparcie i modlitwę! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    ${greetingsText}
                 `;
                 
                 try {
