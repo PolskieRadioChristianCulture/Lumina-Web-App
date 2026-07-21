@@ -647,7 +647,7 @@
 
         /* Flat overlays in all modes to ensure absolute readability and pixel-perfect alignment */
         body.mode-presenters .reflection-canvas-card {
-            right: 70px; /* Equal 70px side margin from right edge matching left panel margin from left edge */
+            right: 0; /* Align flush to .right-panel edge, utilizing main-viewport 70px padding for exact 70px screen margin */
             left: auto; /* Override default left: 450px style */
             top: 180px; /* Top aligned with left-panel schedule widget */
             width: 520px; /* EXACT SAME WIDTH as left panel window (520px) */
@@ -658,7 +658,7 @@
         body.mode-presenters .card-clock-widget {
             width: 520px; /* Fixed width matching the 520px card */
             box-sizing: border-box;
-            margin-right: 70px; /* Match right offset of the card (70px) */
+            margin-right: 0; /* Flush right matching card */
         }
 
         body.mode-studio .reflection-canvas-card {
