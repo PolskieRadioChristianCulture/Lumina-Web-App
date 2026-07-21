@@ -647,11 +647,11 @@
 
         /* Flat overlays in all modes to ensure absolute readability and pixel-perfect alignment */
         body.mode-presenters .reflection-canvas-card {
-            right: 70px; /* Align perfectly with header/footer grid padding (70px) */
+            right: 70px; /* Equal 70px side margin from right edge matching left panel margin from left edge */
             left: auto; /* Override default left: 450px style */
-            top: 110px; /* Starts higher up, directly below the header bar */
+            top: 180px; /* Top aligned with left-panel schedule widget */
             width: 650px; /* Standard card width */
-            height: 560px; /* Ends at Y = 670px, TRIMMED ON THE EXACT SAME HORIZONTAL LINE as bottom of left CTA/SMS widget */
+            height: 760px; /* Extends down to Y = 940px so bottom edge aligns EXACTLY with bottom of CTA & QR widgets */
             transform: none; /* Flat overlay */
         }
 
