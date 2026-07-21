@@ -2901,11 +2901,19 @@
             function initZoomAdCycle() {
                 const zoomAdOverlay = document.getElementById("zoomAdOverlay");
                 const standardWidgets = document.querySelectorAll(".left-panel-standard-widget");
+                const zoomPosterImg = document.querySelector(".zoom-poster");
                 
-                if (!zoomAdOverlay || standardWidgets.length === 0) return;
+                if (!zoomAdOverlay || standardWidgets.length === 0 || !zoomPosterImg) return;
+
+                const posters = ["Modlitwa_za_Polske.jpeg", "Modlitwa_2.jpeg"];
+                let currentPosterIdx = 0;
 
                 // Show Ad Function
                 function showZoomAd() {
+                    // Update poster image before showing
+                    zoomPosterImg.src = posters[currentPosterIdx];
+                    currentPosterIdx = (currentPosterIdx + 1) % posters.length;
+
                     // Hide standard widgets
                     standardWidgets.forEach(widget => {
                         widget.classList.add("hidden-for-ad");
