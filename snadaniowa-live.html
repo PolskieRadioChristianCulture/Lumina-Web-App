@@ -323,12 +323,26 @@
         }
 
         /* --- QR CODE SIDECAR (TEMP POPUP WIDGET) --- */
+        .weather-cta-group {
+            position: relative;
+            display: flex;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        .weather-cta-widgets {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
         .qr-sidecar {
             position: absolute;
-            top: 270px; /* Spans from the top of the weather widget. Aligns perfectly relative to left panel top */
+            top: 0; /* Auto-align exactly with the weather widget top! */
+            bottom: 0; /* Auto-stretch exactly to the bottom of the CTA widget! */
             left: 485px; /* Placed exactly next to the weather/CTA widget border */
             width: 200px;
-            height: 215px; /* Aligned height spanning weather and CTA widgets */
             background: var(--glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
@@ -1343,59 +1357,64 @@
                         </div>
                     </div>
 
-                    <!-- Weather city simulation widget -->
-                    <div class="weather-widget">
-                        <div class="weather-info" id="weatherBox">
-                            <span class="weather-city">WARSZAWA</span>
-                            <span class="weather-temp-desc">☀️ 25°C / Słonecznie</span>
-                        </div>
-                        <i class="fa-solid fa-sun-plant-wilt weather-icon"></i>
-                    </div>
+                    <!-- Weather + CTA + QR Group (Auto-aligns QR sidecar in CSS) -->
+                    <div class="weather-cta-group">
+                        <div class="weather-cta-widgets">
+                            <!-- Weather city simulation widget -->
+                            <div class="weather-widget">
+                                <div class="weather-info" id="weatherBox">
+                                    <span class="weather-city">WARSZAWA</span>
+                                    <span class="weather-temp-desc">☀️ 25°C / Słonecznie</span>
+                                </div>
+                                <i class="fa-solid fa-sun-plant-wilt weather-icon"></i>
+                            </div>
 
-                    <!-- Dynamic CTA Widget -->
-                    <div class="cta-widget" id="ctaWidget">
-                        <div class="cta-icon">
-                            <i class="fa-solid fa-thumbs-up cta-icon-inner" id="ctaIcon"></i>
+                            <!-- Dynamic CTA Widget -->
+                            <div class="cta-widget" id="ctaWidget">
+                                <div class="cta-icon">
+                                    <i class="fa-solid fa-thumbs-up cta-icon-inner" id="ctaIcon"></i>
+                                </div>
+                                <div class="cta-content">
+                                    <div class="cta-slide active">
+                                        <div class="cta-title">POLUB NAS</div>
+                                        <div class="cta-text">Zostaw łapkę w górę pod tą transmisją! 👍</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">SKOMENTUJ</div>
+                                        <div class="cta-text">Napisz krótki komentarz pod wideo! 💬</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">UDOSTĘPNIJ</div>
+                                        <div class="cta-text">Podziel się tą transmisją ze znajomymi! 🚀</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">SUBSKRYBUJ</div>
+                                        <div class="cta-text">Subskrybuj nasz kanał i włącz dzwoneczek! 🔔</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">OKAŻ UZNANIE</div>
+                                        <div class="cta-text">Wejdź do Sklepu: <strong>www.polskieradio.cc</strong> 🛒</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">SPOŁECZNOŚĆ YT</div>
+                                        <div class="cta-text">Dołącz do społeczności YT na naszym kanale! 📺</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">DARMOWE SMS</div>
+                                        <div class="cta-text"><strong>+48 783 478 280</strong><br>Wyślij SMS o treści <strong>"Dobrze, że jesteś"</strong> aby otrzymywać bezpłatne inspiracje.</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="cta-content">
-                            <div class="cta-slide active">
-                                <div class="cta-title">POLUB NAS</div>
-                                <div class="cta-text">Zostaw łapkę w górę pod tą transmisją! 👍</div>
-                            </div>
-                            <div class="cta-slide">
-                                <div class="cta-title">SKOMENTUJ</div>
-                                <div class="cta-text">Napisz krótki komentarz pod wideo! 💬</div>
-                            </div>
-                            <div class="cta-slide">
-                                <div class="cta-title">UDOSTĘPNIJ</div>
-                                <div class="cta-text">Podziel się tą transmisją ze znajomymi! 🚀</div>
-                            </div>
-                            <div class="cta-slide">
-                                <div class="cta-title">SUBSKRYBUJ</div>
-                                <div class="cta-text">Subskrybuj nasz kanał i włącz dzwoneczek! 🔔</div>
-                            </div>
-                            <div class="cta-slide">
-                                <div class="cta-title">OKAŻ UZNANIE</div>
-                                <div class="cta-text">Wejdź do Sklepu: <strong>www.polskieradio.cc</strong> 🛒</div>
-                            </div>
-                            <div class="cta-slide">
-                                <div class="cta-title">SPOŁECZNOŚĆ YT</div>
-                                <div class="cta-text">Dołącz do społeczności YT na naszym kanale! 📺</div>
-                            </div>
-                            <div class="cta-slide">
-                                <div class="cta-title">DARMOWE SMS</div>
-                                <div class="cta-text"><strong>+48 783 478 280</strong><br>Wyślij SMS o treści <strong>"Dobrze, że jesteś"</strong> aby otrzymywać bezpłatne inspiracje.</div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- QR Code Sidecar (Fades in/out next to weather/CTA widgets) -->
-                    <div class="qr-sidecar" id="qrSidecar">
-                        <div class="sidecar-text">POMAGANIE WZMACNIA</div>
-                        <div class="sidecar-qr-box">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://patronite.pl/osobowoscplus" alt="Patronite QR" class="sidecar-qr-img">
+                        <!-- QR Code Sidecar (Fades in/out next to weather/CTA widgets) -->
+                        <div class="qr-sidecar" id="qrSidecar">
+                            <div class="sidecar-text">POMAGANIE WZMACNIA</div>
+                            <div class="sidecar-qr-box">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://patronite.pl/osobowoscplus" alt="Patronite QR" class="sidecar-qr-img">
+                            </div>
+                            <div class="sidecar-subtext">patronite.pl/osobowoscplus</div>
                         </div>
-                        <div class="sidecar-subtext">patronite.pl/osobowoscplus</div>
                     </div>
 
                 </div>
