@@ -1469,6 +1469,18 @@
                                         <div class="cta-title">DARMOWE SMS (2/2)</div>
                                         <div class="cta-text"><strong>+48 783 478 280</strong><br>Otrzymuj codzienne inspiracje! 📱</div>
                                     </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">PYTANIE PORANKA 💬</div>
+                                        <div class="cta-text">Za co dziękujesz dziś Bogu?<br>Wyślij SMS pod <strong>+48 783 478 280</strong></div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">ZŁOTA MYŚL DNIA ✨</div>
+                                        <div class="cta-text" id="goldenQuoteSlideText">"Zaufaj Panu z całego serca i nie polegaj na własnym rozumie."</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">KARTKA Z KALENDARZA 📅</div>
+                                        <div class="cta-text" id="calendarSlideText">DZIŚ OBCHODZIMY: <strong>Międzynarodowy Dzień Radości</strong> ☀️</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2654,7 +2666,10 @@
                     "fa-bag-shopping",
                     "fa-youtube",
                     "fa-comment-sms",
-                    "fa-comment-sms"
+                    "fa-comment-sms",
+                    "fa-comments",
+                    "fa-quote-left",
+                    "fa-calendar-check"
                 ];
                 
                 let currentIdx = 0;
@@ -2679,6 +2694,54 @@
                 }, 12000); // Rotate every 12 seconds
             }
             initCtaRotation();
+
+            // Features 4 & 6: International Calendar Day & Studio Atmospheric Lighting Day-Sync
+            function initDaySyncFeatures() {
+                const now = new Date();
+                const hour = now.getHours();
+                const dayOfMonth = now.getDate();
+
+                // 1. Feature 4: International Calendar Days (STRICTLY NO CATHOLIC SAINTS)
+                const calendarSlideText = document.getElementById("calendarSlideText");
+                if (calendarSlideText) {
+                    const intlDays = [
+                        "Międzynarodowy Dzień Radości ☀️",
+                        "Światowy Dzień Pokoju i Nadziei 🕊️",
+                        "Dzień Wdzięczności i Dobroci 💖",
+                        "Światowy Dzień Przyjaźni i Braterstwa 🤝",
+                        "Dzień Światła i Prawdy ✨",
+                        "Światowy Dzień Życzliwości i Uśmiechu 😊",
+                        "Międzynarodowy Dzień Wiary i Wolności 🕊️"
+                    ];
+                    const chosenDay = intlDays[dayOfMonth % intlDays.length];
+                    calendarSlideText.innerHTML = `DZIŚ OBCHODZIMY: <strong>${chosenDay}</strong>`;
+                }
+
+                // 2. Feature 6: Dynamic Studio Atmosphere Day-Sync Lighting
+                const ambientPulse = document.querySelector(".ambient-pulse-layer");
+                const sunbeams = document.querySelector(".sunbeams");
+
+                if (ambientPulse) {
+                    if (hour >= 5 && hour < 9) {
+                        // Poranek: Warm Sunrise Golden Aura
+                        ambientPulse.style.background = "radial-gradient(circle at 50% 40%, rgba(255, 190, 0, 0.14), transparent 70%)";
+                        if (sunbeams) sunbeams.style.background = "linear-gradient(135deg, rgba(255, 204, 0, 0.12) 0%, transparent 55%)";
+                    } else if (hour >= 9 && hour < 18) {
+                        // Dzień: Daylight Clear Sky Blue Glow
+                        ambientPulse.style.background = "radial-gradient(circle at 50% 40%, rgba(0, 162, 255, 0.11), transparent 70%)";
+                        if (sunbeams) sunbeams.style.background = "linear-gradient(135deg, rgba(0, 200, 255, 0.08) 0%, transparent 55%)";
+                    } else if (hour >= 18 && hour < 22) {
+                        // Wieczór: Deep Sunset Amber & Violet Glow
+                        ambientPulse.style.background = "radial-gradient(circle at 50% 40%, rgba(255, 115, 0, 0.15), transparent 70%)";
+                        if (sunbeams) sunbeams.style.background = "linear-gradient(135deg, rgba(255, 100, 0, 0.10) 0%, transparent 55%)";
+                    } else {
+                        // Noc: Starlight Indigo Aura
+                        ambientPulse.style.background = "radial-gradient(circle at 50% 40%, rgba(100, 120, 255, 0.12), transparent 70%)";
+                        if (sunbeams) sunbeams.style.background = "linear-gradient(135deg, rgba(120, 140, 255, 0.06) 0%, transparent 55%)";
+                    }
+                }
+            }
+            initDaySyncFeatures();
 
             // Cascading 1-Item Program Dnia Schedule Rotation System
             function initScheduleCascadingRotation() {
