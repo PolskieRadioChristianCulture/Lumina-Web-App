@@ -1304,6 +1304,7 @@
             height: 100%;
             object-fit: contain; /* Don't crop the poster, show full image */
             object-position: top;
+            transition: opacity 0.5s ease;
         }
 
         .zoom-details-box {
@@ -2920,13 +2921,12 @@
                 if (!zoomAdOverlay || standardWidgets.length === 0 || !zoomPosterImg) return;
 
                 const posters = ["Modlitwa_za_Polske.jpeg", "Modlitwa_2.jpeg"];
-                let currentPosterIdx = 0;
 
                 // Show Ad Function
                 function showZoomAd() {
-                    // Update poster image before showing
-                    zoomPosterImg.src = posters[currentPosterIdx];
-                    currentPosterIdx = (currentPosterIdx + 1) % posters.length;
+                    // Start with the first image
+                    zoomPosterImg.src = posters[0];
+                    zoomPosterImg.style.opacity = "1";
 
                     // Hide standard widgets
                     standardWidgets.forEach(widget => {
@@ -2938,7 +2938,16 @@
                         zoomAdOverlay.classList.add("show");
                     }, 800);
 
-                    // Hide zoom ad after 20 seconds
+                    // Slideshow effect: Switch to the second image halfway through (after 10 seconds)
+                    setTimeout(() => {
+                        zoomPosterImg.style.opacity = "0";
+                        setTimeout(() => {
+                            zoomPosterImg.src = posters[1];
+                            zoomPosterImg.style.opacity = "1";
+                        }, 500); // Wait for fade out before swapping src
+                    }, 10000);
+
+                    // Hide zoom ad after 20 seconds total display time
                     setTimeout(() => {
                         zoomAdOverlay.classList.remove("show");
                         
@@ -2948,7 +2957,7 @@
                                 widget.classList.remove("hidden-for-ad");
                             });
                         }, 1000);
-                    }, 20000); // 20 seconds display time
+                    }, 20000);
                 }
 
                 // Initial cycle: Run every 7 minutes (420000 ms)
