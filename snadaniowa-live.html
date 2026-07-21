@@ -284,12 +284,33 @@
             border: 1px solid var(--glass-border);
             border-top: 1.5px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
-            padding: 20px 24px;
             box-shadow: 0 15px 35px var(--glass-shadow);
+            height: 90px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .weather-content-sub {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 90px;
+            box-sizing: border-box;
+            padding: 10px 24px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(15px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .weather-content-sub.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
         }
 
         .weather-info {
@@ -319,6 +340,50 @@
             font-size: 2.5rem; /* Increased size */
             color: #FFD700;
             animation: sun-spin 15s linear infinite;
+        }
+
+        /* QR Code Sub-widget details */
+        .qr-text-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .qr-label {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--breakfast-accent);
+            letter-spacing: 2px;
+            margin-bottom: 2px;
+        }
+
+        .qr-main-desc {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .qr-code-box {
+            width: 66px;
+            height: 66px;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 3px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+            border: 2px solid var(--breakfast-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        .qr-code-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         /* Dynamic CTA Widget */
@@ -1262,13 +1327,27 @@
                         </div>
                     </div>
 
-                    <!-- Weather city simulation widget -->
+                    <!-- Weather / Patronite QR Widget -->
                     <div class="weather-widget">
-                        <div class="weather-info" id="weatherBox">
-                            <span class="weather-city">WARSZAWA</span>
-                            <span class="weather-temp-desc">☀️ 25°C / Słonecznie</span>
+                        <!-- Wrapper 1: Weather Info -->
+                        <div class="weather-content-sub active" id="weatherSubContent">
+                            <div class="weather-info" id="weatherBox">
+                                <span class="weather-city">WARSZAWA</span>
+                                <span class="weather-temp-desc">☀️ 25°C / Słonecznie</span>
+                            </div>
+                            <i class="fa-solid fa-sun-plant-wilt weather-icon"></i>
                         </div>
-                        <i class="fa-solid fa-sun-plant-wilt weather-icon"></i>
+                        
+                        <!-- Wrapper 2: Patronite QR -->
+                        <div class="weather-content-sub" id="patroniteQrSubContent">
+                            <div class="qr-text-info">
+                                <span class="qr-label">PATRONITE</span>
+                                <span class="qr-main-desc">POMAGANIE WZMACNIA</span>
+                            </div>
+                            <div class="qr-code-box">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://patronite.pl/osobowoscplus" alt="QR Patronite" class="qr-code-img">
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Dynamic CTA Widget -->
@@ -1863,6 +1942,34 @@
                     console.warn("Could not load news.json, using default mission marquee:", err);
                     marqueeTextEl.innerHTML = defaultMissionText;
                 }
+            }
+
+            // Loop to switch weather widget content between Weather Info and Patronite QR code
+            function runWeatherQrSwapLoop() {
+                const weatherSub = document.getElementById("weatherSubContent");
+                const qrSub = document.getElementById("patroniteQrSubContent");
+                if (!weatherSub || !qrSub) return;
+
+                function showQr() {
+                    weatherSub.classList.remove("active");
+                    setTimeout(() => {
+                        qrSub.classList.add("active");
+                        // Stay active for 15 seconds, then switch back to weather
+                        setTimeout(showWeather, 15000);
+                    }, 800);
+                }
+
+                function showWeather() {
+                    qrSub.classList.remove("active");
+                    setTimeout(() => {
+                        weatherSub.classList.add("active");
+                        // Stay active for 45 seconds, then switch to QR
+                        setTimeout(showQr, 45000);
+                    }, 800);
+                }
+
+                // Initial cycle trigger: stays on weather for 45 seconds first
+                setTimeout(showQr, 45000);
             }
 
             // Weather forecast city rotation simulation
@@ -2527,6 +2634,7 @@
                     setInterval(fetchRealWeather, 900000); // Refresh weather from API every 15 minutes
                     loadNewsMarquee();
                     setInterval(loadNewsMarquee, 600000); // Refresh news headlines every 10 minutes
+                    runWeatherQrSwapLoop(); // Start weather/Patronite QR swap loop
                 })
                 .catch(err => {
                     console.error("Error loading reflections:", err);
