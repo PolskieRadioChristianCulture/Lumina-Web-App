@@ -645,27 +645,27 @@
             overflow: hidden;
         }
 
-        /* Flat overlays in all modes to ensure absolute readability */
+        /* Flat overlays in all modes to ensure absolute readability and pixel-perfect alignment */
         body.mode-presenters .reflection-canvas-card {
-            right: 50px; /* Align perfectly close to the right edge */
+            right: 70px; /* Align perfectly with header/footer grid padding (70px) */
             left: auto; /* Override default left: 450px style */
-            top: 80px;
-            width: 650px; /* Wide card to prevent narrow text wrapping, utilizing all TV screen space */
-            height: 610px;
-            transform: none; /* Removed 3D rotation entirely */
+            top: 180px; /* Lowered from 80px to align top edge EXACTLY with left-panel schedule widget */
+            width: 1180px; /* Fully utilizes right column viewport space */
+            height: 700px; /* Symmetrical height aligned with bottom ticker footer */
+            transform: none; /* Flat overlay */
         }
 
         body.mode-presenters .card-clock-widget {
-            width: 650px; /* Set fixed width to match the card */
+            width: 1180px; /* Fixed width matching the reflection card */
             box-sizing: border-box;
-            margin-right: 50px; /* Match right offset of the card */
+            margin-right: 70px; /* Match right offset of the card (70px) */
         }
 
         body.mode-studio .reflection-canvas-card {
-            left: 280px; /* Centered layout */
-            top: 80px;
-            width: 900px;
-            height: 650px;
+            left: 320px; /* Centered layout */
+            top: 180px; /* Lowered to align with sidebars */
+            width: 1280px;
+            height: 700px;
             transform: none;
         }
 
