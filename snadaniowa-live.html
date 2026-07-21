@@ -1718,8 +1718,13 @@
                         // Rotate between the two backgrounds every 3 minutes (based on current minutes)
                         const slideIndex = Math.floor(now.getMinutes() / 3) % 2;
                         return slideIndex === 0 ? "breakfast_presenters_forenoon.jpg" : "breakfast_presenters_forenoon_2.jpg";
+                    } else if (hour >= 5 && hour < 9) {
+                        // Morning Program background (05:00 - 09:00)
+                        // Rotate between the two new morning backgrounds every 3 minutes
+                        const slideIndex = Math.floor(now.getMinutes() / 3) % 2;
+                        return slideIndex === 0 ? "breakfast_presenters_morning_1.png" : "breakfast_presenters_morning_2.jpg";
                     } else {
-                        // Normal morning / afternoon presenters background (alternating daily)
+                        // Afternoon presenters background (12:00 - 18:00) (alternating daily)
                         const isEvenDay = (now.getDate() % 2 === 0);
                         return isEvenDay ? "breakfast_presenters_alt.jpg" : "breakfast_presenters.jpg";
                     }
