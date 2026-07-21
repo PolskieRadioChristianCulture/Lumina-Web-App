@@ -1832,6 +1832,39 @@
                 }
             }
 
+            // Load and build news marquee text dynamically from news.json
+            async function loadNewsMarquee() {
+                const marqueeTextEl = document.getElementById("marqueeText");
+                if (!marqueeTextEl) return;
+                
+                const defaultMissionText = `
+                    <span style="background: #FFCC00; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">NADAWAJ TĄ TRANSMISJĘ Z CHRISTIAN CULTURE - szczegóły na www.polskieradio.cc</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    📖 BEZPŁATNA BIBLIA DLA KAŻDEGO — wyślij SMS o treści: <strong>BIBLIA</strong> pod numer <strong>530 736 155</strong>. Egzemplarz Pisma Świętego jest darmowy, zamawiający pokrywa jedynie koszt przesyłki! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    📱 DOŁĄCZ NA WHATSAPP — buduj społeczność modlitewną i otrzymuj codzienne inspiracje bezpośrednio na telefon! Szczegóły w bocznej ramce &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    💳 WESPRZYJ MISJĘ CHRISTIAN CULTURE — pomóż nam docierać z Ewangelią dalej! Szczegóły wsparcia na Patronite: patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    🙏 Dziękujemy partnerom misji za każde wsparcie i modlitwę!
+                `;
+                
+                try {
+                    const res = await fetch("news.json?t=" + new Date().getTime());
+                    const headlines = await res.json();
+                    if (headlines && headlines.length > 0) {
+                        const newsMarqueeBlock = headlines.map(h => `⚡ ${h}`).join(" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ");
+                        marqueeTextEl.innerHTML = `
+                            <span style="background: #FF9900; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">WIADOMOŚCI POLSKA I ŚWIAT</span> 
+                            ${newsMarqueeBlock}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            ${defaultMissionText}
+                        `;
+                    } else {
+                        marqueeTextEl.innerHTML = defaultMissionText;
+                    }
+                } catch (err) {
+                    console.warn("Could not load news.json, using default mission marquee:", err);
+                    marqueeTextEl.innerHTML = defaultMissionText;
+                }
+            }
+
             // Weather forecast city rotation simulation
             const weatherCitiesList = ["WARSZAWA", "KRAKÓW", "OSTROWIEC ŚW.", "GDAŃSK", "STALOWA WOLA", "WROCŁAW", "POZNAŃ"];
             let cityIdx = 0;
@@ -2492,6 +2525,8 @@
                     initTickerFlipper();
                     fetchRealWeather();
                     setInterval(fetchRealWeather, 900000); // Refresh weather from API every 15 minutes
+                    loadNewsMarquee();
+                    setInterval(loadNewsMarquee, 600000); // Refresh news headlines every 10 minutes
                 })
                 .catch(err => {
                     console.error("Error loading reflections:", err);
