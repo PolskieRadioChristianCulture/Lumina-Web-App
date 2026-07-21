@@ -284,33 +284,12 @@
             border: 1px solid var(--glass-border);
             border-top: 1.5px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
+            padding: 20px 24px;
             box-shadow: 0 15px 35px var(--glass-shadow);
-            height: 90px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .weather-content-sub {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-sizing: border-box;
-            padding: 10px 24px;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(15px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .weather-content-sub.active {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0);
+            height: 90px;
         }
 
         .weather-info {
@@ -342,48 +321,84 @@
             animation: sun-spin 15s linear infinite;
         }
 
-        /* QR Code Sub-widget details */
-        .qr-text-info {
+        /* --- QR CODE SIDECAR (TEMP POPUP WIDGET) --- */
+        .qr-sidecar {
+            position: absolute;
+            top: 235px; /* Spans from the top of the weather widget. Aligns perfectly relative to left panel top */
+            left: 485px; /* Placed exactly next to the weather/CTA widget border */
+            width: 200px;
+            height: 220px; /* Aligned height spanning weather and CTA widgets */
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1.5px solid var(--glass-border);
+            border-top: 2.5px solid var(--breakfast-accent);
+            border-radius: 22px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
             display: flex;
             flex-direction: column;
+            align-items: center;
             justify-content: center;
+            padding: 15px;
+            box-sizing: border-box;
+            opacity: 0;
+            transform: scale(0.8) translateX(-15px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            z-index: 10;
         }
 
-        .qr-label {
-            font-size: 0.85rem;
-            font-weight: 800;
-            color: var(--breakfast-accent);
-            letter-spacing: 2px;
-            margin-bottom: 2px;
+        .qr-sidecar.active {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+            pointer-events: auto;
         }
 
-        .qr-main-desc {
-            font-size: 1.25rem;
+        body.evening-layout .qr-sidecar {
+            left: auto;
+            right: 485px; /* Position to the left side of the panel when panel shifts to the right column */
+        }
+
+        .sidecar-text {
+            font-size: 0.90rem;
             font-weight: 900;
             color: #ffffff;
-            letter-spacing: 0.5px;
+            text-align: center;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
             text-transform: uppercase;
+            border-bottom: 1.5px solid rgba(255, 204, 0, 0.25);
+            padding-bottom: 5px;
+            width: 100%;
         }
 
-        .qr-code-box {
-            width: 66px;
-            height: 66px;
+        .sidecar-qr-box {
+            width: 120px;
+            height: 120px;
             background: #ffffff;
-            border-radius: 8px;
-            padding: 3px;
+            border-radius: 10px;
+            padding: 4px;
             box-sizing: border-box;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             border: 2px solid var(--breakfast-accent);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 5;
         }
 
-        .qr-code-img {
+        .sidecar-qr-img {
             width: 100%;
             height: 100%;
             object-fit: contain;
+        }
+
+        .sidecar-subtext {
+            font-size: 0.70rem;
+            font-weight: 700;
+            color: var(--breakfast-accent);
+            margin-top: 6px;
+            letter-spacing: 0.5px;
+            text-align: center;
         }
 
         /* Dynamic CTA Widget */
@@ -1327,27 +1342,13 @@
                         </div>
                     </div>
 
-                    <!-- Weather / Patronite QR Widget -->
+                    <!-- Weather city simulation widget -->
                     <div class="weather-widget">
-                        <!-- Wrapper 1: Weather Info -->
-                        <div class="weather-content-sub active" id="weatherSubContent">
-                            <div class="weather-info" id="weatherBox">
-                                <span class="weather-city">WARSZAWA</span>
-                                <span class="weather-temp-desc">☀️ 25°C / Słonecznie</span>
-                            </div>
-                            <i class="fa-solid fa-sun-plant-wilt weather-icon"></i>
+                        <div class="weather-info" id="weatherBox">
+                            <span class="weather-city">WARSZAWA</span>
+                            <span class="weather-temp-desc">☀️ 25°C / Słonecznie</span>
                         </div>
-                        
-                        <!-- Wrapper 2: Patronite QR -->
-                        <div class="weather-content-sub" id="patroniteQrSubContent">
-                            <div class="qr-text-info">
-                                <span class="qr-label">PATRONITE</span>
-                                <span class="qr-main-desc">POMAGANIE WZMACNIA</span>
-                            </div>
-                            <div class="qr-code-box">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://patronite.pl/osobowoscplus" alt="QR Patronite" class="qr-code-img">
-                            </div>
-                        </div>
+                        <i class="fa-solid fa-sun-plant-wilt weather-icon"></i>
                     </div>
 
                     <!-- Dynamic CTA Widget -->
@@ -1381,6 +1382,15 @@
                                 <div class="cta-text">Dołącz do społeczności YT na naszym kanale! 📺</div>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- QR Code Sidecar (Fades in/out next to weather/CTA widgets) -->
+                    <div class="qr-sidecar" id="qrSidecar">
+                        <div class="sidecar-text">POMAGANIE WZMACNIA</div>
+                        <div class="sidecar-qr-box">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://patronite.pl/osobowoscplus" alt="Patronite QR" class="sidecar-qr-img">
+                        </div>
+                        <div class="sidecar-subtext">patronite.pl/osobowoscplus</div>
                     </div>
 
                 </div>
@@ -1946,32 +1956,25 @@
                 }
             }
 
-            // Loop to switch weather widget content between Weather Info and Patronite QR code
-            function runWeatherQrSwapLoop() {
-                const weatherSub = document.getElementById("weatherSubContent");
-                const qrSub = document.getElementById("patroniteQrSubContent");
-                if (!weatherSub || !qrSub) return;
+            // Loop to show/hide the large QR code sidecar panel next to weather/CTA widgets
+            function runQrSidecarLoop() {
+                const qrSidecar = document.getElementById("qrSidecar");
+                if (!qrSidecar) return;
 
-                function showQr() {
-                    weatherSub.classList.remove("active");
-                    setTimeout(() => {
-                        qrSub.classList.add("active");
-                        // Stay active for 15 seconds, then switch back to weather
-                        setTimeout(showWeather, 15000);
-                    }, 800);
+                function showSidecar() {
+                    qrSidecar.classList.add("active");
+                    // Stay visible for 25 seconds, then hide
+                    setTimeout(hideSidecar, 25000);
                 }
 
-                function showWeather() {
-                    qrSub.classList.remove("active");
-                    setTimeout(() => {
-                        weatherSub.classList.add("active");
-                        // Stay active for 45 seconds, then switch to QR
-                        setTimeout(showQr, 45000);
-                    }, 800);
+                function hideSidecar() {
+                    qrSidecar.classList.remove("active");
+                    // Stay hidden for 65 seconds, then show again
+                    setTimeout(showSidecar, 65000);
                 }
 
-                // Initial cycle trigger: stays on weather for 45 seconds first
-                setTimeout(showQr, 45000);
+                // Initial trigger: stays hidden for 45 seconds on start, then appears
+                setTimeout(showSidecar, 45000);
             }
 
             // Weather forecast city rotation simulation
@@ -2636,7 +2639,7 @@
                     setInterval(fetchRealWeather, 900000); // Refresh weather from API every 15 minutes
                     loadNewsMarquee();
                     setInterval(loadNewsMarquee, 600000); // Refresh news headlines every 10 minutes
-                    runWeatherQrSwapLoop(); // Start weather/Patronite QR swap loop
+                    runQrSidecarLoop(); // Start weather/Patronite QR sidecar loop
                 })
                 .catch(err => {
                     console.error("Error loading reflections:", err);
