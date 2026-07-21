@@ -641,6 +641,10 @@
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
+            /* Force hardware acceleration to stop text from waving/jittering over the moving background */
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* Flat overlays in all modes to ensure absolute readability and pixel-perfect alignment */
@@ -650,7 +654,7 @@
             top: 180px; /* Top aligned with left-panel schedule widget */
             width: 520px; /* EXACT SAME WIDTH as left panel window (520px) */
             height: 595px; /* Bottom edge raised slightly to align level with the bottom edge of the QR window */
-            transform: none; /* Flat overlay */
+            transform: translateZ(0); /* Hardware accelerated */
         }
 
         body.mode-presenters .card-clock-widget {
@@ -665,7 +669,7 @@
             top: 180px; /* Lowered to align with sidebars */
             width: 1280px;
             height: 700px;
-            transform: none;
+            transform: translateZ(0);
         }
 
         /* --- EVENING / NIGHT LAYOUT OVERRIDES (Swapped columns to prevent presenter overlap) --- */
@@ -689,7 +693,7 @@
             left: 0; /* Align to the left edge of right-panel (which is 70px from screen border) */
             width: 510px; /* Fits exactly within the window width in the background picture */
             height: 610px;
-            transform: none;
+            transform: translateZ(0);
         }
 
         body.evening-layout.mode-presenters .card-clock-widget {
