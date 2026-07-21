@@ -847,6 +847,7 @@
             border-top: 3px solid var(--breakfast-accent);
             overflow: visible; /* Changed to visible so logo can stick out top */
             position: relative;
+            z-index: 10; /* Ensures footer covers the popup tab */
             box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.3);
             height: 85px;
         }
@@ -868,7 +869,7 @@
             transform: translateY(100%);
             opacity: 0;
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
-            z-index: -1; /* Sits behind the entire footer background */
+            z-index: 4; /* Sits behind the footer which has z-index 10 */
             box-shadow: 0 -4px 20px rgba(229, 9, 20, 0.5);
             letter-spacing: 1px;
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -1605,9 +1606,11 @@
 
             </main>
 
+            <!-- Popup Tab (Outside footer to sit behind it) -->
+            <div class="ticker-popup-tab" id="tickerPopupTab">ZA CHWILĘ...</div>
+
             <!-- Footer Ticker -->
             <footer>
-                <div class="ticker-popup-tab" id="tickerPopupTab">ZA CHWILĘ...</div>
                 <div class="l3-ticker-header">
                     <div class="ticker-flipper" id="tickerFlipper">
                         <!-- FRONT SIDE: Centered large logo -->
