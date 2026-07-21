@@ -287,56 +287,53 @@
             align-items: center;
         }
 
-        .schedule-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .schedule-flipper-container {
+            position: relative;
+            height: 52px;
+            overflow: hidden;
+            width: 100%;
         }
 
-        .schedule-item {
+        .schedule-item.sched-item-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 6px 0;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
-            transition: all 0.3s;
+            padding: 0;
+            border-bottom: none;
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
         }
 
-        .schedule-item:last-child {
-            border-bottom: none;
+        .schedule-item.sched-item-slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
         }
 
         .schedule-time {
             font-family: 'Inter', sans-serif;
             font-size: 1.65rem; /* Increased for mobile readability */
             font-weight: 900;
-            color: var(--breakfast-accent);
-            background: rgba(255, 204, 0, 0.12);
+            color: #000;
+            background: var(--breakfast-accent);
             padding: 4px 10px;
             border-radius: 5px;
             min-width: 90px;
             text-align: center;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
         }
 
         .schedule-name {
             font-size: 1.85rem; /* Increased for mobile readability */
-            font-weight: 600;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .schedule-item.active {
-            transform: scale(1.02) translateX(4px);
-        }
-
-        .schedule-item.active .schedule-time {
-            background: var(--breakfast-accent);
-            color: #000;
-            box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
-        }
-
-        .schedule-item.active .schedule-name {
-            color: #fff;
             font-weight: 800;
+            color: #ffffff;
         }
 
         /* Weather forecast Widget */
@@ -1404,18 +1401,18 @@
                     <div class="schedule-widget" id="scheduleWidget">
                         <div class="widget-title">
                             <span>PROGRAM DNIA</span>
-                            <i class="fa-solid fa-list-ul" style="font-size: 0.85rem;"></i>
+                            <i class="fa-solid fa-clock-rotate-left" style="font-size: 0.9rem;"></i>
                         </div>
-                        <div class="schedule-list">
-                            <div class="schedule-item active" id="sched-1">
+                        <div class="schedule-flipper-container">
+                            <div class="schedule-item sched-item-slide active" id="sched-1">
                                 <span class="schedule-time">09:30</span>
                                 <span class="schedule-name" id="agendaActiveText">Słowo o Poranku</span>
                             </div>
-                            <div class="schedule-item" id="sched-2">
+                            <div class="schedule-item sched-item-slide" id="sched-2">
                                 <span class="schedule-time">11:00</span>
                                 <span class="schedule-name">Zadanie Taktyczne</span>
                             </div>
-                            <div class="schedule-item" id="sched-3">
+                            <div class="schedule-item sched-item-slide" id="sched-3">
                                 <span class="schedule-time">12:00</span>
                                 <span class="schedule-name">Bojowa Modlitwa</span>
                             </div>
@@ -2677,11 +2674,41 @@
                             iconEl.style.transform = "scale(1) rotate(0deg)";
                         }, 300);
                     }
-                    
                     // Add active class to new slide
                     slides[currentIdx].classList.add("active");
                 }, 12000); // Rotate every 12 seconds
             }
+            initCtaRotation();
+
+            // Cascading 1-Item Program Dnia Schedule Rotation System
+            function initScheduleCascadingRotation() {
+                const items = document.querySelectorAll(".sched-item-slide");
+                if (items.length <= 1) return;
+
+                let currentSchedIdx = 0;
+
+                setInterval(() => {
+                    const prevIdx = currentSchedIdx;
+                    currentSchedIdx = (currentSchedIdx + 1) % items.length;
+
+                    // Fade out & slide up current schedule item
+                    items[prevIdx].style.opacity = "0";
+                    items[prevIdx].style.transform = "translateY(-25px)";
+                    items[prevIdx].classList.remove("active");
+
+                    setTimeout(() => {
+                        // Reset position below
+                        items[prevIdx].style.transform = "translateY(25px)";
+
+                        // Fade in & slide up to active position next schedule item
+                        items[currentSchedIdx].classList.add("active");
+                        items[currentSchedIdx].style.opacity = "1";
+                        items[currentSchedIdx].style.transform = "translateY(0)";
+                    }, 400);
+
+                }, 6500); // Cascades to next schedule item every 6.5 seconds
+            }
+            initScheduleCascadingRotation();
 
             // Dynamic Ticker Flipper Rotation (3D flip between large brand logo and edition text)
             function initTickerFlipper() {
