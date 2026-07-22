@@ -45,6 +45,119 @@
                 grid-template-columns: 1fr !important;
             }
         }
+        /* Premium Embed Modal & Toast Styles */
+        .premium-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            inset: 0;
+            background: rgba(3, 4, 7, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .premium-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background: rgba(20, 24, 35, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 3px solid var(--gold-primary);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 550px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .premium-modal.show .modal-content {
+            transform: scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover {
+            color: #fff;
+        }
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .modal-body p {
+            color: #a1a1aa;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .code-textarea {
+            width: 100%;
+            height: 110px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 15px;
+            color: var(--gold-primary);
+            font-family: monospace;
+            font-size: 0.9rem;
+            resize: none;
+            margin-bottom: 20px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .copy-btn {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            cursor: pointer;
+            letter-spacing: 1px;
+            width: 100%;
+            transition: opacity 0.2s;
+        }
+        .copy-btn:hover {
+            opacity: 0.9;
+        }
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(50px);
+            background: rgba(212, 175, 55, 0.95);
+            color: #000;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            z-index: 10001;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .toast-notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
     </style>
     
     <!-- Favicon -->
@@ -208,9 +321,17 @@
                                 Program śniadaniowy z interaktywnym czatem, rotacyjnymi wersetami biblijnymi, pogodą i animowanym tłem. Idealny na poziome pasma TV.
                             </p>
                         </div>
-                        <a href="snadaniowa-live.html" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; padding: 12px 24px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                            <i class="fa-solid fa-play"></i> Uruchom w OBS
-                        </a>
+                        <div class="card-actions" style="display: flex; gap: 10px; width: 100%;">
+                            <a href="snadaniowa-live.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                                <i class="fa-solid fa-play"></i> Uruchom w OBS
+                            </a>
+                            <button onclick="openEmbedModal('snadaniowa-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                <i class="fa-solid fa-code"></i>
+                            </button>
+                            <button onclick="shareLink('snadaniowa-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -226,9 +347,17 @@
                                 Pionowy wariant popularnego programu śniadaniowego. Zaprojektowany od podstaw dla widzów mobilnych na TikToku i YouTube Shorts.
                             </p>
                         </div>
-                        <a href="dzj-vertical-live.html" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; padding: 12px 24px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                            <i class="fa-solid fa-play"></i> Uruchom w OBS
-                        </a>
+                        <div class="card-actions" style="display: flex; gap: 10px; width: 100%;">
+                            <a href="dzj-vertical-live.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                                <i class="fa-solid fa-play"></i> Uruchom w OBS
+                            </a>
+                            <button onclick="openEmbedModal('dzj-vertical-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                <i class="fa-solid fa-code"></i>
+                            </button>
+                            <button onclick="shareLink('dzj-vertical-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -244,9 +373,17 @@
                                 Pozioma scena zintegrowana ze strumieniem audio radia Zeno.fm. Wizualizacja fal dźwiękowych, zegar z datownikiem, werset dnia i dolny pasek informacyjny.
                             </p>
                         </div>
-                        <a href="stream-scene.html" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; padding: 12px 24px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                            <i class="fa-solid fa-play"></i> Uruchom w OBS
-                        </a>
+                        <div class="card-actions" style="display: flex; gap: 10px; width: 100%;">
+                            <a href="stream-scene.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                                <i class="fa-solid fa-play"></i> Uruchom w OBS
+                            </a>
+                            <button onclick="openEmbedModal('stream-scene.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                <i class="fa-solid fa-code"></i>
+                            </button>
+                            <button onclick="shareLink('stream-scene.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -262,9 +399,17 @@
                                 Pionowy szablon nadawczy stworzony specjalnie dla formatów mobilnych na YouTube Shorts, TikTok Live lub Instagram Reels. Zoptymalizowana widoczność na telefonach.
                             </p>
                         </div>
-                        <a href="stream-scene-vertical.html" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; padding: 12px 24px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                            <i class="fa-solid fa-play"></i> Uruchom w OBS
-                        </a>
+                        <div class="card-actions" style="display: flex; gap: 10px; width: 100%;">
+                            <a href="stream-scene-vertical.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                                <i class="fa-solid fa-play"></i> Uruchom w OBS
+                            </a>
+                            <button onclick="openEmbedModal('stream-scene-vertical.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                <i class="fa-solid fa-code"></i>
+                            </button>
+                            <button onclick="shareLink('stream-scene-vertical.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -506,7 +651,7 @@
             // Dynamic fail-safe cleanup for Google Translate top banner (hides all non-YouTube iframes)
             function cleanGoogleBanner() {
                 document.querySelectorAll('iframe').forEach(iframe => {
-                    if (!iframe.src.includes('youtube.com') && !iframe.src.includes('youtube-nocookie.com')) {
+                    if (!iframe.src.includes('youtube.com') && !iframe.src.includes('youtube-nocookie.com') && !iframe.classList.contains('allow-preview')) {
                         iframe.style.setProperty('display', 'none', 'important');
                         iframe.style.setProperty('visibility', 'hidden', 'important');
                         iframe.style.setProperty('height', '0px', 'important');
@@ -520,8 +665,69 @@
             }
             cleanGoogleBanner();
             setInterval(cleanGoogleBanner, 200);
+
+            // ── PREMIUM EMBED MODAL & SHARE FUNCTIONS ──
+            const embedModal = document.getElementById("embedModal");
+            const embedTextArea = document.getElementById("embedCodeArea");
+            const toast = document.getElementById("toastNotification");
+
+            window.openEmbedModal = function(url) {
+                const fullUrl = window.location.origin + "/" + url;
+                const iframeCode = `<iframe src="${fullUrl}" width="100%" height="600" style="border:0; border-radius:12px; box-shadow:0 15px 35px rgba(0,0,0,0.5);" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+                if(embedTextArea) embedTextArea.value = iframeCode;
+                if(embedModal) embedModal.classList.add("show");
+            };
+
+            window.closeEmbedModal = function() {
+                if(embedModal) embedModal.classList.remove("show");
+            };
+
+            window.copyEmbedCode = function() {
+                if(embedTextArea) {
+                    embedTextArea.select();
+                    embedTextArea.setSelectionRange(0, 99999);
+                    navigator.clipboard.writeText(embedTextArea.value).then(() => {
+                        showToast("Skopiowano kod osadzania!");
+                        closeEmbedModal();
+                    });
+                }
+            };
+
+            window.shareLink = function(url) {
+                const fullUrl = window.location.origin + "/" + url;
+                navigator.clipboard.writeText(fullUrl).then(() => {
+                    showToast("Skopiowano link do transmisji!");
+                });
+            };
+
+            function showToast(message) {
+                if(toast) {
+                    toast.textContent = message;
+                    toast.classList.add("show");
+                    setTimeout(() => {
+                        toast.classList.remove("show");
+                    }, 2500);
+                }
+            }
         });
     </script>
+
+    <!-- EMBED CODE MODAL -->
+    <div class="premium-modal" id="embedModal" onclick="if(event.target === this) closeEmbedModal();">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeEmbedModal();">&times;</button>
+            <h3 class="modal-title">Osadź transmisję na stronie</h3>
+            <div class="modal-body">
+                <p>Skopiuj poniższy kod HTML iframe i wklej go w kodzie swojej witryny, aby osadzić tę scenę na żywo:</p>
+                <textarea class="code-textarea" id="embedCodeArea" readonly onclick="this.select();"></textarea>
+                <button class="copy-btn" onclick="copyEmbedCode();">Skopiuj kod</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST SYSTEM NOTIFICATION -->
+    <div class="toast-notification" id="toastNotification">Skopiowano!</div>
+
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="module" src="app.js?v=3"></script>
     <script type="module" src="dobrzezejestes.js?v=6"></script>
