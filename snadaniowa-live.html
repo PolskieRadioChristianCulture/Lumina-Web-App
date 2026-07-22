@@ -1761,7 +1761,7 @@
                             <div class="slide-pagination" id="slidePagination">
                                 <!-- Dots loaded dynamically -->
                             </div>
-                            <div class="card-cycle-badge" id="cycleBadge">Dzień 22 | MISJA BOŻE WAKACJE</div>
+                            <div class="card-cycle-badge" id="cycleBadge">Dzień 20 | LATO KU BOŻEJ CHWALE</div>
                         </div>
 
                     </div>
@@ -2494,7 +2494,10 @@
             function buildSlides(reflection) {
                 if (!reflection) return null;
 
-                let cycleTitle = "MISJA BOŻE WAKACJE";
+                let cycleTitle = "LATO KU BOŻEJ CHWALE";
+                if (reflection.id.includes("wakacje") || reflection.fullText.includes("wakacje") || reflection.title.includes("Wakacje")) {
+                    cycleTitle = "MISJA WAKACJE";
+                }
                 
                 const dayNumMatch = reflection.id.match(/ref_day(\d+)/);
                 const dayNum = dayNumMatch ? dayNumMatch[1] : (reflectionsData.indexOf(reflection) + 1);
