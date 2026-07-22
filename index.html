@@ -1109,23 +1109,25 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const langBtn = document.getElementById('langToggleBtn');
+            const langBtn = document.getElementById('shortcutLangRow');
             const langText = document.getElementById('langToggleText');
-
+ 
             // Function to check if translated to English (based on Google Translate cookie)
             function isEnglish() {
                 return document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen');
             }
-
-            // Sync button label on load
-            if (isEnglish()) {
-                langText.textContent = 'PL';
-                langBtn.title = 'Przełącz na język polski';
-            } else {
-                langText.textContent = 'EN';
-                langBtn.title = 'Switch to English';
+ 
+            // Sync button label on load (with safety checks)
+            if (langText) {
+                if (isEnglish()) {
+                    langText.textContent = 'PL';
+                    if (langBtn) langBtn.title = 'Przełącz na język polski';
+                } else {
+                    langText.textContent = 'EN';
+                    if (langBtn) langBtn.title = 'Switch to English';
+                }
             }
-
+ 
             if (langBtn && langText) {
                 langBtn.addEventListener('click', () => {
                     if (isEnglish()) {
@@ -1188,22 +1190,7 @@
                     if (modal) modal.style.display = "block";
                 });
             }
-            
-            const shortcutLangRow = document.getElementById("shortcutLangRow");
-            if (shortcutLangRow) {
-                shortcutLangRow.addEventListener("click", () => {
-                    if (isEnglish()) {
-                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.polskieradio.cc";
-                        document.cookie = "googtrans=/pl/pl; path=/";
-                        document.cookie = "googtrans=/pl/pl; path=/; domain=.polskieradio.cc";
-                    } else {
-                        document.cookie = "googtrans=/pl/en; path=/";
-                        document.cookie = "googtrans=/pl/en; path=/; domain=.polskieradio.cc";
-                    }
-                    window.location.reload();
-                });
-            }
+
 
             // Dynamic fail-safe cleanup for Google Translate top banner (hides all non-YouTube iframes)
             function cleanGoogleBanner() {
