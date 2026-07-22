@@ -271,7 +271,7 @@
                                 const restoreLink = document.getElementById("drawerShowLiveLink");
                                 if (restoreLink) restoreLink.style.display = "flex";
                             } else {
-                                if (iframe) iframe.src = "snadaniowa-live-pl.html?v=1.2"; // v1.2 version bump to clear caching issues
+                                if (iframe) iframe.src = "snadaniowa-live.html?v=1.2"; // v1.2 version bump to clear caching issues
                             }
                             
                             window.shareLiveStream = function() {
@@ -323,7 +323,7 @@
                                 
                                 // Show and fade-in the stream box, loading iframe source
                                 if (box) {
-                                    if (iframe) iframe.src = "snadaniowa-live-pl.html?v=1.2";
+                                    if (iframe) iframe.src = "snadaniowa-live.html?v=1.2";
                                     box.style.display = "block";
                                     box.style.opacity = "0";
                                     box.style.transform = "scale(0.95)";
