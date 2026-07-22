@@ -1982,9 +1982,9 @@
 
             // Configuration & State
             const todayDateStr = new Date().toISOString().split('T')[0];
-            if (localStorage.getItem("dzj_stream_saved_date") !== todayDateStr) {
-                localStorage.removeItem("dzj_stream_day");
-                localStorage.setItem("dzj_stream_saved_date", todayDateStr);
+            if (safeStorage.getItem("dzj_stream_saved_date") !== todayDateStr) {
+                safeStorage.removeItem("dzj_stream_day");
+                safeStorage.setItem("dzj_stream_saved_date", todayDateStr);
             }
 
             let reflectionsData = [];
@@ -2063,17 +2063,17 @@
                 if (currentDay !== loadedDate) {
                     loadedDate = currentDay;
                     
-                    // If a manual day selection is active in localStorage, increment it by 1
-                    if (localStorage.getItem("dzj_stream_day")) {
-                        let nextDay = (parseInt(localStorage.getItem("dzj_stream_day"), 10) + 1) % reflectionsData.length;
-                        localStorage.setItem("dzj_stream_day", nextDay);
+                    // If a manual day selection is active in safeStorage, increment it by 1
+                    if (safeStorage.getItem("dzj_stream_day")) {
+                        let nextDay = (parseInt(safeStorage.getItem("dzj_stream_day"), 10) + 1) % reflectionsData.length;
+                        safeStorage.setItem("dzj_stream_day", nextDay);
                         currentDayIndex = nextDay;
                         if (daySelect) daySelect.value = nextDay;
                     }
                     
                     // Reload matched index (either updated manual day or today's matching date)
                     let matchedIdx = currentDayIndex;
-                    if (!localStorage.getItem("dzj_stream_day")) {
+                    if (!safeStorage.getItem("dzj_stream_day")) {
                         const todayStr = now.toISOString().split('T')[0];
                         const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
                         if (foundIdx !== -1) {
@@ -2175,13 +2175,13 @@
                     if (activeReflectionObj) {
                         renderReflection(activeReflectionObj);
                     }
-                    if (localStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || !localStorage.getItem("dzj_stream_image")) {
+                    if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || !safeStorage.getItem("dzj_stream_image")) {
                         initBackground();
                     }
                 }
 
                 // Real-time dynamic background check (swaps backgrounds in the slideshow, etc.)
-                if (localStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || !localStorage.getItem("dzj_stream_image")) {
+                if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || !safeStorage.getItem("dzj_stream_image")) {
                     const currentBg = getDynamicBackground("breakfast_presenters.jpg");
                     const currentSrcFilename = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
                     if (currentSrcFilename !== currentBg) {
@@ -2473,22 +2473,22 @@
             }, 8000);
 
             // Load saved settings
-            if (localStorage.getItem("dzj_stream_day")) {
-                currentDayIndex = parseInt(localStorage.getItem("dzj_stream_day"), 10);
+            if (safeStorage.getItem("dzj_stream_day")) {
+                currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
             }
-            if (localStorage.getItem("dzj_stream_image")) {
-                customImgSrc = localStorage.getItem("dzj_stream_image");
+            if (safeStorage.getItem("dzj_stream_image")) {
+                customImgSrc = safeStorage.getItem("dzj_stream_image");
                 bgImageSelect.value = customImgSrc;
                 bgActiveImg.src = getDynamicBackground(customImgSrc);
             } else {
                 bgActiveImg.src = getDynamicBackground(customImgSrc);
             }
-            if (localStorage.getItem("dzj_stream_video")) {
-                customVideoSrc = localStorage.getItem("dzj_stream_video");
+            if (safeStorage.getItem("dzj_stream_video")) {
+                customVideoSrc = safeStorage.getItem("dzj_stream_video");
                 bgVideoSelect.value = customVideoSrc;
             }
-            if (localStorage.getItem("dzj_stream_duration")) {
-                slideDurationMs = parseInt(localStorage.getItem("dzj_stream_duration"), 10) * 1000;
+            if (safeStorage.getItem("dzj_stream_duration")) {
+                slideDurationMs = parseInt(safeStorage.getItem("dzj_stream_duration"), 10) * 1000;
                 slideDurationInput.value = slideDurationMs / 1000;
             }
 
@@ -2514,10 +2514,10 @@
 
             // Save Operator config
             forceReloadBtn.addEventListener("click", () => {
-                localStorage.setItem("dzj_stream_day", daySelect.value);
-                localStorage.setItem("dzj_stream_image", bgImageSelect.value);
-                localStorage.setItem("dzj_stream_video", bgVideoSelect.value);
-                localStorage.setItem("dzj_stream_duration", slideDurationInput.value);
+                safeStorage.setItem("dzj_stream_day", daySelect.value);
+                safeStorage.setItem("dzj_stream_image", bgImageSelect.value);
+                safeStorage.setItem("dzj_stream_video", bgVideoSelect.value);
+                safeStorage.setItem("dzj_stream_duration", slideDurationInput.value);
 
                 window.location.reload();
             });
@@ -3224,7 +3224,7 @@
 
                     // Match today's date if no manual index override is saved
                     let matchedIdx = currentDayIndex;
-                    if (!localStorage.getItem("dzj_stream_day")) {
+                    if (!safeStorage.getItem("dzj_stream_day")) {
                         const todayStr = new Date().toISOString().split('T')[0];
                         const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
                         if (foundIdx !== -1) {
