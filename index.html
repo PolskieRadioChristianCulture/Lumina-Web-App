@@ -68,54 +68,79 @@
                 </div>
             </div>
             
-            <!-- Right Side: Expandable Quick Actions Menu -->
+                      <!-- Right Side: Expandable Quick Actions Dropdown -->
             <div class="header-right">
                 <!-- Google Translate Dropdown -->
                 <div id="google_translate_element" style="position: absolute; left: -9999px; top: -9999px; visibility: hidden;"></div>
                 
-                <div class="quick-actions-menu" id="quickActionsMenu" style="position: relative; display: flex; align-items: center; flex-direction: row-reverse; gap: 8px;">
+                <div class="quick-actions-menu" id="quickActionsMenu" style="position: relative; display: flex; align-items: center; gap: 8px;">
                     <!-- Main Toggle Button -->
-                    <button class="sms-button toggle-trigger" id="actionsToggleBtn" aria-label="Szybkie menu" title="Szybkie menu" style="z-index: 10; margin-right: 0;">
+                    <button class="sms-button toggle-trigger" id="actionsToggleBtn" aria-label="Menu skrótów" title="Menu skrótów" style="z-index: 110; margin-right: 0;">
                         <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.6); border: 1.5px solid var(--border-gold-low); transition: all 0.3s ease;">
                             <i class="fa-solid fa-plus" id="actionsToggleIcon" style="color: var(--gold-primary); font-size: 1.15rem; transition: transform 0.3s ease;"></i>
                         </div>
                     </button>
                     
-                    <!-- Hidden Expanded Actions List -->
-                    <div id="actionsList" style="display: flex; align-items: center; gap: 8px; opacity: 0; transform: translateX(20px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s ease; width: 0; overflow: hidden; justify-content: flex-end;">
+                    <!-- Vertical Dropdown Shortcuts Panel -->
+                    <div id="actionsList" style="position: absolute; top: calc(100% + 12px); right: 0; width: 265px; background: rgba(10, 12, 22, 0.96); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1.5px solid var(--border-gold-low); border-radius: 16px; padding: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.85); display: flex; flex-direction: column; gap: 4px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100;">
                         
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <button class="sms-button" id="navDzjIconBtn" aria-label="Dobrze, że jesteś" title="Dzisiejsze Rozważanie">
-                                <div class="avatar-ring" style="overflow: hidden; padding: 0; background: #000; border: 1.5px solid var(--border-gold-low);">
-                                    <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                                </div>
-                            </button>
-                        </div>
-
-                        <button class="sms-button" id="smsBtn" aria-label="Subskrypcje SMS/MMS" title="Bezpłatne Subskrypcje SMS/MMS">
-                            <div class="avatar-ring" style="border: 1.5px solid var(--border-gold-low);">
-                                <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 1.15rem;"></i>
+                        <!-- Header inside shortcuts panel -->
+                        <div style="font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 8px 8px 8px; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Cinzel', serif; text-align: left;">Menu skrótów</div>
+                        
+                        <!-- Shortcut 1: Herbatka -->
+                        <a href="herbatka/index.html" style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(38, 166, 154, 0.12)'" onmouseout="this.style.background='transparent'">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(38, 166, 154, 0.08); border: 1px solid rgba(38, 166, 154, 0.25); flex-shrink: 0;">
+                                <i class="fa-solid fa-mug-hot" style="color: #26a69a; font-size: 0.95rem;"></i>
                             </div>
-                        </button>
-
-                        <a href="nadawaj.html" class="sms-button" title="Panel Nadawania OBS - Wszystkie Formaty" aria-label="Panel Nadawania" style="display: flex; align-items: center; justify-content: center; text-decoration: none;">
-                            <style>
-                                @keyframes broadcast-glow {
-                                    0% { opacity: 0.65; transform: scale(0.95); }
-                                    50% { opacity: 1; transform: scale(1.10); }
-                                    100% { opacity: 0.65; transform: scale(0.95); }
-                                }
-                            </style>
-                            <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--border-gold-low);">
-                                <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary); font-size: 1.1rem; animation: broadcast-glow 2.2s infinite ease-in-out;"></i>
+                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                <span style="font-size: 0.82rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Herbatka między słowami</span>
+                                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Poczytaj i posłuchaj</span>
                             </div>
                         </a>
 
-                        <button class="sms-button" id="langToggleBtn" title="Switch to English" aria-label="Zmień język">
-                            <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--border-gold-low);">
-                                <span id="langToggleText" style="color: var(--gold-primary); font-size: 0.8rem; font-weight: 800; letter-spacing: 0.05em; font-family: 'Montserrat', sans-serif;">EN</span>
+                        <!-- Shortcut 2: Dobrze, że jesteś -->
+                        <a href="snadaniowa-live-pl.html" style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 1.5px solid var(--border-gold-low); flex-shrink: 0;">
+                                <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
                             </div>
-                        </button>
+                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                <span style="font-size: 0.82rem; font-weight: 700; color: var(--gold-primary); font-family: 'Outfit', sans-serif;">Dobrze, że jesteś</span>
+                                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Codzienne rozważania</span>
+                            </div>
+                        </a>
+
+                        <!-- Shortcut 3: SMS Subscriptions -->
+                        <div id="shortcutSmsRow" style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
+                                <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 0.95rem;"></i>
+                            </div>
+                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                <span style="font-size: 0.82rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Subskrypcje SMS</span>
+                                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Zapisz się bezpłatnie</span>
+                            </div>
+                        </div>
+
+                        <!-- Shortcut 4: OBS Streaming -->
+                        <a href="nadawaj.html" style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
+                                <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary); font-size: 0.9rem;"></i>
+                            </div>
+                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                <span style="font-size: 0.82rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Nadawaj z nami</span>
+                                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Pobierz sygnał dla OBS</span>
+                            </div>
+                        </a>
+
+                        <!-- Shortcut 5: Language Toggle -->
+                        <div id="shortcutLangRow" style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; cursor: pointer; transition: background 0.2s; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 4px; padding-top: 10px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
+                                <span id="langToggleText" style="color: var(--gold-primary); font-size: 0.75rem; font-weight: 800; font-family: 'Montserrat', sans-serif;">EN</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                <span style="font-size: 0.82rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Język / Language</span>
+                                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Zmień na angielski</span>
+                            </div>
+                        </div>
                         
                     </div>
                 </div>
@@ -1119,7 +1144,7 @@
                 });
             }
  
-            // --- Expandable Quick Actions Controller ---
+            // --- Expandable Quick Actions Controller (Pionowy Dropdown) ---
             const actionsToggleBtn = document.getElementById("actionsToggleBtn");
             const actionsList = document.getElementById("actionsList");
             const actionsToggleIcon = document.getElementById("actionsToggleIcon");
@@ -1130,16 +1155,13 @@
                     const isOpen = actionsList.classList.toggle("open");
                     if (isOpen) {
                         actionsList.style.opacity = "1";
-                        actionsList.style.transform = "translateX(0)";
+                        actionsList.style.transform = "translateY(0)";
                         actionsList.style.pointerEvents = "auto";
-                        // Calculate container width: 4 buttons * 46px + gap styling
-                        actionsList.style.width = "210px";
                         actionsToggleIcon.style.transform = "rotate(135deg)";
                     } else {
                         actionsList.style.opacity = "0";
-                        actionsList.style.transform = "translateX(20px)";
+                        actionsList.style.transform = "translateY(-10px)";
                         actionsList.style.pointerEvents = "none";
-                        actionsList.style.width = "0";
                         actionsToggleIcon.style.transform = "rotate(0deg)";
                     }
                 });
@@ -1150,12 +1172,36 @@
                         if (actionsList.classList.contains("open")) {
                             actionsList.classList.remove("open");
                             actionsList.style.opacity = "0";
-                            actionsList.style.transform = "translateX(20px)";
+                            actionsList.style.transform = "translateY(-10px)";
                             actionsList.style.pointerEvents = "none";
-                            actionsList.style.width = "0";
                             actionsToggleIcon.style.transform = "rotate(0deg)";
                         }
                     }
+                });
+            }
+
+            // Shortcuts integration triggers
+            const shortcutSmsRow = document.getElementById("shortcutSmsRow");
+            if (shortcutSmsRow) {
+                shortcutSmsRow.addEventListener("click", () => {
+                    const modal = document.getElementById("smsModal");
+                    if (modal) modal.style.display = "block";
+                });
+            }
+            
+            const shortcutLangRow = document.getElementById("shortcutLangRow");
+            if (shortcutLangRow) {
+                shortcutLangRow.addEventListener("click", () => {
+                    if (isEnglish()) {
+                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.polskieradio.cc";
+                        document.cookie = "googtrans=/pl/pl; path=/";
+                        document.cookie = "googtrans=/pl/pl; path=/; domain=.polskieradio.cc";
+                    } else {
+                        document.cookie = "googtrans=/pl/en; path=/";
+                        document.cookie = "googtrans=/pl/en; path=/; domain=.polskieradio.cc";
+                    }
+                    window.location.reload();
                 });
             }
 
