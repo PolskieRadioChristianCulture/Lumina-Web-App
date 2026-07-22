@@ -687,6 +687,12 @@
             margin-left: 0; /* Align clock to the left edge of the text card */
         }
 
+        /* Shift special ad overlay to the right side in evening layout to avoid overlapping presenters */
+        body.evening-layout .zoom-ad-overlay {
+            left: auto;
+            right: 60px;
+        }
+
         /* Slide layout area */
         .canvas-slide-container {
             position: relative;
@@ -1272,7 +1278,8 @@
         .zoom-ad-overlay {
             position: fixed;
             bottom: 150px; /* Aligned with the bottom of the right-panel reflection box */
-            right: 60px; /* Anchored to the left side */
+            left: 60px; /* Anchored to the left side */
+            right: auto;
             width: 1040px;
             height: 520px;
             z-index: 100;
