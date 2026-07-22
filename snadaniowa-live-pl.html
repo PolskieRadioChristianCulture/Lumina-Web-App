@@ -2042,41 +2042,46 @@
             const bgActiveImg = document.getElementById("bg-img-active");
             const weatherBox = document.getElementById("weatherBox");
 
-            // Viewport Auto-Scaling Handler
+                        // Viewport Auto-Scaling Handler
             function resizeViewport() {
                 const container = document.getElementById("app-container");
                 if (!container) return;
                 const targetW = 1920;
                 const targetH = 1080;
                 
-                let w = window.innerWidth || document.documentElement.clientWidth;
-                let h = window.innerHeight || document.documentElement.clientHeight;
+                const w = window.innerWidth || document.documentElement.clientWidth || 0;
+                const h = window.innerHeight || document.documentElement.clientHeight || 0;
                 
-                // Fallback to avoid division by zero or scale = 0 in small/hidden frames
-                if (w < 100) w = 560;
-                if (h < 100) h = 315;
+                // If dimensions are not ready yet, default to a safe scale and top/left 0
+                if (w <= 0 || h <= 0) {
+                    container.style.transform = "scale(0.29)";
+                    container.style.left = "0px";
+                    container.style.top = "0px";
+                    return;
+                }
                 
                 const scaleX = w / targetW;
                 const scaleY = h / targetH;
-                let scale = Math.min(scaleX, scaleY);
+                const scale = Math.min(scaleX, scaleY);
                 
-                if (isNaN(scale) || scale <= 0.05) {
-                    scale = 0.29; // Safe default for homepage iframe
-                }
-                
-                container.style.transform = `scale(${scale})`;
+                container.style.transform = "scale(" + scale + ")";
                 
                 // Center the container within window
                 const leftOffset = (w - (targetW * scale)) / 2;
                 const topOffset = (h - (targetH * scale)) / 2;
-                container.style.left = `${leftOffset}px`;
-                container.style.top = `${topOffset}px`;
+                container.style.left = leftOffset + "px";
+                container.style.top = topOffset + "px";
             }
             window.addEventListener("resize", resizeViewport);
             resizeViewport();
+            
+            // Re-run resizing after full load and multiple intervals to capture iframe layout stabilization
+            window.addEventListener("load", resizeViewport);
+            setTimeout(resizeViewport, 100);
+            setTimeout(resizeViewport, 500);
+            setTimeout(resizeViewport, 1500);
 
-            // Operator panel toggles
-            panelTriggerBtn.addEventListener("click", () => opPanel.classList.add("visible"));
+            // panelTriggerBtn.addEventListener("click", () => opPanel.classList.add("visible"));
             closePanelBtn.addEventListener("click", () => opPanel.classList.remove("visible"));
 
             let loadedDate = new Date().getDate();
