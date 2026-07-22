@@ -253,7 +253,18 @@
                         </div>
                     </div>
                     <div class="video-container" style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.7); border: 1.5px solid rgba(212, 175, 55, 0.35); background: #000;">
-                        <iframe id="liveStreamIframe" src="" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        <a href="snadaniowa-live-pl.html" style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; text-decoration: none; cursor: pointer; overflow: hidden;">
+                            <!-- Promo cover image -->
+                            <img src="promo_dzj.jpg" alt="Dobrze, że jesteś - Transmisja na żywo" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;" onmouseover="this.style.transform='scale(1.04)';" onmouseout="this.style.transform='scale(1)';">
+                            <!-- Overlay gradients and YT-like Play Button -->
+                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%); display: flex; align-items: center; justify-content: center; transition: background 0.3s;"
+                                 onmouseover="document.getElementById('promoPlayBtn').style.background='#ff0000'; document.getElementById('promoPlayBtn').style.transform='scale(1.15)'; document.getElementById('promoPlayBtn').style.boxShadow='0 12px 30px rgba(255, 0, 0, 0.7)';"
+                                 onmouseout="document.getElementById('promoPlayBtn').style.background='rgba(229, 9, 20, 0.95)'; document.getElementById('promoPlayBtn').style.transform='scale(1)'; document.getElementById('promoPlayBtn').style.boxShadow='0 10px 25px rgba(229, 9, 20, 0.5)';">
+                                <div id="promoPlayBtn" style="width: 80px; height: 56px; background: rgba(229, 9, 20, 0.95); border-radius: 18px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.8rem; box-shadow: 0 10px 25px rgba(229, 9, 20, 0.5); transition: background 0.2s, transform 0.2s, box-shadow 0.2s;">
+                                    <i class="fa-solid fa-play" style="margin-left: 4px;"></i>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                     <script>
                         (function() {
@@ -261,17 +272,14 @@
                             window.youtubeLiveStreamId = streamId;
                             const storageKey = "hide_live_stream_" + streamId;
                             const box = document.getElementById("liveStreamBox");
-                            const iframe = document.getElementById("liveStreamIframe");
                             const isDismissed = localStorage.getItem(storageKey) === "true";
                             
-                            // Load iframe source ONLY if the user hasn't dismissed it
+                            // Immediately hide if user previously closed this specific stream
                             if (isDismissed) {
                                 if (box) box.style.display = "none";
                                 // Show restore link in side drawer if it exists
                                 const restoreLink = document.getElementById("drawerShowLiveLink");
                                 if (restoreLink) restoreLink.style.display = "flex";
-                            } else {
-                                if (iframe) iframe.src = "snadaniowa-live.html?v=1.2"; // v1.2 version bump to clear caching issues
                             }
                             
                             window.shareLiveStream = function() {
@@ -304,8 +312,6 @@
                                     box.style.transform = "scale(0.95)";
                                     setTimeout(() => {
                                         box.style.display = "none";
-                                        // Unload iframe to stop music/scripts completely
-                                        if (iframe) iframe.src = "";
                                         // Show restore link in menu
                                         const restoreLink = document.getElementById("drawerShowLiveLink");
                                         if (restoreLink) restoreLink.style.display = "flex";
@@ -321,9 +327,8 @@
                                 const restoreLink = document.getElementById("drawerShowLiveLink");
                                 if (restoreLink) restoreLink.style.display = "none";
                                 
-                                // Show and fade-in the stream box, loading iframe source
+                                // Show and fade-in the stream box
                                 if (box) {
-                                    if (iframe) iframe.src = "snadaniowa-live.html?v=1.2";
                                     box.style.display = "block";
                                     box.style.opacity = "0";
                                     box.style.transform = "scale(0.95)";
