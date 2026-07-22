@@ -1911,6 +1911,38 @@
 
     <!-- Core Script -->
     <script>
+
+        // ── SAFE LOCALSTORAGE WRAPPER FOR IFRAME COMPATIBILITY ──
+        const safeStorage = {
+            _data: {},
+            getItem(key) {
+                try {
+                    return window.localStorage.getItem(key);
+                } catch (e) {
+                    return this._data[key] || null;
+                }
+            },
+            setItem(key, value) {
+                try {
+                    window.localStorage.setItem(key, value);
+                } catch (e) {
+                    this._data[key] = String(value);
+                }
+            },
+            removeItem(key) {
+                try {
+                    window.localStorage.removeItem(key);
+                } catch (e) {
+                    delete this._data[key];
+                }
+            }
+        };
+
+
+
+        
+
+
         // ── AUDIO INIT (global scope — called from overlay onclick) ──
         function initStream() {
             const overlay = document.getElementById('startOverlay');
