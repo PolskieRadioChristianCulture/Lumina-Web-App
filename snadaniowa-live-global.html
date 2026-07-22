@@ -2018,18 +2018,30 @@
             // Viewport Auto-Scaling Handler
             function resizeViewport() {
                 const container = document.getElementById("app-container");
+                if (!container) return;
                 const targetW = 1920;
                 const targetH = 1080;
                 
-                const scaleX = window.innerWidth / targetW;
-                const scaleY = window.innerHeight / targetH;
-                const scale = Math.min(scaleX, scaleY);
+                let w = window.innerWidth || document.documentElement.clientWidth;
+                let h = window.innerHeight || document.documentElement.clientHeight;
+                
+                // Fallback to avoid division by zero or scale = 0 in small/hidden frames
+                if (w < 100) w = 560;
+                if (h < 100) h = 315;
+                
+                const scaleX = w / targetW;
+                const scaleY = h / targetH;
+                let scale = Math.min(scaleX, scaleY);
+                
+                if (isNaN(scale) || scale <= 0.05) {
+                    scale = 0.29; // Safe default for homepage iframe
+                }
                 
                 container.style.transform = `scale(${scale})`;
                 
                 // Center the container within window
-                const leftOffset = (window.innerWidth - (targetW * scale)) / 2;
-                const topOffset = (window.innerHeight - (targetH * scale)) / 2;
+                const leftOffset = (w - (targetW * scale)) / 2;
+                const topOffset = (h - (targetH * scale)) / 2;
                 container.style.left = `${leftOffset}px`;
                 container.style.top = `${topOffset}px`;
             }
