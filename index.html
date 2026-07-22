@@ -250,10 +250,8 @@
                             <a href="nadawaj.html" style="color: var(--gold-primary); text-decoration: none; font-weight: 700; font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'" title="Przejdź do panelu nadawania"><i class="fa-solid fa-tower-broadcast"></i> NADAWAJ</a>
                             <button onclick="shareLiveStream()" style="background: none; border: none; color: rgba(255, 255, 255, 0.4); cursor: pointer; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; padding: 2px 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--gold-primary)'" onmouseout="this.style.color='rgba(255, 255, 255, 0.4)'" title="Udostępnij transmisję"><i class="fa-solid fa-share-nodes"></i></button>
                             <button onclick="dismissLiveStream()" style="background: none; border: none; color: rgba(255, 255, 255, 0.4); cursor: pointer; font-size: 1.15rem; display: flex; align-items: center; justify-content: center; padding: 2px 6px; transition: color 0.2s;" onmouseover="this.style.color='#ff0000'" onmouseout="this.style.color='rgba(255, 255, 255, 0.4)'" title="Ukryj transmisję"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-                    </div>
-                    <div class="video-container" style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.7); border: 1.5px solid rgba(212, 175, 55, 0.35); background: #000;">
-                        <iframe src="snadaniowa-live-pl.html?v=1.1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                   <div class="video-container" style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.7); border: 1.5px solid rgba(212, 175, 55, 0.35); background: #000;">
+                        <iframe id="liveStreamIframe" src="" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
                     <script>
                         (function() {
@@ -261,13 +259,17 @@
                             window.youtubeLiveStreamId = streamId;
                             const storageKey = "hide_live_stream_" + streamId;
                             const box = document.getElementById("liveStreamBox");
+                            const iframe = document.getElementById("liveStreamIframe");
+                            const isDismissed = localStorage.getItem(storageKey) === "true";
                             
-                            // Immediately hide if user previously closed this specific stream
-                            if (localStorage.getItem(storageKey) === "true") {
+                            // Load iframe source ONLY if the user hasn't dismissed it
+                            if (isDismissed) {
                                 if (box) box.style.display = "none";
                                 // Show restore link in side drawer if it exists
                                 const restoreLink = document.getElementById("drawerShowLiveLink");
                                 if (restoreLink) restoreLink.style.display = "flex";
+                            } else {
+                                if (iframe) iframe.src = "snadaniowa-live-pl.html?v=1.2"; // v1.2 version bump to clear caching issues
                             }
                             
                             window.shareLiveStream = function() {
@@ -291,7 +293,7 @@
                                         });
                                 }
                             };
-
+ 
                             window.dismissLiveStream = function() {
                                 localStorage.setItem(storageKey, "true");
                                 if (box) {
@@ -300,13 +302,15 @@
                                     box.style.transform = "scale(0.95)";
                                     setTimeout(() => {
                                         box.style.display = "none";
+                                        // Unload iframe to stop music/scripts completely
+                                        if (iframe) iframe.src = "";
                                         // Show restore link in menu
                                         const restoreLink = document.getElementById("drawerShowLiveLink");
                                         if (restoreLink) restoreLink.style.display = "flex";
                                     }, 400);
                                 }
                             };
-
+ 
                             window.restoreLiveStream = function(e) {
                                 if (e) e.preventDefault();
                                 localStorage.removeItem(storageKey);
@@ -315,8 +319,9 @@
                                 const restoreLink = document.getElementById("drawerShowLiveLink");
                                 if (restoreLink) restoreLink.style.display = "none";
                                 
-                                // Show and fade-in the stream box
+                                // Show and fade-in the stream box, loading iframe source
                                 if (box) {
+                                    if (iframe) iframe.src = "snadaniowa-live-pl.html?v=1.2";
                                     box.style.display = "block";
                                     box.style.opacity = "0";
                                     box.style.transform = "scale(0.95)";
@@ -326,6 +331,7 @@
                                     box.style.opacity = "1";
                                     box.style.transform = "scale(1)";
                                 }
+                            };
                                 
                                 // Scroll smoothly to the hero section top
                                 const heroSec = document.querySelector(".hero-section");
