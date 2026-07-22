@@ -68,45 +68,57 @@
                 </div>
             </div>
             
-            <!-- Right Side: SMS Subscription -->
+            <!-- Right Side: Expandable Quick Actions Menu -->
             <div class="header-right">
-                <!-- Google Translate Dropdown (Rendered off-screen so Google Translate initializes properly) -->
+                <!-- Google Translate Dropdown -->
                 <div id="google_translate_element" style="position: absolute; left: -9999px; top: -9999px; visibility: hidden;"></div>
                 
-                <div style="display: flex; align-items: center; gap: 6px;">
-                    <button class="sms-button" id="navDzjIconBtn" aria-label="Dobrze, że jesteś" title="Dzisiejsze Rozważanie">
-                        <div class="avatar-ring" style="overflow: hidden; padding: 0; background: #000;">
-                            <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                <div class="quick-actions-menu" id="quickActionsMenu" style="position: relative; display: flex; align-items: center; flex-direction: row-reverse; gap: 8px;">
+                    <!-- Main Toggle Button -->
+                    <button class="sms-button toggle-trigger" id="actionsToggleBtn" aria-label="Szybkie menu" title="Szybkie menu" style="z-index: 10; margin-right: 0;">
+                        <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.6); border: 1.5px solid var(--border-gold-low); transition: all 0.3s ease;">
+                            <i class="fa-solid fa-plus" id="actionsToggleIcon" style="color: var(--gold-primary); font-size: 1.15rem; transition: transform 0.3s ease;"></i>
                         </div>
                     </button>
+                    
+                    <!-- Hidden Expanded Actions List -->
+                    <div id="actionsList" style="display: flex; align-items: center; gap: 8px; opacity: 0; transform: translateX(20px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s ease; width: 0; overflow: hidden; justify-content: flex-end;">
+                        
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <button class="sms-button" id="navDzjIconBtn" aria-label="Dobrze, że jesteś" title="Dzisiejsze Rozważanie">
+                                <div class="avatar-ring" style="overflow: hidden; padding: 0; background: #000; border: 1.5px solid var(--border-gold-low);">
+                                    <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                </div>
+                            </button>
+                        </div>
+
+                        <button class="sms-button" id="smsBtn" aria-label="Subskrypcje SMS/MMS" title="Bezpłatne Subskrypcje SMS/MMS">
+                            <div class="avatar-ring" style="border: 1.5px solid var(--border-gold-low);">
+                                <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 1.15rem;"></i>
+                            </div>
+                        </button>
+
+                        <a href="nadawaj.html" class="sms-button" title="Panel Nadawania OBS - Wszystkie Formaty" aria-label="Panel Nadawania" style="display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                            <style>
+                                @keyframes broadcast-glow {
+                                    0% { opacity: 0.65; transform: scale(0.95); }
+                                    50% { opacity: 1; transform: scale(1.10); }
+                                    100% { opacity: 0.65; transform: scale(0.95); }
+                                }
+                            </style>
+                            <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--border-gold-low);">
+                                <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary); font-size: 1.1rem; animation: broadcast-glow 2.2s infinite ease-in-out;"></i>
+                            </div>
+                        </a>
+
+                        <button class="sms-button" id="langToggleBtn" title="Switch to English" aria-label="Zmień język">
+                            <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--border-gold-low);">
+                                <span id="langToggleText" style="color: var(--gold-primary); font-size: 0.8rem; font-weight: 800; letter-spacing: 0.05em; font-family: 'Montserrat', sans-serif;">EN</span>
+                            </div>
+                        </button>
+                        
+                    </div>
                 </div>
-
-                <button class="sms-button" id="smsBtn" aria-label="Subskrypcje SMS/MMS" title="Bezpłatne Subskrypcje SMS/MMS">
-                    <div class="avatar-ring">
-                        <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 1.15rem;"></i>
-                    </div>
-                </button>
-
-                <!-- OBS Broadcast Panel Link -->
-                <a href="nadawaj.html" class="sms-button" title="Panel Nadawania OBS - Wszystkie Formaty" aria-label="Panel Nadawania" style="display: flex; align-items: center; justify-content: center; text-decoration: none;">
-                    <style>
-                        @keyframes broadcast-glow {
-                            0% { opacity: 0.65; transform: scale(0.95); }
-                            50% { opacity: 1; transform: scale(1.10); }
-                            100% { opacity: 0.65; transform: scale(0.95); }
-                        }
-                    </style>
-                    <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center;">
-                        <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary); font-size: 1.1rem; animation: broadcast-glow 2.2s infinite ease-in-out;"></i>
-                    </div>
-                </a>
-
-                <!-- Premium Custom Language Toggle Button -->
-                <button class="sms-button" id="langToggleBtn" title="Switch to English" aria-label="Zmień język">
-                    <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center;">
-                        <span id="langToggleText" style="color: var(--gold-primary); font-size: 0.8rem; font-weight: 800; letter-spacing: 0.05em; font-family: 'Montserrat', sans-serif;">EN</span>
-                    </div>
-                </button>
             </div>
         </div>
     </header>
@@ -1104,6 +1116,46 @@
                     }
                     // Reload the page to let Google Translate apply the translation immediately
                     window.location.reload();
+                });
+            }
+ 
+            // --- Expandable Quick Actions Controller ---
+            const actionsToggleBtn = document.getElementById("actionsToggleBtn");
+            const actionsList = document.getElementById("actionsList");
+            const actionsToggleIcon = document.getElementById("actionsToggleIcon");
+            
+            if (actionsToggleBtn && actionsList && actionsToggleIcon) {
+                actionsToggleBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const isOpen = actionsList.classList.toggle("open");
+                    if (isOpen) {
+                        actionsList.style.opacity = "1";
+                        actionsList.style.transform = "translateX(0)";
+                        actionsList.style.pointerEvents = "auto";
+                        // Calculate container width: 4 buttons * 46px + gap styling
+                        actionsList.style.width = "210px";
+                        actionsToggleIcon.style.transform = "rotate(135deg)";
+                    } else {
+                        actionsList.style.opacity = "0";
+                        actionsList.style.transform = "translateX(20px)";
+                        actionsList.style.pointerEvents = "none";
+                        actionsList.style.width = "0";
+                        actionsToggleIcon.style.transform = "rotate(0deg)";
+                    }
+                });
+                
+                // Clicking outside collapses the menu
+                document.addEventListener("click", (e) => {
+                    if (!actionsList.contains(e.target) && e.target !== actionsToggleBtn && !actionsToggleBtn.contains(e.target)) {
+                        if (actionsList.classList.contains("open")) {
+                            actionsList.classList.remove("open");
+                            actionsList.style.opacity = "0";
+                            actionsList.style.transform = "translateX(20px)";
+                            actionsList.style.pointerEvents = "none";
+                            actionsList.style.width = "0";
+                            actionsToggleIcon.style.transform = "rotate(0deg)";
+                        }
+                    }
                 });
             }
 
