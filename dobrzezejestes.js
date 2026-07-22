@@ -48,11 +48,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     <p>${formattedContent}</p>
                 </div>
                 
-                <!-- Przycisk Udostępnij -->
-                <div style="text-align: center; margin: 20px 0;">
+                <!-- Przycisk Udostępnij & TV -->
+                <div style="text-align: center; margin: 20px 0; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
                     <button onclick="window.shareDzjContent()" style="background: #E2B859; color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(226, 184, 89, 0.4); font-family: inherit;">
                         <i class="fa-solid fa-share-nodes"></i> UDOSTĘPNIJ ROZWAŻANIE
                     </button>
+                    ${window.youtubeLiveStreamId ? `
+                    <a href="https://youtube.com/live/${window.youtubeLiveStreamId}" target="_blank" style="background: rgba(226, 184, 89, 0.1); color: #E2B859; border: 2px solid #E2B859; padding: 10px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; text-decoration: none;">
+                        <i class="fa-solid fa-tv"></i> ZOBACZ WERSJĘ TV
+                    </a>
+                    ` : ''}
                 </div>
                 
                 <!-- YouTube Video Section -->
