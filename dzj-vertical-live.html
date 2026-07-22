@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dobrze, że jesteś - LIVE 9:16 | Christian Culture TV</title>
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #F3E5AB;
+            --gold-dark: #AA7C11;
+            --bg-dark: #020203;
+            --glass-bg: rgba(8, 8, 18, 0.52);
+            --glass-border: rgba(255, 255, 255, 0.10);
+            --red-live: #E50914;
+            --breakfast-accent: #FFCC00;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg-dark);
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* ── AUTO-SCALING CONTAINER (1080×1920 → any screen) ── */
+        #app-container {
+            width: 1080px;
+            height: 1920px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+            overflow: hidden;
+            background: var(--bg-dark);
+        }
+
+        /* ── BACKGROUND ── */
+        .bg-layer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            transition: opacity 1.8s ease-in-out;
+            animation: ken-burns 28s ease-in-out infinite alternate;
+            will-change: transform;
+        }
+
+        @keyframes ken-burns {
+            0%   { transform: scale(1.0) translate(0, 0); }
+            33%  { transform: scale(1.06) translate(-14px, -8px); }
+            66%  { transform: scale(1.04) translate(10px, 12px); }
+            100% { transform: scale(1.0) translate(0, 0); }
+        }
+
+        .vignette {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 50% 30%, rgba(255, 220, 130, 0.06) 0%, transparent 60%),
+                linear-gradient(to bottom,
+                    rgba(2,2,3,0.72) 0%,
+                    transparent 15%,
+                    transparent 70%,
+                    rgba(2,2,3,0.90) 100%
+                );
+        }
+
+        .sunbeams {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            background: linear-gradient(160deg, rgba(255, 204, 0, 0.10) 0%, transparent 50%);
+            mix-blend-mode: screen;
+            animation: drift 14s ease-in-out infinite alternate;
+        }
+
+        @keyframes drift {
+            0%   { opacity: 0.5; transform: scale(1) rotate(0deg); }
+            50%  { opacity: 0.95; transform: scale(1.04) rotate(0.8deg); }
+            100% { opacity: 0.55; transform: scale(1) rotate(-0.8deg); }
+        }
+
+        /* ── MAIN LAYOUT (9:16 vertical stack) ── */
+        .layout {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            /* Safe zones: top 140px for YouTube Shorts UI, bottom 380px for CTA bar */
+            padding: 140px 60px 380px 60px;
+            gap: 0;
+        }
+
+        /* ── TOP BAR ── */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 48px;
+        }
+
+        .brand-block {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .brand-logo {
+            width: 88px;
+            height: 88px;
+            border-radius: 22px;
+            border: 2.5px solid rgba(212, 175, 55, 0.85);
+            box-shadow: 0 0 28px rgba(212, 175, 55, 0.35);
+            object-fit: cover;
+        }
+
+        .brand-text-block {}
+        .brand-name {
+            font-family: 'Cinzel', serif;
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, #FFEAA7, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+        .brand-sub {
+            font-size: 18px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .live-cluster {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .live-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #E50914, #8B0000);
+            padding: 8px 22px;
+            border-radius: 50px;
+            font-weight: 900;
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #fff;
+            animation: blink-dot 1.2s ease-in-out infinite;
+        }
+
+        @keyframes blink-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        .clock-display {
+            font-family: 'Inter', sans-serif;
+            font-size: 52px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .date-display {
+            font-size: 18px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.55);
+            text-align: right;
+        }
+
+        /* ── GOLD DIVIDER ── */
+        .gold-rule {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212,175,55,0.6), transparent);
+            margin-bottom: 52px;
+        }
+
+        /* ── CYCLE BADGE ── */
+        .cycle-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(212, 175, 55, 0.10);
+            border: 1px solid rgba(212, 175, 55, 0.30);
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--gold-light);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            align-self: flex-start;
+        }
+
+        /* ── REFLECTION CONTENT ── */
+        .reflection-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 64px 56px;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            margin-bottom: 44px;
+            flex-shrink: 0;
+        }
+
+        .reflection-day {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .reflection-title {
+            font-family: 'Cinzel', serif;
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #fff;
+            margin-bottom: 32px;
+        }
+
+        .reflection-teaser {
+            font-size: 30px;
+            font-weight: 400;
+            line-height: 1.65;
+            color: rgba(255,255,255,0.82);
+            font-style: italic;
+        }
+
+        /* ── SCHEDULE WIDGET ── */
+        .schedule-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 42px 50px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            margin-bottom: 44px;
+        }
+
+        .schedule-label {
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .schedule-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .schedule-row:last-child { border-bottom: none; }
+
+        .schedule-time {
+            font-family: 'Inter', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--gold-primary);
+            min-width: 110px;
+        }
+
+        .schedule-program {
+            font-size: 26px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .schedule-row.active .schedule-time,
+        .schedule-row.active .schedule-program {
+            color: #fff;
+            font-weight: 800;
+        }
+
+        .schedule-row.active::before {
+            content: '▶';
+            color: var(--red-live);
+            font-size: 20px;
+            margin-right: -8px;
+        }
+
+        /* ── WEATHER STRIP ── */
+        .weather-strip {
+            display: flex;
+            gap: 20px;
+            overflow: hidden;
+            flex-wrap: nowrap;
+            margin-bottom: 44px;
+        }
+
+        .weather-chip {
+            background: var(--glass-bg);
+            border: 1px solid rgba(212,175,55,0.18);
+            border-radius: 18px;
+            padding: 22px 28px;
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        .weather-city {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .weather-data {
+            font-size: 22px;
+            font-weight: 600;
+            color: #fff;
+            white-space: nowrap;
+        }
+
+        /* ── NEWS TICKER ── */
+        .ticker-bar {
+            position: absolute;
+            bottom: 130px;
+            left: 0;
+            right: 0;
+            background: rgba(2, 2, 3, 0.88);
+            border-top: 2px solid var(--gold-primary);
+            padding: 22px 0;
+            overflow: hidden;
+            z-index: 20;
+        }
+
+        .ticker-track {
+            display: flex;
+            gap: 0;
+            white-space: nowrap;
+            animation: ticker-scroll 55s linear infinite;
+        }
+
+        @keyframes ticker-scroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .ticker-text {
+            font-size: 24px;
+            font-weight: 600;
+            color: #fff;
+            padding-right: 80px;
+            letter-spacing: 0.3px;
+        }
+
+        .ticker-text .ticker-bullet {
+            color: var(--gold-primary);
+            font-weight: 900;
+            padding-right: 14px;
+        }
+
+        /* ── BOTTOM CTA BAR ── */
+        .cta-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 130px;
+            background: linear-gradient(135deg, #0a0a14 0%, #12100a 100%);
+            border-top: 1px solid rgba(212,175,55,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            z-index: 20;
+        }
+
+        .cta-icon {
+            font-size: 38px;
+            color: var(--gold-primary);
+        }
+
+        .cta-text-block {}
+
+        .cta-primary {
+            font-family: 'Cinzel', serif;
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--gold-primary);
+            letter-spacing: 1px;
+        }
+
+        .cta-secondary {
+            font-size: 22px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* ── GREETING OVERLAY ── */
+        .greeting-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(2,2,3,0.82);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+
+        .greeting-overlay.visible {
+            opacity: 1;
+        }
+
+        .greeting-card {
+            background: linear-gradient(135deg, rgba(16,14,8,0.95), rgba(10,10,20,0.95));
+            border: 1.5px solid rgba(212, 175, 55, 0.6);
+            border-radius: 40px;
+            padding: 80px 70px;
+            max-width: 900px;
+            text-align: center;
+            box-shadow: 0 0 80px rgba(212, 175, 55, 0.12);
+        }
+
+        .greeting-from {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 24px;
+        }
+
+        .greeting-text {
+            font-family: 'Cinzel', serif;
+            font-size: 44px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+<div id="app-container">
+
+    <!-- BACKGROUND -->
+    <img id="bg-layer" class="bg-layer" src="breakfast_presenters.jpg" alt="">
+    <div class="vignette"></div>
+    <div class="sunbeams"></div>
+
+    <!-- LAYOUT -->
+    <div class="layout">
+
+        <!-- TOP BAR -->
+        <div class="top-bar">
+            <div class="brand-block">
+                <img class="brand-logo" src="dzj-logo.jpg" alt="Dobrze, że jesteś">
+                <div class="brand-text-block">
+                    <div class="brand-name">Dobrze,<br>że jesteś</div>
+                    <div class="brand-sub">Christian Culture</div>
+                </div>
+            </div>
+            <div class="live-cluster">
+                <div class="live-pill">
+                    <div class="live-dot"></div>
+                    LIVE
+                </div>
+                <div class="clock-display" id="clockDisplay">00:00</div>
+                <div class="date-display" id="dateDisplay">—</div>
+            </div>
+        </div>
+
+        <div class="gold-rule"></div>
+
+        <!-- CYCLE BADGE -->
+        <div class="cycle-badge" id="cycleBadge">
+            ✝️ Misja Boże Wakacje
+        </div>
+
+        <!-- REFLECTION CARD -->
+        <div class="reflection-card">
+            <div class="reflection-day" id="reflectionDay">Ładowanie…</div>
+            <div class="reflection-title" id="reflectionTitle">Słowo na Dziś</div>
+            <div class="reflection-teaser" id="reflectionTeaser"></div>
+        </div>
+
+        <!-- SCHEDULE CARD -->
+        <div class="schedule-card">
+            <div class="schedule-label">
+                <span>📋</span> Ramówka Dnia
+            </div>
+            <div id="scheduleRows"></div>
+        </div>
+
+        <!-- WEATHER STRIP -->
+        <div class="weather-strip" id="weatherStrip">
+            <!-- Filled by JS -->
+        </div>
+
+    </div>
+
+    <!-- NEWS TICKER -->
+    <div class="ticker-bar">
+        <div class="ticker-track" id="tickerTrack">
+            <span class="ticker-text" id="tickerText1">Wczytywanie wiadomości…</span>
+            <span class="ticker-text" id="tickerText2">Wczytywanie wiadomości…</span>
+        </div>
+    </div>
+
+    <!-- BOTTOM CTA -->
+    <div class="cta-bar">
+        <div class="cta-icon">🎙️</div>
+        <div class="cta-text-block">
+            <div class="cta-primary">polskieradio.cc</div>
+            <div class="cta-secondary">Słuchaj • Aplikacja • Radio Online</div>
+        </div>
+    </div>
+
+    <!-- GREETING OVERLAY (appears briefly when triggered) -->
+    <div class="greeting-overlay" id="greetingOverlay">
+        <div class="greeting-card">
+            <div class="greeting-from">💌 Pozdrowienie od Widza</div>
+            <div class="greeting-text" id="greetingText"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- AUDIO (Hidden Zeno.fm Stream) -->
+<audio id="stream-audio" src="https://stream.zeno.fm/imo45hqnshyuv"></audio>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    // ── VIEWPORT SCALING ──
+    function resizeViewport() {
+        const c = document.getElementById("app-container");
+        const targetW = 1080, targetH = 1920;
+        const scale = Math.min(window.innerWidth / targetW, window.innerHeight / targetH);
+        c.style.transform = `scale(${scale})`;
+        c.style.left = `${(window.innerWidth - targetW * scale) / 2}px`;
+        c.style.top  = `${(window.innerHeight - targetH * scale) / 2}px`;
+    }
+    window.addEventListener("resize", resizeViewport);
+    resizeViewport();
+
+    // ── CLOCK ──
+    function updateClock() {
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, "0");
+        const mm = String(now.getMinutes()).padStart(2, "0");
+        document.getElementById("clockDisplay").textContent = `${hh}:${mm}`;
+
+        const days = ["Niedziela","Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota"];
+        const months = ["stycznia","lutego","marca","kwietnia","maja","czerwca","lipca","sierpnia","września","października","listopada","grudnia"];
+        document.getElementById("dateDisplay").textContent =
+            `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    }
+    updateClock();
+    setInterval(updateClock, 15000);
+
+    // ── CYCLE BADGE (updates by day of week) ──
+    const dayOfWeek = new Date().getDay();
+    const themes = ["Niedziela z Bogiem","Poranny Impuls","Dobry Wtorek","Środa Słowa","Czwartek Misji","Piątek Chwały","Sobotni Spokój"];
+    document.getElementById("cycleBadge").innerHTML = `✝️ Misja Boże Wakacje &nbsp;·&nbsp; ${themes[dayOfWeek]}`;
+
+    // ── SCHEDULE ──
+    const schedulePrograms = {
+        morning: [
+            { time: "06:00", label: "Rozważanie Dnia" },
+            { time: "08:00", label: "Program Śniadaniowy" },
+            { time: "10:00", label: "Radio Biblia Audio" }
+        ],
+        afternoon: [
+            { time: "12:00", label: "Modlitwa Południa" },
+            { time: "14:00", label: "Słowo na Popołudnie" },
+            { time: "16:00", label: "Program Śniadaniowy" }
+        ],
+        evening: [
+            { time: "18:00", label: "Wieczorne Rozważanie" },
+            { time: "20:00", label: "SMS dla Subskrybentów" },
+            { time: "22:00", label: "Słowo na Noc" }
+        ],
+        night: [
+            { time: "22:30", label: "Słowo na Noc" },
+            { time: "00:00", label: "Nocne Czuwanie" },
+            { time: "01:30", label: "Walka Duchowa" }
+        ]
+    };
+
+    function buildSchedule() {
+        const hour = new Date().getHours();
+        let prog;
+        if (hour >= 6  && hour < 12) prog = schedulePrograms.morning;
+        else if (hour >= 12 && hour < 18) prog = schedulePrograms.afternoon;
+        else if (hour >= 18 && hour < 22) prog = schedulePrograms.evening;
+        else prog = schedulePrograms.night;
+
+        const container = document.getElementById("scheduleRows");
+        container.innerHTML = prog.map((p, i) => {
+            const isActive = i === 0;
+            return `<div class="schedule-row${isActive ? " active" : ""}">
+                <span class="schedule-time">${p.time}</span>
+                <span class="schedule-program">${p.label}</span>
+            </div>`;
+        }).join("");
+    }
+    buildSchedule();
+    setInterval(buildSchedule, 300000);
+
+    // ── WEATHER ──
+    const cityCoords = {
+        "WARSZAWA":       { lat: 52.23, lon: 21.01 },
+        "KRAKÓW":         { lat: 50.06, lon: 19.94 },
+        "GDAŃSK":         { lat: 54.35, lon: 18.65 },
+        "WROCŁAW":        { lat: 51.11, lon: 17.04 },
+        "RZESZÓW":        { lat: 50.04, lon: 22.00 },
+        "STALOWA WOLA":   { lat: 50.58, lon: 22.05 }
+    };
+
+    let realWeatherData = {};
+
+    function weatherIcon(code, isDay) {
+        if (code === 0)  return isDay ? "☀️" : "🌙";
+        if (code <= 2)   return "🌤️";
+        if (code === 3)  return "☁️";
+        if (code <= 48)  return "🌫️";
+        if (code <= 65)  return "🌧️";
+        if (code <= 77)  return "❄️";
+        if (code <= 82)  return "🌦️";
+        return "⛈️";
+    }
+
+    function renderWeather() {
+        const strip = document.getElementById("weatherStrip");
+        if (!Object.keys(realWeatherData).length) return;
+        strip.innerHTML = Object.entries(realWeatherData).map(([city, data]) =>
+            `<div class="weather-chip">
+                <div class="weather-city">${city}</div>
+                <div class="weather-data">${data}</div>
+            </div>`
+        ).join("");
+    }
+
+    async function fetchWeather() {
+        for (const [city, c] of Object.entries(cityCoords)) {
+            try {
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current=temperature_2m,is_day,weather_code`);
+                const d = await res.json();
+                if (d && d.current) {
+                    const temp = Math.round(d.current.temperature_2m);
+                    const icon = weatherIcon(d.current.weather_code, d.current.is_day);
+                    realWeatherData[city] = `${icon} ${temp}°C`;
+                }
+            } catch(e) { console.warn("Weather error:", city, e); }
+        }
+        renderWeather();
+    }
+    fetchWeather();
+    setInterval(fetchWeather, 900000); // every 15 min
+
+    // ── NEWS TICKER ──
+    async function loadTicker() {
+        try {
+            const res = await fetch("news.json?t=" + Date.now());
+            const headlines = await res.json();
+            if (headlines && headlines.length) {
+                const joined = headlines.map(h => `<span class="ticker-bullet">◆</span>${h}`).join("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+                const html = `<span class="ticker-text">${joined}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
+                document.getElementById("tickerText1").innerHTML = joined;
+                document.getElementById("tickerText2").innerHTML = joined;
+            }
+        } catch(e) { console.warn("Ticker error:", e); }
+    }
+    loadTicker();
+    setInterval(loadTicker, 600000); // every 10 min
+
+    // ── REFLECTION (from rozwazania_baza.json) ──
+    const todayStr = new Date().toISOString().split("T")[0];
+    if (localStorage.getItem("dzj_v916_date") !== todayStr) {
+        localStorage.removeItem("dzj_v916_day");
+        localStorage.setItem("dzj_v916_date", todayStr);
+    }
+
+    fetch("rozwazania_baza.json?t=" + Date.now())
+        .then(r => r.json())
+        .then(data => {
+            let idx = 0;
+            const savedDay = localStorage.getItem("dzj_v916_day");
+            if (savedDay !== null) {
+                idx = parseInt(savedDay, 10);
+            } else {
+                const found = data.findIndex(r => r.date === todayStr);
+                if (found !== -1) idx = found;
+            }
+
+            const ref = data[idx] || data[0];
+            if (!ref) return;
+
+            const dayLabels = ["","Dzień I","Dzień II","Dzień III","Dzień IV","Dzień V","Dzień VI","Dzień VII","Dzień VIII","Dzień IX","Dzień X","Dzień XI","Dzień XII","Dzień XIII","Dzień XIV","Dzień XV","Dzień XVI","Dzień XVII","Dzień XVIII","Dzień XIX","Dzień XX","Dzień XXI","Dzień XXII","Dzień XXIII","Dzień XXIV","Dzień XXV","Dzień XXVI","Dzień XXVII","Dzień XXVIII","Dzień XXIX","Dzień XXX"];
+
+            document.getElementById("reflectionDay").textContent =
+                `${dayLabels[idx + 1] || ("Dzień " + (idx + 1))} · ${ref.dayOfWeek || ""}`;
+            document.getElementById("reflectionTitle").textContent = ref.title || "Słowo na Dziś";
+            document.getElementById("reflectionTeaser").textContent = ref.teaser || "";
+
+            // Midnight auto-advance
+            setInterval(() => {
+                const now = new Date();
+                if (now.getHours() === 0 && now.getMinutes() === 0) {
+                    let nextIdx = (idx + 1) % data.length;
+                    localStorage.setItem("dzj_v916_day", nextIdx);
+                    location.reload();
+                }
+            }, 60000);
+        })
+        .catch(e => {
+            console.warn("Reflection load error:", e);
+            document.getElementById("reflectionTitle").textContent = "Boże Wakacje";
+            document.getElementById("reflectionTeaser").textContent =
+                "Czas letni jako przestrzeń dla Boga – modlitwy, misji i osobistego uświęcenia.";
+        });
+
+    // ── AUDIO ──
+    const audio = document.getElementById("stream-audio");
+    if (audio) {
+        setTimeout(() => {
+            audio.play().catch(e => console.warn("Audio autoplay blocked:", e));
+        }, 1200);
+        setInterval(() => {
+            if (audio.paused) audio.play().catch(() => {});
+        }, 10000);
+    }
+
+    // ── GREETING OVERLAY (activated via URL param ?greet=TEXT) ──
+    const params = new URLSearchParams(window.location.search);
+    const greetText = params.get("greet");
+    if (greetText) {
+        const overlay = document.getElementById("greetingOverlay");
+        document.getElementById("greetingText").textContent = decodeURIComponent(greetText);
+        overlay.classList.add("visible");
+        setTimeout(() => overlay.classList.remove("visible"), 8000);
+    }
+
+});
+</script>
+</body>
+</html>

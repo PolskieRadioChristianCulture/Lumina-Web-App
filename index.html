@@ -119,13 +119,11 @@
         <div class="drawer-content">
             <h2 class="drawer-brand">CHRISTIAN CULTURE</h2>
             <nav class="drawer-nav">
-                <a href="#" class="drawer-link active"><i class="fa-solid fa-house"></i> Strona Główna</a>
+                <a href="#hero" class="drawer-link active"><i class="fa-solid fa-house"></i> Strona Główna</a>
                 <a href="#" class="drawer-link" id="drawerShowLiveLink" onclick="restoreLiveStream(event)" style="display: none; color: #ff0000; font-weight: 700;"><i class="fa-solid fa-circle-play"></i> POKAŻ TRANSMISJĘ</a>
                 <a href="#" class="drawer-link" id="navDzjLink" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-heart"></i> DOBRZE, ŻE JESTEŚ</a>
                 <a href="#radio-player-anchor" class="drawer-link scroll-to" id="navRadioLink"><i class="fa-solid fa-radio"></i> Radio Internetowe</a>
-                <a href="stream-scene.html" target="_blank" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-tower-broadcast"></i> Nadawaj z Christian Culture</a>
-                <a href="stream-scene-vertical.html" target="_blank" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-mobile-screen-button"></i> Nadawaj Pionowo (9:16)</a>
-                <a href="snadaniowa-live.html" target="_blank" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-mug-hot"></i> Retransmituj Dobrze, że jesteś (OBS)</a>
+                <a href="nadawaj.html" class="drawer-link" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-tower-broadcast"></i> Nadawaj z Christian Culture</a>
                 <a href="#" class="drawer-link" id="navSmsLink"><i class="fa-solid fa-comment-sms"></i> Subskrypcje SMS</a>
                 <a href="#aktualnosci-czerwiec" class="drawer-link scroll-to" id="navAktualnosciLink" style="color: var(--gold-primary);"><i class="fa-solid fa-newspaper"></i> Aktualności</a>
                 <a href="#" class="drawer-link" id="navDecalogueLink" style="color: var(--gold-primary);"><i class="fa-solid fa-book-open"></i> Dekalog</a>
@@ -777,54 +775,10 @@
                 </p>
             </div>
             
-            <div class="broadcast-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;">
-                <!-- Card 1: Breakfast Show -->
-                <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 35px 30px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
-                    <div>
-                        <div class="broadcast-icon" style="width: 60px; height: 60px; background: rgba(212, 175, 55, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; border: 1px solid rgba(212, 175, 55, 0.25);">
-                            <i class="fa-solid fa-mug-hot" style="color: var(--gold-primary); font-size: 1.6rem;"></i>
-                        </div>
-                        <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Dobrze, że jesteś (OBS)</h3>
-                        <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
-                            Program śniadaniowy z interaktywnym czatem prezenterek, rotacyjnymi wersetami biblijnymi, pogodą i dynamicznym, animowanym tłem. Idealny na poranne i popołudniowe pasma.
-                        </p>
-                    </div>
-                    <a href="snadaniowa-live.html" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%); color: #000; text-decoration: none; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; padding: 12px 24px; border-radius: 10px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-                        <i class="fa-solid fa-play"></i> Uruchom w OBS
-                    </a>
-                </div>
-
-                <!-- Card 2: Radio Horizontal -->
-                <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 35px 30px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
-                    <div>
-                        <div class="broadcast-icon" style="width: 60px; height: 60px; background: rgba(212, 175, 55, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; border: 1px solid rgba(212, 175, 55, 0.25);">
-                            <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary); font-size: 1.6rem;"></i>
-                        </div>
-                        <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Radio Biblia Audio (16:9)</h3>
-                        <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
-                            Pozioma scena zintegrowana ze strumieniem audio radia Zeno.fm. Wizualizacja fal dźwiękowych, zegar z datownikiem, werset dnia i dolny pasek informacyjny (ticker).
-                        </p>
-                    </div>
-                    <a href="stream-scene.html" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; padding: 12px 24px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                        <i class="fa-solid fa-play"></i> Uruchom w OBS
-                    </a>
-                </div>
-
-                <!-- Card 3: Radio Vertical -->
-                <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 35px 30px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
-                    <div>
-                        <div class="broadcast-icon" style="width: 60px; height: 60px; background: rgba(212, 175, 55, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; border: 1px solid rgba(212, 175, 55, 0.25);">
-                            <i class="fa-solid fa-mobile-screen-button" style="color: var(--gold-primary); font-size: 1.6rem;"></i>
-                        </div>
-                        <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Radio Biblia Audio (9:16)</h3>
-                        <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
-                            Pionowy szablon nadawczy stworzony specjalnie dla formatów mobilnych na YouTube Shorts, TikTok Live lub Instagram Reels. Zoptymalizowana widoczność na telefonach.
-                        </p>
-                    </div>
-                    <a href="stream-scene-vertical.html" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; padding: 12px 24px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                        <i class="fa-solid fa-play"></i> Uruchom w OBS
-                    </a>
-                </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="nadawaj.html" style="display: inline-flex; align-items: center; justify-content: center; gap: 12px; background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%); color: #000; text-decoration: none; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1.5px; padding: 18px 40px; border-radius: 50px; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 40px rgba(212, 175, 55, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(212, 175, 55, 0.2)';">
+                    <i class="fa-solid fa-layer-group"></i> Zobacz wszystkie formaty
+                </a>
             </div>
         </div>
     </section>

@@ -288,53 +288,39 @@
         }
 
         .schedule-flipper-container {
-            position: relative;
-            height: 95px; /* Increased from 52px to fit multiple lines */
-            overflow: hidden;
             width: 100%;
         }
 
-        .schedule-item.sched-item-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        .schedule-item {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 0;
-            border-bottom: none;
-            opacity: 0;
-            transform: translateY(25px);
-            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-            pointer-events: none;
-        }
-
-        .schedule-item.sched-item-slide.active {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
+            gap: 14px;
+            padding: 6px 0;
         }
 
         .schedule-time {
             font-family: 'Inter', sans-serif;
-            font-size: 1.65rem; /* Increased for mobile readability */
+            font-size: 1.4rem;
             font-weight: 900;
             color: #000;
             background: var(--breakfast-accent);
-            padding: 4px 10px;
-            border-radius: 5px;
-            min-width: 90px;
+            padding: 5px 12px;
+            border-radius: 6px;
+            min-width: 85px;
             text-align: center;
-            box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+            box-shadow: 0 0 12px rgba(255, 204, 0, 0.5);
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .schedule-name {
-            font-size: 1.85rem; /* Increased for mobile readability */
+            font-size: 1.5rem;
             font-weight: 800;
             color: #ffffff;
-            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
         }
 
         /* Weather forecast Widget */
@@ -1552,6 +1538,68 @@
         .chat-message-text {
             word-wrap: break-word;
         }
+        /* ── AUDIO STARTUP OVERLAY ── */
+        #startOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(2, 2, 3, 0.96);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
+        }
+        #startOverlay.hidden {
+            display: none;
+        }
+        .start-logo {
+            width: 110px;
+            height: 110px;
+            border-radius: 28px;
+            border: 2px solid rgba(212, 175, 55, 0.7);
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
+            object-fit: cover;
+        }
+        .start-label {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+        .start-sublabel {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.45);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .start-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: linear-gradient(135deg, #D4AF37, #AA7C11);
+            color: #000;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 60px;
+            padding: 22px 56px;
+            cursor: pointer;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .start-btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 0 70px rgba(212, 175, 55, 0.45);
+        }
+        .start-btn i { font-size: 1.5rem; }
     </style>
 </head>
 <body>
@@ -1619,17 +1667,9 @@
                             <i class="fa-solid fa-clock-rotate-left" style="font-size: 0.9rem;"></i>
                         </div>
                         <div class="schedule-flipper-container">
-                            <div class="schedule-item sched-item-slide active" id="sched-1">
-                                <span class="schedule-time">09:30</span>
-                                <span class="schedule-name" id="agendaActiveText">Słowo o Poranku</span>
-                            </div>
-                            <div class="schedule-item sched-item-slide" id="sched-2">
-                                <span class="schedule-time">11:00</span>
-                                <span class="schedule-name">Zadanie Taktyczne</span>
-                            </div>
-                            <div class="schedule-item sched-item-slide" id="sched-3">
-                                <span class="schedule-time">12:00</span>
-                                <span class="schedule-name">Bojowa Modlitwa</span>
+                            <div class="schedule-item" id="sched-current">
+                                <span class="schedule-time" id="sched-time">--:--</span>
+                                <span class="schedule-name" id="sched-name">Wczytywanie...</span>
                             </div>
                         </div>
                     </div>
@@ -1810,6 +1850,16 @@
         </div>
     </div>
 
+    <!-- AUDIO STARTUP OVERLAY (Click to play and bypass browser autoplay block) -->
+    <div id="startOverlay" onclick="initStream()">
+        <img class="start-logo" src="dzj-logo.jpg" alt="Dobrze, że jesteś">
+        <div class="start-label">Dobrze, że jesteś</div>
+        <div class="start-sublabel">Program Śniadaniowy · Christian Culture</div>
+        <button class="start-btn">
+            <i class="fa-solid fa-circle-play"></i> Uruchom Studio
+        </button>
+    </div>
+
     <!-- Toggle controls indicator -->
     <div class="toggle-panel-trigger" id="panelTriggerBtn" title="Panel Sterowania Programem">
         <i class="fa-solid fa-cog"></i>
@@ -1860,7 +1910,70 @@
 
     <!-- Core Script -->
     <script>
+        // ── AUDIO INIT (global scope — called from overlay onclick) ──
+        function initStream() {
+            const overlay = document.getElementById('startOverlay');
+            const audio   = document.getElementById('stream-audio');
+            if (overlay) overlay.classList.add('hidden');
+            if (audio) {
+                audio.play().catch(e => {
+                    console.warn("Audio play blocked:", e);
+                    if (overlay) overlay.classList.remove('hidden'); // show again if blocked
+                });
+                // Watchdog: restart if paused (e.g. network drop)
+                setInterval(() => {
+                    if (audio.paused) audio.play().catch(() => {});
+                }, 10000);
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
+            // ── START AUDIO IMMEDIATELY (nie czekaj na fetch rozważań) ──
+            setTimeout(initStream, 500);
+
+            // ── USTAW SCHEDULE OD RAZU (niezależnie od fetch) ──
+            (function updateScheduleNow() {
+                const now = new Date();
+                const h = now.getHours();
+                const schedTime = document.getElementById("sched-time");
+                const schedName = document.getElementById("sched-name");
+                if (!schedTime || !schedName) return;
+
+                let timeStr = "--:--";
+                let nameStr = "Wczytywanie...";
+
+                if (h >= 5 && h < 9) {
+                    // Morning program profile (05:00 - 09:00)
+                    if (h < 7) { timeStr = "06:00"; nameStr = "Słowo o Poranku"; }
+                    else if (h === 7) { timeStr = "07:00"; nameStr = "Zadanie Taktyczne"; }
+                    else { timeStr = "08:00"; nameStr = "Bojowa Modlitwa"; }
+                } else if (h >= 9 && h < 12) {
+                    // Forenoon program profile (09:00 - 12:00)
+                    if (h === 9) { timeStr = "09:30"; nameStr = "Słowo na Przedpołudnie"; }
+                    else if (h === 10 && now.getMinutes() < 30) { timeStr = "09:30"; nameStr = "Słowo na Przedpołudnie"; }
+                    else if ((h === 10 && now.getMinutes() >= 30) || (h === 11 && now.getMinutes() < 30)) { timeStr = "10:30"; nameStr = "Zadanie Taktyczne"; }
+                    else { timeStr = "11:30"; nameStr = "Bojowa Modlitwa"; }
+                } else if (h >= 12 && h < 18) {
+                    // Afternoon program profile (12:00 - 18:00)
+                    if (h < 15) { timeStr = "13:30"; nameStr = "Słowo na Popołudnie"; }
+                    else if (h === 15 || (h === 16 && now.getMinutes() < 30)) { timeStr = "15:00"; nameStr = "Modlitwa o Przebudzenie"; }
+                    else { timeStr = "16:30"; nameStr = "Zadanie Taktyczne"; }
+                } else if (h >= 18 && h < 22) {
+                    // Evening program profile (18:00 - 22:00)
+                    if (h < 20 || (h === 20 && now.getMinutes() < 30)) { timeStr = "19:30"; nameStr = "Słowo na Wieczór"; }
+                    else if ((h === 20 && now.getMinutes() >= 30) || (h === 21 && now.getMinutes() < 30)) { timeStr = "20:30"; nameStr = "Wieczorna Modlitwa"; }
+                    else { timeStr = "21:30"; nameStr = "Walka Duchowa"; }
+                } else {
+                    // Night program profile (22:00 - 05:00)
+                    if (h === 22 || h === 23) { timeStr = "22:30"; nameStr = "Słowo na Noc"; }
+                    else if (h === 0 || (h === 1 && now.getMinutes() < 30)) { timeStr = "00:00"; nameStr = "Nocne Czuwanie"; }
+                    else { timeStr = "01:30"; nameStr = "Walka Duchowa"; }
+                }
+
+                schedTime.textContent = timeStr;
+                schedName.textContent = nameStr;
+            })();
+
             // Configuration & State
             const todayDateStr = new Date().toISOString().split('T')[0];
             if (localStorage.getItem("dzj_stream_saved_date") !== todayDateStr) {
@@ -1976,74 +2089,43 @@
 
                 // Real-time schedule highlights & program names based on hour of day
                 const currentHour = now.getHours();
-                const sched1 = document.getElementById("sched-1");
-                const sched2 = document.getElementById("sched-2");
-                const sched3 = document.getElementById("sched-3");
+                const schedTime = document.getElementById("sched-time");
+                const schedName = document.getElementById("sched-name");
 
-                if (sched1 && sched2 && sched3) {
-                    let times = ["09:30", "11:00", "12:00"];
-                    let names = ["Słowo o Poranku", "Zadanie Taktyczne", "Bojowa Modlitwa"];
-                    let activeIndex = 0;
+                if (schedTime && schedName) {
+                    let timeStr = "--:--";
+                    let nameStr = "Wczytywanie...";
 
                     if (currentHour >= 5 && currentHour < 9) {
                         // Morning program profile (05:00 - 09:00)
-                        times = ["06:00", "07:00", "08:00"];
-                        names = ["Słowo o Poranku", "Zadanie Taktyczne", "Bojowa Modlitwa"];
-                        if (currentHour < 7) activeIndex = 0;
-                        else if (currentHour === 7) activeIndex = 1;
-                        else activeIndex = 2;
+                        if (currentHour < 7) { timeStr = "06:00"; nameStr = "Słowo o Poranku"; }
+                        else if (currentHour === 7) { timeStr = "07:00"; nameStr = "Zadanie Taktyczne"; }
+                        else { timeStr = "08:00"; nameStr = "Bojowa Modlitwa"; }
                     } else if (currentHour >= 9 && currentHour < 12) {
                         // Forenoon program profile (09:00 - 12:00)
-                        times = ["09:30", "10:30", "11:30"];
-                        names = ["Słowo na Przedpołudnie", "Zadanie Taktyczne", "Bojowa Modlitwa"];
-                        if (currentHour === 9 || (currentHour === 10 && now.getMinutes() < 30)) activeIndex = 0;
-                        else if ((currentHour === 10 && now.getMinutes() >= 30) || (currentHour === 11 && now.getMinutes() < 30)) activeIndex = 1;
-                        else activeIndex = 2;
+                        if (currentHour === 9) { timeStr = "09:30"; nameStr = "Słowo na Przedpołudnie"; }
+                        else if (currentHour === 10 && now.getMinutes() < 30) { timeStr = "09:30"; nameStr = "Słowo na Przedpołudnie"; }
+                        else if ((currentHour === 10 && now.getMinutes() >= 30) || (currentHour === 11 && now.getMinutes() < 30)) { timeStr = "10:30"; nameStr = "Zadanie Taktyczne"; }
+                        else { timeStr = "11:30"; nameStr = "Bojowa Modlitwa"; }
                     } else if (currentHour >= 12 && currentHour < 18) {
                         // Afternoon program profile (12:00 - 18:00)
-                        times = ["13:30", "15:00", "16:30"];
-                        names = ["Słowo na Popołudnie", "Modlitwa o Przebudzenie", "Zadanie Taktyczne"];
-                        if (currentHour < 15) activeIndex = 0;
-                        else if (currentHour === 15 || (currentHour === 16 && now.getMinutes() < 30)) activeIndex = 1;
-                        else activeIndex = 2;
+                        if (currentHour < 15) { timeStr = "13:30"; nameStr = "Słowo na Popołudnie"; }
+                        else if (currentHour === 15 || (currentHour === 16 && now.getMinutes() < 30)) { timeStr = "15:00"; nameStr = "Modlitwa o Przebudzenie"; }
+                        else { timeStr = "16:30"; nameStr = "Zadanie Taktyczne"; }
                     } else if (currentHour >= 18 && currentHour < 22) {
                         // Evening program profile (18:00 - 22:00)
-                        times = ["19:30", "20:30", "21:30"];
-                        names = ["Słowo na Wieczór", "Wieczorna Modlitwa", "Walka Duchowa"];
-                        if (currentHour < 20 || (currentHour === 20 && now.getMinutes() < 30)) activeIndex = 0;
-                        else if ((currentHour === 20 && now.getMinutes() >= 30) || (currentHour === 21 && now.getMinutes() < 30)) activeIndex = 1;
-                        else activeIndex = 2;
+                        if (currentHour < 20 || (currentHour === 20 && now.getMinutes() < 30)) { timeStr = "19:30"; nameStr = "Słowo na Wieczór"; }
+                        else if ((currentHour === 20 && now.getMinutes() >= 30) || (currentHour === 21 && now.getMinutes() < 30)) { timeStr = "20:30"; nameStr = "Wieczorna Modlitwa"; }
+                        else { timeStr = "21:30"; nameStr = "Walka Duchowa"; }
                     } else {
                         // Night program profile (22:00 - 05:00)
-                        times = ["22:30", "00:00", "01:30"];
-                        names = ["Słowo na Noc", "Nocne Czuwanie", "Walka Duchowa"];
-                        if (currentHour === 22 || currentHour === 23) activeIndex = 0;
-                        else if (currentHour === 0 || (currentHour === 1 && now.getMinutes() < 30)) activeIndex = 1;
-                        else activeIndex = 2;
+                        if (currentHour === 22 || currentHour === 23) { timeStr = "22:30"; nameStr = "Słowo na Noc"; }
+                        else if (currentHour === 0 || (currentHour === 1 && now.getMinutes() < 30)) { timeStr = "00:00"; nameStr = "Nocne Czuwanie"; }
+                        else { timeStr = "01:30"; nameStr = "Walka Duchowa"; }
                     }
 
-                    // Set dynamic times
-                    sched1.querySelector(".schedule-time").textContent = times[0];
-                    sched2.querySelector(".schedule-time").textContent = times[1];
-                    sched3.querySelector(".schedule-time").textContent = times[2];
-
-                    // Set secondary program names (Item 1 is handled dynamically by reflections)
-                    sched2.querySelector(".schedule-name").textContent = names[1];
-                    sched3.querySelector(".schedule-name").textContent = names[2];
-
-                    const agendaActiveText = document.getElementById("agendaActiveText");
-                    if (agendaActiveText && !agendaActiveText.dataset.customized) {
-                        agendaActiveText.textContent = names[0];
-                    }
-
-                    // Apply active highlight class
-                    sched1.classList.remove("active");
-                    sched2.classList.remove("active");
-                    sched3.classList.remove("active");
-
-                    if (activeIndex === 0) sched1.classList.add("active");
-                    else if (activeIndex === 1) sched2.classList.add("active");
-                    else if (activeIndex === 2) sched3.classList.add("active");
+                    schedTime.textContent = timeStr;
+                    schedName.textContent = nameStr;
                 }
 
                 // Dynamic Edition Label Updates
@@ -2500,7 +2582,7 @@
                 const dayNum = dayNumMatch ? dayNumMatch[1] : (reflectionsData.indexOf(reflection) + 1);
                 
                 // Format the Sunday agenda widget dynamically
-                const agendaActive = document.getElementById("agendaActiveText");
+                const agendaActive = document.getElementById("sched-name");
                 if (agendaActive) {
                     agendaActive.textContent = reflection.title;
                     agendaActive.dataset.customized = "true";
@@ -3114,7 +3196,7 @@
                         const opt = document.createElement("option");
                         opt.value = idx;
                         opt.textContent = `${dayLabel}: ${ref.title}${dateLabel}`;
-                        daySelect.appendChild(opt);
+                    daySelect.appendChild(opt);
                     });
 
                     if (currentDayIndex >= reflectionsData.length) {
@@ -3150,5 +3232,6 @@
                 });
         });
     </script>
+    <audio id="stream-audio" src="https://stream.zeno.fm/gn3uhltrrytuv"></audio>
 </body>
 </html>
