@@ -44,6 +44,7 @@ async function updateLiveStreamId() {
         const iframeRegex = /(www\.youtube\.com\/embed\/)([a-zA-Z0-9_-]+)(\?)/;
         const variableRegex = /(const streamId = ")([a-zA-Z0-9_-]+)(";)/;
         const urlRegex = /(youtube\.com\/live\/)([a-zA-Z0-9_-]+)('|"|\b)/;
+        const urlRegexG = /(youtube\.com\/live\/)([a-zA-Z0-9_-]+)('|"|\b)/g;
         
         let modified = false;
         
@@ -56,7 +57,7 @@ async function updateLiveStreamId() {
             modified = true;
         }
         if (indexHtml.match(urlRegex) && indexHtml.match(urlRegex)[2] !== detectedId) {
-            indexHtml = indexHtml.replace(urlRegex, `$1${detectedId}$3`);
+            indexHtml = indexHtml.replace(urlRegexG, `$1${detectedId}$3`);
             modified = true;
         }
         
