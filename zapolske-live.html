@@ -3354,8 +3354,8 @@
         const livePrayerText = document.getElementById("livePrayerText");
         const livePrayerAuthor = document.getElementById("livePrayerAuthor");
 
-        let displayedPrayers = new Set();
-        let prayerQueue = [];
+        let activePrayersList = [];
+        let currentPrayerIndex = 0;
         let isShowingPrayer = false;
 
         // Listen for raw intentions list, we do filtering and ordering locally to avoid Firestore composite index errors
@@ -3381,30 +3381,33 @@
             });
 
             if (approvedIntentions.length > 0) {
-                // The newest approved prayer
-                const latest = approvedIntentions[0];
+                activePrayersList = approvedIntentions;
                 
-                // If it's a new prayer we haven't processed/displayed
-                if (!displayedPrayers.has(latest.id)) {
-                    displayedPrayers.add(latest.id);
-                    prayerQueue.push(latest);
-                    
-                    // Update global state and immediately reload marquee
-                    window.lastPrayerIntention = latest;
-                    if (typeof window.loadNewsMarquee === "function") {
-                        window.loadNewsMarquee();
-                    }
-                    
+                // Update global state and immediately reload marquee with the newest
+                window.lastPrayerIntention = approvedIntentions[0];
+                if (typeof window.loadNewsMarquee === "function") {
+                    window.loadNewsMarquee();
+                }
+                
+                if (!isShowingPrayer) {
                     processQueue();
                 }
             }
         });
 
         function processQueue() {
-            if (isShowingPrayer || prayerQueue.length === 0) return;
+            if (activePrayersList.length === 0) {
+                isShowingPrayer = false;
+                return;
+            }
             
             isShowingPrayer = true;
-            const prayer = prayerQueue.shift();
+            
+            if (currentPrayerIndex >= activePrayersList.length) {
+                currentPrayerIndex = 0;
+            }
+            
+            const prayer = activePrayersList[currentPrayerIndex];
             
             // Populate and display
             livePrayerText.textContent = `„${prayer.text}”`;
@@ -3421,7 +3424,7 @@
                 livePrayerOverlay.style.pointerEvents = "none";
                 
                 setTimeout(() => {
-                    isShowingPrayer = false;
+                    currentPrayerIndex++;
                     processQueue();
                 }, 5000); // 5s gap between popups
             }, 20000);
