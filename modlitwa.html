@@ -143,6 +143,13 @@
             bottom: 0;
             background: linear-gradient(180deg, rgba(3,4,7,0.3) 0%, rgba(3,4,7,0.95) 100%);
             z-index: 2;
+            animation: pulse-mask 12s infinite ease-in-out;
+        }
+
+        @keyframes pulse-mask {
+            0% { opacity: 0.85; }
+            50% { opacity: 0.98; } /* Slow overlay fade masks the GIF loop jump */
+            100% { opacity: 0.85; }
         }
 
         .hero-content {
@@ -494,13 +501,13 @@
                 </h2>
                 
                 <div class="prayer-text-block">
-                    <strong>Modlitwa ks. Piotra Skargi:</strong><br><br>
-                    Boże, Rządco i Panie narodów, z ręki i karności Twojej racz nas nie wypuszczać, a za przyczyną Najświętszej Panny, Królowej naszej, błogosław Ojczyźnie naszej, by Tobie zawsze wierna, chwałę przynosiła Imieniowi Twemu, a synów swoich wiodła ku szczęśliwości...
+                    <strong>Modlitwa ks. Piotra Skargi (Wersja zmoderowana):</strong><br><br>
+                    Boże, Rządco i Panie narodów, z ręki i karności Twojej racz nas nie wypuszczać, a przez Syna Twego, Jezusa Chrystusa, błogosław Ojczyźnie naszej, by Tobie zawsze wierna, chwałę przynosiła Imieniowi Twemu, a synów swoich wiodła ku szczęśliwości...
                 </div>
 
                 <div class="prayer-text-block" style="border-left-color: var(--gold-primary);">
-                    <strong>Akt Zawierzenia:</strong><br><br>
-                    Jezu Chryste, Królu Polski, zawierzamy Ci serca nasze, nasze domy i całą naszą Ojczyznę. Spójrz łaskawie na Twój naród, zjednocz nas w miłości i prawdzie, i prowadź drogą sprawiedliwości.
+                    <strong>Akt Zawierzenia (Wersja zmoderowana):</strong><br><br>
+                    Jezu Chryste, Zbawicielu i Panie panów, zawierzamy Ci serca nasze, nasze domy i całą naszą Ojczyznę. Spójrz łaskawie na Twój naród, zjednocz nas w miłości i prawdzie, i prowadź drogą sprawiedliwości.
                 </div>
             </div>
 
