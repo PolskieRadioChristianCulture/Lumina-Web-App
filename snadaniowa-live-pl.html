@@ -3264,6 +3264,13 @@
                     if (!displayedPrayers.has(docId) && data.timestamp) {
                         displayedPrayers.add(docId);
                         prayerQueue.push(data);
+                        
+                        // Update global cache and refresh marquee
+                        window.lastPrayerIntention = data;
+                        if (typeof window.loadNewsMarquee === "function") {
+                            window.loadNewsMarquee();
+                        }
+                        
                         processQueue();
                     }
                 }
