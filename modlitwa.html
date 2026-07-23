@@ -453,18 +453,6 @@
     <!-- Main Container under the animation -->
     <div class="main-container">
         
-        <!-- Standalone Prayer Radio Player Card -->
-        <div class="mini-player-card">
-            <button class="player-play-btn" id="livePlayBtn" onclick="toggleRadio()">
-                <i class="fa-solid fa-play" id="playIcon"></i>
-            </button>
-            <div class="player-info">
-                <p class="player-title">Radio Biblia Audio Christian Culture</p>
-                <p class="player-subtitle">Strumień modlitewny na żywo 24/7. Kliknij, aby dołączyć duchowo i słuchać Słowa Bożego.</p>
-            </div>
-            <audio id="radioAudio" src="https://stream.zeno.fm/imo45hqnshyuv"></audio>
-        </div>
-
         <div class="grid-section">
             
             <!-- Left Column: Form + WhatsApp Invite -->
@@ -592,25 +580,7 @@
         import { db } from "./firebase-config.js";
         import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
-        // Expose toggleRadio globally so inline onclick works
-        window.toggleRadio = function() {
-            const audio = document.getElementById("radioAudio");
-            const playIcon = document.getElementById("playIcon");
-            
-            if (audio.paused) {
-                audio.play()
-                    .then(() => {
-                        playIcon.className = "fa-solid fa-pause";
-                    })
-                    .catch(err => {
-                        console.error("Autoplay blocked:", err);
-                        alert("Kliknij ponownie przycisk PLAY, aby rozpocząć odtwarzanie.");
-                    });
-            } else {
-                audio.pause();
-                playIcon.className = "fa-solid fa-play";
-            }
-        }
+
 
         // Moderation filter based on Bible and Decalogue
         function moderateIntentionText(text) {
