@@ -1,0 +1,3482 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dobrze, że jesteś - PROGRAM ŚNIADANIOWY | Christian Culture TV</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #F3E5AB;
+            --gold-dark: #AA7C11;
+            --bg-dark: #020203;
+            --text-light: #ffffff;
+            --glass-bg: rgba(10, 12, 22, 0.38); /* Unified premium transparent background */
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-shadow: rgba(0, 0, 0, 0.5);
+            --breakfast-accent: #FFCC00;
+            --red-live: #E50914;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* --- AUTO-SCALING VIEWPORT WRAPPER --- */
+        #app-container {
+            width: 1920px;
+            height: 1080px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+        }
+
+        /* --- BACKGROUND LAYER SYSTEM --- */
+        .bg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            transition: opacity 1.5s ease-in-out, filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: ken-burns-zoom 22s ease-in-out infinite alternate; /* Dynamic camera pan & zoom motion */
+            will-change: transform;
+        }
+
+        .bg-layer.blurred {
+            filter: blur(25px) brightness(0.65); /* Dim + blur presenters in background */
+        }
+
+        .bg-image {
+            filter: brightness(0.96) contrast(1.04);
+        }
+
+        /* TV Broadcast Camera Motion (Pan, Tilt & Zoom) */
+        @keyframes ken-burns-zoom {
+            0% {
+                transform: scale(1.0) translate(0px, 0px);
+            }
+            25% {
+                transform: scale(1.07) translate(-18px, -10px);
+            }
+            50% {
+                transform: scale(1.04) translate(12px, 8px);
+            }
+            75% {
+                transform: scale(1.09) translate(-10px, 12px);
+            }
+            100% {
+                transform: scale(1.0) translate(0px, 0px);
+            }
+        }
+
+        /* --- DYNAMIC STUDIO LIGHTING OVERLAYS --- */
+        .vignette-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(255, 220, 130, 0.05) 0%, transparent 60%),
+                linear-gradient(to top, rgba(3, 3, 3, 0.8) 0%, transparent 20%, transparent 80%, rgba(3, 3, 3, 0.4) 100%);
+        }
+
+        .sunbeams {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            background: linear-gradient(135deg, rgba(255, 204, 0, 0.10) 0%, transparent 55%);
+            mix-blend-mode: screen;
+            animation: drift-light 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes drift-light {
+            0% { opacity: 0.5; transform: scale(1) rotate(0deg); }
+            50% { opacity: 0.95; transform: scale(1.05) rotate(1deg); }
+            100% { opacity: 0.6; transform: scale(1) rotate(-1deg); }
+        }
+
+        /* Moving Studio Spotlight Ray Sweep */
+        .lighting-sweep {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            z-index: 2;
+            pointer-events: none;
+            background: linear-gradient(
+                45deg, 
+                transparent 40%, 
+                rgba(255, 204, 0, 0.06) 50%, 
+                transparent 60%
+            );
+            animation: light-sweep-motion 14s ease-in-out infinite;
+        }
+
+        @keyframes light-sweep-motion {
+            0% { transform: translateX(-30%) translateY(-30%); }
+            50% { transform: translateX(20%) translateY(20%); }
+            100% { transform: translateX(-30%) translateY(-30%); }
+        }
+
+        /* Pulsing Studio Ambient Light Aura */
+        .ambient-pulse-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 40%, rgba(255, 180, 0, 0.08), transparent 70%);
+            animation: ambient-glow 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes ambient-glow {
+            0% { opacity: 0.4; }
+            100% { opacity: 1.0; }
+        }
+
+        /* --- MAIN LAYOUT GRID --- */
+        .emission-grid {
+            position: relative;
+            z-index: 3;
+            width: 1920px;
+            height: 1080px;
+            display: grid;
+            grid-template-rows: 100px 1fr 85px;
+            grid-template-columns: 1fr;
+        }
+
+        /* --- HEADER --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 70px;
+            background: linear-gradient(to bottom, rgba(3, 3, 3, 0.7) 0%, transparent 100%);
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem; /* Increased size */
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        .header-brand i {
+            color: var(--breakfast-accent);
+        }
+
+        .live-tag-container {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .tv-station-id {
+            font-size: 1.1rem; /* Increased size */
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+        }
+
+        .live-badge {
+            background: var(--red-live);
+            color: #fff;
+            padding: 6px 18px;
+            border-radius: 4px;
+            font-weight: 900;
+            font-size: 1.1rem; /* Increased size */
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.6);
+            animation: pulse-live 2.5s infinite;
+        }
+
+        .live-badge i {
+            font-size: 0.7rem; /* Increased size */
+        }
+
+        /* --- MAIN VIEWPORT --- */
+        .main-viewport {
+            display: grid;
+            grid-template-columns: 520px 1fr;
+            padding: 0 70px;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* LEFT SIDEBAR */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-top: 215px; /* Shifted slightly down as requested */
+            position: relative; /* Anchor for absolute positioned sidecars like QR */
+        }
+
+        /* Program Dnia Timeline Widget */
+        .schedule-widget {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-top: 1.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 15px 35px var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transform: translateX(0);
+            opacity: 1;
+            transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out; /* Smooth transition for cyclical hiding */
+        }
+
+        .widget-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.0rem; /* Increased for mobile readability */
+            font-weight: 900;
+            color: var(--breakfast-accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .schedule-flipper-container {
+            width: 100%;
+        }
+
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 6px 0;
+        }
+
+        .schedule-time {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #000;
+            background: var(--breakfast-accent);
+            padding: 5px 12px;
+            border-radius: 6px;
+            min-width: 85px;
+            text-align: center;
+            box-shadow: 0 0 12px rgba(255, 204, 0, 0.5);
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .schedule-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+        }
+
+        /* Weather forecast Widget */
+        .weather-widget {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-top: 1.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 22px 28px;
+            box-shadow: 0 15px 35px var(--glass-shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 105px;
+        }
+
+        .weather-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .weather-city {
+            font-size: 1.35rem; /* Enlarged for mobile readability */
+            font-weight: 850;
+            color: var(--breakfast-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .weather-temp-desc {
+            font-size: 1.85rem; /* Enlarged for mobile readability */
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .weather-icon {
+            font-size: 3.0rem; /* Enlarged icon */
+            color: #FFD700;
+            animation: float-logo 4s ease-in-out infinite; /* Gentle float instead of spin */
+        }
+
+        /* --- QR CODE SIDECAR (TEMP POPUP WIDGET) --- */
+        .weather-cta-group {
+            position: relative;
+            display: flex;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        .weather-cta-widgets {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .qr-sidecar {
+            position: absolute;
+            top: 0; /* Auto-align exactly with the weather widget top! */
+            bottom: 0; /* Auto-stretch exactly to the bottom of the CTA widget! */
+            left: 545px; /* Placed next to the wider 520px left panel */
+            width: 230px; /* Enlarged width for larger QR scan area */
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1.5px solid var(--glass-border);
+            border-top: 2.5px solid var(--breakfast-accent);
+            border-radius: 22px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            box-sizing: border-box;
+            opacity: 0;
+            transform: scale(0.8) translateX(-15px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .qr-sidecar.active {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+            pointer-events: auto;
+        }
+
+        body.evening-layout .qr-sidecar {
+            left: auto;
+            right: 545px; /* Position to the left side of the panel when panel shifts to the right column */
+        }
+
+        .sidecar-text {
+            font-size: 1.10rem; /* Enlarged for mobile readability */
+            font-weight: 900;
+            color: #ffffff;
+            text-align: center;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            border-bottom: 1.5px solid rgba(255, 204, 0, 0.25);
+            padding-bottom: 5px;
+            width: 100%;
+        }
+
+        .sidecar-qr-box {
+            width: 145px; /* Enlarged QR code box for mobile camera scanning */
+            height: 145px;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 4px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            border: 2px solid var(--breakfast-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidecar-qr-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .sidecar-subtext {
+            font-size: 0.85rem; /* Enlarged for mobile readability */
+            font-weight: 700;
+            color: var(--breakfast-accent);
+            margin-top: 6px;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        /* Dynamic CTA Widget */
+        .cta-widget {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 14px 22px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            font-family: 'Outfit', sans-serif;
+            color: #ffffff;
+            overflow: hidden;
+            height: 155px; /* Enlarged height to accommodate large text and new broadcast features */
+            box-sizing: border-box;
+            margin-top: 0; /* Clean gap spacing handled by parent container */
+            position: relative;
+            width: 100%;
+        }
+        
+        .cta-icon {
+            font-size: 2.2rem; /* Enlarged icon size */
+            color: var(--breakfast-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px; /* Enlarged icon dimensions */
+            height: 52px;
+            background: rgba(255, 204, 0, 0.1);
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .cta-icon-inner {
+            transition: transform 0.3s ease;
+        }
+
+        .cta-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+        }
+
+        .cta-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .cta-slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .cta-title {
+            font-size: 1.0rem; /* Enlarged title font */
+            font-weight: 850;
+            color: rgba(255, 255, 255, 0.60);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2px;
+        }
+
+        .cta-text {
+            font-size: 1.55rem; /* Enlarged text font for mobile readability */
+            font-weight: 750;
+            color: #ffffff;
+            white-space: normal; /* Enable wrapping into two lines */
+            line-height: 1.25;
+        }
+        
+        .cta-text strong {
+            color: var(--breakfast-accent);
+        }
+
+        /* RIGHT PANEL */
+        .right-panel {
+            width: 100%;
+            height: 750px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        /* Floating Clock Widget */
+        .card-clock-widget {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 12px 28px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            margin-bottom: 15px;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card-clock-time {
+            font-size: 3.0rem; /* Increased size */
+            font-weight: 900;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.5px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            font-variant-numeric: tabular-nums; /* Forces monospaced digits to prevent jitter */
+        }
+
+        .card-clock-time span.sec {
+            font-size: 1.6rem; /* Increased size */
+            color: var(--breakfast-accent);
+            align-self: flex-start;
+            margin-left: 4px;
+            font-weight: 700;
+            display: inline-block;
+            width: 42px; /* Fixed width stops seconds from pushing other digits */
+            text-align: left;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .card-clock-date {
+            font-size: 1.25rem; /* Increased size */
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-left: 1.5px solid rgba(255, 255, 255, 0.2);
+            padding-left: 15px;
+        }
+
+        /* --- REFLECTION GLASS CARD (ADAPTIVE FLAT LAYOUT) --- */
+        .reflection-canvas-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1.5px solid var(--glass-border);
+            border-top: 2.5px solid var(--breakfast-accent);
+            border-radius: 28px;
+            padding: 30px 35px;
+            box-shadow: 0 20px 50px var(--glass-shadow);
+            position: absolute;
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            /* Force hardware acceleration to stop text from waving/jittering over the moving background */
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Flat overlays in all modes to ensure absolute readability and pixel-perfect alignment */
+        body.mode-presenters .reflection-canvas-card {
+            right: 0; /* Align flush to .right-panel edge, utilizing main-viewport 70px padding for exact 70px screen margin */
+            left: auto; /* Override default left: 450px style */
+            top: 180px; /* Top aligned with left-panel schedule widget */
+            width: 520px; /* EXACT SAME WIDTH as left panel window (520px) */
+            height: 595px; /* Bottom edge raised slightly to align level with the bottom edge of the QR window */
+            transform: translateZ(0); /* Hardware accelerated */
+        }
+
+        body.mode-presenters .card-clock-widget {
+            width: 520px; /* Fixed width matching the 520px card */
+            box-sizing: border-box;
+            margin-right: 0; /* Flush right matching card */
+            margin-top: 95px; /* Brought down closer to the top of the reflection card */
+        }
+
+        body.mode-studio .reflection-canvas-card {
+            left: 320px; /* Centered layout */
+            top: 180px; /* Lowered to align with sidebars */
+            width: 1280px;
+            height: 700px;
+            transform: translateZ(0);
+        }
+
+        /* --- EVENING / NIGHT LAYOUT OVERRIDES (Swapped columns to prevent presenter overlap) --- */
+        body.evening-layout .main-viewport {
+            grid-template-columns: 1fr 460px; /* Swaps panels (Agenda goes to the right) */
+        }
+
+        body.evening-layout .left-panel {
+            grid-column: 2; /* Move agenda/weather to the right column (covers the TV screen background) */
+            grid-row: 1; /* Force to the first row to prevent vertical row-wrapping */
+            margin-top: 60px; /* Reduced from 180px to prevent pushing the layout and cutting off the footer */
+        }
+
+        body.evening-layout .right-panel {
+            grid-column: 1; /* Move card/clock to the left column (covers the window background) */
+            grid-row: 1; /* Force to the first row to prevent vertical row-wrapping */
+            align-items: flex-start;
+        }
+
+        body.evening-layout.mode-presenters .reflection-canvas-card {
+            left: 0; /* Align to the left edge of right-panel (which is 70px from screen border) */
+            width: 510px; /* Fits exactly within the window width in the background picture */
+            height: 610px;
+            transform: translateZ(0);
+        }
+
+        body.evening-layout.mode-presenters .card-clock-widget {
+            margin-right: auto;
+            margin-left: 0; /* Align clock to the left edge of the text card */
+        }
+
+        /* Shift special ad overlay to the right side in evening layout to avoid overlapping presenters */
+        body.evening-layout .zoom-ad-overlay {
+            left: auto;
+            right: 60px;
+        }
+
+        /* Slide layout area */
+        .canvas-slide-container {
+            position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .canvas-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .canvas-slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .slide-tag {
+            font-size: 1.45rem; /* Enlarged for mobile readability */
+            font-weight: 850;
+            color: var(--breakfast-accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+        }
+
+        .slide-tag span {
+            flex-shrink: 0;
+        }
+
+        .slide-tag i {
+            flex-shrink: 0;
+        }
+
+        .slide-tag::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, var(--breakfast-accent), transparent);
+            margin-left: 10px;
+        }
+
+        .slide-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.15rem;
+            font-weight: 900;
+            line-height: 1.25;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 8px;
+        }
+
+        .slide-text {
+            font-size: 2.0rem;
+            font-weight: 400;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .slide-text strong {
+            color: var(--breakfast-accent);
+            font-weight: 700;
+        }
+
+        /* Citation box */
+        .bible-citation {
+            border-left: 4.5px solid var(--breakfast-accent);
+            padding: 8px 14px;
+            margin: 4px 0;
+            font-style: italic;
+            background: rgba(255, 204, 0, 0.04);
+            border-radius: 0 12px 12px 0;
+            line-height: 1.35;
+            font-size: 1.85rem;
+        }
+
+        /* Fix scrolling text jitter over blurred backgrounds */
+        .slide-text-scroll-wrap {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: scroll-position, transform;
+            -webkit-font-smoothing: subpixel-antialiased;
+        }
+        
+        .slide-text, .bible-citation, .slide-title {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-font-smoothing: subpixel-antialiased;
+        }
+
+        /* Pagination & card footer */
+        .canvas-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 15px;
+            margin-top: 10px;
+        }
+
+        .slide-pagination {
+            display: flex;
+            gap: 6px;
+        }
+
+        .pagination-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .pagination-dot.active {
+            width: 20px;
+            border-radius: 3px;
+            background: var(--breakfast-accent);
+            box-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+        }
+
+        .card-cycle-badge {
+            background: rgba(255, 204, 0, 0.1);
+            border: 1px solid var(--breakfast-accent);
+            color: var(--breakfast-accent);
+            font-size: 1.20rem; /* Enlarged for mobile readability */
+            font-weight: 850;
+            padding: 4px 12px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- FOOTER DYNAMIC TICKER --- */
+        footer {
+            display: grid;
+            grid-template-columns: 320px 1fr; /* Increased width to accommodate logo */
+            background: linear-gradient(-45deg, 
+                rgba(255, 204, 0, 0.45), 
+                rgba(255, 115, 0, 0.35), 
+                rgba(0, 162, 255, 0.35), 
+                rgba(0, 75, 255, 0.35)
+            );
+            background-size: 400% 400%;
+            animation: logo-gradient-shift 15s ease infinite;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-top: 3px solid var(--breakfast-accent);
+            overflow: visible; /* Changed to visible so logo can stick out top */
+            position: relative;
+            z-index: 10; /* Ensures footer covers the popup tab */
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.3);
+            height: 85px;
+        }
+
+        .ticker-popup-tab {
+            position: absolute;
+            bottom: 85px; /* Appears right above the footer */
+            left: 70px; /* Align with main viewport padding */
+            width: 520px; /* Exact width of the CTA panel */
+            box-sizing: border-box;
+            text-align: center;
+            background: #E50914; /* News red */
+            color: white;
+            padding: 8px 24px;
+            border-radius: 12px 12px 0 0;
+            font-weight: 900;
+            font-size: 1.25rem;
+            font-family: 'Outfit', sans-serif;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+            z-index: 4; /* Sits behind the footer which has z-index 10 */
+            box-shadow: 0 -4px 20px rgba(229, 9, 20, 0.5);
+            letter-spacing: 1px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-bottom: none;
+            text-transform: uppercase;
+        }
+
+        .ticker-popup-tab.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .l3-ticker-header {
+            position: relative;
+            background: linear-gradient(135deg, #FFCC00 0%, #FF9900 100%); /* Vibrant gold gradient */
+            border-right: 1.5px solid rgba(255, 255, 255, 0.15);
+            color: #000000; /* High contrast dark text */
+            height: 100%;
+            z-index: 5;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.15);
+            font-family: 'Outfit', sans-serif; /* Modern, clean sans-serif */
+            perspective: 1000px; /* Enable 3D perspective */
+            padding: 0; /* Let the flipper card occupy full space */
+            overflow: visible; /* Changed to visible to let logo pop out */
+        }
+
+        /* 3D Ticker Flipper Card */
+        .ticker-flipper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.0s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy news flip transition */
+            overflow: visible;
+        }
+
+        .ticker-flipper.flipped {
+            transform: rotateX(180deg); /* Vertical flip transition */
+        }
+
+        .flipper-front, .flipper-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Hide the back side when front is visible and vice versa */
+            -webkit-backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .flipper-front {
+            justify-content: center;
+            background: transparent;
+            z-index: 2;
+            transform: rotateX(0deg);
+            overflow: visible; /* Let large logo stick out */
+        }
+
+        .flipper-back {
+            justify-content: flex-start;
+            background: transparent;
+            transform: rotateX(180deg); /* Starts rotated */
+            padding: 0 20px;
+            gap: 12px;
+            overflow: hidden; /* Clip metadata shimmer inside back card */
+        }
+
+        /* Front: Large focal logo */
+        .large-ticker-logo {
+            height: 170px; /* Increased size by 50% (from 115px) */
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.45));
+            /* Translate up by -42px (halfway out of the top of the 85px ticker) and translateZ for 3D depth */
+            transform: translateY(-42px) translateZ(50px);
+            animation: logo-pulse 4s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes logo-pulse {
+            0%, 100% { transform: translateY(-42px) translateZ(50px) scale(1); }
+            50% { transform: translateY(-42px) translateZ(50px) scale(1.05); }
+        }
+
+        /* Back: Small logo and title texts */
+        .ticker-logo-container-small {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid rgba(0, 0, 0, 0.12);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            z-index: 6;
+        }
+
+        .small-ticker-logo {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+        }
+
+        .ticker-header-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 6;
+        }
+
+        /* Metallic light sweep reflection inside back card only */
+        .flipper-back::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(
+                90deg, 
+                rgba(255, 255, 255, 0) 0%, 
+                rgba(255, 255, 255, 0.65) 50%, 
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-20deg);
+            animation: ticker-badge-shine 4s ease-in-out infinite;
+            z-index: 5;
+        }
+
+        @keyframes ticker-badge-shine {
+            0% { left: -150%; }
+            35% { left: 150%; }
+            100% { left: 150%; }
+        }
+
+        .l3-ticker-header span.label {
+            font-size: 0.8rem;
+            font-weight: 850;
+            letter-spacing: 2px;
+            color: rgba(0, 0, 0, 0.55); /* Subtle dark gold */
+            text-transform: uppercase;
+            margin-bottom: 1px;
+            line-height: 1;
+        }
+
+        .l3-ticker-header span.edition {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem; /* Large focal point size */
+            font-weight: 900;
+            letter-spacing: 0.2px;
+            color: #000000;
+            text-transform: uppercase;
+            text-align: left;
+            line-height: 1.1;
+            z-index: 6; /* Stay above the shimmer */
+        }
+
+        .ticker-marquee-wrap {
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .ticker-marquee-text {
+            display: inline-block;
+            white-space: nowrap;
+            font-size: 2.1rem; /* Enlarged for mobile legibility */
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #ffffff; /* Bright white text */
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+            padding-left: 100%;
+            animation: marquee-scroll 220s linear infinite;
+        }
+
+        .ticker-highlight-msg {
+            color: #FFD700; /* Vibrant Gold */
+            background: rgba(0, 0, 0, 0.35);
+            padding: 2px 16px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            font-weight: 900;
+            margin: 0 10px;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+        }
+
+        .ticker-announcement {
+            background: #E50914; /* TV News Red */
+            color: #ffffff;
+            padding: 2px 14px;
+            border-radius: 6px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-right: 15px;
+            margin-left: 15px;
+            display: inline-block;
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: pulse-live 2.5s infinite;
+        }
+
+        @keyframes logo-gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- TV BUMPER TRANSITION OVERLAY --- */
+        .tv-bumper-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1920px;
+            height: 1080px;
+            background: rgba(0, 0, 0, 0.45); /* Elegant dark glass wash */
+            z-index: 999; /* Stay on top of everything except control panel */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(8px); /* Subtle overall glass blur */
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .tv-bumper-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .bumper-content {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0.6) rotate(-15deg);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .tv-bumper-overlay.active .bumper-content {
+            transform: scale(1) rotate(0deg);
+        }
+
+        .bumper-logo {
+            height: 380px; /* Huge 170px-inspired prominent logo */
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.65));
+            animation: bumper-logo-spin 2.5s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes bumper-logo-spin {
+            0%, 100% { transform: scale(1) rotateY(0deg); }
+            50% { transform: scale(1.06) rotateY(180deg); }
+        }
+
+        .bumper-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 204, 0, 0.30) 0%, rgba(255, 115, 0, 0.05) 50%, rgba(0, 0, 0, 0) 70%);
+            border-radius: 50%;
+            z-index: 5;
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
+
+        /* --- OPERATOR CONTROL PANEL --- */
+        .operator-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(10, 10, 10, 0.98);
+            border: 2px solid var(--breakfast-accent);
+            border-radius: 16px;
+            padding: 20px;
+            z-index: 100;
+            width: 400px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            transform: translateX(-420px);
+            opacity: 0;
+        }
+
+        .operator-panel.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .panel-header {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--breakfast-accent);
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-panel-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 6px;
+        }
+
+        .control-group select, .control-group input {
+            width: 100%;
+            background: #181818;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            color: #fff;
+            padding: 8px 12px;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .control-btn {
+            background: var(--breakfast-accent);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 10px 15px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: #ffdb4d;
+        }
+
+        .toggle-panel-trigger {
+            position: absolute;
+            bottom: 110px; /* Moved down to avoid header brand overlap */
+            left: 20px;
+            z-index: 99;
+            background: rgba(10, 10, 10, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: rgba(255,255,255,0.7);
+            transition: all 0.3s;
+            opacity: 0; /* Fully invisible to viewers by default */
+        }
+
+        .toggle-panel-trigger:hover {
+            color: var(--breakfast-accent);
+            background: rgba(10, 10, 10, 0.95);
+            border-color: var(--breakfast-accent);
+            opacity: 1; /* Appears only when operator hovers the mouse in the bottom-left corner */
+        }
+
+        /* --- ZOOM AD OVERLAY --- */
+        .zoom-ad-overlay {
+            position: fixed;
+            bottom: 150px; /* Aligned with the bottom of the right-panel reflection box */
+            left: 60px; /* Anchored to the left side */
+            right: auto;
+            width: 1040px;
+            height: 520px;
+            z-index: 100;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+            transition: opacity 1.2s ease, transform 1.2s ease;
+        }
+
+        .zoom-ad-overlay.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .zoom-poster-container {
+            width: 520px;
+            height: 520px; /* Square image */
+            flex-shrink: 0;
+            background: #000;
+        }
+
+        .zoom-poster {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Don't crop the poster, show full image */
+            object-position: center; /* Centered instead of top */
+            transition: opacity 0.5s ease;
+        }
+
+        .zoom-details-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 30px;
+            width: 520px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(20,20,20,0.95), rgba(40,40,40,0.95));
+        }
+
+        .zoom-qr-box {
+            width: 250px; /* Huge QR code */
+            height: 250px;
+            background: #fff;
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+        
+        .zoom-qr-box img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .zoom-text-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-family: 'Outfit', sans-serif;
+            text-align: center;
+        }
+
+        .zoom-label {
+            font-weight: 900;
+            font-size: 1.8rem;
+            color: var(--breakfast-accent);
+            letter-spacing: 2px;
+        }
+
+        .zoom-id, .zoom-pass {
+            font-size: 1.4rem;
+            color: #ddd;
+            font-weight: 500;
+        }
+
+        .zoom-id span, .zoom-pass span {
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: 2px;
+        }
+
+        .zoom-date {
+            margin-top: 10px;
+            font-size: 1.4rem;
+            color: #FFD700; /* Vibrant Gold */
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Fade-out class for standard widgets when Zoom ad is shown */
+        .left-panel-standard-widget {
+            transition: opacity 1s ease, transform 1s ease;
+            transform-origin: left center;
+        }
+        
+        .left-panel-standard-widget.hidden-for-ad {
+            opacity: 0 !important;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes marquee-scroll {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        @keyframes pulse-live {
+            0% { box-shadow: 0 0 5px rgba(229, 9, 20, 0.4); opacity: 0.9; }
+            50% { box-shadow: 0 0 16px rgba(229, 9, 20, 0.8); opacity: 1; }
+            100% { box-shadow: 0 0 5px rgba(229, 9, 20, 0.4); opacity: 0.9; }
+        }
+
+        @keyframes sun-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes drift-light {
+            0% { transform: translate(-30px, -20px) rotate(-0.5deg) scale(1.0); }
+            100% { transform: translate(30px, 20px) rotate(0.5deg) scale(1.03); }
+        }
+
+        @keyframes float-logo {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* --- DIALOGUE CHAT STYLING --- */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+            height: calc(100% - 75px);
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        /* Custom Scrollbar for Chat Feed and Text Wrappers */
+        .chat-container::-webkit-scrollbar, .slide-text-scroll-wrap::-webkit-scrollbar {
+            width: 5px;
+        }
+        .slide-text-scroll-wrap::-webkit-scrollbar-track, .chat-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+        .slide-text-scroll-wrap::-webkit-scrollbar-thumb, .chat-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 204, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .chat-bubble-row {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .chat-bubble-row.noemi {
+            flex-direction: row;
+        }
+
+        .chat-bubble-row.sara {
+            flex-direction: row-reverse;
+        }
+
+        .chat-avatar {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 2.5px solid var(--breakfast-accent);
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .chat-bubble {
+            max-width: 82%;
+            border-radius: 18px;
+            padding: 14px 20px;
+            font-size: 2.0rem; /* Further increased size for mobile readability */
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            text-align: left;
+        }
+
+        .chat-bubble-row.noemi .chat-bubble {
+            border-top-left-radius: 4px;
+            background: rgba(212, 175, 55, 0.12); /* Warm Gold Tint for Noemi */
+            border: 1px solid rgba(212, 175, 55, 0.25);
+        }
+
+        .chat-bubble-row.sara .chat-bubble {
+            border-top-right-radius: 4px;
+            background: rgba(255, 255, 255, 0.07); /* Icey White Tint for Sara */
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        /* Combined/Both host or script direction bubble */
+        .chat-bubble-row.both {
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .chat-bubble-row.both .chat-bubble {
+            background: rgba(255, 204, 0, 0.15);
+            border: 1.5px solid var(--breakfast-accent);
+            border-radius: 18px;
+            max-width: 90%;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        /* Direct comments or production notes */
+        .chat-bubble-row.production {
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .chat-bubble-row.production .chat-bubble {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            max-width: 85%;
+            text-align: center;
+            font-size: 1.15rem; /* Further increased size */
+            color: rgba(255, 255, 255, 0.6);
+            padding: 8px 14px;
+            box-shadow: none;
+        }
+
+        .chat-sender-name {
+            font-size: 1.3rem; /* Further increased size */
+            font-weight: 900;
+            color: var(--breakfast-accent);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+        }
+
+        .chat-bubble-row.sara .chat-sender-name {
+            color: #fff;
+            text-align: right;
+        }
+
+        .chat-message-text {
+            word-wrap: break-word;
+        }
+        /* ── AUDIO STARTUP OVERLAY ── */
+        #startOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(2, 2, 3, 0.96);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
+        }
+        #startOverlay.hidden {
+            display: none;
+        }
+        .start-logo {
+            width: 110px;
+            height: 110px;
+            border-radius: 28px;
+            border: 2px solid rgba(212, 175, 55, 0.7);
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
+            object-fit: cover;
+        }
+        .start-label {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+        .start-sublabel {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.45);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .start-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: linear-gradient(135deg, #D4AF37, #AA7C11);
+            color: #000;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 60px;
+            padding: 22px 56px;
+            cursor: pointer;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .start-btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 0 70px rgba(212, 175, 55, 0.45);
+        }
+        .start-btn i { font-size: 1.5rem; }
+        /* Special Event "Zjednoczeni za Polskę" layout overrides */
+        body.special-event-today .left-panel {
+            display: none !important;
+        }
+        body.special-event-today .main-viewport {
+            grid-template-columns: 1fr;
+            padding-left: 70px;
+        }
+        body.special-event-today.evening-layout.mode-presenters .reflection-canvas-card {
+            left: 0;
+            width: 530px;
+            height: 620px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Auto-Scaling Viewport wrapper -->
+    <div id="app-container">
+
+        <!-- Background Image -->
+        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="breakfast_presenters.jpg" alt="Breakfast Studio">
+        
+        <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
+        <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
+
+        <!-- Overlays -->
+        <div class="vignette-overlay"></div>
+        <div class="sunbeams"></div>
+        <div class="lighting-sweep"></div>
+        <div class="ambient-pulse-layer"></div>
+
+        <!-- Emission Screen Grid -->
+        <div class="emission-grid">
+            
+            <!-- Header -->
+            <header>
+                <div class="header-brand">
+                    <i class="fa-solid fa-mug-hot"></i> DOBRZE, ŻE JESTEŚ TV
+                </div>
+                
+                <div class="live-tag-container">
+                    <div class="tv-station-id">PROGRAM 1 • CC</div>
+                    <div class="live-badge">
+                        <i class="fa-solid fa-circle"></i> NA ŻYWO
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Viewport -->
+            <main class="main-viewport">
+                
+                <!-- Left Sidebar -->
+                <div class="left-panel">
+                    
+                    <!-- Zoom Ad Overlay (Hidden by default, triggered cyclically) -->
+                    <div class="zoom-ad-overlay" id="zoomAdOverlay">
+                        <div class="zoom-poster-container">
+                            <img src="Modlitwa_za_Polske.jpeg" alt="Modlitwa za Polskę" class="zoom-poster">
+                        </div>
+                        <div class="zoom-details-box">
+                            <div class="zoom-qr-box">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fus06web.zoom.us%2Fj%2F85696754457%3Fpwd%3DF2idw79Zxcusqbe6QqOAkSaeCmysfo.1" alt="Zoom QR Code">
+                            </div>
+                            <div class="zoom-text-info">
+                                <div class="zoom-label">OGŁOSZENIE SPECJALNE</div>
+                                <div class="zoom-id">MEETING ID: <span>856 9675 4457</span></div>
+                                <div class="zoom-pass">PASSCODE: <span>495780</span></div>
+                                <div class="zoom-date">Do zobaczenia w czwartek o 21:00!</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Sunday agenda widget -->
+                    <div class="schedule-widget left-panel-standard-widget" id="scheduleWidget">
+                        <div class="widget-title">
+                            <span>PROGRAM DNIA</span>
+                            <i class="fa-solid fa-clock-rotate-left" style="font-size: 0.9rem;"></i>
+                        </div>
+                        <div class="schedule-flipper-container">
+                            <div class="schedule-item" id="sched-current">
+                                <span class="schedule-time" id="sched-time">--:--</span>
+                                <span class="schedule-name" id="sched-name">Wczytywanie...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weather + CTA + QR Group (Auto-aligns QR sidecar in CSS) -->
+                    <div class="weather-cta-group left-panel-standard-widget">
+                        <div class="weather-cta-widgets">
+                            <!-- Weather city simulation widget -->
+                            <div class="weather-widget">
+                                <div class="weather-info" id="weatherBox">
+                                    <span class="weather-city">WARSZAWA</span>
+                                    <span class="weather-temp-desc">☀️ 25°C / Słonecznie</span>
+                                </div>
+                                <i class="fa-solid fa-sun-plant-wilt weather-icon"></i>
+                            </div>
+
+                            <!-- Dynamic CTA Widget -->
+                            <div class="cta-widget" id="ctaWidget">
+                                <div class="cta-icon">
+                                    <i class="fa-solid fa-thumbs-up cta-icon-inner" id="ctaIcon"></i>
+                                </div>
+                                <div class="cta-content">
+                                    <div class="cta-slide active">
+                                        <div class="cta-title">BĄDŹ NA ANTENIE (1/3) 📺</div>
+                                        <div class="cta-text" style="line-height: 1.35;">
+                                            Wyślij SMS na numer:<br>
+                                            <strong style="font-size: 1.3em;">+48 783 478 280</strong>
+                                        </div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">BĄDŹ NA ANTENIE (2/3) 📺</div>
+                                        <div class="cta-text" style="line-height: 1.35;">
+                                            Zacznij od słowa:<br>
+                                            <strong style="color: #fff;">Pozdrowienia</strong> lub <strong style="color: #fff;">Modlitwa</strong>
+                                        </div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">BĄDŹ NA ANTENIE (3/3) 📺</div>
+                                        <div class="cta-text" style="line-height: 1.35;">
+                                            Format:<br>
+                                            <span style="color: var(--breakfast-accent); font-weight: 800; font-size: 0.9em;">Pozdrowienia.Treść.TwojeImię</span>
+                                        </div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">POLUB NAS</div>
+                                        <div class="cta-text">Zostaw łapkę w górę pod tą transmisją! 👍</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">SKOMENTUJ</div>
+                                        <div class="cta-text">Napisz krótki komentarz pod wideo! 💬</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">UDOSTĘPNIJ</div>
+                                        <div class="cta-text">Podziel się tą transmisją ze znajomymi! 🚀</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">SUBSKRYBUJ</div>
+                                        <div class="cta-text">Subskrybuj nasz kanał i włącz dzwoneczek! 🔔</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">OKAŻ UZNANIE</div>
+                                        <div class="cta-text">Wejdź do Sklepu: <strong>www.polskieradio.cc</strong> 🛒</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">SPOŁECZNOŚĆ YT</div>
+                                        <div class="cta-text">Dołącz do społeczności YT na naszym kanale! 📺</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">DARMOWE SMS (1/2)</div>
+                                        <div class="cta-text"><strong>+48 783 478 280</strong><br>Wyślij SMS: <strong>"Dobrze, że jesteś"</strong></div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">DARMOWE SMS (2/2)</div>
+                                        <div class="cta-text"><strong>+48 783 478 280</strong><br>Otrzymuj codzienne inspiracje! 📱</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">PYTANIE PORANKA 💬</div>
+                                        <div class="cta-text">Za co dziękujesz dziś Bogu?<br>Wyślij SMS pod <strong>+48 783 478 280</strong></div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">ZŁOTA MYŚL DNIA ✨</div>
+                                        <div class="cta-text" id="goldenQuoteSlideText">"Zaufaj Panu z całego serca i nie polegaj na własnym rozumie."</div>
+                                    </div>
+                                    <div class="cta-slide">
+                                        <div class="cta-title">KARTKA Z KALENDARZA 📅</div>
+                                        <div class="cta-text" id="calendarSlideText">DZIŚ OBCHODZIMY: <strong>Międzynarodowy Dzień Radości</strong> ☀️</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- QR Code Sidecar (Fades in/out next to weather/CTA widgets) -->
+                        <div class="qr-sidecar" id="qrSidecar">
+                            <div class="sidecar-text">POMAGANIE WZMACNIA</div>
+                            <div class="sidecar-qr-box">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://patronite.pl/osobowoscplus" alt="Patronite QR" class="sidecar-qr-img">
+                            </div>
+                            <div class="sidecar-subtext">patronite.pl/osobowoscplus</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Panel (Info Board & Clock Widget) -->
+                <div class="right-panel">
+                    
+                    <!-- Floating Clock above the main card (Isolated to prevent overlaps) -->
+                    <div class="card-clock-widget" id="cardClockWidget">
+                        <div class="card-clock-time">
+                            <span id="timeHour">11</span>:<span id="timeMin">30</span><span class="sec" id="timeSec">00</span>
+                        </div>
+                        <div class="card-clock-date" id="clockDateLabel">Niedziela, 19 Lipca</div>
+                    </div>
+
+                    <!-- Main Glass Card Container -->
+                    <div class="reflection-canvas-card">
+                        
+                        <!-- Slide text content area -->
+                        <div class="canvas-slide-container" id="slidesContainer">
+                            <div class="canvas-slide active">
+                                <div class="tv-logo-slide">
+                                    <img src="Projekt bez nazwy (64).png" alt="Dobrze, że jesteś logo">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer of card -->
+                        <div class="canvas-card-footer">
+                            <div class="slide-pagination" id="slidePagination">
+                                <!-- Dots loaded dynamically -->
+                            </div>
+                            <div class="card-cycle-badge" id="cycleBadge">Dzień 22 | MISJA BOŻE WAKACJE</div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </main>
+
+            <!-- Popup Tab (Outside footer to sit behind it) -->
+            <div class="ticker-popup-tab" id="tickerPopupTab">COMING UP...</div>
+
+            <!-- Prayer Intentions Real-time Broadcast Overlay -->
+            <div id="livePrayerOverlay" style="position: fixed; bottom: 180px; left: 80px; width: 1100px; background: rgba(15, 18, 30, 0.96); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 3px solid var(--breakfast-accent); border-radius: 24px; padding: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.95); display: flex; flex-direction: column; gap: 18px; z-index: 1000; opacity: 0; transform: translateY(30px); pointer-events: none; transition: opacity 1s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1); border-left: 8px solid #dc143c;">
+                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
+                    <span style="font-family: 'Cinzel', serif; font-size: 1.45rem; font-weight: 800; color: #ff4d6d; letter-spacing: 2px; text-transform: uppercase; display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-hands-praying"></i> LIVE PRAYER FELLOWSHIP</span>
+                    <span style="font-size: 1.2rem; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 1px;">NOW</span>
+                </div>
+                <p id="livePrayerText" style="font-size: 1.95rem; color: #ffffff; line-height: 1.5; font-style: italic; text-align: left; margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; text-shadow: 0 2px 5px rgba(0,0,0,0.6);"></p>
+                <p id="livePrayerAuthor" style="font-size: 1.5rem; color: var(--breakfast-accent); font-weight: 800; text-align: right; margin: 5px 0 0 0; font-family: 'Outfit', sans-serif; text-transform: uppercase; letter-spacing: 1px;"></p>
+            </div>
+
+            <!-- Footer Ticker -->
+            <footer>
+                <div class="l3-ticker-header">
+                    <div class="ticker-flipper" id="tickerFlipper">
+                        <!-- FRONT SIDE: Centered large logo -->
+                        <div class="flipper-front">
+                            <img src="Projekt bez nazwy (64).png" alt="Good to have you logo" class="large-ticker-logo">
+                        </div>
+                        <!-- BACK SIDE: Text details (Small logo + Edition metadata) -->
+                        <div class="flipper-back">
+                            <div class="ticker-logo-container-small">
+                                <img src="Projekt bez nazwy (64).png" alt="Good to have you logo" class="small-ticker-logo">
+                            </div>
+                            <div class="ticker-header-text">
+                                <span class="label">NEWS FEED</span>
+                                <span class="edition" id="tickerEditionLabel">MORNING EDITION</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ticker-marquee-wrap">
+                    <span class="ticker-marquee-text" id="marqueeText">
+                        <span class="ticker-announcement">ZA CHWILĘ: GŁOS WIDZÓW 📺</span> <span class="ticker-highlight-msg">💬 Pozdrawiam serdecznie Kasię, Zosię, Pawła, Roberta i Bartka :) niech dobry Bóg Was błogosławi Kochani! ~Czarek &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 💬 Pozdrawiam serdecznie księdza Jan Dubas z kościoła Opatrzności Bożej przy ul. Świadka 5 w Rzeszowie ~Katarzyna Fedków</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ticker-announcement">SERWIS INFORMACYJNY 📰</span> <span style="background: #FFCC00; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">WWW.POLSKIERADIO.CC | CCLITE.PL</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📧 NAPISZ DO NAS: <strong>polskiercctv@gmail.com</strong> | <strong>radiochristianculture@gmail.com</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ticker-announcement">OFERTA SPECJALNA 🎁</span> 📖 BEZPŁATNA BIBLIA DLA KAŻDEGO — wyślij SMS o treści: <strong>BIBLIA</strong> pod numer <strong>530 736 155</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 DOŁĄCZ NA WHATSAPP — szczegóły w bocznej ramce &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ticker-announcement">WESPRZYJ MISJĘ ❤️</span> 💳 Zostań Patronem: patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Dziękujemy za każde wsparcie i modlitwę! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ticker-announcement">ZA CHWILĘ: GŁOS WIDZÓW 📺</span> <span class="ticker-highlight-msg">💬 Pozdrawiam serdecznie Kasię, Zosię, Pawła, Roberta i Bartka :) niech dobry Bóg Was błogosławi Kochani! ~Czarek &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 💬 Pozdrawiam serdecznie księdza Jan Dubas z kościoła Opatrzności Bożej przy ul. Świadka 5 w Rzeszowie ~Katarzyna Fedków</span>
+                    </span>
+                </div>
+            </footer>
+
+            <!-- Full-Screen TV Bumper/Transition Overlay -->
+            <div id="tvBumperOverlay" class="tv-bumper-overlay">
+                <div class="bumper-content">
+                    <img src="Projekt bez nazwy (64).png" alt="Dobrze, że jesteś logo" class="bumper-logo">
+                    <div class="bumper-glow"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- AUDIO STARTUP OVERLAY (Click to play and bypass browser autoplay block) -->
+    <div id="startOverlay" onclick="initStream()">
+        <img class="start-logo" src="dzj-logo.jpg" alt="Dobrze, że jesteś">
+        <div class="start-label">Dobrze, że jesteś</div>
+        <div class="start-sublabel">Program Śniadaniowy · Christian Culture</div>
+        <button class="start-btn">
+            <i class="fa-solid fa-circle-play"></i> Uruchom Studio
+        </button>
+    </div>
+
+    <!-- Toggle controls indicator -->
+    <div class="toggle-panel-trigger" id="panelTriggerBtn" title="Panel Sterowania Programem">
+        <i class="fa-solid fa-cog"></i>
+    </div>
+
+    <!-- Operator controls panel -->
+    <div class="operator-panel" id="operatorPanel">
+        <div class="panel-header">
+            <span>Sterowanie Programem</span>
+            <button class="close-panel-btn" id="closePanelBtn">&times;</button>
+        </div>
+        
+        <div class="control-group">
+            <label for="daySelect">Wybierz Rozważanie (Dzień)</label>
+            <select id="daySelect">
+                <!-- Days loaded dynamically -->
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="bgImageSelect">Tło Programu (Obraz / Layout)</label>
+            <select id="bgImageSelect">
+                <option value="breakfast_presenters.jpg">Prezenterki w Studio (Auto-Rotacja)</option>
+                <option value="zjednoczeni_za_polske_banner.jpg">Wydanie Specjalne (Zjednoczeni za Polskę - Baner)</option>
+                <option value="tapeta_modlitwa.gif">Wydanie Specjalne (Zjednoczeni za Polskę - Animacja GIF)</option>
+                <option value="a0kKB.jpg">Własne Tło Letnie (a0kKB.jpg)</option>
+                <option value="breakfast_presenters_forenoon.jpg">Przedpołudniowe Prezenterki (Mockup 3)</option>
+                <option value="breakfast_presenters_alt.jpg">Alternatywne Prezenterki (Mockup 2)</option>
+                <option value="breakfast_studio.jpg">Studio Bliski Kadr (Kawa + Książka)</option>
+                <option value="breakfast_studio_alt.jpg">Alternatywne Tło Drewniane</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="bgVideoSelect">Alternatywne Tło Wideo (Lokalnie)</label>
+            <select id="bgVideoSelect">
+                <option value="">(Brak wideo - Użyj wybranego obrazu tła)</option>
+                <option value="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Projekt bez nazwy (55).mp4">Projekt bez nazwy (55).mp4</option>
+                <option value="file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Christian Culture TV (1).mp4">Christian Culture TV (1).mp4</option>
+                <option value="file:///C:/Users/czark/Desktop/Tło LIVE/Projekt bez nazwy (33).mp4">Projekt bez nazwy (33).mp4</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="slideDuration">Czas Slajdu (sekundy)</label>
+            <input type="number" id="slideDuration" value="25" min="10" max="120">
+        </div>
+
+        <button class="control-btn" id="forceReloadBtn">Zatwierdź i Odśwież</button>
+    </div>
+
+    <!-- Core Script -->
+    <script>
+
+        // ── SAFE LOCALSTORAGE WRAPPER FOR IFRAME COMPATIBILITY ──
+        const safeStorage = {
+            _data: {},
+            getItem(key) {
+                try {
+                    return window.localStorage.getItem(key);
+                } catch (e) {
+                    return this._data[key] || null;
+                }
+            },
+            setItem(key, value) {
+                try {
+                    window.localStorage.setItem(key, value);
+                } catch (e) {
+                    this._data[key] = String(value);
+                }
+            },
+            removeItem(key) {
+                try {
+                    window.localStorage.removeItem(key);
+                } catch (e) {
+                    delete this._data[key];
+                }
+            }
+        };
+
+
+
+        
+
+
+        // ── wirtualna stacja BIBLE AUDIO GLOBAL (Epoch-sync playlist.json) ──
+        let globalPlaylist = [];
+        let totalDuration = 0;
+
+        async function loadGlobalPlaylist() {
+            if (globalPlaylist.length > 0) return;
+            try {
+                const res = await fetch("./playlist.json");
+                globalPlaylist = await res.json();
+                totalDuration = globalPlaylist.reduce((acc, item) => acc + item.duration, 0);
+                console.log("Loaded global playlist. Total duration: " + totalDuration + " seconds.");
+            } catch (e) {
+                console.error("Failed to load playlist.json", e);
+            }
+        }
+
+        async function syncGlobalBibleAudio() {
+            await loadGlobalPlaylist();
+            const audio = document.getElementById('stream-audio');
+            if (!audio || globalPlaylist.length === 0) return;
+
+            const epochSeconds = Math.floor(Date.now() / 1000);
+            let remaining = epochSeconds % totalDuration;
+            let targetIndex = 0;
+            let seekSeconds = 0;
+
+            for (let i = 0; i < globalPlaylist.length; i++) {
+                if (remaining < globalPlaylist[i].duration) {
+                    targetIndex = i;
+                    seekSeconds = remaining;
+                    break;
+                }
+                remaining -= globalPlaylist[i].duration;
+            }
+
+            const currentTrack = globalPlaylist[targetIndex];
+            
+            // Check if track needs to change
+            if (!audio.src.includes(currentTrack.url)) {
+                audio.src = currentTrack.url;
+                audio.load();
+                audio.currentTime = seekSeconds;
+            } else {
+                // If it is playing but drifted by more than 2 seconds, seek
+                if (Math.abs(audio.currentTime - seekSeconds) > 2) {
+                    audio.currentTime = seekSeconds;
+                }
+            }
+
+            if (audio.paused) {
+                audio.play().catch(e => console.warn("Autoplay blocked:", e));
+            }
+        }
+
+        // ── AUDIO INIT (global scope — called from overlay onclick) ──
+        function initStream() {
+            const overlay = document.getElementById('startOverlay');
+            if (overlay) overlay.classList.add('hidden');
+            
+            // Trigger first sync and play immediately
+            syncGlobalBibleAudio();
+            
+            // Watchdog and sync loop every 2 seconds
+            setInterval(syncGlobalBibleAudio, 2000);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // ── START AUDIO IMMEDIATELY (nie czekaj na fetch rozważań) ──
+            setTimeout(initStream, 500);
+
+            // ── USTAW SCHEDULE OD RAZU (niezależnie od fetch) ──
+            (function updateScheduleNow() {
+                const now = new Date();
+                const h = now.getHours();
+                const schedTime = document.getElementById("sched-time");
+                const schedName = document.getElementById("sched-name");
+                if (!schedTime || !schedName) return;
+
+                let timeStr = "--:--";
+                let nameStr = "Wczytywanie...";
+
+                if (h >= 5 && h < 9) {
+                    // Morning program profile (05:00 - 09:00)
+                    if (h < 7) { timeStr = "06:00"; nameStr = "Słowo o Poranku"; }
+                    else if (h === 7) { timeStr = "07:00"; nameStr = "Zadanie Taktyczne"; }
+                    else { timeStr = "08:00"; nameStr = "Bojowa Modlitwa"; }
+                } else if (h >= 9 && h < 12) {
+                    // Forenoon program profile (09:00 - 12:00)
+                    if (h === 9) { timeStr = "09:30"; nameStr = "Słowo na Przedpołudnie"; }
+                    else if (h === 10 && now.getMinutes() < 30) { timeStr = "09:30"; nameStr = "Słowo na Przedpołudnie"; }
+                    else if ((h === 10 && now.getMinutes() >= 30) || (h === 11 && now.getMinutes() < 30)) { timeStr = "10:30"; nameStr = "Zadanie Taktyczne"; }
+                    else { timeStr = "11:30"; nameStr = "Bojowa Modlitwa"; }
+                } else if (h >= 12 && h < 18) {
+                    // Afternoon program profile (12:00 - 18:00)
+                    if (h < 15) { timeStr = "13:30"; nameStr = "Słowo na Popołudnie"; }
+                    else if (h === 15 || (h === 16 && now.getMinutes() < 30)) { timeStr = "15:00"; nameStr = "Modlitwa o Przebudzenie"; }
+                    else { timeStr = "16:30"; nameStr = "Zadanie Taktyczne"; }
+                } else if (h >= 18 && h < 22) {
+                    // Evening program profile (18:00 - 22:00)
+                    if (h < 20 || (h === 20 && now.getMinutes() < 30)) { timeStr = "19:30"; nameStr = "Słowo na Wieczór"; }
+                    else if ((h === 20 && now.getMinutes() >= 30) || (h === 21 && now.getMinutes() < 30)) { timeStr = "20:30"; nameStr = "Wieczorna Modlitwa"; }
+                    else { timeStr = "21:30"; nameStr = "Walka Duchowa"; }
+                } else {
+                    // Night program profile (22:00 - 05:00)
+                    if (h === 22 || h === 23) { timeStr = "22:30"; nameStr = "Słowo na Noc"; }
+                    else if (h === 0 || (h === 1 && now.getMinutes() < 30)) { timeStr = "00:00"; nameStr = "Nocne Czuwanie"; }
+                    else { timeStr = "01:30"; nameStr = "Walka Duchowa"; }
+                }
+
+                schedTime.textContent = timeStr;
+                schedName.textContent = nameStr;
+            })();
+
+            // Configuration & State
+            const todayDateStr = new Date().toISOString().split('T')[0];
+            if (safeStorage.getItem("dzj_stream_saved_date") !== todayDateStr) {
+                safeStorage.removeItem("dzj_stream_day");
+                safeStorage.setItem("dzj_stream_saved_date", todayDateStr);
+            }
+
+            let reflectionsData = [];
+            let currentDayIndex = 0;
+            let activeSlideIndex = 0;
+            let slideInterval = null;
+            let slideDurationMs = 25000;
+            let activeReflectionObj = null;
+            let lastActiveSlotHour = -1;
+            
+            let customImgSrc = "tapeta_modlitwa.gif";
+            let customVideoSrc = ""; 
+
+            // DOM elements
+            const opPanel = document.getElementById("operatorPanel");
+            const panelTriggerBtn = document.getElementById("panelTriggerBtn");
+            const closePanelBtn = document.getElementById("closePanelBtn");
+            const daySelect = document.getElementById("daySelect");
+            const bgImageSelect = document.getElementById("bgImageSelect");
+            const bgVideoSelect = document.getElementById("bgVideoSelect");
+            const slideDurationInput = document.getElementById("slideDuration");
+            const forceReloadBtn = document.getElementById("forceReloadBtn");
+
+            const slidesContainer = document.getElementById("slidesContainer");
+            const slidePagination = document.getElementById("slidePagination");
+
+            const cycleBadge = document.getElementById("cycleBadge");
+            const bgActiveImg = document.getElementById("bg-img-active");
+            const weatherBox = document.getElementById("weatherBox");
+
+                        // Viewport Auto-Scaling Handler
+            function resizeViewport() {
+                const container = document.getElementById("app-container");
+                if (!container) return;
+                const targetW = 1920;
+                const targetH = 1080;
+                
+                const w = window.innerWidth || document.documentElement.clientWidth || 0;
+                const h = window.innerHeight || document.documentElement.clientHeight || 0;
+                
+                // If dimensions are not ready yet, default to a safe scale and top/left 0
+                if (w <= 0 || h <= 0) {
+                    container.style.transform = "scale(0.29)";
+                    container.style.left = "0px";
+                    container.style.top = "0px";
+                    return;
+                }
+                
+                const scaleX = w / targetW;
+                const scaleY = h / targetH;
+                const scale = Math.min(scaleX, scaleY);
+                
+                container.style.transform = "scale(" + scale + ")";
+                
+                // Center the container within window
+                const leftOffset = (w - (targetW * scale)) / 2;
+                const topOffset = (h - (targetH * scale)) / 2;
+                container.style.left = leftOffset + "px";
+                container.style.top = topOffset + "px";
+            }
+            window.addEventListener("resize", resizeViewport);
+            resizeViewport();
+            
+            // Re-run resizing after full load and multiple intervals to capture iframe layout stabilization
+            window.addEventListener("load", resizeViewport);
+            setTimeout(resizeViewport, 100);
+            setTimeout(resizeViewport, 500);
+            setTimeout(resizeViewport, 1500);
+
+            // panelTriggerBtn.addEventListener("click", () => opPanel.classList.add("visible"));
+            closePanelBtn.addEventListener("click", () => opPanel.classList.remove("visible"));
+
+            let loadedDate = new Date().getDate();
+
+            // Live Clock updates
+            function updateClock() {
+                const now = new Date();
+                
+                // Auto-advance reflection at 00:00 (Midnight Crossing)
+                const currentDay = now.getDate();
+                if (currentDay !== loadedDate) {
+                    loadedDate = currentDay;
+                    
+                    // If a manual day selection is active in safeStorage, increment it by 1
+                    if (safeStorage.getItem("dzj_stream_day")) {
+                        let nextDay = (parseInt(safeStorage.getItem("dzj_stream_day"), 10) + 1) % reflectionsData.length;
+                        safeStorage.setItem("dzj_stream_day", nextDay);
+                        currentDayIndex = nextDay;
+                        if (daySelect) daySelect.value = nextDay;
+                    }
+                    
+                    // Reload matched index (either updated manual day or today's matching date)
+                    let matchedIdx = currentDayIndex;
+                    if (!safeStorage.getItem("dzj_stream_day")) {
+                        const todayStr = now.toISOString().split('T')[0];
+                        const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
+                        if (foundIdx !== -1) {
+                            matchedIdx = foundIdx;
+                            if (daySelect) daySelect.value = matchedIdx;
+                        }
+                    }
+                    
+                    // Re-render reflection text and adapt layout if timezone changed background requirements
+                    if (reflectionsData[matchedIdx]) {
+                        renderReflection(reflectionsData[matchedIdx]);
+                        applyBodyModeClass();
+                        if (bgActiveImg) {
+                            bgActiveImg.src = getDynamicBackground(customImgSrc);
+                        }
+                    }
+                }
+
+                const hr = String(now.getHours()).padStart(2, '0');
+                const min = String(now.getMinutes()).padStart(2, '0');
+                const sec = String(now.getSeconds()).padStart(2, '0');
+                
+                document.getElementById("timeHour").textContent = hr;
+                document.getElementById("timeMin").textContent = min;
+                document.getElementById("timeSec").textContent = sec;
+
+                const days = ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"];
+                const months = ["Stycznia", "Lutego", "Marca", "Kwietnia", "Maja", "Czerwca", "Lipca", "Sierpnia", "Września", "Października", "Listopada", "Grudnia"];
+                
+                document.getElementById("clockDateLabel").textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
+
+                // Real-time schedule highlights & program names based on hour of day
+                const currentHour = now.getHours();
+                const schedTime = document.getElementById("sched-time");
+                const schedName = document.getElementById("sched-name");
+
+                if (schedTime && schedName) {
+                    let timeStr = "--:--";
+                    let nameStr = "Wczytywanie...";
+
+                    if (currentHour >= 5 && currentHour < 9) {
+                        // Morning program profile (05:00 - 09:00)
+                        if (currentHour < 7) { timeStr = "06:00"; nameStr = "Słowo o Poranku"; }
+                        else if (currentHour === 7) { timeStr = "07:00"; nameStr = "Zadanie Taktyczne"; }
+                        else { timeStr = "08:00"; nameStr = "Bojowa Modlitwa"; }
+                    } else if (currentHour >= 9 && currentHour < 12) {
+                        // Forenoon program profile (09:00 - 12:00)
+                        if (currentHour === 9) { timeStr = "09:30"; nameStr = "Słowo na Przedpołudnie"; }
+                        else if (currentHour === 10 && now.getMinutes() < 30) { timeStr = "09:30"; nameStr = "Słowo na Przedpołudnie"; }
+                        else if ((currentHour === 10 && now.getMinutes() >= 30) || (currentHour === 11 && now.getMinutes() < 30)) { timeStr = "10:30"; nameStr = "Zadanie Taktyczne"; }
+                        else { timeStr = "11:30"; nameStr = "Bojowa Modlitwa"; }
+                    } else if (currentHour >= 12 && currentHour < 18) {
+                        // Afternoon program profile (12:00 - 18:00)
+                        if (currentHour < 15) { timeStr = "13:30"; nameStr = "Słowo na Popołudnie"; }
+                        else if (currentHour === 15 || (currentHour === 16 && now.getMinutes() < 30)) { timeStr = "15:00"; nameStr = "Modlitwa o Przebudzenie"; }
+                        else { timeStr = "16:30"; nameStr = "Zadanie Taktyczne"; }
+                    } else if (currentHour >= 18 && currentHour < 22) {
+                        // Evening program profile (18:00 - 22:00)
+                        if (currentHour < 20 || (currentHour === 20 && now.getMinutes() < 30)) { timeStr = "19:30"; nameStr = "Słowo na Wieczór"; }
+                        else if ((currentHour === 20 && now.getMinutes() >= 30) || (currentHour === 21 && now.getMinutes() < 30)) { timeStr = "20:30"; nameStr = "Wieczorna Modlitwa"; }
+                        else { timeStr = "21:30"; nameStr = "Walka Duchowa"; }
+                    } else {
+                        // Night program profile (22:00 - 05:00)
+                        if (currentHour === 22 || currentHour === 23) { timeStr = "22:30"; nameStr = "Słowo na Noc"; }
+                        else if (currentHour === 0 || (currentHour === 1 && now.getMinutes() < 30)) { timeStr = "00:00"; nameStr = "Nocne Czuwanie"; }
+                        else { timeStr = "01:30"; nameStr = "Walka Duchowa"; }
+                    }
+
+                    schedTime.textContent = timeStr;
+                    schedName.textContent = nameStr;
+                }
+
+                // Dynamic Edition Label Updates
+                const tickerEdition = document.getElementById("tickerEditionLabel");
+                if (tickerEdition) {
+                    tickerEdition.textContent = "WYDANIE SPECJALNE";
+                }
+
+                // Real-time hour slot transition check to adapt reflection text and update backgrounds in real-time
+                let currentSlot = 0; 
+                if (currentHour >= 5 && currentHour < 9) currentSlot = 0;
+                else if (currentHour >= 9 && currentHour < 12) currentSlot = 1;
+                else if (currentHour >= 12 && currentHour < 18) currentSlot = 2;
+                else if (currentHour >= 18 && currentHour < 22) currentSlot = 3;
+                else currentSlot = 4;
+
+                if (lastActiveSlotHour !== currentSlot) {
+                    lastActiveSlotHour = currentSlot;
+                    if (activeReflectionObj) {
+                        renderReflection(activeReflectionObj);
+                    }
+                    if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg") {
+                        initBackground();
+                    }
+                }
+
+                // Real-time dynamic background check (swaps backgrounds in the slideshow, etc.)
+                if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg") {
+                    const currentBg = getDynamicBackground("breakfast_presenters.jpg");
+                    const currentSrcFilename = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
+                    if (currentSrcFilename !== currentBg) {
+                        bgActiveImg.src = currentBg;
+                    }
+                }
+            }
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            // Cyclical schedule widget show/hide loop (35s visible, 55s hidden)
+            function runScheduleWidgetLoop() {
+                const schedWidget = document.getElementById("scheduleWidget");
+                if (!schedWidget) return;
+                
+                setTimeout(() => {
+                    // Slide out to left and fade out
+                    schedWidget.style.opacity = "0";
+                    schedWidget.style.transform = "translateX(-50px)";
+                    
+                    setTimeout(() => {
+                        // Slide back in and fade in
+                        schedWidget.style.opacity = "1";
+                        schedWidget.style.transform = "translateX(0)";
+                        
+                        runScheduleWidgetLoop(); // Loop infinitely
+                    }, 55000); // Stay hidden for 55s
+                }, 35000); // Stay visible for 35s
+            }
+            runScheduleWidgetLoop();
+
+            // Cyclical clock widget show/hide loop (45s visible, 45s hidden)
+            function runClockWidgetLoop() {
+                const clockWidget = document.getElementById("cardClockWidget");
+                if (!clockWidget) return;
+                
+                setTimeout(() => {
+                    // Slide up and fade out
+                    clockWidget.style.opacity = "0";
+                    clockWidget.style.transform = "translateY(-20px)";
+                    
+                    setTimeout(() => {
+                        // Slide back down and fade in
+                        clockWidget.style.opacity = "1";
+                        clockWidget.style.transform = "translateY(0)";
+                        
+                        runClockWidgetLoop(); // Loop infinitely
+                    }, 45000); // Stay hidden for 45s
+                }, 45000); // Stay visible for 45s
+            }
+            runClockWidgetLoop();
+
+            // Helper to get dynamic background based on time of day and calendar date
+            function getDynamicBackground(imagePath) {
+                const now = new Date();
+                const hour = now.getHours();
+                
+                if (imagePath === "breakfast_presenters.jpg") {
+                    if (hour >= 18 || hour < 5) {
+                        // Evening and Night background (18:00 - 05:00)
+                        return "breakfast_presenters_evening.jpg";
+                    } else if (hour >= 9 && hour < 12) {
+                        // Forenoon / Late Morning background (09:00 - 12:00)
+                        // Rotate between the two backgrounds every 90 seconds (based on timestamp)
+                        const slideIndex = Math.floor(now.getTime() / 90000) % 2;
+                        return slideIndex === 0 ? "breakfast_presenters_forenoon.jpg" : "breakfast_presenters_forenoon_2.jpg";
+                    } else if (hour >= 5 && hour < 9) {
+                        // Morning Program background (05:00 - 09:00)
+                        // Rotate between the two new morning backgrounds every 90 seconds
+                        const slideIndex = Math.floor(now.getTime() / 90000) % 2;
+                        return slideIndex === 0 ? "breakfast_presenters_morning_1.png" : "breakfast_presenters_morning_2.jpg";
+                    } else {
+                        // Afternoon presenters background (12:00 - 18:00) (alternating daily)
+                        const isEvenDay = (now.getDate() % 2 === 0);
+                        return isEvenDay ? "breakfast_presenters_alt.jpg" : "breakfast_presenters.jpg";
+                    }
+                }
+                return imagePath;
+            }
+
+            // Real-time weather data cache and city coordinates
+            let realWeatherData = {};
+            const cityCoords = {
+                "WARSZAWA": { lat: 52.2297, lon: 21.0122 },
+                "KRAKÓW": { lat: 50.0647, lon: 19.9450 },
+                "OSTROWIEC ŚW.": { lat: 50.9275, lon: 21.3853 },
+                "GDAŃSK": { lat: 54.3520, lon: 18.6466 },
+                "STALOWA WOLA": { lat: 50.5698, lon: 22.0537 },
+                "WROCŁAW": { lat: 51.1079, lon: 17.0385 },
+                "POZNAŃ": { lat: 52.4064, lon: 16.9252 }
+            };
+
+            function getWeatherIcon(code, isDay) {
+                // Open-Meteo WMO weather interpretation codes
+                if (code === 0) return isDay ? "☀️" : "🌙"; // Clear
+                if (code >= 1 && code <= 3) return isDay ? "🌤️" : "☁️"; // Clouds
+                if (code >= 45 && code <= 48) return "🌫️"; // Fog
+                if (code >= 51 && code <= 67) return "🌧️"; // Rain/Drizzle
+                if (code >= 71 && code <= 77) return "❄️"; // Snow
+                if (code >= 80 && code <= 82) return "🌧️"; // Showers
+                if (code >= 95 && code <= 99) return "⛈️"; // Thunderstorm
+                return isDay ? "☀️" : "🌙";
+            }
+
+            function getWeatherDesc(code) {
+                if (code === 0) return "Słonecznie";
+                if (code === 1 || code === 2) return "Lekkie Zachmurzenie";
+                if (code === 3) return "Zachmurzenie";
+                if (code >= 45 && code <= 48) return "Mglisto";
+                if (code >= 51 && code <= 55) return "Mżawka";
+                if (code >= 61 && code <= 65) return "Opady Deszczu";
+                if (code >= 80 && code <= 82) return "Przelotne Opady";
+                if (code >= 95) return "Burza";
+                return "Ładna Pogoda";
+            }
+
+            async function fetchRealWeather() {
+                for (const [city, coords] of Object.entries(cityCoords)) {
+                    try {
+                        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=temperature_2m,is_day,weather_code`);
+                        const data = await res.json();
+                        if (data && data.current) {
+                            const temp = Math.round(data.current.temperature_2m);
+                            const icon = getWeatherIcon(data.current.weather_code, data.current.is_day);
+                            const desc = getWeatherDesc(data.current.weather_code);
+                            realWeatherData[city] = `${icon} ${temp}°C / ${desc}`;
+                        }
+                    } catch (err) {
+                        console.error(`Error fetching weather for ${city}:`, err);
+                    }
+                }
+                updateWeatherDisplay(); // Immediately render real weather after API fetch completes
+            }
+
+            // Helper to get dynamic weather description and temperature based on time of day (fallback or real)
+            function getDynamicWeatherForCity(city) {
+                if (realWeatherData && realWeatherData[city]) {
+                    return realWeatherData[city];
+                }
+
+                const hour = new Date().getHours();
+                if (hour >= 5 && hour < 18) {
+                    // Daytime weather presets
+                    const dayPresets = {
+                        "WARSZAWA": "☀️ 25°C / Słonecznie",
+                        "KRAKÓW": "🌤️ 26°C / Ciepły Wiatr",
+                        "OSTROWIEC ŚW.": "☀️ 24°C / Słonecznie",
+                        "GDAŃSK": "🌤️ 22°C / Rześka Bryza",
+                        "STALOWA WOLA": "☀️ 25°C / Słoneczny Dzień",
+                        "WROCŁAW": "☀️ 27°C / Bezchmurnie",
+                        "POZNAŃ": "🌤️ 25°C / Ciepło i Czysto"
+                    };
+                    return dayPresets[city] || "☀️ 24°C / Słonecznie";
+                } else if (hour >= 18 && hour < 22) {
+                    // Evening weather presets
+                    const eveningPresets = {
+                        "WARSZAWA": "🌇 20°C / Pogodny Wieczór",
+                        "KRAKÓW": "🌇 21°C / Ciepły Zmierzch",
+                        "OSTROWIEC ŚW.": "☁️ 19°C / Rześki Wieczór",
+                        "GDAŃSK": "🌊 18°C / Rześki Wiatr",
+                        "STALOWA WOLA": "🌇 20°C / Spokojny Wieczór",
+                        "WROCŁAW": "🌇 22°C / Ciepły Zmierzch",
+                        "POZNAŃ": "🌇 20°C / Bezchmurnie"
+                    };
+                    return eveningPresets[city] || "🌇 20°C / Pogodny Wieczór";
+                } else {
+                    // Night weather presets (22:00 - 04:59)
+                    const nightPresets = {
+                        "WARSZAWA": "🌙 16°C / Gwieździsta Noc",
+                        "KRAKÓW": "🌙 17°C / Czyste Niebo",
+                        "OSTROWIEC ŚW.": "🌙 15°C / Chłodna Noc",
+                        "GDAŃSK": "🌙 14°C / Nadmorska Noc",
+                        "STALOWA WOLA": "🌙 15°C / Spokojna Noc",
+                        "WROCŁAW": "🌙 17°C / Ciepła Noc",
+                        "POZNAŃ": "🌙 16°C / Bezchmurnie"
+                    };
+                    return nightPresets[city] || "🌙 15°C / Spokojna Noc";
+                }
+            }
+
+            // Load and build news marquee text dynamically from news.json
+            async function loadNewsMarquee() {
+                const marqueeTextEl = document.getElementById("marqueeText");
+                if (!marqueeTextEl) return;
+                
+                let prayerMarqueeText = "";
+                if (window.lastPrayerIntention) {
+                    prayerMarqueeText = `<span style="background: #dc143c; color: #ffffff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-family: 'Outfit', sans-serif; margin-right: 12px; display: inline-block;"><i class="fa-solid fa-hands-praying"></i> PRAYER INTENTION</span> <span style="color: #ff4d6d; font-weight: 700; font-style: italic; margin-right: 25px;">“${window.lastPrayerIntention.text}” (~${window.lastPrayerIntention.name}, ${window.lastPrayerIntention.city})</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
+                }
+                
+                const greetingsText = `<span class="ticker-announcement">COMING UP: VIEWERS CORNER 📺</span> <span class="ticker-highlight-msg">💬 Warm greetings to Kate, Sophie, Paul, Robert and Bart :) may God bless you all! ~Charles &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 💬 Praying for the church fellowship and seeking spiritual revival in our families ~Katherine</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
+
+                const defaultMissionText = `
+                    ${prayerMarqueeText}
+                    ${greetingsText}
+                    <span style="background: #FFCC00; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">WWW.POLSKIERADIO.CC | CCLITE.PL</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    📧 EMAIL US: <strong>polskiercctv@gmail.com</strong> | <strong>radiochristianculture@gmail.com</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    📖 FREE BIBLE FOR EVERYONE — send SMS: <strong>BIBLE</strong> to <strong>+48 530 736 155</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    📱 JOIN ON WHATSAPP — details in the side panel &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    💳 SUPPORT THE MISSION — Patronite: patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    🙏 Thank you for your support and prayers! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    ${greetingsText}
+                `;
+                
+                try {
+                    const res = await fetch("news.json?t=" + new Date().getTime());
+                    const headlines = await res.json();
+                    if (headlines && headlines.length > 0) {
+                        const newsMarqueeBlock = headlines.map(h => `⚡ ${h}`).join(" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ");
+                        // Display core mission text first, then follow with world news, then output news source attribution
+                        marqueeTextEl.innerHTML = `
+                            ${defaultMissionText}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span style="background: #FF9900; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">WIADOMOŚCI POLSKA I ŚWIAT</span> 
+                            ${newsMarqueeBlock}
+                            &nbsp;&nbsp;&nbsp;&nbsp; <span style="color: var(--breakfast-accent); font-weight: 800;">(Źródło: WP Wiadomości)</span>
+                        `;
+                    } else {
+                        marqueeTextEl.innerHTML = defaultMissionText;
+                    }
+                } catch (err) {
+                    console.warn("Could not load news.json, using default mission marquee:", err);
+                    marqueeTextEl.innerHTML = defaultMissionText;
+                }
+            }
+            window.loadNewsMarquee = loadNewsMarquee;
+
+            // Loop to show/hide the large QR code sidecar panel next to weather/CTA widgets
+            function runQrSidecarLoop() {
+                const qrSidecar = document.getElementById("qrSidecar");
+                if (!qrSidecar) return;
+
+                function showSidecar() {
+                    qrSidecar.classList.add("active");
+                    // Stay visible for 25 seconds, then hide
+                    setTimeout(hideSidecar, 25000);
+                }
+
+                function hideSidecar() {
+                    qrSidecar.classList.remove("active");
+                    // Stay hidden for 65 seconds, then show again
+                    setTimeout(showSidecar, 65000);
+                }
+
+                // Initial trigger: stays hidden for 45 seconds on start, then appears
+                setTimeout(showSidecar, 45000);
+            }
+
+            // Weather forecast city rotation simulation
+            const weatherCitiesList = ["WARSZAWA", "KRAKÓW", "OSTROWIEC ŚW.", "GDAŃSK", "STALOWA WOLA", "WROCŁAW", "POZNAŃ"];
+            let cityIdx = 0;
+
+            function updateWeatherDisplay() {
+                const cityName = weatherCitiesList[cityIdx];
+                const weatherBox = document.getElementById("weatherBox");
+                const weatherIcon = document.querySelector(".weather-icon");
+                if (weatherBox) {
+                    const desc = getDynamicWeatherForCity(cityName);
+                    weatherBox.innerHTML = `
+                        <span class="weather-city">${cityName}</span>
+                        <span class="weather-temp-desc">${desc}</span>
+                    `;
+                    
+                    if (weatherIcon) {
+                        weatherIcon.className = "fa-solid weather-icon"; // Reset
+                        if (desc.includes("☀️")) {
+                            weatherIcon.classList.add("fa-sun");
+                        } else if (desc.includes("🌤️") || desc.includes("☁️")) {
+                            weatherIcon.classList.add("fa-cloud-sun");
+                        } else if (desc.includes("🌇") || desc.includes("🌊")) {
+                            weatherIcon.classList.add("fa-mountain-sun");
+                        } else if (desc.includes("🌙")) {
+                            weatherIcon.classList.add("fa-moon");
+                        } else {
+                            weatherIcon.classList.add("fa-cloud");
+                        }
+                    }
+                }
+            }
+            updateWeatherDisplay(); // Initial load run
+
+            setInterval(() => {
+                const weatherBox = document.getElementById("weatherBox");
+                if (weatherBox) {
+                    weatherBox.style.opacity = "0";
+                    weatherBox.style.transform = "translateY(-10px)";
+                    weatherBox.style.transition = "all 0.5s ease";
+
+                    setTimeout(() => {
+                        cityIdx = (cityIdx + 1) % weatherCitiesList.length;
+                        updateWeatherDisplay();
+                        weatherBox.style.opacity = "1";
+                        weatherBox.style.transform = "translateY(0)";
+                    }, 500);
+                }
+            }, 8000);
+
+            // Load saved settings
+            if (safeStorage.getItem("dzj_stream_day")) {
+                currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
+            }
+            if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg") {
+                safeStorage.setItem("dzj_stream_image", "tapeta_modlitwa.gif");
+            }
+            if (safeStorage.getItem("dzj_stream_image")) {
+                customImgSrc = safeStorage.getItem("dzj_stream_image");
+                bgImageSelect.value = customImgSrc;
+                bgActiveImg.src = getDynamicBackground(customImgSrc);
+            } else {
+                bgActiveImg.src = getDynamicBackground(customImgSrc);
+            }
+            if (safeStorage.getItem("dzj_stream_video")) {
+                customVideoSrc = safeStorage.getItem("dzj_stream_video");
+                bgVideoSelect.value = customVideoSrc;
+            }
+            if (safeStorage.getItem("dzj_stream_duration")) {
+                slideDurationMs = parseInt(safeStorage.getItem("dzj_stream_duration"), 10) * 1000;
+                slideDurationInput.value = slideDurationMs / 1000;
+            }
+
+            // Apply body styling mode class based on selected background
+            function applyBodyModeClass() {
+                document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout", "special-event-today");
+                
+                const currentBg = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
+                
+                // 1. Special Event Layouts
+                if (currentBg.includes("zjednoczeni_za_polske_banner") || customImgSrc.includes("zjednoczeni_za_polske_banner")) {
+                    document.body.classList.add("special-event-today", "evening-layout", "mode-presenters");
+                    return;
+                }
+                
+                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa")) {
+                    document.body.classList.add("special-event-today", "mode-presenters");
+                    return;
+                }
+                
+                // 2. Standard Presenters auto-rotation layout
+                if (currentBg.includes("presenters") || customImgSrc.includes("presenters") || currentBg.includes("a0kKB")) {
+                    document.body.classList.add("mode-presenters");
+                    
+                    // evening presenters mockup places presenter Sara/Noemi on the right, so cards must go left.
+                    // daytime presenters are on the left, so cards must go right.
+                    if (currentBg.includes("evening") || customImgSrc.includes("evening")) {
+                        document.body.classList.add("evening-layout");
+                    }
+                } else {
+                    // Studio backgrounds
+                    document.body.classList.add("mode-studio");
+                    
+                    const hour = new Date().getHours();
+                    const isEveningOrNight = (hour >= 18 || hour < 5);
+                    if (isEveningOrNight) {
+                        document.body.classList.add("evening-layout");
+                    }
+                }
+            }
+            applyBodyModeClass();
+
+            // Save Operator config
+            forceReloadBtn.addEventListener("click", () => {
+                safeStorage.setItem("dzj_stream_day", daySelect.value);
+                safeStorage.setItem("dzj_stream_image", bgImageSelect.value);
+                safeStorage.setItem("dzj_stream_video", bgVideoSelect.value);
+                safeStorage.setItem("dzj_stream_duration", slideDurationInput.value);
+
+                window.location.reload();
+            });
+
+            // Video Engine
+            const v1 = document.getElementById("bg-video-1");
+            const v2 = document.getElementById("bg-video-2");
+            let activeVideo = v1;
+            let inactiveVideo = v2;
+            let isVideoTransitioning = false;
+
+            function checkVideoProgress() {
+                if (this !== activeVideo) return;
+                const remaining = this.duration - this.currentTime;
+                if (remaining <= 2.0 && !isVideoTransitioning && this.duration > 0) {
+                    isVideoTransitioning = true;
+                    inactiveVideo.currentTime = 0;
+                    inactiveVideo.play().then(() => {
+                        activeVideo.style.opacity = 0;
+                        inactiveVideo.style.opacity = 1;
+                        setTimeout(() => {
+                            activeVideo.pause();
+                            const temp = activeVideo;
+                            activeVideo = inactiveVideo;
+                            inactiveVideo = temp;
+                            isVideoTransitioning = false;
+                        }, 1500);
+                    }).catch(e => {
+                        console.warn(e);
+                        isVideoTransitioning = false;
+                    });
+                }
+            }
+
+            // Background Init
+            function initBackground() {
+                if (customImgSrc === "zjednoczeni_za_polske_banner.jpg" || customImgSrc === "tapeta_modlitwa.gif") {
+                    bgActiveImg.src = customImgSrc;
+                    bgActiveImg.style.opacity = 1;
+                    applyBodyModeClass();
+                    return;
+                }
+                
+                if (!customVideoSrc) {
+                    bgActiveImg.src = getDynamicBackground(customImgSrc);
+                    bgActiveImg.style.opacity = 1;
+                    applyBodyModeClass();
+                    return;
+                }
+
+                const isLocal = window.location.protocol === "file:";
+                if (isLocal) {
+                    v1.src = customVideoSrc;
+                    v2.src = customVideoSrc;
+                    v1.load();
+                    v2.load();
+
+                    let videoTimeout = setTimeout(() => {
+                        console.warn("Video timed out. Using static layout background.");
+                        bgActiveImg.style.opacity = 1;
+                        applyBodyModeClass();
+                    }, 4000);
+
+                    v1.addEventListener("canplaythrough", () => {
+                        clearTimeout(videoTimeout);
+                        bgActiveImg.style.opacity = 0;
+                        activeVideo.style.opacity = 1;
+                        activeVideo.play().catch(e => console.warn(e));
+                        v1.addEventListener("timeupdate", checkVideoProgress);
+                        v2.addEventListener("timeupdate", checkVideoProgress);
+                        applyBodyModeClass();
+                    }, { once: true });
+
+                    v1.addEventListener("error", () => {
+                        clearTimeout(videoTimeout);
+                        bgActiveImg.style.opacity = 1;
+                        applyBodyModeClass();
+                    }, { once: true });
+                } else {
+                    bgActiveImg.style.opacity = 1;
+                    applyBodyModeClass();
+                }
+            }
+
+            // Compiler of raw reflection string to slide objects
+            function buildSlides(reflection) {
+                if (!reflection) return null;
+
+                let cycleTitle = "MISJA BOŻE WAKACJE";
+                
+                const dayNumMatch = reflection.id.match(/ref_day(\d+)/);
+                const dayNum = dayNumMatch ? dayNumMatch[1] : (reflectionsData.indexOf(reflection) + 1);
+                
+                // Format the Sunday agenda widget dynamically
+                const agendaActive = document.getElementById("sched-name");
+                if (agendaActive) {
+                    agendaActive.textContent = reflection.title;
+                    agendaActive.dataset.customized = "true";
+                }
+                cycleBadge.textContent = `Dzień ${dayNum} | ${cycleTitle}`;
+
+                const text = reflection.fullText;
+
+                
+                function cleanMarkdown(str) {
+                    return str
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                        .trim();
+                }
+
+                // Check if text is a dialogue script
+                const isDialogue = text.includes("**Noemi") || text.includes("**Sara");
+
+                if (isDialogue) {
+                    const slides = [];
+                    const messages = [];
+                    
+                    // Split dialogue script into individual lines instead of ### slides
+                    const rawLines = text.split("\n").map(s => s.trim()).filter(s => s.length > 0);
+                    
+                    let currentSender = "";
+                    let currentMsgText = "";
+
+                    function commitMessage() {
+                        if (currentSender && currentMsgText.trim()) {
+                            messages.push({
+                                sender: currentSender,
+                                text: cleanMarkdown(currentMsgText.trim())
+                            });
+                            currentMsgText = "";
+                        }
+                    }
+
+                    rawLines.forEach(line => {
+                        // Transform section tags into visual cues (Skip displaying to viewers)
+                        if (line.startsWith("###")) {
+                            commitMessage();
+                            return;
+                        }
+
+                        // Production notes (Skip displaying to viewers)
+                        if (line.startsWith("[") && line.endsWith("]")) {
+                            commitMessage();
+                            return;
+                        }
+
+                        // Scripture citations
+                        if (line.startsWith(">")) {
+                            commitMessage();
+                            const citation = line.replace(/^>\s*/, "").trim();
+                            messages.push({
+                                sender: "PISMO ŚWIĘTE",
+                                text: `<div class="bible-citation">${cleanMarkdown(citation)}</div>`
+                            });
+                            return;
+                        }
+
+                        // Dialogue lines
+                        const speakerMatch = line.match(/^\*\*(Noemi|Sara|Głos Prowadzących|Noemi i Sara)\s*(\(.*?\))?\s*(?::\*\*|\*\*:)\s*(.*)/i);
+                        if (speakerMatch) {
+                            commitMessage();
+                            currentSender = speakerMatch[1].trim();
+                            currentMsgText = speakerMatch[3].trim();
+                        } else {
+                            if (currentSender) {
+                                currentMsgText += "\n" + line;
+                            }
+                        }
+                    });
+                    commitMessage();
+
+                    // Generate a single giant slide that loops
+                    slides.push({
+                        type: "chat",
+                        tag: "PROGRAM EMISYJNY TV",
+                        title: reflection.title,
+                        messages: messages,
+                        l3Title: reflection.title,
+                        l3Desc: "TELEWIZJA ŚNIADANIOWA"
+                    });
+
+                    return slides;
+                } else {
+                    // Fallback to standard paragraph slides
+                    const slides = [];
+                    const rawParagraphs = text.split("\n").map(p => p.trim()).filter(p => p.length > 0);
+                    
+                    let introText = [];
+                    let bibleQuote = "";
+                    let zadanieText = "";
+                    let modlitwaText = "";
+                    let blogoslawienstwoText = "";
+
+                    let captureState = "intro";
+
+                    rawParagraphs.forEach(para => {
+                        const cleanPara = para.toLowerCase();
+                        if (cleanPara.startsWith("jezus mówi dziś") || cleanPara.startsWith("jezus mowila") || cleanPara.includes("jezus mówi")) {
+                            captureState = "bible";
+                            return;
+                        }
+                        if (cleanPara.startsWith("zadanie taktyczne:") || cleanPara.startsWith("zadanie:")) {
+                            captureState = "zadanie";
+                            return;
+                        }
+                        if (cleanPara.startsWith("modlitwa bojowa:") || cleanPara.startsWith("modlitwa:")) {
+                            captureState = "modlitwa";
+                            return;
+                        }
+                        if (cleanPara.startsWith("błogosławieństwo:") || cleanPara.startsWith("blogoslawienstwo:")) {
+                            captureState = "blogoslawienstwo";
+                            return;
+                        }
+                        if (cleanPara.includes("dziękuję, że jesteś") || cleanPara.startsWith("baza i wzrost") || cleanPara.startsWith("sms:") || cleanPara.startsWith("apps:") || cleanPara.includes("podaj dalej")) {
+                            return;
+                        }
+
+                        if (captureState === "intro") {
+                            introText.push(para);
+                        } else if (captureState === "bible") {
+                            bibleQuote += para + " ";
+                        } else if (captureState === "zadanie") {
+                            zadanieText += para + " ";
+                        } else if (captureState === "modlitwa") {
+                            modlitwaText += para + " ";
+                        } else if (captureState === "blogoslawienstwo") {
+                            blogoslawienstwoText += para + " ";
+                        }
+                    });
+
+                    function cleanTeaserText(str) {
+                        if (!str) return "";
+                        return str.replace(/Dzień\s+(\d+)\s*-\s*\*?\*?Dzień\s+\1\s*-\s*\*?\*?/gi, "Dzień $1 - ");
+                    }
+
+                    // Slide 1: Welcome & Teaser
+                    slides.push({
+                        type: "content",
+                        tag: "Dzień dzisiejszy",
+                        title: reflection.title,
+                        text: cleanMarkdown(cleanTeaserText(reflection.teaser)),
+                        l3Title: "ROZWAŻANIE DNIA",
+                        l3Desc: reflection.title
+                    });
+
+                    // Slide 2+: Intro paragraphs
+                    for (let i = 0; i < introText.length; i += 2) {
+                        const chunk = introText.slice(i, i + 2).join("<br><br>");
+                        slides.push({
+                            type: "content",
+                            tag: "Słowo Wprowadzenia",
+                            title: "Duchowy Horyzont",
+                            text: cleanMarkdown(chunk),
+                            l3Title: "GŁÓWNE ROZWAŻANIE",
+                            l3Desc: reflection.title
+                        });
+                    }
+
+                    // Slide Quote
+                    if (bibleQuote) {
+                        slides.push({
+                            type: "content",
+                            tag: "Słowo Pana",
+                            title: "Jezus mówi do Ciebie",
+                            text: `<div class="bible-citation">${cleanMarkdown(bibleQuote)}</div>`,
+                            l3Title: "SŁOWO Z PISMA ŚWIĘTEGO",
+                            l3Desc: (new Date().getHours() < 12 ? "Ewangelia Poranka" : (new Date().getHours() < 18 ? "Ewangelia na Popołudnie" : "Ewangelia na Wieczór"))
+                        });
+                    }
+
+                    // Slide Zadanie Taktyczne
+                    if (zadanieText) {
+                        slides.push({
+                            type: "content",
+                            tag: "Zadanie Taktyczne",
+                            title: "Praktyka i Czyn",
+                            text: `<strong>Wytyczne do działania na dzisiaj:</strong><br>${cleanMarkdown(zadanieText)}`,
+                            l3Title: "MISJA PORANKA",
+                            l3Desc: "Czas wdrożyć wiarę w konkretne czyny"
+                        });
+                    }
+
+                    // Slide Modlitwa / Błogosławieństwo
+                    const finalTexts = [];
+                    if (modlitwaText) finalTexts.push(`<strong>Modlitwa:</strong> ${cleanMarkdown(modlitwaText)}`);
+                    if (blogoslawienstwoText) finalTexts.push(`<strong>Błogosławieństwo:</strong> ${cleanMarkdown(blogoslawienstwoText)}`);
+
+                    if (finalTexts.length > 0) {
+                        slides.push({
+                            type: "content",
+                            tag: "Zabezpieczenie Dnia",
+                            title: "Oręż Modlitewny",
+                            text: finalTexts.join("<br><br>"),
+                            l3Title: "MODLITWA & BŁOGOSŁAWIEŃSTWO",
+                            l3Desc: "Podsumowanie programu"
+                        });
+                    }
+
+                    return slides;
+                }
+            }
+
+            // Prompter Scrolling System
+            let autoScrollTimeout = null;
+            let autoScrollAnimationFrame = null;
+
+            function scrollPrompter(container) {
+                if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
+                if (autoScrollAnimationFrame) cancelAnimationFrame(autoScrollAnimationFrame);
+
+                container.scrollTop = 0;
+
+                // Wait 4 seconds at the top before starting
+                autoScrollTimeout = setTimeout(() => {
+                    const scrollHeight = container.scrollHeight;
+                    const clientHeight = container.clientHeight;
+                    const maxScroll = scrollHeight - clientHeight;
+                    if (maxScroll <= 0) return;
+
+                    // Steady teleprompter speed: ~25 pixels per second
+                    const speed = 25; 
+                    const duration = (maxScroll / speed) * 1000;
+                    const startTime = performance.now();
+
+                    function prompterStep(timestamp) {
+                        const elapsed = timestamp - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        
+                        container.scrollTop = maxScroll * progress;
+
+                        if (progress < 1) {
+                            autoScrollAnimationFrame = requestAnimationFrame(prompterStep);
+                        } else {
+                            // Reached the bottom! Pause for 6 seconds, then loop back to top
+                            autoScrollTimeout = setTimeout(() => {
+                                scrollPrompter(container);
+                            }, 6000);
+                        }
+                    }
+                    autoScrollAnimationFrame = requestAnimationFrame(prompterStep);
+                }, 4000);
+            }
+
+            function adaptTextToTimeOfDay(text) {
+                const hour = new Date().getHours();
+                let slotText = "w porannym paśmie";
+                let greetingText = "Dzień dobry";
+
+                if (hour >= 12 && hour < 18) {
+                    slotText = "w popołudniowym paśmie";
+                    greetingText = "Dzień dobry";
+                } else if (hour >= 18 && hour < 22) {
+                    slotText = "w wieczornym paśmie";
+                    greetingText = "Dobry wieczór";
+                } else if (hour >= 22 || hour < 5) {
+                    slotText = "w nocnym paśmie";
+                    greetingText = "Dobry wieczór";
+                }
+
+                return text
+                    .replace(/w porannym paśmie|w popołudniowym paśmie|w wieczornym paśmie|w nocnym paśmie/gi, slotText)
+                    .replace(/Dzień dobry|Dobry wieczór|Dobrej nocy/gi, greetingText);
+            }
+
+            // Render reflections into slides
+            function renderReflection(reflection) {
+                activeReflectionObj = reflection;
+                const structuredSlides = buildSlides(reflection);
+                if (!structuredSlides || structuredSlides.length === 0) return;
+
+                slidesContainer.innerHTML = "";
+                slidePagination.innerHTML = "";
+
+                structuredSlides.forEach((slideData, idx) => {
+                    const slideEl = document.createElement("div");
+                    slideEl.className = `canvas-slide ${idx === 0 ? 'active' : ''}`;
+                    
+                    if (slideData.type === "chat") {
+                        let chatHTML = `
+                            <div class="slide-tag"><i class="fa-solid fa-comments"></i> <span>${slideData.tag}</span></div>
+                            <div class="slide-title" style="font-size: 1.90rem; margin-bottom: 12px; font-family: 'Cinzel', serif;">${slideData.title}</div>
+                            <div class="chat-container">
+                        `;
+                        slideData.messages.forEach(msg => {
+                            let isNoemi = msg.sender.toLowerCase().includes("noemi");
+                            let isSara = msg.sender.toLowerCase().includes("sara");
+                            let isBoth = msg.sender.toLowerCase().includes("głos") || msg.sender.toLowerCase().includes("razem") || msg.sender.toLowerCase().includes("prowadzących") || msg.sender.toLowerCase().includes("noemi i sara");
+                            let isProduction = msg.sender.toLowerCase().includes("produkcja") || msg.sender.toLowerCase().includes("oprawa");
+                            let isScripture = msg.sender.toLowerCase().includes("pismo") || msg.sender.toLowerCase().includes("święte");
+                            
+                            let avatar = isNoemi ? 'avatar_noemi.jpg' : (isSara ? 'avatar_sara.jpg' : '');
+                            let senderClass = isNoemi ? 'noemi' : (isSara ? 'sara' : (isBoth ? 'both' : (isProduction ? 'production' : (isScripture ? 'both' : ''))));
+                            
+                            // Adapt greeting and slot to time of day
+                            const adaptedText = adaptTextToTimeOfDay(msg.text);
+
+                            chatHTML += `
+                                <div class="chat-bubble-row ${senderClass}">
+                                    ${avatar ? `<img class="chat-avatar" src="${avatar}" alt="${msg.sender}">` : ''}
+                                    <div class="chat-bubble">
+                                        ${(!isProduction && !isScripture) ? `<div class="chat-sender-name">${msg.sender}</div>` : ''}
+                                        <div class="chat-message-text">${adaptedText}</div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        chatHTML += `</div>`;
+                        slideEl.innerHTML = chatHTML;
+                    } else {
+                        slideEl.innerHTML = `
+                            <div class="slide-tag"><i class="fa-solid fa-mug-hot"></i> <span>${slideData.tag}</span></div>
+                            <div class="slide-text-scroll-wrap" style="flex: 1; overflow-y: auto; padding-right: 8px; margin-top: 10px; width: 100%;">
+                                <div class="slide-title" style="margin-bottom: 15px;">${slideData.title}</div>
+                                <div class="slide-text">${adaptTextToTimeOfDay(slideData.text)}</div>
+                            </div>
+                        `;
+                    }
+                    slidesContainer.appendChild(slideEl);
+
+                    const dotEl = document.createElement("div");
+                    dotEl.className = `pagination-dot ${idx === 0 ? 'active' : ''}`;
+                    slidePagination.appendChild(dotEl);
+                });
+
+                activeSlideIndex = 0;
+                if (slideInterval) clearInterval(slideInterval);
+
+                const domSlides = document.querySelectorAll(".canvas-slide");
+                const domDots = document.querySelectorAll(".pagination-dot");
+
+                // Prompter scrolling trigger
+                function triggerSlideScroll(index) {
+                    const activeSlide = domSlides[index];
+                    if (!activeSlide) return;
+                    const scrollContainer = activeSlide.querySelector(".chat-container") || activeSlide.querySelector(".slide-text-scroll-wrap");
+                    if (scrollContainer) {
+                        scrollPrompter(scrollContainer);
+                    }
+                }
+
+                // Initial scroll execution
+                triggerSlideScroll(0);
+
+                // Slide rotation only runs if there are multiple slides (standard text reflections)
+                if (domSlides.length > 1) {
+                    slideInterval = setInterval(() => {
+                        const bumper = document.getElementById("tvBumperOverlay");
+                        const activeBg = document.getElementById("bg-img-active");
+                        const bgVid1 = document.getElementById("bg-video-1");
+                        const bgVid2 = document.getElementById("bg-video-2");
+
+                        // 1. Trigger full-screen bumper and blur background presenters
+                        if (bumper) bumper.classList.add("active");
+                        if (activeBg) activeBg.classList.add("blurred");
+                        if (bgVid1) bgVid1.classList.add("blurred");
+                        if (bgVid2) bgVid2.classList.add("blurred");
+
+                        // 2. Swap the slide content at 800ms (completely covered)
+                        setTimeout(() => {
+                            domSlides[activeSlideIndex].classList.remove("active");
+                            domDots[activeSlideIndex].classList.remove("active");
+
+                            activeSlideIndex = (activeSlideIndex + 1) % domSlides.length;
+
+                            domSlides[activeSlideIndex].classList.add("active");
+                            domDots[activeSlideIndex].classList.add("active");
+
+                            triggerSlideScroll(activeSlideIndex);
+                        }, 800);
+
+                        // 3. Fade out bumper at 1800ms
+                        setTimeout(() => {
+                            if (bumper) bumper.classList.remove("active");
+                        }, 1800);
+
+                        // 4. Fully remove background blur at 2500ms
+                        setTimeout(() => {
+                            if (activeBg) activeBg.classList.remove("blurred");
+                            if (bgVid1) bgVid1.classList.remove("blurred");
+                            if (bgVid2) bgVid2.classList.remove("blurred");
+                        }, 2500);
+                    }, slideDurationMs);
+                }
+            }
+
+            // Dynamic CTA Rotation System
+            function initCtaRotation() {
+                const slides = document.querySelectorAll(".cta-slide");
+                const iconEl = document.getElementById("ctaIcon");
+                if (slides.length === 0) return;
+                
+                const icons = [
+                    "fa-envelope-open-text",
+                    "fa-envelope-open-text",
+                    "fa-envelope-open-text",
+                    "fa-thumbs-up",
+                    "fa-comment",
+                    "fa-share-nodes",
+                    "fa-bell",
+                    "fa-bag-shopping",
+                    "fa-youtube",
+                    "fa-comment-sms",
+                    "fa-comment-sms",
+                    "fa-comments",
+                    "fa-quote-left",
+                    "fa-calendar-check"
+                ];
+                
+                let currentIdx = 0;
+                
+                setInterval(() => {
+                    // Remove active class from current slide
+                    slides[currentIdx].classList.remove("active");
+                    
+                    // Move to next slide
+                    currentIdx = (currentIdx + 1) % slides.length;
+                    
+                    // Rotate and change icon with a quick scale animation
+                    if (iconEl) {
+                        iconEl.style.transform = "scale(0) rotate(-45deg)";
+                        setTimeout(() => {
+                            iconEl.className = `fa-solid ${icons[currentIdx]} cta-icon-inner`;
+                            iconEl.style.transform = "scale(1) rotate(0deg)";
+                        }, 300);
+                    }
+                    // Add active class to new slide
+                    slides[currentIdx].classList.add("active");
+                }, 12000); // Rotate every 12 seconds
+            }
+            initCtaRotation();
+
+            // Features 4 & 6: International Calendar Day & Studio Atmospheric Lighting Day-Sync
+            // Zoom Ad Override Cycle Logic
+            function initZoomAdCycle() {
+                const zoomAdOverlay = document.getElementById("zoomAdOverlay");
+                const standardWidgets = document.querySelectorAll(".left-panel-standard-widget");
+                const zoomPosterImg = document.querySelector(".zoom-poster");
+                
+                if (!zoomAdOverlay || standardWidgets.length === 0 || !zoomPosterImg) return;
+
+                const posters = ["Modlitwa_za_Polske.jpeg", "Modlitwa_2.jpeg"];
+
+                // Show Ad Function
+                function showZoomAd() {
+                    // Start with the first image
+                    zoomPosterImg.src = posters[0];
+                    zoomPosterImg.style.opacity = "1";
+
+                    // Hide standard widgets
+                    standardWidgets.forEach(widget => {
+                        widget.classList.add("hidden-for-ad");
+                    });
+                    
+                    // Show zoom ad with a slight delay so standard widgets fade out first
+                    setTimeout(() => {
+                        zoomAdOverlay.classList.add("show");
+                    }, 800);
+
+                    // Slideshow effect: Switch to the second image halfway through (after 10 seconds)
+                    setTimeout(() => {
+                        zoomPosterImg.style.opacity = "0";
+                        setTimeout(() => {
+                            zoomPosterImg.src = posters[1];
+                            zoomPosterImg.style.opacity = "1";
+                        }, 500); // Wait for fade out before swapping src
+                    }, 10000);
+
+                    // Hide zoom ad after 20 seconds total display time
+                    setTimeout(() => {
+                        zoomAdOverlay.classList.remove("show");
+                        
+                        // Bring standard widgets back after zoom ad fades out
+                        setTimeout(() => {
+                            standardWidgets.forEach(widget => {
+                                widget.classList.remove("hidden-for-ad");
+                            });
+                        }, 1000);
+                    }, 20000);
+                }
+
+                // Initial cycle: Run every 2 minutes (120000 ms)
+                setInterval(showZoomAd, 120000);
+            }
+            initZoomAdCycle();
+
+            function initDaySyncFeatures() {
+                const now = new Date();
+                const hour = now.getHours();
+                const dayOfMonth = now.getDate();
+
+                // 1. Feature 4: International Calendar Days (STRICTLY NO CATHOLIC SAINTS)
+                const calendarSlideText = document.getElementById("calendarSlideText");
+                if (calendarSlideText) {
+                    const intlDays = [
+                        "Międzynarodowy Dzień Radości ☀️",
+                        "Światowy Dzień Pokoju i Nadziei 🕊️",
+                        "Dzień Wdzięczności i Dobroci 💖",
+                        "Światowy Dzień Przyjaźni i Braterstwa 🤝",
+                        "Dzień Światła i Prawdy ✨",
+                        "Światowy Dzień Życzliwości i Uśmiechu 😊",
+                        "Międzynarodowy Dzień Wiary i Wolności 🕊️"
+                    ];
+                    const chosenDay = intlDays[dayOfMonth % intlDays.length];
+                    calendarSlideText.innerHTML = `DZIŚ OBCHODZIMY: <strong>${chosenDay}</strong>`;
+                }
+
+                // 2. Feature 6: Dynamic Studio Atmosphere Day-Sync Lighting
+                const ambientPulse = document.querySelector(".ambient-pulse-layer");
+                const sunbeams = document.querySelector(".sunbeams");
+
+                if (ambientPulse) {
+                    if (hour >= 5 && hour < 9) {
+                        // Poranek: Warm Sunrise Golden Aura
+                        ambientPulse.style.background = "radial-gradient(circle at 50% 40%, rgba(255, 190, 0, 0.14), transparent 70%)";
+                        if (sunbeams) sunbeams.style.background = "linear-gradient(135deg, rgba(255, 204, 0, 0.12) 0%, transparent 55%)";
+                    } else if (hour >= 9 && hour < 18) {
+                        // Dzień: Daylight Clear Sky Blue Glow
+                        ambientPulse.style.background = "radial-gradient(circle at 50% 40%, rgba(0, 162, 255, 0.11), transparent 70%)";
+                        if (sunbeams) sunbeams.style.background = "linear-gradient(135deg, rgba(0, 200, 255, 0.08) 0%, transparent 55%)";
+                    } else if (hour >= 18 && hour < 22) {
+                        // Wieczór: Deep Sunset Amber & Violet Glow
+                        ambientPulse.style.background = "radial-gradient(circle at 50% 40%, rgba(255, 115, 0, 0.15), transparent 70%)";
+                        if (sunbeams) sunbeams.style.background = "linear-gradient(135deg, rgba(255, 100, 0, 0.10) 0%, transparent 55%)";
+                    } else {
+                        // Noc: Starlight Indigo Aura
+                        ambientPulse.style.background = "radial-gradient(circle at 50% 40%, rgba(100, 120, 255, 0.12), transparent 70%)";
+                        if (sunbeams) sunbeams.style.background = "linear-gradient(135deg, rgba(120, 140, 255, 0.06) 0%, transparent 55%)";
+                    }
+                }
+            }
+            initDaySyncFeatures();
+
+            // Cascading 1-Item Program Dnia Schedule Rotation System
+            function initScheduleCascadingRotation() {
+                const items = document.querySelectorAll(".sched-item-slide");
+                if (items.length <= 1) return;
+
+                let currentSchedIdx = 0;
+
+                setInterval(() => {
+                    const prevIdx = currentSchedIdx;
+                    currentSchedIdx = (currentSchedIdx + 1) % items.length;
+
+                    // Fade out & slide up current schedule item
+                    items[prevIdx].style.opacity = "0";
+                    items[prevIdx].style.transform = "translateY(-25px)";
+                    items[prevIdx].classList.remove("active");
+
+                    setTimeout(() => {
+                        // Reset position below
+                        items[prevIdx].style.transform = "translateY(25px)";
+
+                        // Fade in & slide up to active position next schedule item
+                        items[currentSchedIdx].classList.add("active");
+                        items[currentSchedIdx].style.opacity = "1";
+                        items[currentSchedIdx].style.transform = "translateY(0)";
+                    }, 400);
+
+                }, 6500); // Cascades to next schedule item every 6.5 seconds
+            }
+            initScheduleCascadingRotation();
+
+            // Dynamic Ticker Flipper Rotation (3D flip between large brand logo and edition text)
+            function initTickerFlipper() {
+                const flipper = document.getElementById("tickerFlipper");
+                const popupTab = document.getElementById("tickerPopupTab");
+                if (!flipper) return;
+                
+                const announcements = [
+                    "ZA CHWILĘ: POZDROWIENIA OD WIDZÓW",
+                    "NASTĘPNE: SERWIS INFORMACYJNY 📰",
+                    "ZA CHWILĘ: OFERTA SPECJALNA 🎁",
+                    "ZA CHWILĘ: POZDROWIENIA OD WIDZÓW",
+                    "NASTĘPNE: WESPRZYJ MISJĘ ❤️"
+                ];
+                let currentAnnIdx = 0;
+                
+                setInterval(() => {
+                    const isFlipped = flipper.classList.toggle("flipped");
+                    
+                    if (isFlipped && popupTab) {
+                        popupTab.textContent = announcements[currentAnnIdx];
+                        currentAnnIdx = (currentAnnIdx + 1) % announcements.length;
+                        popupTab.classList.add("show");
+                        
+                        setTimeout(() => {
+                            popupTab.classList.remove("show");
+                        }, 4500); // Tab stays up for 4.5 seconds while logo is hidden
+                    }
+                }, 8000); // Toggle flip state every 8 seconds
+            }
+
+            // Load database with cache buster
+            fetch("rozwazania_baza.json?t=" + new Date().getTime())
+                .then(res => res.json())
+                .then(data => {
+                    reflectionsData = data;
+                    if (reflectionsData.length === 0) return;
+
+                    // Populate select list
+                    daySelect.innerHTML = "";
+                    reflectionsData.forEach((ref, idx) => {
+                        const dayLabel = ref.id.replace("ref_day", "Dzień ").replace("ref_", "");
+                        const dateLabel = ref.date ? ` (${ref.date})` : "";
+                        const opt = document.createElement("option");
+                        opt.value = idx;
+                        opt.textContent = `${dayLabel}: ${ref.title}${dateLabel}`;
+                    daySelect.appendChild(opt);
+                    });
+
+                    if (currentDayIndex >= reflectionsData.length) {
+                        currentDayIndex = 0;
+                    }
+                    daySelect.value = currentDayIndex;
+
+                    // Match today's date if no manual index override is saved
+                    let matchedIdx = currentDayIndex;
+                    if (!safeStorage.getItem("dzj_stream_day")) {
+                        const todayStr = new Date().toISOString().split('T')[0];
+                        const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
+                        if (foundIdx !== -1) {
+                            matchedIdx = foundIdx;
+                            daySelect.value = matchedIdx;
+                        }
+                    }
+
+                    renderReflection(reflectionsData[matchedIdx]);
+                    initBackground();
+                    initCtaRotation();
+                    initTickerFlipper();
+                    fetchRealWeather();
+                    setInterval(fetchRealWeather, 900000); // Refresh weather from API every 15 minutes
+                    loadNewsMarquee();
+                    setInterval(loadNewsMarquee, 600000); // Refresh news headlines every 10 minutes
+                    runQrSidecarLoop(); // Start weather/Patronite QR sidecar loop
+                })
+                .catch(err => {
+                    console.error("Error loading reflections:", err);
+                    document.querySelector(".slide-title").textContent = "Błąd Bazy Danych";
+                    document.querySelector(".slide-text").textContent = "Nie udało się wczytać pliku rozważań. Upewnij się, że plik rozwazania_baza.json istnieje.";
+                });
+        });
+    </script>
+    <!-- Real-time Prayer Intentions Controller -->
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { collection, query, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        const livePrayerOverlay = document.getElementById("livePrayerOverlay");
+        const livePrayerText = document.getElementById("livePrayerText");
+        const livePrayerAuthor = document.getElementById("livePrayerAuthor");
+
+        let displayedPrayers = new Set();
+        let prayerQueue = [];
+        let isShowingPrayer = false;
+
+        // Listen for raw intentions list, we do filtering and ordering locally to avoid Firestore composite index errors
+        const q = query(
+            collection(db, "prayer_intentions"),
+            limit(50)
+        );
+
+        onSnapshot(q, (snapshot) => {
+            const approvedIntentions = [];
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.approved === true && data.timestamp) {
+                    approvedIntentions.push({ id: doc.id, ...data });
+                }
+            });
+
+            // Local sort: newest first
+            approvedIntentions.sort((a, b) => {
+                const tA = a.timestamp && a.timestamp.seconds ? a.timestamp.seconds : 0;
+                const tB = b.timestamp && b.timestamp.seconds ? b.timestamp.seconds : 0;
+                return tB - tA;
+            });
+
+            if (approvedIntentions.length > 0) {
+                // The newest approved prayer
+                const latest = approvedIntentions[0];
+                
+                // If it's a new prayer we haven't processed/displayed
+                if (!displayedPrayers.has(latest.id)) {
+                    displayedPrayers.add(latest.id);
+                    prayerQueue.push(latest);
+                    
+                    // Update global state and immediately reload marquee
+                    window.lastPrayerIntention = latest;
+                    if (typeof window.loadNewsMarquee === "function") {
+                        window.loadNewsMarquee();
+                    }
+                    
+                    processQueue();
+                }
+            }
+        });
+
+        function processQueue() {
+            if (isShowingPrayer || prayerQueue.length === 0) return;
+            
+            isShowingPrayer = true;
+            const prayer = prayerQueue.shift();
+            
+            // Populate and display
+            livePrayerText.textContent = `„${prayer.text}”`;
+            livePrayerAuthor.textContent = `— ${prayer.name}, ${prayer.city}`;
+            
+            livePrayerOverlay.style.opacity = "1";
+            livePrayerOverlay.style.transform = "translateY(0)";
+            livePrayerOverlay.style.pointerEvents = "auto";
+            
+            // Show for 20 seconds, then hide and process next after some gap
+            setTimeout(() => {
+                livePrayerOverlay.style.opacity = "0";
+                livePrayerOverlay.style.transform = "translateY(20px)";
+                livePrayerOverlay.style.pointerEvents = "none";
+                
+                setTimeout(() => {
+                    isShowingPrayer = false;
+                    processQueue();
+                }, 5000); // 5s gap between popups
+            }, 20000);
+        }
+    </script>
+
+    <audio id="stream-audio"></audio>
+</body>
+</html>
