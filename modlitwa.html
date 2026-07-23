@@ -518,8 +518,12 @@
         <p>&copy; 2026 Polskie Radio <a href="index.html">Christian Culture</a>. Wszelkie prawa zastrzeżone.</p>
     </footer>
 
-    <script>
-        function toggleRadio() {
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        // Expose toggleRadio globally so inline onclick works
+        window.toggleRadio = function() {
             const audio = document.getElementById("radioAudio");
             const playIcon = document.getElementById("playIcon");
             
@@ -538,27 +542,81 @@
             }
         }
 
-        function submitIntention(e) {
+        // Moderation filter based on Bible and Decalogue
+        function moderateIntentionText(text) {
+            const textLower = text.toLowerCase();
+            
+            // Typowo katolickie formuły (niebiblijne według dekalogu z 1962 roku)
+            const forbiddenKeywords = [
+                "maryj", "marią", "mario", "matka boska", "matka boża", "matka boza", "królowa niebios", "krolowa niebios",
+                "różaniec", "rozaniec", "zdrowaś", "zdrowas", "pod twoją obronę", "pod twoja obrone",
+                "święt", "swiet", "patron", "papież", "papiez", "czyściec", "czysciec",
+                "modlitwa za zmarłych", "za dusze w czyśćcu", "za dusze w czysccu", "wstawiennictw",
+                "obraz ryty", "oddawać cześć obrazom", "oddawac czesc obrazom", "święcenie niedzieli", "swiecenie niedzieli"
+            ];
+            
+            for (let word of forbiddenKeywords) {
+                if (textLower.includes(word)) {
+                    return {
+                        valid: false,
+                        reason: "Przepraszamy, ale akceptujemy wyłącznie intencje biblijne i zgodne z dziesięcioma przykazaniami Bożymi (m.in. zakaz kultu postaci innych niż Bóg Ojciec i Jezus Chrystus oraz kultu obrazów/różańca)."
+                    };
+                }
+            }
+            
+            // Filtrowanie linków/spamu
+            const spamKeywords = ["http", "www", "kup", "sprzedam", "promocja"];
+            for (let word of spamKeywords) {
+                if (textLower.includes(word)) {
+                    return {
+                        valid: false,
+                        reason: "Wykryto spam lub linki w treści intencji."
+                    };
+                }
+            }
+            
+            return { valid: true };
+        }
+
+        window.submitIntention = async function(e) {
             e.preventDefault();
             
             const name = document.getElementById("userName").value;
             const city = document.getElementById("userCity").value;
             const text = document.getElementById("prayerText").value;
             
-            // Simulating API or Firebase submit
-            console.log("Submit intention:", { name, city, text });
+            // Client-side bible moderation check
+            const check = moderateIntentionText(text);
+            if (!check.valid) {
+                alert(check.reason);
+                return;
+            }
             
-            // Show custom Toast success notification
-            const toast = document.getElementById("intentionToast");
-            toast.classList.add("show");
-            
-            // Reset form fields
-            document.getElementById("prayerForm").reset();
-            
-            // Hide toast after 4 seconds
-            setTimeout(() => {
-                toast.classList.remove("show");
-            }, 4000);
+            try {
+                // Submit to cc-mission-control Firestore
+                await addDoc(collection(db, "prayer_intentions"), {
+                    name: name,
+                    city: city,
+                    text: text,
+                    approved: true, // Auto approved if client validation passes
+                    timestamp: serverTimestamp()
+                });
+                
+                // Show custom Toast success notification
+                const toast = document.getElementById("intentionToast");
+                toast.classList.add("show");
+                
+                // Reset form fields
+                document.getElementById("prayerForm").reset();
+                
+                // Hide toast after 4 seconds
+                setTimeout(() => {
+                    toast.classList.remove("show");
+                }, 4000);
+            } catch (err) {
+                console.error("Error submitting intention:", err);
+                alert("Wystąpił błąd podczas wysyłania intencji. Spróbuj ponownie za chwilę.");
+            }
         }
     </script>
 </body>

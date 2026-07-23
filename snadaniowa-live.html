@@ -1819,6 +1819,16 @@
             <!-- Popup Tab (Outside footer to sit behind it) -->
             <div class="ticker-popup-tab" id="tickerPopupTab">ZA CHWILĘ...</div>
 
+            <!-- Prayer Intentions Real-time Broadcast Overlay -->
+            <div id="livePrayerOverlay" style="position: fixed; bottom: 85px; left: 70px; width: 460px; background: rgba(15, 18, 30, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1.5px solid var(--breakfast-accent); border-radius: 16px; padding: 18px; box-shadow: 0 15px 30px rgba(0,0,0,0.85); display: flex; flex-direction: column; gap: 8px; z-index: 1000; opacity: 0; transform: translateY(20px); pointer-events: none; transition: opacity 1s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1); border-left: 4.5px solid #dc143c;">
+                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
+                    <span style="font-family: 'Cinzel', serif; font-size: 0.72rem; font-weight: 800; color: #ff4d6d; letter-spacing: 1.5px; text-transform: uppercase; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-hands-praying"></i> WSPÓLNA MODLITWA LIVE</span>
+                    <span style="font-size: 0.65rem; color: rgba(255,255,255,0.4); font-weight: 700;">TERAZ</span>
+                </div>
+                <p id="livePrayerText" style="font-size: 0.85rem; color: #e4e4e7; line-height: 1.5; font-style: italic; text-align: left; margin: 0; font-family: 'Inter', sans-serif; font-weight: 400;"></p>
+                <p id="livePrayerAuthor" style="font-size: 0.75rem; color: var(--breakfast-accent); font-weight: 700; text-align: right; margin: 2px 0 0 0; font-family: 'Outfit', sans-serif; text-transform: uppercase; letter-spacing: 0.5px;"></p>
+            </div>
+
             <!-- Footer Ticker -->
             <footer>
                 <div class="l3-ticker-header">
@@ -3289,6 +3299,69 @@
                 });
         });
     </script>
+    <!-- Real-time Prayer Intentions Controller -->
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { collection, query, where, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        const livePrayerOverlay = document.getElementById("livePrayerOverlay");
+        const livePrayerText = document.getElementById("livePrayerText");
+        const livePrayerAuthor = document.getElementById("livePrayerAuthor");
+
+        let displayedPrayers = new Set();
+        let prayerQueue = [];
+        let isShowingPrayer = false;
+
+        // Listen for new approved intentions
+        const q = query(
+            collection(db, "prayer_intentions"),
+            where("approved", "==", true),
+            orderBy("timestamp", "desc"),
+            limit(10)
+        );
+
+        onSnapshot(q, (snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                    const docId = change.doc.id;
+                    const data = change.doc.data();
+                    if (!displayedPrayers.has(docId) && data.timestamp) {
+                        displayedPrayers.add(docId);
+                        prayerQueue.push(data);
+                        processQueue();
+                    }
+                }
+            });
+        });
+
+        function processQueue() {
+            if (isShowingPrayer || prayerQueue.length === 0) return;
+            
+            isShowingPrayer = true;
+            const prayer = prayerQueue.shift();
+            
+            // Populate and display
+            livePrayerText.textContent = `„${prayer.text}”`;
+            livePrayerAuthor.textContent = `— ${prayer.name}, ${prayer.city}`;
+            
+            livePrayerOverlay.style.opacity = "1";
+            livePrayerOverlay.style.transform = "translateY(0)";
+            livePrayerOverlay.style.pointerEvents = "auto";
+            
+            // Show for 20 seconds, then hide and process next after some gap
+            setTimeout(() => {
+                livePrayerOverlay.style.opacity = "0";
+                livePrayerOverlay.style.transform = "translateY(20px)";
+                livePrayerOverlay.style.pointerEvents = "none";
+                
+                setTimeout(() => {
+                    isShowingPrayer = false;
+                    processQueue();
+                }, 5000); // 5s gap between popups
+            }, 20000);
+        }
+    </script>
+
     <audio id="stream-audio" src="https://stream.zeno.fm/gn3uhltrrytuv"></audio>
 </body>
 </html>
