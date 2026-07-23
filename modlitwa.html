@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zjednoczeni za Polskę - Modlitwa | Christian Culture</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Inter:wght@300;400;600;700;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --gold-primary: #d4af37;
+            --gold-light: #f3e5ab;
+            --gold-dark: #aa7c11;
+            --red-national: #dc143c;
+            --white-national: #ffffff;
+            --glass-bg: rgba(10, 12, 22, 0.85);
+            --glass-border: rgba(212, 175, 55, 0.25);
+            --text-main: #f4f4f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #030407 url('tapeta_modlitwa.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Dark overlay over background wallpaper */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(3, 4, 7, 0.7) 0%, rgba(3, 4, 7, 0.85) 100%);
+            z-index: 1;
+        }
+
+        /* Header styling */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 20px 24px;
+            background: rgba(3, 4, 7, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1.5px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-link {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-top {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--white-national);
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .logo-bottom {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            letter-spacing: 4px;
+            line-height: 1.2;
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gold-primary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: 1px solid var(--glass-border);
+            padding: 8px 16px;
+            border-radius: 50px;
+            background: rgba(0,0,0,0.5);
+            transition: all 0.2s;
+        }
+
+        .nav-back:hover {
+            background: var(--gold-primary);
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        /* Main Container */
+        .main-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 24px;
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        /* Hero Card */
+        .hero-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--white-national) 50%, var(--red-national) 50%);
+        }
+
+        .event-tag {
+            display: inline-block;
+            background: rgba(220, 20, 60, 0.15);
+            border: 1.5px solid var(--red-national);
+            color: #ff4d6d;
+            font-weight: 800;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            padding: 6px 18px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .event-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        .event-subtitle {
+            font-size: 1.1rem;
+            color: #d4d4d8;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+        }
+
+        /* Forms and content section */
+        .grid-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-section {
+                grid-template-columns: 1fr;
+            }
+            .event-title {
+                font-size: 2rem;
+            }
+        }
+
+        .content-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            border-bottom: 1.5px solid rgba(212, 175, 55, 0.15);
+            padding-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Form styling */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #a1a1aa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input, .form-textarea {
+            background: rgba(0,0,0,0.4);
+            border: 1.5px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+            background: rgba(0,0,0,0.6);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, #aa7c11 100%);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 28px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Prayer Texts card styling */
+        .prayer-text-block {
+            background: rgba(0,0,0,0.25);
+            border-left: 3px solid var(--red-national);
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            color: #e4e4e7;
+        }
+
+        /* Mini Player card */
+        .mini-player {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .player-play-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gold-primary);
+            color: #000;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .player-play-btn:hover {
+            transform: scale(1.08);
+            background: var(--gold-light);
+        }
+
+        .player-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .player-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+
+        .player-subtitle {
+            font-size: 0.75rem;
+            color: #a1a1aa;
+            margin-top: 2px;
+        }
+
+        /* Custom notifications (toast) */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(16, 185, 129, 0.95);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            font-weight: 700;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        footer {
+            position: relative;
+            z-index: 10;
+            padding: 30px 24px;
+            background: rgba(3, 4, 7, 0.95);
+            text-align: center;
+            border-top: 1.5px solid var(--glass-border);
+            font-size: 0.85rem;
+            color: #71717a;
+            margin-top: auto;
+        }
+
+        footer a {
+            color: var(--gold-primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="brand-logo">
+            <a href="index.html" class="logo-link">
+                <span class="logo-top">CHRISTIAN</span>
+                <span class="logo-bottom">CULTURE</span>
+            </a>
+        </div>
+        <a href="index.html" class="nav-back">
+            <i class="fa-solid fa-arrow-left"></i> Powrót do Strony Głównej
+        </a>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        
+        <!-- Hero Event Card -->
+        <div class="hero-card">
+            <span class="event-tag">Wydarzenie Specjalne</span>
+            <h1 class="event-title">ZJEDNOCZENI ZA POLSKĘ</h1>
+            <p class="event-subtitle">
+                Trwamy we wspólnej modlitwie za naszą Ojczyznę, prosząc o Boże błogosławieństwo, jedność i uświęcenie narodu. Dołącz do nas w tej duchowej walce.
+            </p>
+            
+            <!-- Mini Live Stream Player -->
+            <div class="mini-player">
+                <button class="player-play-btn" id="livePlayBtn" onclick="toggleRadio()">
+                    <i class="fa-solid fa-play" id="playIcon"></i>
+                </button>
+                <div class="player-info">
+                    <p class="player-title">Biblia Audio Christian Culture</p>
+                    <p class="player-subtitle">Strumień modlitewny na żywo 24/7</p>
+                </div>
+                <audio id="radioAudio" src="https://stream.zeno.fm/imo45hqnshyuv"></audio>
+            </div>
+        </div>
+
+        <div class="grid-section">
+            
+            <!-- Prayer Intentions Form -->
+            <div class="content-card">
+                <h2 class="card-title">
+                    <i class="fa-solid fa-hands-praying" style="color: var(--gold-primary);"></i> Wyślij intencję modlitewną
+                </h2>
+                <form id="prayerForm" onsubmit="submitIntention(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="userName">Imię lub Inicjały</label>
+                        <input class="form-input" type="text" id="userName" placeholder="np. Jan" required>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label class="form-label" for="userCity">Miejscowość</label>
+                        <input class="form-input" type="text" id="userCity" placeholder="np. Rzeszów" required>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label class="form-label" for="prayerText">Twoja intencja modlitewna</label>
+                        <textarea class="form-textarea" id="prayerText" rows="5" placeholder="Napisz intencję modlitewną za Ojczyznę, rodzinę lub bliskich..." required></textarea>
+                    </div>
+                    
+                    <button class="btn-submit" type="submit">
+                        <i class="fa-solid fa-paper-plane"></i> Prześlij intencję
+                    </button>
+                </form>
+            </div>
+
+            <!-- Prayer Texts & Inspirations -->
+            <div class="content-card">
+                <h2 class="card-title">
+                    <i class="fa-solid fa-book" style="color: var(--gold-primary);"></i> Modlitwa za Ojczyznę
+                </h2>
+                
+                <div class="prayer-text-block">
+                    <strong>Modlitwa ks. Piotra Skargi:</strong><br><br>
+                    Boże, Rządco i Panie narodów, z ręki i karności Twojej racz nas nie wypuszczać, a za przyczyną Najświętszej Panny, Królowej naszej, błogosław Ojczyźnie naszej, by Tobie zawsze wierna, chwałę przynosiła Imieniowi Twemu, a synów swoich wiodła ku szczęśliwości...
+                </div>
+
+                <div class="prayer-text-block" style="border-left-color: var(--gold-primary);">
+                    <strong>Akt Zawierzenia:</strong><br><br>
+                    Jezu Chryste, Królu Polski, zawierzamy Ci serca nasze, nasze domy i całą naszą Ojczyznę. Spójrz łaskawie na Twój naród, zjednocz nas w miłości i prawdzie, i prowadź drogą sprawiedliwości.
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="intentionToast">
+        <i class="fa-solid fa-circle-check"></i> Intencja została przesłana! Dołączamy do modlitwy.
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Polskie Radio <a href="index.html">Christian Culture</a>. Wszelkie prawa zastrzeżone.</p>
+    </footer>
+
+    <script>
+        function toggleRadio() {
+            const audio = document.getElementById("radioAudio");
+            const playIcon = document.getElementById("playIcon");
+            
+            if (audio.paused) {
+                audio.play()
+                    .then(() => {
+                        playIcon.className = "fa-solid fa-pause";
+                    })
+                    .catch(err => {
+                        console.error("Autoplay blocked:", err);
+                        alert("Kliknij ponownie przycisk PLAY, aby rozpocząć odtwarzanie.");
+                    });
+            } else {
+                audio.pause();
+                playIcon.className = "fa-solid fa-play";
+            }
+        }
+
+        function submitIntention(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById("userName").value;
+            const city = document.getElementById("userCity").value;
+            const text = document.getElementById("prayerText").value;
+            
+            // Simulating API or Firebase submit
+            console.log("Submit intention:", { name, city, text });
+            
+            // Show custom Toast success notification
+            const toast = document.getElementById("intentionToast");
+            toast.classList.add("show");
+            
+            // Reset form fields
+            document.getElementById("prayerForm").reset();
+            
+            // Hide toast after 4 seconds
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
