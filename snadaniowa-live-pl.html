@@ -2053,7 +2053,7 @@
             let activeReflectionObj = null;
             let lastActiveSlotHour = -1;
             
-            let customImgSrc = "tapeta_modlitwa.gif";
+            let customImgSrc = "breakfast_presenters.jpg";
             let customVideoSrc = ""; 
 
             // DOM elements
@@ -2517,9 +2517,6 @@
             // Load saved settings
             if (safeStorage.getItem("dzj_stream_day")) {
                 currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
-            }
-            if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg") {
-                safeStorage.setItem("dzj_stream_image", "tapeta_modlitwa.gif");
             }
             if (safeStorage.getItem("dzj_stream_image")) {
                 customImgSrc = safeStorage.getItem("dzj_stream_image");

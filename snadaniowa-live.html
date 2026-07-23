@@ -2229,13 +2229,13 @@
                     if (activeReflectionObj) {
                         renderReflection(activeReflectionObj);
                     }
-                    if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || !safeStorage.getItem("dzj_stream_image")) {
+                    if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg") {
                         initBackground();
                     }
                 }
 
                 // Real-time dynamic background check (swaps backgrounds in the slideshow, etc.)
-                if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || !safeStorage.getItem("dzj_stream_image")) {
+                if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg") {
                     const currentBg = getDynamicBackground("breakfast_presenters.jpg");
                     const currentSrcFilename = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
                     if (currentSrcFilename !== currentBg) {
