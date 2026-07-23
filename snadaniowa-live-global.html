@@ -1913,6 +1913,7 @@
             <label for="bgImageSelect">Tło Programu (Obraz / Layout)</label>
             <select id="bgImageSelect">
                 <option value="breakfast_presenters.jpg">Prezenterki w Studio (Auto-Rotacja)</option>
+                <option value="zjednoczeni_za_polske_banner.jpg">Wydanie Specjalne (Zjednoczeni za Polskę)</option>
                 <option value="a0kKB.jpg">Własne Tło Letnie (a0kKB.jpg)</option>
                 <option value="breakfast_presenters_forenoon.jpg">Przedpołudniowe Prezenterki (Mockup 3)</option>
                 <option value="breakfast_presenters_alt.jpg">Alternatywne Prezenterki (Mockup 2)</option>
@@ -2554,8 +2555,35 @@
 
             // Apply body styling mode class based on selected background
             function applyBodyModeClass() {
-                document.body.classList.remove("mode-studio");
-                document.body.classList.add("special-event-today", "evening-layout", "mode-presenters");
+                document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout", "special-event-today");
+                
+                const currentBg = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
+                
+                // 1. Special Event QR Banner layout
+                if (currentBg.includes("zjednoczeni_za_polske_banner") || customImgSrc.includes("zjednoczeni_za_polske_banner")) {
+                    document.body.classList.add("special-event-today", "evening-layout", "mode-presenters");
+                    return;
+                }
+                
+                // 2. Standard Presenters auto-rotation layout
+                if (currentBg.includes("presenters") || customImgSrc.includes("presenters") || currentBg.includes("a0kKB")) {
+                    document.body.classList.add("mode-presenters");
+                    
+                    // evening presenters mockup places presenter Sara/Noemi on the right, so cards must go left.
+                    // daytime presenters are on the left, so cards must go right.
+                    if (currentBg.includes("evening") || customImgSrc.includes("evening")) {
+                        document.body.classList.add("evening-layout");
+                    }
+                } else {
+                    // Studio backgrounds
+                    document.body.classList.add("mode-studio");
+                    
+                    const hour = new Date().getHours();
+                    const isEveningOrNight = (hour >= 18 || hour < 5);
+                    if (isEveningOrNight) {
+                        document.body.classList.add("evening-layout");
+                    }
+                }
             }
             applyBodyModeClass();
 
@@ -2601,9 +2629,52 @@
 
             // Background Init
             function initBackground() {
-                bgActiveImg.src = "zjednoczeni_za_polske_banner.jpg";
-                bgActiveImg.style.opacity = 1;
-                return;
+                if (customImgSrc === "zjednoczeni_za_polske_banner.jpg") {
+                    bgActiveImg.src = "zjednoczeni_za_polske_banner.jpg";
+                    bgActiveImg.style.opacity = 1;
+                    applyBodyModeClass();
+                    return;
+                }
+                
+                if (!customVideoSrc) {
+                    bgActiveImg.src = getDynamicBackground(customImgSrc);
+                    bgActiveImg.style.opacity = 1;
+                    applyBodyModeClass();
+                    return;
+                }
+
+                const isLocal = window.location.protocol === "file:";
+                if (isLocal) {
+                    v1.src = customVideoSrc;
+                    v2.src = customVideoSrc;
+                    v1.load();
+                    v2.load();
+
+                    let videoTimeout = setTimeout(() => {
+                        console.warn("Video timed out. Using static layout background.");
+                        bgActiveImg.style.opacity = 1;
+                        applyBodyModeClass();
+                    }, 4000);
+
+                    v1.addEventListener("canplaythrough", () => {
+                        clearTimeout(videoTimeout);
+                        bgActiveImg.style.opacity = 0;
+                        activeVideo.style.opacity = 1;
+                        activeVideo.play().catch(e => console.warn(e));
+                        v1.addEventListener("timeupdate", checkVideoProgress);
+                        v2.addEventListener("timeupdate", checkVideoProgress);
+                        applyBodyModeClass();
+                    }, { once: true });
+
+                    v1.addEventListener("error", () => {
+                        clearTimeout(videoTimeout);
+                        bgActiveImg.style.opacity = 1;
+                        applyBodyModeClass();
+                    }, { once: true });
+                } else {
+                    bgActiveImg.style.opacity = 1;
+                    applyBodyModeClass();
+                }
             }
 
             // Compiler of raw reflection string to slide objects
