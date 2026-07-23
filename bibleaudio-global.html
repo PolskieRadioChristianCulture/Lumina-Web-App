@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+    <script type="text/javascript">
+        // Force Google Translate cookie for auto English translation immediately
+        document.cookie = "googtrans=/pl/en; path=/";
+        document.cookie = "googtrans=/pl/en; path=/; domain=.polskieradio.cc";
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dobrze, że jesteś - PROGRAM ŚNIADANIOWY | Christian Culture TV</title>
@@ -2738,7 +2743,7 @@
             function buildSlides(reflection) {
                 if (!reflection) return null;
 
-                let cycleTitle = "MISJA BOŻE WAKACJE";
+                let cycleTitle = "MISSION GOD'S HOLIDAYS";
                 
                 const dayNumMatch = reflection.id.match(/ref_day(\d+)/);
                 const dayNum = dayNumMatch ? dayNumMatch[1] : (reflectionsData.indexOf(reflection) + 1);
@@ -2749,7 +2754,7 @@
                     agendaActive.textContent = reflection.title;
                     agendaActive.dataset.customized = "true";
                 }
-                cycleBadge.textContent = `Dzień ${dayNum} | ${cycleTitle}`;
+                cycleBadge.textContent = `Day ${dayNum} | ${cycleTitle}`;
 
                 const text = reflection.fullText;
 
@@ -3320,11 +3325,11 @@
                 if (!flipper) return;
                 
                 const announcements = [
-                    "ZA CHWILĘ: POZDROWIENIA OD WIDZÓW",
-                    "NASTĘPNE: SERWIS INFORMACYJNY 📰",
-                    "ZA CHWILĘ: OFERTA SPECJALNA 🎁",
-                    "ZA CHWILĘ: POZDROWIENIA OD WIDZÓW",
-                    "NASTĘPNE: WESPRZYJ MISJĘ ❤️"
+                    "UP NEXT: VIEWERS GREETINGS 💬",
+                    "UP NEXT: WORLD NEWS FEED 📰",
+                    "UP NEXT: SPECIAL INSPIRATION 🎁",
+                    "UP NEXT: PRAYER INTENTIONS 🙏",
+                    "UP NEXT: SUPPORT THE MISSION ❤️"
                 ];
                 let currentAnnIdx = 0;
                 
@@ -3478,5 +3483,16 @@
     </script>
 
     <audio id="stream-audio"></audio>
+    <div id="google_translate_element" style="position: absolute; left: -9999px; top: -9999px; visibility: hidden;"></div>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'pl',
+                includedLanguages: 'en',
+                autoDisplay: true
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
