@@ -1607,6 +1607,19 @@
             box-shadow: 0 0 70px rgba(212, 175, 55, 0.45);
         }
         .start-btn i { font-size: 1.5rem; }
+        /* Special Event "Zjednoczeni za Polskę" layout overrides */
+        body.special-event-today .left-panel {
+            display: none !important;
+        }
+        body.special-event-today .main-viewport {
+            grid-template-columns: 1fr;
+            padding-left: 70px;
+        }
+        body.special-event-today.evening-layout.mode-presenters .reflection-canvas-card {
+            left: 0;
+            width: 530px;
+            height: 620px;
+        }
     </style>
 </head>
 <body>
@@ -2199,17 +2212,7 @@
                 // Dynamic Edition Label Updates
                 const tickerEdition = document.getElementById("tickerEditionLabel");
                 if (tickerEdition) {
-                    if (currentHour >= 5 && currentHour < 9) {
-                        tickerEdition.textContent = "WYDANIE PORANNE";
-                    } else if (currentHour >= 9 && currentHour < 12) {
-                        tickerEdition.textContent = "WYDANIE PRZEDPOŁUDNIOWE";
-                    } else if (currentHour >= 12 && currentHour < 18) {
-                        tickerEdition.textContent = "WYDANIE POPOŁUDNIOWE";
-                    } else if (currentHour >= 18 && currentHour < 22) {
-                        tickerEdition.textContent = "WYDANIE WIECZORNE";
-                    } else {
-                        tickerEdition.textContent = "WYDANIE NOCNE";
-                    }
+                    tickerEdition.textContent = "WYDANIE SPECJALNE";
                 }
 
                 // Real-time hour slot transition check to adapt reflection text and update backgrounds in real-time
@@ -2544,21 +2547,8 @@
 
             // Apply body styling mode class based on selected background
             function applyBodyModeClass() {
-                document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout");
-                
-                // Determine if it is evening/night
-                const hour = new Date().getHours();
-                const isEveningOrNight = (hour >= 18 || hour < 5);
-                
-                if (isEveningOrNight) {
-                    document.body.classList.add("evening-layout");
-                }
-
-                if (customImgSrc.includes("presenters")) {
-                    document.body.classList.add("mode-presenters");
-                } else {
-                    document.body.classList.add("mode-studio");
-                }
+                document.body.classList.remove("mode-studio");
+                document.body.classList.add("special-event-today", "evening-layout", "mode-presenters");
             }
             applyBodyModeClass();
 
@@ -2604,40 +2594,9 @@
 
             // Background Init
             function initBackground() {
-                if (!customVideoSrc) {
-                    bgActiveImg.src = getDynamicBackground(customImgSrc);
-                    bgActiveImg.style.opacity = 1;
-                    return;
-                }
-
-                const isLocal = window.location.protocol === "file:";
-                if (isLocal) {
-                    v1.src = customVideoSrc;
-                    v2.src = customVideoSrc;
-                    v1.load();
-                    v2.load();
-
-                    let videoTimeout = setTimeout(() => {
-                        console.warn("Video timed out. Using static layout background.");
-                        bgActiveImg.style.opacity = 1;
-                    }, 4000);
-
-                    v1.addEventListener("canplaythrough", () => {
-                        clearTimeout(videoTimeout);
-                        bgActiveImg.style.opacity = 0;
-                        activeVideo.style.opacity = 1;
-                        activeVideo.play().catch(e => console.warn(e));
-                        v1.addEventListener("timeupdate", checkVideoProgress);
-                        v2.addEventListener("timeupdate", checkVideoProgress);
-                    }, { once: true });
-
-                    v1.addEventListener("error", () => {
-                        clearTimeout(videoTimeout);
-                        bgActiveImg.style.opacity = 1;
-                    }, { once: true });
-                } else {
-                    bgActiveImg.style.opacity = 1;
-                }
+                bgActiveImg.src = "zjednoczeni_za_polske_banner.jpg";
+                bgActiveImg.style.opacity = 1;
+                return;
             }
 
             // Compiler of raw reflection string to slide objects
