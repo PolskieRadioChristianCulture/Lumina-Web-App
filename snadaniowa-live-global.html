@@ -1913,7 +1913,8 @@
             <label for="bgImageSelect">Tło Programu (Obraz / Layout)</label>
             <select id="bgImageSelect">
                 <option value="breakfast_presenters.jpg">Prezenterki w Studio (Auto-Rotacja)</option>
-                <option value="zjednoczeni_za_polske_banner.jpg">Wydanie Specjalne (Zjednoczeni za Polskę)</option>
+                <option value="zjednoczeni_za_polske_banner.jpg">Wydanie Specjalne (Zjednoczeni za Polskę - Baner)</option>
+                <option value="tapeta_modlitwa.gif">Wydanie Specjalne (Zjednoczeni za Polskę - Animacja GIF)</option>
                 <option value="a0kKB.jpg">Własne Tło Letnie (a0kKB.jpg)</option>
                 <option value="breakfast_presenters_forenoon.jpg">Przedpołudniowe Prezenterki (Mockup 3)</option>
                 <option value="breakfast_presenters_alt.jpg">Alternatywne Prezenterki (Mockup 2)</option>
@@ -2054,7 +2055,7 @@
             let activeReflectionObj = null;
             let lastActiveSlotHour = -1;
             
-            let customImgSrc = "breakfast_presenters.jpg";
+            let customImgSrc = "tapeta_modlitwa.gif";
             let customVideoSrc = ""; 
 
             // DOM elements
@@ -2559,8 +2560,9 @@
                 
                 const currentBg = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
                 
-                // 1. Special Event QR Banner layout
-                if (currentBg.includes("zjednoczeni_za_polske_banner") || customImgSrc.includes("zjednoczeni_za_polske_banner")) {
+                // 1. Special Event QR Banner / GIF animation layout
+                if (currentBg.includes("zjednoczeni_za_polske_banner") || customImgSrc.includes("zjednoczeni_za_polske_banner") ||
+                    currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa")) {
                     document.body.classList.add("special-event-today", "evening-layout", "mode-presenters");
                     return;
                 }
@@ -2629,8 +2631,8 @@
 
             // Background Init
             function initBackground() {
-                if (customImgSrc === "zjednoczeni_za_polske_banner.jpg") {
-                    bgActiveImg.src = "zjednoczeni_za_polske_banner.jpg";
+                if (customImgSrc === "zjednoczeni_za_polske_banner.jpg" || customImgSrc === "tapeta_modlitwa.gif") {
+                    bgActiveImg.src = customImgSrc;
                     bgActiveImg.style.opacity = 1;
                     applyBodyModeClass();
                     return;
