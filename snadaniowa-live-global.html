@@ -2538,6 +2538,9 @@
             if (safeStorage.getItem("dzj_stream_day")) {
                 currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
             }
+            if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg") {
+                safeStorage.setItem("dzj_stream_image", "tapeta_modlitwa.gif");
+            }
             if (safeStorage.getItem("dzj_stream_image")) {
                 customImgSrc = safeStorage.getItem("dzj_stream_image");
                 bgImageSelect.value = customImgSrc;
@@ -3353,7 +3356,7 @@
     <!-- Real-time Prayer Intentions Controller -->
     <script type="module">
         import { db } from "./firebase-config.js";
-        import { collection, query, where, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+        import { collection, query, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
         const livePrayerOverlay = document.getElementById("livePrayerOverlay");
         const livePrayerText = document.getElementById("livePrayerText");
@@ -3363,33 +3366,46 @@
         let prayerQueue = [];
         let isShowingPrayer = false;
 
-        // Listen for new approved intentions
+        // Listen for raw intentions list, we do filtering and ordering locally to avoid Firestore composite index errors
         const q = query(
             collection(db, "prayer_intentions"),
-            where("approved", "==", true),
-            orderBy("timestamp", "desc"),
-            limit(10)
+            limit(50)
         );
 
         onSnapshot(q, (snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-                if (change.type === "added") {
-                    const docId = change.doc.id;
-                    const data = change.doc.data();
-                    if (!displayedPrayers.has(docId) && data.timestamp) {
-                        displayedPrayers.add(docId);
-                        prayerQueue.push(data);
-                        
-                        // Update global cache and refresh marquee
-                        window.lastPrayerIntention = data;
-                        if (typeof window.loadNewsMarquee === "function") {
-                            window.loadNewsMarquee();
-                        }
-                        
-                        processQueue();
-                    }
+            const approvedIntentions = [];
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.approved === true && data.timestamp) {
+                    approvedIntentions.push({ id: doc.id, ...data });
                 }
             });
+
+            // Local sort: newest first
+            approvedIntentions.sort((a, b) => {
+                const tA = a.timestamp && a.timestamp.seconds ? a.timestamp.seconds : 0;
+                const tB = b.timestamp && b.timestamp.seconds ? b.timestamp.seconds : 0;
+                return tB - tA;
+            });
+
+            if (approvedIntentions.length > 0) {
+                // The newest approved prayer
+                const latest = approvedIntentions[0];
+                
+                // If it's a new prayer we haven't processed/displayed
+                if (!displayedPrayers.has(latest.id)) {
+                    displayedPrayers.add(latest.id);
+                    prayerQueue.push(latest);
+                    
+                    // Update global state and immediately reload marquee
+                    window.lastPrayerIntention = latest;
+                    if (typeof window.loadNewsMarquee === "function") {
+                        window.loadNewsMarquee();
+                    }
+                    
+                    processQueue();
+                }
+            }
         });
 
         function processQueue() {
