@@ -467,31 +467,48 @@
 
         <div class="grid-section">
             
-            <!-- Prayer Intentions Form -->
-            <div class="content-card">
-                <h2 class="card-title">
-                    <i class="fa-solid fa-hands-praying" style="color: var(--gold-primary);"></i> Wyślij intencję modlitewną
-                </h2>
-                <form id="prayerForm" onsubmit="submitIntention(event)">
-                    <div class="form-group">
-                        <label class="form-label" for="userName">Imię lub Inicjały</label>
-                        <input class="form-input" type="text" id="userName" placeholder="np. Jan" required>
+            <!-- Left Column: Form + WhatsApp Invite -->
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+                <!-- Prayer Intentions Form -->
+                <div class="content-card" style="margin-bottom: 0;">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-hands-praying" style="color: var(--gold-primary);"></i> Wyślij intencję modlitewną
+                    </h2>
+                    <form id="prayerForm" onsubmit="submitIntention(event)">
+                        <div class="form-group">
+                            <label class="form-label" for="userName">Imię lub Inicjały</label>
+                            <input class="form-input" type="text" id="userName" placeholder="np. Jan" required>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label class="form-label" for="userCity">Miejscowość</label>
+                            <input class="form-input" type="text" id="userCity" placeholder="np. Rzeszów" required>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label class="form-label" for="prayerText">Twoja intencja modlitewna</label>
+                            <textarea class="form-textarea" id="prayerText" rows="5" placeholder="Napisz intencję modlitewną za Ojczyznę, rodzinę lub bliskich..." required></textarea>
+                        </div>
+                        
+                        <button class="btn-submit" type="submit">
+                            <i class="fa-solid fa-paper-plane"></i> Prześlij intencję do wspólnej modlitwy
+                        </button>
+                    </form>
+                </div>
+
+                <!-- WhatsApp Group Invite Widget -->
+                <div class="content-card" style="border-left: 4px solid #25d366; background: rgba(37, 211, 102, 0.05); gap: 15px;">
+                    <h2 class="card-title" style="color: #25d366; border-bottom-color: rgba(37, 211, 102, 0.15); margin-bottom: 12px; padding-bottom: 8px;">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 1.5rem; vertical-align: middle; margin-right: 5px;"></i> Grupa WhatsApp
+                    </h2>
+                    <div style="font-size: 0.92rem; line-height: 1.5; text-align: left; display: flex; flex-direction: column; gap: 10px;">
+                        <p style="font-weight: 700; color: #fff; margin: 0; font-family: 'Outfit', sans-serif; font-size: 1rem;">„Jeśli chcesz, pomodlę się za Ciebie”</p>
+                        <p style="color: #d4d4d8; margin: 0;">Dołącz do naszej społeczności modlitewnej na WhatsApp. Możesz tam podzielić się swoją osobistą intencją i wspólnie z innymi trwać na modlitwie w każdej potrzebie.</p>
+                        <a href="https://chat.whatsapp.com/LGzSCB9K5Vp2jTF8dIALI6" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); color: #fff; text-decoration: none; border-radius: 50px; padding: 12px 24px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2); margin-top: 5px; text-align: center;" onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';">
+                            <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Dołącz do grupy na WhatsApp
+                        </a>
                     </div>
-                    
-                    <div class="form-group" style="margin-top: 15px;">
-                        <label class="form-label" for="userCity">Miejscowość</label>
-                        <input class="form-input" type="text" id="userCity" placeholder="np. Rzeszów" required>
-                    </div>
-                    
-                    <div class="form-group" style="margin-top: 15px;">
-                        <label class="form-label" for="prayerText">Twoja intencja modlitewna</label>
-                        <textarea class="form-textarea" id="prayerText" rows="5" placeholder="Napisz intencję modlitewną za Ojczyznę, rodzinę lub bliskich..." required></textarea>
-                    </div>
-                    
-                    <button class="btn-submit" type="submit">
-                        <i class="fa-solid fa-paper-plane"></i> Prześlij intencję do wspólnej modlitwy
-                    </button>
-                </form>
+                </div>
             </div>
 
             <!-- Official Prayer for the Nation -->
