@@ -1683,6 +1683,16 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         }
 
     </style>
+    <script>
+        // initStream in HEAD - guaranteed global before any onclick fires
+        function initStream() {
+            var o = document.getElementById('startOverlay');
+            if (o) { o.style.display = 'none'; o.className += ' hidden'; }
+            var a = document.getElementById('stream-audio');
+            if (a) a.play().catch(function(){});
+        }
+        window.initStream = initStream;
+    </script>
 </head>
 <body>
     <script>

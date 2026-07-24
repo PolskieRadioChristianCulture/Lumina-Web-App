@@ -1618,6 +1618,16 @@ body.za-polske-wallpaper .right-panel { grid-column: 2 !important; display: flex
 body.za-polske-wallpaper .reflection-canvas-card { position: relative !important; top: 0 !important; left: auto !important; right: auto !important; width: 520px !important; height: 530px !important; margin-top: 0 !important; }
 body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom: 180px !important; left: 70px !important; width: 750px !important; }
     </style>
+    <script>
+        // initStream in HEAD - guaranteed global before any onclick fires
+        function initStream() {
+            var o = document.getElementById('startOverlay');
+            if (o) { o.style.display = 'none'; o.className += ' hidden'; }
+            var a = document.getElementById('stream-audio');
+            if (a) a.play().catch(function(){});
+        }
+        window.initStream = initStream;
+    </script>
 </head>
 <body>
     <script>
