@@ -3294,6 +3294,27 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         });
     </script>
 
-    <audio id="stream-audio" src="https://stream.zeno.fm/zka1er2mfzzuv"></audio>
+    <audio id="stream-audio" src="https://christian-culture-global.web.app/deep_forest_1.mp3" loop></audio>
+    <script>
+        // Automatic playlist rotation fallback for Worship Instrumental channel
+        (function initWorshipPlaylist() {
+            var audio = document.getElementById("stream-audio");
+            if (!audio) return;
+            fetch("./worship_playlist.json")
+                .then(function(res) { return res.json(); })
+                .then(function(playlist) {
+                    if (!playlist || !playlist.length) return;
+                    var currentIdx = 0;
+                    audio.addEventListener("ended", function() {
+                        currentIdx = (currentIdx + 1) % playlist.length;
+                        if (playlist[currentIdx] && playlist[currentIdx].url) {
+                            audio.src = playlist[currentIdx].url;
+                            audio.play().catch(function(){});
+                        }
+                    });
+                })
+                .catch(function(){});
+        })();
+    </script>
 </body>
 </html>
