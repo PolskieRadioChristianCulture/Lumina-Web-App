@@ -2307,6 +2307,16 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                 return "breakfast_presenters_evening.jpg";
             }
 
+                        function getDynamicWeatherForCity(city) {
+                if (typeof realWeatherData !== "undefined" && realWeatherData[city]) {
+                    return realWeatherData[city];
+                }
+                if (typeof getWeatherPreset === "function") {
+                    return getWeatherPreset(city);
+                }
+                return "☀️ 24°C / Słonecznie";
+            }
+
             function getWeatherPreset(city) {
                 const hour = new Date().getHours();
                 if (hour >= 5 && hour < 18) {
