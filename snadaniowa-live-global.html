@@ -1978,7 +1978,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             if (audio) {
                 audio.play().catch(e => {
                     console.warn("Audio play blocked:", e);
-                    if (overlay) overlay.classList.remove('hidden'); // show again if blocked
+                    // overlay stays hidden even if audio play is blocked // show again if blocked
                 });
                 // Watchdog: restart if paused (e.g. network drop)
                 setInterval(() => {
