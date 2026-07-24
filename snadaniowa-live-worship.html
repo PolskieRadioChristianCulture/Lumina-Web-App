@@ -1882,9 +1882,9 @@
 
     <!-- AUDIO STARTUP OVERLAY (Click to play and bypass browser autoplay block) -->
     <div id="startOverlay" onclick="initStream()">
-        <img class="start-logo" src="dzj-logo.jpg" alt="Dobrze, że jesteś">
-        <div class="start-label">Dobrze, że jesteś</div>
-        <div class="start-sublabel">Program Śniadaniowy · Christian Culture</div>
+        <img class="start-logo" src="worship_logo.png" alt="Instrumental Worship" onerror="this.style.display='none'">
+        <div class="start-label">Instrumental Worship</div>
+        <div class="start-sublabel">Sanctuary Edition · Christian Culture Radio</div>
         <button class="start-btn">
             <i class="fa-solid fa-circle-play"></i> Uruchom Studio
         </button>
@@ -3413,15 +3413,18 @@
             if (!audio) return;
             var worshipPlaylist = [];
             var totalDuration = 0;
+            var FIREBASE_BASE = 'https://christian-culture-global.web.app/';
+            var TRACKS = [
+                { url: FIREBASE_BASE + 'deep_forest_1.mp3', duration: 193 },
+                { url: FIREBASE_BASE + 'deep_forest_2.mp3', duration: 207 },
+                { url: FIREBASE_BASE + 'deep_forest_3.mp3', duration: 202 },
+                { url: FIREBASE_BASE + 'deep_forest_4.mp3', duration: 168 }
+            ];
+            worshipPlaylist = TRACKS;
+            totalDuration = TRACKS.reduce(function(a, t) { return a + t.duration; }, 0);
             function init() {
-                fetch('./worship_playlist.json')
-                    .then(function(r) { return r.json(); })
-                    .then(function(data) {
-                        worshipPlaylist = data;
-                        totalDuration = data.reduce(function(a, t) { return a + (t.duration || 200); }, 0);
-                        sync();
-                        audio.addEventListener('ended', sync);
-                    }).catch(function(e) { console.error('Worship audio error:', e); });
+                sync();
+                audio.addEventListener('ended', sync);
             }
             function sync() {
                 if (!worshipPlaylist.length) return;

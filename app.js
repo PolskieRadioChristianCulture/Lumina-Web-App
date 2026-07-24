@@ -69,7 +69,7 @@ let STATIONS = {
     instrumental_worship: {
         id: "instrumental_worship",
         name: "INSTRUMENTAL WORSHIP",
-        streamUrl: "https://drive.usercontent.google.com/download?id=1jvSo-xBCvWQ3OmN9k9XTDBvxt2d6IAr7&export=download",
+        streamUrl: "https://christian-culture-global.web.app/deep_forest_1.mp3",
         playlistUrl: "./worship_playlist.json",
         isDrivePlaylist: true,
         accentColors: ["#8E2DE2", "#4A00E0"],
