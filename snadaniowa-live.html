@@ -1685,6 +1685,26 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
     </style>
 </head>
 <body>
+    <script>
+        // Global initStream - guaranteed global scope for onclick handler
+        window.initStream = function() {
+            var overlay = document.getElementById('startOverlay');
+            var audio = document.getElementById('stream-audio');
+            if (overlay) {
+                overlay.style.display = 'none';
+                overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
+                overlay.style.visibility = 'hidden';
+                overlay.classList.add('hidden');
+            }
+            if (audio) {
+                audio.play().catch(function(e) {
+                    console.warn('Audio play blocked:', e);
+                });
+            }
+        };
+        function initStream() { window.initStream(); }
+    </script>
 
     <!-- Main Auto-Scaling Viewport wrapper -->
     <div id="app-container">
@@ -3513,7 +3533,8 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
 
     <audio id="stream-audio" src="https://stream.zeno.fm/vz96pvl3pnktv"></audio>
 
-        document.addEventListener("DOMContentLoaded", () => {
+<script>
+document.addEventListener("DOMContentLoaded", () => {
             const overlay = document.getElementById('startOverlay');
             if (overlay) {
                 overlay.addEventListener('click', () => {
@@ -3528,6 +3549,5 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                 });
             }
         });
-
+</script>
 </body>
-</html>
