@@ -752,18 +752,18 @@
 
         .slide-title {
             font-family: 'Cinzel', serif;
-            font-size: 2.0rem;
+            font-size: 2.4rem;
             font-weight: 900;
-            line-height: 1.25;
+            line-height: 1.2;
             color: #fff;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .slide-text {
-            font-size: 1.65rem;
+            font-size: 2.0rem;
             font-weight: 400;
-            line-height: 1.45;
+            line-height: 1.5;
             color: rgba(255, 255, 255, 0.95);
             text-shadow: 0 2px 8px rgba(0,0,0,0.4);
         }
@@ -777,13 +777,22 @@
         /* Citation box */
         .bible-citation {
             border-left: 4.5px solid var(--breakfast-accent);
-            padding: 10px 16px;
-            margin: 6px 0;
+            padding: 12px 18px;
+            margin: 8px 0;
             font-style: italic;
             background: rgba(255, 204, 0, 0.04);
             border-radius: 0 12px 12px 0;
-            line-height: 1.4;
-            font-size: 2.2rem;
+            line-height: 1.45;
+            font-size: 2.5rem;
+        }
+
+        /* Live Helpline Panel */
+        .live-helpline-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
         }
 
         /* Fix scrolling text jitter over blurred backgrounds */
@@ -1633,7 +1642,27 @@
             100% { transform: rotate(14deg) scale(1.2); }
         }
 
-        /* --- HELPLINE WIDGET --- */
+        /* --- LIVE HELPLINE PANEL (lewy panel - pod zegarem) --- */
+        .live-helpline-panel {
+            display: flex !important;
+            align-items: center;
+            gap: 14px;
+            background: rgba(245,197,24,0.08);
+            border: 1.5px solid rgba(245,197,24,0.3);
+            border-radius: 14px;
+            padding: 10px 16px;
+            margin: 8px 0 10px 0;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            animation: live-helpline-pulse 2.4s infinite alternate;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .live-helpline-panel:hover {
+            background: rgba(245,197,24,0.18);
+            border-color: rgba(245,197,24,0.7);
+        }
         .helpline-header-widget {
             display: flex;
             align-items: center;
