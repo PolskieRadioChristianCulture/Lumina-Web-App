@@ -243,7 +243,7 @@
             grid-template-columns: 520px 1fr 520px;
             padding: 0 70px;
             gap: 60px;
-            align-items: center;
+            align-items: stretch;
         }
 
         /* LEFT SIDEBAR */
@@ -557,11 +557,12 @@
         .right-panel {
             display: flex !important;
             width: 520px;
-            height: 530px;
+            height: 100%;
+            min-height: 0;
             position: relative;
             flex-direction: column;
-            justify-content: center;
-            align-self: center;
+            justify-content: stretch;
+            align-self: stretch;
             margin-top: 0;
             overflow: hidden;
         }
@@ -629,7 +630,7 @@
             border: 1px solid var(--glass-border);
             border-top: 2.5px solid var(--breakfast-accent);
             border-radius: 20px;
-            padding: 26px 30px;
+            padding: 28px 32px;
             box-shadow: 0 15px 35px var(--glass-shadow);
             position: relative;
             top: auto;
@@ -637,11 +638,13 @@
             left: auto;
             width: 100%;
             height: 100%;
+            flex: 1;
             box-sizing: border-box;
             transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
+
 
             /* Force hardware acceleration to stop text from waving/jittering over the moving background */
             transform: translateZ(0);
