@@ -241,6 +241,9 @@
         .main-viewport {
             display: grid;
             grid-template-columns: 520px 1fr 520px;
+            /* height must be 100% so child panels can resolve height:100% relative to this container */
+            height: 100%;
+            min-height: 0;
             padding: 0 70px;
             gap: 60px;
             align-items: stretch;
