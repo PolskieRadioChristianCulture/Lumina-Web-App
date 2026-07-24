@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INSTRUMENTAL WORSHIP - Radio Christian Culture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #090514;
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            background: rgba(20, 10, 35, 0.75);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            max-width: 600px;
+            width: 90%;
+        }
+        .logo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #a855f7;
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: #a855f7;
+            font-size: 28px;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        p {
+            color: #d1d5db;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 8px 18px;
+            background: rgba(168, 85, 247, 0.2);
+            color: #c084fc;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid rgba(168, 85, 247, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="worship_logo_bg.jpg" alt="Instrumental Worship" class="logo">
+        <h1>INSTRUMENTAL WORSHIP</h1>
+        <p id="track-name">Sanctuary Ambient & Prayer</p>
+        <div class="status-badge" id="status">NADWANIE 24/7</div>
+    </div>
+
+    <audio id="stream-audio" autoplay></audio>
+    <script type="text/javascript">
+        (function() {
+            const audio = document.getElementById("stream-audio");
+            const trackNameEl = document.getElementById("track-name");
+            let worshipPlaylist = [];
+            let totalWorshipDuration = 0;
+            
+            async function initWorshipAudio() {
+                try {
+                    const res = await fetch('./worship_playlist.json');
+                    if (res.ok) {
+                        worshipPlaylist = await res.json();
+                        totalWorshipDuration = worshipPlaylist.reduce((acc, t) => acc + (t.duration || 200), 0);
+                        syncAndPlay();
+                        audio.addEventListener('ended', syncAndPlay);
+                    }
+                } catch(e) {
+                    console.error("Błąd ładowania playlisty worship:", e);
+                }
+            }
+            
+            function syncAndPlay() {
+                if (!worshipPlaylist.length) return;
+                const epochSeconds = Math.floor(Date.now() / 1000);
+                let remaining = epochSeconds % (totalWorshipDuration || 770);
+                let targetIndex = 0;
+                let seekSeconds = 0;
+                for (let i = 0; i < worshipPlaylist.length; i++) {
+                    const dur = worshipPlaylist[i].duration || 200;
+                    if (remaining < dur) {
+                        targetIndex = i;
+                        seekSeconds = remaining;
+                        break;
+                    }
+                    remaining -= dur;
+                }
+                const currentTrack = worshipPlaylist[targetIndex];
+                if (trackNameEl) trackNameEl.textContent = `${currentTrack.title} — ${currentTrack.artist}`;
+                const cleanPath = currentTrack.url.replace('./', '');
+                if (!audio.src.includes(cleanPath)) {
+                    audio.src = currentTrack.url;
+                    try { audio.currentTime = seekSeconds; } catch(e) {}
+                }
+                audio.play().catch(e => console.log("Auto-play wait for user gesture", e));
+            }
+            
+            document.addEventListener("DOMContentLoaded", initWorshipAudio);
+            document.addEventListener("click", () => {
+                if (audio.paused) audio.play();
+            }, { once: true });
+        })();
+    </script>
+</body>
+</html>

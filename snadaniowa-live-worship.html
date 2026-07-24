@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INSTRUMENTAL WORSHIP - Radio Christian Culture | Christian Culture TV</title>
+    <title>INSTRUMENTAL WORSHIP - Radio Christian Culture</title>
     
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,7 +22,7 @@
             --glass-border: rgba(255, 255, 255, 0.15);
             --glass-shadow: rgba(0, 0, 0, 0.6);
             --breakfast-accent: #a855f7;
-            --red-live: #ff3b30;
+            --red-live: #a855f7;
         }
 
         * {
@@ -1645,7 +1645,7 @@
             <!-- Header -->
             <header>
                 <div class="header-brand">
-                    <i class="fa-solid fa-mug-hot"></i> INSTRUMENTAL WORSHIP TV
+                    <i class="fa-solid fa-mug-hot"></i> DOBRZE, ŻE JESTEŚ TV
                 </div>
                 
                 <div class="live-tag-container">
@@ -3409,52 +3409,42 @@
     <audio id="stream-audio"></audio>
     <script type="text/javascript">
         (function() {
-            const audio = document.getElementById("stream-audio");
+            var audio = document.getElementById("stream-audio");
             if (!audio) return;
-            
-            let worshipPlaylist = [];
-            let totalWorshipDuration = 0;
-            
-            async function initWorshipAudio() {
-                try {
-                    const res = await fetch('./worship_playlist.json');
-                    if (res.ok) {
-                        worshipPlaylist = await res.json();
-                        totalWorshipDuration = worshipPlaylist.reduce((acc, t) => acc + (t.duration || 210), 0);
-                        syncAndPlay();
-                        audio.addEventListener('ended', syncAndPlay);
-                    }
-                } catch(e) {
-                    console.error("Błąd ładowania playlisty worship:", e);
-                }
+            var worshipPlaylist = [];
+            var totalDuration = 0;
+            function init() {
+                fetch('./worship_playlist.json')
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        worshipPlaylist = data;
+                        totalDuration = data.reduce(function(a, t) { return a + (t.duration || 200); }, 0);
+                        sync();
+                        audio.addEventListener('ended', sync);
+                    }).catch(function(e) { console.error('Worship audio error:', e); });
             }
-            
-            function syncAndPlay() {
+            function sync() {
                 if (!worshipPlaylist.length) return;
-                const epochSeconds = Math.floor(Date.now() / 1000);
-                let remaining = epochSeconds % (totalWorshipDuration || 837);
-                let targetIndex = 0;
-                let seekSeconds = 0;
-                for (let i = 0; i < worshipPlaylist.length; i++) {
-                    const dur = worshipPlaylist[i].duration || 210;
-                    if (remaining < dur) {
-                        targetIndex = i;
-                        seekSeconds = remaining;
-                        break;
-                    }
-                    remaining -= dur;
+                var epoch = Math.floor(Date.now() / 1000);
+                var rem = epoch % (totalDuration || 770);
+                var idx = 0; var seek = 0;
+                for (var i = 0; i < worshipPlaylist.length; i++) {
+                    var dur = worshipPlaylist[i].duration || 200;
+                    if (rem < dur) { idx = i; seek = rem; break; }
+                    rem -= dur;
                 }
-                const currentTrack = worshipPlaylist[targetIndex];
-                const cleanPath = currentTrack.url.replace('./', '');
-                if (!audio.src.includes(cleanPath)) {
-                    audio.src = currentTrack.url;
-                    try { audio.currentTime = seekSeconds; } catch(e) {}
+                var track = worshipPlaylist[idx];
+                var clean = track.url.replace('./', '');
+                if (!audio.src.includes(clean)) {
+                    audio.src = track.url;
+                    try { audio.currentTime = seek; } catch(e) {}
                 }
-                audio.play().catch(e => console.log("Auto-play wait for user gesture", e));
+                audio.play().catch(function() {});
             }
-            
-            document.addEventListener("DOMContentLoaded", initWorshipAudio);
-            document.addEventListener("click", () => {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else { init(); }
+            document.addEventListener('click', function() {
                 if (audio.paused) audio.play();
             }, { once: true });
         })();
