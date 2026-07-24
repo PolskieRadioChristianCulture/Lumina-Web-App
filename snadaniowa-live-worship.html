@@ -1694,6 +1694,18 @@
                         </div>
                     </div>
 
+                    <!-- Prayer Intentions Real-time Broadcast Overlay (Swaps in-place with Schedule Widget) -->
+                    <div id="livePrayerOverlay" class="schedule-widget left-panel-standard-widget" style="display: none; opacity: 0; transform: translateY(-15px); transition: opacity 0.6s ease, transform 0.6s ease; border-left: 6px solid #ff4d6d;">
+                        <div class="widget-title" style="color: #ff4d6d; border-bottom: 1px solid rgba(255,77,109,0.3);">
+                            <span><i class="fa-solid fa-hands-praying"></i> MODLITWA LIVE</span>
+                            <span style="font-size: 0.85rem; opacity: 0.7;">TERAZ</span>
+                        </div>
+                        <div style="padding: 10px 0;">
+                            <p id="livePrayerText" style="font-size: 1.55rem; color: #ffffff; line-height: 1.45; font-style: italic; margin: 0; font-weight: 500; text-shadow: 0 2px 5px rgba(0,0,0,0.6);"></p>
+                            <p id="livePrayerAuthor" style="font-size: 1.25rem; color: var(--breakfast-accent); font-weight: 800; text-align: right; margin: 12px 0 0 0; text-transform: uppercase; letter-spacing: 1px;"></p>
+                        </div>
+                    </div>
+
                     <!-- Weather + CTA + QR Group (Auto-aligns QR sidecar in CSS) -->
                     <div class="weather-cta-group left-panel-standard-widget">
                         <div class="weather-cta-widgets">
@@ -1831,16 +1843,6 @@
 
             <!-- Popup Tab (Outside footer to sit behind it) -->
             <div class="ticker-popup-tab" id="tickerPopupTab">ZA CHWILĘ...</div>
-
-            <!-- Prayer Intentions Real-time Broadcast Overlay -->
-            <div id="livePrayerOverlay" style="position: fixed; bottom: 120px; left: 470px; width: 850px; background: rgba(15, 18, 30, 0.96); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 3px solid var(--breakfast-accent); border-radius: 24px; padding: 25px 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.95); display: flex; flex-direction: column; gap: 14px; z-index: 1000; opacity: 0; transform: translateY(30px); pointer-events: none; transition: opacity 1s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1); border-left: 8px solid #dc143c;">
-                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
-                    <span style="font-family: 'Cinzel', serif; font-size: 1.45rem; font-weight: 800; color: #ff4d6d; letter-spacing: 2px; text-transform: uppercase; display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-hands-praying"></i> WSPÓLNA MODLITWA LIVE</span>
-                    <span style="font-size: 1.2rem; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 1px;">TERAZ</span>
-                </div>
-                <p id="livePrayerText" style="font-size: 1.95rem; color: #ffffff; line-height: 1.5; font-style: italic; text-align: left; margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; text-shadow: 0 2px 5px rgba(0,0,0,0.6);"></p>
-                <p id="livePrayerAuthor" style="font-size: 1.5rem; color: var(--breakfast-accent); font-weight: 800; text-align: right; margin: 5px 0 0 0; font-family: 'Outfit', sans-serif; text-transform: uppercase; letter-spacing: 1px;"></p>
-            </div>
 
             <!-- Footer Ticker -->
             <footer>
@@ -2053,7 +2055,7 @@
             let activeReflectionObj = null;
             let lastActiveSlotHour = -1;
             
-            let customImgSrc = "breakfast_presenters.jpg";
+            let customImgSrc = "worship_bg.jpg";
             let customVideoSrc = ""; 
 
             // DOM elements
@@ -2233,38 +2235,9 @@
                     }
                 }
 
-                // Real-time dynamic background check (swaps backgrounds in the slideshow, etc.)
-                if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || !safeStorage.getItem("dzj_stream_image")) {
-                    const currentBg = getDynamicBackground("breakfast_presenters.jpg");
-                    const currentSrcFilename = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
-                    if (currentSrcFilename !== currentBg) {
-                        bgActiveImg.src = currentBg;
-                    }
-                }
             }
             setInterval(updateClock, 1000);
             updateClock();
-
-            // Cyclical schedule widget show/hide loop (35s visible, 55s hidden)
-            function runScheduleWidgetLoop() {
-                const schedWidget = document.getElementById("scheduleWidget");
-                if (!schedWidget) return;
-                
-                setTimeout(() => {
-                    // Slide out to left and fade out
-                    schedWidget.style.opacity = "0";
-                    schedWidget.style.transform = "translateX(-50px)";
-                    
-                    setTimeout(() => {
-                        // Slide back in and fade in
-                        schedWidget.style.opacity = "1";
-                        schedWidget.style.transform = "translateX(0)";
-                        
-                        runScheduleWidgetLoop(); // Loop infinitely
-                    }, 55000); // Stay hidden for 55s
-                }, 35000); // Stay visible for 35s
-            }
-            runScheduleWidgetLoop();
 
             // Cyclical clock widget show/hide loop (45s visible, 45s hidden)
             function runClockWidgetLoop() {
@@ -2287,21 +2260,12 @@
             }
             runClockWidgetLoop();
 
-            // Helper to get dynamic background based on time of day and calendar date
+            // Helper to get dynamic background for Worship scene
             function getDynamicBackground(imagePath) {
-                if (imagePath && imagePath !== "breakfast_presenters.jpg") {
+                if (imagePath && !imagePath.includes("presenters")) {
                     return imagePath;
                 }
-                const hour = new Date().getHours();
-                if (hour >= 5 && hour < 9) {
-                    return "breakfast_presenters_morning_2.jpg";
-                } else if (hour >= 9 && hour < 12) {
-                    return "breakfast_presenters_forenoon.jpg";
-                } else if (hour >= 12 && hour < 18) {
-                    return "breakfast_presenters.jpg";
-                } else {
-                    return "breakfast_presenters_evening.jpg";
-                }
+                return "worship_bg.jpg";
             }
 
             // Real-time weather data cache and city coordinates
@@ -3388,31 +3352,41 @@
             livePrayerText.textContent = `„${prayer.text}”`;
             livePrayerAuthor.textContent = `— ${prayer.name}, ${prayer.city}`;
             
-            // Smoothly hide Schedule Widget first to prevent any visual overlap
             const scheduleWidget = document.getElementById("scheduleWidget");
+            
+            // Step 1: Smoothly fade out Schedule Widget (PROGRAM DNIA)
             if (scheduleWidget) {
                 scheduleWidget.style.opacity = "0";
                 scheduleWidget.style.transform = "translateY(-15px)";
             }
             
-            // Display Prayer Overlay after schedule fades out
+            // Step 2: Swap display and fade in Prayer Overlay in the exact same slot
             setTimeout(() => {
-                livePrayerOverlay.style.opacity = "1";
-                livePrayerOverlay.style.transform = "translateY(0)";
-                livePrayerOverlay.style.pointerEvents = "auto";
-            }, 400);
+                if (scheduleWidget) scheduleWidget.style.display = "none";
+                
+                livePrayerOverlay.style.display = "flex";
+                setTimeout(() => {
+                    livePrayerOverlay.style.opacity = "1";
+                    livePrayerOverlay.style.transform = "translateY(0)";
+                    livePrayerOverlay.style.pointerEvents = "auto";
+                }, 50);
+            }, 500);
             
-            // Show prayer for 20 seconds, then hide and restore Schedule Widget
+            // Step 3: Show prayer for 20 seconds, then fade out and restore Schedule Widget
             setTimeout(() => {
                 livePrayerOverlay.style.opacity = "0";
-                livePrayerOverlay.style.transform = "translateY(20px)";
+                livePrayerOverlay.style.transform = "translateY(15px)";
                 livePrayerOverlay.style.pointerEvents = "none";
                 
                 setTimeout(() => {
-                    // Restore Program Dnia (Schedule Widget)
+                    livePrayerOverlay.style.display = "none";
+                    
                     if (scheduleWidget) {
-                        scheduleWidget.style.opacity = "1";
-                        scheduleWidget.style.transform = "translateY(0)";
+                        scheduleWidget.style.display = "flex";
+                        setTimeout(() => {
+                            scheduleWidget.style.opacity = "1";
+                            scheduleWidget.style.transform = "translateY(0)";
+                        }, 50);
                     }
                     
                     setTimeout(() => {
