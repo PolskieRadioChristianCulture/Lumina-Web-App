@@ -150,13 +150,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (adminDoc.exists()) {
             const data = adminDoc.data();
             if (data.STATIONS) {
-                STATIONS = data.STATIONS;
-                console.log("Loaded STATIONS configuration from Firebase");
+                STATIONS = { ...STATIONS, ...data.STATIONS };
+                console.log("Loaded STATIONS configuration from Firebase merged with local stations");
             }
         }
     } catch (e) {
         console.error("Failed to load STATIONS from Firebase, using fallback", e);
     }
+    
+    // Dynamically render station dropdown menu items
+    renderStationDropdown();
     
     // Setup initial station details
     selectStation("poland");
@@ -240,18 +243,25 @@ document.addEventListener("click", () => {
     stationDropdownMenu.classList.remove("active");
 });
 
-// Switch stations when clicking dropdown items
-document.querySelectorAll(".dropdown-item").forEach(item => {
-    item.addEventListener("click", (e) => {
-        const stationId = item.getAttribute("data-station-id");
-        
-        // Update active class in dropdown menu
-        document.querySelectorAll(".dropdown-item").forEach(i => i.classList.remove("active"));
-        item.classList.add("active");
-        
-        selectStation(stationId);
+function renderStationDropdown() {
+    if (!stationDropdownMenu) return;
+    stationDropdownMenu.innerHTML = Object.values(STATIONS).map(st => `
+        <button class="dropdown-item ${st.id === (activeStation ? activeStation.id : 'poland') ? 'active' : ''}" data-station-id="${st.id}">
+            <span class="dot" style="background: ${st.accentColors ? st.accentColors[0] : '#D4AF37'}; box-shadow: 0 0 8px ${st.accentColors ? st.accentColors[0] : '#D4AF37'};"></span> ${st.name}
+        </button>
+    `).join('');
+
+    document.querySelectorAll(".dropdown-item").forEach(item => {
+        item.addEventListener("click", (e) => {
+            const stationId = item.getAttribute("data-station-id");
+            document.querySelectorAll(".dropdown-item").forEach(i => i.classList.remove("active"));
+            item.classList.add("active");
+            selectStation(stationId);
+        });
     });
-});
+}
+
+renderStationDropdown();
 
 // Main Play / Pause click
 playBtn.addEventListener("click", () => {
