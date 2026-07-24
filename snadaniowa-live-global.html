@@ -2632,54 +2632,15 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                 }
             }
 
+                        // Background Init
             // Background Init
             function initBackground() {
                 const activeBg = getActiveBackground();
-                bgActiveImg.src = activeBg;
+                if (bgActiveImg) {
+                    bgActiveImg.src = activeBg;
                     bgActiveImg.style.opacity = 1;
-                    applyBodyModeClass();
-                    return;
                 }
-                
-                if (!customVideoSrc) {
-                    bgActiveImg.src = getDynamicBackground(customImgSrc);
-                    bgActiveImg.style.opacity = 1;
-                    applyBodyModeClass();
-                    return;
-                }
-
-                const isLocal = window.location.protocol === "file:";
-                if (isLocal) {
-                    v1.src = customVideoSrc;
-                    v2.src = customVideoSrc;
-                    v1.load();
-                    v2.load();
-
-                    let videoTimeout = setTimeout(() => {
-                        console.warn("Video timed out. Using static layout background.");
-                        bgActiveImg.style.opacity = 1;
-                        applyBodyModeClass();
-                    }, 4000);
-
-                    v1.addEventListener("canplaythrough", () => {
-                        clearTimeout(videoTimeout);
-                        bgActiveImg.style.opacity = 0;
-                        activeVideo.style.opacity = 1;
-                        activeVideo.play().catch(e => console.warn(e));
-                        v1.addEventListener("timeupdate", checkVideoProgress);
-                        v2.addEventListener("timeupdate", checkVideoProgress);
-                        applyBodyModeClass();
-                    }, { once: true });
-
-                    v1.addEventListener("error", () => {
-                        clearTimeout(videoTimeout);
-                        bgActiveImg.style.opacity = 1;
-                        applyBodyModeClass();
-                    }, { once: true });
-                } else {
-                    bgActiveImg.style.opacity = 1;
-                    applyBodyModeClass();
-                }
+                applyBodyModeClass();
             }
 
             // Compiler of raw reflection string to slide objects
