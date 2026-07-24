@@ -3415,14 +3415,15 @@
             var totalDuration = 0;
             var FIREBASE_BASE = 'https://christian-culture-global.web.app/';
             var TRACKS = [
-                { url: FIREBASE_BASE + 'deep_forest_1.mp3', duration: 193 },
-                { url: FIREBASE_BASE + 'deep_forest_2.mp3', duration: 207 },
-                { url: FIREBASE_BASE + 'deep_forest_3.mp3', duration: 202 },
-                { url: FIREBASE_BASE + 'deep_forest_4.mp3', duration: 168 }
+                { url: 'https://christian-culture-global.web.app/deep_forest_1.mp3', duration: 193 },
+                { url: 'https://christian-culture-global.web.app/deep_forest_2.mp3', duration: 207 },
+                { url: 'https://christian-culture-global.web.app/deep_forest_3.mp3', duration: 202 },
+                { url: 'https://christian-culture-global.web.app/deep_forest_4.mp3', duration: 168 },
+                { url: 'https://christian-culture-global.web.app/worship_track__3P6NjOw.mp3', duration: NaN }
             ];
             worshipPlaylist = TRACKS;
             totalDuration = TRACKS.reduce(function(a, t) { return a + t.duration; }, 0);
-            function init() {
+                        function init() {
                 sync();
                 audio.addEventListener('ended', sync);
             }
