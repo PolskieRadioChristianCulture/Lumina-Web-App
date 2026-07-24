@@ -73,7 +73,7 @@ let STATIONS = {
         playlistUrl: "./worship_playlist.json",
         isDrivePlaylist: true,
         accentColors: ["#8E2DE2", "#4A00E0"],
-        logo: "./worship_logo.png",
+        logo: "./worship_logo_bg.jpg",
         tracks: [
             "DEEP FOREST 1 - Instrumental Prayer",
             "DEEP FOREST 2 - Sanctuary Ambient",
@@ -309,40 +309,28 @@ function selectStation(stationId) {
     const station = STATIONS[stationId];
     if (!station) return;
     
-    const wasPlaying = isPlaying;
-    
     // Set active station state
     activeStation = station;
     activeStationNameText.textContent = station.name;
     playerStationLogo.src = station.logo;
     
     // Change player CSS accent color dynamically
-    document.documentElement.style.setProperty('--player-accent', station.accentColors[0]);
+    if (station.accentColors && station.accentColors[0]) {
+        document.documentElement.style.setProperty('--player-accent', station.accentColors[0]);
+    }
     
     // Connect to Zeno.fm live metadata EventSource
     connectStationMetadata(stationId);
     
-    if (wasPlaying) {
-        // Smoothly fade out, switch source, and fade back in
-        fadeAudioOut(() => {
-            if (stationId === "global_biblia" || stationId === "instrumental_worship") {
-                audio.src = "";
-            } else {
-                setAudioSource(station.streamUrl);
-            }
-            playRadio();
-        });
-    } else {
+    // Smoothly fade out, switch source, and start playback automatically
+    fadeAudioOut(() => {
         if (stationId === "global_biblia" || stationId === "instrumental_worship") {
             audio.src = "";
-            updatePlayerUI(false);
-            playerStatusText.textContent = "Gotowy";
         } else {
             setAudioSource(station.streamUrl);
-            updatePlayerUI(false);
-            playerStatusText.textContent = "Gotowy";
         }
-    }
+        playRadio();
+    });
 }
 
 function setAudioSource(url) {
