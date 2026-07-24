@@ -1994,7 +1994,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         <img class="start-logo" src="worship_logo.png" alt="Instrumental Worship" onerror="this.style.display='none'">
         <div class="start-label">Instrumental Worship</div>
         <div class="start-sublabel">Telewizja Christian Culture 24</div>
-        <button class="start-btn">
+        <button class="start-btn" onclick="initStream();">
             <i class="fa-solid fa-circle-play"></i> Uruchom Studio
         </button>
     </div>
@@ -2086,16 +2086,17 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
 
 
         // ── AUDIO INIT (global scope — called from overlay onclick) ──
-        function initStream() {
+                function initStream() {
             const overlay = document.getElementById('startOverlay');
             const audio   = document.getElementById('stream-audio');
-            if (overlay) overlay.classList.add('hidden');
+            if (overlay) {
+                overlay.classList.add('hidden');
+                overlay.style.display = 'none';
+            }
             if (audio) {
                 audio.play().catch(e => {
-                    console.warn("Audio play blocked:", e);
-                    // overlay stays hidden even if audio play is blocked // show again if blocked
+                    console.warn("Audio play blocked or delayed:", e);
                 });
-                // Watchdog: restart if paused (e.g. network drop)
                 setInterval(() => {
                     if (audio.paused) audio.play().catch(() => {});
                 }, 10000);
