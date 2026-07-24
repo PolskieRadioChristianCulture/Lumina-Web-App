@@ -1642,18 +1642,37 @@
             box-shadow: 0 0 70px rgba(212, 175, 55, 0.45);
         }
         .start-btn i { font-size: 1.5rem; }
-        /* Special Event "Zjednoczeni za Polskę" layout overrides */
-        body.special-event-today .left-panel {
+        /* Dedicated locked layout for Za Polske wallpaper */
+        body.za-polske-wallpaper .left-panel {
             display: none !important;
         }
-        body.special-event-today .main-viewport {
-            grid-template-columns: 1fr;
-            padding-left: 70px;
+        body.za-polske-wallpaper .main-viewport {
+            display: grid !important;
+            grid-template-columns: 1fr 520px !important;
+            padding: 0 70px !important;
         }
-        body.special-event-today.evening-layout.mode-presenters .reflection-canvas-card {
-            left: 0;
-            width: 530px;
-            height: 620px;
+        body.za-polske-wallpaper .right-panel {
+            grid-column: 2 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-end !important;
+            gap: 15px !important;
+            margin-top: 40px !important;
+        }
+        body.za-polske-wallpaper .reflection-canvas-card {
+            position: relative !important;
+            top: 0 !important;
+            left: auto !important;
+            right: auto !important;
+            width: 520px !important;
+            height: 530px !important;
+            margin-top: 0 !important;
+        }
+        body.za-polske-wallpaper #livePrayerOverlay {
+            position: fixed !important;
+            bottom: 180px !important;
+            left: 70px !important;
+            width: 750px !important;
         }
     
         
@@ -2683,7 +2702,7 @@
                 }
                 
                 if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("Tapeta_ZaPolske") || customImgSrc.includes("Tapeta_ZaPolske")) {
-                    document.body.classList.add("special-event-today", "mode-presenters");
+                    document.body.classList.add("special-event-today", "mode-presenters", "za-polske-wallpaper");
                     return;
                 }
                 
