@@ -118,28 +118,44 @@ async function loadWorshipPlaylist() {
 const audio = new Audio();
 audio.volume = 0.8;
 
-// Pętla Instrumental Worship — po zakończeniu utworu wybiera losowo kolejny utwór (bez powtarzania tego samego bezpośrednio)
+// Global Audio Ended Handler: Automatic loop for Worship Music and Biblia Audio
 audio.addEventListener('ended', () => {
-    if (!isPlaying) return;
-    if (activeStation && activeStation.id === 'instrumental_worship' && worshipPlaylist.length > 0) {
-        let nextIndex = worshipTrackIndex;
-        if (worshipPlaylist.length > 1) {
-            while (nextIndex === worshipTrackIndex) {
-                nextIndex = Math.floor(Math.random() * worshipPlaylist.length);
-            }
-        }
-        worshipTrackIndex = nextIndex;
-        const nextTrack = worshipPlaylist[worshipTrackIndex];
-        audio.src = nextTrack.url;
-        audio.load();
-        audio.play().catch(e => console.error('Worship next track error:', e));
-        playerTrackTitle.textContent = `${nextTrack.title} — ${nextTrack.artist}`;
-        console.log(`🎵 Worship pętla (losowo) → utwór ${worshipTrackIndex + 1}/${worshipPlaylist.length}: ${nextTrack.title}`);
+    if (activeStation && activeStation.id === 'instrumental_worship') {
+        playNextWorshipTrack();
     } else if (activeStation && activeStation.id === 'global_biblia' && globalPlaylist.length > 0) {
-        // Biblia audio też przechodzi do następnego rozdziału
         playRadio();
     }
 });
+
+function playNextWorshipTrack() {
+    if (!worshipPlaylist || worshipPlaylist.length === 0) return;
+    
+    let nextIndex = worshipTrackIndex;
+    if (worshipPlaylist.length > 1) {
+        while (nextIndex === worshipTrackIndex) {
+            nextIndex = Math.floor(Math.random() * worshipPlaylist.length);
+        }
+    } else {
+        nextIndex = 0;
+    }
+    worshipTrackIndex = nextIndex;
+    const nextTrack = worshipPlaylist[worshipTrackIndex];
+    audio.src = nextTrack.url;
+    playerTrackTitle.textContent = `${nextTrack.title} — ${nextTrack.artist || 'Christian Culture'}`;
+    
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            isPlaying = true;
+            updatePlayerUI(true);
+            playerStatusText.textContent = "Odtwarza";
+        }).catch(err => {
+            console.error('Worship next track error:', err);
+            isPlaying = false;
+            updatePlayerUI(false);
+        });
+    }
+}
 
 const playBtn = document.getElementById("playBtn");
 const playIcon = document.getElementById("playIcon");
@@ -397,29 +413,14 @@ async function playRadio() {
     } else if (activeStation.id === "instrumental_worship") {
         await loadWorshipPlaylist();
         if (worshipPlaylist.length > 0) {
-            // Synchronizacja czasowa 24/7: wyznacz który utwór powinien grać teraz
-            const epochSeconds = Math.floor(Date.now() / 1000);
-            let remaining = epochSeconds % (totalWorshipDuration || 1200);
-            let targetIndex = 0;
-            let seekSeconds = 0;
-            for (let i = 0; i < worshipPlaylist.length; i++) {
-                const dur = worshipPlaylist[i].duration || 240;
-                if (remaining < dur) {
-                    targetIndex = i;
-                    seekSeconds = remaining;
-                    break;
+            if (!audio.src || !audio.src.includes(".mp3") || audio.ended) {
+                if (worshipTrackIndex < 0 || worshipTrackIndex >= worshipPlaylist.length) {
+                    worshipTrackIndex = Math.floor(Math.random() * worshipPlaylist.length);
                 }
-                remaining -= dur;
-            }
-            worshipTrackIndex = targetIndex; // Ustaw globalny indeks dla pętli
-            const currentTrack = worshipPlaylist[targetIndex];
-            if (audio.src !== currentTrack.url) {
+                const currentTrack = worshipPlaylist[worshipTrackIndex];
                 audio.src = currentTrack.url;
-                audio.load();
-                try { audio.currentTime = seekSeconds; } catch(e) {}
+                playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist || 'Christian Culture'}`;
             }
-            playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist}`;
-            console.log(`🎵 Worship start: utwór ${targetIndex + 1}/${worshipPlaylist.length}, pozycja ${seekSeconds}s`);
         }
     } else {
         // If audio element was reset, reload the active stream url
@@ -520,11 +521,7 @@ audio.addEventListener("error", (e) => {
     }
 });
 
-audio.addEventListener("ended", () => {
-    if (activeStation.id === "global_biblia") {
-        playRadio();
-    }
-});
+
 
 
 // Update play/pause buttons visually
