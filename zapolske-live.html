@@ -2189,6 +2189,16 @@
             let lastActiveSlotHour = -1;
             
             let customImgSrc = "Tapeta_ZaPolske.jpg";
+
+            // Dynamic Time-Based Background Handler (Night 21:00 - 06:00 switch to CCTV_NOCA.jpg)
+            function getActiveBackground() {
+                const hour = new Date().getHours();
+                if (hour >= 21 || hour < 6) {
+                    return "CCTV_NOCA.jpg?v=1";
+                }
+                return customImgSrc || "Tapeta_ZaPolske.jpg?v=2";
+            }
+
             let customVideoSrc = ""; 
 
             // DOM elements
@@ -2358,18 +2368,11 @@
                     if (activeReflectionObj) {
                         renderReflection(activeReflectionObj);
                     }
-                    if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg") {
-                        initBackground();
-                    }
-                }
-
-                // Real-time dynamic background check (swaps backgrounds in the slideshow, etc.)
-                if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg") {
-                    const currentBg = getDynamicBackground("breakfast_presenters.jpg");
-                    const currentSrcFilename = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
-                    if (currentSrcFilename !== currentBg) {
-                        bgActiveImg.src = currentBg;
-                    }
+                    const activeBg = getActiveBackground();
+                const currentSrcFilename = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
+                if (!currentSrcFilename.includes(activeBg.split('?')[0])) {
+                    bgActiveImg.src = activeBg;
+                    applyBodyModeClass();
                 }
             }
             setInterval(updateClock, 1000);
@@ -2697,7 +2700,7 @@
                     return;
                 }
                 
-                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("Tapeta_ZaPolske") || customImgSrc.includes("Tapeta_ZaPolske")) {
+                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("Tapeta_ZaPolske") || customImgSrc.includes("Tapeta_ZaPolske") || currentBg.includes("CCTV_NOCA") || customImgSrc.includes("CCTV_NOCA")) {
                     document.body.classList.add("special-event-today", "mode-presenters", "za-polske-wallpaper");
                     return;
                 }
@@ -2766,8 +2769,8 @@
 
             // Background Init
             function initBackground() {
-                if (customImgSrc === "zjednoczeni_za_polske_banner.jpg" || customImgSrc === "Tapeta_ZaPolske.jpg") {
-                    bgActiveImg.src = customImgSrc;
+                const activeBg = getActiveBackground();
+                bgActiveImg.src = activeBg;
                     bgActiveImg.style.opacity = 1;
                     applyBodyModeClass();
                     return;

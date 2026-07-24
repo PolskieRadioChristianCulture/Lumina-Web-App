@@ -2050,6 +2050,16 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             let lastActiveSlotHour = -1;
             
             let customImgSrc = "breakfast_presenters.jpg";
+
+            // Dynamic Time-Based Background Handler (Night 21:00 - 06:00 switch to CCTV_NOCA.jpg)
+            function getActiveBackground() {
+                const hour = new Date().getHours();
+                if (hour >= 21 || hour < 6) {
+                    return "CCTV_NOCA.jpg?v=1";
+                }
+                return customImgSrc || "Tapeta_ZaPolske.jpg?v=2";
+            }
+
             let customVideoSrc = ""; 
 
             // DOM elements
@@ -2555,7 +2565,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                     return;
                 }
                 
-                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("Tapeta_ZaPolske") || customImgSrc.includes("Tapeta_ZaPolske")) {
+                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("Tapeta_ZaPolske") || customImgSrc.includes("Tapeta_ZaPolske") || currentBg.includes("CCTV_NOCA") || customImgSrc.includes("CCTV_NOCA")) {
                     document.body.classList.add("special-event-today", "mode-presenters", "za-polske-wallpaper");
                     return;
                 }
@@ -2624,8 +2634,8 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
 
             // Background Init
             function initBackground() {
-                if (customImgSrc === "zjednoczeni_za_polske_banner.jpg" || customImgSrc === "tapeta_modlitwa.gif") {
-                    bgActiveImg.src = customImgSrc;
+                const activeBg = getActiveBackground();
+                bgActiveImg.src = activeBg;
                     bgActiveImg.style.opacity = 1;
                     applyBodyModeClass();
                     return;
