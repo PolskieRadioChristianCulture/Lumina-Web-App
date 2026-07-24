@@ -3048,56 +3048,11 @@
             // Features 4 & 6: International Calendar Day & Studio Atmospheric Lighting Day-Sync
             // Zoom Ad Override Cycle Logic
             function initZoomAdCycle() {
-                const zoomAdOverlay = document.getElementById("zoomAdOverlay");
-                const standardWidgets = document.querySelectorAll(".left-panel-standard-widget");
-                const zoomPosterImg = document.querySelector(".zoom-poster");
-                
-                if (!zoomAdOverlay || standardWidgets.length === 0 || !zoomPosterImg) return;
-
-                const posters = ["Modlitwa_za_Polske.jpeg", "Modlitwa_2.jpeg"];
-
-                // Show Ad Function
-                function showZoomAd() {
-                    // Start with the first image
-                    zoomPosterImg.src = posters[0];
-                    zoomPosterImg.style.opacity = "1";
-
-                    // Hide standard widgets
-                    standardWidgets.forEach(widget => {
-                        widget.classList.add("hidden-for-ad");
-                    });
-                    
-                    // Show zoom ad with a slight delay so standard widgets fade out first
-                    setTimeout(() => {
-                        zoomAdOverlay.classList.add("show");
-                    }, 800);
-
-                    // Slideshow effect: Switch to the second image halfway through (after 10 seconds)
-                    setTimeout(() => {
-                        zoomPosterImg.style.opacity = "0";
-                        setTimeout(() => {
-                            zoomPosterImg.src = posters[1];
-                            zoomPosterImg.style.opacity = "1";
-                        }, 500); // Wait for fade out before swapping src
-                    }, 10000);
-
-                    // Hide zoom ad after 20 seconds total display time
-                    setTimeout(() => {
-                        zoomAdOverlay.classList.remove("show");
-                        
-                        // Bring standard widgets back after zoom ad fades out
-                        setTimeout(() => {
-                            standardWidgets.forEach(widget => {
-                                widget.classList.remove("hidden-for-ad");
-                            });
-                        }, 1000);
-                    }, 20000);
-                }
-
-                // Initial cycle: Run every 2 minutes (120000 ms)
-                setInterval(showZoomAd, 120000);
+                // Disabled for worship live scene
+                return;
             }
-            initZoomAdCycle();
+            // initZoomAdCycle();
+
 
             function initDaySyncFeatures() {
                 const now = new Date();
