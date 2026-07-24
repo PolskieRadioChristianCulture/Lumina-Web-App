@@ -2072,7 +2072,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
 
         document.addEventListener("DOMContentLoaded", () => {
             // ── START AUDIO IMMEDIATELY (nie czekaj na fetch rozważań) ──
-            setTimeout(initStream, 500);
+            // Audio started by user click on overlay
 
             // ── USTAW SCHEDULE OD RAZU (niezależnie od fetch) ──
             (function updateScheduleNow() {
