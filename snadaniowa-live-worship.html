@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dobrze, że jesteś - PROGRAM ŚNIADANIOWY | Christian Culture TV</title>
+    <title>INSTRUMENTAL WORSHIP - Radio Christian Culture | Christian Culture TV</title>
     
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,16 +13,16 @@
 
     <style>
         :root {
-            --gold-primary: #3b82f6; /* Modern Blue */
-            --gold-light: #93c5fd; /* Light Blue */
-            --gold-dark: #1e3a8a; /* Deep Navy Blue */
-            --bg-dark: #02040a; /* Dark Blue Black */
+            --gold-primary: #a855f7; /* High-contrast Yellow for descriptions */
+            --gold-light: #ffffff; /* White */
+            --gold-dark: #581c87; /* Medium-Dark Red */
+            --bg-dark: #090514; /* Very dark red/black */
             --text-light: #ffffff;
-            --glass-bg: rgba(10, 15, 30, 0.45); /* Transparent Navy Blue */
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --glass-shadow: rgba(0, 0, 0, 0.5);
-            --breakfast-accent: #3b82f6;
-            --red-live: #E50914;
+            --glass-bg: rgba(20, 10, 35, 0.45); /* Transparent Dark Crimson Red */
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: rgba(0, 0, 0, 0.6);
+            --breakfast-accent: #a855f7;
+            --red-live: #ff3b30;
         }
 
         * {
@@ -1645,7 +1645,7 @@
             <!-- Header -->
             <header>
                 <div class="header-brand">
-                    <i class="fa-solid fa-mug-hot"></i> DOBRZE, ŻE JESTEŚ TV
+                    <i class="fa-solid fa-mug-hot"></i> INSTRUMENTAL WORSHIP TV
                 </div>
                 
                 <div class="live-tag-container">
@@ -1913,8 +1913,7 @@
             <label for="bgImageSelect">Tło Programu (Obraz / Layout)</label>
             <select id="bgImageSelect">
                 <option value="breakfast_presenters.jpg">Prezenterki w Studio (Auto-Rotacja)</option>
-                <option value="zjednoczeni_za_polske_banner.jpg">Wydanie Specjalne (Zjednoczeni za Polskę - Baner)</option>
-                <option value="tapeta_modlitwa.gif">Wydanie Specjalne (Zjednoczeni za Polskę - Animacja GIF)</option>
+                <option value="zjednoczeni_za_polske_banner.jpg">Wydanie Specjalne (Zjednoczeni za Polskę)</option>
                 <option value="a0kKB.jpg">Własne Tło Letnie (a0kKB.jpg)</option>
                 <option value="breakfast_presenters_forenoon.jpg">Przedpołudniowe Prezenterki (Mockup 3)</option>
                 <option value="breakfast_presenters_alt.jpg">Alternatywne Prezenterki (Mockup 2)</option>
@@ -1971,10 +1970,9 @@
         };
 
 
-        // Force Google Translate to translate to English immediately
-        document.cookie = "googtrans=/pl/en; path=/";
-        document.cookie = "googtrans=/pl/en; path=/; domain=" + window.location.hostname;
-        document.cookie = "googtrans=/pl/en; path=/; domain=.polskieradio.cc";
+
+        
+
 
         // ── AUDIO INIT (global scope — called from overlay onclick) ──
         function initStream() {
@@ -2291,42 +2289,31 @@
 
             // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
-                const now = new Date();
-                const hour = now.getHours();
-                
-                if (imagePath === "breakfast_presenters.jpg") {
-                    if (hour >= 18 || hour < 5) {
-                        // Evening and Night background (18:00 - 05:00)
-                        return "breakfast_presenters_evening.jpg";
-                    } else if (hour >= 9 && hour < 12) {
-                        // Forenoon / Late Morning background (09:00 - 12:00)
-                        // Rotate between the two backgrounds every 90 seconds (based on timestamp)
-                        const slideIndex = Math.floor(now.getTime() / 90000) % 2;
-                        return slideIndex === 0 ? "breakfast_presenters_forenoon.jpg" : "breakfast_presenters_forenoon_2.jpg";
-                    } else if (hour >= 5 && hour < 9) {
-                        // Morning Program background (05:00 - 09:00)
-                        // Rotate between the two new morning backgrounds every 90 seconds
-                        const slideIndex = Math.floor(now.getTime() / 90000) % 2;
-                        return slideIndex === 0 ? "breakfast_presenters_morning_1.png" : "breakfast_presenters_morning_2.jpg";
-                    } else {
-                        // Afternoon presenters background (12:00 - 18:00) (alternating daily)
-                        const isEvenDay = (now.getDate() % 2 === 0);
-                        return isEvenDay ? "breakfast_presenters_alt.jpg" : "breakfast_presenters.jpg";
-                    }
+                if (imagePath && imagePath !== "breakfast_presenters.jpg") {
+                    return imagePath;
                 }
-                return imagePath;
+                const hour = new Date().getHours();
+                if (hour >= 5 && hour < 9) {
+                    return "breakfast_presenters_morning_2.jpg";
+                } else if (hour >= 9 && hour < 12) {
+                    return "breakfast_presenters_forenoon.jpg";
+                } else if (hour >= 12 && hour < 18) {
+                    return "breakfast_presenters.jpg";
+                } else {
+                    return "breakfast_presenters_evening.jpg";
+                }
             }
 
             // Real-time weather data cache and city coordinates
             let realWeatherData = {};
             const cityCoords = {
-                "NEW YORK": { lat: 40.7128, lon: -74.0060 },
-                "LONDON": { lat: 51.5074, lon: -0.1278 },
-                "ROME": { lat: 41.9028, lon: 12.4964 },
-                "JERUSALEM": { lat: 31.7683, lon: 35.2137 },
-                "TOKYO": { lat: 35.6762, lon: 139.6503 },
-                "PARIS": { lat: 48.8566, lon: 2.3522 },
-                "SYDNEY": { lat: -33.8688, lon: 151.2093 }
+                "WARSZAWA": { lat: 52.2297, lon: 21.0122 },
+                "KRAKÓW": { lat: 50.0647, lon: 19.9450 },
+                "OSTROWIEC ŚW.": { lat: 50.9275, lon: 21.3853 },
+                "GDAŃSK": { lat: 54.3520, lon: 18.6466 },
+                "STALOWA WOLA": { lat: 50.5698, lon: 22.0537 },
+                "WROCŁAW": { lat: 51.1079, lon: 17.0385 },
+                "POZNAŃ": { lat: 52.4064, lon: 16.9252 }
             };
 
             function getWeatherIcon(code, isDay) {
@@ -2342,15 +2329,15 @@
             }
 
             function getWeatherDesc(code) {
-                if (code === 0) return "Sunny";
-                if (code === 1 || code === 2) return "Mainly Clear";
-                if (code === 3) return "Cloudy";
-                if (code >= 45 && code <= 48) return "Foggy";
-                if (code >= 51 && code <= 55) return "Drizzle";
-                if (code >= 61 && code <= 65) return "Rainy";
-                if (code >= 80 && code <= 82) return "Rain Showers";
-                if (code >= 95) return "Thunderstorm";
-                return "Clear Sky";
+                if (code === 0) return "Słonecznie";
+                if (code === 1 || code === 2) return "Lekkie Zachmurzenie";
+                if (code === 3) return "Zachmurzenie";
+                if (code >= 45 && code <= 48) return "Mglisto";
+                if (code >= 51 && code <= 55) return "Mżawka";
+                if (code >= 61 && code <= 65) return "Opady Deszczu";
+                if (code >= 80 && code <= 82) return "Przelotne Opady";
+                if (code >= 95) return "Burza";
+                return "Ładna Pogoda";
             }
 
             async function fetchRealWeather() {
@@ -2381,39 +2368,39 @@
                 if (hour >= 5 && hour < 18) {
                     // Daytime weather presets
                     const dayPresets = {
-                        "NEW YORK": "☀️ 25°C / Sunny",
-                        "LONDON": "🌤️ 20°C / Light Breeze",
-                        "ROME": "☀️ 28°C / Clear Sky",
-                        "JERUSALEM": "☀️ 30°C / Sunny Day",
-                        "TOKYO": "🌤️ 26°C / Mild and Warm",
-                        "PARIS": "☀️ 24°C / Pleasant",
-                        "SYDNEY": "🌤️ 22°C / Fresh Breeze"
+                        "WARSZAWA": "☀️ 25°C / Słonecznie",
+                        "KRAKÓW": "🌤️ 26°C / Ciepły Wiatr",
+                        "OSTROWIEC ŚW.": "☀️ 24°C / Słonecznie",
+                        "GDAŃSK": "🌤️ 22°C / Rześka Bryza",
+                        "STALOWA WOLA": "☀️ 25°C / Słoneczny Dzień",
+                        "WROCŁAW": "☀️ 27°C / Bezchmurnie",
+                        "POZNAŃ": "🌤️ 25°C / Ciepło i Czysto"
                     };
-                    return dayPresets[city] || "☀️ 24°C / Sunny";
+                    return dayPresets[city] || "☀️ 24°C / Słonecznie";
                 } else if (hour >= 18 && hour < 22) {
                     // Evening weather presets
                     const eveningPresets = {
-                        "NEW YORK": "🌇 20°C / Clear Evening",
-                        "LONDON": "🌇 17°C / Cool Evening",
-                        "ROME": "🌇 24°C / Warm Twilight",
-                        "JERUSALEM": "🌇 23°C / Calm Evening",
-                        "TOKYO": "🌇 22°C / Cozy Evening",
-                        "PARIS": "🌇 19°C / Romantic Dusk",
-                        "SYDNEY": "🌇 18°C / Refreshing Breeze"
+                        "WARSZAWA": "🌇 20°C / Pogodny Wieczór",
+                        "KRAKÓW": "🌇 21°C / Ciepły Zmierzch",
+                        "OSTROWIEC ŚW.": "☁️ 19°C / Rześki Wieczór",
+                        "GDAŃSK": "🌊 18°C / Rześki Wiatr",
+                        "STALOWA WOLA": "🌇 20°C / Spokojny Wieczór",
+                        "WROCŁAW": "🌇 22°C / Ciepły Zmierzch",
+                        "POZNAŃ": "🌇 20°C / Bezchmurnie"
                     };
-                    return eveningPresets[city] || "🌇 20°C / Clear Evening";
+                    return eveningPresets[city] || "🌇 20°C / Pogodny Wieczór";
                 } else {
                     // Night weather presets (22:00 - 04:59)
                     const nightPresets = {
-                        "NEW YORK": "🌙 16°C / Starry Night",
-                        "LONDON": "🌙 13°C / Cool Night",
-                        "ROME": "🌙 18°C / Clear Sky",
-                        "JERUSALEM": "🌙 17°C / Chilly Night",
-                        "TOKYO": "🌙 19°C / Quiet Night",
-                        "PARIS": "🌙 15°C / Starry Sky",
-                        "SYDNEY": "🌙 14°C / Coastal Breeze"
+                        "WARSZAWA": "🌙 16°C / Gwieździsta Noc",
+                        "KRAKÓW": "🌙 17°C / Czyste Niebo",
+                        "OSTROWIEC ŚW.": "🌙 15°C / Chłodna Noc",
+                        "GDAŃSK": "🌙 14°C / Nadmorska Noc",
+                        "STALOWA WOLA": "🌙 15°C / Spokojna Noc",
+                        "WROCŁAW": "🌙 17°C / Ciepła Noc",
+                        "POZNAŃ": "🌙 16°C / Bezchmurnie"
                     };
-                    return nightPresets[city] || "🌙 15°C / Quiet Night";
+                    return nightPresets[city] || "🌙 15°C / Spokojna Noc";
                 }
             }
 
@@ -2422,15 +2409,9 @@
                 const marqueeTextEl = document.getElementById("marqueeText");
                 if (!marqueeTextEl) return;
                 
-                let prayerMarqueeText = "";
-                if (window.lastPrayerIntention) {
-                    prayerMarqueeText = `<span style="background: #dc143c; color: #ffffff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-family: 'Outfit', sans-serif; margin-right: 12px; display: inline-block;"><i class="fa-solid fa-hands-praying"></i> INTENCJA LIVE</span> <span style="color: #ff4d6d; font-weight: 700; font-style: italic; margin-right: 25px;">„${window.lastPrayerIntention.text}” (~${window.lastPrayerIntention.name}, ${window.lastPrayerIntention.city})</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
-                }
-                
                 const greetingsText = `<span class="ticker-announcement">ZA CHWILĘ: GŁOS WIDZÓW 📺</span> <span class="ticker-highlight-msg">💬 Pozdrawiam serdecznie Kasię, Zosię, Pawła, Roberta i Bartka :) niech dobry Bóg Was błogosławi Kochani! ~Czarek &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 💬 Pozdrawiam serdecznie księdza Jan Dubas z kościoła Opatrzności Bożej przy ul. Świadka 5 w Rzeszowie ~Katarzyna Fedków</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
 
                 const defaultMissionText = `
-                    ${prayerMarqueeText}
                     ${greetingsText}
                     <span style="background: #FFCC00; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">WWW.POLSKIERADIO.CC | CCLITE.PL</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     📧 NAPISZ DO NAS: <strong>polskiercctv@gmail.com</strong> | <strong>radiochristianculture@gmail.com</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -2462,7 +2443,6 @@
                     marqueeTextEl.innerHTML = defaultMissionText;
                 }
             }
-            window.loadNewsMarquee = loadNewsMarquee;
 
             // Loop to show/hide the large QR code sidecar panel next to weather/CTA widgets
             function runQrSidecarLoop() {
@@ -3343,17 +3323,6 @@
                 });
         });
     </script>
-    <div id="google_translate_element" style="position: absolute; left: -9999px; top: -9999px; visibility: hidden;"></div>
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'pl',
-                includedLanguages: 'en',
-                autoDisplay: true
-            }, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <!-- Real-time Prayer Intentions Controller -->
     <script type="module">
         import { db } from "./firebase-config.js";
@@ -3451,10 +3420,7 @@
                     const res = await fetch('./worship_playlist.json');
                     if (res.ok) {
                         worshipPlaylist = await res.json();
-                        worshipPlaylist.forEach(tr => {
-                            if (!tr.duration) tr.duration = 240;
-                        });
-                        totalWorshipDuration = worshipPlaylist.reduce((acc, t) => acc + t.duration, 0);
+                        totalWorshipDuration = worshipPlaylist.reduce((acc, t) => acc + (t.duration || 210), 0);
                         syncAndPlay();
                         audio.addEventListener('ended', syncAndPlay);
                     }
@@ -3466,11 +3432,11 @@
             function syncAndPlay() {
                 if (!worshipPlaylist.length) return;
                 const epochSeconds = Math.floor(Date.now() / 1000);
-                let remaining = epochSeconds % (totalWorshipDuration || 1200);
+                let remaining = epochSeconds % (totalWorshipDuration || 837);
                 let targetIndex = 0;
                 let seekSeconds = 0;
                 for (let i = 0; i < worshipPlaylist.length; i++) {
-                    const dur = worshipPlaylist[i].duration || 240;
+                    const dur = worshipPlaylist[i].duration || 210;
                     if (remaining < dur) {
                         targetIndex = i;
                         seekSeconds = remaining;
