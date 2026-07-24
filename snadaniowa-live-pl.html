@@ -2757,7 +2757,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                 }
 
                 // Check if text is a dialogue script
-                const isDialogue = text.includes("**Noemi") || text.includes("**Sara");
+                const isDialogue = text.includes("Noemi") || text.includes("Sara");
 
                 if (isDialogue) {
                     const slides = [];
@@ -2804,7 +2804,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                         }
 
                         // Dialogue lines
-                        const speakerMatch = line.match(/^\*\*(Noemi|Sara|Głos Prowadzących|Noemi i Sara)\s*(\(.*?\))?\s*(?::\*\*|\*\*:)\s*(.*)/i);
+                        const speakerMatch = line.match(/^(?:\*\*)?(Noemi|Sara|Gł?os Prowadzą?cych|Noemi i Sara)(?:\*\*)?\s*(\([.*?\)])?\s*(?::\*\*|\*\*:|:)?\s*(.*)/i);
                         if (speakerMatch) {
                             commitMessage();
                             currentSender = speakerMatch[1].trim();
