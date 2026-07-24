@@ -161,8 +161,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Dynamically render station dropdown menu items
     renderStationDropdown();
     
-    // Setup initial station details
-    selectStation("poland");
+    // Setup initial station details WITHOUT auto-starting audio
+    selectStation("poland", true);
     
     // Check and keep fallback loop alive
     setInterval(updateLocalTrackTitleFallback, 15000);
@@ -305,7 +305,7 @@ volumeBtn.addEventListener("click", () => {
 
 // 6. AUDIO LOGIC & STATE HANDLING
 
-function selectStation(stationId) {
+function selectStation(stationId, noPlay = false) {
     const station = STATIONS[stationId];
     if (!station) return;
     
@@ -321,6 +321,9 @@ function selectStation(stationId) {
     
     // Connect to Zeno.fm live metadata EventSource
     connectStationMetadata(stationId);
+    
+    // Only start playback if explicitly requested (not on initial page load)
+    if (noPlay) return;
     
     // Smoothly fade out, switch source, and start playback automatically
     fadeAudioOut(() => {
