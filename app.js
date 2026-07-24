@@ -69,7 +69,7 @@ let STATIONS = {
     instrumental_worship: {
         id: "instrumental_worship",
         name: "INSTRUMENTAL WORSHIP",
-        streamUrl: "https://docs.google.com/uc?export=download&id=1jvSo-xBCvWQ3OmN9k9XTDBvxt2d6IAr7",
+        streamUrl: "./audio/worship/deep_forest_1.wav",
         playlistUrl: "./worship_playlist.json",
         isDrivePlaylist: true,
         accentColors: ["#8E2DE2", "#4A00E0"],
@@ -396,11 +396,12 @@ async function playRadio() {
                 remaining -= dur;
             }
             const currentTrack = worshipPlaylist[targetIndex];
-            if (!audio.src.includes(currentTrack.id)) {
+            const cleanPath = currentTrack.url.replace('./', '');
+            if (!audio.src.includes(cleanPath)) {
                 audio.src = currentTrack.url;
                 audio.load();
+                try { audio.currentTime = seekSeconds; } catch(e) {}
             }
-            try { audio.currentTime = seekSeconds; } catch(e) {}
             playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist}`;
         }
     } else {

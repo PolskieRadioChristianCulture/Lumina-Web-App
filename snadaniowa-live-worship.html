@@ -3479,10 +3479,11 @@
                     remaining -= dur;
                 }
                 const currentTrack = worshipPlaylist[targetIndex];
-                if (audio.src !== currentTrack.url) {
+                const cleanPath = currentTrack.url.replace('./', '');
+                if (!audio.src.includes(cleanPath)) {
                     audio.src = currentTrack.url;
+                    try { audio.currentTime = seekSeconds; } catch(e) {}
                 }
-                try { audio.currentTime = seekSeconds; } catch(e) {}
                 audio.play().catch(e => console.log("Auto-play wait for user gesture", e));
             }
             
