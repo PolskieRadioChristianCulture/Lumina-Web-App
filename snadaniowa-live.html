@@ -1561,10 +1561,7 @@
             transition: opacity 0.5s ease;
         }
         #startOverlay.hidden {
-            display: none !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-            visibility: hidden !important;
+            display: none;
         }
         .start-logo {
             width: 110px;
@@ -1684,7 +1681,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
 
     </style>
     <script>
-        // initStream in HEAD - guaranteed global before any onclick fires
+        // initStream in HEAD - global before any onclick fires
         function initStream() {
             var o = document.getElementById('startOverlay');
             if (o) { o.style.display = 'none'; o.className += ' hidden'; }
@@ -1695,26 +1692,6 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
     </script>
 </head>
 <body>
-    <script>
-        // Global initStream - guaranteed global scope for onclick handler
-        window.initStream = function() {
-            var overlay = document.getElementById('startOverlay');
-            var audio = document.getElementById('stream-audio');
-            if (overlay) {
-                overlay.style.display = 'none';
-                overlay.style.opacity = '0';
-                overlay.style.pointerEvents = 'none';
-                overlay.style.visibility = 'hidden';
-                overlay.classList.add('hidden');
-            }
-            if (audio) {
-                audio.play().catch(function(e) {
-                    console.warn('Audio play blocked:', e);
-                });
-            }
-        };
-        function initStream() { window.initStream(); }
-    </script>
 
     <!-- Main Auto-Scaling Viewport wrapper -->
     <div id="app-container">
@@ -1989,7 +1966,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         <img class="start-logo" src="dzj-logo.jpg" alt="Dobrze, że jesteś">
         <div class="start-label">Dobrze, że jesteś</div>
         <div class="start-sublabel">Telewizja Christian Culture 24</div>
-        <button class="start-btn" onclick="initStream();">
+        <button class="start-btn" onclick="initStream()">
             <i class="fa-solid fa-circle-play"></i> Uruchom Studio
         </button>
     </div>
@@ -2079,30 +2056,23 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
 
 
         // ── AUDIO INIT (global scope — called from overlay onclick) ──
-                window.initStream = function() {
+        function initStream() {
             const overlay = document.getElementById('startOverlay');
             const audio   = document.getElementById('stream-audio');
-            if (overlay) {
-                overlay.classList.add('hidden');
-                overlay.style.setProperty('display', 'none', 'important');
-                overlay.style.setProperty('opacity', '0', 'important');
-                overlay.style.setProperty('pointer-events', 'none', 'important');
-                overlay.style.setProperty('visibility', 'hidden', 'important');
-            }
+            if (overlay) overlay.classList.add('hidden');
             if (audio) {
                 audio.play().catch(e => {
-                    console.warn("Audio play blocked or delayed:", e);
+                    console.warn("Audio play blocked:", e);
+                    // overlay stays hidden even if audio play is blocked // show again if blocked
                 });
+                // Watchdog: restart if paused (e.g. network drop)
                 setInterval(() => {
                     if (audio.paused) audio.play().catch(() => {});
                 }, 10000);
             }
-        };
-        function initStream() { window.initStream(); }
+        }
 
         document.addEventListener("DOMContentLoaded", () => {
-            // ── START AUDIO IMMEDIATELY (nie czekaj na fetch rozważań) ──
-            // Audio started by user click on overlay
 
             // ── USTAW SCHEDULE OD RAZU (niezależnie od fetch) ──
             (function updateScheduleNow() {
@@ -2657,41 +2627,46 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                 slideDurationInput.value = slideDurationMs / 1000;
             }
 
-                        // Apply body styling mode class based on selected background
+            // Apply body styling mode class based on selected background
             function applyBodyModeClass() {
-                document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout", "special-event-today", "za-polske-wallpaper");
+                document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout", "special-event-today");
                 
-                const currentBg = bgActiveImg ? bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1) : "";
+                const currentBg = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
                 
-                // Night background (CCTV_NOCA 21:00-06:00)
-                if (currentBg.includes("CCTV_NOCA") || (customImgSrc && customImgSrc.includes("CCTV_NOCA"))) {
-                    document.body.classList.add("mode-presenters", "evening-layout");
-                    return;
-                }
-                
-                // Special event: Zjednoczeni za Polskę
+                // 1. Special Event Layouts
                 if (currentBg.includes("zjednoczeni_za_polske_banner") || customImgSrc.includes("zjednoczeni_za_polske_banner")) {
                     document.body.classList.add("special-event-today", "evening-layout", "mode-presenters");
                     return;
                 }
                 
-                // Special event: Tapeta za Polskę / Modlitwa
-                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("Tapeta_ZaPolske") || customImgSrc.includes("Tapeta_ZaPolske")) {
+
+                // Night background (CCTV_NOCA 21:00-06:00) - use evening-layout, not za-polske-wallpaper
+                if (currentBg.includes("CCTV_NOCA") || customImgSrc.includes("CCTV_NOCA")) {
+                    document.body.classList.add("mode-presenters", "evening-layout");
+                    return;
+                }
+                
+                                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("Tapeta_ZaPolske") || customImgSrc.includes("Tapeta_ZaPolske") ) {
                     document.body.classList.add("special-event-today", "mode-presenters", "za-polske-wallpaper");
                     return;
                 }
                 
-                // Standard Presenters auto-rotation layout
+                // 2. Standard Presenters auto-rotation layout
                 if (currentBg.includes("presenters") || customImgSrc.includes("presenters") || currentBg.includes("a0kKB")) {
                     document.body.classList.add("mode-presenters");
+                    
+                    // evening presenters mockup places presenter Sara/Noemi on the right, so cards must go left.
+                    // daytime presenters are on the left, so cards must go right.
                     if (currentBg.includes("evening") || customImgSrc.includes("evening")) {
                         document.body.classList.add("evening-layout");
                     }
                 } else {
                     // Studio backgrounds
                     document.body.classList.add("mode-studio");
+                    
                     const hour = new Date().getHours();
-                    if (hour >= 18 || hour < 5) {
+                    const isEveningOrNight = (hour >= 18 || hour < 5);
+                    if (isEveningOrNight) {
                         document.body.classList.add("evening-layout");
                     }
                 }
@@ -3506,22 +3481,5 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
     </script>
 
     <audio id="stream-audio" src="https://stream.zeno.fm/vz96pvl3pnktv"></audio>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-            const overlay = document.getElementById('startOverlay');
-            if (overlay) {
-                overlay.addEventListener('click', () => {
-                    if (window.initStream) window.initStream();
-                });
-            }
-            const startBtn = document.querySelector('.start-btn');
-            if (startBtn) {
-                startBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    if (window.initStream) window.initStream();
-                });
-            }
-        });
-</script>
 </body>
+</html>

@@ -1566,10 +1566,7 @@
             transition: opacity 0.5s ease;
         }
         #startOverlay.hidden {
-            display: none !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-            visibility: hidden !important;
+            display: none;
         }
         .start-logo {
             width: 110px;
@@ -1631,7 +1628,7 @@
         }
     </style>
     <script>
-        // initStream in HEAD - guaranteed global before any onclick fires
+        // initStream in HEAD - global before any onclick fires
         function initStream() {
             var o = document.getElementById('startOverlay');
             if (o) { o.style.display = 'none'; o.className += ' hidden'; }
@@ -1642,26 +1639,6 @@
     </script>
 </head>
 <body>
-    <script>
-        // Global initStream - guaranteed global scope for onclick handler
-        window.initStream = function() {
-            var overlay = document.getElementById('startOverlay');
-            var audio = document.getElementById('stream-audio');
-            if (overlay) {
-                overlay.style.display = 'none';
-                overlay.style.opacity = '0';
-                overlay.style.pointerEvents = 'none';
-                overlay.style.visibility = 'hidden';
-                overlay.classList.add('hidden');
-            }
-            if (audio) {
-                audio.play().catch(function(e) {
-                    console.warn('Audio play blocked:', e);
-                });
-            }
-        };
-        function initStream() { window.initStream(); }
-    </script>
 
     <!-- Main Auto-Scaling Viewport wrapper -->
     <div id="app-container">
@@ -1924,7 +1901,7 @@
         <img class="start-logo" src="dzj-logo.jpg" alt="Dobrze, że jesteś">
         <div class="start-label">Dobrze, że jesteś</div>
         <div class="start-sublabel">Telewizja Christian Culture 24</div>
-        <button class="start-btn">
+        <button class="start-btn" onclick="initStream()">
             <i class="fa-solid fa-circle-play"></i> Uruchom Studio
         </button>
     </div>
@@ -2081,8 +2058,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            // ── START AUDIO IMMEDIATELY (nie czekaj na fetch rozważań) ──
-            setTimeout(initStream, 500);
 
             // ── USTAW SCHEDULE OD RAZU (niezależnie od fetch) ──
             (function updateScheduleNow() {
@@ -2591,46 +2566,8 @@
                 slideDurationInput.value = slideDurationMs / 1000;
             }
 
-                        // Apply body styling mode class based on selected background
+            // Apply body styling mode class based on selected background
             function applyBodyModeClass() {
-                document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout", "special-event-today", "za-polske-wallpaper");
-                
-                const currentBg = bgActiveImg ? bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1) : "";
-                
-                if (currentBg.includes("CCTV_NOCA") || (customImgSrc && customImgSrc.includes("CCTV_NOCA"))) {
-                    document.body.classList.add("mode-presenters", "evening-layout");
-                    return;
-                }
-                document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout", "special-event-today", "za-polske-wallpaper");
-                
-                const currentBg = bgActiveImg ? bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1) : "";
-
-                // CCTV Nocą Layout (Night Studio 21:00 - 06:00)
-                if (currentBg.includes("CCTV_NOCA") || (customImgSrc && customImgSrc.includes("CCTV_NOCA"))) {
-                    document.body.classList.add("mode-presenters", "evening-layout");
-                    return;
-                }
-                
-                // 1. Special Event Layouts
-                if (currentBg.includes("zjednoczeni_za_polske_banner") || (customImgSrc && customImgSrc.includes("zjednoczeni_za_polske_banner"))) {
-                    document.body.classList.add("special-event-today", "evening-layout", "mode-presenters");
-                    return;
-                }
-                
-                if (currentBg.includes("tapeta_modlitwa") || (customImgSrc && customImgSrc.includes("tapeta_modlitwa")) || currentBg.includes("Tapeta_ZaPolske") || (customImgSrc && customImgSrc.includes("Tapeta_ZaPolske"))) {
-                    document.body.classList.add("special-event-today", "mode-presenters", "za-polske-wallpaper");
-                    return;
-                }
-                
-                // 2. Standard Presenters auto-rotation layout
-                if (currentBg.includes("presenters") || (customImgSrc && customImgSrc.includes("presenters")) || currentBg.includes("a0kKB")) {
-                    document.body.classList.add("mode-presenters");
-                    if (currentBg.includes("evening") || (customImgSrc && customImgSrc.includes("evening"))) {
-                        document.body.classList.add("evening-layout");
-                    }
-                }
-            }
-
                 document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout", "special-event-today");
                 
                 const currentBg = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
@@ -3494,7 +3431,7 @@
         }
     </script>
 
-    <audio id="stream-audio" src="https://stream.zeno.fm/imo45hqnshyuv"></audio>
+    <audio id="stream-audio" src="https://stream.zeno.fm/gn3uhltrrytuv"></audio>
     <div id="google_translate_element" style="position: absolute; left: -9999px; top: -9999px; visibility: hidden;"></div>
     <script type="text/javascript">
         function googleTranslateElementInit() {
@@ -3506,24 +3443,5 @@
         }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-    
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-            const overlay = document.getElementById('startOverlay');
-            if (overlay) {
-                overlay.addEventListener('click', () => {
-                    if (window.initStream) window.initStream();
-                });
-            }
-            const startBtn = document.querySelector('.start-btn');
-            if (startBtn) {
-                startBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    if (window.initStream) window.initStream();
-                });
-            }
-        });
-</script>
 </body>
+</html>
