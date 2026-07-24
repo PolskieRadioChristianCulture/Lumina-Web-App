@@ -95,6 +95,7 @@ let globalBibleTimer = null;
 
 let worshipPlaylist = [];
 let totalWorshipDuration = 0;
+let worshipTrackIndex = 0; // Aktualny indeks utworu w pętli
 
 async function loadWorshipPlaylist() {
     if (worshipPlaylist.length > 0) return;
@@ -116,6 +117,23 @@ async function loadWorshipPlaylist() {
 // DOM Elements
 const audio = new Audio();
 audio.volume = 0.8;
+
+// Pętla Instrumental Worship — po zakończeniu utworu gra następny
+audio.addEventListener('ended', () => {
+    if (!isPlaying) return;
+    if (activeStation && activeStation.id === 'instrumental_worship' && worshipPlaylist.length > 0) {
+        worshipTrackIndex = (worshipTrackIndex + 1) % worshipPlaylist.length;
+        const nextTrack = worshipPlaylist[worshipTrackIndex];
+        audio.src = nextTrack.url;
+        audio.load();
+        audio.play().catch(e => console.error('Worship next track error:', e));
+        playerTrackTitle.textContent = `${nextTrack.title} — ${nextTrack.artist}`;
+        console.log(`🎵 Worship pętla → utwór ${worshipTrackIndex + 1}/${worshipPlaylist.length}: ${nextTrack.title}`);
+    } else if (activeStation && activeStation.id === 'global_biblia' && globalPlaylist.length > 0) {
+        // Biblia audio też przechodzi do następnego rozdziału
+        playRadio();
+    }
+});
 
 const playBtn = document.getElementById("playBtn");
 const playIcon = document.getElementById("playIcon");
@@ -373,6 +391,7 @@ async function playRadio() {
     } else if (activeStation.id === "instrumental_worship") {
         await loadWorshipPlaylist();
         if (worshipPlaylist.length > 0) {
+            // Synchronizacja czasowa 24/7: wyznacz który utwór powinien grać teraz
             const epochSeconds = Math.floor(Date.now() / 1000);
             let remaining = epochSeconds % (totalWorshipDuration || 1200);
             let targetIndex = 0;
@@ -386,14 +405,15 @@ async function playRadio() {
                 }
                 remaining -= dur;
             }
+            worshipTrackIndex = targetIndex; // Ustaw globalny indeks dla pętli
             const currentTrack = worshipPlaylist[targetIndex];
-            const cleanPath = currentTrack.url.replace('./', '');
-            if (!audio.src.includes(cleanPath)) {
+            if (audio.src !== currentTrack.url) {
                 audio.src = currentTrack.url;
                 audio.load();
                 try { audio.currentTime = seekSeconds; } catch(e) {}
             }
             playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist}`;
+            console.log(`🎵 Worship start: utwór ${targetIndex + 1}/${worshipPlaylist.length}, pozycja ${seekSeconds}s`);
         }
     } else {
         // If audio element was reset, reload the active stream url
