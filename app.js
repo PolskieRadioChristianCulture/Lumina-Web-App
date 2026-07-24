@@ -69,7 +69,7 @@ let STATIONS = {
     instrumental_worship: {
         id: "instrumental_worship",
         name: "INSTRUMENTAL WORSHIP",
-        streamUrl: "./audio/worship/deep_forest_1.wav",
+        streamUrl: "./audio/worship/deep_forest_1.mp3",
         playlistUrl: "./worship_playlist.json",
         isDrivePlaylist: true,
         accentColors: ["#8E2DE2", "#4A00E0"],
