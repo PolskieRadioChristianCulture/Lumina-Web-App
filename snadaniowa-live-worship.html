@@ -3243,7 +3243,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                 });
         });
     </script>
-    <!-- Real-time Prayer Intentions Controller -->
+        <!-- Real-time Prayer Intentions Controller -->
     <script type="module">
         import { db } from "./firebase-config.js";
         import { collection, query, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
@@ -3256,7 +3256,6 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         let prayerQueue = [];
         let isShowingPrayer = false;
 
-        // Listen for raw intentions list, we do filtering and ordering locally to avoid Firestore composite index errors
         const q = query(
             collection(db, "prayer_intentions"),
             limit(50)
@@ -3271,7 +3270,6 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                 }
             });
 
-            // Local sort: newest first
             approvedIntentions.sort((a, b) => {
                 const tA = a.timestamp && a.timestamp.seconds ? a.timestamp.seconds : 0;
                 const tB = b.timestamp && b.timestamp.seconds ? b.timestamp.seconds : 0;
@@ -3279,87 +3277,19 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             });
 
             if (approvedIntentions.length > 0) {
-                // The newest approved prayer
                 const latest = approvedIntentions[0];
-                
-                // If it's a new prayer we haven't processed/displayed
                 if (!displayedPrayers.has(latest.id)) {
                     displayedPrayers.add(latest.id);
                     prayerQueue.push(latest);
-                    
-                    // Update global state and immediately reload marquee
                     window.lastPrayerIntention = latest;
                     if (typeof window.loadNewsMarquee === "function") {
                         window.loadNewsMarquee();
                     }
-                    
-                    processQueue();
                 }
             }
         });
-
-        function processQueue() {
-            if (isShowingPrayer || prayerQueue.length === 0) return;
-            
-            isShowingPrayer = true;
-            const prayer = prayerQueue.shift();
-            
-            // Na kanale instrumentalnym modlitwy wyświetlane są tylko w pasku ticker
-            // Aktualizacja tickera dzieje się wyżej poprzez window.loadNewsMarquee()
-            // Pomijamy animację lewego okienka i po prostu czekamy 2 sekundy przed kolejną:
-            
-            setTimeout(() => {
-                isShowingPrayer = false;
-                processQueue();
-            }, 2000);
-        }
     </script>
 
     <audio id="stream-audio" src="https://stream.zeno.fm/vz96pvl3pnktv"></audio>
-    <script type="text/javascript">
-        (function() {
-            var audio = document.getElementById("stream-audio");
-            if (!audio) return;
-            var FIREBASE_BASE = 'https://christian-culture-global.web.app/';
-            var TRACKS = [
-                { url: 'https://christian-culture-global.web.app/deep_forest_1.mp3', duration: 193 },
-                { url: 'https://christian-culture-global.web.app/deep_forest_2.mp3', duration: 207 },
-                { url: 'https://christian-culture-global.web.app/deep_forest_3.mp3', duration: 202 },
-                { url: 'https://christian-culture-global.web.app/deep_forest_4.mp3', duration: 168 }
-            ];
-            var currentIdx = -1;
-
-            function playRandom() {
-                if (!TRACKS.length) return;
-                var nextIdx = currentIdx;
-                if (TRACKS.length > 1) {
-                    while (nextIdx === currentIdx) {
-                        nextIdx = Math.floor(Math.random() * TRACKS.length);
-                    }
-                } else {
-                    nextIdx = 0;
-                }
-                currentIdx = nextIdx;
-                var track = TRACKS[currentIdx];
-                if (track && track.url) {
-                    audio.src = track.url;
-                    audio.play().catch(function() {});
-                }
-            }
-
-            function init() {
-                playRandom();
-                audio.addEventListener('ended', playRandom);
-            }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', init);
-            } else { init(); }
-
-            document.addEventListener('click', function() {
-                if (audio.paused) audio.play().catch(function() {});
-            }, { once: true });
-        })();
-    </script>
 </body>
 </html>
