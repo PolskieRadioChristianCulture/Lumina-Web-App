@@ -67,7 +67,7 @@
         }
 
         .bg-layer.blurred {
-            filter: blur(25px) brightness(0.65); /* Dim + blur presenters in background */
+            filter: none !important;
         }
 
         .bg-image {
@@ -3189,9 +3189,9 @@
 
                         // 1. Trigger full-screen bumper and blur background presenters
                         // if (bumper) bumper.classList.add("active"); // Disabled big logo bumper
-                        if (activeBg) activeBg.classList.add("blurred");
-                        if (bgVid1) bgVid1.classList.add("blurred");
-                        if (bgVid2) bgVid2.classList.add("blurred");
+                        // Disabled background blur transition
+                        // Disabled background blur transition
+                        // Disabled background blur transition
 
                         // 2. Swap the slide content at 800ms (completely covered)
                         setTimeout(() => {
