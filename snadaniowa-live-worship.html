@@ -2246,15 +2246,10 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                     }
                     
                     // Reload matched index (either updated manual day or today's matching date)
-                    let matchedIdx = currentDayIndex;
-                    if (!safeStorage.getItem("dzj_stream_day")) {
-                        const todayStr = now.toISOString().split('T')[0];
-                        const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
-                        if (foundIdx !== -1) {
-                            matchedIdx = foundIdx;
-                            if (daySelect) daySelect.value = matchedIdx;
-                        }
-                    }
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
+                    let matchedIdx = (foundIdx !== -1) ? foundIdx : currentDayIndex;
+                    if (daySelect && matchedIdx !== undefined) daySelect.value = matchedIdx;
                     
                     // Re-render reflection text and adapt layout if timezone changed background requirements
                     if (reflectionsData[matchedIdx]) {
@@ -3329,15 +3324,10 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                     daySelect.value = currentDayIndex;
 
                     // Match today's date if no manual index override is saved
-                    let matchedIdx = currentDayIndex;
-                    if (!safeStorage.getItem("dzj_stream_day")) {
-                        const todayStr = new Date().toISOString().split('T')[0];
-                        const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
-                        if (foundIdx !== -1) {
-                            matchedIdx = foundIdx;
-                            daySelect.value = matchedIdx;
-                        }
-                    }
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
+                    let matchedIdx = (foundIdx !== -1) ? foundIdx : currentDayIndex;
+                    if (daySelect && matchedIdx !== undefined) daySelect.value = matchedIdx;
 
                     renderReflection(reflectionsData[matchedIdx]);
                     initBackground();
