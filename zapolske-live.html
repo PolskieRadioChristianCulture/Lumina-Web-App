@@ -2028,7 +2028,7 @@
             <select id="bgImageSelect">
                 <option value="breakfast_presenters.jpg">Prezenterki w Studio (Auto-Rotacja)</option>
                 <option value="zjednoczeni_za_polske_banner.jpg">Wydanie Specjalne (Zjednoczeni za Polskę - Baner)</option>
-                <option value="tapeta_modlitwa.gif">Wydanie Specjalne (Zjednoczeni za Polskę - Animacja GIF)</option>
+                <option value="Tapeta_ZaPolske.jpg">Wydanie Specjalne (Zjednoczeni za Polskę - Animacja GIF)</option>
                 <option value="a0kKB.jpg">Własne Tło Letnie (a0kKB.jpg)</option>
                 <option value="breakfast_presenters_forenoon.jpg">Przedpołudniowe Prezenterki (Mockup 3)</option>
                 <option value="breakfast_presenters_alt.jpg">Alternatywne Prezenterki (Mockup 2)</option>
@@ -2168,7 +2168,7 @@
             let activeReflectionObj = null;
             let lastActiveSlotHour = -1;
             
-            let customImgSrc = "tapeta_modlitwa.gif";
+            let customImgSrc = "Tapeta_ZaPolske.jpg";
             let customVideoSrc = ""; 
 
             // DOM elements
@@ -2651,8 +2651,8 @@
             if (safeStorage.getItem("dzj_stream_day")) {
                 currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
             }
-            if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg") {
-                safeStorage.setItem("dzj_stream_image", "tapeta_modlitwa.gif");
+            if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || safeStorage.getItem("dzj_stream_image") === "tapeta_modlitwa.gif") {
+                safeStorage.setItem("dzj_stream_image", "Tapeta_ZaPolske.jpg");
             }
             if (safeStorage.getItem("dzj_stream_image")) {
                 customImgSrc = safeStorage.getItem("dzj_stream_image");
@@ -2751,7 +2751,7 @@
 
             // Background Init
             function initBackground() {
-                if (customImgSrc === "zjednoczeni_za_polske_banner.jpg" || customImgSrc === "tapeta_modlitwa.gif") {
+                if (customImgSrc === "zjednoczeni_za_polske_banner.jpg" || customImgSrc === "Tapeta_ZaPolske.jpg") {
                     bgActiveImg.src = customImgSrc;
                     bgActiveImg.style.opacity = 1;
                     applyBodyModeClass();
