@@ -2543,8 +2543,46 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                 slideDurationInput.value = slideDurationMs / 1000;
             }
 
-            // Apply body styling mode class based on selected background
+                        // Apply body styling mode class based on selected background
             function applyBodyModeClass() {
+                document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout", "special-event-today", "za-polske-wallpaper");
+                
+                const currentBg = bgActiveImg ? bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1) : "";
+                
+                if (currentBg.includes("CCTV_NOCA") || (customImgSrc && customImgSrc.includes("CCTV_NOCA"))) {
+                    document.body.classList.add("mode-presenters", "evening-layout");
+                    return;
+                }
+                document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout", "special-event-today", "za-polske-wallpaper");
+                
+                const currentBg = bgActiveImg ? bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1) : "";
+
+                // CCTV Nocą Layout (Night Studio 21:00 - 06:00)
+                if (currentBg.includes("CCTV_NOCA") || (customImgSrc && customImgSrc.includes("CCTV_NOCA"))) {
+                    document.body.classList.add("mode-presenters", "evening-layout");
+                    return;
+                }
+                
+                // 1. Special Event Layouts
+                if (currentBg.includes("zjednoczeni_za_polske_banner") || (customImgSrc && customImgSrc.includes("zjednoczeni_za_polske_banner"))) {
+                    document.body.classList.add("special-event-today", "evening-layout", "mode-presenters");
+                    return;
+                }
+                
+                if (currentBg.includes("tapeta_modlitwa") || (customImgSrc && customImgSrc.includes("tapeta_modlitwa")) || currentBg.includes("Tapeta_ZaPolske") || (customImgSrc && customImgSrc.includes("Tapeta_ZaPolske"))) {
+                    document.body.classList.add("special-event-today", "mode-presenters", "za-polske-wallpaper");
+                    return;
+                }
+                
+                // 2. Standard Presenters auto-rotation layout
+                if (currentBg.includes("presenters") || (customImgSrc && customImgSrc.includes("presenters")) || currentBg.includes("a0kKB")) {
+                    document.body.classList.add("mode-presenters");
+                    if (currentBg.includes("evening") || (customImgSrc && customImgSrc.includes("evening"))) {
+                        document.body.classList.add("evening-layout");
+                    }
+                }
+            }
+
                 document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout", "special-event-today");
                 
                 const currentBg = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
@@ -2555,7 +2593,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                     return;
                 }
                 
-                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("Tapeta_ZaPolske") || customImgSrc.includes("Tapeta_ZaPolske") || currentBg.includes("CCTV_NOCA") || customImgSrc.includes("CCTV_NOCA")) {
+                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("Tapeta_ZaPolske") || customImgSrc.includes("Tapeta_ZaPolske") ) {
                     document.body.classList.add("special-event-today", "mode-presenters", "za-polske-wallpaper");
                     return;
                 }
