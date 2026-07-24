@@ -69,7 +69,7 @@ let STATIONS = {
     instrumental_worship: {
         id: "instrumental_worship",
         name: "INSTRUMENTAL WORSHIP",
-        streamUrl: "https://lh3.googleusercontent.com/d/1jvSo-xBCvWQ3OmN9k9XTDBvxt2d6IAr7",
+        streamUrl: "https://docs.google.com/uc?export=download&id=1jvSo-xBCvWQ3OmN9k9XTDBvxt2d6IAr7",
         playlistUrl: "./worship_playlist.json",
         isDrivePlaylist: true,
         accentColors: ["#8E2DE2", "#4A00E0"],
@@ -315,7 +315,7 @@ function selectStation(stationId) {
     if (wasPlaying) {
         // Smoothly fade out, switch source, and fade back in
         fadeAudioOut(() => {
-            if (stationId === "global_biblia") {
+            if (stationId === "global_biblia" || stationId === "instrumental_worship") {
                 audio.src = "";
             } else {
                 setAudioSource(station.streamUrl);
@@ -323,7 +323,7 @@ function selectStation(stationId) {
             playRadio();
         });
     } else {
-        if (stationId === "global_biblia") {
+        if (stationId === "global_biblia" || stationId === "instrumental_worship") {
             audio.src = "";
             updatePlayerUI(false);
             playerStatusText.textContent = "Gotowy";
