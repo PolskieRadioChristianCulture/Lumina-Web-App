@@ -243,7 +243,7 @@
             grid-template-columns: 520px 1fr 520px;
             padding: 0 70px;
             gap: 60px;
-            align-items: stretch;
+            align-items: center;
         }
 
         /* LEFT SIDEBAR */
@@ -252,7 +252,8 @@
             flex-direction: column;
             gap: 20px;
             margin-top: 0;
-            align-self: center; /* Vertically centered within the stretched grid row */
+            width: 520px;
+            align-self: center;
             position: relative; /* Anchor for absolute positioned sidecars like QR */
         }
 
@@ -556,12 +557,11 @@
         .right-panel {
             display: flex !important;
             width: 520px;
-            height: 100%;
-            min-height: 0;
+            height: 530px;
             position: relative;
             flex-direction: column;
-            justify-content: stretch;
-            align-items: stretch;
+            justify-content: center;
+            align-self: center;
             margin-top: 0;
             overflow: hidden;
         }
@@ -626,22 +626,23 @@
             background: var(--glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border: 1.5px solid var(--glass-border);
+            border: 1px solid var(--glass-border);
             border-top: 2.5px solid var(--breakfast-accent);
-            border-radius: 28px;
-            padding: 30px 35px;
-            box-shadow: 0 20px 50px var(--glass-shadow);
+            border-radius: 20px;
+            padding: 26px 30px;
+            box-shadow: 0 15px 35px var(--glass-shadow);
             position: relative;
             top: auto;
             right: auto;
             left: auto;
             width: 100%;
-            flex: 1;
+            height: 100%;
             box-sizing: border-box;
             transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
+
             /* Force hardware acceleration to stop text from waving/jittering over the moving background */
             transform: translateZ(0);
             backface-visibility: hidden;
@@ -649,65 +650,35 @@
         }
 
         /* Flat overlays in all modes to ensure absolute readability and pixel-perfect alignment */
-        body.mode-presenters .reflection-canvas-card {
-            right: auto;
-            left: auto;
-            top: auto;
-            width: 100%;
-            height: auto;
-            flex: 1;
+        body.mode-presenters .reflection-canvas-card,
+        body.mode-studio .reflection-canvas-card,
+        body.evening-layout.mode-presenters .reflection-canvas-card {
+            position: relative !important;
+            right: auto !important;
+            left: auto !important;
+            top: auto !important;
+            width: 100% !important;
+            height: auto !important;
+            flex: 1 !important;
             transform: translateZ(0);
         }
 
-        body.mode-presenters .card-clock-widget {
-            width: 520px; /* Fixed width matching the 520px card */
-            box-sizing: border-box;
-            margin-right: 0; /* Flush right matching card */
-            margin-top: 95px; /* Brought down closer to the top of the reflection card */
-        }
-
-        body.mode-studio .reflection-canvas-card {
-            left: 320px; /* Centered layout */
-            top: 180px; /* Lowered to align with sidebars */
-            width: 1280px;
-            height: 700px;
-            transform: translateZ(0);
-        }
-
-        /* --- EVENING / NIGHT LAYOUT OVERRIDES (Swapped columns to prevent presenter overlap) --- */
         body.evening-layout .main-viewport {
-            grid-template-columns: 1fr 460px; /* Swaps panels (Agenda goes to the right) */
+            grid-template-columns: 520px 1fr 520px !important;
         }
 
         body.evening-layout .left-panel {
-            grid-column: 2; /* Move agenda/weather to the right column (covers the TV screen background) */
-            grid-row: 1; /* Force to the first row to prevent vertical row-wrapping */
-            margin-top: 60px; /* Reduced from 180px to prevent pushing the layout and cutting off the footer */
+            grid-column: 1 !important;
+            grid-row: auto !important;
+            margin-top: 0 !important;
         }
 
         body.evening-layout .right-panel {
-            grid-column: 1; /* Move card/clock to the left column (covers the window background) */
-            grid-row: 1; /* Force to the first row to prevent vertical row-wrapping */
-            align-items: flex-start;
+            grid-column: 3 !important;
+            grid-row: auto !important;
+            align-items: stretch !important;
         }
 
-        body.evening-layout.mode-presenters .reflection-canvas-card {
-            left: 0; /* Align to the left edge of right-panel (which is 70px from screen border) */
-            width: 510px; /* Fits exactly within the window width in the background picture */
-            height: 610px;
-            transform: translateZ(0);
-        }
-
-        body.evening-layout.mode-presenters .card-clock-widget {
-            margin-right: auto;
-            margin-left: 0; /* Align clock to the left edge of the text card */
-        }
-
-        /* Shift special ad overlay to the right side in evening layout to avoid overlapping presenters */
-        body.evening-layout .zoom-ad-overlay {
-            left: auto;
-            right: 60px;
-        }
 
         /* Slide layout area */
         .canvas-slide-container {
@@ -738,15 +709,15 @@
         }
 
         .slide-tag {
-            font-size: 1.45rem; /* Enlarged for mobile readability */
+            font-size: 1.15rem;
             font-weight: 850;
             color: var(--breakfast-accent);
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             white-space: nowrap;
         }
 
@@ -768,7 +739,7 @@
 
         .slide-title {
             font-family: 'Cinzel', serif;
-            font-size: 2.15rem;
+            font-size: 1.6rem;
             font-weight: 900;
             line-height: 1.25;
             color: #fff;
@@ -777,12 +748,13 @@
         }
 
         .slide-text {
-            font-size: 2.0rem;
+            font-size: 1.3rem;
             font-weight: 400;
             line-height: 1.4;
             color: rgba(255, 255, 255, 0.95);
             text-shadow: 0 2px 8px rgba(0,0,0,0.4);
         }
+
 
         .slide-text strong {
             color: var(--breakfast-accent);
