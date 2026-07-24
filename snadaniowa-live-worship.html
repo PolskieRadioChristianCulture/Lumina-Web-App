@@ -2364,38 +2364,28 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                         // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
                 const hour = new Date().getHours();
-                if (hour >= 21 || hour < 6) {
-                    return "CCTV_NOCA.jpg?v=1";
-                }
-                if (imagePath && imagePath !== "breakfast_presenters.jpg") {
-                    return imagePath;
-                }
-                if (hour >= 5 && hour < 9) {
-                    return "breakfast_presenters_morning_2.jpg";
-                } else if (hour >= 9 && hour < 12) {
-                    return "breakfast_presenters_forenoon.jpg";
-                } else if (hour >= 12 && hour < 18) {
-                    return "breakfast_presenters.jpg";
-                } else {
-                    return "breakfast_presenters_evening.jpg";
-                }
+                if (hour >= 21 || hour < 6) return "CCTV_NOCA.jpg?v=1";
+                if (imagePath && imagePath !== "breakfast_presenters.jpg") return imagePath;
+                if (hour >= 5 && hour < 9) return "breakfast_presenters_morning_2.jpg";
+                if (hour >= 9 && hour < 12) return "breakfast_presenters_forenoon.jpg";
+                if (hour >= 12 && hour < 18) return "breakfast_presenters.jpg";
+                return "breakfast_presenters_evening.jpg";
             }
-                if (imagePath && imagePath !== "breakfast_presenters.jpg") {
-                    return imagePath;
-                }
-                if (hour >= 5 && hour < 9) {
-                    return "breakfast_presenters_morning_2.jpg";
-                } else if (hour >= 9 && hour < 12) {
-                    return "breakfast_presenters_forenoon.jpg";
-                } else if (hour >= 12 && hour < 18) {
-                    return "breakfast_presenters.jpg";
-                } else {
-                    return "breakfast_presenters_evening.jpg";
-                }
-            };
+
+            function getWeatherPreset(city) {
+                const hour = new Date().getHours();
+                if (hour >= 5 && hour < 18) {
+                    const dayPresets = {
+                        "WARSZAWA": "☀️ 24°C / Słonecznie",
+                        "KRAKÓW": "☀️ 25°C / Słonecznie",
+                        "OSTROWIEC ŚW.": "🌤️ 23°C / Lekkie Chmury",
+                        "GDAŃSK": "🌊 21°C / Wietrznie",
+                        "STALOWA WOLA": "☀️ 24°C / Ciepło",
+                        "WROCŁAW": "☀️ 26°C / Słonecznie",
+                        "POZNAŃ": "☀️ 24°C / Bezchmurnie"
+                    };
                     return dayPresets[city] || "☀️ 24°C / Słonecznie";
                 } else if (hour >= 18 && hour < 22) {
-                    // Evening weather presets
                     const eveningPresets = {
                         "WARSZAWA": "🌇 20°C / Pogodny Wieczór",
                         "KRAKÓW": "🌇 21°C / Ciepły Zmierzch",
@@ -2407,7 +2397,6 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                     };
                     return eveningPresets[city] || "🌇 20°C / Pogodny Wieczór";
                 } else {
-                    // Night weather presets (22:00 - 04:59)
                     const nightPresets = {
                         "WARSZAWA": "🌙 16°C / Gwieździsta Noc",
                         "KRAKÓW": "🌙 17°C / Czyste Niebo",
