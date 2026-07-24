@@ -73,7 +73,7 @@ let STATIONS = {
         playlistUrl: "./worship_playlist.json",
         isDrivePlaylist: true,
         accentColors: ["#8E2DE2", "#4A00E0"],
-        logo: "./CC CR+J.png",
+        logo: "./worship_logo.png",
         tracks: [
             "DEEP FOREST 1 - Instrumental Prayer",
             "DEEP FOREST 2 - Sanctuary Ambient",
