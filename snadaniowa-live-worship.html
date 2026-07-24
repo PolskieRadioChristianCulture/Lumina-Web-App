@@ -3423,53 +3423,14 @@
             isShowingPrayer = true;
             const prayer = prayerQueue.shift();
             
-            // Populate text
-            livePrayerText.textContent = `„${prayer.text}”`;
-            livePrayerAuthor.textContent = `— ${prayer.name}, ${prayer.city}`;
+            // Na kanale instrumentalnym modlitwy wyświetlane są tylko w pasku ticker
+            // Aktualizacja tickera dzieje się wyżej poprzez window.loadNewsMarquee()
+            // Pomijamy animację lewego okienka i po prostu czekamy 2 sekundy przed kolejną:
             
-            const scheduleWidget = document.getElementById("scheduleWidget");
-            
-            // Step 1: Smoothly fade out Schedule Widget (PROGRAM DNIA)
-            if (scheduleWidget) {
-                scheduleWidget.style.opacity = "0";
-                scheduleWidget.style.transform = "translateY(-15px)";
-            }
-            
-            // Step 2: Swap display and fade in Prayer Overlay in the exact same slot
             setTimeout(() => {
-                if (scheduleWidget) scheduleWidget.style.display = "none";
-                
-                livePrayerOverlay.style.display = "flex";
-                setTimeout(() => {
-                    livePrayerOverlay.style.opacity = "1";
-                    livePrayerOverlay.style.transform = "translateY(0)";
-                    livePrayerOverlay.style.pointerEvents = "auto";
-                }, 50);
-            }, 500);
-            
-            // Step 3: Show prayer for 20 seconds, then fade out and restore Schedule Widget
-            setTimeout(() => {
-                livePrayerOverlay.style.opacity = "0";
-                livePrayerOverlay.style.transform = "translateY(15px)";
-                livePrayerOverlay.style.pointerEvents = "none";
-                
-                setTimeout(() => {
-                    livePrayerOverlay.style.display = "none";
-                    
-                    if (scheduleWidget) {
-                        scheduleWidget.style.display = "flex";
-                        setTimeout(() => {
-                            scheduleWidget.style.opacity = "1";
-                            scheduleWidget.style.transform = "translateY(0)";
-                        }, 50);
-                    }
-                    
-                    setTimeout(() => {
-                        isShowingPrayer = false;
-                        processQueue();
-                    }, 5000); // 5s gap before next prayer popup
-                }, 500);
-            }, 20000);
+                isShowingPrayer = false;
+                processQueue();
+            }, 2000);
         }
     </script>
 
