@@ -65,6 +65,21 @@ let STATIONS = {
             "Gospel of John - Chapter 1",
             "Revelation - Chapter 22"
         ]
+    },
+    instrumental_worship: {
+        id: "instrumental_worship",
+        name: "INSTRUMENTAL WORSHIP",
+        streamUrl: "https://lh3.googleusercontent.com/d/1jvSo-xBCvWQ3OmN9k9XTDBvxt2d6IAr7",
+        playlistUrl: "./worship_playlist.json",
+        isDrivePlaylist: true,
+        accentColors: ["#8E2DE2", "#4A00E0"],
+        logo: "./CC CR+J.png",
+        tracks: [
+            "DEEP FOREST 1 - Instrumental Prayer",
+            "DEEP FOREST 2 - Sanctuary Ambient",
+            "DEEP FOREST 3 - Holy Spirit Presence",
+            "DEEP FOREST 4 - Peace & Worship"
+        ]
     }
 };
 
@@ -77,6 +92,26 @@ let metadataEventSource = null;
 let globalPlaylist = [];
 let totalDuration = 0;
 let globalBibleTimer = null;
+
+let worshipPlaylist = [];
+let totalWorshipDuration = 0;
+
+async function loadWorshipPlaylist() {
+    if (worshipPlaylist.length > 0) return;
+    try {
+        const res = await fetch('./worship_playlist.json');
+        if (res.ok) {
+            worshipPlaylist = await res.json();
+            worshipPlaylist.forEach(tr => {
+                if (!tr.duration) tr.duration = 240;
+            });
+            totalWorshipDuration = worshipPlaylist.reduce((acc, t) => acc + t.duration, 0);
+            console.log(`🎶 Załadowano playlistę Instrumental Worship z Dysku Google: ${worshipPlaylist.length} utworów`);
+        }
+    } catch(e) {
+        console.error("❌ Błąd ładowania worship_playlist.json:", e);
+    }
+}
 
 // DOM Elements
 const audio = new Audio();
@@ -333,6 +368,30 @@ async function playRadio() {
             }
             audio.currentTime = seekSeconds;
             playerTrackTitle.textContent = `${currentTrack.bookName} - Chapter ${currentTrack.chapter}`;
+        }
+    } else if (activeStation.id === "instrumental_worship") {
+        await loadWorshipPlaylist();
+        if (worshipPlaylist.length > 0) {
+            const epochSeconds = Math.floor(Date.now() / 1000);
+            let remaining = epochSeconds % (totalWorshipDuration || 1200);
+            let targetIndex = 0;
+            let seekSeconds = 0;
+            for (let i = 0; i < worshipPlaylist.length; i++) {
+                const dur = worshipPlaylist[i].duration || 240;
+                if (remaining < dur) {
+                    targetIndex = i;
+                    seekSeconds = remaining;
+                    break;
+                }
+                remaining -= dur;
+            }
+            const currentTrack = worshipPlaylist[targetIndex];
+            if (!audio.src.includes(currentTrack.id)) {
+                audio.src = currentTrack.url;
+                audio.load();
+            }
+            try { audio.currentTime = seekSeconds; } catch(e) {}
+            playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist}`;
         }
     } else {
         // If audio element was reset, reload the active stream url
