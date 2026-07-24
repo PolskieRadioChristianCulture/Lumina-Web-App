@@ -1561,7 +1561,10 @@
             transition: opacity 0.5s ease;
         }
         #startOverlay.hidden {
-            display: none;
+            display: none !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            visibility: hidden !important;
         }
         .start-logo {
             width: 110px;
@@ -2046,12 +2049,15 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
 
 
         // ── AUDIO INIT (global scope — called from overlay onclick) ──
-                function initStream() {
+                window.initStream = function() {
             const overlay = document.getElementById('startOverlay');
             const audio   = document.getElementById('stream-audio');
             if (overlay) {
                 overlay.classList.add('hidden');
-                overlay.style.display = 'none';
+                overlay.style.setProperty('display', 'none', 'important');
+                overlay.style.setProperty('opacity', '0', 'important');
+                overlay.style.setProperty('pointer-events', 'none', 'important');
+                overlay.style.setProperty('visibility', 'hidden', 'important');
             }
             if (audio) {
                 audio.play().catch(e => {
@@ -2061,7 +2067,8 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                     if (audio.paused) audio.play().catch(() => {});
                 }, 10000);
             }
-        }
+        };
+        function initStream() { window.initStream(); }
 
         document.addEventListener("DOMContentLoaded", () => {
             // ── START AUDIO IMMEDIATELY (nie czekaj na fetch rozważań) ──
@@ -3709,5 +3716,22 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
     </script>
 
     <audio id="stream-audio" src="https://stream.zeno.fm/vz96pvl3pnktv"></audio>
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const overlay = document.getElementById('startOverlay');
+            if (overlay) {
+                overlay.addEventListener('click', () => {
+                    if (window.initStream) window.initStream();
+                });
+            }
+            const startBtn = document.querySelector('.start-btn');
+            if (startBtn) {
+                startBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (window.initStream) window.initStream();
+                });
+            }
+        });
+
 </body>
 </html>
