@@ -2168,7 +2168,7 @@
                     
                     // Re-render reflection text and adapt layout if timezone changed background requirements
                     if (reflectionsData[matchedIdx]) {
-                        renderReflection(reflectionsData[matchedIdx]);
+                        renderReflection(reflectionsData[matchedIdx] || reflectionsData[reflectionsData.length - 1] || reflectionsData[0]);
                         applyBodyModeClass();
                         if (bgActiveImg) {
                             bgActiveImg.src = getDynamicBackground(customImgSrc);
@@ -3229,7 +3229,7 @@
                     let matchedIdx = (foundIdx !== -1) ? foundIdx : currentDayIndex;
                     if (daySelect && matchedIdx !== undefined) daySelect.value = matchedIdx;
 
-                    renderReflection(reflectionsData[matchedIdx]);
+                    renderReflection(reflectionsData[matchedIdx] || reflectionsData[reflectionsData.length - 1] || reflectionsData[0]);
                     initBackground();
                     initCtaRotation();
                     initTickerFlipper();
