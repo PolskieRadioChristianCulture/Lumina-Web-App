@@ -1681,7 +1681,7 @@
                     </div>
 
                     <!-- Floating Sunday agenda widget -->
-                    <div class="schedule-widget left-panel-standard-widget" id="scheduleWidget">
+                    <div class="schedule-widget left-panel-standard-widget" id="scheduleWidget" style="transition: opacity 0.6s ease, transform 0.6s ease;">
                         <div class="widget-title">
                             <span>PROGRAM DNIA</span>
                             <i class="fa-solid fa-clock-rotate-left" style="font-size: 0.9rem;"></i>
@@ -3384,24 +3384,42 @@
             isShowingPrayer = true;
             const prayer = prayerQueue.shift();
             
-            // Populate and display
+            // Populate text
             livePrayerText.textContent = `„${prayer.text}”`;
             livePrayerAuthor.textContent = `— ${prayer.name}, ${prayer.city}`;
             
-            livePrayerOverlay.style.opacity = "1";
-            livePrayerOverlay.style.transform = "translateY(0)";
-            livePrayerOverlay.style.pointerEvents = "auto";
+            // Smoothly hide Schedule Widget first to prevent any visual overlap
+            const scheduleWidget = document.getElementById("scheduleWidget");
+            if (scheduleWidget) {
+                scheduleWidget.style.opacity = "0";
+                scheduleWidget.style.transform = "translateY(-15px)";
+            }
             
-            // Show for 20 seconds, then hide and process next after some gap
+            // Display Prayer Overlay after schedule fades out
+            setTimeout(() => {
+                livePrayerOverlay.style.opacity = "1";
+                livePrayerOverlay.style.transform = "translateY(0)";
+                livePrayerOverlay.style.pointerEvents = "auto";
+            }, 400);
+            
+            // Show prayer for 20 seconds, then hide and restore Schedule Widget
             setTimeout(() => {
                 livePrayerOverlay.style.opacity = "0";
                 livePrayerOverlay.style.transform = "translateY(20px)";
                 livePrayerOverlay.style.pointerEvents = "none";
                 
                 setTimeout(() => {
-                    isShowingPrayer = false;
-                    processQueue();
-                }, 5000); // 5s gap between popups
+                    // Restore Program Dnia (Schedule Widget)
+                    if (scheduleWidget) {
+                        scheduleWidget.style.opacity = "1";
+                        scheduleWidget.style.transform = "translateY(0)";
+                    }
+                    
+                    setTimeout(() => {
+                        isShowingPrayer = false;
+                        processQueue();
+                    }, 5000); // 5s gap before next prayer popup
+                }, 500);
             }, 20000);
         }
     </script>
