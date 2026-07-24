@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+    <!-- ==========================================
+         1. PODSTAWOWE METADANE I SEO
+         ========================================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Christian Culture - Ekosystem Osobistego Uświęcenia</title>
-    <meta name="description" content="Nowoczesna platforma Christian Culture. Słuchaj czterech stacji radiowych online (Radio PL, Radio Global, Biblia Audio, Instrumental Worship Music) oraz pobierz nasze aplikacje mobilne.">
-    
+    <title>PolskieRadio.cc - Globalne Polskie Radio Internetowe & Christian Culture</title>
+    <meta name="description" content="Nowoczesna platforma Christian Culture & PolskieRadio.cc. Słuchaj czterech stacji radiowych online (Polskie Radio CC, Radio Global CC, Biblia Audio, Instrumental Worship Music) oraz korzystaj z modlitewnika 24/7.">
+    <meta name="keywords" content="polskie radio, radio online, polska muzyka, radio internetowe, polonia, kultura chrześcijańska, biblia audio, instrumental worship, modlitwa online, dobrze że jesteś">
+    <meta name="author" content="Christian Culture / PolskieRadio.cc">
+    <link rel="canonical" href="https://polskieradio.cc/">
+
     <!-- Google AdSense Verification Code -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6762200025251358"
          crossorigin="anonymous"></script>
-    
+
     <!-- Google Fonts: Cinzel (Headers) and Montserrat (UI & Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +23,47 @@
     
     <!-- FontAwesome for Premium Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
+    <!-- ==========================================
+         2. OPEN GRAPH (Facebook, WhatsApp, LinkedIn, Discord)
+         ========================================== -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PolskieRadio.cc - Christian Culture">
+    <meta property="og:title" content="PolskieRadio.cc - Globalne Polskie Radio Internetowe & Christian Culture">
+    <meta property="og:description" content="Słuchaj 4 stacji radiowych na żywo 24/7: Polskie Radio CC, Radio Global CC, Biblia Audio, Instrumental Worship Music oraz dołącz do ściany intencji modlitewnych.">
+    <meta property="og:url" content="https://polskieradio.cc/">
+    <meta property="og:image" content="https://polskieradio.cc/icon.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="pl_PL">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <!-- ==========================================
+         3. TWITTER CARDS (X)
+         ========================================== -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ChristianCulture">
+    <meta name="twitter:title" content="PolskieRadio.cc - Na żywo ze świata 24/7">
+    <meta name="twitter:description" content="Włącz 4 stacje radiowe online: muzyka, słowo Boże, Biblia Audio i muzyka do modlitwy (Instrumental Worship).">
+    <meta name="twitter:image" content="https://polskieradio.cc/icon.png">
+
+    <!-- ==========================================
+         4. PWA, APLIKACJE I UX MOBILNY
+         ========================================== -->
+    <meta name="theme-color" content="#0d0f19">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PolskieRadio.cc">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- ==========================================
+         5. OPTYMALIZACJA DLA AI I BOTÓW (GEO / AIO)
+         ========================================== -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+
     <!-- Custom Style Sheet -->
     <link rel="stylesheet" href="style.css?v=11">
     <style>
@@ -43,10 +89,65 @@
             margin-top: 0px !important;
         }
     </style>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="icon.png">
-    <link rel="apple-touch-icon" href="icon.png">
+
+    <!-- ==========================================
+         6. SCHEMA.ORG JSON-LD (Kluczowe dla Google i LLM AI)
+         ========================================== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "RadioStation",
+          "@id": "https://polskieradio.cc/#station",
+          "name": "PolskieRadio.cc - Christian Culture",
+          "url": "https://polskieradio.cc",
+          "image": "https://polskieradio.cc/icon.png",
+          "logo": "https://polskieradio.cc/icon.png",
+          "description": "Globalne polskie radio internetowe oraz ekosystem chrześcijański transmitujący 24/7 audycje, muzykę worship, Biblię Audio i intencje modlitewne.",
+          "broadcastDisplayName": "PolskieRadio.cc",
+          "inLanguage": ["pl", "en"],
+          "areaServed": "Global",
+          "broadcaster": {
+            "@type": "Organization",
+            "name": "Christian Culture",
+            "url": "https://polskieradio.cc",
+            "logo": "https://polskieradio.cc/icon.png"
+          },
+          "hasBroadcastService": [
+            {
+              "@type": "RadioBroadcastService",
+              "name": "Polskie Radio CC - Program 1",
+              "broadcaster": { "@id": "https://polskieradio.cc/#station" },
+              "inLanguage": "pl",
+              "genre": ["Christian", "Culture", "Talk", "Worship"]
+            },
+            {
+              "@type": "RadioBroadcastService",
+              "name": "Global Radio CC - English Program",
+              "broadcaster": { "@id": "https://polskieradio.cc/#station" },
+              "inLanguage": "en",
+              "genre": ["Christian", "Global", "Worship"]
+            },
+            {
+              "@type": "RadioBroadcastService",
+              "name": "Biblia Audio CC",
+              "broadcaster": { "@id": "https://polskieradio.cc/#station" },
+              "inLanguage": "pl",
+              "genre": ["Audiobook", "Bible", "Scripture"]
+            },
+            {
+              "@type": "RadioBroadcastService",
+              "name": "Instrumental Worship Music - Christian Culture",
+              "broadcaster": { "@id": "https://polskieradio.cc/#station" },
+              "inLanguage": "pl",
+              "genre": ["Instrumental", "Worship", "Meditation", "Prayer"]
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
 
