@@ -1664,7 +1664,7 @@
             border-color: rgba(245,197,24,0.7);
         }
         .helpline-header-widget {
-            display: flex;
+            display: none !important; /* Ukryte (przeniesione do lewego panelu) */
             align-items: center;
             gap: 12px;
             background: rgba(255, 255, 255, 0.08);
@@ -1722,8 +1722,9 @@
     <!-- Main Auto-Scaling Viewport wrapper -->
     <div id="app-container">
 
-        <!-- Background Image -->
-        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="worship_bg.jpg" alt="Instrumental Worship Studio">
+        <!-- Background Images (rotational crossfade every 30s) -->
+        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1; transition: opacity 2s ease-in-out;" src="worship_bg.jpg" alt="Instrumental Worship Studio">
+        <img id="bg-img-swap"   class="bg-layer bg-image" style="opacity: 0; transition: opacity 2s ease-in-out;" src="worship_bg_2.png" alt="Instrumental Worship Studio 2">
         
         <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
         <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
@@ -2362,6 +2363,32 @@
                 }
                 return "worship_bg.jpg";
             }
+
+            // --- AUTO BACKGROUND ROTATION (crossfade co 30 sekund) ---
+            (function initBgRotation() {
+                const backgrounds = ["worship_bg.jpg", "worship_bg_2.png"];
+                let currentBgIndex = 0;
+                const imgActive = document.getElementById("bg-img-active");
+                const imgSwap   = document.getElementById("bg-img-swap");
+                if (!imgActive || !imgSwap) return;
+
+                setInterval(function() {
+                    currentBgIndex = (currentBgIndex + 1) % backgrounds.length;
+                    const nextSrc = backgrounds[currentBgIndex];
+
+                    if (currentBgIndex % 2 === 1) {
+                        // Fade in swap, fade out active
+                        imgSwap.src = nextSrc;
+                        imgSwap.style.opacity = "1";
+                        imgActive.style.opacity = "0";
+                    } else {
+                        // Fade in active, fade out swap
+                        imgActive.src = nextSrc;
+                        imgActive.style.opacity = "1";
+                        imgSwap.style.opacity = "0";
+                    }
+                }, 30000); // 30 sekund
+            })();
 
             // Real-time weather data cache and city coordinates
             let realWeatherData = {};
