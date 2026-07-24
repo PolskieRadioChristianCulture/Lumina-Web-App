@@ -482,6 +482,27 @@
             color: #fff;
             line-height: 1.4;
         }
+    
+        /* --- HELPLINE WIDGET --- */
+        .helpline-vertical-container {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+        .pulse-phone-icon {
+            font-size: 38px;
+            color: var(--gold-primary);
+            animation: phone-bounce-pulse 1.6s infinite alternate;
+        }
+        @keyframes phone-bounce-pulse {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                transform: scale(1.15) rotate(8deg);
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -552,10 +573,26 @@
     </div>
 
     <!-- BOTTOM CTA -->
-    <div class="cta-bar">
-        <div class="cta-icon">🎙️</div>
-        <div class="cta-text-block">
-            <div class="cta-primary">polskieradio.cc</div>
+    <!-- BOTTOM CTA -->
+    <div class="cta-bar" style="display: flex; justify-content: space-around; padding: 0 45px; height: 140px;">
+        <div class="cta-element" style="display: flex; align-items: center; gap: 20px;">
+            <div class="cta-icon">🎙️</div>
+            <div class="cta-text-block">
+                <div class="cta-primary" style="font-size: 28px;">polskieradio.cc</div>
+                <div class="cta-secondary" style="font-size: 20px;">Słuchaj • Radio Online</div>
+            </div>
+        </div>
+        
+        <div class="vertical-divider" style="width: 2px; height: 70px; background: rgba(212,175,55,0.25);"></div>
+        
+        <div class="helpline-vertical-container">
+            <i class="fa-solid fa-phone-volume pulse-phone-icon"></i>
+            <div class="cta-text-block">
+                <div class="cta-primary" style="font-size: 28px; color: var(--gold-primary);">+48 730 958 583</div>
+                <div class="cta-secondary" style="font-size: 20px;">Infolinia Nadzieja CC</div>
+            </div>
+        </div>
+    </div>
             <div class="cta-secondary">Słuchaj • Aplikacja • Radio Online</div>
         </div>
     </div>
