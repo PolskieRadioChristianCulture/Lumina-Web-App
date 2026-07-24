@@ -118,17 +118,23 @@ async function loadWorshipPlaylist() {
 const audio = new Audio();
 audio.volume = 0.8;
 
-// Pętla Instrumental Worship — po zakończeniu utworu gra następny
+// Pętla Instrumental Worship — po zakończeniu utworu wybiera losowo kolejny utwór (bez powtarzania tego samego bezpośrednio)
 audio.addEventListener('ended', () => {
     if (!isPlaying) return;
     if (activeStation && activeStation.id === 'instrumental_worship' && worshipPlaylist.length > 0) {
-        worshipTrackIndex = (worshipTrackIndex + 1) % worshipPlaylist.length;
+        let nextIndex = worshipTrackIndex;
+        if (worshipPlaylist.length > 1) {
+            while (nextIndex === worshipTrackIndex) {
+                nextIndex = Math.floor(Math.random() * worshipPlaylist.length);
+            }
+        }
+        worshipTrackIndex = nextIndex;
         const nextTrack = worshipPlaylist[worshipTrackIndex];
         audio.src = nextTrack.url;
         audio.load();
         audio.play().catch(e => console.error('Worship next track error:', e));
         playerTrackTitle.textContent = `${nextTrack.title} — ${nextTrack.artist}`;
-        console.log(`🎵 Worship pętla → utwór ${worshipTrackIndex + 1}/${worshipPlaylist.length}: ${nextTrack.title}`);
+        console.log(`🎵 Worship pętla (losowo) → utwór ${worshipTrackIndex + 1}/${worshipPlaylist.length}: ${nextTrack.title}`);
     } else if (activeStation && activeStation.id === 'global_biblia' && globalPlaylist.length > 0) {
         // Biblia audio też przechodzi do następnego rozdziału
         playRadio();

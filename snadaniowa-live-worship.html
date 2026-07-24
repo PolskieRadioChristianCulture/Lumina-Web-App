@@ -3411,45 +3411,44 @@
         (function() {
             var audio = document.getElementById("stream-audio");
             if (!audio) return;
-            var worshipPlaylist = [];
-            var totalDuration = 0;
             var FIREBASE_BASE = 'https://christian-culture-global.web.app/';
             var TRACKS = [
                 { url: 'https://christian-culture-global.web.app/deep_forest_1.mp3', duration: 193 },
                 { url: 'https://christian-culture-global.web.app/deep_forest_2.mp3', duration: 207 },
                 { url: 'https://christian-culture-global.web.app/deep_forest_3.mp3', duration: 202 },
-                { url: 'https://christian-culture-global.web.app/deep_forest_4.mp3', duration: 168 },
-                { url: 'https://christian-culture-global.web.app/worship_track__3P6NjOw.mp3', duration: NaN }
+                { url: 'https://christian-culture-global.web.app/deep_forest_4.mp3', duration: 168 }
             ];
-            worshipPlaylist = TRACKS;
-            totalDuration = TRACKS.reduce(function(a, t) { return a + t.duration; }, 0);
-                        function init() {
-                sync();
-                audio.addEventListener('ended', sync);
-            }
-            function sync() {
-                if (!worshipPlaylist.length) return;
-                var epoch = Math.floor(Date.now() / 1000);
-                var rem = epoch % (totalDuration || 770);
-                var idx = 0; var seek = 0;
-                for (var i = 0; i < worshipPlaylist.length; i++) {
-                    var dur = worshipPlaylist[i].duration || 200;
-                    if (rem < dur) { idx = i; seek = rem; break; }
-                    rem -= dur;
+            var currentIdx = -1;
+
+            function playRandom() {
+                if (!TRACKS.length) return;
+                var nextIdx = currentIdx;
+                if (TRACKS.length > 1) {
+                    while (nextIdx === currentIdx) {
+                        nextIdx = Math.floor(Math.random() * TRACKS.length);
+                    }
+                } else {
+                    nextIdx = 0;
                 }
-                var track = worshipPlaylist[idx];
-                var clean = track.url.replace('./', '');
-                if (!audio.src.includes(clean)) {
+                currentIdx = nextIdx;
+                var track = TRACKS[currentIdx];
+                if (track && track.url) {
                     audio.src = track.url;
-                    try { audio.currentTime = seek; } catch(e) {}
+                    audio.play().catch(function() {});
                 }
-                audio.play().catch(function() {});
             }
+
+            function init() {
+                playRandom();
+                audio.addEventListener('ended', playRandom);
+            }
+
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', init);
             } else { init(); }
+
             document.addEventListener('click', function() {
-                if (audio.paused) audio.play();
+                if (audio.paused) audio.play().catch(function() {});
             }, { once: true });
         })();
     </script>
