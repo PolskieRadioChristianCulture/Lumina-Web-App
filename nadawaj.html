@@ -308,237 +308,266 @@
                 </p>
             </div>
             
-            <div class="broadcast-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
-                <!-- Card 0: Original Breakfast Show 16:9 -->
-                <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
-                    <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
-                        <img src="a0kKB.jpg" alt="Dobrze, że jesteś Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-                    </div>
-                    <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
-                        <div>
-                            <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Dobrze, że jesteś (16:9)</h3>
-                            <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
-                                Oryginalny program śniadaniowy z interaktywnym czatem, rotacyjnymi wersetami biblijnymi, pogodą i animowanym złotym tłem.
-                            </p>
+            <!-- GROUP 1: STRUMIENIE POLSKIE -->
+            <div style="margin-bottom: 40px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 25px; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 10px;">
+                    <span style="font-size: 1.5rem;">🇵🇱</span>
+                    <h3 style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--gold-primary); font-weight: 800; letter-spacing: 1px; margin: 0; text-transform: uppercase;">STRUMIENIE POLSKIE</h3>
+                </div>
+
+                <div class="broadcast-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <!-- Card 1: Breakfast Show PL 16:9 -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="POLAND.jpg" alt="Dobrze, że jesteś PL Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
                         </div>
-                        <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
-                            <a href="snadaniowa-live.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                                <i class="fa-solid fa-play"></i> Uruchom w OBS
-                            </a>
-                            <button onclick="openEmbedModal('snadaniowa-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
-                                <i class="fa-solid fa-code"></i>
-                            </button>
-                            <button onclick="shareOnFacebook('snadaniowa-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
-                                <i class="fa-brands fa-facebook"></i>
-                            </button>
-                            <button onclick="shareOnWhatsApp('snadaniowa-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
-                                <i class="fa-brands fa-whatsapp"></i>
-                            </button>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Dobrze, że jesteś PL (16:9)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Program śniadaniowy w barwach narodowych PL z polskim sygnałem radiowym. Interaktywny czat, werset dnia, pogoda.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <a href="snadaniowa-live-pl.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                                    <i class="fa-solid fa-play"></i> Uruchom w OBS
+                                </a>
+                                <button onclick="openEmbedModal('snadaniowa-live-pl.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('snadaniowa-live-pl.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('snadaniowa-live-pl.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Special Poland Prayer Live 16:9 -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; border-left: 4px solid var(--red-national);" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--red-national)'; this.style.background='rgba(220,20,60,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="POLAND.jpg" alt="Zjednoczeni za Polskę Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                        </div>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <span style="background: #dc143c; color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.65rem; font-family: 'Outfit', sans-serif; align-self: flex-start; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; display: inline-block;">Wydanie Specjalne</span>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Zjednoczeni za Polskę (16:9)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Dedykowany, bezterminowy strumień modlitewny za Ojczyznę. Animowane tło modlitewne, automatycznie wczytywane intencje widzów na żywo, polskie audio.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <a href="zapolske-live.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--red-national)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                                    <i class="fa-solid fa-play"></i> Uruchom w OBS
+                                </a>
+                                <button onclick="openEmbedModal('zapolske-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--red-national)'; this.style.borderColor='var(--red-national)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('zapolske-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('zapolske-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Breakfast Show 9:16 -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="dzj-916-thumb.png" alt="Dobrze, że jesteś Pionowo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                        </div>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Dobrze, że jesteś (9:16)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Pionowy wariant popularnego programu śniadaniowego. Zaprojektowany od podstaw dla widzów mobilnych na TikToku i YouTube Shorts.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <a href="dzj-vertical-live.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                                    <i class="fa-solid fa-play"></i> Uruchom w OBS
+                                </a>
+                                <button onclick="openEmbedModal('dzj-vertical-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('dzj-vertical-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('dzj-vertical-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Radio Horizontal -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="Logo Biblia Audio CC.jpg" alt="Radio Biblia Audio Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                        </div>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Radio Biblia Audio (16:9)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Pozioma scena zintegrowana ze strumieniem audio radia Zeno.fm. Wizualizacja fal dźwiękowych, zegar z datownikiem, werset dnia i dolny pasek informacyjny.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <a href="stream-scene.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                                    <i class="fa-solid fa-play"></i> Uruchom w OBS
+                                </a>
+                                <button onclick="openEmbedModal('stream-scene.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('stream-scene.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('stream-scene.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Radio Vertical -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="Logo Globalna Biblia Audio.jpg" alt="Radio Biblia Audio Pionowo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                        </div>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Radio Biblia Audio (9:16)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Pionowy szablon nadawczy stworzony specjalnie dla formatów mobilnych na YouTube Shorts, TikTok Live lub Instagram Reels. Zoptymalizowana widoczność na telefonach.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <a href="stream-scene-vertical.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                                    <i class="fa-solid fa-play"></i> Uruchom w OBS
+                                </a>
+                                <button onclick="openEmbedModal('stream-scene-vertical.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('stream-scene-vertical.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('stream-scene-vertical.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Card 0.5: Special Poland Prayer Live 16:9 -->
-                <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; border-left: 4px solid var(--red-national);" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--red-national)'; this.style.background='rgba(220,20,60,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
-                    <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
-                        <img src="POLAND.jpg" alt="Zjednoczeni za Polskę Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-                    </div>
-                    <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
-                        <div>
-                            <span style="background: #dc143c; color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.65rem; font-family: 'Outfit', sans-serif; align-self: flex-start; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; display: inline-block;">Wydanie Specjalne</span>
-                            <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Zjednoczeni za Polskę (16:9)</h3>
-                            <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
-                                Dedykowany, bezterminowy strumień modlitewny za Ojczyznę. Animowane tło modlitewne, automatycznie wczytywane intencje widzów na żywo, polskie audio.
-                            </p>
+            <!-- GROUP 2: STRUMIENIE ANGIELSKIE -->
+            <div style="margin-bottom: 40px; margin-top: 50px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 25px; border-bottom: 1px solid rgba(0, 162, 255, 0.3); padding-bottom: 10px;">
+                    <span style="font-size: 1.5rem;">🇬🇧</span>
+                    <h3 style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: #00a2ff; font-weight: 800; letter-spacing: 1px; margin: 0; text-transform: uppercase;">STRUMIENIE ANGIELSKIE</h3>
+                </div>
+
+                <div class="broadcast-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <!-- Card 1: Breakfast Show Global 16:9 -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='#00a2ff'; this.style.background='rgba(0,162,255,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="GLOBAL.jpg" alt="Good to have you Global Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
                         </div>
-                        <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
-                            <a href="zapolske-live.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--red-national)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                                <i class="fa-solid fa-play"></i> Uruchom w OBS
-                            </a>
-                            <button onclick="openEmbedModal('zapolske-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--red-national)'; this.style.borderColor='var(--red-national)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
-                                <i class="fa-solid fa-code"></i>
-                            </button>
-                            <button onclick="shareOnFacebook('zapolske-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
-                                <i class="fa-brands fa-facebook"></i>
-                            </button>
-                            <button onclick="shareOnWhatsApp('zapolske-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
-                                <i class="fa-brands fa-whatsapp"></i>
-                            </button>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Good to have you Global (16:9)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Global English version of the breakfast show. Blue-navy themed styling, Christian Culture Global radio signal.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <a href="snadaniowa-live-global.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='#00a2ff';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                                    <i class="fa-solid fa-play"></i> Uruchom w OBS
+                                </a>
+                                <button onclick="openEmbedModal('snadaniowa-live-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#00a2ff'; this.style.borderColor='#00a2ff';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('snadaniowa-live-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('snadaniowa-live-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Special Bible Audio Global Live 16:9 -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; border-left: 4px solid #00a2ff;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='#00a2ff'; this.style.background='rgba(0,162,255,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="Logo Globalna Biblia Audio.jpg" alt="Bible Audio Global Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                        </div>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <span style="background: #00a2ff; color: #000; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.65rem; font-family: 'Outfit', sans-serif; align-self: flex-start; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; display: inline-block;">English Edition</span>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Bible Audio Global (16:9)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Anglojęzyczny wirtualny stream modlitewny. Odtwarza zsynchronizowany Epoch-sync sygnał Bible Audio Global, zablokowane tło modlitewne GIF oraz intencje widzów.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <a href="bibleaudio-global.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='#00a2ff';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                                    <i class="fa-solid fa-play"></i> Uruchom w OBS
+                                </a>
+                                <button onclick="openEmbedModal('bibleaudio-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#00a2ff'; this.style.borderColor='#00a2ff';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('bibleaudio-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('bibleaudio-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Card 1: Breakfast Show PL 16:9 -->
-                <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
-                    <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
-                        <img src="POLAND.jpg" alt="Dobrze, że jesteś PL Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-                    </div>
-                    <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
-                        <div>
-                            <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Dobrze, że jesteś PL (16:9)</h3>
-                            <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
-                                Program śniadaniowy w barwach narodowych PL z polskim sygnałem radiowym. Interaktywny czat, werset dnia, pogoda.
-                            </p>
-                        </div>
-                        <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
-                            <a href="snadaniowa-live-pl.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                                <i class="fa-solid fa-play"></i> Uruchom w OBS
-                            </a>
-                            <button onclick="openEmbedModal('snadaniowa-live-pl.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
-                                <i class="fa-solid fa-code"></i>
-                            </button>
-                            <button onclick="shareOnFacebook('snadaniowa-live-pl.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
-                                <i class="fa-brands fa-facebook"></i>
-                            </button>
-                            <button onclick="shareOnWhatsApp('snadaniowa-live-pl.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
-                                <i class="fa-brands fa-whatsapp"></i>
-                            </button>
-                        </div>
-                    </div>
+            <!-- GROUP 3: STRUMIENIE INSTRUMENTALNE -->
+            <div style="margin-bottom: 20px; margin-top: 50px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 25px; border-bottom: 1px solid rgba(142, 45, 226, 0.4); padding-bottom: 10px;">
+                    <span style="font-size: 1.5rem;">🕊️</span>
+                    <h3 style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: #a855f7; font-weight: 800; letter-spacing: 1px; margin: 0; text-transform: uppercase;">STRUMIENIE INSTRUMENTALNE</h3>
                 </div>
 
-                <!-- Card 1.5: Breakfast Show Global 16:9 -->
-                <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
-                    <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
-                        <img src="GLOBAL.jpg" alt="Good to have you Global Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-                    </div>
-                    <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
-                        <div>
-                            <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Good to have you Global (16:9)</h3>
-                            <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
-                                Global English version of the breakfast show. Blue-navy themed styling, Christian Culture Global radio signal.
-                            </p>
+                <div class="broadcast-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <!-- Card 1: Instrumental Worship Live 16:9 -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; border-left: 4px solid #a855f7;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='#a855f7'; this.style.background='rgba(168,85,247,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="worship_logo_bg.jpg" alt="Instrumental Worship Live Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
                         </div>
-                        <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
-                            <a href="snadaniowa-live-global.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                                <i class="fa-solid fa-play"></i> Uruchom w OBS
-                            </a>
-                            <button onclick="openEmbedModal('snadaniowa-live-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
-                                <i class="fa-solid fa-code"></i>
-                            </button>
-                            <button onclick="shareOnFacebook('snadaniowa-live-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
-                                <i class="fa-brands fa-facebook"></i>
-                            </button>
-                            <button onclick="shareOnWhatsApp('snadaniowa-live-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
-                                <i class="fa-brands fa-whatsapp"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 1.7: Special Bible Audio Global Live 16:9 -->
-                <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; border-left: 4px solid var(--gold-primary);" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
-                    <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
-                        <img src="Logo Globalna Biblia Audio.jpg" alt="Bible Audio Global Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-                    </div>
-                    <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
-                        <div>
-                            <span style="background: var(--gold-primary); color: #000; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.65rem; font-family: 'Outfit', sans-serif; align-self: flex-start; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; display: inline-block;">English Edition</span>
-                            <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Bible Audio Global (16:9)</h3>
-                            <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
-                                Anglojęzyczny wirtualny stream modlitewny. Odtwarza zsynchronizowany Epoch-sync sygnał Bible Audio Global (nie-Zeno), zablokowane tło modlitewne GIF oraz intencje widzów.
-                            </p>
-                        </div>
-                        <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
-                            <a href="bibleaudio-global.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                                <i class="fa-solid fa-play"></i> Uruchom w OBS
-                            </a>
-                            <button onclick="openEmbedModal('bibleaudio-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
-                                <i class="fa-solid fa-code"></i>
-                            </button>
-                            <button onclick="shareOnFacebook('bibleaudio-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
-                                <i class="fa-brands fa-facebook"></i>
-                            </button>
-                            <button onclick="shareOnWhatsApp('bibleaudio-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
-                                <i class="fa-brands fa-whatsapp"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 2: Breakfast Show 9:16 -->
-                <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
-                    <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
-                        <img src="dzj-916-thumb.png" alt="Dobrze, że jesteś Pionowo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-                    </div>
-                    <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
-                        <div>
-                            <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Dobrze, że jesteś (9:16)</h3>
-                            <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
-                                Pionowy wariant popularnego programu śniadaniowego. Zaprojektowany od podstaw dla widzów mobilnych na TikToku i YouTube Shorts.
-                            </p>
-                        </div>
-                        <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
-                            <a href="dzj-vertical-live.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                                <i class="fa-solid fa-play"></i> Uruchom w OBS
-                            </a>
-                            <button onclick="openEmbedModal('dzj-vertical-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
-                                <i class="fa-solid fa-code"></i>
-                            </button>
-                            <button onclick="shareOnFacebook('dzj-vertical-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
-                                <i class="fa-brands fa-facebook"></i>
-                            </button>
-                            <button onclick="shareOnWhatsApp('dzj-vertical-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
-                                <i class="fa-brands fa-whatsapp"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3: Radio Horizontal -->
-                <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
-                    <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
-                        <img src="Logo Biblia Audio CC.jpg" alt="Radio Biblia Audio Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-                    </div>
-                    <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
-                        <div>
-                            <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Radio Biblia Audio (16:9)</h3>
-                            <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
-                                Pozioma scena zintegrowana ze strumieniem audio radia Zeno.fm. Wizualizacja fal dźwiękowych, zegar z datownikiem, werset dnia i dolny pasek informacyjny.
-                            </p>
-                        </div>
-                        <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
-                            <a href="stream-scene.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                                <i class="fa-solid fa-play"></i> Uruchom w OBS
-                            </a>
-                            <button onclick="openEmbedModal('stream-scene.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
-                                <i class="fa-solid fa-code"></i>
-                            </button>
-                            <button onclick="shareOnFacebook('stream-scene.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
-                                <i class="fa-brands fa-facebook"></i>
-                            </button>
-                            <button onclick="shareOnWhatsApp('stream-scene.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
-                                <i class="fa-brands fa-whatsapp"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 4: Radio Vertical -->
-                <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
-                    <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
-                        <img src="Logo Globalna Biblia Audio.jpg" alt="Radio Biblia Audio Pionowo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-                    </div>
-                    <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
-                        <div>
-                            <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Radio Biblia Audio (9:16)</h3>
-                            <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
-                                Pionowy szablon nadawczy stworzony specjalnie dla formatów mobilnych na YouTube Shorts, TikTok Live lub Instagram Reels. Zoptymalizowana widoczność na telefonach.
-                            </p>
-                        </div>
-                        <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
-                            <a href="stream-scene-vertical.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
-                                <i class="fa-solid fa-play"></i> Uruchom w OBS
-                            </a>
-                            <button onclick="openEmbedModal('stream-scene-vertical.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
-                                <i class="fa-solid fa-code"></i>
-                            </button>
-                            <button onclick="shareOnFacebook('stream-scene-vertical.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
-                                <i class="fa-brands fa-facebook"></i>
-                            </button>
-                            <button onclick="shareOnWhatsApp('stream-scene-vertical.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
-                                <i class="fa-brands fa-whatsapp"></i>
-                            </button>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <span style="background: #a855f7; color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.65rem; font-family: 'Outfit', sans-serif; align-self: flex-start; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; display: inline-block;">Google Drive Audio</span>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Instrumental Worship Live (16:9)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Strumień kojącej muzyki instrumentalnej uwielbienia i modlitwy. Zasilany bezpośrednio bezkosztową playlistą z Dysku Google z oficjalną oprawą graficzną.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <a href="snadaniowa-live-worship.html" target="_blank" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='#a855f7';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                                    <i class="fa-solid fa-play"></i> Uruchom w OBS
+                                </a>
+                                <button onclick="openEmbedModal('snadaniowa-live-worship.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#a855f7'; this.style.borderColor='#a855f7';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('snadaniowa-live-worship.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('snadaniowa-live-worship.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
