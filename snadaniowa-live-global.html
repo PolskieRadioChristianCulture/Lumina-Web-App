@@ -2299,60 +2299,49 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                         // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
                 const hour = new Date().getHours();
-                if (hour >= 21 || hour < 6) {
-                    return "CCTV_NOCA.jpg?v=1";
-                }
-                if (imagePath && imagePath !== "breakfast_presenters.jpg") {
-                    return imagePath;
-                }
-                if (hour >= 5 && hour < 9) {
-                    return "breakfast_presenters_morning_2.jpg";
-                } else if (hour >= 9 && hour < 12) {
-                    return "breakfast_presenters_forenoon.jpg";
-                } else if (hour >= 12 && hour < 18) {
-                    return "breakfast_presenters.jpg";
-                } else {
-                    return "breakfast_presenters_evening.jpg";
-                }
+                if (hour >= 21 || hour < 6) return "CCTV_NOCA.jpg?v=1";
+                if (imagePath && imagePath !== "breakfast_presenters.jpg") return imagePath;
+                if (hour >= 5 && hour < 9) return "breakfast_presenters_morning_2.jpg";
+                if (hour >= 9 && hour < 12) return "breakfast_presenters_forenoon.jpg";
+                if (hour >= 12 && hour < 18) return "breakfast_presenters.jpg";
+                return "breakfast_presenters_evening.jpg";
             }
-                if (imagePath && imagePath !== "breakfast_presenters.jpg") {
-                    return imagePath;
-                }
-                if (hour >= 5 && hour < 9) {
-                    return "breakfast_presenters_morning_2.jpg";
-                } else if (hour >= 9 && hour < 12) {
-                    return "breakfast_presenters_forenoon.jpg";
-                } else if (hour >= 12 && hour < 18) {
-                    return "breakfast_presenters.jpg";
-                } else {
-                    return "breakfast_presenters_evening.jpg";
-                }
-            };
-                    return dayPresets[city] || "☀️ 24°C / Sunny";
+
+            function getWeatherPreset(city) {
+                const hour = new Date().getHours();
+                if (hour >= 5 && hour < 18) {
+                    const dayPresets = {
+                        "WARSZAWA": "☀️ 24°C / Słonecznie",
+                        "KRAKÓW": "☀️ 25°C / Słonecznie",
+                        "OSTROWIEC ŚW.": "🌤️ 23°C / Lekkie Chmury",
+                        "GDAŃSK": "🌊 21°C / Wietrznie",
+                        "STALOWA WOLA": "☀️ 24°C / Ciepło",
+                        "WROCŁAW": "☀️ 26°C / Słonecznie",
+                        "POZNAŃ": "☀️ 24°C / Bezchmurnie"
+                    };
+                    return dayPresets[city] || "☀️ 24°C / Słonecznie";
                 } else if (hour >= 18 && hour < 22) {
-                    // Evening weather presets
                     const eveningPresets = {
-                        "NEW YORK": "🌇 20°C / Clear Evening",
-                        "LONDON": "🌇 17°C / Cool Evening",
-                        "ROME": "🌇 24°C / Warm Twilight",
-                        "JERUSALEM": "🌇 23°C / Calm Evening",
-                        "TOKYO": "🌇 22°C / Cozy Evening",
-                        "PARIS": "🌇 19°C / Romantic Dusk",
-                        "SYDNEY": "🌇 18°C / Refreshing Breeze"
+                        "WARSZAWA": "🌇 20°C / Pogodny Wieczór",
+                        "KRAKÓW": "🌇 21°C / Ciepły Zmierzch",
+                        "OSTROWIEC ŚW.": "☁️ 19°C / Rześki Wieczór",
+                        "GDAŃSK": "🌊 18°C / Rześki Wiatr",
+                        "STALOWA WOLA": "🌇 20°C / Spokojny Wieczór",
+                        "WROCŁAW": "🌇 22°C / Ciepły Zmierzch",
+                        "POZNAŃ": "🌇 20°C / Bezchmurnie"
                     };
-                    return eveningPresets[city] || "🌇 20°C / Clear Evening";
+                    return eveningPresets[city] || "🌇 20°C / Pogodny Wieczór";
                 } else {
-                    // Night weather presets (22:00 - 04:59)
                     const nightPresets = {
-                        "NEW YORK": "🌙 16°C / Starry Night",
-                        "LONDON": "🌙 13°C / Cool Night",
-                        "ROME": "🌙 18°C / Clear Sky",
-                        "JERUSALEM": "🌙 17°C / Chilly Night",
-                        "TOKYO": "🌙 19°C / Quiet Night",
-                        "PARIS": "🌙 15°C / Starry Sky",
-                        "SYDNEY": "🌙 14°C / Coastal Breeze"
+                        "WARSZAWA": "🌙 16°C / Gwieździsta Noc",
+                        "KRAKÓW": "🌙 17°C / Czyste Niebo",
+                        "OSTROWIEC ŚW.": "🌙 15°C / Chłodna Noc",
+                        "GDAŃSK": "🌙 14°C / Nadmorska Noc",
+                        "STALOWA WOLA": "🌙 15°C / Spokojna Noc",
+                        "WROCŁAW": "🌙 17°C / Ciepła Noc",
+                        "POZNAŃ": "🌙 16°C / Bezchmurnie"
                     };
-                    return nightPresets[city] || "🌙 15°C / Quiet Night";
+                    return nightPresets[city] || "🌙 15°C / Spokojna Noc";
                 }
             }
 

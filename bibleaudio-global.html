@@ -1987,74 +1987,26 @@
         };
 
 
-
-        
-
-
-        // ── wirtualna stacja BIBLE AUDIO GLOBAL (Epoch-sync playlist.json) ──
-        let globalPlaylist = [];
-        let totalDuration = 0;
-
-        async function loadGlobalPlaylist() {
-            if (globalPlaylist.length > 0) return;
-            try {
-                const res = await fetch("./playlist.json");
-                globalPlaylist = await res.json();
-                totalDuration = globalPlaylist.reduce((acc, item) => acc + item.duration, 0);
-                console.log("Loaded global playlist. Total duration: " + totalDuration + " seconds.");
-            } catch (e) {
-                console.error("Failed to load playlist.json", e);
-            }
-        }
-
-        async function syncGlobalBibleAudio() {
-            await loadGlobalPlaylist();
-            const audio = document.getElementById('stream-audio');
-            if (!audio || globalPlaylist.length === 0) return;
-
-            const epochSeconds = Math.floor(Date.now() / 1000);
-            let remaining = epochSeconds % totalDuration;
-            let targetIndex = 0;
-            let seekSeconds = 0;
-
-            for (let i = 0; i < globalPlaylist.length; i++) {
-                if (remaining < globalPlaylist[i].duration) {
-                    targetIndex = i;
-                    seekSeconds = remaining;
-                    break;
-                }
-                remaining -= globalPlaylist[i].duration;
-            }
-
-            const currentTrack = globalPlaylist[targetIndex];
-            
-            // Check if track needs to change
-            if (!audio.src.includes(currentTrack.url)) {
-                audio.src = currentTrack.url;
-                audio.load();
-                audio.currentTime = seekSeconds;
-            } else {
-                // If it is playing but drifted by more than 2 seconds, seek
-                if (Math.abs(audio.currentTime - seekSeconds) > 2) {
-                    audio.currentTime = seekSeconds;
-                }
-            }
-
-            if (audio.paused) {
-                audio.play().catch(e => console.warn("Autoplay blocked:", e));
-            }
-        }
+        // Force Google Translate to translate to English immediately
+        document.cookie = "googtrans=/pl/en; path=/";
+        document.cookie = "googtrans=/pl/en; path=/; domain=" + window.location.hostname;
+        document.cookie = "googtrans=/pl/en; path=/; domain=.polskieradio.cc";
 
         // ── AUDIO INIT (global scope — called from overlay onclick) ──
         function initStream() {
             const overlay = document.getElementById('startOverlay');
+            const audio   = document.getElementById('stream-audio');
             if (overlay) overlay.classList.add('hidden');
-            
-            // Trigger first sync and play immediately
-            syncGlobalBibleAudio();
-            
-            // Watchdog and sync loop every 2 seconds
-            setInterval(syncGlobalBibleAudio, 2000);
+            if (audio) {
+                audio.play().catch(e => {
+                    console.warn("Audio play blocked:", e);
+                    // overlay stays hidden even if audio play is blocked // show again if blocked
+                });
+                // Watchdog: restart if paused (e.g. network drop)
+                setInterval(() => {
+                    if (audio.paused) audio.play().catch(() => {});
+                }, 10000);
+            }
         }
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -2117,7 +2069,7 @@
             let activeReflectionObj = null;
             let lastActiveSlotHour = -1;
             
-            let customImgSrc = "tapeta_modlitwa.gif";
+            let customImgSrc = "breakfast_presenters.jpg";
 
             // Dynamic Time-Based Background Handler (Night 21:00 - 06:00 switch to CCTV_NOCA.jpg)
             function getActiveBackground() {
@@ -2232,10 +2184,10 @@
                 document.getElementById("timeMin").textContent = min;
                 document.getElementById("timeSec").textContent = sec;
 
-                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                const days = ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"];
+                const months = ["Stycznia", "Lutego", "Marca", "Kwietnia", "Maja", "Czerwca", "Lipca", "Sierpnia", "Września", "Października", "Listopada", "Grudnia"];
                 
-                document.getElementById("clockDateLabel").textContent = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
+                document.getElementById("clockDateLabel").textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
 
                 // Real-time schedule highlights & program names based on hour of day
                 const currentHour = now.getHours();
@@ -2244,34 +2196,34 @@
 
                 if (schedTime && schedName) {
                     let timeStr = "--:--";
-                    let nameStr = "Loading...";
+                    let nameStr = "Wczytywanie...";
 
                     if (currentHour >= 5 && currentHour < 9) {
                         // Morning program profile (05:00 - 09:00)
-                        if (currentHour < 7) { timeStr = "06:00"; nameStr = "Morning Word"; }
-                        else if (currentHour === 7) { timeStr = "07:00"; nameStr = "Tactical Task"; }
-                        else { timeStr = "08:00"; nameStr = "Battle Prayer"; }
+                        if (currentHour < 7) { timeStr = "06:00"; nameStr = "Słowo o Poranku"; }
+                        else if (currentHour === 7) { timeStr = "07:00"; nameStr = "Zadanie Taktyczne"; }
+                        else { timeStr = "08:00"; nameStr = "Bojowa Modlitwa"; }
                     } else if (currentHour >= 9 && currentHour < 12) {
                         // Forenoon program profile (09:00 - 12:00)
-                        if (currentHour === 9) { timeStr = "09:30"; nameStr = "Forenoon Word"; }
-                        else if (currentHour === 10 && now.getMinutes() < 30) { timeStr = "09:30"; nameStr = "Forenoon Word"; }
-                        else if ((currentHour === 10 && now.getMinutes() >= 30) || (currentHour === 11 && now.getMinutes() < 30)) { timeStr = "10:30"; nameStr = "Tactical Task"; }
-                        else { timeStr = "11:30"; nameStr = "Battle Prayer"; }
+                        if (currentHour === 9) { timeStr = "09:30"; nameStr = "Słowo na Przedpołudnie"; }
+                        else if (currentHour === 10 && now.getMinutes() < 30) { timeStr = "09:30"; nameStr = "Słowo na Przedpołudnie"; }
+                        else if ((currentHour === 10 && now.getMinutes() >= 30) || (currentHour === 11 && now.getMinutes() < 30)) { timeStr = "10:30"; nameStr = "Zadanie Taktyczne"; }
+                        else { timeStr = "11:30"; nameStr = "Bojowa Modlitwa"; }
                     } else if (currentHour >= 12 && currentHour < 18) {
                         // Afternoon program profile (12:00 - 18:00)
-                        if (currentHour < 15) { timeStr = "13:30"; nameStr = "Afternoon Word"; }
-                        else if (currentHour === 15 || (currentHour === 16 && now.getMinutes() < 30)) { timeStr = "15:00"; nameStr = "Prayer for Revival"; }
-                        else { timeStr = "16:30"; nameStr = "Tactical Task"; }
+                        if (currentHour < 15) { timeStr = "13:30"; nameStr = "Słowo na Popołudnie"; }
+                        else if (currentHour === 15 || (currentHour === 16 && now.getMinutes() < 30)) { timeStr = "15:00"; nameStr = "Modlitwa o Przebudzenie"; }
+                        else { timeStr = "16:30"; nameStr = "Zadanie Taktyczne"; }
                     } else if (currentHour >= 18 && currentHour < 22) {
                         // Evening program profile (18:00 - 22:00)
-                        if (currentHour < 20 || (currentHour === 20 && now.getMinutes() < 30)) { timeStr = "19:30"; nameStr = "Evening Word"; }
-                        else if ((currentHour === 20 && now.getMinutes() >= 30) || (currentHour === 21 && now.getMinutes() < 30)) { timeStr = "20:30"; nameStr = "Evening Prayer"; }
-                        else { timeStr = "21:30"; nameStr = "Spiritual Warfare"; }
+                        if (currentHour < 20 || (currentHour === 20 && now.getMinutes() < 30)) { timeStr = "19:30"; nameStr = "Słowo na Wieczór"; }
+                        else if ((currentHour === 20 && now.getMinutes() >= 30) || (currentHour === 21 && now.getMinutes() < 30)) { timeStr = "20:30"; nameStr = "Wieczorna Modlitwa"; }
+                        else { timeStr = "21:30"; nameStr = "Walka Duchowa"; }
                     } else {
                         // Night program profile (22:00 - 05:00)
-                        if (currentHour === 22 || currentHour === 23) { timeStr = "22:30"; nameStr = "Night Word"; }
-                        else if (currentHour === 0 || (currentHour === 1 && now.getMinutes() < 30)) { timeStr = "00:00"; nameStr = "Night Vigil"; }
-                        else { timeStr = "01:30"; nameStr = "Spiritual Warfare"; }
+                        if (currentHour === 22 || currentHour === 23) { timeStr = "22:30"; nameStr = "Słowo na Noc"; }
+                        else if (currentHour === 0 || (currentHour === 1 && now.getMinutes() < 30)) { timeStr = "00:00"; nameStr = "Nocne Czuwanie"; }
+                        else { timeStr = "01:30"; nameStr = "Walka Duchowa"; }
                     }
 
                     schedTime.textContent = timeStr;
@@ -2281,7 +2233,7 @@
                 // Dynamic Edition Label Updates
                 const tickerEdition = document.getElementById("tickerEditionLabel");
                 if (tickerEdition) {
-                    tickerEdition.textContent = "SPECIAL EDITION";
+                    tickerEdition.textContent = "WYDANIE SPECJALNE";
                 }
 
                 // Real-time hour slot transition check to adapt reflection text and update backgrounds in real-time
@@ -2297,11 +2249,18 @@
                     if (activeReflectionObj) {
                         renderReflection(activeReflectionObj);
                     }
-                    const activeBg = getActiveBackground();
-                const currentSrcFilename = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
-                if (!currentSrcFilename.includes(activeBg.split('?')[0])) {
-                    bgActiveImg.src = activeBg;
-                    applyBodyModeClass();
+                    if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || !safeStorage.getItem("dzj_stream_image")) {
+                        initBackground();
+                    }
+                }
+
+                // Real-time dynamic background check (swaps backgrounds in the slideshow, etc.)
+                if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || !safeStorage.getItem("dzj_stream_image")) {
+                    const currentBg = getDynamicBackground("breakfast_presenters.jpg");
+                    const currentSrcFilename = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
+                    if (currentSrcFilename !== currentBg) {
+                        bgActiveImg.src = currentBg;
+                    }
                 }
             }
             setInterval(updateClock, 1000);
@@ -2352,38 +2311,28 @@
                         // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
                 const hour = new Date().getHours();
-                if (hour >= 21 || hour < 6) {
-                    return "CCTV_NOCA.jpg?v=1";
-                }
-                if (imagePath && imagePath !== "breakfast_presenters.jpg") {
-                    return imagePath;
-                }
-                if (hour >= 5 && hour < 9) {
-                    return "breakfast_presenters_morning_2.jpg";
-                } else if (hour >= 9 && hour < 12) {
-                    return "breakfast_presenters_forenoon.jpg";
-                } else if (hour >= 12 && hour < 18) {
-                    return "breakfast_presenters.jpg";
-                } else {
-                    return "breakfast_presenters_evening.jpg";
-                }
+                if (hour >= 21 || hour < 6) return "CCTV_NOCA.jpg?v=1";
+                if (imagePath && imagePath !== "breakfast_presenters.jpg") return imagePath;
+                if (hour >= 5 && hour < 9) return "breakfast_presenters_morning_2.jpg";
+                if (hour >= 9 && hour < 12) return "breakfast_presenters_forenoon.jpg";
+                if (hour >= 12 && hour < 18) return "breakfast_presenters.jpg";
+                return "breakfast_presenters_evening.jpg";
             }
-                if (imagePath && imagePath !== "breakfast_presenters.jpg") {
-                    return imagePath;
-                }
-                if (hour >= 5 && hour < 9) {
-                    return "breakfast_presenters_morning_2.jpg";
-                } else if (hour >= 9 && hour < 12) {
-                    return "breakfast_presenters_forenoon.jpg";
-                } else if (hour >= 12 && hour < 18) {
-                    return "breakfast_presenters.jpg";
-                } else {
-                    return "breakfast_presenters_evening.jpg";
-                }
-            };
+
+            function getWeatherPreset(city) {
+                const hour = new Date().getHours();
+                if (hour >= 5 && hour < 18) {
+                    const dayPresets = {
+                        "WARSZAWA": "☀️ 24°C / Słonecznie",
+                        "KRAKÓW": "☀️ 25°C / Słonecznie",
+                        "OSTROWIEC ŚW.": "🌤️ 23°C / Lekkie Chmury",
+                        "GDAŃSK": "🌊 21°C / Wietrznie",
+                        "STALOWA WOLA": "☀️ 24°C / Ciepło",
+                        "WROCŁAW": "☀️ 26°C / Słonecznie",
+                        "POZNAŃ": "☀️ 24°C / Bezchmurnie"
+                    };
                     return dayPresets[city] || "☀️ 24°C / Słonecznie";
                 } else if (hour >= 18 && hour < 22) {
-                    // Evening weather presets
                     const eveningPresets = {
                         "WARSZAWA": "🌇 20°C / Pogodny Wieczór",
                         "KRAKÓW": "🌇 21°C / Ciepły Zmierzch",
@@ -2395,7 +2344,6 @@
                     };
                     return eveningPresets[city] || "🌇 20°C / Pogodny Wieczór";
                 } else {
-                    // Night weather presets (22:00 - 04:59)
                     const nightPresets = {
                         "WARSZAWA": "🌙 16°C / Gwieździsta Noc",
                         "KRAKÓW": "🌙 17°C / Czyste Niebo",
@@ -2409,21 +2357,6 @@
                 }
             }
 
-            // Native client-side Translation helper inside first script
-            async function translateText(text) {
-                if (!text) return "";
-                try {
-                    const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=pl|en`);
-                    const data = await res.json();
-                    if (data && data.responseData && data.responseData.translatedText) {
-                        return data.responseData.translatedText;
-                    }
-                } catch (e) {
-                    console.warn("Translation failed, using original text:", e);
-                }
-                return text;
-            }
-
             // Load and build news marquee text dynamically from news.json
             async function loadNewsMarquee() {
                 const marqueeTextEl = document.getElementById("marqueeText");
@@ -2431,22 +2364,20 @@
                 
                 let prayerMarqueeText = "";
                 if (window.lastPrayerIntention) {
-                    const translatedText = await translateText(window.lastPrayerIntention.text);
-                    const translatedCity = await translateText(window.lastPrayerIntention.city);
-                    prayerMarqueeText = `<span style="background: #dc143c; color: #ffffff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-family: 'Outfit', sans-serif; margin-right: 12px; display: inline-block;"><i class="fa-solid fa-hands-praying"></i> PRAYER INTENTION</span> <span style="color: #ff4d6d; font-weight: 700; font-style: italic; margin-right: 25px;">“${translatedText}” (~${window.lastPrayerIntention.name}, ${translatedCity})</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
+                    prayerMarqueeText = `<span style="background: #dc143c; color: #ffffff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-family: 'Outfit', sans-serif; margin-right: 12px; display: inline-block;"><i class="fa-solid fa-hands-praying"></i> INTENCJA LIVE</span> <span style="color: #ff4d6d; font-weight: 700; font-style: italic; margin-right: 25px;">„${window.lastPrayerIntention.text}” (~${window.lastPrayerIntention.name}, ${window.lastPrayerIntention.city})</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
                 }
                 
-                const greetingsText = `<span class="ticker-announcement">COMING UP: VIEWERS CORNER 📺</span> <span class="ticker-highlight-msg">💬 Warm greetings to Kate, Sophie, Paul, Robert and Bart :) may God bless you all! ~Charles &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 💬 Praying for the church fellowship and seeking spiritual revival in our families ~Katherine</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
+                const greetingsText = `<span class="ticker-announcement">ZA CHWILĘ: GŁOS WIDZÓW 📺</span> <span class="ticker-highlight-msg">💬 Pozdrawiam serdecznie Kasię, Zosię, Pawła, Roberta i Bartka :) niech dobry Bóg Was błogosławi Kochani! ~Czarek &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 💬 Pozdrawiam serdecznie księdza Jan Dubas z kościoła Opatrzności Bożej przy ul. Świadka 5 w Rzeszowie ~Katarzyna Fedków</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
 
                 const defaultMissionText = `
                     ${prayerMarqueeText}
                     ${greetingsText}
                     <span style="background: #FFCC00; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">WWW.POLSKIERADIO.CC | CCLITE.PL</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                    📧 EMAIL US: <strong>polskiercctv@gmail.com</strong> | <strong>radiochristianculture@gmail.com</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                    📖 FREE BIBLE FOR EVERYONE — send SMS: <strong>BIBLE</strong> to <strong>+48 530 736 155</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                    📱 JOIN ON WHATSAPP — details in the side panel &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                    💳 SUPPORT THE MISSION — Patronite: patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                    🙏 Thank you for your support and prayers! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    📧 NAPISZ DO NAS: <strong>polskiercctv@gmail.com</strong> | <strong>radiochristianculture@gmail.com</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    📖 BEZPŁATNA BIBLIA DLA KAŻDEGO — wyślij SMS o treści: <strong>BIBLIA</strong> pod numer <strong>530 736 155</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    📱 DOŁĄCZ NA WHATSAPP — szczegóły w bocznej ramce &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    💳 WESPRZYJ MISJĘ — Patronite: patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    🙏 Dziękujemy za każde wsparcie i modlitwę! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     ${greetingsText}
                 `;
                 
@@ -2547,9 +2478,6 @@
             if (safeStorage.getItem("dzj_stream_day")) {
                 currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
             }
-            if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg") {
-                safeStorage.setItem("dzj_stream_image", "tapeta_modlitwa.gif");
-            }
             if (safeStorage.getItem("dzj_stream_image")) {
                 customImgSrc = safeStorage.getItem("dzj_stream_image");
                 bgImageSelect.value = customImgSrc;
@@ -2578,8 +2506,15 @@
                     return;
                 }
                 
-                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa")) {
-                    document.body.classList.add("special-event-today", "mode-presenters");
+
+                // Night background (CCTV_NOCA 21:00-06:00) - use evening-layout, not za-polske-wallpaper
+                if (currentBg.includes("CCTV_NOCA") || customImgSrc.includes("CCTV_NOCA")) {
+                    document.body.classList.add("mode-presenters", "evening-layout");
+                    return;
+                }
+                
+                                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("Tapeta_ZaPolske") || customImgSrc.includes("Tapeta_ZaPolske") ) {
+                    document.body.classList.add("special-event-today", "mode-presenters", "za-polske-wallpaper");
                     return;
                 }
                 
@@ -2660,7 +2595,7 @@
             function buildSlides(reflection) {
                 if (!reflection) return null;
 
-                let cycleTitle = "MISSION GOD'S HOLIDAYS";
+                let cycleTitle = "MISJA BOŻE WAKACJE";
                 
                 const dayNumMatch = reflection.id.match(/ref_day(\d+)/);
                 const dayNum = dayNumMatch ? dayNumMatch[1] : (reflectionsData.indexOf(reflection) + 1);
@@ -2671,7 +2606,7 @@
                     agendaActive.textContent = reflection.title;
                     agendaActive.dataset.customized = "true";
                 }
-                cycleBadge.textContent = `Day ${dayNum} | ${cycleTitle}`;
+                cycleBadge.textContent = `Dzień ${dayNum} | ${cycleTitle}`;
 
                 const text = reflection.fullText;
 
@@ -2724,7 +2659,7 @@
                             commitMessage();
                             const citation = line.replace(/^>\s*/, "").trim();
                             messages.push({
-                                sender: "HOLY SCRIPTURE",
+                                sender: "PISMO ŚWIĘTE",
                                 text: `<div class="bible-citation">${cleanMarkdown(citation)}</div>`
                             });
                             return;
@@ -2747,7 +2682,7 @@
                     // Generate a single giant slide that loops
                     slides.push({
                         type: "chat",
-                        tag: "BROADCAST PROGRAM TV",
+                        tag: "PROGRAM EMISYJNY TV",
                         title: reflection.title,
                         messages: messages,
                         l3Title: reflection.title,
@@ -2938,22 +2873,7 @@
             }
 
             // Render reflections into slides
-            async function renderReflection(reflection) {
-                if (!reflection) return;
-                if (!reflection.translated) {
-                    reflection.translated = true;
-                    try {
-                        const translatedTitle = await translateText(reflection.title);
-                        const translatedFullText = await translateText(reflection.fullText);
-                        const translatedTeaser = await translateText(reflection.teaser);
-                        
-                        reflection.title = translatedTitle;
-                        reflection.fullText = translatedFullText;
-                        reflection.teaser = translatedTeaser;
-                    } catch (e) {
-                        console.warn("Error translating reflection:", e);
-                    }
-                }
+            function renderReflection(reflection) {
                 activeReflectionObj = reflection;
                 const structuredSlides = buildSlides(reflection);
                 if (!structuredSlides || structuredSlides.length === 0) return;
@@ -3257,11 +3177,11 @@
                 if (!flipper) return;
                 
                 const announcements = [
-                    "UP NEXT: VIEWERS GREETINGS 💬",
-                    "UP NEXT: WORLD NEWS FEED 📰",
-                    "UP NEXT: SPECIAL INSPIRATION 🎁",
-                    "UP NEXT: PRAYER INTENTIONS 🙏",
-                    "UP NEXT: SUPPORT THE MISSION ❤️"
+                    "ZA CHWILĘ: POZDROWIENIA OD WIDZÓW",
+                    "NASTĘPNE: SERWIS INFORMACYJNY 📰",
+                    "ZA CHWILĘ: OFERTA SPECJALNA 🎁",
+                    "ZA CHWILĘ: POZDROWIENIA OD WIDZÓW",
+                    "NASTĘPNE: WESPRZYJ MISJĘ ❤️"
                 ];
                 let currentAnnIdx = 0;
                 
