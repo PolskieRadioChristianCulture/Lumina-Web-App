@@ -637,9 +637,9 @@
         body.mode-presenters .reflection-canvas-card {
             right: 0; /* Align flush to .right-panel edge, utilizing main-viewport 70px padding for exact 70px screen margin */
             left: auto; /* Override default left: 450px style */
-            top: 230px; /* Equal spacing below the helpline */
+            top: 255px; /* Pushed down slightly for perfect vertical centering */
             width: 520px; /* EXACT SAME WIDTH as left panel window (520px) */
-            height: 595px; /* Bottom edge raised slightly to align level with the bottom edge of the QR window */
+            height: 540px; /* Shrunk slightly to balance empty space above the top clock and below the card */
             transform: translateZ(0); /* Hardware accelerated */
         }
 
@@ -647,7 +647,7 @@
             width: 520px; /* Fixed width matching the 520px card */
             box-sizing: border-box;
             margin-right: 0; /* Flush right matching card */
-            margin-top: 0; /* Lifted up to align with header */
+            margin-top: 25px; /* Pushed down slightly for perfect vertical centering */
         }
 
         body.mode-studio .reflection-canvas-card {
