@@ -3403,26 +3403,37 @@ function getWeatherPreset(city) {
 
                 var currentTrack = worshipPlaylist[targetIndex];
                 if (currentTrack && currentTrack.url) {
-                    var cleanUrl = currentTrack.url.replace('./', '');
-                    if (!audio.src || !audio.src.includes(cleanUrl)) {
-                        audio.src = currentTrack.url;
-                        audio.load(); // wymuś załadowanie (ważne dla WAV z Drive)
-                        audio.addEventListener('canplay', function onCanPlay() {
-                            audio.removeEventListener('canplay', onCanPlay);
-                            try { audio.currentTime = seekSeconds; } catch(e) {}
-                            audio.play().catch(function(e) {
-                                console.log("Audio autoplay waiting for user interaction:", e);
-                            });
-                        }, { once: true });
-                    } else {
-                        // Utwór już załadowany – graj natychmiast
-                        audio.play().catch(function(e) {
-                            console.log("Audio autoplay waiting for user interaction:", e);
-                        });
+                    var newUrl = currentTrack.url;
+                    // Załaduj tylko jeśli to inny utwór
+                    if (!audio.src || !audio.src.includes(newUrl.slice(-30))) {
+                        audio.src = newUrl;
+                        // NIE seek – WAV z Drive nie obsługuje range requests dobrze
+                        // Graj od początku, watchdog pilnuje ciągłości
                     }
+                    audio.play().catch(function(e) {
+                        console.warn("Audio play blokada:", e.message);
+                    });
                     updateMediaSession(currentTrack);
                 }
             }
+
+            // Przy błędzie ładowania – przejdź do następnego utworu
+            audio.addEventListener('error', function() {
+                console.warn("Audio error – przechodzę do następnego utworu");
+                if (worshipPlaylist && worshipPlaylist.length > 0) {
+                    var currentSrc = audio.src;
+                    var currentIdx = worshipPlaylist.findIndex(function(t) {
+                        return currentSrc.includes(t.url.slice(-30));
+                    });
+                    var nextIdx = (currentIdx + 1) % worshipPlaylist.length;
+                    var next = worshipPlaylist[nextIdx];
+                    if (next && next.url) {
+                        audio.src = next.url;
+                        audio.play().catch(function(){});
+                        updateMediaSession(next);
+                    }
+                }
+            });
 
             // Expose globally so initStream() can trigger playback after user gesture
             window.worshipSyncAndPlay = syncAndPlay;
@@ -3439,10 +3450,9 @@ function getWeatherPreset(city) {
                     }, 0);
                     syncAndPlay();
                     // Jeśli użytkownik już kliknął play zanim playlista się załadowała
-                    // – wymuś play (watchdog w initStream() też to zrobi ale to szybciej)
                     var audio2 = document.getElementById('stream-audio');
                     if (window._worshipUserInteracted && audio2 && audio2.paused) {
-                        audio2.play().catch(function(){});
+                        setTimeout(function() { audio2.play().catch(function(){}); }, 300);
                     }
                 })
                 .catch(function(err) {
@@ -3459,3 +3469,4 @@ function getWeatherPreset(city) {
     </script>
 </body>
 </html>
+
