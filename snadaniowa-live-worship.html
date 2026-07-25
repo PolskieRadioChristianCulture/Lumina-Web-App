@@ -2098,18 +2098,21 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             const audio   = document.getElementById('stream-audio');
             if (overlay) overlay.classList.add('hidden');
             if (audio) {
+                // Oznacz że użytkownik kliknął – playlista może jeszcze ładować
+                window._worshipUserInteracted = true;
                 // Trigger synced playlist playback (loads src + plays correct track)
                 if (typeof window.worshipSyncAndPlay === 'function') {
                     window.worshipSyncAndPlay();
                 } else {
+                    // Playlista jeszcze nie załadowana – spróbuj za chwilę
                     audio.play().catch(e => {
                         console.warn("Audio play blocked:", e);
                     });
                 }
-                // Watchdog: restart if paused (e.g. network drop)
+                // Watchdog: restart if paused (e.g. network drop lub race condition)
                 setInterval(() => {
                     if (audio.paused) audio.play().catch(() => {});
-                }, 10000);
+                }, 5000);
             }
         }
 
@@ -3403,12 +3406,21 @@ function getWeatherPreset(city) {
                     var cleanUrl = currentTrack.url.replace('./', '');
                     if (!audio.src || !audio.src.includes(cleanUrl)) {
                         audio.src = currentTrack.url;
-                        try { audio.currentTime = seekSeconds; } catch(e) {}
+                        audio.load(); // wymuś załadowanie (ważne dla WAV z Drive)
+                        audio.addEventListener('canplay', function onCanPlay() {
+                            audio.removeEventListener('canplay', onCanPlay);
+                            try { audio.currentTime = seekSeconds; } catch(e) {}
+                            audio.play().catch(function(e) {
+                                console.log("Audio autoplay waiting for user interaction:", e);
+                            });
+                        }, { once: true });
+                    } else {
+                        // Utwór już załadowany – graj natychmiast
+                        audio.play().catch(function(e) {
+                            console.log("Audio autoplay waiting for user interaction:", e);
+                        });
                     }
                     updateMediaSession(currentTrack);
-                    audio.play().catch(function(e) {
-                        console.log("Audio autoplay waiting for user interaction:", e);
-                    });
                 }
             }
 
@@ -3426,6 +3438,12 @@ function getWeatherPreset(city) {
                         return acc + (t.duration || 240);
                     }, 0);
                     syncAndPlay();
+                    // Jeśli użytkownik już kliknął play zanim playlista się załadowała
+                    // – wymuś play (watchdog w initStream() też to zrobi ale to szybciej)
+                    var audio2 = document.getElementById('stream-audio');
+                    if (window._worshipUserInteracted && audio2 && audio2.paused) {
+                        audio2.play().catch(function(){});
+                    }
                 })
                 .catch(function(err) {
                     console.error("Error loading worship_playlist.json:", err);
