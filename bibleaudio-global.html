@@ -1993,19 +1993,81 @@
         document.cookie = "googtrans=/pl/en; path=/; domain=.polskieradio.cc";
 
         // ── AUDIO INIT (global scope — called from overlay onclick) ──
-        function initStream() {
+        let biblePlaylist = [];
+        let bibleTotalDuration = 0;
+        let bibleTrackIndex = 0;
+        let bibleAudioEl = null;
+
+        async function loadBiblePlaylist() {
+            if (biblePlaylist.length > 0) return;
+            try {
+                const res = await fetch('./playlist.json');
+                biblePlaylist = await res.json();
+                bibleTotalDuration = biblePlaylist.reduce((acc, t) => acc + t.duration, 0);
+                console.log('✅ Bible playlist loaded:', biblePlaylist.length, 'tracks');
+            } catch (e) {
+                console.error('❌ Failed to load Bible playlist.json:', e);
+            }
+        }
+
+        function playBibleTrack(index) {
+            if (!bibleAudioEl || biblePlaylist.length === 0) return;
+            bibleTrackIndex = index % biblePlaylist.length;
+            const track = biblePlaylist[bibleTrackIndex];
+            bibleAudioEl.src = track.url;
+            bibleAudioEl.load();
+            bibleAudioEl.play().catch(e => console.warn('Bible play error:', e));
+            // Update track title in operator panel if element exists
+            const titleEl = document.getElementById('currentTrackTitle');
+            if (titleEl) titleEl.textContent = (track.bookName || '') + (track.chapter ? ' — Chapter ' + track.chapter : '');
+            console.log('▶️ Bible track:', track.bookName, track.chapter, track.url);
+        }
+
+        async function initStream() {
             const overlay = document.getElementById('startOverlay');
-            const audio   = document.getElementById('stream-audio');
+            bibleAudioEl = document.getElementById('stream-audio');
             if (overlay) overlay.classList.add('hidden');
-            if (audio) {
-                audio.play().catch(e => {
-                    console.warn("Audio play blocked:", e);
-                    // overlay stays hidden even if audio play is blocked // show again if blocked
+
+            await loadBiblePlaylist();
+
+            if (biblePlaylist.length > 0) {
+                // Sync track by epoch time (same logic as app.js / global_biblia)
+                const epochSeconds = Math.floor(Date.now() / 1000);
+                let remaining = epochSeconds % bibleTotalDuration;
+                let targetIndex = 0;
+                let seekSeconds = 0;
+                for (let i = 0; i < biblePlaylist.length; i++) {
+                    if (remaining < biblePlaylist[i].duration) {
+                        targetIndex = i;
+                        seekSeconds = remaining;
+                        break;
+                    }
+                    remaining -= biblePlaylist[i].duration;
+                }
+                bibleTrackIndex = targetIndex;
+                const track = biblePlaylist[bibleTrackIndex];
+                bibleAudioEl.src = track.url;
+                bibleAudioEl.load();
+                bibleAudioEl.currentTime = seekSeconds;
+                bibleAudioEl.play().catch(e => console.warn('Bible play blocked:', e));
+
+                // Auto-advance to next chapter on track end
+                bibleAudioEl.addEventListener('ended', () => {
+                    playBibleTrack(bibleTrackIndex + 1);
                 });
-                // Watchdog: restart if paused (e.g. network drop)
+
+                // Watchdog: restart if paused (network drop)
                 setInterval(() => {
-                    if (audio.paused) audio.play().catch(() => {});
+                    if (bibleAudioEl && bibleAudioEl.paused && !bibleAudioEl.ended) {
+                        bibleAudioEl.play().catch(() => {});
+                    }
                 }, 10000);
+            } else {
+                // Fallback: Zeno.fm stream if playlist fails
+                if (bibleAudioEl) {
+                    bibleAudioEl.src = 'https://stream.zeno.fm/gn3uhltrrytuv';
+                    bibleAudioEl.play().catch(e => console.warn('Fallback stream error:', e));
+                }
             }
         }
 
@@ -3415,7 +3477,7 @@ function getWeatherPreset(city) {
         }
     </script>
 
-    <audio id="stream-audio" src="https://stream.zeno.fm/gn3uhltrrytuv"></audio>
+    <audio id="stream-audio" preload="auto"></audio>
     <div id="google_translate_element" style="position: absolute; left: -9999px; top: -9999px; visibility: hidden;"></div>
     <script type="text/javascript">
         function googleTranslateElementInit() {
