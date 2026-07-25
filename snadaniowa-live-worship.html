@@ -2101,10 +2101,14 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             const audio   = document.getElementById('stream-audio');
             if (overlay) overlay.classList.add('hidden');
             if (audio) {
-                audio.play().catch(e => {
-                    console.warn("Audio play blocked:", e);
-                    // overlay stays hidden even if audio play is blocked // show again if blocked
-                });
+                // Trigger synced playlist playback (loads src + plays correct track)
+                if (typeof window.worshipSyncAndPlay === 'function') {
+                    window.worshipSyncAndPlay();
+                } else {
+                    audio.play().catch(e => {
+                        console.warn("Audio play blocked:", e);
+                    });
+                }
                 // Watchdog: restart if paused (e.g. network drop)
                 setInterval(() => {
                     if (audio.paused) audio.play().catch(() => {});
@@ -3400,7 +3404,7 @@ function getWeatherPreset(city) {
                 var currentTrack = worshipPlaylist[targetIndex];
                 if (currentTrack && currentTrack.url) {
                     var cleanUrl = currentTrack.url.replace('./', '');
-                    if (!audio.src.includes(cleanUrl)) {
+                    if (!audio.src || !audio.src.includes(cleanUrl)) {
                         audio.src = currentTrack.url;
                         try { audio.currentTime = seekSeconds; } catch(e) {}
                     }
@@ -3411,22 +3415,31 @@ function getWeatherPreset(city) {
                 }
             }
 
-            function playNextTrack() {
-                syncAndPlay();
-            }
+            // Expose globally so initStream() can trigger playback after user gesture
+            window.worshipSyncAndPlay = syncAndPlay;
+
+            audio.addEventListener('ended', syncAndPlay);
 
             fetch("./worship_playlist.json?t=" + new Date().getTime())
                 .then(function(res) { return res.json(); })
                 .then(function(playlist) {
                     if (!playlist || !playlist.length) return;
-                        currentIdx = (currentIdx + 1) % playlist.length;
-                        if (playlist[currentIdx] && playlist[currentIdx].url) {
-                            audio.src = playlist[currentIdx].url;
-                            audio.play().catch(function(){});
-                        }
-                    });
+                    worshipPlaylist = playlist;
+                    totalWorshipDuration = worshipPlaylist.reduce(function(acc, t) {
+                        return acc + (t.duration || 240);
+                    }, 0);
+                    syncAndPlay();
                 })
-                .catch(function(){});
+                .catch(function(err) {
+                    console.error("Error loading worship_playlist.json:", err);
+                });
+
+            // Unlock audio on click if blocked by Autoplay policy
+            document.addEventListener("click", function() {
+                if (audio.paused) {
+                    audio.play().catch(function(){});
+                }
+            }, { once: true });
         })();
     </script>
 </body>
