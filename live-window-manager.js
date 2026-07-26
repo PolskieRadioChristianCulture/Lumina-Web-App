@@ -37,6 +37,10 @@
     function getWindowTitle(el) {
         if (el.dataset.windowTitle) return el.dataset.windowTitle;
 
+        if (el.id === 'livePrayerOverlay' || el.classList.contains('live-prayer-overlay') || el.classList.contains('prayer-card')) {
+            return 'Wspólna Modlitwa LIVE';
+        }
+
         const titleEl = el.querySelector('.widget-title, .canvas-title, .app-card-title, .header-title, .cta-title, .weather-city, h1, h2, h3, h4, .title');
         if (titleEl && titleEl.textContent.trim()) {
             let t = titleEl.textContent.trim().split('\n')[0].replace(/[\u1F600-\u1F64F]/g, '').trim();
@@ -101,6 +105,7 @@
 
             isDragging = true;
             el.classList.add('is-dragging');
+            el.style.pointerEvents = 'auto';
 
             const container = document.getElementById('app-container') || document.body;
             const containerRect = container.getBoundingClientRect();
@@ -125,8 +130,8 @@
 
             startX = e.clientX;
             startY = e.clientY;
-            startLeft = parseFloat(el.style.left) || 0;
-            startTop = parseFloat(el.style.top) || 0;
+            startLeft = parseFloat(el.style.left) || ((elRect.left - containerRect.left) / scale);
+            startTop = parseFloat(el.style.top) || ((elRect.top - containerRect.top) / scale);
 
             function onMouseMove(moveEvent) {
                 if (!isDragging) return;
@@ -162,6 +167,7 @@
 
             isResizing = true;
             el.classList.add('is-resizing');
+            el.style.pointerEvents = 'auto';
 
             const scale = getAppScale();
             const elRect = el.getBoundingClientRect();
@@ -213,10 +219,12 @@
             const dockBtn = document.createElement('button');
             dockBtn.className = 'live-dock-btn';
             dockBtn.title = 'Przywróć okno: ' + title;
-            dockBtn.innerHTML = '<i class="fa-solid fa-window-restore"></i> <span>' + title + '</span>';
+            dockBtn.innerHTML = '<i class="fa-solid fa-hands-praying"></i> <span>' + title + '</span>';
 
             dockBtn.addEventListener('click', () => {
                 el.classList.remove('live-win-minimized');
+                el.style.opacity = '1';
+                el.style.pointerEvents = 'auto';
                 dockBtn.remove();
             });
 
@@ -229,6 +237,9 @@
         getOrCreateDock();
 
         const selectors = [
+            '#livePrayerOverlay',
+            '.live-prayer-overlay',
+            '.prayer-card',
             '.schedule-widget',
             '.weather-cta-group',
             '.card-clock-widget',
@@ -251,8 +262,8 @@
         initLiveWindowManager();
     }
 
-    // Catch dynamic widgets
-    setInterval(initLiveWindowManager, 2500);
+    // Catch dynamic widgets (e.g. when livePrayerOverlay appears dynamically)
+    setInterval(initLiveWindowManager, 2000);
 
     window.initLiveWindowManager = initLiveWindowManager;
 })();

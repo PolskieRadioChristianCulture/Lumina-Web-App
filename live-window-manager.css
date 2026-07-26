@@ -23,10 +23,11 @@
 
 /* Show controls when hovering window card */
 .live-window-card:hover > .live-win-controls,
+#livePrayerOverlay:hover > .live-win-controls,
 .live-win-controls:hover,
 .live-win-controls.active {
-    opacity: 1;
-    pointer-events: auto;
+    opacity: 1 !important;
+    pointer-events: auto !important;
     transform: translateY(0);
 }
 
@@ -97,10 +98,11 @@
 }
 
 .live-window-card:hover > .live-win-resize-handle,
+#livePrayerOverlay:hover > .live-win-resize-handle,
 .live-win-resize-handle:hover,
 .live-win-resize-handle.active {
-    opacity: 1;
-    pointer-events: auto;
+    opacity: 1 !important;
+    pointer-events: auto !important;
 }
 
 .live-win-resize-handle:hover {
