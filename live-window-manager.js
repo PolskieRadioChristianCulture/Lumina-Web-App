@@ -80,17 +80,31 @@
         const titleEl = el.querySelector('.widget-title, .canvas-title, .app-card-title, .header-title, .cta-title, h1, h2, h3, h4, .title');
         if (titleEl && titleEl.textContent.trim()) {
             let t = titleEl.textContent.trim().split('\n')[0].replace(/[\uD83C-\uDBFF\uDC00-\uDFFF]+/g, '').trim();
-            if (t.length > 22) t = t.substring(0, 22) + '…';
+            if (t.length > 22) t = t.substring(0, 22) + '\u2026';
             if (t) return t;
         }
-        if (el.classList.contains('schedule-widget'))       return 'Program Dnia';
-        if (el.classList.contains('card-clock-widget'))     return 'Zegar & Data';
-        if (el.classList.contains('reflection-canvas-card'))return 'Ekran Rozważania';
-        if (el.classList.contains('live-helpline-panel'))   return 'Infolinia Nadzieja';
-        if (el.classList.contains('weather-cta-group'))     return 'Pogoda i Oferta';
-        if (el.classList.contains('main-panel'))            return 'Tekst Biblii';
-        if (el.classList.contains('app-card'))              return 'Aplikacja CC';
+        if (el.classList.contains('schedule-widget'))        return 'Program Dnia';
+        if (el.classList.contains('card-clock-widget'))      return 'Zegar & Data';
+        if (el.classList.contains('reflection-canvas-card')) return 'Ekran Rozwa\u017cania';
+        if (el.classList.contains('live-helpline-panel'))    return 'Infolinia Nadzieja';
+        if (el.classList.contains('weather-cta-group'))      return 'Pogoda i Oferta';
+        if (el.classList.contains('main-panel'))             return 'Tekst Biblii';
+        if (el.classList.contains('app-card'))               return 'Aplikacja CC';
         return 'Okienko';
+    }
+
+    // Per-window-type Font Awesome icon
+    function getWindowIcon(el) {
+        if (el.id === 'livePrayerOverlay')                    return 'fa-hands-praying';
+        if (el.classList.contains('schedule-widget'))         return 'fa-calendar-days';
+        if (el.classList.contains('card-clock-widget'))       return 'fa-clock';
+        if (el.classList.contains('reflection-canvas-card'))  return 'fa-book-open';
+        if (el.classList.contains('live-helpline-panel'))     return 'fa-phone';
+        if (el.classList.contains('weather-cta-group'))       return 'fa-cloud-sun';
+        if (el.classList.contains('main-panel'))              return 'fa-book-bible';
+        if (el.classList.contains('app-card'))                return 'fa-mobile-screen';
+        if (el.classList.contains('cta-widget'))              return 'fa-bullhorn';
+        return 'fa-window-restore';
     }
 
     /* ---- Background Picker Panel ----------------------------------------- */
@@ -355,13 +369,15 @@
             e.stopPropagation();
 
             const title = getWindowTitle(el);
+            const icon  = getWindowIcon(el);
             el.classList.add('live-win-minimized');
 
             const dock = getOrCreateDock();
             const dockBtn = document.createElement('button');
             dockBtn.className = 'live-dock-btn';
-            dockBtn.title = 'Przywróć okno: ' + title;
-            dockBtn.innerHTML = '<i class="fa-solid fa-window-restore"></i> <span>' + title + '</span>';
+            dockBtn.title = 'Przywró\u0107 okno: ' + title;
+            dockBtn.setAttribute('data-label', title);
+            dockBtn.innerHTML = '<i class="fa-solid ' + icon + '"></i>';
 
             dockBtn.addEventListener('click', () => {
                 el.classList.remove('live-win-minimized');
