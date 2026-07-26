@@ -1,12 +1,22 @@
 /* ==========================================================================
-   LIVE WINDOW MANAGER — Drag (transform), Resize & Minimize + BG Picker
-   v3 — 2026-07-26
+   LIVE WINDOW MANAGER JS v5
+   - Drag: transform:translate (bez znikania)
+   - Resize: złap za róg
+   - Minimize: okrągłe ikony w #live-outer-controls (POZA app-container)
+   - BG Picker: panel zmiany tła
+   - #live-outer-controls: pozycjonowany w CZARNYM OBSZARZE (poza 1920x1080)
+     → niewidoczny dla widza w OBS, dostępny dla operatora lokalnie
    ========================================================================== */
 
 (function () {
     'use strict';
 
-    /* ---- Background presets (files from polskieradio.cc root) ------------- */
+    /* ---- OBS Detection ---------------------------------------------------- */
+    // OBS Browser Source używa user-agenta zawierającego "OBS" lub "obs-browser"
+    // Jeśli wykryjemy OBS, ukrywamy całe #live-outer-controls
+    const IS_OBS = /OBS|obs-browser|OBSBrowser/i.test(navigator.userAgent);
+
+    /* ---- Background presets ----------------------------------------------- */
     const BG_PRESETS = [
         { label: 'Studio Śniadaniowe',   src: 'breakfast_studio.jpg' },
         { label: 'Studio Alt',           src: 'breakfast_studio_alt.jpg' },
@@ -37,18 +47,6 @@
     ];
 
     /* ---- Helpers ---------------------------------------------------------- */
-    function getOrCreateDock() {
-        let dock = document.getElementById('live-minimized-dock');
-        if (!dock) {
-            dock = document.createElement('div');
-            dock.id = 'live-minimized-dock';
-            dock.className = 'live-minimized-dock';
-            const container = document.getElementById('app-container') || document.querySelector('.emission-grid') || document.body;
-            container.appendChild(dock);
-        }
-        return dock;
-    }
-
     function getAppScale() {
         const container = document.getElementById('app-container');
         if (!container) return 1;
@@ -60,7 +58,6 @@
         return 1;
     }
 
-    // Parse current translate from el.style.transform (may already have other transforms)
     function getCurrentTranslate(el) {
         const s = el.style.transform || '';
         const m = s.match(/translate\(([^,]+)px,\s*([^)]+)px\)/);
@@ -68,12 +65,96 @@
         return { x: 0, y: 0 };
     }
 
-    // Apply translate while preserving other transforms (e.g. scale from resizeViewport)
     function setTranslate(el, tx, ty) {
         const base = (el.style.transform || '').replace(/translate\([^)]*\)/g, '').trim();
         el.style.transform = `translate(${tx}px, ${ty}px) ${base}`.trim();
     }
 
+    /* ====================================================================
+       OUTER CONTROLS CONTAINER
+       Dołączamy do document.body — POZA #app-container.
+       Pozycjonowany w czarnym obszarze ekranu (niewidoczny w OBS capture).
+       W OBS (skalowanie ≈ 1, viewport = 1920x1080): container trafia
+       poniżej dolnej krawędzi capture = nie nagrywany przez OBS.
+       Lokalnie (skalowanie < 1): trafia w czarny pas poniżej/z boku.
+       ==================================================================== */
+    function getOrCreateOuterControls() {
+        let c = document.getElementById('live-outer-controls');
+        if (!c) {
+            c = document.createElement('div');
+            c.id = 'live-outer-controls';
+            c.className = 'live-outer-controls';
+            if (IS_OBS) {
+                c.style.display = 'none'; // W OBS ukrywamy całkowicie
+            }
+            document.body.appendChild(c);
+            updateOuterControlsPosition();
+            window.addEventListener('resize', updateOuterControlsPosition);
+        }
+        return c;
+    }
+
+    function updateOuterControlsPosition() {
+        const c = document.getElementById('live-outer-controls');
+        if (!c || IS_OBS) return;
+
+        const scale    = getAppScale();
+        const scaledW  = Math.ceil(1920 * scale);
+        const scaledH  = Math.ceil(1080 * scale);
+        const vW       = window.innerWidth;
+        const rightGap = vW - scaledW;
+
+        if (rightGap >= 58) {
+            // ---- Czarny obszar PO PRAWEJ stronie skalowanego kontenera ----
+            // W OBS (scale≈1, vW=1920): scaledW=1920, rightGap=0 → branch poniżej
+            c.style.left        = (scaledW + 10) + 'px';
+            c.style.top         = '20px';
+            c.style.bottom      = 'auto';
+            c.style.right       = 'auto';
+            c.style.flexDirection = 'column';
+        } else {
+            // ---- Czarny obszar PONIŻEJ skalowanego kontenera ----
+            // W OBS (scale=1, vh=1080): scaledH=1080, top=1090px → poniżej dolnej
+            //   krawędzi viewportu OBS (1080px) → niewidoczne dla widza ✅
+            // Lokalnie (scale<1): top = 1080*scale+10 → czarny pas pod kontenerem ✅
+            c.style.left        = '10px';
+            c.style.top         = (scaledH + 10) + 'px';
+            c.style.bottom      = 'auto';
+            c.style.right       = 'auto';
+            c.style.flexDirection = 'row';
+        }
+    }
+
+    /* ---- Dock (zminimalizowane ikony) — wewnątrz outer-controls ---------- */
+    function getOrCreateDock() {
+        const outer = getOrCreateOuterControls();
+        let dock = document.getElementById('live-minimized-dock');
+        if (!dock) {
+            dock = document.createElement('div');
+            dock.id = 'live-minimized-dock';
+            dock.className = 'live-minimized-dock';
+            outer.appendChild(dock);
+        }
+        return dock;
+    }
+
+    /* ---- BG button — wewnątrz outer-controls ------------------------------ */
+    function getOrCreateBgBtn() {
+        let btn = document.getElementById('live-bg-btn');
+        if (!btn) {
+            const outer = getOrCreateOuterControls();
+            btn = document.createElement('button');
+            btn.id = 'live-bg-btn';
+            btn.className = 'live-bg-global-btn';
+            btn.title = 'Zmień tło transmisji w czasie rzeczywistym';
+            btn.innerHTML = '<i class="fa-solid fa-palette"></i>';
+            btn.addEventListener('click', (e) => { e.stopPropagation(); createBgPickerPanel(); });
+            outer.appendChild(btn);
+        }
+        return btn;
+    }
+
+    /* ---- Window titles & icons ------------------------------------------- */
     function getWindowTitle(el) {
         if (el.dataset.windowTitle) return el.dataset.windowTitle;
         if (el.id === 'livePrayerOverlay') return 'Wspólna Modlitwa LIVE';
@@ -85,7 +166,7 @@
         }
         if (el.classList.contains('schedule-widget'))        return 'Program Dnia';
         if (el.classList.contains('card-clock-widget'))      return 'Zegar & Data';
-        if (el.classList.contains('reflection-canvas-card')) return 'Ekran Rozwa\u017cania';
+        if (el.classList.contains('reflection-canvas-card')) return 'Ekran Rozważania';
         if (el.classList.contains('live-helpline-panel'))    return 'Infolinia Nadzieja';
         if (el.classList.contains('weather-cta-group'))      return 'Pogoda i Oferta';
         if (el.classList.contains('main-panel'))             return 'Tekst Biblii';
@@ -93,7 +174,6 @@
         return 'Okienko';
     }
 
-    // Per-window-type Font Awesome icon
     function getWindowIcon(el) {
         if (el.id === 'livePrayerOverlay')                    return 'fa-hands-praying';
         if (el.classList.contains('schedule-widget'))         return 'fa-calendar-days';
@@ -133,60 +213,45 @@
             <input type="text" id="bgUrlInput" class="bg-url-input" placeholder="https://... lub ścieżka/do/pliku.jpg">
             <button id="bgUrlApplyBtn" class="bg-url-apply-btn"><i class="fa-solid fa-check"></i> Zastosuj</button>
           </div>
-          <div class="bg-picker-section-title" style="margin-top:14px;">⏱️ Klatka z wideo (aktywna chwila)</div>
+          <div class="bg-picker-section-title" style="margin-top:14px;">⏱️ Klatka z wideo</div>
           <button id="bgVideoCaptureBtn" class="bg-video-capture-btn"><i class="fa-solid fa-camera"></i> Użyj aktualnej klatki wideo jako tło</button>
         `;
 
-        // Insert into app-container or body
-        const container = document.getElementById('app-container') || document.body;
-        container.appendChild(panel);
+        // Panel trafia do outer-controls (poza app-container, poza OBS capture)
+        const outer = getOrCreateOuterControls();
+        outer.appendChild(panel);
         bgPickerPanel = panel;
 
-        // Close button
         panel.querySelector('.bg-picker-close').addEventListener('click', () => {
             panel.remove(); bgPickerPanel = null;
         });
 
-        // Preset grid
         const grid = panel.querySelector('#bgPresetGrid');
         BG_PRESETS.forEach(preset => {
             const tile = document.createElement('div');
             tile.className = 'bg-preset-tile';
             tile.title = preset.label;
-            if (preset.src) {
-                tile.style.backgroundImage = `url('${preset.src}')`;
-            } else if (preset.gradient) {
-                tile.style.background = preset.gradient;
-            } else {
-                tile.style.background = preset.color || '#0b0d14';
-            }
+            if (preset.src)           tile.style.backgroundImage = `url('${preset.src}')`;
+            else if (preset.gradient) tile.style.background = preset.gradient;
+            else                      tile.style.background = preset.color || '#0b0d14';
             const lbl = document.createElement('span');
             lbl.textContent = preset.label;
             tile.appendChild(lbl);
             tile.addEventListener('click', () => {
-                if (preset.src) applyBgImage(preset.src);
+                if (preset.src)           applyBgImage(preset.src);
                 else if (preset.gradient) applyBgGradient(preset.gradient);
-                else applyBgColor(preset.color);
+                else                      applyBgColor(preset.color);
                 highlightTile(tile);
             });
             grid.appendChild(tile);
         });
 
-        // Custom color
-        panel.querySelector('#bgColorInput').addEventListener('input', e => {
-            applyBgColor(e.target.value);
-        });
-
-        // Custom URL
+        panel.querySelector('#bgColorInput').addEventListener('input', e => applyBgColor(e.target.value));
         panel.querySelector('#bgUrlApplyBtn').addEventListener('click', () => {
             const url = panel.querySelector('#bgUrlInput').value.trim();
             if (url) applyBgImage(url);
         });
-
-        // Video frame capture
-        panel.querySelector('#bgVideoCaptureBtn').addEventListener('click', () => {
-            captureVideoFrame();
-        });
+        panel.querySelector('#bgVideoCaptureBtn').addEventListener('click', captureVideoFrame);
     }
 
     function highlightTile(activeTile) {
@@ -197,10 +262,8 @@
     function applyBgImage(src) {
         const container = document.getElementById('app-container');
         if (!container) return;
-        // Try to update bg-layer img first
         const bgImg = container.querySelector('.bg-layer.bg-img, #bg-img-1, #bgImage');
         if (bgImg) { bgImg.src = src; bgImg.style.opacity = '1'; return; }
-        // Fallback: set background directly on app-container
         container.style.backgroundImage = `url('${src}')`;
         container.style.backgroundSize = 'cover';
         container.style.backgroundPosition = 'center';
@@ -211,7 +274,6 @@
         if (!container) return;
         container.style.backgroundImage = 'none';
         container.style.backgroundColor = color;
-        // Fade out video layers
         container.querySelectorAll('.bg-layer').forEach(l => l.style.opacity = '0');
     }
 
@@ -239,9 +301,7 @@
                 container.style.backgroundPosition = 'center';
                 container.querySelectorAll('.bg-layer').forEach(l => l.style.opacity = '0');
             }
-        } catch(e) {
-            console.warn('Capture failed (CORS?):', e.message);
-        }
+        } catch(e) { console.warn('Capture failed (CORS?):', e.message); }
     }
 
     /* ---- Attach Controls to a Widget -------------------------------------- */
@@ -250,57 +310,43 @@
         el.dataset.windowControlsAttached = 'true';
         el.classList.add('live-window-card');
 
-        /* ---- CONTROL BAR (top-right) ---- */
+        /* CONTROL BAR (top-right, hover-reveal) */
         const controls = document.createElement('div');
         controls.className = 'live-win-controls';
 
         const dragBtn = document.createElement('button');
         dragBtn.className = 'live-win-btn drag-handle';
-        dragBtn.title = 'Przenieś okienko w dowolne miejsce na ekranie';
+        dragBtn.title = 'Przenieś okienko';
         dragBtn.innerHTML = '<i class="fa-solid fa-arrows-up-down-left-right"></i>';
 
         const minBtn = document.createElement('button');
         minBtn.className = 'live-win-btn min-btn';
-        minBtn.title = 'Zminimalizuj okno jako przycisk';
+        minBtn.title = 'Zminimalizuj';
         minBtn.innerHTML = '<i class="fa-solid fa-minus"></i>';
 
         controls.appendChild(dragBtn);
         controls.appendChild(minBtn);
         el.appendChild(controls);
 
-        /* ---- RESIZE HANDLE (bottom-right corner) ---- */
+        /* RESIZE HANDLE */
         const resizeHandle = document.createElement('div');
         resizeHandle.className = 'live-win-resize-handle';
-        resizeHandle.title = 'Rozciągnij okienko (złap za róg i przeciągnij)';
+        resizeHandle.title = 'Rozciągnij okienko';
         resizeHandle.innerHTML = '<i class="fa-solid fa-up-right-and-down-left-from-center"></i>';
         el.appendChild(resizeHandle);
 
-        /* ---- BG PICKER BUTTON (global, only once per page) ---- */
-        if (!document.getElementById('live-bg-btn')) {
-            const bgBtn = document.createElement('button');
-            bgBtn.id = 'live-bg-btn';
-            bgBtn.className = 'live-bg-global-btn';
-            bgBtn.title = 'Zmień tło transmisji w czasie rzeczywistym';
-            bgBtn.innerHTML = '<i class="fa-solid fa-palette"></i>';
-            bgBtn.addEventListener('click', (e) => { e.stopPropagation(); createBgPickerPanel(); });
-            const container = document.getElementById('app-container') || document.querySelector('.emission-grid') || document.body;
-            container.appendChild(bgBtn);
-        }
+        /* Ensure BG button exists in outer controls */
+        getOrCreateBgBtn();
 
-        /* ==== DRAG ENGINE (transform: translate — element stays in DOM flow) ==== */
+        /* ==== DRAG (transform:translate) ==== */
         let isDragging = false;
-        let dragStartX = 0, dragStartY = 0;
-        let dragStartTX = 0, dragStartTY = 0;
+        let dragStartX = 0, dragStartY = 0, dragStartTX = 0, dragStartTY = 0;
 
         dragBtn.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-
+            e.preventDefault(); e.stopPropagation();
             const t = getCurrentTranslate(el);
-            dragStartTX = t.x;
-            dragStartTY = t.y;
-            dragStartX = e.clientX;
-            dragStartY = e.clientY;
+            dragStartTX = t.x; dragStartTY = t.y;
+            dragStartX = e.clientX; dragStartY = e.clientY;
             isDragging = true;
             el.classList.add('is-dragging');
             el.style.zIndex = '9000';
@@ -308,36 +354,30 @@
             function onMouseMove(me) {
                 if (!isDragging) return;
                 const scale = getAppScale();
-                const dx = (me.clientX - dragStartX) / scale;
-                const dy = (me.clientY - dragStartY) / scale;
-                setTranslate(el, dragStartTX + dx, dragStartTY + dy);
+                setTranslate(el, dragStartTX + (me.clientX - dragStartX) / scale,
+                                  dragStartTY + (me.clientY - dragStartY) / scale);
             }
-
             function onMouseUp() {
                 isDragging = false;
                 el.classList.remove('is-dragging');
                 window.removeEventListener('mousemove', onMouseMove);
                 window.removeEventListener('mouseup', onMouseUp);
             }
-
             window.addEventListener('mousemove', onMouseMove);
             window.addEventListener('mouseup', onMouseUp);
         });
 
-        /* ==== RESIZE ENGINE ==== */
+        /* ==== RESIZE ==== */
         let isResizing = false;
         let rStartX = 0, rStartY = 0, startW = 0, startH = 0;
 
         resizeHandle.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-
+            e.preventDefault(); e.stopPropagation();
             const scale = getAppScale();
             const elRect = el.getBoundingClientRect();
             startW = elRect.width / scale;
             startH = elRect.height / scale;
-            rStartX = e.clientX;
-            rStartY = e.clientY;
+            rStartX = e.clientX; rStartY = e.clientY;
             el.style.width = startW + 'px';
             el.style.height = startH + 'px';
             el.style.overflow = 'hidden';
@@ -348,26 +388,22 @@
             function onResizeMove(me) {
                 if (!isResizing) return;
                 const scale = getAppScale();
-                el.style.width = Math.max(160, startW + (me.clientX - rStartX) / scale) + 'px';
-                el.style.height = Math.max(80, startH + (me.clientY - rStartY) / scale) + 'px';
+                el.style.width  = Math.max(160, startW + (me.clientX - rStartX) / scale) + 'px';
+                el.style.height = Math.max(80,  startH + (me.clientY - rStartY) / scale) + 'px';
             }
-
             function onResizeUp() {
                 isResizing = false;
                 el.classList.remove('is-resizing');
                 window.removeEventListener('mousemove', onResizeMove);
                 window.removeEventListener('mouseup', onResizeUp);
             }
-
             window.addEventListener('mousemove', onResizeMove);
             window.addEventListener('mouseup', onResizeUp);
         });
 
-        /* ==== MINIMIZE ENGINE ==== */
+        /* ==== MINIMIZE ==== */
         minBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-
+            e.preventDefault(); e.stopPropagation();
             const title = getWindowTitle(el);
             const icon  = getWindowIcon(el);
             el.classList.add('live-win-minimized');
@@ -375,41 +411,30 @@
             const dock = getOrCreateDock();
             const dockBtn = document.createElement('button');
             dockBtn.className = 'live-dock-btn';
-            dockBtn.title = 'Przywró\u0107 okno: ' + title;
+            dockBtn.title = 'Przywróć: ' + title;
             dockBtn.setAttribute('data-label', title);
             dockBtn.innerHTML = '<i class="fa-solid ' + icon + '"></i>';
-
             dockBtn.addEventListener('click', () => {
                 el.classList.remove('live-win-minimized');
-                el.style.opacity = '1';
-                el.style.pointerEvents = 'auto';
                 dockBtn.remove();
             });
-
             dock.appendChild(dockBtn);
         });
     }
 
     /* ---- Init ------------------------------------------------------------- */
     function initLiveWindowManager() {
+        getOrCreateOuterControls();
         getOrCreateDock();
+        getOrCreateBgBtn();
 
         const selectors = [
-            '#livePrayerOverlay',
-            '.live-prayer-overlay',
-            '.prayer-card',
-            '.schedule-widget',
-            '.weather-cta-group',
-            '.card-clock-widget',
-            '.live-helpline-panel',
-            '.reflection-canvas-card',
-            '.main-panel',
-            '.app-card',
-            '.obs-card',
-            '.special-event-card',
+            '#livePrayerOverlay', '.live-prayer-overlay', '.prayer-card',
+            '.schedule-widget', '.weather-cta-group', '.card-clock-widget',
+            '.live-helpline-panel', '.reflection-canvas-card',
+            '.main-panel', '.app-card', '.obs-card', '.special-event-card',
             '[data-window]'
         ];
-
         document.querySelectorAll(selectors.join(', ')).forEach(attachWindowControls);
     }
 
@@ -420,7 +445,8 @@
     }
 
     setInterval(initLiveWindowManager, 2000);
-    window.initLiveWindowManager = initLiveWindowManager;
-    window.applyBgImage = applyBgImage;
-    window.applyBgColor = applyBgColor;
+    window.initLiveWindowManager   = initLiveWindowManager;
+    window.applyBgImage            = applyBgImage;
+    window.applyBgColor            = applyBgColor;
+    window.updateOuterControlsPosition = updateOuterControlsPosition;
 })();
