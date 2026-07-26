@@ -315,3 +315,29 @@
 .live-win-resize-handle:hover { color:#000; background:#d4af37; border-color:#fff; transform:scale(1.18); }
 
 .live-win-minimized { display: none !important; }
+
+/* ========================================================================
+   QR SIDECAR — specjalne reguły
+   Sidecar normalnie ma opacity:0 i pointer-events:none (ukryty).
+   Kontrolki okna muszą być dostępne ZAWSZE dla operatora —
+   wymuszamy widoczność przy hover niezależnie od stanu .active.
+   ======================================================================== */
+.qr-sidecar.live-window-card {
+    /* Kontrolki muszą wystawac poza overflow:hidden rodzica */
+    overflow: visible !important;
+}
+
+/* Gdy operator najedzie na sidecar, force-show kontrolki */
+.qr-sidecar.live-window-card:hover {
+    /* Tymczasowo aktywuj pointer-events żeby chwytać hover */
+    pointer-events: auto !important;
+    opacity: 0.92 !important;
+    z-index: 99 !important;
+}
+
+.qr-sidecar.live-window-card:hover > .live-win-controls,
+.qr-sidecar.live-window-card:hover > .live-win-resize-handle {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateY(0);
+}

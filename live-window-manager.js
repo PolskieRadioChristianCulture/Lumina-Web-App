@@ -180,6 +180,7 @@
 
     function getWindowIcon(el) {
         if (el.id === 'livePrayerOverlay')                    return 'fa-hands-praying';
+        if (el.classList.contains('qr-sidecar'))              return 'fa-qrcode';
         if (el.classList.contains('schedule-widget'))         return 'fa-calendar-days';
         if (el.classList.contains('card-clock-widget'))       return 'fa-clock';
         if (el.classList.contains('reflection-canvas-card'))  return 'fa-book-open';
@@ -495,9 +496,18 @@
             '.schedule-widget', '.weather-cta-group', '.card-clock-widget',
             '.live-helpline-panel', '.reflection-canvas-card',
             '.main-panel', '.app-card', '.obs-card', '.special-event-card',
+            '.qr-sidecar', '#qrSidecar',
             '[data-window]'
         ];
-        document.querySelectorAll(selectors.join(', ')).forEach(attachWindowControls);
+        document.querySelectorAll(selectors.join(', ')).forEach(el => {
+            // QR sidecar: nadaj tytuł i upewnij się że kontrolki działają też gdy .active
+            if (el.classList.contains('qr-sidecar')) {
+                el.dataset.windowTitle = 'Kod QR';
+                // Kontrolki muszą być widoczne przy hover nawet gdy opacity < 1
+                el.style.overflow = 'visible';
+            }
+            attachWindowControls(el);
+        });
     }
 
     if (document.readyState === 'loading') {
