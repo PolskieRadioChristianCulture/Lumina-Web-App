@@ -16,34 +16,38 @@
     // Jeśli wykryjemy OBS, ukrywamy całe #live-outer-controls
     const IS_OBS = /OBS|obs-browser|OBSBrowser/i.test(navigator.userAgent);
 
-    /* ---- Background presets ----------------------------------------------- */
-    const BG_PRESETS = [
-        { label: 'Studio Śniadaniowe',   src: 'breakfast_studio.jpg' },
-        { label: 'Studio Alt',           src: 'breakfast_studio_alt.jpg' },
-        { label: 'Prowadzące (ranek)',    src: 'breakfast_presenters_morning_1.png' },
-        { label: 'Prowadzące (rano 2)',   src: 'breakfast_presenters_morning_2.jpg' },
-        { label: 'Prowadzące',           src: 'breakfast_presenters.jpg' },
-        { label: 'Prowadzące (alt)',      src: 'breakfast_presenters_alt.jpg' },
-        { label: 'Prowadzące (wieczór)', src: 'breakfast_presenters_evening.jpg' },
-        { label: 'Prowadzące (południe)',src: 'breakfast_presenters_forenoon.jpg' },
-        { label: 'Modlitwa za Polskę',   src: 'Tapeta_ZaPolske.jpg' },
-        { label: 'Tapeta Modlitwa',      src: 'tapeta_modlitwa.jpg' },
-        { label: 'Tapeta Modlitwa GIF',  src: 'tapeta_modlitwa.gif' },
-        { label: 'Worship BG',           src: 'worship_bg.jpg' },
-        { label: 'Worship BG 2',         src: 'worship_bg_2.png' },
-        { label: 'Worship Logo BG',      src: 'worship_logo_bg.jpg' },
-        { label: 'GLOBAL',               src: 'GLOBAL.jpg' },
-        { label: 'POLSKA (flaga)',        src: 'POLAND.jpg' },
-        { label: 'Inauguracja',          src: 'inauguration.jpg' },
-        { label: 'Slideshw 1',           src: 'bg_slideshow_1.jpg' },
-        { label: 'Slideshw 2',           src: 'bg_slideshow_2.jpg' },
-        { label: 'Slideshw 3',           src: 'bg_slideshow_3.jpg' },
-        { label: 'Czarne (domyślne)',     src: null, color: '#0b0d14' },
-        { label: 'Głęboka noc',          src: null, color: '#080c18' },
-        { label: 'Granatowy',            src: null, color: '#0d1a35' },
-        { label: 'Ciemny fiolet',        src: null, color: '#16092e' },
-        { label: 'Gradient złoty',       src: null, gradient: 'linear-gradient(135deg,#1a0f00 0%,#2a1800 50%,#0b0d14 100%)' },
-        { label: 'Gradient czerwony',    src: null, gradient: 'linear-gradient(135deg,#1a0005 0%,#2a0010 50%,#0b0d14 100%)' },
+    /* ---- Background presets (dokladne nazwy pliki jak w #bgImageSelect) -- */
+    const BG_PRESETS_IMAGES = [
+        { label: 'Prezenterki (auto-rotacja)',  src: 'breakfast_presenters.jpg' },
+        { label: 'Przedpołudniowe Prezenterki', src: 'breakfast_presenters_forenoon.jpg' },
+        { label: 'Alternatywne Prezenterki',    src: 'breakfast_presenters_alt.jpg' },
+        { label: 'Studio (kawa + książka)',    src: 'breakfast_studio.jpg' },
+        { label: 'Studio drewniane (alt)',       src: 'breakfast_studio_alt.jpg' },
+        { label: 'Letnie tło',                  src: 'a0kKB.jpg' },
+        { label: 'Zjednoczeni za Polskę',       src: 'zjednoczeni_za_polske_banner.jpg' },
+        { label: 'Tapeta Modlitwa',             src: 'tapeta_modlitwa.jpg' },
+        { label: 'Tapeta Modlitwa GIF',         src: 'tapeta_modlitwa.gif' },
+        { label: 'Tapeta Za Polskę',           src: 'Tapeta_ZaPolske.jpg' },
+        { label: 'Worship BG',                  src: 'worship_bg.jpg' },
+        { label: 'Worship BG 2',               src: 'worship_bg_2.png' },
+        { label: 'Inauguracja',                 src: 'inauguration.jpg' },
+        { label: 'Slideshw 1',                  src: 'bg_slideshow_1.jpg' },
+        { label: 'Slideshw 2',                  src: 'bg_slideshow_2.jpg' },
+    ];
+
+    const BG_PRESETS_VIDEOS = [
+        { label: 'Projekt bez nazwy (55).mp4', src: 'file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Projekt bez nazwy (55).mp4' },
+        { label: 'Christian Culture TV (1)',   src: 'file:///C:/Users/czark/Desktop/Dobrze, że jeśst/Christian Culture TV (1).mp4' },
+        { label: 'Projekt bez nazwy (33).mp4', src: 'file:///C:/Users/czark/Desktop/Tło LIVE/Projekt bez nazwy (33).mp4' },
+    ];
+
+    const BG_PRESETS_COLORS = [
+        { label: 'Czarne (domyślne)',  color: '#0b0d14' },
+        { label: 'Głęboka noc',       color: '#080c18' },
+        { label: 'Granatowy',          color: '#0d1a35' },
+        { label: 'Ciemny fiolet',      color: '#16092e' },
+        { label: 'Gradient złoty',    gradient: 'linear-gradient(135deg,#1a0f00 0%,#2a1800 50%,#0b0d14 100%)' },
+        { label: 'Gradient czerwony',  gradient: 'linear-gradient(135deg,#1a0005 0%,#2a0010 50%,#0b0d14 100%)' },
     ];
 
     /* ---- Helpers ---------------------------------------------------------- */
@@ -203,17 +207,19 @@
           </div>
           <div class="bg-picker-section-title">📷 Zdjęcia i Tapety</div>
           <div class="bg-picker-grid" id="bgPresetGrid"></div>
-          <div class="bg-picker-section-title" style="margin-top:14px;">🎨 Własny kolor</div>
+          <div class="bg-picker-section-title" style="margin-top:12px;">🎨 Kolory i Gradienty</div>
+          <div class="bg-picker-grid bg-picker-grid-colors" id="bgColorGrid"></div>
+          <div class="bg-picker-section-title" style="margin-top:12px;">🎨 Własny kolor</div>
           <div class="bg-picker-color-row">
             <input type="color" id="bgColorInput" value="#0b0d14" class="bg-color-input" title="Wybierz kolor tła">
             <label for="bgColorInput">Kolor niestandardowy</label>
           </div>
-          <div class="bg-picker-section-title" style="margin-top:14px;">🖼️ Własne zdjęcie (URL)</div>
+          <div class="bg-picker-section-title" style="margin-top:12px;">🖼️ Własne zdjęcie (URL lub ścieżka)</div>
           <div class="bg-picker-url-row">
-            <input type="text" id="bgUrlInput" class="bg-url-input" placeholder="https://... lub ścieżka/do/pliku.jpg">
+            <input type="text" id="bgUrlInput" class="bg-url-input" placeholder="np. breakfast_studio.jpg lub https://...">
             <button id="bgUrlApplyBtn" class="bg-url-apply-btn"><i class="fa-solid fa-check"></i> Zastosuj</button>
           </div>
-          <div class="bg-picker-section-title" style="margin-top:14px;">⏱️ Klatka z wideo</div>
+          <div class="bg-picker-section-title" style="margin-top:12px;">⏱️ Klatka z aktywnego wideo</div>
           <button id="bgVideoCaptureBtn" class="bg-video-capture-btn"><i class="fa-solid fa-camera"></i> Użyj aktualnej klatki wideo jako tło</button>
         `;
 
@@ -226,24 +232,39 @@
             panel.remove(); bgPickerPanel = null;
         });
 
+        // --- Siatka obrazów (dokładne pliki ze strony)
         const grid = panel.querySelector('#bgPresetGrid');
-        BG_PRESETS.forEach(preset => {
+        BG_PRESETS_IMAGES.forEach(preset => {
             const tile = document.createElement('div');
             tile.className = 'bg-preset-tile';
             tile.title = preset.label;
-            if (preset.src)           tile.style.backgroundImage = `url('${preset.src}')`;
-            else if (preset.gradient) tile.style.background = preset.gradient;
-            else                      tile.style.background = preset.color || '#0b0d14';
+            tile.style.backgroundImage = `url('${preset.src}')`;
             const lbl = document.createElement('span');
             lbl.textContent = preset.label;
             tile.appendChild(lbl);
             tile.addEventListener('click', () => {
-                if (preset.src)           applyBgImage(preset.src);
-                else if (preset.gradient) applyBgGradient(preset.gradient);
-                else                      applyBgColor(preset.color);
+                applyBgImage(preset.src);
                 highlightTile(tile);
             });
             grid.appendChild(tile);
+        });
+
+        // --- Siatka kolorów / gradientów
+        const colorGrid = panel.querySelector('#bgColorGrid');
+        BG_PRESETS_COLORS.forEach(preset => {
+            const tile = document.createElement('div');
+            tile.className = 'bg-preset-tile';
+            tile.title = preset.label;
+            tile.style.background = preset.gradient || preset.color || '#0b0d14';
+            const lbl = document.createElement('span');
+            lbl.textContent = preset.label;
+            tile.appendChild(lbl);
+            tile.addEventListener('click', () => {
+                if (preset.gradient) applyBgGradient(preset.gradient);
+                else                 applyBgColor(preset.color);
+                highlightTile(tile);
+            });
+            colorGrid.appendChild(tile);
         });
 
         panel.querySelector('#bgColorInput').addEventListener('input', e => applyBgColor(e.target.value));
@@ -259,30 +280,71 @@
         activeTile.classList.add('active');
     }
 
+    /* -----------------------------------------------------------------------
+       applyBgImage
+       Strona używa <img id="bg-img-active" class="bg-layer bg-image">
+       do wyświetlania tła — podmieniamy .src tego elementu.
+       Dodatkowo aktualizujemy #bgImageSelect i wywołujemy applyBodyModeClass
+       (jeśli istnieje w scope strony), aby klasy CSS body były spójne.
+    ----------------------------------------------------------------------- */
     function applyBgImage(src) {
-        const container = document.getElementById('app-container');
-        if (!container) return;
-        const bgImg = container.querySelector('.bg-layer.bg-img, #bg-img-1, #bgImage');
-        if (bgImg) { bgImg.src = src; bgImg.style.opacity = '1'; return; }
-        container.style.backgroundImage = `url('${src}')`;
-        container.style.backgroundSize = 'cover';
-        container.style.backgroundPosition = 'center';
+        // 1. Główny element tła używany przez stronę
+        const bgActive = document.getElementById('bg-img-active');
+        if (bgActive) {
+            // Płynne przejście: fade out → zmień src → fade in
+            bgActive.style.transition = 'opacity 0.6s ease';
+            bgActive.style.opacity = '0';
+            setTimeout(() => {
+                bgActive.src = src;
+                bgActive.style.opacity = '1';
+            }, 300);
+        }
+
+        // 2. Synchronizuj select operatora (jeśli istnieje)
+        const sel = document.getElementById('bgImageSelect');
+        if (sel) sel.value = src;
+
+        // 3. Ukryj warstwy wideo (żeby nie zasłaniały nowego tła)
+        document.querySelectorAll('.bg-layer.bg-video, .bg-layer.bg-img-video')
+            .forEach(v => { v.style.opacity = '0'; });
+
+        // 4. Jeśli strona ma własną funkcję trybu CSS — wywołaj ją
+        //    (applyBodyModeClass jest lokalnie scoped w DOMContentLoaded,
+        //     szukamy jej na window jako eksport lub przez zdarzenie)
+        if (typeof window.applyBodyModeClass === 'function') {
+            window.applyBodyModeClass();
+        } else {
+            // Fallback: wywołaj zdarzenie, na które strona może reagować
+            document.dispatchEvent(new CustomEvent('liveWindowManagerBgChange', {
+                detail: { src }
+            }));
+        }
+
+        // 5. Zapisz do localStorage (tak jak panel operatora)
+        try { localStorage.setItem('dzj_stream_image', src); } catch(_) {}
     }
 
     function applyBgColor(color) {
+        // Dla koloru: ukryj img tła i warstwy wideo, ustaw kolor na kontenerze
+        const bgActive = document.getElementById('bg-img-active');
+        if (bgActive) { bgActive.style.opacity = '0'; }
+        document.querySelectorAll('.bg-layer').forEach(l => l.style.opacity = '0');
         const container = document.getElementById('app-container');
-        if (!container) return;
-        container.style.backgroundImage = 'none';
-        container.style.backgroundColor = color;
-        container.querySelectorAll('.bg-layer').forEach(l => l.style.opacity = '0');
+        if (container) {
+            container.style.backgroundImage = 'none';
+            container.style.backgroundColor = color;
+        }
     }
 
     function applyBgGradient(gradient) {
+        const bgActive = document.getElementById('bg-img-active');
+        if (bgActive) { bgActive.style.opacity = '0'; }
+        document.querySelectorAll('.bg-layer').forEach(l => l.style.opacity = '0');
         const container = document.getElementById('app-container');
-        if (!container) return;
-        container.style.backgroundImage = gradient;
-        container.style.backgroundSize = 'cover';
-        container.querySelectorAll('.bg-layer').forEach(l => l.style.opacity = '0');
+        if (container) {
+            container.style.backgroundImage = gradient;
+            container.style.backgroundSize = 'cover';
+        }
     }
 
     function captureVideoFrame() {
