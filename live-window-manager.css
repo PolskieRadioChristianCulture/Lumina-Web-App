@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LIVE WINDOW MANAGER CSS — Drag & Minimize Controls for Live Channel Cards
+   LIVE WINDOW MANAGER CSS — Drag, Resize & Minimize Controls for Live Cards
    ========================================================================== */
 
 /* Target container position */
@@ -70,6 +70,52 @@
     box-shadow: 0 0 35px rgba(212, 175, 55, 0.6), 0 20px 40px rgba(0, 0, 0, 0.85) !important;
     z-index: 99999 !important;
     opacity: 0.96;
+}
+
+/* Resize handle in bottom-right corner */
+.live-win-resize-handle {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 26px;
+    height: 26px;
+    z-index: 99998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(212, 175, 55, 0.8);
+    font-size: 0.72rem;
+    cursor: nwse-resize;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    border-radius: 6px;
+    background: rgba(12, 14, 24, 0.85);
+    border-right: 2px solid rgba(212, 175, 55, 0.9);
+    border-bottom: 2px solid rgba(212, 175, 55, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.live-window-card:hover > .live-win-resize-handle,
+.live-win-resize-handle:hover,
+.live-win-resize-handle.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.live-win-resize-handle:hover {
+    color: #000000;
+    background: #d4af37;
+    border-color: #ffffff;
+    transform: scale(1.18);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.9);
+}
+
+/* Active resizing state */
+.live-window-card.is-resizing {
+    box-shadow: 0 0 35px rgba(212, 175, 55, 0.6), 0 20px 40px rgba(0, 0, 0, 0.85) !important;
+    z-index: 99999 !important;
+    user-select: none !important;
 }
 
 /* Minimized state */

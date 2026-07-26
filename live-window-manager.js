@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LIVE WINDOW MANAGER — Drag & Minimize Controls Engine for Live Channels
+   LIVE WINDOW MANAGER — Drag, Resize & Minimize Controls Engine for Live Channels
    ========================================================================== */
 
 (function () {
@@ -57,13 +57,13 @@
         return 'Okienko';
     }
 
-    // Attach hover controls (Przenieś + Zminimalizuj) to a widget
+    // Attach hover controls (Przenieś + Rozciągnij + Zminimalizuj) to a widget
     function attachWindowControls(el) {
         if (el.dataset.windowControlsAttached) return;
         el.dataset.windowControlsAttached = 'true';
         el.classList.add('live-window-card');
 
-        // Create control overlay container
+        // Create control overlay container (top-right)
         const controls = document.createElement('div');
         controls.className = 'live-win-controls';
 
@@ -82,6 +82,13 @@
         controls.appendChild(dragBtn);
         controls.appendChild(minBtn);
         el.appendChild(controls);
+
+        // 3. Resize Handle in bottom-right corner (Rozciągnij okienko)
+        const resizeHandle = document.createElement('div');
+        resizeHandle.className = 'live-win-resize-handle';
+        resizeHandle.title = 'Rozciągnij okienko (złap za róg i przeciągnij)';
+        resizeHandle.innerHTML = '<i class="fa-solid fa-up-right-and-down-left-from-center"></i>';
+        el.appendChild(resizeHandle);
 
         // --- Dragging Engine ---
         let isDragging = false;
@@ -142,6 +149,56 @@
 
             window.addEventListener('mousemove', onMouseMove);
             window.addEventListener('mouseup', onMouseUp);
+        });
+
+        // --- Corner Resizing Engine (Rozciąganie za róg) ---
+        let isResizing = false;
+        let rStartX = 0, rStartY = 0;
+        let startW = 0, startH = 0;
+
+        resizeHandle.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            isResizing = true;
+            el.classList.add('is-resizing');
+
+            const scale = getAppScale();
+            const elRect = el.getBoundingClientRect();
+
+            startW = elRect.width / scale;
+            startH = elRect.height / scale;
+            rStartX = e.clientX;
+            rStartY = e.clientY;
+
+            // Lock explicit pixel width and height
+            el.style.width = startW + 'px';
+            el.style.height = startH + 'px';
+
+            function onResizeMove(moveEvent) {
+                if (!isResizing) return;
+                const currentScale = getAppScale();
+                const dw = (moveEvent.clientX - rStartX) / currentScale;
+                const dh = (moveEvent.clientY - rStartY) / currentScale;
+
+                const newW = Math.max(160, startW + dw);
+                const newH = Math.max(80, startH + dh);
+
+                el.style.width = newW + 'px';
+                el.style.height = newH + 'px';
+            }
+
+            function onResizeUp() {
+                if (isResizing) {
+                    isResizing = false;
+                    el.classList.remove('is-resizing');
+                    window.removeEventListener('mousemove', onResizeMove);
+                    window.removeEventListener('mouseup', onResizeUp);
+                }
+            }
+
+            window.addEventListener('mousemove', onResizeMove);
+            window.addEventListener('mouseup', onResizeUp);
         });
 
         // --- Minimizing Engine ---
