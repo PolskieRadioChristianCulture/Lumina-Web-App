@@ -1792,8 +1792,8 @@
                 <!-- Left Sidebar -->
                 <div class="left-panel">
                     
-                    <!-- Zoom Ad Overlay (Hidden by default, triggered cyclically) -->
-                    <div class="zoom-ad-overlay" id="zoomAdOverlay">
+                    <!-- Zoom Ad Overlay (WYŁĄCZONE) -->
+                    <div class="zoom-ad-overlay" id="zoomAdOverlay" style="display:none !important;">
                         <div class="zoom-poster-container">
                             <img src="Modlitwa_za_Polske.jpeg" alt="Modlitwa za Polskę" class="zoom-poster">
                         </div>
@@ -3283,7 +3283,7 @@ function getWeatherPreset(city) {
                 // Initial cycle: Run every 2 minutes (120000 ms)
                 setInterval(showZoomAd, 120000);
             }
-            initZoomAdCycle();
+            // initZoomAdCycle(); // WYŁĄCZONE — reklama Zoom nieaktywna
 
             function initDaySyncFeatures() {
                 const now = new Date();
