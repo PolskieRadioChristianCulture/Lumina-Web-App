@@ -125,10 +125,10 @@
     display: none !important;
 }
 
-/* Minimized dock container (bottom-right near info ticker / screen) */
+/* Minimized dock container (ABOVE info ticker / footer bar in bottom-right) */
 .live-minimized-dock {
     position: absolute;
-    bottom: 20px;
+    bottom: 130px;
     right: 25px;
     z-index: 999999;
     display: flex;
@@ -140,34 +140,34 @@
 
 /* Dock button styling */
 .live-dock-btn {
-    background: linear-gradient(135deg, rgba(18, 22, 36, 0.95), rgba(8, 10, 18, 0.95));
-    border: 1.5px solid rgba(212, 175, 55, 0.7);
+    background: linear-gradient(135deg, rgba(18, 22, 36, 0.96), rgba(8, 10, 18, 0.96));
+    border: 1.5px solid rgba(212, 175, 55, 0.8);
     color: #f3e5ab;
-    padding: 8px 16px;
-    border-radius: 20px;
+    padding: 9px 18px;
+    border-radius: 22px;
     font-family: 'Montserrat', 'Outfit', sans-serif;
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     font-weight: 700;
     letter-spacing: 0.03em;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 12px rgba(212, 175, 55, 0.25);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.85), 0 0 15px rgba(212, 175, 55, 0.3);
     display: flex;
     align-items: center;
     gap: 8px;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 }
 
 .live-dock-btn:hover {
     background: #d4af37;
     color: #000000;
-    transform: translateY(-3px) scale(1.04);
-    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.7);
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.8);
 }
 
 .live-dock-btn i {
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     color: #d4af37;
 }
 
