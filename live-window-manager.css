@@ -1,13 +1,13 @@
 /* ==========================================================================
-   LIVE WINDOW MANAGER CSS — Drag, Resize & Minimize Controls for Live Cards
+   LIVE WINDOW MANAGER CSS v3 — Drag/Resize/Minimize + Background Picker
    ========================================================================== */
 
-/* Target container position */
+/* ---- Window card base --------------------------------------------------- */
 .live-window-card {
     position: relative;
 }
 
-/* Control buttons overlay bar (appears on hover) */
+/* ---- Controls bar (top-right, hover-reveal) ----------------------------- */
 .live-win-controls {
     position: absolute;
     top: 10px;
@@ -21,7 +21,6 @@
     transform: translateY(-4px);
 }
 
-/* Show controls when hovering window card */
 .live-window-card:hover > .live-win-controls,
 #livePrayerOverlay:hover > .live-win-controls,
 .live-win-controls:hover,
@@ -31,13 +30,13 @@
     transform: translateY(0);
 }
 
-/* Control buttons styling */
+/* ---- Control buttons ---------------------------------------------------- */
 .live-win-btn {
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    background: rgba(12, 14, 24, 0.90);
-    border: 1.5px solid rgba(212, 175, 55, 0.6);
+    background: rgba(12, 14, 24, 0.92);
+    border: 1.5px solid rgba(212, 175, 55, 0.65);
     color: #f3e5ab;
     display: flex;
     align-items: center;
@@ -47,33 +46,32 @@
     transition: all 0.2s ease;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 0 8px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6), 0 0 8px rgba(212,175,55,0.15);
     padding: 0;
 }
 
 .live-win-btn:hover {
     background: #d4af37;
-    color: #000000;
+    color: #000;
     transform: scale(1.12);
-    box-shadow: 0 0 18px rgba(212, 175, 55, 0.8);
+    box-shadow: 0 0 18px rgba(212,175,55,0.8);
 }
 
-.live-win-btn.drag-handle {
-    cursor: grab;
-}
+.live-win-btn.drag-handle        { cursor: grab; }
+.live-win-btn.drag-handle:active { cursor: grabbing; }
 
-.live-win-btn.drag-handle:active {
-    cursor: grabbing;
-}
-
-/* Active dragging state */
-.live-window-card.is-dragging {
-    box-shadow: 0 0 35px rgba(212, 175, 55, 0.6), 0 20px 40px rgba(0, 0, 0, 0.85) !important;
+/* ---- Drag / resize active states ---------------------------------------- */
+.live-window-card.is-dragging,
+.live-window-card.is-resizing {
+    box-shadow: 0 0 35px rgba(212,175,55,0.55), 0 20px 40px rgba(0,0,0,0.85) !important;
     z-index: 99999 !important;
-    opacity: 0.96;
+    opacity: 0.97;
+}
+.live-window-card.is-resizing {
+    user-select: none !important;
 }
 
-/* Resize handle in bottom-right corner */
+/* ---- Resize handle (bottom-right corner) --------------------------------- */
 .live-win-resize-handle {
     position: absolute;
     bottom: 4px;
@@ -84,17 +82,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(212, 175, 55, 0.8);
+    color: rgba(212,175,55,0.85);
     font-size: 0.72rem;
     cursor: nwse-resize;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease, color 0.2s ease, background 0.2s ease, transform 0.2s ease;
     border-radius: 6px;
-    background: rgba(12, 14, 24, 0.85);
-    border-right: 2px solid rgba(212, 175, 55, 0.9);
-    border-bottom: 2px solid rgba(212, 175, 55, 0.9);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    background: rgba(12,14,24,0.88);
+    border-right: 2px solid rgba(212,175,55,0.9);
+    border-bottom: 2px solid rgba(212,175,55,0.9);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
 .live-window-card:hover > .live-win-resize-handle,
@@ -106,26 +104,19 @@
 }
 
 .live-win-resize-handle:hover {
-    color: #000000;
+    color: #000;
     background: #d4af37;
-    border-color: #ffffff;
+    border-color: #fff;
     transform: scale(1.18);
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.9);
+    box-shadow: 0 0 15px rgba(212,175,55,0.9);
 }
 
-/* Active resizing state */
-.live-window-card.is-resizing {
-    box-shadow: 0 0 35px rgba(212, 175, 55, 0.6), 0 20px 40px rgba(0, 0, 0, 0.85) !important;
-    z-index: 99999 !important;
-    user-select: none !important;
-}
-
-/* Minimized state */
+/* ---- Minimized state ----------------------------------------------------- */
 .live-win-minimized {
     display: none !important;
 }
 
-/* Minimized dock container (ABOVE info ticker / footer bar in bottom-right) */
+/* ---- Minimized dock — ABOVE footer/ticker (bottom:130px) ---------------- */
 .live-minimized-dock {
     position: absolute;
     bottom: 130px;
@@ -138,39 +129,273 @@
     pointer-events: auto;
 }
 
-/* Dock button styling */
 .live-dock-btn {
-    background: linear-gradient(135deg, rgba(18, 22, 36, 0.96), rgba(8, 10, 18, 0.96));
-    border: 1.5px solid rgba(212, 175, 55, 0.8);
+    background: linear-gradient(135deg, rgba(18,22,36,0.97), rgba(8,10,18,0.97));
+    border: 1.5px solid rgba(212,175,55,0.8);
     color: #f3e5ab;
     padding: 9px 18px;
     border-radius: 22px;
-    font-family: 'Montserrat', 'Outfit', sans-serif;
+    font-family: 'Montserrat','Outfit',sans-serif;
     font-size: 0.84rem;
     font-weight: 700;
     letter-spacing: 0.03em;
     cursor: pointer;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.85), 0 0 15px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.85), 0 0 15px rgba(212,175,55,0.25);
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
 }
 
 .live-dock-btn:hover {
     background: #d4af37;
-    color: #000000;
+    color: #000;
     transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.8);
+    box-shadow: 0 10px 30px rgba(212,175,55,0.8);
 }
 
-.live-dock-btn i {
-    font-size: 0.88rem;
+.live-dock-btn i       { font-size: 0.88rem; color: #d4af37; }
+.live-dock-btn:hover i { color: #000; }
+
+/* ==========================================================================
+   GLOBAL BG BUTTON (floating 🎨 icon near bottom-left of screen)
+   ========================================================================== */
+.live-bg-global-btn {
+    position: absolute;
+    bottom: 140px;
+    left: 25px;
+    z-index: 999998;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(18,22,36,0.95), rgba(8,10,18,0.95));
+    border: 2px solid rgba(212,175,55,0.75);
     color: #d4af37;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.8), 0 0 18px rgba(212,175,55,0.35);
+    transition: all 0.25s ease;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
-.live-dock-btn:hover i {
-    color: #000000;
+.live-bg-global-btn:hover {
+    background: #d4af37;
+    color: #000;
+    transform: scale(1.15) rotate(8deg);
+    box-shadow: 0 0 30px rgba(212,175,55,0.9);
+}
+
+/* ==========================================================================
+   BG PICKER PANEL
+   ========================================================================== */
+.live-bg-picker-panel {
+    position: absolute;
+    bottom: 200px;
+    left: 85px;
+    z-index: 999997;
+    width: 640px;
+    max-height: 660px;
+    overflow-y: auto;
+    background: linear-gradient(160deg, rgba(12,14,24,0.97) 0%, rgba(6,8,16,0.98) 100%);
+    border: 1.5px solid rgba(212,175,55,0.45);
+    border-radius: 20px;
+    padding: 20px 22px 24px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.95), 0 0 40px rgba(212,175,55,0.12);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    font-family: 'Montserrat','Outfit',sans-serif;
+    color: #f3e5ab;
+    animation: bgPanelIn 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+
+@keyframes bgPanelIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+.bg-picker-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #d4af37;
+    border-bottom: 1px solid rgba(212,175,55,0.2);
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+}
+
+.bg-picker-close {
+    margin-left: auto;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #f3e5ab;
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-picker-close:hover {
+    background: #d4af37;
+    color: #000;
+}
+
+.bg-picker-section-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgba(212,175,55,0.75);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+/* ---- Preset grid ---- */
+.bg-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 9px;
+}
+
+.bg-preset-tile {
+    aspect-ratio: 16/9;
+    border-radius: 9px;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+}
+
+.bg-preset-tile span {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 4px 6px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.82));
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.bg-preset-tile:hover {
+    border-color: #d4af37;
+    transform: scale(1.06);
+    box-shadow: 0 0 18px rgba(212,175,55,0.7);
+}
+
+.bg-preset-tile.active {
+    border-color: #d4af37;
+    box-shadow: 0 0 22px rgba(212,175,55,0.9);
+}
+
+/* ---- Custom color row ---- */
+.bg-picker-color-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.bg-color-input {
+    width: 52px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1.5px solid rgba(212,175,55,0.5);
+    cursor: pointer;
+    background: none;
+    padding: 2px;
+}
+
+.bg-picker-color-row label {
+    font-size: 0.82rem;
+    color: rgba(243,229,171,0.75);
+}
+
+/* ---- Custom URL row ---- */
+.bg-picker-url-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.bg-url-input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(212,175,55,0.3);
+    border-radius: 9px;
+    color: #f3e5ab;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.bg-url-input:focus {
+    border-color: #d4af37;
+}
+
+.bg-url-apply-btn {
+    background: rgba(212,175,55,0.15);
+    border: 1.5px solid rgba(212,175,55,0.5);
+    color: #d4af37;
+    padding: 8px 14px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.bg-url-apply-btn:hover {
+    background: #d4af37;
+    color: #000;
+}
+
+/* ---- Video capture button ---- */
+.bg-video-capture-btn {
+    width: 100%;
+    background: rgba(220,20,60,0.12);
+    border: 1.5px solid rgba(220,20,60,0.4);
+    color: #ff6b8a;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.84rem;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    margin-top: 4px;
+}
+
+.bg-video-capture-btn:hover {
+    background: #dc143c;
+    color: #fff;
+    border-color: #dc143c;
+    box-shadow: 0 0 18px rgba(220,20,60,0.6);
 }
