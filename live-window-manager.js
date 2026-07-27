@@ -233,6 +233,7 @@
             if (t.length > 22) t = t.substring(0, 22) + '\u2026';
             if (t) return t;
         }
+        if (el.classList.contains('shop-sidecar') || el.id === 'shopSidecar') return 'Sklep CC';
         if (el.classList.contains('schedule-widget'))        return 'Program Dnia';
         if (el.classList.contains('card-clock-widget'))      return 'Zegar & Data';
         if (el.classList.contains('reflection-canvas-card')) return 'Ekran Rozważania';
@@ -245,6 +246,7 @@
 
     function getWindowIcon(el) {
         if (el.id === 'livePrayerOverlay')                    return 'fa-hands-praying';
+        if (el.classList.contains('shop-sidecar') || el.id === 'shopSidecar') return 'fa-bag-shopping';
         if (el.classList.contains('qr-sidecar'))              return 'fa-qrcode';
         if (el.classList.contains('schedule-widget'))         return 'fa-calendar-days';
         if (el.classList.contains('card-clock-widget'))       return 'fa-clock';
@@ -556,6 +558,7 @@
             '.live-helpline-panel', '.reflection-canvas-card',
             '.main-panel', '.app-card', '.obs-card', '.special-event-card',
             '.qr-sidecar', '#qrSidecar',
+            '.shop-sidecar', '#shopSidecar',
             '[data-window]'
         ];
         document.querySelectorAll(selectors.join(', ')).forEach(el => {
