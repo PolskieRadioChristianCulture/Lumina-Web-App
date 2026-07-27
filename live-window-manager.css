@@ -244,6 +244,10 @@
 .bg-url-apply-btn { background:rgba(212,175,55,0.15); border:1.5px solid rgba(212,175,55,0.5); color:#d4af37; padding:7px 12px; border-radius:8px; cursor:pointer; font-weight:700; font-size:0.76rem; transition:all 0.2s; white-space:nowrap; }
 .bg-url-apply-btn:hover { background:#d4af37; color:#000; }
 
+.bg-file-pick-btn { display:inline-flex; align-items:center; gap:7px; background:rgba(100,149,237,0.13); border:1.5px solid rgba(100,149,237,0.45); color:#8ab4f8; padding:7px 14px; border-radius:8px; cursor:pointer; font-weight:700; font-size:0.76rem; font-family:'Montserrat',sans-serif; transition:all 0.2s; white-space:nowrap; user-select:none; }
+.bg-file-pick-btn:hover { background:rgba(100,149,237,0.3); color:#fff; border-color:#8ab4f8; box-shadow:0 0 12px rgba(100,149,237,0.5); }
+.bg-file-pick-name { flex:1; font-size:0.72rem; color:rgba(243,229,171,0.55); font-style:italic; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; align-self:center; }
+
 .bg-video-capture-btn { width:100%; background:rgba(220,20,60,0.12); border:1.5px solid rgba(220,20,60,0.4); color:#ff6b8a; padding:9px 14px; border-radius:9px; cursor:pointer; font-weight:700; font-size:0.78rem; font-family:'Montserrat',sans-serif; display:flex; align-items:center; justify-content:center; gap:7px; transition:all 0.2s; margin-top:4px; }
 .bg-video-capture-btn:hover { background:#dc143c; color:#fff; border-color:#dc143c; box-shadow:0 0 16px rgba(220,20,60,0.6); }
 

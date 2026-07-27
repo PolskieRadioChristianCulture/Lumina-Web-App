@@ -282,10 +282,17 @@
             <input type="color" id="bgColorInput" value="#0b0d14" class="bg-color-input" title="Wybierz kolor tła">
             <label for="bgColorInput">Kolor niestandardowy</label>
           </div>
-          <div class="bg-picker-section-title" style="margin-top:12px;">🖼️ Własne zdjęcie (URL lub ścieżka)</div>
+          <div class="bg-picker-section-title" style="margin-top:12px;">🖼️ Własne zdjęcie</div>
           <div class="bg-picker-url-row">
-            <input type="text" id="bgUrlInput" class="bg-url-input" placeholder="np. breakfast_studio.jpg lub https://...">
-            <button id="bgUrlApplyBtn" class="bg-url-apply-btn"><i class="fa-solid fa-check"></i> Zastosuj</button>
+            <input type="text" id="bgUrlInput" class="bg-url-input" placeholder="np. https://... lub wklej URL">
+            <button id="bgUrlApplyBtn" class="bg-url-apply-btn"><i class="fa-solid fa-check"></i> Zastosuj URL</button>
+          </div>
+          <div class="bg-picker-url-row" style="margin-top:8px;">
+            <label id="bgFilePickerLabel" class="bg-file-pick-btn" title="Wybierz plik z dysku">
+              <i class="fa-solid fa-folder-open"></i> Wybierz plik z dysku…
+              <input type="file" id="bgFilePicker" accept="image/*" style="display:none;">
+            </label>
+            <span id="bgFilePickerName" class="bg-file-pick-name">Brak pliku</span>
           </div>
           <div class="bg-picker-section-title" style="margin-top:12px;">⏱️ Klatka z aktywnego wideo</div>
           <button id="bgVideoCaptureBtn" class="bg-video-capture-btn"><i class="fa-solid fa-camera"></i> Użyj aktualnej klatki wideo jako tło</button>
@@ -362,6 +369,22 @@
             const url = panel.querySelector('#bgUrlInput').value.trim();
             if (url) applyBgImage(url);
         });
+
+        // Obsługa lokalnego pliku z dysku (File API → blob URL)
+        panel.querySelector('#bgFilePicker').addEventListener('change', (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            panel.querySelector('#bgFilePickerName').textContent = file.name;
+            // Zwolnij poprzedni blob URL jeśli był
+            if (window._lwm_localBlobUrl) {
+                URL.revokeObjectURL(window._lwm_localBlobUrl);
+                window._lwm_localBlobUrl = null;
+            }
+            const blobUrl = URL.createObjectURL(file);
+            window._lwm_localBlobUrl = blobUrl;
+            applyBgImage(blobUrl);
+        });
+
         panel.querySelector('#bgVideoCaptureBtn').addEventListener('click', captureVideoFrame);
     }
 
