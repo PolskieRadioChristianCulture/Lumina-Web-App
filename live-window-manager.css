@@ -147,10 +147,9 @@
    ======================================================================== */
 .live-bg-picker-panel {
     position: absolute;
-    top: calc(100% + 10px);
-    left: 0;
-    z-index: 10;
-    width: 500px;
+    z-index: 99999;
+    width: 480px;
+    max-width: calc(100vw - 30px);
     max-height: 560px;
     overflow-y: auto;
     background: linear-gradient(160deg, rgba(12,14,24,0.98) 0%, rgba(6,8,16,0.99) 100%);

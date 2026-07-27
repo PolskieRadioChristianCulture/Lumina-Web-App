@@ -295,6 +295,31 @@
         outer.appendChild(panel);
         bgPickerPanel = panel;
 
+        // Dynamiczne pozycjonowanie panelu w zależności od dostępnego miejsca na ekranie
+        const outerRect = outer.getBoundingClientRect();
+        const vW = window.innerWidth;
+        const vH = window.innerHeight;
+
+        // Jeśli przycisk/panel operatora jest przy prawej krawędzi -> otwórz panel W LEWO
+        if (vW - outerRect.left < 500) {
+            panel.style.left = 'auto';
+            panel.style.right = '0px';
+        } else {
+            panel.style.left = '0px';
+            panel.style.right = 'auto';
+        }
+
+        // Jeśli panel jest nisko na ekranie -> otwórz DO GÓRY
+        const availH = vH - 30;
+        panel.style.maxHeight = Math.min(560, availH) + 'px';
+        if (outerRect.top > vH * 0.5) {
+            panel.style.top = 'auto';
+            panel.style.bottom = 'calc(100% + 10px)';
+        } else {
+            panel.style.top = 'calc(100% + 10px)';
+            panel.style.bottom = 'auto';
+        }
+
         panel.querySelector('.bg-picker-close').addEventListener('click', () => {
             panel.remove(); bgPickerPanel = null;
         });
