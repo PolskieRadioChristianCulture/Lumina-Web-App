@@ -2044,6 +2044,28 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             <input type="number" id="slideDuration" value="25" min="10" max="120">
         </div>
 
+        <!-- ── REKLAMA SPECJALNA ── -->
+        <div class="control-group" style="border-top:1px solid rgba(212,175,55,0.25);padding-top:12px;margin-top:4px;">
+            <label style="color:#d4af37;font-weight:800;letter-spacing:0.05em;">🎯 REKLAMA SPECJALNA</label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+                <button class="control-btn" id="adShowBtn" style="flex:1;background:rgba(50,205,50,0.15);border-color:rgba(50,205,50,0.5);color:#90ee90;">▶ Pokaż</button>
+                <button class="control-btn" id="adHideBtn" style="flex:1;background:rgba(220,20,60,0.15);border-color:rgba(220,20,60,0.5);color:#ff6b8a;">⏹ Ukryj</button>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
+                <label style="font-size:0.75rem;color:rgba(243,229,171,0.7);min-width:90px;">Auto-cykl:</label>
+                <button class="control-btn" id="adCycleToggleBtn" style="flex:1;font-size:0.76rem;">⏸ Wyłącz Auto</button>
+            </div>
+            <div style="margin-top:10px;">
+                <label style="font-size:0.75rem;color:rgba(243,229,171,0.7);">Zdjęcie reklamy:</label>
+                <select id="adImageSelect" style="width:100%;margin-top:5px;background:rgba(15,15,30,0.95);border:1.5px solid rgba(212,175,55,0.4);color:#f3e5ab;border-radius:8px;padding:6px 8px;font-family:Montserrat,sans-serif;font-size:0.76rem;">
+                    <option value="Modlitwa_za_Polske.jpeg">Modlitwa za Polskę (domyślne)</option>
+                    <option value="Modlitwa_2.jpeg">Modlitwa 2</option>
+                    <option value="zjednoczeni_za_polske_banner.jpg">Zjednoczeni za Polskę</option>
+                    <option value="reklama_sklepu_cc.png">Sklep CC</option>
+                </select>
+            </div>
+        </div>
+
         <button class="control-btn" id="forceReloadBtn">Zatwierdź i Odśwież</button>
     </div>
 
@@ -3243,9 +3265,25 @@ function getWeatherPreset(city) {
                 }
 
                 // Initial cycle: Run every 2 minutes (120000 ms)
-                setInterval(showZoomAd, 120000);
+                let _adCycleInterval = setInterval(showZoomAd, 120000);
+                let _adCycleEnabled = true;
+                window.adControl = {
+                    show: showZoomAd,
+                    hide: function() { zoomAdOverlay.classList.remove('show'); setTimeout(() => standardWidgets.forEach(w => w.classList.remove('hidden-for-ad')), 700); },
+                    enableCycle: function() { if (!_adCycleEnabled) { _adCycleEnabled = true; _adCycleInterval = setInterval(showZoomAd, 120000); document.getElementById('adCycleToggleBtn').textContent = '⏸ Wyłącz Auto'; document.getElementById('adCycleToggleBtn').style.color = '#ff6b8a'; } },
+                    disableCycle: function() { if (_adCycleEnabled) { _adCycleEnabled = false; clearInterval(_adCycleInterval); document.getElementById('adCycleToggleBtn').textContent = '▶ Włącz Auto'; document.getElementById('adCycleToggleBtn').style.color = '#90ee90'; } },
+                    setImage: function(src) { if (zoomPosterImg) zoomPosterImg.src = src; },
+                    isEnabled: function() { return _adCycleEnabled; }
+                };
             }
             initZoomAdCycle();
+            (function() {
+                const s = document.getElementById('adShowBtn'), h = document.getElementById('adHideBtn'), c = document.getElementById('adCycleToggleBtn'), i = document.getElementById('adImageSelect');
+                if (s) s.addEventListener('click', () => window.adControl && window.adControl.show());
+                if (h) h.addEventListener('click', () => window.adControl && window.adControl.hide());
+                if (c) c.addEventListener('click', () => { if (window.adControl) window.adControl.isEnabled() ? window.adControl.disableCycle() : window.adControl.enableCycle(); });
+                if (i) i.addEventListener('change', () => window.adControl && window.adControl.setImage(i.value));
+            })();
 
             function initDaySyncFeatures() {
                 const now = new Date();
