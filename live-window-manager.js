@@ -1,19 +1,17 @@
 /* ==========================================================================
-   LIVE WINDOW MANAGER JS v5
-   - Drag: transform:translate (bez znikania)
-   - Resize: złap za róg
-   - Minimize: okrągłe ikony w #live-outer-controls (POZA app-container)
-   - BG Picker: panel zmiany tła
-   - #live-outer-controls: pozycjonowany w CZARNYM OBSZARZE (poza 1920x1080)
-     → niewidoczny dla widza w OBS, dostępny dla operatora lokalnie
+   LIVE WINDOW MANAGER JS v6
+   - Drag: transform:translate (zapis pozycji do localStorage)
+   - Resize: złap za róg (zapis rozmiaru do localStorage)
+   - Minimize: okrągłe ikony w #live-outer-controls (zapis stanu zminimalizowania)
+   - BG Picker: panel zmiany tła w czasie rzeczywistym
+   - #live-outer-controls: pozycjonowany precyzyjnie w CZARNYM OBSZARZE poza #app-container
+     → niewidoczny dla widza w OBS, zawsze dostępny dla operatora z boku/u dołu
    ========================================================================== */
 
 (function () {
     'use strict';
 
     /* ---- OBS Detection ---------------------------------------------------- */
-    // OBS Browser Source używa user-agenta zawierającego "OBS" lub "obs-browser"
-    // Jeśli wykryjemy OBS, ukrywamy całe #live-outer-controls
     const IS_OBS = /OBS|obs-browser|OBSBrowser/i.test(navigator.userAgent);
 
     /* ---- Background presets (dokladne nazwy pliki jak w #bgImageSelect) -- */
@@ -74,13 +72,65 @@
         el.style.transform = `translate(${tx}px, ${ty}px) ${base}`.trim();
     }
 
+    /* ---- Persistence (localStorage) -------------------------------------- */
+    function getWindowStorageKey(el) {
+        if (el.id) return 'live_win_cfg_' + el.id;
+        if (el.dataset.windowKey) return 'live_win_cfg_' + el.dataset.windowKey;
+        const classes = Array.from(el.classList).filter(c => 
+            c !== 'live-window-card' && 
+            c !== 'is-dragging' && 
+            c !== 'is-resizing' && 
+            c !== 'live-win-minimized'
+        );
+        if (classes.length > 0) return 'live_win_cfg_' + classes.join('_');
+        return null;
+    }
+
+    function saveWindowState(el) {
+        const key = getWindowStorageKey(el);
+        if (!key) return;
+
+        const translate = getCurrentTranslate(el);
+        const state = {
+            tx: Math.round(translate.x),
+            ty: Math.round(translate.y),
+            w: el.style.width || '',
+            h: el.style.height || '',
+            min: el.classList.contains('live-win-minimized')
+        };
+
+        try {
+            localStorage.setItem(key, JSON.stringify(state));
+        } catch (_) {}
+    }
+
+    function restoreWindowState(el) {
+        const key = getWindowStorageKey(el);
+        if (!key) return;
+
+        try {
+            const raw = localStorage.getItem(key);
+            if (!raw) return;
+            const state = JSON.parse(raw);
+
+            if (typeof state.tx === 'number' && typeof state.ty === 'number' && (state.tx !== 0 || state.ty !== 0)) {
+                setTranslate(el, state.tx, state.ty);
+            }
+            if (state.w) el.style.width = state.w;
+            if (state.h) {
+                el.style.height = state.h;
+                el.style.overflow = 'hidden';
+            }
+            if (state.min) {
+                minimizeWindow(el, false);
+            }
+        } catch (_) {}
+    }
+
     /* ====================================================================
        OUTER CONTROLS CONTAINER
        Dołączamy do document.body — POZA #app-container.
-       Pozycjonowany w czarnym obszarze ekranu (niewidoczny w OBS capture).
-       W OBS (skalowanie ≈ 1, viewport = 1920x1080): container trafia
-       poniżej dolnej krawędzi capture = nie nagrywany przez OBS.
-       Lokalnie (skalowanie < 1): trafia w czarny pas poniżej/z boku.
+       Pozycjonowany precyzyjnie w czarnym obszarze ekranu (niewidoczny w OBS capture).
        ==================================================================== */
     function getOrCreateOuterControls() {
         let c = document.getElementById('live-outer-controls');
@@ -102,30 +152,45 @@
         const c = document.getElementById('live-outer-controls');
         if (!c || IS_OBS) return;
 
-        const scale    = getAppScale();
-        const scaledW  = Math.ceil(1920 * scale);
-        const scaledH  = Math.ceil(1080 * scale);
-        const vW       = window.innerWidth;
-        const rightGap = vW - scaledW;
+        const container = document.getElementById('app-container');
+        if (!container) return;
 
-        if (rightGap >= 58) {
+        const rect = container.getBoundingClientRect();
+        const vW   = window.innerWidth;
+        const vH   = window.innerHeight;
+
+        const spaceRight  = vW - rect.right;
+        const spaceBottom = vH - rect.bottom;
+        const spaceLeft   = rect.left;
+
+        if (spaceRight >= 58) {
             // ---- Czarny obszar PO PRAWEJ stronie skalowanego kontenera ----
-            // W OBS (scale≈1, vW=1920): scaledW=1920, rightGap=0 → branch poniżej
-            c.style.left        = (scaledW + 10) + 'px';
-            c.style.top         = '20px';
-            c.style.bottom      = 'auto';
-            c.style.right       = 'auto';
+            c.style.left          = Math.round(rect.right + 12) + 'px';
+            c.style.top           = Math.max(25, Math.round(rect.top + 20)) + 'px';
+            c.style.bottom        = 'auto';
+            c.style.right         = 'auto';
+            c.style.flexDirection = 'column';
+        } else if (spaceBottom >= 58) {
+            // ---- Czarny obszar PONIŻEJ skalowanego kontenera ----
+            c.style.left          = Math.max(12, Math.round(rect.left + 12)) + 'px';
+            c.style.top           = Math.round(rect.bottom + 12) + 'px';
+            c.style.bottom        = 'auto';
+            c.style.right         = 'auto';
+            c.style.flexDirection = 'row';
+        } else if (spaceLeft >= 58) {
+            // ---- Czarny obszar PO LEWEJ stronie skalowanego kontenera ----
+            c.style.left          = Math.max(12, Math.round(rect.left - 68)) + 'px';
+            c.style.top           = Math.max(25, Math.round(rect.top + 20)) + 'px';
+            c.style.bottom        = 'auto';
+            c.style.right         = 'auto';
             c.style.flexDirection = 'column';
         } else {
-            // ---- Czarny obszar PONIŻEJ skalowanego kontenera ----
-            // W OBS (scale=1, vh=1080): scaledH=1080, top=1090px → poniżej dolnej
-            //   krawędzi viewportu OBS (1080px) → niewidoczne dla widza ✅
-            // Lokalnie (scale<1): top = 1080*scale+10 → czarny pas pod kontenerem ✅
-            c.style.left        = '10px';
-            c.style.top         = (scaledH + 10) + 'px';
-            c.style.bottom      = 'auto';
-            c.style.right       = 'auto';
-            c.style.flexDirection = 'row';
+            // ---- Brak czarnego pasa po bokach (okno w pełnym rozmiarze 16:9) ----
+            c.style.left          = 'auto';
+            c.style.right         = '12px';
+            c.style.top           = '25px';
+            c.style.bottom        = 'auto';
+            c.style.flexDirection = 'column';
         }
     }
 
@@ -224,7 +289,6 @@
           <button id="bgVideoCaptureBtn" class="bg-video-capture-btn"><i class="fa-solid fa-camera"></i> Użyj aktualnej klatki wideo jako tło</button>
         `;
 
-        // Panel trafia do outer-controls (poza app-container, poza OBS capture)
         const outer = getOrCreateOuterControls();
         outer.appendChild(panel);
         bgPickerPanel = panel;
@@ -233,7 +297,6 @@
             panel.remove(); bgPickerPanel = null;
         });
 
-        // --- Siatka obrazów (dokładne pliki ze strony)
         const grid = panel.querySelector('#bgPresetGrid');
         BG_PRESETS_IMAGES.forEach(preset => {
             const tile = document.createElement('div');
@@ -250,7 +313,6 @@
             grid.appendChild(tile);
         });
 
-        // --- Siatka kolorów / gradientów
         const colorGrid = panel.querySelector('#bgColorGrid');
         BG_PRESETS_COLORS.forEach(preset => {
             const tile = document.createElement('div');
@@ -281,18 +343,9 @@
         activeTile.classList.add('active');
     }
 
-    /* -----------------------------------------------------------------------
-       applyBgImage
-       Strona używa <img id="bg-img-active" class="bg-layer bg-image">
-       do wyświetlania tła — podmieniamy .src tego elementu.
-       Dodatkowo aktualizujemy #bgImageSelect i wywołujemy applyBodyModeClass
-       (jeśli istnieje w scope strony), aby klasy CSS body były spójne.
-    ----------------------------------------------------------------------- */
     function applyBgImage(src) {
-        // 1. Główny element tła używany przez stronę
         const bgActive = document.getElementById('bg-img-active');
         if (bgActive) {
-            // Płynne przejście: fade out → zmień src → fade in
             bgActive.style.transition = 'opacity 0.6s ease';
             bgActive.style.opacity = '0';
             setTimeout(() => {
@@ -301,32 +354,24 @@
             }, 300);
         }
 
-        // 2. Synchronizuj select operatora (jeśli istnieje)
         const sel = document.getElementById('bgImageSelect');
         if (sel) sel.value = src;
 
-        // 3. Ukryj warstwy wideo (żeby nie zasłaniały nowego tła)
         document.querySelectorAll('.bg-layer.bg-video, .bg-layer.bg-img-video')
             .forEach(v => { v.style.opacity = '0'; });
 
-        // 4. Jeśli strona ma własną funkcję trybu CSS — wywołaj ją
-        //    (applyBodyModeClass jest lokalnie scoped w DOMContentLoaded,
-        //     szukamy jej na window jako eksport lub przez zdarzenie)
         if (typeof window.applyBodyModeClass === 'function') {
             window.applyBodyModeClass();
         } else {
-            // Fallback: wywołaj zdarzenie, na które strona może reagować
             document.dispatchEvent(new CustomEvent('liveWindowManagerBgChange', {
                 detail: { src }
             }));
         }
 
-        // 5. Zapisz do localStorage (tak jak panel operatora)
         try { localStorage.setItem('dzj_stream_image', src); } catch(_) {}
     }
 
     function applyBgColor(color) {
-        // Dla koloru: ukryj img tła i warstwy wideo, ustaw kolor na kontenerze
         const bgActive = document.getElementById('bg-img-active');
         if (bgActive) { bgActive.style.opacity = '0'; }
         document.querySelectorAll('.bg-layer').forEach(l => l.style.opacity = '0');
@@ -367,6 +412,29 @@
         } catch(e) { console.warn('Capture failed (CORS?):', e.message); }
     }
 
+    /* ---- Minimize Helper -------------------------------------------------- */
+    function minimizeWindow(el, saveState = true) {
+        if (el.classList.contains('live-win-minimized')) return;
+        const title = getWindowTitle(el);
+        const icon  = getWindowIcon(el);
+        el.classList.add('live-win-minimized');
+
+        const dock = getOrCreateDock();
+        const dockBtn = document.createElement('button');
+        dockBtn.className = 'live-dock-btn';
+        dockBtn.title = 'Przywróć: ' + title;
+        dockBtn.setAttribute('data-label', title);
+        dockBtn.innerHTML = '<i class="fa-solid ' + icon + '"></i>';
+        dockBtn.addEventListener('click', () => {
+            el.classList.remove('live-win-minimized');
+            dockBtn.remove();
+            if (saveState) saveWindowState(el);
+        });
+        dock.appendChild(dockBtn);
+
+        if (saveState) saveWindowState(el);
+    }
+
     /* ---- Attach Controls to a Widget -------------------------------------- */
     function attachWindowControls(el) {
         if (el.dataset.windowControlsAttached) return;
@@ -401,6 +469,9 @@
         /* Ensure BG button exists in outer controls */
         getOrCreateBgBtn();
 
+        /* Restore saved window position, size, minimized state */
+        restoreWindowState(el);
+
         /* ==== DRAG (transform:translate) ==== */
         let isDragging = false;
         let dragStartX = 0, dragStartY = 0, dragStartTX = 0, dragStartTY = 0;
@@ -425,6 +496,7 @@
                 el.classList.remove('is-dragging');
                 window.removeEventListener('mousemove', onMouseMove);
                 window.removeEventListener('mouseup', onMouseUp);
+                saveWindowState(el);
             }
             window.addEventListener('mousemove', onMouseMove);
             window.addEventListener('mouseup', onMouseUp);
@@ -459,6 +531,7 @@
                 el.classList.remove('is-resizing');
                 window.removeEventListener('mousemove', onResizeMove);
                 window.removeEventListener('mouseup', onResizeUp);
+                saveWindowState(el);
             }
             window.addEventListener('mousemove', onResizeMove);
             window.addEventListener('mouseup', onResizeUp);
@@ -467,21 +540,7 @@
         /* ==== MINIMIZE ==== */
         minBtn.addEventListener('click', (e) => {
             e.preventDefault(); e.stopPropagation();
-            const title = getWindowTitle(el);
-            const icon  = getWindowIcon(el);
-            el.classList.add('live-win-minimized');
-
-            const dock = getOrCreateDock();
-            const dockBtn = document.createElement('button');
-            dockBtn.className = 'live-dock-btn';
-            dockBtn.title = 'Przywróć: ' + title;
-            dockBtn.setAttribute('data-label', title);
-            dockBtn.innerHTML = '<i class="fa-solid ' + icon + '"></i>';
-            dockBtn.addEventListener('click', () => {
-                el.classList.remove('live-win-minimized');
-                dockBtn.remove();
-            });
-            dock.appendChild(dockBtn);
+            minimizeWindow(el, true);
         });
     }
 
@@ -500,14 +559,13 @@
             '[data-window]'
         ];
         document.querySelectorAll(selectors.join(', ')).forEach(el => {
-            // QR sidecar: nadaj tytuł i upewnij się że kontrolki działają też gdy .active
             if (el.classList.contains('qr-sidecar')) {
                 el.dataset.windowTitle = 'Kod QR';
-                // Kontrolki muszą być widoczne przy hover nawet gdy opacity < 1
                 el.style.overflow = 'visible';
             }
             attachWindowControls(el);
         });
+        updateOuterControlsPosition();
     }
 
     if (document.readyState === 'loading') {
