@@ -223,6 +223,157 @@
         return btn;
     }
 
+    /* ---- Windows Manager button — wewnątrz outer-controls ----------------- */
+    let winMgrPanel = null;
+
+    function getOrCreateWinMgrBtn() {
+        let btn = document.getElementById('live-winmgr-btn');
+        if (!btn) {
+            const outer = getOrCreateOuterControls();
+            btn = document.createElement('button');
+            btn.id = 'live-winmgr-btn';
+            btn.className = 'live-bg-global-btn';
+            btn.title = 'Zarządzaj oknami — pokaż / ukryj';
+            btn.style.marginTop = '6px';
+            btn.innerHTML = '<i class="fa-solid fa-table-cells-large"></i>';
+            btn.addEventListener('click', (e) => { e.stopPropagation(); toggleWinMgrPanel(); });
+            outer.appendChild(btn);
+        }
+        return btn;
+    }
+
+    function toggleWinMgrPanel() {
+        if (winMgrPanel) { winMgrPanel.remove(); winMgrPanel = null; return; }
+        buildWinMgrPanel();
+    }
+
+    function buildWinMgrPanel() {
+        if (winMgrPanel) winMgrPanel.remove();
+
+        const outer = getOrCreateOuterControls();
+        const panel = document.createElement('div');
+        panel.id = 'live-winmgr-panel';
+        panel.className = 'live-bg-picker-panel'; // reuse styling
+        panel.style.width = '300px';
+        winMgrPanel = panel;
+
+        panel.innerHTML = `
+          <div class="bg-picker-header">
+            <i class="fa-solid fa-table-cells-large"></i>&nbsp; Okna — Pokaż / Ukryj
+            <button class="bg-picker-close" title="Zamknij">✕</button>
+          </div>
+          <div id="lwm-win-list" style="display:flex;flex-direction:column;gap:7px;margin-top:12px;"></div>
+          <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(212,175,55,0.2);display:flex;gap:8px;">
+            <button id="lwm-show-all" style="flex:1;" class="bg-url-apply-btn"><i class="fa-solid fa-eye"></i> Wszystkie</button>
+            <button id="lwm-hide-all" style="flex:1;background:rgba(220,20,60,0.15);border-color:rgba(220,20,60,0.4);color:#ff6b8a;" class="bg-url-apply-btn"><i class="fa-solid fa-eye-slash"></i> Ukryj wszystkie</button>
+          </div>
+        `;
+
+        // pozycjonowanie identyczne jak bg-picker-panel
+        const outerRect = outer.getBoundingClientRect();
+        const vW = window.innerWidth;
+        const vH = window.innerHeight;
+        if (vW - outerRect.left < 320) {
+            panel.style.left = 'auto'; panel.style.right = '0px';
+        } else {
+            panel.style.left = '0px'; panel.style.right = 'auto';
+        }
+        if (outerRect.top > vH * 0.5) {
+            panel.style.top = 'auto'; panel.style.bottom = 'calc(100% + 10px)';
+        } else {
+            panel.style.top = 'calc(100% + 10px)'; panel.style.bottom = 'auto';
+        }
+
+        outer.appendChild(panel);
+        panel.querySelector('.bg-picker-close').addEventListener('click', () => { panel.remove(); winMgrPanel = null; });
+
+        refreshWinMgrList(panel);
+
+        panel.querySelector('#lwm-show-all').addEventListener('click', () => {
+            document.querySelectorAll('.live-window-card').forEach(el => {
+                if (el.classList.contains('live-win-minimized')) {
+                    el.classList.remove('live-win-minimized');
+                    // remove corresponding dock btn
+                    const title = getWindowTitle(el);
+                    document.querySelectorAll('.live-dock-btn').forEach(b => {
+                        if (b.getAttribute('data-label') === title) b.remove();
+                    });
+                    saveWindowState(el);
+                }
+                el.style.display = '';
+            });
+            refreshWinMgrList(panel);
+        });
+
+        panel.querySelector('#lwm-hide-all').addEventListener('click', () => {
+            document.querySelectorAll('.live-window-card').forEach(el => {
+                if (!el.classList.contains('live-win-minimized')) {
+                    minimizeWindow(el);
+                }
+            });
+            refreshWinMgrList(panel);
+        });
+    }
+
+    function refreshWinMgrList(panel) {
+        const list = panel.querySelector('#lwm-win-list');
+        if (!list) return;
+        list.innerHTML = '';
+
+        const windows = document.querySelectorAll('.live-window-card');
+        if (windows.length === 0) {
+            list.innerHTML = '<div style="color:rgba(243,229,171,0.4);font-size:0.75rem;text-align:center;">Brak wykrytych okien</div>';
+            return;
+        }
+
+        windows.forEach(el => {
+            const title = getWindowTitle(el) || el.id || '(okno)';
+            const icon  = getWindowIcon(el);
+            const isMin = el.classList.contains('live-win-minimized');
+
+            const row = document.createElement('div');
+            row.style.cssText = 'display:flex;align-items:center;gap:8px;';
+
+            const lbl = document.createElement('span');
+            lbl.style.cssText = 'flex:1;font-size:0.76rem;font-family:Montserrat,sans-serif;color:#f3e5ab;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+            lbl.innerHTML = `<i class="fa-solid ${icon}" style="margin-right:6px;opacity:0.65;"></i>${title}`;
+
+            const showBtn = document.createElement('button');
+            showBtn.className = 'bg-url-apply-btn';
+            showBtn.style.cssText = 'padding:5px 10px;font-size:0.72rem;min-width:60px;' + (isMin ? '' : 'background:rgba(50,205,50,0.15);border-color:rgba(50,205,50,0.4);color:#90ee90;');
+            showBtn.innerHTML = isMin ? '<i class="fa-solid fa-eye"></i> Pokaż' : '<i class="fa-solid fa-check"></i> Widoczne';
+
+            const hideBtn = document.createElement('button');
+            hideBtn.className = 'bg-url-apply-btn';
+            hideBtn.style.cssText = 'padding:5px 10px;font-size:0.72rem;min-width:60px;background:rgba(220,20,60,0.12);border-color:rgba(220,20,60,0.35);color:#ff6b8a;' + (isMin ? 'opacity:0.4;' : '');
+            hideBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Ukryj';
+
+            showBtn.addEventListener('click', () => {
+                if (el.classList.contains('live-win-minimized')) {
+                    el.classList.remove('live-win-minimized');
+                    document.querySelectorAll('.live-dock-btn').forEach(b => {
+                        if (b.getAttribute('data-label') === title) b.remove();
+                    });
+                    saveWindowState(el);
+                }
+                el.style.display = '';
+                refreshWinMgrList(panel);
+            });
+
+            hideBtn.addEventListener('click', () => {
+                if (!el.classList.contains('live-win-minimized')) {
+                    minimizeWindow(el);
+                }
+                refreshWinMgrList(panel);
+            });
+
+            row.appendChild(lbl);
+            row.appendChild(showBtn);
+            row.appendChild(hideBtn);
+            list.appendChild(row);
+        });
+    }
+
     /* ---- Window titles & icons ------------------------------------------- */
     function getWindowTitle(el) {
         if (el.dataset.windowTitle) return el.dataset.windowTitle;
@@ -599,6 +750,7 @@
         getOrCreateOuterControls();
         getOrCreateDock();
         getOrCreateBgBtn();
+        getOrCreateWinMgrBtn();
 
         const selectors = [
             '#livePrayerOverlay', '.live-prayer-overlay', '.prayer-card',
