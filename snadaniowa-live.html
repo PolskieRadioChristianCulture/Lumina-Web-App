@@ -3232,8 +3232,8 @@ function getWeatherPreset(city) {
                 }
 
                 // Initial cycle: Run every 2 minutes (120000 ms)
-                let _adCycleInterval = setInterval(showZoomAd, 120000);
-                let _adCycleEnabled = true;
+                let _adCycleInterval = null;
+                let _adCycleEnabled = false;
 
                 // ── Expose Ad Control API to operator panel ──
                 window.adControl = {
@@ -3544,3 +3544,4 @@ function getWeatherPreset(city) {
     <script src="live-window-manager.js"></script>
 </body>
 </html>
+
