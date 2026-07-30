@@ -3,10 +3,10 @@ const fs = require('fs');
 const liveFiles = [
     'zapolske-live.html',
     'bibleaudio-global.html',
-    'snadaniowa-live-global.html',
-    'snadaniowa-live-pl.html',
-    'snadaniowa-live-worship.html',
-    'snadaniowa-live.html'
+    'cctv24-global.html',
+    'cctv24-pl.html',
+    'cctv24-worship.html',
+    'cctv24.html'
 ];
 
 // Part 1: Update the zoom ad overlay image from Za_Polske.jpg to B22vP.jpg

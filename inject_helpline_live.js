@@ -1,9 +1,9 @@
 const fs = require('fs');
 
 const files = [
-  'snadaniowa-live-pl.html',
-  'snadaniowa-live-worship.html',
-  'snadaniowa-live.html',
+  'cctv24-pl.html',
+  'cctv24-worship.html',
+  'cctv24.html',
   'zapolske-live.html',
   'dzj-vertical-live.html'
 ];

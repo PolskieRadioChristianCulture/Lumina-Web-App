@@ -1,5 +1,5 @@
 const fs = require('fs');
-const file = 'snadaniowa-live-worship.html';
+const file = 'cctv24-worship.html';
 let content = fs.readFileSync(file, 'utf8');
 
 // Exact broken fragment (clock comment followed immediately by zoom-details-box)
