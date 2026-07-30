@@ -2401,7 +2401,7 @@
                     if (activeReflectionObj) {
                         renderReflection(activeReflectionObj);
                     }
-                    if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || !safeStorage.getItem("dzj_stream_image")) {
+                    if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || safeStorage.getItem("dzj_stream_image") === "Tapeta_ZaPolske.jpg" || !safeStorage.getItem("dzj_stream_image")) {
                         initBackground();
                     }
                 }
@@ -2696,6 +2696,7 @@ function getWeatherPreset(city) {
             if (safeStorage.getItem("dzj_stream_day")) {
                 currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
             }
+            if (safeStorage.getItem("dzj_stream_image") === "Tapeta_ZaPolske.jpg") { safeStorage.setItem("dzj_stream_image", "Czwartek_za_Polske.jpg"); }
             if (safeStorage.getItem("dzj_stream_image")) {
                 customImgSrc = safeStorage.getItem("dzj_stream_image");
                 bgImageSelect.value = customImgSrc;
