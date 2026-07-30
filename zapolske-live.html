@@ -2697,11 +2697,12 @@ function getWeatherPreset(city) {
                 currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
             }
 
-            safeStorage.setItem("dzj_stream_image", "Czwartek_za_Polske.jpg");
-            customImgSrc = "Czwartek_za_Polske.jpg";
-            if (bgImageSelect) bgImageSelect.value = customImgSrc;
-            if (bgActiveImg) bgActiveImg.src = getDynamicBackground(customImgSrc); else {
-                bgActiveImg.src = getDynamicBackground(customImgSrc);
+                        if (safeStorage.getItem("dzj_stream_image")) {
+                customImgSrc = safeStorage.getItem("dzj_stream_image");
+                if (bgImageSelect) bgImageSelect.value = customImgSrc;
+                if (bgActiveImg) bgActiveImg.src = getDynamicBackground(customImgSrc);
+            } else {
+                if (bgActiveImg) bgActiveImg.src = getDynamicBackground(customImgSrc);
             }
             if (safeStorage.getItem("dzj_stream_video")) {
                 customVideoSrc = safeStorage.getItem("dzj_stream_video");
