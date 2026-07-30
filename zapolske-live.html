@@ -2463,7 +2463,7 @@
                         // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
                 const hour = new Date().getHours();
-                if (hour >= 21 || hour < 6) return "CCTV_NOCA.jpg?v=1";
+                // if (hour >= 21 || hour < 6) return "CCTV_NOCA.jpg?v=1";
                 if (imagePath && imagePath !== "breakfast_presenters.jpg") return imagePath;
                 if (hour >= 5 && hour < 9) return "breakfast_presenters_morning_2.jpg";
                 if (hour >= 9 && hour < 12) return "breakfast_presenters_forenoon.jpg";
