@@ -3504,19 +3504,7 @@ function getWeatherPreset(city) {
             limit(50)
         );
 
-        let firebaseConnected = false;
-        setTimeout(() => {
-            if (!firebaseConnected && activePrayersList.length === 0) {
-                console.log('Firebase fallback activated.');
-                activePrayersList = [
-                    {id:'f1', text:'Módlmy się o pokój i bezpieczeństwo dla naszej Ojczyzny oraz wszystkich strzegących jej granic.', name:'Wspólnota', city:'Polska'},
-                    {id:'f2', text:'Panie, daj nam mądrość, odwagę i jedność w tym trudnym czasie.', name:'Redakcja', city:'Christian Culture'}
-                ];
-                processQueue();
-            }
-        }, 6000);
-        onSnapshot(q, (snapshot) => {
-            firebaseConnected = true;
+        
             const approvedIntentions = [];
             snapshot.forEach((doc) => {
                 const data = doc.data();
@@ -3585,6 +3573,43 @@ function getWeatherPreset(city) {
 
     <audio id="stream-audio" src="https://stream.zeno.fm/gn3uhltrrytuv"></audio>
     <script src="live-window-manager.js"></script>
+    <!-- Independent OBS Fallback Script -->
+    <script>
+        setTimeout(() => {
+            const overlay = document.getElementById("livePrayerOverlay");
+            const author = document.getElementById("livePrayerAuthor");
+            const text = document.getElementById("livePrayerText");
+            
+            if (overlay && window.getComputedStyle(overlay).opacity === "0") {
+                console.log("Independent Fallback triggered due to module/Firebase failure!");
+                const fallbacks = [
+                    {text:'"Módlmy się o pokój i bezpieczeństwo dla naszej Ojczyzny oraz wszystkich strzegących jej granic."', name:'Wspólnota, Polska'},
+                    {text:'"Panie, daj nam mądrość, odwagę i jedność w tym trudnym czasie."', name:'Redakcja, Christian Culture'}
+                ];
+                let idx = 0;
+                
+                function showFallback() {
+                    if (text && author) {
+                        text.textContent = fallbacks[idx].text;
+                        author.textContent = "- " + fallbacks[idx].name;
+                    }
+                    overlay.style.opacity = "1";
+                    overlay.style.transform = "translateY(0)";
+                    overlay.style.pointerEvents = "auto";
+                    
+                    setTimeout(() => {
+                        overlay.style.opacity = "0";
+                        overlay.style.transform = "translateY(20px)";
+                        overlay.style.pointerEvents = "none";
+                        
+                        idx = (idx + 1) % fallbacks.length;
+                        setTimeout(showFallback, 5000);
+                    }, 20000);
+                }
+                showFallback();
+            }
+        }, 12000); // Wait 12 seconds for standard module to load
+    </script>
 </body>
 </html>
 
