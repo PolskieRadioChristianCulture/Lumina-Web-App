@@ -2060,7 +2060,7 @@
             <select id="bgImageSelect">
                 <option value="breakfast_presenters.jpg">Prezenterki w Studio (Auto-Rotacja)</option>
                 <option value="zjednoczeni_za_polske_banner.jpg">Wydanie Specjalne (Zjednoczeni za Polskę - Baner)</option>
-                <option value="Tapeta_ZaPolske.jpg">Wydanie Specjalne (Zjednoczeni za Polskę - Animacja GIF)</option>
+                <option value="Czwartek_za_Polske.jpg">Wydanie Specjalne (Zjednoczeni za Polskę - Animacja GIF)</option>
                 <option value="a0kKB.jpg">Własne Tło Letnie (a0kKB.jpg)</option>
                 <option value="breakfast_presenters_forenoon.jpg">Przedpołudniowe Prezenterki (Mockup 3)</option>
                 <option value="breakfast_presenters_alt.jpg">Alternatywne Prezenterki (Mockup 2)</option>
@@ -2229,7 +2229,7 @@
                 if (hour >= 21 || hour < 6) {
                     return "CCTV_NOCA.jpg?v=1";
                 }
-                return getDynamicBackground(customImgSrc || "Tapeta_ZaPolske.jpg");
+                return getDynamicBackground(customImgSrc || "Czwartek_za_Polske.jpg");
             }
 
             let customVideoSrc = ""; 
@@ -2731,7 +2731,7 @@ function getWeatherPreset(city) {
                     return;
                 }
                 
-                                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("Tapeta_ZaPolske") || customImgSrc.includes("Tapeta_ZaPolske") ) {
+                                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("Czwartek_za_Polske") || customImgSrc.includes("Czwartek_za_Polske") ) {
                     document.body.classList.add("special-event-today", "mode-presenters", "za-polske-wallpaper");
                     return;
                 }
