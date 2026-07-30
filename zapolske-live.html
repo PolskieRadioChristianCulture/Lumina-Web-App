@@ -3488,7 +3488,7 @@ function getWeatherPreset(city) {
     <!-- Real-time Prayer Intentions Controller -->
     <script type="module">
         import { db } from "./firebase-config.js";
-        import { collection, query, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+        import { collection, query, limit, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
         const livePrayerOverlay = document.getElementById("livePrayerOverlay");
         const livePrayerText = document.getElementById("livePrayerText");
@@ -3499,10 +3499,7 @@ function getWeatherPreset(city) {
         let isShowingPrayer = false;
 
         // Listen for raw intentions list, we do filtering and ordering locally to avoid Firestore composite index errors
-        const q = query(
-            collection(db, "prayer_intentions"),
-            limit(50)
-        );
+                const q = query(collection(db, "prayer_intentions"), orderBy("timestamp", "desc"), limit(50));
 
         
             const approvedIntentions = [];
