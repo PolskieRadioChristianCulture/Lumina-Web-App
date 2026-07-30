@@ -2401,7 +2401,7 @@
                     if (activeReflectionObj) {
                         renderReflection(activeReflectionObj);
                     }
-                    if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || safeStorage.getItem("dzj_stream_image") === "Tapeta_ZaPolske.jpg" || !safeStorage.getItem("dzj_stream_image")) {
+                    if (true) { // Force update clock to use current customImgSrc
                         initBackground();
                     }
                 }
@@ -2696,12 +2696,11 @@ function getWeatherPreset(city) {
             if (safeStorage.getItem("dzj_stream_day")) {
                 currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
             }
-            if (safeStorage.getItem("dzj_stream_image") === "Tapeta_ZaPolske.jpg") { safeStorage.setItem("dzj_stream_image", "Czwartek_za_Polske.jpg"); }
-            if (safeStorage.getItem("dzj_stream_image")) {
-                customImgSrc = safeStorage.getItem("dzj_stream_image");
-                bgImageSelect.value = customImgSrc;
-                bgActiveImg.src = getDynamicBackground(customImgSrc);
-            } else {
+
+            safeStorage.setItem("dzj_stream_image", "Czwartek_za_Polske.jpg");
+            customImgSrc = "Czwartek_za_Polske.jpg";
+            if (bgImageSelect) bgImageSelect.value = customImgSrc;
+            if (bgActiveImg) bgActiveImg.src = getDynamicBackground(customImgSrc); else {
                 bgActiveImg.src = getDynamicBackground(customImgSrc);
             }
             if (safeStorage.getItem("dzj_stream_video")) {
