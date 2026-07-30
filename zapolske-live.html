@@ -1759,7 +1759,7 @@
     <div id="app-container">
 
         <!-- Background Image -->
-        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="CCTV_NOCA.jpg?v=1" alt="Breakfast Studio">
+        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="Czwartek_za_Polske.jpg" alt="Breakfast Studio">
         
         <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
         <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
@@ -2221,14 +2221,14 @@
             let activeReflectionObj = null;
             let lastActiveSlotHour = -1;
             
-            let customImgSrc = "breakfast_presenters.jpg";
+            let customImgSrc = "Czwartek_za_Polske.jpg";
 
             // Dynamic Time-Based Background Handler (Night 21:00 - 06:00 switch to CCTV_NOCA.jpg)
             function getActiveBackground() {
                 const hour = new Date().getHours();
-                if (hour >= 21 || hour < 6) {
-                    return "CCTV_NOCA.jpg?v=1";
-                }
+                // if (hour >= 21 || hour < 6) {
+                //    return "CCTV_NOCA.jpg?v=1";
+                // }
                 return getDynamicBackground(customImgSrc || "Czwartek_za_Polske.jpg");
             }
 
