@@ -1785,6 +1785,11 @@
             <header>
                 <div class="header-brand" style="display:flex; align-items:center; gap: 10px;">
                     <span>DOBRZE, ŻE JESTEŚ</span>
+                    <span style="color: var(--breakfast-accent); font-weight: 800; font-size: 1.1rem; opacity: 0.8; margin-left: 10px; margin-right: 10px;">|</span>
+                    <span id="zenoNowPlaying" style="display:flex; align-items:center; gap: 8px; color: #fff; font-weight: 700; font-size: 1rem; max-width: 500px; overflow: hidden; white-space: nowrap;">
+                        <span style="color: var(--breakfast-accent); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Teraz gramy:</span>
+                        <span id="zenoTrackTitle" style="text-overflow: ellipsis; overflow: hidden; font-family: 'Outfit', sans-serif;">Łączenie...</span>
+                    </span>
                 </div>
                 
                 <div class="live-tag-container">
@@ -3577,6 +3582,42 @@ function getWeatherPreset(city) {
         }
     </script>
 
+    <!-- Zeno.fm RDS / Now Playing Logic -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const zenoTrackTitle = document.getElementById("zenoTrackTitle");
+            const audioEl = document.getElementById("stream-audio");
+            
+            if (zenoTrackTitle && audioEl && audioEl.src) {
+                // Get mount ID from streamUrl
+                const streamUrl = audioEl.src;
+                const mountId = streamUrl.split('/').pop();
+                const sseUrl = `https://api.zeno.fm/mounts/metadata/subscribe/${mountId}`;
+                
+                try {
+                    const metadataEventSource = new EventSource(sseUrl);
+                    metadataEventSource.onmessage = function(event) {
+                        try {
+                            const data = JSON.parse(event.data);
+                            if (data && data.streamTitle) {
+                                const cleanTitle = data.streamTitle.trim();
+                                if (cleanTitle && zenoTrackTitle.textContent !== cleanTitle) {
+                                    zenoTrackTitle.textContent = cleanTitle;
+                                }
+                            }
+                        } catch (e) {
+                            console.error("Error parsing Zeno.fm metadata event:", e);
+                        }
+                    };
+                    metadataEventSource.onerror = function() {
+                        console.warn("Zeno metadata connection lost or unavailable.");
+                    };
+                } catch (error) {
+                    console.error("Failed to initialize Zeno.fm metadata EventSource:", error);
+                }
+            }
+        });
+    </script>
     <audio id="stream-audio" src="https://stream.zeno.fm/gn3uhltrrytuv"></audio>
     <script src="live-window-manager.js"></script>
     <!-- Independent OBS Fallback Script -->
