@@ -2456,15 +2456,12 @@
                 const storedImage = safeStorage.getItem("dzj_stream_image");
                 if (storedImage === "breakfast_presenters.jpg" || storedImage === "tlo_poranne_live.png" || storedImage === "tlo_live_1.png" || storedImage === "tlo_live_2.png" || !storedImage) {
                     const currentBg = getDynamicBackground(customImgSrc);
-                    let currentSrcFilename = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
-                    // Strip any cache buster query parameters for comparison
-                    if (currentSrcFilename.includes('?')) {
-                        currentSrcFilename = currentSrcFilename.split('?')[0];
-                    }
-                    if (currentSrcFilename !== currentBg) {
-                        bgActiveImg.src = currentBg + "?v=" + Math.floor(Date.now() / 60000); // cache buster updated per minute
-                        applyBodyModeClass();
-                    }
+                    
+                      if (window._lastAppliedBg !== currentBg) {
+                          bgActiveImg.src = currentBg + "?v=" + Math.floor(Date.now() / 60000); // cache buster updated per minute
+                          window._lastAppliedBg = currentBg;
+                          applyBodyModeClass();
+                      }
                 }
             }
             setInterval(updateClock, 1000);
@@ -2815,7 +2812,7 @@ function getWeatherPreset(city) {
                 }
                 
                 // 2. Standard Presenters auto-rotation layout
-                if (currentBg.includes("presenters") || customImgSrc.includes("presenters") || currentBg.includes("a0kKB") || currentBg.includes("tlo_poranne_live") || customImgSrc.includes("tlo_poranne_live")) {
+                if (currentBg.includes("presenters") || customImgSrc.includes("presenters") || currentBg.includes("a0kKB") || currentBg.includes("tlo_poranne_live") || customImgSrc.includes("tlo_poranne_live") || currentBg.includes("tlo_live_1") || customImgSrc.includes("tlo_live_1") || currentBg.includes("tlo_live_2") || customImgSrc.includes("tlo_live_2")) {
                     document.body.classList.add("mode-presenters");
                     
                     // evening presenters mockup places presenter Sara/Noemi on the right, so cards must go left.
