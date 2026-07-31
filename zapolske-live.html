@@ -1059,13 +1059,10 @@
         .ticker-marquee-text {
             display: inline-block;
             white-space: nowrap;
-            font-size: 2.1rem; /* Enlarged for mobile legibility */
-            font-weight: 800;
-            letter-spacing: 0.5px;
             color: #ffffff; /* Bright white text */
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
             padding-left: 100%;
-            animation: marquee-scroll 65s linear infinite;
+            animation: marquee-scroll 220s linear infinite;
             will-change: transform;
             transform: translateZ(0);
         }
@@ -1788,12 +1785,6 @@
             <header>
                 <div class="header-brand" style="display:flex; align-items:center; gap: 10px;">
                     <span>DOBRZE, ŻE JESTEŚ</span>
-                    <span style="color: var(--breakfast-accent); font-weight: 800; font-size: 1.1rem; opacity: 0.8;">|</span>
-                    <span id="zenoNowPlaying" style="display:flex; align-items:center; gap: 8px; color: #fff; font-weight: 700; font-size: 1rem; max-width: 400px; overflow: hidden; white-space: nowrap;">
-                        <span style="color: var(--breakfast-accent); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Teraz gramy:</span>
-                        <span id="zenoTrackTitle" style="text-overflow: ellipsis; overflow: hidden;">Łączenie...</span>
-                    </span>
-                    <span style="color: var(--breakfast-accent); font-weight: 800; font-size: 1.1rem; opacity: 0.8;">|</span>
                 </div>
                 
                 <div class="live-tag-container">
@@ -2238,7 +2229,7 @@
             let activeReflectionObj = null;
             let lastActiveSlotHour = -1;
             
-            let customImgSrc = "Czwartek_za_Polske.jpg";
+            let customImgSrc = "breakfast_presenters.jpg";
 
             // Dynamic Time-Based Background Handler (Night 21:00 - 06:00 switch to CCTV_NOCA.jpg)
             function getActiveBackground() {
@@ -2402,7 +2393,12 @@
                 // Dynamic Edition Label Updates
                 const tickerEdition = document.getElementById("tickerEditionLabel");
                 if (tickerEdition) {
-                    tickerEdition.textContent = "WYDANIE SPECJALNE";
+                    const hour = new Date().getHours();
+                    if (hour >= 5 && hour < 9) tickerEdition.textContent = "WYDANIE PORANNE";
+                    else if (hour >= 9 && hour < 12) tickerEdition.textContent = "WYDANIE PRZEDPOŁUDNIOWE";
+                    else if (hour >= 12 && hour < 18) tickerEdition.textContent = "WYDANIE POPOŁUDNIOWE";
+                    else if (hour >= 18 && hour < 22) tickerEdition.textContent = "WYDANIE WIECZORNE";
+                    else tickerEdition.textContent = "WYDANIE NOCNE";
                 }
 
                 // Real-time hour slot transition check to adapt reflection text and update backgrounds in real-time
@@ -3471,18 +3467,18 @@ function getWeatherPreset(city) {
                     daySelect.appendChild(opt);
                     });
 
-                    if (currentDayIndex >= reflectionsData.length) {
-                        currentDayIndex = 0;
+                    // Set latest by date if possible
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    const latestIdx = reflectionsData.findIndex(r => r.date === todayStr);
+                    currentDayIndex = (latestIdx !== -1) ? latestIdx : (reflectionsData.length - 1);
+                    
+                    if (safeStorage.getItem("dzj_stream_day")) {
+                        currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
                     }
+                    
                     daySelect.value = currentDayIndex;
 
-                    // Match today's date if no manual index override is saved
-                    const todayStr = new Date().toISOString().split('T')[0];
-                    const foundIdx = reflectionsData.findIndex(r => r.date === todayStr);
-                    let matchedIdx = (foundIdx !== -1) ? foundIdx : currentDayIndex;
-                    if (daySelect && matchedIdx !== undefined) daySelect.value = matchedIdx;
-
-                    renderReflection(reflectionsData[matchedIdx] || reflectionsData[reflectionsData.length - 1] || reflectionsData[0]);
+                    renderReflection(reflectionsData[currentDayIndex]);
                     initBackground();
                     initCtaRotation();
                     initTickerFlipper();
@@ -3512,10 +3508,9 @@ function getWeatherPreset(city) {
         let currentPrayerIndex = 0;
         let isShowingPrayer = false;
 
-        // Listen for raw intentions list, we do filtering and ordering locally to avoid Firestore composite index errors
-                const q = query(collection(db, "prayer_intentions"), orderBy("timestamp", "desc"), limit(50));
-
-        
+        // Listen for raw intentions list
+        const q = query(collection(db, "prayer_intentions"), orderBy("timestamp", "desc"), limit(50));
+        onSnapshot(q, (snapshot) => {
             const approvedIntentions = [];
             snapshot.forEach((doc) => {
                 const data = doc.data();
