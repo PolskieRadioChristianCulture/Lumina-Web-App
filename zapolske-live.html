@@ -2429,11 +2429,12 @@
                 }
 
                 // Real-time dynamic background check (swaps backgrounds in the slideshow, etc.)
-                if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || !safeStorage.getItem("dzj_stream_image")) {
+                if (safeStorage.getItem("dzj_stream_image") === "breakfast_presenters.jpg" || safeStorage.getItem("dzj_stream_image") === "tlo_poranne_live.png" || !safeStorage.getItem("dzj_stream_image")) {
                     const currentBg = getDynamicBackground(customImgSrc);
                     const currentSrcFilename = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
                     if (currentSrcFilename !== currentBg) {
                         bgActiveImg.src = currentBg;
+                        applyBodyModeClass();
                     }
                 }
             }
@@ -2484,6 +2485,18 @@
 
                         // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
+                // Auto-rotation every 5 minutes between new morning bg and dynamic presenters
+                const min = new Date().getMinutes();
+                const isPoranneTurn = (Math.floor(min / 5) % 2 === 0); // e.g. 0-4=Poranne, 5-9=Presenters, 10-14=Poranne...
+
+                if (imagePath === "tlo_poranne_live.png" || imagePath === "breakfast_presenters.jpg") {
+                    if (isPoranneTurn) {
+                        return "tlo_poranne_live.png";
+                    } else {
+                        imagePath = "breakfast_presenters.jpg"; // Fall through to time-based presenters logic
+                    }
+                }
+
                 const hour = new Date().getHours();
                 // if (hour >= 21 || hour < 6) return "CCTV_NOCA.jpg?v=1";
                 if (imagePath && imagePath !== "breakfast_presenters.jpg") return imagePath;
