@@ -1783,7 +1783,8 @@
     <div id="app-container">
 
         <!-- Background Image -->
-        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="Czwartek_za_Polske.jpg" alt="Breakfast Studio">
+        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1; transition: opacity 2s ease-in-out;" src="Czwartek_za_Polske.jpg" alt="Breakfast Studio">
+          <img id="bg-img-next" class="bg-layer bg-image" style="opacity: 0; transition: opacity 2s ease-in-out;" src="" alt="">
         
         <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
         <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
@@ -2276,7 +2277,33 @@
             let customVideoSrc = ""; 
 
             // DOM elements
-            const opPanel = document.getElementById("operatorPanel");
+            
+              function crossfadeBackground(newSrc) {
+                  const active = document.getElementById("bg-img-active");
+                  const next = document.getElementById("bg-img-next");
+                  if (!active || !next) return;
+                  
+                  let currentSrc = active.src.substring(active.src.lastIndexOf('/') + 1).split('?')[0];
+                  let targetSrc = newSrc.substring(newSrc.lastIndexOf('/') + 1).split('?')[0];
+                  
+                  if (currentSrc === targetSrc && active.style.opacity == 1) return;
+                  
+                  next.src = newSrc;
+                  next.onload = () => {
+                      next.style.opacity = 1;
+                      active.style.opacity = 0;
+                      setTimeout(() => {
+                          active.id = "bg-img-temp";
+                          next.id = "bg-img-active";
+                          active.id = "bg-img-next";
+                      }, 2000);
+                  };
+                  next.onerror = () => {
+                      active.src = newSrc;
+                  };
+              }
+
+              const opPanel = document.getElementById("operatorPanel");
             const panelTriggerBtn = document.getElementById("panelTriggerBtn");
             const closePanelBtn = document.getElementById("closePanelBtn");
             const daySelect = document.getElementById("daySelect");
@@ -2363,9 +2390,7 @@
                     if (reflectionsData[matchedIdx]) {
                         renderReflection(reflectionsData[matchedIdx] || reflectionsData[reflectionsData.length - 1] || reflectionsData[0]);
                         applyBodyModeClass();
-                        if (bgActiveImg) {
-                            bgActiveImg.src = getDynamicBackground(customImgSrc);
-                        }
+                        crossfadeBackground(getDynamicBackground(customImgSrc));
                     }
                 }
 
@@ -2458,9 +2483,9 @@
                     const currentBg = getDynamicBackground(customImgSrc);
                     
                       if (window._lastAppliedBg !== currentBg) {
-                          bgActiveImg.src = currentBg + "?v=" + Math.floor(Date.now() / 60000); // cache buster updated per minute
+                          crossfadeBackground(currentBg + "?v=" + Math.floor(Date.now() / 60000));
                           window._lastAppliedBg = currentBg;
-                          applyBodyModeClass();
+                          setTimeout(applyBodyModeClass, 1000); // Apply class halfway through fade
                       }
                 }
             }
@@ -2513,7 +2538,7 @@
             function getDynamicBackground(imagePath) {
                 // Auto-rotation every 1 minute between new morning bg and dynamic presenters
                 const min = new Date().getMinutes();
-                const isPoranneTurn = (min % 2 === 0); // Even minutes = Poranne, Odd minutes = Presenters
+                  const isPoranneTurn = (Math.floor(min / 5) % 2 === 0); // Even minutes = Poranne, Odd minutes = Presenters
 
                 // Normalize cache busted URLs if present
                 if (imagePath && imagePath.includes("?v=")) {
@@ -2774,9 +2799,9 @@ function getWeatherPreset(city) {
                         if (safeStorage.getItem("dzj_stream_image")) {
                 customImgSrc = safeStorage.getItem("dzj_stream_image");
                 if (bgImageSelect) bgImageSelect.value = customImgSrc;
-                if (bgActiveImg) bgActiveImg.src = getDynamicBackground(customImgSrc);
+                crossfadeBackground(getDynamicBackground(customImgSrc));
             } else {
-                if (bgActiveImg) bgActiveImg.src = getDynamicBackground(customImgSrc);
+                crossfadeBackground(getDynamicBackground(customImgSrc));
             }
             if (safeStorage.getItem("dzj_stream_video")) {
                 customVideoSrc = safeStorage.getItem("dzj_stream_video");
@@ -2791,7 +2816,8 @@ function getWeatherPreset(city) {
             function applyBodyModeClass() {
                 document.body.classList.remove("mode-presenters", "mode-studio", "evening-layout", "special-event-today");
                 
-                const currentBg = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
+                const activeEl = document.getElementById("bg-img-active");
+                  const currentBg = activeEl ? activeEl.src.substring(activeEl.src.lastIndexOf('/') + 1) : "";
                 
                 // 1. Special Event Layouts
                 if (currentBg.includes("zjednoczeni_za_polske_banner") || customImgSrc.includes("zjednoczeni_za_polske_banner")) {
@@ -2877,10 +2903,7 @@ function getWeatherPreset(city) {
             // Background Init
             function initBackground() {
                 const activeBg = getActiveBackground();
-                if (bgActiveImg) {
-                    bgActiveImg.src = activeBg;
-                    bgActiveImg.style.opacity = 1;
-                }
+                crossfadeBackground(activeBg);
                 applyBodyModeClass();
             }
 
