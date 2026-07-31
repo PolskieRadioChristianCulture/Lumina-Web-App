@@ -31,13 +31,9 @@
         { label: 'Inauguracja',                 src: 'inauguration.jpg' },
         { label: 'Slideshw 1',                  src: 'bg_slideshow_1.jpg' },
         { label: 'Slideshw 2',                  src: 'bg_slideshow_2.jpg' },
-    
-          { label: 'Nowe Tło Użytkownika 1', src: 'user_bg_1.png' },
-          { label: 'Nowe Tło Użytkownika 2', src: 'user_bg_2.png' },
-          { label: 'Nowe Tło Użytkownika 3', src: 'user_bg_3.jpg' },
-          { label: 'Nowe Tło Użytkownika 4', src: 'user_bg_4.jpg' },
-          { label: 'Nowe Tło Użytkownika 5', src: 'user_bg_5.jpg' },
-      ];
+          { label: 'Nowe Tło Poranne 1', src: 'tlo_live_1.png' },
+          { label: 'Nowe Tło Poranne 2', src: 'tlo_live_2.png' },
+];
 
     const BG_PRESETS_VIDEOS = [
         { label: 'Projekt bez nazwy (55).mp4', src: 'file:///C:/Users/czark/Desktop/Dobrze, że jesteś/Projekt bez nazwy (55).mp4' },

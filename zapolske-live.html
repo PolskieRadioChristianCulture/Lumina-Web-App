@@ -1771,9 +1771,9 @@
 
     <script>
         // Force the background to the user's new uploaded background just once
-        if (localStorage.getItem('dzj_stream_image_forced_v1') !== 'true') {
-            localStorage.setItem('dzj_stream_image', 'user_bg_3.jpg');
-            localStorage.setItem('dzj_stream_image_forced_v1', 'true');
+        if (localStorage.getItem('dzj_stream_image_forced_v2') !== 'true') {
+            localStorage.setItem('dzj_stream_image', 'tlo_live_1.png');
+            localStorage.setItem('dzj_stream_image_forced_v2', 'true');
         }
     </script>
 </head>
@@ -2096,13 +2096,10 @@
                 <option value="breakfast_presenters_alt.jpg">Alternatywne Prezenterki (Mockup 2)</option>
                 <option value="breakfast_studio.jpg">Studio Bliski Kadr (Kawa + Książka)</option>
                 <option value="breakfast_studio_alt.jpg">Alternatywne Tło Drewniane</option>
+                  <option value="tlo_live_1.png">Nowe Tło Poranne 1</option>
+                  <option value="tlo_live_2.png">Nowe Tło Poranne 2</option>
             
-                  <option value="user_bg_1.png">Nowe Tło Użytkownika 1 (PNG)</option>
-                  <option value="user_bg_2.png">Nowe Tło Użytkownika 2 (PNG)</option>
-                  <option value="user_bg_3.jpg">Nowe Tło Użytkownika 3 (JPG)</option>
-                  <option value="user_bg_4.jpg">Nowe Tło Użytkownika 4 (JPG)</option>
-                  <option value="user_bg_5.jpg">Nowe Tło Użytkownika 5 (JPG)</option>
-              </select>
+                  </select>
           </div>
 
           <div class="control-group">
@@ -3679,7 +3676,7 @@ function getWeatherPreset(city) {
         });
     </script>
     <audio id="stream-audio" src="https://stream.zeno.fm/gn3uhltrrytuv"></audio>
-    <script src="live-window-manager.js?v=1785489525142"></script>
+    <script src="live-window-manager.js?v=1785491334299"></script>
     <!-- Independent OBS Fallback Script -->
     <script>
         setTimeout(() => {
