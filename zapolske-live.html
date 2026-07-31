@@ -2454,7 +2454,7 @@
 
                 // Real-time dynamic background check (swaps backgrounds in the slideshow, etc.)
                 const storedImage = safeStorage.getItem("dzj_stream_image");
-                if (storedImage === "breakfast_presenters.jpg" || storedImage === "tlo_poranne_live.png" || !storedImage) {
+                if (storedImage === "breakfast_presenters.jpg" || storedImage === "tlo_poranne_live.png" || storedImage === "tlo_live_1.png" || storedImage === "tlo_live_2.png" || !storedImage) {
                     const currentBg = getDynamicBackground(customImgSrc);
                     let currentSrcFilename = bgActiveImg.src.substring(bgActiveImg.src.lastIndexOf('/') + 1);
                     // Strip any cache buster query parameters for comparison
@@ -2523,11 +2523,19 @@
                     imagePath = imagePath.split("?v=")[0];
                 }
 
-                if (imagePath === "tlo_poranne_live.png" || imagePath === "breakfast_presenters.jpg") {
+                                if (imagePath === "tlo_poranne_live.png" || imagePath === "breakfast_presenters.jpg") {
                     if (isPoranneTurn) {
                         return "tlo_poranne_live.png";
                     } else {
                         imagePath = "breakfast_presenters.jpg"; // Fall through to time-based presenters logic
+                    }
+                }
+                
+                if (imagePath === "tlo_live_1.png" || imagePath === "tlo_live_2.png") {
+                    if (isPoranneTurn) {
+                        return "tlo_live_1.png";
+                    } else {
+                        return "tlo_live_2.png";
                     }
                 }
 
