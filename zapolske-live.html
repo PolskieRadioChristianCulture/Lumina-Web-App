@@ -191,12 +191,14 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 70px;
+            width: 100%;
+            box-sizing: border-box;
             background: linear-gradient(to bottom, rgba(3, 3, 3, 0.7) 0%, transparent 100%);
         }
 
         .header-brand {
             display: flex;
-            align-items: center;
+            align-items: baseline;
             gap: 12px;
             font-family: 'Cinzel', serif;
             font-size: 1.3rem; /* Increased size */
@@ -1786,10 +1788,10 @@
             
             <!-- Header -->
             <header>
-                <div class="header-brand" style="display:flex; align-items:center; gap: 10px;">
+                <div class="header-brand" style="display:flex; align-items:baseline; gap: 10px;">
                     <span>DOBRZE, ŻE JESTEŚ</span>
                     <span style="color: var(--breakfast-accent); font-weight: 800; font-size: 1.3rem; opacity: 0.8; margin-left: 10px; margin-right: 10px;">|</span>
-                    <span id="zenoNowPlaying" style="display:flex; align-items:center; gap: 10px; color: #fff; font-weight: 700; font-size: 1.3rem; white-space: nowrap;">
+                    <span id="zenoNowPlaying" style="display:flex; align-items:baseline; gap: 10px; color: #fff; font-weight: 700; font-size: 1.3rem; white-space: nowrap;">
                         <span style="color: var(--breakfast-accent); text-transform: uppercase; font-size: 1.3rem; letter-spacing: 1px;">Teraz gramy:</span>
                         <span id="zenoTrackTitle" style="font-family: 'Outfit', sans-serif;">Łączenie...</span>
                     </span>
@@ -3666,7 +3668,7 @@ function getWeatherPreset(city) {
         });
     </script>
     <audio id="stream-audio" src="https://stream.zeno.fm/gn3uhltrrytuv"></audio>
-    <script src="live-window-manager.js"></script>
+    <script src="live-window-manager.js?v=1785489525142"></script>
     <!-- Independent OBS Fallback Script -->
     <script>
         setTimeout(() => {
