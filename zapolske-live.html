@@ -197,6 +197,7 @@
         }
 
         .header-brand {
+            white-space: nowrap;
             display: flex;
             align-items: baseline;
             gap: 12px;
@@ -219,6 +220,7 @@
         }
 
         .tv-station-id {
+            white-space: nowrap;
             font-size: 1.3rem; /* Increased size */
             font-weight: 800;
             letter-spacing: 3px;
@@ -227,6 +229,7 @@
         }
 
         .live-badge {
+            white-space: nowrap;
             background: var(--red-live);
             color: #fff;
             padding: 6px 18px;
@@ -1765,6 +1768,14 @@
         window.initStream = initStream;
     </script>
     <link rel="stylesheet" href="live-window-manager.css">
+
+    <script>
+        // Force the background to the user's new uploaded background just once
+        if (localStorage.getItem('dzj_stream_image_forced_v1') !== 'true') {
+            localStorage.setItem('dzj_stream_image', 'user_bg_3.jpg');
+            localStorage.setItem('dzj_stream_image_forced_v1', 'true');
+        }
+    </script>
 </head>
 <body>
 
@@ -1793,7 +1804,7 @@
                     <span style="color: var(--breakfast-accent); font-weight: 800; font-size: 1.3rem; opacity: 0.8; margin-left: 10px; margin-right: 10px;">|</span>
                     <span id="zenoNowPlaying" style="display:flex; align-items:baseline; gap: 10px; color: #fff; font-weight: 700; font-size: 1.3rem; white-space: nowrap;">
                         <span style="color: var(--breakfast-accent); text-transform: uppercase; font-size: 1.3rem; letter-spacing: 1px;">Teraz gramy:</span>
-                        <span id="zenoTrackTitle" style="font-family: 'Outfit', sans-serif;">Łączenie...</span>
+                        <span id="zenoTrackTitle" style="max-width: 400px; overflow: hidden; text-overflow: ellipsis; font-family: 'Outfit', sans-serif;">Łączenie...</span>
                     </span>
                 </div>
                 
