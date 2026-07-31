@@ -2074,6 +2074,7 @@
         <div class="control-group">
             <label for="bgImageSelect">Tło Programu (Obraz / Layout)</label>
             <select id="bgImageSelect">
+                <option value="tlo_poranne_live.png">Wydanie Poranne LIVE (Główne Tło)</option>
                 <option value="breakfast_presenters.jpg">Prezenterki w Studio (Auto-Rotacja)</option>
                 <option value="zjednoczeni_za_polske_banner.jpg">Wydanie Specjalne (Zjednoczeni za Polskę - Baner)</option>
                 <option value="Czwartek_za_Polske.jpg">Wydanie Specjalne (Zjednoczeni za Polskę - Animacja GIF)</option>
@@ -2237,7 +2238,7 @@
             let activeReflectionObj = null;
             let lastActiveSlotHour = -1;
             
-            let customImgSrc = "breakfast_presenters.jpg";
+            let customImgSrc = "tlo_poranne_live.png";
 
             // Dynamic Time-Based Background Handler (Night 21:00 - 06:00 switch to CCTV_NOCA.jpg)
             function getActiveBackground() {
@@ -2759,7 +2760,7 @@ function getWeatherPreset(city) {
                 }
                 
                 // 2. Standard Presenters auto-rotation layout
-                if (currentBg.includes("presenters") || customImgSrc.includes("presenters") || currentBg.includes("a0kKB")) {
+                if (currentBg.includes("presenters") || customImgSrc.includes("presenters") || currentBg.includes("a0kKB") || currentBg.includes("tlo_poranne_live") || customImgSrc.includes("tlo_poranne_live")) {
                     document.body.classList.add("mode-presenters");
                     
                     // evening presenters mockup places presenter Sara/Noemi on the right, so cards must go left.
