@@ -2031,15 +2031,16 @@
             <!-- New tv24 CC Ticker System -->
             <footer class="tv24-ticker-system">
                 <div class="ticker-badges-row" style="align-items: center;">
-                    <div class="badge-live">LIVE <span class="recording-dot"></span></div>
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <div class="badge-live">LIVE <span class="recording-dot"></span></div>
+                        <div class="badge-tv24"><span style="transform: translateY(2px); display: inline-block;">tv24</span> <span class="badge-cc">CC</span></div>
+                    </div>
                     
                     <div style="display: flex; gap: 15px; align-items: center; background: rgba(2, 18, 55, 0.85); border: 2px solid #fff; border-radius: 8px; padding: 5px 25px; backdrop-filter: blur(10px);">
                         <div class="badge-clock" id="tickerClock" style="color: white; font-weight: 900; font-size: 1.8rem; font-variant-numeric: tabular-nums;">--:--:--</div>
                         <div style="width: 2px; height: 25px; background: rgba(255,255,255,0.3);"></div>
                         <div class="badge-date" id="tickerDate" style="color: rgba(255,255,255,0.9); font-weight: 700; font-size: 1.2rem; text-transform: uppercase;">-- ----- ----</div>
                     </div>
-
-                    <div class="badge-tv24"><span style="transform: translateY(2px); display: inline-block;">CC</span></div>
                 </div>
                 
                 <div class="ticker-row top-row">
