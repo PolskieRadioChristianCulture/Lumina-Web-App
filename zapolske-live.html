@@ -1055,7 +1055,7 @@
             font-weight: 600;
             color: #ffffff;
             padding-left: 100%;
-            animation: marquee-scroll 40s linear infinite;
+            animation: marquee-scroll 300s linear infinite;
             transform: translate3d(0, 0, 0);
             will-change: transform;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
@@ -2030,10 +2030,15 @@
 
             <!-- New tv24 CC Ticker System -->
             <footer class="tv24-ticker-system">
-                <div class="ticker-badges-row">
+                <div class="ticker-badges-row" style="align-items: center;">
                     <div class="badge-live">LIVE <span class="recording-dot"></span></div>
-                    <div class="badge-clock" id="tickerClock" style="color: white; font-weight: 900; font-size: 1.4rem; padding: 0 15px; font-variant-numeric: tabular-nums;">--:--:--</div>
-                    <div class="badge-date" id="tickerDate" style="color: rgba(255,255,255,0.8); font-weight: 600; font-size: 1rem; padding-right: 20px; text-transform: uppercase;">-- ----- ----</div>
+                    
+                    <div style="display: flex; gap: 15px; align-items: center; background: rgba(2, 18, 55, 0.85); border: 2px solid #fff; border-radius: 8px; padding: 5px 25px; backdrop-filter: blur(10px);">
+                        <div class="badge-clock" id="tickerClock" style="color: white; font-weight: 900; font-size: 1.8rem; font-variant-numeric: tabular-nums;">--:--:--</div>
+                        <div style="width: 2px; height: 25px; background: rgba(255,255,255,0.3);"></div>
+                        <div class="badge-date" id="tickerDate" style="color: rgba(255,255,255,0.9); font-weight: 700; font-size: 1.2rem; text-transform: uppercase;">-- ----- ----</div>
+                    </div>
+
                     <div class="badge-tv24"><span style="transform: translateY(2px); display: inline-block;">CC</span></div>
                 </div>
                 
@@ -2047,8 +2052,8 @@
                     </div>
                     <div class="ticker-box agenda-box" style="flex: 1; background: linear-gradient(90deg, rgba(30,30,30,0.8), rgba(15,15,15,0.8));">
                         <div class="news-label"><i class="fa-regular fa-calendar-check"></i> PROGRAM:</div>
-                        <div class="marquee-container" style="overflow: hidden; white-space: nowrap;">
-                            <span class="agenda-text" id="agendaTickerText" style="font-weight: 800; color: #fff; padding-left: 15px; font-size: 1.1rem;">TERAZ: Wczytywanie...</span>
+                        <div class="marquee-container" style="overflow: hidden; white-space: nowrap; display: flex; justify-content: center; width: 100%;">
+                            <span class="agenda-text" id="agendaTickerText" style="font-weight: 800; color: #fff; font-size: 1.3rem;">TERAZ: Wczytywanie...</span>
                         </div>
                     </div>
                     <div class="ticker-box helpline-box" style="background: linear-gradient(to right, rgba(144, 238, 144, 0.2), rgba(50, 205, 50, 0.3)); border-left: 2px solid #32cd32;">
