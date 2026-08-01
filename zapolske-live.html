@@ -854,14 +854,16 @@
 
         /* --- NEW TV24 CC TICKER SYSTEM --- */
         .tv24-ticker-system {
-            position: relative;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
-            width: 100%;
             display: flex;
             flex-direction: column;
             gap: 4px;
-            padding: 0 40px 20px 40px;
-            font-family: 'Oswald', 'Inter', sans-serif;
+            padding: 0 40px 15px 40px;
+            font-family: 'Outfit', 'Inter', sans-serif;
             box-sizing: border-box;
         }
 
@@ -869,32 +871,31 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-bottom: -15px;
+            margin-bottom: -2px;
             z-index: 101;
-            padding: 0 10px;
+            padding: 0;
             pointer-events: none;
         }
 
         .badge-live {
-            background: linear-gradient(to bottom, #0d1b2a, #000000);
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            border-radius: 8px;
+            background: #001233;
+            border: 2px solid #fff;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
             color: #ffffff;
             font-weight: 800;
-            font-size: 1.8rem;
-            padding: 4px 16px;
+            font-size: 1.7rem;
+            padding: 4px 18px;
             display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            letter-spacing: 1px;
         }
         .recording-dot {
-            width: 16px;
-            height: 16px;
-            background: #ff0000;
+            width: 14px;
+            height: 14px;
+            background: #e50914;
             border-radius: 50%;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.4), 0 0 10px rgba(255,0,0,0.8);
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.4);
             animation: pulse-dot 1.5s infinite alternate;
         }
         @keyframes pulse-dot {
@@ -905,51 +906,48 @@
         .badge-tv24 {
             display: flex;
             align-items: stretch;
-            background: linear-gradient(to bottom, #0d3b66, #001a33);
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            border-radius: 8px;
+            background: #002a5c;
+            border: 2px solid #fff;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
             color: #ffffff;
             font-weight: 800;
-            font-size: 2.2rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            font-size: 1.7rem;
             overflow: hidden;
             line-height: 1;
             padding-left: 12px;
-            letter-spacing: -1px;
         }
         .badge-cc {
-            background: linear-gradient(to bottom, #cc0000, #800000);
+            background: #b30000;
             padding: 4px 12px;
-            margin-left: 10px;
-            height: 100%;
+            margin-left: 8px;
             display: flex;
             align-items: center;
-            border-left: 1px solid rgba(255,255,255,0.3);
         }
 
         .ticker-row {
             display: flex;
             width: 100%;
             gap: 4px;
-            height: 55px;
+            height: 48px;
         }
         .bottom-row {
-            height: 55px;
+            height: 48px;
         }
 
         .ticker-box {
-            border: 2px solid rgba(255, 255, 255, 0.6);
+            border: 2px solid #fff;
             border-radius: 6px;
             display: flex;
             align-items: center;
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.1), 0 4px 10px rgba(0,0,0,0.5);
+            box-shadow: inset 0 2px 10px rgba(255,255,255,0.1), 0 4px 10px rgba(0,0,0,0.3);
             overflow: hidden;
             box-sizing: border-box;
         }
 
         .weather-box {
-            background: linear-gradient(to right, #0a4f8f, #052a4f);
-            width: 280px;
+            background: linear-gradient(to right, #3A79B5, #2B629A);
+            width: 250px;
             flex-shrink: 0;
             padding: 0 15px;
             justify-content: space-between;
@@ -958,6 +956,8 @@
         .weather-icon-small {
             font-size: 2.2rem;
             color: #FFD700;
+            display: flex;
+            align-items: center;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
         .weather-data {
@@ -967,12 +967,12 @@
             line-height: 1.1;
         }
         .w-city {
-            font-size: 1.0rem;
+            font-size: 0.9rem;
             font-weight: 700;
             letter-spacing: 1px;
         }
         .w-temp {
-            font-size: 2.0rem;
+            font-size: 1.6rem;
             font-weight: 900;
         }
 
@@ -983,30 +983,34 @@
             background: linear-gradient(to bottom, #111, #000);
         }
         .polska-news {
-            background: linear-gradient(to bottom, #a00000, #500000);
+            background: linear-gradient(to bottom, #A40000, #660000);
         }
         .swiat-news {
-            background: linear-gradient(to bottom, #001f4d, #000d26);
+            background: linear-gradient(to bottom, #002244, #001122);
         }
         .news-label {
-            background: rgba(255,255,255,0.1);
             color: white;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            padding: 0 20px;
+            padding: 0 15px;
             display: flex;
             align-items: center;
             gap: 10px;
             white-space: nowrap;
-            border-right: 2px solid rgba(255,255,255,0.3);
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             z-index: 2;
         }
+        .swiat-news .news-label {
+            color: #4db8ff; /* Light blue globe text */
+        }
+        .swiat-news .news-label i {
+            color: #4db8ff;
+        }
         .pl-flag {
-            width: 24px;
-            height: 16px;
+            width: 28px;
+            height: 18px;
             background: linear-gradient(to bottom, #fff 50%, #dc143c 50%);
-            border: 1px solid rgba(0,0,0,0.5);
+            border: 1px solid rgba(0,0,0,0.2);
             border-radius: 2px;
         }
         .marquee-container {
@@ -1019,50 +1023,60 @@
         .marquee-text {
             display: inline-block;
             white-space: nowrap;
-            font-size: 1.9rem;
+            font-size: 1.45rem;
             font-weight: 600;
             color: #ffffff;
             padding-left: 100%;
             animation: marquee-scroll 45s linear infinite;
         }
         .currency-box, .market-box {
-            background: linear-gradient(to bottom, #081122, #02050a);
-            width: 280px;
+            width: 250px;
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             color: white;
-            line-height: 1.1;
-            padding: 5px 0;
+            line-height: 1.15;
+            padding: 4px 0;
+        }
+        .currency-box {
+            background: linear-gradient(to bottom, #001233, #00081a);
+        }
+        .market-box {
+            background: linear-gradient(to bottom, #002b3d, #001520);
         }
         .box-title {
-            font-size: 1.0rem;
+            font-size: 0.95rem;
             font-weight: 700;
             letter-spacing: 1px;
-            color: rgba(255,255,255,0.8);
+            color: #fff;
             text-transform: uppercase;
         }
         .box-value {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 900;
-            color: #FFCC00;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: baseline;
         }
-        .market-box .box-value {
-            color: #ffffff;
+        .val-gold {
+            color: #FFCC00;
+        }
+        .val-green {
+            color: #33ff33;
+        }
+        .val-white {
+            color: #fff;
         }
         .trend-down {
             color: #ff3333;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 800;
         }
         .trend-up {
             color: #33ff33;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 800;
         }
         @keyframes marquee-scroll {
@@ -1751,7 +1765,7 @@
     <div id="app-container">
 
         <!-- Background Image -->
-        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1; transition: opacity 3s ease-in-out;" src="Czwartek_za_Polske.jpg" alt="Breakfast Studio">
+        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1; transition: opacity 3s ease-in-out;" src="SOBOTA.jpg" alt="Breakfast Studio">
           <img id="bg-img-next" class="bg-layer bg-image" style="opacity: 0; transition: opacity 3s ease-in-out;" src="" alt="">
         
         <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
@@ -2013,7 +2027,7 @@
                 <div class="ticker-row bottom-row">
                     <div class="ticker-box currency-box">
                         <div class="box-title">WALUTY</div>
-                        <div class="box-value">3,742 <span class="trend-down">▼ -0.2%</span></div>
+                        <div class="box-value"><span class="val-gold">3,742</span> <span class="trend-down">▼</span> <span class="val-white">-0.2%</span></div>
                     </div>
                     <div class="ticker-box news-box swiat-news">
                         <div class="news-label"><i class="fa-solid fa-globe"></i> ŚWIAT:</div>
@@ -2025,7 +2039,7 @@
                     </div>
                     <div class="ticker-box market-box">
                         <div class="box-title">MARKET INDEX</div>
-                        <div class="box-value">3 920 <span class="trend-up">▲ +0.3%</span></div>
+                        <div class="box-value"><span class="val-green">3 920</span> <span class="trend-up">▲</span> <span class="val-white">+0.3%</span></div>
                     </div>
                 </div>
             </footer>
@@ -2064,28 +2078,9 @@
         </div>
         
         <div class="control-group">
-            <label for="daySelect">Wybierz Rozważanie (Dzień)</label>
-            <select id="daySelect">
-                <!-- Days loaded dynamically -->
-            </select>
-        </div>
-
-        <div class="control-group">
-            <label for="bgImageSelect">Tło Programu (Obraz / Layout)</label>
-            <select id="bgImageSelect">
-                <option value="tlo_poranne_live.png">Wydanie Poranne LIVE (Główne Tło)</option>
-                <option value="breakfast_presenters.jpg">Prezenterki w Studio (Auto-Rotacja)</option>
-                <option value="zjednoczeni_za_polske_banner.jpg">Wydanie Specjalne (Zjednoczeni za Polskę - Baner)</option>
-                <option value="Czwartek_za_Polske.jpg">Wydanie Specjalne (Zjednoczeni za Polskę - Animacja GIF)</option>
-                <option value="a0kKB.jpg">Własne Tło Letnie (a0kKB.jpg)</option>
-                <option value="breakfast_presenters_forenoon.jpg">Przedpołudniowe Prezenterki (Mockup 3)</option>
-                <option value="breakfast_presenters_alt.jpg">Alternatywne Prezenterki (Mockup 2)</option>
                 <option value="breakfast_studio.jpg">Studio Bliski Kadr (Kawa + Książka)</option>
                 <option value="breakfast_studio_alt.jpg">Alternatywne Tło Drewniane</option>
                   <option value="tlo_live_1.png">Nowe Tło Poranne 1</option>
-                  <option value="tlo_live_2.png">Nowe Tło Poranne 2</option>
-            
-                  </select>
           </div>
 
           <div class="control-group">
@@ -2256,7 +2251,7 @@
                 // if (hour >= 21 || hour < 6) {
                 //    return "CCTV_NOCA.jpg?v=1";
                 // }
-                return getDynamicBackground(customImgSrc || "Czwartek_za_Polske.jpg");
+                return getDynamicBackground(customImgSrc || "SOBOTA.jpg");
             }
 
             let customVideoSrc = ""; 
@@ -2836,7 +2831,7 @@ function getWeatherPreset(city) {
                     return;
                 }
                 
-                                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("Czwartek_za_Polske") || customImgSrc.includes("Czwartek_za_Polske") ) {
+                                if (currentBg.includes("tapeta_modlitwa") || customImgSrc.includes("tapeta_modlitwa") || currentBg.includes("SOBOTA") || customImgSrc.includes("SOBOTA") ) {
                     document.body.classList.add("special-event-today", "mode-presenters", "za-polske-wallpaper");
                     return;
                 }
