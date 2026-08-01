@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -13,16 +14,17 @@
 
     <style>
         :root {
-            --gold-primary: #a855f7; /* High-contrast Yellow for descriptions */
-            --gold-light: #ffffff; /* White */
-            --gold-dark: #581c87; /* Medium-Dark Red */
-            --bg-dark: #090514; /* Very dark red/black */
+            /* === 1 SIERPNIA 1944 — ROCZNICA POWSTANIA WARSZAWSKIEGO === */
+            --gold-primary: #ef4444; /* Patriotic Red */
+            --gold-light: #ffffff;   /* White */
+            --gold-dark: #7f1d1d;   /* Dark Red */
+            --bg-dark: #0a0505;     /* Very dark red-black */
             --text-light: #ffffff;
-            --glass-bg: rgba(20, 10, 35, 0.45); /* Transparent Dark Crimson Red */
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-shadow: rgba(0, 0, 0, 0.6);
-            --breakfast-accent: #a855f7;
-            --red-live: #a855f7;
+            --glass-bg: rgba(15, 5, 5, 0.5); /* Dark Red Glass */
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --glass-shadow: rgba(0, 0, 0, 0.65);
+            --breakfast-accent: #ef4444; /* Red accent */
+            --red-live: #dc2626;         /* Live badge red */
         }
 
         * {
@@ -1723,31 +1725,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
     <div id="app-container">
 
         <!-- Background Images (rotational crossfade every 30s) -->
-        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="CCTV_NOCA.jpg?v=1" alt="Instrumental Worship Studio">
-        <img id="bg-img-swap"   class="bg-layer bg-image" style="opacity: 0; transition: opacity 2s ease-in-out;" src="worship_bg_2.png" alt="Instrumental Worship Studio 2">
-        
-        <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
-        <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
-
-        <!-- Overlays -->
-        <div class="vignette-overlay"></div>
-        <div class="sunbeams"></div>
-        <div class="lighting-sweep"></div>
-        <div class="ambient-pulse-layer"></div>
-
-        <!-- Emission Screen Grid -->
-        <div class="emission-grid">
-            
-            <!-- Header -->
-            <header>
-                <div class="header-brand">
-                    <i class="fa-solid fa-mug-hot"></i> DOBRZE, ŻE JESTEŚ TV
-                </div>
-                
-                <div class="live-tag-container">
-                    <!-- Helpline Widget -->
-                    <div class="helpline-header-widget">
-                        <i class="fa-solid fa-phone-volume pulse-phone-icon"></i>
+        <!-- TŁO SPECJALNE: 1 SIERPNIA 1944 — 82. ROCZNICA POWSTANIA WARSZAWSKIEGO -->
                         <div class="helpline-header-content">
                             <div class="helpline-header-title">Infolinia "Nadzieja Christian Culture"</div>
                             <div class="helpline-header-number">+48 730 958 583</div>
@@ -2178,7 +2156,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             let activeReflectionObj = null;
             let lastActiveSlotHour = -1;
             
-            let customImgSrc = "worship_bg.jpg";
+            let customImgSrc = "tlo_powstanie_1944.jpg"; // TŁO SPECJALNE: 1 SIERPNIA 1944
 
             // Dynamic Time-Based Background Handler (Night 21:00 - 06:00 switch to CCTV_NOCA.jpg)
             function getActiveBackground() {
@@ -2370,7 +2348,12 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                         // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
                 const hour = new Date().getHours();
-                if (hour >= 21 || hour < 6) return "CCTV_NOCA.jpg?v=1";
+                const now = new Date();
+                // === SPECJALNE TŁO: 1 SIERPNIA — ROCZNICA POWSTANIA WARSZAWSKIEGO ===
+                const isAug1 = (now.getMonth() === 7 && now.getDate() === 1);
+                if (isAug1 && hour >= 5) return "tlo_powstanie_1944.jpg?v=2";
+                // Nocne tło (21:00 - 05:00)
+                if (hour >= 21 || hour < 5) return "CCTV_NOCA.jpg?v=1";
                 if (imagePath && imagePath !== "breakfast_presenters.jpg") return imagePath;
                 if (hour >= 5 && hour < 9) return "breakfast_presenters_morning_2.jpg";
                 if (hour >= 9 && hour < 12) return "breakfast_presenters_forenoon.jpg";
