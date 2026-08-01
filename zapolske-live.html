@@ -861,7 +861,7 @@
             z-index: 100;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
             padding: 0 40px 15px 40px;
             font-family: 'Outfit', 'Inter', sans-serif;
             box-sizing: border-box;
@@ -871,28 +871,28 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-bottom: -2px;
+            margin-bottom: 2px;
             z-index: 101;
             padding: 0;
             pointer-events: none;
         }
 
         .badge-live {
-            background: #001233;
+            background: #021237;
             border: 2px solid #fff;
-            border-bottom: none;
-            border-radius: 6px 6px 0 0;
+            border-radius: 8px;
             color: #ffffff;
             font-weight: 800;
-            font-size: 1.7rem;
-            padding: 4px 18px;
+            font-size: 1.8rem;
+            padding: 6px 20px;
             display: flex;
             align-items: center;
             gap: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
         .recording-dot {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             background: #e50914;
             border-radius: 50%;
             box-shadow: inset 0 2px 4px rgba(255,255,255,0.4);
@@ -905,56 +905,58 @@
 
         .badge-tv24 {
             display: flex;
-            align-items: stretch;
-            background: #002a5c;
+            align-items: center;
+            background: #021237;
             border: 2px solid #fff;
-            border-bottom: none;
-            border-radius: 6px 6px 0 0;
+            border-radius: 8px;
             color: #ffffff;
             font-weight: 800;
-            font-size: 1.7rem;
+            font-size: 2.0rem;
             overflow: hidden;
             line-height: 1;
-            padding-left: 12px;
+            padding-left: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
         .badge-cc {
-            background: #b30000;
-            padding: 4px 12px;
-            margin-left: 8px;
+            background: #a40000;
+            padding: 6px 14px;
+            margin-left: 10px;
             display: flex;
             align-items: center;
+            align-self: stretch;
+            border-left: 2px solid #fff;
         }
 
         .ticker-row {
             display: flex;
             width: 100%;
-            gap: 4px;
-            height: 48px;
+            gap: 6px;
+            height: 52px;
         }
         .bottom-row {
-            height: 48px;
+            height: 52px;
         }
 
         .ticker-box {
             border: 2px solid #fff;
-            border-radius: 6px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
-            box-shadow: inset 0 2px 10px rgba(255,255,255,0.1), 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: inset 0 2px 10px rgba(255,255,255,0.1), 0 4px 10px rgba(0,0,0,0.4);
             overflow: hidden;
             box-sizing: border-box;
         }
 
         .weather-box {
-            background: linear-gradient(to right, #3A79B5, #2B629A);
+            background: linear-gradient(to right, #438fc7, #134e87);
             width: 250px;
             flex-shrink: 0;
-            padding: 0 15px;
+            padding: 0 16px;
             justify-content: space-between;
             color: white;
         }
         .weather-icon-small {
-            font-size: 2.2rem;
+            font-size: 2.6rem;
             color: #FFD700;
             display: flex;
             align-items: center;
@@ -969,10 +971,11 @@
         .w-city {
             font-size: 0.9rem;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            color: #e0e0e0;
         }
         .w-temp {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 900;
         }
 
@@ -983,34 +986,34 @@
             background: linear-gradient(to bottom, #111, #000);
         }
         .polska-news {
-            background: linear-gradient(to bottom, #A40000, #660000);
+            background: linear-gradient(to bottom, #b31616, #5d0202);
         }
         .swiat-news {
-            background: linear-gradient(to bottom, #002244, #001122);
+            background: linear-gradient(to bottom, #0d3663, #021124);
         }
         .news-label {
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 800;
-            padding: 0 15px;
+            padding: 0 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             white-space: nowrap;
             letter-spacing: 0.5px;
             z-index: 2;
         }
         .swiat-news .news-label {
-            color: #4db8ff; /* Light blue globe text */
+            color: #5da3e4;
         }
         .swiat-news .news-label i {
-            color: #4db8ff;
+            color: #5da3e4;
         }
         .pl-flag {
-            width: 28px;
-            height: 18px;
+            width: 32px;
+            height: 20px;
             background: linear-gradient(to bottom, #fff 50%, #dc143c 50%);
-            border: 1px solid rgba(0,0,0,0.2);
+            border: 1px solid rgba(0,0,0,0.3);
             border-radius: 2px;
         }
         .marquee-container {
@@ -1023,11 +1026,11 @@
         .marquee-text {
             display: inline-block;
             white-space: nowrap;
-            font-size: 1.45rem;
+            font-size: 1.6rem;
             font-weight: 600;
             color: #ffffff;
             padding-left: 100%;
-            animation: marquee-scroll 45s linear infinite;
+            animation: marquee-scroll 40s linear infinite;
         }
         .currency-box, .market-box {
             width: 250px;
@@ -1039,22 +1042,17 @@
             color: white;
             line-height: 1.15;
             padding: 4px 0;
-        }
-        .currency-box {
-            background: linear-gradient(to bottom, #001233, #00081a);
-        }
-        .market-box {
-            background: linear-gradient(to bottom, #002b3d, #001520);
+            background: #021237;
         }
         .box-title {
-            font-size: 0.95rem;
+            font-size: 1.0rem;
             font-weight: 700;
             letter-spacing: 1px;
-            color: #fff;
+            color: #c0c0c0;
             text-transform: uppercase;
         }
         .box-value {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 900;
             display: flex;
             gap: 8px;
@@ -1765,7 +1763,7 @@
     <div id="app-container">
 
         <!-- Background Image -->
-        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1; transition: opacity 3s ease-in-out;" src="SOBOTA.jpg" alt="Breakfast Studio">
+        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1; transition: opacity 3s ease-in-out;" src="" alt="Breakfast Studio">
           <img id="bg-img-next" class="bg-layer bg-image" style="opacity: 0; transition: opacity 3s ease-in-out;" src="" alt="">
         
         <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
@@ -1783,8 +1781,6 @@
             <!-- Header -->
             <header>
                 <div class="header-brand" style="display:flex; align-items:baseline; gap: 10px;">
-                    <span>SOBOTA Z CHRISTIAN CULTURE</span>
-                    <span style="color: var(--breakfast-accent); font-weight: 800; font-size: 1.3rem; opacity: 0.8; margin-left: 10px; margin-right: 10px;">|</span>
                     <span id="zenoNowPlaying" style="display:flex; align-items:baseline; gap: 10px; color: #fff; font-weight: 700; font-size: 1.3rem; white-space: nowrap;">
                         <span style="color: var(--breakfast-accent); text-transform: uppercase; font-size: 1.3rem; letter-spacing: 1px;">Teraz gramy:</span>
                         <span id="zenoTrackTitle" style="max-width: 400px; overflow: hidden; text-overflow: ellipsis; font-family: 'Outfit', sans-serif;">Łączenie...</span>
@@ -1792,7 +1788,6 @@
                 </div>
                 
                 <div class="live-tag-container">
-                    <div class="tv-station-id">SOBOTA Z CHRISTIAN CULTURE</div>
                     <div class="live-badge">
                         <i class="fa-solid fa-circle"></i> NA ŻYWO
                     </div>
@@ -1987,7 +1982,6 @@
             </main>
 
             <!-- Popup Tab (Outside footer to sit behind it) -->
-            <div class="ticker-popup-tab" id="tickerPopupTab">ZA CHWILĘ...</div>
 
             <!-- Prayer Intentions Real-time Broadcast Overlay -->
             <div id="livePrayerOverlay" style="position: fixed; bottom: 200px; left: 70px; width: 800px; background: rgba(15, 18, 30, 0.96); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 3px solid var(--breakfast-accent); border-radius: 24px; padding: 25px 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.95); display: flex; flex-direction: column; gap: 14px; z-index: 1000; opacity: 0; transform: translateY(30px); pointer-events: none; transition: opacity 1s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1); border-left: 8px solid #dc143c;">
@@ -2003,7 +1997,7 @@
             <footer class="tv24-ticker-system">
                 <div class="ticker-badges-row">
                     <div class="badge-live">LIVE <span class="recording-dot"></span></div>
-                    <div class="badge-tv24">tv24 <span class="badge-cc">CC</span></div>
+                    <div class="badge-tv24"><span style="transform: translateY(2px); display: inline-block;">tv24</span> <span class="badge-cc">CC</span></div>
                 </div>
                 
                 <div class="ticker-row top-row">
@@ -2057,7 +2051,7 @@
 
     <!-- AUDIO STARTUP OVERLAY (Click to play and bypass browser autoplay block) -->
     <div id="startOverlay" onclick="initStream()">
-        <img class="start-logo" src="dzj-logo.jpg" alt="Dobrze, że jesteś">
+        
         <div class="start-label">Dobrze, że jesteś</div>
         <div class="start-sublabel">Telewizja Christian Culture 24</div>
         <button class="start-btn" onclick="initStream()">
@@ -2532,9 +2526,7 @@
                         // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
                 const now = new Date();
-                if (now.getMonth() === 7 && now.getDate() === 1) {
-                    return "tlo_powstanie_1944_zapolske.jpg";
-                }
+                
                 // Auto-rotation every 1 minute between new morning bg and dynamic presenters
                 const min = new Date().getMinutes();
                   const isPoranneTurn = (Math.floor(min / 5) % 2 === 0); // Even minutes = Poranne, Odd minutes = Presenters
@@ -3680,10 +3672,10 @@ function getWeatherPreset(city) {
                             if (data && data.streamTitle) {
                                 const cleanTitle = data.streamTitle.trim();
                                 let cleanTitleFixed = cleanTitle;
-                                  const targetString = "aplikacji Christian Culture cclite.pl";
+                                  const targetString = "aplikacji Christian Culture";
                                   const targetIndex = cleanTitleFixed.indexOf(targetString);
                                   if (targetIndex !== -1) {
-                                      cleanTitleFixed = cleanTitleFixed.substring(0, targetIndex + targetString.length) + " oraz na www.polskieradio.cc";
+                                      cleanTitleFixed = cleanTitleFixed.substring(0, targetIndex + targetString.length);
                                   }
                                   if (cleanTitleFixed && zenoTrackTitle.textContent !== cleanTitleFixed) {
                                     zenoTrackTitle.textContent = cleanTitleFixed;
@@ -3743,5 +3735,7 @@ function getWeatherPreset(city) {
     </script>
 </body>
 </html>
+
+
 
 
