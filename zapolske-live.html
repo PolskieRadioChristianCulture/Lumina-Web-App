@@ -2031,9 +2031,23 @@
             <!-- New tv24 CC Ticker System -->
             <footer class="tv24-ticker-system">
                 <div class="ticker-badges-row" style="align-items: center;">
-                    <div style="display: flex; gap: 15px; align-items: center;">
+                    <div style="display: flex; gap: 15px; align-items: center; position: relative;">
+                        <!-- QR Code positioned above LIVE -->
+                        <div style="position: absolute; bottom: 120%; left: 0; background: rgba(0,0,0,0.8); border: 2px solid var(--breakfast-accent); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+                            <span style="color: #fff; font-size: 0.8rem; font-weight: 800; white-space: nowrap;">WESPRZYJ MISJĘ</span>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://patronite.pl/osobowoscplus" alt="Patronite QR" style="width: 80px; height: 80px; background: #fff; padding: 2px; border-radius: 4px;">
+                        </div>
+                        
                         <div class="badge-live">LIVE <span class="recording-dot"></span></div>
-                        <div class="badge-tv24"><span style="transform: translateY(2px); display: inline-block;">tv24</span> <span class="badge-cc">CC</span></div>
+                        
+                        <!-- Weather moved to badges row -->
+                        <div class="ticker-box weather-box" style="height: 40px; border-color: rgba(255,255,255,0.3); background: rgba(2, 18, 55, 0.85); backdrop-filter: blur(10px);">
+                            <div class="weather-icon-small"><i class="fa-solid fa-cloud-sun-rain"></i></div>
+                            <div class="weather-data">
+                                <div class="w-city">WARSZAWA</div>
+                                <div class="w-temp">22°C</div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div style="display: flex; gap: 15px; align-items: center; background: rgba(2, 18, 55, 0.85); border: 2px solid #fff; border-radius: 8px; padding: 5px 25px; backdrop-filter: blur(10px);">
@@ -2044,13 +2058,9 @@
                 </div>
                 
                 <div class="ticker-row top-row">
-                    <div class="ticker-box weather-box">
-                        <div class="weather-icon-small"><i class="fa-solid fa-cloud-sun-rain"></i></div>
-                        <div class="weather-data">
-                            <div class="w-city">WARSZAWA</div>
-                            <div class="w-temp">22°C</div>
-                        </div>
-                    </div>
+                    <!-- TV24 CC moved to top row -->
+                    <div class="badge-tv24" style="height: 100%; display: flex; align-items: center; background: rgba(0,0,0,0.6); padding: 0 15px; border-radius: 8px; border: 2px solid rgba(255,255,255,0.3);"><span style="transform: translateY(2px); display: inline-block;">tv24</span> <span class="badge-cc">CC</span></div>
+                    
                     <div class="ticker-box agenda-box" style="flex: 1; background: linear-gradient(90deg, rgba(30,30,30,0.8), rgba(15,15,15,0.8));">
                         <div class="news-label"><i class="fa-regular fa-calendar-check"></i> PROGRAM:</div>
                         <div class="marquee-container" style="overflow: hidden; white-space: nowrap; display: flex; justify-content: center; width: 100%;">
@@ -2722,7 +2732,7 @@ function getWeatherPreset(city) {
                     const dayPresets = {
                         "WARSZAWA": "☀️ 24°C / Słonecznie",
                         "KRAKÓW": "☀️ 25°C / Słonecznie",
-                        "OSTROWIEC ŚW.": "🌤️ 23°C / Lekkie Chmury",
+                        "OSTROWIEC ŚW.": "☀️ 32°C / Lekkie Chmury",
                         "GDAŃSK": "🌊 21°C / Wietrznie",
                         "STALOWA WOLA": "☀️ 24°C / Ciepło",
                         "WROCŁAW": "☀️ 26°C / Słonecznie",
