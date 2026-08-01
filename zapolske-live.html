@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dobrze, że jesteś - TELEWIZJA CHRISTIAN CULTURE 24</title>
+    <title>Sobota z Christian Culture – TELEWIZJA CHRISTIAN CULTURE 24</title>
     
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,7 +61,7 @@
             height: 100%;
             object-fit: cover;
             z-index: 1;
-            transition: opacity 1.5s ease-in-out, filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 3s ease-in-out, filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             animation: ken-burns-zoom 22s ease-in-out infinite alternate; /* Dynamic camera pan & zoom motion */
             will-change: transform;
         }
@@ -1783,8 +1783,8 @@
     <div id="app-container">
 
         <!-- Background Image -->
-        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1; transition: opacity 2s ease-in-out;" src="Czwartek_za_Polske.jpg" alt="Breakfast Studio">
-          <img id="bg-img-next" class="bg-layer bg-image" style="opacity: 0; transition: opacity 2s ease-in-out;" src="" alt="">
+        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1; transition: opacity 3s ease-in-out;" src="Czwartek_za_Polske.jpg" alt="Breakfast Studio">
+          <img id="bg-img-next" class="bg-layer bg-image" style="opacity: 0; transition: opacity 3s ease-in-out;" src="" alt="">
         
         <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
         <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
@@ -1801,7 +1801,7 @@
             <!-- Header -->
             <header>
                 <div class="header-brand" style="display:flex; align-items:baseline; gap: 10px;">
-                    <span>DOBRZE, ŻE JESTEŚ</span>
+                    <span>SOBOTA Z CHRISTIAN CULTURE</span>
                     <span style="color: var(--breakfast-accent); font-weight: 800; font-size: 1.3rem; opacity: 0.8; margin-left: 10px; margin-right: 10px;">|</span>
                     <span id="zenoNowPlaying" style="display:flex; align-items:baseline; gap: 10px; color: #fff; font-weight: 700; font-size: 1.3rem; white-space: nowrap;">
                         <span style="color: var(--breakfast-accent); text-transform: uppercase; font-size: 1.3rem; letter-spacing: 1px;">Teraz gramy:</span>
@@ -1810,7 +1810,7 @@
                 </div>
                 
                 <div class="live-tag-container">
-                    <div class="tv-station-id">MODLITWA ZA POLSKĘ</div>
+                    <div class="tv-station-id">SOBOTA Z CHRISTIAN CULTURE</div>
                     <div class="live-badge">
                         <i class="fa-solid fa-circle"></i> NA ŻYWO
                     </div>
@@ -2286,19 +2286,34 @@
                   let currentSrc = active.src.substring(active.src.lastIndexOf('/') + 1).split('?')[0];
                   let targetSrc = newSrc.substring(newSrc.lastIndexOf('/') + 1).split('?')[0];
                   
-                  if (currentSrc === targetSrc && active.style.opacity == 1) return;
+                  if (currentSrc === targetSrc && parseFloat(active.style.opacity) >= 1) return;
                   
+                  // Prepare next layer
                   next.src = newSrc;
+                  next.style.transition = "none";
+                  next.style.opacity = "0";
+                  
                   next.onload = () => {
-                      next.style.opacity = 1;
-                      active.style.opacity = 0;
-                      setTimeout(() => {
-                          active.id = "bg-img-temp";
-                          next.id = "bg-img-active";
-                          active.id = "bg-img-next";
-                      }, 2000);
+                      // Re-enable transition AFTER setting opacity 0 (avoids flash)
+                      requestAnimationFrame(() => {
+                          next.style.transition = "opacity 3s ease-in-out";
+                          next.style.opacity = "1";
+                          active.style.transition = "opacity 3s ease-in-out";
+                          active.style.opacity = "0";
+                          
+                          // After transition completes: swap IDs and reset new "next" to invisible
+                          setTimeout(() => {
+                              // Swap: make "next" the new "active"
+                              next.id = "bg-img-active";
+                              active.id = "bg-img-next";
+                              // Reset old active (now next) so it's ready for the next crossfade
+                              active.style.transition = "none";
+                              active.style.opacity = "0";
+                          }, 3100);
+                      });
                   };
                   next.onerror = () => {
+                      // Fallback: just update the active image without crossfade
                       active.src = newSrc;
                   };
               }
@@ -2522,6 +2537,42 @@
                     // Slide up and fade out
                     clockWidget.style.opacity = "0";
                     clockWidget.style.transform = "translateY(-20px)";
+                      }
+                }
+            }
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            // Cyclical schedule widget show/hide loop (35s visible, 55s hidden)
+            function runScheduleWidgetLoop() {
+                const schedWidget = document.getElementById("scheduleWidget");
+                if (!schedWidget) return;
+                
+                setTimeout(() => {
+                    // Slide out to left and fade out
+                    schedWidget.style.opacity = "0";
+                    schedWidget.style.transform = "translateX(-50px)";
+                    
+                    setTimeout(() => {
+                        // Slide back in and fade in
+                        schedWidget.style.opacity = "1";
+                        schedWidget.style.transform = "translateX(0)";
+                        
+                        runScheduleWidgetLoop(); // Loop infinitely
+                    }, 55000); // Stay hidden for 55s
+                }, 35000); // Stay visible for 35s
+            }
+            runScheduleWidgetLoop();
+
+            // Cyclical clock widget show/hide loop (45s visible, 45s hidden)
+            function runClockWidgetLoop() {
+                const clockWidget = document.getElementById("cardClockWidget");
+                if (!clockWidget) return;
+                
+                setTimeout(() => {
+                    // Slide up and fade out
+                    clockWidget.style.opacity = "0";
+                    clockWidget.style.transform = "translateY(-20px)";
                     
                     setTimeout(() => {
                         // Slide back down and fade in
@@ -2536,6 +2587,10 @@
 
                         // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
+                const now = new Date();
+                if (now.getMonth() === 7 && now.getDate() === 1) {
+                    return "tlo_powstanie_1944_zapolske.jpg";
+                }
                 // Auto-rotation every 1 minute between new morning bg and dynamic presenters
                 const min = new Date().getMinutes();
                   const isPoranneTurn = (Math.floor(min / 5) % 2 === 0); // Even minutes = Poranne, Odd minutes = Presenters
