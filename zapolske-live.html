@@ -2497,7 +2497,8 @@
                 
                 // Update New Ticker Agenda (TERAZ / ZA CHWILĘ logic)
                 const agendaTicker = document.getElementById("agendaTickerText");
-                if (agendaTicker) {
+                const newsLabel = document.querySelector(".news-label");
+                if (agendaTicker && newsLabel) {
                     let nameStr = "Program CC";
                     let nextStr = "Wiadomości";
                     if (currentHour >= 5 && currentHour < 9) {
@@ -2524,9 +2525,15 @@
                     
                     // Toggle TERAZ and ZA CHWILĘ every 10 seconds
                     if (now.getSeconds() % 20 < 10) {
-                        agendaTicker.innerHTML = `<span style="color: var(--breakfast-accent);">TERAZ:</span> ${nameStr}`;
+                        newsLabel.innerHTML = `<i class="fa-regular fa-clock"></i> TERAZ:`;
+                        newsLabel.style.background = "#CC0000";
+                        newsLabel.style.color = "white";
+                        agendaTicker.innerHTML = `<span style="color: #FFD700; font-weight: 800;">${nameStr}</span>`;
                     } else {
-                        agendaTicker.innerHTML = `<span style="color: rgba(255,255,255,0.7);">ZA CHWILĘ:</span> ${nextStr}`;
+                        newsLabel.innerHTML = `<i class="fa-solid fa-forward"></i> ZA CHWILĘ:`;
+                        newsLabel.style.background = "#134e87"; // blue
+                        newsLabel.style.color = "white";
+                        agendaTicker.innerHTML = `<span style="color: rgba(255,255,255,0.9);">${nextStr}</span>`;
                     }
                 }
 
