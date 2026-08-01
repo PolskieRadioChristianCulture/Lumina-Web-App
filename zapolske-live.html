@@ -2031,21 +2031,23 @@
             <!-- New tv24 CC Ticker System -->
             <footer class="tv24-ticker-system">
                 <div class="ticker-badges-row" style="align-items: center;">
-                    <div style="display: flex; gap: 15px; align-items: center; position: relative;">
-                        <!-- QR Code positioned above LIVE -->
-                        <div style="position: absolute; bottom: 120%; left: 0; background: rgba(0,0,0,0.8); border: 2px solid var(--breakfast-accent); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
-                            <span style="color: #fff; font-size: 0.8rem; font-weight: 800; white-space: nowrap;">WESPRZYJ MISJĘ</span>
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://patronite.pl/osobowoscplus" alt="Patronite QR" style="width: 80px; height: 80px; background: #fff; padding: 2px; border-radius: 4px;">
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        
+                        <!-- LIVE Badge with QR Code above it -->
+                        <div style="position: relative; display: flex; flex-direction: column; align-items: center;">
+                            <div style="position: absolute; bottom: calc(100% + 5px); width: 100%; background: rgba(0,0,0,0.85); border: 2px solid #fff; border-radius: 8px; padding: 5px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+                                <span style="color: #fff; font-size: 0.65rem; font-weight: 800; white-space: nowrap; margin-bottom: 4px; text-transform: uppercase;">WESPRZYJ</span>
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://patronite.pl/osobowoscplus" alt="Patronite QR" style="width: 100%; height: auto; aspect-ratio: 1/1; background: #fff; padding: 2px; border-radius: 4px;">
+                            </div>
+                            <div class="badge-live" style="width: 100%; justify-content: center; box-sizing: border-box;">LIVE <span class="recording-dot"></span></div>
                         </div>
                         
-                        <div class="badge-live">LIVE <span class="recording-dot"></span></div>
-                        
                         <!-- Weather moved to badges row -->
-                        <div class="ticker-box weather-box" style="height: 40px; border-color: rgba(255,255,255,0.3); background: rgba(2, 18, 55, 0.85); backdrop-filter: blur(10px);">
-                            <div class="weather-icon-small"><i class="fa-solid fa-cloud-sun-rain"></i></div>
-                            <div class="weather-data">
-                                <div class="w-city">WARSZAWA</div>
-                                <div class="w-temp">22°C</div>
+                        <div class="ticker-box weather-box" style="padding: 2px 15px; border: 2px solid #fff; border-radius: 8px; background: rgba(2, 18, 55, 0.85); backdrop-filter: blur(10px); display: flex; align-items: center; gap: 12px; min-width: 160px; justify-content: space-between;">
+                            <div class="weather-icon-small" style="font-size: 1.6rem;"><i class="fa-solid fa-cloud-sun-rain"></i></div>
+                            <div class="weather-data" style="align-items: flex-end; line-height: 1;">
+                                <div class="w-city" style="font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.8); margin-bottom: 2px;">WARSZAWA</div>
+                                <div class="w-temp" style="font-size: 1.4rem; font-weight: 900; color: #fff;">22°C</div>
                             </div>
                         </div>
                     </div>
