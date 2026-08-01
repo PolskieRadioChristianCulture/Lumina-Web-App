@@ -2537,42 +2537,6 @@
                     // Slide up and fade out
                     clockWidget.style.opacity = "0";
                     clockWidget.style.transform = "translateY(-20px)";
-                      }
-                }
-            }
-            setInterval(updateClock, 1000);
-            updateClock();
-
-            // Cyclical schedule widget show/hide loop (35s visible, 55s hidden)
-            function runScheduleWidgetLoop() {
-                const schedWidget = document.getElementById("scheduleWidget");
-                if (!schedWidget) return;
-                
-                setTimeout(() => {
-                    // Slide out to left and fade out
-                    schedWidget.style.opacity = "0";
-                    schedWidget.style.transform = "translateX(-50px)";
-                    
-                    setTimeout(() => {
-                        // Slide back in and fade in
-                        schedWidget.style.opacity = "1";
-                        schedWidget.style.transform = "translateX(0)";
-                        
-                        runScheduleWidgetLoop(); // Loop infinitely
-                    }, 55000); // Stay hidden for 55s
-                }, 35000); // Stay visible for 35s
-            }
-            runScheduleWidgetLoop();
-
-            // Cyclical clock widget show/hide loop (45s visible, 45s hidden)
-            function runClockWidgetLoop() {
-                const clockWidget = document.getElementById("cardClockWidget");
-                if (!clockWidget) return;
-                
-                setTimeout(() => {
-                    // Slide up and fade out
-                    clockWidget.style.opacity = "0";
-                    clockWidget.style.transform = "translateY(-20px)";
                     
                     setTimeout(() => {
                         // Slide back down and fade in
