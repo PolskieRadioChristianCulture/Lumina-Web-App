@@ -2174,6 +2174,9 @@
             // ── USTAW SCHEDULE OD RAZU (niezależnie od fetch) ──
             (function updateScheduleNow() {
                 const now = new Date();
+                if (now.getMonth() === 7 && now.getDate() === 1) {
+                    return "tlo_1_sie_2026.jpg";
+                }
                 const h = now.getHours();
                 const schedTime = document.getElementById("sched-time");
                 const schedName = document.getElementById("sched-name");
@@ -2355,6 +2358,9 @@
             // Live Clock updates
             function updateClock() {
                 const now = new Date();
+                if (now.getMonth() === 7 && now.getDate() === 1) {
+                    return "tlo_1_sie_2026.jpg";
+                }
                 
                 // Auto-advance reflection at 00:00 (Midnight Crossing)
                 const currentDay = now.getDate();
@@ -2526,6 +2532,9 @@
                         // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
                 const now = new Date();
+                if (now.getMonth() === 7 && now.getDate() === 1) {
+                    return "tlo_1_sie_2026.jpg";
+                }
                 
                 // Auto-rotation every 1 minute between new morning bg and dynamic presenters
                 const min = new Date().getMinutes();
@@ -3419,6 +3428,9 @@ function getWeatherPreset(city) {
 
             function initDaySyncFeatures() {
                 const now = new Date();
+                if (now.getMonth() === 7 && now.getDate() === 1) {
+                    return "tlo_1_sie_2026.jpg";
+                }
                 const hour = now.getHours();
                 const dayOfMonth = now.getDate();
 
