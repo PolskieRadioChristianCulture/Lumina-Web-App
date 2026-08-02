@@ -1837,7 +1837,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         /* === RDS Now Playing Bar === */
         .rds-bar {
             position: absolute;
-            top: 128px;
+            top: 70px;
             left: 0;
             right: 0;
             z-index: 100;
@@ -3836,31 +3836,9 @@ function getWeatherPreset(city) {
         }
         .cinema-bar-top {
             top: 0;
-            background: linear-gradient(
-                180deg,
-                #000000 0%,
-                #000000 70%,
-                rgba(20, 12, 0, 0.92) 88%,
-                rgba(212, 175, 55, 0.06) 100%
-            );
+            background: #000000;
         }
-        .cinema-bar-top::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(
-                90deg,
-                transparent 0%,
-                rgba(212, 175, 55, 0.5) 25%,
-                rgba(255, 215, 100, 0.9) 50%,
-                rgba(212, 175, 55, 0.5) 75%,
-                transparent 100%
-            );
-            animation: gold-shimmer 4s ease-in-out infinite alternate;
-        }
+        
         .cinema-bar-bottom {
             bottom: 0;
             background: #000000;
