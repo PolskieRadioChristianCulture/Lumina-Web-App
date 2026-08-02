@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Biblia do pobrania - PolskieRadio.cc</title>
+    <meta name="description" content="Pobierz darmowy egzemplarz Pisma Świętego (Uwspółcześniona Biblia Gdańska) w formacie PDF.">
+    
+    <!-- Google AdSense Verification Code -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6762200025251358"
+         crossorigin="anonymous"></script>
+    
+    <!-- Google Fonts: Cinzel (Headers) and Montserrat (UI & Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700;800&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css?v=11">
+    <style>
+        /* Aggressive Google Translate Banner and Offsets Hider */
+        iframe.goog-te-banner-frame,
+        .goog-te-banner-frame,
+        .goog-te-banner-frame.skiptranslate,
+        iframe[id*="goog"],
+        iframe[class*="goog"],
+        #goog-gt-tt,
+        .goog-te-balloon-frame {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+        }
+        body {
+            top: 0px !important;
+            position: static !important;
+        }
+        /* Responsive override for broadcast grid */
+        @media (max-width: 768px) {
+            .broadcast-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        /* Premium Embed Modal & Toast Styles */
+        .premium-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            inset: 0;
+            background: rgba(3, 4, 7, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .premium-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background: rgba(20, 24, 35, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 3px solid var(--gold-primary);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 550px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .premium-modal.show .modal-content {
+            transform: scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover {
+            color: #fff;
+        }
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .modal-body p {
+            color: #a1a1aa;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .code-textarea {
+            width: 100%;
+            height: 110px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 15px;
+            color: var(--gold-primary);
+            font-family: monospace;
+            font-size: 0.9rem;
+            resize: none;
+            margin-bottom: 20px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .copy-btn {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            cursor: pointer;
+            letter-spacing: 1px;
+            width: 100%;
+            transition: opacity 0.2s;
+        }
+        .copy-btn:hover {
+            opacity: 0.9;
+        }
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(50px);
+            background: rgba(212, 175, 55, 0.95);
+            color: #000;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            z-index: 10001;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .toast-notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+</head>
+<body>
+
+    <!-- SECTION A: HEADER -->
+    <header class="main-header" id="mainHeader">
+        <div class="header-container">
+            <!-- Left Side: Hamburger Menu & Logo -->
+            <div class="header-left">
+                <button class="hamburger-menu" id="hamburgerBtn" aria-label="Otwórz menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <div class="brand-logo">
+                    <a href="#" class="logo-link">
+                        <span class="logo-top">CHRISTIAN</span>
+                        <span class="logo-bottom">CULTURE</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Side: SMS Subscription -->
+            <div class="header-right">
+                <!-- Google Translate Dropdown (Rendered off-screen so Google Translate initializes properly) -->
+                <div id="google_translate_element" style="position: absolute; left: -9999px; top: -9999px; visibility: hidden;"></div>
+                
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <button class="sms-button" id="navDzjIconBtn" aria-label="Dobrze, że jesteś" title="Dzisiejsze Rozważanie">
+                        <div class="avatar-ring" style="overflow: hidden; padding: 0; background: #000;">
+                            <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        </div>
+                    </button>
+                </div>
+
+                <button class="sms-button" id="smsBtn" aria-label="Subskrypcje SMS/MMS" title="Bezpłatne Subskrypcje SMS/MMS">
+                    <div class="avatar-ring">
+                        <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 1.15rem;"></i>
+                    </div>
+                </button>
+
+                <!-- OBS Broadcast Panel Link -->
+                <a href="nadawaj.html" class="sms-button" title="Panel Nadawania OBS - Wszystkie Formaty" aria-label="Panel Nadawania" style="display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                    <style>
+                        @keyframes broadcast-glow {
+                            0% { opacity: 0.65; transform: scale(0.95); }
+                            50% { opacity: 1; transform: scale(1.10); }
+                            100% { opacity: 0.65; transform: scale(0.95); }
+                        }
+                    </style>
+                    <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary); font-size: 1.1rem; animation: broadcast-glow 2.2s infinite ease-in-out;"></i>
+                    </div>
+                </a>
+
+                <!-- Premium Custom Language Toggle Button -->
+                <button class="sms-button" id="langToggleBtn" title="Switch to English" aria-label="Zmień język">
+                    <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center;">
+                        <span id="langToggleText" style="color: var(--gold-primary); font-size: 0.8rem; font-weight: 800; letter-spacing: 0.05em; font-family: 'Montserrat', sans-serif;">EN</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- SIDE DRAWER NAVIGATION -->
+    <div class="side-drawer" id="sideDrawer">
+        <button class="drawer-close" id="drawerCloseBtn" aria-label="Zamknij menu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="drawer-content">
+            <h2 class="drawer-brand">CHRISTIAN CULTURE</h2>
+            <nav class="drawer-nav">
+                <a href="index.html" class="drawer-link"><i class="fa-solid fa-house"></i> Strona Główna</a>
+                <a href="#" class="drawer-link" id="drawerShowLiveLink" onclick="restoreLiveStream(event)" style="display: none; color: #ff0000; font-weight: 700;"><i class="fa-solid fa-circle-play"></i> POKAŻ TRANSMISJĘ</a>
+                <a href="#" class="drawer-link" id="navDzjLink" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-heart"></i> DOBRZE, ŻE JESTEŚ</a>
+                <a href="#radio-player-anchor" class="drawer-link scroll-to" id="navRadioLink"><i class="fa-solid fa-radio"></i> Radio Internetowe</a>
+                <a href="#" class="drawer-link active" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-tower-broadcast"></i> Nadawaj z Christian Culture</a>
+
+                <a href="#" class="drawer-link" id="navSmsLink"><i class="fa-solid fa-comment-sms"></i> Subskrypcje SMS</a>
+                <a href="#aktualnosci-czerwiec" class="drawer-link scroll-to" id="navAktualnosciLink" style="color: var(--gold-primary);"><i class="fa-solid fa-newspaper"></i> Aktualności</a>
+                <a href="#" class="drawer-link" id="navDecalogueLink" style="color: var(--gold-primary);"><i class="fa-solid fa-book-open"></i> Dekalog</a>
+                <!-- Promocja Pisma Świętego (Biblia UBG) -->
+                <div class="drawer-bible-promo">
+                    <div class="bible-promo-badge">Darmowy Egzemplarz</div>
+                    <h3 class="bible-promo-title">PISMO ŚWIĘTE</h3>
+                    <p class="bible-promo-subtitle">Biblia UBG</p>
+                    <div class="bible-promo-image-wrapper">
+                        <img src="reklama_biblia_2.jpeg" alt="Reklama Pismo Święte Biblia UBG" class="bible-promo-img">
+                    </div>
+                    <div class="bible-promo-actions">
+                        <div class="sms-instruction">
+                            <span>Wyślij SMS o treści:</span>
+                            <strong>"BIBLIA"</strong>
+                        </div>
+                        <a href="tel:+48530736155" class="promo-btn call-btn" style="flex-direction: column; gap: 4px; padding: 10px 15px;">
+                            <span style="font-size: 0.75rem; opacity: 0.9; text-transform: uppercase; font-weight: 700; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-phone"></i> Zadzwoń</span>
+                            <span style="font-size: 0.95rem; font-weight: 800; white-space: nowrap;">+48 507 821 789</span>
+                        </a>
+                        <a href="sms:+48530736155?body=BIBLIA" class="promo-btn sms-btn" style="flex-direction: column; gap: 4px; padding: 10px 15px;">
+                            <span style="font-size: 0.75rem; opacity: 0.9; text-transform: uppercase; font-weight: 700; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-envelope"></i> Wyślij SMS</span>
+                            <span style="font-size: 0.95rem; font-weight: 800; white-space: nowrap;">+48 507 821 789</span>
+                        </a>
+                    </div>
+                    <p class="bible-promo-footnote">* Zamawiający ponosi jedynie koszt przesyłki</p>
+                </div>
+                <!-- Przycisk pobierania Biblii Jakuba Wujka -->
+                <a href="https://drive.google.com/file/d/1HCcafv4rdU-otttgkQJEsWauvwjWlNy3/view?usp=sharing" target="_blank" class="drawer-link download-wujek-link" style="color: var(--gold-primary); font-weight: 700; border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 12px; padding: 12px; text-align: center; justify-content: center; background: rgba(212, 175, 55, 0.05); margin-top: -0.5rem; margin-bottom: 0.5rem; font-size: 0.85rem; display: flex; flex-direction: column; gap: 6px; transition: var(--transition-fast);" onmouseover="this.style.background='rgba(212, 175, 55, 0.15)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(212, 175, 55, 0.05)'; this.style.borderColor='rgba(212, 175, 55, 0.25)';">
+                    <span style="font-weight: 700;">Pobierz Biblię</span>
+                    <span style="font-weight: 500; font-size: 0.75rem; opacity: 0.85; text-transform: none; letter-spacing: 0.03em;">ks. Jakuba Wujka (PDF)</span>
+                    <i class="fa-solid fa-download" style="font-size: 1.15rem; margin-top: 4px;"></i>
+                </a>
+                <a href="#apps-section" class="drawer-link scroll-to"><i class="fa-solid fa-mobile-screen-button"></i> Nasze Aplikacje</a>
+                <a href="#social-channels" class="drawer-link scroll-to"><i class="fa-solid fa-share-nodes"></i> Sieć YouTube & Spotify</a>
+                <a href="https://linktr.ee/christianculture" target="_blank" class="drawer-link"><i class="fa-solid fa-address-card"></i> Wizytówka Linktree</a>
+                <a href="#support-store" class="drawer-link scroll-to"><i class="fa-solid fa-heart"></i> Wsparcie & Sklep</a>
+                <a href="#contact-section" class="drawer-link scroll-to"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+                <a href="#app-ads-link" class="drawer-link"><i class="fa-solid fa-certificate"></i> AdMob Weryfikacja</a>
+                <a href="privacy.html" class="drawer-link"><i class="fa-solid fa-user-shield"></i> Polityka Prywatności</a>
+                <a href="general-safety.html" class="drawer-link"><i class="fa-solid fa-shield-halved"></i> Standardy Bezpieczeństwa</a>
+                <a href="lumina-safety.html" class="drawer-link"><i class="fa-solid fa-child-reaching"></i> Ochrona Dzieci (Lumina)</a>
+            </nav>
+            <div class="drawer-footer">
+                <p>&copy; 2026 Christian Culture</p>
+                <p class="drawer-sub">Elevating Faith</p>
+            </div>
+        </div>
+    </div>
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <!-- HERO SECTION -->
+    <section class="hero-section" style="min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 20px 60px; position: relative;">
+        <!-- Tło dedykowane -->
+        <div class="custom-bg-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.5; background-image: url('tlo-biblia.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(10, 12, 22, 0.3), rgba(10, 12, 22, 0.95));"></div>
+        </div>
+
+        <div style="max-width: 800px; z-index: 1;">
+            <h1 style="font-family: 'Cinzel', serif; font-size: 3.5rem; color: #fff; margin-bottom: 20px; text-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); line-height: 1.2;">Darmowa Biblia<br>do pobrania</h1>
+            <p style="font-family: 'Montserrat', sans-serif; font-size: 1.15rem; color: #d1d5db; line-height: 1.6; margin-bottom: 50px;">Zanurz się w Słowie Bożym. Pobierz za darmo plik PDF Pisma Świętego – Uwspółcześnionej Biblii Gdańskiej i czytaj gdziekolwiek jesteś.</p>
+            
+            <div style="background: rgba(20, 24, 35, 0.85); border: 1.5px solid var(--border-gold-low); border-radius: 20px; padding: 50px 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center; gap: 20px; backdrop-filter: blur(10px);">
+                <img src="reklama_biblia_2.jpeg" alt="Pismo Święte" style="max-width: 250px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                
+                <div style="text-align: center; margin-top: 10px;">
+                    <h2 style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold-primary); margin-bottom: 5px;">Pismo Święte</h2>
+                    <p style="font-family: 'Montserrat', sans-serif; font-size: 1rem; color: #9ca3af;">Uwspółcześniona Biblia Gdańska (UBG)</p>
+                </div>
+                
+                <a href="downloads/UBG20240604.pdf" download="Pismo_Swiete_UBG.pdf" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #f5c518, #e6a817); color: #000; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.15rem; text-transform: uppercase; padding: 18px 45px; border-radius: 50px; text-decoration: none; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 8px 25px rgba(245, 197, 24, 0.4); margin-top: 15px;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 12px 35px rgba(245, 197, 24, 0.6)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 25px rgba(245, 197, 24, 0.4)';">
+                    <i class="fa-solid fa-download"></i> POBIERZ PDF (12 MB)
+                </a>
+                <p style="font-size: 0.85rem; color: #6b7280; margin-top: 15px;">Format dokumentu zoptymalizowany do czytania na telefonach i komputerach.</p>
+            </div>
+            
+            <div style="margin-top: 70px; padding-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <h3 style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: #fff; margin-bottom: 15px;">Wolisz egzemplarz papierowy?</h3>
+                <p style="font-family: 'Montserrat', sans-serif; font-size: 1rem; color: #a1a1aa; margin-bottom: 25px;">Możesz zamówić darmowy egzemplarz drukowany, pokrywając jedynie koszty wysyłki.</p>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <a href="tel:+48530736155" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 12px 25px; border-radius: 12px; text-decoration: none; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; transition: background 0.2s;" onmouseover="this.style.background='rgba(255, 255, 255, 0.1)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)';">
+                        <i class="fa-solid fa-phone"></i> Zadzwoń: 507 821 789
+                    </a>
+                    <a href="sms:+48530736155?body=BIBLIA" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 12px 25px; border-radius: 12px; text-decoration: none; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; transition: background 0.2s;" onmouseover="this.style.background='rgba(255, 255, 255, 0.1)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)';">
+                        <i class="fa-solid fa-comment-sms"></i> Wyślij SMS
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nadawaj z Christian Culture - Zestaw Scen OBS</title>
+    <meta name="description" content="Pobierz w pełni darmowe, zoptymalizowane sceny przeglądarki dla programu OBS Studio i nadawaj z Christian Culture na swoim własnym kanale.">
+    
+    <!-- Google AdSense Verification Code -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6762200025251358"
+         crossorigin="anonymous"></script>
+    
+    <!-- Google Fonts: Cinzel (Headers) and Montserrat (UI & Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700;800&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css?v=11">
+    <style>
+        /* Aggressive Google Translate Banner and Offsets Hider */
+        iframe.goog-te-banner-frame,
+        .goog-te-banner-frame,
+        .goog-te-banner-frame.skiptranslate,
+        iframe[id*="goog"],
+        iframe[class*="goog"],
+        #goog-gt-tt,
+        .goog-te-balloon-frame {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+        }
+        body {
+            top: 0px !important;
+            position: static !important;
+        }
+        /* Responsive override for broadcast grid */
+        @media (max-width: 768px) {
+            .broadcast-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        /* Premium Embed Modal & Toast Styles */
+        .premium-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            inset: 0;
+            background: rgba(3, 4, 7, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .premium-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background: rgba(20, 24, 35, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 3px solid var(--gold-primary);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 550px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .premium-modal.show .modal-content {
+            transform: scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover {
+            color: #fff;
+        }
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .modal-body p {
+            color: #a1a1aa;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .code-textarea {
+            width: 100%;
+            height: 110px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 15px;
+            color: var(--gold-primary);
+            font-family: monospace;
+            font-size: 0.9rem;
+            resize: none;
+            margin-bottom: 20px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .copy-btn {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            cursor: pointer;
+            letter-spacing: 1px;
+            width: 100%;
+            transition: opacity 0.2s;
+        }
+        .copy-btn:hover {
+            opacity: 0.9;
+        }
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(50px);
+            background: rgba(212, 175, 55, 0.95);
+            color: #000;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            z-index: 10001;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .toast-notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+</head>
+<body>
+
+    <!-- SECTION A: HEADER -->
+    <header class="main-header" id="mainHeader">
+        <div class="header-container">
+            <!-- Left Side: Hamburger Menu & Logo -->
+            <div class="header-left">
+                <button class="hamburger-menu" id="hamburgerBtn" aria-label="Otwórz menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <div class="brand-logo">
+                    <a href="#" class="logo-link">
+                        <span class="logo-top">CHRISTIAN</span>
+                        <span class="logo-bottom">CULTURE</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Side: SMS Subscription -->
+            <div class="header-right">
+                <!-- Google Translate Dropdown (Rendered off-screen so Google Translate initializes properly) -->
+                <div id="google_translate_element" style="position: absolute; left: -9999px; top: -9999px; visibility: hidden;"></div>
+                
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <button class="sms-button" id="navDzjIconBtn" aria-label="Dobrze, że jesteś" title="Dzisiejsze Rozważanie">
+                        <div class="avatar-ring" style="overflow: hidden; padding: 0; background: #000;">
+                            <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        </div>
+                    </button>
+                </div>
+
+                <button class="sms-button" id="smsBtn" aria-label="Subskrypcje SMS/MMS" title="Bezpłatne Subskrypcje SMS/MMS">
+                    <div class="avatar-ring">
+                        <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 1.15rem;"></i>
+                    </div>
+                </button>
+
+                <!-- OBS Broadcast Panel Link -->
+                <a href="nadawaj.html" class="sms-button" title="Panel Nadawania OBS - Wszystkie Formaty" aria-label="Panel Nadawania" style="display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                    <style>
+                        @keyframes broadcast-glow {
+                            0% { opacity: 0.65; transform: scale(0.95); }
+                            50% { opacity: 1; transform: scale(1.10); }
+                            100% { opacity: 0.65; transform: scale(0.95); }
+                        }
+                    </style>
+                    <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary); font-size: 1.1rem; animation: broadcast-glow 2.2s infinite ease-in-out;"></i>
+                    </div>
+                </a>
+
+                <!-- Premium Custom Language Toggle Button -->
+                <button class="sms-button" id="langToggleBtn" title="Switch to English" aria-label="Zmień język">
+                    <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center;">
+                        <span id="langToggleText" style="color: var(--gold-primary); font-size: 0.8rem; font-weight: 800; letter-spacing: 0.05em; font-family: 'Montserrat', sans-serif;">EN</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- SIDE DRAWER NAVIGATION -->
+    <div class="side-drawer" id="sideDrawer">
+        <button class="drawer-close" id="drawerCloseBtn" aria-label="Zamknij menu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="drawer-content">
+            <h2 class="drawer-brand">CHRISTIAN CULTURE</h2>
+            <nav class="drawer-nav">
+                <a href="index.html" class="drawer-link"><i class="fa-solid fa-house"></i> Strona Główna</a>
+                <a href="#" class="drawer-link" id="drawerShowLiveLink" onclick="restoreLiveStream(event)" style="display: none; color: #ff0000; font-weight: 700;"><i class="fa-solid fa-circle-play"></i> POKAŻ TRANSMISJĘ</a>
+                <a href="#" class="drawer-link" id="navDzjLink" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-heart"></i> DOBRZE, ŻE JESTEŚ</a>
+                <a href="#radio-player-anchor" class="drawer-link scroll-to" id="navRadioLink"><i class="fa-solid fa-radio"></i> Radio Internetowe</a>
+                <a href="#" class="drawer-link active" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-tower-broadcast"></i> Nadawaj z Christian Culture</a>
+
+                <a href="#" class="drawer-link" id="navSmsLink"><i class="fa-solid fa-comment-sms"></i> Subskrypcje SMS</a>
+                <a href="#aktualnosci-czerwiec" class="drawer-link scroll-to" id="navAktualnosciLink" style="color: var(--gold-primary);"><i class="fa-solid fa-newspaper"></i> Aktualności</a>
+                <a href="#" class="drawer-link" id="navDecalogueLink" style="color: var(--gold-primary);"><i class="fa-solid fa-book-open"></i> Dekalog</a>
+                <!-- Promocja Pisma Świętego (Biblia UBG) -->
+                <div class="drawer-bible-promo">
+                    <div class="bible-promo-badge">Darmowy Egzemplarz</div>
+                    <h3 class="bible-promo-title">PISMO ŚWIĘTE</h3>
+                    <p class="bible-promo-subtitle">Biblia UBG</p>
+                    <div class="bible-promo-image-wrapper">
+                        <img src="reklama_biblia_2.jpeg" alt="Reklama Pismo Święte Biblia UBG" class="bible-promo-img">
+                    </div>
+                    <div class="bible-promo-actions">
+                        <div class="sms-instruction">
+                            <span>Wyślij SMS o treści:</span>
+                            <strong>"BIBLIA"</strong>
+                        </div>
+                        <a href="tel:+48530736155" class="promo-btn call-btn" style="flex-direction: column; gap: 4px; padding: 10px 15px;">
+                            <span style="font-size: 0.75rem; opacity: 0.9; text-transform: uppercase; font-weight: 700; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-phone"></i> Zadzwoń</span>
+                            <span style="font-size: 0.95rem; font-weight: 800; white-space: nowrap;">+48 507 821 789</span>
+                        </a>
+                        <a href="sms:+48530736155?body=BIBLIA" class="promo-btn sms-btn" style="flex-direction: column; gap: 4px; padding: 10px 15px;">
+                            <span style="font-size: 0.75rem; opacity: 0.9; text-transform: uppercase; font-weight: 700; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-envelope"></i> Wyślij SMS</span>
+                            <span style="font-size: 0.95rem; font-weight: 800; white-space: nowrap;">+48 507 821 789</span>
+                        </a>
+                    </div>
+                    <p class="bible-promo-footnote">* Zamawiający ponosi jedynie koszt przesyłki</p>
+                </div>
+                <!-- Przycisk pobierania Biblii Jakuba Wujka -->
+                <a href="https://drive.google.com/file/d/1HCcafv4rdU-otttgkQJEsWauvwjWlNy3/view?usp=sharing" target="_blank" class="drawer-link download-wujek-link" style="color: var(--gold-primary); font-weight: 700; border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 12px; padding: 12px; text-align: center; justify-content: center; background: rgba(212, 175, 55, 0.05); margin-top: -0.5rem; margin-bottom: 0.5rem; font-size: 0.85rem; display: flex; flex-direction: column; gap: 6px; transition: var(--transition-fast);" onmouseover="this.style.background='rgba(212, 175, 55, 0.15)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(212, 175, 55, 0.05)'; this.style.borderColor='rgba(212, 175, 55, 0.25)';">
+                    <span style="font-weight: 700;">Pobierz Biblię</span>
+                    <span style="font-weight: 500; font-size: 0.75rem; opacity: 0.85; text-transform: none; letter-spacing: 0.03em;">ks. Jakuba Wujka (PDF)</span>
+                    <i class="fa-solid fa-download" style="font-size: 1.15rem; margin-top: 4px;"></i>
+                </a>
+                <a href="#apps-section" class="drawer-link scroll-to"><i class="fa-solid fa-mobile-screen-button"></i> Nasze Aplikacje</a>
+                <a href="#social-channels" class="drawer-link scroll-to"><i class="fa-solid fa-share-nodes"></i> Sieć YouTube & Spotify</a>
+                <a href="https://linktr.ee/christianculture" target="_blank" class="drawer-link"><i class="fa-solid fa-address-card"></i> Wizytówka Linktree</a>
+                <a href="#support-store" class="drawer-link scroll-to"><i class="fa-solid fa-heart"></i> Wsparcie & Sklep</a>
+                <a href="#contact-section" class="drawer-link scroll-to"><i class="fa-solid fa-envelope"></i> Kontakt</a>
+                <a href="#app-ads-link" class="drawer-link"><i class="fa-solid fa-certificate"></i> AdMob Weryfikacja</a>
+                <a href="privacy.html" class="drawer-link"><i class="fa-solid fa-user-shield"></i> Polityka Prywatności</a>
+                <a href="general-safety.html" class="drawer-link"><i class="fa-solid fa-shield-halved"></i> Standardy Bezpieczeństwa</a>
+                <a href="lumina-safety.html" class="drawer-link"><i class="fa-solid fa-child-reaching"></i> Ochrona Dzieci (Lumina)</a>
+            </nav>
+            <div class="drawer-footer">
+                <p>&copy; 2026 Christian Culture</p>
+                <p class="drawer-sub">Elevating Faith</p>
+            </div>
+        </div>
+    </div>
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+
+    <!-- SECTION B: GŁÓWNY HERO BANNER -->
+    <!-- SECTION C: CODZIENNE ROZWAŻANIE (DOBRZE, ŻE JESTEŚ) -->
+    <!-- SECTION D: NASZE APLIKACJE (SHOWCASE) -->
+    <!-- SECTION E: STRUMIENIE SOCIAL MEDIA (SPOTIFY & YOUTUBE) -->
+    <!-- SECTION E: RETRANSMISJA & OBS NADAWANIE (BROADCAST SECTION) -->
+    <section class="broadcast-section" id="broadcast-section" style="padding: 100px 0; background: linear-gradient(180deg, #090b11 0%, #030407 100%); position: relative; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div class="section-container" style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
+            <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+                <span class="section-tag" style="display: inline-block; font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; color: var(--gold-primary); text-transform: uppercase; margin-bottom: 12px; background: rgba(212, 175, 55, 0.08); padding: 6px 16px; border-radius: 50px; border: 1px solid rgba(212, 175, 55, 0.2);">Retransmisja 24/7</span>
+                <h2 class="section-title" style="font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 800; letter-spacing: 1px; color: #fff; margin-bottom: 15px;">NADAWAJ Z CHRISTIAN CULTURE</h2>
+                <div class="gold-divider centered" style="width: 60px; height: 3px; background: var(--gold-primary); margin: 0 auto 20px auto; border-radius: 2px;"></div>
+                <p class="section-subtitle" style="font-size: 1.05rem; color: #a1a1aa; max-width: 800px; margin: 0 auto; line-height: 1.6;">
+                    Chcesz szerzyć słowo Boże na swoim własnym kanale? Udostępniamy w pełni darmowe, zoptymalizowane sceny przeglądarki dla programu OBS Studio. Pobierz sygnał i nadawaj u siebie!
+                </p>
+            </div>
+            
+            <!-- GROUP 1: STRUMIENIE POLSKIE -->
+            <div style="margin-bottom: 40px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 25px; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 10px;">
+                    <span style="font-size: 1.5rem;">🇵🇱</span>
+                    <h3 style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--gold-primary); font-weight: 800; letter-spacing: 1px; margin: 0; text-transform: uppercase;">STRUMIENIE POLSKIE</h3>
+                </div>
+
+                <div class="broadcast-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <!-- Card 1: Breakfast Show PL 16:9 -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="snadaniowa_pl_thumbnail.png" alt="Dobrze, że jesteś PL Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                        </div>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Dobrze, że jesteś PL (16:9)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Program śniadaniowy w barwach narodowych PL z polskim sygnałem radiowym. Interaktywny czat, werset dnia, pogoda.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <button onclick="copyAndOpenOBS('cctv24-pl.html')" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;  font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';" style="cursor: pointer; font-family: inherit;"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button onclick="openEmbedModal('cctv24-pl.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('cctv24-pl.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('cctv24-pl.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Special Poland Prayer Live 16:9 -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; border-left: 4px solid var(--red-national);" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--red-national)'; this.style.background='rgba(220,20,60,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="POLAND.jpg" alt="Zjednoczeni za Polskę Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                        </div>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <span style="background: #dc143c; color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.65rem; font-family: 'Outfit', sans-serif; align-self: flex-start; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; display: inline-block;">Wydanie Specjalne</span>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Zjednoczeni za Polskę (16:9)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Dedykowany, bezterminowy strumień modlitewny za Ojczyznę. Animowane tło modlitewne, automatycznie wczytywane intencje widzów na żywo, polskie audio.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <button onclick="copyAndOpenOBS('zapolske-live.html')" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;  font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--red-national)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';" style="cursor: pointer; font-family: inherit;"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button onclick="openEmbedModal('zapolske-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--red-national)'; this.style.borderColor='var(--red-national)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('zapolske-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('zapolske-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Breakfast Show 9:16 -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="dzj-916-thumb.png" alt="Dobrze, że jesteś Pionowo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                        </div>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Dobrze, że jesteś (9:16)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Pionowy wariant popularnego programu śniadaniowego. Zaprojektowany od podstaw dla widzów mobilnych na TikToku i YouTube Shorts.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <button onclick="copyAndOpenOBS('dzj-vertical-live.html')" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;  font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';" style="cursor: pointer; font-family: inherit;"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button onclick="openEmbedModal('dzj-vertical-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('dzj-vertical-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('dzj-vertical-live.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Radio Horizontal -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="Logo Biblia Audio CC.jpg" alt="Radio Biblia Audio Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                        </div>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Radio Biblia Audio (16:9)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Pozioma scena zintegrowana ze strumieniem audio radia Zeno.fm. Wizualizacja fal dźwiękowych, zegar z datownikiem, werset dnia i dolny pasek informacyjny.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <button onclick="copyAndOpenOBS('stream-scene.html')" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;  font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';" style="cursor: pointer; font-family: inherit;"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button onclick="openEmbedModal('stream-scene.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('stream-scene.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('stream-scene.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Radio Vertical -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='var(--gold-primary)'; this.style.background='rgba(212,175,55,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="Logo Globalna Biblia Audio.jpg" alt="Radio Biblia Audio Pionowo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                        </div>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Radio Biblia Audio (9:16)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Pionowy szablon nadawczy stworzony specjalnie dla formatów mobilnych na YouTube Shorts, TikTok Live lub Instagram Reels. Zoptymalizowana widoczność na telefonach.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <button onclick="copyAndOpenOBS('stream-scene-vertical.html')" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;  font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';" style="cursor: pointer; font-family: inherit;"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button onclick="openEmbedModal('stream-scene-vertical.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='var(--gold-primary)'; this.style.borderColor='var(--gold-primary)';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('stream-scene-vertical.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('stream-scene-vertical.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GROUP 2: STRUMIENIE ANGIELSKIE -->
+            <div style="margin-bottom: 40px; margin-top: 50px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 25px; border-bottom: 1px solid rgba(0, 162, 255, 0.3); padding-bottom: 10px;">
+                    <span style="font-size: 1.5rem;">🇬🇧</span>
+                    <h3 style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: #00a2ff; font-weight: 800; letter-spacing: 1px; margin: 0; text-transform: uppercase;">STRUMIENIE ANGIELSKIE</h3>
+                </div>
+
+                <div class="broadcast-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <!-- Card 1: Breakfast Show Global 16:9 -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='#00a2ff'; this.style.background='rgba(0,162,255,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="GLOBAL.jpg" alt="Good to have you Global Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                        </div>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Good to have you Global (16:9)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Global English version of the breakfast show. Blue-navy themed styling, Christian Culture Global radio signal.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <button onclick="copyAndOpenOBS('cctv24-global.html')" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;  font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='#00a2ff';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';" style="cursor: pointer; font-family: inherit;"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button onclick="openEmbedModal('cctv24-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#00a2ff'; this.style.borderColor='#00a2ff';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('cctv24-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('cctv24-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Special Bible Audio Global Live 16:9 -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; border-left: 4px solid #00a2ff;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='#00a2ff'; this.style.background='rgba(0,162,255,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="Logo Globalna Biblia Audio.jpg" alt="Bible Audio Global Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                        </div>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <span style="background: #00a2ff; color: #000; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.65rem; font-family: 'Outfit', sans-serif; align-self: flex-start; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; display: inline-block;">English Edition</span>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Bible Audio Global (16:9)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Anglojęzyczny wirtualny stream modlitewny. Odtwarza zsynchronizowany Epoch-sync sygnał Bible Audio Global, zablokowane tło modlitewne GIF oraz intencje widzów.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <button onclick="copyAndOpenOBS('bibleaudio-global.html')" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;  font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='#00a2ff';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';" style="cursor: pointer; font-family: inherit;"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button onclick="openEmbedModal('bibleaudio-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#00a2ff'; this.style.borderColor='#00a2ff';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('bibleaudio-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('bibleaudio-global.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GROUP 3: STRUMIENIE INSTRUMENTALNE -->
+            <div style="margin-bottom: 20px; margin-top: 50px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 25px; border-bottom: 1px solid rgba(142, 45, 226, 0.4); padding-bottom: 10px;">
+                    <span style="font-size: 1.5rem;">🕊️</span>
+                    <h3 style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: #a855f7; font-weight: 800; letter-spacing: 1px; margin: 0; text-transform: uppercase;">STRUMIENIE INSTRUMENTALNE</h3>
+                </div>
+
+                <div class="broadcast-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <!-- Card 1: Instrumental Worship Live 16:9 -->
+                    <div class="broadcast-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; border-left: 4px solid #a855f7;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='#a855f7'; this.style.background='rgba(168,85,247,0.02)';" onmouseout="this.style.transform='none'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)';">
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                            <img src="bg-worship-1.png" alt="Instrumental Worship Live Poziomo" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                        </div>
+                        <div style="padding: 25px 30px; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+                            <div>
+                                <span style="background: #a855f7; color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.65rem; font-family: 'Outfit', sans-serif; align-self: flex-start; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; display: inline-block;">Google Drive Audio</span>
+                                <h3 style="font-family: 'Cinzel', serif; font-size: 1.35rem; color: #fff; margin-bottom: 12px; font-weight: 700;">Instrumental Worship Live (16:9)</h3>
+                                <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.6; margin-bottom: 25px;">
+                                    Strumień kojącej muzyki instrumentalnej uwielbienia i modlitwy. Zasilany bezpośrednio bezkosztową playlistą z Dysku Google z oficjalną oprawą graficzną.
+                                </p>
+                            </div>
+                            <div class="card-actions" style="display: flex; gap: 8px; width: 100%;">
+                                <button onclick="copyAndOpenOBS('cctv24-worship.html')" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;  font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 10px; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='#a855f7';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.1)';" style="cursor: pointer; font-family: inherit;"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button onclick="openEmbedModal('cctv24-worship.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#a855f7'; this.style.borderColor='#a855f7';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Osadź na stronie">
+                                    <i class="fa-solid fa-code"></i>
+                                </button>
+                                <button onclick="shareOnFacebook('cctv24-worship.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#1877F2'; this.style.borderColor='#1877F2';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Udostępnij na Facebooku">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </button>
+                                <button onclick="shareOnWhatsApp('cctv24-worship.html')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#25D366'; this.style.borderColor='#25D366';" onmouseout="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.1)';" title="Wyślij na WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION F: SKLEP & WSPARCIE MISJI (SUPPORT & STORE) -->
+    <!-- SECTION F2: OPINIE UŻYTKOWNIKÓW (GOOGLE REVIEWS) -->
+    <!-- SECTION G: KONTAKT (CONTACT) -->
+    <!-- ANCHOR FOR SCROLLING -->
+    <div id="radio-player-anchor"></div>
+
+    <!-- SECTION C: DOLNY PANEL ODTWARZACZA (RADIO PLAYER BAR) -->
+    <section class="radio-player-bar" id="radioPlayerBar">
+        <div class="player-container">
+            
+            <!-- Left Side: Station Info & Selector -->
+            <div class="player-left">
+                <div class="station-thumbnail-container">
+                    <img src="./Aplikacja Christian Culture.png" id="playerStationLogo" class="station-thumbnail-img" alt="Logo stacji">
+                </div>
+                <div class="station-details">
+                    <div class="station-selection-dropdown">
+                        <button class="station-select-btn" id="stationDropdownBtn">
+                            <span id="activeStationName">RADIO PL</span> <i class="fa-solid fa-chevron-up"></i>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div class="station-dropdown-menu" id="stationDropdownMenu">
+                            <button class="dropdown-item active" data-station-id="poland">
+                                <span class="dot pl-accent"></span> Radio PL
+                            </button>
+                            <button class="dropdown-item" data-station-id="global">
+                                <span class="dot global-accent"></span> Radio Global
+                            </button>
+                            <button class="dropdown-item" data-station-id="biblia_audio">
+                                <span class="dot biblia-accent"></span> Radio Biblia (Audio)
+                            </button>
+                            <button class="dropdown-item" data-station-id="global_biblia">
+                                <span class="dot global-biblia-accent"></span> Global Audio Bible
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Scrolling / Real-time Track Title -->
+                    <div class="track-scroller-container">
+                        <span class="track-title" id="playerTrackTitle">Wczytywanie informacji o utworze...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Center: Waveform Visualization -->
+            <div class="player-center">
+                <!-- Custom Canvas for highly performant and CORS-safe visualizer -->
+                <canvas id="visualizerCanvas" class="visualizer-canvas"></canvas>
+            </div>
+            
+            <!-- Right Side: Controls (Play/Pause, Mute, Volume) -->
+            <div class="player-right">
+                <!-- Status/Buffering Indicator -->
+                <div class="player-status" id="playerStatusText">Wyciszony</div>
+                
+                <!-- Play/Pause Button with circular border and glow -->
+                <button class="play-btn" id="playBtn" aria-label="Odtwarzaj">
+                    <i class="fa-solid fa-play" id="playIcon"></i>
+                </button>
+                
+                <!-- Volume Control -->
+                <div class="volume-container">
+                    <button class="volume-btn" id="volumeBtn" aria-label="Wycisz/Włącz dźwięk">
+                        <i class="fa-solid fa-volume-high" id="volumeIcon"></i>
+                    </button>
+                    <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider" aria-label="Suwak głośności">
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- SMS/MMS SUBSCRIPTION MODAL -->
+    <div class="modal-overlay" id="smsModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalCloseBtn" aria-label="Zamknij"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-header">
+                <i class="fa-solid fa-comment-sms modal-user-icon"></i>
+                <h2>Bezpłatne Subskrypcje SMS/MMS</h2>
+                <p>Subskrybuj Chrześcijańskie Inspiracje</p>
+            </div>
+            <div class="modal-sms-content">
+                <div class="sms-instructions-card">
+                    <p class="sms-instruction-text">Wyślij SMS o treści:</p>
+                    <div class="sms-keyword-badge">Inspiracje</div>
+                    <p class="sms-instruction-text">na numer:</p>
+                    <div class="sms-number-badge">783 478 280</div>
+                </div>
+                
+                <div class="sms-info-box">
+                    <p class="sms-disclaimer">
+                        <i class="fa-solid fa-circle-info"></i> Usługa dostępna tylko na terenie PL i tylko dla użytkowników korzystających z usług polskich operatorów komórkowych. Koszt wysłania SMS według stawek Twojego operatora.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden AdMob App-Ads link verification block (for SEO/indexing convenience) -->
+    <div style="display:none;" id="app-ads-link">
+        <a href="app-ads.txt">AdMob Verification Link</a>
+    </div>
+
+    <!-- BACK TO TOP BUTTON -->
+    <button class="back-to-top" id="backToTopBtn" aria-label="Przewiń do góry">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- MODAL DEKALOG -->
+    <div id="decalogueModal" class="dzj-modal-wrapper" style="z-index: 10000; display: none;">
+        <div class="dzj-modal-overlay" id="decalogueModalOverlay"></div>
+        <div class="dzj-modal-content" style="max-height: 90vh; overflow-y: auto; background: linear-gradient(135deg, #111, #0a0a0a); border: 1px solid rgba(212, 175, 55, 0.2);">
+            <button class="dzj-close-top" id="decalogueCloseBtn" style="color: #fff;"><i class="fa-solid fa-xmark"></i></button>
+            <div class="dzj-header" style="background: none; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 1rem;">
+                <div class="dzj-logo-wrapper" style="box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);">
+                    <img src="icon.png" alt="Christian Culture Logo" style="filter: brightness(1.2);">
+                </div>
+                <h2 class="dzj-title" style="color: #d4af37; font-family: 'Cinzel', serif; letter-spacing: 0.1em; text-transform: uppercase;">Dekalog</h2>
+                <p style="color: #a0a0a0; font-size: 0.85rem; margin-top: 5px;">DZIESIĘCIORO PRZYKAZAŃ</p>
+            </div>
+            <div class="dzj-body" id="decalogueContentBox" style="color: #eaeaea; font-family: 'Montserrat', sans-serif; line-height: 1.6; padding: 20px;">
+                  <div class="decalogue-list" style="display: flex; flex-direction: column; gap: 15px; font-weight: bold;">
+                      <div style="padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">1. NIE BĘDZIESZ MIAŁ BOGÓW CUDZYCH PRZEDE MNĄ</div>
+                      <div style="padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">2. NIE BĘDZIESZ BRAŁ IMIENIA PANA, BOGA TWEGO, NADAREMNIE</div>
+                      <div style="padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">3. PAMIĘTAJ, ABYŚ DZIEŃ ŚWIĘTY ŚWIĘCIŁ</div>
+                      <div style="padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">4. CZCIJ OJCA SWEGO I MATKĘ SWOJĄ</div>
+                      <div style="padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">5. NIE ZABIJAJ</div>
+                      <div style="padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">6. NIE CUDZOŁÓŻ</div>
+                      <div style="padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">7. NIE KRADNIJ</div>
+                      <div style="padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">8. NIE MÓW FAŁSZYWEGO ŚWIADECTWA PRZECIW BLIŹNIEMU SWEMU</div>
+                      <div style="padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">9. NIE POŻĄDAJ ŻONY BLIŹNIEGO SWEGO</div>
+                      <div style="padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">10. ANI ŻADNEJ RZECZY, KTÓRA JEGO JEST</div>
+                  </div>
+                
+                <div class="mt-12 p-8 text-center" style="margin-top: 3rem; padding: 2rem; background: rgba(197,160,89,0.05); border: 1px solid rgba(197,160,89,0.2); border-radius: 1.5rem;">
+                    <p style="color: #C5A059; font-style: italic; font-size: 1.125rem; font-family: 'Lora', serif;">
+                        "Ja jestem Pan, Bóg twój, którym cię wywiódł z ziemi egipskiej, z domu niewoli."
+                    </p>
+                    <p style="font-size: 0.625rem; font-weight: 900; color: #71717a; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 1rem;">
+                        Księga Wyjścia 20,1-17 (Wyd. 1962)
+                    </p>
+                    
+                    <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+                        <button id="btnCopyDecalogue" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-weight: bold; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s;">
+                            <i class="fa-solid fa-copy"></i> Kopiuj
+                        </button>
+                        <button id="btnShareDecalogue" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: #C5A059; color: black; font-weight: 900; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border: none; box-shadow: 0 0 20px rgba(197,160,89,0.3); transition: all 0.3s;">
+                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pobieranie Biblii ks. Jakuba Wujka z Dysku Google -->
+                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(212, 175, 55, 0.2); text-align: center;">
+                    <p style="color: #eaeaea; font-size: 0.85rem; margin-bottom: 1.25rem; font-weight: 500; font-family: 'Montserrat', sans-serif;">Pobierz pełne Pismo Święte w tradycyjnym przekładzie ks. Jakuba Wujka:</p>
+                    <a href="https://drive.google.com/file/d/1HCcafv4rdU-otttgkQJEsWauvwjWlNy3/view?usp=sharing" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.85rem 1.75rem; border-radius: 9999px; background: rgba(212, 175, 55, 0.15); border: 1.5px solid #d4af37; color: #f3e5ab; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; text-decoration: none; transition: all 0.3s; box-shadow: 0 0 15px rgba(212,175,55,0.1);" onmouseover="this.style.background='#d4af37'; this.style.color='#000'; this.style.boxShadow='0 0 25px rgba(212,175,55,0.3)';" onmouseout="this.style.background='rgba(212, 175, 55, 0.15)'; this.style.color='#f3e5ab'; this.style.boxShadow='0 0 15px rgba(212,175,55,0.1)';">
+                        <i class="fa-solid fa-download"></i> Pobierz Biblię ks. Jakuba Wujka (PDF)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DOBRZE, ZE JESTES -->
+    <div id="dzjModal" class="dzj-modal-wrapper">
+        <div class="dzj-modal-overlay" id="dzjModalOverlay"></div>
+        <div class="dzj-modal-content">
+            <button class="dzj-close-top" id="dzjCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="dzj-header">
+                <div class="dzj-logo-wrapper">
+                    <img src="dzj-logo.jpg" alt="Dobrze że jesteś Logo">
+                </div>
+                <div class="dzj-date-badge">
+                    <i class="fa-solid fa-calendar"></i> <span id="dzjDate">Ładowanie...</span>
+                </div>
+                <h2 id="dzjTitle" class="dzj-title">Szukam dzisiejszego słowa...</h2>
+            </div>
+            <div class="dzj-body" id="dzjContentBox">
+                <!-- Content gets injected by JS -->
+            </div>
+            <div class="dzj-footer">
+                <button class="dzj-close-bottom" id="dzjCloseFooterBtn">ZAMKNIJ OKNO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'pl',
+                includedLanguages: 'en,pl',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const langBtn = document.getElementById('langToggleBtn');
+            const langText = document.getElementById('langToggleText');
+
+            // Function to check if translated to English (based on Google Translate cookie)
+            function isEnglish() {
+                return document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen');
+            }
+
+            // Sync button label on load
+            if (isEnglish()) {
+                langText.textContent = 'PL';
+                langBtn.title = 'Przełącz na język polski';
+            } else {
+                langText.textContent = 'EN';
+                langBtn.title = 'Switch to English';
+            }
+
+            if (langBtn && langText) {
+                langBtn.addEventListener('click', () => {
+                    if (isEnglish()) {
+                        // Switch back to Polish by clearing the cookies
+                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.polskieradio.cc";
+                        document.cookie = "googtrans=/pl/pl; path=/";
+                        document.cookie = "googtrans=/pl/pl; path=/; domain=.polskieradio.cc";
+                    } else {
+                        // Switch to English
+                        document.cookie = "googtrans=/pl/en; path=/";
+                        document.cookie = "googtrans=/pl/en; path=/; domain=.polskieradio.cc";
+                    }
+                    // Reload the page to let Google Translate apply the translation immediately
+                    window.location.reload();
+                });
+            }
+
+            // Dynamic fail-safe cleanup for Google Translate top banner (hides all non-YouTube iframes)
+            function cleanGoogleBanner() {
+                document.querySelectorAll('iframe').forEach(iframe => {
+                    if (!iframe.src.includes('youtube.com') && !iframe.src.includes('youtube-nocookie.com') && !iframe.classList.contains('allow-preview')) {
+                        iframe.style.setProperty('display', 'none', 'important');
+                        iframe.style.setProperty('visibility', 'hidden', 'important');
+                        iframe.style.setProperty('height', '0px', 'important');
+                        iframe.style.setProperty('width', '0px', 'important');
+                        iframe.style.setProperty('opacity', '0', 'important');
+                    }
+                });
+                document.body.style.setProperty('top', '0px', 'important');
+                document.body.style.setProperty('position', 'static', 'important');
+                document.documentElement.style.setProperty('margin-top', '0px', 'important');
+            }
+            cleanGoogleBanner();
+            setInterval(cleanGoogleBanner, 200);
+
+            // ── PREMIUM EMBED MODAL & SHARE FUNCTIONS ──
+            const embedModal = document.getElementById("embedModal");
+            const embedTextArea = document.getElementById("embedCodeArea");
+            const toast = document.getElementById("toastNotification");
+
+            window.copyAndOpenOBS = function(url) {
+                const baseUrl = (window.location.protocol === "file:" || !window.location.origin || window.location.origin === "null") ? "https://polskieradio.cc" : window.location.origin;
+                const fullUrl = baseUrl.replace(/\/$/, "") + "/" + url;
+                
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(fullUrl).then(() => {
+                        showToast("✅ Link OBS skopiowany! Wklej w OBS -> Dodaj źródło -> Przeglądarka");
+                    }).catch(() => {
+                        showToast("Otwieranie sceny OBS...");
+                    });
+                } else {
+                    showToast("Otwieranie sceny OBS...");
+                }
+                window.open(fullUrl, '_blank');
+            };
+
+            window.openEmbedModal = function(url) {
+                const baseUrl = (window.location.protocol === "file:" || !window.location.origin || window.location.origin === "null") ? "https://polskieradio.cc" : window.location.origin;
+                const fullUrl = baseUrl.replace(/\/$/, "") + "/" + url;
+                const iframeCode = `<iframe src="${fullUrl}" width="100%" height="600" style="border:0; border-radius:12px; box-shadow:0 15px 35px rgba(0,0,0,0.5);" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+                if(embedTextArea) embedTextArea.value = iframeCode;
+                if(embedModal) embedModal.classList.add("show");
+            };
+
+            window.closeEmbedModal = function() {
+                if(embedModal) embedModal.classList.remove("show");
+            };
+
+            window.copyEmbedCode = function() {
+                if(embedTextArea) {
+                    embedTextArea.select();
+                    embedTextArea.setSelectionRange(0, 99999);
+                    navigator.clipboard.writeText(embedTextArea.value).then(() => {
+                        showToast("Skopiowano kod osadzania!");
+                        closeEmbedModal();
+                    });
+                }
+            };
+
+            window.shareOnFacebook = function(url) {
+                const baseUrl = (window.location.protocol === "file:" || !window.location.origin || window.location.origin === "null") ? "https://polskieradio.cc" : window.location.origin;
+                const fullUrl = encodeURIComponent(baseUrl.replace(/\/$/, "") + "/" + url);
+                const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${fullUrl}`;
+                window.open(fbUrl, '_blank', 'width=600,height=400');
+            };
+
+            window.shareOnWhatsApp = function(url) {
+                const baseUrl = (window.location.protocol === "file:" || !window.location.origin || window.location.origin === "null") ? "https://polskieradio.cc" : window.location.origin;
+                const fullUrl = encodeURIComponent(baseUrl.replace(/\/$/, "") + "/" + url);
+                const waUrl = `https://api.whatsapp.com/send?text=${fullUrl}`;
+                window.open(waUrl, '_blank');
+            };
+
+            function showToast(message) {
+                if(toast) {
+                    toast.textContent = message;
+                    toast.classList.add("show");
+                    setTimeout(() => {
+                        toast.classList.remove("show");
+                    }, 2500);
+                }
+            }
+        });
+    </script>
+
+    <!-- EMBED CODE MODAL -->
+    <div class="premium-modal" id="embedModal" onclick="if(event.target === this) closeEmbedModal();">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeEmbedModal();">&times;</button>
+            <h3 class="modal-title">Osadź transmisję na stronie</h3>
+            <div class="modal-body">
+                <p>Skopiuj poniższy kod HTML iframe i wklej go w kodzie swojej witryny, aby osadzić tę scenę na żywo:</p>
+                <textarea class="code-textarea" id="embedCodeArea" readonly onclick="this.select();"></textarea>
+                <button class="copy-btn" onclick="copyEmbedCode();">Skopiuj kod</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST SYSTEM NOTIFICATION -->
+    <div class="toast-notification" id="toastNotification">Skopiowano!</div>
+
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="module" src="app.js?v=3"></script>
+    <script type="module" src="dobrzezejestes.js?v=6"></script>
+</body>
+</html>
