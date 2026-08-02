@@ -1826,6 +1826,12 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
     
         /* === RDS Now Playing Bar === */
         .rds-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            pointer-events: none; /* Doesn't block clicks on the canvas below */
             position: absolute;
             top: 0;
             left: 0;
@@ -1886,40 +1892,6 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             margin-left: auto;
             display: flex;
             align-items: center;
-            gap: 5px;
-            color: rgba(255,255,255,0.2);
-            font-size: 0.65rem;
-        }
-
-        
-        /* Offset app-container for RDS bar */
-        #app-container {
-            margin-top: 36px !important;
-        }
-
-        
-        /* === Fix bottom ticker cutoff === */
-        #app-container {
-            height: calc(100vh - 36px) !important; /* account for RDS bar */
-            min-height: unset !important;
-            overflow: hidden !important;
-            display: flex !important;
-            flex-direction: column !important;
-        }
-        .main-viewport {
-            flex: 1 !important;
-            min-height: 0 !important;
-        }
-        footer {
-            flex-shrink: 0 !important;
-            position: relative !important;
-            bottom: unset !important;
-            height: 60px !important;
-            min-height: 60px !important;
-        }
-
-        </style>
-    <script>
         // initStream in HEAD - global before any onclick fires
         function initStream() {
             var o = document.getElementById('startOverlay');
