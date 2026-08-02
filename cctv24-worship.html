@@ -170,10 +170,11 @@
 
         /* --- MAIN LAYOUT GRID --- */
         .emission-grid {
-            position: relative;
+            position: absolute;
+            top: 128px;
             z-index: 10;
             width: 1920px;
-            height: 1080px;
+            height: 824px;
             display: grid;
             grid-template-rows: 100px 1fr 85px;
             grid-template-columns: 1fr;
@@ -1836,7 +1837,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         /* === RDS Now Playing Bar === */
         .rds-bar {
             position: fixed;
-            top: 0;
+            top: 128px;
             left: 0;
             right: 0;
             z-index: 9999;
@@ -3800,7 +3801,7 @@ function getWeatherPreset(city) {
     <style>
         .wide-spectrum {
             position: absolute;
-            bottom: 128px; /* Zaczyna się równo z krawędzią grafiki (nad kinowym pasem) */
+            bottom: 188px; /* Zaczyna się równo z krawędzią grafiki (nad kinowym pasem) */
             left: 0;
             width: 100%;
             height: 150px;
