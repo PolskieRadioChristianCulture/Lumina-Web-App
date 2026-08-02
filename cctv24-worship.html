@@ -1897,6 +1897,27 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             margin-top: 36px !important;
         }
 
+        
+        /* === Fix bottom ticker cutoff === */
+        #app-container {
+            height: calc(100vh - 36px) !important; /* account for RDS bar */
+            min-height: unset !important;
+            overflow: hidden !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        .main-viewport {
+            flex: 1 !important;
+            min-height: 0 !important;
+        }
+        footer {
+            flex-shrink: 0 !important;
+            position: relative !important;
+            bottom: unset !important;
+            height: 60px !important;
+            min-height: 60px !important;
+        }
+
         </style>
     <script>
         // initStream in HEAD - global before any onclick fires
