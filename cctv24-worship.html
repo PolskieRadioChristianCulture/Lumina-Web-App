@@ -1900,7 +1900,9 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         
         /* --- Ticker elements sit in the black cinema bar --- */
         footer {
-            /* No transform, sits naturally at the bottom (inside 128px letterbox) */
+            /* Ensure footer is visible ON TOP of the black bar */
+            position: relative !important;
+            z-index: 100 !important;
         }
         .ticker-popup-tab {
             bottom: 85px !important; /* Right above the footer */
