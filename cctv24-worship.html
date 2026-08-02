@@ -1956,7 +1956,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
     <div id="app-container">
 
         <!-- Background Images (rotational crossfade every 30s) -->
-        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg" alt="Instrumental Worship Studio">
+        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 0;" src="INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg" alt="Instrumental Worship Studio">
         <img id="bg-img-swap"   class="bg-layer bg-image" style="opacity: 0; transition: opacity 2s ease-in-out;" src="CCTV NOCĄ.jpg" alt="Instrumental Worship Studio 2">
         
         
@@ -1964,7 +1964,9 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         <div class="cinema-bar cinema-bar-top"></div>
         <div class="cinema-bar cinema-bar-bottom"></div>
 
-        <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
+        <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 1; object-fit: cover;" autoplay loop muted playsinline>
+            <source src="background_worship.mp4" type="video/mp4">
+        </video>
         <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
 
         <!-- Overlays -->
@@ -3800,7 +3802,7 @@ function getWeatherPreset(city) {
 
     <script>
     (function(){
-        const bgImages = ['bg-worship-1.png', 'bg-worship-2.png', 'bg-worship-3.png', 'bg-worship-4.png'];
+        const bgImages = []; // Disabled for video background
         let currentBgIdx = 0;
         
         // Set initial image
