@@ -1924,6 +1924,11 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg" alt="Instrumental Worship Studio">
         <img id="bg-img-swap"   class="bg-layer bg-image" style="opacity: 0; transition: opacity 2s ease-in-out;" src="CCTV NOCĄ.jpg" alt="Instrumental Worship Studio 2">
         
+        
+        <!-- Cinematic 21:9 Letterbox Bars (z-index 4, above bg, below content) -->
+        <div class="cinema-bar cinema-bar-top"></div>
+        <div class="cinema-bar cinema-bar-bottom"></div>
+
         <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
         <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
 
@@ -3748,7 +3753,79 @@ function getWeatherPreset(city) {
             0% { height: 5%; }
             100% { height: 100%; }
         }
-    </style>
+    
+        /* ====================================================
+           CINEMATIC 21:9 ULTRA-WIDE LETTERBOX
+           128px bars top+bottom — z-index 4 (above bg, below content)
+        ==================================================== */
+        .cinema-bar {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 128px;
+            z-index: 4;
+            pointer-events: none;
+        }
+        .cinema-bar-top {
+            top: 0;
+            background: linear-gradient(
+                180deg,
+                #000000 0%,
+                #000000 70%,
+                rgba(20, 12, 0, 0.92) 88%,
+                rgba(212, 175, 55, 0.06) 100%
+            );
+        }
+        .cinema-bar-top::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(212, 175, 55, 0.5) 25%,
+                rgba(255, 215, 100, 0.9) 50%,
+                rgba(212, 175, 55, 0.5) 75%,
+                transparent 100%
+            );
+            animation: gold-shimmer 4s ease-in-out infinite alternate;
+        }
+        .cinema-bar-bottom {
+            bottom: 0;
+            background: linear-gradient(
+                0deg,
+                #000000 0%,
+                #000000 70%,
+                rgba(20, 12, 0, 0.92) 88%,
+                rgba(212, 175, 55, 0.06) 100%
+            );
+        }
+        .cinema-bar-bottom::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(212, 175, 55, 0.5) 25%,
+                rgba(255, 215, 100, 0.9) 50%,
+                rgba(212, 175, 55, 0.5) 75%,
+                transparent 100%
+            );
+            animation: gold-shimmer 4s ease-in-out infinite alternate;
+        }
+        @keyframes gold-shimmer {
+            0%   { opacity: 0.3; }
+            100% { opacity: 1.0; }
+        }
+
+        </style>
     <script>
         (function() {
             const container = document.getElementById('app-container');
