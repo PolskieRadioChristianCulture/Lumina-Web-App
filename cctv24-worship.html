@@ -1807,11 +1807,11 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             overflow: hidden !important;
         }
         .ticker-marquee-text {
-            display: flex !important;
-            align-items: center !important;
-            padding-left: 20px !important; /* Start immediately, just a tiny bit of padding */
+            display: inline-block !important; /* NOT FLEX! Flex compresses child spans into a blinking line */
+            padding-left: 20px !important; /* Start immediately */
             flex-shrink: 0 !important;
             white-space: nowrap !important;
+            line-height: 60px !important; /* Vertically center in the 60px footer */
         }
 
     
