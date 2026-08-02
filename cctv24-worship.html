@@ -3586,6 +3586,20 @@ function getWeatherPreset(city) {
             var totalWorshipDuration = 0;
 
             function updateMediaSession(track) {
+                // === RDS Live Track Display ===
+                if (track && track.title) {
+                    var rdsEl = document.getElementById('rds-track-name');
+                    if (rdsEl) {
+                        rdsEl.style.transition = 'opacity 0.6s ease';
+                        rdsEl.style.opacity = '0';
+                        setTimeout(function() {
+                            var label = track.title;
+                            if (track.artist) label += '  –  ' + track.artist;
+                            rdsEl.textContent = label;
+                            rdsEl.style.opacity = '1';
+                        }, 600);
+                    }
+                }
                 if ('mediaSession' in navigator && track) {
                     navigator.mediaSession.metadata = new MediaMetadata({
                         title: track.title || "Instrumental Worship",
