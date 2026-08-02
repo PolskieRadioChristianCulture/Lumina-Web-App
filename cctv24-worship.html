@@ -11,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="live-window-manager.css">
     <style>
         :root {
             --gold-primary: #D4AF37; /* Elegant Gold */
@@ -574,7 +573,368 @@
 
         /* Floating Clock Widget */
         .card-clock-widget {
-            background: transparent !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-top: 1.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 16px 26px;
+            box-shadow: 0 15px 35px var(--glass-shadow);
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 0;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card-clock-time {
+            font-size: 3.0rem; /* Increased size */
+            font-weight: 900;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.5px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            font-variant-numeric: tabular-nums; /* Forces monospaced digits to prevent jitter */
+        }
+
+        .card-clock-time span.sec {
+            font-size: 1.6rem; /* Increased size */
+            color: var(--breakfast-accent);
+            align-self: flex-start;
+            margin-left: 4px;
+            font-weight: 700;
+            display: inline-block;
+            width: 42px; /* Fixed width stops seconds from pushing other digits */
+            text-align: left;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .card-clock-date {
+            font-size: 1.25rem; /* Increased size */
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-left: 1.5px solid rgba(255, 255, 255, 0.2);
+            padding-left: 15px;
+        }
+
+        /* --- REFLECTION GLASS CARD (ADAPTIVE FLAT LAYOUT) --- */
+        .reflection-canvas-card {
+            display: flex !important;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-top: 2.5px solid var(--breakfast-accent);
+            border-radius: 20px;
+            padding: 28px 32px;
+            box-shadow: 0 15px 35px var(--glass-shadow);
+            position: relative;
+            top: auto;
+            right: auto;
+            left: auto;
+            width: 100%;
+            /* flex: 1 1 0 fills the right-panel height; height:100% removed to avoid conflict */
+            flex: 1 1 0;
+            min-height: 0;
+            box-sizing: border-box;
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+
+
+            /* Force hardware acceleration to stop text from waving/jittering over the moving background */
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Flat overlays in all modes to ensure absolute readability and pixel-perfect alignment.
+           CRITICAL: height must be 100% (NOT auto) so the card fills the full right-panel column. */
+        body.mode-presenters .reflection-canvas-card,
+        body.mode-studio .reflection-canvas-card,
+        body.evening-layout.mode-presenters .reflection-canvas-card {
+            position: relative !important;
+            right: auto !important;
+            left: auto !important;
+            top: auto !important;
+            width: 100% !important;
+            height: 100% !important;
+            flex: 1 1 0 !important;
+            min-height: 0 !important;
+            transform: translateZ(0);
+        }
+
+        body.evening-layout .main-viewport {
+            grid-template-columns: 520px 1fr 520px !important;
+        }
+
+        body.evening-layout .left-panel {
+            grid-column: 1 !important;
+            grid-row: auto !important;
+            margin-top: 0 !important;
+        }
+
+        body.evening-layout .right-panel {
+            grid-column: 3 !important;
+            grid-row: auto !important;
+            align-items: stretch !important;
+        }
+
+
+        /* Slide layout area */
+        .canvas-slide-container {
+            position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .canvas-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .canvas-slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .slide-tag {
+            font-size: 1.3rem;
+            font-weight: 850;
+            color: var(--breakfast-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .slide-tag span {
+            flex-shrink: 0;
+        }
+
+        .slide-tag i {
+            flex-shrink: 0;
+        }
+
+        .slide-tag::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, var(--breakfast-accent), transparent);
+            margin-left: 10px;
+        }
+
+        .slide-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.4rem;
+            font-weight: 900;
+            line-height: 1.2;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 12px;
+        }
+
+        .slide-text {
+            font-size: 2.0rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+
+        .slide-text strong {
+            color: var(--breakfast-accent);
+            font-weight: 700;
+        }
+
+        /* Citation box */
+        .bible-citation {
+            border-left: 4.5px solid var(--breakfast-accent);
+            padding: 12px 18px;
+            margin: 8px 0;
+            font-style: italic;
+            background: rgba(255, 204, 0, 0.04);
+            border-radius: 0 12px 12px 0;
+            line-height: 1.45;
+            font-size: 2.5rem;
+        }
+
+
+
+        /* Fix scrolling text jitter over blurred backgrounds */
+        .slide-text-scroll-wrap {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: scroll-position, transform;
+            -webkit-font-smoothing: subpixel-antialiased;
+        }
+        
+        .slide-text, .bible-citation, .slide-title {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-font-smoothing: subpixel-antialiased;
+        }
+
+        /* Pagination & card footer */
+        .canvas-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 15px;
+            margin-top: 10px;
+        }
+
+        .slide-pagination {
+            display: flex;
+            gap: 6px;
+        }
+
+        .pagination-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .pagination-dot.active {
+            width: 20px;
+            border-radius: 3px;
+            background: var(--breakfast-accent);
+            box-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+        }
+
+        .card-cycle-badge {
+            background: rgba(255, 204, 0, 0.1);
+            border: 1px solid var(--breakfast-accent);
+            color: var(--breakfast-accent);
+            font-size: 1.20rem; /* Enlarged for mobile readability */
+            font-weight: 850;
+            padding: 4px 12px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- FOOTER DYNAMIC TICKER --- */
+        footer {
+            display: grid;
+            grid-template-columns: 320px 1fr; /* Increased width to accommodate logo */
+            background: linear-gradient(-45deg, 
+                rgba(255, 204, 0, 0.45), 
+                rgba(255, 115, 0, 0.35), 
+                rgba(0, 162, 255, 0.35), 
+                rgba(0, 75, 255, 0.35)
+            );
+            background-size: 400% 400%;
+            animation: logo-gradient-shift 15s ease infinite;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-top: 3px solid var(--breakfast-accent);
+            overflow: visible; /* Changed to visible so logo can stick out top */
+            position: relative;
+            z-index: 10; /* Ensures footer covers the popup tab */
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.3);
+            height: 85px;
+        }
+
+        .ticker-popup-tab {
+            position: absolute;
+            bottom: 85px; /* Appears right above the footer */
+            left: 70px; /* Align with main viewport padding */
+            width: 520px; /* Exact width of the CTA panel */
+            box-sizing: border-box;
+            text-align: center;
+            background: #E50914; /* News red */
+            color: white;
+            padding: 8px 24px;
+            border-radius: 12px 12px 0 0;
+            font-weight: 900;
+            font-size: 1.25rem;
+            font-family: 'Outfit', sans-serif;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+            z-index: 4; /* Sits behind the footer which has z-index 10 */
+            box-shadow: 0 -4px 20px rgba(229, 9, 20, 0.5);
+            letter-spacing: 1px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-bottom: none;
+            text-transform: uppercase;
+        }
+
+        .ticker-popup-tab.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .l3-ticker-header {
+            position: relative;
+            background: linear-gradient(135deg, #FFCC00 0%, #FF9900 100%); /* Vibrant gold gradient */
+            border-right: 1.5px solid rgba(255, 255, 255, 0.15);
+            color: #000000; /* High contrast dark text */
+            height: 100%;
+            z-index: 5;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.15);
+            font-family: 'Outfit', sans-serif; /* Modern, clean sans-serif */
+            perspective: 1000px; /* Enable 3D perspective */
+            padding: 0; /* Let the flipper card occupy full space */
+            overflow: visible; /* Changed to visible to let logo pop out */
+        }
+
+        /* 3D Ticker Flipper Card */
+        .ticker-flipper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.0s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy news flip transition */
+            overflow: visible;
+        }
+
+        .ticker-flipper.flipped {
+            transform: rotateX(180deg); /* Vertical flip transition */
+        }
+
+        .flipper-front, .flipper-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Hide the back side when front is visible and vice versa */
+            -webkit-backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .flipper-front {
+            justify-content: center;
+            background: transparent;
             z-index: 2;
             transform: rotateX(0deg);
             overflow: visible; /* Let large logo stick out */
@@ -1357,15 +1717,15 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
 
         /* Clean clock */
         .card-clock-widget {
-            background: transparent;
-            border: none;
-            box-shadow: none;
-            padding: 0;
-            margin-bottom: 20px;
-            justify-content: flex-start;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin-bottom: 20px !important;
+            justify-content: flex-start !important;
         }
-        .card-clock-time { font-weight: 300; font-size: 4rem; }
-        .card-clock-date { border-left: none; opacity: 0.5; font-weight: 400; padding-left: 0; margin-left: 20px; }
+        .card-clock-time { font-weight: 300 !important; font-size: 4rem !important; }
+        .card-clock-date { border-left: none !important; opacity: 0.5 !important; font-weight: 400 !important; padding-left: 0 !important; margin-left: 20px !important; }
 
         /* Ticker redesign */
         footer {
@@ -1386,14 +1746,14 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         /* Live badge redesign */
         .live-badge {
             background: rgba(255,255,255,0.1) !important;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.2) !important;
             color: #fff !important;
             box-shadow: none !important;
             font-weight: 400 !important;
             font-size: 0.9rem !important;
             animation: none !important;
         }
-        .live-badge i { color: #ff4d4d; animation: pulse-live 2s infinite alternate; }
+        .live-badge i { color: #ff4d4d !important; animation: pulse-live 2s infinite alternate !important; }
 
     </style>
     <script>
@@ -1406,7 +1766,8 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         }
         window.initStream = initStream;
     </script>
-    </head>
+    <link rel="stylesheet" href="live-window-manager.css">
+</head>
 <body>
 
     <!-- Main Auto-Scaling Viewport wrapper -->
@@ -1867,13 +2228,14 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             let activeReflectionObj = null;
             let lastActiveSlotHour = -1;
             
-            let customImgSrc = "INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg";
+            let customImgSrc = "worship_bg.jpg";
 
             // Dynamic Time-Based Background Handler (Night 21:00 - 06:00 switch to CCTV_NOCA.jpg)
+            safeStorage.removeItem("dzj_stream_image"); // Force wipe user override
             function getActiveBackground() {
                 const hour = new Date().getHours();
                 if (hour >= 21 || hour < 6) {
-                    return "CCTV_NOCA.jpg?v=2";
+                    return "CCTV_NOCA.jpg?v=1";
                 }
                 return getDynamicBackground(customImgSrc || "Tapeta_ZaPolske.jpg");
             }
@@ -2061,6 +2423,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                 const hour = new Date().getHours();
                 if (hour >= 21 || hour < 6) return "CCTV NOCĄ.jpg";
                 return "INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg";
+                if (hour >= 5 && hour < 9) return "breakfast_presenters_morning_2.jpg";
                 if (hour >= 9 && hour < 12) return "breakfast_presenters_forenoon.jpg";
                 if (hour >= 12 && hour < 18) return "breakfast_presenters.jpg";
                 return "breakfast_presenters_evening.jpg";
@@ -2285,7 +2648,6 @@ function getWeatherPreset(city) {
                 currentDayIndex = parseInt(safeStorage.getItem("dzj_stream_day"), 10);
             }
             if (safeStorage.getItem("dzj_stream_image")) {
-                safeStorage.setItem("dzj_stream_image", "INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg");
                 customImgSrc = safeStorage.getItem("dzj_stream_image");
                 bgImageSelect.value = customImgSrc;
                 bgActiveImg.src = getDynamicBackground(customImgSrc);
