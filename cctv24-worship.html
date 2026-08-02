@@ -1897,6 +1897,15 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             font-size: 0.65rem;
         }
 
+        
+        /* --- Move ticker elements ABOVE the 21:9 letterbox --- */
+        footer {
+            margin-bottom: 128px !important;
+        }
+        .ticker-popup-tab {
+            bottom: 213px !important; /* 85px footer + 128px bar */
+        }
+
         </style>
     <script>
         // initStream in HEAD - global before any onclick fires
