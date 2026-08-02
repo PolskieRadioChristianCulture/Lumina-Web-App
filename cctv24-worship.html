@@ -1920,6 +1920,11 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
 
     <div id="app-container">
 
+        
+        <!-- Cinematic 21:9 Letterbox Bars -->
+        <div class="cinema-bar cinema-bar-top"></div>
+        <div class="cinema-bar cinema-bar-bottom"></div>
+
         <!-- Background Images (rotational crossfade every 30s) -->
         <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg" alt="Instrumental Worship Studio">
         <img id="bg-img-swap"   class="bg-layer bg-image" style="opacity: 0; transition: opacity 2s ease-in-out;" src="CCTV NOCĄ.jpg" alt="Instrumental Worship Studio 2">
@@ -3748,7 +3753,82 @@ function getWeatherPreset(city) {
             0% { height: 5%; }
             100% { height: 100%; }
         }
-    </style>
+    
+        /* ====================================================
+           CINEMATIC 21:9 ULTRA-WIDE LETTERBOX
+           Bars: 128px top + 128px bottom on 1920×1080
+        ==================================================== */
+        .cinema-bar {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 128px;
+            z-index: 50;
+            pointer-events: none;
+        }
+        .cinema-bar-top {
+            top: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 0.97) 60%,
+                rgba(20, 12, 0, 0.85) 85%,
+                rgba(212, 175, 55, 0.08) 100%
+            );
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        .cinema-bar-bottom {
+            bottom: 0;
+            background: linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 0.97) 60%,
+                rgba(20, 12, 0, 0.85) 85%,
+                rgba(212, 175, 55, 0.08) 100%
+            );
+            border-top: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        /* Subtle gold shimmer on the inner edge of bars */
+        .cinema-bar::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(212, 175, 55, 0.4) 20%,
+                rgba(255, 215, 100, 0.7) 50%,
+                rgba(212, 175, 55, 0.4) 80%,
+                transparent 100%
+            );
+            animation: gold-shimmer 4s ease-in-out infinite alternate;
+        }
+        .cinema-bar-top::after {
+            bottom: 0;
+        }
+        .cinema-bar-bottom::after {
+            top: 0;
+        }
+        @keyframes gold-shimmer {
+            0%   { opacity: 0.3; }
+            100% { opacity: 1.0; }
+        }
+
+        /* Push header and footer inside the 21:9 visible zone */
+        header {
+            margin-top: 128px !important;
+        }
+        footer {
+            margin-bottom: 128px !important;
+        }
+        /* Wide spectrum sits just above the bottom bar */
+        .wide-spectrum {
+            bottom: 188px !important; /* 128px bar + 60px above it */
+        }
+
+        </style>
     <script>
         (function() {
             const container = document.getElementById('app-container');
