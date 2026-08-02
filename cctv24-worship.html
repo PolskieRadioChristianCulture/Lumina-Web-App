@@ -1836,16 +1836,12 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
     
         /* === RDS Now Playing Bar === */
         .rds-bar {
-            position: fixed;
+            position: absolute;
             top: 128px;
             left: 0;
             right: 0;
-            z-index: 9999;
+            z-index: 100;
             pointer-events: none; /* Doesn't block clicks on the canvas below */
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
             height: 36px;
             background: rgba(0, 0, 0, 0.65);
             backdrop-filter: blur(10px);
@@ -1854,7 +1850,6 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             align-items: center;
             padding: 0 28px;
             gap: 12px;
-            z-index: 100;
             font-family: 'Outfit', sans-serif;
             font-size: 0.78rem;
             letter-spacing: 2px;
