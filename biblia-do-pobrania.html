@@ -183,12 +183,12 @@
                     <span class="bar"></span>
                     <span class="bar"></span>
                 </button>
-                <div class="brand-logo">
-                    <a href="#" class="logo-link">
-                        <span class="logo-top">CHRISTIAN</span>
-                        <span class="logo-bottom">CULTURE</span>
-                    </a>
-                </div>
+        <div class="brand-logo">
+            <a href="index.html" class="logo-link">
+                <span class="logo-top">CHRISTIAN</span>
+                <span class="logo-bottom">CULTURE</span>
+            </a>
+        </div>
             </div>
             
             <!-- Right Side: SMS Subscription -->
@@ -360,3 +360,169 @@
             </div>
         </div>
     </section>
+
+                <!-- Pobieranie Biblii ks. Jakuba Wujka z Dysku Google -->
+                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(212, 175, 55, 0.2); text-align: center;">
+                    <p style="color: #eaeaea; font-size: 0.85rem; margin-bottom: 1.25rem; font-weight: 500; font-family: 'Montserrat', sans-serif;">Pobierz pełne Pismo Święte w tradycyjnym przekładzie ks. Jakuba Wujka:</p>
+                    <a href="https://drive.google.com/file/d/1HCcafv4rdU-otttgkQJEsWauvwjWlNy3/view?usp=sharing" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.85rem 1.75rem; border-radius: 9999px; background: rgba(212, 175, 55, 0.15); border: 1.5px solid #d4af37; color: #f3e5ab; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; text-decoration: none; transition: all 0.3s; box-shadow: 0 0 15px rgba(212,175,55,0.1);" onmouseover="this.style.background='#d4af37'; this.style.color='#000'; this.style.boxShadow='0 0 25px rgba(212,175,55,0.3)';" onmouseout="this.style.background='rgba(212, 175, 55, 0.15)'; this.style.color='#f3e5ab'; this.style.boxShadow='0 0 15px rgba(212,175,55,0.1)';">
+                        <i class="fa-solid fa-download"></i> Pobierz Biblię ks. Jakuba Wujka (PDF)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DOBRZE, ZE JESTES -->
+    <div id="dzjModal" class="dzj-modal-wrapper">
+        <div class="dzj-modal-overlay" id="dzjModalOverlay"></div>
+        <div class="dzj-modal-content">
+            <button class="dzj-close-top" id="dzjCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="dzj-header">
+                <div class="dzj-logo-wrapper">
+                    <img src="dzj-logo.jpg" alt="Dobrze że jesteś Logo">
+                </div>
+                <div class="dzj-date-badge">
+                    <i class="fa-solid fa-calendar"></i> <span id="dzjDate">Ładowanie...</span>
+                </div>
+                <h2 id="dzjTitle" class="dzj-title">Szukam dzisiejszego słowa...</h2>
+            </div>
+            <div class="dzj-body" id="dzjContentBox">
+                <!-- Content gets injected by JS -->
+            </div>
+            <div class="dzj-footer">
+                <button class="dzj-close-bottom" id="dzjCloseFooterBtn">ZAMKNIJ OKNO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'pl',
+                includedLanguages: 'en,pl',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const langBtn = document.getElementById('shortcutLangRow');
+            const langText = document.getElementById('langToggleText');
+ 
+            // Function to check if translated to English (based on Google Translate cookie)
+            function isEnglish() {
+                return document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen');
+            }
+ 
+            // Sync button label on load (with safety checks)
+            if (langText) {
+                if (isEnglish()) {
+                    langText.textContent = 'PL';
+                    if (langBtn) langBtn.title = 'Przełącz na język polski';
+                } else {
+                    langText.textContent = 'EN';
+                    if (langBtn) langBtn.title = 'Switch to English';
+                }
+            }
+ 
+            if (langBtn && langText) {
+                langBtn.addEventListener('click', () => {
+                    if (isEnglish()) {
+                        // Switch back to Polish by clearing the cookies
+                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.polskieradio.cc";
+                        document.cookie = "googtrans=/pl/pl; path=/";
+                        document.cookie = "googtrans=/pl/pl; path=/; domain=.polskieradio.cc";
+                    } else {
+                        // Switch to English
+                        document.cookie = "googtrans=/pl/en; path=/";
+                        document.cookie = "googtrans=/pl/en; path=/; domain=.polskieradio.cc";
+                    }
+                    // Reload the page to let Google Translate apply the translation immediately
+                    window.location.reload();
+                });
+            }
+ 
+            // --- Expandable Quick Actions Controller (Pionowy Dropdown) ---
+            const actionsToggleBtn = document.getElementById("actionsToggleBtn");
+            const actionsList = document.getElementById("actionsList");
+            const actionsToggleIcon = document.getElementById("actionsToggleIcon");
+            
+            if (actionsToggleBtn && actionsList && actionsToggleIcon) {
+                actionsToggleBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const isOpen = actionsList.classList.toggle("open");
+                    if (isOpen) {
+                        actionsList.style.opacity = "1";
+                        actionsList.style.transform = "translateY(0)";
+                        actionsList.style.pointerEvents = "auto";
+                        actionsToggleIcon.style.transform = "rotate(135deg)";
+                    } else {
+                        actionsList.style.opacity = "0";
+                        actionsList.style.transform = "translateY(-10px)";
+                        actionsList.style.pointerEvents = "none";
+                        actionsToggleIcon.style.transform = "rotate(0deg)";
+                    }
+                });
+                
+                // Clicking outside collapses the menu
+                document.addEventListener("click", (e) => {
+                    if (!actionsList.contains(e.target) && e.target !== actionsToggleBtn && !actionsToggleBtn.contains(e.target)) {
+                        if (actionsList.classList.contains("open")) {
+                            actionsList.classList.remove("open");
+                            actionsList.style.opacity = "0";
+                            actionsList.style.transform = "translateY(-10px)";
+                            actionsList.style.pointerEvents = "none";
+                            actionsToggleIcon.style.transform = "rotate(0deg)";
+                        }
+                    }
+                });
+            }
+
+            // Shortcuts integration triggers
+            const shortcutSmsRow = document.getElementById("shortcutSmsRow");
+            if (shortcutSmsRow) {
+                shortcutSmsRow.addEventListener("click", () => {
+                    const modal = document.getElementById("smsModal");
+                    if (modal) modal.style.display = "block";
+                });
+            }
+
+
+            // Dynamic fail-safe cleanup for Google Translate top banner (hides all non-YouTube iframes)
+            function cleanGoogleBanner() {
+                document.querySelectorAll('iframe').forEach(iframe => {
+                    if (!iframe.src.includes('youtube.com') && !iframe.src.includes('youtube-nocookie.com')) {
+                        iframe.style.setProperty('display', 'none', 'important');
+                        iframe.style.setProperty('visibility', 'hidden', 'important');
+                        iframe.style.setProperty('height', '0px', 'important');
+                        iframe.style.setProperty('width', '0px', 'important');
+                        iframe.style.setProperty('opacity', '0', 'important');
+                    }
+                });
+                document.body.style.setProperty('top', '0px', 'important');
+                document.body.style.setProperty('position', 'static', 'important');
+                document.documentElement.style.setProperty('margin-top', '0px', 'important');
+            }
+            cleanGoogleBanner();
+            setInterval(cleanGoogleBanner, 200);
+        });
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="module" src="app.js?v=14"></script>
+    <script type="module" src="dobrzezejestes.js?v=6"></script>
+
+    <!-- ========== PULSUJĄCA SŁUCHAWKA INFOLINII (FLOATING WIDGET) ========== -->
+    <a href="tel:+48730958583" id="helplineFloat" title="Zadzwoń na Infolinię Nadzieja Christian Culture" aria-label="Infolinia Nadzieja Christian Culture - zadzwoń +48 730 958 583">
+        <div class="hf-label">
+            <span class="hf-label-top">Infolinia &ldquo;Nadzieja&rdquo;</span>
+            <span class="hf-label-number">+48 730 958 583</span>
+        </div>
+        <div class="hf-btn">
+            <i class="fa-solid fa-phone-volume"></i>
+        </div>
+    </a>
+
+</body>
+</html>
