@@ -1909,12 +1909,22 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         
         /* --- Ticker elements sit in the black cinema bar --- */
         footer {
-            /* Ensure footer is visible ON TOP of the black bar */
-            position: relative !important;
+            /* PIN FOOTER TO ABSOLUTE BOTTOM TO PREVENT IT FALLING OFF SCREEN */
+            position: absolute !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
             z-index: 100 !important;
         }
         .ticker-popup-tab {
             bottom: 85px !important; /* Right above the footer */
+        }
+
+        
+        /* HIDE OPERATOR PANEL */
+        .operator-panel, .toggle-panel-trigger {
+            display: none !important;
         }
 
         </style>
