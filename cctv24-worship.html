@@ -1941,7 +1941,8 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
     <!-- Main Auto-Scaling Viewport wrapper -->
     
         <!-- RDS Now Playing Bar -->
-        <div class="rds-bar">
+        <div class="rds-bar" id="rdsWrap" style="overflow: hidden; display: block; position: absolute; padding: 0;">
+            <div id="rdsMarqueeText" style="display: flex; align-items: center; gap: 12px; height: 100%; white-space: nowrap; padding: 0 28px; position: absolute; top: 0;">
             <span class="rds-live"><i class="fa-solid fa-circle"></i> LIVE</span>
             <span class="rds-divider">|</span>
             <span class="rds-label">Now playing on</span>
@@ -1949,6 +1950,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             <span class="rds-divider">·</span>
             <span class="rds-track" id="rds-track-name">Instrumental Worship 24/7</span>
             <span class="rds-note"><i class="fa-solid fa-music"></i> polskieradio.cc</span>
+        </div>
         </div>
 
     <div id="app-container">
@@ -2796,6 +2798,40 @@ function getWeatherPreset(city) {
                     requestAnimationFrame(animateScroller);
                 }
             }
+
+                // Start robust CPU-based JS Scroller for RDS Bar
+                if (!window.rdsScrollerStarted) {
+                    window.rdsScrollerStarted = true;
+                    const rdsWrapEl = document.getElementById("rdsWrap");
+                    const rdsTextEl = document.getElementById("rdsMarqueeText");
+                    
+                    if (rdsWrapEl && rdsTextEl) {
+                        let currentRdsLeft = rdsWrapEl.clientWidth || 1920;
+                        
+                        rdsTextEl.style.left = currentRdsLeft + "px";
+                        
+                        let lastRdsTime = performance.now();
+                        
+                        function animateRdsScroller(time) {
+                            const delta = time - lastRdsTime;
+                            lastRdsTime = time;
+                            
+                            // Move ~100 pixels per second
+                            currentRdsLeft -= (100 * (delta / 1000)); 
+                            
+                            rdsTextEl.style.left = currentRdsLeft + "px";
+                            
+                            const textWidth = rdsTextEl.scrollWidth;
+                            if (currentRdsLeft < -textWidth) {
+                                currentRdsLeft = rdsWrapEl.clientWidth || 1920;
+                            }
+                            
+                            requestAnimationFrame(animateRdsScroller);
+                        }
+                        requestAnimationFrame(animateRdsScroller);
+                    }
+                }
+
 
             // Loop to show/hide the large QR code sidecar panel next to weather/CTA widgets
             function runQrSidecarLoop() {
