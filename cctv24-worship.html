@@ -1898,12 +1898,12 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         }
 
         
-        /* --- Move ticker elements ABOVE the 21:9 letterbox --- */
+        /* --- Ticker elements sit in the black cinema bar --- */
         footer {
-            transform: translateY(-128px) !important;
+            /* No transform, sits naturally at the bottom (inside 128px letterbox) */
         }
         .ticker-popup-tab {
-            bottom: 213px !important; /* 85px footer + 128px bar */
+            bottom: 85px !important; /* Right above the footer */
         }
 
         </style>
