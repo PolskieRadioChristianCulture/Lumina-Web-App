@@ -170,11 +170,11 @@
         /* --- MAIN LAYOUT GRID --- */
         .emission-grid {
             position: absolute;
-            top: 128px;
+            top: 56px;
             left: 0;
             z-index: 10;
             width: 1920px;
-            height: 867px; /* 1080 - 128 (RDS+offset) - 85 (footer) = 867 */
+            height: 1024px;
             display: grid;
             grid-template-rows: 100px 1fr;
             grid-template-columns: 1fr;
@@ -1845,11 +1845,33 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         .main-viewport.cinematic-mode .right-panel {
             display: none !important;
         }
-
-        
-
-        
-
+        /* --- RDS Bar (New) --- */
+        .rds-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            pointer-events: none;
+            height: 56px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .rds-live {
+            color: #ff3333;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+            animation: pulse-live 2s infinite;
+        }
+        @keyframes pulse-live {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
     </style>
     <script>
         // initStream in HEAD - global before any onclick fires
