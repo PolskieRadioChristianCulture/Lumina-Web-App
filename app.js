@@ -383,6 +383,7 @@ function setAudioSource(url) {
 }
 
 async function playRadio() {
+    stopFade();
     isPlaying = true;
     updatePlayerUI(true);
     playerStatusText.textContent = "Łączenie...";
@@ -445,50 +446,62 @@ async function playRadio() {
     }
 }
 
+let fadeInterval = null;
+
+function stopFade() {
+    if (fadeInterval) {
+        clearInterval(fadeInterval);
+        fadeInterval = null;
+    }
+}
+
 function pauseRadio() {
     isPlaying = false;
     updatePlayerUI(false);
     playerStatusText.textContent = "Zatrzymany";
+    stopFade();
+    audio.pause();
+    audio.volume = previousVolume;
     
-    // Smoothly fade out volume and pause/release stream
-    fadeAudioOut(() => {
-        audio.pause();
-        // Clear audio source on pause so it doesn't download bandwidth/buffer outdated content
+    // Clear audio source on pause for live streams so they don't buffer outdated content
+    if (activeStation && activeStation.id !== "instrumental_worship") {
         audio.src = "";
-    });
+    }
 }
 
 function fadeAudioOut(callback) {
+    stopFade();
     const fadeSteps = 10;
     const fadeIntervalTime = 30; // 300ms total fade out
     const initialVolume = audio.volume;
     let currentStep = 0;
     
-    const interval = setInterval(() => {
+    fadeInterval = setInterval(() => {
         currentStep++;
         const targetVol = initialVolume * (1 - currentStep / fadeSteps);
         audio.volume = Math.max(0, targetVol);
         
         if (currentStep >= fadeSteps) {
-            clearInterval(interval);
+            stopFade();
             if (callback) callback();
         }
     }, fadeIntervalTime);
 }
 
 function fadeAudioIn(targetVolume) {
+    stopFade();
     audio.volume = 0;
     const fadeSteps = 10;
     const fadeIntervalTime = 35; // 350ms total fade in
     let currentStep = 0;
     
-    const interval = setInterval(() => {
+    fadeInterval = setInterval(() => {
         currentStep++;
         const targetVol = targetVolume * (currentStep / fadeSteps);
         audio.volume = Math.min(targetVolume, targetVol);
         
         if (currentStep >= fadeSteps) {
-            clearInterval(interval);
+            stopFade();
         }
     }, fadeIntervalTime);
 }

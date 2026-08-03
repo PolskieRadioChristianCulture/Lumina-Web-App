@@ -181,15 +181,9 @@
             background: linear-gradient(135deg, #ffe45e, #f5c518);
             animation: helpline-ring 0.5s infinite;
         }
-        @media (max-width: 480px) {
-            #helplineFloat {
-                bottom: 16px;
-                right: 14px;
-            }
-            #helplineFloat .hf-btn {
-                width: 50px;
-                height: 50px;
-                font-size: 1.25rem;
+        @media (max-width: 1024px) {
+            #helplineFloat, #shortcutHelpline, #drawerHelpline {
+                display: none !important;
             }
         }
     </style>
@@ -458,7 +452,7 @@
                 <a href="general-safety.html" class="drawer-link"><i class="fa-solid fa-shield-halved"></i> Standardy Bezpieczeństwa</a>
                 <a href="lumina-safety.html" class="drawer-link"><i class="fa-solid fa-child-reaching"></i> Ochrona Dzieci (Lumina)</a>
                 <!-- Helpline Nadzieja CC -->
-                <a href="tel:+48730958583" class="drawer-link" style="background: rgba(255, 204, 0, 0.06); border: 1px solid rgba(255, 204, 0, 0.2); border-radius: 10px; margin-top: 8px; animation: helpline-pulse-drawer 2s infinite alternate;">
+                <a href="tel:+48730958583" id="drawerHelpline" class="drawer-link" style="background: rgba(255, 204, 0, 0.06); border: 1px solid rgba(255, 204, 0, 0.2); border-radius: 10px; margin-top: 8px; animation: helpline-pulse-drawer 2s infinite alternate;">
                     <i class="fa-solid fa-phone-volume" style="color: #FFCC00; animation: phone-bounce-drawer 1.5s infinite alternate;"></i>
                     <span style="display: flex; flex-direction: column; gap: 2px;">
                         <span style="font-size: 0.65rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700;">Infolinia "Nadzieja Christian Culture"</span>
