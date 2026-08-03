@@ -80,6 +80,20 @@ let STATIONS = {
             "DEEP FOREST 3 - Holy Spirit Presence",
             "DEEP FOREST 4 - Peace & Worship"
         ]
+    },
+    biblia_spiewana: {
+        id: "biblia_spiewana",
+        name: "BIBLIA ŚPIEWANA",
+        streamUrl: "./audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3",
+        playlistUrl: "./biblia_spiewana_playlist.json",
+        isDrivePlaylist: true,
+        accentColors: ["#D4AF37", "#E6A817"],
+        logo: "./biblia_spiewana_tlo.jpg",
+        tracks: [
+            "Śpiewane Przypowieści Salomona - Rozdział 1",
+            "Śpiewane Przypowieści Salomona - Rozdział 2",
+            "Śpiewane Przypowieści Salomona - Rozdział 3"
+        ]
     }
 };
 
@@ -97,6 +111,10 @@ let worshipPlaylist = [];
 let totalWorshipDuration = 0;
 let worshipTrackIndex = 0; // Aktualny indeks utworu w pętli
 
+let bibliaSpiewanaPlaylist = [];
+let totalBibliaSpiewanaDuration = 0;
+let bibliaSpiewanaTrackIndex = 0;
+
 async function loadWorshipPlaylist() {
     if (worshipPlaylist.length > 0) return;
     try {
@@ -107,10 +125,27 @@ async function loadWorshipPlaylist() {
                 if (!tr.duration) tr.duration = 240;
             });
             totalWorshipDuration = worshipPlaylist.reduce((acc, t) => acc + t.duration, 0);
-            console.log(`🎶 Załadowano playlistę Instrumental Worship z Dysku Google: ${worshipPlaylist.length} utworów`);
+            console.log(`🎶 Załadowano playlistę Instrumental Worship: ${worshipPlaylist.length} utworów`);
         }
     } catch(e) {
         console.error("❌ Błąd ładowania worship_playlist.json:", e);
+    }
+}
+
+async function loadBibliaSpiewanaPlaylist() {
+    if (bibliaSpiewanaPlaylist.length > 0) return;
+    try {
+        const res = await fetch('./biblia_spiewana_playlist.json');
+        if (res.ok) {
+            bibliaSpiewanaPlaylist = await res.json();
+            bibliaSpiewanaPlaylist.forEach(tr => {
+                if (!tr.duration) tr.duration = 240;
+            });
+            totalBibliaSpiewanaDuration = bibliaSpiewanaPlaylist.reduce((acc, t) => acc + t.duration, 0);
+            console.log(`🎶 Załadowano playlistę Biblia Śpiewana: ${bibliaSpiewanaPlaylist.length} utworów`);
+        }
+    } catch(e) {
+        console.error("❌ Błąd ładowania biblia_spiewana_playlist.json:", e);
     }
 }
 
@@ -118,14 +153,37 @@ async function loadWorshipPlaylist() {
 const audio = new Audio();
 audio.volume = 0.8;
 
-// Global Audio Ended Handler: Automatic loop for Worship Music and Biblia Audio
+// Global Audio Ended Handler: Automatic loop for Worship Music, Biblia Śpiewana and Biblia Audio
 audio.addEventListener('ended', () => {
     if (activeStation && activeStation.id === 'instrumental_worship') {
         playNextWorshipTrack();
+    } else if (activeStation && activeStation.id === 'biblia_spiewana') {
+        playNextBibliaSpiewanaTrack();
     } else if (activeStation && activeStation.id === 'global_biblia' && globalPlaylist.length > 0) {
         playRadio();
     }
 });
+
+function playNextBibliaSpiewanaTrack() {
+    if (!bibliaSpiewanaPlaylist || bibliaSpiewanaPlaylist.length === 0) return;
+    bibliaSpiewanaTrackIndex = (bibliaSpiewanaTrackIndex + 1) % bibliaSpiewanaPlaylist.length;
+    const nextTrack = bibliaSpiewanaPlaylist[bibliaSpiewanaTrackIndex];
+    audio.src = nextTrack.url;
+    playerTrackTitle.textContent = `${nextTrack.title} — ${nextTrack.artist || 'Christian Culture'}`;
+    
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            isPlaying = true;
+            updatePlayerUI(true);
+            playerStatusText.textContent = "Odtwarza";
+        }).catch(err => {
+            console.error('Biblia Śpiewana next track error:', err);
+            isPlaying = false;
+            updatePlayerUI(false);
+        });
+    }
+}
 
 function playNextWorshipTrack() {
     if (!worshipPlaylist || worshipPlaylist.length === 0) return;
@@ -200,6 +258,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     // Dynamically render station dropdown menu items
     renderStationDropdown();
+
+    // Preload local playlists to ensure immediate user-gesture playback
+    loadWorshipPlaylist();
+    loadBibliaSpiewanaPlaylist();
     
     // Setup initial station details WITHOUT auto-starting audio
     selectStation("poland", true);
@@ -419,6 +481,18 @@ async function playRadio() {
                     worshipTrackIndex = Math.floor(Math.random() * worshipPlaylist.length);
                 }
                 const currentTrack = worshipPlaylist[worshipTrackIndex];
+                audio.src = currentTrack.url;
+                playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist || 'Christian Culture'}`;
+            }
+        }
+    } else if (activeStation.id === "biblia_spiewana") {
+        await loadBibliaSpiewanaPlaylist();
+        if (bibliaSpiewanaPlaylist.length > 0) {
+            if (!audio.src || !audio.src.includes(".mp3") || audio.ended) {
+                if (bibliaSpiewanaTrackIndex < 0 || bibliaSpiewanaTrackIndex >= bibliaSpiewanaPlaylist.length) {
+                    bibliaSpiewanaTrackIndex = 0;
+                }
+                const currentTrack = bibliaSpiewanaPlaylist[bibliaSpiewanaTrackIndex];
                 audio.src = currentTrack.url;
                 playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist || 'Christian Culture'}`;
             }
