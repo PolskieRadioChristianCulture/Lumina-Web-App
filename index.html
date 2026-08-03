@@ -120,13 +120,17 @@
         /* Helpline Widget inside player-right */
         #helplineFloat {
             position: relative;
-            display: flex;
-            align-items: center;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            align-self: center !important;
             gap: 0;
             cursor: pointer;
             text-decoration: none;
             flex-shrink: 0;
-            margin-left: auto;
+            margin: 0 0 0 auto !important;
+            padding: 0 !important;
+            line-height: 1 !important;
         }
         #helplineFloat .hf-label {
             display: none;
@@ -165,14 +169,16 @@
             height: 44px;
             border-radius: 50%;
             background: linear-gradient(135deg, #f5c518, #e6a817);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            align-self: center !important;
             font-size: 1.15rem;
             color: #000;
             box-shadow: 0 4px 15px rgba(245, 197, 24, 0.4);
             animation: helpline-float-pulse 2.2s infinite, helpline-ring 4s 2s infinite;
             flex-shrink: 0;
+            margin: 0 !important;
             transition: transform 0.2s, background 0.2s;
         }
         #helplineFloat:hover .hf-btn {
