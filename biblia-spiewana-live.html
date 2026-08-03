@@ -174,7 +174,7 @@
             width: 1920px;
             height: 1080px;
             display: grid;
-            grid-template-rows: 100px 1fr 85px;
+            grid-template-rows: 40px 100px 1fr 60px;
             grid-template-columns: 1fr;
         }
 
@@ -1811,6 +1811,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             padding-left: 100% !important;
         }
 
+        #live-outer-controls { display: none !important; }
     </style>
     <script>
         // initStream in HEAD - global before any onclick fires
@@ -1821,6 +1822,33 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             if (a) a.play().catch(function(){});
         }
         window.initStream = initStream;
+
+        // RDS Scroll Script
+        if (!window.rdsScrollerStarted) {
+            window.rdsScrollerStarted = true;
+            const rdsWrapEl = document.getElementById("rdsWrap");
+            const rdsTextEl = document.getElementById("rdsMarqueeText");
+            
+            if (rdsWrapEl && rdsTextEl) {
+                let currentRdsLeft = rdsWrapEl.clientWidth || 1920;
+                rdsTextEl.style.left = currentRdsLeft + "px";
+                let lastRdsTime = performance.now();
+                
+                function animateRdsScroller(time) {
+                    const delta = time - lastRdsTime;
+                    lastRdsTime = time;
+                    currentRdsLeft -= (100 * (delta / 1000)); 
+                    rdsTextEl.style.left = currentRdsLeft + "px";
+                    
+                    if (currentRdsLeft < -rdsTextEl.scrollWidth) {
+                        currentRdsLeft = rdsWrapEl.clientWidth || 1920;
+                    }
+                    requestAnimationFrame(animateRdsScroller);
+                }
+                requestAnimationFrame(animateRdsScroller);
+            }
+        }
+
     </script>
     <link rel="stylesheet" href="live-window-manager.css">
 </head>
@@ -1846,6 +1874,11 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         <div class="emission-grid">
             
             <!-- Header -->
+            <div class="rds-bar" id="rdsWrap" style="overflow: hidden; display: block; position: relative; padding: 0; background: rgba(0,0,0,0.8); height: 40px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <div id="rdsMarqueeText" style="display: flex; align-items: center; gap: 12px; height: 100%; white-space: nowrap; padding: 0 28px; position: absolute; top: 0; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 700; color: #fff; letter-spacing: 2px;">
+                    BIBLIA ŚPIEWANA CC 🎵 ŚPIEWANE PRZYPOWIEŚCI SALOMONA 24/7 📖 POBIERZ APLIKACJĘ: POLSKIERADIO.CC 📱
+                </div>
+            </div>
             <header>
                 <div class="header-brand">
                     
@@ -1872,199 +1905,36 @@ BIBLIA ŚPIEWANA CC
             </header>
 
             <!-- Main Viewport -->
-            <main class="main-viewport">
+            <main class="main-viewport cinematic-mode">
                 
-                <!-- Left Sidebar -->
-                <div class="left-panel">
-                    
-                    <!-- Floating Clock Widget -->
-                    <div class="card-clock-widget" id="cardClockWidget">
-                        <div class="card-clock-time">
-                            <span id="timeHour">11</span>:<span id="timeMin">30</span><span class="sec" id="timeSec">00</span>
+                <!-- Left Sidebar (Kept minimal for QR codes) -->
+                <div class="left-panel" style="display: flex !important; align-items: flex-end; padding-bottom: 80px;">
+                    <!-- QR Code Sidecar -->
+                    <div class="qr-sidecar" id="qrSidecar" style="display: flex !important; opacity: 1; margin-bottom: 20px;">
+                        <div class="sidecar-text">POBIERZ APLIKACJĘ</div>
+                        <div class="sidecar-qr-box">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://polskieradio.cc" alt="Aplikacja QR" class="sidecar-qr-img">
                         </div>
-                        <div class="card-clock-date" id="clockDateLabel">Niedziela, 19 Lipca</div>
-                    </div>
-
-                    <!-- INFOLINIA NADZIEJA CC — pod zegarem, nad Program Dnia -->
-                    <a href="tel:+48730958583" class="live-helpline-panel" title="Zadzwoń: Infolinia Nadzieja Christian Culture">
-                        <div style="width:84px; height:84px; border-radius:50%; background:linear-gradient(135deg,#f5c518,#e6a817); display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 0 20px rgba(245,197,24,0.6);">
-                            <i class="fa-solid fa-phone-volume" style="color:#000; font-size:2.3rem; animation:live-phone-ring 1.6s infinite alternate;"></i>
-                        </div>
-                        <div style="display:flex; flex-direction:column; line-height:1.4;">
-                            <span style="font-size:1.16rem; font-weight:800; color:rgba(245,197,24,0.85); text-transform:uppercase; letter-spacing:1.5px; font-family:'Montserrat',sans-serif;">Infolinia &ldquo;Nadzieja Christian Culture&rdquo;</span>
-                            <span style="font-size:2.3rem; font-weight:900; color:#fff; letter-spacing:1px; font-family:'Montserrat',sans-serif;">+48 730 958 583</span>
-                        </div>
-                    </a>
-
-                    <!-- Zoom Ad Overlay (Hidden by default, triggered cyclically) -->
-                    <div class="zoom-ad-overlay" id="zoomAdOverlay">
-                        <div class="zoom-poster-container">
-                            <img src="Modlitwa_za_Polske.jpeg" alt="Modlitwa za Polskę" class="zoom-poster">
-                        </div>
-                        <div class="zoom-details-box">
-                            <div class="zoom-qr-box">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fus06web.zoom.us%2Fj%2F85696754457%3Fpwd%3DF2idw79Zxcusqbe6QqOAkSaeCmysfo.1" alt="Zoom QR Code">
-                            </div>
-                            <div class="zoom-text-info">
-                                <div class="zoom-label">OGŁOSZENIE SPECJALNE</div>
-                                <div class="zoom-id">MEETING ID: <span>856 9675 4457</span></div>
-                                <div class="zoom-pass">PASSCODE: <span>495780</span></div>
-                                <div class="zoom-date">Do zobaczenia w czwartek o 21:00!</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Floating Sunday agenda widget -->
-                    <div class="schedule-widget left-panel-standard-widget" id="scheduleWidget" style="transition: opacity 0.6s ease, transform 0.6s ease;">
-                        <div class="widget-title">
-                            <span>PROGRAM DNIA</span>
-                            <i class="fa-solid fa-clock-rotate-left" style="font-size: 0.9rem;"></i>
-                        </div>
-                        <div class="schedule-flipper-container">
-                            <div class="schedule-item" id="sched-current">
-                                <span class="schedule-time" id="sched-time">--:--</span>
-                                <span class="schedule-name" id="sched-name">Wczytywanie...</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Prayer Intentions Real-time Broadcast Overlay (Swaps in-place with Schedule Widget) -->
-                    <div id="livePrayerOverlay" class="schedule-widget left-panel-standard-widget" style="display: none; opacity: 0; transform: translateY(-15px); transition: opacity 0.6s ease, transform 0.6s ease; border-left: 6px solid #ff4d6d;">
-                        <div class="widget-title" style="color: #ff4d6d; border-bottom: 1px solid rgba(255,77,109,0.3);">
-                            <span><i class="fa-solid fa-hands-praying"></i> MODLITWA LIVE</span>
-                            <span style="font-size: 0.85rem; opacity: 0.7;">TERAZ</span>
-                        </div>
-                        <div style="padding: 10px 0;">
-                            <p id="livePrayerText" style="font-size: 1.55rem; color: #ffffff; line-height: 1.45; font-style: italic; margin: 0; font-weight: 500; text-shadow: 0 2px 5px rgba(0,0,0,0.6);"></p>
-                            <p id="livePrayerAuthor" style="font-size: 1.25rem; color: var(--breakfast-accent); font-weight: 800; text-align: right; margin: 12px 0 0 0; text-transform: uppercase; letter-spacing: 1px;"></p>
-                        </div>
-                    </div>
-
-                    <!-- Weather + CTA + QR Group (Auto-aligns QR sidecar in CSS) -->
-                    <div class="weather-cta-group left-panel-standard-widget">
-                        <div class="weather-cta-widgets">
-                            <!-- Weather city simulation widget -->
-                            <div class="weather-widget">
-                                <div class="weather-info" id="weatherBox">
-                                    <span class="weather-city">WARSZAWA</span>
-                                    <span class="weather-temp-desc">☀️ 25°C / Słonecznie</span>
-                                </div>
-                                <i class="fa-solid fa-sun-plant-wilt weather-icon"></i>
-                            </div>
-
-                            <!-- Dynamic CTA Widget -->
-                            <div class="cta-widget" id="ctaWidget">
-                                <div class="cta-icon">
-                                    <i class="fa-solid fa-thumbs-up cta-icon-inner" id="ctaIcon"></i>
-                                </div>
-                                <div class="cta-content">
-                                    <div class="cta-slide active">
-                                        <div class="cta-title">BĄDŹ NA ANTENIE (1/3) 📺</div>
-                                        <div class="cta-text" style="line-height: 1.35;">
-                                            Wyślij SMS na numer:<br>
-                                            <strong style="font-size: 1.3em;">+48 783 478 280</strong>
-                                        </div>
-                                    </div>
-                                    <div class="cta-slide">
-                                        <div class="cta-title">BĄDŹ NA ANTENIE (2/3) 📺</div>
-                                        <div class="cta-text" style="line-height: 1.35;">
-                                            Zacznij od słowa:<br>
-                                            <strong style="color: #fff;">Pozdrowienia</strong> lub <strong style="color: #fff;">Modlitwa</strong>
-                                        </div>
-                                    </div>
-                                    <div class="cta-slide">
-                                        <div class="cta-title">BĄDŹ NA ANTENIE (3/3) 📺</div>
-                                        <div class="cta-text" style="line-height: 1.35;">
-                                            Format:<br>
-                                            <span style="color: var(--breakfast-accent); font-weight: 800; font-size: 0.9em;">Pozdrowienia.Treść.TwojeImię</span>
-                                        </div>
-                                    </div>
-                                    <div class="cta-slide">
-                                        <div class="cta-title">POLUB NAS</div>
-                                        <div class="cta-text">Zostaw łapkę w górę pod tą transmisją! 👍</div>
-                                    </div>
-                                    <div class="cta-slide">
-                                        <div class="cta-title">SKOMENTUJ</div>
-                                        <div class="cta-text">Napisz krótki komentarz pod wideo! 💬</div>
-                                    </div>
-                                    <div class="cta-slide">
-                                        <div class="cta-title">UDOSTĘPNIJ</div>
-                                        <div class="cta-text">Podziel się tą transmisją ze znajomymi! 🚀</div>
-                                    </div>
-                                    <div class="cta-slide">
-                                        <div class="cta-title">SUBSKRYBUJ</div>
-                                        <div class="cta-text">Subskrybuj nasz kanał i włącz dzwoneczek! 🔔</div>
-                                    </div>
-                                    <div class="cta-slide">
-                                        <div class="cta-title">OKAŻ UZNANIE</div>
-                                        <div class="cta-text">Wejdź do Sklepu: <strong>www.polskieradio.cc</strong> 🛒</div>
-                                    </div>
-                                    <div class="cta-slide">
-                                        <div class="cta-title">SPOŁECZNOŚĆ YT</div>
-                                        <div class="cta-text">Dołącz do społeczności YT na naszym kanale! 📺</div>
-                                    </div>
-                                    <div class="cta-slide">
-                                        <div class="cta-title">DARMOWE SMS (1/2)</div>
-                                        <div class="cta-text"><strong>+48 783 478 280</strong><br>Wyślij SMS: <strong>"Dobrze, że jesteś"</strong></div>
-                                    </div>
-                                    <div class="cta-slide">
-                                        <div class="cta-title">DARMOWE SMS (2/2)</div>
-                                        <div class="cta-text"><strong>+48 783 478 280</strong><br>Otrzymuj codzienne inspiracje! 📱</div>
-                                    </div>
-                                    <div class="cta-slide">
-                                        <div class="cta-title">PYTANIE PORANKA 💬</div>
-                                        <div class="cta-text">Za co dziękujesz dziś Bogu?<br>Wyślij SMS pod <strong>+48 783 478 280</strong></div>
-                                    </div>
-                                    <div class="cta-slide">
-                                        <div class="cta-title">ZŁOTA MYŚL DNIA ✨</div>
-                                        <div class="cta-text" id="goldenQuoteSlideText">"Zaufaj Panu z całego serca i nie polegaj na własnym rozumie."</div>
-                                    </div>
-                                    <div class="cta-slide">
-                                        <div class="cta-title">KARTKA Z KALENDARZA 📅</div>
-                                        <div class="cta-text" id="calendarSlideText">DZIŚ OBCHODZIMY: <strong>Międzynarodowy Dzień Radości</strong> ☀️</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- QR Code Sidecar (Fades in/out next to weather/CTA widgets) -->
-                        <div class="qr-sidecar" id="qrSidecar">
-                            <div class="sidecar-text">POMAGANIE WZMACNIA</div>
-                            <div class="sidecar-qr-box">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://patronite.pl/osobowoscplus" alt="Patronite QR" class="sidecar-qr-img">
-                            </div>
-                            <div class="sidecar-subtext">patronite.pl/osobowoscplus</div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Right Panel (Info Board & Clock Widget) -->
-                <div class="right-panel">
-
-                    <!-- Main Glass Card Container -->
-                    <div class="reflection-canvas-card">
-                        
-                        <!-- Slide text content area -->
-                        <div class="canvas-slide-container" id="slidesContainer">
-                            <div class="canvas-slide active">
-                                <div class="tv-logo-slide">
-                                    <img src="Projekt bez nazwy (64).png" alt="Dobrze, że jesteś logo">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Footer of card -->
-                        <div class="canvas-card-footer">
-                            <div class="slide-pagination" id="slidePagination">
-                                <!-- Dots loaded dynamically -->
-                            </div>
-                            <div class="card-cycle-badge" id="cycleBadge">Dzień 22 | MISJA BOŻE WAKACJE</div>
-                        </div>
-
+                        <div class="sidecar-subtext">polskieradio.cc</div>
                     </div>
                 </div>
 
+                <!-- Right Panel (Empty for cinematic view) -->
+                <div class="right-panel"></div>
+                
+                <!-- Cinematic Audio Spectrum -->
+                <div class="cinematic-spectrum-container" style="position: absolute; bottom: 85px; left: 0; width: 100%; height: 180px; display: flex; align-items: flex-end; justify-content: center; gap: 8px; opacity: 0.8; z-index: 10; pointer-events: none;">
+                    <!-- We'll generate bars dynamically or via CSS -->
+                    <div class="cinematic-bars" style="display: flex; gap: 4px; height: 100%; align-items: flex-end; width: 80%; justify-content: center;">
+                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 20%; animation: spectrum-bounce 1s infinite alternate ease-in-out; animation-delay: 0.1s;"></span>
+                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 50%; animation: spectrum-bounce 1.2s infinite alternate ease-in-out; animation-delay: 0.3s;"></span>
+                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 30%; animation: spectrum-bounce 0.9s infinite alternate ease-in-out; animation-delay: 0.5s;"></span>
+                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 80%; animation: spectrum-bounce 1.1s infinite alternate ease-in-out; animation-delay: 0.2s;"></span>
+                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 40%; animation: spectrum-bounce 1s infinite alternate ease-in-out; animation-delay: 0.7s;"></span>
+                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 60%; animation: spectrum-bounce 1.3s infinite alternate ease-in-out; animation-delay: 0.4s;"></span>
+                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 20%; animation: spectrum-bounce 0.8s infinite alternate ease-in-out; animation-delay: 0.1s;"></span>
+                    </div>
+                </div>
             </main>
 
             <!-- Popup Tab (Outside footer to sit behind it) -->
