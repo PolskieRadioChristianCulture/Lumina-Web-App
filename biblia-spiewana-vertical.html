@@ -712,7 +712,7 @@
                     </div>
                 </div>
                 <div class="info-marquee-text-wrap">
-                    <span id="marqueeText" class="info-marquee-text"><span style="background: #FFCC00; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">NADAWAJ TĄ TRANSMISJĘ Z CHRISTIAN CULTURE - szczegóły na www.polskieradio.cc</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Możesz wspierać misję Christian Culture modlitwą, udostępniając i polecając nasze treści oraz poprzez cykliczny dar finansowy 🤍 Każde wsparcie pomaga nam docierać z Ewangelią dalej i tworzyć przestrzeń wzrostu duchowego dla tysięcy osób 🌱✨ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wspieraj Bożą misję: 👉 https://patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 Nr konta (Bank / Revolut): 48 2910 0006 0000 0000 0527 2629 &nbsp; z dopiskiem: „Dar misyjny” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌍 Wsparcie przez bezpieczny link Revolut: https://revolut.me/christianculture &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 BLIK: 537 147 043 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Dziękujemy za Twoje wsparcie, modlitwę i zaufanie. Razem budujemy Christian Culture — ku Bożej chwale i dla dobra ludzi 🔥✝️</span>
+                    <span id="marqueeText" class="info-marquee-text"><span class="ticker-announcement">TERAZ GRAMY 🎵</span> <span class="ticker-highlight-msg">Biblia Śpiewana • Śpiewane Przypowieści Salomona 24/7</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ticker-announcement">DARMOWA BIBLIA PDF 📖</span> <span class="ticker-highlight-msg">Pobierz darmowy egzemplarz Pisma Świętego (UBG / Wujek) na www.polskieradio.cc/biblia-do-pobrania.html</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ticker-announcement">PISMO ŚWIĘTE W DRUKU 📦</span> <span class="ticker-highlight-msg">Zamów bezpłatną Biblię papierową — wyślij SMS: BIBLIA pod numer 507 821 789</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ticker-announcement">APLIKACJA MOBILNA 📱</span> <span class="ticker-highlight-msg">Słuchaj rozważań i Pisma Świętego w aplikacji "Dobrze, że jesteś" (Google Play)</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ticker-announcement">KANAŁ YOUTUBE 📺</span> <span class="ticker-highlight-msg">Subskrybuj Biblia Audio CC na YouTube i słuchaj nowych nagrań Słowa Bożego</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ticker-announcement">WESPRZYJ MISJĘ BIBLIJNĄ ❤️</span> <span class="ticker-highlight-msg">Pomóż wydawać i rozpowszechniać Pismo Święte: patronite.pl/osobowoscplus</span></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Możesz wspierać misję Christian Culture modlitwą, udostępniając i polecając nasze treści oraz poprzez cykliczny dar finansowy 🤍 Każde wsparcie pomaga nam docierać z Ewangelią dalej i tworzyć przestrzeń wzrostu duchowego dla tysięcy osób 🌱✨ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wspieraj Bożą misję: 👉 https://patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 Nr konta (Bank / Revolut): 48 2910 0006 0000 0000 0527 2629 &nbsp; z dopiskiem: „Dar misyjny” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🌍 Wsparcie przez bezpieczny link Revolut: https://revolut.me/christianculture &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 BLIK: 537 147 043 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Dziękujemy za Twoje wsparcie, modlitwę i zaufanie. Razem budujemy Christian Culture — ku Bożej chwale i dla dobra ludzi 🔥✝️</span>
                 </div>
             </div>
 
@@ -1622,34 +1622,45 @@
             }, 6000); // Shift every 6 seconds
             
             // --- 13. QR CODE & BIBLE AD ROTATION ---
-            let showQR = true;
+            
+            // --- 4 ROTATIONAL BIBLE QR SLIDES IN 9:16 SIDEBAR ---
+            const bibleRotatorSlides = [
+                {
+                    qr: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://polskieradio.cc/biblia-do-pobrania.html",
+                    title: "Darmowa Biblia PDF",
+                    desc: "Zeskanuj QR, aby pobrać Pismo Święte (UBG / Wujek) w formacie PDF."
+                },
+                {
+                    qr: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://polskieradio.cc/biblia-do-pobrania.html",
+                    title: "Pismo Święte w druku",
+                    desc: "Wyślij SMS o treści: <strong>BIBLIA</strong> pod numer <strong>507 821 789</strong>."
+                },
+                {
+                    qr: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://play.google.com/store/search?q=Christian%20Culture&c=apps&hl=pl",
+                    title: "Aplikacja 'Dobrze, że jesteś'",
+                    desc: "Słuchaj rozważań i Pisma Świętego w aplikacji mobilnej."
+                },
+                {
+                    qr: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://patronite.pl/osobowoscplus",
+                    title: "Wsparcie Misji Biblijnej",
+                    desc: "Pomóż nam bezpłatnie wydawać Pismo Święte: patronite.pl/osobowoscplus"
+                }
+            ];
+            let rotIndex = 0;
             const qrcodeEl = document.getElementById("qrcode");
-            const adImageEl = document.getElementById("adImage");
             const cardTitleEl = document.getElementById("sidebarCardTitle");
             const cardDescEl = document.getElementById("sidebarCardDesc");
 
             setInterval(() => {
-                showQR = !showQR;
-                if (showQR) {
-                    qrcodeEl.style.opacity = "1";
-                    qrcodeEl.style.zIndex = "2";
-                    qrcodeEl.style.pointerEvents = "auto";
-                    adImageEl.style.opacity = "0";
-                    adImageEl.style.zIndex = "1";
-                    adImageEl.style.pointerEvents = "none";
-                    if (cardTitleEl) cardTitleEl.textContent = "Twoja Biblia w kieszeni";
-                    if (cardDescEl) cardDescEl.textContent = "Zeskanuj, aby słuchać i czytać w aplikacji.";
-                } else {
-                    qrcodeEl.style.opacity = "0";
-                    qrcodeEl.style.zIndex = "1";
-                    qrcodeEl.style.pointerEvents = "none";
-                    adImageEl.style.opacity = "1";
-                    adImageEl.style.zIndex = "2";
-                    adImageEl.style.pointerEvents = "auto";
-                    if (cardTitleEl) cardTitleEl.textContent = "Bezpłatne Pismo Święte";
-                    if (cardDescEl) cardDescEl.innerHTML = "Wyślij SMS o treści: <strong>BIBLIA</strong> pod numer <strong>507 821 789</strong>.<br><span style='font-size: 10px; opacity: 0.6; display: block; margin-top: 5px;'>* Zamawiający ponosi jedynie koszt przesyłki</span>";
+                rotIndex = (rotIndex + 1) % bibleRotatorSlides.length;
+                const slide = bibleRotatorSlides[rotIndex];
+                if (qrcodeEl) {
+                    qrcodeEl.innerHTML = `<img src="${slide.qr}" style="width: 100%; height: 100%; object-fit: contain;">`;
                 }
-            }, 15000); // Shift every 15 seconds
+                if (cardTitleEl) cardTitleEl.textContent = slide.title;
+                if (cardDescEl) cardDescEl.innerHTML = slide.desc;
+            }, 10000);
+ // Shift every 15 seconds
 
             // Trigger stream initialization automatically on load
             setTimeout(initializeStream, 500);
