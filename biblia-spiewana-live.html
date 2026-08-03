@@ -1812,6 +1812,49 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         }
 
         #live-outer-controls { display: none !important; }
+        /* ══ CINEMATIC MODE OVERRIDES ══════════════════════════════════ */
+        /* Wyłącz grid layout w trybie kinowym — main to zwykły blok z position:relative */
+        .main-viewport.cinematic-mode {
+            display: block !important;
+            grid-template-columns: none !important;
+            padding: 0 !important;
+            gap: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            overflow: hidden !important;
+        }
+
+        /* Header w trybie kinowym: flex+column, 140px łącznie (RDS 40px + brand 100px) */
+        .emission-grid > header {
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 0 !important;
+            height: 140px !important;
+            overflow: hidden;
+        }
+
+        /* Ukryj lewy i prawy panel — nie są już potrzebne w trybie kinowym */
+        .main-viewport.cinematic-mode .left-panel,
+        .main-viewport.cinematic-mode .right-panel {
+            display: none !important;
+        }
+
+        /* Pasek RDS scrollujący — płynny CSS fallback jeśli JS nie zdąży */
+        #rdsMarqueeText {
+            will-change: left;
+        }
+
+        /* Footer Ticker — pełny widok w trybie kinowym (override gradienta) */
+        .main-viewport.cinematic-mode ~ footer,
+        .emission-grid footer {
+            display: flex !important;
+            align-items: center !important;
+            height: 85px !important;
+            background: rgba(0, 0, 0, 0.65) !important;
+            backdrop-filter: blur(15px) !important;
+            border-top: 2px solid rgba(212,175,55,0.5) !important;
+        }
+
     </style>
     <script>
         // initStream in HEAD - global before any onclick fires
