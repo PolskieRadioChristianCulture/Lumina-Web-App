@@ -1832,7 +1832,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
 
         <!-- Background Images (rotational crossfade every 30s) -->
         <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg" alt="Instrumental Worship Studio">
-        <img id="bg-img-swap"   class="bg-layer bg-image" style="opacity: 0; transition: opacity 2s ease-in-out;" src="biblia_spiewana_tlo.jpg" alt="Instrumental Worship Studio 2">
+        <img id="bg-img-swap"   class="bg-layer bg-image" style="opacity: 0; transition: opacity 2s ease-in-out;" src="biblia_spiewana_tlo2.png" alt="Instrumental Worship Studio 2">
         
         <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
         <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
@@ -2283,7 +2283,7 @@ BIBLIA ŚPIEWANA CC
             // Dynamic Time-Based Background Handler (Night 21:00 - 06:00 switch to CCTV_NOCA.jpg)
             safeStorage.removeItem("dzj_stream_image"); // Force wipe user override
             function getActiveBackground() {
-                return "biblia_spiewana_tlo.jpg";
+                return "biblia_spiewana_tlo2.png";
             }
 
             let customVideoSrc = ""; 
@@ -2466,7 +2466,7 @@ BIBLIA ŚPIEWANA CC
 
                         // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
-                return "biblia_spiewana_tlo.jpg";
+                return "biblia_spiewana_tlo2.png";
             }
 
                                     // Real-time weather data cache and city coordinates
