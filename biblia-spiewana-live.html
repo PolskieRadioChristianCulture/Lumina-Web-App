@@ -174,7 +174,7 @@
             width: 1920px;
             height: 1080px;
             display: grid;
-            grid-template-rows: 40px 100px 1fr 60px;
+            grid-template-rows: 140px 1fr 85px;
             grid-template-columns: 1fr;
         }
 
@@ -1822,33 +1822,6 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             if (a) a.play().catch(function(){});
         }
         window.initStream = initStream;
-
-        // RDS Scroll Script
-        if (!window.rdsScrollerStarted) {
-            window.rdsScrollerStarted = true;
-            const rdsWrapEl = document.getElementById("rdsWrap");
-            const rdsTextEl = document.getElementById("rdsMarqueeText");
-            
-            if (rdsWrapEl && rdsTextEl) {
-                let currentRdsLeft = rdsWrapEl.clientWidth || 1920;
-                rdsTextEl.style.left = currentRdsLeft + "px";
-                let lastRdsTime = performance.now();
-                
-                function animateRdsScroller(time) {
-                    const delta = time - lastRdsTime;
-                    lastRdsTime = time;
-                    currentRdsLeft -= (100 * (delta / 1000)); 
-                    rdsTextEl.style.left = currentRdsLeft + "px";
-                    
-                    if (currentRdsLeft < -rdsTextEl.scrollWidth) {
-                        currentRdsLeft = rdsWrapEl.clientWidth || 1920;
-                    }
-                    requestAnimationFrame(animateRdsScroller);
-                }
-                requestAnimationFrame(animateRdsScroller);
-            }
-        }
-
     </script>
     <link rel="stylesheet" href="live-window-manager.css">
 </head>
@@ -1872,69 +1845,61 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
 
         <!-- Emission Screen Grid -->
         <div class="emission-grid">
-            
-            <!-- Header -->
-            <div class="rds-bar" id="rdsWrap" style="overflow: hidden; display: block; position: relative; padding: 0; background: rgba(0,0,0,0.8); height: 40px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                <div id="rdsMarqueeText" style="display: flex; align-items: center; gap: 12px; height: 100%; white-space: nowrap; padding: 0 28px; position: absolute; top: 0; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 700; color: #fff; letter-spacing: 2px;">
-                    BIBLIA ŚPIEWANA CC 🎵 ŚPIEWANE PRZYPOWIEŚCI SALOMONA 24/7 📖 POBIERZ APLIKACJĘ: POLSKIERADIO.CC 📱
-                </div>
-            </div>
-            <header>
-                <div class="header-brand">
-                    
-<div class="audio-spectrum">
-    <span></span><span></span><span></span><span></span>
-</div>
-BIBLIA ŚPIEWANA CC
-                </div>
-                
-                <div class="live-tag-container">
-                    <!-- Helpline Widget -->
-                    <div class="helpline-header-widget">
-                        <i class="fa-solid fa-phone-volume pulse-phone-icon"></i>
-                        <div class="helpline-header-content">
-                            <div class="helpline-header-title">Infolinia "Nadzieja Christian Culture"</div>
-                            <div class="helpline-header-number">+48 730 958 583</div>
-                        </div>
+               <!-- HEADER: zawiera RDS scrollbar + pasek brandingu (140px łącznie) -->
+            <header style="display: flex; flex-direction: column; padding: 0; background: linear-gradient(to bottom, rgba(3,3,3,0.88) 0%, rgba(3,3,3,0.1) 100%);">
+                <!-- RDS Scrolling Bar (40px) -->
+                <div id="rdsWrap" style="overflow: hidden; position: relative; width: 100%; height: 40px; background: rgba(0,0,0,0.8); border-bottom: 1px solid rgba(212,175,55,0.25); flex-shrink: 0;">
+                    <div id="rdsMarqueeText" style="position: absolute; top: 0; height: 100%; display: flex; align-items: center; white-space: nowrap; font-family: 'Inter', sans-serif; font-size: 1.0rem; font-weight: 700; color: #fff; letter-spacing: 2px; gap: 50px; padding: 0 20px;">
+                        <span style="color: var(--breakfast-accent);">✝</span>&nbsp;BIBLIA ŚPIEWANA CC&nbsp;<span style="opacity:0.3">•</span>&nbsp;🎵 ŚPIEWANE PRZYPOWIEŚCI SALOMONA 24/7&nbsp;<span style="opacity:0.3">•</span>&nbsp;📖 POBIERZ DARMOWĄ BIBLIĘ: POLSKIERADIO.CC&nbsp;<span style="opacity:0.3">•</span>&nbsp;📱 APLIKACJA "DOBRZE, ŻE JESTEŚ" — GOOGLE PLAY&nbsp;<span style="opacity:0.3">•</span>&nbsp;📦 ZAMÓW BIBLIĘ PAPIEROWĄ — SMS: BIBLIA → 507 821 789&nbsp;<span style="opacity:0.3">•</span>&nbsp;📞 INFOLINIA NADZIEJA CC: +48 730 958 583&nbsp;<span style="color: var(--breakfast-accent);">✝</span>&nbsp;BIBLIA ŚPIEWANA CC&nbsp;<span style="opacity:0.3">•</span>&nbsp;🎵 ŚPIEWANE PRZYPOWIEŚCI SALOMONA 24/7&nbsp;<span style="opacity:0.3">•</span>&nbsp;📖 SŁOWO BOŻE NA ŻYWO — POLSKIERADIO.CC
                     </div>
-                    <div class="tv-station-id">BIBLIA ŚPIEWANA • CC</div>
-                    <div class="live-badge">
-                        <i class="fa-solid fa-circle"></i> NA ŻYWO
+                </div>
+                <!-- Main branding bar (100px) -->
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 70px; flex: 1;">
+                    <div class="header-brand">
+                        <div class="audio-spectrum">
+                            <span></span><span></span><span></span><span></span>
+                        </div>
+                        BIBLIA ŚPIEWANA CC
+                    </div>
+                    <div class="live-tag-container">
+                        <!-- Numer Infolinii widoczny w headerze -->
+                        <div style="display: flex; align-items: center; gap: 10px; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.35); border-radius: 10px; padding: 8px 18px; animation: live-helpline-pulse 2.4s infinite alternate;">
+                            <i class="fa-solid fa-phone-volume" style="color: var(--breakfast-accent); font-size: 1.1rem; animation: live-phone-ring 1.6s infinite alternate;"></i>
+                            <div style="display: flex; flex-direction: column; line-height: 1.2;">
+                                <span style="font-size: 0.65rem; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase;">Infolinia Nadzieja CC</span>
+                                <span style="font-size: 1.15rem; font-weight: 900; color: #fff; letter-spacing: 0.5px;">+48 730 958 583</span>
+                            </div>
+                        </div>
+                        <div class="tv-station-id">BIBLIA ŚPIEWANA • CC</div>
+                        <div class="live-badge">
+                            <i class="fa-solid fa-circle"></i> NA ŻYWO
+                        </div>
                     </div>
                 </div>
             </header>
 
             <!-- Main Viewport -->
-            <main class="main-viewport cinematic-mode">
-                
-                <!-- Left Sidebar (Kept minimal for QR codes) -->
-                <div class="left-panel" style="display: flex !important; align-items: flex-end; padding-bottom: 80px;">
-                    <!-- QR Code Sidecar -->
-                    <div class="qr-sidecar" id="qrSidecar" style="display: flex !important; opacity: 1; margin-bottom: 20px;">
-                        <div class="sidecar-text">POBIERZ APLIKACJĘ</div>
-                        <div class="sidecar-qr-box">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://polskieradio.cc" alt="Aplikacja QR" class="sidecar-qr-img">
-                        </div>
-                        <div class="sidecar-subtext">polskieradio.cc</div>
-                    </div>
+            <main class="main-viewport cinematic-mode" style="position: relative; display: block; overflow: hidden;">
+
+
+                <!-- QR 1: Pobierz Aplikację — lewy dolny róg (absolutny, poza obszarem twarzy) -->
+                <div style="position: absolute; bottom: 100px; left: 60px; z-index: 15; display: flex; flex-direction: column; align-items: center; gap: 8px; background: rgba(0,0,0,0.65); backdrop-filter: blur(12px); border: 1px solid rgba(212,175,55,0.35); border-radius: 16px; padding: 16px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    <div style="font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 900; color: var(--breakfast-accent); letter-spacing: 1.5px; text-transform: uppercase; text-align: center;">📱 Pobierz Aplikację</div>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://polskieradio.cc&color=D4AF37&bgcolor=000000" alt="QR Aplikacja" style="width: 140px; height: 140px; border-radius: 8px; display: block;">
+                    <div style="font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 0.5px; text-align: center;">polskieradio.cc</div>
                 </div>
 
-                <!-- Right Panel (Empty for cinematic view) -->
-                <div class="right-panel"></div>
-                
-                <!-- Cinematic Audio Spectrum -->
-                <div class="cinematic-spectrum-container" style="position: absolute; bottom: 85px; left: 0; width: 100%; height: 180px; display: flex; align-items: flex-end; justify-content: center; gap: 8px; opacity: 0.8; z-index: 10; pointer-events: none;">
-                    <!-- We'll generate bars dynamically or via CSS -->
-                    <div class="cinematic-bars" style="display: flex; gap: 4px; height: 100%; align-items: flex-end; width: 80%; justify-content: center;">
-                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 20%; animation: spectrum-bounce 1s infinite alternate ease-in-out; animation-delay: 0.1s;"></span>
-                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 50%; animation: spectrum-bounce 1.2s infinite alternate ease-in-out; animation-delay: 0.3s;"></span>
-                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 30%; animation: spectrum-bounce 0.9s infinite alternate ease-in-out; animation-delay: 0.5s;"></span>
-                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 80%; animation: spectrum-bounce 1.1s infinite alternate ease-in-out; animation-delay: 0.2s;"></span>
-                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 40%; animation: spectrum-bounce 1s infinite alternate ease-in-out; animation-delay: 0.7s;"></span>
-                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 60%; animation: spectrum-bounce 1.3s infinite alternate ease-in-out; animation-delay: 0.4s;"></span>
-                        <span class="bar" style="width: 8px; background: var(--breakfast-accent); height: 20%; animation: spectrum-bounce 0.8s infinite alternate ease-in-out; animation-delay: 0.1s;"></span>
-                    </div>
+                <!-- QR 2: Zamów Biblię Papierową — prawy dolny róg -->
+                <div style="position: absolute; bottom: 100px; right: 60px; z-index: 15; display: flex; flex-direction: column; align-items: center; gap: 8px; background: rgba(0,0,0,0.65); backdrop-filter: blur(12px); border: 1px solid rgba(212,175,55,0.35); border-radius: 16px; padding: 16px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    <div style="font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 900; color: var(--breakfast-accent); letter-spacing: 1.5px; text-transform: uppercase; text-align: center;">📖 Zamów Biblię</div>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://polskieradio.cc/biblia-do-pobrania.html&color=D4AF37&bgcolor=000000" alt="QR Biblia" style="width: 140px; height: 140px; border-radius: 8px; display: block;">
+                    <div style="font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 0.5px; text-align: center;">SMS "BIBLIA" → 507 821 789</div>
                 </div>
+
+                <!-- Cinematic Audio Spectrum — nad dolnym tickerem -->
+                <div style="position: absolute; bottom: 90px; left: 0; width: 100%; height: 160px; display: flex; align-items: flex-end; justify-content: center; pointer-events: none; z-index: 10; overflow: hidden;" id="cinematicSpectrumContainer">
+                </div>
+
             </main>
 
             <!-- Popup Tab (Outside footer to sit behind it) -->
@@ -3434,6 +3399,55 @@ function getWeatherPreset(city) {
         })();
     </script>
     <script src="live-window-manager.js"></script>
+
+    <!-- RDS Scroller — uruchamiany po załadowaniu DOM -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rdsWrap = document.getElementById('rdsWrap');
+            const rdsText = document.getElementById('rdsMarqueeText');
+            if (!rdsWrap || !rdsText) return;
+            
+            let pos = rdsWrap.clientWidth || 1920;
+            rdsText.style.left = pos + 'px';
+            let last = performance.now();
+            
+            function tickRds(now) {
+                const dt = now - last;
+                last = now;
+                pos -= 120 * (dt / 1000); // 120px/s
+                if (pos < -(rdsText.scrollWidth)) {
+                    pos = rdsWrap.clientWidth || 1920;
+                }
+                rdsText.style.left = pos + 'px';
+                requestAnimationFrame(tickRds);
+            }
+            requestAnimationFrame(tickRds);
+
+            // Cinematic Spectrum — generuj słupki dynamicznie
+            const container = document.getElementById('cinematicSpectrumContainer');
+            if (container) {
+                const numBars = 80;
+                for (let i = 0; i < numBars; i++) {
+                    const bar = document.createElement('div');
+                    const baseH = 15 + Math.random() * 60;
+                    const dur = (0.6 + Math.random() * 1.0).toFixed(2);
+                    const delay = (Math.random() * 0.8).toFixed(2);
+                    bar.style.cssText = [
+                        'display:inline-block',
+                        'width:14px',
+                        'flex-shrink:0',
+                        'border-radius:4px 4px 0 0',
+                        'background:linear-gradient(to top,rgba(212,175,55,0.9),rgba(212,175,55,0.2))',
+                        'height:' + baseH + 'px',
+                        'animation:spectrum-bounce ' + dur + 's ' + delay + 's infinite alternate ease-in-out',
+                        'margin:0 2px'
+                    ].join(';');
+                    container.appendChild(bar);
+                }
+            }
+        });
+    </script>
+
 </body>
 </html>
 
