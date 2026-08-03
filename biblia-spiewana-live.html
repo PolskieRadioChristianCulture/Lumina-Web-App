@@ -169,12 +169,14 @@
 
         /* --- MAIN LAYOUT GRID --- */
         .emission-grid {
-            position: relative;
-            z-index: 3;
+            position: absolute;
+            top: 128px;
+            left: 0;
+            z-index: 10;
             width: 1920px;
-            height: 1080px;
+            height: 867px; /* 1080 - 128 (RDS+offset) - 85 (footer) = 867 */
             display: grid;
-            grid-template-rows: 140px 1fr 85px;
+            grid-template-rows: 100px 1fr;
             grid-template-columns: 1fr;
         }
 
@@ -1825,13 +1827,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         }
 
         /* Header w trybie kinowym: flex+column, 140px łącznie (RDS 40px + brand 100px) */
-        .emission-grid > header {
-            display: flex !important;
-            flex-direction: column !important;
-            padding: 0 !important;
-            height: 140px !important;
-            overflow: hidden;
-        }
+        
 
         /* Ukryj lewy i prawy panel — nie są już potrzebne w trybie kinowym */
         .main-viewport.cinematic-mode .left-panel,
@@ -1839,21 +1835,9 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             display: none !important;
         }
 
-        /* Pasek RDS scrollujący — płynny CSS fallback jeśli JS nie zdąży */
-        #rdsMarqueeText {
-            will-change: left;
-        }
+        
 
-        /* Footer Ticker — pełny widok w trybie kinowym (override gradienta) */
-        .main-viewport.cinematic-mode ~ footer,
-        .emission-grid footer {
-            display: flex !important;
-            align-items: center !important;
-            height: 85px !important;
-            background: rgba(0, 0, 0, 0.65) !important;
-            backdrop-filter: blur(15px) !important;
-            border-top: 2px solid rgba(212,175,55,0.5) !important;
-        }
+        
 
     </style>
     <script>
@@ -1873,10 +1857,9 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
     <!-- Main Auto-Scaling Viewport wrapper -->
     <div id="app-container">
 
-        <!-- Background Images (rotational crossfade every 30s) -->
+        <!-- Background Images -->
         <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="biblia_spiewana_tlo2.png" alt="Biblia Śpiewana Studio">
         <img id="bg-img-swap"   class="bg-layer bg-image" style="opacity: 0; transition: opacity 2s ease-in-out;" src="biblia_spiewana_tlo2.png" alt="Biblia Śpiewana Studio 2">
-        
         <video id="bg-video-1" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
         <video id="bg-video-2" class="bg-layer bg-video" style="opacity: 0;" muted playsinline></video>
 
@@ -1886,66 +1869,81 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         <div class="lighting-sweep"></div>
         <div class="ambient-pulse-layer"></div>
 
-        <!-- Emission Screen Grid -->
-        <div class="emission-grid">               <!-- HEADER: RDS (40px) + branding (100px) = 140px total -->
+        <!-- RDS Now Playing Bar (absolutny, top:70px, wzór z cctv24-worship.html) -->
+        <div class="rds-bar" id="rdsWrap" style="overflow: hidden; display: block; position: absolute; padding: 0;">
+            <div id="rdsMarqueeText" style="display: flex; align-items: center; gap: 40px; height: 100%; white-space: nowrap; padding: 0 28px; position: absolute; top: 0;">
+                <span class="rds-live"><i class="fa-solid fa-circle"></i> LIVE</span>
+                <span class="rds-divider">|</span>
+                <span class="rds-label">Teraz na</span>
+                <span class="rds-station">Biblia Śpiewana CC</span>
+                <span class="rds-divider">·</span>
+                <span class="rds-track">Śpiewane Przypowieści Salomona 24/7</span>
+                <span class="rds-divider">·</span>
+                <span class="rds-station">📖 POBIERZ BIBLIĘ: polskieradio.cc</span>
+                <span class="rds-divider">·</span>
+                <span class="rds-station">📦 SMS: BIBLIA → 507 821 789</span>
+                <span class="rds-divider">·</span>
+                <span class="rds-station">📞 +48 730 958 583</span>
+                <span class="rds-note"><i class="fa-solid fa-bible"></i> polskieradio.cc</span>
+            </div>
+        </div>
+
+        <!-- Emission Screen Grid (absolutny, top:128px, wzór z cctv24-worship.html) -->
+        <div class="emission-grid">
+
+            <!-- Header (100px) -->
             <header>
-                <!-- RDS Scrolling Bar -->
-                <div id="rdsWrap" style="overflow: hidden; position: relative; width: 100%; height: 40px; background: rgba(0,0,0,0.85); border-bottom: 1.5px solid rgba(212,175,55,0.3); flex-shrink: 0;">
-                    <div id="rdsMarqueeText" style="position: absolute; top: 0; left: 1920px; height: 100%; display: flex; align-items: center; white-space: nowrap; font-family: 'Inter', sans-serif; font-size: 1.0rem; font-weight: 700; color: #fff; letter-spacing: 2px; gap: 50px; padding: 0 20px;">
-                        <span style="color: var(--breakfast-accent);">✝</span>&nbsp;BIBLIA ŚPIEWANA CC&nbsp;<span style="opacity:0.3">•</span>&nbsp;🎵 ŚPIEWANE PRZYPOWIEŚCI SALOMONA 24/7&nbsp;<span style="opacity:0.3">•</span>&nbsp;📖 POBIERZ DARMOWĄ BIBLIĘ: POLSKIERADIO.CC&nbsp;<span style="opacity:0.3">•</span>&nbsp;📱 APLIKACJA "DOBRZE, ŻE JESTEŚ" — GOOGLE PLAY&nbsp;<span style="opacity:0.3">•</span>&nbsp;📦 ZAMÓW BIBLIĘ PAPIEROWĄ — SMS: BIBLIA → 507 821 789&nbsp;<span style="opacity:0.3">•</span>&nbsp;📞 INFOLINIA: +48 730 958 583&nbsp;<span style="color: var(--breakfast-accent);">✝</span>&nbsp;BIBLIA ŚPIEWANA CC&nbsp;<span style="opacity:0.3">•</span>&nbsp;🎵 ŚPIEWANE PRZYPOWIEŚCI SALOMONA 24/7&nbsp;<span style="opacity:0.3">•</span>&nbsp;📖 SŁOWO BOŻE NA ŻYWO — POLSKIERADIO.CC&nbsp;
+                <div class="header-brand">
+                    <div class="audio-spectrum">
+                        <span></span><span></span><span></span><span></span>
                     </div>
+                    BIBLIA ŚPIEWANA CC
                 </div>
-                <!-- Brand bar -->
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 70px; flex: 1;">
-                    <div class="header-brand">
-                        <div class="audio-spectrum">
-                            <span></span><span></span><span></span><span></span>
+                <div class="live-tag-container">
+                    <!-- Helpline Widget -->
+                    <div class="helpline-header-widget">
+                        <i class="fa-solid fa-phone-volume pulse-phone-icon"></i>
+                        <div class="helpline-header-content">
+                            <div class="helpline-header-title">Infolinia "Nadzieja Christian Culture"</div>
+                            <div class="helpline-header-number">+48 730 958 583</div>
                         </div>
-                        BIBLIA ŚPIEWANA CC
                     </div>
-                    <div class="live-tag-container">
-                        <!-- Numer Infolinii -->
-                        <div style="display: flex; align-items: center; gap: 10px; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.35); border-radius: 10px; padding: 8px 18px; animation: live-helpline-pulse 2.4s infinite alternate;">
-                            <i class="fa-solid fa-phone-volume" style="color: var(--breakfast-accent); font-size: 1.1rem; animation: live-phone-ring 1.6s infinite alternate;"></i>
-                            <div style="display: flex; flex-direction: column; line-height: 1.2;">
-                                <span style="font-size: 0.65rem; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase;">Infolinia Nadzieja CC</span>
-                                <span style="font-size: 1.15rem; font-weight: 900; color: #fff; letter-spacing: 0.5px;">+48 730 958 583</span>
-                            </div>
-                        </div>
-                        <div class="tv-station-id">BIBLIA ŚPIEWANA • CC</div>
-                        <div class="live-badge">
-                            <i class="fa-solid fa-circle"></i> NA ŻYWO
-                        </div>
+                    <div class="tv-station-id">BIBLIA ŚPIEWANA • CC</div>
+                    <div class="live-badge">
+                        <i class="fa-solid fa-circle"></i> NA ŻYWO
                     </div>
                 </div>
             </header>
-            <!-- Main Viewport — przezroczysty obszar (tło za nim widoczne) -->
+
+            <!-- Main Viewport (1fr — czysty obszar tła) -->
             <main class="main-viewport cinematic-mode">
             </main>
 
-            <!-- QR 1: Pobierz Aplikację — lewy dolny róg -->
-            <div class="biblia-qr-widget" style="left: 60px;">
-                <div class="biblia-qr-widget-title">📱 Pobierz Aplikację</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://polskieradio.cc&color=D4AF37&bgcolor=000000" alt="QR Aplikacja Biblia Audio">
-                <div class="biblia-qr-widget-sub">polskieradio.cc</div>
-            </div>
+        </div><!-- /.emission-grid -->
 
-            <!-- QR 2: Zamów Biblię Papierową — prawy dolny róg -->
-            <div class="biblia-qr-widget" style="right: 60px;">
-                <div class="biblia-qr-widget-title">📖 Zamów Biblię</div>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://polskieradio.cc/biblia-do-pobrania.html&color=D4AF37&bgcolor=000000" alt="QR Biblia papierowa">
-                <div class="biblia-qr-widget-sub">SMS "BIBLIA" → 507 821 789</div>
-            </div>
+        <!-- QR 1: Pobierz Aplikację — lewy dolny róg -->
+        <div class="biblia-qr-widget" style="left: 60px;">
+            <div class="biblia-qr-widget-title">📱 Pobierz Aplikację</div>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://polskieradio.cc&color=D4AF37&bgcolor=000000" alt="QR Aplikacja Biblia Audio">
+            <div class="biblia-qr-widget-sub">polskieradio.cc</div>
+        </div>
 
-            <!-- Cinematic Audio Spectrum — nad dolnym tickerem -->
-            <div id="cinematicSpectrumContainer" style="position: absolute; bottom: 90px; left: 0; width: 100%; height: 160px; display: flex; align-items: flex-end; justify-content: center; pointer-events: none; z-index: 12; overflow: hidden;">
-            </div>
+        <!-- QR 2: Zamów Biblię Papierową — prawy dolny róg -->
+        <div class="biblia-qr-widget" style="right: 60px;">
+            <div class="biblia-qr-widget-title">📖 Zamów Biblię</div>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://polskieradio.cc/biblia-do-pobrania.html&color=D4AF37&bgcolor=000000" alt="QR Biblia papierowa">
+            <div class="biblia-qr-widget-sub">SMS "BIBLIA" → 507 821 789</div>
+        </div>
 
-            <!-- Popup Tab (Outside footer to sit behind it) -->
-            <div class="ticker-popup-tab" id="tickerPopupTab">ZA CHWILĘ...</div>
+        <!-- Cinematic Audio Spectrum (nad footer) -->
+        <div id="cinematicSpectrumContainer" style="position: absolute; bottom: 90px; left: 0; width: 100%; height: 150px; display: flex; align-items: flex-end; justify-content: center; pointer-events: none; z-index: 12; overflow: hidden;"></div>
 
-            <!-- Footer Ticker -->
-            <footer>
+        <!-- Popup Tab -->
+        <div class="ticker-popup-tab" id="tickerPopupTab">ZA CHWILĘ...</div>
+
+        <!-- Footer Ticker (absolutny, bottom:0, wzór z cctv24-worship.html) -->
+        <footer>
+
                 <div class="l3-ticker-header">
                     <div class="ticker-flipper" id="tickerFlipper">
                         <!-- FRONT SIDE: Centered large logo -->
@@ -1969,18 +1967,9 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                     📧 NAPISZ DO NAS: <strong>polskiercctv@gmail.com</strong> | <strong>radiochristianculture@gmail.com</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ticker-announcement">OFERTA SPECJALNA 🎁</span> 📖 BEZPŁATNA BIBLIA DLA KAŻDEGO — wyślij SMS o treści: <strong>BIBLIA</strong> pod numer <strong>507 821 789</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 📱 DOŁĄCZ NA WHATSAPP — szczegóły w bocznej ramce &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ticker-announcement">WESPRZYJ MISJĘ ❤️</span> 💳 Zostań Patronem: patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🙏 Dziękujemy za każde wsparcie i modlitwę! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ticker-announcement">ZA CHWILĘ: GŁOS WIDZÓW 📺</span> <span class="ticker-highlight-msg">💬 Pozdrawiam serdecznie Kasię, Zosię, Pawła, Roberta i Bartka :) niech dobry Bóg Was błogosławi Kochani! ~Czarek &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 💬 Pozdrawiam serdecznie księdza Jan Dubas z kościoła Opatrzności Bożej przy ul. Świadka 5 w Rzeszowie ~Katarzyna Fedków</span>
                     </span>
                 </div>
-            </footer>
+                    </footer>
 
-            <!-- Full-Screen TV Bumper/Transition Overlay -->
-            <div id="tvBumperOverlay" class="tv-bumper-overlay" style="display: none !important;">
-                <div class="bumper-content">
-                    <img src="Logo_Biblia_Spiewana.jpg" alt="Biblia Śpiewana logo" class="bumper-logo">
-                    <div class="bumper-glow"></div>
-                </div>
-            </div>
-
-        </div>
-    </div>
+    </div><!-- /#app-container -->
 
     <!-- AUDIO STARTUP OVERLAY (Click to play and bypass browser autoplay block) -->
     <div id="startOverlay" onclick="initStream()">
