@@ -88,7 +88,7 @@ let STATIONS = {
         playlistUrl: "./biblia_spiewana_playlist.json",
         isDrivePlaylist: true,
         accentColors: ["#D4AF37", "#E6A817"],
-        logo: "./biblia_spiewana_tlo.jpg",
+        logo: "./Logo_Biblia_Spiewana.jpg",
         tracks: [
             "Śpiewane Przypowieści Salomona - Rozdział 1",
             "Śpiewane Przypowieści Salomona - Rozdział 2",
