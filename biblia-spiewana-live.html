@@ -1872,6 +1872,46 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             50% { opacity: 0.4; }
             100% { opacity: 1; }
         }
+
+        /* --- QR CODE WIDGETS --- */
+        .biblia-qr-widget {
+            position: absolute;
+            bottom: 110px; /* Sits cleanly above the 85px footer */
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            width: 170px;
+        }
+        .biblia-qr-widget-title {
+            color: #D4AF37;
+            font-size: 0.85rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Cinzel', serif;
+        }
+        .biblia-qr-widget img {
+            border-radius: 8px;
+            margin-bottom: 10px;
+            width: 130px;
+            height: 130px;
+            border: 2px solid #D4AF37;
+        }
+        .biblia-qr-widget-sub {
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
     </style>
     <script>
         // initStream in HEAD - global before any onclick fires
