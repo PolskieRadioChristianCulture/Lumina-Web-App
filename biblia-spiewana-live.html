@@ -1887,16 +1887,15 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         <div class="ambient-pulse-layer"></div>
 
         <!-- Emission Screen Grid -->
-        <div class="emission-grid">
-               <!-- HEADER: zawiera RDS scrollbar + pasek brandingu (140px łącznie) -->
-            <header style="display: flex; flex-direction: column; padding: 0; background: linear-gradient(to bottom, rgba(3,3,3,0.88) 0%, rgba(3,3,3,0.1) 100%);">
-                <!-- RDS Scrolling Bar (40px) -->
-                <div id="rdsWrap" style="overflow: hidden; position: relative; width: 100%; height: 40px; background: rgba(0,0,0,0.8); border-bottom: 1px solid rgba(212,175,55,0.25); flex-shrink: 0;">
-                    <div id="rdsMarqueeText" style="position: absolute; top: 0; height: 100%; display: flex; align-items: center; white-space: nowrap; font-family: 'Inter', sans-serif; font-size: 1.0rem; font-weight: 700; color: #fff; letter-spacing: 2px; gap: 50px; padding: 0 20px;">
-                        <span style="color: var(--breakfast-accent);">✝</span>&nbsp;BIBLIA ŚPIEWANA CC&nbsp;<span style="opacity:0.3">•</span>&nbsp;🎵 ŚPIEWANE PRZYPOWIEŚCI SALOMONA 24/7&nbsp;<span style="opacity:0.3">•</span>&nbsp;📖 POBIERZ DARMOWĄ BIBLIĘ: POLSKIERADIO.CC&nbsp;<span style="opacity:0.3">•</span>&nbsp;📱 APLIKACJA "DOBRZE, ŻE JESTEŚ" — GOOGLE PLAY&nbsp;<span style="opacity:0.3">•</span>&nbsp;📦 ZAMÓW BIBLIĘ PAPIEROWĄ — SMS: BIBLIA → 507 821 789&nbsp;<span style="opacity:0.3">•</span>&nbsp;📞 INFOLINIA NADZIEJA CC: +48 730 958 583&nbsp;<span style="color: var(--breakfast-accent);">✝</span>&nbsp;BIBLIA ŚPIEWANA CC&nbsp;<span style="opacity:0.3">•</span>&nbsp;🎵 ŚPIEWANE PRZYPOWIEŚCI SALOMONA 24/7&nbsp;<span style="opacity:0.3">•</span>&nbsp;📖 SŁOWO BOŻE NA ŻYWO — POLSKIERADIO.CC
+        <div class="emission-grid">               <!-- HEADER: RDS (40px) + branding (100px) = 140px total -->
+            <header>
+                <!-- RDS Scrolling Bar -->
+                <div id="rdsWrap" style="overflow: hidden; position: relative; width: 100%; height: 40px; background: rgba(0,0,0,0.85); border-bottom: 1.5px solid rgba(212,175,55,0.3); flex-shrink: 0;">
+                    <div id="rdsMarqueeText" style="position: absolute; top: 0; left: 1920px; height: 100%; display: flex; align-items: center; white-space: nowrap; font-family: 'Inter', sans-serif; font-size: 1.0rem; font-weight: 700; color: #fff; letter-spacing: 2px; gap: 50px; padding: 0 20px;">
+                        <span style="color: var(--breakfast-accent);">✝</span>&nbsp;BIBLIA ŚPIEWANA CC&nbsp;<span style="opacity:0.3">•</span>&nbsp;🎵 ŚPIEWANE PRZYPOWIEŚCI SALOMONA 24/7&nbsp;<span style="opacity:0.3">•</span>&nbsp;📖 POBIERZ DARMOWĄ BIBLIĘ: POLSKIERADIO.CC&nbsp;<span style="opacity:0.3">•</span>&nbsp;📱 APLIKACJA "DOBRZE, ŻE JESTEŚ" — GOOGLE PLAY&nbsp;<span style="opacity:0.3">•</span>&nbsp;📦 ZAMÓW BIBLIĘ PAPIEROWĄ — SMS: BIBLIA → 507 821 789&nbsp;<span style="opacity:0.3">•</span>&nbsp;📞 INFOLINIA: +48 730 958 583&nbsp;<span style="color: var(--breakfast-accent);">✝</span>&nbsp;BIBLIA ŚPIEWANA CC&nbsp;<span style="opacity:0.3">•</span>&nbsp;🎵 ŚPIEWANE PRZYPOWIEŚCI SALOMONA 24/7&nbsp;<span style="opacity:0.3">•</span>&nbsp;📖 SŁOWO BOŻE NA ŻYWO — POLSKIERADIO.CC&nbsp;
                     </div>
                 </div>
-                <!-- Main branding bar (100px) -->
+                <!-- Brand bar -->
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 70px; flex: 1;">
                     <div class="header-brand">
                         <div class="audio-spectrum">
@@ -1905,7 +1904,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                         BIBLIA ŚPIEWANA CC
                     </div>
                     <div class="live-tag-container">
-                        <!-- Numer Infolinii widoczny w headerze -->
+                        <!-- Numer Infolinii -->
                         <div style="display: flex; align-items: center; gap: 10px; background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.35); border-radius: 10px; padding: 8px 18px; animation: live-helpline-pulse 2.4s infinite alternate;">
                             <i class="fa-solid fa-phone-volume" style="color: var(--breakfast-accent); font-size: 1.1rem; animation: live-phone-ring 1.6s infinite alternate;"></i>
                             <div style="display: flex; flex-direction: column; line-height: 1.2;">
@@ -1920,30 +1919,27 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                     </div>
                 </div>
             </header>
-
-            <!-- Main Viewport -->
-            <main class="main-viewport cinematic-mode" style="position: relative; display: block; overflow: hidden;">
-
-
-                <!-- QR 1: Pobierz Aplikację — lewy dolny róg (absolutny, poza obszarem twarzy) -->
-                <div style="position: absolute; bottom: 100px; left: 60px; z-index: 15; display: flex; flex-direction: column; align-items: center; gap: 8px; background: rgba(0,0,0,0.65); backdrop-filter: blur(12px); border: 1px solid rgba(212,175,55,0.35); border-radius: 16px; padding: 16px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                    <div style="font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 900; color: var(--breakfast-accent); letter-spacing: 1.5px; text-transform: uppercase; text-align: center;">📱 Pobierz Aplikację</div>
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://polskieradio.cc&color=D4AF37&bgcolor=000000" alt="QR Aplikacja" style="width: 140px; height: 140px; border-radius: 8px; display: block;">
-                    <div style="font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 0.5px; text-align: center;">polskieradio.cc</div>
-                </div>
-
-                <!-- QR 2: Zamów Biblię Papierową — prawy dolny róg -->
-                <div style="position: absolute; bottom: 100px; right: 60px; z-index: 15; display: flex; flex-direction: column; align-items: center; gap: 8px; background: rgba(0,0,0,0.65); backdrop-filter: blur(12px); border: 1px solid rgba(212,175,55,0.35); border-radius: 16px; padding: 16px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                    <div style="font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 900; color: var(--breakfast-accent); letter-spacing: 1.5px; text-transform: uppercase; text-align: center;">📖 Zamów Biblię</div>
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://polskieradio.cc/biblia-do-pobrania.html&color=D4AF37&bgcolor=000000" alt="QR Biblia" style="width: 140px; height: 140px; border-radius: 8px; display: block;">
-                    <div style="font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 0.5px; text-align: center;">SMS "BIBLIA" → 507 821 789</div>
-                </div>
-
-                <!-- Cinematic Audio Spectrum — nad dolnym tickerem -->
-                <div style="position: absolute; bottom: 90px; left: 0; width: 100%; height: 160px; display: flex; align-items: flex-end; justify-content: center; pointer-events: none; z-index: 10; overflow: hidden;" id="cinematicSpectrumContainer">
-                </div>
-
+            <!-- Main Viewport — przezroczysty obszar (tło za nim widoczne) -->
+            <main class="main-viewport cinematic-mode">
             </main>
+
+            <!-- QR 1: Pobierz Aplikację — lewy dolny róg -->
+            <div class="biblia-qr-widget" style="left: 60px;">
+                <div class="biblia-qr-widget-title">📱 Pobierz Aplikację</div>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://polskieradio.cc&color=D4AF37&bgcolor=000000" alt="QR Aplikacja Biblia Audio">
+                <div class="biblia-qr-widget-sub">polskieradio.cc</div>
+            </div>
+
+            <!-- QR 2: Zamów Biblię Papierową — prawy dolny róg -->
+            <div class="biblia-qr-widget" style="right: 60px;">
+                <div class="biblia-qr-widget-title">📖 Zamów Biblię</div>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://polskieradio.cc/biblia-do-pobrania.html&color=D4AF37&bgcolor=000000" alt="QR Biblia papierowa">
+                <div class="biblia-qr-widget-sub">SMS "BIBLIA" → 507 821 789</div>
+            </div>
+
+            <!-- Cinematic Audio Spectrum — nad dolnym tickerem -->
+            <div id="cinematicSpectrumContainer" style="position: absolute; bottom: 90px; left: 0; width: 100%; height: 160px; display: flex; align-items: flex-end; justify-content: center; pointer-events: none; z-index: 12; overflow: hidden;">
+            </div>
 
             <!-- Popup Tab (Outside footer to sit behind it) -->
             <div class="ticker-popup-tab" id="tickerPopupTab">ZA CHWILĘ...</div>
