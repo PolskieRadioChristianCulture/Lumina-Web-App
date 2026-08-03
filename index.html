@@ -117,17 +117,16 @@
             100% { opacity: 1; transform: translateX(0px); }
         }
 
-        /* Floating widget styles */
+        /* Helpline Widget inside player-right */
         #helplineFloat {
-            position: fixed;
-            bottom: 28px;
-            right: 24px;
-            z-index: 9990;
+            position: relative;
             display: flex;
             align-items: center;
             gap: 0;
             cursor: pointer;
             text-decoration: none;
+            flex-shrink: 0;
+            margin-left: auto;
         }
         #helplineFloat .hf-label {
             display: none;
@@ -162,35 +161,29 @@
             white-space: nowrap;
         }
         #helplineFloat .hf-btn {
-            width: 58px;
-            height: 58px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: linear-gradient(135deg, #f5c518, #e6a817);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.15rem;
             color: #000;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 4px 15px rgba(245, 197, 24, 0.4);
             animation: helpline-float-pulse 2.2s infinite, helpline-ring 4s 2s infinite;
             flex-shrink: 0;
             transition: transform 0.2s, background 0.2s;
         }
         #helplineFloat:hover .hf-btn {
-            transform: scale(1.1);
+            transform: scale(1.08);
             background: linear-gradient(135deg, #ffe45e, #f5c518);
-            animation: helpline-ring 0.5s infinite;
         }
         @media (max-width: 768px) {
-            #helplineFloat {
-                display: flex !important;
-                bottom: 8px !important;
-                right: 10px !important;
-            }
             #helplineFloat .hf-btn {
-                width: 44px !important;
-                height: 44px !important;
-                font-size: 1.1rem !important;
+                width: 38px !important;
+                height: 38px !important;
+                font-size: 0.95rem !important;
             }
             #helplineFloat .hf-label {
                 display: none !important;
@@ -1270,6 +1263,17 @@
                     </button>
                     <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider" aria-label="Suwak głośności">
                 </div>
+
+                <!-- Floating Helpline Phone Button -->
+                <a href="tel:+48730958583" id="helplineFloat" title="Zadzwoń na Infolinię Nadzieja Christian Culture" aria-label="Infolinia Nadzieja Christian Culture - zadzwoń +48 730 958 583">
+                    <div class="hf-label">
+                        <span class="hf-label-top">Infolinia &ldquo;Nadzieja&rdquo;</span>
+                        <span class="hf-label-number">+48 730 958 583</span>
+                    </div>
+                    <div class="hf-btn">
+                        <i class="fa-solid fa-phone-volume"></i>
+                    </div>
+                </a>
             </div>
             
         </div>
@@ -1498,17 +1502,6 @@
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="module" src="app.js?v=14"></script>
     <script type="module" src="dobrzezejestes.js?v=6"></script>
-
-    <!-- ========== PULSUJĄCA SŁUCHAWKA INFOLINII (FLOATING WIDGET) ========== -->
-    <a href="tel:+48730958583" id="helplineFloat" title="Zadzwoń na Infolinię Nadzieja Christian Culture" aria-label="Infolinia Nadzieja Christian Culture - zadzwoń +48 730 958 583">
-        <div class="hf-label">
-            <span class="hf-label-top">Infolinia &ldquo;Nadzieja&rdquo;</span>
-            <span class="hf-label-number">+48 730 958 583</span>
-        </div>
-        <div class="hf-btn">
-            <i class="fa-solid fa-phone-volume"></i>
-        </div>
-    </a>
 
 </body>
 </html>
