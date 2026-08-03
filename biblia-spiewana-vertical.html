@@ -636,7 +636,7 @@
 <body>
 
     <!-- Radio Stream Audio (src attribute placed directly on audio tag for dynamic hot-swapping; crossorigin removed to support external ebible.org MP3s) -->
-    <audio id="stream-audio" src="https://stream.zeno.fm/imo45hqnshyuv"></audio>
+    <audio id="stream-audio" autoplay></audio>
 
     <!-- Video Background Loops (Dual player configuration; visible if local file is present) -->
     <video muted playsinline id="bg-video-1" class="bg-video" style="opacity: 0;"></video>
@@ -1367,6 +1367,105 @@
                 }, 5000);
             });
         }
+
+        // --- BIBLIA ŚPIEWANA AUDIO PLAYLIST SYNCHRONIZER ---
+        (function initBibliaSpiewanaAudio() {
+            var audio = document.getElementById("stream-audio");
+            if (!audio) return;
+
+            var spiewanaPlaylist = [];
+            var totalSpiewanaDuration = 0;
+
+            function updateMediaSession(track) {
+                if ('mediaSession' in navigator && track) {
+                    navigator.mediaSession.metadata = new MediaMetadata({
+                        title: track.title || "Biblia Śpiewana",
+                        artist: track.artist || "Christian Culture",
+                        album: track.album || "Biblia Śpiewana - Śpiewane Przypowieści Salomona",
+                        artwork: [{ src: 'Logo_Biblia_Spiewana.jpg', sizes: '512x512', type: 'image/jpeg' }]
+                    });
+                }
+            }
+
+            function syncAndPlay() {
+                if (!spiewanaPlaylist || !spiewanaPlaylist.length) return;
+
+                var epochSeconds = Math.floor(Date.now() / 1000);
+                var remaining = epochSeconds % (totalSpiewanaDuration || 7440);
+                var targetIndex = 0;
+
+                for (var i = 0; i < spiewanaPlaylist.length; i++) {
+                    var dur = spiewanaPlaylist[i].duration || 240;
+                    if (remaining < dur) {
+                        targetIndex = i;
+                        break;
+                    }
+                    remaining -= dur;
+                }
+
+                var currentTrack = spiewanaPlaylist[targetIndex];
+                if (currentTrack && currentTrack.url) {
+                    var newUrl = currentTrack.url;
+                    if (!audio.src || !audio.src.includes(encodeURI(newUrl).slice(-30))) {
+                        audio.src = newUrl;
+                    }
+                    audio.play().catch(function(e) {
+                        console.warn("Audio play blocked:", e.message);
+                    });
+                    updateMediaSession(currentTrack);
+
+                    const chapterHead = document.getElementById("chapterHeading");
+                    const footerTitle = document.getElementById("footerTitle");
+                    if (chapterHead) chapterHead.textContent = currentTrack.title || "Biblia Śpiewana";
+                    if (footerTitle) footerTitle.textContent = currentTrack.title || "Biblia Śpiewana";
+                }
+            }
+
+            audio.addEventListener('ended', syncAndPlay);
+            audio.addEventListener('error', function() {
+                console.warn("Audio error – loading next track");
+                if (spiewanaPlaylist && spiewanaPlaylist.length > 0) {
+                    var currentSrc = audio.src;
+                    var currentIdx = spiewanaPlaylist.findIndex(function(t) {
+                        return currentSrc.includes(t.url.slice(-30));
+                    });
+                    var nextIdx = (currentIdx + 1) % spiewanaPlaylist.length;
+                    var next = spiewanaPlaylist[nextIdx];
+                    if (next && next.url) {
+                        audio.src = next.url;
+                        audio.play().catch(function(){});
+                        updateMediaSession(next);
+                    }
+                }
+            });
+
+            window.initializeStream = function() {
+                const overlay = document.getElementById('interactiveOverlay');
+                if (overlay) overlay.classList.add('hidden');
+                syncAndPlay();
+            };
+
+            fetch("./biblia_spiewana_playlist.json?t=" + new Date().getTime())
+                .then(function(res) { return res.json(); })
+                .then(function(playlist) {
+                    if (!playlist || !playlist.length) return;
+                    spiewanaPlaylist = playlist;
+                    totalSpiewanaDuration = spiewanaPlaylist.reduce(function(acc, t) {
+                        return acc + (t.duration || 240);
+                    }, 0);
+                    syncAndPlay();
+                })
+                .catch(function(err) {
+                    console.error("Error loading biblia_spiewana_playlist.json:", err);
+                });
+
+            document.addEventListener("click", function() {
+                if (audio.paused) {
+                    audio.play().catch(function(){});
+                }
+            }, { once: true });
+        })();
+
 
         function initializeStream() {
             document.getElementById('interactiveOverlay').classList.add('hidden');
