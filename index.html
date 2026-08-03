@@ -181,8 +181,18 @@
             background: linear-gradient(135deg, #ffe45e, #f5c518);
             animation: helpline-ring 0.5s infinite;
         }
-        @media (max-width: 1024px) {
-            #helplineFloat, #shortcutHelpline, #drawerHelpline {
+        @media (max-width: 768px) {
+            #helplineFloat {
+                display: flex !important;
+                bottom: 8px !important;
+                right: 10px !important;
+            }
+            #helplineFloat .hf-btn {
+                width: 44px !important;
+                height: 44px !important;
+                font-size: 1.1rem !important;
+            }
+            #helplineFloat .hf-label {
                 display: none !important;
             }
         }
