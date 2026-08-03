@@ -1252,7 +1252,7 @@
                 <canvas id="visualizerCanvas" class="visualizer-canvas"></canvas>
             </div>
             
-            <!-- Right Side: Controls (Play/Pause, Mute, Volume) -->
+            <!-- Right Side: Controls (Status, Play/Pause, Volume, Helpline) -->
             <div class="player-right">
                 <!-- Status/Buffering Indicator -->
                 <div class="player-status" id="playerStatusText">Wyciszony</div>
@@ -1262,26 +1262,24 @@
                     <i class="fa-solid fa-play" id="playIcon"></i>
                 </button>
 
-                <!-- Right Controls Group (Volume + Helpline) -->
-                <div class="player-controls-right-group">
-                    <div class="volume-container">
-                        <button class="volume-btn" id="volumeBtn" aria-label="Wycisz/Wyłącz dźwięk">
-                            <i class="fa-solid fa-volume-high" id="volumeIcon"></i>
-                        </button>
-                        <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider" aria-label="Suwak głośności">
-                    </div>
-
-                    <!-- Floating Helpline Phone Button -->
-                    <a href="tel:+48730958583" id="helplineFloat" title="Zadzwoń na Infolinię Nadzieja Christian Culture" aria-label="Infolinia Nadzieja Christian Culture - zadzwoń +48 730 958 583">
-                        <div class="hf-label">
-                            <span class="hf-label-top">Infolinia &ldquo;Nadzieja&rdquo;</span>
-                            <span class="hf-label-number">+48 730 958 583</span>
-                        </div>
-                        <div class="hf-btn">
-                            <i class="fa-solid fa-phone-volume"></i>
-                        </div>
-                    </a>
+                <!-- Volume Control -->
+                <div class="volume-container">
+                    <button class="volume-btn" id="volumeBtn" aria-label="Wycisz/Wyłącz dźwięk">
+                        <i class="fa-solid fa-volume-high" id="volumeIcon"></i>
+                    </button>
+                    <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider" aria-label="Suwak głośności">
                 </div>
+
+                <!-- Floating Helpline Phone Button -->
+                <a href="tel:+48730958583" id="helplineFloat" title="Zadzwoń na Infolinię Nadzieja Christian Culture" aria-label="Infolinia Nadzieja Christian Culture - zadzwoń +48 730 958 583">
+                    <div class="hf-label">
+                        <span class="hf-label-top">Infolinia &ldquo;Nadzieja&rdquo;</span>
+                        <span class="hf-label-number">+48 730 958 583</span>
+                    </div>
+                    <div class="hf-btn">
+                        <i class="fa-solid fa-phone-volume"></i>
+                    </div>
+                </a>
             </div>
             
         </div>

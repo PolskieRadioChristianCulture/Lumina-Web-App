@@ -932,12 +932,6 @@ button {
     gap: 1.25rem;
 }
 
-.player-controls-right-group {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-}
-
 .player-status {
     font-size: 0.65rem;
     font-weight: 700;
@@ -1420,9 +1414,10 @@ button {
     .player-right {
         grid-column: 1;
         grid-row: 2;
-        display: grid !important;
-        grid-template-columns: 1fr auto 1fr !important;
+        display: flex !important;
+        flex-direction: row !important;
         align-items: center !important;
+        justify-content: space-between !important;
         width: 100% !important;
         border-top: 1px solid rgba(212, 175, 55, 0.08);
         padding-top: 0.35rem;
@@ -1430,7 +1425,6 @@ button {
     }
     
     .player-status {
-        justify-self: start !important;
         font-size: 0.58rem;
         padding: 0.15rem 0.3rem;
         border-radius: 3px;
@@ -1438,7 +1432,6 @@ button {
     }
     
     .play-btn {
-        justify-self: center !important;
         width: 38px !important;
         height: 38px !important;
         font-size: 0.9rem !important;
@@ -1447,18 +1440,10 @@ button {
         margin: 0 !important;
     }
 
-    .player-controls-right-group {
-        justify-self: end !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 0.3rem !important;
-        flex-shrink: 0;
-    }
-    
     .volume-container {
         display: flex !important;
         align-items: center !important;
-        gap: 0.25rem !important;
+        gap: 0.3rem !important;
         flex-shrink: 0;
     }
     
@@ -1468,8 +1453,24 @@ button {
     
     .volume-slider {
         display: block !important;
-        width: 40px !important;
+        width: 50px !important;
         height: 3px !important;
+    }
+
+    #helplineFloat {
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0;
+        margin: 0 !important;
+    }
+
+    #helplineFloat .hf-btn {
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 0.95rem !important;
+        margin: 0 !important;
     }
 }
 
