@@ -507,6 +507,10 @@ function fadeAudioIn(targetVolume) {
 }
 
 // Audio Buffering Event Listeners
+// Preload playlists immediately for instant playback and gesture preservation
+loadWorshipPlaylist();
+loadGlobalPlaylist();
+
 audio.addEventListener("waiting", () => {
     if (isPlaying) {
         playerStatusText.textContent = "Buforowanie...";
@@ -514,8 +518,14 @@ audio.addEventListener("waiting", () => {
 });
 
 audio.addEventListener("playing", () => {
-    if (isPlaying) {
-        playerStatusText.textContent = "Odtwarza";
+    isPlaying = true;
+    updatePlayerUI(true);
+    playerStatusText.textContent = "Odtwarza";
+});
+
+audio.addEventListener("pause", () => {
+    if (audio.paused && !isPlaying) {
+        updatePlayerUI(false);
     }
 });
 
