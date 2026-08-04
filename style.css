@@ -761,9 +761,9 @@ button {
     margin: 0 auto;
     padding: 0 2rem;
     display: grid;
-    grid-template-columns: 320px 1fr 300px;
+    grid-template-columns: 320px 1fr 340px;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 /* Left: Station info */
@@ -914,7 +914,9 @@ button {
     align-items: center;
     height: 100%;
     width: 100%;
+    min-width: 0;          /* pozwala na kurczenie się w gridzie */
     padding: 0 1rem;
+    overflow: hidden;      /* canvas nie wychodzi poza kolumnę */
 }
 
 .visualizer-canvas {
@@ -942,6 +944,8 @@ button {
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
     background: rgba(255, 255, 255, 0.02);
+    white-space: nowrap;   /* napis nie łamie linii */
+    flex-shrink: 0;        /* nie kurczy się kosztem sąsiadów */
 }
 
 /* Circular Play Button */
