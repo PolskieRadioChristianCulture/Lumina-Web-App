@@ -718,21 +718,19 @@
                     </div>
                     <div class="video-container" style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.7); border: 1.5px solid rgba(212, 175, 55, 0.35); background: #000;">
                         <style>
-                            /* ── Ken Burns: powiększanie podczas wyświetlania ── */
-                            @keyframes kenBurnsIn {
-                                0%   { transform: scale(1.0);   opacity: 1; }
-                                100% { transform: scale(1.10);  opacity: 1; }
+                            /* ── Jedna płynna animacja: fade-in (pierwsze 23%) + Ken Burns zoom ── */
+                            @keyframes liveShowZoomIn {
+                                0%   { opacity: 0; transform: scale(1.00); }
+                                20%  { opacity: 1; transform: scale(1.02); }
+                                100% { opacity: 1; transform: scale(1.10); }
                             }
-                            @keyframes kenBurnsOut {
-                                0%   { transform: scale(1.10);  opacity: 1; }
-                                100% { transform: scale(1.0);   opacity: 1; }
+                            @keyframes liveShowZoomOut {
+                                0%   { opacity: 0; transform: scale(1.10); }
+                                20%  { opacity: 1; transform: scale(1.08); }
+                                100% { opacity: 1; transform: scale(1.00); }
                             }
-                            /* ── Fade animacje (zachowują skalę) ── */
-                            @keyframes liveBgFadeIn {
-                                0%   { opacity: 0; transform: scale(1.0); }
-                                100% { opacity: 1; transform: scale(1.0); }
-                            }
-                            @keyframes liveBgFadeOut {
+                            /* ── Wygaszenie: tylko opacity (skala niewidoczna na przezroczystym) ── */
+                            @keyframes liveFadeOut {
                                 0%   { opacity: 1; }
                                 100% { opacity: 0; }
                             }
@@ -741,19 +739,28 @@
                                 top: 0; left: 0;
                                 width: 100%; height: 100%;
                                 object-fit: cover;
+                                opacity: 0;
+                                transform: scale(1.0);
                                 transform-origin: center center;
                                 will-change: transform, opacity;
+                                z-index: 1;
                             }
-                            .live-bg-img.active        { opacity: 1; z-index: 2; }
-                            .live-bg-img.inactive      { opacity: 0; z-index: 1; transform: scale(1.0); }
-                            .live-bg-img.fading-out    { animation: liveBgFadeOut 1.5s ease forwards; z-index: 2; }
-                            .live-bg-img.fading-in     { animation: liveBgFadeIn  1.5s ease forwards; z-index: 3; }
-                            /* Ken Burns podczas wyświetlania (start po fading-in) */
-                            .live-bg-img.active.kb-in  { animation: kenBurnsIn  6.5s ease forwards; }
-                            .live-bg-img.active.kb-out { animation: kenBurnsOut 6.5s ease forwards; }
+                            .live-bg-img.inactive   { opacity: 0; z-index: 1; }
+                            .live-bg-img.showing-in  {
+                                animation: liveShowZoomIn  6.5s ease forwards;
+                                z-index: 3;
+                            }
+                            .live-bg-img.showing-out {
+                                animation: liveShowZoomOut 6.5s ease forwards;
+                                z-index: 3;
+                            }
+                            .live-bg-img.hiding {
+                                animation: liveFadeOut 1.5s ease forwards;
+                                z-index: 2;
+                            }
                         </style>
                         <!-- Rotacyjne tła transmisji (9 zdjęć) -->
-                        <img id="liveBg0" src="promo_dzj.jpg"        alt="Dobrze, że jesteś - Transmisja na żywo"  class="live-bg-img active">
+                        <img id="liveBg0" src="promo_dzj.jpg"        alt="Dobrze, że jesteś - Transmisja na żywo"  class="live-bg-img showing-in">
                         <img id="liveBg1" src="tlo_tv_dzj.jpg"       alt="Dobrze, że jesteś - Studio TV"           class="live-bg-img inactive">
                         <img id="liveBg2" src="tlo_tv_polska.jpg"    alt="Zjednoczeni za Polskę - NA ŻYWO"         class="live-bg-img inactive">
                         <img id="liveBg3" src="tlo_tv_biblia.jpg"    alt="Biblia Audio Christian Culture"          class="live-bg-img inactive">
@@ -779,35 +786,31 @@
                                 var ids = ['liveBg0','liveBg1','liveBg2','liveBg3','liveBg4','liveBg5','liveBg6','liveBg7','liveBg8'];
                                 var imgs = ids.map(function(id){ return document.getElementById(id); });
                                 var current = 0;
-                                var kbDir = 0; /* 0 = zoom-in, 1 = zoom-out — naprzemiennie */
+                                var kbDir = 0; /* 0 = zoom-in, 1 = zoom-out, naprzemiennie */
 
-                                /* Pierwszy obraz od razu dostaje Ken Burns */
-                                imgs[0].classList.add('kb-in');
-
-                                setInterval(function() {
+                                function showNext() {
                                     var next = (current + 1) % imgs.length;
-                                    kbDir = 1 - kbDir; /* flip */
+                                    kbDir = 1 - kbDir;
 
-                                    /* Wygaszanie bieżącego */
-                                    imgs[current].classList.remove('active','fading-in','kb-in','kb-out');
-                                    imgs[current].classList.add('fading-out');
+                                    /* Wygaszenie bieżącego — prosta animacja opacity */
+                                    imgs[current].classList.remove('showing-in', 'showing-out');
+                                    imgs[current].classList.add('hiding');
 
-                                    /* Pojawienie następnego */
-                                    imgs[next].classList.remove('inactive','fading-out','kb-in','kb-out');
-                                    imgs[next].classList.add('fading-in');
+                                    /* Pojawienie następnego — jedna płynna animacja fade+zoom */
+                                    imgs[next].classList.remove('inactive', 'hiding');
+                                    imgs[next].classList.add(kbDir === 0 ? 'showing-in' : 'showing-out');
 
+                                    /* Po zakończeniu fade-out → inactive */
+                                    var old = current;
                                     setTimeout(function() {
-                                        imgs[current].classList.remove('fading-out');
-                                        imgs[current].classList.add('inactive');
-
-                                        imgs[next].classList.remove('fading-in');
-                                        imgs[next].classList.add('active');
-                                        /* Dodaj Ken Burns w odpowiednim kierunku */
-                                        imgs[next].classList.add(kbDir === 0 ? 'kb-in' : 'kb-out');
-
-                                        current = next;
+                                        imgs[old].classList.remove('hiding');
+                                        imgs[old].classList.add('inactive');
                                     }, 1500);
-                                }, 6500);
+
+                                    current = next;
+                                }
+
+                                setInterval(showNext, 6500);
                             })();
                         </script>
                     </div>
