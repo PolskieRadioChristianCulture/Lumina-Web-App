@@ -246,6 +246,147 @@
 </head>
 <body>
 
+    <!-- ===== FIXED SIDE PROMO PANELS (desktop only) ===== -->
+    <style>
+        .side-promo {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 130px;
+            z-index: 9000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: opacity 0.3s;
+        }
+        .side-promo-left  { left: 8px; }
+        .side-promo-right { right: 8px; }
+        .side-promo-inner {
+            background: linear-gradient(160deg, #0d0d1a 0%, #1a1a2e 60%, #0d0d1a 100%);
+            border: 1.5px solid rgba(212,175,55,0.5);
+            border-radius: 16px;
+            padding: 14px 10px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.7), 0 0 20px rgba(212,175,55,0.15);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+            animation: sidePanelSlideIn 0.8s cubic-bezier(0.16,1,0.3,1) both;
+            text-decoration: none;
+            display: block;
+        }
+        .side-promo-inner:hover {
+            transform: scale(1.06);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 30px rgba(212,175,55,0.35);
+            border-color: rgba(212,175,55,0.9);
+        }
+        @keyframes sidePanelSlideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        .side-promo-right .side-promo-inner {
+            animation-name: sidePanelSlideInRight;
+        }
+        @keyframes sidePanelSlideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        .side-badge {
+            background: linear-gradient(90deg, #ff4444, #ff0000);
+            color: #fff;
+            font-size: 0.5rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            padding: 3px 6px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            display: inline-block;
+            line-height: 1.4;
+        }
+        .side-badge-gold {
+            background: linear-gradient(90deg, #D4AF37, #f5d77e);
+            color: #000;
+            font-size: 0.48rem;
+            font-weight: 900;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        .side-img {
+            width: 100%;
+            border-radius: 10px;
+            display: block;
+            margin-bottom: 8px;
+            border: 1px solid rgba(212,175,55,0.3);
+        }
+        .side-title {
+            color: #fff;
+            font-size: 0.62rem;
+            font-weight: 800;
+            font-family: 'Cinzel', serif;
+            line-height: 1.3;
+            margin-bottom: 4px;
+        }
+        .side-sub {
+            color: rgba(212,175,55,0.85);
+            font-size: 0.55rem;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .side-cta {
+            display: block;
+            background: linear-gradient(90deg, #D4AF37, #f5d77e);
+            color: #000;
+            font-weight: 900;
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 7px 4px;
+            border-radius: 8px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            animation: sideCtaPulse 2.5s ease-in-out infinite;
+            font-family: 'Inter', sans-serif;
+        }
+        @keyframes sideCtaPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.5); }
+            50%       { box-shadow: 0 0 0 6px rgba(212,175,55,0); }
+        }
+        /* Ukryj na mobile i małych ekranach */
+        @media (max-width: 1400px) { .side-promo { display: none !important; } }
+    </style>
+
+    <!-- Panel LEWY -->
+    <div class="side-promo side-promo-left">
+        <a class="side-promo-inner" href="https://my-store-1009741.creator-spring.com/listing/jezu-ty-si-tym-zajmij?product=2405" target="_blank" rel="noopener">
+            <span class="side-badge">🔥 NOWOŚĆ</span><br>
+            <span class="side-badge-gold">⭐ Mega Hit Lata 2026</span>
+            <img src="tlo_tv_koszulki.jpg" alt="Koszulka Jezu Ty się tym zajmij" class="side-img">
+            <div class="side-title">Koszulka<br>"Jezu, Ty się<br>tym zajmij"</div>
+            <div class="side-sub">Christian Culture TV<br>Oficjalny sklep</div>
+            <span class="side-cta">🛒 KUP TERAZ</span>
+        </a>
+    </div>
+
+    <!-- Panel PRAWY -->
+    <div class="side-promo side-promo-right">
+        <a class="side-promo-inner" href="https://my-store-1009741.creator-spring.com/listing/jezu-ty-si-tym-zajmij?product=2405" target="_blank" rel="noopener">
+            <span class="side-badge">🔥 NOWOŚĆ</span><br>
+            <span class="side-badge-gold">⭐ Mega Hit Lata 2026</span>
+            <img src="tlo_tv_koszulki.jpg" alt="Koszulka Jezu Ty się tym zajmij" class="side-img">
+            <div class="side-title">Koszulka<br>"Jezu, Ty się<br>tym zajmij"</div>
+            <div class="side-sub">Christian Culture TV<br>Oficjalny sklep</div>
+            <span class="side-cta">🛒 KUP TERAZ</span>
+        </a>
+    </div>
+    <!-- ===== END SIDE PANELS ===== -->
+
     <!-- SECTION A: HEADER -->
     <header class="main-header" id="mainHeader">
         <div class="header-container">
@@ -563,10 +704,16 @@
                             .live-bg-img.fading-out { animation: liveBgFadeOut 1.5s ease forwards; z-index: 2; }
                             .live-bg-img.fading-in  { animation: liveBgFadeIn  1.5s ease forwards; z-index: 3; }
                         </style>
-                        <!-- Rotacyjne tła transmisji -->
-                        <img id="liveBg0" src="promo_dzj.jpg"    alt="Dobrze, że jesteś - Transmisja na żywo" class="live-bg-img active">
-                        <img id="liveBg1" src="tlo_tv_dzj.jpg"   alt="Dobrze, że jesteś - Studio TV"          class="live-bg-img inactive">
-                        <img id="liveBg2" src="tlo_tv_polska.jpg" alt="Zjednoczeni za Polskę - NA ŻYWO"        class="live-bg-img inactive">
+                        <!-- Rotacyjne tła transmisji (9 zdjęć) -->
+                        <img id="liveBg0" src="promo_dzj.jpg"        alt="Dobrze, że jesteś - Transmisja na żywo"  class="live-bg-img active">
+                        <img id="liveBg1" src="tlo_tv_dzj.jpg"       alt="Dobrze, że jesteś - Studio TV"           class="live-bg-img inactive">
+                        <img id="liveBg2" src="tlo_tv_polska.jpg"    alt="Zjednoczeni za Polskę - NA ŻYWO"         class="live-bg-img inactive">
+                        <img id="liveBg3" src="tlo_tv_biblia.jpg"    alt="Biblia Audio Christian Culture"          class="live-bg-img inactive">
+                        <img id="liveBg4" src="tlo_tv_live2.png"     alt="Dobrze, że jesteś - Program Live"       class="live-bg-img inactive">
+                        <img id="liveBg5" src="tlo_tv_worship_bw.png" alt="Christian Culture TV Studio"           class="live-bg-img inactive">
+                        <img id="liveBg6" src="tlo_tv_nocna.jpg"     alt="Instrumental Worship Music - CCTV"      class="live-bg-img inactive">
+                        <img id="liveBg7" src="tlo_tv_radiocc.jpg"   alt="Polskie Radio Christian Culture"         class="live-bg-img inactive">
+                        <img id="liveBg8" src="tlo_tv_koszulki.jpg"  alt="Koszulka Jezu Ty się tym zajmij"        class="live-bg-img inactive">
                         <a href="cctv24-pl.html" style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; text-decoration: none; cursor: pointer; z-index: 4;"
                            onmouseover="document.querySelectorAll('.live-bg-img').forEach(i=>i.style.transform='scale(1.04)');"
                            onmouseout="document.querySelectorAll('.live-bg-img').forEach(i=>i.style.transform='scale(1)');">
@@ -581,7 +728,8 @@
                         </a>
                         <script>
                             (function() {
-                                var imgs = [document.getElementById('liveBg0'), document.getElementById('liveBg1')];
+                                var ids = ['liveBg0','liveBg1','liveBg2','liveBg3','liveBg4','liveBg5','liveBg6','liveBg7','liveBg8'];
+                                var imgs = ids.map(function(id){ return document.getElementById(id); });
                                 var current = 0;
                                 setInterval(function() {
                                     var next = (current + 1) % imgs.length;
