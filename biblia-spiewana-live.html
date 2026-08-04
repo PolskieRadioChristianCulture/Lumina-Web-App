@@ -70,101 +70,15 @@
         }
 
         .bg-image {
-            filter: brightness(0.96) contrast(1.04);
+            filter: none !important;
         }
 
-        /* TV Broadcast Camera Motion (Pan, Tilt & Zoom) */
-        @keyframes ken-burns-zoom {
-            0% {
-                transform: scale(1.0) translate(0px, 0px);
-            }
-            25% {
-                transform: scale(1.07) translate(-18px, -10px);
-            }
-            50% {
-                transform: scale(1.04) translate(12px, 8px);
-            }
-            75% {
-                transform: scale(1.09) translate(-10px, 12px);
-            }
-            100% {
-                transform: scale(1.0) translate(0px, 0px);
-            }
-        }
-
-        /* --- DYNAMIC STUDIO LIGHTING OVERLAYS --- */
-        .vignette-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            pointer-events: none;
-            background: 
-                radial-gradient(circle at 80% 20%, rgba(255, 220, 130, 0.05) 0%, transparent 60%),
-                linear-gradient(to top, rgba(3, 3, 3, 0.8) 0%, transparent 20%, transparent 80%, rgba(3, 3, 3, 0.4) 100%);
-        }
-
-        .sunbeams {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            pointer-events: none;
-            background: linear-gradient(135deg, rgba(255, 204, 0, 0.10) 0%, transparent 55%);
-            mix-blend-mode: screen;
-            animation: drift-light 12s ease-in-out infinite alternate;
-        }
-
-        @keyframes drift-light {
-            0% { opacity: 0.5; transform: scale(1) rotate(0deg); }
-            50% { opacity: 0.95; transform: scale(1.05) rotate(1deg); }
-            100% { opacity: 0.6; transform: scale(1) rotate(-1deg); }
-        }
-
-        /* Moving Studio Spotlight Ray Sweep */
-        .lighting-sweep {
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            z-index: 2;
-            pointer-events: none;
-            background: linear-gradient(
-                45deg, 
-                transparent 40%, 
-                rgba(255, 204, 0, 0.06) 50%, 
-                transparent 60%
-            );
-            animation: light-sweep-motion 14s ease-in-out infinite;
-        }
-
-        @keyframes light-sweep-motion {
-            0% { transform: translateX(-30%) translateY(-30%); }
-            50% { transform: translateX(20%) translateY(20%); }
-            100% { transform: translateX(-30%) translateY(-30%); }
-        }
-
-        /* Pulsing Studio Ambient Light Aura */
+        /* --- DYNAMIC STUDIO LIGHTING OVERLAYS (DISABLED for 100% clean original image) --- */
+        .vignette-overlay,
+        .sunbeams,
+        .lighting-sweep,
         .ambient-pulse-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            pointer-events: none;
-            background: radial-gradient(circle at 50% 40%, rgba(255, 180, 0, 0.08), transparent 70%);
-            animation: ambient-glow 10s ease-in-out infinite alternate;
-        }
-
-        @keyframes ambient-glow {
-            0% { opacity: 0.4; }
-            100% { opacity: 1.0; }
+            display: none !important;
         }
 
         /* --- MAIN LAYOUT GRID --- */
