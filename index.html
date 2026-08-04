@@ -363,7 +363,7 @@
     </style>
 
     <!-- Panel LEWY -->
-    <div class="side-promo side-promo-left">
+    <div class="side-promo side-promo-left" id="sidePanelLeft">
         <a class="side-promo-inner" href="https://my-store-1009741.creator-spring.com/listing/jezu-ty-si-tym-zajmij?product=2405" target="_blank" rel="noopener">
             <span class="side-badge">🔥 NOWOŚĆ</span><br>
             <span class="side-badge-gold">⭐ Mega Hit Lata 2026</span>
@@ -375,7 +375,7 @@
     </div>
 
     <!-- Panel PRAWY -->
-    <div class="side-promo side-promo-right">
+    <div class="side-promo side-promo-right" id="sidePanelRight">
         <a class="side-promo-inner" href="https://my-store-1009741.creator-spring.com/listing/jezu-ty-si-tym-zajmij?product=2405" target="_blank" rel="noopener">
             <span class="side-badge">🔥 NOWOŚĆ</span><br>
             <span class="side-badge-gold">⭐ Mega Hit Lata 2026</span>
@@ -386,6 +386,43 @@
         </a>
     </div>
     <!-- ===== END SIDE PANELS ===== -->
+
+    <script>
+    (function() {
+        /* Panele widoczne tylko między hero-section a końcem #aktualnosci-lipiec */
+        var panels = [document.getElementById('sidePanelLeft'), document.getElementById('sidePanelRight')];
+
+        function updatePanels() {
+            var start = document.querySelector('.hero-section');
+            var end   = document.getElementById('aktualnosci-lipiec');
+            if (!start || !end) return;
+
+            var scrollY    = window.scrollY || window.pageYOffset;
+            var viewH      = window.innerHeight;
+            var startTop   = start.getBoundingClientRect().top  + scrollY;
+            var endBottom  = end.getBoundingClientRect().bottom + scrollY;
+
+            /* Pokaż gdy góra widoku jest w obrębie strefy [startTop … endBottom]
+               Znikaj dokładnie gdy dół sekcji "Misja Trwa" wychodzi poza ekran */
+            var inZone = (scrollY + viewH * 0.3 >= startTop) && (scrollY + viewH <= endBottom + 40);
+
+            panels.forEach(function(p) {
+                if (!p) return;
+                p.style.opacity   = inZone ? '1' : '0';
+                p.style.pointerEvents = inZone ? 'auto' : 'none';
+                p.style.transition = 'opacity 0.5s ease';
+            });
+        }
+
+        /* Ukryj domyślnie */
+        panels.forEach(function(p) { if (p) { p.style.opacity = '0'; p.style.pointerEvents = 'none'; } });
+
+        window.addEventListener('scroll', updatePanels, { passive: true });
+        window.addEventListener('resize', updatePanels, { passive: true });
+        /* Pierwsze wywołanie po załadowaniu layoutu */
+        window.addEventListener('load', updatePanels);
+    })();
+    </script>
 
     <!-- SECTION A: HEADER -->
     <header class="main-header" id="mainHeader">
