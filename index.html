@@ -393,8 +393,10 @@
             var startTop  = start.getBoundingClientRect().top  + scrollY;
             var endBottom = end.getBoundingClientRect().bottom + scrollY;
 
-            /* Pokaż gdy użytkownik przewinie 200px za górkę hero-section */
-            var scrolledPastStart = scrollY > (startTop + 200);
+            /* Pokaż dopiero gdy CAŁY hero-section wyjdzie ponad ekran
+               (dolna krawędź hero-section przewinęła się powyżej góry widoku) */
+            var heroBottom    = start.getBoundingClientRect().bottom + scrollY;
+            var scrolledPastStart = scrollY > heroBottom;
             var notYetPastEnd     = (scrollY + viewH) <= (endBottom + 40);
             var inZone = scrolledPastStart && notYetPastEnd;
 
