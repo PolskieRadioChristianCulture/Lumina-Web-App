@@ -3890,6 +3890,17 @@ function getWeatherPreset(city) {
             }
         }, 12000); // Wait 12 seconds for standard module to load
     </script>
+
+<!-- MASTER STREAM AUTOPLAY BYPASS -->
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+if (new URLSearchParams(window.location.search).get('autoplay') === '1') {
+setTimeout(function() {
+if(typeof initStream === 'function') initStream();
+}, 1000);
+}
+});
+</script>
 </body>
 </html>
 

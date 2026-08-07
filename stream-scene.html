@@ -1864,5 +1864,16 @@
         });
     </script>
     <script src="live-window-manager.js"></script>
+
+<!-- MASTER STREAM AUTOPLAY BYPASS -->
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+if (new URLSearchParams(window.location.search).get('autoplay') === '1') {
+setTimeout(function() {
+if(typeof initStream === 'function') initStream();
+}, 1000);
+}
+});
+</script>
 </body>
 </html>
