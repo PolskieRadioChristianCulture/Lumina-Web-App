@@ -26,10 +26,10 @@
 
     <script>
         const schedule = [
-            { start: 0,  end: 6,  url: "cctv24-worship-live.html" },
+            { start: 0,  end: 6,  url: "cctv24-worship.html" },
             { start: 6,  end: 12, url: "zapolske-live.html" },
             { start: 12, end: 22, url: "biblia-spiewana-live.html" },
-            { start: 22, end: 24, url: "cctv24-worship-live.html" }
+            { start: 22, end: 24, url: "cctv24-worship.html" }
         ];
 
         let currentUrl = null;
@@ -44,7 +44,7 @@
                     return schedule[i].url;
                 }
             }
-            return "cctv24-worship-live.html"; // fallback
+            return "cctv24-worship.html"; // fallback
         }
 
         function checkSchedule() {
