@@ -2748,56 +2748,54 @@ function getWeatherPreset(city) {
                 const hour = new Date().getHours();
                 if (hour >= 5 && hour < 18) {
                     const dayPresets = {
-                        "WARSZAWA": "☀️ 24°C / Słonecznie",
-                        "KRAKÓW": "☀️ 25°C / Słonecznie",
-                        "OSTROWIEC ŚW.": "🌤️ 23°C / Lekkie chmury",
-                        "GDAŃSK": "🌊 21°C / Wietrznie",
-                        "STALOWA WOLA": "☀️ 24°C / Ciepło",
-                        "WROCŁAW": "☀️ 26°C / Słonecznie",
-                        "POZNAŃ": "☀️ 24°C / Bezchmurnie",
-                        "ŁÓDŹ": "☀️ 24°C / Słonecznie",
-                        "SZCZECIN": "🌤️ 23°C / Pogodnie",
-                        "BYDGOSZCZ": "☀️ 24°C / Słonecznie",
-                        "LUBLIN": "☀️ 25°C / Ciepło",
-                        "BIAŁYSTOK": "🌤️ 22°C / Chłodniej",
-                        "KATOWICE": "☀️ 24°C / Słonecznie",
-                        "RZESZÓW": "☀️ 25°C / Słonecznie"
+                        "WARSZAWA": "🌤️ 26°C / Ciepło, przelotne burze",
+                        "KRAKÓW": "☀️ 27°C / Słonecznie i upalnie",
+                        "OSTROWIEC ŚW.": "🌤️ 25°C / Lekkie chmury",
+                        "GDAŃSK": "☀️ 23°C / Słonecznie, morska bryza",
+                        "STALOWA WOLA": "☀️ 26°C / Ciepło",
+                        "WROCŁAW": "☀️ 28°C / Słonecznie",
+                        "POZNAŃ": "⛈️ 25°C / Możliwe burze",
+                        "ŁÓDŹ": "🌤️ 25°C / Przelotne opady",
+                        "SZCZECIN": "☀️ 24°C / Pogodnie",
+                        "BYDGOSZCZ": "☀️ 25°C / Słonecznie",
+                        "LUBLIN": "🌤️ 26°C / Lekkie zachmurzenie",
+                        "BIAŁYSTOK": "🌤️ 24°C / Chłodniej",
+                        "KATOWICE": "☀️ 26°C / Słonecznie",
+                        "RZESZÓW": "☀️ 27°C / Słonecznie"
                     };
-                    return dayPresets[city] || "☀️ 24°C / Słonecznie";
                 } else if (hour >= 18 && hour < 22) {
                     const eveningPresets = {
-                        "WARSZAWA": "🌇 20°C / Pogodny Wieczór",
-                        "KRAKÓW": "🌇 21°C / Ciepły Zmierzch",
-                        "OSTROWIEC ŚW.": "☁️ 19°C / Rześki Wieczór",
-                        "GDAŃSK": "🌊 18°C / Rześki Wiatr",
-                        "STALOWA WOLA": "🌇 20°C / Spokojny Wieczór",
-                        "WROCŁAW": "🌇 22°C / Ciepły Zmierzch",
-                        "POZNAŃ": "🌇 20°C / Bezchmurnie",
-                        "ŁÓDŹ": "🌇 20°C / Spokojny Wieczór",
-                        "SZCZECIN": "🌇 19°C / Chłodny Wieczór",
-                        "BYDGOSZCZ": "🌇 19°C / Pogodnie",
-                        "LUBLIN": "🌇 21°C / Ciepły Zmierzch",
-                        "BIAŁYSTOK": "☁️ 18°C / Pochmurno",
-                        "KATOWICE": "🌇 20°C / Pogodny Wieczór",
-                        "RZESZÓW": "🌇 21°C / Pogodny Wieczór"
+                        "WARSZAWA": "🌇 22°C / Ciepły Wieczór",
+                        "KRAKÓW": "🌇 23°C / Ciepły Zmierzch",
+                        "OSTROWIEC ŚW.": "☁️ 21°C / Rześki Wieczór",
+                        "GDAŃSK": "🌊 20°C / Rześki Wiatr",
+                        "STALOWA WOLA": "🌇 22°C / Spokojny Wieczór",
+                        "WROCŁAW": "🌇 24°C / Ciepły Zmierzch",
+                        "POZNAŃ": "☁️ 21°C / Pochmurnie",
+                        "ŁÓDŹ": "🌇 22°C / Spokojny Wieczór",
+                        "SZCZECIN": "🌇 20°C / Chłodny Wieczór",
+                        "BYDGOSZCZ": "🌇 21°C / Pogodnie",
+                        "LUBLIN": "🌇 22°C / Ciepły Zmierzch",
+                        "BIAŁYSTOK": "☁️ 20°C / Pochmurno",
+                        "KATOWICE": "🌇 22°C / Pogodny Wieczór",
+                        "RZESZÓW": "🌇 23°C / Pogodny Wieczór"
                     };
-                    return eveningPresets[city] || "🌇 20°C / Pogodny Wieczór";
                 } else {
                     const nightPresets = {
-                        "WARSZAWA": "🌙 16°C / Gwieździsta Noc",
-                        "KRAKÓW": "🌙 17°C / Czyste Niebo",
-                        "OSTROWIEC ŚW.": "🌙 15°C / Chłodna Noc",
-                        "GDAŃSK": "🌙 14°C / Nadmorska Noc",
-                        "STALOWA WOLA": "🌙 15°C / Spokojna Noc",
-                        "WROCŁAW": "🌙 17°C / Ciepła Noc",
-                        "POZNAŃ": "🌙 16°C / Bezchmurnie",
-                        "ŁÓDŹ": "🌙 15°C / Spokojna Noc",
-                        "SZCZECIN": "🌙 14°C / Chłodna Noc",
-                        "BYDGOSZCZ": "🌙 15°C / Pogodna Noc",
-                        "LUBLIN": "🌙 16°C / Gwieździsta Noc",
-                        "BIAŁYSTOK": "🌙 13°C / Chłodna Noc",
-                        "KATOWICE": "🌙 16°C / Czyste Niebo",
-                        "RZESZÓW": "🌙 16°C / Ciepła Noc"
+                        "WARSZAWA": "🌙 18°C / Gwieździsta Noc",
+                        "KRAKÓW": "🌙 19°C / Czyste Niebo",
+                        "OSTROWIEC ŚW.": "🌙 17°C / Chłodna Noc",
+                        "GDAŃSK": "🌙 16°C / Nadmorska Noc",
+                        "STALOWA WOLA": "🌙 17°C / Spokojna Noc",
+                        "WROCŁAW": "🌙 19°C / Ciepła Noc",
+                        "POZNAŃ": "🌙 18°C / Możliwe opady",
+                        "ŁÓDŹ": "🌙 17°C / Spokojna Noc",
+                        "SZCZECIN": "🌙 16°C / Chłodna Noc",
+                        "BYDGOSZCZ": "🌙 17°C / Pogodna Noc",
+                        "LUBLIN": "🌙 18°C / Gwieździsta Noc",
+                        "BIAŁYSTOK": "🌙 15°C / Chłodna Noc",
+                        "KATOWICE": "🌙 18°C / Czyste Niebo",
+                        "RZESZÓW": "🌙 18°C / Ciepła Noc"
                     };
                     return nightPresets[city] || "🌙 15°C / Spokojna Noc";
                 }
