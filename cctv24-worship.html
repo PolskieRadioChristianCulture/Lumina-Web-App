@@ -1967,8 +1967,8 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         </div>
 
         <!-- Background Images (rotational crossfade every 30s) -->
-        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg" alt="Instrumental Worship Studio">
-        <img id="bg-img-swap"   class="bg-layer bg-image" style="opacity: 0; transition: opacity 2s ease-in-out;" src="CCTV NOCĄ.jpg" alt="Instrumental Worship Studio 2">
+        <img id="bg-img-active" class="bg-layer bg-image" style="opacity: 1;" src="tlo_tv_worship_bw.png" alt="Instrumental Worship Studio">
+        <img id="bg-img-swap"   class="bg-layer bg-image" style="opacity: 0; transition: opacity 2s ease-in-out;" src="tlo_tv_worship_bw.png" alt="Instrumental Worship Studio 2">
         
         
         <!-- Cinematic 21:9 Letterbox Bars (z-index 4, above bg, below content) -->
@@ -2620,13 +2620,7 @@ WORSHIP INSTRUMENTAL CCTV24
 
                         // Helper to get dynamic background based on time of day and calendar date
             function getDynamicBackground(imagePath) {
-                const hour = new Date().getHours();
-                if (hour >= 21 || hour < 6) return "CCTV NOCĄ.jpg";
-                return "INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg";
-                if (hour >= 5 && hour < 9) return "breakfast_presenters_morning_2.jpg";
-                if (hour >= 9 && hour < 12) return "breakfast_presenters_forenoon.jpg";
-                if (hour >= 12 && hour < 18) return "breakfast_presenters.jpg";
-                return "breakfast_presenters_evening.jpg";
+                return "tlo_tv_worship_bw.png";
             }
 
                                     // Real-time weather data cache and city coordinates
