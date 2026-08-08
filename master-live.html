@@ -10,7 +10,7 @@
         #fade-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 9999;
-            opacity: 1; transition: opacity 2s ease; pointer-events: none;
+            opacity: 1; transition: opacity 0.8s ease; pointer-events: none;
         }
         #master-status {
             position: absolute; top: 20px; left: 20px; color: rgba(255,255,255,0.3);
@@ -20,7 +20,7 @@
     </style>
 </head>
 <body>
-    <iframe id="channel-frame" allow="autoplay"></iframe>
+    <iframe id="channel-frame" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; clipboard-write; clipboard-read"></iframe>
     <div id="fade-overlay"></div>
     <div id="master-status">MCR: INITIALIZING...</div>
 
@@ -57,22 +57,23 @@
         function switchChannel(newChannel) {
             console.log("MCR: Przełączanie kanału na " + newChannel);
             status.textContent = "MCR: " + newChannel;
+            const isFirstLoad = (currentUrl === null);
             currentUrl = newChannel;
             
-            // Fade to black
-            fade.style.opacity = "1";
-            
-            // Wait for fade out, then change source
-            setTimeout(() => {
-                // Dodajemy parametr autoplay=1 oraz cache-buster
+            if (isFirstLoad) {
                 frame.src = newChannel + "?autoplay=1&t=" + Date.now();
-                
-                // Wait for the new iframe to load and initialize (give it 3 seconds)
                 setTimeout(() => {
-                    // Fade in
                     fade.style.opacity = "0";
-                }, 3000);
-            }, 2000);
+                }, 600);
+            } else {
+                fade.style.opacity = "1";
+                setTimeout(() => {
+                    frame.src = newChannel + "?autoplay=1&t=" + Date.now();
+                    setTimeout(() => {
+                        fade.style.opacity = "0";
+                    }, 800);
+                }, 500);
+            }
         }
 
         // Start checking every 10 seconds
