@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chrześcijański Blok Filmowy — Christian Culture TV</title>
+    <meta name="description" content="Chrześcijański Blok Filmowy — Wyjątkowe filmy, dokumenty i seanse chrześcijańskie w Christian Culture TV. Oglądaj w weekendy od 18:00 i na życzenie.">
+    <link rel="icon" href="Logo Biblia Audio CC.jpg" type="image/jpeg">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --gold-primary: #d4af37;
+            --gold-light: #f3e5ab;
+            --dark-bg: #05070b;
+            --glass-bg: rgba(10, 14, 23, 0.85);
+            --glass-border: rgba(212, 175, 55, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-bg);
+            font-family: 'Outfit', sans-serif;
+            color: #ffffff;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* ── VIDEO CONTAINER ── */
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: #000;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: cover;
+        }
+
+        /* ── TOP HEADER BRANDING BAR ── */
+        .top-header-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            z-index: 10;
+            background: linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 70%, transparent 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            backdrop-filter: blur(8px);
+            transition: opacity 0.5s ease;
+        }
+
+        .header-left-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .channel-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(212, 175, 55, 0.15);
+            border: 1.5px solid var(--gold-primary);
+            padding: 6px 16px;
+            border-radius: 50px;
+        }
+
+        .channel-name {
+            font-family: 'Cinzel', serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--gold-light);
+            letter-spacing: 1px;
+        }
+
+        .live-tag {
+            background: #ff0000;
+            color: #fff;
+            font-weight: 800;
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            animation: pulseGlow 1.5s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.8; box-shadow: 0 0 5px rgba(255,0,0,0.5); }
+            100% { opacity: 1; box-shadow: 0 0 15px rgba(255,0,0,0.9); }
+        }
+
+        .header-right-clock {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .clock-box {
+            text-align: right;
+        }
+
+        .clock-time {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        .clock-date {
+            font-size: 0.8rem;
+            color: var(--gold-light);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .chromecast-btn {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1.5px solid var(--gold-primary);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .chromecast-btn:hover {
+            background: rgba(212, 175, 55, 0.35);
+            transform: scale(1.05);
+        }
+
+        /* ── FILM BADGE BOX ── */
+        .film-badge-box {
+            position: absolute;
+            top: 110px;
+            left: 40px;
+            z-index: 10;
+            background: var(--glass-bg);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 20px 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            transition: opacity 0.5s ease;
+            max-width: 600px;
+        }
+
+        .film-tag {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .film-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.25;
+        }
+
+        /* ── BOTTOM TICKER BAR ── */
+        .bottom-ticker-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 70%, transparent 100%);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            border-top: 1px solid rgba(212, 175, 55, 0.25);
+            transition: opacity 0.5s ease;
+        }
+
+        .ticker-label {
+            background: var(--gold-primary);
+            color: #000;
+            font-weight: 900;
+            font-size: 1.1rem;
+            padding: 0 35px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+            box-shadow: 10px 0 25px rgba(0, 0, 0, 0.9);
+        }
+
+        .ticker-track-wrapper {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .ticker-content {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            animation: scrollTicker 35s linear infinite;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        @keyframes scrollTicker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Auto-fade overlays */
+        .fade-overlay {
+            opacity: 1;
+        }
+        .fade-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Modal Chromecast */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-card {
+            background: #0d111a;
+            border: 1px solid var(--gold-primary);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 500px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- VIDEO PLAYER BACKGROUND -->
+    <div class="video-container">
+        <div id="player"></div>
+    </div>
+
+    <!-- UI OVERLAYS CONTAINER -->
+    <div id="ui-overlays" class="fade-overlay">
+        
+        <!-- TOP HEADER BAR -->
+        <div class="top-header-bar">
+            <div class="header-left-brand">
+                <div class="channel-indicator">
+                    <i class="fa-solid fa-film" style="color: var(--gold-primary);"></i>
+                    <span class="channel-name">KINO CHRISTIAN CULTURE</span>
+                </div>
+                <span class="live-tag">SEANS NA ŻYWO</span>
+            </div>
+
+            <div class="header-right-clock">
+                <div class="clock-box">
+                    <div class="clock-time" id="clock-time">00:00:00</div>
+                    <div class="clock-date" id="clock-date">PONIEDZIAŁEK, 10 SIERPNIA</div>
+                </div>
+                <button class="chromecast-btn" onclick="openChromecastModal()">
+                    <img src="chromecast.png" alt="Chromecast" style="height: 18px; width: auto;">
+                    <span>PRZEŚLIJ NA TV</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- FILM BADGE -->
+        <div class="film-badge-box">
+            <div class="film-tag"><i class="fa-solid fa-clapperboard"></i> CHRZEŚCIJAŃSKI BLOK FILMOWY</div>
+            <div class="film-title" id="film-title-label">Ładowanie seansu filmowego...</div>
+        </div>
+
+        <!-- BOTTOM TICKER BAR -->
+        <div class="bottom-ticker-bar">
+            <div class="ticker-label">
+                <i class="fa-solid fa-film"></i> CC KINO
+            </div>
+            <div class="ticker-track-wrapper">
+                <div class="ticker-content">
+                    <span>🎬 OGLĄDASZ CHRZEŚCIJAŃSKI BLOK FILMOWY W CHRISTIAN CULTURE TV • EMISJA W WEEKENDY OD 18:00 ORAZ NA ŻYCZENIE • WYJĄTKOWE SEANSE I DOKUMENTY Z PRZESŁANIEM • &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span>🎬 OGLĄDASZ CHRZEŚCIJAŃSKI BLOK FILMOWY W CHRISTIAN CULTURE TV • EMISJA W WEEKENDY OD 18:00 ORAZ NA ŻYCZENIE • WYJĄTKOWE SEANSE I DOKUMENTY Z PRZESŁANIEM • &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CHROMECAST MODAL -->
+    <div class="modal-overlay" id="chromecastModal">
+        <div class="modal-card">
+            <i class="fa-solid fa-tv" style="font-size: 3rem; color: var(--gold-primary); margin-bottom: 15px;"></i>
+            <h2 style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: #fff; margin-bottom: 10px;">Oglądaj na Ekranie TV</h2>
+            <p style="font-size: 0.95rem; color: #a1a1aa; line-height: 1.5; margin-bottom: 20px;">
+                Użyj ikony przesyłania w przeglądarce Chrome lub opcji Klonowania Ekranu (AirPlay/Smart View), aby przestać oglądać na małym ekranie i włączyć film na Smart TV!
+            </p>
+            <button onclick="closeChromecastModal()" style="background: var(--gold-primary); color: #000; font-weight: 800; border: none; padding: 10px 25px; border-radius: 10px; cursor: pointer;">Zamknij</button>
+        </div>
+    </div>
+
+    <!-- YOUTUBE IFRAME API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        // ── 1. Real-time Clock ──
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const dateStr = now.toLocaleDateString('pl-PL', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase();
+            document.getElementById('clock-time').textContent = timeStr;
+            document.getElementById('clock-date').textContent = dateStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // ── 2. Movie List ──
+        const movies = [
+            { id: "lVg2FykmLOY", title: "Film Chrześcijański — Seans 1" },
+            { id: "VrqDOF9A8KU", title: "Film Chrześcijański — Seans 2" },
+            { id: "O6VJHHbfjxo", title: "Film Chrześcijański — Seans 3" },
+            { id: "YkqBe6iTptM", title: "Film Chrześcijański — Seans 4" },
+            { id: "QqOLoOYsbBk", title: "Film Chrześcijański — Seans 5" },
+            { id: "GMdQIwKh22A", title: "Film Chrześcijański — Seans 6" }
+        ];
+
+        let currentMovieIndex = 0;
+        let player;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                videoId: movies[currentMovieIndex].id,
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 0,
+                    'modestbranding': 1,
+                    'rel': 0,
+                    'showinfo': 0,
+                    'iv_load_policy': 3,
+                    'enablejsapi': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            event.target.playVideo();
+            updateFilmLabel();
+        }
+
+        function onPlayerStateChange(event) {
+            // YT.PlayerState.ENDED = 0
+            if (event.data === 0) {
+                currentMovieIndex = (currentMovieIndex + 1) % movies.length;
+                player.loadVideoById(movies[currentMovieIndex].id);
+                updateFilmLabel();
+                window.parent.postMessage({ type: 'KINO_FINISHED' }, '*');
+            }
+        }
+
+        function updateFilmLabel() {
+            document.getElementById('film-title-label').textContent = movies[currentMovieIndex].title;
+        }
+
+        // ── 3. Auto-fade overlays after 30s ──
+        let fadeTimeout;
+        function resetFadeTimer() {
+            const overlays = document.getElementById('ui-overlays');
+            overlays.classList.remove('hidden');
+            clearTimeout(fadeTimeout);
+            fadeTimeout = setTimeout(() => {
+                overlays.classList.add('hidden');
+            }, 30000);
+        }
+
+        window.addEventListener('mousemove', resetFadeTimer);
+        window.addEventListener('touchstart', resetFadeTimer);
+        resetFadeTimer();
+
+        // ── 4. Chromecast Modal Controls ──
+        function openChromecastModal() {
+            document.getElementById('chromecastModal').style.display = 'flex';
+        }
+        function closeChromecastModal() {
+            document.getElementById('chromecastModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
