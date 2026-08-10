@@ -128,32 +128,45 @@
             }
 
             // 3) Trigger "Apokalipsa: Księga Nadziei" (10:00, 22:00 - 60 min slot window)
-            if ((hour === 10 || hour === 22) && min < 60) {
-                if (!ksiegaNadzieiDoneHours[hour]) {
-                    ksiegaNadzieiDoneHours[hour] = true;
-                    isSpecialSlotActive = true;
-                    switchChannel("apokalipsa-ksiega-nadziei-live.html");
+            if (hour === 10 || hour === 22) {
+                if (min < 55) {
+                    if (!ksiegaNadzieiDoneHours[hour]) {
+                        ksiegaNadzieiDoneHours[hour] = true;
+                        isSpecialSlotActive = true;
+                        switchChannel("apokalipsa-ksiega-nadziei-live.html");
 
-                    // Safety timeout (60 mins max)
-                    safetyTimeout = setTimeout(() => {
-                        console.log("MCR: Safety timeout reached for Księga Nadziei slot.");
-                        endSpecialSlot();
-                    }, 3600000);
-                    return;
+                        // Safety timeout (55 mins max)
+                        safetyTimeout = setTimeout(() => {
+                            console.log("MCR: Safety timeout reached for Księga Nadziei slot.");
+                            endSpecialSlot();
+                        }, 3300000);
+                        return;
+                    }
+                } else if (isSpecialSlotActive && currentUrl === "apokalipsa-ksiega-nadziei-live.html") {
+                    endSpecialSlot();
                 }
-            // 4) Trigger "Śpiewajmy Panu" (16:00 - 60 min slot)
-            if (hour === 16 && min < 60) {
-                if (!spiewajmyPanuDoneHours[16]) {
-                    spiewajmyPanuDoneHours[16] = true;
-                    isSpecialSlotActive = true;
-                    switchChannel("spiewajmy-panu-live.html");
+            } else {
+                if (hour !== 10) ksiegaNadzieiDoneHours[10] = false;
+                if (hour !== 22) ksiegaNadzieiDoneHours[22] = false;
+            }
 
-                    // Safety timeout (60 mins max)
-                    safetyTimeout = setTimeout(() => {
-                        console.log("MCR: Safety timeout reached for Śpiewajmy Panu slot.");
-                        endSpecialSlot();
-                    }, 3600000);
-                    return;
+            // 4) Trigger "Śpiewajmy Panu" (16:00 - 60 min slot)
+            if (hour === 16) {
+                if (min < 60) {
+                    if (!spiewajmyPanuDoneHours[16]) {
+                        spiewajmyPanuDoneHours[16] = true;
+                        isSpecialSlotActive = true;
+                        switchChannel("spiewajmy-panu-live.html");
+
+                        // Safety timeout (60 mins max)
+                        safetyTimeout = setTimeout(() => {
+                            console.log("MCR: Safety timeout reached for Śpiewajmy Panu slot.");
+                            endSpecialSlot();
+                        }, 3600000);
+                        return;
+                    }
+                } else if (isSpecialSlotActive && currentUrl === "spiewajmy-panu-live.html") {
+                    endSpecialSlot();
                 }
             } else {
                 if (hour !== 16) spiewajmyPanuDoneHours[16] = false;
@@ -161,18 +174,22 @@
 
             // 5) Trigger "Chrześcijański Blok Filmowy" (Sobota i Niedziela 18:00 - 20:00)
             const dayOfWeek = now.getDay(); // 0 = Niedziela, 6 = Sobota
-            if ((dayOfWeek === 0 || dayOfWeek === 6) && (hour >= 18 && hour < 20)) {
-                if (!kinoDoneHours[hour]) {
-                    kinoDoneHours[hour] = true;
-                    isSpecialSlotActive = true;
-                    const targetFilmChannel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "kino-live.html";
-                    switchChannel(targetFilmChannel);
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+                if (hour >= 18 && hour < 20) {
+                    if (!kinoDoneHours[hour]) {
+                        kinoDoneHours[hour] = true;
+                        isSpecialSlotActive = true;
+                        const targetFilmChannel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "kino-live.html";
+                        switchChannel(targetFilmChannel);
 
-                    safetyTimeout = setTimeout(() => {
-                        console.log("MCR: Safety timeout reached for Kino slot.");
-                        endSpecialSlot();
-                    }, 7200000);
-                    return;
+                        safetyTimeout = setTimeout(() => {
+                            console.log("MCR: Safety timeout reached for Kino slot.");
+                            endSpecialSlot();
+                        }, 7200000);
+                        return;
+                    }
+                } else if (isSpecialSlotActive && (currentUrl === "kino-live.html" || currentUrl === "biblia-spiewana-live.html")) {
+                    endSpecialSlot();
                 }
             } else {
                 if (hour !== 18 && hour !== 19) {
