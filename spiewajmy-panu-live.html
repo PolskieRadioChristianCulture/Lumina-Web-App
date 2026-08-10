@@ -408,6 +408,28 @@
             });
         }
 
+        function enableAudio() {
+            const overlay = document.getElementById("startOverlay");
+            if (overlay) overlay.style.display = "none";
+
+            try {
+                if (player && typeof player.unMute === 'function') {
+                    player.unMute();
+                    player.setVolume(100);
+                    player.playVideo();
+                }
+            } catch(e) {}
+
+            try {
+                const iframe = document.getElementById("yt-player");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                }
+            } catch(e) {}
+        }
+
         function onPlayerReady(event) {
             const overlay = document.getElementById("startOverlay");
             if (overlay) overlay.style.display = "none";
