@@ -211,6 +211,19 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+            box-shadow: 10px 0 25px rgba(0, 0, 0, 0.9);
+        }
+
+        .ticker-track-wrapper {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            z-index: 1;
         }
 
         .ticker-content {
@@ -313,9 +326,11 @@
             <div class="ticker-label">
                 <i class="fa-solid fa-music"></i> CC MUSIC
             </div>
-            <div class="ticker-content">
-                <span>🎵 OGLĄDASZ ŚPIEWAJMY PANU W CHRISTIAN CULTURE TV • CODZIENNIE O 16:00 • MUZYKA UWIELBIENIA, PIEŚNI CHWAŁY I UTWORY DLA BOGA • ZAPRASZAMY DO WSPÓLNEGO ŚPIEWU I UWIELBIENIA! • &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span>🎵 OGLĄDASZ ŚPIEWAJMY PANU W CHRISTIAN CULTURE TV • CODZIENNIE O 16:00 • MUZYKA UWIELBIENIA, PIEŚNI CHWAŁY I UTWORY DLA BOGA • ZAPRASZAMY DO WSPÓLNEGO ŚPIEWU I UWIELBIENIA! • &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <div class="ticker-track-wrapper">
+                <div class="ticker-content">
+                    <span>🎵 OGLĄDASZ ŚPIEWAJMY PANU W CHRISTIAN CULTURE TV • CODZIENNIE O 16:00 • MUZYKA UWIELBIENIA, PIEŚNI CHWAŁY I UTWORY DLA BOGA • ZAPRASZAMY DO WSPÓLNEGO ŚPIEWU I UWIELBIENIA! • &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span>🎵 OGLĄDASZ ŚPIEWAJMY PANU W CHRISTIAN CULTURE TV • CODZIENNIE O 16:00 • MUZYKA UWIELBIENIA, PIEŚNI CHWAŁY I UTWORY DLA BOGA • ZAPRASZAMY DO WSPÓLNEGO ŚPIEWU I UWIELBIENIA! • &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </div>
             </div>
         </div>
 
