@@ -2983,30 +2983,40 @@ html {
 }
 
 /* ==========================================================================
-   9. TABLET DESKTOP LAYOUT ADAPTATION (600px - 1199px)
-   Enforces full desktop experience on iPad, Android tablets & tablet screens
+   9. TABLET DESKTOP LAYOUT ADAPTATION (768px - 1199px)
+   Refined desktop experience tailored specifically for tablets & iPads
    ========================================================================== */
-@media (min-width: 600px) and (max-width: 1199px) {
-    /* 1. Header Live Schedule Widget - Visible & formatted like desktop on tablets */
+@media (min-width: 768px) and (max-width: 1199px) {
+    /* 1. Prevent side promo banners from obscuring tablet content */
+    .side-promo {
+        display: none !important;
+    }
+
+    /* 2. Header Live Schedule Widget - Compact 2-item display for Tablet Header */
     .header-live-schedule {
         display: flex !important;
-        font-size: 0.7rem !important;
+        font-size: 0.68rem !important;
         gap: 6px !important;
-        max-width: 540px !important;
+        max-width: 360px !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         white-space: nowrap !important;
         align-items: center !important;
-        margin: 0 10px !important;
+        margin: 0 8px !important;
+    }
+    .header-live-schedule .next-label[style*="opacity: 0.7"],
+    .header-live-schedule #headerThirdLiveTitle,
+    .header-live-schedule .header-schedule-sep:last-of-type {
+        display: none !important;
     }
 
-    /* 2. Desktop 2-Column Hero Section for Tablet */
+    /* 3. Balanced 2-Column Desktop Hero Section for Tablet */
     .hero-container {
-        grid-template-columns: 1.1fr 0.9fr !important;
+        grid-template-columns: 1fr 1fr !important;
         gap: 2rem !important;
         text-align: left !important;
         align-items: center !important;
-        padding: 0 1.5rem !important;
+        padding: 110px 2rem 50px 2rem !important;
     }
     .hero-text-col {
         order: 1 !important;
@@ -3015,7 +3025,7 @@ html {
     }
     .hero-title {
         text-align: left !important;
-        font-size: clamp(2rem, 4vw, 3.2rem) !important;
+        font-size: clamp(2rem, 3.6vw, 2.8rem) !important;
     }
     .gold-divider {
         margin: 0.5rem 0 1.5rem 0 !important;
@@ -3030,18 +3040,19 @@ html {
         justify-content: center !important;
     }
     .hero-character-img {
-        max-width: 100% !important;
+        max-width: 320px !important;
+        width: 100% !important;
     }
 
-    /* 3. Desktop 3-Column Radio Player Bar for Tablet */
+    /* 4. Elegant 3-Column Radio Player Bar for Tablet */
     .radio-player-bar {
-        height: 90px !important;
-        padding: 0.5rem 1rem !important;
+        height: 85px !important;
+        padding: 0.4rem 1rem !important;
     }
     .player-container {
-        grid-template-columns: 240px 1fr 220px !important;
+        grid-template-columns: 210px 1fr 180px !important;
         grid-template-rows: 1fr !important;
-        gap: 1rem !important;
+        gap: 0.75rem !important;
         padding: 0 1rem !important;
         align-items: center !important;
     }
@@ -3061,21 +3072,23 @@ html {
         width: auto !important;
     }
     .track-scroller-container {
-        width: 160px !important;
+        width: 120px !important;
     }
 
-    /* 4. Desktop Grids for Tablet Screens */
+    /* 5. Spacious 2-Column Grids for Tablet Screens */
     .apps-grid {
-        grid-template-columns: repeat(4, 1fr) !important;
-        gap: 1.25rem !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem !important;
     }
     .featured-channels-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 1.25rem !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem !important;
     }
     .featured-channels-grid > .featured-channel-card:last-child {
-        grid-column: span 1 !important;
-        max-width: none !important;
+        grid-column: span 2 !important;
+        max-width: 580px !important;
+        margin: 0 auto !important;
+        width: 100% !important;
     }
     .social-grid {
         grid-template-columns: repeat(3, 1fr) !important;
@@ -3087,24 +3100,14 @@ html {
         gap: 1.5rem !important;
     }
     .support-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 1.25rem !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem !important;
     }
     .support-grid > .support-card:last-child {
-        grid-column: span 1 !important;
-        max-width: none !important;
-    }
-
-    /* 5. Side Banners Adaptation on Tablet (900px+) */
-    @media (min-width: 900px) {
-        .side-promo {
-            display: block !important;
-            width: 120px !important;
-            transform: scale(0.8);
-            transform-origin: top center;
-        }
-        .side-promo-left { left: 4px !important; }
-        .side-promo-right { right: 4px !important; }
+        grid-column: span 2 !important;
+        max-width: 580px !important;
+        margin: 0 auto !important;
+        width: 100% !important;
     }
 }
 
