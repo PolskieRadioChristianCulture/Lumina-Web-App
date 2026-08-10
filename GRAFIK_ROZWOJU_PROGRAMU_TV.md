@@ -23,8 +23,9 @@ Głównym celem jest zbudowanie nowoczesnej, spójnej estetycznie i duchowo cał
 | **11:00 – 12:00** | **💬 Świadectwa Życia & Wywiady** | Historie nawróceń, przemiany życia, inspirujące reportaże | `master-live.html` |
 | **12:00 – 15:00** | **🎶 Biblia Śpiewana & Worship** | Śpiewane Przypowieści Salomona i utwory uwielbienia | `biblia-spiewana-live.html` |
 | **15:00 – 15:06** | **📌 Apokalipsa Dzień po Dniu** | Popołudniowy komentarz dnia | `apokalipsa-live.html` |
-| **15:06 – 18:00** | **🎨 Pasmo Rodzinne, Młodzieżowe i Dziecięce** | Bajki biblijne, słuchowiska, programy młodzieżowe | `master-live.html` |
-| **18:00 – 20:00** | **🎬 Chrześcijański Blok Filmowy & Dokumenty** | Filmy fabularne, kino chrześcijańskie, dokumenty, koncerty na żywo | `master-live.html` / `film-live.html` |
+| **15:06 – 16:00** | **🎶 Biblia Śpiewana — Pasmo Popołudniowe** | Spokojne kompozycje muzyczne i wersety Pisma Świętego | `biblia-spiewana-live.html` |
+| **16:00 – 18:00** | **🎵 Śpiewajmy Panu — Codzienny Blok Muzyczny** | 2-godzinny blok z utworami uwielbienia i nowościami Christian Culture Music (Odtwarzanie Losowe 24/7) | `spiewajmy-panu-live.html` |
+| **18:00 – 20:00** | **🎬 Chrześcijański Blok Filmowy & Dokumenty** | Filmy fabularne, kino chrześcijańskie, dokumenty, koncerty na żywo (Weekendy / Na życzenie) | `kino-live.html` / `biblia-spiewana-live.html` |
 | **20:00 – 21:00** | **📖 Studium Telewizyjne Pisma Świętego** | Wydanie wieczorne wykładu werset po wersecie | `studium-live.html` |
 | **21:00 – 21:06** | **📌 Apokalipsa Dzień po Dniu** | Wieczorny komentarz dnia | `apokalipsa-live.html` |
 | **21:06 – 22:00** | **🎶 Biblia Śpiewana — Finał Dnia** | Zwieńczenie dnia muzyką uwielbienia | `biblia-spiewana-live.html` |
