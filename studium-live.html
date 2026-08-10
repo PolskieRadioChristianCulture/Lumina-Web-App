@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studium Telewizyjne Pisma Świętego — Emisja na Żywo | Christian Culture</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@400;500;600;700;800&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --gold-primary: #d4af37;
+            --gold-light: #f3e5ab;
+            --gold-dark: #aa820a;
+            --glass-bg: rgba(12, 12, 16, 0.75);
+            --glass-border: rgba(212, 175, 55, 0.3);
+            --glass-shadow: rgba(0, 0, 0, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        #app-container {
+            width: 1920px;
+            height: 1080px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        /* --- VIDEO FRAME CONTAINER --- */
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: #000;
+        }
+
+        .video-container iframe, .video-container div {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* --- HEADER BRANDING BAR --- */
+        .top-header-bar {
+            position: absolute;
+            top: 40px;
+            left: 60px;
+            right: 60px;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .header-left-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 10px 24px;
+            border-radius: 50px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px var(--glass-shadow);
+        }
+
+        .channel-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .channel-indicator span {
+            width: 3px;
+            height: 14px;
+            background: var(--gold-primary);
+            border-radius: 2px;
+            animation: barPulse 1.4s infinite ease-in-out alternate;
+        }
+        .channel-indicator span:nth-child(2) { animation-delay: 0.2s; height: 18px; }
+        .channel-indicator span:nth-child(3) { animation-delay: 0.4s; height: 12px; }
+
+        @keyframes barPulse {
+            0% { transform: scaleY(0.6); }
+            100% { transform: scaleY(1.2); }
+        }
+
+        .channel-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .header-center-clock {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 8px 28px;
+            border-radius: 50px;
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .time-display {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--gold-primary);
+            letter-spacing: 1px;
+        }
+
+        .date-display {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            padding-left: 12px;
+        }
+
+        .header-right-badge {
+            background: rgba(220, 20, 60, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 20px rgba(220, 20, 60, 0.5);
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            animation: blink 1s infinite alternate;
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* --- EPISODE BADGE --- */
+        .episode-badge-box {
+            position: absolute;
+            bottom: 155px;
+            left: 60px;
+            background: var(--glass-bg);
+            border: 1.5px solid var(--glass-border);
+            border-left: 6px solid var(--gold-primary);
+            padding: 24px 38px;
+            border-radius: 20px;
+            backdrop-filter: blur(16px);
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 12px 40px var(--glass-shadow);
+            transition: opacity 1s ease-in-out;
+        }
+
+        .episode-tag {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+        }
+
+        .episode-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.25;
+        }
+
+        /* --- BOTTOM TICKER --- */
+        .bottom-ticker-bar {
+            position: absolute;
+            bottom: 35px;
+            left: 60px;
+            right: 60px;
+            height: 90px;
+            background: var(--glass-bg);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 50px;
+            backdrop-filter: blur(16px);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            z-index: 10;
+            pointer-events: none;
+            box-shadow: 0 8px 32px var(--glass-shadow);
+            transition: opacity 1s ease-in-out;
+        }
+
+        .ticker-label {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: #000;
+            font-weight: 900;
+            font-size: 1.5rem;
+            padding: 0 35px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .ticker-content {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            animation: scrollTicker 32s linear infinite;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            padding: 0 40px;
+        }
+
+        .ticker-item i {
+            color: var(--gold-primary);
+        }
+
+        .ticker-highlight {
+            color: var(--gold-light);
+            font-weight: 800;
+        }
+
+        @keyframes scrollTicker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Start Overlay for Autoplay Audio unlock */
+        #startOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            cursor: pointer;
+        }
+
+        #startOverlay h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-primary);
+            font-size: 2.5rem;
+        }
+
+        #startOverlay p {
+            color: #fff;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+
+        <!-- UNMUTE OVERLAY -->
+        <div id="startOverlay" onclick="enableAudio()">
+            <i class="fa-solid fa-play-circle" style="font-size: 5rem; color: var(--gold-primary);"></i>
+            <h2>STUDIUM TELEWIZYJNE PISMA ŚWIĘTEGO</h2>
+            <p>Kliknij w dowolnym miejscu, aby włączyć dźwięk i transmisję na żywo</p>
+        </div>
+
+        <!-- VIDEO CONTAINER -->
+        <div class="video-container">
+            <div id="yt-player"></div>
+        </div>
+
+        <!-- HEADER BRANDING BAR -->
+        <div class="top-header-bar">
+            <div class="header-left-brand">
+                <div class="channel-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="channel-name">Christian Culture • Studium Biblijne</div>
+            </div>
+
+            <div class="header-center-clock">
+                <div class="time-display" id="clock-time">00:00:00</div>
+                <div class="date-display" id="clock-date">PONIEDZIAŁEK, 10 SIERPNIA</div>
+            </div>
+
+            <div class="header-right-badge">
+                <div class="live-dot"></div>
+                <span>EMISJA SPECJALNA</span>
+            </div>
+        </div>
+
+        <!-- EPISODE BADGE -->
+        <div class="episode-badge-box">
+            <div class="episode-tag" id="episode-tag-label">ODCINEK -- z 572</div>
+            <div class="episode-title">Studium Telewizyjne Pisma Świętego</div>
+        </div>
+
+        <!-- BOTTOM TICKER -->
+        <div class="bottom-ticker-bar">
+            <div class="ticker-label">
+                <i class="fa-solid fa-book-bible"></i>
+                PISMO ŚWIĘTE
+            </div>
+            <div style="overflow: hidden; width: 100%;">
+                <div class="ticker-content">
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-crown"></i>
+                        <span>Wspieraj misję ewangelizacji: <span class="ticker-highlight">patronite.pl/osobowoscplus</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Mobilna aplikacja Christian Culture: <span class="ticker-highlight">cclite.pl</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                        <span>Wsparcie BLIK: <span class="ticker-highlight">730 948 823</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-tv"></i>
+                        <span>Portal internetowy: <span class="ticker-highlight">polskieradio.cc</span></span>
+                    </div>
+
+                    <!-- Duplicate for infinite marquee loop -->
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-crown"></i>
+                        <span>Wspieraj misję ewangelizacji: <span class="ticker-highlight">patronite.pl/osobowoscplus</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Mobilna aplikacja Christian Culture: <span class="ticker-highlight">cclite.pl</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                        <span>Wsparcie BLIK: <span class="ticker-highlight">730 948 823</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-tv"></i>
+                        <span>Portal internetowy: <span class="ticker-highlight">polskieradio.cc</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- YOUTUBE IFRAME API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script>
+        // ── 1. Responsive 1920x1080 Viewport Scaling ──
+        function scaleViewport() {
+            const container = document.getElementById('app-container');
+            const targetWidth = 1920;
+            const targetHeight = 1080;
+
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+
+            const scaleX = windowWidth / targetWidth;
+            const scaleY = windowHeight / targetHeight;
+            const scale = Math.min(scaleX, scaleY);
+
+            container.style.transform = `scale(${scale})`;
+            container.style.left = `${(windowWidth - targetWidth * scale) / 2}px`;
+            container.style.top = `${(windowHeight - targetHeight * scale) / 2}px`;
+        }
+
+        window.addEventListener('resize', scaleViewport);
+        scaleViewport();
+
+        // ── 2. Real-time Clock ──
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            const days = ['NIEDZIELA', 'PONIEDZIAŁEK', 'WTOREK', 'ŚRODA', 'CZWARTEK', 'PIĄTEK', 'SOBOTA'];
+            const months = ['STYCZNIA', 'LUTYGO', 'MARCA', 'KWIETNIA', 'MAJA', 'CZERWCA', 'LIPCA', 'SIERPNIA', 'WRZEŚNIA', 'PAŹDZIERNIKA', 'LISTOPADA', 'GRUDNIA'];
+            
+            const dayName = days[now.getDay()];
+            const dayNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const dateStr = `${dayName}, ${dayNum} ${monthName}`;
+
+            document.getElementById('clock-time').textContent = timeStr;
+            document.getElementById('clock-date').textContent = dateStr;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // ── 3. Calculate Day of Year (1-365) and Target Episode (1-572) ──
+        function getDayOfYear() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+
+        const dayOfYear = getDayOfYear();
+        const episodeIndex = ((dayOfYear - 1) % 572) + 1; // 1 to 572
+        const targetZeroBasedIndex = episodeIndex - 1;
+
+        document.getElementById('episode-tag-label').textContent = `ODCINEK ${episodeIndex} z 572`;
+
+        // ── 4. YouTube Iframe Player with Single Episode Targeting ──
+        let player = null;
+        let initialJumpDone = false;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('yt-player', {
+                playerVars: {
+                    autoplay: 1,
+                    controls: 0,
+                    rel: 0,
+                    modestbranding: 1,
+                    fs: 0,
+                    showinfo: 0,
+                    iv_load_policy: 3,
+                    enablejsapi: 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            // Load playlist starting directly at today's zero-based episode index
+            try {
+                event.target.loadPlaylist({
+                    list: 'PLs8TgKBcNke1BIL1szN47GLzK9YFfyQNs',
+                    listType: 'playlist',
+                    index: targetZeroBasedIndex,
+                    startSeconds: 0
+                });
+            } catch(e) {
+                console.log("loadPlaylist error:", e);
+            }
+
+            // Multi-pass auto-unmute for MCR master-live.html & OBS Studio
+            const isInIframe = (window.self !== window.top);
+            if (isInIframe || new URLSearchParams(window.location.search).get('autoplay') === '1') {
+                const overlay = document.getElementById("startOverlay");
+                if (overlay) overlay.style.display = "none";
+
+                [500, 1200, 2000, 3000, 5000].forEach(ms => {
+                    setTimeout(enableAudio, ms);
+                });
+            }
+
+            // Start 30-second auto-fade timer for clean video view
+            resetAutoFadeTimer();
+        }
+
+        // ── Auto-Fade Overlays after 30 Seconds ──
+        let autoFadeTimer = null;
+
+        function resetAutoFadeTimer() {
+            showOverlays();
+            if (autoFadeTimer) clearTimeout(autoFadeTimer);
+            autoFadeTimer = setTimeout(hideOverlays, 30000); // 30s
+        }
+
+        function hideOverlays() {
+            const header = document.querySelector('.top-header-bar');
+            const badge = document.querySelector('.episode-badge-box');
+            const ticker = document.querySelector('.bottom-ticker-bar');
+            
+            if (header) header.style.opacity = '0';
+            if (badge) badge.style.opacity = '0';
+            if (ticker) ticker.style.opacity = '0';
+        }
+
+        function showOverlays() {
+            const header = document.querySelector('.top-header-bar');
+            const badge = document.querySelector('.episode-badge-box');
+            const ticker = document.querySelector('.bottom-ticker-bar');
+
+            if (header) header.style.opacity = '1';
+            if (badge) badge.style.opacity = '1';
+            if (ticker) ticker.style.opacity = '1';
+        }
+
+        window.addEventListener('mousemove', resetAutoFadeTimer);
+        window.addEventListener('touchstart', resetAutoFadeTimer);
+        window.addEventListener('click', resetAutoFadeTimer);
+
+        function onPlayerStateChange(event) {
+            // Verify and correct playlist index on first play
+            if (!initialJumpDone && (event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.BUFFERING)) {
+                initialJumpDone = true;
+                if (player && typeof player.getPlaylistIndex === 'function') {
+                    const currentIndex = player.getPlaylistIndex();
+                    if (currentIndex !== targetZeroBasedIndex) {
+                        console.log("Correcting playlist index from", currentIndex, "to", targetZeroBasedIndex);
+                        player.playVideoAt(targetZeroBasedIndex);
+                    }
+                }
+            }
+
+            // Single episode completion -> stop video and notify MCR parent to switch back immediately
+            if (event.data === YT.PlayerState.ENDED) {
+                console.log("Single lesson ended. Stopping video & notifying parent.");
+                try {
+                    if (player && typeof player.stopVideo === 'function') {
+                        player.stopVideo();
+                    }
+                } catch(e) {}
+
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type: 'STUDIUM_FINISHED' }, '*');
+                } else {
+                    window.location.href = "index.html";
+                }
+            }
+        }
+
+        function enableAudio() {
+            const overlay = document.getElementById("startOverlay");
+            if (overlay) overlay.style.display = "none";
+
+            if (player && typeof player.unMute === 'function') {
+                player.unMute();
+                player.setVolume(100);
+                player.playVideo();
+            } else {
+                const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

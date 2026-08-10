@@ -39,6 +39,7 @@
         let isSpecialSlotActive = false;
         let apokalipsaDoneHours = { 9: false, 15: false, 21: false };
         let ksiegaNadzieiDoneHours = { 10: false, 22: false };
+        let studiumDoneHours = { 8: false, 20: false };
         let safetyTimeout = null;
 
         const frame = document.getElementById("channel-frame");
@@ -47,7 +48,11 @@
 
         // Listen for single episode completion event from sub-channels
         window.addEventListener("message", (event) => {
-            if (event.data && (event.data.type === "APOKALIPSA_FINISHED" || event.data.type === "APOKALIPSA_KSIEGA_NADZIEI_FINISHED")) {
+            if (event.data && (
+                event.data.type === "APOKALIPSA_FINISHED" || 
+                event.data.type === "APOKALIPSA_KSIEGA_NADZIEI_FINISHED" ||
+                event.data.type === "STUDIUM_FINISHED"
+            )) {
                 console.log("MCR: Special episode ended! Returning to main channel immediately.");
                 endSpecialSlot();
             }
@@ -78,7 +83,26 @@
             const hour = now.getHours();
             const min = now.getMinutes();
 
-            // 1) Trigger "Apokalipsa dzień po dniu" (09:00, 15:00, 21:00 - 6 min slot)
+            // 1) Trigger "Studium Telewizyjne Pisma Świętego" (08:00, 20:00 - 60 min slot)
+            if ((hour === 8 || hour === 20) && min < 60) {
+                if (!studiumDoneHours[hour]) {
+                    studiumDoneHours[hour] = true;
+                    isSpecialSlotActive = true;
+                    switchChannel("studium-live.html");
+
+                    // Safety timeout (60 mins max)
+                    safetyTimeout = setTimeout(() => {
+                        console.log("MCR: Safety timeout reached for Studium slot.");
+                        endSpecialSlot();
+                    }, 3600000);
+                    return;
+                }
+            } else {
+                if (hour !== 8) studiumDoneHours[8] = false;
+                if (hour !== 20) studiumDoneHours[20] = false;
+            }
+
+            // 2) Trigger "Apokalipsa dzień po dniu" (09:00, 15:00, 21:00 - 6 min slot)
             if ((hour === 9 || hour === 15 || hour === 21) && min < 6) {
                 if (!apokalipsaDoneHours[hour]) {
                     apokalipsaDoneHours[hour] = true;
@@ -98,7 +122,7 @@
                 if (hour !== 21) apokalipsaDoneHours[21] = false;
             }
 
-            // 2) Trigger "Apokalipsa: Księga Nadziei" (10:00, 22:00 - 60 min slot window)
+            // 3) Trigger "Apokalipsa: Księga Nadziei" (10:00, 22:00 - 60 min slot window)
             if ((hour === 10 || hour === 22) && min < 60) {
                 if (!ksiegaNadzieiDoneHours[hour]) {
                     ksiegaNadzieiDoneHours[hour] = true;
