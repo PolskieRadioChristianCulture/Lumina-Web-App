@@ -1,20 +1,174 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Y4EFTVBPE3');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>CC Master Control Room (Auto-Switch)</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
-        iframe { width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0; }
-        #fade-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 9999;
-            opacity: 1; transition: opacity 0.8s ease; pointer-events: none;
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #ffffff;
+            --gold-dark: #AA7C11;
+            --bg-dark: #05070c;
         }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        #fade-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.8s ease;
+            pointer-events: none;
+            display: none;
+        }
+
+        /* --- TV BUMPER ANNOUNCEMENT CARD OVERLAY --- */
+        #bumper-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #0f1523 0%, #04060a 100%);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        #bumper-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .bumper-glass-card {
+            background: rgba(15, 20, 32, 0.75);
+            border: 2px solid rgba(212, 175, 55, 0.35);
+            border-radius: 28px;
+            padding: 45px 70px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(212, 175, 55, 0.15);
+            max-width: 900px;
+            width: 85%;
+            position: relative;
+            overflow: hidden;
+            animation: bumperPulse 3s infinite alternate ease-in-out;
+        }
+
+        @keyframes bumperPulse {
+            0% { border-color: rgba(212, 175, 55, 0.3); box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.1); }
+            100% { border-color: rgba(212, 175, 55, 0.7); box-shadow: 0 20px 80px rgba(0, 0, 0, 0.9), 0 0 60px rgba(212, 175, 55, 0.3); }
+        }
+
+        .bumper-channel-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            margin-bottom: 25px;
+        }
+
+        .bumper-channel-brand i {
+            font-size: 1.2rem;
+        }
+
+        .bumper-next-tag {
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #a1a1aa;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .bumper-program-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            line-height: 1.2;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        }
+
+        .bumper-program-desc {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+            line-height: 1.5;
+            margin-bottom: 35px;
+        }
+
+        .bumper-progress-container {
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bumper-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-primary), #ffffff);
+            box-shadow: 0 0 15px var(--gold-primary);
+            transition: width 4.5s linear;
+        }
+
         #master-status {
             position: absolute; top: 20px; left: 20px; color: rgba(255,255,255,0.3);
             z-index: 10000; font-size: 10px; pointer-events: none; text-transform: uppercase; letter-spacing: 2px;
@@ -23,17 +177,62 @@
     </style>
 </head>
 <body>
+
     <iframe id="channel-frame" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; clipboard-write; clipboard-read; accelerometer; encrypted-media; gyroscope; web-share"></iframe>
     <div id="fade-overlay"></div>
+
+    <!-- TV ANNOUNCEMENT BUMPER CARD -->
+    <div id="bumper-overlay">
+        <div class="bumper-glass-card">
+            <div class="bumper-channel-brand">
+                <i class="fa-solid fa-tv"></i> TELEWIZJA CHRISTIAN CULTURE
+            </div>
+            <div class="bumper-next-tag">ZA CHWILĘ W PROGRAMIE</div>
+            <h1 class="bumper-program-title" id="bumperProgramTitle">ŁADOWANIE PROGRAMU...</h1>
+            <div class="bumper-program-desc" id="bumperProgramDesc">Zapraszamy na transmisję na żywo.</div>
+            <div class="bumper-progress-container">
+                <div class="bumper-progress-bar" id="bumperProgressBar"></div>
+            </div>
+        </div>
+    </div>
+
     <div id="master-status">MCR: INITIALIZING...</div>
 
     <script>
-        const schedule = [
-            { start: 0,  end: 6,  url: "cctv24-worship.html" },
-            { start: 6,  end: 12, url: "zapolske-live.html" },
-            { start: 12, end: 22, url: "biblia-spiewana-live.html" },
-            { start: 22, end: 24, url: "cctv24-worship.html" }
-        ];
+        const programMeta = {
+            "spiewajmy-panu-live.html": {
+                title: "ŚPIEWAJMY PANU",
+                desc: "Codzienny 60-minutowy blok muzyczny • Uwielbienie & Pieśni Chwały"
+            },
+            "kino-live.html": {
+                title: "CHRZEŚCIJAŃSKI BLOK FILMOWY",
+                desc: "Wyjątkowe seanse filmowe i dokumentalne z przesłaniem na życzenie"
+            },
+            "studium-live.html": {
+                title: "STUDIUM TELEWIZYJNE PISMA ŚWIĘTEGO",
+                desc: "Wyczerpujący 572-odcinkowy wykład biblijny werset po wersecie"
+            },
+            "apokalipsa-live.html": {
+                title: "APOKALIPSA DZIEŃ PO DNIU",
+                desc: "Dzienny komentarz proroczy i analiza Księgi Objawienia św. Jana"
+            },
+            "apokalipsa-ksiega-nadziei-live.html": {
+                title: "APOKALIPSA: KSIĘGA NADZIEI",
+                desc: "24-lekcyjny cykl odkrywania nadziei w proroctwach biblijnych"
+            },
+            "biblia-spiewana-live.html": {
+                title: "BIBLIA ŚPIEWANA & WORSHIP 24/7",
+                desc: "Śpiewane Przypowieści Salomona oraz całodobowa muzyka uwielbienia"
+            },
+            "zapolske-live.html": {
+                title: "ZJEDNOCZENI ZA POLSKĘ",
+                desc: "Poranny blok modlitewny i transmisja radiowo-telewizyjna"
+            },
+            "cctv24-worship.html": {
+                title: "NOCNE CZUWANIE & WORSHIP 24/7",
+                desc: "Nocny strumień muzyczny i czuwanie modlitewne Christian Culture"
+            }
+        };
 
         let currentUrl = null;
         let isSpecialSlotActive = false;
@@ -44,10 +243,15 @@
         let kinoDoneHours = { 18: false, 19: false };
         let isSafeMonetizationMode = false;
         let safetyTimeout = null;
+        let isSwitchingWithBumper = false;
 
         const frame = document.getElementById("channel-frame");
         const fade = document.getElementById("fade-overlay");
         const status = document.getElementById("master-status");
+        const bumperOverlay = document.getElementById("bumper-overlay");
+        const bumperTitle = document.getElementById("bumperProgramTitle");
+        const bumperDesc = document.getElementById("bumperProgramDesc");
+        const bumperProgress = document.getElementById("bumperProgressBar");
 
         // Listen for single episode completion event from sub-channels
         window.addEventListener("message", (event) => {
@@ -84,23 +288,28 @@
         }
 
         function checkSchedule() {
+            if (isSwitchingWithBumper) return;
+
             const now = new Date();
             const hour = now.getHours();
             const min = now.getMinutes();
 
             // 1) Trigger "Studium Telewizyjne Pisma Świętego" (08:00, 20:00 - 60 min slot)
-            if ((hour === 8 || hour === 20) && min < 60) {
-                if (!studiumDoneHours[hour]) {
-                    studiumDoneHours[hour] = true;
-                    isSpecialSlotActive = true;
-                    switchChannel("studium-live.html");
+            if (hour === 8 || hour === 20) {
+                if (min < 55) {
+                    if (!studiumDoneHours[hour]) {
+                        studiumDoneHours[hour] = true;
+                        isSpecialSlotActive = true;
+                        switchChannel("studium-live.html");
 
-                    // Safety timeout (60 mins max)
-                    safetyTimeout = setTimeout(() => {
-                        console.log("MCR: Safety timeout reached for Studium slot.");
-                        endSpecialSlot();
-                    }, 3600000);
-                    return;
+                        safetyTimeout = setTimeout(() => {
+                            console.log("MCR: Safety timeout reached for Studium slot.");
+                            endSpecialSlot();
+                        }, 3300000);
+                        return;
+                    }
+                } else if (isSpecialSlotActive && currentUrl === "studium-live.html") {
+                    endSpecialSlot();
                 }
             } else {
                 if (hour !== 8) studiumDoneHours[8] = false;
@@ -108,18 +317,21 @@
             }
 
             // 2) Trigger "Apokalipsa dzień po dniu" (09:00, 15:00, 21:00 - 6 min slot)
-            if ((hour === 9 || hour === 15 || hour === 21) && min < 6) {
-                if (!apokalipsaDoneHours[hour]) {
-                    apokalipsaDoneHours[hour] = true;
-                    isSpecialSlotActive = true;
-                    switchChannel("apokalipsa-live.html");
-                    
-                    // Safety timeout (6.5 mins max)
-                    safetyTimeout = setTimeout(() => {
-                        console.log("MCR: Safety timeout reached for Apokalipsa slot.");
-                        endSpecialSlot();
-                    }, 390000);
-                    return;
+            if (hour === 9 || hour === 15 || hour === 21) {
+                if (min < 6) {
+                    if (!apokalipsaDoneHours[hour]) {
+                        apokalipsaDoneHours[hour] = true;
+                        isSpecialSlotActive = true;
+                        switchChannel("apokalipsa-live.html");
+                        
+                        safetyTimeout = setTimeout(() => {
+                            console.log("MCR: Safety timeout reached for Apokalipsa slot.");
+                            endSpecialSlot();
+                        }, 390000);
+                        return;
+                    }
+                } else if (isSpecialSlotActive && currentUrl === "apokalipsa-live.html") {
+                    endSpecialSlot();
                 }
             } else {
                 if (hour !== 9) apokalipsaDoneHours[9] = false;
@@ -135,7 +347,6 @@
                         isSpecialSlotActive = true;
                         switchChannel("apokalipsa-ksiega-nadziei-live.html");
 
-                        // Safety timeout (55 mins max)
                         safetyTimeout = setTimeout(() => {
                             console.log("MCR: Safety timeout reached for Księga Nadziei slot.");
                             endSpecialSlot();
@@ -158,7 +369,6 @@
                         isSpecialSlotActive = true;
                         switchChannel("spiewajmy-panu-live.html");
 
-                        // Safety timeout (60 mins max)
                         safetyTimeout = setTimeout(() => {
                             console.log("MCR: Safety timeout reached for Śpiewajmy Panu slot.");
                             endSpecialSlot();
@@ -173,7 +383,7 @@
             }
 
             // 5) Trigger "Chrześcijański Blok Filmowy" (Sobota i Niedziela 18:00 - 20:00)
-            const dayOfWeek = now.getDay(); // 0 = Niedziela, 6 = Sobota
+            const dayOfWeek = now.getDay();
             if (dayOfWeek === 0 || dayOfWeek === 6) {
                 if (hour >= 18 && hour < 20) {
                     if (!kinoDoneHours[hour]) {
@@ -211,18 +421,53 @@
             status.textContent = "MCR: " + newChannel;
             const isFirstLoad = (currentUrl === null);
             currentUrl = newChannel;
-            
-            fade.style.display = "block";
-            fade.style.opacity = "1";
-            
-            frame.src = newChannel + "?autoplay=1&t=" + Date.now();
-            
-            setTimeout(() => {
-                fade.style.opacity = "0";
+
+            const cleanChannelKey = newChannel.split('?')[0];
+            const meta = programMeta[cleanChannelKey] || {
+                title: "PROGRAM CHRISTIAN CULTURE",
+                desc: "Emisja na żywo w Christian Culture TV"
+            };
+
+            if (isFirstLoad) {
+                // First load -> direct smooth load
+                frame.src = newChannel + "?autoplay=1&t=" + Date.now();
+                fade.style.display = "block";
+                fade.style.opacity = "1";
                 setTimeout(() => {
-                    fade.style.display = "none";
-                }, 800);
-            }, 600);
+                    fade.style.opacity = "0";
+                    setTimeout(() => { fade.style.display = "none"; }, 800);
+                }, 600);
+            } else {
+                // Subsequent program switches -> display 4.5-second TV Bumper Announcement Card!
+                isSwitchingWithBumper = true;
+                bumperTitle.textContent = meta.title;
+                bumperDesc.textContent = meta.desc;
+                bumperProgress.style.transition = 'none';
+                bumperProgress.style.width = '0%';
+
+                bumperOverlay.classList.add('show');
+
+                setTimeout(() => {
+                    bumperProgress.style.transition = 'width 4s linear';
+                    bumperProgress.style.width = '100%';
+                }, 50);
+
+                // Load iframe in background during bumper display
+                setTimeout(() => {
+                    frame.src = newChannel + "?autoplay=1&t=" + Date.now();
+                }, 1500);
+
+                // After 4.5s, fade out bumper smoothly to reveal new channel!
+                setTimeout(() => {
+                    bumperOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        bumperOverlay.classList.remove('show');
+                        bumperOverlay.style.opacity = '1';
+                        bumperProgress.style.width = '0%';
+                        isSwitchingWithBumper = false;
+                    }, 600);
+                }, 4500);
+            }
         }
 
         // Forward click/touch interaction to unmute nested iframe
@@ -246,83 +491,5 @@
             checkSchedule();
         });
     </script>
-
-    <!-- CHROMECAST / SMART TV CAST MODAL -->
-    <div id="chromecastModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 99999; display: none; align-items: center; justify-content: center; padding: 20px;">
-        <div style="background: rgba(18, 18, 26, 0.95); border: 2px solid var(--gold-primary, #d4af37); border-radius: 24px; max-width: 580px; width: 100%; padding: 35px; box-shadow: 0 20px 60px rgba(212,175,55,0.25); text-align: center; position: relative;">
-            <button onclick="closeChromecastModal()" style="position: absolute; top: 18px; right: 20px; background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">&times;</button>
-            
-            <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 20px;">
-                <img src="chromecast.png" alt="Chromecast" style="height: 38px; width: auto; filter: drop-shadow(0 0 10px rgba(212,175,55,0.5));">
-                <h2 style="font-family: 'Cinzel', serif; font-size: 1.6rem; color: #fff; font-weight: 800; margin: 0;">PRZEŚLIJ EKRAM NA TV</h2>
-            </div>
-            
-            <p style="color: rgba(255,255,255,0.8); font-size: 1.05rem; line-height: 1.6; margin-bottom: 25px;">
-                Oglądaj transmisję <strong>Christian Culture TV</strong> na dużym ekranie Twojego telewizora (Chromecast, Google TV, Apple TV, Samsung, LG webOS).
-            </p>
-
-            <div style="display: flex; flex-direction: column; gap: 14px; text-align: left; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin-bottom: 25px;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <i class="fa-brands fa-chromecast" style="color: var(--gold-primary, #d4af37); font-size: 1.4rem;"></i>
-                    <div>
-                        <strong style="color: #fff; display: block; font-size: 0.95rem;">Google Chromecast & Android TV:</strong>
-                        <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem;">W menu przeglądarke Chrome wybierz <strong>"Prześlij..." (Cast)</strong> i wskaż swój telewizor.</span>
-                    </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px;">
-                    <i class="fa-brands fa-apple" style="color: #fff; font-size: 1.4rem;"></i>
-                    <div>
-                        <strong style="color: #fff; display: block; font-size: 0.95rem;">AirPlay (iPhone / iPad / Mac):</strong>
-                        <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem;">Użyj przycisku AirPlay w menu klonowania ekranu iOS/macOS i wybierz Apple TV.</span>
-                    </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px;">
-                    <i class="fa-solid fa-tv" style="color: #80c2ff; font-size: 1.4rem;"></i>
-                    <div>
-                        <strong style="color: #fff; display: block; font-size: 0.95rem;">Smart TV (Samsung / LG / Panasonic):</strong>
-                        <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem;">Otwórz przeglądarkę w TV i wpisz adres: <strong>polskieradio.cc</strong></span>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                <button id="chromecastDirectTriggerBtn" onclick="triggerNativeCast()" style="background: linear-gradient(135deg, var(--gold-primary, #d4af37) 0%, #aa820a 100%); color: #000; font-weight: 800; font-size: 0.9rem; padding: 14px 24px; border-radius: 50px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 8px;">
-                    <img src="chromecast.png" alt="" style="height: 18px; width: auto;"> WŁĄCZ TRANSMISJĘ NA TV
-                </button>
-                <button onclick="closeChromecastModal()" style="background: rgba(255,255,255,0.1); color: #fff; font-weight: 700; font-size: 0.9rem; padding: 14px 24px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;">
-                    ZAMKNIJ
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let currentTargetCastUrl = 'master-live.html';
-
-        function openChromecastModal(targetUrl) {
-            if (targetUrl) currentTargetCastUrl = targetUrl;
-            const modal = document.getElementById('chromecastModal');
-            if (modal) modal.style.display = 'flex';
-        }
-
-        function closeChromecastModal() {
-            const modal = document.getElementById('chromecastModal');
-            if (modal) modal.style.display = 'none';
-        }
-
-        function triggerNativeCast() {
-            // Attempt Web Presentation / Cast API or open clean fullscreen player for Smart TV
-            if (navigator.presentation && navigator.presentation.defaultRequest) {
-                navigator.presentation.defaultRequest.start()
-                    .then(connection => console.log('Connected to cast display:', connection))
-                    .catch(err => {
-                        window.open(currentTargetCastUrl, '_blank');
-                    });
-            } else {
-                window.open(currentTargetCastUrl, '_blank');
-            }
-        }
-    </script>
-
 </body>
 </html>
