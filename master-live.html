@@ -258,9 +258,7 @@
             if (event.data && (
                 event.data.type === "APOKALIPSA_FINISHED" || 
                 event.data.type === "APOKALIPSA_KSIEGA_NADZIEI_FINISHED" ||
-                event.data.type === "STUDIUM_FINISHED" ||
-                event.data.type === "SPIEWAJMY_PANU_FINISHED" ||
-                event.data.type === "KINO_FINISHED"
+                event.data.type === "STUDIUM_FINISHED"
             )) {
                 console.log("MCR: Special episode ended! Returning to main channel immediately.");
                 endSpecialSlot();
@@ -361,50 +359,33 @@
                 if (hour !== 22) ksiegaNadzieiDoneHours[22] = false;
             }
 
-            // 4) Trigger "Śpiewajmy Panu" (16:00 - 60 min slot)
+            // 4) Trigger "Śpiewajmy Panu" (16:00 - 60 min slot: 16:00 - 17:00)
             if (hour === 16) {
-                if (min < 60) {
-                    if (!spiewajmyPanuDoneHours[16]) {
-                        spiewajmyPanuDoneHours[16] = true;
-                        isSpecialSlotActive = true;
-                        switchChannel("spiewajmy-panu-live.html");
-
-                        safetyTimeout = setTimeout(() => {
-                            console.log("MCR: Safety timeout reached for Śpiewajmy Panu slot.");
-                            endSpecialSlot();
-                        }, 3600000);
-                        return;
-                    }
-                } else if (isSpecialSlotActive && currentUrl === "spiewajmy-panu-live.html") {
-                    endSpecialSlot();
+                isSpecialSlotActive = true;
+                if (currentUrl !== "spiewajmy-panu-live.html") {
+                    switchChannel("spiewajmy-panu-live.html");
                 }
+                return;
             } else {
-                if (hour !== 16) spiewajmyPanuDoneHours[16] = false;
+                if (isSpecialSlotActive && currentUrl === "spiewajmy-panu-live.html") {
+                    isSpecialSlotActive = false;
+                }
             }
 
             // 5) Trigger "Chrześcijański Blok Filmowy" (Sobota i Niedziela 18:00 - 20:00)
             const dayOfWeek = now.getDay();
             if (dayOfWeek === 0 || dayOfWeek === 6) {
                 if (hour >= 18 && hour < 20) {
-                    if (!kinoDoneHours[hour]) {
-                        kinoDoneHours[hour] = true;
-                        isSpecialSlotActive = true;
-                        const targetFilmChannel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "kino-live.html";
+                    isSpecialSlotActive = true;
+                    const targetFilmChannel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "kino-live.html";
+                    if (currentUrl !== targetFilmChannel) {
                         switchChannel(targetFilmChannel);
-
-                        safetyTimeout = setTimeout(() => {
-                            console.log("MCR: Safety timeout reached for Kino slot.");
-                            endSpecialSlot();
-                        }, 7200000);
-                        return;
                     }
-                } else if (isSpecialSlotActive && (currentUrl === "kino-live.html" || currentUrl === "biblia-spiewana-live.html")) {
-                    endSpecialSlot();
-                }
-            } else {
-                if (hour !== 18 && hour !== 19) {
-                    kinoDoneHours[18] = false;
-                    kinoDoneHours[19] = false;
+                    return;
+                } else {
+                    if (isSpecialSlotActive && (currentUrl === "kino-live.html" || currentUrl === "biblia-spiewana-live.html")) {
+                        isSpecialSlotActive = false;
+                    }
                 }
             }
 
