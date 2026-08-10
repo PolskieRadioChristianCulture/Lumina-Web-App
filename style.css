@@ -3027,8 +3027,14 @@ html {
         text-align: left !important;
         font-size: clamp(2rem, 3.6vw, 2.8rem) !important;
     }
-    .gold-divider {
+    .hero-text-col > .gold-divider {
         margin: 0.5rem 0 1.5rem 0 !important;
+    }
+    .gold-divider.centered,
+    .section-header .gold-divider,
+    .section-header .gold-divider.centered,
+    .centered .gold-divider {
+        margin: 0.5rem auto 1.5rem auto !important;
     }
     .hero-description {
         margin: 0 0 2rem 0 !important;
