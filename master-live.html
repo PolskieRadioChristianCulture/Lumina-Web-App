@@ -41,13 +41,22 @@
         const status = document.getElementById("master-status");
 
         function getActiveChannel() {
-            const hour = new Date().getHours();
-            for (let i = 0; i < schedule.length; i++) {
-                if (hour >= schedule[i].start && hour < schedule[i].end) {
-                    return schedule[i].url;
-                }
+            const now = new Date();
+            const hour = now.getHours();
+            const min = now.getMinutes();
+            const timeInMinutes = hour * 60 + min;
+
+            // Emisje Specjalne: "Apokalipsa dzień po dniu" (09:00-09:10, 15:00-15:10, 21:00-21:10)
+            if ((timeInMinutes >= 9 * 60 && timeInMinutes < 9 * 60 + 10) ||
+                (timeInMinutes >= 15 * 60 && timeInMinutes < 15 * 60 + 10) ||
+                (timeInMinutes >= 21 * 60 && timeInMinutes < 21 * 60 + 10)) {
+                return "apokalipsa-live.html";
             }
-            return "cctv24-worship.html"; // fallback
+
+            if (hour >= 0 && hour < 6) return "cctv24-worship.html";
+            if (hour >= 6 && hour < 12) return "zapolske-live.html";
+            if (hour >= 12 && hour < 22) return "biblia-spiewana-live.html";
+            return "cctv24-worship.html";
         }
 
         function checkSchedule() {
