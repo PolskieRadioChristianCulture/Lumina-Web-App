@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program TV & Ramówka 24/7 | Christian Culture TV</title>
+    <meta name="description" content="Oficjalny Program TV i ramówka 24/7 stacji Christian Culture. Zobacz transmisje na żywo, kursy biblijne, koncerty uwielbienia i premiery filmowe.">
+    <meta name="robots" content="index, follow">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css?v=25">
+
+    <style>
+        :root {
+            --gold-primary: #d4af37;
+            --gold-light: #f3e5ab;
+            --gold-dark: #aa820a;
+            --bg-deep-black: #0a0a0c;
+            --glass-card: rgba(18, 18, 24, 0.65);
+            --glass-border: rgba(212, 175, 55, 0.22);
+            --glass-glow: rgba(212, 175, 55, 0.12);
+        }
+
+        body {
+            background: #060608 linear-gradient(180deg, #0b0b10 0%, #040406 100%);
+            color: #ffffff;
+            font-family: 'Outfit', 'Montserrat', sans-serif;
+            min-height: 100vh;
+        }
+
+        /* --- HERO BANNER --- */
+        .tv-hero {
+            position: relative;
+            padding: 120px 2rem 50px 2rem;
+            background: radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 6px 18px;
+            border-radius: 30px;
+            color: var(--gold-light);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 30%, var(--gold-light) 70%, var(--gold-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 750px;
+            margin: 0 auto 35px auto;
+            line-height: 1.6;
+        }
+
+        /* --- LIVE NOW ON-AIR BANNER --- */
+        .live-now-card {
+            max-width: 1200px;
+            margin: 0 auto 50px auto;
+            background: rgba(20, 20, 28, 0.75);
+            border: 1.5px solid rgba(255, 42, 85, 0.4);
+            border-radius: 24px;
+            padding: 25px 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(255, 42, 85, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .live-now-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #ff2a55;
+            box-shadow: 0 0 15px #ff2a55;
+        }
+
+        .live-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ff2a55;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .live-now-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+            margin: 8px 0 4px 0;
+        }
+
+        .live-now-desc {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.95rem;
+        }
+
+        .live-watch-btn {
+            background: linear-gradient(135deg, #ff2a55 0%, #c01138 100%);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 42, 85, 0.4);
+            white-space: nowrap;
+        }
+
+        .live-watch-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 42, 85, 0.6);
+            color: #fff;
+        }
+
+        /* --- CONTROL & FILTER BAR --- */
+        .controls-wrapper {
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 0 1rem;
+        }
+
+        .view-switcher-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 6px;
+            border-radius: 50px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .view-tab-btn {
+            padding: 10px 26px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.65);
+            transition: all 0.3s ease;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .view-tab-btn.active {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: #000;
+            font-weight: 800;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .category-pills-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .cat-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .cat-pill:hover, .cat-pill.active {
+            border-color: var(--gold-primary);
+            color: var(--gold-light);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .cat-pill.new-highlight {
+            border-color: #ff2a55;
+            color: #ff5e7e;
+            background: rgba(255, 42, 85, 0.1);
+        }
+
+        /* --- SCHEDULE TIMELINE LIST --- */
+        .schedule-container {
+            max-width: 1200px;
+            margin: 0 auto 80px auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .schedule-card {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 24px 30px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            backdrop-filter: blur(15px);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .schedule-card:hover {
+            transform: translateX(6px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.12);
+            background: rgba(24, 24, 32, 0.85);
+        }
+
+        .schedule-card.is-new {
+            border-left: 5px solid #ff2a55;
+        }
+
+        .schedule-time-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 90px;
+            padding-right: 20px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .time-start {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--gold-primary);
+            letter-spacing: 0.5px;
+        }
+
+        .time-end {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .schedule-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .card-tag-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tag-badge {
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tag-badge.badge-new {
+            background: #ff2a55;
+            color: #fff;
+            animation: pulseGlow 1.5s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px rgba(255, 42, 85, 0.4); }
+            100% { box-shadow: 0 0 15px rgba(255, 42, 85, 0.8); }
+        }
+
+        .tag-badge.badge-course {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--gold-light);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .tag-badge.badge-worship {
+            background: rgba(159, 77, 255, 0.15);
+            color: #d19eff;
+            border: 1px solid rgba(159, 77, 255, 0.3);
+        }
+
+        .tag-badge.badge-cinema {
+            background: rgba(77, 159, 255, 0.15);
+            color: #80c2ff;
+            border: 1px solid rgba(77, 159, 255, 0.3);
+        }
+
+        .show-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .show-desc {
+            font-size: 0.92rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        .schedule-action-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .schedule-action-btn:hover {
+            background: var(--gold-primary);
+            color: #000;
+            border-color: var(--gold-primary);
+        }
+
+        /* --- WEEK & MONTH VIEWS --- */
+        .grid-days-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .day-column-card {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 22px;
+            backdrop-filter: blur(15px);
+        }
+
+        .day-column-header {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--gold-primary);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .live-now-card {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
+            }
+            .schedule-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .schedule-time-box {
+                flex-direction: row;
+                gap: 10px;
+                min-width: unset;
+                padding-right: 0;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding-bottom: 10px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER NAVIGATION -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="header-left">
+                <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                
+                <a href="index.html" class="brand-logo">
+                    <span class="brand-title">CHRISTIAN CULTURE</span>
+                    <span class="brand-subtitle">POLSKIE RADIO & TELEWIZJA</span>
+                </a>
+            </div>
+
+            <div class="header-right">
+                <a href="nadawaj.html" class="nav-link"><i class="fa-solid fa-tower-broadcast"></i> Nadawaj w OBS</a>
+                <a href="program.html" class="nav-link active" style="color: var(--gold-primary);"><i class="fa-solid fa-calendar-days"></i> Program TV</a>
+                <a href="modlitwa.html" class="btn-dzj-header"><i class="fa-solid fa-hands-praying"></i> Modlitwa</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO HEADER -->
+    <section class="tv-hero">
+        <div class="hero-badge">
+            <i class="fa-solid fa-tv"></i> CC TV 24/7 • EMISJA CAŁODOBOWA
+        </div>
+        <h1 class="hero-title">PROGRAM TV & RAMÓWKA 24/7</h1>
+        <p class="hero-subtitle">
+            Twoja codzienna porcja Bożej mądrości, śpiewanego Pisma Świętego, głębokich kursów biblijnych oraz wartościowych premier filmowych.
+        </p>
+
+        <!-- LIVE NOW BANNER -->
+        <div class="live-now-card">
+            <div>
+                <div class="live-status-pill">
+                    <i class="fa-solid fa-circle" style="font-size: 0.6rem; animation: pulseGlow 1s infinite alternate;"></i> 🔴 TERAZ NA ŻYWO
+                </div>
+                <h3 class="live-now-title" id="liveHeroTitle">Zjednoczeni za Polskę — Wydanie Przedpołudniowe</h3>
+                <p class="live-now-desc" id="liveHeroDesc">Wspólna modlitwa, werset dnia i Twoje intencje emitowane na żywo na ekranie.</p>
+            </div>
+            <a href="master-live.html" class="live-watch-btn">
+                <i class="fa-solid fa-play"></i> OGLĄDAJ EMISJĘ NA ŻYWO
+            </a>
+        </div>
+    </section>
+
+    <!-- CONTROLS & FILTER BAR -->
+    <section class="controls-wrapper">
+        <!-- Time View Tabs (Dziś / Tydzień / Miesiąc) -->
+        <div class="view-switcher-group">
+            <button class="view-tab-btn active" onclick="switchView('today')"><i class="fa-solid fa-clock"></i> DZIŚ</button>
+            <button class="view-tab-btn" onclick="switchView('week')"><i class="fa-solid fa-calendar-week"></i> TYDZIEŃ</button>
+            <button class="view-tab-btn" onclick="switchView('month')"><i class="fa-solid fa-calendar-days"></i> MIESIĄC</button>
+        </div>
+
+        <!-- Category Pills Filter -->
+        <div class="category-pills-row">
+            <button class="cat-pill active" onclick="filterCategory('all')"><i class="fa-solid fa-border-all"></i> Wszystkie</button>
+            <button class="cat-pill new-highlight" onclick="filterCategory('new')"><i class="fa-solid fa-star"></i> NOWOŚCI</button>
+            <button class="cat-pill" onclick="filterCategory('course')"><i class="fa-solid fa-book-bible"></i> Kursy Biblijne</button>
+            <button class="cat-pill" onclick="filterCategory('worship')"><i class="fa-solid fa-music"></i> Uwielbienie & Biblia Śpiewana</button>
+            <button class="cat-pill" onclick="filterCategory('cinema')"><i class="fa-solid fa-film"></i> Kino & Dokumenty</button>
+            <button class="cat-pill" onclick="filterCategory('prayer')"><i class="fa-solid fa-hands-praying"></i> Poranek Modlitewny</button>
+        </div>
+    </section>
+
+    <!-- TODAY SCHEDULE CONTAINER -->
+    <main class="schedule-container" id="todayScheduleList">
+
+        <!-- 06:00 - 08:00 -->
+        <article class="schedule-card" data-category="prayer">
+            <div class="schedule-time-box">
+                <span class="time-start">06:00</span>
+                <span class="time-end">08:00</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-course">MODLITWA & SŁOWO</span>
+                    <span class="tag-badge badge-worship">NA ŻYWO</span>
+                </div>
+                <h3 class="show-title">Zjednoczeni za Polskę — Wydanie Poranne</h3>
+                <p class="show-desc">Wspólna modlitwa poranna o pokój i błogosławieństwo. Twoje intencje wyświetlane na żywo na ekranie.</p>
+            </div>
+            <a href="master-live.html" class="schedule-action-btn"><i class="fa-solid fa-play"></i> Oglądaj</a>
+        </article>
+
+        <!-- 08:00 - 09:00 (NOWOŚĆ) -->
+        <article class="schedule-card is-new" data-category="new course">
+            <div class="schedule-time-box">
+                <span class="time-start">08:00</span>
+                <span class="time-end">09:00</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-new"><i class="fa-solid fa-fire"></i> NOWOŚĆ</span>
+                    <span class="tag-badge badge-course">STUDIUM BIBLIJNE</span>
+                    <span class="tag-badge" style="background: rgba(255,255,255,0.1); color: #fff;">572 ODCINKI</span>
+                </div>
+                <h3 class="show-title">Studium Telewizyjne Pisma Świętego — Poranny Wykład</h3>
+                <p class="show-desc">Głębokie, systematyczne studium Pisma Świętego werset po wersecie. Wyjaśnienie kontekstu i praktycznego zastosowania Słowa Bożego.</p>
+            </div>
+            <a href="studium-live.html" class="schedule-action-btn" style="border-color: #ff2a55; color: #ff5e7e;"><i class="fa-solid fa-play"></i> Uruchom Odtwarzacz</a>
+        </article>
+
+        <!-- 09:00 - 09:06 -->
+        <article class="schedule-card" data-category="course">
+            <div class="schedule-time-box">
+                <span class="time-start">09:00</span>
+                <span class="time-end">09:06</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-course">ETIUDA DNIOWA</span>
+                    <span class="tag-badge" style="background: rgba(212,175,55,0.2); color: var(--gold-light);">CYKL ROCZNY</span>
+                </div>
+                <h3 class="show-title">Apokalipsa Dzień po Dniu — Komentarz Dnia</h3>
+                <p class="show-desc">Precyzyjny 5-minutowy komentarz biblijny dedykowany na dzisiejszy dzień roku.</p>
+            </div>
+            <a href="apokalipsa-live.html" class="schedule-action-btn"><i class="fa-solid fa-play"></i> Oglądaj</a>
+        </article>
+
+        <!-- 09:06 - 10:00 -->
+        <article class="schedule-card" data-category="prayer">
+            <div class="schedule-time-box">
+                <span class="time-start">09:06</span>
+                <span class="time-end">10:00</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-course">PRZEDPOŁUDNIE</span>
+                </div>
+                <h3 class="show-title">Zjednoczeni za Polskę — Pasmo Przedpołudniowe</h3>
+                <p class="show-desc">Muzyka uwielbienia, modlitwy w intencjach Polaków i rozważanie tekstów Pisma Świętego.</p>
+            </div>
+            <a href="master-live.html" class="schedule-action-btn"><i class="fa-solid fa-play"></i> Oglądaj</a>
+        </article>
+
+        <!-- 10:00 - 11:00 (NOWOŚĆ) -->
+        <article class="schedule-card is-new" data-category="new course">
+            <div class="schedule-time-box">
+                <span class="time-start">10:00</span>
+                <span class="time-end">11:00</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-new"><i class="fa-solid fa-fire"></i> NOWOŚĆ</span>
+                    <span class="tag-badge badge-course">KURS BIBLIJNY</span>
+                    <span class="tag-badge" style="background: rgba(255,193,7,0.15); color: #ffc107;">24 LEKCJE</span>
+                </div>
+                <h3 class="show-title">Apokalipsa: Księga Nadziei — Kompletny Kurs Biblijny</h3>
+                <p class="show-desc">Wyjaśnienie proroctw Księgi Objawienia w praktyczny i przejrzysty sposób. Przesłanie nadziei i Bożej opieki dla każdego człowieka.</p>
+            </div>
+            <a href="apokalipsa-ksiega-nadziei-live.html" class="schedule-action-btn" style="border-color: #ffc107; color: #ffc107;"><i class="fa-solid fa-play"></i> Uruchom Kurs</a>
+        </article>
+
+        <!-- 11:00 - 12:00 -->
+        <article class="schedule-card" data-category="prayer">
+            <div class="schedule-time-box">
+                <span class="time-start">11:00</span>
+                <span class="time-end">12:00</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-course">POŁUDNIE</span>
+                </div>
+                <h3 class="show-title">Zjednoczeni za Polskę — Pasmo Południowe</h3>
+                <p class="show-desc">Rozważania biblijne, świadectwa wiary i wspólna modlitwa.</p>
+            </div>
+            <a href="master-live.html" class="schedule-action-btn"><i class="fa-solid fa-play"></i> Oglądaj</a>
+        </article>
+
+        <!-- 12:00 - 15:00 -->
+        <article class="schedule-card" data-category="worship">
+            <div class="schedule-time-box">
+                <span class="time-start">12:00</span>
+                <span class="time-end">15:00</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-worship">UWIELBIENIE & MUZYKA</span>
+                </div>
+                <h3 class="show-title">Biblia Śpiewana — Śpiewane Przypowieści Salomona</h3>
+                <p class="show-desc">Jedyne w swoim rodzaju śpiewane teksty mądrościowe Księgi Przypowieści z towarzyszeniem muzyki worship.</p>
+            </div>
+            <a href="biblia-spiewana-live.html" class="schedule-action-btn"><i class="fa-solid fa-play"></i> Oglądaj</a>
+        </article>
+
+        <!-- 15:00 - 15:06 -->
+        <article class="schedule-card" data-category="course">
+            <div class="schedule-time-box">
+                <span class="time-start">15:00</span>
+                <span class="time-end">15:06</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-course">ETIUDA POPOŁUDNIOWA</span>
+                </div>
+                <h3 class="show-title">Apokalipsa Dzień po Dniu — Popołudniowy Komentarz Dnia</h3>
+                <p class="show-desc">Popołudniowa powtórka dziennego komentarza proroczego.</p>
+            </div>
+            <a href="apokalipsa-live.html" class="schedule-action-btn"><i class="fa-solid fa-play"></i> Oglądaj</a>
+        </article>
+
+        <!-- 15:06 - 18:00 -->
+        <article class="schedule-card" data-category="worship">
+            <div class="schedule-time-box">
+                <span class="time-start">15:06</span>
+                <span class="time-end">18:00</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-worship">POPOŁUDNIE</span>
+                </div>
+                <h3 class="show-title">Biblia Śpiewana — Pasmo Muzyczne i Uwielbienia</h3>
+                <p class="show-desc">Spokojne kompozycje muzyczne i wersety Pisma Świętego śpiewane na żywo.</p>
+            </div>
+            <a href="biblia-spiewana-live.html" class="schedule-action-btn"><i class="fa-solid fa-play"></i> Oglądaj</a>
+        </article>
+
+        <!-- 18:00 - 20:00 (NOWOŚĆ - KINO & DOKUMENT) -->
+        <article class="schedule-card is-new" data-category="new cinema">
+            <div class="schedule-time-box">
+                <span class="time-start">18:00</span>
+                <span class="time-end">20:00</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-new"><i class="fa-solid fa-fire"></i> NOWOŚĆ</span>
+                    <span class="tag-badge badge-cinema">KINO CHRZEŚCIJAŃSKIE</span>
+                    <span class="tag-badge" style="background: rgba(77,159,255,0.2); color: #80c2ff;">FILM & DOKUMENT</span>
+                </div>
+                <h3 class="show-title">Chrześcijański Blok Filmowy & Dokumenty</h3>
+                <p class="show-desc">Wartościowe filmy fabularne, chrześcijańskie produkcje kinowe, dokumenty archeologiczne oraz retransmisje koncertów uwielbienia.</p>
+            </div>
+            <a href="master-live.html" class="schedule-action-btn" style="border-color: #4d9fff; color: #80c2ff;"><i class="fa-solid fa-film"></i> Oglądaj Pasmo Filmowe</a>
+        </article>
+
+        <!-- 20:00 - 21:00 (NOWOŚĆ) -->
+        <article class="schedule-card is-new" data-category="new course">
+            <div class="schedule-time-box">
+                <span class="time-start">20:00</span>
+                <span class="time-end">21:00</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-new"><i class="fa-solid fa-fire"></i> NOWOŚĆ</span>
+                    <span class="tag-badge badge-course">STUDIUM BIBLIJNE</span>
+                </div>
+                <h3 class="show-title">Studium Telewizyjne Pisma Świętego — Wydanie Wieczorne</h3>
+                <p class="show-desc">Wieczorny wykład werset po wersecie dla osób szukających głębszego zrozumienia słów Biblii.</p>
+            </div>
+            <a href="studium-live.html" class="schedule-action-btn" style="border-color: #ff2a55; color: #ff5e7e;"><i class="fa-solid fa-play"></i> Uruchom Odtwarzacz</a>
+        </article>
+
+        <!-- 21:00 - 21:06 -->
+        <article class="schedule-card" data-category="course">
+            <div class="schedule-time-box">
+                <span class="time-start">21:00</span>
+                <span class="time-end">21:06</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-course">ETIUDA WIECZORNA</span>
+                </div>
+                <h3 class="show-title">Apokalipsa Dzień po Dniu — Wieczorny Komentarz Dnia</h3>
+                <p class="show-desc">Wieczorna podsumowująca etiuda z przesłaniem na nadchodzącą noc.</p>
+            </div>
+            <a href="apokalipsa-live.html" class="schedule-action-btn"><i class="fa-solid fa-play"></i> Oglądaj</a>
+        </article>
+
+        <!-- 21:06 - 22:00 -->
+        <article class="schedule-card" data-category="worship">
+            <div class="schedule-time-box">
+                <span class="time-start">21:06</span>
+                <span class="time-end">22:00</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-worship">FINAŁ DNIA</span>
+                </div>
+                <h3 class="show-title">Biblia Śpiewana — Finał Dnia</h3>
+                <p class="show-desc">Wyraziste, poruszające serce utwory śpiewanego Pisma Świętego przed nocnym wyciszeniem.</p>
+            </div>
+            <a href="biblia-spiewana-live.html" class="schedule-action-btn"><i class="fa-solid fa-play"></i> Oglądaj</a>
+        </article>
+
+        <!-- 22:00 - 23:00 (NOWOŚĆ) -->
+        <article class="schedule-card is-new" data-category="new course">
+            <div class="schedule-time-box">
+                <span class="time-start">22:00</span>
+                <span class="time-end">23:00</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-new"><i class="fa-solid fa-fire"></i> NOWOŚĆ</span>
+                    <span class="tag-badge badge-course">KURS BIBLIJNY</span>
+                </div>
+                <h3 class="show-title">Apokalipsa: Księga Nadziei — Wieczorny Kurs Biblijny</h3>
+                <p class="show-desc">Wieczorny wykład biblijny wyjaśniający proroctwa Księgi Objawienia.</p>
+            </div>
+            <a href="apokalipsa-ksiega-nadziei-live.html" class="schedule-action-btn" style="border-color: #ffc107; color: #ffc107;"><i class="fa-solid fa-play"></i> Uruchom Kurs</a>
+        </article>
+
+        <!-- 23:00 - 06:00 -->
+        <article class="schedule-card" data-category="worship">
+            <div class="schedule-time-box">
+                <span class="time-start">23:00</span>
+                <span class="time-end">06:00</span>
+            </div>
+            <div class="schedule-info">
+                <div class="card-tag-group">
+                    <span class="tag-badge badge-worship">NOCNE CZUWANIE</span>
+                    <span class="tag-badge" style="background: rgba(255,255,255,0.1); color: #fff;">100% MUZYKI</span>
+                </div>
+                <h3 class="show-title">Instrumental Worship & Nocne Czuwanie</h3>
+                <p class="show-desc">Głębokie wyciszenie, 100% instrumentalnej muzyki uwielbienia bez przerw. Idealne do snu, pracy i nocnej kontemplacji.</p>
+            </div>
+            <a href="cctv24-worship.html" class="schedule-action-btn"><i class="fa-solid fa-moon"></i> Oglądaj Nocne Czuwanie</a>
+        </article>
+
+    </main>
+
+    <!-- WEEK VIEW CONTAINER (Hidden by default) -->
+    <main class="schedule-container" id="weekScheduleList" style="display: none;">
+        <div class="grid-days-container">
+            <div class="day-column-card">
+                <div class="day-column-header">
+                    <span>PONIEDZIAŁEK</span>
+                    <i class="fa-solid fa-calendar-day"></i>
+                </div>
+                <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                    • 06:00 Poranek Zjednoczeni za Polskę<br>
+                    • 08:00 Studium Pisma Świętego (Odc. 1)<br>
+                    • 10:00 Apokalipsa: Księga Nadziei (Lekcja 1)<br>
+                    • 12:00 Biblia Śpiewana<br>
+                    • 18:00 Kino Chrześcijańskie: Premiera Tygodnia<br>
+                    • 20:00 Studium Pisma Świętego (Powtórka)<br>
+                    • 22:00 Apokalipsa: Księga Nadziei (Lekcja 1)<br>
+                    • 23:00 Nocne Czuwanie Worship
+                </p>
+            </div>
+
+            <div class="day-column-card">
+                <div class="day-column-header">
+                    <span>WTOREK</span>
+                    <i class="fa-solid fa-calendar-day"></i>
+                </div>
+                <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                    • 06:00 Poranek Zjednoczeni za Polskę<br>
+                    • 08:00 Studium Pisma Świętego (Odc. 2)<br>
+                    • 10:00 Apokalipsa: Księga Nadziei (Lekcja 2)<br>
+                    • 12:00 Biblia Śpiewana<br>
+                    • 18:00 Dokument Biblijny: Archeologia Ziemi Świętej<br>
+                    • 20:00 Studium Pisma Świętego (Powtórka)<br>
+                    • 22:00 Apokalipsa: Księga Nadziei (Lekcja 2)<br>
+                    • 23:00 Nocne Czuwanie Worship
+                </p>
+            </div>
+
+            <div class="day-column-card">
+                <div class="day-column-header">
+                    <span>ŚRODA</span>
+                    <i class="fa-solid fa-calendar-day"></i>
+                </div>
+                <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                    • 06:00 Poranek Zjednoczeni za Polskę<br>
+                    • 08:00 Studium Pisma Świętego (Odc. 3)<br>
+                    • 10:00 Apokalipsa: Księga Nadziei (Lekcja 3)<br>
+                    • 12:00 Biblia Śpiewana<br>
+                    • 18:00 Reportaże i Świadectwa Nawróceń<br>
+                    • 20:00 Studium Pisma Świętego (Powtórka)<br>
+                    • 22:00 Apokalipsa: Księga Nadziei (Lekcja 3)<br>
+                    • 23:00 Nocne Czuwanie Worship
+                </p>
+            </div>
+
+            <div class="day-column-card">
+                <div class="day-column-header">
+                    <span>CZWARTEK</span>
+                    <i class="fa-solid fa-calendar-day"></i>
+                </div>
+                <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                    • 06:00 Poranek Zjednoczeni za Polskę<br>
+                    • 08:00 Studium Pisma Świętego (Odc. 4)<br>
+                    • 10:00 Apokalipsa: Księga Nadziei (Lekcja 4)<br>
+                    • 12:00 Biblia Śpiewana<br>
+                    • 18:00 Wielkie Koncerty Uwielbienia Na Żywo<br>
+                    • 20:00 Studium Pisma Świętego (Powtórka)<br>
+                    • 22:00 Apokalipsa: Księga Nadziei (Lekcja 4)<br>
+                    • 23:00 Nocne Czuwanie Worship
+                </p>
+            </div>
+
+            <div class="day-column-card">
+                <div class="day-column-header">
+                    <span>PIĄTEK</span>
+                    <i class="fa-solid fa-calendar-day"></i>
+                </div>
+                <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                    • 06:00 Poranek Zjednoczeni za Polskę<br>
+                    • 08:00 Studium Pisma Świętego (Odc. 5)<br>
+                    • 10:00 Apokalipsa: Księga Nadziei (Lekcja 5)<br>
+                    • 12:00 Biblia Śpiewana<br>
+                    • 18:00 Wieczór Uwielbienia i Modlitwy Ozdrowienia<br>
+                    • 20:00 Studium Pisma Świętego (Powtórka)<br>
+                    • 22:00 Apokalipsa: Księga Nadziei (Lekcja 5)<br>
+                    • 23:00 Nocne Czuwanie Worship
+                </p>
+            </div>
+
+            <div class="day-column-card" style="border-color: var(--gold-primary);">
+                <div class="day-column-header">
+                    <span>SOBOTA (WEEKEND)</span>
+                    <i class="fa-solid fa-star" style="color: var(--gold-primary);"></i>
+                </div>
+                <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                    • 08:00 Sobotnie Pasmo Rodzinne & Dzieci<br>
+                    • 10:00 Maraton Kursu Apokalipsa<br>
+                    • 14:00 Najpiękniejsze Koncerty Worship<br>
+                    • 18:00 SOBOTNIE KINO KINOWE (Film Fabularny)<br>
+                    • 21:00 Noc Uwielbienia i Modlitwy
+                </p>
+            </div>
+
+            <div class="day-column-card" style="border-color: var(--gold-primary);">
+                <div class="day-column-header">
+                    <span>NIEDZIELA (WEEKEND)</span>
+                    <i class="fa-solid fa-cross" style="color: var(--gold-primary);"></i>
+                </div>
+                <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                    • 08:00 Poranny Blok Uwielbienia<br>
+                    • 10:00 Uroczyste Nabożeństwo & Słowo Bożego<br>
+                    • 14:00 Maraton Biblia Śpiewana<br>
+                    • 18:00 Niedzielne Kino Rodzinne<br>
+                    • 21:00 Finał Tygodnia & Nocne Czuwanie
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- MONTH VIEW CONTAINER (Hidden by default) -->
+    <main class="schedule-container" id="monthScheduleList" style="display: none;">
+        <div style="background: var(--glass-card); border: 1px solid var(--glass-border); border-radius: 20px; padding: 40px; text-align: center;">
+            <i class="fa-solid fa-calendar-check" style="font-size: 3.5rem; color: var(--gold-primary); margin-bottom: 20px;"></i>
+            <h2 style="font-family: 'Cinzel', serif; font-size: 2rem; margin-bottom: 15px;">CYKL ROZWAŻAŃ I PREMIER — SIERPIEŃ / WRZESIEŃ 2026</h2>
+            <p style="font-size: 1.05rem; color: rgba(255,255,255,0.75); max-width: 800px; margin: 0 auto 30px auto; line-height: 1.7;">
+                Trwa letnia misja <strong>„Boże Wakacje — Osobiste Uświęcenie, Ewangelizacja i Misja”</strong>. Każdego miesiąca emitujemy 30 unikalnych lekcji kursu biblijnego, nowe wydania Studium Telewizyjnego oraz cotygodniowe premiery filmowe w sobory i niedziele.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                <a href="nadawaj.html" class="live-watch-btn" style="background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%); color: #000;"><i class="fa-solid fa-tower-broadcast"></i> Panel Nadawania OBS</a>
+                <a href="master-live.html" class="live-watch-btn"><i class="fa-solid fa-play"></i> Oglądaj Transmisję 24/7</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- JAVASCRIPT LOGIC FOR INTERACTIVE FILTERS & VIEWS -->
+    <script>
+        function switchView(viewName) {
+            const tabs = document.querySelectorAll('.view-tab-btn');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            const todayList = document.getElementById('todayScheduleList');
+            const weekList = document.getElementById('weekScheduleList');
+            const monthList = document.getElementById('monthScheduleList');
+
+            todayList.style.display = 'none';
+            weekList.style.display = 'none';
+            monthList.style.display = 'none';
+
+            if (viewName === 'today') {
+                tabs[0].classList.add('active');
+                todayList.style.display = 'flex';
+            } else if (viewName === 'week') {
+                tabs[1].classList.add('active');
+                weekList.style.display = 'block';
+            } else if (viewName === 'month') {
+                tabs[2].classList.add('active');
+                monthList.style.display = 'block';
+            }
+        }
+
+        function filterCategory(category) {
+            const pills = document.querySelectorAll('.cat-pill');
+            pills.forEach(p => p.classList.remove('active'));
+
+            event.currentTarget.classList.add('active');
+
+            const cards = document.querySelectorAll('#todayScheduleList .schedule-card');
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                if (category === 'all') {
+                    card.style.display = 'flex';
+                } else if (category === 'new') {
+                    if (cardCat.includes('new')) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                } else {
+                    if (cardCat.includes(category)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
