@@ -288,7 +288,15 @@
     <div id="app-container">
         <!-- YouTube Video Player Frame -->
         <div class="video-container">
-            <iframe id="yt-player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+            <iframe id="yt-player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+
+        <!-- Audio Startup Overlay (Click to play/unmute) -->
+        <div id="startOverlay" onclick="enableAudio()" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.45); z-index: 999; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(6px);">
+            <div style="background: var(--glass-bg); border: 2px solid var(--gold-primary); padding: 22px 45px; border-radius: 50px; display: flex; align-items: center; gap: 15px; box-shadow: 0 10px 40px rgba(212,175,55,0.4); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <i class="fa-solid fa-volume-high" style="font-size: 1.8rem; color: var(--gold-primary);"></i>
+                <span style="font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: 1px; text-transform: uppercase;">KLIKNIJ, ABY WŁĄCZYĆ DŹWIĘK TRANSMISJI</span>
+            </div>
         </div>
 
         <!-- Header Bar -->
@@ -331,7 +339,11 @@
         </div>
     </div>
 
+    <!-- YouTube Iframe API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
+        let player = null;
+
         // ── Helper: Calculate Day of Year (1-365) ──
         function getDayOfYear() {
             const now = new Date();
@@ -344,10 +356,9 @@
         // ── Init Player with Playlist Index for Today ──
         function initPlayer() {
             const dayOfYear = getDayOfYear();
-            // Calculate episode index in 365-day cycle (1-based index for YouTube playlist)
             const episodeIndex = ((dayOfYear - 1) % 365) + 1;
-
             const playlistId = "PLluZnPP0Jp3JNxzhJJTmERpZZGyh8vQix";
+
             const embedUrl = "https://www.youtube.com/embed/videoseries?list=" + playlistId + "&index=" + episodeIndex + "&autoplay=1&controls=0&rel=0&modestbranding=1&enablejsapi=1";
 
             const iframe = document.getElementById("yt-player");
@@ -359,7 +370,25 @@
             if (tagEl) {
                 tagEl.textContent = "CYKL ROCZNY • ODCINEK " + episodeIndex + " / 365 (DZIEŃ " + dayOfYear + ")";
             }
+
+            // If autoplay parameter is set (e.g. from MCR), attempt auto unmute after 1.5s
+            if (new URLSearchParams(window.location.search).get('autoplay') === '1') {
+                setTimeout(enableAudio, 1500);
+            }
         }
+
+        function enableAudio() {
+            const overlay = document.getElementById("startOverlay");
+            if (overlay) overlay.style.display = "none";
+
+            const iframe = document.getElementById("yt-player");
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            }
+        }
+
+        window.addEventListener('click', enableAudio);
 
         // ── Clock & Date Updater ──
         function updateClock() {
