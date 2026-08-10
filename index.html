@@ -803,9 +803,8 @@
                         <img id="liveBg6" src="tlo_tv_nocna.jpg"     alt="Instrumental Worship Music - CCTV"      class="live-bg-img inactive">
                         <img id="liveBg7" src="tlo_tv_radiocc.jpg"   alt="Polskie Radio Christian Culture"         class="live-bg-img inactive">
                         <img id="liveBg8" src="tlo_tv_koszulki.jpg"  alt="Koszulka Jezu Ty się tym zajmij"        class="live-bg-img inactive">
-                        <a href="cctv24-pl.html" style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; text-decoration: none; cursor: pointer; z-index: 4;"
-                           onmouseover=""
-                           onmouseout="">
+                        <a href="master-live.html" onclick="playMasterLiveInline(event)" style="display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; text-decoration: none; cursor: pointer; z-index: 4;"
+                           title="Odtwórz aktualną transmisję ramówki na żywo">
                             <!-- Overlay + Play Button -->
                             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%); display: flex; align-items: center; justify-content: center; transition: background 0.3s;"
                                  onmouseover="document.getElementById('promoPlayBtn').style.background='#ff0000'; document.getElementById('promoPlayBtn').style.transform='scale(1.15)'; document.getElementById('promoPlayBtn').style.boxShadow='0 12px 30px rgba(255, 0, 0, 0.7)';"
@@ -850,11 +849,19 @@
                     </div>
                     <script>
                         (function() {
+                            window.playMasterLiveInline = function(event) {
+                                if (event) event.preventDefault();
+                                const container = document.querySelector('#liveStreamBox .video-container');
+                                if (container) {
+                                    container.innerHTML = `<iframe src="master-live.html" style="width:100%; height:100%; position:absolute; top:0; left:0; border:none;" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+                                }
+                            };
+
                             window.shareLiveStream = function() {
                                 const shareData = {
-                                    title: 'Polskie Radio Christian Culture - Pasmo Śniadaniowe',
-                                    text: 'Dołącz do pasma śniadaniowego Polskiego Radia Christian Culture!',
-                                    url: 'https://polskieradio.cc/cctv24-pl.html'
+                                    title: 'Christian Culture TV — Transmisja na Żywo 24/7',
+                                    text: 'Oglądaj transmisję na żywo ramówki Christian Culture TV!',
+                                    url: 'https://polskieradio.cc/master-live.html'
                                 };
                                 
                                 if (navigator.share) {
