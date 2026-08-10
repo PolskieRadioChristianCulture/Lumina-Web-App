@@ -448,7 +448,7 @@
                         <span class="logo-bottom">CULTURE</span>
                     </a>
                 </div>
-                <!-- Middle: Live Broadcast Schedule Widget (Desktop Only - Subtle Single Line) -->
+                <!-- Middle: Live Broadcast Schedule Widget (Desktop Only - 3 Positions Single Line) -->
                 <div id="headerLiveSchedule" class="header-live-schedule">
                     <span class="live-dot-pulse"></span>
                     <span class="live-label">TERAZ:</span>
@@ -456,6 +456,9 @@
                     <span class="header-schedule-sep">•</span>
                     <span class="next-label">NASTĘPNIE <span id="headerNextLiveTime">--:--</span>:</span>
                     <span id="headerNextLiveTitle" class="next-title">...</span>
+                    <span class="header-schedule-sep">•</span>
+                    <span class="next-label" style="opacity: 0.7;">KOLEJNO <span id="headerThirdLiveTime">--:--</span>:</span>
+                    <span id="headerThirdLiveTitle" class="next-title" style="opacity: 0.75;">...</span>
                 </div>
             </div>
             
@@ -1791,66 +1794,79 @@
 
                 let current = { title: "Instrumental Worship & Nocne Czuwanie", url: "master-live.html" };
                 let next = { time: "06:00", title: "Zjednoczeni za Polskę" };
+                let third = { time: "09:00", title: "Apokalipsa dzień po dniu" };
 
-                // 09:00 - 09:05 (Apokalipsa Dzień po Dniu)
+                // 09:00 - 09:06 (Apokalipsa Dzień po Dniu)
                 if (timeInMinutes >= 9 * 60 && timeInMinutes < 9 * 60 + 6) {
                     current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "apokalipsa-live.html" };
+                    next = { time: "09:06", title: "Zjednoczeni za Polskę" };
+                    third = { time: "10:00", title: "Apokalipsa: Księga Nadziei" };
+                }
+                // 09:06 - 10:00 (Zjednoczeni za Polskę Przedpołudnie)
+                else if (timeInMinutes >= 9 * 60 + 6 && timeInMinutes < 10 * 60) {
+                    current = { title: "Zjednoczeni za Polskę (Przedpołudnie)", url: "master-live.html" };
                     next = { time: "10:00", title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)" };
+                    third = { time: "10:35", title: "Zjednoczeni za Polskę" };
                 }
                 // 10:00 - 10:35 (Apokalipsa: Księga Nadziei)
                 else if (timeInMinutes >= 10 * 60 && timeInMinutes < 10 * 60 + 35) {
                     current = { title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)", url: "apokalipsa-ksiega-nadziei-live.html" };
                     next = { time: "10:35", title: "Zjednoczeni za Polskę" };
+                    third = { time: "12:00", title: "Biblia Śpiewana" };
                 }
-                // 06:00 - 09:00
+                // 06:00 - 09:00 (Zjednoczeni za Polskę Poranek)
                 else if (timeInMinutes >= 6 * 60 && timeInMinutes < 9 * 60) {
                     current = { title: "Zjednoczeni za Polskę (Wydanie Poranne)", url: "master-live.html" };
                     next = { time: "09:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
+                    third = { time: "10:00", title: "Apokalipsa: Księga Nadziei" };
                 }
-                // 09:06 - 10:00
-                else if (timeInMinutes >= 9 * 60 + 6 && timeInMinutes < 10 * 60) {
-                    current = { title: "Zjednoczeni za Polskę (Przedpołudnie)", url: "master-live.html" };
-                    next = { time: "10:00", title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)" };
-                }
-                // 10:35 - 12:00
+                // 10:35 - 12:00 (Zjednoczeni za Polskę Pasmo Południowe)
                 else if (timeInMinutes >= 10 * 60 + 35 && timeInMinutes < 12 * 60) {
                     current = { title: "Zjednoczeni za Polskę (Pasmo Południowe)", url: "master-live.html" };
                     next = { time: "12:00", title: "Biblia Śpiewana" };
+                    third = { time: "15:00", title: "Apokalipsa dzień po dniu" };
+                }
+                // 12:00 - 15:00 (Biblia Śpiewana Popołudnie)
+                else if (timeInMinutes >= 12 * 60 && timeInMinutes < 15 * 60) {
+                    current = { title: "Biblia Śpiewana (Wydanie Popołudniowe)", url: "master-live.html" };
+                    next = { time: "15:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
+                    third = { time: "15:06", title: "Biblia Śpiewana" };
                 }
                 // 15:00 - 15:06 (Apokalipsa Dzień po Dniu)
                 else if (timeInMinutes >= 15 * 60 && timeInMinutes < 15 * 60 + 6) {
                     current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "apokalipsa-live.html" };
                     next = { time: "15:06", title: "Biblia Śpiewana" };
+                    third = { time: "21:00", title: "Apokalipsa dzień po dniu" };
                 }
-                // 12:00 - 15:00
-                else if (timeInMinutes >= 12 * 60 && timeInMinutes < 15 * 60) {
-                    current = { title: "Biblia Śpiewana (Wydanie Popołudniowe)", url: "master-live.html" };
-                    next = { time: "15:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
+                // 15:06 - 21:00 (Biblia Śpiewana Wieczór)
+                else if (timeInMinutes >= 15 * 60 + 6 && timeInMinutes < 21 * 60) {
+                    current = { title: "Biblia Śpiewana (Wydanie Wieczorne)", url: "master-live.html" };
+                    next = { time: "21:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
+                    third = { time: "21:06", title: "Biblia Śpiewana" };
                 }
                 // 21:00 - 21:06 (Apokalipsa Dzień po Dniu)
                 else if (timeInMinutes >= 21 * 60 && timeInMinutes < 21 * 60 + 6) {
                     current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "apokalipsa-live.html" };
                     next = { time: "21:06", title: "Biblia Śpiewana" };
+                    third = { time: "22:00", title: "Apokalipsa: Księga Nadziei" };
                 }
-                // 15:06 - 21:00
-                else if (timeInMinutes >= 15 * 60 + 6 && timeInMinutes < 21 * 60) {
-                    current = { title: "Biblia Śpiewana (Wydanie Wieczorne)", url: "master-live.html" };
-                    next = { time: "21:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
-                }
-                // 21:06 - 22:00
+                // 21:06 - 22:00 (Biblia Śpiewana Finał Dnia)
                 else if (timeInMinutes >= 21 * 60 + 6 && timeInMinutes < 22 * 60) {
                     current = { title: "Biblia Śpiewana (Finał Dnia)", url: "master-live.html" };
                     next = { time: "22:00", title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)" };
+                    third = { time: "22:35", title: "Instrumental Worship" };
                 }
                 // 22:00 - 22:35 (Apokalipsa: Księga Nadziei)
                 else if (timeInMinutes >= 22 * 60 && timeInMinutes < 22 * 60 + 35) {
                     current = { title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)", url: "apokalipsa-ksiega-nadziei-live.html" };
                     next = { time: "22:35", title: "Instrumental Worship & Nocne Czuwanie" };
+                    third = { time: "06:00", title: "Zjednoczeni za Polskę" };
                 }
-                // 22:35 - 24:00 or 00:00 - 06:00
+                // 22:35 - 24:00 or 00:00 - 06:00 (Nocne Czuwanie)
                 else {
                     current = { title: "Instrumental Worship & Nocne Czuwanie", url: "master-live.html" };
                     next = { time: "06:00", title: "Zjednoczeni za Polskę" };
+                    third = { time: "09:00", title: "Apokalipsa dzień po dniu" };
                 }
 
                 const titleLink = document.getElementById("headerCurrentLiveTitle");
