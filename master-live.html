@@ -359,8 +359,8 @@
                 if (hour !== 22) ksiegaNadzieiDoneHours[22] = false;
             }
 
-            // 4) Trigger "Śpiewajmy Panu" (16:00 - 60 min slot: 16:00 - 17:00)
-            if (hour === 16) {
+            // 4) Trigger "Śpiewajmy Panu" (16:00 - 18:00 daily 2-hour music block)
+            if (hour >= 16 && hour < 18) {
                 isSpecialSlotActive = true;
                 if (currentUrl !== "spiewajmy-panu-live.html") {
                     switchChannel("spiewajmy-panu-live.html");

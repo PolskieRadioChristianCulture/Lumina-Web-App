@@ -459,6 +459,13 @@
             const overlay = document.getElementById("startOverlay");
             if (overlay) overlay.style.display = "none";
 
+            try {
+                if (player && typeof player.setShuffle === 'function') {
+                    player.setShuffle(true);
+                    console.log("Śpiewajmy Panu: Shuffle mode enabled!");
+                }
+            } catch(e) {}
+
             [200, 500, 1000, 2000, 3000, 5000].forEach(ms => {
                 setTimeout(enableAudio, ms);
             });
