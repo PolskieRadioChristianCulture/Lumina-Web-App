@@ -444,20 +444,19 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // ── 3. Calculate Day of Year (1-365) and Target Episode (1-572) ──
-        function getDayOfYear() {
-            const now = new Date();
-            const start = new Date(now.getFullYear(), 0, 0);
-            const diff = now - start + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
-            const oneDay = 1000 * 60 * 60 * 24;
-            return Math.floor(diff / oneDay);
+        // ── 3. Calculate Episode Index (Default to Episode 1 / Index 0 to prevent unreleased premieres) ──
+        const urlParams = new URLSearchParams(window.location.search);
+        let targetZeroBasedIndex = 0; // Starts reliably at Episode 1 (published & active)
+
+        if (urlParams.has('ep')) {
+            const parsedEp = parseInt(urlParams.get('ep'));
+            if (!isNaN(parsedEp) && parsedEp > 0) {
+                targetZeroBasedIndex = (parsedEp - 1) % 572;
+            }
         }
 
-        const dayOfYear = getDayOfYear();
-        const episodeIndex = ((dayOfYear - 1) % 572) + 1; // 1 to 572
-        const targetZeroBasedIndex = episodeIndex - 1;
-
-        document.getElementById('episode-tag-label').textContent = `ODCINEK ${episodeIndex} z 572`;
+        const currentEpNumber = targetZeroBasedIndex + 1;
+        document.getElementById('episode-tag-label').textContent = `ODCINEK ${currentEpNumber} z 572`;
 
         // ── 4. YouTube Iframe Player with Direct URL & Single Episode Targeting ──
         let player = null;
