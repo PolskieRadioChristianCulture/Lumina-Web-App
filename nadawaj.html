@@ -247,16 +247,14 @@
 
         .card-title {
             font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             color: #fff;
             margin-bottom: 10px;
             font-weight: 700;
             line-height: 1.35;
-            height: 2.7rem; /* Guaranteed 2 lines max height */
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            min-height: 3.4rem;
+            height: auto;
+            overflow: visible;
         }
 
         .card-desc {
@@ -264,11 +262,9 @@
             color: #a1a1aa;
             line-height: 1.55;
             margin-bottom: 22px;
-            height: 4.3rem; /* Guaranteed 3 lines uniform height */
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            min-height: 4.5rem;
+            height: auto;
+            overflow: visible;
         }
 
         .card-actions {
