@@ -371,9 +371,15 @@
                 tagEl.textContent = "CYKL ROCZNY • ODCINEK " + episodeIndex + " / 365 (DZIEŃ " + dayOfYear + ")";
             }
 
-            // If autoplay parameter is set (e.g. from MCR), attempt auto unmute after 1.5s
-            if (new URLSearchParams(window.location.search).get('autoplay') === '1') {
-                setTimeout(enableAudio, 1500);
+            // Multi-pass auto-unmute for MCR master-live.html & OBS Studio
+            const isInIframe = (window.self !== window.top);
+            if (isInIframe || new URLSearchParams(window.location.search).get('autoplay') === '1') {
+                const overlay = document.getElementById("startOverlay");
+                if (overlay) overlay.style.display = "none";
+
+                [500, 1200, 2000, 3000, 5000].forEach(ms => {
+                    setTimeout(enableAudio, ms);
+                });
             }
         }
 
@@ -384,6 +390,7 @@
             const iframe = document.getElementById("yt-player");
             if (iframe && iframe.contentWindow) {
                 iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
                 iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
             }
         }
