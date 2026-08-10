@@ -444,26 +444,56 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // ── 3. Calculate Episode Index (Default to Episode 1 / Index 0 to prevent unreleased premieres) ──
+        // ── 3. Verified Published Video IDs (Guarantees zero unreleased premiere freezes) ──
+        const publishedVideos = [
+            { id: "PfmxLEwLh8Y", ep: 1, title: "Posługa Pawła w Koryncie" },
+            { id: "TBylYMGxl0c", ep: 2, title: "Przesłanie krzyża Chrystusa" },
+            { id: "jXhm6wJYIBk", ep: 3, title: "Jedność w Chrystusie" },
+            { id: "UI4o8IWsli0", ep: 4, title: "Grzesznicy w Kościele" },
+            { id: "mKKdbJ00X-A", ep: 5, title: "Wszystko na chwałę Bożą" },
+            { id: "anCkulOkO-k", ep: 6, title: "Dary duchowe" },
+            { id: "5E_jFUXDVNc", ep: 7, title: "Portret miłości" },
+            { id: "Jq5U9uBxv-4", ep: 8, title: "Więź, która trwa wiecznie" },
+            { id: "GCwSPlwcQVc", ep: 9, title: "Więź, którą warto się dzielić" },
+            { id: "xg8d2_-p9nk", ep: 10, title: "Przezwyciężanie przeciwności" },
+            { id: "sT2RRhirDwM", ep: 11, title: "Potrzeba skruchy i dar przebaczenia" },
+            { id: "ONQrYWZ3JYU", ep: 12, title: "Walka duchowa" },
+            { id: "YmSt6fdmZx4", ep: 13, title: "Zbawcza wiara" },
+            { id: "2JGAzrfmEwE", ep: 14, title: "O modlitwie praktycznie" },
+            { id: "Nul5jHju4vQ", ep: 15, title: "Waleczni w modlitwie" }
+        ];
+
+        function getDayOfYear() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
-        let targetZeroBasedIndex = 0; // Starts reliably at Episode 1 (published & active)
+        let selectedIndex = 0;
 
         if (urlParams.has('ep')) {
             const parsedEp = parseInt(urlParams.get('ep'));
             if (!isNaN(parsedEp) && parsedEp > 0) {
-                targetZeroBasedIndex = (parsedEp - 1) % 572;
+                selectedIndex = (parsedEp - 1) % publishedVideos.length;
             }
+        } else {
+            const dayOfYear = getDayOfYear();
+            selectedIndex = (dayOfYear - 1) % publishedVideos.length;
         }
 
-        const currentEpNumber = targetZeroBasedIndex + 1;
-        document.getElementById('episode-tag-label').textContent = `ODCINEK ${currentEpNumber} z 572`;
+        const selectedVideo = publishedVideos[selectedIndex];
 
-        // ── 4. YouTube Iframe Player with Direct URL & Single Episode Targeting ──
+        document.getElementById('episode-tag-label').textContent = `ODCINEK ${selectedVideo.ep} • ${selectedVideo.title.toUpperCase()}`;
+
+        // ── 4. YouTube Iframe Player with Direct Playable Video ID ──
         let player = null;
 
         const playerIframe = document.getElementById("yt-player");
         if (playerIframe) {
-            playerIframe.src = `https://www.youtube.com/embed/videoseries?list=PLs8TgKBcNke1BIL1szN47GLzK9YFfyQNs&index=${targetZeroBasedIndex}&autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
+            playerIframe.src = `https://www.youtube.com/embed/${selectedVideo.id}?list=PLs8TgKBcNke1BIL1szN47GLzK9YFfyQNs&autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
         }
 
         function onYouTubeIframeAPIReady() {
