@@ -469,11 +469,19 @@
                 }
             }
 
-            // Single episode completion -> notify MCR parent to switch back immediately
+            // Single episode completion -> stop video and notify MCR parent to switch back immediately
             if (event.data === YT.PlayerState.ENDED) {
-                console.log("Single episode ended. Sending APOKALIPSA_FINISHED to MCR parent.");
+                console.log("Single episode ended. Stopping video & notifying parent.");
+                try {
+                    if (player && typeof player.stopVideo === 'function') {
+                        player.stopVideo();
+                    }
+                } catch(e) {}
+
                 if (window.parent && window.parent !== window) {
                     window.parent.postMessage({ type: 'APOKALIPSA_FINISHED' }, '*');
+                } else {
+                    window.location.href = "index.html";
                 }
             }
         }
