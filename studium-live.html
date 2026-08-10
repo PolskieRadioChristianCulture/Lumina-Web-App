@@ -322,7 +322,7 @@
 
         <!-- VIDEO CONTAINER -->
         <div class="video-container">
-            <div id="yt-player"></div>
+            <iframe id="yt-player" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
 
         <!-- HEADER BRANDING BAR -->
@@ -459,22 +459,16 @@
 
         document.getElementById('episode-tag-label').textContent = `ODCINEK ${episodeIndex} z 572`;
 
-        // ── 4. YouTube Iframe Player with Single Episode Targeting ──
+        // ── 4. YouTube Iframe Player with Direct URL & Single Episode Targeting ──
         let player = null;
-        let initialJumpDone = false;
+
+        const playerIframe = document.getElementById("yt-player");
+        if (playerIframe) {
+            playerIframe.src = `https://www.youtube.com/embed/videoseries?list=PLs8TgKBcNke1BIL1szN47GLzK9YFfyQNs&index=${targetZeroBasedIndex}&autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
+        }
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
-                playerVars: {
-                    autoplay: 1,
-                    controls: 0,
-                    rel: 0,
-                    modestbranding: 1,
-                    fs: 0,
-                    showinfo: 0,
-                    iv_load_policy: 3,
-                    enablejsapi: 1
-                },
                 events: {
                     'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange
@@ -483,18 +477,6 @@
         }
 
         function onPlayerReady(event) {
-            // Load playlist starting directly at today's zero-based episode index
-            try {
-                event.target.loadPlaylist({
-                    list: 'PLs8TgKBcNke1BIL1szN47GLzK9YFfyQNs',
-                    listType: 'playlist',
-                    index: targetZeroBasedIndex,
-                    startSeconds: 0
-                });
-            } catch(e) {
-                console.log("loadPlaylist error:", e);
-            }
-
             // Always hide overlay & trigger multi-pass auto-start for OBS Studio, iFrames, and direct browser view
             const overlay = document.getElementById("startOverlay");
             if (overlay) overlay.style.display = "none";
@@ -503,7 +485,6 @@
                 setTimeout(enableAudio, ms);
             });
 
-            // Start 30-second auto-fade timer for clean video view
             resetAutoFadeTimer();
         }
 

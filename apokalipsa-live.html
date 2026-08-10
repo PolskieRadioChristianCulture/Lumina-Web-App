@@ -363,6 +363,7 @@
         function onYouTubeIframeAPIReady() {
             const dayOfYear = getDayOfYear();
             const episodeIndex = ((dayOfYear - 1) % 365) + 1;
+            const targetZeroBasedIndex = episodeIndex - 1;
 
             const tagEl = document.getElementById("episodeTag");
             if (tagEl) {
@@ -377,7 +378,10 @@
                     controls: 0,
                     rel: 0,
                     modestbranding: 1,
-                    enablejsapi: 1
+                    enablejsapi: 1,
+                    listType: 'playlist',
+                    list: 'PLluZnPP0Jp3JNxzhJJTmERpZZGyh8vQix',
+                    index: targetZeroBasedIndex
                 },
                 events: {
                     'onReady': onPlayerReady,
