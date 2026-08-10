@@ -121,6 +121,112 @@ button {
     gap: 1.5rem;
 }
 
+/* --- Header Live Broadcast Schedule Widget (Desktop Only) --- */
+.header-live-schedule {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 12px;
+    padding: 6px 18px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-family: 'Outfit', 'Montserrat', sans-serif;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    max-width: 580px;
+}
+
+@media (max-width: 1080px) {
+    .header-live-schedule {
+        display: none !important;
+    }
+}
+
+.live-now-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    line-height: 1.2;
+}
+
+.live-dot-pulse {
+    width: 8px;
+    height: 8px;
+    background: #ff1e4b;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ff1e4b;
+    animation: liveDotPulse 1.2s infinite alternate;
+    flex-shrink: 0;
+}
+
+@keyframes liveDotPulse {
+    0% { opacity: 0.4; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1.25); }
+}
+
+.live-label {
+    font-weight: 800;
+    font-size: 0.7rem;
+    color: #ff1e4b;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.live-title-link {
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--gold-primary, #d4af37);
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s, text-shadow 0.2s;
+}
+
+.live-title-link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+}
+
+.next-up-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.73rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.2;
+}
+
+.next-label {
+    font-weight: 700;
+    font-size: 0.64rem;
+    letter-spacing: 0.8px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.next-time {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.next-sep {
+    color: rgba(212, 175, 55, 0.4);
+}
+
+.next-title {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* Hamburger Menu button */
 .hamburger-menu {
     display: flex;

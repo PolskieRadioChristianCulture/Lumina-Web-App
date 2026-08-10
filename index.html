@@ -450,7 +450,22 @@
                 </div>
             </div>
             
-                      <!-- Right Side: Expandable Quick Actions Dropdown -->
+            <!-- Middle: Live Broadcast Schedule Widget (Desktop Only) -->
+            <div id="headerLiveSchedule" class="header-live-schedule">
+                <div class="live-now-row">
+                    <span class="live-dot-pulse"></span>
+                    <span class="live-label">OGLĄDAJ TERAZ W CC TV24:</span>
+                    <a href="master-live.html" id="headerCurrentLiveTitle" class="live-title-link">Wczytywanie...</a>
+                </div>
+                <div class="next-up-row">
+                    <span class="next-label">NASTĘPNY PROGRAM:</span>
+                    <span id="headerNextLiveTime" class="next-time">--:--</span>
+                    <span class="next-sep">|</span>
+                    <span id="headerNextLiveTitle" class="next-title">...</span>
+                </div>
+            </div>
+
+            <!-- Right Side: Expandable Quick Actions Dropdown -->
             <div class="header-right">
                 <!-- Google Translate Dropdown -->
                 <div id="google_translate_element" style="position: absolute; left: -9999px; top: -9999px; visibility: hidden;"></div>
@@ -1772,6 +1787,78 @@
             }
             cleanGoogleBanner();
             setInterval(cleanGoogleBanner, 200);
+
+            // --- Real-time Header Schedule Updater ---
+            function updateHeaderSchedule() {
+                const now = new Date();
+                const hour = now.getHours();
+                const min = now.getMinutes();
+                const timeInMinutes = hour * 60 + min;
+
+                let current = { title: "Instrumental Worship & Nocne Czuwanie", url: "master-live.html" };
+                let next = { time: "06:00", title: "Zjednoczeni za Polskę" };
+
+                // 09:00 - 09:10 (Apokalipsa)
+                if (timeInMinutes >= 9 * 60 && timeInMinutes < 9 * 60 + 10) {
+                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "apokalipsa-live.html" };
+                    next = { time: "09:10", title: "Zjednoczeni za Polskę" };
+                }
+                // 06:00 - 09:00
+                else if (timeInMinutes >= 6 * 60 && timeInMinutes < 9 * 60) {
+                    current = { title: "Zjednoczeni za Polskę (Wydanie Poranne)", url: "master-live.html" };
+                    next = { time: "09:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
+                }
+                // 09:10 - 12:00
+                else if (timeInMinutes >= 9 * 60 + 10 && timeInMinutes < 12 * 60) {
+                    current = { title: "Zjednoczeni za Polskę (Przedpołudnie)", url: "master-live.html" };
+                    next = { time: "12:00", title: "Biblia Śpiewana" };
+                }
+                // 15:00 - 15:10 (Apokalipsa)
+                else if (timeInMinutes >= 15 * 60 && timeInMinutes < 15 * 60 + 10) {
+                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "apokalipsa-live.html" };
+                    next = { time: "15:10", title: "Biblia Śpiewana" };
+                }
+                // 12:00 - 15:00
+                else if (timeInMinutes >= 12 * 60 && timeInMinutes < 15 * 60) {
+                    current = { title: "Biblia Śpiewana (Wydanie Popołudniowe)", url: "master-live.html" };
+                    next = { time: "15:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
+                }
+                // 21:00 - 21:10 (Apokalipsa)
+                else if (timeInMinutes >= 21 * 60 && timeInMinutes < 21 * 60 + 10) {
+                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "apokalipsa-live.html" };
+                    next = { time: "21:10", title: "Biblia Śpiewana" };
+                }
+                // 15:10 - 21:00
+                else if (timeInMinutes >= 15 * 60 + 10 && timeInMinutes < 21 * 60) {
+                    current = { title: "Biblia Śpiewana (Wydanie Wieczorne)", url: "master-live.html" };
+                    next = { time: "21:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
+                }
+                // 21:10 - 22:00
+                else if (timeInMinutes >= 21 * 60 + 10 && timeInMinutes < 22 * 60) {
+                    current = { title: "Biblia Śpiewana (Finał Dnia)", url: "master-live.html" };
+                    next = { time: "22:00", title: "Instrumental Worship & Nocne Czuwanie" };
+                }
+                // 22:00 - 24:00 or 00:00 - 06:00
+                else {
+                    current = { title: "Instrumental Worship & Nocne Czuwanie", url: "master-live.html" };
+                    next = { time: "06:00", title: "Zjednoczeni za Polskę" };
+                }
+
+                const titleLink = document.getElementById("headerCurrentLiveTitle");
+                if (titleLink) {
+                    titleLink.textContent = current.title;
+                    titleLink.href = current.url;
+                }
+
+                const nextTime = document.getElementById("headerNextLiveTime");
+                if (nextTime) nextTime.textContent = next.time;
+
+                const nextTitle = document.getElementById("headerNextLiveTitle");
+                if (nextTitle) nextTitle.textContent = next.title;
+            }
+
+            updateHeaderSchedule();
+            setInterval(updateHeaderSchedule, 10000);
         });
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
