@@ -386,17 +386,20 @@
             selectedIndex = (dayOfYear - 1) % publishedVideos.length;
         }
 
-        const selectedVideo = publishedVideos[selectedIndex];
+        function updateSongUI() {
+            const song = publishedVideos[selectedIndex];
+            document.getElementById('episode-tag-label').textContent = `ŚPIEWAJMY PANU • UTWÓR ${song.ep} z ${publishedVideos.length}`;
+            document.getElementById('episode-title-label').textContent = song.title;
+        }
 
-        document.getElementById('episode-tag-label').textContent = `ŚPIEWAJMY PANU • UTWÓR ${selectedVideo.ep} z ${publishedVideos.length}`;
-        document.getElementById('episode-title-label').textContent = selectedVideo.title;
+        updateSongUI();
 
         // ── 3. YouTube Iframe Player with Direct Playable Video ID ──
         let player = null;
 
         const playerIframe = document.getElementById("yt-player");
         if (playerIframe) {
-            playerIframe.src = `https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
+            playerIframe.src = `https://www.youtube.com/embed/${publishedVideos[selectedIndex].id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
         }
 
         function onYouTubeIframeAPIReady() {
@@ -441,6 +444,18 @@
             resetAutoFadeTimer();
         }
 
+        function loadNextSong() {
+            selectedIndex = (selectedIndex + 1) % publishedVideos.length;
+            const nextSong = publishedVideos[selectedIndex];
+            updateSongUI();
+            if (playerIframe) {
+                playerIframe.src = `https://www.youtube.com/embed/${nextSong.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
+            }
+            [200, 500, 1000, 2000].forEach(ms => {
+                setTimeout(enableAudio, ms);
+            });
+        }
+
         // ── Auto-Fade Overlays after 30 Seconds ──
         let autoFadeTimer = null;
 
@@ -475,20 +490,10 @@
         window.addEventListener('click', resetAutoFadeTimer);
 
         function onPlayerStateChange(event) {
-            // Block finish -> stop video and notify MCR parent to switch back immediately
+            // When a single song finishes -> auto-advance to next song continuously for full 60 min block
             if (event.data === YT.PlayerState.ENDED) {
-                console.log("Music block ended. Stopping video & notifying parent.");
-                try {
-                    if (player && typeof player.stopVideo === 'function') {
-                        player.stopVideo();
-                    }
-                } catch(e) {}
-
-                if (window.parent && window.parent !== window) {
-                    window.parent.postMessage({ type: 'SPIEWAJMY_PANU_FINISHED' }, '*');
-                } else {
-                    window.location.href = "index.html";
-                }
+                console.log("Song finished. Auto-advancing to next song in Śpiewajmy Panu block.");
+                loadNextSong();
             }
         }
 
