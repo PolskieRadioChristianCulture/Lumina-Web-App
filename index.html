@@ -72,19 +72,6 @@
          ========================================== -->
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
-
-    <!-- Custom Style Sheet -->
-    <link rel="stylesheet" href="style.css?v=20">
-    <style>
-        /* Aggressive Google Translate Banner and Offsets Hider */
-        .goog-te-banner-frame,
-        .goog-te-banner-frame.skiptranslate,
-        iframe.goog-te-banner-frame {
-            display: none !important;
-            visibility: hidden !important;
-            height: 0 !important;
-            width: 0 !important;
-            opacity: 0 !important;
             pointer-events: none !important;
         }
         body {
@@ -1880,6 +1867,12 @@
 
                 const nextTitle = document.getElementById("headerNextLiveTitle");
                 if (nextTitle) nextTitle.textContent = next.title;
+
+                const thirdTime = document.getElementById("headerThirdLiveTime");
+                if (thirdTime) thirdTime.textContent = third.time;
+
+                const thirdTitle = document.getElementById("headerThirdLiveTitle");
+                if (thirdTitle) thirdTitle.textContent = third.title;
             }
 
             updateHeaderSchedule();
