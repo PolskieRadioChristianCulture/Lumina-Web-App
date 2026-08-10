@@ -90,6 +90,7 @@
             align-items: center;
             z-index: 10;
             pointer-events: none;
+            transition: opacity 1s ease-in-out;
         }
 
         .header-left-brand {
@@ -208,6 +209,7 @@
             flex-direction: column;
             gap: 8px;
             box-shadow: 0 12px 40px var(--glass-shadow);
+            transition: opacity 1s ease-in-out;
         }
 
         .episode-tag {
@@ -243,6 +245,7 @@
             z-index: 10;
             pointer-events: none;
             box-shadow: 0 8px 32px var(--glass-shadow);
+            transition: opacity 1s ease-in-out;
         }
 
         .ticker-label {
@@ -410,6 +413,43 @@
                     setTimeout(enableAudio, ms);
                 });
             }
+
+            // Start 30-second auto-fade timer for clean video view
+            resetAutoFadeTimer();
+        }
+
+        // ── Auto-Fade Overlays after 30 Seconds ──
+        let autoFadeTimer = null;
+
+        function resetAutoFadeTimer() {
+            showOverlays();
+            if (autoFadeTimer) clearTimeout(autoFadeTimer);
+            autoFadeTimer = setTimeout(hideOverlays, 30000); // 30s
+        }
+
+        function hideOverlays() {
+            const header = document.querySelector('.top-header-bar');
+            const badge = document.querySelector('.episode-badge-box');
+            const ticker = document.querySelector('.bottom-ticker-bar');
+            
+            if (header) header.style.opacity = '0';
+            if (badge) badge.style.opacity = '0';
+            if (ticker) ticker.style.opacity = '0';
+        }
+
+        function showOverlays() {
+            const header = document.querySelector('.top-header-bar');
+            const badge = document.querySelector('.episode-badge-box');
+            const ticker = document.querySelector('.bottom-ticker-bar');
+
+            if (header) header.style.opacity = '1';
+            if (badge) badge.style.opacity = '1';
+            if (ticker) ticker.style.opacity = '1';
+        }
+
+        window.addEventListener('mousemove', resetAutoFadeTimer);
+        window.addEventListener('touchstart', resetAutoFadeTimer);
+        window.addEventListener('click', resetAutoFadeTimer);
         }
 
         function onPlayerStateChange(event) {
