@@ -851,10 +851,7 @@
                         (function() {
                             window.playMasterLiveInline = function(event) {
                                 if (event) event.preventDefault();
-                                const container = document.querySelector('#liveStreamBox .video-container');
-                                if (container) {
-                                    container.innerHTML = `<iframe src="master-live.html" style="width:100%; height:100%; position:absolute; top:0; left:0; border:none;" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
-                                }
+                                window.location.href = "master-live.html";
                             };
 
                             window.shareLiveStream = function() {
