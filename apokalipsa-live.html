@@ -427,6 +427,14 @@
                     }
                 }
             }
+
+            // Single episode completion -> notify MCR parent to switch back immediately
+            if (event.data === YT.PlayerState.ENDED) {
+                console.log("Single episode ended. Sending APOKALIPSA_FINISHED to MCR parent.");
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type: 'APOKALIPSA_FINISHED' }, '*');
+                }
+            }
         }
 
         function enableAudio() {

@@ -36,23 +36,36 @@
         ];
 
         let currentUrl = null;
+        let isApokalipsaActive = false;
+        let apokalipsaDoneHours = { 9: false, 15: false, 21: false };
+        let safetyTimeout = null;
+
         const frame = document.getElementById("channel-frame");
         const fade = document.getElementById("fade-overlay");
         const status = document.getElementById("master-status");
 
-        function getActiveChannel() {
-            const now = new Date();
-            const hour = now.getHours();
-            const min = now.getMinutes();
-            const timeInMinutes = hour * 60 + min;
-
-            // Emisje Specjalne: "Apokalipsa dzień po dniu" (09:00-09:10, 15:00-15:10, 21:00-21:10)
-            if ((timeInMinutes >= 9 * 60 && timeInMinutes < 9 * 60 + 10) ||
-                (timeInMinutes >= 15 * 60 && timeInMinutes < 15 * 60 + 10) ||
-                (timeInMinutes >= 21 * 60 && timeInMinutes < 21 * 60 + 10)) {
-                return "apokalipsa-live.html";
+        // Listen for single episode completion event from apokalipsa-live.html
+        window.addEventListener("message", (event) => {
+            if (event.data && event.data.type === "APOKALIPSA_FINISHED") {
+                console.log("MCR: Single episode ended! Returning to main channel immediately.");
+                endApokalipsaSlot();
             }
+        });
 
+        function endApokalipsaSlot() {
+            if (safetyTimeout) {
+                clearTimeout(safetyTimeout);
+                safetyTimeout = null;
+            }
+            if (isApokalipsaActive) {
+                isApokalipsaActive = false;
+                const baseChannel = getActiveBaseChannel();
+                switchChannel(baseChannel);
+            }
+        }
+
+        function getActiveBaseChannel() {
+            const hour = new Date().getHours();
             if (hour >= 0 && hour < 6) return "cctv24-worship.html";
             if (hour >= 6 && hour < 12) return "zapolske-live.html";
             if (hour >= 12 && hour < 22) return "biblia-spiewana-live.html";
@@ -60,9 +73,36 @@
         }
 
         function checkSchedule() {
-            const targetChannel = getActiveChannel();
-            if (currentUrl !== targetChannel) {
-                switchChannel(targetChannel);
+            const now = new Date();
+            const hour = now.getHours();
+            const min = now.getMinutes();
+
+            // Trigger single episode broadcast exactly at 09:00, 15:00, 21:00
+            if ((hour === 9 || hour === 15 || hour === 21) && min < 8) {
+                if (!apokalipsaDoneHours[hour]) {
+                    apokalipsaDoneHours[hour] = true;
+                    isApokalipsaActive = true;
+                    switchChannel("apokalipsa-live.html");
+                    
+                    // Safety timeout (6.5 mins max)
+                    safetyTimeout = setTimeout(() => {
+                        console.log("MCR: Safety timeout reached for Apokalipsa slot.");
+                        endApokalipsaSlot();
+                    }, 390000);
+                    return;
+                }
+            } else {
+                // Reset flags for upcoming hours
+                if (hour !== 9) apokalipsaDoneHours[9] = false;
+                if (hour !== 15) apokalipsaDoneHours[15] = false;
+                if (hour !== 21) apokalipsaDoneHours[21] = false;
+            }
+
+            if (!isApokalipsaActive) {
+                const targetChannel = getActiveBaseChannel();
+                if (currentUrl !== targetChannel) {
+                    switchChannel(targetChannel);
+                }
             }
         }
 
