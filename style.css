@@ -2975,6 +2975,102 @@ html {
     font-style: italic;
 }
 
+/* ==========================================================================
+   MOBILE HEADER ULTRA-PREMIUM CLEANUP (< 768px)
+   Eliminates ugly wrapped text, stacked logos & header overflow on mobile
+   ========================================================================== */
+@media (max-width: 767px) {
+    /* 1. Fixed sleek 60px mobile header height */
+    .main-header {
+        height: 60px !important;
+        min-height: 60px !important;
+        max-height: 60px !important;
+        padding: 0 !important;
+    }
+
+    .header-container {
+        padding: 0 0.85rem !important;
+        height: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        max-width: 100% !important;
+        flex-wrap: nowrap !important;
+    }
+
+    /* 2. Left side: Hamburger + Clean Single-Line Logo */
+    .header-left {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .hamburger-menu {
+        margin-right: 2px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .brand-logo, .logo-link {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 4px !important;
+        text-decoration: none !important;
+    }
+
+    /* Hide subtitle on mobile so logo is always 1 clean horizontal line */
+    .brand-subtitle, .logo-bottom {
+        display: none !important;
+    }
+
+    .brand-title, .logo-top {
+        font-family: 'Cinzel', serif !important;
+        font-size: 0.95rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 1px !important;
+        color: #ffffff !important;
+        white-space: nowrap !important;
+        line-height: 1 !important;
+        margin: 0 !important;
+    }
+
+    /* 3. Right side: Hide raw text links on mobile header bar */
+    .header-right .nav-link,
+    .header-right .btn-dzj-header {
+        display: none !important;
+    }
+
+    .mobile-live-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        background: #ff2a55 !important;
+        color: #ffffff !important;
+        font-weight: 800 !important;
+        font-size: 0.7rem !important;
+        padding: 5px 12px !important;
+        border-radius: 20px !important;
+        text-decoration: none !important;
+        letter-spacing: 1px !important;
+        box-shadow: 0 0 12px rgba(255, 42, 85, 0.4) !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Keep right side compact with icon action buttons */
+    .header-right {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .header-right .sms-button {
+        width: 36px !important;
+        height: 36px !important;
+    }
+}
+
 /* Hide Dobrze, że jesteś avatar button in header on mobile screens */
 @media (max-width: 599px) {
     #navDzjIconBtn {
