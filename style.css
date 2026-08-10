@@ -2976,8 +2976,135 @@ html {
 }
 
 /* Hide Dobrze, że jesteś avatar button in header on mobile screens */
-@media (max-width: 767px) {
+@media (max-width: 599px) {
     #navDzjIconBtn {
         display: none !important;
     }
 }
+
+/* ==========================================================================
+   9. TABLET DESKTOP LAYOUT ADAPTATION (600px - 1199px)
+   Enforces full desktop experience on iPad, Android tablets & tablet screens
+   ========================================================================== */
+@media (min-width: 600px) and (max-width: 1199px) {
+    /* 1. Header Live Schedule Widget - Visible & formatted like desktop on tablets */
+    .header-live-schedule {
+        display: flex !important;
+        font-size: 0.7rem !important;
+        gap: 6px !important;
+        max-width: 540px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        align-items: center !important;
+        margin: 0 10px !important;
+    }
+
+    /* 2. Desktop 2-Column Hero Section for Tablet */
+    .hero-container {
+        grid-template-columns: 1.1fr 0.9fr !important;
+        gap: 2rem !important;
+        text-align: left !important;
+        align-items: center !important;
+        padding: 0 1.5rem !important;
+    }
+    .hero-text-col {
+        order: 1 !important;
+        align-items: flex-start !important;
+        text-align: left !important;
+    }
+    .hero-title {
+        text-align: left !important;
+        font-size: clamp(2rem, 4vw, 3.2rem) !important;
+    }
+    .gold-divider {
+        margin: 0.5rem 0 1.5rem 0 !important;
+    }
+    .hero-description {
+        margin: 0 0 2rem 0 !important;
+        text-align: left !important;
+    }
+    .hero-image-col {
+        order: 2 !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+    .hero-character-img {
+        max-width: 100% !important;
+    }
+
+    /* 3. Desktop 3-Column Radio Player Bar for Tablet */
+    .radio-player-bar {
+        height: 90px !important;
+        padding: 0.5rem 1rem !important;
+    }
+    .player-container {
+        grid-template-columns: 240px 1fr 220px !important;
+        grid-template-rows: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 1rem !important;
+        align-items: center !important;
+    }
+    .player-left {
+        grid-column: 1 !important;
+        justify-content: flex-start !important;
+    }
+    .player-center {
+        display: flex !important;
+        grid-column: 2 !important;
+        justify-content: center !important;
+    }
+    .player-right {
+        grid-column: 3 !important;
+        justify-content: flex-end !important;
+        margin-top: 0 !important;
+        width: auto !important;
+    }
+    .track-scroller-container {
+        width: 160px !important;
+    }
+
+    /* 4. Desktop Grids for Tablet Screens */
+    .apps-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 1.25rem !important;
+    }
+    .featured-channels-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 1.25rem !important;
+    }
+    .featured-channels-grid > .featured-channel-card:last-child {
+        grid-column: span 1 !important;
+        max-width: none !important;
+    }
+    .social-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 1.25rem !important;
+        max-width: 100% !important;
+    }
+    .contact-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem !important;
+    }
+    .support-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 1.25rem !important;
+    }
+    .support-grid > .support-card:last-child {
+        grid-column: span 1 !important;
+        max-width: none !important;
+    }
+
+    /* 5. Side Banners Adaptation on Tablet (900px+) */
+    @media (min-width: 900px) {
+        .side-promo {
+            display: block !important;
+            width: 120px !important;
+            transform: scale(0.8);
+            transform-origin: top center;
+        }
+        .side-promo-left { left: 4px !important; }
+        .side-promo-right { right: 4px !important; }
+    }
+}
+
