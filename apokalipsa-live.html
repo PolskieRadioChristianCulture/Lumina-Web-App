@@ -102,287 +102,439 @@
             padding: 10px 24px;
             border-radius: 50px;
             backdrop-filter: blur(12px);
-            box-shadow: 0 8px 32px var(--glass-shadow);
+            box-shadow: 0 10px 30px var(--glass-shadow);
+            pointer-events: auto;
         }
 
-        .channel-indicator {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .channel-indicator span {
-            width: 3px;
-            height: 14px;
-            background: var(--gold-primary);
-            border-radius: 2px;
-            animation: barPulse 1.4s infinite ease-in-out alternate;
-        }
-        .channel-indicator span:nth-child(2) { animation-delay: 0.2s; height: 18px; }
-        .channel-indicator span:nth-child(3) { animation-delay: 0.4s; height: 12px; }
-
-        @keyframes barPulse {
-            0% { transform: scaleY(0.6); }
-            100% { transform: scaleY(1.2); }
-        }
-
-        .channel-name {
-            font-family: 'Cinzel', serif;
-            font-size: 1.1rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: #fff;
-            text-transform: uppercase;
-        }
-
-        .header-center-clock {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 8px 28px;
-            border-radius: 50px;
-            backdrop-filter: blur(12px);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .time-display {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--gold-primary);
-            letter-spacing: 1px;
-        }
-
-        .date-display {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.8);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
-            padding-left: 12px;
-        }
-
-        .header-right-badge {
-            background: rgba(220, 20, 60, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 10px 22px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 0 20px rgba(220, 20, 60, 0.5);
-        }
-
-        .live-dot {
-            width: 10px;
-            height: 10px;
-            background: #fff;
+        .brand-logo-icon {
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            animation: blink 1s infinite alternate;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 1.1rem;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
         }
 
-        @keyframes blink {
-            0% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
-
-        /* --- EPISODE BADGE --- */
-        .episode-badge-box {
-            position: absolute;
-            bottom: 155px;
-            left: 60px;
-            background: var(--glass-bg);
-            border: 1.5px solid var(--glass-border);
-            border-left: 6px solid var(--gold-primary);
-            padding: 24px 38px;
-            border-radius: 20px;
-            backdrop-filter: blur(16px);
-            z-index: 10;
-            pointer-events: none;
+        .brand-title-group {
             display: flex;
             flex-direction: column;
+        }
+
+        .brand-main-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 800;
+            font-size: 1.15rem;
+            letter-spacing: 1.5px;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .brand-sub-title {
+            font-size: 0.75rem;
+            color: var(--gold-primary);
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .live-status-pill {
+            display: flex;
+            align-items: center;
             gap: 8px;
-            box-shadow: 0 12px 40px var(--glass-shadow);
+            background: rgba(220, 20, 60, 0.2);
+            border: 1px solid rgba(220, 20, 60, 0.5);
+            padding: 6px 14px;
+            border-radius: 50px;
+            margin-left: 10px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--red-live);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--red-live);
+            animation: pulseDot 1.5s infinite;
+        }
+
+        @keyframes pulseDot {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 20, 60, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(220, 20, 60, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 20, 60, 0); }
+        }
+
+        .live-text {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        .header-right-clock {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 10px 26px;
+            border-radius: 50px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px var(--glass-shadow);
+            pointer-events: auto;
+        }
+
+        .clock-time {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+
+        .clock-date {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gold-primary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* --- EPISODE TITLE BADGE BOX --- */
+        .episode-badge-box {
+            position: absolute;
+            top: 135px;
+            left: 60px;
+            z-index: 10;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid var(--gold-primary);
+            padding: 16px 28px;
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px var(--glass-shadow);
+            pointer-events: auto;
             transition: opacity 1s ease-in-out;
+            max-width: 700px;
         }
 
         .episode-tag {
-            font-size: 1.4rem;
-            font-weight: 900;
+            font-size: 0.75rem;
+            font-weight: 800;
             color: var(--gold-primary);
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 2.5px;
+            margin-bottom: 4px;
         }
 
         .episode-title {
             font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #fff;
-            line-height: 1.25;
+            font-weight: 700;
+            font-size: 1.35rem;
+            color: #ffffff;
+            line-height: 1.3;
         }
 
-        /* --- BOTTOM TICKER --- */
+        /* --- BOTTOM TICKER BAR --- */
         .bottom-ticker-bar {
             position: absolute;
-            bottom: 35px;
-            left: 60px;
-            right: 60px;
-            height: 90px;
-            background: var(--glass-bg);
-            border: 1.5px solid var(--glass-border);
-            border-radius: 50px;
-            backdrop-filter: blur(16px);
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            background: linear-gradient(180deg, rgba(5,5,8,0.85) 0%, rgba(5,5,8,0.98) 100%);
+            border-top: 1px solid var(--glass-border);
             display: flex;
             align-items: center;
-            overflow: hidden;
             z-index: 10;
-            pointer-events: none;
-            box-shadow: 0 8px 32px var(--glass-shadow);
+            backdrop-filter: blur(15px);
             transition: opacity 1s ease-in-out;
         }
 
         .ticker-label {
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            height: 100%;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
             color: #000;
             font-weight: 900;
-            font-size: 1.5rem;
-            padding: 0 36px;
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+
+        .ticker-track-wrapper {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
             height: 100%;
             display: flex;
             align-items: center;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            white-space: nowrap;
         }
 
-        .ticker-marquee {
-            flex: 1;
-            overflow: hidden;
+        .ticker-track {
+            display: flex;
             white-space: nowrap;
+            animation: marquee 35s linear infinite;
+        }
+
+        .ticker-item {
             display: flex;
             align-items: center;
+            gap: 12px;
+            padding: 0 35px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 0.5px;
         }
 
-        .ticker-content {
-            display: inline-block;
-            white-space: nowrap;
-            padding-left: 100%;
-            animation: marquee 60s linear infinite;
+        .ticker-item i {
+            color: var(--gold-primary);
+            font-size: 0.85rem;
+        }
+
+        .ticker-highlight {
+            color: var(--gold-primary);
             font-weight: 700;
-            font-size: 1.8rem;
-            color: rgba(255, 255, 255, 0.95);
-            letter-spacing: 0.8px;
         }
 
         @keyframes marquee {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Start Overlay */
+        #startOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .start-btn-card {
+            background: var(--glass-bg);
+            border: 2px solid var(--gold-primary);
+            padding: 30px 50px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .start-btn-card:hover {
+            transform: scale(1.05);
+        }
+
+        .start-btn-card i {
+            font-size: 3.5rem;
+            color: var(--gold-primary);
+            margin-bottom: 15px;
+        }
+
+        .start-btn-card h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
         }
     </style>
 </head>
 <body>
 
     <div id="app-container">
-        <!-- YouTube Video Player Container -->
+        <!-- VIDEO FRAME BACKGROUND -->
         <div class="video-container">
-            <div id="yt-player"></div>
+            <iframe id="yt-player" allow="autoplay; fullscreen; encrypted-media; picture-in-picture"></iframe>
         </div>
 
-        <!-- Audio Startup Overlay (Click to play/unmute) -->
-        <div id="startOverlay" onclick="enableAudio()" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.45); z-index: 999; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(6px);">
-            <div style="background: var(--glass-bg); border: 2px solid var(--gold-primary); padding: 22px 45px; border-radius: 50px; display: flex; align-items: center; gap: 15px; box-shadow: 0 10px 40px rgba(212,175,55,0.4); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                <i class="fa-solid fa-volume-high" style="font-size: 1.8rem; color: var(--gold-primary);"></i>
-                <span style="font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: 1px; text-transform: uppercase;">KLIKNIJ, ABY WŁĄCZYĆ DŹWIĘK TRANSMISJI</span>
+        <!-- START / UNMUTE OVERLAY -->
+        <div id="startOverlay" onclick="enableAudio()">
+            <div class="start-btn-card">
+                <i class="fa-solid fa-play"></i>
+                <h2>ODBLOKUJ EMISJĘ NA ŻYWO</h2>
+                <p style="color: var(--gold-primary); font-weight: 600; margin-top: 5px;">Kliknij w dowolnym miejscu, aby odblokować dźwięk</p>
             </div>
         </div>
 
-        <!-- Header Bar -->
+        <!-- TOP HEADER BAR -->
         <div class="top-header-bar">
             <div class="header-left-brand">
-                <div class="channel-indicator">
-                    <span></span><span></span><span></span>
+                <div class="brand-logo-icon">
+                    <i class="fa-solid fa-book-bible"></i>
                 </div>
-                <div class="channel-name">APOKALIPSA DZIEŃ PO DNIU</div>
+                <div class="brand-title-group">
+                    <span class="brand-main-title">APOKALIPSA DZIEŃ PO DNIU</span>
+                    <span class="brand-sub-title">CHRISTIAN CULTURE TELEWIZJA</span>
+                </div>
+                <div class="live-status-pill">
+                    <div class="pulse-dot"></div>
+                    <span class="live-text">EMISJA NA ŻYWO</span>
+                </div>
             </div>
 
-            <div class="header-center-clock">
-                <div class="time-display" id="timeDisplay">00:00:00</div>
-                <div class="date-display" id="dateDisplay">Wczytywanie...</div>
-            </div>
-
-            <div class="header-right-badge">
-                <div class="live-dot"></div>
-                <span>EMISJA SPECJALNA • CC TV</span>
+            <div class="header-right-clock">
+                <span class="clock-date" id="dateDisplay">PONIEDZIAŁEK, 10 SIERPNIA</span>
+                <span class="clock-time" id="timeDisplay">00:00:00</span>
             </div>
         </div>
 
-        <!-- Episode Info Box -->
+        <!-- EPISODE TITLE BADGE -->
         <div class="episode-badge-box">
-            <div class="episode-tag" id="episodeTag">CYKL ROCZNY • ODCINEK ... / 365</div>
-            <div class="episode-title">Apokalipsa św. Jana — Komentarz Dnia</div>
-            <div class="episode-desc" style="font-size: 1.35rem; color: rgba(255,255,255,0.85); line-height: 1.4; margin-top: 8px; max-width: 950px;">
-                Seria 365 krótkich rozważań wyjaśniająca każdy werset Księgi Objawienia. Audiobook jest polskim wydaniem książki „Revelation Verse by Verse: A Daily Devotional” (Doug Batchelor, Kristyn Dolenski, Mark Kellner, Jacob McBlane, Curtis Rittenour). © 2022 Amazing Facts International. © 2025 nadzieja.tv (CC BY-NC-ND 4.0 PL).
-            </div>
+            <div class="episode-tag" id="episode-tag-label">KOMENTARZ PROROCZY • DZIENNY CYKL</div>
+            <div class="episode-title" id="episode-title-label">Apokalipsa Dzień po Dniu — Dzisiejsza Lekcja</div>
         </div>
 
-        <!-- Ticker -->
+        <!-- BOTTOM TICKER BAR -->
         <div class="bottom-ticker-bar">
-            <div class="ticker-label">WSPARCIE MISJI</div>
-            <div class="ticker-marquee">
-                <div class="ticker-content">
-                    🌿 Wspieraj budowę cyfrowego ekosystemu Christian Culture! ▸ PATRONITE: patronite.pl/osobowoscplus ▸ REVOLUT: revolut.me/christianculture ▸ BLIK: 537 147 043 ▸ Nr konta: 48 2910 0006 0000 0000 0527 2629 z dopiskiem „Dar misyjny” ▸ Portal: www.polskieradio.cc | Aplikacja: cclite.pl
+            <div class="ticker-label">
+                <i class="fa-solid fa-scroll"></i> KOMENTARZ
+            </div>
+            <div class="ticker-track-wrapper">
+                <div class="ticker-track">
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-crown"></i>
+                        <span>Wspieraj misję ewangelizacji: <span class="ticker-highlight">patronite.pl/osobowoscplus</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Mobilna aplikacja Christian Culture: <span class="ticker-highlight">cclite.pl</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                        <span>Wsparcie BLIK: <span class="ticker-highlight">730 948 823</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-tv"></i>
+                        <span>Portal internetowy: <span class="ticker-highlight">polskieradio.cc</span></span>
+                    </div>
+
+                    <!-- Duplicate for infinite loop -->
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-crown"></i>
+                        <span>Wspieraj misję ewangelizacji: <span class="ticker-highlight">patronite.pl/osobowoscplus</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Mobilna aplikacja Christian Culture: <span class="ticker-highlight">cclite.pl</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                        <span>Wsparcie BLIK: <span class="ticker-highlight">730 948 823</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-tv"></i>
+                        <span>Portal internetowy: <span class="ticker-highlight">polskieradio.cc</span></span>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 
-    <!-- YouTube Iframe API -->
+    <!-- YOUTUBE IFRAME API -->
     <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-        let player = null;
 
-        // ── Helper: Calculate Day of Year (1-365) ──
+    <script>
+        // ── 1. Responsive Viewport Scaling ──
+        function scaleViewport() {
+            const container = document.getElementById('app-container');
+            const targetWidth = 1920;
+            const targetHeight = 1080;
+
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+
+            const scaleX = windowWidth / targetWidth;
+            const scaleY = windowHeight / targetHeight;
+            const scale = Math.min(scaleX, scaleY);
+
+            container.style.transform = `scale(${scale})`;
+            container.style.left = `${(windowWidth - targetWidth * scale) / 2}px`;
+            container.style.top = `${(windowHeight - targetHeight * scale) / 2}px`;
+        }
+
+        window.addEventListener('resize', scaleViewport);
+        scaleViewport();
+
+        // ── 2. Real-time Clock ──
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            const days = ['NIEDZIELA', 'PONIEDZIAŁEK', 'WTOREK', 'ŚRODA', 'CZWARTEK', 'PIĄTEK', 'SOBOTA'];
+            const months = ['STYCZNIA', 'LUTYGO', 'MARCA', 'KWIETNIA', 'MAJA', 'CZERWCA', 'LIPCA', 'SIERPNIA', 'WRZEŚNIA', 'PAŹDZIERNIKA', 'LISTOPADA', 'GRUDNIA'];
+            
+            const dayName = days[now.getDay()];
+            const dayNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const dateStr = `${dayName}, ${dayNum} ${monthName}`;
+
+            document.getElementById('timeDisplay').textContent = timeStr;
+            document.getElementById('dateDisplay').textContent = dateStr;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // ── 3. Verified Published Videos ──
+        const publishedVideos = [
+            { id: "R3hKDf3UiqU", ep: 365, title: "Apokalipsa dzień po dniu — Ostatnie słowo" },
+            { id: "ZkFOIegyhx4", ep: 364, title: "Apokalipsa dzień po dniu — Pewność proroctwa" },
+            { id: "VM9NKU3POmg", ep: 363, title: "Apokalipsa dzień po dniu — Ani słowa" },
+            { id: "uHhntwOF5U4", ep: 362, title: "Apokalipsa dzień po dniu — Niezawodna księga" },
+            { id: "Jbjun5gpR00", ep: 361, title: "Apokalipsa dzień po dniu — Zaproszenie" },
+            { id: "rGI67dxU_wo", ep: 360, title: "Apokalipsa dzień po dniu — Gwiazda poranna" },
+            { id: "8XR1pUmWwVU", ep: 359, title: "Apokalipsa dzień po dniu — Na zewnątrz" },
+            { id: "e12D3pKDkRs", ep: 358, title: "Apokalipsa dzień po dniu — Na zawsze błogosławieni" },
+            { id: "KfOctyhXVU8", ep: 359, title: "Apokalipsa dzień po dniu — Realna umowa" },
+            { id: "QNPnn_gbahw", ep: 356, title: "Apokalipsa dzień po dniu — Niebiańska nagroda" },
+            { id: "WbYO814zBDw", ep: 355, title: "Apokalipsa dzień po dniu — Ostateczny werdykt" },
+            { id: "zm7vWWWlqgs", ep: 354, title: "Apokalipsa dzień po dniu — Dalej i szerzej" },
+            { id: "yYCTR1QsklM", ep: 353, title: "Apokalipsa dzień po dniu — Reagowanie w uwielbieniu" },
+            { id: "l_Y4eCEyfoM", ep: 352, title: "Apokalipsa dzień po dniu — Bez zwłoki" },
+            { id: "4Z8ejqOstM8", ep: 351, title: "Apokalipsa dzień po dniu — Wiarygodne i pewne" }
+        ];
+
         function getDayOfYear() {
             const now = new Date();
             const start = new Date(now.getFullYear(), 0, 0);
-            const diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
+            const diff = now - start + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
             const oneDay = 1000 * 60 * 60 * 24;
             return Math.floor(diff / oneDay);
         }
 
-        let initialJumpDone = false;
+        const dayOfYear = getDayOfYear();
+        const selectedIndex = (dayOfYear - 1) % publishedVideos.length;
+        const selectedVideo = publishedVideos[selectedIndex];
 
-        // ── Init Player with YouTube API & jump to exact episode ──
+        document.getElementById('episode-tag-label').textContent = `KOMENTARZ PROROCZY • ODCINEK ${selectedVideo.ep}`;
+        document.getElementById('episode-title-label').textContent = selectedVideo.title;
+
+        // ── 4. YouTube Iframe Player ──
+        let player = null;
+        const playerIframe = document.getElementById("yt-player");
+        if (playerIframe) {
+            playerIframe.src = `https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
+        }
+
         function onYouTubeIframeAPIReady() {
-            const dayOfYear = getDayOfYear();
-            const episodeIndex = ((dayOfYear - 1) % 365) + 1;
-            const targetZeroBasedIndex = episodeIndex - 1;
-
-            const tagEl = document.getElementById("episodeTag");
-            if (tagEl) {
-                tagEl.textContent = "CYKL ROCZNY • ODCINEK " + episodeIndex + " / 365 (DZIEŃ " + dayOfYear + ")";
-            }
-
             player = new YT.Player('yt-player', {
-                height: '100%',
-                width: '100%',
-                playerVars: {
-                    autoplay: 1,
-                    controls: 0,
-                    rel: 0,
-                    modestbranding: 1,
-                    enablejsapi: 1,
-                    listType: 'playlist',
-                    list: 'PLluZnPP0Jp3JNxzhJJTmERpZZGyh8vQix',
-                    index: targetZeroBasedIndex
-                },
                 events: {
                     'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange
@@ -390,45 +542,46 @@
             });
         }
 
-        function onPlayerReady(event) {
-            const dayOfYear = getDayOfYear();
-            const episodeIndex = ((dayOfYear - 1) % 365) + 1;
-            const targetZeroBasedIndex = episodeIndex - 1;
+        function enableAudio() {
+            const overlay = document.getElementById("startOverlay");
+            if (overlay) overlay.style.display = "none";
 
-            // Load playlist starting directly at today's zero-based episode index
             try {
-                event.target.loadPlaylist({
-                    list: 'PLluZnPP0Jp3JNxzhJJTmERpZZGyh8vQix',
-                    listType: 'playlist',
-                    index: targetZeroBasedIndex,
-                    startSeconds: 0
-                });
-            } catch(e) {
-                console.log("loadPlaylist error:", e);
-            }
+                if (player && typeof player.unMute === 'function') {
+                    player.unMute();
+                    player.setVolume(100);
+                    player.playVideo();
+                }
+            } catch(e) {}
 
-            // Multi-pass auto-unmute for MCR master-live.html & OBS Studio
-            const isInIframe = (window.self !== window.top);
-            if (isInIframe || new URLSearchParams(window.location.search).get('autoplay') === '1') {
-                const overlay = document.getElementById("startOverlay");
-                if (overlay) overlay.style.display = "none";
+            try {
+                const iframe = document.getElementById("yt-player");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                }
+            } catch(e) {}
+        }
 
-                [500, 1200, 2000, 3000, 5000].forEach(ms => {
-                    setTimeout(enableAudio, ms);
-                });
-            }
+        function onPlayerReady(event) {
+            const overlay = document.getElementById("startOverlay");
+            if (overlay) overlay.style.display = "none";
 
-            // Start 30-second auto-fade timer for clean video view
+            [200, 500, 1000, 2000, 3000, 5000].forEach(ms => {
+                setTimeout(enableAudio, ms);
+            });
+
             resetAutoFadeTimer();
         }
 
-        // ── Auto-Fade Overlays after 30 Seconds ──
+        // ── Auto-Fade Overlays ──
         let autoFadeTimer = null;
 
         function resetAutoFadeTimer() {
             showOverlays();
             if (autoFadeTimer) clearTimeout(autoFadeTimer);
-            autoFadeTimer = setTimeout(hideOverlays, 30000); // 30s
+            autoFadeTimer = setTimeout(hideOverlays, 30000);
         }
 
         function hideOverlays() {
@@ -451,29 +604,11 @@
             if (ticker) ticker.style.opacity = '1';
         }
 
-        window.addEventListener('mousemove', resetAutoFadeTimer);
-        window.addEventListener('touchstart', resetAutoFadeTimer);
-        window.addEventListener('click', resetAutoFadeTimer);
-        }
+        window.addEventListener('mousemove', () => { resetAutoFadeTimer(); enableAudio(); });
+        window.addEventListener('touchstart', () => { resetAutoFadeTimer(); enableAudio(); });
+        window.addEventListener('click', () => { resetAutoFadeTimer(); enableAudio(); });
 
         function onPlayerStateChange(event) {
-            const dayOfYear = getDayOfYear();
-            const episodeIndex = ((dayOfYear - 1) % 365) + 1;
-            const targetZeroBasedIndex = episodeIndex - 1;
-
-            // Verify and correct playlist index on first play
-            if (!initialJumpDone && (event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.BUFFERING)) {
-                initialJumpDone = true;
-                if (player && typeof player.getPlaylistIndex === 'function') {
-                    const currentIndex = player.getPlaylistIndex();
-                    if (currentIndex !== targetZeroBasedIndex) {
-                        console.log("Correcting playlist index from", currentIndex, "to", targetZeroBasedIndex);
-                        player.playVideoAt(targetZeroBasedIndex);
-                    }
-                }
-            }
-
-            // Single episode completion -> stop video and notify MCR parent to switch back immediately
             if (event.data === YT.PlayerState.ENDED) {
                 console.log("Single episode ended. Stopping video & notifying parent.");
                 try {
@@ -489,153 +624,6 @@
                 }
             }
         }
-
-        function enableAudio() {
-            const overlay = document.getElementById("startOverlay");
-            if (overlay) overlay.style.display = "none";
-
-            if (player && typeof player.unMute === 'function') {
-                player.unMute();
-                player.setVolume(100);
-                player.playVideo();
-            } else {
-                const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
-                if (iframe && iframe.contentWindow) {
-                    iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-                    iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
-                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-                }
-            }
-        }
-
-        window.addEventListener('click', enableAudio);
-
-        // ── Clock & Date Updater ──
-        function updateClock() {
-            const now = new Date();
-            const h = String(now.getHours()).padStart(2, '0');
-            const m = String(now.getMinutes()).padStart(2, '0');
-            const s = String(now.getSeconds()).padStart(2, '0');
-
-            const timeEl = document.getElementById("timeDisplay");
-            if (timeEl) timeEl.textContent = h + ":" + m + ":" + s;
-
-            const days = ["NIEDZIELA", "PONIEDZIAŁEK", "WTOREK", "ŚRODA", "CZWARTEK", "PIĄTEK", "SOBOTA"];
-            const months = ["STYCZNIA", "LUTEGO", "MARCA", "KWIETNIA", "MAJA", "CZERWCA", "LIPCA", "SIERPNIA", "WRZEŚNIA", "PAŹDZIERNIKA", "LISTOPADA", "GRUDNIA"];
-            
-            const dateStr = days[now.getDay()] + ", " + now.getDate() + " " + months[now.getMonth()];
-            const dateEl = document.getElementById("dateDisplay");
-            if (dateEl) dateEl.textContent = dateStr;
-        }
-
-        // ── Viewport Scaling ──
-        function resizeViewport() {
-            const container = document.getElementById("app-container");
-            if (!container) return;
-            const targetW = 1920;
-            const targetH = 1080;
-            const w = window.innerWidth || document.documentElement.clientWidth || 0;
-            const h = window.innerHeight || document.documentElement.clientHeight || 0;
-
-            if (w <= 0 || h <= 0) return;
-
-            const scaleX = w / targetW;
-            const scaleY = h / targetH;
-            const scale = Math.min(scaleX, scaleY);
-
-            container.style.transform = "scale(" + scale + ")";
-            const leftOffset = (w - (targetW * scale)) / 2;
-            const topOffset = (h - (targetH * scale)) / 2;
-            container.style.left = leftOffset + "px";
-            container.style.top = topOffset + "px";
-        }
-
-        window.addEventListener("resize", resizeViewport);
-        window.addEventListener("load", () => {
-            resizeViewport();
-            initPlayer();
-        });
-        setInterval(updateClock, 1000);
-        updateClock();
-        resizeViewport();
     </script>
-
-    <!-- CHROMECAST / SMART TV CAST MODAL -->
-    <div id="chromecastModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 99999; display: none; align-items: center; justify-content: center; padding: 20px;">
-        <div style="background: rgba(18, 18, 26, 0.95); border: 2px solid var(--gold-primary, #d4af37); border-radius: 24px; max-width: 580px; width: 100%; padding: 35px; box-shadow: 0 20px 60px rgba(212,175,55,0.25); text-align: center; position: relative;">
-            <button onclick="closeChromecastModal()" style="position: absolute; top: 18px; right: 20px; background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">&times;</button>
-            
-            <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 20px;">
-                <img src="chromecast.png" alt="Chromecast" style="height: 38px; width: auto; filter: drop-shadow(0 0 10px rgba(212,175,55,0.5));">
-                <h2 style="font-family: 'Cinzel', serif; font-size: 1.6rem; color: #fff; font-weight: 800; margin: 0;">PRZEŚLIJ EKRAM NA TV</h2>
-            </div>
-            
-            <p style="color: rgba(255,255,255,0.8); font-size: 1.05rem; line-height: 1.6; margin-bottom: 25px;">
-                Oglądaj transmisję <strong>Christian Culture TV</strong> na dużym ekranie Twojego telewizora (Chromecast, Google TV, Apple TV, Samsung, LG webOS).
-            </p>
-
-            <div style="display: flex; flex-direction: column; gap: 14px; text-align: left; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin-bottom: 25px;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <i class="fa-brands fa-chromecast" style="color: var(--gold-primary, #d4af37); font-size: 1.4rem;"></i>
-                    <div>
-                        <strong style="color: #fff; display: block; font-size: 0.95rem;">Google Chromecast & Android TV:</strong>
-                        <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem;">W menu przeglądarke Chrome wybierz <strong>"Prześlij..." (Cast)</strong> i wskaż swój telewizor.</span>
-                    </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px;">
-                    <i class="fa-brands fa-apple" style="color: #fff; font-size: 1.4rem;"></i>
-                    <div>
-                        <strong style="color: #fff; display: block; font-size: 0.95rem;">AirPlay (iPhone / iPad / Mac):</strong>
-                        <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem;">Użyj przycisku AirPlay w menu klonowania ekranu iOS/macOS i wybierz Apple TV.</span>
-                    </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px;">
-                    <i class="fa-solid fa-tv" style="color: #80c2ff; font-size: 1.4rem;"></i>
-                    <div>
-                        <strong style="color: #fff; display: block; font-size: 0.95rem;">Smart TV (Samsung / LG / Panasonic):</strong>
-                        <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem;">Otwórz przeglądarkę w TV i wpisz adres: <strong>polskieradio.cc</strong></span>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                <button id="chromecastDirectTriggerBtn" onclick="triggerNativeCast()" style="background: linear-gradient(135deg, var(--gold-primary, #d4af37) 0%, #aa820a 100%); color: #000; font-weight: 800; font-size: 0.9rem; padding: 14px 24px; border-radius: 50px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 8px;">
-                    <img src="chromecast.png" alt="" style="height: 18px; width: auto;"> WŁĄCZ TRANSMISJĘ NA TV
-                </button>
-                <button onclick="closeChromecastModal()" style="background: rgba(255,255,255,0.1); color: #fff; font-weight: 700; font-size: 0.9rem; padding: 14px 24px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;">
-                    ZAMKNIJ
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let currentTargetCastUrl = 'master-live.html';
-
-        function openChromecastModal(targetUrl) {
-            if (targetUrl) currentTargetCastUrl = targetUrl;
-            const modal = document.getElementById('chromecastModal');
-            if (modal) modal.style.display = 'flex';
-        }
-
-        function closeChromecastModal() {
-            const modal = document.getElementById('chromecastModal');
-            if (modal) modal.style.display = 'none';
-        }
-
-        function triggerNativeCast() {
-            // Attempt Web Presentation / Cast API or open clean fullscreen player for Smart TV
-            if (navigator.presentation && navigator.presentation.defaultRequest) {
-                navigator.presentation.defaultRequest.start()
-                    .then(connection => console.log('Connected to cast display:', connection))
-                    .catch(err => {
-                        window.open(currentTargetCastUrl, '_blank');
-                    });
-            } else {
-                window.open(currentTargetCastUrl, '_blank');
-            }
-        }
-    </script>
-
 </body>
 </html>
