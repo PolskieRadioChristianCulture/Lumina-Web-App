@@ -1865,8 +1865,20 @@
                     next = { time: "15:06", title: "Biblia Śpiewana" };
                     third = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
                 }
-                // 15:06 - 20:00 (Biblia Śpiewana Wieczór)
-                else if (timeInMinutes >= 15 * 60 + 6 && timeInMinutes < 20 * 60) {
+                // 15:06 - 16:00 (Biblia Śpiewana Popołudnie)
+                else if (timeInMinutes >= 15 * 60 + 6 && timeInMinutes < 16 * 60) {
+                    current = { title: "Biblia Śpiewana (Wydanie Popołudniowe)", url: "master-live.html" };
+                    next = { time: "16:00", title: "Śpiewajmy Panu (Blok Muzyczny)" };
+                    third = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
+                }
+                // 16:00 - 17:00 (Śpiewajmy Panu — Blok Muzyczny)
+                else if (timeInMinutes >= 16 * 60 && timeInMinutes < 17 * 60) {
+                    current = { title: "Śpiewajmy Panu (Blok Muzyczny)", url: "spiewajmy-panu-live.html" };
+                    next = { time: "17:00", title: "Biblia Śpiewana (Wydanie Wieczorne)" };
+                    third = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
+                }
+                // 17:00 - 20:00 (Biblia Śpiewana Wieczór)
+                else if (timeInMinutes >= 17 * 60 && timeInMinutes < 20 * 60) {
                     current = { title: "Biblia Śpiewana (Wydanie Wieczorne)", url: "master-live.html" };
                     next = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
                     third = { time: "21:00", title: "Apokalipsa dzień po dniu" };

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Śpiewajmy Panu — Transmisja na Żywo | Christian Culture TV</title>
+    <meta name="description" content="Codzienny blok muzyczny Śpiewajmy Panu na żywo w Christian Culture TV. Utwory uwielbienia, pieśni chwały i polska muzyka chrześcijańska.">
+    <meta name="robots" content="noindex, follow">
+
+    <!-- Google Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Montserrat:wght@400;600;700;800;900&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --gold-primary: #d4af37;
+            --gold-light: #f3e5ab;
+            --gold-dark: #aa820a;
+            --glass-bg: rgba(10, 12, 22, 0.75);
+            --glass-border: rgba(212, 175, 55, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Outfit', 'Montserrat', sans-serif;
+            color: #fff;
+        }
+
+        #app-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            overflow: hidden;
+        }
+
+        /* ── VIDEO CONTAINER ── */
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: #000;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: cover;
+        }
+
+        /* ── TOP HEADER BRANDING BAR ── */
+        .top-header-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            z-index: 10;
+            background: linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 70%, transparent 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            backdrop-filter: blur(8px);
+            transition: opacity 0.5s ease;
+        }
+
+        .header-left-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .channel-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .channel-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--gold-primary);
+            border-radius: 50%;
+            animation: pulseGlow 1.5s infinite ease-in-out alternate;
+        }
+
+        .channel-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--gold-light);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .header-center-clock {
+            text-align: center;
+        }
+
+        .time-display {
+            font-size: 1.9rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .date-display {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .header-right-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(212, 175, 55, 0.15);
+            border: 1.5px solid var(--gold-primary);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: #ff0000;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff0000;
+            animation: pulseGlow 1s infinite alternate;
+        }
+
+        /* ── EPISODE BADGE BOX ── */
+        .episode-badge-box {
+            position: absolute;
+            top: 110px;
+            left: 40px;
+            z-index: 10;
+            background: var(--glass-bg);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 20px 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            transition: opacity 0.5s ease;
+        }
+
+        .episode-tag {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .episode-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        /* ── BOTTOM TICKER BAR ── */
+        .bottom-ticker-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 70%, transparent 100%);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            border-top: 1px solid rgba(212, 175, 55, 0.25);
+            transition: opacity 0.5s ease;
+        }
+
+        .ticker-label {
+            background: var(--gold-primary);
+            color: #000;
+            font-weight: 900;
+            font-size: 1.1rem;
+            padding: 0 35px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .ticker-content {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            animation: scrollTicker 35s linear infinite;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        @keyframes scrollTicker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        /* Start Overlay for Autoplay Audio unlock */
+        #startOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            cursor: pointer;
+        }
+
+        #startOverlay h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-primary);
+            font-size: 2.5rem;
+        }
+
+        #startOverlay p {
+            color: #fff;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+
+        <!-- UNMUTE OVERLAY -->
+        <div id="startOverlay" onclick="enableAudio()">
+            <i class="fa-solid fa-music" style="font-size: 5rem; color: var(--gold-primary);"></i>
+            <h2>ŚPIEWAJMY PANU • BLOK MUZYCZNY</h2>
+            <p>Kliknij w dowolnym miejscu, aby włączyć dźwięk i transmisję na żywo</p>
+        </div>
+
+        <!-- VIDEO CONTAINER -->
+        <div class="video-container">
+            <iframe id="yt-player" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <!-- HEADER BRANDING BAR -->
+        <div class="top-header-bar">
+            <div class="header-left-brand">
+                <div class="channel-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="channel-name">Christian Culture • Śpiewajmy Panu</div>
+            </div>
+
+            <div class="header-center-clock">
+                <div class="time-display" id="clock-time">00:00:00</div>
+                <div class="date-display" id="clock-date">PONIEDZIAŁEK, 10 SIERPNIA</div>
+            </div>
+
+            <div class="header-right-badge">
+                <button onclick="openChromecastModal('spiewajmy-panu-live.html')" style="background: rgba(212,175,55,0.15); border: 1.5px solid var(--gold-primary); color: #fff; border-radius: 20px; padding: 6px 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.8rem; letter-spacing: 1px; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';" title="Prześlij na TV (Chromecast / AirPlay)">
+                    <img src="chromecast.png" alt="Chromecast" style="height: 18px; width: auto;">
+                    <span>PRZEŚLIJ NA TV</span>
+                </button>
+                <div class="live-dot"></div>
+                <span>EMISJA MUZYCZNA</span>
+            </div>
+        </div>
+
+        <!-- EPISODE BADGE -->
+        <div class="episode-badge-box">
+            <div class="episode-tag" id="episode-tag-label">CODZIENNY BLOK MUZYCZNY • 16:00</div>
+            <div class="episode-title" id="episode-title-label">Śpiewajmy Panu — Utwory Uwielbienia</div>
+        </div>
+
+        <!-- BOTTOM TICKER BAR -->
+        <div class="bottom-ticker-bar">
+            <div class="ticker-label">
+                <i class="fa-solid fa-music"></i> CC MUSIC
+            </div>
+            <div class="ticker-content">
+                <span>🎵 OGLĄDASZ ŚPIEWAJMY PANU W CHRISTIAN CULTURE TV • CODZIENNIE O 16:00 • MUZYKA UWIELBIENIA, PIEŚNI CHWAŁY I UTWORY DLA BOGA • ZAPRASZAMY DO WSPÓLNEGO ŚPIEWU I UWIELBIENIA! • &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span>🎵 OGLĄDASZ ŚPIEWAJMY PANU W CHRISTIAN CULTURE TV • CODZIENNIE O 16:00 • MUZYKA UWIELBIENIA, PIEŚNI CHWAŁY I UTWORY DLA BOGA • ZAPRASZAMY DO WSPÓLNEGO ŚPIEWU I UWIELBIENIA! • &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- YOUTUBE IFRAME API & CONTROL LOGIC -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        // ── 1. Real-time Clock ──
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const dateStr = now.toLocaleDateString('pl-PL', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase();
+
+            document.getElementById('clock-time').textContent = timeStr;
+            document.getElementById('clock-date').textContent = dateStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // ── 2. Verified Published Video List for Śpiewajmy Panu ──
+        const publishedVideos = [
+            { id: "PLBoxajz2zg", ep: 1, title: "Bądź Iskrą Bożą" },
+            { id: "U2Ar6-T43kE", ep: 2, title: "Marana Tha!" },
+            { id: "K_9TQXQFmL4", ep: 3, title: "Jestem Kobietą Boga" },
+            { id: "jR5ht9KPmhQ", ep: 4, title: "Żołnierzu Chrystusa" },
+            { id: "JKP5nFYIyr0", ep: 5, title: "Jezus — Christian Culture Music Hits" },
+            { id: "8PUt-ZK0jlQ", ep: 6, title: "Dobry Początek" },
+            { id: "tCNExzu0S7g", ep: 7, title: "Zjednoczeni za Polskę w Imieniu Jezusa" },
+            { id: "BT7TYso7y1E", ep: 8, title: "Jezusie, Synu Dawida" },
+            { id: "GeG4cEKQiOk", ep: 9, title: "Niech twoich słów będzie niewiele" },
+            { id: "XfgAa-624pA", ep: 10, title: "Budujmy Mosty Miłości" }
+        ];
+
+        function getDayOfYear() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        let selectedIndex = 0;
+
+        if (urlParams.has('ep')) {
+            const parsedEp = parseInt(urlParams.get('ep'));
+            if (!isNaN(parsedEp) && parsedEp > 0) {
+                selectedIndex = (parsedEp - 1) % publishedVideos.length;
+            }
+        } else {
+            const dayOfYear = getDayOfYear();
+            selectedIndex = (dayOfYear - 1) % publishedVideos.length;
+        }
+
+        const selectedVideo = publishedVideos[selectedIndex];
+
+        document.getElementById('episode-tag-label').textContent = `ŚPIEWAJMY PANU • UTWÓR ${selectedVideo.ep} z ${publishedVideos.length}`;
+        document.getElementById('episode-title-label').textContent = selectedVideo.title;
+
+        // ── 3. YouTube Iframe Player with Direct Playable Video ID ──
+        let player = null;
+
+        const playerIframe = document.getElementById("yt-player");
+        if (playerIframe) {
+            playerIframe.src = `https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
+        }
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('yt-player', {
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            const overlay = document.getElementById("startOverlay");
+            if (overlay) overlay.style.display = "none";
+
+            [200, 500, 1000, 2000, 3000, 5000].forEach(ms => {
+                setTimeout(enableAudio, ms);
+            });
+
+            resetAutoFadeTimer();
+        }
+
+        // ── Auto-Fade Overlays after 30 Seconds ──
+        let autoFadeTimer = null;
+
+        function resetAutoFadeTimer() {
+            showOverlays();
+            if (autoFadeTimer) clearTimeout(autoFadeTimer);
+            autoFadeTimer = setTimeout(hideOverlays, 30000); // 30s
+        }
+
+        function hideOverlays() {
+            const header = document.querySelector('.top-header-bar');
+            const badge = document.querySelector('.episode-badge-box');
+            const ticker = document.querySelector('.bottom-ticker-bar');
+            
+            if (header) header.style.opacity = '0';
+            if (badge) badge.style.opacity = '0';
+            if (ticker) ticker.style.opacity = '0';
+        }
+
+        function showOverlays() {
+            const header = document.querySelector('.top-header-bar');
+            const badge = document.querySelector('.episode-badge-box');
+            const ticker = document.querySelector('.bottom-ticker-bar');
+
+            if (header) header.style.opacity = '1';
+            if (badge) badge.style.opacity = '1';
+            if (ticker) ticker.style.opacity = '1';
+        }
+
+        window.addEventListener('mousemove', resetAutoFadeTimer);
+        window.addEventListener('touchstart', resetAutoFadeTimer);
+        window.addEventListener('click', resetAutoFadeTimer);
+
+        function onPlayerStateChange(event) {
+            // Block finish -> stop video and notify MCR parent to switch back immediately
+            if (event.data === YT.PlayerState.ENDED) {
+                console.log("Music block ended. Stopping video & notifying parent.");
+                try {
+                    if (player && typeof player.stopVideo === 'function') {
+                        player.stopVideo();
+                    }
+                } catch(e) {}
+
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type: 'SPIEWAJMY_PANU_FINISHED' }, '*');
+                } else {
+                    window.location.href = "index.html";
+                }
+            }
+        }
+
+        function enableAudio() {
+            const overlay = document.getElementById("startOverlay");
+            if (overlay) overlay.style.display = "none";
+
+            if (player && typeof player.unMute === 'function') {
+                player.unMute();
+                player.setVolume(100);
+                player.playVideo();
+            } else {
+                const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
