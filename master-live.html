@@ -212,21 +212,31 @@
             const isFirstLoad = (currentUrl === null);
             currentUrl = newChannel;
             
-            if (isFirstLoad) {
-                frame.src = newChannel + "?autoplay=1&t=" + Date.now();
+            fade.style.display = "block";
+            fade.style.opacity = "1";
+            
+            frame.src = newChannel + "?autoplay=1&t=" + Date.now();
+            
+            setTimeout(() => {
+                fade.style.opacity = "0";
                 setTimeout(() => {
-                    fade.style.opacity = "0";
-                }, 600);
-            } else {
-                fade.style.opacity = "1";
-                setTimeout(() => {
-                    frame.src = newChannel + "?autoplay=1&t=" + Date.now();
-                    setTimeout(() => {
-                        fade.style.opacity = "0";
-                    }, 800);
-                }, 500);
-            }
+                    fade.style.display = "none";
+                }, 800);
+            }, 600);
         }
+
+        // Forward click/touch interaction to unmute nested iframe
+        function unmuteSubframe() {
+            try {
+                if (frame && frame.contentWindow) {
+                    frame.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                    frame.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                    frame.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                }
+            } catch(e) {}
+        }
+        window.addEventListener('click', unmuteSubframe);
+        window.addEventListener('touchstart', unmuteSubframe);
 
         // Start checking every 10 seconds
         setInterval(checkSchedule, 10000);

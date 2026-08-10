@@ -3489,13 +3489,32 @@ function getWeatherPreset(city) {
 
 <!-- MASTER STREAM AUTOPLAY BYPASS -->
 <script>
-window.addEventListener('DOMContentLoaded', function() {
-if (new URLSearchParams(window.location.search).get('autoplay') === '1') {
-setTimeout(function() {
-if(typeof initStream === 'function') initStream();
-}, 1000);
-}
-});
+(function() {
+    function autoStartIfEmbedded() {
+        var isIframe = (window.self !== window.top);
+        var isAutoplay = new URLSearchParams(window.location.search).get('autoplay') === '1';
+        if (isIframe || isAutoplay) {
+            var overlay = document.getElementById('startOverlay');
+            if (overlay) {
+                overlay.style.display = 'none';
+                overlay.classList.add('hidden');
+            }
+            window._worshipUserInteracted = true;
+            var audio = document.getElementById('stream-audio');
+            if (audio) {
+                audio.muted = false;
+                audio.play().catch(function(e) { console.log('Autoplay audio blocked:', e); });
+            }
+            if (typeof window.worshipSyncAndPlay === 'function') {
+                window.worshipSyncAndPlay();
+            }
+        }
+    }
+    window.addEventListener('DOMContentLoaded', autoStartIfEmbedded);
+    setTimeout(autoStartIfEmbedded, 200);
+    setTimeout(autoStartIfEmbedded, 800);
+    setTimeout(autoStartIfEmbedded, 2000);
+})();
 </script>
 
     <!-- CHROMECAST / SMART TV CAST MODAL -->
