@@ -353,11 +353,12 @@
             return Math.floor(diff / oneDay);
         }
 
+        let initialJumpDone = false;
+
         // ── Init Player with YouTube API & jump to exact episode ──
         function onYouTubeIframeAPIReady() {
             const dayOfYear = getDayOfYear();
             const episodeIndex = ((dayOfYear - 1) % 365) + 1;
-            const targetZeroBasedIndex = episodeIndex - 1; // 0-based for JS API
 
             const tagEl = document.getElementById("episodeTag");
             if (tagEl) {
@@ -368,9 +369,6 @@
                 height: '100%',
                 width: '100%',
                 playerVars: {
-                    listType: 'playlist',
-                    list: 'PLluZnPP0Jp3JNxzhJJTmERpZZGyh8vQix',
-                    index: targetZeroBasedIndex,
                     autoplay: 1,
                     controls: 0,
                     rel: 0,
@@ -378,7 +376,8 @@
                     enablejsapi: 1
                 },
                 events: {
-                    'onReady': onPlayerReady
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
                 }
             });
         }
@@ -388,11 +387,16 @@
             const episodeIndex = ((dayOfYear - 1) % 365) + 1;
             const targetZeroBasedIndex = episodeIndex - 1;
 
-            // Force player to jump to exact 0-based episode index for today
+            // Load playlist starting directly at today's zero-based episode index
             try {
-                event.target.playVideoAt(targetZeroBasedIndex);
+                event.target.loadPlaylist({
+                    list: 'PLluZnPP0Jp3JNxzhJJTmERpZZGyh8vQix',
+                    listType: 'playlist',
+                    index: targetZeroBasedIndex,
+                    startSeconds: 0
+                });
             } catch(e) {
-                console.log("playVideoAt error:", e);
+                console.log("loadPlaylist error:", e);
             }
 
             // Multi-pass auto-unmute for MCR master-live.html & OBS Studio
@@ -404,6 +408,24 @@
                 [500, 1200, 2000, 3000, 5000].forEach(ms => {
                     setTimeout(enableAudio, ms);
                 });
+            }
+        }
+
+        function onPlayerStateChange(event) {
+            const dayOfYear = getDayOfYear();
+            const episodeIndex = ((dayOfYear - 1) % 365) + 1;
+            const targetZeroBasedIndex = episodeIndex - 1;
+
+            // Verify and correct playlist index on first play
+            if (!initialJumpDone && (event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.BUFFERING)) {
+                initialJumpDone = true;
+                if (player && typeof player.getPlaylistIndex === 'function') {
+                    const currentIndex = player.getPlaylistIndex();
+                    if (currentIndex !== targetZeroBasedIndex) {
+                        console.log("Correcting playlist index from", currentIndex, "to", targetZeroBasedIndex);
+                        player.playVideoAt(targetZeroBasedIndex);
+                    }
+                }
             }
         }
 
