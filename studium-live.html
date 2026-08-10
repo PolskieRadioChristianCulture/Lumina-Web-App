@@ -339,7 +339,11 @@
                 <div class="date-display" id="clock-date">PONIEDZIAŁEK, 10 SIERPNIA</div>
             </div>
 
-            <div class="header-right-badge">
+            <div class="header-right-badge" style="display: flex; align-items: center; gap: 12px;">
+                <button onclick="openChromecastModal('studium-live.html')" style="background: rgba(212,175,55,0.15); border: 1.5px solid var(--gold-primary); color: #fff; border-radius: 20px; padding: 6px 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.8rem; letter-spacing: 1px; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';" title="Prześlij na TV (Chromecast / AirPlay)">
+                    <img src="chromecast.png" alt="Chromecast" style="height: 18px; width: auto;">
+                    <span>PRZEŚLIJ NA TV</span>
+                </button>
                 <div class="live-dot"></div>
                 <span>EMISJA SPECJALNA</span>
             </div>
@@ -585,5 +589,83 @@
             }
         }
     </script>
+
+    <!-- CHROMECAST / SMART TV CAST MODAL -->
+    <div id="chromecastModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 99999; display: none; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: rgba(18, 18, 26, 0.95); border: 2px solid var(--gold-primary, #d4af37); border-radius: 24px; max-width: 580px; width: 100%; padding: 35px; box-shadow: 0 20px 60px rgba(212,175,55,0.25); text-align: center; position: relative;">
+            <button onclick="closeChromecastModal()" style="position: absolute; top: 18px; right: 20px; background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            
+            <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 20px;">
+                <img src="chromecast.png" alt="Chromecast" style="height: 38px; width: auto; filter: drop-shadow(0 0 10px rgba(212,175,55,0.5));">
+                <h2 style="font-family: 'Cinzel', serif; font-size: 1.6rem; color: #fff; font-weight: 800; margin: 0;">PRZEŚLIJ EKRAM NA TV</h2>
+            </div>
+            
+            <p style="color: rgba(255,255,255,0.8); font-size: 1.05rem; line-height: 1.6; margin-bottom: 25px;">
+                Oglądaj transmisję <strong>Christian Culture TV</strong> na dużym ekranie Twojego telewizora (Chromecast, Google TV, Apple TV, Samsung, LG webOS).
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 14px; text-align: left; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin-bottom: 25px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fa-brands fa-chromecast" style="color: var(--gold-primary, #d4af37); font-size: 1.4rem;"></i>
+                    <div>
+                        <strong style="color: #fff; display: block; font-size: 0.95rem;">Google Chromecast & Android TV:</strong>
+                        <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem;">W menu przeglądarke Chrome wybierz <strong>"Prześlij..." (Cast)</strong> i wskaż swój telewizor.</span>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px;">
+                    <i class="fa-brands fa-apple" style="color: #fff; font-size: 1.4rem;"></i>
+                    <div>
+                        <strong style="color: #fff; display: block; font-size: 0.95rem;">AirPlay (iPhone / iPad / Mac):</strong>
+                        <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem;">Użyj przycisku AirPlay w menu klonowania ekranu iOS/macOS i wybierz Apple TV.</span>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px;">
+                    <i class="fa-solid fa-tv" style="color: #80c2ff; font-size: 1.4rem;"></i>
+                    <div>
+                        <strong style="color: #fff; display: block; font-size: 0.95rem;">Smart TV (Samsung / LG / Panasonic):</strong>
+                        <span style="color: rgba(255,255,255,0.65); font-size: 0.85rem;">Otwórz przeglądarkę w TV i wpisz adres: <strong>polskieradio.cc</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                <button id="chromecastDirectTriggerBtn" onclick="triggerNativeCast()" style="background: linear-gradient(135deg, var(--gold-primary, #d4af37) 0%, #aa820a 100%); color: #000; font-weight: 800; font-size: 0.9rem; padding: 14px 24px; border-radius: 50px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 8px;">
+                    <img src="chromecast.png" alt="" style="height: 18px; width: auto;"> WŁĄCZ TRANSMISJĘ NA TV
+                </button>
+                <button onclick="closeChromecastModal()" style="background: rgba(255,255,255,0.1); color: #fff; font-weight: 700; font-size: 0.9rem; padding: 14px 24px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;">
+                    ZAMKNIJ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTargetCastUrl = 'master-live.html';
+
+        function openChromecastModal(targetUrl) {
+            if (targetUrl) currentTargetCastUrl = targetUrl;
+            const modal = document.getElementById('chromecastModal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function closeChromecastModal() {
+            const modal = document.getElementById('chromecastModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function triggerNativeCast() {
+            // Attempt Web Presentation / Cast API or open clean fullscreen player for Smart TV
+            if (navigator.presentation && navigator.presentation.defaultRequest) {
+                navigator.presentation.defaultRequest.start()
+                    .then(connection => console.log('Connected to cast display:', connection))
+                    .catch(err => {
+                        window.open(currentTargetCastUrl, '_blank');
+                    });
+            } else {
+                window.open(currentTargetCastUrl, '_blank');
+            }
+        }
+    </script>
+
 </body>
 </html>
