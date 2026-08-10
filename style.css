@@ -3035,26 +3035,60 @@ html {
         margin: 0 !important;
     }
 
-    /* 3. Right side: Hide raw text links on mobile header bar */
+    /* 3. Right side: Format nav links as compact icon-only circular buttons */
     .header-right .nav-link,
     .header-right .btn-dzj-header {
-        display: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 36px !important;
+        height: 36px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+        border: 1px solid rgba(212, 175, 55, 0.25) !important;
+        color: var(--gold-primary, #d4af37) !important;
+        font-size: 0 !important; /* Hide text label on mobile, show icon only */
+        text-decoration: none !important;
+        flex-shrink: 0 !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .header-right .nav-link i,
+    .header-right .btn-dzj-header i {
+        font-size: 0.95rem !important;
+        margin: 0 !important;
+        color: var(--gold-primary, #d4af37) !important;
+    }
+
+    .header-right .nav-link.active,
+    .header-right .nav-link:hover,
+    .header-right .btn-dzj-header:hover {
+        background: rgba(212, 175, 55, 0.18) !important;
+        border-color: var(--gold-primary, #d4af37) !important;
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.3) !important;
     }
 
     .mobile-live-btn {
         display: inline-flex !important;
         align-items: center !important;
-        gap: 6px !important;
+        justify-content: center !important;
+        width: 36px !important;
+        height: 36px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
         background: #ff2a55 !important;
         color: #ffffff !important;
-        font-weight: 800 !important;
-        font-size: 0.7rem !important;
-        padding: 5px 12px !important;
-        border-radius: 20px !important;
+        font-size: 0 !important;
         text-decoration: none !important;
-        letter-spacing: 1px !important;
-        box-shadow: 0 0 12px rgba(255, 42, 85, 0.4) !important;
+        box-shadow: 0 0 12px rgba(255, 42, 85, 0.5) !important;
         flex-shrink: 0 !important;
+    }
+
+    .mobile-live-btn i {
+        font-size: 0.9rem !important;
+        color: #ffffff !important;
+        margin: 0 !important;
     }
 
     /* Keep right side compact with icon action buttons */
