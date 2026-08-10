@@ -394,12 +394,12 @@
 
         updateSongUI();
 
-        // ── 3. YouTube Iframe Player with Direct Playable Video ID ──
+        // ── 3. YouTube Iframe Player with Official Playlist ──
         let player = null;
 
         const playerIframe = document.getElementById("yt-player");
         if (playerIframe) {
-            playerIframe.src = `https://www.youtube.com/embed/${publishedVideos[selectedIndex].id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
+            playerIframe.src = `https://www.youtube.com/embed/videoseries?list=PLHy3TNFso_uLnL_I1TPR4d35H6FuSVIUW&autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
         }
 
         function onYouTubeIframeAPIReady() {
@@ -433,6 +433,18 @@
             } catch(e) {}
         }
 
+        function updateTrackMetadata() {
+            try {
+                if (player && typeof player.getVideoData === 'function') {
+                    const data = player.getVideoData();
+                    if (data && data.title) {
+                        document.getElementById('episode-tag-label').textContent = `ŚPIEWAJMY PANU • CHRISTIAN CULTURE MUSIC`;
+                        document.getElementById('episode-title-label').textContent = data.title;
+                    }
+                }
+            } catch(e) {}
+        }
+
         function onPlayerReady(event) {
             const overlay = document.getElementById("startOverlay");
             if (overlay) overlay.style.display = "none";
@@ -442,31 +454,7 @@
             });
 
             resetAutoFadeTimer();
-        }
-
-        function loadNextSong() {
-            selectedIndex = (selectedIndex + 1) % publishedVideos.length;
-            const nextSong = publishedVideos[selectedIndex];
-            updateSongUI();
-
-            if (player && typeof player.loadVideoById === 'function') {
-                try {
-                    player.loadVideoById(nextSong.id);
-                    player.unMute();
-                    player.setVolume(100);
-                    player.playVideo();
-                } catch(e) {
-                    if (playerIframe) {
-                        playerIframe.src = `https://www.youtube.com/embed/${nextSong.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
-                    }
-                }
-            } else if (playerIframe) {
-                playerIframe.src = `https://www.youtube.com/embed/${nextSong.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
-            }
-
-            [200, 500, 1000, 2000].forEach(ms => {
-                setTimeout(enableAudio, ms);
-            });
+            updateTrackMetadata();
         }
 
         // ── Auto-Fade Overlays after 30 Seconds ──
@@ -503,10 +491,8 @@
         window.addEventListener('click', resetAutoFadeTimer);
 
         function onPlayerStateChange(event) {
-            // When a single song finishes -> auto-advance to next song continuously for full 60 min block
-            if (event.data === YT.PlayerState.ENDED) {
-                console.log("Song finished. Auto-advancing to next song in Śpiewajmy Panu block.");
-                loadNextSong();
+            if (event.data === YT.PlayerState.PLAYING) {
+                updateTrackMetadata();
             }
         }
 
