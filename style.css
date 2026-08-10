@@ -121,65 +121,59 @@ button {
     gap: 1.5rem;
 }
 
-/* --- Header Live Broadcast Schedule Widget (Desktop Only) --- */
+/* --- Header Live Broadcast Schedule Widget (Desktop Only - Subtle Single Line) --- */
 .header-live-schedule {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 3px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(212, 175, 55, 0.25);
-    border-radius: 12px;
-    padding: 6px 18px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 30px;
+    padding: 5px 16px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     font-family: 'Outfit', 'Montserrat', sans-serif;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    max-width: 580px;
+    font-size: 0.78rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    max-width: 680px;
+    white-space: nowrap;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1120px) {
     .header-live-schedule {
         display: none !important;
     }
 }
 
-.live-now-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.82rem;
-    line-height: 1.2;
-}
-
 .live-dot-pulse {
-    width: 8px;
-    height: 8px;
-    background: #ff1e4b;
+    width: 7px;
+    height: 7px;
+    background: #ff2a55;
     border-radius: 50%;
-    box-shadow: 0 0 10px #ff1e4b;
-    animation: liveDotPulse 1.2s infinite alternate;
+    box-shadow: 0 0 8px #ff2a55;
+    animation: liveDotPulse 1.4s infinite alternate;
     flex-shrink: 0;
 }
 
 @keyframes liveDotPulse {
-    0% { opacity: 0.4; transform: scale(0.8); }
-    100% { opacity: 1; transform: scale(1.25); }
+    0% { opacity: 0.4; transform: scale(0.85); }
+    100% { opacity: 1; transform: scale(1.2); }
 }
 
 .live-label {
     font-weight: 800;
-    font-size: 0.7rem;
-    color: #ff1e4b;
+    font-size: 0.68rem;
+    color: #ff2a55;
     letter-spacing: 1px;
     text-transform: uppercase;
     flex-shrink: 0;
 }
 
 .live-title-link {
-    font-weight: 700;
-    font-size: 0.82rem;
-    color: var(--gold-primary, #d4af37);
+    font-weight: 600;
+    font-size: 0.78rem;
+    color: #ffffff;
     text-decoration: none;
     white-space: nowrap;
     overflow: hidden;
@@ -188,40 +182,34 @@ button {
 }
 
 .live-title-link:hover {
-    color: #ffffff;
-    text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+    color: var(--gold-primary, #d4af37);
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
 }
 
-.next-up-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.73rem;
-    color: rgba(255, 255, 255, 0.6);
-    line-height: 1.2;
+.header-schedule-sep {
+    color: rgba(212, 175, 55, 0.45);
+    font-size: 0.75rem;
+    margin: 0 2px;
 }
 
 .next-label {
     font-weight: 700;
-    font-size: 0.64rem;
+    font-size: 0.65rem;
     letter-spacing: 0.8px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.45);
     text-transform: uppercase;
     flex-shrink: 0;
 }
 
-.next-time {
+.next-label span {
+    color: rgba(255, 255, 255, 0.85);
     font-weight: 700;
-    color: #ffffff;
-}
-
-.next-sep {
-    color: rgba(212, 175, 55, 0.4);
 }
 
 .next-title {
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.85);
+    font-weight: 500;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.75);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
