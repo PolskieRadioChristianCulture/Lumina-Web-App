@@ -290,8 +290,13 @@
 
     <!-- VIDEO PLAYER BACKGROUND -->
     <div class="video-container">
-        <div id="player"></div>
+        <iframe id="yt-player" allow="autoplay; fullscreen; encrypted-media; picture-in-picture"></iframe>
     </div>
+
+    <!-- UNMUTE AUDIO FLOATING BUTTON -->
+    <button id="unmuteBtn" onclick="enableAudio(); this.style.display='none';" style="position: absolute; bottom: 85px; right: 40px; z-index: 99; background: var(--gold-primary); color: #000; font-weight: 900; font-size: 0.85rem; padding: 10px 22px; border-radius: 50px; border: none; cursor: pointer; box-shadow: 0 0 20px rgba(212,175,55,0.6); display: flex; align-items: center; gap: 8px; font-family: inherit; letter-spacing: 0.5px; text-transform: uppercase;">
+        <i class="fa-solid fa-volume-high"></i> ODBLOKUJ DŹWIĘK FILMOWY
+    </button>
 
     <!-- UI OVERLAYS CONTAINER -->
     <div id="ui-overlays" class="fade-overlay">
@@ -367,29 +372,35 @@
 
         // ── 2. Movie List ──
         const movies = [
-            { id: "lVg2FykmLOY", title: "Film Chrześcijański — Seans 1" },
-            { id: "VrqDOF9A8KU", title: "Film Chrześcijański — Seans 2" },
-            { id: "O6VJHHbfjxo", title: "Film Chrześcijański — Seans 3" },
-            { id: "YkqBe6iTptM", title: "Film Chrześcijański — Seans 4" },
-            { id: "QqOLoOYsbBk", title: "Film Chrześcijański — Seans 5" },
-            { id: "GMdQIwKh22A", title: "Film Chrześcijański — Seans 6" }
+            { id: "lVg2FykmLOY", ep: 1, title: "Film Chrześcijański — Seans 1" },
+            { id: "VrqDOF9A8KU", ep: 2, title: "Film Chrześcijański — Seans 2" },
+            { id: "O6VJHHbfjxo", ep: 3, title: "Film Chrześcijański — Seans 3" },
+            { id: "YkqBe6iTptM", ep: 4, title: "Film Chrześcijański — Seans 4" },
+            { id: "QqOLoOYsbBk", ep: 5, title: "Film Chrześcijański — Seans 5" },
+            { id: "GMdQIwKh22A", ep: 6, title: "Film Chrześcijański — Seans 6" }
         ];
 
-        let currentMovieIndex = 0;
-        let player;
+        function getDayOfYear() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+
+        const dayOfYear = getDayOfYear();
+        let currentMovieIndex = (dayOfYear - 1) % movies.length;
+        const selectedVideo = movies[currentMovieIndex];
+
+        const playerIframe = document.getElementById("yt-player");
+        if (playerIframe) {
+            playerIframe.src = `https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
+        }
+
+        let player = null;
 
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                videoId: movies[currentMovieIndex].id,
-                playerVars: {
-                    'autoplay': 1,
-                    'controls': 0,
-                    'modestbranding': 1,
-                    'rel': 0,
-                    'showinfo': 0,
-                    'iv_load_policy': 3,
-                    'enablejsapi': 1
-                },
+            player = new YT.Player('yt-player', {
                 events: {
                     'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange
@@ -397,38 +408,59 @@
             });
         }
 
+        function enableAudio() {
+            try {
+                if (player && typeof player.unMute === 'function') {
+                    player.unMute();
+                    player.setVolume(100);
+                    player.playVideo();
+                    const btn = document.getElementById("unmuteBtn");
+                    if (btn) btn.style.display = "none";
+                }
+            } catch(e) {}
+        }
+
         function onPlayerReady(event) {
-            event.target.playVideo();
             updateFilmLabel();
+            [100, 300, 600, 1200, 2500, 4000].forEach(ms => {
+                setTimeout(enableAudio, ms);
+            });
         }
 
         function onPlayerStateChange(event) {
             // YT.PlayerState.ENDED = 0
             if (event.data === 0) {
                 currentMovieIndex = (currentMovieIndex + 1) % movies.length;
-                player.loadVideoById(movies[currentMovieIndex].id);
+                const nextMovie = movies[currentMovieIndex];
+                if (playerIframe) {
+                    playerIframe.src = `https://www.youtube.com/embed/${nextMovie.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
+                }
                 updateFilmLabel();
-                window.parent.postMessage({ type: 'KINO_FINISHED' }, '*');
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type: 'KINO_FINISHED' }, '*');
+                }
             }
         }
 
         function updateFilmLabel() {
-            document.getElementById('film-title-label').textContent = movies[currentMovieIndex].title;
+            const current = movies[currentMovieIndex];
+            document.getElementById('film-title-label').textContent = `${current.title.toUpperCase()}`;
         }
 
         // ── 3. Auto-fade overlays after 30s ──
         let fadeTimeout;
         function resetFadeTimer() {
             const overlays = document.getElementById('ui-overlays');
-            overlays.classList.remove('hidden');
+            if (overlays) overlays.classList.remove('hidden');
             clearTimeout(fadeTimeout);
             fadeTimeout = setTimeout(() => {
-                overlays.classList.add('hidden');
+                if (overlays) overlays.classList.add('hidden');
             }, 30000);
         }
 
-        window.addEventListener('mousemove', resetFadeTimer);
-        window.addEventListener('touchstart', resetFadeTimer);
+        window.addEventListener('mousemove', () => { resetFadeTimer(); enableAudio(); });
+        window.addEventListener('touchstart', () => { resetFadeTimer(); enableAudio(); });
+        window.addEventListener('click', () => { resetFadeTimer(); enableAudio(); });
         resetFadeTimer();
 
         // ── 4. Chromecast Modal Controls ──
