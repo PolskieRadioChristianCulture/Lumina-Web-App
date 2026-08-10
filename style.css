@@ -3034,7 +3034,11 @@ html {
     .section-header .gold-divider,
     .section-header .gold-divider.centered,
     .centered .gold-divider {
-        margin: 0.5rem auto 1.5rem auto !important;
+        margin: 0.75rem auto 1.25rem auto !important;
+        width: 120px !important;
+        height: 2px !important;
+        background: linear-gradient(90deg, transparent, var(--gold-primary, #d4af37), transparent) !important;
+        display: block !important;
     }
     .hero-description {
         margin: 0 0 2rem 0 !important;
