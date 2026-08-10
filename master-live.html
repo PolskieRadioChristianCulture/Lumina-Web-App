@@ -98,18 +98,18 @@
                 if (hour !== 21) apokalipsaDoneHours[21] = false;
             }
 
-            // 2) Trigger "Apokalipsa: Księga Nadziei" (10:00, 22:00 - 35 min slot)
-            if ((hour === 10 || hour === 22) && min < 35) {
+            // 2) Trigger "Apokalipsa: Księga Nadziei" (10:00, 22:00 - 60 min slot window)
+            if ((hour === 10 || hour === 22) && min < 60) {
                 if (!ksiegaNadzieiDoneHours[hour]) {
                     ksiegaNadzieiDoneHours[hour] = true;
                     isSpecialSlotActive = true;
                     switchChannel("apokalipsa-ksiega-nadziei-live.html");
 
-                    // Safety timeout (45 mins max)
+                    // Safety timeout (60 mins max)
                     safetyTimeout = setTimeout(() => {
                         console.log("MCR: Safety timeout reached for Księga Nadziei slot.");
                         endSpecialSlot();
-                    }, 2700000);
+                    }, 3600000);
                     return;
                 }
             } else {
