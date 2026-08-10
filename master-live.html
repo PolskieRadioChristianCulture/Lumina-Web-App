@@ -78,8 +78,8 @@
             const hour = now.getHours();
             const min = now.getMinutes();
 
-            // 1) Trigger "Apokalipsa dzień po dniu" (09:00, 15:00, 21:00)
-            if ((hour === 9 || hour === 15 || hour === 21) && min < 8) {
+            // 1) Trigger "Apokalipsa dzień po dniu" (09:00, 15:00, 21:00 - 6 min slot)
+            if ((hour === 9 || hour === 15 || hour === 21) && min < 6) {
                 if (!apokalipsaDoneHours[hour]) {
                     apokalipsaDoneHours[hour] = true;
                     isSpecialSlotActive = true;
@@ -98,8 +98,8 @@
                 if (hour !== 21) apokalipsaDoneHours[21] = false;
             }
 
-            // 2) Trigger "Apokalipsa: Księga Nadziei" (10:00, 22:00)
-            if ((hour === 10 || hour === 22) && min < 8) {
+            // 2) Trigger "Apokalipsa: Księga Nadziei" (10:00, 22:00 - 35 min slot)
+            if ((hour === 10 || hour === 22) && min < 35) {
                 if (!ksiegaNadzieiDoneHours[hour]) {
                     ksiegaNadzieiDoneHours[hour] = true;
                     isSpecialSlotActive = true;
