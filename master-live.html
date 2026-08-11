@@ -484,7 +484,7 @@
                     setTimeout(() => { fade.style.display = "none"; }, 800);
                 }, 600);
             } else {
-                // Subsequent program switches -> Launch 10-second Video Bumper + Dual-Iframe Preload!
+                // Subsequent program switches -> Launch Video Bumper + Dual-Iframe Preload!
                 isSwitchingWithBumper = true;
                 bumperTitle.textContent = meta.title;
                 bumperDesc.textContent = meta.desc;
@@ -492,16 +492,15 @@
                 bumperProgress.style.transition = 'none';
                 bumperProgress.style.width = '0%';
 
-                // 1) IMMEDIATELY STOP & MUTE OUTGOING FRAME AUDIO SO ONLY BUMPER VIDEO AUDIO PLAYS!
+                // 1) Mute outgoing active frame via postMessage (Keep frame rendered under bumper so no black screen appears!)
                 try {
                     if (activeFrame && activeFrame.contentWindow) {
                         activeFrame.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
                         activeFrame.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
                     }
-                    activeFrame.src = 'about:blank';
                 } catch(e) {}
 
-                // 2) Start playing video bumper
+                // 2) Show bumper overlay and play transition video
                 bumperOverlay.classList.add('show');
                 try {
                     bumperVideo.currentTime = 0;
@@ -511,32 +510,30 @@
                         playPromise.catch(err => {
                             console.log("MCR Video Bumper autoplay muted fallback:", err);
                             bumperVideo.muted = true;
-                            bumperVideo.play();
+                            bumperVideo.play().catch(() => {});
                         });
                     }
                 } catch(e) {
                     console.error("Video Bumper play error:", e);
                 }
 
-                // Determine video duration (default 9 seconds fallback)
-                const durationSec = (bumperVideo.duration && !isNaN(bumperVideo.duration)) ? bumperVideo.duration : 9;
+                // 3) Preload incoming channel IMMEDIATELY (at T=500ms) on inactiveFrame so it buffers fully during bumper!
+                setTimeout(() => {
+                    inactiveFrame.src = newChannel + "?autoplay=1&t=" + Date.now();
+                }, 500);
+
+                // 4) Determine video duration (default 8s fallback)
+                const durationSec = (bumperVideo.duration && !isNaN(bumperVideo.duration) && bumperVideo.duration > 2) ? bumperVideo.duration : 8;
 
                 setTimeout(() => {
                     bumperProgress.style.transition = `width ${durationSec}s linear`;
                     bumperProgress.style.width = '100%';
                 }, 50);
 
-                // Load upcoming channel silently on INACTIVE frame in background 2.5 seconds before bumper finishes
-                const preloadTime = Math.max((durationSec - 2.5) * 1000, 1000);
-                setTimeout(() => {
-                    inactiveFrame.src = newChannel + "?autoplay=1&t=" + Date.now();
-                }, preloadTime);
-
-                // Swap frames seamlessly 0.6s before video finishes
-                const switchLeadTime = Math.max((durationSec - 0.6) * 1000, 3000);
+                // 5) Swap frames seamlessly when bumper finishes
+                const switchLeadTime = Math.max((durationSec - 0.5) * 1000, 3000);
 
                 setTimeout(() => {
-                    // Make inactive frame active and fade out bumper
                     inactiveFrame.classList.remove('inactive');
                     inactiveFrame.classList.add('active');
 
@@ -553,7 +550,7 @@
                         bumperOverlay.classList.remove('show');
                         bumperOverlay.style.opacity = '1';
                         bumperProgress.style.width = '0%';
-                        // Clean up old frame to free memory
+                        // Clean up old frame AFTER frame swap is 100% complete
                         activeFrame.src = 'about:blank';
                         isSwitchingWithBumper = false;
                     }, 600);
