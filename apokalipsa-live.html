@@ -497,24 +497,6 @@
         updateClock();
 
         // ── 3. Verified Published Videos ──
-        const publishedVideos = [
-            { id: "R3hKDf3UiqU", ep: 365, title: "Apokalipsa dzień po dniu — Ostatnie słowo" },
-            { id: "ZkFOIegyhx4", ep: 364, title: "Apokalipsa dzień po dniu — Pewność proroctwa" },
-            { id: "VM9NKU3POmg", ep: 363, title: "Apokalipsa dzień po dniu — Ani słowa" },
-            { id: "uHhntwOF5U4", ep: 362, title: "Apokalipsa dzień po dniu — Niezawodna księga" },
-            { id: "Jbjun5gpR00", ep: 361, title: "Apokalipsa dzień po dniu — Zaproszenie" },
-            { id: "rGI67dxU_wo", ep: 360, title: "Apokalipsa dzień po dniu — Gwiazda poranna" },
-            { id: "8XR1pUmWwVU", ep: 359, title: "Apokalipsa dzień po dniu — Na zewnątrz" },
-            { id: "e12D3pKDkRs", ep: 358, title: "Apokalipsa dzień po dniu — Na zawsze błogosławieni" },
-            { id: "KfOctyhXVU8", ep: 359, title: "Apokalipsa dzień po dniu — Realna umowa" },
-            { id: "QNPnn_gbahw", ep: 356, title: "Apokalipsa dzień po dniu — Niebiańska nagroda" },
-            { id: "WbYO814zBDw", ep: 355, title: "Apokalipsa dzień po dniu — Ostateczny werdykt" },
-            { id: "zm7vWWWlqgs", ep: 354, title: "Apokalipsa dzień po dniu — Dalej i szerzej" },
-            { id: "yYCTR1QsklM", ep: 353, title: "Apokalipsa dzień po dniu — Reagowanie w uwielbieniu" },
-            { id: "l_Y4eCEyfoM", ep: 352, title: "Apokalipsa dzień po dniu — Bez zwłoki" },
-            { id: "4Z8ejqOstM8", ep: 351, title: "Apokalipsa dzień po dniu — Wiarygodne i pewne" }
-        ];
-
         function getDayOfYear() {
             const now = new Date();
             const start = new Date(now.getFullYear(), 0, 0);
@@ -523,18 +505,17 @@
             return Math.floor(diff / oneDay);
         }
 
-        const dayOfYear = getDayOfYear();
-        const selectedIndex = (dayOfYear - 1) % publishedVideos.length;
-        const selectedVideo = publishedVideos[selectedIndex];
+        const dayOfYear = getDayOfYear(); // Today = Episode 223
+        const playlistId = 'PLluZnPP0Jp3JNxzhJJTmERpZZGyh8vQix';
 
         document.getElementById('episode-tag-label').textContent = `APOKALIPSA DZIEŃ PO DNIU • ODCINEK ${dayOfYear} z 365`;
-        document.getElementById('episode-title-label').textContent = `${selectedVideo.title} (Dzień ${dayOfYear})`;
+        document.getElementById('episode-title-label').textContent = `Apokalipsa Dzień po Dniu — Lekcja ${dayOfYear} z 365`;
 
         // ── 4. YouTube Iframe Player ──
         let player = null;
         const playerIframe = document.getElementById("yt-player");
         if (playerIframe) {
-            playerIframe.src = `https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
+            playerIframe.src = `https://www.youtube.com/embed/videoseries?list=${playlistId}&index=${dayOfYear}&autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
         }
 
         function onYouTubeIframeAPIReady() {

@@ -530,10 +530,11 @@
                     bumperProgress.style.width = '100%';
                 }, 50);
 
-                // Load upcoming channel silently on INACTIVE frame in background
+                // Load upcoming channel silently on INACTIVE frame in background 2.5 seconds before bumper finishes
+                const preloadTime = Math.max((durationSec - 2.5) * 1000, 1000);
                 setTimeout(() => {
                     inactiveFrame.src = newChannel + "?autoplay=1&t=" + Date.now();
-                }, 1000);
+                }, preloadTime);
 
                 // Swap frames seamlessly 0.6s before video finishes
                 const switchLeadTime = Math.max((durationSec - 0.6) * 1000, 3000);
