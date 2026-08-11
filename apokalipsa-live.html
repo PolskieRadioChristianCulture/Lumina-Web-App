@@ -602,20 +602,46 @@
         window.addEventListener('touchstart', () => { resetAutoFadeTimer(); enableAudio(); });
         window.addEventListener('click', () => { resetAutoFadeTimer(); enableAudio(); });
 
+        let isFinished = false;
+        function finishEpisode() {
+            if (isFinished) return;
+            isFinished = true;
+            console.log("Apokalipsa: Episode finished. Notifying MCR parent.");
+            try {
+                if (player && typeof player.stopVideo === 'function') {
+                    player.stopVideo();
+                }
+            } catch(e) {}
+
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'APOKALIPSA_FINISHED' }, '*');
+                window.parent.postMessage('APOKALIPSA_FINISHED', '*');
+            } else {
+                window.location.href = "index.html";
+            }
+        }
+
+        // Active polling every 1 second to detect video completion
+        setInterval(() => {
+            if (isFinished) return;
+            try {
+                if (player && typeof player.getCurrentTime === 'function' && typeof player.getDuration === 'function') {
+                    const currentTime = player.getCurrentTime();
+                    const duration = player.getDuration();
+                    const state = player.getPlayerState();
+                    if (state === 0 || (duration > 0 && currentTime > 0 && duration - currentTime <= 1.5)) {
+                        finishEpisode();
+                    }
+                }
+            } catch(e) {}
+        }, 1000);
+
+        // Fallback safety timeout (3.5 minutes = 210,000ms)
+        setTimeout(finishEpisode, 210000);
+
         function onPlayerStateChange(event) {
             if (event.data === YT.PlayerState.ENDED) {
-                console.log("Single episode ended. Stopping video & notifying parent.");
-                try {
-                    if (player && typeof player.stopVideo === 'function') {
-                        player.stopVideo();
-                    }
-                } catch(e) {}
-
-                if (window.parent && window.parent !== window) {
-                    window.parent.postMessage({ type: 'APOKALIPSA_FINISHED' }, '*');
-                } else {
-                    window.location.href = "index.html";
-                }
+                finishEpisode();
             }
         }
     </script>
