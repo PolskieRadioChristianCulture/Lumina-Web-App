@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Y4EFTVBPE3');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>NOCNE CZUWANIE & WORSHIP — Radio Christian Culture</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #ffffff;
+            --gold-dark: #AA7C11;
+            --bg-dark: #050508;
+            --text-light: #ffffff;
+            --glass-bg: rgba(10, 10, 15, 0.55);
+            --glass-border: rgba(212, 175, 55, 0.25);
+            --glass-shadow: rgba(0, 0, 0, 0.5);
+            --red-live: #dc143c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        #app-container {
+            width: 1920px;
+            height: 1080px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .video-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            width: 100vw;
+            height: 56.25vw; /* 16:9 aspect ratio */
+            min-height: 100vh;
+            min-width: 177.77vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: none;
+            pointer-events: auto;
+        }
+
+        .vignette-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* --- TOP HEADER BAR --- */
+        .top-header-bar {
+            position: absolute;
+            top: 35px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .header-left-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 10px 24px;
+            border-radius: 50px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px var(--glass-shadow);
+            pointer-events: auto;
+        }
+
+        .brand-logo-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 1.1rem;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .brand-title-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-main-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: 1.5px;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .brand-sub-title {
+            font-size: 0.8rem;
+            color: var(--gold-primary);
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .live-status-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(220, 20, 60, 0.2);
+            border: 1px solid rgba(220, 20, 60, 0.5);
+            padding: 6px 14px;
+            border-radius: 50px;
+            margin-left: 10px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--red-live);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--red-live);
+            animation: pulseDot 1.5s infinite;
+        }
+
+        @keyframes pulseDot {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 20, 60, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(220, 20, 60, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 20, 60, 0); }
+        }
+
+        .live-text {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        .header-right-clock {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 10px 26px;
+            border-radius: 50px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px var(--glass-shadow);
+            pointer-events: auto;
+        }
+
+        .clock-time {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+
+        .clock-date {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gold-primary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* --- EPISODE TITLE BADGE BOX --- */
+        .episode-badge-box {
+            position: absolute;
+            top: 135px;
+            left: 60px;
+            z-index: 10;
+            background: var(--glass-bg);
+            border: 1.5px solid var(--glass-border);
+            border-left: 6px solid var(--gold-primary);
+            padding: 22px 34px;
+            border-radius: 20px;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 10px 30px var(--glass-shadow);
+            pointer-events: auto;
+            max-width: 950px;
+        }
+
+        .episode-tag {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--gold-primary);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .episode-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 800;
+            font-size: 2.2rem;
+            color: #ffffff;
+            line-height: 1.25;
+        }
+
+        /* --- BOTTOM TICKER BAR --- */
+        .bottom-ticker-bar {
+            position: absolute;
+            bottom: 35px;
+            left: 60px;
+            right: 60px;
+            width: auto;
+            height: 90px;
+            background: var(--glass-bg);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px var(--glass-shadow);
+            overflow: hidden;
+        }
+
+        .ticker-label {
+            height: 100%;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            color: #000;
+            font-weight: 900;
+            font-size: 1.6rem;
+            letter-spacing: 2px;
+            padding: 0 35px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+
+        .ticker-track-wrapper {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-track {
+            display: flex;
+            white-space: nowrap;
+            animation: marquee 35s linear infinite;
+        }
+
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 0 40px;
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.95);
+            letter-spacing: 0.5px;
+        }
+
+        .ticker-item i {
+            color: var(--gold-primary);
+            font-size: 1.8rem;
+        }
+
+        .ticker-highlight {
+            color: var(--gold-primary);
+            font-weight: 700;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Interactive Click Overlay to unmute audio */
+        #unmute-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
+            transition: opacity 0.5s ease;
+        }
+        #unmute-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .unmute-card {
+            background: rgba(10,12,20,0.85);
+            border: 2px solid var(--gold-primary);
+            border-radius: 20px;
+            padding: 30px 50px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <!-- VIDEO BACKGROUND LAYER -->
+        <div class="video-wrapper">
+            <iframe id="yt-player" allow="autoplay; fullscreen; encrypted-media" allowfullscreen></iframe>
+        </div>
+
+        <div class="vignette-overlay"></div>
+
+        <!-- UNMUTE OVERLAY -->
+        <div id="unmute-overlay" onclick="handleUserUnmute()">
+            <div class="unmute-card">
+                <i class="fa-solid fa-volume-high" style="font-size: 3rem; color: var(--gold-primary); margin-bottom: 15px;"></i>
+                <h2 style="font-family: 'Cinzel', serif; font-size: 2rem;">NOCNE CZUWANIE & WORSHIP</h2>
+                <p style="color: var(--gold-primary); font-weight: 600; margin-top: 5px;">Kliknij w dowolnym miejscu, aby odblokować dźwięk</p>
+            </div>
+        </div>
+
+        <!-- TOP HEADER BAR -->
+        <div class="top-header-bar">
+            <div class="header-left-brand">
+                <div class="brand-logo-icon">
+                    <i class="fa-solid fa-moon"></i>
+                </div>
+                <div class="brand-title-group">
+                    <span class="brand-main-title">NOCNE CZUWANIE & WORSHIP</span>
+                    <span class="brand-sub-title">CHRISTIAN CULTURE TELEWIZJA</span>
+                </div>
+                <div class="live-status-pill">
+                    <div class="pulse-dot"></div>
+                    <span class="live-text">EMISJA NA ŻYWO</span>
+                </div>
+            </div>
+
+            <div class="header-right-clock">
+                <span class="clock-date" id="dateDisplay">PONIEDZIAŁEK, 11 SIERPNIA</span>
+                <span class="clock-time" id="timeDisplay">00:00:00</span>
+            </div>
+        </div>
+
+        <!-- EPISODE TITLE BADGE -->
+        <div class="episode-badge-box">
+            <div class="episode-tag" id="episode-tag-label">NOCNE CZUWANIE • ROTACJA FILMÓW</div>
+            <div class="episode-title" id="episode-title-label">Ładowanie filmu nocnego...</div>
+        </div>
+
+        <!-- BOTTOM TICKER BAR -->
+        <div class="bottom-ticker-bar">
+            <div class="ticker-label">
+                <i class="fa-solid fa-moon"></i> PASMO NOCNE
+            </div>
+            <div class="ticker-track-wrapper">
+                <div class="ticker-track">
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-crown"></i>
+                        <span>Wspieraj misję ewangelizacji: <span class="ticker-highlight">patronite.pl/osobowoscplus</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Mobilna aplikacja Christian Culture: <span class="ticker-highlight">cclite.pl</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                        <span>Wsparcie BLIK: <span class="ticker-highlight">730 948 823</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-tv"></i>
+                        <span>Portal internetowy: <span class="ticker-highlight">polskieradio.cc</span></span>
+                    </div>
+
+                    <!-- Duplicate for infinite loop -->
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-crown"></i>
+                        <span>Wspieraj misję ewangelizacji: <span class="ticker-highlight">patronite.pl/osobowoscplus</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Mobilna aplikacja Christian Culture: <span class="ticker-highlight">cclite.pl</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                        <span>Wsparcie BLIK: <span class="ticker-highlight">730 948 823</span></span>
+                    </div>
+                    <div class="ticker-item">
+                        <i class="fa-solid fa-tv"></i>
+                        <span>Portal internetowy: <span class="ticker-highlight">polskieradio.cc</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- YOUTUBE IFRAME API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script>
+        // ── 1. Responsive Viewport Scaling ──
+        function scaleViewport() {
+            const container = document.getElementById('app-container');
+            const targetWidth = 1920;
+            const targetHeight = 1080;
+
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+
+            const scaleX = windowWidth / targetWidth;
+            const scaleY = windowHeight / targetHeight;
+            const scale = Math.min(scaleX, scaleY);
+
+            container.style.transform = `scale(${scale})`;
+            container.style.left = `${(windowWidth - targetWidth * scale) / 2}px`;
+            container.style.top = `${(windowHeight - targetHeight * scale) / 2}px`;
+        }
+
+        window.addEventListener('resize', scaleViewport);
+        scaleViewport();
+
+        // ── 2. Real-time Clock ──
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            const days = ['NIEDZIELA', 'PONIEDZIAŁEK', 'WTOREK', 'ŚRODA', 'CZWARTEK', 'PIĄTEK', 'SOBOTA'];
+            const months = ['STYCZNIA', 'LUTYGO', 'MARCA', 'KWIETNIA', 'MAJA', 'CZERWCA', 'LIPCA', 'SIERPNIA', 'WRZEŚNIA', 'PAŹDZIERNIKA', 'LISTOPADA', 'GRUDNIA'];
+            
+            const dayName = days[now.getDay()];
+            const dayNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const dateStr = `${dayName}, ${dayNum} ${monthName}`;
+
+            document.getElementById('timeDisplay').textContent = timeStr;
+            document.getElementById('dateDisplay').textContent = dateStr;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // ── 3. 23 Night Movies List (1 Movie Per Day) ──
+        const nightMovies = [
+            { id: "m8-oBN29hKU", title: "Dźwięki Nieba: Ucisz swój umysł w dziesięć minut" },
+            { id: "dkJ8PK1T14Q", title: "Pure Guitar Comfort: The Ultimate Frequency for Complete Rest" },
+            { id: "7r5nLwlECbI", title: "Dom zrodzony z pasji | Spokojne Tło Muzyczne" },
+            { id: "ikfqjnY4mPQ", title: "Christian Sleep & Study Music 🌿 Peaceful Bible Reading Ambience" },
+            { id: "iub9Lr-Jw3U", title: "Heavenly Advent Music ✨ Instrumental Worship & Reflection" },
+            { id: "eKHhSSdZp1A", title: "Advent Evenings 🕯️ Peaceful Christian Hymns & Instrumental Music" },
+            { id: "YOfH43Jne_M", title: "23 MINUTY CZYSTEGO SPOKOJU | Soft Worship Instrumental Mix" },
+            { id: "DmF8pAAlaUI", title: "Hang Drum Night Prayer 1 Hour 432Hz – Holy Spirit Contemplation" },
+            { id: "JVsaQLRAQ7g", title: "Weekend Relax & Saturday Chill | Melodic Fantasy Ambient" },
+            { id: "l3IkkdzDSao", title: "Towards the Sky: Rise from the Mud – Epic Ambient Journey" },
+            { id: "A32KCDykIEQ", title: "Heavenly Prayer | Moc Anielskich Nut: Ambient Worship" },
+            { id: "LncyvSA8ZbE", title: "FALL ASLEEP LIVE | Ethereal Guitar Music for Deep Sleep & Calm" },
+            { id: "N8nhZ84Yh1c", title: "Rain Whisper Dreams – Gentle Rain & Ambient Sounds for Deep Sleep" },
+            { id: "gPMNA3zSZ1E", title: "Muzyka Miłości 🎶 — Nocne Uwielbienie & Relaks" },
+            { id: "9Qkagy9FO_4", title: "Nocna Cisza – Chrześcijańska Relaksacja | Kontemplacja i Czytanie Biblii" },
+            { id: "pJqMgdH3RSE", title: "Woman with a Passion (A Musical Journey into the Abyss of Depth)" },
+            { id: "C5fBGU9sjtc", title: "Searching for the Way – Inspirational Music Collection" },
+            { id: "W3CFmrcbF8s", title: "Cosmic Worship | Epic Electronic Composition Inspired by God's Creation" },
+            { id: "S89sKysOw30", title: "Angelic Notes – Christian Worship Music on the Harp 🎶✨" },
+            { id: "m3rA3qKXYYc", title: "Jazz Worship Music – Relaxing Christian Smooth Jazz" },
+            { id: "FQy8POmhn64", title: "Guitar Worship Music – Top Christian Hits for Praise and Worship" },
+            { id: "XtLW3OpoFXI", title: "Violin Worship Music – Beautiful Music for Prayer and Worship" },
+            { id: "Bj_yxWqq51c", title: "Gitarowa Muzyka Uwielbienia – Piękne Melodie na Gitarę Klasyczną" }
+        ];
+
+        function getDayOfYear() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+
+        const dayOfYear = getDayOfYear();
+        const movieIndex = (dayOfYear - 1) % nightMovies.length;
+        const currentMovie = nightMovies[movieIndex];
+
+        document.getElementById('episode-tag-label').textContent = `NOCNE CZUWANIE & WORSHIP • POZYCJA ${movieIndex + 1} z 23 (FILM DNIOWY)`;
+        document.getElementById('episode-title-label').textContent = currentMovie.title;
+
+        // ── 4. YouTube Iframe Player ──
+        let player = null;
+        const playerIframe = document.getElementById("yt-player");
+        if (playerIframe) {
+            playerIframe.src = `https://www.youtube.com/embed/${currentMovie.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1&loop=1`;
+        }
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('yt-player', {
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                event.target.playVideo(); // Continuous loop throughout night slot
+            }
+        }
+
+        function handleUserUnmute() {
+            const overlay = document.getElementById('unmute-overlay');
+            if (overlay) overlay.classList.add('hidden');
+            if (player && typeof player.unMute === 'function') {
+                player.unMute();
+                player.setVolume(100);
+                player.playVideo();
+            }
+        }
+
+        window.addEventListener('click', handleUserUnmute);
+        window.addEventListener('touchstart', handleUserUnmute);
+    </script>
+
+</body>
+</html>
