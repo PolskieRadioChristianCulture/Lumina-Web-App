@@ -40,14 +40,26 @@
             font-family: 'Outfit', sans-serif;
         }
 
-        iframe {
+        .channel-frame {
             width: 100%;
             height: 100%;
             border: none;
             position: absolute;
             top: 0;
             left: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .channel-frame.active {
+            opacity: 1;
+            z-index: 2;
+            pointer-events: auto;
+        }
+
+        .channel-frame.inactive {
+            opacity: 0;
             z-index: 1;
+            pointer-events: none;
         }
 
         #fade-overlay {
@@ -64,48 +76,70 @@
             display: none;
         }
 
-        /* --- TV BUMPER ANNOUNCEMENT CARD OVERLAY --- */
-        #bumper-overlay {
+        /* --- FULL-SCREEN VIDEO BUMPER OVERLAY --- */
+        #bumper-video-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, #0f1523 0%, #04060a 100%);
+            background: #000;
             z-index: 10000;
             display: none;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #fff;
             opacity: 0;
             transition: opacity 0.6s ease;
+            overflow: hidden;
         }
 
-        #bumper-overlay.show {
+        #bumper-video-overlay.show {
             display: flex;
             opacity: 1;
         }
 
+        #bumperVideo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        /* Ambient dark vignette gradient behind glass card */
+        .bumper-vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
         .bumper-glass-card {
-            background: rgba(15, 20, 32, 0.75);
-            border: 2px solid rgba(212, 175, 55, 0.35);
-            border-radius: 28px;
-            padding: 45px 70px;
-            text-align: center;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(212, 175, 55, 0.15);
-            max-width: 900px;
-            width: 85%;
             position: relative;
+            z-index: 3;
+            background: rgba(10, 12, 20, 0.72);
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            border-radius: 28px;
+            padding: 40px 65px;
+            text-align: center;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(212, 175, 55, 0.2);
+            max-width: 850px;
+            width: 80%;
             overflow: hidden;
             animation: bumperPulse 3s infinite alternate ease-in-out;
         }
 
         @keyframes bumperPulse {
-            0% { border-color: rgba(212, 175, 55, 0.3); box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.1); }
-            100% { border-color: rgba(212, 175, 55, 0.7); box-shadow: 0 20px 80px rgba(0, 0, 0, 0.9), 0 0 60px rgba(212, 175, 55, 0.3); }
+            0% { border-color: rgba(212, 175, 55, 0.35); box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.15); }
+            100% { border-color: rgba(212, 175, 55, 0.75); box-shadow: 0 20px 80px rgba(0, 0, 0, 0.95), 0 0 60px rgba(212, 175, 55, 0.35); }
         }
 
         .bumper-channel-brand {
@@ -118,7 +152,7 @@
             letter-spacing: 3px;
             color: var(--gold-primary);
             text-transform: uppercase;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .bumper-channel-brand i {
@@ -129,34 +163,34 @@
             font-size: 0.9rem;
             font-weight: 700;
             letter-spacing: 4px;
-            color: #a1a1aa;
+            color: #d4d4d8;
             text-transform: uppercase;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .bumper-program-title {
             font-family: 'Cinzel', serif;
-            font-size: 2.8rem;
+            font-size: 2.6rem;
             font-weight: 900;
             color: #ffffff;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             letter-spacing: 1px;
-            line-height: 1.2;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            line-height: 1.25;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.9);
         }
 
         .bumper-program-desc {
-            font-size: 1.15rem;
-            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 500;
             line-height: 1.5;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
         }
 
         .bumper-progress-container {
             width: 100%;
             height: 5px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 10px;
             overflow: hidden;
         }
@@ -166,7 +200,6 @@
             width: 0%;
             background: linear-gradient(90deg, var(--gold-dark), var(--gold-primary), #ffffff);
             box-shadow: 0 0 15px var(--gold-primary);
-            transition: width 4.5s linear;
         }
 
         #master-status {
@@ -178,11 +211,16 @@
 </head>
 <body>
 
-    <iframe id="channel-frame" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; clipboard-write; clipboard-read; accelerometer; encrypted-media; gyroscope; web-share"></iframe>
+    <!-- DUAL IFRAME ENGINE (ZERO BUFFER LAG) -->
+    <iframe id="channel-frame-a" class="channel-frame active" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; clipboard-write; clipboard-read; accelerometer; encrypted-media; gyroscope; web-share"></iframe>
+    <iframe id="channel-frame-b" class="channel-frame inactive" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; clipboard-write; clipboard-read; accelerometer; encrypted-media; gyroscope; web-share"></iframe>
+    
     <div id="fade-overlay"></div>
 
-    <!-- TV ANNOUNCEMENT BUMPER CARD -->
-    <div id="bumper-overlay">
+    <!-- FULL-SCREEN VIDEO BUMPER OVERLAY -->
+    <div id="bumper-video-overlay">
+        <video id="bumperVideo" src="przebitka_cc.mp4" playsinline preload="auto"></video>
+        <div class="bumper-vignette"></div>
         <div class="bumper-glass-card">
             <div class="bumper-channel-brand">
                 <i class="fa-solid fa-tv"></i> TELEWIZJA CHRISTIAN CULTURE
@@ -201,16 +239,12 @@
     <script>
         const programMeta = {
             "spiewajmy-panu-live.html": {
-                title: "ŚPIEWAJMY PANU",
-                desc: "Codzienny 60-minutowy blok muzyczny • Uwielbienie & Pieśni Chwały"
+                title: "ŚPIEWAJMY PANU — BLOK MUZYCZNY",
+                desc: "Najpiękniejsze utwory uwielbienia i nowości muzyczne Christian Culture Music"
             },
             "kino-live.html": {
                 title: "CHRZEŚCIJAŃSKI BLOK FILMOWY",
                 desc: "Wyjątkowe seanse filmowe i dokumentalne z przesłaniem na życzenie"
-            },
-            "spiewajmy-panu-live.html": {
-                title: "ŚPIEWAJMY PANU — BLOK MUZYCZNY",
-                desc: "Najpiękniejsze utwory uwielbienia i nowości muzyczne Christian Culture Music"
             },
             "studium-live.html": {
                 title: "STUDIUM TELEWIZYJNE PISMA ŚWIĘTEGO",
@@ -238,6 +272,17 @@
             }
         };
 
+        const frameA = document.getElementById('channel-frame-a');
+        const frameB = document.getElementById('channel-frame-b');
+        const fade = document.getElementById('fade-overlay');
+        const bumperOverlay = document.getElementById('bumper-video-overlay');
+        const bumperVideo = document.getElementById('bumperVideo');
+        const bumperTitle = document.getElementById('bumperProgramTitle');
+        const bumperDesc = document.getElementById('bumperProgramDesc');
+        const bumperProgress = document.getElementById('bumperProgressBar');
+        const status = document.getElementById('master-status');
+
+        let activeFrameIndex = 0; // 0 = Frame A, 1 = Frame B
         let currentUrl = null;
         let isSpecialSlotActive = false;
         let apokalipsaDoneHours = { 9: false, 15: false, 21: false };
@@ -249,25 +294,13 @@
         let safetyTimeout = null;
         let isSwitchingWithBumper = false;
 
-        const frame = document.getElementById("channel-frame");
-        const fade = document.getElementById("fade-overlay");
-        const status = document.getElementById("master-status");
-        const bumperOverlay = document.getElementById("bumper-overlay");
-        const bumperTitle = document.getElementById("bumperProgramTitle");
-        const bumperDesc = document.getElementById("bumperProgramDesc");
-        const bumperProgress = document.getElementById("bumperProgressBar");
+        function getActiveFrame() {
+            return activeFrameIndex === 0 ? frameA : frameB;
+        }
 
-        // Listen for single episode completion event from sub-channels
-        window.addEventListener("message", (event) => {
-            if (event.data && (
-                event.data.type === "APOKALIPSA_FINISHED" || 
-                event.data.type === "APOKALIPSA_KSIEGA_NADZIEI_FINISHED" ||
-                event.data.type === "STUDIUM_FINISHED"
-            )) {
-                console.log("MCR: Special episode ended! Returning to main channel immediately.");
-                endSpecialSlot();
-            }
-        });
+        function getInactiveFrame() {
+            return activeFrameIndex === 0 ? frameB : frameA;
+        }
 
         function endSpecialSlot() {
             if (safetyTimeout) {
@@ -282,11 +315,23 @@
         }
 
         function getActiveBaseChannel() {
-            const hour = new Date().getHours();
+            const now = new Date();
+            const hour = now.getHours();
+
             if (hour >= 0 && hour < 6) return "cctv24-worship.html";
-            if (hour >= 6 && hour < 12) return "zapolske-live.html";
-            if (hour >= 12 && hour < 22) return "biblia-spiewana-live.html";
-            return "cctv24-worship.html";
+            if (hour >= 6 && hour < 8) return "zapolske-live.html";
+            if (hour >= 8 && hour < 9) return "studium-live.html";
+            if (hour >= 9 && hour < 10) return "apokalipsa-live.html";
+            if (hour >= 10 && hour < 11) return "apokalipsa-ksiega-nadziei-live.html";
+            if (hour >= 11 && hour < 15) return "biblia-spiewana-live.html";
+            if (hour >= 15 && hour < 16) return "apokalipsa-live.html";
+            if (hour >= 16 && hour < 18) return "spiewajmy-panu-live.html";
+            if (hour >= 18 && hour < 20) return isSafeMonetizationMode ? "biblia-spiewana-live.html" : "kino-live.html";
+            if (hour >= 20 && hour < 21) return "studium-live.html";
+            if (hour >= 21 && hour < 22) return "apokalipsa-live.html";
+            if (hour >= 22 && hour < 23) return "apokalipsa-ksiega-nadziei-live.html";
+            if (hour >= 23 && hour < 24) return "biblia-spiewana-live.html";
+            return "biblia-spiewana-live.html";
         }
 
         function checkSchedule() {
@@ -413,9 +458,12 @@
                 desc: "Emisja na żywo w Christian Culture TV"
             };
 
+            const activeFrame = getActiveFrame();
+            const inactiveFrame = getInactiveFrame();
+
             if (isFirstLoad) {
-                // First load -> direct smooth load
-                frame.src = newChannel + "?autoplay=1&t=" + Date.now();
+                // First load -> direct smooth load on Active Frame
+                activeFrame.src = newChannel + "?autoplay=1&t=" + Date.now();
                 fade.style.display = "block";
                 fade.style.opacity = "1";
                 setTimeout(() => {
@@ -423,41 +471,81 @@
                     setTimeout(() => { fade.style.display = "none"; }, 800);
                 }, 600);
             } else {
-                // Subsequent program switches -> display 4.5-second TV Bumper Announcement Card!
+                // Subsequent program switches -> Launch 10-second Video Bumper + Dual-Iframe Preload!
                 isSwitchingWithBumper = true;
                 bumperTitle.textContent = meta.title;
                 bumperDesc.textContent = meta.desc;
+                
                 bumperProgress.style.transition = 'none';
                 bumperProgress.style.width = '0%';
 
+                // Start playing video bumper
                 bumperOverlay.classList.add('show');
+                try {
+                    bumperVideo.currentTime = 0;
+                    bumperVideo.muted = false;
+                    const playPromise = bumperVideo.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(err => {
+                            console.log("MCR Video Bumper autoplay muted fallback:", err);
+                            bumperVideo.muted = true;
+                            bumperVideo.play();
+                        });
+                    }
+                } catch(e) {
+                    console.error("Video Bumper play error:", e);
+                }
+
+                // Determine video duration (default 9 seconds fallback)
+                const durationSec = (bumperVideo.duration && !isNaN(bumperVideo.duration)) ? bumperVideo.duration : 9;
 
                 setTimeout(() => {
-                    bumperProgress.style.transition = 'width 4s linear';
+                    bumperProgress.style.transition = `width ${durationSec}s linear`;
                     bumperProgress.style.width = '100%';
                 }, 50);
 
-                // Load iframe in background during bumper display
+                // Load upcoming channel silently on INACTIVE frame in background
                 setTimeout(() => {
-                    frame.src = newChannel + "?autoplay=1&t=" + Date.now();
-                }, 1500);
+                    inactiveFrame.src = newChannel + "?autoplay=1&t=" + Date.now();
+                }, 1000);
 
-                // After 4.5s, fade out bumper smoothly to reveal new channel!
+                // Swap frames seamlessly 0.6s before video finishes
+                const switchLeadTime = Math.max((durationSec - 0.6) * 1000, 3000);
+
                 setTimeout(() => {
+                    // Make inactive frame active and fade out bumper
+                    inactiveFrame.classList.remove('inactive');
+                    inactiveFrame.classList.add('active');
+
+                    activeFrame.classList.remove('active');
+                    activeFrame.classList.add('inactive');
+
+                    // Swap index pointer
+                    activeFrameIndex = activeFrameIndex === 0 ? 1 : 0;
+
+                    // Fade out bumper overlay
                     bumperOverlay.style.opacity = '0';
+
                     setTimeout(() => {
                         bumperOverlay.classList.remove('show');
                         bumperOverlay.style.opacity = '1';
                         bumperProgress.style.width = '0%';
+                        // Clean up old frame to free memory
+                        activeFrame.src = 'about:blank';
                         isSwitchingWithBumper = false;
                     }, 600);
-                }, 4500);
+
+                }, switchLeadTime);
             }
         }
 
-        // Forward click/touch interaction to unmute nested iframe
+        // Forward click/touch interaction to unmute nested iframe & video bumper
         function unmuteSubframe() {
             try {
+                if (bumperVideo) {
+                    bumperVideo.muted = false;
+                }
+                const frame = getActiveFrame();
                 if (frame && frame.contentWindow) {
                     frame.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
                     frame.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
@@ -468,7 +556,7 @@
         window.addEventListener('click', unmuteSubframe);
         window.addEventListener('touchstart', unmuteSubframe);
 
-        // Start checking every 10 seconds
+        // Start checking schedule every 10 seconds
         setInterval(checkSchedule, 10000);
         
         // Initial load
