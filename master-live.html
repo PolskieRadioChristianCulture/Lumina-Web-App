@@ -266,6 +266,10 @@
                 title: "ZJEDNOCZENI ZA POLSKĘ",
                 desc: "Poranny blok modlitewny i transmisja radiowo-telewizyjna"
             },
+            "swiadectwa-live.html": {
+                title: "ŚWIADECTWA — HISTORIE WIARY",
+                desc: "Poruszające opowieści nawrócenia, uzdrowień i cudów na niedzielne wieczory"
+            },
             "nocne-czuwanie-live.html": {
                 title: "NOCNE CZUWANIE & WORSHIP",
                 desc: "Nocny blok kontemplacji z cyklem 23 rotacyjnych filmów wyciszenia i uwielbienia"
@@ -425,20 +429,27 @@
                 }
             }
 
-            // 5) Trigger "Chrześcijański Blok Filmowy" (Sobota i Niedziela 18:00 - 20:00)
+            // 5) Trigger Weekend Evening Shows (18:00 - 20:00): Sobota = Kino, Niedziela = Świadectwa
             const dayOfWeek = now.getDay();
-            if (dayOfWeek === 0 || dayOfWeek === 6) {
-                if (hour >= 18 && hour < 20) {
+            if (hour >= 18 && hour < 20) {
+                if (dayOfWeek === 6) { // Sobota -> Chrześcijański Blok Filmowy
                     isSpecialSlotActive = true;
                     const targetFilmChannel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "kino-live.html";
                     if (currentUrl !== targetFilmChannel) {
                         switchChannel(targetFilmChannel);
                     }
                     return;
-                } else {
-                    if (isSpecialSlotActive && (currentUrl === "kino-live.html" || currentUrl === "biblia-spiewana-live.html")) {
-                        isSpecialSlotActive = false;
+                } else if (dayOfWeek === 0) { // Niedziela -> Świadectwa
+                    isSpecialSlotActive = true;
+                    const targetTestimonyChannel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "swiadectwa-live.html";
+                    if (currentUrl !== targetTestimonyChannel) {
+                        switchChannel(targetTestimonyChannel);
                     }
+                    return;
+                }
+            } else {
+                if (isSpecialSlotActive && (currentUrl === "kino-live.html" || currentUrl === "swiadectwa-live.html" || currentUrl === "biblia-spiewana-live.html")) {
+                    isSpecialSlotActive = false;
                 }
             }
 

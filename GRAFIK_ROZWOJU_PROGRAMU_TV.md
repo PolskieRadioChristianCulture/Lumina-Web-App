@@ -25,12 +25,13 @@ Głównym celem jest zbudowanie nowoczesnej, spójnej estetycznie i duchowo cał
 | **15:00 – 15:06** | **📌 Apokalipsa Dzień po Dniu** | Popołudniowy komentarz dnia | `apokalipsa-live.html` |
 | **15:06 – 16:00** | **🎶 Biblia Śpiewana — Pasmo Popołudniowe** | Spokojne kompozycje muzyczne i wersety Pisma Świętego | `biblia-spiewana-live.html` |
 | **16:00 – 18:00** | **🎵 Śpiewajmy Panu — Codzienny Blok Muzyczny** | 2-godzinny blok z utworami uwielbienia i nowościami Christian Culture Music (Odtwarzanie Losowe 24/7) | `spiewajmy-panu-live.html` |
-| **18:00 – 20:00** | **🎬 Chrześcijański Blok Filmowy & Dokumenty** | Filmy fabularne, kino chrześcijańskie, dokumenty, koncerty na żywo (Weekendy / Na życzenie) | `kino-live.html` / `biblia-spiewana-live.html` |
+| **18:00 – 20:00 (Sobota)** | **🎬 Chrześcijański Blok Filmowy & Dokumenty** | Filmy fabularne, kino chrześcijańskie, dokumenty, koncerty na żywo | `kino-live.html` |
+| **18:00 – 20:00 (Niedziela)** | **💬 Świadectwa — Cykl Historii Wiary** | Poruszające historie nawróceń, przemiany życia i uzdrowień (Cykl 11 filmów w rotacji) | `swiadectwa-live.html` |
 | **20:00 – 21:00** | **📖 Studium Telewizyjne Pisma Świętego** | Wydanie wieczorne wykładu werset po wersecie | `studium-live.html` |
 | **21:00 – 21:06** | **📌 Apokalipsa Dzień po Dniu** | Wieczorny komentarz dnia | `apokalipsa-live.html` |
 | **21:06 – 22:00** | **🎶 Biblia Śpiewana — Finał Dnia** | Zwieńczenie dnia muzyką uwielbienia | `biblia-spiewana-live.html` |
 | **22:00 – 23:00** | **🔥 Apokalipsa: Księga Nadziei** | Wieczorne wydanie kursu biblijnego | `apokalipsa-ksiega-nadziei-live.html` |
-| **23:00 – 06:00** | **🌙 Instrumental Worship & Nocne Czuwanie** | 100% muzyki uwielbienia bez przerw, idealne do snu i kontemplacji | `cctv24-worship.html` |
+| **23:00 – 06:00** | **🌙 Nocne Czuwanie & Worship — Pasmo Nocne** | 100% muzyki i relaksu z cyklem 23 rotacyjnych filmów nocnych (1 pozycja na dobę) | `nocne-czuwanie-live.html` |
 
 ---
 
