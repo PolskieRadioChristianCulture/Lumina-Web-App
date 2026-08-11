@@ -581,7 +581,15 @@
             } catch(e) {}
         }
         window.addEventListener('click', unmuteSubframe);
-        window.addEventListener('touchstart', unmuteSubframe);
+        // Listen for completion signals from sub-channels (Apokalipsa, Studium, Księga Nadziei, etc.)
+        window.addEventListener('message', (event) => {
+            if (!event || !event.data) return;
+            const type = event.data.type || event.data;
+            if (type === 'APOKALIPSA_FINISHED' || type === 'STUDIUM_FINISHED' || type === 'KSIEGA_NADZIEI_FINISHED' || type === 'PROGRAM_FINISHED') {
+                console.log("MCR: Received completion signal (" + type + ") from sub-channel. Ending special slot immediately!");
+                endSpecialSlot();
+            }
+        });
 
         // Start checking schedule every 10 seconds
         setInterval(checkSchedule, 10000);
