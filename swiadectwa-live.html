@@ -358,6 +358,20 @@
             color: #fff;
             box-shadow: 0 10px 40px rgba(0,0,0,0.8);
         }
+    
+        /* ===== MOBILE VIEWPORT FIX (auto-injected) ===== */
+        body, html {
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            touch-action: none !important;
+            overflow: hidden !important;
+        }
+        #app-container {
+            position: fixed !important;
+        }
+        /* =============================================== */
     </style>
 </head>
 <body>
@@ -580,6 +594,42 @@
         window.addEventListener('touchstart', handleUserUnmute);
     </script>
 
+
+            // === MOBILE VIEWPORT FIX: visualViewport + orientationchange ===
+            (function() {
+                function _rvp() {
+                    const c = document.getElementById('app-container');
+                    if (!c) return;
+                    const vvp = window.visualViewport;
+                    const w = vvp ? vvp.width  : window.innerWidth;
+                    const h = vvp ? vvp.height : window.innerHeight;
+                    if (!w || !h) return;
+                    const scale = Math.min(w / 1920, h / 1080);
+                    c.style.transformOrigin = 'top left';
+                    c.style.transform = 'scale(' + scale + ')';
+                    c.style.left = Math.max(0, (w - 1920 * scale) / 2) + 'px';
+                    c.style.top  = Math.max(0, (h - 1080 * scale) / 2) + 'px';
+                }
+                if (window.visualViewport) {
+                    window.visualViewport.addEventListener('resize', _rvp);
+                    window.visualViewport.addEventListener('scroll', _rvp);
+                }
+                window.addEventListener('orientationchange', function() {
+                    setTimeout(_rvp, 200);
+                    setTimeout(_rvp, 600);
+                });
+                window.addEventListener('resize', _rvp);
+                // Initial call after DOM ready
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', _rvp);
+                } else {
+                    _rvp();
+                }
+                setTimeout(_rvp, 100);
+                setTimeout(_rvp, 500);
+                setTimeout(_rvp, 1500);
+            })();
+            // === END MOBILE VIEWPORT FIX ===
 </body>
 </html>
 

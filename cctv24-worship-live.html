@@ -1824,6 +1824,20 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             padding-left: 100% !important;
         }
 
+    
+        /* ===== MOBILE VIEWPORT FIX (auto-injected) ===== */
+        body, html {
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            touch-action: none !important;
+            overflow: hidden !important;
+        }
+        #app-container {
+            position: fixed !important;
+        }
+        /* =============================================== */
     </style>
     <script>
         // initStream in HEAD - global before any onclick fires
@@ -2334,31 +2348,15 @@ WORSHIP INSTRUMENTAL CCTV24
             function resizeViewport() {
                 const container = document.getElementById("app-container");
                 if (!container) return;
-                const targetW = 1920;
-                const targetH = 1080;
-                
-                const w = window.innerWidth || document.documentElement.clientWidth || 0;
-                const h = window.innerHeight || document.documentElement.clientHeight || 0;
-                
-                // If dimensions are not ready yet, default to a safe scale and top/left 0
-                if (w <= 0 || h <= 0) {
-                    container.style.transform = "scale(0.29)";
-                    container.style.left = "0px";
-                    container.style.top = "0px";
-                    return;
-                }
-                
-                const scaleX = w / targetW;
-                const scaleY = h / targetH;
-                const scale = Math.min(scaleX, scaleY);
-                
+                const vvp = window.visualViewport;
+                const w = vvp ? vvp.width  : (window.innerWidth  || document.documentElement.clientWidth  || 0);
+                const h = vvp ? vvp.height : (window.innerHeight || document.documentElement.clientHeight || 0);
+                if (w <= 0 || h <= 0) return;
+                const scale = Math.min(w / 1920, h / 1080);
+                container.style.transformOrigin = "top left";
                 container.style.transform = "scale(" + scale + ")";
-                
-                // Center the container within window
-                const leftOffset = (w - (targetW * scale)) / 2;
-                const topOffset = (h - (targetH * scale)) / 2;
-                container.style.left = leftOffset + "px";
-                container.style.top = topOffset + "px";
+                container.style.left = Math.max(0, (w - 1920 * scale) / 2) + "px";
+                container.style.top  = Math.max(0, (h - 1080 * scale) / 2) + "px";
             }
             window.addEventListener("resize", resizeViewport);
             resizeViewport();
