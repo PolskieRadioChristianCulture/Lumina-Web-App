@@ -2190,26 +2190,27 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                 const targetW = 1920;
                 const targetH = 1080;
                 
-                // Prefer clientWidth/Height to avoid scrollbar clipping, fallback to innerWidth
-                const w = document.documentElement.clientWidth || window.innerWidth || 0;
-                const h = document.documentElement.clientHeight || window.innerHeight || 0;
+                const w = window.innerWidth || document.documentElement.clientWidth || 0;
+                const h = window.innerHeight || document.documentElement.clientHeight || 0;
                 
                 if (w <= 0 || h <= 0) {
-                    container.style.transformOrigin = "top left";
                     container.style.transform = "scale(0.29)";
                     container.style.left = "0px";
                     container.style.top = "0px";
                     return;
                 }
                 
-                const scale = Math.min(w / targetW, h / targetH);
+                const scaleX = w / targetW;
+                const scaleY = h / targetH;
+                const scale = Math.min(scaleX, scaleY);
                 
-                // CRITICAL: Must be top left for the left/top centering logic to work!
                 container.style.transformOrigin = "top left";
                 container.style.transform = "scale(" + scale + ")";
                 
-                container.style.left = Math.max(0, (w - targetW * scale) / 2) + "px";
-                container.style.top  = Math.max(0, (h - targetH * scale) / 2) + "px";
+                const leftOffset = (w - (targetW * scale)) / 2;
+                const topOffset = (h - (targetH * scale)) / 2;
+                container.style.left = Math.max(0, leftOffset) + "px";
+                container.style.top = Math.max(0, topOffset) + "px";
             }
             window.addEventListener("resize", resizeViewport);
             resizeViewport();

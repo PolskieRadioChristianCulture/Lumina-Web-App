@@ -465,39 +465,39 @@
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
-        // ── 1. Responsive Viewport Scaling ──
         function resizeViewport() {
-    const container = document.getElementById("app-container");
-    if (!container) return;
-    const targetW = 1920;
-    const targetH = 1080;
-    
-    const w = document.documentElement.clientWidth || window.innerWidth || 0;
-    const h = document.documentElement.clientHeight || window.innerHeight || 0;
-    
-    if (w <= 0 || h <= 0) {
-        container.style.transformOrigin = "top left";
-        container.style.transform = "scale(0.29)";
-        container.style.left = "0px";
-        container.style.top = "0px";
-        return;
-    }
-    
-    const scale = Math.min(w / targetW, h / targetH);
-    
-    container.style.transformOrigin = "top left";
-    container.style.transform = "scale(" + scale + ")";
-    
-    container.style.left = Math.max(0, (w - targetW * scale) / 2) + "px";
-    container.style.top  = Math.max(0, (h - targetH * scale) / 2) + "px";
-}
-window.addEventListener("resize", resizeViewport);
-window.addEventListener("load", resizeViewport);
-resizeViewport();
-setTimeout(resizeViewport, 100);
-setTimeout(resizeViewport, 500);
-setTimeout(resizeViewport, 1500);
+            const container = document.getElementById("app-container");
+            if (!container) return;
+            const targetW = 1920;
+            const targetH = 1080;
+            
+            const w = window.innerWidth || document.documentElement.clientWidth || 0;
+            const h = window.innerHeight || document.documentElement.clientHeight || 0;
+            
+            if (w <= 0 || h <= 0) {
+                container.style.transform = "scale(0.29)";
+                container.style.left = "0px";
+                container.style.top = "0px";
+                return;
+            }
+            
+            const scaleX = w / targetW;
+            const scaleY = h / targetH;
+            const scale = Math.min(scaleX, scaleY);
+            
+            container.style.transform = "scale(" + scale + ")";
+            
+            const leftOffset = (w - (targetW * scale)) / 2;
+            const topOffset = (h - (targetH * scale)) / 2;
+            container.style.left = leftOffset + "px";
+            container.style.top = topOffset + "px";
+        }
+        window.addEventListener("resize", resizeViewport);
+        window.addEventListener("load", resizeViewport);
         resizeViewport();
+        setTimeout(resizeViewport, 100);
+        setTimeout(resizeViewport, 500);
+        setTimeout(resizeViewport, 1500);
 
         // ── 2. Real-time Clock ──
         function updateClock() {
