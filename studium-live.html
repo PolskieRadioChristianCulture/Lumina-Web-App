@@ -441,7 +441,11 @@
     container.style.top  = Math.max(0, (h - targetH * scale) / 2) + "px";
 }
 window.addEventListener("resize", resizeViewport);
-        resizeViewport();
+window.addEventListener("load", resizeViewport);
+resizeViewport();
+setTimeout(resizeViewport, 100);
+setTimeout(resizeViewport, 500);
+setTimeout(resizeViewport, 1500);
 
         // ── 2. Real-time Clock ──
         function updateClock() {
@@ -542,9 +546,6 @@ window.addEventListener("resize", resizeViewport);
                     setTimeout(enableAudio, ms);
                 });
             }
-
-            resetAutoFadeTimer();
-        }
 
             resetAutoFadeTimer();
         }

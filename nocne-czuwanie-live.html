@@ -492,6 +492,11 @@
     container.style.top  = Math.max(0, (h - targetH * scale) / 2) + "px";
 }
 window.addEventListener("resize", resizeViewport);
+window.addEventListener("load", resizeViewport);
+resizeViewport();
+setTimeout(resizeViewport, 100);
+setTimeout(resizeViewport, 500);
+setTimeout(resizeViewport, 1500);
         resizeViewport();
 
         // ── 2. Real-time Clock ──
