@@ -3267,7 +3267,7 @@ function getWeatherPreset(city) {
                         const opt = document.createElement("option");
                         opt.value = idx;
                         opt.textContent = `${dayLabel}: ${ref.title}${dateLabel}`;
-                    daySelect.appendChild(opt);
+                        daySelect.appendChild(opt);
                     });
 
                     if (currentDayIndex >= reflectionsData.length) {
@@ -3296,28 +3296,21 @@ function getWeatherPreset(city) {
                     document.querySelector(".slide-title").textContent = "Błąd Bazy Danych";
                     document.querySelector(".slide-text").textContent = "Nie udało się wczytać pliku rozważań. Upewnij się, że plik rozwazania_baza.json istnieje.";
                 });
-        });
     </script>
         <!-- Real-time Prayer Intentions Controller -->
     <script type="module">
         import { db } from "./firebase-config.js";
         import { collection, doc, query, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
-        // --- MISSION CONTROL: GLOBAL CONFIG RDS LISTENER ---
+        // --- MISSION CONTROL: GLOBAL CONFIG LISTENER ---
         onSnapshot(doc(db, "mission_control_live", "global_config"), (docSnap) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                console.log("Odebrano nowy RDS z Mission Control:", data);
-                const marqueeTextEl = document.getElementById("marqueeText");
-                if (marqueeTextEl && data.tickerMessage) {
-                    // Aktualizacja paska RDS (zachowujemy oryginalne style lub formatujemy)
-                    marqueeTextEl.innerHTML = `
-                        <span style="background: ${data.isLive ? '#dc143c' : '#FFCC00'}; color: ${data.isLive ? '#ffffff' : '#000000'}; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">
-                            ${data.isLive ? '🔴 LIVE' : (data.priority && data.priority !== 'Normalne' ? data.priority : 'INFORMACJA')}
-                        </span>
-                        <span class="ticker-highlight-msg">${data.tickerMessage}</span>
-                    `;
-                }
+                const liveBadges = document.querySelectorAll(".live-badge");
+                liveBadges.forEach(badge => {
+                    if (data.isLive) badge.style.display = "flex";
+                    else badge.style.display = "none";
+                });
             }
         });
         // ---------------------------------------------------
