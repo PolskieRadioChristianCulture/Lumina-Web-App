@@ -1560,7 +1560,7 @@
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: rgba(2, 2, 3, 0.96);
+            background: #010103;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1569,8 +1569,32 @@
             cursor: pointer;
             transition: opacity 0.5s ease;
         }
+        #startOverlay.fade-in .start-logo,
+        #startOverlay.fade-in .start-label,
+        #startOverlay.fade-in .start-sublabel,
+        #startOverlay.fade-in .start-btn {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
         #startOverlay.hidden {
             display: none;
+        }
+        /* Spinner – widoczny natychmiast, bez czekania na fonty */
+        #startSpinner {
+            width: 56px; height: 56px;
+            border: 4px solid rgba(212,175,55,0.15);
+            border-top-color: #D4AF37;
+            border-radius: 50%;
+            animation: spinRing 0.9s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.4s ease;
+        }
+        #startSpinner.hidden { opacity: 0; pointer-events: none; }
+        @keyframes spinRing {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
         }
         .start-logo {
             width: 110px;
@@ -1587,12 +1611,18 @@
             color: #fff;
             letter-spacing: 2px;
             text-align: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease 0.25s, transform 0.5s ease 0.25s;
         }
         .start-sublabel {
             font-size: 1rem;
             color: rgba(255,255,255,0.45);
             letter-spacing: 3px;
             text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.5s ease 0.35s, transform 0.5s ease 0.35s;
         }
         .start-btn {
             display: flex;
@@ -1610,7 +1640,9 @@
             padding: 22px 56px;
             cursor: pointer;
             box-shadow: 0 0 50px rgba(212, 175, 55, 0.25);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: opacity 0.5s ease 0.45s, transform 0.5s ease 0.45s, box-shadow 0.2s ease;
+            opacity: 0;
+            transform: translateY(8px) scale(0.97);
         }
         .start-btn:hover {
             transform: scale(1.04);
@@ -1723,6 +1755,33 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             if (a) a.play().catch(function(){});
         }
         window.initStream = initStream;
+        
+        let _overlayLogoReady = false;
+        function _checkOverlayReady() {
+            if (_overlayLogoReady) {
+                const s = document.getElementById('startSpinner');
+                if (s) s.classList.add('hidden');
+                const o = document.getElementById('startOverlay');
+                if (o) o.classList.add('fade-in');
+            }
+        }
+        // Fallback: jeśli logo jest w cache lub onload nie odpali — pokaż po 800ms
+        document.addEventListener('DOMContentLoaded', function() {
+            const logo = document.querySelector('.start-logo');
+            if (logo && logo.complete && logo.naturalWidth > 0) {
+                // Logo już w cache — pokaż natychmiast
+                _overlayLogoReady = true;
+                _checkOverlayReady();
+            } else {
+                // Fallback timer — pokaż maksymalnie po 1s niezależnie od stanu
+                setTimeout(function() {
+                    if (!_overlayLogoReady) {
+                        _overlayLogoReady = true;
+                        _checkOverlayReady();
+                    }
+                }, 1000);
+            }
+        });
     </script>
     <link rel="stylesheet" href="live-window-manager.css">
 </head>
@@ -1999,7 +2058,8 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
 
     <!-- AUDIO STARTUP OVERLAY (Click to play and bypass browser autoplay block) -->
     <div id="startOverlay" onclick="initStream()">
-        <img class="start-logo" src="dzj-logo.jpg" alt="Dobrze, że jesteś">
+        <div id="startSpinner"></div>
+        <img class="start-logo" src="dzj-logo.jpg" alt="Dobrze, że jesteś" onload="this.style.opacity=1; _overlayLogoReady=true; _checkOverlayReady();">
         <div class="start-label">Dobrze, że jesteś</div>
         <div class="start-sublabel">Telewizja Christian Culture 24</div>
         <button class="start-btn" onclick="initStream()">
