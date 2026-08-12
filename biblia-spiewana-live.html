@@ -3287,7 +3287,7 @@ function getWeatherPreset(city) {
         <!-- Real-time Prayer Intentions Controller -->
     <script type="module">
         import { db } from "./firebase-config.js";
-        import { collection, query, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+        import { collection, doc, query, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
         const livePrayerOverlay = document.getElementById("livePrayerOverlay");
         const livePrayerText = document.getElementById("livePrayerText");
