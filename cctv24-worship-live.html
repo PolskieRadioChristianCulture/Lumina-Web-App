@@ -1838,7 +1838,12 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             position: fixed !important;
         }
         /* =============================================== */
-    </style>
+    
+        /* HIDE OPERATOR PANEL FOR PUBLIC VIEWERS */
+        .operator-panel, .toggle-panel-trigger, .live-outer-controls, #live-outer-controls {
+            display: none !important;
+        }
+</style>
     <script>
         // initStream in HEAD - global before any onclick fires
         function initStream() {
