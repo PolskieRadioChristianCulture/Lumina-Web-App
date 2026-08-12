@@ -2835,7 +2835,9 @@ function getWeatherPreset(city) {
                 
                 const greetingsText = `<span class="ticker-announcement">ZA CHWILĘ: GŁOS WIDZÓW 📺</span> <span class="ticker-highlight-msg">💬 Pozdrawiamy wszystkich uczestników wspólnej modlitwy! Niech ten dzień przyniesie Wam Boży pokój ~Redakcja CC &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 💬 Dziękujemy za Wasze wiadomości i codzienne wsparcie naszej misji. Jesteście wspaniali! ~Zespół Christian Culture</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
 
+                const specialRds = window.mcSpecialRdsMessage || "";
                 const defaultMissionText = `
+                    ${specialRds}
                     ${reflectionMarqueeText}
                     ${prayerMarqueeText}
                     ${greetingsText}
@@ -3729,6 +3731,16 @@ function getWeatherPreset(city) {
                     initBackground();
                     initCtaRotation();
                     initTickerFlipper();
+                    
+                    if (data.tickerMessage && data.tickerMessage.trim()) {
+                        window.mcSpecialRdsMessage = `<span style="background: #FF0033; color: #FFFFFF; padding: 2px 10px; border-radius: 4px; font-weight: 900; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block; box-shadow: 0 0 10px rgba(255,0,51,0.6);"><i class="fa-solid fa-bullhorn"></i> WIADOMOŚĆ SPECJALNA RDS</span> <span style="color: #FFD700; font-weight: 800; margin-right: 25px;">${data.tickerMessage}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
+                    } else {
+                        window.mcSpecialRdsMessage = "";
+                    }
+                    if (typeof window.loadNewsMarquee === "function") {
+                        window.loadNewsMarquee();
+                    }
+
                     fetchRealWeather();
                     setInterval(fetchRealWeather, 900000); // Refresh weather from API every 15 minutes
                     loadNewsMarquee();
