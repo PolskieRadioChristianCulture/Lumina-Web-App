@@ -1838,9 +1838,25 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
             var o = document.getElementById('startOverlay');
             if (o) { o.style.display = 'none'; o.className += ' hidden'; }
             var a = document.getElementById('stream-audio');
-            if (a) a.play().catch(function(){});
+            var isPreloadMuted = window.location.search.includes('muted=1');
+            if (a) {
+                if (isPreloadMuted) {
+                    a.muted = true;
+                }
+                a.play().catch(function(){});
+            }
         }
         window.initStream = initStream;
+
+        window.addEventListener('message', function(e) {
+            if (e.data && (e.data.type === 'UNMUTE_AUDIO' || e.data === 'UNMUTE_AUDIO')) {
+                var a = document.getElementById('stream-audio');
+                if (a) {
+                    a.muted = false;
+                    a.play().catch(function(){});
+                }
+            }
+        });
     </script>
     <link rel="stylesheet" href="live-window-manager.css">
 </head>

@@ -401,10 +401,18 @@
         let currentMovieIndex = (dayOfYear - 1) % movies.length;
         const selectedVideo = movies[currentMovieIndex];
 
+        const isPreloadMuted = window.location.search.includes('muted=1');
         const playerIframe = document.getElementById("yt-player");
         if (playerIframe) {
-            playerIframe.src = `https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&enablejsapi=1&controls=1&rel=0&modestbranding=1`;
+            const muteParam = isPreloadMuted ? '&mute=1' : '';
+            playerIframe.src = `https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&enablejsapi=1&controls=1&rel=0&modestbranding=1${muteParam}`;
         }
+
+        window.addEventListener('message', (e) => {
+            if (e.data && (e.data.type === 'UNMUTE_AUDIO' || e.data === 'UNMUTE_AUDIO')) {
+                enableAudio();
+            }
+        });
 
         let player = null;
 
@@ -443,9 +451,11 @@
 
         function onPlayerReady(event) {
             updateFilmLabel();
-            [100, 300, 600, 1200, 2500, 4000].forEach(ms => {
-                setTimeout(enableAudio, ms);
-            });
+            if (!isPreloadMuted) {
+                [100, 300, 600, 1200, 2500, 4000].forEach(ms => {
+                    setTimeout(enableAudio, ms);
+                });
+            }
         }
 
         function onPlayerStateChange(event) {

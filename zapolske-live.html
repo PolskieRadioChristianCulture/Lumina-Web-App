@@ -2214,15 +2214,29 @@
         function initStream() {
             const overlay = document.getElementById('startOverlay');
             const audio   = document.getElementById('stream-audio');
+            const isPreloadMuted = window.location.search.includes('muted=1');
             if (overlay) overlay.classList.add('hidden');
             if (audio) {
+                if (isPreloadMuted) {
+                    audio.muted = true;
+                }
                 audio.play().catch(e => {
                     console.warn("Audio play blocked:", e);
-                    // overlay stays hidden even if audio play is blocked // show again if blocked
                 });
+
+                window.addEventListener('message', function(e) {
+                    if (e.data && (e.data.type === 'UNMUTE_AUDIO' || e.data === 'UNMUTE_AUDIO')) {
+                        const audio = document.getElementById('stream-audio');
+                        if (audio) {
+                            audio.muted = false;
+                            audio.play().catch(() => {});
+                        }
+                    }
+                });
+
                 // Watchdog: restart if paused (e.g. network drop)
                 setInterval(() => {
-                    if (audio.paused) audio.play().catch(() => {});
+                    if (audio.paused && !audio.muted) audio.play().catch(() => {});
                 }, 10000);
             }
         }

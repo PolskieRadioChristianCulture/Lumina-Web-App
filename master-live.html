@@ -517,9 +517,10 @@
                     console.error("Video Bumper play error:", e);
                 }
 
-                // 3) Preload incoming channel IMMEDIATELY (at T=500ms) on inactiveFrame so it buffers fully during bumper!
+                // 3) Preload incoming channel IMMEDIATELY (at T=500ms) MUTED so it buffers fully without audio bleed!
                 setTimeout(() => {
-                    inactiveFrame.src = newChannel + "?autoplay=1&t=" + Date.now();
+                    const sep = newChannel.includes('?') ? '&' : '?';
+                    inactiveFrame.src = newChannel + sep + "muted=1&autoplay=1&t=" + Date.now();
                 }, 500);
 
                 // 4) Determine video duration (default 8s fallback)
@@ -530,10 +531,19 @@
                     bumperProgress.style.width = '100%';
                 }, 50);
 
-                // 5) Swap frames seamlessly when bumper finishes
+                // 5) Swap frames & UNMUTE incoming channel seamlessly when bumper finishes
                 const switchLeadTime = Math.max((durationSec - 0.5) * 1000, 3000);
 
                 setTimeout(() => {
+                    // Unmute incoming frame audio at exact moment of frame swap
+                    try {
+                        if (inactiveFrame && inactiveFrame.contentWindow) {
+                            inactiveFrame.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*');
+                            inactiveFrame.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                            inactiveFrame.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                        }
+                    } catch(e) {}
+
                     inactiveFrame.classList.remove('inactive');
                     inactiveFrame.classList.add('active');
 
