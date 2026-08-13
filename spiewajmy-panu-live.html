@@ -529,6 +529,16 @@
         function onPlayerStateChange(event) {
             if (event.data === YT.PlayerState.PLAYING) {
                 updateTrackMetadata();
+            } else if (event.data === YT.PlayerState.ENDED) {
+                console.log("Song ended. Auto-advancing to next track in playlist.");
+                selectedIndex = (selectedIndex + 1) % publishedVideos.length;
+                updateSongUI();
+                const nextVideo = publishedVideos[selectedIndex];
+                if (player && typeof player.loadVideoById === 'function') {
+                    player.loadVideoById(nextVideo.id);
+                } else if (event.target && typeof event.target.loadVideoById === 'function') {
+                    event.target.loadVideoById(nextVideo.id);
+                }
             }
         }
 
