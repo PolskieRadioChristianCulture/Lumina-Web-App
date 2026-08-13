@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Y4EFTVBPE3');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chrześcijański Bank Treści - PolskieRadio.cc</title>
+    <meta name="description" content="Pobierz bezpłatne materiały multimedialne, m.in. Biblię Śpiewaną w formacie MP3, do użytku osobistego i ewangelizacji.">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Chrześcijański Bank Treści - PolskieRadio.cc">
+    <meta property="og:description" content="Bezpłatne materiały multimedialne. Pobierz Biblię Śpiewaną (MP3) i inne zasoby Christian Culture.">
+    <meta property="og:image" content="https://polskieradio.cc/biblia_spiewana_tlo.jpg">
+    <meta property="og:url" content="https://polskieradio.cc/bank-tresci.html">
+    <meta property="og:type" content="website">
+    
+    <!-- Google AdSense Verification Code -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6762200025251358" crossorigin="anonymous"></script>
+    
+    <!-- Google Fonts: Cinzel (Headers) and Montserrat (UI & Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700;800&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css?v=11">
+    <style>
+        /* Aggressive Google Translate Banner and Offsets Hider */
+        iframe.goog-te-banner-frame,
+        .goog-te-banner-frame,
+        .goog-te-banner-frame.skiptranslate,
+        iframe[id*="goog"],
+        iframe[class*="goog"],
+        #goog-gt-tt,
+        .goog-te-balloon-frame {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+        }
+        body {
+            top: 0px !important;
+            position: static !important;
+        }
+    </style>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+</head>
+<body>
+
+    <!-- SECTION A: HEADER -->
+    <header class="main-header" id="mainHeader">
+        <div class="header-container">
+            <!-- Left Side: Hamburger Menu & Logo -->
+            <div class="header-left">
+                <button class="hamburger-menu" id="hamburgerBtn" aria-label="Otwórz menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <div class="brand-logo">
+                    <a href="index.html" class="logo-link">
+                        <span class="logo-top">CHRISTIAN</span>
+                        <span class="logo-bottom">CULTURE</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Side: SMS Subscription -->
+            <div class="header-right">
+                <div id="google_translate_element" style="position: absolute; left: -9999px; top: -9999px; visibility: hidden;"></div>
+                
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <button class="sms-button" id="navDzjIconBtn" aria-label="Dobrze, że jesteś" title="Dzisiejsze Rozważanie">
+                        <div class="avatar-ring" style="overflow: hidden; padding: 0; background: #000;">
+                            <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        </div>
+                    </button>
+                </div>
+
+                <button class="sms-button" id="smsBtn" aria-label="Subskrypcje SMS/MMS" title="Bezpłatne Subskrypcje SMS/MMS">
+                    <div class="avatar-ring">
+                        <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 1.15rem;"></i>
+                    </div>
+                </button>
+
+                <a href="nadawaj.html" class="sms-button" title="Panel Nadawania OBS - Wszystkie Formaty" aria-label="Panel Nadawania" style="display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                    <style>
+                        @keyframes broadcast-glow {
+                            0% { opacity: 0.65; transform: scale(0.95); }
+                            50% { opacity: 1; transform: scale(1.10); }
+                            100% { opacity: 0.65; transform: scale(0.95); }
+                        }
+                    </style>
+                    <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary); font-size: 1.1rem; animation: broadcast-glow 2.2s infinite ease-in-out;"></i>
+                    </div>
+                </a>
+
+                <button class="sms-button" id="langToggleBtn" title="Switch to English" aria-label="Zmień język">
+                    <div class="avatar-ring" style="display: flex; align-items: center; justify-content: center;">
+                        <span id="langToggleText" style="color: var(--gold-primary); font-size: 0.8rem; font-weight: 800; letter-spacing: 0.05em; font-family: 'Montserrat', sans-serif;">EN</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- SIDE DRAWER NAVIGATION -->
+    <div class="side-drawer" id="sideDrawer">
+        <button class="drawer-close" id="drawerCloseBtn" aria-label="Zamknij menu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="drawer-content">
+            <h2 class="drawer-brand">CHRISTIAN CULTURE</h2>
+            <nav class="drawer-nav">
+                <a href="index.html" class="drawer-link"><i class="fa-solid fa-house"></i> Strona Główna</a>
+                <a href="#" class="drawer-link" id="navDzjLink" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-heart"></i> DOBRZE, ŻE JESTEŚ</a>
+                <a href="bank-tresci.html" class="drawer-link active" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-download"></i> Bank Treści</a>
+                <a href="nadawaj.html" class="drawer-link" style="color: var(--gold-primary);"><i class="fa-solid fa-tower-broadcast"></i> Nadawaj z Christian Culture</a>
+                <a href="general-safety.html" class="drawer-link"><i class="fa-solid fa-shield-halved"></i> Standardy Bezpieczeństwa</a>
+                <a href="privacy.html" class="drawer-link"><i class="fa-solid fa-user-shield"></i> Polityka Prywatności</a>
+            </nav>
+            <div class="drawer-footer">
+                <p>&copy; 2026 Christian Culture</p>
+                <p class="drawer-sub">Elevating Faith</p>
+            </div>
+        </div>
+    </div>
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section" style="min-height: 90vh; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; text-align: center; padding: 120px 20px 60px; position: relative; overflow: hidden; z-index: 1;">
+        <!-- Tło dedykowane -->
+        <div class="custom-bg-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 1; background-image: url('tlo_dla_kanalu_Biblia_Spiewana.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(10, 12, 22, 0.4), rgba(10, 12, 22, 0.95));"></div>
+        </div>
+
+        <div style="max-width: 900px; z-index: 2; position: relative; margin-top: 40px;">
+            <h1 style="font-family: 'Cinzel', serif; font-size: 3.5rem; color: #fff; margin-bottom: 20px; text-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); line-height: 1.2;">Chrześcijański<br><span style="color: var(--gold-primary);">Bank Treści</span></h1>
+            <p style="font-family: 'Montserrat', sans-serif; font-size: 1.15rem; color: #d1d5db; line-height: 1.6; margin-bottom: 60px;">Bezpłatne Materiały Multimedialne do pobrania. Używaj w osobistym studiowaniu, modlitwie, retransmisjach oraz ewangelizacji.</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%;">
+                
+                <!-- KARTA: Biblia Śpiewana -->
+                <div style="background: rgba(20, 24, 35, 0.7); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 20px; padding: 30px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.4); transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <div style="width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1);">
+                        <img src="Logo_Biblia_Spiewana.jpg" alt="Biblia Śpiewana" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h2 style="font-family: 'Cinzel', serif; font-size: 1.6rem; color: #fff; margin-bottom: 10px;">Biblia Śpiewana (MP3)</h2>
+                    <p style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem; color: #9ca3af; margin-bottom: 25px; flex-grow: 1;">Pobierz pełną paczkę wysokiej jakości utworów MP3 z Księgi Przysłów (Przypowieści Salomona) zaśpiewanych przez wokalistów Christian Culture.</p>
+                    
+                    <a href="downloads/Biblia_Spiewana_Audio.zip" download="Biblia_Spiewana_Audio.zip" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%); color: #000; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 0.95rem; text-transform: uppercase; padding: 14px 30px; border-radius: 50px; text-decoration: none; width: 100%; transition: box-shadow 0.3s ease, transform 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 8px 25px rgba(212, 175, 55, 0.5)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+                        <i class="fa-solid fa-file-zipper"></i> POBIERZ ZBIÓR (.ZIP)
+                    </a>
+                </div>
+
+                <!-- KARTA: Biblia UBG PDF -->
+                <div style="background: rgba(20, 24, 35, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 30px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.4); transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <div style="width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; background: #000;">
+                        <img src="reklama_biblia.png" alt="Uwspółcześniona Biblia Gdańska PDF" style="height: 100%; width: auto; object-fit: contain;">
+                    </div>
+                    <h2 style="font-family: 'Cinzel', serif; font-size: 1.6rem; color: #fff; margin-bottom: 10px;">Biblia UBG (PDF)</h2>
+                    <p style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem; color: #9ca3af; margin-bottom: 25px; flex-grow: 1;">Pobierz darmowy egzemplarz Uwspółcześnionej Biblii Gdańskiej, zoptymalizowany pod kątem urządzeń mobilnych.</p>
+                    
+                    <a href="downloads/UBG20240604.pdf" download="Pismo_Swiete_UBG.pdf" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--gold-primary); color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 0.95rem; text-transform: uppercase; padding: 12px 30px; border-radius: 50px; text-decoration: none; width: 100%; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(212, 175, 55, 0.1)'; this.style.transform='scale(1.03)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='scale(1)';">
+                        <i class="fa-solid fa-download"></i> POBIERZ UBG (12 MB)
+                    </a>
+                </div>
+
+                <!-- KARTA: Biblia ks. Jakuba Wujka PDF -->
+                <div style="background: rgba(20, 24, 35, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 30px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.4); transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <div style="width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; background: #000;">
+                        <img src="reklama_biblia_2.jpeg" alt="Biblia ks. Jakuba Wujka PDF" style="height: 100%; width: auto; object-fit: contain;">
+                    </div>
+                    <h2 style="font-family: 'Cinzel', serif; font-size: 1.6rem; color: #fff; margin-bottom: 10px;">Biblia Wujka (PDF)</h2>
+                    <p style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem; color: #9ca3af; margin-bottom: 25px; flex-grow: 1;">Pobierz tradycyjny przekład Biblii w tłumaczeniu ks. Jakuba Wujka, udostępniony bezpłatnie.</p>
+                    
+                    <a href="https://drive.google.com/file/d/1HCcafv4rdU-otttgkQJEsWauvwjWlNy3/view?usp=sharing" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--gold-primary); color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 0.95rem; text-transform: uppercase; padding: 12px 30px; border-radius: 50px; text-decoration: none; width: 100%; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(212, 175, 55, 0.1)'; this.style.transform='scale(1.03)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.transform='scale(1)';">
+                        <i class="fa-brands fa-google-drive"></i> POBIERZ WUJKA
+                    </a>
+                </div>
+
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- MODAL DOBRZE, ZE JESTES -->
+    <div id="dzjModal" class="dzj-modal-wrapper">
+        <div class="dzj-modal-overlay" id="dzjModalOverlay"></div>
+        <div class="dzj-modal-content">
+            <button class="dzj-close-top" id="dzjCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="dzj-header">
+                <div class="dzj-logo-wrapper">
+                    <img src="dzj-logo.jpg" alt="Dobrze że jesteś Logo">
+                </div>
+                <div class="dzj-date-badge">
+                    <i class="fa-solid fa-calendar"></i> <span id="dzjDate">Ładowanie...</span>
+                </div>
+                <h2 id="dzjTitle" class="dzj-title">Szukam dzisiejszego słowa...</h2>
+            </div>
+            <div class="dzj-body" id="dzjContentBox">
+                <!-- Content gets injected by JS -->
+            </div>
+            <div class="dzj-footer">
+                <button class="dzj-close-bottom" id="dzjCloseFooterBtn">ZAMKNIJ OKNO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'pl',
+                includedLanguages: 'en,pl',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const langBtn = document.getElementById('langToggleBtn');
+            const langText = document.getElementById('langToggleText');
+ 
+            function isEnglish() {
+                return document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen');
+            }
+ 
+            if (langText) {
+                if (isEnglish()) {
+                    langText.textContent = 'PL';
+                    if (langBtn) langBtn.title = 'Przełącz na język polski';
+                } else {
+                    langText.textContent = 'EN';
+                    if (langBtn) langBtn.title = 'Switch to English';
+                }
+            }
+ 
+            if (langBtn && langText) {
+                langBtn.addEventListener('click', () => {
+                    if (isEnglish()) {
+                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.polskieradio.cc";
+                        document.cookie = "googtrans=/pl/pl; path=/";
+                        document.cookie = "googtrans=/pl/pl; path=/; domain=.polskieradio.cc";
+                    } else {
+                        document.cookie = "googtrans=/pl/en; path=/";
+                        document.cookie = "googtrans=/pl/en; path=/; domain=.polskieradio.cc";
+                    }
+                    window.location.reload();
+                });
+            }
+
+            // Dynamic fail-safe cleanup for Google Translate top banner
+            function cleanGoogleBanner() {
+                document.querySelectorAll('iframe').forEach(iframe => {
+                    if (!iframe.src.includes('youtube.com') && !iframe.src.includes('youtube-nocookie.com')) {
+                        iframe.style.setProperty('display', 'none', 'important');
+                        iframe.style.setProperty('visibility', 'hidden', 'important');
+                        iframe.style.setProperty('height', '0px', 'important');
+                        iframe.style.setProperty('width', '0px', 'important');
+                        iframe.style.setProperty('opacity', '0', 'important');
+                    }
+                });
+                document.body.style.setProperty('top', '0px', 'important');
+                document.body.style.setProperty('position', 'static', 'important');
+                document.documentElement.style.setProperty('margin-top', '0px', 'important');
+            }
+            cleanGoogleBanner();
+            setInterval(cleanGoogleBanner, 200);
+        });
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="module" src="app.js?v=14"></script>
+    <script type="module" src="dobrzezejestes.js?v=6"></script>
+</body>
+</html>

@@ -65,3 +65,4 @@ Głównym celem jest zbudowanie nowoczesnej, spójnej estetycznie i duchowo cał
 - [x] Płynne 30-sekundowe autowygaszanie nakładek UI dla zachowania czystego obrazu.
 - [ ] Utworzenie dedykowanego modułu dla **Chrześcijańskiego Bloku Filmowego (18:00 – 20:00)**.
 - [ ] Rozbudowa pasm weekendowych (Sobota/Niedziela) z dedykowaną ramówką świąteczno-koncertową.
+- [ ] Budowa podstrony **"Chrześcijański Bank Treści"** - Bezpłatne Materiały Multimedialne.
