@@ -518,124 +518,137 @@
                         </div>
                     </button>
                     
-                    <!-- Vertical Dropdown Shortcuts Panel -->
-                    <div id="actionsList" style="position: absolute; top: calc(100% + 12px); right: 0; width: 265px; background: rgba(10, 12, 22, 0.96); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1.5px solid var(--border-gold-low); border-radius: 16px; padding: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.85); display: flex; flex-direction: column; gap: 4px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100;">
+                    <!-- Vertical Dropdown Shortcuts Panel (2-Block Cascading Grid) -->
+                    <div id="actionsList" style="position: absolute; top: calc(100% + 12px); right: 0; width: 540px; background: rgba(10, 12, 22, 0.96); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1.5px solid var(--border-gold-low); border-radius: 18px; padding: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 10px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100;">
                         
                         <!-- Header inside shortcuts panel -->
-                        <div style="font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 8px 8px 8px; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Cinzel', serif; text-align: left;">Menu skrótów</div>
-
-                        <!-- Shortcut: Program TV 24/7 -->
-                        <a href="program.html" style="display: flex; align-items: center; gap: 12px; padding: 10px 8px; border-radius: 12px; text-decoration: none; transition: background 0.2s; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.3); margin-top: 4px;" onmouseover="this.style.background='rgba(212,175,55,0.18)';" onmouseout="this.style.background='rgba(212,175,55,0.08)';">
-                            <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #d4af37, #aa820a); flex-shrink: 0;">
-                                <i class="fa-solid fa-calendar-days" style="color: #000; font-size: 0.95rem;"></i>
-                            </div>
-                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                <span style="font-size: 0.85rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Program TV & Ramówka</span>
-                                <span style="font-size: 0.62rem; color: var(--gold-light); font-family: 'Inter', sans-serif;">Dziś • Tydzień • Miesiąc</span>
-                            </div>
-                        </a>
-                        
-                        <!-- Shortcut 0: Helpline Nadzieja CC (FIRST, MOST PROMINENT) -->
-                        <a href="tel:+48730958583" id="shortcutHelpline" style="display: flex; align-items: center; gap: 12px; padding: 11px 10px; border-radius: 12px; text-decoration: none; transition: background 0.2s, box-shadow 0.3s; background: rgba(245, 197, 24, 0.07); border: 1px solid rgba(245,197,24,0.25); margin-top: 6px; animation: helpline-pulse-drawer 2s infinite alternate;" onmouseover="this.style.background='rgba(245,197,24,0.16)'; this.style.borderColor='rgba(245,197,24,0.6)';" onmouseout="this.style.background='rgba(245,197,24,0.07)'; this.style.borderColor='rgba(245,197,24,0.25)';">
-                            <div style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f5c518, #e6a817); flex-shrink: 0; box-shadow: 0 0 12px rgba(245,197,24,0.5);">
-                                <i class="fa-solid fa-phone-volume" style="color: #000; font-size: 1rem; animation: phone-bounce-drawer 1.4s infinite alternate;"></i>
-                            </div>
-                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.25;">
-                                <span style="font-size: 0.62rem; font-weight: 700; color: rgba(245,197,24,0.85); text-transform: uppercase; letter-spacing: 0.8px; font-family: 'Montserrat', sans-serif;">Infolinia &ldquo;Nadzieja Christian Culture&rdquo;</span>
-                                <span style="font-size: 1rem; font-weight: 900; color: #ffffff; letter-spacing: 0.5px; font-family: 'Montserrat', sans-serif;">+48 730 958 583</span>
-                            </div>
-                        </a>
-
-                        <!-- Separator -->
-                        <div style="border-top: 1px solid rgba(255,255,255,0.08); margin: 4px 0;"></div>
-                        <a href="herbatka/index.html" style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(38, 166, 154, 0.12)'" onmouseout="this.style.background='transparent'">
-                            <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(38, 166, 154, 0.08); border: 1px solid rgba(38, 166, 154, 0.25); flex-shrink: 0;">
-                                <i class="fa-solid fa-mug-hot" style="color: #26a69a; font-size: 0.95rem;"></i>
-                            </div>
-                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                <span style="font-size: 0.82rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Herbatka między słowami</span>
-                                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Poczytaj i posłuchaj</span>
-                            </div>
-                        </a>
-
-                        <!-- Shortcut 2: Modlitwa (Zjednoczeni za Polskę) -->
-                        <a href="modlitwa.html" style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(220, 20, 60, 0.12)'" onmouseout="this.style.background='transparent'">
-                            <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(220, 20, 60, 0.15); border: 1.5px solid var(--border-gold-low); flex-shrink: 0;">
-                                <i class="fa-solid fa-hands-praying" style="color: var(--gold-primary); font-size: 0.95rem;"></i>
-                            </div>
-                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                <span style="font-size: 0.82rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Zjednoczeni za Polskę</span>
-                                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Podstrona modlitewna</span>
-                            </div>
-                        </a>
-
-                        <!-- Shortcut 3: Dobrze, że jesteś -->
-                        <a href="cctv24-pl.html" style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                            <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 1.5px solid var(--border-gold-low); flex-shrink: 0;">
-                                <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                            </div>
-                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                <span style="font-size: 0.82rem; font-weight: 700; color: var(--gold-primary); font-family: 'Outfit', sans-serif;">Dobrze, że jesteś</span>
-                                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Codzienne rozważania</span>
-                            </div>
-                        </a>
-
-                        <!-- Shortcut 3a: Aplikacja Webowa CC -->
-                        <a href="https://christian-culture.web.app/" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                            <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 1.5px solid var(--border-gold-low); flex-shrink: 0;">
-                                <img src="icon.png" alt="Aplikacja CC" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                            </div>
-                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                <span style="font-size: 0.82rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Aplikacja Christian Culture</span>
-                                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">christian-culture.web.app</span>
-                            </div>
-                        </a>
-
-                        <!-- Shortcut 3b: Biblia do pobrania -->
-                        <a href="biblia-do-pobrania.html" style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                            <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(243, 229, 171, 0.1); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                <i class="fa-solid fa-book-bible" style="color: #f3e5ab; font-size: 0.95rem;"></i>
-                            </div>
-                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                <span style="font-size: 0.82rem; font-weight: 700; color: #f3e5ab; font-family: 'Outfit', sans-serif;">Biblia do pobrania</span>
-                                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Darmowy plik PDF</span>
-                            </div>
-                        </a>
-
-                        <!-- Shortcut 3c: SMS Subscriptions -->
-                        <div id="shortcutSmsRow" style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                            <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 0.95rem;"></i>
-                            </div>
-                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                <span style="font-size: 0.82rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Subskrypcje SMS</span>
-                                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Zapisz się bezpłatnie</span>
-                            </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.45); letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 4px 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Cinzel', serif;">
+                            <span><i class="fa-solid fa-layer-group" style="color: var(--gold-primary); margin-right: 6px;"></i> Menu Skrótów Christian Culture</span>
+                            <span style="font-size: 0.58rem; background: rgba(212, 175, 55, 0.15); color: var(--gold-primary); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(212,175,55,0.3);">2 BLOKI</span>
                         </div>
 
-                        <!-- Shortcut 4: OBS Streaming -->
-                        <a href="nadawaj.html" style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                            <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary); font-size: 0.9rem;"></i>
-                            </div>
-                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                <span style="font-size: 0.82rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Nadawaj z nami</span>
-                                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Pobierz sygnał dla OBS</span>
-                            </div>
-                        </a>
+                        <!-- 2 Equal Cascading Blocks Side-By-Side -->
+                        <div class="shortcuts-blocks-container">
+                            <!-- BLOCK 1: GŁÓWNE NARZĘDZIA & MEDIA -->
+                            <div class="shortcut-block block-1">
+                                <div style="font-size: 0.6rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(212,175,55,0.15); font-family: 'Montserrat', sans-serif;">Główne Media</div>
 
-                        <!-- Shortcut 5: Language Toggle -->
-                        <div id="shortcutLangRow" style="display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; cursor: pointer; transition: background 0.2s; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 4px; padding-top: 10px;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                            <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                <span id="langToggleText" style="color: var(--gold-primary); font-size: 0.75rem; font-weight: 800; font-family: 'Montserrat', sans-serif;">EN</span>
+                                <!-- Shortcut: Program TV 24/7 -->
+                                <a href="program.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.25); margin-top: 4px;" onmouseover="this.style.background='rgba(212,175,55,0.18)';" onmouseout="this.style.background='rgba(212,175,55,0.08)';">
+                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #d4af37, #aa820a); flex-shrink: 0;">
+                                        <i class="fa-solid fa-calendar-days" style="color: #000; font-size: 0.88rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                        <span style="font-size: 0.8rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Program TV & Ramówka</span>
+                                        <span style="font-size: 0.6rem; color: var(--gold-light); font-family: 'Inter', sans-serif;">Dziś • Tydzień • Miesiąc</span>
+                                    </div>
+                                </a>
+                                
+                                <!-- Shortcut: Helpline Nadzieja CC -->
+                                <a href="tel:+48730958583" id="shortcutHelpline" style="display: flex; align-items: center; gap: 10px; padding: 9px; border-radius: 10px; text-decoration: none; transition: background 0.2s, box-shadow 0.3s; background: rgba(245, 197, 24, 0.07); border: 1px solid rgba(245,197,24,0.25); animation: helpline-pulse-drawer 2s infinite alternate;" onmouseover="this.style.background='rgba(245,197,24,0.16)'; this.style.borderColor='rgba(245,197,24,0.6)';" onmouseout="this.style.background='rgba(245,197,24,0.07)'; this.style.borderColor='rgba(245,197,24,0.25)';">
+                                    <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f5c518, #e6a817); flex-shrink: 0; box-shadow: 0 0 10px rgba(245,197,24,0.4);">
+                                        <i class="fa-solid fa-phone-volume" style="color: #000; font-size: 0.9rem; animation: phone-bounce-drawer 1.4s infinite alternate;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                        <span style="font-size: 0.58rem; font-weight: 700; color: rgba(245,197,24,0.9); text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Montserrat', sans-serif;">Infolinia Nadzieja CC</span>
+                                        <span style="font-size: 0.9rem; font-weight: 900; color: #ffffff; letter-spacing: 0.3px; font-family: 'Montserrat', sans-serif;">+48 730 958 583</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Dobrze, że jesteś -->
+                                <a href="cctv24-pl.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 30px; height: 30px; border-radius: 50%; overflow: hidden; border: 1.5px solid var(--border-gold-low); flex-shrink: 0;">
+                                        <img src="dzj-logo.jpg" alt="Dobrze, że jesteś" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                        <span style="font-size: 0.8rem; font-weight: 700; color: var(--gold-primary); font-family: 'Outfit', sans-serif;">Dobrze, że jesteś</span>
+                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Codzienne rozważania</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Aplikacja Webowa CC -->
+                                <a href="https://christian-culture.web.app/" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 30px; height: 30px; border-radius: 50%; overflow: hidden; border: 1.5px solid var(--border-gold-low); flex-shrink: 0;">
+                                        <img src="icon.png" alt="Aplikacja CC" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Aplikacja CC Web</span>
+                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">christian-culture.web.app</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Herbatka między słowami -->
+                                <a href="herbatka/index.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(38, 166, 154, 0.12)'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(38, 166, 154, 0.08); border: 1px solid rgba(38, 166, 154, 0.25); flex-shrink: 0;">
+                                        <i class="fa-solid fa-mug-hot" style="color: #26a69a; font-size: 0.88rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Herbatka między słowami</span>
+                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Poczytaj i posłuchaj</span>
+                                    </div>
+                                </a>
                             </div>
-                            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
-                                <span style="font-size: 0.82rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Język / Language</span>
-                                <span style="font-size: 0.62rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Zmień na angielski</span>
+
+                            <!-- BLOCK 2: ZASOBY, MODLITWA & OBS -->
+                            <div class="shortcut-block block-2">
+                                <div style="font-size: 0.6rem; font-weight: 800; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; padding: 2px 4px 6px 4px; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Montserrat', sans-serif;">Zasoby & Usługi</div>
+
+                                <!-- Shortcut: Modlitwa (Zjednoczeni za Polskę) -->
+                                <a href="modlitwa.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s; margin-top: 4px;" onmouseover="this.style.background='rgba(220, 20, 60, 0.12)'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(220, 20, 60, 0.15); border: 1.5px solid var(--border-gold-low); flex-shrink: 0;">
+                                        <i class="fa-solid fa-hands-praying" style="color: var(--gold-primary); font-size: 0.88rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Zjednoczeni za Polskę</span>
+                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Podstrona modlitewna</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Biblia do pobrania -->
+                                <a href="biblia-do-pobrania.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(243, 229, 171, 0.1); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
+                                        <i class="fa-solid fa-book-bible" style="color: #f3e5ab; font-size: 0.88rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                        <span style="font-size: 0.8rem; font-weight: 700; color: #f3e5ab; font-family: 'Outfit', sans-serif;">Biblia do pobrania</span>
+                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Darmowy plik PDF</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: SMS Subscriptions -->
+                                <div id="shortcutSmsRow" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
+                                        <i class="fa-solid fa-comment-sms" style="color: var(--gold-primary); font-size: 0.88rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Subskrypcje SMS</span>
+                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Zapisz się bezpłatnie</span>
+                                    </div>
+                                </div>
+
+                                <!-- Shortcut: OBS Streaming -->
+                                <a href="nadawaj.html" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
+                                        <i class="fa-solid fa-tower-broadcast" style="color: var(--gold-primary); font-size: 0.85rem;"></i>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Nadawaj z nami</span>
+                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Pobierz sygnał dla OBS</span>
+                                    </div>
+                                </a>
+
+                                <!-- Shortcut: Language Toggle -->
+                                <div id="shortcutLangRow" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                                    <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
+                                        <span id="langToggleText" style="color: var(--gold-primary); font-size: 0.7rem; font-weight: 800; font-family: 'Montserrat', sans-serif;">EN</span>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
+                                        <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Język / Language</span>
+                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Zmień na angielski</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- Shortcut 6: Helpline REMOVED FROM BOTTOM (moved to top) -->
-                        
                     </div>
                 </div>
             </div>
