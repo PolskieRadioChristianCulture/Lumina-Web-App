@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <!-- Google tag (gtag.js) -->
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -11,11 +11,10 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUMINA - Odkryj Prawdziwe Połączenie | Chrześcijański Portal Randkowy</title>
-    <meta name="description" content="Witaj w LUMINA – Miejscu Głębszych Relacji. Rozpocznij swoją podróż do miłości z inteligentnym dopasowaniem w ekosystemie Christian Culture.">
+    <title>LUMINA – Odkryj Prawdziwe Połączenie | Christian Culture</title>
+    <meta name="description" content="Witaj w LUMINA – Miejscu Głębszych Relacji. Chrześcijański portal randkowy z inteligentnym dopasowaniem w ekosystemie Christian Culture.">
     <link rel="icon" type="image/png" href="icon.png">
 
-    <!-- Google Fonts & FontAwesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
@@ -23,720 +22,650 @@
 
     <style>
         :root {
-            --bg-dark: #090B15;
-            --bg-card: rgba(20, 26, 48, 0.65);
-            --border-glass: rgba(255, 255, 255, 0.12);
-            --accent-cyan: #00d2ff;
+            --navy: #0f1535;
+            --navy-deep: #090b1f;
             --accent-purple: #9d4edd;
+            --accent-cyan: #00d2ff;
             --accent-magenta: #e01a4f;
-            --accent-gold: #ffb703;
-            --text-main: #ffffff;
             --text-muted: #94a3b8;
-            --radius-lg: 24px;
-            --radius-md: 16px;
-            --radius-sm: 10px;
+            --radius-lg: 20px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+            background: linear-gradient(135deg, #1a0a2e 0%, #0f1a3d 40%, #0d2060 70%, #1a0a2e 100%);
             min-height: 100vh;
+            color: #fff;
             overflow-x: hidden;
         }
 
-        /* ─── TOP OUTER LABEL BAR ─── */
-        .outer-label {
-            background: var(--bg-dark);
-            text-align: center;
-            padding: 16px 24px;
+        /* ──────────────────── NAVBAR ──────────────────── */
+        .lumina-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 14px 48px;
+            background: rgba(9, 11, 31, 0.78);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
-        .outer-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.25rem;
+
+        .nav-logo-text {
+            font-size: 1.4rem;
             font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             color: #fff;
             text-decoration: none;
         }
-        .outer-brand-icon {
-            width: 34px; height: 34px;
-            background: linear-gradient(135deg, #fff, #c8d0e0);
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .outer-brand-icon i { background: linear-gradient(135deg, #0072ff, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1rem; }
-        .outer-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 0.5px;
-        }
-        .outer-title span { color: var(--accent-cyan); }
-        .outer-spacer { width: 160px; }
 
-        /* ─── APP FRAME ─── */
-        .app-frame {
-            width: 93%;
-            max-width: 1340px;
-            margin: 0 auto 40px;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.1);
-            position: relative;
-        }
-
-        /* ─── NAVBAR (sits on top of hero photo) ─── */
-        .app-nav {
-            position: relative;
-            z-index: 50;
+        .nav-links {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 16px 32px;
-            background: rgba(10, 16, 35, 0.82);
-            backdrop-filter: blur(18px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            gap: 32px;
         }
-        .nav-logo {
-            display: flex; align-items: center; gap: 10px;
-            text-decoration: none; color: #fff;
-            font-size: 1.4rem; font-weight: 800; letter-spacing: 1px;
-        }
-        .nav-logo-icon {
-            width: 36px; height: 36px; border-radius: 10px;
-            background: linear-gradient(135deg, #fff, #dde4f0);
-            display: flex; align-items: center; justify-content: center;
-        }
-        .nav-logo-icon i { background: linear-gradient(135deg, #0072ff, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.1rem; }
-        .nav-menu { display: flex; align-items: center; gap: 28px; }
+
         .nav-link {
-            color: rgba(255,255,255,0.8); text-decoration: none;
-            font-size: 0.92rem; font-weight: 600;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.82);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
             transition: color 0.2s;
-            cursor: pointer; background: none; border: none;
-            display: flex; align-items: center; gap: 5px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
-        .nav-link:hover, .nav-link.active { color: #fff; }
+        .nav-link:hover { color: #fff; }
         .nav-badge {
-            background: var(--accent-magenta); color: #fff;
-            font-size: 0.7rem; font-weight: 800;
-            padding: 2px 6px; border-radius: 10px;
+            background: var(--accent-magenta);
+            color: #fff;
+            font-size: 0.68rem;
+            font-weight: 900;
+            padding: 1px 6px;
+            border-radius: 10px;
         }
-        .btn-auth-nav {
-            background: linear-gradient(90deg, #0072ff, #00d2ff);
-            color: #fff; border: none; padding: 10px 24px;
-            border-radius: 30px; font-weight: 700; font-size: 0.88rem;
-            cursor: pointer; box-shadow: 0 4px 14px rgba(0,114,255,0.4);
+
+        .btn-nav-cta {
+            background: linear-gradient(90deg, #0072ff, #00c6ff);
+            color: #fff;
+            border: none;
+            padding: 10px 26px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 4px 16px rgba(0, 114, 255, 0.45);
             transition: transform 0.2s, box-shadow 0.2s;
             white-space: nowrap;
         }
-        .btn-auth-nav:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(0,210,255,0.5); }
+        .btn-nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(0,198,255,0.6);
+        }
 
-        /* ─── HERO: full-bleed photo with text overlay ─── */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .lumina-nav { padding: 14px 20px; }
+        }
+
+        /* ──────────────────── HERO ──────────────────── */
         .hero-section {
             position: relative;
-            min-height: 420px;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            overflow: hidden;
+            min-height: 390px;
         }
-        .hero-photo {
-            position: absolute; inset: 0;
-            background: url('lumina_hero_group.jpg') center center / cover no-repeat;
+
+        /* The banner image IS the background */
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url('lumina_banner.png') center center / cover no-repeat;
+            z-index: 0;
         }
-        /* Dark gradient overlays – darker on sides, lighter in middle so text is readable */
-        .hero-photo::before {
+
+        /* Subtle overlay to ensure text contrast without hiding the photo */
+        .hero-bg::before {
             content: '';
-            position: absolute; inset: 0;
-            background: linear-gradient(90deg,
-                rgba(8,14,35,0.88) 0%,
-                rgba(8,14,35,0.35) 30%,
-                rgba(8,14,35,0.35) 70%,
-                rgba(8,14,35,0.88) 100%);
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(10,15,45,0.62) 0%,
+                rgba(10,15,45,0.12) 28%,
+                rgba(10,15,45,0.12) 72%,
+                rgba(10,15,45,0.62) 100%
+            );
         }
-        .hero-photo::after {
+        /* Bottom fade to merge with wave */
+        .hero-bg::after {
             content: '';
-            position: absolute; inset: 0;
-            background: linear-gradient(180deg,
-                rgba(8,14,35,0.1) 0%,
-                rgba(8,14,35,0.0) 50%,
-                rgba(8,14,35,0.65) 100%);
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                transparent 50%,
+                rgba(10,15,45,0.55) 100%
+            );
         }
-        .hero-text {
-            position: relative; z-index: 5;
-            max-width: 680px; padding: 60px 24px 80px;
+
+        .hero-content {
+            position: relative;
+            z-index: 5;
+            padding: 60px 32px 90px;
+            max-width: 700px;
         }
+
         .hero-title {
-            font-size: 2.55rem; font-weight: 800; line-height: 1.2;
+            font-size: 2.6rem;
+            font-weight: 800;
+            line-height: 1.18;
             color: #fff;
-            text-shadow: 0 2px 20px rgba(0,0,0,0.7);
-            margin-bottom: 14px;
+            text-shadow: 0 2px 24px rgba(0,0,0,0.6);
+            margin-bottom: 12px;
         }
+
         .hero-sub {
-            font-size: 1rem; color: rgba(255,255,255,0.88);
-            margin-bottom: 28px; font-weight: 500;
-            text-shadow: 0 1px 10px rgba(0,0,0,0.8);
+            font-size: 1rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 500;
+            margin-bottom: 28px;
+            text-shadow: 0 1px 12px rgba(0,0,0,0.7);
         }
-        .btn-cta-hero {
+
+        .btn-hero-main {
             display: inline-block;
-            background: linear-gradient(90deg, #9d4edd, #00d2ff);
-            color: #fff; border: none;
-            padding: 15px 40px; border-radius: 35px;
-            font-weight: 800; font-size: 0.95rem; letter-spacing: 1px;
+            background: linear-gradient(90deg, #a855f7, #3b82f6, #06b6d4);
+            color: #fff;
+            border: none;
+            padding: 15px 42px;
+            border-radius: 40px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            letter-spacing: 0.8px;
             cursor: pointer;
-            box-shadow: 0 0 28px rgba(157,78,221,0.6);
+            font-family: inherit;
+            box-shadow: 0 0 32px rgba(168,85,247,0.65), 0 0 60px rgba(6,182,212,0.3);
             transition: transform 0.25s, box-shadow 0.25s;
         }
-        .btn-cta-hero:hover { transform: scale(1.04); box-shadow: 0 0 40px rgba(0,210,255,0.7); }
+        .btn-hero-main:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 42px rgba(168,85,247,0.8), 0 0 70px rgba(6,182,212,0.5);
+        }
 
-        /* ─── WAVE DIVIDER ─── */
-        .wave-divider {
+        /* ──────────────────── WAVE ──────────────────── */
+        .wave-wrap {
             position: relative;
             z-index: 10;
-            margin-top: -2px;
             line-height: 0;
+            margin-top: -2px;
         }
-        .wave-divider svg { display: block; width: 100%; }
+        .wave-wrap svg { display: block; width: 100%; }
 
-        /* ─── CARDS + SIDEBAR ROW (over the dark lower section) ─── */
-        .cards-sidebar-row {
-            background: var(--bg-dark);
-            background-image:
-                radial-gradient(circle at 15% 50%, rgba(157,78,221,0.12) 0%, transparent 45%),
-                radial-gradient(circle at 85% 30%, rgba(0,210,255,0.10) 0%, transparent 45%);
-            padding: 0 40px 50px;
-            display: grid;
-            grid-template-columns: 1fr 290px;
-            gap: 28px;
-            align-items: start;
-        }
-        @media (max-width: 1024px) {
-            .cards-sidebar-row { grid-template-columns: 1fr; }
-            .sidebar-panel { display: none; }
+        /* ──────────────────── CARDS SECTION ──────────────────── */
+        .cards-section {
+            background: #fff;
+            padding: 0 48px 60px;
         }
 
-        /* Profile Cards */
-        .profiles-area { display: flex; flex-direction: column; gap: 0; }
         .profiles-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-            margin-top: -60px; /* pulls cards UP into the wave */
-            position: relative; z-index: 20;
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            /* Pull cards UP into the wave area */
+            margin-top: -70px;
+            position: relative;
+            z-index: 20;
         }
-        @media (max-width: 768px) {
-            .profiles-grid { grid-template-columns: 1fr; margin-top: 20px; }
-            .nav-menu { display: none; }
-            .hero-title { font-size: 1.8rem; }
+
+        @media (max-width: 900px) {
+            .profiles-grid {
+                grid-template-columns: repeat(2, 1fr);
+                margin-top: -30px;
+            }
+            .cards-section { padding: 0 20px 40px; }
+        }
+        @media (max-width: 580px) {
+            .profiles-grid { grid-template-columns: 1fr; }
         }
 
         .profile-card {
-            background: #ffffff;
-            border-radius: 20px;
+            background: #fff;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.18);
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
         }
-        .profile-card:hover { transform: translateY(-6px); box-shadow: 0 20px 45px rgba(0,0,0,0.55); }
+        .profile-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 42px rgba(0,0,0,0.22);
+        }
+        /* Piotr (middle / featured) – slightly bigger shadow */
         .profile-card.featured {
-            box-shadow: 0 0 0 3px #ffb703, 0 16px 45px rgba(255,183,3,0.4);
-            transform: translateY(-10px);
+            transform: translateY(-12px);
+            box-shadow: 0 18px 48px rgba(0,0,0,0.28);
         }
-        .profile-card.featured:hover { transform: translateY(-14px); }
-
-        .card-img-box {
-            position: relative; height: 210px; overflow: hidden; background: #e2e8f0;
+        .profile-card.featured:hover {
+            transform: translateY(-17px);
         }
-        .card-img-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .card-like-btn {
-            position: absolute; top: 10px; right: 10px;
-            width: 32px; height: 32px; border-radius: 50%;
-            background: rgba(255,255,255,0.75);
+        .card-photo {
+            position: relative;
+            height: 240px;
+            overflow: hidden;
+            background: #e2e8f0;
+        }
+        .card-photo img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+
+        /* Heart button – top right */
+        .card-heart {
+            position: absolute;
+            top: 10px; right: 10px;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.7);
             backdrop-filter: blur(6px);
             border: none; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            color: #94a3b8; font-size: 0.95rem;
-            transition: all 0.2s;
+            color: #cbd5e1; font-size: 0.9rem;
+            transition: color 0.2s, background 0.2s;
         }
-        .card-like-btn:hover, .card-like-btn.liked { color: #e01a4f; background: rgba(255,255,255,0.92); }
+        .card-heart:hover, .card-heart.liked {
+            color: #ef4444;
+            background: rgba(255,255,255,0.92);
+        }
 
-        .card-match-pill {
-            position: absolute; bottom: 10px; right: 10px;
-            background: rgba(9,11,21,0.82);
-            border: 2px solid var(--accent-cyan);
-            color: #fff; font-size: 0.75rem; font-weight: 800;
-            width: 44px; height: 44px; border-radius: 50%;
+        /* Match % badge – bottom right */
+        .card-match {
+            position: absolute;
+            bottom: 10px; right: 10px;
+            width: 44px; height: 44px;
+            border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
+            font-size: 0.72rem; font-weight: 900; color: #fff;
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            box-shadow: 0 2px 10px rgba(168,85,247,0.5);
         }
-        .profile-card.featured .card-match-pill { border-color: var(--accent-purple); }
-
-        .card-info {
-            padding: 14px 16px 16px;
-            background: #fff;
+        .profile-card:nth-child(2) .card-match {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            box-shadow: 0 2px 10px rgba(59,130,246,0.5);
         }
-        .card-name { font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 2px; }
-        .card-city { font-size: 0.78rem; color: #64748b; font-weight: 600; margin-bottom: 5px; }
-        .card-desc { font-size: 0.78rem; color: #475569; line-height: 1.4; }
-
-        /* ─── SIDEBAR PANEL ─── */
-        .sidebar-panel {
-            background: #fff;
-            border-radius: var(--radius-lg);
-            padding: 20px;
-            margin-top: -40px;
-            position: relative; z-index: 20;
-            box-shadow: 0 14px 40px rgba(0,0,0,0.4);
-            color: #0f172a;
-        }
-        .sidebar-head {
-            font-size: 1rem; font-weight: 800;
-            color: #0f172a; margin-bottom: 14px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .notif-row {
-            display: flex; align-items: center; gap: 10px;
-            padding: 9px 10px; border-radius: 10px;
-            margin-bottom: 8px;
-            background: #f8fafc; cursor: pointer;
-            transition: background 0.2s;
-        }
-        .notif-row:hover { background: #f1f5f9; }
-        .notif-icon {
-            width: 30px; height: 30px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem; flex-shrink: 0;
-            position: relative;
-        }
-        .notif-icon.orange { background: #fb923c; color: #fff; }
-        .notif-icon.red { background: #ef4444; color: #fff; }
-        .notif-icon-badge {
-            position: absolute; top: -3px; right: -3px;
-            background: #e01a4f; color: #fff;
-            font-size: 0.6rem; font-weight: 900;
-            width: 14px; height: 14px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .notif-text { font-size: 0.78rem; color: #334155; font-weight: 600; line-height: 1.35; }
-
-        .sidebar-sub-head {
-            font-size: 0.82rem; font-weight: 700; color: #64748b;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            margin: 16px 0 10px;
-        }
-        .user-online-row {
-            display: flex; align-items: center;
-            justify-content: space-between;
-            padding: 6px 4px; cursor: pointer;
-            border-radius: 8px; transition: background 0.2s;
-        }
-        .user-online-row:hover { background: #f1f5f9; }
-        .user-online-left { display: flex; align-items: center; gap: 10px; }
-        .user-avatar-img {
-            width: 34px; height: 34px; border-radius: 50%; object-fit: cover;
-        }
-        .user-name-label { font-size: 0.85rem; font-weight: 700; color: #1e293b; }
-        .user-status-label { font-size: 0.7rem; color: #64748b; }
-        .online-dot-green {
-            width: 8px; height: 8px; border-radius: 50%;
-            background: #10b981; box-shadow: 0 0 7px #10b981;
-            flex-shrink: 0;
+        .profile-card:nth-child(3) .card-match {
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
         }
 
-        /* ─── WHY LUMINA SECTION ─── */
+        /* Card body */
+        .card-body {
+            padding: 14px 16px 18px;
+        }
+        .card-name {
+            font-size: 1rem; font-weight: 800; color: #0f172a;
+            margin-bottom: 2px;
+        }
+        .card-city {
+            font-size: 0.8rem; color: #64748b; font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .card-desc {
+            font-size: 0.78rem; color: #475569; line-height: 1.4;
+        }
+
+        /* ──────────────────── WHY LUMINA ──────────────────── */
         .why-section {
-            background: var(--bg-dark);
-            background-image:
-                radial-gradient(circle at 15% 50%, rgba(157,78,221,0.12) 0%, transparent 45%),
-                radial-gradient(circle at 85% 30%, rgba(0,210,255,0.10) 0%, transparent 45%);
-            padding: 40px 40px 60px;
+            background: #fff;
+            padding: 20px 48px 60px;
             text-align: center;
         }
-        .why-title {
-            font-size: 0.85rem; font-weight: 800; letter-spacing: 2px;
-            text-transform: uppercase; color: var(--text-muted);
-            margin-bottom: 30px;
+
+        .why-title-line {
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #1e293b;
+            margin-bottom: 36px;
         }
+
         .why-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 20px; max-width: 600px; margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 560px;
+            margin: 0 auto;
         }
-        @media (max-width: 600px) { .why-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 560px) { .why-grid { grid-template-columns: 1fr; } }
+
         .why-item {
-            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
             cursor: pointer;
         }
-        .why-icon-circle {
-            width: 52px; height: 52px; border-radius: 50%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.12);
+        .why-icon-wrap {
+            width: 54px; height: 54px;
+            border: 2px solid #e2e8f0;
+            border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem; color: var(--accent-cyan);
-            transition: background 0.2s, transform 0.2s;
+            font-size: 1.3rem;
+            color: #334155;
+            transition: border-color 0.2s, color 0.2s, transform 0.2s;
         }
-        .why-item:hover .why-icon-circle {
-            background: rgba(0,210,255,0.12); transform: scale(1.08);
+        .why-item:hover .why-icon-wrap {
+            border-color: #a855f7;
+            color: #a855f7;
+            transform: scale(1.08);
         }
-        .why-label { font-size: 0.88rem; font-weight: 700; color: #fff; line-height: 1.3; }
+        .why-label {
+            font-size: 0.88rem; font-weight: 700;
+            color: #1e293b; line-height: 1.3;
+        }
 
-        /* ─── FOOTER ─── */
-        .app-footer {
-            background: rgba(4,8,18,0.98);
+        /* ──────────────────── FOOTER ──────────────────── */
+        .page-footer {
+            background: var(--navy-deep);
             border-top: 1px solid rgba(255,255,255,0.07);
-            padding: 20px 40px;
-            display: flex; align-items: center;
+            padding: 22px 48px;
+            display: flex;
+            align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap; gap: 14px;
-            font-size: 0.82rem; color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 14px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
-        .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-        .footer-links a:hover { color: var(--accent-cyan); }
-        .social-row { display: flex; gap: 14px; font-size: 1rem; }
-        .social-row a { color: var(--text-muted); transition: color 0.2s; }
-        .social-row a:hover { color: var(--accent-cyan); }
+        .footer-links-row { display: flex; gap: 18px; flex-wrap: wrap; }
+        .footer-links-row a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .footer-links-row a:hover { color: var(--accent-cyan); }
+        .footer-social { display: flex; gap: 14px; font-size: 1rem; }
+        .footer-social a { color: var(--text-muted); transition: color 0.2s; }
+        .footer-social a:hover { color: var(--accent-cyan); }
 
-        /* ─── MODALS ─── */
-        .modal-bg {
-            position: fixed; inset: 0; z-index: 10000;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+        /* ──────────────────── MODALS ──────────────────── */
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0,0,0,0.82);
+            backdrop-filter: blur(14px);
             display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none;
-            transition: opacity 0.25s ease;
+            transition: opacity 0.25s;
         }
-        .modal-bg.open { opacity: 1; pointer-events: auto; }
-        .modal-box {
-            background: #0f172a;
-            border: 1px solid rgba(0,210,255,0.35);
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+
+        .modal-card {
+            background: #0f1a3d;
+            border: 1px solid rgba(168,85,247,0.3);
             border-radius: var(--radius-lg);
-            padding: 28px 28px 24px;
+            padding: 28px;
             max-width: 460px; width: 90%;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0,210,255,0.15);
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.7);
+            transform: translateY(16px);
+            transition: transform 0.3s;
         }
-        .modal-bg.open .modal-box { transform: translateY(0); }
-        .modal-close {
-            position: absolute; top: 14px; right: 14px;
-            background: rgba(255,255,255,0.08); border: none; color: #fff;
-            width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.9rem;
-        }
-        .modal-close:hover { background: rgba(255,255,255,0.15); }
+        .modal-overlay.open .modal-card { transform: translateY(0); }
 
-        .form-field {
-            margin-bottom: 12px;
+        .modal-close-btn {
+            position: absolute; top: 14px; right: 14px;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); border: none;
+            color: #fff; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; transition: background 0.2s;
         }
-        .form-field label {
-            display: block; font-size: 0.75rem; font-weight: 700;
-            margin-bottom: 4px; color: var(--text-muted);
-        }
-        .form-field input, .form-field textarea {
+        .modal-close-btn:hover { background: rgba(255,255,255,0.2); }
+
+        .form-row { margin-bottom: 12px; }
+        .form-row label { display: block; font-size: 0.73rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
+        .form-row input, .form-row textarea {
             width: 100%; padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.05);
-            color: #fff; font-family: inherit; font-size: 0.88rem;
+            border-radius: 10px; border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.05); color: #fff;
+            font-family: inherit; font-size: 0.87rem;
             outline: none; resize: none;
             transition: border-color 0.2s;
         }
-        .form-field input:focus, .form-field textarea:focus {
-            border-color: var(--accent-cyan);
-        }
+        .form-row input:focus, .form-row textarea:focus { border-color: #a855f7; }
 
-        /* ─── TOAST ─── */
-        .toast-notif {
+        .btn-modal-submit {
+            width: 100%; padding: 13px;
+            background: linear-gradient(90deg, #a855f7, #3b82f6, #06b6d4);
+            color: #fff; border: none; border-radius: 30px;
+            font-weight: 800; font-size: 0.9rem; cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 4px 18px rgba(168,85,247,0.5);
+            transition: transform 0.2s;
+        }
+        .btn-modal-submit:hover { transform: scale(1.02); }
+
+        /* ──────────────────── TOAST ──────────────────── */
+        .toast {
             position: fixed; bottom: 28px; right: 28px;
-            background: linear-gradient(90deg, #9d4edd, #00d2ff);
+            background: linear-gradient(90deg, #a855f7, #06b6d4);
             color: #fff; padding: 12px 22px;
-            border-radius: 30px; font-weight: 700; font-size: 0.88rem;
-            box-shadow: 0 10px 30px rgba(0,210,255,0.45);
-            z-index: 99999;
+            border-radius: 30px; font-weight: 700; font-size: 0.87rem;
             display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 8px 28px rgba(168,85,247,0.5);
+            z-index: 99999;
             transform: translateY(100px); opacity: 0;
             transition: transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275), opacity 0.3s;
         }
-        .toast-notif.show { transform: translateY(0); opacity: 1; }
+        .toast.show { transform: translateY(0); opacity: 1; }
     </style>
 </head>
 <body>
 
-    <!-- ── OUTER BRANDING ROW ── -->
-    <div class="outer-label">
-        <a href="index.html" class="outer-brand">
-            <div class="outer-brand-icon"><i class="fa-solid fa-sparkles"></i></div>
-            LUMINA
-        </a>
-        <div class="outer-title"><strong>LUMINA:</strong> <span>Odkryj Prawdziwe Połączenie</span></div>
-        <div class="outer-spacer"></div>
+    <!-- ══════════ NAVBAR ══════════ -->
+    <nav class="lumina-nav">
+        <a href="index.html" class="nav-logo-text">LUMINA</a>
+
+        <div class="nav-links">
+            <button class="nav-link">Strona Główna</button>
+            <button class="nav-link" onclick="scrollToSection('odkrywaj')">Odkrywaj</button>
+            <button class="nav-link" onclick="showToast('Masz 3 nowe wiadomości! 💬')">
+                Wiadomości <span class="nav-badge">3</span>
+            </button>
+            <button class="nav-link" onclick="openProfile('Twój Profil','28','Warszawa','Witaj w LUMINA!','https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=500','100%')">Profil</button>
+            <button class="nav-link" onclick="showToast('Sekcja Wydarzeń Lokalnych już wkrótce! 📍')">Wydarzenia</button>
+        </div>
+
+        <button class="btn-nav-cta" onclick="openAuth()">Zaloguj / Rejestracja</button>
+    </nav>
+
+    <!-- ══════════ HERO ══════════ -->
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Witaj w LUMINA&nbsp;–<br>Miejscu Głębszych Relacji.</h1>
+            <p class="hero-sub">Rozpocznij swoją podróż do miłości z inteligentnym dopasowaniem.</p>
+            <button class="btn-hero-main" onclick="openAuth()">ZAREJESTRUJ SIĘ ZA DARMO</button>
+        </div>
+    </section>
+
+    <!-- ══════════ WAVE ══════════ -->
+    <div class="wave-wrap">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" height="80" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,80 L0,40 Q180,0 360,32 Q540,64 720,32 Q900,0 1080,32 Q1260,64 1440,32 L1440,80 Z" fill="#ffffff"/>
+        </svg>
     </div>
 
-    <!-- ── APP FRAME ── -->
-    <div class="app-frame">
+    <!-- ══════════ PROFILE CARDS (on white) ══════════ -->
+    <section class="cards-section" id="odkrywaj">
+        <div class="profiles-grid">
 
-        <!-- NAVBAR -->
-        <nav class="app-nav">
-            <a href="index.html" class="nav-logo">
-                <div class="nav-logo-icon"><i class="fa-solid fa-sparkles"></i></div>
-                LUMINA
-            </a>
-            <div class="nav-menu">
-                <button class="nav-link active" onclick="void(0)">Strona Główna</button>
-                <button class="nav-link" onclick="scrollToCards()">Odkrywaj</button>
-                <button class="nav-link" onclick="showToast('Masz 3 nowe wiadomości w LUMINA! 💬')">Wiadomości <span class="nav-badge">3</span></button>
-                <button class="nav-link" onclick="openProfileDetail('Twój Profil','28','Warszawa','Witaj w LUMINA!','https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=500','100%')">Profil</button>
-                <button class="nav-link" onclick="showToast('Sekcja Wydarzeń Lokalnych już wkrótce! 📍')">Wydarzenia</button>
+            <!-- Anna -->
+            <div class="profile-card" onclick="openProfile('Anna','28','Warszawa','Uwielbia podróże, sztukę i muzykę worship','https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=500','94%')">
+                <div class="card-photo">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=500" alt="Anna" loading="lazy">
+                    <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                    <div class="card-match">94%</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-name">Anna, 28</div>
+                    <div class="card-city">Warszawa</div>
+                    <div class="card-desc">Uwielbia podróżne i sztukę</div>
+                </div>
             </div>
-            <button class="btn-auth-nav" onclick="openAuthModal()">Zaloguj / Rejestracja</button>
-        </nav>
 
-        <!-- HERO SECTION (full-bleed photo) -->
-        <section class="hero-section">
-            <div class="hero-photo"></div>
-            <div class="hero-text">
-                <h1 class="hero-title">Witaj w LUMINA&nbsp;–<br>Miejscu Głębszych&nbsp;Relacji.</h1>
-                <p class="hero-sub">Rozpocznij swoją podróż do miłości z inteligentnym dopasowaniem.</p>
-                <button class="btn-cta-hero" onclick="openAuthModal()">ZAREJESTRUJ SIĘ ZA DARMO</button>
+            <!-- Piotr (featured / center) -->
+            <div class="profile-card featured" onclick="openProfile('Piotr','31','Kraków','Szuka wartościowej relacji prowadzącej do sakramentu małżeństwa','https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=500','88%')">
+                <div class="card-photo">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=500" alt="Piotr" loading="lazy">
+                    <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                    <div class="card-match">88%</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-name">Piotr, 31</div>
+                    <div class="card-city">Kraków</div>
+                    <div class="card-desc">Szuka spontanicznych przygód</div>
+                </div>
             </div>
-        </section>
 
-        <!-- WAVE DIVIDER (hero → dark) -->
-        <div class="wave-divider">
-            <svg viewBox="0 0 1440 70" preserveAspectRatio="none" height="70" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,70 L0,35 Q180,0 360,28 Q540,56 720,28 Q900,0 1080,28 Q1260,56 1440,28 L1440,70 Z" fill="#090B15"/>
-            </svg>
+            <!-- Julia -->
+            <div class="profile-card" onclick="openProfile('Julia','26','Gdańsk','Marzycielka z pasją do muzyki i fotografii','https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=500','91%')">
+                <div class="card-photo">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=500" alt="Julia" loading="lazy">
+                    <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                    <div class="card-match">91%</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-name">Julia, 26</div>
+                    <div class="card-city">Gdańsk</div>
+                    <div class="card-desc">Marzycka z pasją do muzyki</div>
+                </div>
+            </div>
+
         </div>
+    </section>
 
-        <!-- CARDS + SIDEBAR ROW -->
-        <div class="cards-sidebar-row" id="odkrywaj">
-            <div class="profiles-area">
-                <div class="profiles-grid">
-
-                    <!-- Anna -->
-                    <div class="profile-card" onclick="openProfileDetail('Anna','28','Warszawa','Uwielbia podróże, sztukę i muzykę worship','https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=500','94%')">
-                        <div class="card-img-box">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=500" alt="Anna" loading="lazy">
-                            <button class="card-like-btn" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                            <div class="card-match-pill">94%</div>
-                        </div>
-                        <div class="card-info">
-                            <div class="card-name">Anna, 28</div>
-                            <div class="card-city">Warszawa</div>
-                            <div class="card-desc">Uwielbia podróże i sztukę</div>
-                        </div>
-                    </div>
-
-                    <!-- Piotr (featured) -->
-                    <div class="profile-card featured" onclick="openProfileDetail('Piotr','31','Kraków','Szuka wartościowej relacji prowadzącej do sakramentu małżeństwa','https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=500','88%')">
-                        <div class="card-img-box">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=500" alt="Piotr" loading="lazy">
-                            <button class="card-like-btn" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                            <div class="card-match-pill">88%</div>
-                        </div>
-                        <div class="card-info">
-                            <div class="card-name">Piotr, 31</div>
-                            <div class="card-city">Kraków</div>
-                            <div class="card-desc">Szuka spontanicznych przygód</div>
-                        </div>
-                    </div>
-
-                    <!-- Julia -->
-                    <div class="profile-card" onclick="openProfileDetail('Julia','26','Gdańsk','Marzycielka z pasją do muzyki i fotografii','https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=500','91%')">
-                        <div class="card-img-box">
-                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=500" alt="Julia" loading="lazy">
-                            <button class="card-like-btn" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                            <div class="card-match-pill">91%</div>
-                        </div>
-                        <div class="card-info">
-                            <div class="card-name">Julia, 26</div>
-                            <div class="card-city">Gdańsk</div>
-                            <div class="card-desc">Marzycielka z pasją do muzyki</div>
-                        </div>
-                    </div>
-
-                </div>
+    <!-- ══════════ DLACZEGO LUMINA? ══════════ -->
+    <section class="why-section">
+        <div class="why-title-line">DLACZEGO LUMINA?</div>
+        <div class="why-grid">
+            <div class="why-item" onclick="showToast('Inteligentne Dopasowanie na podstawie wartości i wiary!')">
+                <div class="why-icon-wrap"><i class="fa-regular fa-user-group"></i></div>
+                <div class="why-label">Inteligentne<br>Doposowanie</div>
             </div>
-
-            <!-- SIDEBAR: Szybkie Wiadomości (WHITE panel) -->
-            <aside class="sidebar-panel">
-                <div class="sidebar-head">Szybkie Wiadomości</div>
-
-                <div class="notif-row" onclick="showToast('Masz nowe dopasowanie! 💘')">
-                    <div class="notif-icon orange">
-                        <i class="fa-solid fa-bell"></i>
-                        <div class="notif-icon-badge">1</div>
-                    </div>
-                    <div class="notif-text">Notyfikacja o nowym<br>dopasowaniu profilu</div>
-                </div>
-                <div class="notif-row" onclick="showToast('Ktoś polubił Twój profil! ❤️')">
-                    <div class="notif-icon red">
-                        <i class="fa-solid fa-bell"></i>
-                        <div class="notif-icon-badge">3</div>
-                    </div>
-                    <div class="notif-text">Notyfikacja na<br>nositu powiadomień</div>
-                </div>
-
-                <div class="sidebar-sub-head">Useromości</div>
-                <div class="online-users-list">
-                    <div class="user-online-row" onclick="openProfileDetail('Ania W.','25','Poznań','Aktywna we wspólnocie akademickiej','https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100','96%')">
-                        <div class="user-online-left">
-                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100" class="user-avatar-img" alt="Ania W.">
-                            <div>
-                                <div class="user-name-label">Ania W.</div>
-                                <div class="user-status-label">Online</div>
-                            </div>
-                        </div>
-                        <div class="online-dot-green"></div>
-                    </div>
-                    <div class="user-online-row" onclick="openProfileDetail('Tomek K.','30','Wrocław','Lubi muzykę organową i szlaki górskie','https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100','92%')">
-                        <div class="user-online-left">
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100" class="user-avatar-img" alt="Tomek K.">
-                            <div>
-                                <div class="user-name-label">Tomek K.</div>
-                                <div class="user-status-label">Online</div>
-                            </div>
-                        </div>
-                        <div class="online-dot-green"></div>
-                    </div>
-                </div>
-            </aside>
-        </div>
-
-        <!-- WHY LUMINA SECTION -->
-        <div class="why-section">
-            <div class="why-title">DLACZEGO LUMINA?</div>
-            <div class="why-grid">
-                <div class="why-item" onclick="showToast('Inteligentne Dopasowanie na podstawie wartości i wiary!')">
-                    <div class="why-icon-circle"><i class="fa-solid fa-users"></i></div>
-                    <div class="why-label">Inteligentne<br>Dopasowanie</div>
-                </div>
-                <div class="why-item" onclick="window.location.href='lumina-safety.html'">
-                    <div class="why-icon-circle"><i class="fa-solid fa-shield-halved"></i></div>
-                    <div class="why-label">Weryfikacja<br>Profili</div>
-                </div>
-                <div class="why-item" onclick="showToast('Rekolekcje i spotkania singli chrześcijańskich!')">
-                    <div class="why-icon-circle"><i class="fa-solid fa-location-dot"></i></div>
-                    <div class="why-label">Wydarzenia<br>Lokalne</div>
-                </div>
+            <div class="why-item" onclick="window.location.href='lumina-safety.html'">
+                <div class="why-icon-wrap"><i class="fa-regular fa-shield-check"></i></div>
+                <div class="why-label">Weryfikacja<br>Profili</div>
+            </div>
+            <div class="why-item" onclick="showToast('Rekolekcje i spotkania singli chrześcijańskich!')">
+                <div class="why-icon-wrap"><i class="fa-regular fa-location-dot"></i></div>
+                <div class="why-label">Wydarzenia<br>Lokalne</div>
             </div>
         </div>
+    </section>
 
-        <!-- FOOTER -->
-        <footer class="app-footer">
-            <div>LUMINA © 2026 &bull; Ekosystem Christian Culture @ICC</div>
-            <div class="footer-links">
-                <a href="index.html">Strona Główna CC</a>
-                <a href="lumina-safety.html">Regulamin & Ochrona Dzieci</a>
-                <a href="privacy.html">Polityka Prywatności</a>
-                <a href="general-safety.html">O Nas</a>
-                <a href="index.html#contact-section">Kontakt</a>
-            </div>
-            <div class="social-row">
-                <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-        </footer>
+    <!-- ══════════ FOOTER ══════════ -->
+    <footer class="page-footer">
+        <div>LUMINA © 2026 &bull; Ekosystem Christian Culture</div>
+        <div class="footer-links-row">
+            <a href="index.html">Strona Główna</a>
+            <a href="lumina-safety.html">Regulamin & Ochrona</a>
+            <a href="privacy.html">Prywatność</a>
+            <a href="index.html#contact-section">Kontakt</a>
+        </div>
+        <div class="footer-social">
+            <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+    </footer>
 
-    </div><!-- /app-frame -->
-
-    <!-- ── PROFILE DETAIL MODAL ── -->
-    <div class="modal-bg" id="profileModal">
-        <div class="modal-box">
-            <button class="modal-close" onclick="closeModal('profileModal')"><i class="fa-solid fa-xmark"></i></button>
-            <div style="text-align:center; margin-bottom:18px;">
-                <img id="mImg" src="" alt="" style="width:96px;height:96px;border-radius:50%;object-fit:cover;border:3px solid var(--accent-cyan);box-shadow:0 0 16px rgba(0,210,255,0.4);">
-                <h3 id="mName" style="font-size:1.2rem;font-weight:800;margin:10px 0 3px;"></h3>
-                <div id="mLoc" style="font-size:0.82rem;color:var(--accent-cyan);font-weight:700;"></div>
+    <!-- ══════════ PROFILE MODAL ══════════ -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeModal('profileModal')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="text-align:center;margin-bottom:18px;">
+                <img id="mImg" src="" alt="" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);">
+                <h3 id="mName" style="font-size:1.2rem;font-weight:800;margin:10px 0 4px;"></h3>
+                <div id="mLoc" style="font-size:0.82rem;color:#a78bfa;font-weight:700;"></div>
             </div>
-            <p id="mDesc" style="font-size:0.85rem;color:var(--text-muted);line-height:1.55;background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin-bottom:18px;font-style:italic;"></p>
+            <p id="mDesc" style="font-size:0.85rem;color:var(--text-muted);line-height:1.55;font-style:italic;background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin-bottom:18px;"></p>
             <div style="display:flex;gap:10px;">
-                <button onclick="sendPray()" style="flex:1;padding:11px;border-radius:30px;border:none;background:rgba(255,255,255,0.08);color:#fff;font-weight:700;cursor:pointer;font-size:0.85rem;"><i class="fa-solid fa-hands-praying"></i> Modlitwa 🙏</button>
-                <button onclick="sendChat()" style="flex:1;padding:11px;border-radius:30px;border:none;background:linear-gradient(90deg,#9d4edd,#00d2ff);color:#fff;font-weight:700;cursor:pointer;font-size:0.85rem;"><i class="fa-solid fa-paper-plane"></i> Wiadomość 💌</button>
+                <button onclick="sendPray()" style="flex:1;padding:11px;border-radius:30px;border:none;background:rgba(255,255,255,0.08);color:#fff;font-weight:700;cursor:pointer;font-family:inherit;font-size:0.85rem;"><i class="fa-solid fa-hands-praying"></i> Modlitwa 🙏</button>
+                <button onclick="sendMsg()" style="flex:1;padding:11px;border-radius:30px;border:none;background:linear-gradient(90deg,#a855f7,#06b6d4);color:#fff;font-weight:700;cursor:pointer;font-family:inherit;font-size:0.85rem;"><i class="fa-solid fa-paper-plane"></i> Wiadomość 💌</button>
             </div>
         </div>
     </div>
 
-    <!-- ── AUTH MODAL ── -->
-    <div class="modal-bg" id="authModal">
-        <div class="modal-box">
-            <button class="modal-close" onclick="closeModal('authModal')"><i class="fa-solid fa-xmark"></i></button>
+    <!-- ══════════ AUTH MODAL ══════════ -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeModal('authModal')"><i class="fa-solid fa-xmark"></i></button>
             <h3 style="text-align:center;font-size:1.3rem;font-weight:800;margin-bottom:6px;">Dołącz do LUMINA</h3>
-            <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);margin-bottom:20px;">Chrześcijański portal randkowy @ICC</p>
-            <form onsubmit="handleAuth(event)">
-                <div class="form-field">
-                    <label>Imię i wiek</label>
-                    <input type="text" placeholder="np. Mateusz, 27" required>
-                </div>
-                <div class="form-field">
-                    <label>Miasto</label>
-                    <input type="text" placeholder="np. Kraków" required>
-                </div>
-                <div class="form-field">
-                    <label>Werset przewodni lub kilka słów o sobie</label>
-                    <textarea rows="3" placeholder="Co jest dla Ciebie ważne..." required></textarea>
-                </div>
-                <button type="submit" class="btn-cta-hero" style="width:100%;padding:13px;font-size:0.9rem;">ZAREJESTRUJ MNIE ✨</button>
+            <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);margin-bottom:20px;">Chrześcijański portal randkowy</p>
+            <form onsubmit="handleReg(event)">
+                <div class="form-row"><label>Imię i wiek</label><input type="text" placeholder="np. Mateusz, 27" required></div>
+                <div class="form-row"><label>Miasto</label><input type="text" placeholder="np. Kraków" required></div>
+                <div class="form-row"><label>Kilka słów o sobie</label><textarea rows="3" placeholder="Co jest dla Ciebie ważne..." required></textarea></div>
+                <button type="submit" class="btn-modal-submit">ZAREJESTRUJ MNIE ✨</button>
             </form>
         </div>
     </div>
 
-    <!-- ── TOAST ── -->
-    <div class="toast-notif" id="toastEl">
+    <!-- ══════════ TOAST ══════════ -->
+    <div class="toast" id="toastEl">
         <i class="fa-solid fa-sparkles"></i>
-        <span id="toastMsg"></span>
+        <span id="toastTxt"></span>
     </div>
 
     <script>
-        function openProfileDetail(name, age, city, desc, img, match) {
+        // ── Profile modal ──
+        function openProfile(name, age, city, desc, img, match) {
+            document.getElementById('mImg').src = img;
             document.getElementById('mName').textContent = `${name}, ${age}`;
             document.getElementById('mLoc').textContent = `📍 ${city}  •  Dopasowanie: ${match}`;
             document.getElementById('mDesc').textContent = `"${desc}"`;
-            document.getElementById('mImg').src = img;
             document.getElementById('profileModal').classList.add('open');
         }
-        function openAuthModal() { document.getElementById('authModal').classList.add('open'); }
+        function openAuth() { document.getElementById('authModal').classList.add('open'); }
         function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-        function handleAuth(e) {
-            e.preventDefault();
-            closeModal('authModal');
-            showToast('Rejestracja udana! Profil LUMINA aktywny ✨');
-        }
+        function handleReg(e) { e.preventDefault(); closeModal('authModal'); showToast('Rejestracja udana! Profil LUMINA aktywny ✨'); }
+
+        // ── Interactions ──
         function toggleLike(e, btn) {
             e.stopPropagation();
             btn.classList.toggle('liked');
             showToast(btn.classList.contains('liked') ? 'Polubiono profil! 💖' : 'Usunięto polubienie');
         }
         function sendPray() { closeModal('profileModal'); showToast('Wysłano intencję modlitewną! 🙏'); }
-        function sendChat() { closeModal('profileModal'); showToast('Otwarto czat w LUMINA 💌'); }
-        function scrollToCards() { document.getElementById('odkrywaj').scrollIntoView({ behavior: 'smooth' }); }
+        function sendMsg()  { closeModal('profileModal'); showToast('Otwarto czat w LUMINA 💌'); }
+        function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
+
+        // ── Toast ──
         let toastTimer;
         function showToast(msg) {
             const el = document.getElementById('toastEl');
-            document.getElementById('toastMsg').textContent = msg;
+            document.getElementById('toastTxt').textContent = msg;
             el.classList.add('show');
             clearTimeout(toastTimer);
             toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
         }
-        // Close modals on backdrop click
-        document.querySelectorAll('.modal-bg').forEach(bg => {
-            bg.addEventListener('click', e => { if(e.target === bg) bg.classList.remove('open'); });
-        });
+
+        // ── Close modals on backdrop click ──
+        document.querySelectorAll('.modal-overlay').forEach(bg =>
+            bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); })
+        );
     </script>
 </body>
 </html>

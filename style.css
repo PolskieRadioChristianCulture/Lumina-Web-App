@@ -3282,13 +3282,13 @@ html {
 #actionsList.open .shortcut-block.block-1 {
     opacity: 1;
     transform: translateY(0) scale(1);
-    transition-delay: 0.05s;
+    transition-delay: 0.2s;
 }
 
 #actionsList.open .shortcut-block.block-2 {
     opacity: 1;
     transform: translateY(0) scale(1);
-    transition-delay: 0.14s;
+    transition-delay: 0.4s;
 }
 
 @media (max-width: 600px) {
