@@ -38,11 +38,14 @@
         }
 
         #app-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            background: #000;
+            width: 1920px;
+            height: 1080px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
             overflow: hidden;
+            background-color: #000;
         }
 
         /* ── VIDEO CONTAINER ── */
@@ -401,12 +404,15 @@
 
         updateSongUI();
 
-        // ── 3. YouTube Iframe Player with Official Playlist ──
+        // ── 3. YouTube Iframe Player ──
+        const isPreloadMuted = window.location.search.includes('muted=1');
+        const selectedVideo = publishedVideos[selectedIndex] || publishedVideos[0];
         let player = null;
 
         const playerIframe = document.getElementById("yt-player");
         if (playerIframe) {
-            playerIframe.src = `https://www.youtube.com/embed/videoseries?list=PLHy3TNFso_uLnL_I1TPR4d35H6FuSVIUW&autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1`;
+            const muteParam = isPreloadMuted ? '&mute=1' : '';
+            playerIframe.src = `https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1&loop=1${muteParam}`;
         }
 
         function onYouTubeIframeAPIReady() {
@@ -462,8 +468,6 @@
                 }
             } catch(e) {}
         }
-
-        const isPreloadMuted = window.location.search.includes('muted=1');
 
         window.addEventListener('message', (e) => {
             if (e.data && (e.data.type === 'UNMUTE_AUDIO' || e.data === 'UNMUTE_AUDIO')) {
@@ -531,22 +535,25 @@
             }
         }
 
-        function enableAudio() {
-            const overlay = document.getElementById("startOverlay");
-            if (overlay) overlay.style.display = "none";
-
-            if (player && typeof player.unMute === 'function') {
-                player.unMute();
-                player.setVolume(100);
-                player.playVideo();
-            } else {
-                const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
-                if (iframe && iframe.contentWindow) {
-                    iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-                }
-            }
+        function resizeViewport() {
+            const container = document.getElementById("app-container");
+            if (!container) return;
+            const w = window.innerWidth || document.documentElement.clientWidth || 0;
+            const h = window.innerHeight || document.documentElement.clientHeight || 0;
+            if (!w || !h) return;
+            const scale = Math.min(w / 1920, h / 1080);
+            const leftOffset = Math.max(0, (w - 1920 * scale) / 2);
+            const topOffset = Math.max(0, (h - 1080 * scale) / 2);
+            container.style.transform = "scale(" + scale + ")";
+            container.style.left = leftOffset + "px";
+            container.style.top = topOffset + "px";
         }
+        window.addEventListener("resize", resizeViewport);
+        window.addEventListener("load", resizeViewport);
+        document.addEventListener("DOMContentLoaded", resizeViewport);
+        setTimeout(resizeViewport, 100);
+        setTimeout(resizeViewport, 500);
+        setTimeout(resizeViewport, 1500);
     </script>
 
             
