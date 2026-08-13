@@ -293,6 +293,22 @@
             box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.15);
             border-color: rgba(212, 175, 55, 0.55);
         }
+        .side-slide {
+            transition: opacity 0.6s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+        }
+        .side-slide.active {
+            position: relative;
+            opacity: 1;
+            pointer-events: auto;
+            visibility: visible;
+        }
         .side-badge {
             background: rgba(229, 9, 20, 0.85);
             color: #fff;
@@ -365,14 +381,22 @@
         @media (max-width: 1360px) { .side-promo { display: none !important; } }
     </style>
 
-    <!-- Panel LEWY — Kubek -->
+    <!-- Panel LEWY — Rotacyjny Sklep (Kubek <-> Koszulka) -->
     <div class="side-promo side-promo-left" id="sidePanelLeft">
-        <a class="side-promo-inner" href="https://my-store-1009741.creator-spring.com/listing/mog-wszystko?product=1566" target="_blank" rel="noopener">
+        <a class="side-promo-inner side-slide active" href="https://my-store-1009741.creator-spring.com/listing/mog-wszystko?product=1566" target="_blank" rel="noopener">
             <span class="side-badge">🔥 NOWOŚĆ</span><br>
             <span class="side-badge-gold">⭐ Mega Hit Lata 2026</span>
             <img src="kubek_filipian.png" alt="Kubek Wszystko mogę w tym który mnie umacnia" class="side-img">
             <div class="side-title">Kubek<br>„Wszystko mogę<br>w Tym…"</div>
             <div class="side-sub">Filipian 4:13<br>Christian Culture TV<br>Oficjalny sklep</div>
+            <span class="side-cta">🛒 KUP TERAZ</span>
+        </a>
+        <a class="side-promo-inner side-slide" href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2537" target="_blank" rel="noopener">
+            <span class="side-badge">🔥 KOLEKCJA 2026</span><br>
+            <span class="side-badge-gold">⭐ Koszulka Premium FAITH</span>
+            <img src="koszulka_faith_2026.jpg" alt="Koszulka FAITH Christian Culture 2026" class="side-img">
+            <div class="side-title">Koszulka<br>„FAITH”</div>
+            <div class="side-sub">Sierpień 2026<br>Christian Culture TV<br>Oficjalny sklep</div>
             <span class="side-cta">🛒 KUP TERAZ</span>
         </a>
     </div>
@@ -422,6 +446,17 @@
         panels.forEach(function(p) {
             if (p) { p.style.opacity = '0'; p.style.pointerEvents = 'none'; }
         });
+
+        /* Rotator lewego panelu (Kubek <-> Koszulka) */
+        var leftSlides = document.querySelectorAll('#sidePanelLeft .side-slide');
+        if (leftSlides.length > 1) {
+            var currentLeftSlide = 0;
+            setInterval(function() {
+                leftSlides[currentLeftSlide].classList.remove('active');
+                currentLeftSlide = (currentLeftSlide + 1) % leftSlides.length;
+                leftSlides[currentLeftSlide].classList.add('active');
+            }, 6000);
+        }
 
         window.addEventListener('scroll', updatePanels, { passive: true });
         window.addEventListener('resize', updatePanels, { passive: true });
