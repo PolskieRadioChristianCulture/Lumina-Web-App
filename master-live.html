@@ -234,6 +234,10 @@
                 <div class="bumper-progress-bar" id="bumperProgressBar"></div>
             </div>
         </div>
+    <!-- MASTER UNMUTE BANNER -->
+    <div id="masterUnmuteBanner" onclick="unmuteSubframe();" style="position: fixed; top: 25px; left: 50%; transform: translateX(-50%); z-index: 10001; background: rgba(12, 12, 16, 0.88); border: 1.5px solid var(--gold-primary); color: #fff; padding: 14px 30px; border-radius: 50px; font-weight: 800; font-size: 0.95rem; letter-spacing: 1px; cursor: pointer; box-shadow: 0 8px 32px rgba(0,0,0,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; align-items: center; gap: 12px; transition: opacity 0.5s ease;">
+        <i class="fa-solid fa-volume-high" style="color: var(--gold-primary); font-size: 1.3rem;"></i>
+        <span>KLIKNIJ W DOWOLNYM MIEJSCU, ABY WŁĄCZYĆ DŹWIĘK TRANSMISJI NA ŻYWO</span>
     </div>
 
     <div id="master-status">MCR: INITIALIZING...</div>
@@ -573,12 +577,18 @@
 
         // Forward click/touch interaction to unmute nested iframe & video bumper
         function unmuteSubframe() {
+            const banner = document.getElementById('masterUnmuteBanner');
+            if (banner) {
+                banner.style.opacity = '0';
+                setTimeout(() => { banner.style.display = 'none'; }, 500);
+            }
             try {
                 if (bumperVideo) {
                     bumperVideo.muted = false;
                 }
                 const frame = getActiveFrame();
                 if (frame && frame.contentWindow) {
+                    frame.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*');
                     frame.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
                     frame.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
                     frame.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
@@ -586,6 +596,7 @@
             } catch(e) {}
         }
         window.addEventListener('click', unmuteSubframe);
+        window.addEventListener('touchstart', unmuteSubframe);
         // Listen for completion signals from sub-channels (Apokalipsa, Studium, Księga Nadziei, etc.)
         window.addEventListener('message', (event) => {
             if (!event || !event.data) return;
