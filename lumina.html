@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Y4EFTVBPE3');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMINA – Chrześcijański Portal Randkowy & Relacje | Ekosystem Christian Culture</title>
+    <meta name="description" content="LUMINA to profesjonalny chrześcijański portal randkowy i przestrzeń budowania wartościowych relacji opartych na wierze, szacunku i wartościach Ewangelii w ekosystemie Christian Culture.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="icon.png">
+
+    <style>
+        :root {
+            --lumina-gold: #d4af37;
+            --lumina-gold-bright: #ffd700;
+            --lumina-rose: #ff4757;
+            --lumina-purple: #9b59b6;
+            --lumina-bg: #090b10;
+            --lumina-card-bg: rgba(18, 22, 32, 0.85);
+            --lumina-border: rgba(212, 175, 55, 0.25);
+            --lumina-text: #f1f2f6;
+        }
+
+        body {
+            background-color: var(--lumina-bg);
+            background-image: 
+                radial-gradient(circle at 20% 15%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(155, 89, 182, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 50% 90%, rgba(255, 71, 87, 0.05) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: var(--lumina-text);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Navigation Header for Lumina */
+        .lumina-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(9, 11, 16, 0.92);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--lumina-border);
+            padding: 12px 24px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .lumina-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .lumina-logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d4af37, #ff4757);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.3rem;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .lumina-brand-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 2px;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .lumina-brand-sub {
+            font-size: 0.72rem;
+            color: var(--lumina-gold-bright);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .lumina-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .lumina-menu-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .lumina-menu-link:hover, .lumina-menu-link.active {
+            color: var(--lumina-gold-bright);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+        }
+
+        .lumina-btn-primary {
+            background: linear-gradient(135deg, #d4af37, #e6a817);
+            color: #000;
+            font-weight: 800;
+            font-size: 0.88rem;
+            padding: 9px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .lumina-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Hero Banner */
+        .lumina-hero {
+            padding-top: 130px;
+            padding-bottom: 50px;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .lumina-badge-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: var(--lumina-gold-bright);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+        }
+
+        .lumina-hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 0 0 18px 0;
+            background: linear-gradient(135deg, #ffffff 30%, #d4af37 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .lumina-hero-desc {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        /* Portal Main Container Layout */
+        .lumina-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 80px 20px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 960px) {
+            .lumina-container {
+                grid-template-columns: 1fr;
+            }
+            .lumina-hero-title {
+                font-size: 2.2rem;
+            }
+            .lumina-menu {
+                display: none;
+            }
+        }
+
+        /* Filter Panel */
+        .lumina-filter-card {
+            background: var(--lumina-card-bg);
+            border: 1px solid var(--lumina-border);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            height: fit-content;
+        }
+
+        .lumina-filter-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--lumina-gold-bright);
+            margin-top: 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 12px;
+        }
+
+        .form-group-lumina {
+            margin-bottom: 18px;
+        }
+
+        .form-group-lumina label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .lumina-select, .lumina-input {
+            width: 100%;
+            background: rgba(10, 12, 18, 0.9);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: #fff;
+            font-size: 0.92rem;
+            font-family: 'Montserrat', sans-serif;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .lumina-select:focus, .lumina-input:focus {
+            border-color: var(--lumina-gold-bright);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Swiper / Cards Section */
+        .lumina-main-area {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .lumina-tabs-bar {
+            display: flex;
+            gap: 12px;
+            background: rgba(15, 18, 26, 0.8);
+            padding: 6px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .lumina-tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .lumina-tab-btn.active {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(255, 71, 87, 0.2));
+            color: var(--lumina-gold-bright);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Single Featured Deck Swiper Card */
+        .lumina-swiper-card {
+            background: var(--lumina-card-bg);
+            border: 1px solid var(--lumina-border);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            min-height: 480px;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .lumina-swiper-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .lumina-avatar-box {
+            position: relative;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .lumina-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            min-height: 380px;
+            display: block;
+        }
+
+        .lumina-avatar-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--lumina-gold-bright);
+            color: var(--lumina-gold-bright);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .lumina-details-box {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .lumina-user-name {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .lumina-user-meta {
+            color: var(--lumina-gold-bright);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .lumina-quote-box {
+            background: rgba(212, 175, 55, 0.08);
+            border-left: 3px solid var(--lumina-gold-bright);
+            padding: 12px 16px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.92rem;
+        }
+
+        .lumina-tags-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .lumina-tag {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.85);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .lumina-actions-bar {
+            display: flex;
+            gap: 14px;
+            margin-top: auto;
+        }
+
+        .lumina-act-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            font-weight: 800;
+            font-size: 0.92rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .lumina-act-pass {
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.8);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .lumina-act-pray {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.25), rgba(255, 215, 0, 0.35));
+            color: var(--lumina-gold-bright);
+            border: 1px solid var(--lumina-gold-bright);
+        }
+
+        .lumina-act-like {
+            background: linear-gradient(135deg, #ff4757, #ff6b81);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+        }
+
+        .lumina-act-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Profiles Grid View */
+        .lumina-profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .lumina-grid-card {
+            background: var(--lumina-card-bg);
+            border: 1px solid var(--lumina-border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .lumina-grid-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--lumina-gold-bright);
+        }
+
+        .lumina-grid-img-wrap {
+            height: 240px;
+            position: relative;
+            background: #000;
+        }
+
+        .lumina-grid-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .lumina-grid-info {
+            padding: 16px;
+        }
+
+        .lumina-grid-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 4px 0;
+        }
+
+        .lumina-grid-city {
+            font-size: 0.82rem;
+            color: var(--lumina-gold-bright);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        .lumina-footer {
+            border-top: 1px solid var(--lumina-border);
+            background: rgba(6, 8, 12, 0.95);
+            padding: 40px 20px;
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.88rem;
+        }
+
+        .lumina-footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .lumina-footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+
+        .lumina-footer-links a:hover {
+            color: var(--lumina-gold-bright);
+        }
+
+        /* Interactive Notification Toast */
+        .lumina-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(18, 22, 32, 0.95);
+            border: 1px solid var(--lumina-gold-bright);
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(150px);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .lumina-toast.show {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="lumina-nav">
+        <a href="#" class="lumina-brand">
+            <div class="lumina-logo-icon">
+                <i class="fa-solid fa-sparkles"></i>
+            </div>
+            <div>
+                <h1 class="lumina-brand-title">LUMINA</h1>
+                <div class="lumina-brand-sub">Chrześcijański Portal Randkowy &bull; CC @ICC</div>
+            </div>
+        </a>
+
+        <nav class="lumina-menu">
+            <a href="index.html" class="lumina-menu-link"><i class="fa-solid fa-house"></i> Portal Główny</a>
+            <a href="#odkrywaj" class="lumina-menu-link active"><i class="fa-solid fa-compass"></i> Odkrywaj Profile</a>
+            <a href="#czat" class="lumina-menu-link" onclick="openChatDemo()"><i class="fa-solid fa-comments"></i> Wiadomości</a>
+            <a href="lumina-safety.html" class="lumina-menu-link"><i class="fa-solid fa-shield-halved"></i> Ochrona & Wartości</a>
+        </nav>
+
+        <div style="display: flex; gap: 10px;">
+            <button class="lumina-btn-primary" onclick="openCreateProfileModal()"><i class="fa-solid fa-user-plus"></i> Stwórz Profil</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="lumina-hero">
+        <div class="lumina-badge-tag">
+            <i class="fa-solid fa-heart"></i> Ekosystem Christian Culture @ICC
+        </div>
+        <h2 class="lumina-hero-title">Relacje Budowane na Skale Wiary</h2>
+        <p class="lumina-hero-desc">
+            LUMINA to chrześcijańska przestrzeń spotkania dla osób pragnących zbudować trwałe małżeństwo i wartościowe relacje oparte na wspólnym fundamencie Ewangelii, szacunku i modlitwie.
+        </p>
+    </section>
+
+    <!-- Main Content Area -->
+    <div class="lumina-container" id="odkrywaj">
+
+        <!-- Left Filter Panel -->
+        <aside class="lumina-filter-card">
+            <h3 class="lumina-filter-title">
+                <i class="fa-solid fa-sliders"></i> Filtry Dopasowania
+            </h3>
+
+            <div class="form-group-lumina">
+                <label>Szukam:</label>
+                <select class="lumina-select" id="filterGender" onchange="applyFilters()">
+                    <option value="all">Wszystkie Profile</option>
+                    <option value="kobieta">Kobiety</option>
+                    <option value="mezczyzna">Mężczyźni</option>
+                </select>
+            </div>
+
+            <div class="form-group-lumina">
+                <label>Przedział Wiekowy:</label>
+                <select class="lumina-select" id="filterAge" onchange="applyFilters()">
+                    <option value="all">Każdy Wiek</option>
+                    <option value="18-25">18 - 25 lat</option>
+                    <option value="26-35" selected>26 - 35 lat</option>
+                    <option value="36+">36+ lat</option>
+                </select>
+            </div>
+
+            <div class="form-group-lumina">
+                <label>Województwo / Miasto:</label>
+                <select class="lumina-select" id="filterCity" onchange="applyFilters()">
+                    <option value="all">Cała Polska</option>
+                    <option value="Mazowieckie">Mazowieckie (Warszawa)</option>
+                    <option value="Małopolskie">Małopolskie (Kraków)</option>
+                    <option value="Wielkopolskie">Wielkopolskie (Poznań)</option>
+                    <option value="Dolnośląskie">Dolnośląskie (Wrocław)</option>
+                    <option value="Pomorskie">Pomorskie (Gdańsk)</option>
+                </select>
+            </div>
+
+            <div class="form-group-lumina">
+                <label>Ważne Wartości:</label>
+                <select class="lumina-select" id="filterValue" onchange="applyFilters()">
+                    <option value="all">Wszystkie Wartości</option>
+                    <option value="Małżeństwo">Wizja Małżeństwa</option>
+                    <option value="Wspólnota">Aktywność we Wspólnocie</option>
+                    <option value="Modlitwa">Codzienna Modlitwa</option>
+                </select>
+            </div>
+
+            <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+                <div style="font-size: 0.8rem; color: var(--lumina-gold-bright); font-weight: 700; margin-bottom: 8px;">
+                    🛡️ Gwarancja Bezpieczeństwa
+                </div>
+                <div style="font-size: 0.78rem; color: rgba(255,255,255,0.6); line-height: 1.4;">
+                    Profile w aplikacji LUMINA podlegają standardom ochrony i weryfikacji tożsamości.
+                </div>
+                <a href="lumina-safety.html" style="font-size: 0.78rem; color: var(--lumina-gold-bright); display: inline-block; margin-top: 8px;">Przeczytaj Zasady Ochrony &raquo;</a>
+            </div>
+        </aside>
+
+        <!-- Right Content / Swiper area -->
+        <main class="lumina-main-area">
+
+            <!-- Mode Selector Tabs -->
+            <div class="lumina-tabs-bar">
+                <button class="lumina-tab-btn active" id="tabSwiper" onclick="switchView('swiper')">
+                    <i class="fa-solid fa-cards-blank"></i> Tryb Kart (Swipe)
+                </button>
+                <button class="lumina-tab-btn" id="tabGrid" onclick="switchView('grid')">
+                    <i class="fa-solid fa-grid-2"></i> Przeglądaj Siatkę
+                </button>
+            </div>
+
+            <!-- Single Featured Profile Card (Swiper View) -->
+            <div id="viewSwiper">
+                <div class="lumina-swiper-card" id="featuredCard">
+                    <div class="lumina-avatar-box">
+                        <img src="avatar_noemi.jpg" id="cardImg" alt="Profil LUMINA" class="lumina-avatar-img">
+                        <div class="lumina-avatar-badge">
+                            <i class="fa-solid fa-circle-check"></i> Profil Zweryfikowany
+                        </div>
+                    </div>
+
+                    <div class="lumina-details-box">
+                        <div>
+                            <h3 class="lumina-user-name" id="cardName">Noemi, 26</h3>
+                            <div class="lumina-user-meta" id="cardMeta">
+                                <span><i class="fa-solid fa-location-dot"></i> Warszawa, Mazowieckie</span>
+                                <span>&bull;</span>
+                                <span><i class="fa-solid fa-church"></i> Wspólnota Akademicka</span>
+                            </div>
+
+                            <div class="lumina-quote-box" id="cardQuote">
+                                "Zaufaj Panu z całego serca i nie polegaj na własnym rozumie." &mdash; Prz 3,5
+                            </div>
+
+                            <p style="font-size: 0.9rem; color: rgba(255,255,255,0.8); line-height: 1.6;" id="cardBio">
+                                Szukam mężczyzny o otwartym sercu, dla którego wiara i wartości chrześcijańskie są fundamentem budowania przyszłej rodziny. Uwielbiam muzykę uwielbieniową, wędrówki górskie i dobrą książkę.
+                            </p>
+
+                            <div class="lumina-tags-list" id="cardTags">
+                                <span class="lumina-tag">🕊️ Modlitwa osobista</span>
+                                <span class="lumina-tag">💍 Cel: Małżeństwo</span>
+                                <span class="lumina-tag">🏔️ Wędrówki</span>
+                                <span class="lumina-tag">🎶 Muzyka Worship</span>
+                            </div>
+                        </div>
+
+                        <div class="lumina-actions-bar">
+                            <button class="lumina-act-btn lumina-act-pass" onclick="nextProfile('pass')">
+                                <i class="fa-solid fa-xmark"></i> Pomiń
+                            </button>
+                            <button class="lumina-act-btn lumina-act-pray" onclick="nextProfile('pray')">
+                                <i class="fa-solid fa-hands-praying"></i> Modlitwa 🙏
+                            </button>
+                            <button class="lumina-act-btn lumina-act-like" onclick="nextProfile('like')">
+                                <i class="fa-solid fa-heart"></i> Polub 💌
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profiles Grid View (Hidden by default) -->
+            <div id="viewGrid" style="display: none;">
+                <div class="lumina-profiles-grid" id="gridContainer">
+                    <!-- Dynamic Items rendered by JS -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="lumina-footer">
+        <div class="lumina-footer-links">
+            <a href="index.html">Strona Główna polskieradio.cc</a>
+            <a href="lumina-safety.html">Standardy Ochrony Dzieci LUMINA</a>
+            <a href="privacy.html">Polityka Prywatności</a>
+            <a href="general-safety.html">Bezpieczeństwo Portalowe</a>
+        </div>
+        <p>&copy; 2026 Christian Culture Ecosystem &bull; Wszelkie prawa zastrzeżone @ICC</p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="lumina-toast" id="luminaToast">
+        <i class="fa-solid fa-sparkles" style="color: var(--lumina-gold-bright); font-size: 1.4rem;"></i>
+        <span id="toastText">Wysłano modlitewne zainteresowanie!</span>
+    </div>
+
+    <!-- JS Logic -->
+    <script>
+        const profiles = [
+            {
+                id: 1,
+                name: "Noemi",
+                age: 26,
+                gender: "kobieta",
+                city: "Warszawa",
+                region: "Mazowieckie",
+                church: "Wspólnota Akademicka",
+                img: "avatar_noemi.jpg",
+                quote: "\"Zaufaj Panu z całego serca i nie polegaj na własnym rozumie.\" — Prz 3,5",
+                bio: "Szukam mężczyzny o otwartym sercu, dla którego wiara i wartości chrześcijańskie są fundamentem budowania przyszłej rodziny. Uwielbiam muzykę uwielbieniową, wędrówki górskie i dobrą książkę.",
+                tags: ["🕊️ Modlitwa osobista", "💍 Cel: Małżeństwo", "🏔️ Wędrówki", "🎶 Muzyka Worship"]
+            },
+            {
+                id: 2,
+                name: "Szymon",
+                age: 29,
+                gender: "mezczyzna",
+                city: "Kraków",
+                region: "Małopolskie",
+                church: "Duszpasterstwo Mężczyzn",
+                img: "avatar_sara.jpg", // fallback portrait avatar
+                quote: "\"Wszystko mogę w Tym, który mnie umacnia.\" — Flp 4,13",
+                bio: "Inżynier z pasją do ewangelizacji i aktywnego spędzania czasu. Szukam wartościowej relacji prowadzącej do sakramentu małżeństwa.",
+                tags: ["✝️ Aktywność w kościele", "💍 Sakrament", "🚴 Rower", "📚 Biblia"]
+            },
+            {
+                id: 3,
+                name: "Maria",
+                age: 24,
+                gender: "kobieta",
+                city: "Poznań",
+                region: "Wielkopolskie",
+                church: "Wspólnota Domowego Kościoła",
+                img: "avatar_noemi.jpg",
+                quote: "\"Bóg jest miłością: kto trwa w miłości, trwa w Bogu.\" — 1 J 4,16",
+                bio: "Nauczycielka wychowania przedszkolnego. Cenię szczerość, rodzinne ciepło i wspólne wieczorne modlitwy.",
+                tags: ["🌸 Ciepło domowe", "🙏 Różańcowe intencje", "🎨 Sztuka"]
+            },
+            {
+                id: 4,
+                name: "Michał",
+                age: 31,
+                gender: "mezczyzna",
+                city: "Wrocław",
+                region: "Dolnośląskie",
+                church: "Mężczyźni Świętego Józefa",
+                img: "avatar_sara.jpg",
+                quote: "\"Bądź mężny i mężnego serca, nie lękaj się!\" — Joz 1,9",
+                bio: "Przedsiębiorca budujący firmę na chrześcijańskich zasadach etycznych. Poszukuję partnerki życiowej do wspólnej drogi do Nieba.",
+                tags: ["🛡️ Odpowiedzialność", "💍 Małżeństwo", "🏕️ Podróże"]
+            }
+        ];
+
+        let currentIndex = 0;
+
+        function renderCurrentSwiperProfile() {
+            if (profiles.length === 0) return;
+            const p = profiles[currentIndex % profiles.length];
+            document.getElementById('cardImg').src = p.img;
+            document.getElementById('cardName').textContent = `${p.name}, ${p.age}`;
+            document.getElementById('cardMeta').innerHTML = `
+                <span><i class="fa-solid fa-location-dot"></i> ${p.city}, ${p.region}</span>
+                <span>&bull;</span>
+                <span><i class="fa-solid fa-church"></i> ${p.church}</span>
+            `;
+            document.getElementById('cardQuote').textContent = p.quote;
+            document.getElementById('cardBio').textContent = p.bio;
+
+            const tagsContainer = document.getElementById('cardTags');
+            tagsContainer.innerHTML = p.tags.map(t => `<span class="lumina-tag">${t}</span>`).join('');
+        }
+
+        function renderGridProfiles() {
+            const container = document.getElementById('gridContainer');
+            container.innerHTML = profiles.map(p => `
+                <div class="lumina-grid-card">
+                    <div class="lumina-grid-img-wrap">
+                        <img src="${p.img}" alt="${p.name}">
+                    </div>
+                    <div class="lumina-grid-info">
+                        <h4 class="lumina-grid-name">${p.name}, ${p.age}</h4>
+                        <div class="lumina-grid-city"><i class="fa-solid fa-location-dot"></i> ${p.city}</div>
+                        <p style="font-size: 0.82rem; color: rgba(255,255,255,0.7); line-height: 1.4; margin-bottom: 12px;">
+                            ${p.bio.substring(0, 90)}...
+                        </p>
+                        <button class="lumina-btn-primary" style="width: 100%; font-size: 0.8rem; padding: 8px;" onclick="showToast('Rozpoczęto kontakt z profilu ${p.name}!')">
+                            <i class="fa-solid fa-envelope"></i> Nawiąż Kontakt
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function nextProfile(action) {
+            const p = profiles[currentIndex % profiles.length];
+            if (action === 'pray') {
+                showToast(`Wysłano sygnał modlitewnego wsparcia dla: ${p.name}! 🙏✨`);
+            } else if (action === 'like') {
+                showToast(`Polubiono profil ${p.name}! Wysłano powiadomienie 💌`);
+            } else {
+                showToast(`Przejście do kolejnego profilu...`);
+            }
+            currentIndex++;
+            renderCurrentSwiperProfile();
+        }
+
+        function switchView(view) {
+            const swiperView = document.getElementById('viewSwiper');
+            const gridView = document.getElementById('viewGrid');
+            const tabSwiper = document.getElementById('tabSwiper');
+            const tabGrid = document.getElementById('tabGrid');
+
+            if (view === 'swiper') {
+                swiperView.style.display = 'block';
+                gridView.style.display = 'none';
+                tabSwiper.classList.add('active');
+                tabGrid.classList.remove('active');
+            } else {
+                swiperView.style.display = 'none';
+                gridView.style.display = 'block';
+                tabGrid.classList.add('active');
+                tabSwiper.classList.remove('active');
+                renderGridProfiles();
+            }
+        }
+
+        function applyFilters() {
+            showToast("Zastosowano nowe filtry wyszukiwania!");
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('luminaToast');
+            document.getElementById('toastText').textContent = text;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3200);
+        }
+
+        function openChatDemo() {
+            showToast("Otwieranie bezpiecznego czatu LUMINA...");
+        }
+
+        function openCreateProfileModal() {
+            alert("Witamy w kreatorze profilu LUMINA! Twój profil zostanie dołączony do bazy testowej ekosystemu Christian Culture.");
+        }
+
+        // Initialize on load
+        renderCurrentSwiperProfile();
+    </script>
+</body>
+</html>
