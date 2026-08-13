@@ -276,12 +276,19 @@ button {
 }
 
 .sms-button:hover .avatar-ring {
-    background: var(--gold-primary);
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    background: rgba(212, 175, 55, 0.25) !important;
+    border-color: var(--gold-primary) !important;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6) !important;
 }
 
 .sms-button:hover .avatar-ring i {
-    color: var(--bg-deep-black) !important;
+    color: var(--gold-primary) !important;
+    transform: rotate(90deg) scale(1.18);
+}
+
+.sms-button.open:hover .avatar-ring i,
+.sms-button.open:hover #actionsToggleIcon {
+    transform: rotate(225deg) scale(1.18);
 }
 
 .dzj-nav-wrapper {
