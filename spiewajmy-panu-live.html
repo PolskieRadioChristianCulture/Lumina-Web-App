@@ -449,23 +449,20 @@
 
         function updateTrackMetadata() {
             try {
+                const song = publishedVideos[selectedIndex] || publishedVideos[0];
+                let displayTitle = song ? song.title : "UWIELBIENIE I PIEŚNI CHWAŁY";
+
                 if (player && typeof player.getVideoData === 'function') {
                     const data = player.getVideoData();
-                    const playlistIndex = (typeof player.getPlaylistIndex === 'function') ? player.getPlaylistIndex() : -1;
-                    const playlist = (typeof player.getPlaylist === 'function') ? player.getPlaylist() : null;
-
-                    let tagText = "ŚPIEWAJMY PANU • CHRISTIAN CULTURE MUSIC";
-                    if (playlistIndex >= 0 && playlist && playlist.length) {
-                        tagText = `ŚPIEWAJMY PANU • UTWÓR ${playlistIndex + 1} z ${playlist.length}`;
-                    } else if (playlistIndex >= 0) {
-                        tagText = `ŚPIEWAJMY PANU • UTWÓR ${playlistIndex + 1}`;
-                    }
-
                     if (data && data.title) {
-                        document.getElementById('episode-tag-label').textContent = tagText;
-                        document.getElementById('episode-title-label').textContent = data.title.toUpperCase();
+                        displayTitle = data.title
+                            .replace(/Cezary\s+Rogowski/gi, 'Christian Culture TV')
+                            .replace(/Cezary/gi, 'Christian Culture')
+                            .replace(/Rogowski/gi, 'CC TV24');
                     }
                 }
+
+                document.getElementById('episode-title-label').textContent = displayTitle.toUpperCase();
             } catch(e) {}
         }
 
