@@ -2244,11 +2244,18 @@
                 });
 
                 window.addEventListener('message', function(e) {
-                    if (e.data && (e.data.type === 'UNMUTE_AUDIO' || e.data === 'UNMUTE_AUDIO')) {
-                        const audio = document.getElementById('stream-audio');
+                    if (!e || !e.data) return;
+                    const type = e.data.type || e.data;
+                    const audio = document.getElementById('stream-audio');
+                    if (type === 'UNMUTE_AUDIO' || type === 'unMute') {
                         if (audio) {
                             audio.muted = false;
                             audio.play().catch(() => {});
+                        }
+                    } else if (type === 'MUTE_AUDIO' || type === 'mute') {
+                        if (audio) {
+                            audio.muted = true;
+                            audio.pause();
                         }
                     }
                 });

@@ -572,7 +572,9 @@
                 if (player && typeof player.unMute === 'function') {
                     player.unMute();
                     player.setVolume(100);
-                    player.playVideo();
+                    if (typeof player.getPlayerState === 'function' && player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                        player.playVideo();
+                    }
                 }
             } catch(e) {}
 
@@ -581,7 +583,6 @@
                 if (iframe && iframe.contentWindow) {
                     iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
                     iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
-                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
                 }
             } catch(e) {}
         }

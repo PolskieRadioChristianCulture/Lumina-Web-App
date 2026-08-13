@@ -460,6 +460,7 @@
         }
 
         function switchChannel(newChannel) {
+            if (currentUrl === newChannel) return;
             console.log("MCR: Przełączanie kanału na " + newChannel);
             status.textContent = "MCR: " + newChannel;
             const isFirstLoad = (currentUrl === null);
@@ -492,9 +493,10 @@
                 bumperProgress.style.transition = 'none';
                 bumperProgress.style.width = '0%';
 
-                // 1) Mute outgoing active frame via postMessage (Keep frame rendered under bumper so no black screen appears!)
+                // 1) Mute & pause outgoing active frame via postMessage immediately
                 try {
                     if (activeFrame && activeFrame.contentWindow) {
+                        activeFrame.contentWindow.postMessage({ type: 'MUTE_AUDIO' }, '*');
                         activeFrame.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
                         activeFrame.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
                     }

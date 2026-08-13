@@ -604,7 +604,9 @@
             if (player && typeof player.unMute === 'function') {
                 player.unMute();
                 player.setVolume(100);
-                player.playVideo();
+                if (typeof player.getPlayerState === 'function' && player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                    player.playVideo();
+                }
             }
         }
 

@@ -3550,6 +3550,21 @@ function getWeatherPreset(city) {
     function autoStartIfEmbedded() {
         var isIframe = (window.self !== window.top);
         var isAutoplay = new URLSearchParams(window.location.search).get('autoplay') === '1';
+        var isMuted = new URLSearchParams(window.location.search).get('muted') === '1';
+
+        if (isMuted) {
+            var overlay = document.getElementById('startOverlay');
+            if (overlay) {
+                overlay.style.display = 'none';
+                overlay.classList.add('hidden');
+            }
+            var audio = document.getElementById('stream-audio');
+            if (audio) {
+                audio.muted = true;
+            }
+            return;
+        }
+
         if (isIframe || isAutoplay) {
             var overlay = document.getElementById('startOverlay');
             if (overlay) {
@@ -3571,6 +3586,23 @@ function getWeatherPreset(city) {
     setTimeout(autoStartIfEmbedded, 200);
     setTimeout(autoStartIfEmbedded, 800);
     setTimeout(autoStartIfEmbedded, 2000);
+
+    window.addEventListener('message', function(e) {
+        if (!e || !e.data) return;
+        var type = e.data.type || e.data;
+        var audio = document.getElementById('stream-audio');
+        if (type === 'MUTE_AUDIO' || type === 'mute') {
+            if (audio) {
+                audio.muted = true;
+                audio.pause();
+            }
+        } else if (type === 'UNMUTE_AUDIO' || type === 'unMute') {
+            if (audio) {
+                audio.muted = false;
+                audio.play().catch(function(){});
+            }
+        }
+    });
 })();
 </script>
 

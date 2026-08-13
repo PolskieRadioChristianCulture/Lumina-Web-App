@@ -3614,11 +3614,32 @@ function getWeatherPreset(city) {
 <!-- MASTER STREAM AUTOPLAY BYPASS -->
 <script>
 window.addEventListener('DOMContentLoaded', function() {
-if (new URLSearchParams(window.location.search).get('autoplay') === '1') {
-setTimeout(function() {
-if(typeof initStream === 'function') initStream();
-}, 1000);
-}
+    var isMuted = new URLSearchParams(window.location.search).get('muted') === '1';
+    var audio = document.getElementById('worshipAudioPlayer') || document.querySelector('audio');
+    if (isMuted && audio) {
+        audio.muted = true;
+    }
+    if (new URLSearchParams(window.location.search).get('autoplay') === '1' && !isMuted) {
+        setTimeout(function() {
+            if(typeof initStream === 'function') initStream();
+        }, 1000);
+    }
+});
+window.addEventListener('message', function(e) {
+    if (!e || !e.data) return;
+    var type = e.data.type || e.data;
+    var audio = document.getElementById('worshipAudioPlayer') || document.querySelector('audio');
+    if (type === 'MUTE_AUDIO' || type === 'mute') {
+        if (audio) {
+            audio.muted = true;
+            audio.pause();
+        }
+    } else if (type === 'UNMUTE_AUDIO' || type === 'unMute') {
+        if (audio) {
+            audio.muted = false;
+            audio.play().catch(function(){});
+        }
+    }
 });
 </script>
 </body>
