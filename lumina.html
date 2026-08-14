@@ -820,18 +820,51 @@
         .scripture-card {
             flex: 1;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 20px;
             padding: 22px 26px;
             text-align: left;
             position: relative;
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 22px rgba(168, 85, 247, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            overflow: hidden;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 24px rgba(168, 85, 247, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3);
             transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
             cursor: default;
         }
+
+        /* Dynamic Liquid Glass Shimmer (Ruchomy Połysk Szkła) */
+        .scripture-card::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -60%;
+            width: 220%;
+            height: 220%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.03) 42%,
+                rgba(255, 255, 255, 0.22) 50%,
+                rgba(255, 255, 255, 0.03) 58%,
+                transparent 70%
+            );
+            transform: rotate(30deg) translateY(-120%);
+            pointer-events: none;
+            z-index: 2;
+        }
+        .scripture-card:nth-child(1)::before {
+            animation: glassSheen 6s ease-in-out infinite;
+        }
+        .scripture-card:nth-child(2)::before {
+            animation: glassSheen 6s ease-in-out infinite 3s;
+        }
+        @keyframes glassSheen {
+            0% { transform: rotate(30deg) translateY(-130%); }
+            35%, 100% { transform: rotate(30deg) translateY(130%); }
+        }
+
         .scripture-card:nth-child(1) {
             animation: floatVerseLeft 6s ease-in-out infinite;
         }
@@ -848,21 +881,21 @@
         @keyframes floatVerseLeft {
             0%, 100% {
                 transform: translateY(0px) rotateX(4deg) rotateY(-3deg) translateZ(0);
-                box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 20px rgba(168, 85, 247, 0.12);
+                box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 22px rgba(168, 85, 247, 0.18), 0 0 12px rgba(6, 182, 212, 0.12);
             }
             50% {
                 transform: translateY(-10px) rotateX(1deg) rotateY(-1deg) translateZ(16px);
-                box-shadow: 0 24px 44px rgba(0, 0, 0, 0.45), 0 0 28px rgba(168, 85, 247, 0.22);
+                box-shadow: 0 24px 44px rgba(0, 0, 0, 0.45), 0 0 28px rgba(168, 85, 247, 0.25), 0 0 18px rgba(6, 182, 212, 0.18);
             }
         }
         @keyframes floatVerseRight {
             0%, 100% {
                 transform: translateY(0px) rotateX(4deg) rotateY(3deg) translateZ(0);
-                box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 20px rgba(6, 182, 212, 0.12);
+                box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 22px rgba(6, 182, 212, 0.18), 0 0 12px rgba(168, 85, 247, 0.12);
             }
             50% {
                 transform: translateY(-12px) rotateX(2deg) rotateY(1deg) translateZ(18px);
-                box-shadow: 0 26px 46px rgba(0, 0, 0, 0.45), 0 0 30px rgba(6, 182, 212, 0.22);
+                box-shadow: 0 26px 46px rgba(0, 0, 0, 0.45), 0 0 30px rgba(6, 182, 212, 0.25), 0 0 18px rgba(168, 85, 247, 0.18);
             }
         }
         .scripture-text {
@@ -873,6 +906,8 @@
             margin-bottom: 10px;
             font-family: 'Plus Jakarta Sans', sans-serif;
             text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 3;
         }
         .scripture-sig {
             font-size: 0.78rem;
@@ -884,6 +919,8 @@
             align-items: center;
             justify-content: flex-end;
             gap: 6px;
+            position: relative;
+            z-index: 3;
         }
 
         @media (max-width: 800px) {
