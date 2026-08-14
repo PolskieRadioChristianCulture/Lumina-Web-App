@@ -967,18 +967,11 @@
                     </div>
                 </div>
 
-                <!-- Reklama Wideo: Dobrze, że jesteś (YouTube Shorts) -->
+                <!-- Reklama Wideo: Dobrze, że jesteś (Natywne Wideo MP4) -->
                 <div class="profile-card video-card" onclick="window.open('https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536', '_blank')">
                     <div class="card-photo">
-                        <iframe
-                            id="ytPromoIframe"
-                            src="https://www.youtube.com/embed/vpHsETwWwns?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=vpHsETwWwns&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                            frameborder="0"
-                            allow="autoplay; encrypted-media; fullscreen"
-                            allowfullscreen
-                            style="position:absolute;inset:0;width:100%;height:100%;border-radius:16px;border:none;pointer-events:none;">
-                        </iframe>
-                        <button class="card-sound-btn" onclick="toggleYtSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
+                        <video id="promoVideoEl" src="czesc_dobrze_ze_jestes.mp4" autoplay loop muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:16px;"></video>
+                        <button class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
                             <i class="fa-solid fa-volume-xmark"></i>
                         </button>
                         <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
