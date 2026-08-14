@@ -500,7 +500,7 @@
             .bottom-layout { grid-template-columns: 1fr; }
         }
 
-        /* ──────────────────── WHY LUMINA 3D ──────────────────── */
+        /* ──────────────────── WHY LUMINA 3D (Static Crisp 3D with Hover) ──────────────────── */
         .why-section {
             text-align: center;
             display: flex;
@@ -557,63 +557,15 @@
             -webkit-backdrop-filter: blur(12px);
             transform-style: preserve-3d;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s, border-color 0.4s, background 0.4s;
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s, border-color 0.35s, background 0.35s;
             overflow: hidden;
         }
 
-        /* 3D Asynchronous Floating Animations */
-        .why-item:nth-child(1) {
-            animation: whyFloat1 5.6s ease-in-out infinite alternate;
-        }
-        .why-item:nth-child(2) {
-            animation: whyFloat2 6.2s ease-in-out infinite alternate 0.5s;
-        }
-        .why-item:nth-child(3) {
-            animation: whyFloat3 5.9s ease-in-out infinite alternate 1s;
-        }
-
-        @keyframes whyFloat1 {
-            0%   { transform: perspective(800px) rotateX(4deg) rotateY(-5deg) translateY(0px) translateZ(0px); }
-            50%  { transform: perspective(800px) rotateX(-2deg) rotateY(-2deg) translateY(-8px) translateZ(10px); }
-            100% { transform: perspective(800px) rotateX(3deg) rotateY(4deg) translateY(-4px) translateZ(6px); }
-        }
-
-        @keyframes whyFloat2 {
-            0%   { transform: perspective(800px) rotateX(-3deg) rotateY(0deg) translateY(-6px) translateZ(8px); }
-            50%  { transform: perspective(800px) rotateX(4deg) rotateY(4deg) translateY(2px) translateZ(2px); }
-            100% { transform: perspective(800px) rotateX(-2deg) rotateY(-4deg) translateY(-9px) translateZ(12px); }
-        }
-
-        @keyframes whyFloat3 {
-            0%   { transform: perspective(800px) rotateX(3deg) rotateY(5deg) translateY(2px) translateZ(2px); }
-            50%  { transform: perspective(800px) rotateX(-4deg) rotateY(-3deg) translateY(-7px) translateZ(9px); }
-            100% { transform: perspective(800px) rotateX(2deg) rotateY(-5deg) translateY(-3px) translateZ(6px); }
-        }
-
-        /* Glass Sheen / Reflection on 3D Items */
-        .why-item::after {
-            content: '';
-            position: absolute;
-            top: -100%;
-            left: -100%;
-            width: 300%;
-            height: 300%;
-            background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.12) 50%, transparent 60%);
-            pointer-events: none;
-            animation: whyGlassSheen 6s infinite cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateZ(1px);
-        }
-        @keyframes whyGlassSheen {
-            0% { transform: translateY(-100%) rotate(25deg); }
-            35%, 100% { transform: translateY(100%) rotate(25deg); }
-        }
-
         .why-item:hover {
-            animation-play-state: paused;
-            transform: perspective(800px) translateY(-12px) translateZ(35px) rotateX(6deg) scale(1.05) !important;
+            transform: translateY(-8px) translateZ(25px) scale(1.04);
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.12) 0%, rgba(234, 179, 8, 0.08) 100%);
             border-color: rgba(234, 179, 8, 0.6);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), 0 0 30px rgba(234, 179, 8, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4), 0 0 25px rgba(234, 179, 8, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
         .why-icon-wrap {
@@ -628,12 +580,12 @@
             background: radial-gradient(circle, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0.02) 70%, transparent 100%);
             border: 1.5px solid rgba(251, 191, 36, 0.35);
             box-shadow: 0 0 22px rgba(251, 191, 36, 0.25);
-            transform: translateZ(25px);
+            transform: translateZ(15px);
             transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s, box-shadow 0.3s, background 0.3s;
         }
 
         .why-item:hover .why-icon-wrap {
-            transform: translateZ(45px) scale(1.18) rotate(6deg);
+            transform: translateZ(30px) scale(1.15) rotate(6deg);
             color: #fef08a;
             border-color: rgba(254, 240, 138, 0.7);
             background: radial-gradient(circle, rgba(251, 191, 36, 0.35) 0%, rgba(251, 191, 36, 0.1) 70%, transparent 100%);
@@ -646,14 +598,14 @@
             font-weight: 700;
             color: #f1f5f9;
             line-height: 1.35;
-            transform: translateZ(20px);
+            transform: translateZ(10px);
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
             transition: color 0.3s, transform 0.3s;
         }
 
         .why-item:hover .why-label {
             color: #ffffff;
-            transform: translateZ(30px);
+            transform: translateZ(20px);
             text-shadow: 0 2px 14px rgba(234, 179, 8, 0.5);
         }
 
@@ -1123,17 +1075,59 @@
             <button class="carousel-btn left" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="profiles-grid" id="profilesCarousel">
 
-                <!-- Anna -->
-                <div class="profile-card" onclick="openProfile('Anna','28','Warszawa','Uwielbia podróże i sztukę','lumina_anna2.jpg','94%')">
+                <!-- Noemi (Nowa Kobieta) -->
+                <div class="profile-card" onclick="openProfile('Noemi','28','Wrocław','Głęboka wiara i pasja do natury','avatar_noemi.jpg','96%')">
                     <div class="card-photo">
-                        <img src="lumina_anna2.jpg" alt="Anna" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="avatar_noemi.jpg" alt="Noemi" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match">94%</div>
+                        <div class="card-match" style="background: linear-gradient(135deg, #0369a1, #06b6d4);">96%</div>
                     </div>
                     <div class="card-body">
-                        <div class="card-name">Anna, 28</div>
-                        <div class="card-city">📍 Warszawa</div>
-                        <div class="card-desc">"Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania świata."</div>
+                        <div class="card-name">Noemi, 28</div>
+                        <div class="card-city">📍 Wrocław</div>
+                        <div class="card-desc">"Spokój, las i głębokie rozmowy o Bogu przy herbacie. Szukam bratniej duszy."</div>
+                    </div>
+                </div>
+
+                <!-- Dawid (Nowy Mężczyzna) -->
+                <div class="profile-card" onclick="openProfile('Dawid','30','Poznań','Muzyka uwielbienia i architektura','avatar_sara.jpg','93%')">
+                    <div class="card-photo">
+                        <img src="avatar_sara.jpg" alt="Dawid" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #6d28d9, #0ea5e9);">93%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Dawid, 30</div>
+                        <div class="card-city">📍 Poznań</div>
+                        <div class="card-desc">"Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu i wierze."</div>
+                    </div>
+                </div>
+
+                <!-- Weronika (Nowa Kobieta) -->
+                <div class="profile-card" onclick="openProfile('Weronika','25','Kraków','Graficzka z zamiłowaniem do fotografii i sztuki','avatar_widget_ania.jpg','97%')">
+                    <div class="card-photo">
+                        <img src="avatar_widget_ania.jpg" alt="Weronika" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #a855f7, #ec4899);">97%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Weronika, 25</div>
+                        <div class="card-city">📍 Kraków</div>
+                        <div class="card-desc">"Graficzka z pasją do piękna i muzyki. Szukam szczerej relacji opartej na wierze."</div>
+                    </div>
+                </div>
+
+                <!-- Tomek (Nowy Mężczyzna) -->
+                <div class="profile-card" onclick="openProfile('Tomek','27','Gdańsk','Pasjonat leśnych wędrówek i natury','avatar_widget_tomek.jpg','94%')">
+                    <div class="card-photo">
+                        <img src="avatar_widget_tomek.jpg" alt="Tomek" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #059669, #10b981);">94%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Tomek, 27</div>
+                        <div class="card-city">📍 Gdańsk</div>
+                        <div class="card-desc">"Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku."</div>
                     </div>
                 </div>
 
@@ -1150,6 +1144,20 @@
                         <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
                             <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➔
                         </a>
+                    </div>
+                </div>
+
+                <!-- Anna -->
+                <div class="profile-card" onclick="openProfile('Anna','28','Warszawa','Uwielbia podróże i sztukę','lumina_anna2.jpg','94%')">
+                    <div class="card-photo">
+                        <img src="lumina_anna2.jpg" alt="Anna" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match">94%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Anna, 28</div>
+                        <div class="card-city">📍 Warszawa</div>
+                        <div class="card-desc">"Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania świata."</div>
                     </div>
                 </div>
 
@@ -1178,34 +1186,6 @@
                         <div class="card-name">Julia, 26</div>
                         <div class="card-city">📍 Gdańsk</div>
                         <div class="card-desc">"Marzycielka z pasją do muzyki. Szukam głębokich, szczerych relacji."</div>
-                    </div>
-                </div>
-                
-                <!-- Noemi -->
-                <div class="profile-card" onclick="openProfile('Noemi','28','Wrocław','Głęboka wiara i pasja do natury','avatar_noemi.jpg','96%')">
-                    <div class="card-photo">
-                        <img src="avatar_noemi.jpg" alt="Noemi" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #0369a1, #06b6d4);">96%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name">Noemi, 28</div>
-                        <div class="card-city">📍 Wrocław</div>
-                        <div class="card-desc">"Spokój, las i głębokie rozmowy o Bogu przy herbacie. Szukam bratniej duszy."</div>
-                    </div>
-                </div>
-                
-                <!-- Dawid -->
-                <div class="profile-card" onclick="openProfile('Dawid','30','Poznań','Muzyka uwielbienia i architektura','avatar_sara.jpg','93%')">
-                    <div class="card-photo">
-                        <img src="avatar_sara.jpg" alt="Dawid" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #6d28d9, #0ea5e9);">93%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name">Dawid, 30</div>
-                        <div class="card-city">📍 Poznań</div>
-                        <div class="card-desc">"Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu i wierze."</div>
                     </div>
                 </div>
 
