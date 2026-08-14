@@ -856,7 +856,7 @@
             color: #facc15;
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
         }
-        .m-nav-radio-icon {
+        .m-nav-msg-icon, .m-nav-radio-icon {
             width: 32px;
             height: 32px;
             background: linear-gradient(135deg, #ec4899, #8b5cf6);
@@ -867,10 +867,27 @@
             color: #fff;
             box-shadow: 0 2px 10px rgba(236, 72, 153, 0.5);
             margin-top: -6px;
+            position: relative;
         }
-        .m-nav-radio-icon i {
+        .m-nav-msg-icon i, .m-nav-radio-icon i {
             font-size: 0.95rem;
             color: #fff !important;
+        }
+        .m-nav-badge {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 800;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #090d1a;
         }
 
         @media (max-width: 900px) {
@@ -1804,17 +1821,85 @@
             <i class="fa-solid fa-rectangle-list"></i>
             <span>Tablica</span>
         </a>
-        <a href="javascript:void(0)" onclick="toggleCCRadioStream()" class="m-nav-item" id="mNavRadioItem">
-            <div class="m-nav-radio-icon">
-                <i class="fa-solid fa-radio"></i>
+        <a href="javascript:void(0)" onclick="openDirectMessagesModal()" class="m-nav-item" id="mNavMsgItem">
+            <div class="m-nav-msg-icon">
+                <i class="fa-solid fa-comment-dots"></i>
+                <span class="m-nav-badge">2</span>
             </div>
-            <span>Radio CC</span>
+            <span>Wiadomości</span>
         </a>
         <a href="lumina.wiolettarogowska.html" class="m-nav-item active" id="mNavProfileItem">
             <i class="fa-solid fa-user"></i>
             <span>Mój Profil</span>
         </a>
     </nav>
+
+    <!-- ══════════ DIRECT MESSAGES MODAL ══════════ -->
+    <div class="modal-overlay" id="directMessagesModal">
+        <div class="modal-card" style="max-width: 460px; padding: 20px 16px; max-height: 88vh; display: flex; flex-direction: column;">
+            <button class="modal-close-btn" onclick="closeModal('directMessagesModal')"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
+                <div style="width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,#ec4899,#8b5cf6); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.05rem; box-shadow:0 4px 12px rgba(236,72,153,0.4);">
+                    <i class="fa-solid fa-comment-dots"></i>
+                </div>
+                <div>
+                    <h3 style="font-size: 1.15rem; font-family:'Outfit',sans-serif; margin:0; color:#fff; font-weight:800;">Skrzynka Wiadomości</h3>
+                    <div style="font-size: 0.72rem; color: #94a3b8;">Twoje rozmowy w społeczności LUMINA</div>
+                </div>
+            </div>
+
+            <!-- List of conversations -->
+            <div style="overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
+                <div onclick="openChatWith('Cezary Rogowski', 'avatar_new1.jpg', 'cezaryrgowski')" style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; cursor:pointer; transition:all 0.2s;">
+                    <div style="position:relative;">
+                        <img src="avatar_new1.jpg" alt="Cezary" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block;">
+                        <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
+                    </div>
+                    <div style="flex:1; min-width:0;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                            <span style="font-weight:700; font-size:0.86rem; color:#fff;">Cezary Rogowski</span>
+                            <span style="font-size:0.68rem; color:#facc15; font-weight:600;">5 min temu</span>
+                        </div>
+                        <div style="font-size:0.75rem; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Kochanie, wszystko na tablicy wygląda pięknie! ❤️</div>
+                    </div>
+                    <span style="background:#ec4899; color:#fff; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:10px;">1</span>
+                </div>
+
+                <div onclick="openChatWith('Anna', 'lumina_anna2.jpg', 'anna')" style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; cursor:pointer; transition:all 0.2s;">
+                    <div style="position:relative;">
+                        <img src="lumina_anna2.jpg" alt="Anna" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block;">
+                        <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
+                    </div>
+                    <div style="flex:1; min-width:0;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                            <span style="font-weight:700; font-size:0.86rem; color:#fff;">Anna</span>
+                            <span style="font-size:0.68rem; color:#94a3b8;">15 min temu</span>
+                        </div>
+                        <div style="font-size:0.75rem; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Pozdrawiam serdecznie, niech Bóg błogosławi! ✨</div>
+                    </div>
+                    <span style="background:#3b82f6; color:#fff; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:10px;">1</span>
+                </div>
+
+                <div onclick="openChatWith('Weronika', 'avatar_widget_ania.jpg', 'weronika')" style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px; cursor:pointer; transition:all 0.2s;">
+                    <div style="position:relative;">
+                        <img src="avatar_widget_ania.jpg" alt="Weronika" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block;">
+                    </div>
+                    <div style="flex:1; min-width:0;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                            <span style="font-weight:700; font-size:0.86rem; color:#fff;">Weronika</span>
+                            <span style="font-size:0.68rem; color:#64748b;">Wczoraj</span>
+                        </div>
+                        <div style="font-size:0.75rem; color:#94a3b8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Dobrego i błogosławionego dnia! 🕊️</div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" onclick="closeModal('directMessagesModal'); window.location.href='lumina.html#odkrywaj';" style="width:100%; padding:11px; border-radius:24px; background:linear-gradient(90deg,#ec4899,#8b5cf6); border:none; color:#fff; font-weight:800; font-family:inherit; font-size:0.84rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(236,72,153,0.35);">
+                <i class="fa-solid fa-plus"></i> Rozpocznij Nową Rozmowę
+            </button>
+        </div>
+    </div>
 
     <!-- ══════════ TOAST NOTIFICATION ══════════ -->
     <div class="toast" id="toast"><i class="fa-solid fa-check-circle"></i> <span id="toastMsg">Sukces!</span></div>
@@ -2700,6 +2785,28 @@
                 showToast('Radio wstrzymane');
             }
         }
+
+        // Direct Messages Modal Handlers
+        function openDirectMessagesModal() {
+            const m = document.getElementById('directMessagesModal');
+            if (m) m.classList.add('open');
+        }
+
+        function openChatWith(name, avatar, slug) {
+            closeModal('directMessagesModal');
+            if (slug === 'cezaryrgowski') {
+                window.location.href = 'lumina.cezaryrgowski.html';
+            } else if (slug === 'wiolettarogowska') {
+                window.location.href = 'lumina.wiolettarogowska.html';
+            } else {
+                window.location.href = `lumina-profile.html?u=${slug}`;
+            }
+        }
+
+        // Close modals on backdrop click
+        document.querySelectorAll('.modal-overlay').forEach(bg =>
+            bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); })
+        );
 
         window.addEventListener('DOMContentLoaded', () => {
             checkOwnerAuthSession();
