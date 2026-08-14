@@ -337,6 +337,103 @@
         .card-photo img {
             width: 100%; height: 100%; object-fit: cover; display: block;
             border-radius: 16px 16px 0 0;
+            object-position: center top;
+        }
+
+        /* ── Full-Bleed Video Card ── */
+        .profile-card.video-card {
+            min-height: 410px;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .profile-card.video-card .card-photo {
+            position: absolute;
+            inset: 0;
+            height: 100% !important;
+            border-radius: 16px;
+            background: #000;
+            overflow: hidden;
+        }
+        .profile-card.video-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 5%;
+            border-radius: 16px;
+            display: block;
+        }
+
+        /* Pulsujący Przycisk do Sklepu */
+        .btn-video-shop-pulse {
+            position: absolute;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84%;
+            padding: 13px 18px;
+            background: linear-gradient(135deg, #4f46e5, #9333ea, #db2777);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.88rem;
+            letter-spacing: 0.6px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 30px;
+            box-shadow: 0 4px 22px rgba(147, 51, 234, 0.65), 0 0 16px rgba(219, 39, 119, 0.45);
+            animation: storePulse 2s infinite ease-in-out;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1.5px solid rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-video-shop-pulse:hover {
+            transform: translateX(-50%) scale(1.08);
+            box-shadow: 0 6px 30px rgba(147, 51, 234, 0.85);
+        }
+        @keyframes storePulse {
+            0%, 100% {
+                transform: translateX(-50%) scale(1);
+                box-shadow: 0 4px 22px rgba(147, 51, 234, 0.65), 0 0 16px rgba(219, 39, 119, 0.45);
+            }
+            50% {
+                transform: translateX(-50%) scale(1.06);
+                box-shadow: 0 8px 32px rgba(147, 51, 234, 0.9), 0 0 25px rgba(219, 39, 119, 0.7);
+            }
+        }
+
+        .card-sound-btn {
+            position: absolute;
+            top: 12px; left: 12px;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.78);
+            backdrop-filter: blur(8px);
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            color: #fff;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 6;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+        }
+        .card-sound-btn:hover {
+            transform: scale(1.15);
+            background: #eab308;
+            color: #0f172a;
+            border-color: #fef08a;
+        }
+        .card-sound-btn.sound-on {
+            background: #eab308;
+            color: #0f172a;
+            border-color: #fde047;
+            box-shadow: 0 0 14px rgba(234, 179, 8, 0.6);
         }
 
         .card-heart {
@@ -790,8 +887,9 @@
 
     <!-- ══════════ NAVBAR ══════════ -->
     <nav class="lumina-nav">
-        <a href="index.html" class="nav-logo-text">
-            <i class="fa-solid fa-sparkles"></i> LUMINA
+        <a href="index.html" class="nav-logo-text" style="display: flex; align-items: center; gap: 9px;">
+            <img src="lumina_icon.jpg" alt="LUMINA Logo" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(192,132,252,0.6); box-shadow: 0 0 10px rgba(168,85,247,0.4);">
+            <span>LUMINA</span>
         </a>
 
         <div class="nav-links">
@@ -832,8 +930,10 @@
     </nav>
 
     <!-- ══════════ HERO (Clean & Unobstructed) ══════════ -->
-    <section class="hero-section" onclick="openAuth()" style="cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 150px;">
-        <div class="hero-bg"></div>
+    <section class="hero-section" onclick="openAuth()" style="cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 150px; position: relative; overflow: hidden; min-height: 480px; background: #0b1838;">
+        <div class="hero-bg">
+            <img src="lumina_hero_group.jpg" alt="LUMINA Relacje" style="width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; position: absolute; inset: 0;">
+        </div>
         <div style="position: relative; z-index: 5; transform: translate(-22px, 2px);">
             <button class="btn-hero-main" onclick="openAuth()" style="width: 380px; height: 64px; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; box-sizing: border-box; border-radius: 50px;">ZAREJESTRUJ SIĘ ZA DARMO</button>
         </div>
@@ -853,9 +953,9 @@
             <div class="profiles-grid" id="profilesCarousel">
 
                 <!-- Anna -->
-                <div class="profile-card" onclick="openProfile('Anna','28','Warszawa','Uwielbia podróże i sztukę','anna-photo','94%')">
+                <div class="profile-card" onclick="openProfile('Anna','28','Warszawa','Uwielbia podróże i sztukę','lumina_anna.jpg','94%')">
                     <div class="card-photo">
-                        <div class="sprite-photo anna-photo"></div>
+                        <img src="lumina_anna.jpg" alt="Anna" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px 16px 0 0; display: block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match">94%</div>
                     </div>
@@ -866,10 +966,26 @@
                     </div>
                 </div>
 
-                <!-- Piotr -->
-                <div class="profile-card" onclick="openProfile('Piotr','31','Kraków','Szuka spontanicznych przygód','piotr-photo','88%')">
+                <!-- Reklama Wideo: Dobrze, że jesteś (Pełna widoczność wideo) -->
+                <div class="profile-card video-card" onclick="window.open('https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536', '_blank')">
                     <div class="card-photo">
-                        <div class="sprite-photo piotr-photo"></div>
+                        <video id="promoVideoEl" src="czesc_dobrze_ze_jestes.mp4" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:16px;"></video>
+                        <button class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk">
+                            <i class="fa-solid fa-volume-xmark"></i>
+                        </button>
+                        <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        
+                        <!-- Pulsujący Przycisk do Sklepu -->
+                        <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
+                            <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➔
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Piotr -->
+                <div class="profile-card" onclick="openProfile('Piotr','31','Kraków','Szuka spontanicznych przygód','lumina_piotr.jpg','88%')">
+                    <div class="card-photo">
+                        <img src="lumina_piotr.jpg" alt="Piotr" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px 16px 0 0; display: block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match">88%</div>
                     </div>
@@ -881,9 +997,9 @@
                 </div>
 
                 <!-- Julia -->
-                <div class="profile-card" onclick="openProfile('Julia','26','Gdańsk','Marzycielka z pasją do muzyki','julia-photo','91%')">
+                <div class="profile-card" onclick="openProfile('Julia','26','Gdańsk','Marzycielka z pasją do muzyki','lumina_julia.jpg','91%')">
                     <div class="card-photo">
-                        <div class="sprite-photo julia-photo"></div>
+                        <img src="lumina_julia.jpg" alt="Julia" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px 16px 0 0; display: block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match">91%</div>
                     </div>
@@ -895,9 +1011,9 @@
                 </div>
                 
                 <!-- Noemi -->
-                <div class="profile-card" onclick="openProfile('Noemi','27','Wrocław','Głęboka wiara i pasja do natury','anna-photo','96%')">
+                <div class="profile-card" onclick="openProfile('Noemi','27','Wrocław','Głęboka wiara i pasja do natury','avatar_noemi.jpg','96%')">
                     <div class="card-photo">
-                        <img src="avatar_noemi.jpg" alt="Noemi" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;">
+                        <img src="avatar_noemi.jpg" alt="Noemi" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #0369a1, #06b6d4);">96%</div>
                     </div>
@@ -909,9 +1025,9 @@
                 </div>
                 
                 <!-- Sara -->
-                <div class="profile-card" onclick="openProfile('Sara','29','Poznań','Muzyka uwielbienia i architektura','julia-photo','92%')">
+                <div class="profile-card" onclick="openProfile('Sara','29','Poznań','Muzyka uwielbienia i architektura','avatar_sara.jpg','92%')">
                     <div class="card-photo">
-                        <img src="avatar_sara.jpg" alt="Sara" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;">
+                        <img src="avatar_sara.jpg" alt="Sara" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #6d28d9, #ec4899);">92%</div>
                     </div>
@@ -974,7 +1090,7 @@
 
             <div class="users-title">Użytkownicy</div>
             <div class="user-item">
-                <div class="widget-sprite anna-photo"></div>
+                <img src="lumina_anna.jpg" alt="Ania" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #a855f7;">
                 <div class="user-info">
                     <div class="user-name">Ania W.</div>
                     <div class="user-status">Online</div>
@@ -982,7 +1098,7 @@
                 <div class="status-dot"></div>
             </div>
             <div class="user-item">
-                <div class="widget-sprite piotr-photo"></div>
+                <img src="lumina_piotr.jpg" alt="Tomek" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #06b6d4;">
                 <div class="user-info">
                     <div class="user-name">Tomek K.</div>
                     <div class="user-status">Online</div>
@@ -1269,37 +1385,38 @@
         // ── Load Dynamic Profiles ──
         async function loadFirestoreProfiles() {
             try {
+                if (window.setupInfiniteCarousel && !window.isInfiniteInitialized) {
+                    window.setupInfiniteCarousel();
+                }
                 const querySnapshot = await getDocs(collection(db, "lumina_users"));
                 if (!querySnapshot.empty) {
                     const carousel = document.getElementById('profilesCarousel');
-                    carousel.innerHTML = '';
                     querySnapshot.forEach((docSnap) => {
                         const data = docSnap.data();
-                        const card = document.createElement('div');
-                        card.className = 'profile-card';
-                        card.onclick = () => window.openProfile(data.name || 'Użytkownik', data.age || 26, data.city || 'Polska', data.bio || 'Witaj!', 'anna-photo', data.matchRate || '93%');
-                        card.innerHTML = `
-                            <div class="card-photo">
-                                <div class="sprite-photo anna-photo"></div>
-                                <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                                <div class="card-match">${data.matchRate || '90%'}</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="card-name">${data.name || 'Anonim'}, ${data.age || 25}</div>
-                                <div class="card-city">📍 ${data.city || 'Polska'}</div>
-                                <div class="card-desc">"${data.bio || 'Wierzący chrześcijanin'}"</div>
-                            </div>
-                        `;
-                        carousel.appendChild(card);
+                        if (data && data.name && !document.getElementById('user_card_' + docSnap.id)) {
+                            const card = document.createElement('div');
+                            card.className = 'profile-card';
+                            card.id = 'user_card_' + docSnap.id;
+                            const imgSrc = data.photoURL || 'lumina_anna.jpg';
+                            card.onclick = () => window.openProfile(data.name || 'Użytkownik', data.age || 26, data.city || 'Polska', data.bio || 'Witaj w LUMINA!', imgSrc, data.matchRate || '95%');
+                            card.innerHTML = `
+                                <div class="card-photo">
+                                    <img src="${imgSrc}" alt="${data.name || 'Użytkownik'}" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;display:block;">
+                                    <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                                    <div class="card-match">${data.matchRate || '95%'}</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-name">${data.name || 'Anonim'}, ${data.age || 25}</div>
+                                    <div class="card-city">📍 ${data.city || 'Polska'}</div>
+                                    <div class="card-desc">"${data.bio || 'Wierzący chrześcijanin'}"</div>
+                                </div>
+                            `;
+                            carousel.appendChild(card);
+                        }
                     });
-                    if (window.setupInfiniteCarousel) {
-                        window.isInfiniteInitialized = false;
-                        window.setupInfiniteCarousel();
-                    }
                 }
             } catch (err) {
-                // Fallback silently to static profiles if offline/no permissions
-                console.log("Ładowanie profili domyślnych.");
+                console.log("Działanie w trybie lokalnym / domyślnych profili.");
             }
         }
         loadFirestoreProfiles();
@@ -1307,8 +1424,11 @@
 
     <script>
         // ── Profile modal ──
-        function openProfile(name, age, city, desc, spriteClass, match) {
-            document.getElementById('mImg').className = 'modal-sprite ' + spriteClass;
+        function openProfile(name, age, city, desc, imgSrc, match) {
+            const mImg = document.getElementById('mImg');
+            if (mImg) {
+                mImg.innerHTML = `<img src="${imgSrc || 'lumina_anna.jpg'}" alt="${name}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);margin:0 auto;display:block;">`;
+            }
             document.getElementById('mName').textContent = `${name}, ${age}`;
             document.getElementById('mLoc').textContent = `📍 ${city}  •  Dopasowanie: ${match}`;
             document.getElementById('mDesc').textContent = `"${desc}"`;
@@ -1326,6 +1446,28 @@
             btn.classList.toggle('liked');
             showToast(btn.classList.contains('liked') ? 'Polubiono profil! 💖' : 'Usunięto polubienie');
         }
+
+        // ── Video Sound Toggle ──
+        window.toggleVideoSound = function(e, btn) {
+            e.stopPropagation();
+            const card = btn.closest('.card-photo');
+            const video = card ? card.querySelector('video') : null;
+            if (!video) return;
+
+            video.muted = !video.muted;
+            const icon = btn.querySelector('i');
+            if (video.muted) {
+                icon.className = 'fa-solid fa-volume-xmark';
+                btn.classList.remove('sound-on');
+                showToast('Wyciszono wideo 🔇');
+            } else {
+                icon.className = 'fa-solid fa-volume-high';
+                btn.classList.add('sound-on');
+                video.play();
+                showToast('Włączono dźwięk wideo 🔊');
+            }
+        };
+
         function sendPray() { closeModal('profileModal'); showToast('Wysłano intencję modlitewną! 🙏'); }
         function sendMsg()  { closeModal('profileModal'); showToast('Otwarto czat w LUMINA 💌'); }
         function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
