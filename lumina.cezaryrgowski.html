@@ -19,6 +19,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Lumina Realtime Firestore Engine -->
+    <script type="module" src="lumina-db.js"></script>
 
     <style>
         :root {
@@ -2668,7 +2670,26 @@
             cur.posts.unshift(newPost);
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
             } catch(e) {}
+
+            // Save to Firestore Cloud in real-time
+            if (window.LuminaDB) {
+                window.LuminaDB.addPostToCloud({
+                    author: cur.name,
+                    authorSlug: 'cezaryrgowski',
+                    authorAvatar: cur.avatar || 'avatar_new1.jpg',
+                    authorRole: 'Założyciel Christian Culture ✨',
+                    time: 'Przed chwilą • 🌍 Nowy Wpis',
+                    text: val || '',
+                    image: attachedPostImageDataUrl || null,
+                    type: 'post',
+                    likes: 1,
+                    amen: 0
+                });
+                window.LuminaDB.saveProfileToCloud('cezaryrgowski', cur);
+            }
+
             input.value = '';
             removeAttachedPostImage();
             renderPosts();
@@ -2847,9 +2868,13 @@
                 localStorage.setItem(MAIN_USER_KEY, JSON.stringify(updated));
             } catch (err) {}
 
+            if (window.LuminaDB) {
+                window.LuminaDB.saveProfileToCloud('cezaryrgowski', updated);
+            }
+
             renderProfileView();
             closeModal('editProfileModal');
-            showToast('Twój profil został zaktualizowany i trwale zabezpieczony! ✨');
+            showToast('Twój profil został zaktualizowany i trwale zabezpieczony w chmurze! ✨');
         }
 
         function switchTab(tabId, btn) {
@@ -3091,7 +3116,22 @@
         );
 
         // Initialize on load
-        window.addEventListener('DOMContentLoaded', renderProfileView);
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProfileView();
+
+            const initCloudSync = () => {
+                if (window.LuminaDB) {
+                    window.LuminaDB.subscribeToProfile('cezaryrgowski', (cloudData) => {
+                        if (cloudData) {
+                            renderProfileView();
+                        }
+                    });
+                } else {
+                    setTimeout(initCloudSync, 300);
+                }
+            };
+            initCloudSync();
+        });
     </script>
 </body>
 </html>

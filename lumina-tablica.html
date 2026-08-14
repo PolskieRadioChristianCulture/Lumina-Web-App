@@ -21,7 +21,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Firebase SDK -->
+    <!-- Lumina Realtime Firestore Engine -->
+    <script type="module" src="lumina-db.js"></script>
+
+    <!-- Firebase SDK (Rozważanie Dnia) -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
         import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
@@ -1122,8 +1125,30 @@
             return [...DEFAULT_CC_CAMPAIGNS];
         }
 
+        let cloudFeedPosts = [];
+
         function getUserFeedPosts() {
             const posts = [];
+
+            // 0. Real-time Cloud Posts from Firestore
+            if (window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts) && window.cloudFeedPosts.length > 0) {
+                window.cloudFeedPosts.forEach(cp => {
+                    posts.push({
+                        id: cp.id,
+                        type: cp.type || 'post',
+                        author: cp.author || 'Użytkownik LUMINA',
+                        authorRole: cp.authorRole || 'Społeczność LUMINA ✨',
+                        authorAvatar: cp.authorAvatar || 'icon.png',
+                        authorSlug: cp.authorSlug || '',
+                        time: cp.time || 'Przed chwilą • ☁️ Chmura',
+                        title: cp.title || '',
+                        text: cp.text || '',
+                        image: cp.image || null,
+                        likes: cp.likes || 1,
+                        amen: cp.amen || 0
+                    });
+                });
+            }
 
             // 1. Cezary Rogowski Posts
             try {
@@ -1747,7 +1772,31 @@
         window.addEventListener('DOMContentLoaded', () => {
             syncFounderAvatar();
             renderFeed();
-            // Note: Firebase module loads daily reflection async and calls renderFeed() again when ready
+
+            // Realtime Sync from LuminaDB (Firestore)
+            const initRealtimeSync = () => {
+                if (window.LuminaDB) {
+                    // 1. Subscribe to Live Feed Posts
+                    window.LuminaDB.subscribeToFeedPosts((cloudPosts) => {
+                        window.cloudFeedPosts = cloudPosts;
+                        renderFeed();
+                    });
+
+                    // 2. Subscribe to Cezary & Wioletta Profile Avatars
+                    window.LuminaDB.subscribeToProfile('cezaryrgowski', (p) => {
+                        if (p && p.avatar && document.getElementById('founderBarAvatar')) {
+                            document.getElementById('founderBarAvatar').src = p.avatar;
+                        }
+                        renderFeed();
+                    });
+                    window.LuminaDB.subscribeToProfile('wiolettarogowska', () => {
+                        renderFeed();
+                    });
+                } else {
+                    setTimeout(initRealtimeSync, 300);
+                }
+            };
+            initRealtimeSync();
         });
         window.addEventListener('storage', () => {
             syncFounderAvatar();
