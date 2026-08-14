@@ -1038,7 +1038,7 @@
             <div class="cover-overlay"></div>
             
             <div class="cover-actions-group">
-                <button class="btn-change-cover" onclick="document.getElementById('coverFileInput').click()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
+                <button class="btn-change-cover" onclick="triggerCoverUpload()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
                 <button class="btn-change-cover" onclick="toggleCoverRepositionToolbar()"><i class="fa-solid fa-arrows-up-down"></i> Ustaw Kadr / Wycentruj</button>
             </div>
 
@@ -1064,7 +1064,7 @@
             <div class="profile-head-top">
                 <div class="avatar-wrap">
                     <img src="avatar_new1.jpg" alt="Cezary Rogowski" class="avatar-img" id="avatarImgEl">
-                    <button class="avatar-edit-overlay" onclick="document.getElementById('avatarFileInput').click()" title="Wgraj nowe zdjęcie profilowe z dysku"><i class="fa-solid fa-camera"></i></button>
+                    <button class="avatar-edit-overlay" onclick="triggerAvatarUpload()" title="Wgraj nowe zdjęcie profilowe z dysku"><i class="fa-solid fa-camera"></i></button>
                     <div class="avatar-status-badge" title="Użytkownik Online"></div>
                 </div>
 
@@ -1175,7 +1175,7 @@
                 <div class="sidebar-card">
                     <div class="card-title">
                         <span>Zdjęcia</span>
-                        <button class="card-edit-btn" onclick="document.getElementById('galleryFileInput').click()" title="Wgraj nowe zdjęcie z dysku"><i class="fa-solid fa-plus"></i></button>
+                        <button class="card-edit-btn" onclick="triggerGalleryUpload()" title="Wgraj nowe zdjęcie z dysku"><i class="fa-solid fa-plus"></i></button>
                     </div>
                     <div class="photo-grid-mini" id="miniPhotoGrid">
                         <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" id="miniPhoto1" onclick="showToast('Podgląd zdjęcia')">
@@ -1196,7 +1196,7 @@
                     <div class="feed-composer">
                         <div class="composer-top">
                             <img src="avatar_new1.jpg" alt="Cezary" class="composer-avatar" id="myComposerAvatar">
-                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną...">
+                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onfocus="if(!isOwnerMode) requestOwnerAccess(()=>document.getElementById('composerInput').focus())">
                         </div>
 
                         <!-- Post Image Attachment Preview -->
@@ -1206,7 +1206,7 @@
                         </div>
 
                         <div class="composer-actions">
-                            <button class="composer-btn-attach" onclick="document.getElementById('postImageFileInput').click()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Dołącz Grafikę do Posta</button>
+                            <button class="composer-btn-attach" onclick="triggerPostImageUpload()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Dołącz Grafikę do Posta</button>
                             <button class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Dodaj Werset</button>
                             <button class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-share"></i> Opublikuj</button>
                         </div>
@@ -1246,7 +1246,7 @@
                             <div class="post-content">
                                 „Nie troszczcie się zbytnio o jutro, albowiem jutrzejszy dzień sam o siebie troszczyć się będzie.” (Mt 6, 34). Niech ten werset przyniesie Wam dzisiaj pokój serca i siłę do działania! 🙏
                             </div>
-                            <img src="lumina_hero_main.jpg" alt="Banner" class="post-image">
+                            <img src="lumina_hero_main.jpg" alt="Wschód Słońca" class="post-image">
                             <div class="post-footer">
                                 <button class="post-action-btn liked" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">34</span> Polubień</button>
                                 <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
@@ -1273,7 +1273,7 @@
                     <div class="sidebar-card">
                         <div class="card-title">
                             <span>Albumy i Zdjęcia</span>
-                            <button class="card-edit-btn" onclick="document.getElementById('galleryFileInput').click()" title="Wgraj nowe zdjęcie do galerii"><i class="fa-solid fa-plus"></i></button>
+                            <button class="card-edit-btn" onclick="triggerGalleryUpload()" title="Wgraj nowe zdjęcie do galerii"><i class="fa-solid fa-plus"></i></button>
                         </div>
                         <div class="photo-grid-mini" id="fullPhotoGrid" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px;">
                         </div>
@@ -1825,9 +1825,30 @@
             reader.readAsDataURL(file);
         }
 
+        // ── Direct Protected Upload Triggers (Strict PIN Check Before File Dialog) ──
+        function triggerCoverUpload() {
+            if (!requestOwnerAccess(triggerCoverUpload)) return;
+            document.getElementById('coverFileInput').click();
+        }
+
+        function triggerAvatarUpload() {
+            if (!requestOwnerAccess(triggerAvatarUpload)) return;
+            document.getElementById('avatarFileInput').click();
+        }
+
+        function triggerGalleryUpload() {
+            if (!requestOwnerAccess(triggerGalleryUpload)) return;
+            document.getElementById('galleryFileInput').click();
+        }
+
+        function triggerPostImageUpload() {
+            if (!requestOwnerAccess(triggerPostImageUpload)) return;
+            document.getElementById('postImageFileInput').click();
+        }
+
         // File Upload Handlers (Compressed & Safe LocalStorage Persistence)
         function handleAvatarFileSelect(e) {
-            if (!requestOwnerAccess(() => document.getElementById('avatarFileInput').click())) return;
+            if (!requestOwnerAccess(triggerAvatarUpload)) return;
             const file = e.target.files[0];
             if (!file) return;
             showToast('Przetwarzanie zdjęcia profilowego... ⏳');
