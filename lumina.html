@@ -1224,20 +1224,37 @@
             <button class="carousel-btn left" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="profiles-grid" id="profilesCarousel">
 
-                <!-- Cezary Rogowski / Twój Profil (Zawsze na początku) -->
+                <!-- Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
                 <div class="profile-card featured" id="my_saved_profile_card" onclick="window.location.href='lumina.cezaryrgowski.html'">
                     <div class="card-photo">
                         <img src="avatar_new1.jpg" alt="Cezary Rogowski" id="homeUserAvatar" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #10b981, #06b6d4); font-size: 0.72rem; width: auto; padding: 0 10px; border-radius: 20px; right: 12px; bottom: -14px;">Twój Profil ✨</div>
+                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706); font-size: 0.72rem; width: auto; padding: 0 10px; border-radius: 20px; right: 12px; bottom: -14px;">Założyciel CC ✨</div>
                     </div>
                     <div class="card-body">
                         <div class="card-name" style="display:flex;align-items:center;gap:6px;">
                             <span id="homeUserName">Cezary Rogowski, 32</span>
-                            <i class="fa-solid fa-circle-check" style="color:#38bdf8;font-size:0.85rem;" title="Zweryfikowany Profil"></i>
+                            <i class="fa-solid fa-circle-check" style="color:#38bdf8;font-size:0.85rem;" title="Zweryfikowany Założyciel"></i>
                         </div>
-                        <div class="card-city" id="homeUserCity">📍 Warszawa, Polska</div>
-                        <div class="card-desc" id="homeUserDesc">"Twórca & Wizjoner Christian Culture. Ja i mój dom służyć będziemy Panu."</div>
+                        <div class="card-city" id="homeUserCity">📍 Warszawa, Polska • <b>Żonaty</b></div>
+                        <div class="card-desc" id="homeUserDesc">"Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu."</div>
+                    </div>
+                </div>
+
+                <!-- Wioletta Rogowska / Współzałożycielka Christian Culture (Mężatka) -->
+                <div class="profile-card featured" onclick="window.location.href='lumina.wiolettarogowska.html'">
+                    <div class="card-photo">
+                        <img src="lumina_anna2.jpg" alt="Wioletta Rogowska" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f472b6); font-size: 0.72rem; width: auto; padding: 0 10px; border-radius: 20px; right: 12px; bottom: -14px;">Współzałożycielka 💕</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            <span>Wioletta Rogowska, 30</span>
+                            <i class="fa-solid fa-circle-check" style="color:#f472b6;font-size:0.85rem;" title="Zweryfikowana Współzałożycielka"></i>
+                        </div>
+                        <div class="card-city">📍 Warszawa, Polska • <b>Mężatka</b></div>
+                        <div class="card-desc">"Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
                     </div>
                 </div>
 
@@ -1809,14 +1826,17 @@
             if (fullLink) {
                 const lowerName = (name || '').toLowerCase();
                 let slug = 'cezaryrgowski';
-                if (lowerName.includes('noemi')) slug = 'noemi';
+                if (lowerName.includes('wioletta')) slug = 'wiolettarogowska';
+                else if (lowerName.includes('noemi')) slug = 'noemi';
                 else if (lowerName.includes('dawid')) slug = 'dawid';
                 else if (lowerName.includes('weronika')) slug = 'weronika';
                 else if (lowerName.includes('tomek')) slug = 'tomek';
                 else if (lowerName.includes('anna')) slug = 'anna';
                 else if (lowerName.includes('cezary')) slug = 'cezaryrgowski';
 
-                fullLink.href = (slug === 'cezaryrgowski') ? 'lumina.cezaryrgowski.html' : `lumina-profile.html?u=${slug}`;
+                if (slug === 'cezaryrgowski') fullLink.href = 'lumina.cezaryrgowski.html';
+                else if (slug === 'wiolettarogowska') fullLink.href = 'lumina.wiolettarogowska.html';
+                else fullLink.href = `lumina-profile.html?u=${slug}`;
             }
 
             document.getElementById('profileModal').classList.add('open');

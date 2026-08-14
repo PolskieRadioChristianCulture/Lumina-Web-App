@@ -1,169 +1,211 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-Y4EFTVBPE3');
-    </script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title id="pageTitle">Profil Użytkownika – LUMINA | Christian Culture</title>
-    <meta name="description" content="Profil na portalu randkowym LUMINA. Odkryj wartościowe relacje oparte na wierze i zaufaniu.">
-    <link rel="icon" type="image/png" href="lumina_icon.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Wioletta Rogowska – Współzałożycielka Christian Culture | Profil LUMINA</title>
+    
+    <!-- Meta SEO & Social Sharing -->
+    <meta name="description" content="Oficjalny profil Wioletty Rogowskiej – Współzałożycielki Christian Culture w portalu relacji chrześcijańskich LUMINA.">
+    <meta name="theme-color" content="#0b1838">
+    <meta property="og:title" content="Wioletta Rogowska – Współzałożycielka Christian Culture | LUMINA">
+    <meta property="og:description" content="Oficjalny profil Wioletty Rogowskiej – Współzałożycielki Christian Culture w portalu LUMINA.">
+    <meta property="og:image" content="lumina_anna2.jpg">
+    <meta property="og:type" content="profile">
 
+    <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
         :root {
-            --navy-deep: #0b1838;
-            --navy-surface: #0f1d44;
-            --navy-card: #152554;
-            --purple-glow: #a855f7;
-            --cyan-glow: #06b6d4;
+            --navy-dark: #070e24;
+            --navy-surface: #0b1838;
+            --navy-card: #112350;
+            --navy-border: rgba(255, 255, 255, 0.12);
             --gold-accent: #facc15;
+            --gold-glow: rgba(250, 204, 21, 0.4);
+            --pink-accent: #f472b6;
+            --pink-glow: rgba(244, 114, 182, 0.4);
+            --purple-glow: #a855f7;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --radius-lg: 20px;
             --radius-md: 14px;
         }
 
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--navy-deep);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        /* ──────────────────── NAVBAR ──────────────────── */
-        .lumina-nav {
+        body {
+            background-color: var(--navy-dark);
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Top Navbar ── */
+        .profile-navbar {
             position: sticky;
             top: 0;
             z-index: 100;
+            background: rgba(7, 14, 36, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--navy-border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 48px;
-            background: #ffffff;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            padding: 12px 28px;
+            gap: 16px;
         }
 
-        .nav-logo-text {
-            font-size: 1.35rem;
-            font-weight: 800;
-            letter-spacing: 1.2px;
-            color: #1e293b;
-            text-decoration: none;
+        .nav-logo-wrap {
             display: flex;
             align-items: center;
             gap: 10px;
+            text-decoration: none;
         }
 
-        .nav-links {
+        .nav-logo-badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--pink-accent);
+            box-shadow: 0 0 12px var(--pink-glow);
+        }
+
+        .nav-brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.35rem;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #fff 40%, var(--pink-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-center-links {
             display: flex;
             align-items: center;
-            gap: 28px;
+            gap: 20px;
         }
 
         .nav-link {
-            background: none;
-            border: none;
-            color: #475569;
-            font-size: 0.92rem;
-            font-weight: 600;
-            cursor: pointer;
-            font-family: inherit;
-            transition: color 0.2s;
+            color: var(--text-secondary);
             text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: all 0.2s;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
         }
-        .nav-link:hover, .nav-link.active { color: #2563eb; }
+        .nav-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+        }
 
-        /* Mini Radio Pill in Navbar */
+        .btn-nav-back {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-nav-back:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateX(-2px);
+        }
+
+        /* Mini Radio Player in Navbar */
         .nav-radio-pill {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: linear-gradient(135deg, #fffbeb, #fef3c7);
-            border: 1px solid #fde047;
-            padding: 5px 12px 5px 8px;
+            background: rgba(17, 35, 80, 0.8);
+            border: 1px solid rgba(244, 114, 182, 0.35);
+            padding: 5px 12px;
             border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(250, 204, 21, 0.2);
-            transition: transform 0.2s;
+            transition: all 0.2s;
         }
-        .nav-radio-pill:hover { transform: scale(1.03); }
+        .nav-radio-pill:hover {
+            border-color: var(--pink-accent);
+            box-shadow: 0 0 15px var(--pink-glow);
+        }
         .nav-radio-play {
-            width: 26px; height: 26px; border-radius: 50%;
-            background: #eab308; color: #fff; border: none;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.75rem; cursor: pointer;
-        }
-        .nav-radio-info { display: flex; flex-direction: column; text-align: left; }
-        .nav-radio-title { font-size: 0.76rem; font-weight: 800; color: #78350f; line-height: 1.1; }
-        .nav-radio-sub { font-size: 0.62rem; color: #b45309; }
-
-        .btn-nav-back {
-            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--pink-accent), #ec4899);
             color: #fff;
-            border: none;
-            padding: 9px 20px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-family: inherit;
-            text-decoration: none;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 7px;
-            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
+            justify-content: center;
+            font-size: 0.72rem;
+            border: none;
         }
-        .btn-nav-back:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); }
-
-        @media (max-width: 900px) {
-            .lumina-nav { padding: 10px 16px; }
-            .nav-links { display: none; }
-            .nav-radio-sub { display: none; }
+        .nav-radio-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+        .nav-radio-title {
+            font-size: 0.76rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .nav-radio-sub {
+            font-size: 0.65rem;
+            color: var(--pink-accent);
         }
 
-        /* ──────────────────── PROFILE HERO / HEADER (FACEBOOK STYLE) ──────────────────── */
+        /* ── Profile Container ── */
         .profile-container {
-            max-width: 1060px;
+            max-width: 1160px;
             margin: 0 auto;
-            padding: 0 16px 80px;
+            padding: 0 16px 60px;
         }
 
+        /* Cover Banner */
         .cover-wrapper {
             position: relative;
             width: 100%;
             height: 310px;
-            background: linear-gradient(135deg, #1e1b4b, #312e81, #0f172a);
             border-radius: 0 0 24px 24px;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
         }
 
         .cover-photo {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 35%;
-            filter: brightness(0.92);
-            transition: transform 0.5s ease;
+            display: block;
         }
 
         .cover-overlay {
@@ -220,7 +262,7 @@
             height: 150px;
             border-radius: 50%;
             border: 5px solid var(--navy-surface);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(168, 85, 247, 0.35);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px var(--pink-glow);
             background: #1e293b;
             flex-shrink: 0;
             margin-top: -75px;
@@ -270,11 +312,11 @@
             flex-shrink: 0;
         }
         .card-edit-btn:hover {
-            background: linear-gradient(135deg, #a855f7, #06b6d4);
+            background: linear-gradient(135deg, #ec4899, #facc15);
             color: #fff;
             border-color: transparent;
             transform: scale(1.12);
-            box-shadow: 0 0 14px rgba(168, 85, 247, 0.6);
+            box-shadow: 0 0 14px rgba(244, 114, 182, 0.6);
         }
 
         .avatar-status-badge {
@@ -302,24 +344,23 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #fff;
             font-family: 'Outfit', sans-serif;
         }
 
         .verified-badge {
-            color: #38bdf8;
-            font-size: 1.2rem;
-            filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
+            color: #f472b6;
+            font-size: 1.25rem;
+            filter: drop-shadow(0 0 6px rgba(244, 114, 182, 0.6));
         }
 
         .head-user-tagline {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
             display: flex;
             align-items: center;
+            gap: 16px;
+            margin-top: 6px;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
             flex-wrap: wrap;
-            gap: 14px;
         }
         .head-user-tagline span { display: inline-flex; align-items: center; gap: 5px; }
 
@@ -332,7 +373,7 @@
         }
 
         .btn-action-primary {
-            background: linear-gradient(90deg, #d946ef, #0ea5e9);
+            background: linear-gradient(90deg, #ec4899, #f472b6);
             color: #fff;
             border: none;
             padding: 12px 24px;
@@ -344,12 +385,12 @@
             align-items: center;
             gap: 8px;
             font-family: inherit;
-            box-shadow: 0 4px 18px rgba(217, 70, 239, 0.4);
+            box-shadow: 0 4px 18px rgba(236, 72, 153, 0.4);
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .btn-action-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(217, 70, 239, 0.6);
+            box-shadow: 0 6px 25px rgba(236, 72, 153, 0.6);
         }
 
         .btn-action-secondary {
@@ -410,32 +451,23 @@
             color: var(--text-secondary);
             font-size: 0.92rem;
             font-weight: 700;
-            padding: 8px 4px 12px;
+            padding: 10px 4px;
             cursor: pointer;
-            font-family: inherit;
-            position: relative;
-            white-space: nowrap;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: color 0.2s;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+            font-family: inherit;
         }
         .tab-btn:hover { color: #fff; }
         .tab-btn.active {
-            color: #38bdf8;
-        }
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #d946ef, #0ea5e9);
-            border-radius: 3px;
+            color: var(--pink-accent);
+            border-bottom-color: var(--pink-accent);
         }
 
-        /* ──────────────────── MAIN 2-COLUMN LAYOUT ──────────────────── */
+        /* ── Profile Body Grid (2 Columns: Sidebar & Timeline) ── */
         .profile-body-grid {
             display: grid;
             grid-template-columns: 360px 1fr;
@@ -444,12 +476,9 @@
         }
 
         @media (max-width: 900px) {
-            .profile-body-grid {
-                grid-template-columns: 1fr;
-            }
-            .cover-wrapper { height: 210px; }
-            .avatar-wrap { width: 110px; height: 110px; margin-top: -55px; }
-            .profile-head-card { padding: 0 18px 20px; }
+            .profile-body-grid { grid-template-columns: 1fr; }
+            .cover-wrapper { height: 220px; }
+            .profile-head-card { padding: 0 20px 20px; }
             .head-user-name { font-size: 1.5rem; }
         }
 
@@ -459,18 +488,19 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: var(--radius-lg);
             padding: 22px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
         }
 
         .card-title {
-            font-size: 1.05rem;
-            font-weight: 800;
-            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
             margin-bottom: 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            color: #fff;
         }
         .card-title i { color: var(--gold-accent); }
 
@@ -489,7 +519,7 @@
         }
         .info-row i {
             width: 20px;
-            color: #38bdf8;
+            color: var(--pink-accent);
             margin-top: 2px;
             font-size: 1rem;
         }
@@ -498,8 +528,8 @@
 
         /* Scripture Card in Sidebar */
         .verse-box {
-            background: linear-gradient(145deg, rgba(250, 204, 21, 0.08) 0%, rgba(168, 85, 247, 0.05) 100%);
-            border: 1px solid rgba(250, 204, 21, 0.3);
+            background: linear-gradient(145deg, rgba(244, 114, 182, 0.08) 0%, rgba(250, 204, 21, 0.06) 100%);
+            border: 1px solid rgba(244, 114, 182, 0.35);
             border-radius: var(--radius-md);
             padding: 16px;
             margin-top: 10px;
@@ -509,7 +539,7 @@
             font-size: 0.86rem;
             font-style: italic;
             line-height: 1.5;
-            color: #fef08a;
+            color: #fdf2f8;
             margin-bottom: 6px;
         }
         .verse-ref {
@@ -589,7 +619,7 @@
             outline: none;
             transition: border-color 0.2s;
         }
-        .composer-input:focus { border-color: var(--purple-glow); }
+        .composer-input:focus { border-color: var(--pink-accent); }
 
         .composer-actions {
             display: flex;
@@ -612,7 +642,7 @@
         }
         .composer-btn-attach:hover { color: #fff; }
         .composer-btn-publish {
-            background: linear-gradient(90deg, #a855f7, #3b82f6);
+            background: linear-gradient(90deg, #ec4899, #f472b6);
             color: #fff;
             border: none;
             padding: 8px 20px;
@@ -634,7 +664,7 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
             transition: border-color 0.2s;
         }
-        .post-card:hover { border-color: rgba(168, 85, 247, 0.3); }
+        .post-card:hover { border-color: rgba(244, 114, 182, 0.3); }
 
         .post-header {
             display: flex;
@@ -667,16 +697,16 @@
 
         .post-image {
             width: 100%;
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             margin-bottom: 14px;
-            max-height: 420px;
+            max-height: 380px;
             object-fit: cover;
         }
 
         .post-footer {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 14px;
             padding-top: 12px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
         }
@@ -684,81 +714,111 @@
             background: none;
             border: none;
             color: var(--text-secondary);
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 0.84rem;
+            font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 6px;
             padding: 6px 12px;
-            border-radius: 12px;
+            border-radius: 20px;
             transition: all 0.2s;
+            font-family: inherit;
         }
-        .post-action-btn:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
-        .post-action-btn.liked { color: #f43f5e; }
-        .post-action-btn.amen { color: #facc15; }
+        .post-action-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .post-action-btn.liked {
+            color: #f43f5e;
+        }
+        .post-action-btn.amen-active {
+            color: var(--gold-accent);
+        }
 
-        /* ──────────────────── MODAL / DIALOG ──────────────────── */
+        /* ── Modals ── */
         .modal-overlay {
-            position: fixed; inset: 0; z-index: 9999;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(14px);
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.25s;
-            padding: 16px;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
-        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .modal-overlay.open { display: flex; }
 
         .modal-card {
-            background: #0f1a3d;
-            border: 1px solid rgba(168,85,247,0.35);
-            border-radius: 20px;
+            background: var(--navy-card);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 520px;
             padding: 28px;
-            max-width: 480px; width: 100%;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
             position: relative;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.7);
-            max-height: 90vh;
-            overflow-y: auto;
         }
 
         .modal-close-btn {
-            position: absolute; top: 14px; right: 14px;
-            width: 30px; height: 30px; border-radius: 50%;
-            background: rgba(255,255,255,0.1); border: none;
-            color: #fff; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
+        /* Toast Notifications */
         .toast {
-            position: fixed; bottom: 28px; right: 28px;
-            background: linear-gradient(90deg, #a855f7, #06b6d4);
-            color: #fff; padding: 12px 22px;
-            border-radius: 30px; font-weight: 700; font-size: 0.87rem;
-            display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 8px 28px rgba(168,85,247,0.5);
-            z-index: 99999;
-            transform: translateY(100px); opacity: 0;
-            transition: transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275), opacity 0.3s;
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: rgba(17, 35, 80, 0.95);
+            border: 1px solid var(--pink-accent);
+            color: #fff;
+            padding: 12px 22px;
+            border-radius: 30px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px var(--pink-glow);
+            z-index: 2000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Audio Player for Radio Christian Culture -->
+    <!-- Audio Player for Radio CC -->
     <audio id="ccRadioAudio" preload="none"></audio>
 
-    <!-- ══════════ NAVBAR ══════════ -->
-    <nav class="lumina-nav">
-        <a href="lumina.html" class="nav-logo-text">
-            <img src="lumina_icon.jpg" alt="LUMINA Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
-            <span>LUMINA</span>
+    <!-- ── Top Navbar ── -->
+    <nav class="profile-navbar">
+        <a href="lumina.html" class="nav-logo-wrap">
+            <img src="lumina_icon.jpg" alt="LUMINA Logo" class="nav-logo-badge">
+            <span class="nav-brand-title">LUMINA</span>
         </a>
 
-        <div class="nav-links">
+        <div class="nav-center-links">
             <a href="lumina.html" class="nav-link"><i class="fa-solid fa-compass"></i> Odkrywaj</a>
-            <button class="nav-link" onclick="showToast('Skrzynka wiadomości – napisz wiadomość!')"><i class="fa-solid fa-comments"></i> Wiadomości</button>
+            <a href="lumina.cezaryrgowski.html" class="nav-link" style="color:#60a5fa; font-weight:700;"><i class="fa-solid fa-heart"></i> Profil Męża (Cezary)</a>
             <a href="index.html" class="nav-link"><i class="fa-solid fa-radio"></i> Radio CC</a>
         </div>
 
@@ -796,26 +856,26 @@
         <section class="profile-head-card">
             <div class="profile-head-top">
                 <div class="avatar-wrap">
-                    <img src="avatar_new1.jpg" alt="Avatar" class="avatar-img" id="avatarImgEl">
+                    <img src="lumina_anna2.jpg" alt="Wioletta Rogowska" class="avatar-img" id="avatarImgEl">
                     <button class="avatar-edit-overlay" onclick="document.getElementById('avatarFileInput').click()" title="Wgraj nowe zdjęcie profilowe z dysku"><i class="fa-solid fa-camera"></i></button>
                     <div class="avatar-status-badge" title="Użytkownik Online"></div>
                 </div>
 
                 <div class="head-user-details">
                     <h1 class="head-user-name">
-                        <span id="userNameEl">Cezary Rogowski</span>
+                        <span id="userNameEl">Wioletta Rogowska</span>
                         <i class="fa-solid fa-circle-check verified-badge" title="Zweryfikowany Profil Chrześcijański"></i>
                         <button class="card-edit-btn" onclick="openEditProfileModal('info')" title="Edytuj Imię i Wiek"><i class="fa-solid fa-pencil"></i></button>
                     </h1>
                     <div class="head-user-tagline">
                         <span id="userAgeCityEl"><i class="fa-solid fa-location-dot"></i> Warszawa, Polska</span>
-                        <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijanin</span>
-                        <span id="userMatchEl" style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: 98%</span>
+                        <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijanka</span>
+                        <span id="userMatchEl" style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-heart-pulse"></i> Małżeństwo Sakramentalne 💕</span>
                     </div>
                 </div>
 
                 <div class="head-actions">
-                    <button class="btn-action-primary" style="background: linear-gradient(90deg, #3b82f6, #06b6d4); box-shadow: 0 4px 18px rgba(6, 182, 212, 0.4);" onclick="openEditProfileModal()"><i class="fa-solid fa-pen-to-square"></i> Edytuj Mój Profil</button>
+                    <button class="btn-action-primary" style="background: linear-gradient(90deg, #ec4899, #f472b6); box-shadow: 0 4px 18px rgba(236, 72, 153, 0.4);" onclick="openEditProfileModal()"><i class="fa-solid fa-pen-to-square"></i> Edytuj Mój Profil</button>
                     <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Wiadomość</button>
                     <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> Kawa ☕</button>
                     <button class="btn-action-heart" id="btnHeartLike" onclick="toggleProfileHeart(this)" title="Polub Profil"><i class="fa-solid fa-heart"></i></button>
@@ -848,8 +908,8 @@
                         <div class="info-row">
                             <i class="fa-solid fa-briefcase"></i>
                             <div>
-                                <span class="info-label">Zawód & Pasja</span>
-                                <span class="info-val" id="userJobEl">Twórca & Wizjoner Christian Culture</span>
+                                <span class="info-label">Rola & Powołanie</span>
+                                <span class="info-val" id="userJobEl" style="color:#f472b6; font-weight:800;">Współzałożycielka Christian Culture</span>
                             </div>
                         </div>
                         <div class="info-row">
@@ -860,17 +920,17 @@
                             </div>
                         </div>
                         <div class="info-row">
-                            <i class="fa-solid fa-ring"></i>
+                            <i class="fa-solid fa-ring" style="color:#ec4899;"></i>
                             <div>
                                 <span class="info-label">Stan Cywilny</span>
-                                <span class="info-val">Kawaler / Szuka żony</span>
+                                <span class="info-val" id="userStatusEl" style="color:#fff; font-weight:700;">Mężatka • Mąż: <a href="lumina.cezaryrgowski.html" style="color: #60a5fa; font-weight: 800; text-decoration: underline;">Cezary Rogowski 💕</a></span>
                             </div>
                         </div>
                         <div class="info-row">
                             <i class="fa-solid fa-bullseye"></i>
                             <div>
                                 <span class="info-label">Cel w LUMINA</span>
-                                <span class="info-val">Budowanie trwałego małżeństwa opartego na Chrystusie</span>
+                                <span class="info-val" id="userGoalEl">Wspólna posługa z mężem Cezarym, budowanie Królestwa Bożego i rodziny opartej na Chrystusie</span>
                             </div>
                         </div>
                     </div>
@@ -883,8 +943,8 @@
                         <button class="card-edit-btn" onclick="openEditProfileModal('verse')" title="Edytuj werset"><i class="fa-solid fa-pencil"></i></button>
                     </div>
                     <div class="verse-box">
-                        <div class="verse-text" id="userVerseText">„Ja i mój dom służyć będziemy Panu.”</div>
-                        <div class="verse-ref" id="userVerseRef">— Księga Jozuego 24, 15</div>
+                        <div class="verse-text" id="userVerseText">„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły. Serce jej męża ufa jej i nie brak mu zysku.”</div>
+                        <div class="verse-ref" id="userVerseRef">— Księga Przysłów 31, 10-11</div>
                     </div>
                 </div>
 
@@ -895,12 +955,12 @@
                         <button class="card-edit-btn" onclick="openEditProfileModal('tags')" title="Edytuj zainteresowania"><i class="fa-solid fa-pencil"></i></button>
                     </div>
                     <div class="tag-cloud" id="userTagsEl">
+                        <span class="tag-chip"><i class="fa-solid fa-heart"></i> Rodzina & Małżeństwo</span>
                         <span class="tag-chip"><i class="fa-solid fa-guitar"></i> Muzyka Uwielbienia</span>
-                        <span class="tag-chip"><i class="fa-solid fa-mountain"></i> Wędrówki Górskie</span>
                         <span class="tag-chip"><i class="fa-solid fa-book"></i> Pismo Święte</span>
-                        <span class="tag-chip"><i class="fa-solid fa-microphone"></i> Ewangelizacja</span>
-                        <span class="tag-chip"><i class="fa-solid fa-laptop-code"></i> Nowe Technologie</span>
-                        <span class="tag-chip"><i class="fa-solid fa-mug-saucer"></i> Głębokie Rozmowy</span>
+                        <span class="tag-chip"><i class="fa-solid fa-radio"></i> Radio CC</span>
+                        <span class="tag-chip"><i class="fa-solid fa-dove"></i> Ewangelizacja</span>
+                        <span class="tag-chip"><i class="fa-solid fa-mug-saucer"></i> Głębokie Relacje</span>
                     </div>
                 </div>
 
@@ -911,9 +971,9 @@
                         <button class="card-edit-btn" onclick="document.getElementById('avatarFileInput').click()" title="Wgraj nowe zdjęcie z dysku"><i class="fa-solid fa-plus"></i></button>
                     </div>
                     <div class="photo-grid-mini" id="userPhotosMini">
-                        <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" id="miniPhoto1" onclick="openPhotoView(this.src)">
-                        <img src="avatar_widget_tomek.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoView(this.src)">
-                        <img src="lumina_hero_main.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoView(this.src)">
+                        <img src="lumina_anna2.jpg" alt="Photo" class="photo-thumb" id="miniPhoto1" onclick="showToast('Podgląd zdjęcia')">
+                        <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" onclick="showToast('Podgląd zdjęcia')">
+                        <img src="lumina_hero_main.jpg" alt="Photo" class="photo-thumb" onclick="showToast('Podgląd zdjęcia')">
                     </div>
                 </div>
 
@@ -928,7 +988,7 @@
                     <!-- Composer -->
                     <div class="feed-composer">
                         <div class="composer-top">
-                            <img src="avatar_new1.jpg" alt="You" class="composer-avatar" id="myComposerAvatar">
+                            <img src="lumina_anna2.jpg" alt="Wioletta" class="composer-avatar" id="myComposerAvatar">
                             <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną...">
                         </div>
                         <div class="composer-actions">
@@ -944,17 +1004,17 @@
                         <!-- Post 1 -->
                         <article class="post-card">
                             <div class="post-header">
-                                <img src="avatar_new1.jpg" alt="Author" class="post-avatar" id="postAvatar1">
+                                <img src="lumina_anna2.jpg" alt="Wioletta" class="post-avatar" id="postAvatar1">
                                 <div>
-                                    <div class="post-author" id="postAuthor1">Cezary Rogowski</div>
-                                    <div class="post-time">Dzisiaj, 18:30 • 🌍 Publiczny</div>
+                                    <div class="post-author" id="postAuthor1">Wioletta Rogowska</div>
+                                    <div class="post-time">Dzisiaj, 19:15 • 🌍 Publiczny</div>
                                 </div>
                             </div>
                             <div class="post-content">
-                                Witaj na moim profilu w LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku. Szukam bratniej duszy, z którą będziemy wspólnie służyć, modlić się i budować dom pełen pokoju i Bożej miłości. Zapraszam do rozmowy! ☕✨
+                                Witaj w LUMINA! Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień. Niech ten portal będzie dla Was miejscem spotkania z Bogiem i bratnią duszą! 💕✨
                             </div>
                             <div class="post-footer">
-                                <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">14</span> Polubień</button>
+                                <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">38</span> Polubień</button>
                                 <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
                                 <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i> Napisz</button>
                             </div>
@@ -963,18 +1023,18 @@
                         <!-- Post 2 -->
                         <article class="post-card">
                             <div class="post-header">
-                                <img src="avatar_new1.jpg" alt="Author" class="post-avatar" id="postAvatar2">
+                                <img src="lumina_anna2.jpg" alt="Wioletta" class="post-avatar" id="postAvatar2">
                                 <div>
-                                    <div class="post-author" id="postAuthor2">Cezary Rogowski</div>
-                                    <div class="post-time">Wczoraj, 21:15 • 📖 Rozważanie</div>
+                                    <div class="post-author" id="postAuthor2">Wioletta Rogowska</div>
+                                    <div class="post-time">Wczoraj, 20:40 • 📖 Słowo Życia</div>
                                 </div>
                             </div>
                             <div class="post-content">
-                                „Nie troszczcie się zbytnio o jutro, albowiem jutrzejszy dzień sam o siebie troszczyć się będzie.” (Mt 6, 34). Niech ten werset przyniesie Wam dzisiaj pokój serca! 🙏
+                                „Przede wszystkim miejcie gorącą miłość jedni ku drugim, bo miłość zakrywa mnóstwo grzechów.” (1 P 4, 8). Błogosławionego wieczoru dla każdego z Was! 🙏
                             </div>
                             <img src="lumina_hero_main.jpg" alt="Banner" class="post-image">
                             <div class="post-footer">
-                                <button class="post-action-btn liked" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">28</span> Polubień</button>
+                                <button class="post-action-btn liked" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">52</span> Polubień</button>
                                 <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
                                 <button class="post-action-btn" onclick="showToast('Udostępniono wpis na Twojej tablicy!')"><i class="fa-solid fa-share"></i> Udostępnij</button>
                             </div>
@@ -991,7 +1051,7 @@
                             <button class="card-edit-btn" onclick="openEditProfileModal('bio')" title="Edytuj świadectwo"><i class="fa-solid fa-pencil"></i></button>
                         </div>
                         <p style="font-size:0.93rem; line-height:1.65; color:#cbd5e1;" id="userBioFull">
-                            Moja relacja z Bogiem to fundament każdego dnia. Odkryłem, że prawdziwa radość i pokój pochodzą z zaufania Jego planom. W życiu codziennym łączę pasję do ewangelizacji, tworzenia mediów chrześcijańskich i technologii. Szukam partnerki, która kocha Boga całym sercem, ceni szczerość, poczucie humoru i chce wspólnie iść drogą uświęcenia.
+                            Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej, kochającej się rodziny zakorzenionej w Bogu, wspólnej modlitwy i niesienia Dobrej Nowiny. Wierzę, że miłość małżeńska jest żywym odzwierciedleniem wierności Chrystusa i najpiękniejszą drogą do uświęcenia.
                         </p>
                     </div>
                 </div>
@@ -1003,10 +1063,10 @@
                             <span>Albumy i Zdjęcia</span>
                             <button class="card-edit-btn" onclick="document.getElementById('avatarFileInput').click()" title="Wgraj nowe zdjęcie z dysku"><i class="fa-solid fa-plus"></i></button>
                         </div>
-                        <div class="photo-grid-mini" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px;" id="userPhotosFull">
-                            <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" id="fullPhoto1" style="height:180px; border-radius:14px;" onclick="openPhotoView(this.src)">
-                            <img src="avatar_widget_tomek.jpg" alt="Photo" class="photo-thumb" style="height:180px; border-radius:14px;" onclick="openPhotoView(this.src)">
-                            <img src="lumina_hero_main.jpg" alt="Photo" class="photo-thumb" style="height:180px; border-radius:14px;" onclick="openPhotoView(this.src)">
+                        <div class="photo-grid-mini" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px;">
+                            <img src="lumina_anna2.jpg" alt="Photo" class="photo-thumb" id="fullPhoto1" style="height:180px; border-radius:14px;" onclick="showToast('Podgląd zdjęcia')">
+                            <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" style="height:180px; border-radius:14px;" onclick="showToast('Podgląd zdjęcia')">
+                            <img src="lumina_hero_main.jpg" alt="Photo" class="photo-thumb" style="height:180px; border-radius:14px;" onclick="showToast('Podgląd zdjęcia')">
                         </div>
                     </div>
                 </div>
@@ -1019,9 +1079,9 @@
                             <button class="card-edit-btn" onclick="openEditProfileModal('faith')" title="Edytuj wartości"><i class="fa-solid fa-pencil"></i></button>
                         </div>
                         <div class="info-list" style="font-size:0.92rem;">
-                            <div class="info-row"><i class="fa-solid fa-heart" style="color:#ec4899;"></i><div><span class="info-label">Podejście do Małżeństwa:</span> Sakrament i przymierze na całe życie.</div></div>
-                            <div class="info-row"><i class="fa-solid fa-music" style="color:#a855f7;"></i><div><span class="info-label">Muzyka Duchowa:</span> Hillsong, Bethel, Polskie Uwielbienie, Biblia Śpiewana CC.</div></div>
-                            <div class="info-row"><i class="fa-solid fa-hands-holding-child" style="color:#06b6d4;"></i><div><span class="info-label">Wizja Rodziny:</span> Otwartość na dar życia, wychowanie w miłości i prawdzie Ewangelii.</div></div>
+                            <div class="info-row"><i class="fa-solid fa-heart" style="color:#ec4899;"></i><div><span class="info-label">Podejście do Małżeństwa:</span> Święty sakrament, przymierze miłości, wierności i wzajemnej służby na całe życie.</div></div>
+                            <div class="info-row"><i class="fa-solid fa-music" style="color:#a855f7;"></i><div><span class="info-label">Muzyka Duchowa:</span> Uwielbienie, Biblia Śpiewana CC, pieśni chwały i dziękczynienia.</div></div>
+                            <div class="info-row"><i class="fa-solid fa-hands-holding-child" style="color:#f472b6;"></i><div><span class="info-label">Wizja Rodziny:</span> Dom pełen ciepła, modlitwy, wzajemnego szacunku i otwartości na dar życia.</div></div>
                         </div>
                     </div>
                 </div>
@@ -1036,15 +1096,15 @@
     <div class="modal-overlay" id="editProfileModal">
         <div class="modal-card" style="max-width: 620px; max-height: 90vh; overflow-y: auto;">
             <button class="modal-close-btn" onclick="closeModal('editProfileModal')"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="font-size: 1.35rem; margin-bottom: 4px; font-family:'Outfit',sans-serif;"><i class="fa-solid fa-pen-to-square" style="color:#c084fc;"></i> Edytuj Swój Profil</h3>
+            <h3 style="font-size: 1.35rem; margin-bottom: 4px; font-family:'Outfit',sans-serif;"><i class="fa-solid fa-pen-to-square" style="color:#f472b6;"></i> Edytuj Swój Profil</h3>
             <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 18px;">Wprowadzone dane i wgrane zdjęcia są natychmiast widoczne na profilu i stronie głównej LUMINA.</p>
             
             <!-- Photo Upload Quick Controls -->
-            <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(168,85,247,0.4); border-radius: 14px; padding: 14px; margin-bottom: 18px;">
+            <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(244,114,182,0.4); border-radius: 14px; padding: 14px; margin-bottom: 18px;">
                 <div style="font-size: 0.82rem; font-weight: 700; color: #facc15; margin-bottom: 10px;"><i class="fa-solid fa-camera"></i> Wgraj Zdjęcia z Dysku / Telefonu:</div>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button type="button" onclick="document.getElementById('avatarFileInput').click()" style="flex: 1; min-width: 170px; padding: 10px 14px; border-radius: 10px; background: rgba(59,130,246,0.2); border: 1px solid #3b82f6; color: #fff; font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fa-solid fa-user-circle" style="color: #60a5fa; font-size: 1.1rem;"></i> Wgraj Zdjęcie Profilowe
+                    <button type="button" onclick="document.getElementById('avatarFileInput').click()" style="flex: 1; min-width: 170px; padding: 10px 14px; border-radius: 10px; background: rgba(236,72,153,0.2); border: 1px solid #ec4899; color: #fff; font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fa-solid fa-user-circle" style="color: #f472b6; font-size: 1.1rem;"></i> Wgraj Zdjęcie Profilowe
                     </button>
                     <button type="button" onclick="document.getElementById('coverFileInput').click()" style="flex: 1; min-width: 170px; padding: 10px 14px; border-radius: 10px; background: rgba(168,85,247,0.2); border: 1px solid #a855f7; color: #fff; font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
                         <i class="fa-solid fa-panorama" style="color: #c084fc; font-size: 1.1rem;"></i> Wgraj Zdjęcie w Tle
@@ -1071,13 +1131,13 @@
                     </div>
                     <div>
                         <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Wyznanie / Tradycja</label>
-                        <input type="text" id="editDenom" placeholder="np. Chrześcijanin / Katolik" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
+                        <input type="text" id="editDenom" placeholder="np. Chrześcijanka" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
                     </div>
                 </div>
 
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
                     <div>
-                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Zawód & Pasja</label>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Rola & Powołanie</label>
                         <input type="text" id="editJob" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
                     </div>
                     <div>
@@ -1089,7 +1149,7 @@
                 <div style="margin-bottom:12px;">
                     <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Przewodni Werset Życiowy</label>
                     <input type="text" id="editVerse" placeholder="Treść wersetu..." style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px; margin-bottom:6px;" required>
-                    <input type="text" id="editVerseRef" placeholder="Odnośnik, np. — Księga Jozuego 24, 15" style="width:100%; padding:8px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#facc15; font-family:inherit; font-size:14px; font-weight:700;" required>
+                    <input type="text" id="editVerseRef" placeholder="Odnośnik, np. — Księga Przysłów 31, 10-11" style="width:100%; padding:8px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#facc15; font-family:inherit; font-size:14px; font-weight:700;" required>
                 </div>
 
                 <div style="margin-bottom:12px;">
@@ -1099,12 +1159,12 @@
 
                 <div style="margin-bottom:18px;">
                     <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Zainteresowania i Pasje (oddziel przecinkami)</label>
-                    <input type="text" id="editTags" placeholder="np. Muzyka Uwielbienia, Wędrówki Górskie, Pismo Święte, Ewangelizacja" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
+                    <input type="text" id="editTags" placeholder="np. Rodzina & Małżeństwo, Muzyka Uwielbienia, Pismo Święte, Radio CC" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
                 </div>
 
                 <div style="display:flex; gap:10px;">
                     <button type="button" onclick="closeModal('editProfileModal')" style="flex:1; padding:12px; border-radius:30px; background:rgba(255,255,255,0.08); border:none; color:#fff; font-weight:700; font-family:inherit; cursor:pointer;">Anuluj</button>
-                    <button type="submit" style="flex:1.6; padding:12px; border-radius:30px; background:linear-gradient(90deg,#22c55e,#06b6d4); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 18px rgba(34,197,94,0.4);"><i class="fa-solid fa-floppy-disk"></i> Zapisz Zmiany Profilu ✨</button>
+                    <button type="submit" style="flex:1.6; padding:12px; border-radius:30px; background:linear-gradient(90deg,#ec4899,#f472b6); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 18px rgba(236,72,153,0.4);"><i class="fa-solid fa-floppy-disk"></i> Zapisz Zmiany Profilu ✨</button>
                 </div>
             </form>
         </div>
@@ -1114,8 +1174,8 @@
     <div class="modal-overlay" id="messageModal">
         <div class="modal-card">
             <button class="modal-close-btn" onclick="closeModal('messageModal')"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="font-size: 1.3rem; margin-bottom: 6px; font-family:'Outfit',sans-serif;">Napisz wiadomość do <span id="modalMsgRecipient" style="color:#c084fc;">Cezarego</span></h3>
-            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">Twoja wiadomość trafi bezpośrednio do skrzynki użytkownika.</p>
+            <h3 style="font-size: 1.3rem; margin-bottom: 6px; font-family:'Outfit',sans-serif;">Napisz wiadomość do <span id="msgModalRecipientName" style="color:#f472b6;">Wioletty</span></h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">Twoja wiadomość trafi bezpośrednio do skrzynki użytkowniczki.</p>
             <textarea id="msgTextArea" placeholder="Napisz miłe powitanie, podziel się wersetem lub zrób pierwszy krok..." style="width:100%; height:120px; padding:12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px; margin-bottom:16px; outline:none; resize:none;"></textarea>
             <button class="btn-action-primary" style="width:100%; justify-content:center;" onclick="sendMessageSubmit()"><i class="fa-solid fa-paper-plane"></i> Wyślij Wiadomość</button>
         </div>
@@ -1135,186 +1195,48 @@
     <!-- ══════════ TOAST NOTIFICATION ══════════ -->
     <div class="toast" id="toast"><i class="fa-solid fa-check-circle"></i> <span id="toastMsg">Sukces!</span></div>
 
-    <!-- ══════════ JAVASCRIPT & PROFILE DATABASE ENGINE ══════════ -->
+    <!-- ══════════ JAVASCRIPT & PROFILE ENGINE ══════════ -->
     <script>
-        const MAIN_USER_KEY = 'lumina_main_user_profile';
+        const STORAGE_KEY = 'lumina_profile_wiolettarogowska';
 
-        // ── Database of Known Profiles ──
-        const PROFILES_DB = {
-            'cezaryrgowski': {
-                name: 'Cezary Rogowski',
-                age: '32',
-                city: 'Warszawa, Polska',
-                avatar: 'avatar_new1.jpg',
-                cover: 'lumina_hero_main.jpg',
-                job: 'Założyciel Christian Culture',
-                church: 'Wspólnota Uwielbieniowa',
-                denom: 'Chrześcijanin',
-                status: 'Żonaty',
-                spouse: 'Wioletta Rogowska',
-                match: '98%',
-                verse: '„Ja i mój dom służyć będziemy Panu.”',
-                verseRef: '— Księga Jozuego 24, 15',
-                bio: 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture. Wierzymy, że małżeństwo oparte na Chrystusie jest źródłem niesamowitej siły, pokoju i ewangelizacyjnego świadectwa.',
-                tags: ['Muzyka Uwielbienia', 'Wędrówki Górskie', 'Pismo Święte', 'Ewangelizacja', 'Nowe Technologie', 'Głębokie Rozmowy'],
-                photos: ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg']
-            },
-            'wiolettarogowska': {
-                name: 'Wioletta Rogowska',
-                age: '30',
-                city: 'Warszawa, Polska',
-                avatar: 'lumina_anna2.jpg',
-                cover: 'lumina_hero_main.jpg',
-                job: 'Współzałożycielka Christian Culture',
-                church: 'Wspólnota Uwielbieniowa',
-                denom: 'Chrześcijanka',
-                status: 'Mężatka',
-                spouse: 'Cezary Rogowski',
-                match: 'Małżeństwo Sakramentalne 💕',
-                verse: '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły. Serce jej męża ufa jej.”',
-                verseRef: '— Księga Przysłów 31, 10-11',
-                bio: 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej, kochającej się rodziny zakorzenionej w Bogu, wspólnej modlitwy i niesienia Dobrej Nowiny. Wierzymy, że miłość małżeńska jest żywym odzwierciedleniem wierności Chrystusa.',
-                tags: ['Rodzina & Małżeństwo', 'Muzyka Uwielbienia', 'Pismo Święte', 'Radio CC', 'Ewangelizacja', 'Głębokie Relacje'],
-                photos: ['lumina_anna2.jpg', 'avatar_new1.jpg', 'lumina_hero_main.jpg']
-            },
-            'cezaryrogowski': {
-                name: 'Cezary Rogowski',
-                age: '32',
-                city: 'Warszawa, Polska',
-                avatar: 'avatar_new1.jpg',
-                cover: 'lumina_hero_main.jpg',
-                job: 'Założyciel Christian Culture',
-                church: 'Wspólnota Uwielbieniowa',
-                denom: 'Chrześcijanin',
-                status: 'Żonaty',
-                spouse: 'Wioletta Rogowska',
-                match: '98%',
-                verse: '„Ja i mój dom służyć będziemy Panu.”',
-                verseRef: '— Księga Jozuego 24, 15',
-                bio: 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture.',
-                tags: ['Muzyka Uwielbienia', 'Wędrówki Górskie', 'Pismo Święte', 'Ewangelizacja', 'Nowe Technologie'],
-                photos: ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg']
-            },
-            'noemi': {
-                name: 'Noemi',
-                age: '28',
-                city: 'Wrocław, Polska',
-                avatar: 'avatar_noemi.jpg',
-                cover: 'lumina_hero_main.jpg',
-                job: 'Pedagog & Terapeuta',
-                church: 'Kościół Ewangeliczny / Domowy',
-                denom: 'Chrześcijanka',
-                match: '96%',
-                verse: '„Pan jest moją mocą i moją pieśnią.”',
-                verseRef: '— Psalm 118, 14',
-                bio: 'Spokój, las i głębokie rozmowy o Bogu przy herbacie. Kocham przyrodę, śpiew i pracę z ludźmi. Szukam bratniej duszy i dojrzałego mężczyzny o mocnym kręgosłupie moralnym.',
-                tags: ['Natura & Las', 'Śpiew', 'Herbata i Książki', 'Modlitwa', 'Psychologia'],
-                photos: ['avatar_noemi.jpg', 'avatar_widget_ania.jpg', 'lumina_hero_main.jpg']
-            },
-            'dawid': {
-                name: 'Dawid',
-                age: '30',
-                city: 'Poznań, Polska',
-                avatar: 'avatar_sara.jpg',
-                cover: 'lumina_hero_main.jpg',
-                job: 'Architekt & Projektant',
-                church: 'Wspólnota Katolicka Odnowy',
-                denom: 'Katolik',
-                match: '93%',
-                verse: '„Wszystko mogę w Tym, który mnie umacnia.”',
-                verseRef: '— List do Filipian 4, 13',
-                bio: 'Architekt z sercem do uwielbienia. Pasjonują mnie piękne formy, muzyka na żywo i wyprawy w góry. Chcę budować relację opartą na zaufaniu, wierności i wspólnej modlitwie.',
-                tags: ['Architektura', 'Gitara', 'Góry', 'Kawa', 'Sport'],
-                photos: ['avatar_sara.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg']
-            },
-            'weronika': {
-                name: 'Weronika S.',
-                age: '25',
-                city: 'Kraków, Polska',
-                avatar: 'avatar_widget_ania.jpg',
-                cover: 'lumina_hero_main.jpg',
-                job: 'Graficzka & Fotografka',
-                church: 'Wspólnota Młodych',
-                denom: 'Chrześcijanka',
-                match: '97%',
-                verse: '„Bóg jest miłością: kto trwa w miłości, trwa w Bogu.”',
-                verseRef: '— 1 List św. Jana 4, 16',
-                bio: 'Graficzka z zamiłowaniem do fotografii i sztuki sakralnej. Cenię prostotę, autentyczność i głębokie rozmowy do późna. Szukam kogoś, z kim będziemy dzielić wspólne pasje i wiarę.',
-                tags: ['Fotografia', 'Sztuka', 'Kino Chrześcijańskie', 'Podróże'],
-                photos: ['avatar_widget_ania.jpg', 'avatar_noemi.jpg', 'lumina_hero_main.jpg']
-            },
-            'tomek': {
-                name: 'Tomek K.',
-                age: '27',
-                city: 'Gdańsk, Polska',
-                avatar: 'avatar_widget_tomek.jpg',
-                cover: 'lumina_hero_main.jpg',
-                job: 'Inżynier Środowiska',
-                church: 'Wspólnota Mężczyzn św. Józefa',
-                denom: 'Chrześcijanin',
-                match: '94%',
-                verse: '„Bądź mężny i mocny, nie lękaj się!”',
-                verseRef: '— Księga Jozuego 1, 9',
-                bio: 'Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku. Szukam kobiety o łagodnym sercu, z którą stworzymy bezpieczny i ciepły dom.',
-                tags: ['Survival', 'Leśnictwo', 'Gotowanie', 'Kajaki', 'Biblia'],
-                photos: ['avatar_widget_tomek.jpg', 'avatar_new1.jpg', 'lumina_hero_main.jpg']
-            },
-            'anna': {
-                name: 'Anna',
-                age: '28',
-                city: 'Warszawa, Polska',
-                avatar: 'lumina_anna2.jpg',
-                cover: 'lumina_hero_main.jpg',
-                job: 'Historyk Sztuki',
-                church: 'Wspólnota Akademicka',
-                denom: 'Chrześcijanka',
-                match: '94%',
-                verse: '„Serce człowieka obmyśla drogę, ale Pan kieruje jego krokami.”',
-                verseRef: '— Księga Przysłów 16, 9',
-                bio: 'Uwielbia podróże i sztukę sakralną. Szuka kogoś do wspólnego odkrywania świata i wzrastania w wierze każdego dnia.',
-                tags: ['Sztuka', 'Muzea', 'Podróże', 'Książki'],
-                photos: ['lumina_anna2.jpg', 'avatar_widget_ania.jpg', 'lumina_hero_main.jpg']
-            }
+        const defaultProfile = {
+            name: 'Wioletta Rogowska',
+            age: '30',
+            city: 'Warszawa, Polska',
+            denom: 'Chrześcijanka',
+            match: 'Małżeństwo Sakramentalne 💕',
+            status: 'Mężatka',
+            spouse: 'Cezary Rogowski',
+            avatar: 'lumina_anna2.jpg',
+            cover: 'lumina_hero_main.jpg',
+            job: 'Współzałożycielka Christian Culture',
+            church: 'Wspólnota Uwielbieniowa',
+            verse: '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły. Serce jej męża ufa jej i nie brak mu zysku.”',
+            verseRef: '— Księga Przysłów 31, 10-11',
+            bio: 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej, kochającej się rodziny zakorzenionej w Bogu, wspólnej modlitwy i niesienia Dobrej Nowiny. Wierzę, że miłość małżeńska jest żywym odzwierciedleniem wierności Chrystusa i najpiękniejszą drogą do uświęcenia.',
+            tags: ['Rodzina & Małżeństwo', 'Muzyka Uwielbienia', 'Pismo Święte', 'Radio CC', 'Ewangelizacja', 'Głębokie Relacje']
         };
 
-        // ── Parse Query String or URL Slug ──
-        function getRequestedUserSlug() {
-            const path = window.location.pathname.toLowerCase();
-            if (path.includes('lumina.cezaryrgowski') || path.includes('lumina.cezaryrogowski')) {
-                return 'cezaryrgowski';
-            }
-            if (path.includes('lumina.wiolettarogowska')) {
-                return 'wiolettarogowska';
-            }
-            const params = new URLSearchParams(window.location.search);
-            return (params.get('u') || params.get('user') || 'cezaryrgowski').toLowerCase();
-        }
-
         function getProfileData() {
-            const slug = getRequestedUserSlug();
-            const fallback = PROFILES_DB[slug] || PROFILES_DB['cezaryrgowski'];
             try {
-                const saved = localStorage.getItem('lumina_profile_' + slug);
-                if (saved) return { ...fallback, ...JSON.parse(saved) };
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) return { ...defaultProfile, ...JSON.parse(saved) };
             } catch (e) {}
-            return fallback;
+            return defaultProfile;
         }
 
-        // ── Load & Render Profile Data ──
-        function renderProfile() {
+        function renderProfileView() {
             const data = getProfileData();
-
-            document.getElementById('pageTitle').textContent = `${data.name} – Profil LUMINA | Christian Culture`;
             document.getElementById('userNameEl').textContent = data.name;
-            document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} (${data.age} lat)`;
+            document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city}`;
             document.getElementById('userDenomEl').innerHTML = `<i class="fa-solid fa-cross"></i> ${data.denom}`;
-            document.getElementById('userMatchEl').innerHTML = `<i class="fa-solid fa-heart-pulse"></i> Dopasowanie: ${data.match}`;
             document.getElementById('userJobEl').textContent = data.job;
             document.getElementById('userChurchEl').textContent = data.church;
             document.getElementById('userVerseText').textContent = data.verse;
             document.getElementById('userVerseRef').textContent = data.verseRef;
             document.getElementById('userBioFull').textContent = data.bio;
-            
+            document.getElementById('msgModalRecipientName').textContent = data.name.split(' ')[0] || data.name;
+
             if (data.avatar) {
                 document.getElementById('avatarImgEl').src = data.avatar;
                 if (document.getElementById('myComposerAvatar')) document.getElementById('myComposerAvatar').src = data.avatar;
@@ -1327,11 +1249,6 @@
                 document.getElementById('coverPhotoEl').src = data.cover;
             }
 
-            document.getElementById('postAuthor1').textContent = data.name;
-            document.getElementById('postAuthor2').textContent = data.name;
-            document.getElementById('modalMsgRecipient').textContent = data.name.split(' ')[0] || data.name;
-
-            // Render Tags
             const tagsContainer = document.getElementById('userTagsEl');
             if (tagsContainer && data.tags) {
                 tagsContainer.innerHTML = data.tags.map(t => `<span class="tag-chip"><i class="fa-solid fa-sparkle"></i> ${t}</span>`).join('');
@@ -1345,14 +1262,12 @@
             const reader = new FileReader();
             reader.onload = function(evt) {
                 const dataUrl = evt.target.result;
-                const slug = getRequestedUserSlug();
                 const cur = getProfileData();
                 cur.avatar = dataUrl;
                 try {
-                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
-                    localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
                 } catch(err) {}
-                renderProfile();
+                renderProfileView();
                 showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane! 📷✨');
             };
             reader.readAsDataURL(file);
@@ -1364,14 +1279,12 @@
             const reader = new FileReader();
             reader.onload = function(evt) {
                 const dataUrl = evt.target.result;
-                const slug = getRequestedUserSlug();
                 const cur = getProfileData();
                 cur.cover = dataUrl;
                 try {
-                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
-                    localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
                 } catch(err) {}
-                renderProfile();
+                renderProfileView();
                 showToast('Zdjęcie w tle zostało zaktualizowane i zapisane! 🖼️✨');
             };
             reader.readAsDataURL(file);
@@ -1401,7 +1314,6 @@
 
         function saveProfileEdits(e) {
             e.preventDefault();
-            const slug = getRequestedUserSlug();
             const cur = getProfileData();
             const tagsRaw = document.getElementById('editTags').value;
             const updated = {
@@ -1419,16 +1331,14 @@
             };
 
             try {
-                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(updated));
-                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(updated));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
             } catch (err) {}
 
-            renderProfile();
+            renderProfileView();
             closeModal('editProfileModal');
-            showToast('Twój profil został zaktualizowany i dodany na stronę główną LUMINA! ✨');
+            showToast('Profil Wioletty Rogowskiej został pomyślnie zaktualizowany! ✨');
         }
 
-        // ── Tabs Switching ──
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content-pane').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -1437,7 +1347,6 @@
             if (btn) btn.classList.add('active');
         }
 
-        // ── Interactions & Modals ──
         function openMessageModal() {
             document.getElementById('messageModal').classList.add('open');
             document.getElementById('msgTextArea').focus();
@@ -1457,7 +1366,7 @@
             }
             closeModal('messageModal');
             document.getElementById('msgTextArea').value = '';
-            showToast('Wiadomość została pomyślnie wysłana! 💬✨');
+            showToast('Wiadomość do Wioletty została pomyślnie wysłana! 💬✨');
         }
 
         function sendCoffeeInvitation() {
@@ -1468,7 +1377,7 @@
         function toggleProfileHeart(btn) {
             btn.classList.toggle('active');
             if (btn.classList.contains('active')) {
-                showToast('Dodano profil do Twoich ulubionych połączeń! ❤️');
+                showToast('Dodano profil Wioletty do Twoich ulubionych połączeń! ❤️');
             } else {
                 showToast('Usunięto z ulubionych');
             }
@@ -1506,7 +1415,7 @@
             newCard.className = 'post-card';
             newCard.innerHTML = `
                 <div class="post-header">
-                    <img src="${data.avatar || 'avatar_new1.jpg'}" alt="Author" class="post-avatar">
+                    <img src="${data.avatar || 'lumina_anna2.jpg'}" alt="${data.name}" class="post-avatar">
                     <div>
                         <div class="post-author">${data.name}</div>
                         <div class="post-time">Przed chwilą • 🌍 Nowy Wpis</div>
@@ -1530,11 +1439,6 @@
             input.focus();
         }
 
-        function openPhotoView(src) {
-            showToast('Podgląd zdjęcia w pełnej rozdzielczości');
-        }
-
-        // ── Toast Utility ──
         let toastTimer = null;
         function showToast(msg) {
             const toast = document.getElementById('toast');
@@ -1544,12 +1448,10 @@
             toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
-        // ── Integrated Radio CC Logic ──
         let isRadioPlaying = false;
         const radioStreams = [
             "https://stream.zeno.fm/f97y7f6w30hvv",
-            "https://stream.zeno.fm/f97y7f6w30hvv.aac",
-            "https://stream-178.zeno.fm/f97y7f6w30hvv"
+            "https://stream.zeno.fm/f97y7f6w30hvv.aac"
         ];
         function toggleRadio() {
             const audio = document.getElementById('ccRadioAudio');
@@ -1572,7 +1474,7 @@
         }
 
         // Initialize on load
-        window.addEventListener('DOMContentLoaded', renderProfile);
+        window.addEventListener('DOMContentLoaded', renderProfileView);
     </script>
 </body>
 </html>
