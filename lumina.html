@@ -728,76 +728,31 @@
             .why-label br { display: none; }
         }
 
-        /* ──────────────────── QUICK MESSAGES WIDGET ──────────────────── */
-        .widget-panel {
-            background: #f8fafc;
-            border-radius: 20px;
+        /* ──────────────────── TABLICA PREVIEW WIDGET (ZAMIAST SZYBKICH WIADOMOŚCI) ──────────────────── */
+        .tablica-preview-widget {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-top: 1px solid rgba(236, 72, 153, 0.45);
+            border-radius: 22px;
             padding: 24px;
-            width: 280px;
-            flex-shrink: 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.35);
             text-align: left;
-            animation: floatWidget 7s ease-in-out infinite;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s;
-            transform-style: preserve-3d;
+            transition: transform 0.35s ease, box-shadow 0.35s, border-color 0.35s;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        .widget-panel:hover {
-            animation-play-state: paused;
-            transform: translateY(-8px) perspective(1000px) rotateY(-6deg) scale(1.03);
-            box-shadow: -25px 25px 50px rgba(0,0,0,0.4);
+        .tablica-preview-widget:hover {
+            transform: translateY(-6px);
+            border-color: rgba(236, 72, 153, 0.7);
+            box-shadow: 0 20px 45px rgba(236, 72, 153, 0.25);
         }
         @media (max-width: 850px) {
-            .widget-panel {
+            .tablica-preview-widget {
                 width: 100%;
-                max-width: 100%;
                 padding: 20px 16px;
-                animation: none;
-                transform: none !important;
             }
-        }
-        .widget-title {
-            font-size: 1.1rem;
-            font-weight: 800;
-            margin-bottom: 16px;
-        }
-        .notif-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #fff;
-            padding: 10px 12px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        .notif-icon {
-            width: 32px; height: 32px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; color: #fff;
-        }
-        .notif-icon.blue { background: #3b82f6; }
-        .notif-icon.orange { background: #f59e0b; }
-        .notif-count {
-            margin-left: auto; width: 18px; height: 18px; border-radius: 50%;
-            background: #ef4444; color: #fff; font-size: 0.65rem;
-            display: flex; align-items: center; justify-content: center; font-weight: bold;
-        }
-        .users-title {
-            font-size: 0.9rem; font-weight: 700; margin: 20px 0 12px;
-        }
-        .user-item {
-            display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
-        }
-        .user-item img {
-            width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
-        }
-        .user-info { flex: 1; }
-        .user-name { font-size: 0.85rem; font-weight: 700; }
-        .user-status { font-size: 0.75rem; color: #64748b; }
-        .status-dot {
-            width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
-            animation: statusPulse 2s infinite;
         }
 
         /* ──────────────────── FOOTER ──────────────────── */
@@ -1405,7 +1360,7 @@
         </div>
     </div>
 
-    <!-- ══════════ BOTTOM LAYOUT (WHY LUMINA + WIDGET) ══════════ -->
+    <!-- ══════════ BOTTOM LAYOUT (WHY LUMINA + TABLICA SPOŁECZNOŚCI) ══════════ -->
     <section class="bottom-layout">
         <div class="why-section">
             <div class="why-title-line">DLACZEGO LUMINA?</div>
@@ -1418,42 +1373,38 @@
                     <div class="why-icon-wrap"><i class="fa-solid fa-shield-halved"></i></div>
                     <div class="why-label">Weryfikacja<br>Profili</div>
                 </div>
-                <div class="why-item" onclick="showToast('Rekolekcje i spotkania singli chrześcijańskich!')">
+                <div class="why-item" onclick="showToast('Rekolekcje i spotkania chrześcijańskie!')">
                     <div class="why-icon-wrap"><i class="fa-solid fa-location-dot"></i></div>
                     <div class="why-label">Wydarzenia<br>Lokalne</div>
                 </div>
             </div>
         </div>
 
-        <div class="messages-widget">
-            <div class="widget-title">Szybkie Wiadomości</div>
-            <div class="notif-item">
-                <div class="notif-icon blue"><i class="fa-solid fa-bell"></i></div>
-                <div>Notyfikacja o nowościach w aplikacji</div>
-                <div class="notif-count">1</div>
-            </div>
-            <div class="notif-item">
-                <div class="notif-icon orange"><i class="fa-solid fa-bell"></i></div>
-                <div>Notyfikacja o nowym dopasowaniu</div>
-                <div class="notif-count">3</div>
-            </div>
-
-            <div class="users-title">Użytkownicy</div>
-            <div class="user-item" onclick="openProfile('Weronika S.','25','Kraków','Graficzka z zamiłowaniem do fotografii i muzyki. Szuka dojrzałej relacji opartej na zaufaniu.','avatar_widget_ania.jpg','97%')" style="cursor:pointer;" title="Zobacz profil Weroniki">
-                <img src="avatar_widget_ania.jpg" alt="Weronika" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #a855f7;">
-                <div class="user-info">
-                    <div class="user-name">Weronika S.</div>
-                    <div class="user-status">Online</div>
+        <!-- Banner / Widget Tablicy Społeczności (Zamiast Szybkich Wiadomości) -->
+        <div class="tablica-preview-widget" onclick="window.location.href='lumina-tablica.html'" style="cursor:pointer;" title="Przejdź do Tablicy Społeczności">
+            <div>
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, #ec4899, #8b5cf6); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1rem; box-shadow:0 4px 12px rgba(236,72,153,0.4);">
+                            <i class="fa-solid fa-rectangle-list"></i>
+                        </div>
+                        <span style="font-weight:800; font-size:1.05rem; color:#fff;">Tablica LUMINA</span>
+                    </div>
+                    <span style="font-size:0.72rem; color:#facc15; font-weight:800; background:rgba(250,204,21,0.15); padding:3px 10px; border-radius:12px; border:1px solid rgba(250,204,21,0.35);">LIVE ✨</span>
                 </div>
-                <div class="status-dot"></div>
+                <p style="font-size:0.84rem; color:#cbd5e1; line-height:1.5; margin-bottom:16px;">
+                    Wszystkie posty, świadectwa, rozważania biblijne oraz oficjalne ogłoszenia Misji Christian Culture w jednym miejscu.
+                </p>
             </div>
-            <div class="user-item" onclick="openProfile('Tomek K.','27','Gdańsk','Pasjonat leśnych wędrówek, natury i spokojnych rozmów o wierze.','avatar_widget_tomek.jpg','94%')" style="cursor:pointer;" title="Zobacz profil Tomka">
-                <img src="avatar_widget_tomek.jpg" alt="Tomek" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #06b6d4;">
-                <div class="user-info">
-                    <div class="user-name">Tomek K.</div>
-                    <div class="user-status">Online</div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1);">
+                <div style="display:flex; align-items:center;">
+                    <img src="avatar_new1.jpg" alt="Cezary" class="home-cezary-avatar" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid #090d1a;">
+                    <img src="lumina_anna2.jpg" alt="Wioletta" class="home-wioletta-avatar" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid #090d1a;margin-left:-8px;">
+                    <img src="avatar_widget_tomek.jpg" alt="Tomek" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid #090d1a;margin-left:-8px;">
                 </div>
-                <div class="status-dot"></div>
+                <span style="color:#38bdf8; font-size:0.84rem; font-weight:800; display:flex; align-items:center; gap:6px;">
+                    Otwórz Tablicę <i class="fa-solid fa-arrow-right"></i>
+                </span>
             </div>
         </div>
     </section>
