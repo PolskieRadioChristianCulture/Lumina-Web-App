@@ -500,48 +500,161 @@
             .bottom-layout { grid-template-columns: 1fr; }
         }
 
-        /* ──────────────────── WHY LUMINA ──────────────────── */
+        /* ──────────────────── WHY LUMINA 3D ──────────────────── */
         .why-section {
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            perspective: 1200px;
         }
 
         .why-title-line {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 800;
-            letter-spacing: 2px;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
             color: #fff;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
+            text-shadow: 0 2px 14px rgba(0,0,0,0.5);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+        }
+        .why-title-line::before, .why-title-line::after {
+            content: '';
+            width: 35px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(234, 179, 8, 0.7));
+        }
+        .why-title-line::after {
+            background: linear-gradient(90deg, rgba(234, 179, 8, 0.7), transparent);
         }
 
         .why-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 24px;
+            perspective: 1200px;
+            transform-style: preserve-3d;
         }
 
         .why-item {
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 16px;
             cursor: pointer;
+            padding: 30px 16px 26px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-top: 1px solid rgba(234, 179, 8, 0.4);
+            border-radius: 22px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transform-style: preserve-3d;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s, border-color 0.4s, background 0.4s;
+            overflow: hidden;
         }
+
+        /* 3D Asynchronous Floating Animations */
+        .why-item:nth-child(1) {
+            animation: whyFloat1 5.6s ease-in-out infinite alternate;
+        }
+        .why-item:nth-child(2) {
+            animation: whyFloat2 6.2s ease-in-out infinite alternate 0.5s;
+        }
+        .why-item:nth-child(3) {
+            animation: whyFloat3 5.9s ease-in-out infinite alternate 1s;
+        }
+
+        @keyframes whyFloat1 {
+            0%   { transform: perspective(800px) rotateX(4deg) rotateY(-5deg) translateY(0px) translateZ(0px); }
+            50%  { transform: perspective(800px) rotateX(-2deg) rotateY(-2deg) translateY(-8px) translateZ(10px); }
+            100% { transform: perspective(800px) rotateX(3deg) rotateY(4deg) translateY(-4px) translateZ(6px); }
+        }
+
+        @keyframes whyFloat2 {
+            0%   { transform: perspective(800px) rotateX(-3deg) rotateY(0deg) translateY(-6px) translateZ(8px); }
+            50%  { transform: perspective(800px) rotateX(4deg) rotateY(4deg) translateY(2px) translateZ(2px); }
+            100% { transform: perspective(800px) rotateX(-2deg) rotateY(-4deg) translateY(-9px) translateZ(12px); }
+        }
+
+        @keyframes whyFloat3 {
+            0%   { transform: perspective(800px) rotateX(3deg) rotateY(5deg) translateY(2px) translateZ(2px); }
+            50%  { transform: perspective(800px) rotateX(-4deg) rotateY(-3deg) translateY(-7px) translateZ(9px); }
+            100% { transform: perspective(800px) rotateX(2deg) rotateY(-5deg) translateY(-3px) translateZ(6px); }
+        }
+
+        /* Glass Sheen / Reflection on 3D Items */
+        .why-item::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.12) 50%, transparent 60%);
+            pointer-events: none;
+            animation: whyGlassSheen 6s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateZ(1px);
+        }
+        @keyframes whyGlassSheen {
+            0% { transform: translateY(-100%) rotate(25deg); }
+            35%, 100% { transform: translateY(100%) rotate(25deg); }
+        }
+
+        .why-item:hover {
+            animation-play-state: paused;
+            transform: perspective(800px) translateY(-12px) translateZ(35px) rotateX(6deg) scale(1.05) !important;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.12) 0%, rgba(234, 179, 8, 0.08) 100%);
+            border-color: rgba(234, 179, 8, 0.6);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), 0 0 30px rgba(234, 179, 8, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
         .why-icon-wrap {
-            font-size: 2rem;
-            color: #eab308;
-            transition: transform 0.2s, text-shadow 0.2s;
+            font-size: 2.1rem;
+            color: #fbbf24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0.02) 70%, transparent 100%);
+            border: 1.5px solid rgba(251, 191, 36, 0.35);
+            box-shadow: 0 0 22px rgba(251, 191, 36, 0.25);
+            transform: translateZ(25px);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s, box-shadow 0.3s, background 0.3s;
         }
+
         .why-item:hover .why-icon-wrap {
-            transform: scale(1.1);
-            text-shadow: 0 0 15px rgba(234,179,8,0.4);
+            transform: translateZ(45px) scale(1.18) rotate(6deg);
+            color: #fef08a;
+            border-color: rgba(254, 240, 138, 0.7);
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.35) 0%, rgba(251, 191, 36, 0.1) 70%, transparent 100%);
+            box-shadow: 0 0 35px rgba(251, 191, 36, 0.6), inset 0 0 15px rgba(254, 240, 138, 0.4);
+            text-shadow: 0 0 16px rgba(254, 240, 138, 0.8);
         }
+
         .why-label {
-            font-size: 0.9rem; font-weight: 600;
-            color: #e2e8f0; line-height: 1.4;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            line-height: 1.35;
+            transform: translateZ(20px);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .why-item:hover .why-label {
+            color: #ffffff;
+            transform: translateZ(30px);
+            text-shadow: 0 2px 14px rgba(234, 179, 8, 0.5);
         }
 
         /* ──────────────────── QUICK MESSAGES WIDGET ──────────────────── */
