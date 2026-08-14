@@ -11,8 +11,8 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Główna Tablica 1:1 – LUMINA | Portal Chrześcijański Christian Culture</title>
-    <meta name="description" content="Główna Tablica Portalu LUMINA. Wpisy społeczności, rozważania i inicjatywy Misji Christian Culture w formacie 1:1.">
+    <title>Główna Tablica – LUMINA | Portal Chrześcijański Christian Culture</title>
+    <meta name="description" content="Główna Tablica Portalu LUMINA. Wpisy społeczności, rozważania i inicjatywy Misji Christian Culture.">
     <link rel="icon" type="image/png" href="icon.png">
 
     <!-- Fonts & Icons -->
@@ -612,7 +612,7 @@
 
         <div class="nav-links">
             <a href="lumina.html" class="nav-link"><i class="fa-solid fa-compass"></i> Odkrywaj Profile</a>
-            <a href="lumina-tablica.html" class="nav-link active"><i class="fa-solid fa-rectangle-list"></i> Główna Tablica 1:1</a>
+            <a href="lumina-tablica.html" class="nav-link active"><i class="fa-solid fa-rectangle-list"></i> Główna Tablica</a>
             <a href="lumina.cezaryrgowski.html" class="nav-link" id="navMyProfileLink"><i class="fa-solid fa-user"></i> Mój Profil</a>
             <a href="index.html" class="nav-link"><i class="fa-solid fa-radio"></i> Radio CC</a>
         </div>
@@ -641,12 +641,12 @@
             <div class="board-tagline"><i class="fa-solid fa-sparkles"></i> Społeczność & Misja Christian Culture</div>
             <h1 class="board-title">Główna Tablica Portalu LUMINA</h1>
             <p class="board-subtitle">
-                Wpisy społeczności, rozważania biblijne oraz oficjalne kampanie i inicjatywy Misji Christian Culture w kompaktowym formacie kwadratu 1:1.
+                Wpisy społeczności, rozważania biblijne oraz oficjalne kampanie i inicjatywy Misji Christian Culture.
             </p>
 
             <!-- Filter Categories Row -->
             <div class="filter-chips-row">
-                <button class="chip-btn active" onclick="filterFeed('all', this)"><i class="fa-solid fa-grid-2"></i> Wszystko 1:1</button>
+                <button class="chip-btn active" onclick="filterFeed('all', this)"><i class="fa-solid fa-grid-2"></i> Wszystkie Wpisy</button>
                 <button class="chip-btn" onclick="filterFeed('post', this)"><i class="fa-solid fa-users"></i> Wpisy Użytkowników</button>
                 <button class="chip-btn" onclick="filterFeed('ad', this)"><i class="fa-solid fa-bullhorn"></i> Reklamy Misji CC</button>
                 <button class="chip-btn" onclick="filterFeed('promo', this)"><i class="fa-solid fa-rocket"></i> Promocje</button>
@@ -673,7 +673,7 @@
             </div>
         </div>
 
-        <!-- ══════════ FEED STREAM 1:1 ══════════ -->
+        <!-- ══════════ FEED STREAM ══════════ -->
         <div class="feed-stream" id="feedStream1x1">
             <!-- Dynamic stream content injected via JS -->
         </div>
@@ -688,7 +688,7 @@
                 <span id="campModalIcon" style="font-size: 1.5rem;">📢</span>
                 <div>
                     <h3 style="font-size: 1.25rem; font-family:'Outfit',sans-serif; margin:0;" id="campModalTitle">Dodaj Reklamę Misji CC</h3>
-                    <div style="font-size: 0.74rem; color: #facc15; font-weight:700;">Format 1:1 • Automatyczna rotacja na Głównej Tablicy</div>
+                    <div style="font-size: 0.74rem; color: #facc15; font-weight:700;">Automatyczna rotacja na Głównej Tablicy</div>
                 </div>
             </div>
             <p style="font-size: 0.80rem; color: var(--text-secondary); margin-bottom: 14px;">
@@ -727,9 +727,9 @@
                     </div>
                 </div>
 
-                <!-- Graphic 1:1 Square Upload & Preview -->
+                <!-- Graphic Upload & Preview -->
                 <div style="margin-bottom: 12px;">
-                    <label style="display:block; font-size:0.74rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;"><i class="fa-solid fa-image"></i> Grafika Kampanii (Format Kwadrat 1:1)</label>
+                    <label style="display:block; font-size:0.74rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;"><i class="fa-solid fa-image"></i> Grafika Kampanii / Zdjęcie</label>
                     <input type="file" id="campaignImgFileInput" accept="image/*" style="display:none;" onchange="handleCampaignImgSelect(event)">
                     
                     <div id="campImgPreviewContainer" style="display:none; position:relative; width: 100%; max-width: 220px; aspect-ratio: 1/1; margin: 0 auto 8px; border-radius: 12px; overflow: hidden; border: 2px solid #f59e0b; box-shadow: 0 6px 20px rgba(0,0,0,0.5);">
@@ -738,7 +738,7 @@
                     </div>
 
                     <button type="button" onclick="document.getElementById('campaignImgFileInput').click()" style="width:100%; padding:9px; border-radius:10px; background:rgba(245,158,11,0.15); border:1px dashed #f59e0b; color:#fef08a; font-family:inherit; font-size:0.80rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Wybierz Grafikę 1:1 z Dysku / Telefonu
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Wybierz Grafikę z Dysku / Telefonu
                     </button>
                 </div>
 
@@ -1201,7 +1201,7 @@
         function sharePostLink(postId) {
             const url = window.location.origin + window.location.pathname + '#' + postId;
             navigator.clipboard.writeText(url).then(() => {
-                showToast('Link do wpisu 1:1 skopiowany do schowka! 🔗✨');
+                showToast('Link do wpisu skopiowany do schowka! 🔗✨');
             }).catch(() => {
                 prompt('Skopiuj link do wpisu:', url);
             });
@@ -1261,12 +1261,12 @@
         function handleCampaignImgSelect(e) {
             const file = e.target.files[0];
             if (!file) return;
-            showToast('Przetwarzanie grafiki 1:1... ⏳');
+            showToast('Przetwarzanie grafiki... ⏳');
             compressAndReadImage(file, 900, 900, 0.85, function(dataUrl) {
                 attachedCampaignImgDataUrl = dataUrl;
                 document.getElementById('campImgPreviewEl').src = dataUrl;
                 document.getElementById('campImgPreviewContainer').style.display = 'block';
-                showToast('Grafika 1:1 została dołączona do kampanii! 🖼️✨');
+                showToast('Grafika została dołączona do kampanii! 🖼️✨');
             });
             e.target.value = '';
         }
@@ -1359,7 +1359,7 @@
             removeCampaignImg();
 
             renderFeed();
-            showToast('Kampania została pomyślnie opublikowana na Głównej Tablicy 1:1! 📢✨');
+            showToast('Kampania została pomyślnie opublikowana na Głównej Tablicy! 📢✨');
         }
 
         // ── Toast System ──

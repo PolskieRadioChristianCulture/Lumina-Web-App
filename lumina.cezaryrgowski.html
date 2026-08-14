@@ -1171,7 +1171,7 @@
 
         <div class="nav-links">
             <a href="lumina.html" class="nav-link"><i class="fa-solid fa-compass"></i> Odkrywaj</a>
-            <a href="lumina-tablica.html" class="nav-link" style="color: #ec4899; font-weight:700;"><i class="fa-solid fa-rectangle-list"></i> Główna Tablica 1:1</a>
+            <a href="lumina-tablica.html" class="nav-link" style="color: #ec4899; font-weight:700;"><i class="fa-solid fa-rectangle-list"></i> Główna Tablica</a>
             <button class="nav-link" onclick="openMessageModal()"><i class="fa-solid fa-comments"></i> Wiadomości</button>
             <a href="index.html" class="nav-link"><i class="fa-solid fa-radio"></i> Radio CC</a>
         </div>
@@ -1418,7 +1418,7 @@
                         <div class="cc-mission-publisher-header">
                             <div style="display:flex; align-items:center; gap:8px;">
                                 <i class="fa-solid fa-bullhorn" style="color:#f59e0b; font-size:1.15rem;"></i>
-                                <span style="font-weight:800; font-size:0.92rem; color:#fff;">Centrum Nadawcze Misji CC (Główna Tablica 1:1)</span>
+                                <span style="font-weight:800; font-size:0.92rem; color:#fff;">Centrum Nadawcze Misji CC (Główna Tablica)</span>
                             </div>
                             <span style="font-size:0.72rem; color:#fef08a; background:rgba(245,158,11,0.2); border:1px solid rgba(245,158,11,0.45); padding:3px 10px; border-radius:12px; font-weight:800;">Panel Założyciela ✨</span>
                         </div>
@@ -1780,11 +1780,11 @@
                 <span id="campModalIcon" style="font-size: 1.6rem;">📢</span>
                 <div>
                     <h3 style="font-size: 1.35rem; font-family:'Outfit',sans-serif; margin:0;" id="campModalTitle">Dodaj Reklamę Misji CC</h3>
-                    <div style="font-size: 0.76rem; color: #facc15; font-weight:700;">Format 1:1 • Automatyczna rotacja na Głównej Tablicy LUMINA</div>
+                    <div style="font-size: 0.76rem; color: #facc15; font-weight:700;">Automatyczna rotacja na Głównej Tablicy LUMINA</div>
                 </div>
             </div>
             <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">
-                Utwórz publikację misyjną, która będzie wyświetlać się użytkownikom na Głównej Tablicy portalu w nowoczesnym formacie 1:1.
+                Utwórz publikację misyjną, która będzie wyświetlać się użytkownikom na Głównej Tablicy portalu.
             </p>
 
             <form onsubmit="saveCampaignSubmit(event)">
@@ -1819,9 +1819,9 @@
                     </div>
                 </div>
 
-                <!-- Graphic 1:1 Square Upload & Preview -->
+                <!-- Graphic Upload & Preview -->
                 <div style="margin-bottom: 14px;">
-                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:6px;"><i class="fa-solid fa-image"></i> Grafika Kampanii (Format Kwadrat 1:1)</label>
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:6px;"><i class="fa-solid fa-image"></i> Grafika Kampanii / Zdjęcie</label>
                     <input type="file" id="campaignImgFileInput" accept="image/*" style="display:none;" onchange="handleCampaignImgSelect(event)">
                     
                     <div id="campImgPreviewContainer" style="display:none; position:relative; width: 100%; max-width: 280px; aspect-ratio: 1/1; margin: 0 auto 10px; border-radius: 14px; overflow: hidden; border: 2px solid #f59e0b; box-shadow: 0 8px 24px rgba(0,0,0,0.5);">
@@ -1830,7 +1830,7 @@
                     </div>
 
                     <button type="button" onclick="document.getElementById('campaignImgFileInput').click()" style="width:100%; padding:10px; border-radius:10px; background:rgba(245,158,11,0.15); border:1px dashed #f59e0b; color:#fef08a; font-family:inherit; font-size:0.85rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Wybierz Grafikę 1:1 z Dysku / Telefonu
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Wybierz Grafikę z Dysku / Telefonu
                     </button>
                 </div>
 
@@ -2804,12 +2804,12 @@
         function handleCampaignImgSelect(e) {
             const file = e.target.files[0];
             if (!file) return;
-            showToast('Przetwarzanie grafiki 1:1... ⏳');
+            showToast('Przetwarzanie grafiki... ⏳');
             compressAndReadImage(file, 900, 900, 0.85, function(dataUrl) {
                 attachedCampaignImgDataUrl = dataUrl;
                 document.getElementById('campImgPreviewEl').src = dataUrl;
                 document.getElementById('campImgPreviewContainer').style.display = 'block';
-                showToast('Grafika 1:1 została dołączona do kampanii! 🖼️✨');
+                showToast('Grafika została dołączona do kampanii! 🖼️✨');
             });
             e.target.value = '';
         }
@@ -2860,7 +2860,7 @@
             document.getElementById('campDescInput').value = '';
             removeCampaignImg();
 
-            showToast('Kampania została pomyślnie opublikowana na Głównej Tablicy 1:1! 📢✨');
+            showToast('Kampania została pomyślnie opublikowana na Głównej Tablicy! 📢✨');
         }
 
         // Initialize on load
