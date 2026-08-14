@@ -1098,7 +1098,7 @@
 
             <div class="users-title">Użytkownicy</div>
             <div class="user-item">
-                <img src="lumina_anna.jpg" alt="Ania" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #a855f7;">
+                <img src="lumina_anna2.jpg" alt="Ania" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #a855f7;">
                 <div class="user-info">
                     <div class="user-name">Ania W.</div>
                     <div class="user-status">Online</div>
@@ -1106,7 +1106,7 @@
                 <div class="status-dot"></div>
             </div>
             <div class="user-item">
-                <img src="lumina_piotr.jpg" alt="Tomek" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #06b6d4;">
+                <img src="lumina_piotr2.jpg" alt="Tomek" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #06b6d4;">
                 <div class="user-info">
                     <div class="user-name">Tomek K.</div>
                     <div class="user-status">Online</div>
@@ -1426,7 +1426,7 @@
                             const card = document.createElement('div');
                             card.className = 'profile-card';
                             card.id = 'user_card_' + docSnap.id;
-                            const imgSrc = data.photoURL || 'lumina_anna.jpg';
+                            const imgSrc = data.photoURL || 'lumina_anna2.jpg';
                             card.onclick = () => window.openProfile(data.name || 'Użytkownik', data.age || 26, data.city || 'Polska', data.bio || 'Witaj w LUMINA!', imgSrc, data.matchRate || '95%');
                             card.innerHTML = `
                                 <div class="card-photo">
@@ -1456,7 +1456,7 @@
         function openProfile(name, age, city, desc, imgSrc, match) {
             const mImg = document.getElementById('mImg');
             if (mImg) {
-                mImg.innerHTML = `<img src="${imgSrc || 'lumina_anna.jpg'}" alt="${name}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);margin:0 auto;display:block;">`;
+                mImg.innerHTML = `<img src="${imgSrc || 'lumina_anna2.jpg'}" alt="${name}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);margin:0 auto;display:block;">`;
             }
             document.getElementById('mName').textContent = `${name}, ${age}`;
             document.getElementById('mLoc').textContent = `📍 ${city}  •  Dopasowanie: ${match}`;
