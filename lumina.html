@@ -971,13 +971,16 @@
                 <div class="profile-card video-card" onclick="window.open('https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536', '_blank')">
                     <div class="card-photo">
                         <iframe
-                            src="https://www.youtube.com/embed/vpHsETwWwns?autoplay=1&mute=1&loop=1&playlist=vpHsETwWwns&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                            id="ytPromoIframe"
+                            src="https://www.youtube.com/embed/vpHsETwWwns?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=vpHsETwWwns&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
                             frameborder="0"
-                            allow="autoplay; fullscreen"
+                            allow="autoplay; encrypted-media; fullscreen"
                             allowfullscreen
-                            onclick="event.stopPropagation();"
                             style="position:absolute;inset:0;width:100%;height:100%;border-radius:16px;border:none;pointer-events:none;">
                         </iframe>
+                        <button class="card-sound-btn" onclick="toggleYtSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
+                            <i class="fa-solid fa-volume-xmark"></i>
+                        </button>
                         <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         
                         <!-- Pulsujący Przycisk do Sklepu -->
@@ -1473,24 +1476,42 @@
             showToast(btn.classList.contains('liked') ? 'Polubiono profil! 💖' : 'Usunięto polubienie');
         }
 
-        // ── Video Sound Toggle ──
-        window.toggleVideoSound = function(e, btn) {
+        // ── Video / YouTube Sound Toggle ──
+        let isYtMuted = true;
+        window.toggleYtSound = window.toggleVideoSound = function(e, btn) {
             e.stopPropagation();
+            const icon = btn.querySelector('i');
+            const iframe = document.getElementById('ytPromoIframe');
             const card = btn.closest('.card-photo');
             const video = card ? card.querySelector('video') : null;
-            if (!video) return;
 
-            video.muted = !video.muted;
-            const icon = btn.querySelector('i');
-            if (video.muted) {
-                icon.className = 'fa-solid fa-volume-xmark';
-                btn.classList.remove('sound-on');
-                showToast('Wyciszono wideo 🔇');
-            } else {
-                icon.className = 'fa-solid fa-volume-high';
-                btn.classList.add('sound-on');
-                video.play();
-                showToast('Włączono dźwięk wideo 🔊');
+            if (iframe && iframe.contentWindow) {
+                if (isYtMuted) {
+                    iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
+                    iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
+                    isYtMuted = false;
+                    if (icon) icon.className = 'fa-solid fa-volume-high';
+                    btn.classList.add('sound-on');
+                    showToast('Włączono dźwięk wideo 🔊');
+                } else {
+                    iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
+                    isYtMuted = true;
+                    if (icon) icon.className = 'fa-solid fa-volume-xmark';
+                    btn.classList.remove('sound-on');
+                    showToast('Wyciszono wideo 🔇');
+                }
+            } else if (video) {
+                video.muted = !video.muted;
+                if (video.muted) {
+                    if (icon) icon.className = 'fa-solid fa-volume-xmark';
+                    btn.classList.remove('sound-on');
+                    showToast('Wyciszono wideo 🔇');
+                } else {
+                    if (icon) icon.className = 'fa-solid fa-volume-high';
+                    btn.classList.add('sound-on');
+                    video.play();
+                    showToast('Włączono dźwięk wideo 🔊');
+                }
             }
         };
 
