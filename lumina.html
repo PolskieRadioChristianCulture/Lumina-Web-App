@@ -1686,7 +1686,7 @@
             }, 320);
         };
 
-        // Attach scroll listener to carousel
+        // Attach scroll listener to carousel & setup Inactivity Auto-Rotation
         document.addEventListener('DOMContentLoaded', () => {
             setupInfiniteCarousel();
             const carousel = document.getElementById('profilesCarousel');
@@ -1702,6 +1702,52 @@
                 isInfiniteInitialized = false;
                 setupInfiniteCarousel();
             });
+
+            // ── 30-Second Inactivity Auto-Rotation Engine ──
+            let inactivityTimer = null;
+            let autoRotationInterval = null;
+            const INACTIVITY_DELAY = 30000; // 30 seconds of inactivity
+            const ROTATION_STEP_INTERVAL = 3800; // auto-scroll every 3.8s when idle
+
+            function startAutoRotation() {
+                if (autoRotationInterval) return;
+                autoRotationInterval = setInterval(() => {
+                    const c = document.getElementById('profilesCarousel');
+                    if (c && !document.hidden) {
+                        window.scrollCarousel(1);
+                    }
+                }, ROTATION_STEP_INTERVAL);
+            }
+
+            function stopAutoRotation() {
+                if (autoRotationInterval) {
+                    clearInterval(autoRotationInterval);
+                    autoRotationInterval = null;
+                }
+            }
+
+            function resetInactivityCountdown() {
+                stopAutoRotation();
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(() => {
+                    startAutoRotation();
+                }, INACTIVITY_DELAY);
+            }
+
+            // Listen for any user activity to reset countdown
+            ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'click', 'wheel'].forEach(evt => {
+                window.addEventListener(evt, resetInactivityCountdown, { passive: true });
+            });
+
+            // Pause auto-rotation on direct carousel hover
+            if (carousel) {
+                carousel.addEventListener('mouseenter', stopAutoRotation);
+                carousel.addEventListener('mouseleave', resetInactivityCountdown);
+                carousel.addEventListener('touchstart', stopAutoRotation, { passive: true });
+            }
+
+            // Start initial 30s countdown
+            resetInactivityCountdown();
         });
 
         // ── Toast ──
