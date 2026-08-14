@@ -21,6 +21,65 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDou1gYyuJnuF2WocXEqglfRPqqwMm0Ge4",
+            authDomain: "cc-mission-control.firebaseapp.com",
+            projectId: "cc-mission-control",
+            storageBucket: "cc-mission-control.firebasestorage.app",
+            messagingSenderId: "519207260358",
+            appId: "1:519207260358:web:d875a610f438ecad2c47c7"
+        };
+
+        // Fetch today's reflection and inject into board
+        async function loadDailyReflection() {
+            try {
+                const app = initializeApp(firebaseConfig, 'lumina-board');
+                const db = getFirestore(app);
+                const today = new Date().toISOString().split('T')[0];
+                const q = query(
+                    collection(db, 'web_inspirations'),
+                    orderBy('date', 'desc'),
+                    limit(1)
+                );
+                const snap = await getDocs(q);
+                if (!snap.empty) {
+                    const data = snap.docs[0].data();
+                    // Only show if it's today's or the most recent
+                    window._luminaDailyReflection = {
+                        id: 'daily_rozważanie_' + (data.dayNumber || Date.now()),
+                        type: 'announcement',
+                        author: 'Christian Culture',
+                        authorRole: '☀️ Rozważanie Dnia • Misja CC',
+                        authorAvatar: 'icon.png',
+                        authorSlug: 'cezaryrgowski',
+                        time: 'Dzisiaj • 📖 Słowo na dziś • ' + (data.date || today),
+                        title: data.title || '☀️ Rozważanie na dziś',
+                        text: (data.contentWeb || data.fullText || '').substring(0, 320) + '...',
+                        image: data.imageUrl || 'tlo_pr_cc.jpg',
+                        btnText: 'Czytaj Pełne Rozważanie →',
+                        btnUrl: 'https://polskieradio.cc',
+                        likes: data.dayNumber ? (data.dayNumber * 3 + 40) : 42,
+                        amen: data.dayNumber ? (data.dayNumber * 3 + 35) : 38,
+                        _pinned: true
+                    };
+                    // Re-render if feed already loaded
+                    if (typeof renderFeed === 'function') renderFeed();
+                }
+            } catch(e) {
+                console.warn('Lumina Board: Nie można pobrać rozważania z Firestore:', e.message);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDailyReflection();
+        });
+    </script>
+
     <style>
         :root {
             --bg-base: #090d1a;
@@ -1133,6 +1192,11 @@
 
             // Harmonious Interleaving: Post -> Post -> Ad -> Post -> Promo -> Post ...
             let combined = [];
+
+            // ── Pinned Daily Reflection (top of feed, from Firestore) ──
+            if (window._luminaDailyReflection) {
+                combined.push(window._luminaDailyReflection);
+            }
             let cIndex = 0;
 
             userPosts.forEach((post, idx) => {
@@ -1170,7 +1234,8 @@
                 const isCampaign = (item.type === 'ad' || item.type === 'promo' || item.type === 'announcement' || item.type === 'event');
                 
                 let badgeHtml = '';
-                if (item.type === 'ad') badgeHtml = '<span class="badge-type-tag badge-type-ad"><i class="fa-solid fa-rectangle-ad"></i> Reklama Misji CC</span>';
+                if (item._pinned) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(168,85,247,0.25));border-color:rgba(245,158,11,0.5);color:#fbbf24;"><i class="fa-solid fa-sun"></i> Rozważanie Dnia</span>';
+                else if (item.type === 'ad') badgeHtml = '<span class="badge-type-tag badge-type-ad"><i class="fa-solid fa-rectangle-ad"></i> Reklama Misji CC</span>';
                 else if (item.type === 'promo') badgeHtml = '<span class="badge-type-tag badge-type-promo"><i class="fa-solid fa-rocket"></i> Promocja CC</span>';
                 else if (item.type === 'announcement') badgeHtml = '<span class="badge-type-tag badge-type-ann"><i class="fa-solid fa-scroll"></i> Ogłoszenie CC</span>';
                 else if (item.type === 'event') badgeHtml = '<span class="badge-type-tag badge-type-event"><i class="fa-solid fa-calendar-star"></i> Wydarzenie</span>';
@@ -1529,6 +1594,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             syncFounderAvatar();
             renderFeed();
+            // Note: Firebase module loads daily reflection async and calls renderFeed() again when ready
         });
         window.addEventListener('storage', () => {
             syncFounderAvatar();
