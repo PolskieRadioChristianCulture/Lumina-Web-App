@@ -1232,7 +1232,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Noemi, 28</div>
-                        <div class="card-city">📍 Wrocław</div>
+                        <div class="card-city">📍 Wrocław • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Spokój, las i głębokie rozmowy o Bogu przy herbacie. Szukam bratniej duszy."</div>
                     </div>
                 </div>
@@ -1246,7 +1246,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Dawid, 30</div>
-                        <div class="card-city">📍 Poznań</div>
+                        <div class="card-city">📍 Poznań • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu i wierze."</div>
                     </div>
                 </div>
@@ -1260,7 +1260,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Weronika, 25</div>
-                        <div class="card-city">📍 Kraków</div>
+                        <div class="card-city">📍 Kraków • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Graficzka z pasją do piękna i muzyki. Szukam szczerej relacji opartej na wierze."</div>
                     </div>
                 </div>
@@ -1274,7 +1274,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Tomek, 27</div>
-                        <div class="card-city">📍 Gdańsk</div>
+                        <div class="card-city">📍 Gdańsk • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku."</div>
                     </div>
                 </div>
@@ -1304,7 +1304,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Anna, 28</div>
-                        <div class="card-city">📍 Warszawa</div>
+                        <div class="card-city">📍 Warszawa • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania świata."</div>
                     </div>
                 </div>
@@ -1318,7 +1318,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Piotr, 31</div>
-                        <div class="card-city">📍 Kraków</div>
+                        <div class="card-city">📍 Kraków • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Szuka spontanicznych przygód. Entuzjasta górskich wędrówek."</div>
                     </div>
                 </div>
@@ -1332,7 +1332,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Julia, 26</div>
-                        <div class="card-city">📍 Gdańsk</div>
+                        <div class="card-city">📍 Gdańsk • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Marzycielka z pasją do muzyki. Szukam głębokich, szczerych relacji."</div>
                     </div>
                 </div>
@@ -1825,8 +1825,11 @@
             if (mImg) {
                 mImg.innerHTML = `<img src="${imgSrc || 'lumina_anna2.jpg'}" alt="${name}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);margin:0 auto;display:block;">`;
             }
+            const lowerName = (name || '').toLowerCase();
+            const isDemo = !lowerName.includes('cezary') && !lowerName.includes('wioletta');
+            
             document.getElementById('mName').textContent = `${name}, ${age}`;
-            document.getElementById('mLoc').textContent = `📍 ${city}  •  Dopasowanie: ${match}`;
+            document.getElementById('mLoc').innerHTML = `📍 ${city}  •  Dopasowanie: ${match}${isDemo ? '  •  <span style="color:#c084fc;font-weight:700;">Profil Poglądowy</span>' : ''}`;
             document.getElementById('mDesc').textContent = `"${desc}"`;
 
             // Dynamic slug for full Facebook-style profile page
