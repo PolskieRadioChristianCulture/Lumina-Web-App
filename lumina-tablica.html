@@ -24,8 +24,8 @@
     <style>
         :root {
             --bg-base: #090d1a;
-            --bg-card: rgba(18, 26, 47, 0.85);
-            --bg-card-hover: rgba(26, 38, 68, 0.95);
+            --bg-card: rgba(18, 26, 47, 0.90);
+            --bg-card-hover: rgba(26, 38, 68, 0.98);
             --border-glass: rgba(255, 255, 255, 0.12);
             --border-glass-glow: rgba(168, 85, 247, 0.4);
             --text-primary: #ffffff;
@@ -36,7 +36,7 @@
             --accent-purple: #a855f7;
             --accent-cyan: #38bdf8;
             --accent-green: #10b981;
-            --radius-card: 20px;
+            --radius-card: 18px;
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -63,7 +63,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 12px 36px;
-            background: rgba(15, 23, 42, 0.92);
+            background: rgba(15, 23, 42, 0.94);
             backdrop-filter: blur(18px);
             border-bottom: 1px solid var(--border-glass);
         }
@@ -81,7 +81,7 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
         }
         .nav-link {
             color: #cbd5e1;
@@ -138,23 +138,23 @@
             cursor: pointer;
         }
 
-        /* ──────────────────── MAIN FEED CONTAINER ──────────────────── */
+        /* ──────────────────── MAIN FEED CONTAINER (RESPONSIVE GRID) ──────────────────── */
         .board-container {
-            max-width: 960px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 30px 16px 80px;
+            padding: 24px 18px 80px;
         }
 
         /* ──────────────────── HERO HEADER ──────────────────── */
         .board-header {
             text-align: center;
-            margin-bottom: 28px;
-            padding: 32px 20px 24px;
-            border-radius: 24px;
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.85));
+            margin-bottom: 24px;
+            padding: 26px 20px 20px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.75), rgba(15, 23, 42, 0.9));
             border: 1px solid var(--border-glass);
             backdrop-filter: blur(16px);
-            box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
         }
         .board-tagline {
             display: inline-flex;
@@ -165,26 +165,26 @@
             color: #fbbf24;
             padding: 4px 14px;
             border-radius: 20px;
-            font-size: 0.76rem;
+            font-size: 0.74rem;
             font-weight: 800;
             letter-spacing: 0.5px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             text-transform: uppercase;
         }
         .board-title {
-            font-size: 2.1rem;
+            font-size: 1.85rem;
             font-weight: 900;
             font-family: 'Outfit', sans-serif;
             background: linear-gradient(90deg, #ffffff, #f472b6, #38bdf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .board-subtitle {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--text-secondary);
-            max-width: 580px;
-            margin: 0 auto 20px;
+            max-width: 650px;
+            margin: 0 auto 16px;
             line-height: 1.5;
         }
 
@@ -200,9 +200,9 @@
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.12);
             color: #cbd5e1;
-            padding: 7px 16px;
+            padding: 6px 15px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
@@ -222,10 +222,10 @@
         .founder-mission-bar {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
             border: 1px solid rgba(245, 158, 11, 0.45);
-            border-radius: 20px;
-            padding: 16px 20px;
+            border-radius: 18px;
+            padding: 14px 18px;
             margin-bottom: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.35);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -235,11 +235,11 @@
         .founder-info-side {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
         .founder-badge-avatar {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #f59e0b;
@@ -255,9 +255,9 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-size: 0.78rem;
+            padding: 7px 13px;
+            border-radius: 10px;
+            font-size: 0.76rem;
             font-weight: 800;
             color: #fff;
             border: none;
@@ -271,11 +271,12 @@
         .btn-camp-ann { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
         .btn-camp-event { background: linear-gradient(135deg, #10b981, #047857); }
 
-        /* ──────────────────── FEED POST CARD 1:1 ──────────────────── */
+        /* ──────────────────── COMPACT MULTI-COLUMN 1:1 FEED GRID ──────────────────── */
         .feed-stream {
-            display: flex;
-            flex-direction: column;
-            gap: 28px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 22px;
+            align-items: start;
         }
 
         .post-card-1x1 {
@@ -284,12 +285,15 @@
             border-radius: var(--radius-card);
             overflow: hidden;
             backdrop-filter: blur(14px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
-            transition: transform 0.25s, box-shadow 0.25s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+            display: flex;
+            flex-direction: column;
         }
         .post-card-1x1:hover {
-            border-color: rgba(255, 255, 255, 0.22);
-            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.55);
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
         }
 
         /* Post Card Header */
@@ -297,31 +301,34 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 20px;
+            padding: 12px 14px;
+            background: rgba(15, 23, 42, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         .post-author-box {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             text-decoration: none;
             color: inherit;
         }
         .post-author-img {
-            width: 44px;
-            height: 44px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
         }
         .post-author-name {
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
+            color: #f8fafc;
         }
         .post-author-role {
-            font-size: 0.72rem;
+            font-size: 0.70rem;
             color: var(--text-secondary);
         }
 
@@ -329,12 +336,12 @@
         .badge-type-tag {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.72rem;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.68rem;
             font-weight: 800;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
         }
         .badge-type-post { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35); }
         .badge-type-ad { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.45); }
@@ -357,107 +364,75 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center center;
             display: block;
             transition: transform 0.4s ease;
         }
         .post-card-1x1:hover .media-img-1x1 {
-            transform: scale(1.02);
-        }
-
-        /* Square Typographic Poster (when text only) */
-        .typographic-poster-1x1 {
-            width: 100%;
-            height: 100%;
-            padding: 36px 28px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(135deg, #1e1b4b, #0f172a, #311042);
-            position: relative;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
-        .poster-quote-icon {
-            font-size: 2.2rem;
-            color: rgba(245, 158, 11, 0.35);
-            margin-bottom: 12px;
-        }
-        .poster-text {
-            font-size: 1.15rem;
-            font-weight: 700;
-            line-height: 1.6;
-            color: #f8fafc;
-            font-family: 'Outfit', sans-serif;
-            max-width: 520px;
-        }
-        .poster-author-sub {
-            margin-top: 16px;
-            font-size: 0.82rem;
-            color: #facc15;
-            font-weight: 800;
+            transform: scale(1.03);
         }
 
         /* Post Body Content */
         .post-details-box {
-            padding: 18px 20px 14px;
+            padding: 14px 16px 10px;
+            flex: 1;
         }
         .post-headline {
-            font-size: 1.15rem;
+            font-size: 1.02rem;
             font-weight: 800;
             font-family: 'Outfit', sans-serif;
             color: #fff;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
+            line-height: 1.35;
         }
         .post-desc-text {
-            font-size: 0.9rem;
+            font-size: 0.84rem;
             color: #cbd5e1;
-            line-height: 1.55;
-            margin-bottom: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
         }
 
         /* Event Location Pill */
         .event-info-pill {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             background: rgba(16, 185, 129, 0.12);
             border: 1px solid rgba(16, 185, 129, 0.35);
-            border-radius: 12px;
-            padding: 8px 14px;
-            font-size: 0.82rem;
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-size: 0.76rem;
             color: #6ee7b7;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             flex-wrap: wrap;
         }
 
         /* CTA Button for Ads / Promos / Events */
         .campaign-cta-row {
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
         .btn-campaign-cta {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 7px;
             width: 100%;
-            padding: 12px 20px;
-            border-radius: 14px;
+            padding: 10px 16px;
+            border-radius: 12px;
             font-weight: 800;
-            font-size: 0.92rem;
+            font-size: 0.85rem;
             font-family: inherit;
             color: #fff;
             text-decoration: none;
             cursor: pointer;
             border: none;
             transition: all 0.2s;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
         }
-        .btn-campaign-cta.ad { background: linear-gradient(90deg, #f59e0b, #ea580c); box-shadow: 0 4px 18px rgba(245, 158, 11, 0.35); }
-        .btn-campaign-cta.promo { background: linear-gradient(90deg, #ec4899, #8b5cf6); box-shadow: 0 4px 18px rgba(236, 72, 153, 0.35); }
-        .btn-campaign-cta.ann { background: linear-gradient(90deg, #3b82f6, #06b6d4); box-shadow: 0 4px 18px rgba(59, 130, 246, 0.35); }
-        .btn-campaign-cta.event { background: linear-gradient(90deg, #10b981, #059669); box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35); }
+        .btn-campaign-cta.ad { background: linear-gradient(90deg, #f59e0b, #ea580c); box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35); }
+        .btn-campaign-cta.promo { background: linear-gradient(90deg, #ec4899, #8b5cf6); box-shadow: 0 4px 14px rgba(236, 72, 153, 0.35); }
+        .btn-campaign-cta.ann { background: linear-gradient(90deg, #3b82f6, #06b6d4); box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35); }
+        .btn-campaign-cta.event { background: linear-gradient(90deg, #10b981, #059669); box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35); }
         .btn-campaign-cta:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
         /* Post Action Buttons Footer */
@@ -465,22 +440,23 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 10px 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
             background: rgba(15, 23, 42, 0.5);
+            margin-top: auto;
         }
         .post-action-btn {
             background: transparent;
             border: none;
             color: #94a3b8;
-            font-size: 0.85rem;
+            font-size: 0.80rem;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 20px;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 16px;
             transition: all 0.2s;
             font-family: inherit;
         }
@@ -490,7 +466,7 @@
 
         /* Comments Drawer */
         .comments-section {
-            padding: 14px 20px;
+            padding: 12px 14px;
             background: rgba(10, 15, 30, 0.7);
             border-top: 1px solid rgba(255, 255, 255, 0.06);
             display: none;
@@ -498,35 +474,35 @@
         .comments-section.open { display: block; }
         .comment-item {
             display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            font-size: 0.82rem;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.78rem;
         }
         .comment-avatar {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             object-fit: cover;
         }
         .comment-bubble {
             background: rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
-            padding: 8px 12px;
+            border-radius: 10px;
+            padding: 6px 10px;
             flex: 1;
         }
         .comment-input-row {
             display: flex;
-            gap: 8px;
-            margin-top: 10px;
+            gap: 6px;
+            margin-top: 8px;
         }
         .comment-input {
             flex: 1;
-            padding: 8px 12px;
-            border-radius: 20px;
+            padding: 7px 10px;
+            border-radius: 16px;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: #fff;
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             outline: none;
             font-family: inherit;
         }
@@ -534,13 +510,14 @@
             background: #a855f7;
             color: #fff;
             border: none;
-            width: 34px;
-            height: 34px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 0.75rem;
         }
 
         /* ──────────────────── MODALS & TOAST ──────────────────── */
@@ -559,22 +536,22 @@
         .modal-card {
             background: #0f172a;
             border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            padding: 26px;
+            border-radius: 22px;
+            padding: 24px;
             width: 100%;
-            max-width: 540px;
+            max-width: 520px;
             position: relative;
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
         }
         .modal-close-btn {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            top: 14px;
+            right: 14px;
             background: rgba(255, 255, 255, 0.1);
             border: none;
             color: #fff;
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
@@ -588,13 +565,13 @@
             transform: translateX(-50%) translateY(100px);
             background: #1e293b;
             color: #fff;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 30px;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             border: 1px solid rgba(255,255,255,0.15);
             z-index: 2000;
@@ -603,13 +580,21 @@
         }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        @media (max-width: 768px) {
-            .lumina-nav { padding: 10px 16px; }
+        @media (max-width: 900px) {
+            .feed-stream {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 16px;
+            }
+        }
+        @media (max-width: 640px) {
+            .lumina-nav { padding: 10px 14px; }
             .nav-links { display: none; }
-            .board-title { font-size: 1.65rem; }
-            .board-container { padding: 16px 10px 60px; }
-            .post-top-header { padding: 12px 14px; }
-            .post-details-box { padding: 14px 14px 10px; }
+            .board-title { font-size: 1.45rem; }
+            .board-container { padding: 14px 8px 60px; }
+            .feed-stream {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
         }
     </style>
 </head>
@@ -621,7 +606,7 @@
     <!-- ══════════ NAVBAR ══════════ -->
     <nav class="lumina-nav">
         <a href="lumina.html" class="nav-logo-text">
-            <img src="lumina_icon.jpg" alt="LUMINA Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+            <img src="lumina_icon.jpg" alt="LUMINA Logo" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
             <span>LUMINA</span>
         </a>
 
@@ -656,7 +641,7 @@
             <div class="board-tagline"><i class="fa-solid fa-sparkles"></i> Społeczność & Misja Christian Culture</div>
             <h1 class="board-title">Główna Tablica Portalu LUMINA</h1>
             <p class="board-subtitle">
-                Odkrywaj codzienne świadectwa, rozważania, wpisy użytkowników oraz oficjalne kampanie i wydarzenia Misji Christian Culture w formacie kwadratu 1:1.
+                Wpisy społeczności, rozważania biblijne oraz oficjalne kampanie i inicjatywy Misji Christian Culture w kompaktowym formacie kwadratu 1:1.
             </p>
 
             <!-- Filter Categories Row -->
@@ -677,7 +662,7 @@
                     <div style="font-weight: 800; font-size: 0.88rem; color:#fff; display:flex; align-items:center; gap:6px;">
                         Centrum Nadawcze Misji CC <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.8rem;"></i>
                     </div>
-                    <div style="font-size: 0.74rem; color: #facc15; font-weight:700;">Zalogowano jako Założyciel: Cezary Rogowski</div>
+                    <div style="font-size: 0.72rem; color: #facc15; font-weight:700;">Zalogowano jako Założyciel: Cezary Rogowski</div>
                 </div>
             </div>
             <div class="founder-buttons-group">
@@ -700,78 +685,78 @@
         <div class="modal-card" style="max-height: 90vh; overflow-y: auto;">
             <button class="modal-close-btn" onclick="closeModal('campaignModal')"><i class="fa-solid fa-xmark"></i></button>
             <div style="display:flex; align-items:center; gap:10px; margin-bottom: 6px;">
-                <span id="campModalIcon" style="font-size: 1.6rem;">📢</span>
+                <span id="campModalIcon" style="font-size: 1.5rem;">📢</span>
                 <div>
-                    <h3 style="font-size: 1.35rem; font-family:'Outfit',sans-serif; margin:0;" id="campModalTitle">Dodaj Reklamę Misji CC</h3>
-                    <div style="font-size: 0.76rem; color: #facc15; font-weight:700;">Format 1:1 • Automatyczna rotacja na Głównej Tablicy</div>
+                    <h3 style="font-size: 1.25rem; font-family:'Outfit',sans-serif; margin:0;" id="campModalTitle">Dodaj Reklamę Misji CC</h3>
+                    <div style="font-size: 0.74rem; color: #facc15; font-weight:700;">Format 1:1 • Automatyczna rotacja na Głównej Tablicy</div>
                 </div>
             </div>
-            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">
+            <p style="font-size: 0.80rem; color: var(--text-secondary); margin-bottom: 14px;">
                 Utwórz publikację misyjną, która natychmiast wyświetli się na Głównej Tablicy portalu.
             </p>
 
             <form onsubmit="saveCampaignSubmit(event)">
                 <input type="hidden" id="campType" value="ad">
 
-                <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px;">
-                    <button type="button" class="btn-camp-quick btn-camp-ad" id="btnTypeAd" onclick="selectCampaignType('ad')" style="padding:7px; font-size:0.72rem; justify-content:center;"><i class="fa-solid fa-rectangle-ad"></i> Reklama</button>
-                    <button type="button" class="btn-camp-quick btn-camp-promo" id="btnTypePromo" onclick="selectCampaignType('promo')" style="padding:7px; font-size:0.72rem; justify-content:center; opacity:0.5;"><i class="fa-solid fa-rocket"></i> Promocja</button>
-                    <button type="button" class="btn-camp-quick btn-camp-ann" id="btnTypeAnn" onclick="selectCampaignType('announcement')" style="padding:7px; font-size:0.72rem; justify-content:center; opacity:0.5;"><i class="fa-solid fa-scroll"></i> Ogłoszenie</button>
-                    <button type="button" class="btn-camp-quick btn-camp-event" id="btnTypeEvent" onclick="selectCampaignType('event')" style="padding:7px; font-size:0.72rem; justify-content:center; opacity:0.5;"><i class="fa-solid fa-calendar-star"></i> Wydarzenie</button>
+                <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px;">
+                    <button type="button" class="btn-camp-quick btn-camp-ad" id="btnTypeAd" onclick="selectCampaignType('ad')" style="padding:6px; font-size:0.70rem; justify-content:center;"><i class="fa-solid fa-rectangle-ad"></i> Reklama</button>
+                    <button type="button" class="btn-camp-quick btn-camp-promo" id="btnTypePromo" onclick="selectCampaignType('promo')" style="padding:6px; font-size:0.70rem; justify-content:center; opacity:0.5;"><i class="fa-solid fa-rocket"></i> Promocja</button>
+                    <button type="button" class="btn-camp-quick btn-camp-ann" id="btnTypeAnn" onclick="selectCampaignType('announcement')" style="padding:6px; font-size:0.70rem; justify-content:center; opacity:0.5;"><i class="fa-solid fa-scroll"></i> Ogłoszenie</button>
+                    <button type="button" class="btn-camp-quick btn-camp-event" id="btnTypeEvent" onclick="selectCampaignType('event')" style="padding:6px; font-size:0.70rem; justify-content:center; opacity:0.5;"><i class="fa-solid fa-calendar-star"></i> Wydarzenie</button>
                 </div>
 
-                <div style="margin-bottom: 12px;">
-                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Tytuł / Nagłówek Kampanii</label>
-                    <input type="text" id="campTitleInput" placeholder="np. Radio Christian Culture – Kanał Uwielbienia 24/7" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:15px; font-weight:700;" required>
+                <div style="margin-bottom: 10px;">
+                    <label style="display:block; font-size:0.74rem; font-weight:700; color:var(--text-secondary); margin-bottom:3px;">Tytuł / Nagłówek Kampanii</label>
+                    <input type="text" id="campTitleInput" placeholder="np. Radio Christian Culture – Kanał Uwielbienia 24/7" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:14px; font-weight:700;" required>
                 </div>
 
-                <div style="margin-bottom: 12px;">
-                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Treść / Opis Kampanii</label>
-                    <textarea id="campDescInput" rows="3" placeholder="Opisz cel, misję, zachętę do udziału lub szczegóły promocji..." style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:15px; outline:none; resize:vertical;" required></textarea>
+                <div style="margin-bottom: 10px;">
+                    <label style="display:block; font-size:0.74rem; font-weight:700; color:var(--text-secondary); margin-bottom:3px;">Treść / Opis Kampanii</label>
+                    <textarea id="campDescInput" rows="3" placeholder="Opisz cel, misję, zachętę do udziału lub szczegóły promocji..." style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:14px; outline:none; resize:vertical;" required></textarea>
                 </div>
 
                 <!-- Event Specific Info -->
-                <div id="campEventFields" style="display:none; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px; padding:10px; border-radius:10px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3);">
+                <div id="campEventFields" style="display:none; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:10px; padding:10px; border-radius:10px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3);">
                     <div>
-                        <label style="display:block; font-size:0.72rem; font-weight:700; color:#6ee7b7; margin-bottom:3px;"><i class="fa-solid fa-calendar-days"></i> Data / Godzina</label>
-                        <input type="text" id="campEventDate" placeholder="np. Każda Niedziela, 19:00" style="width:100%; padding:8px 12px; border-radius:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px;">
+                        <label style="display:block; font-size:0.70rem; font-weight:700; color:#6ee7b7; margin-bottom:2px;"><i class="fa-solid fa-calendar-days"></i> Data / Godzina</label>
+                        <input type="text" id="campEventDate" placeholder="np. Każda Niedziela, 19:00" style="width:100%; padding:7px 10px; border-radius:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13px;">
                     </div>
                     <div>
-                        <label style="display:block; font-size:0.72rem; font-weight:700; color:#6ee7b7; margin-bottom:3px;"><i class="fa-solid fa-location-dot"></i> Miejsce / Transmisja</label>
-                        <input type="text" id="campEventLoc" placeholder="np. Transmisja Live & Warszawa" style="width:100%; padding:8px 12px; border-radius:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px;">
+                        <label style="display:block; font-size:0.70rem; font-weight:700; color:#6ee7b7; margin-bottom:2px;"><i class="fa-solid fa-location-dot"></i> Miejsce / Transmisja</label>
+                        <input type="text" id="campEventLoc" placeholder="np. Transmisja Live & Warszawa" style="width:100%; padding:7px 10px; border-radius:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13px;">
                     </div>
                 </div>
 
                 <!-- Graphic 1:1 Square Upload & Preview -->
-                <div style="margin-bottom: 14px;">
-                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:6px;"><i class="fa-solid fa-image"></i> Grafika Kampanii (Format Kwadrat 1:1)</label>
+                <div style="margin-bottom: 12px;">
+                    <label style="display:block; font-size:0.74rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;"><i class="fa-solid fa-image"></i> Grafika Kampanii (Format Kwadrat 1:1)</label>
                     <input type="file" id="campaignImgFileInput" accept="image/*" style="display:none;" onchange="handleCampaignImgSelect(event)">
                     
-                    <div id="campImgPreviewContainer" style="display:none; position:relative; width: 100%; max-width: 240px; aspect-ratio: 1/1; margin: 0 auto 10px; border-radius: 14px; overflow: hidden; border: 2px solid #f59e0b; box-shadow: 0 8px 24px rgba(0,0,0,0.5);">
+                    <div id="campImgPreviewContainer" style="display:none; position:relative; width: 100%; max-width: 220px; aspect-ratio: 1/1; margin: 0 auto 8px; border-radius: 12px; overflow: hidden; border: 2px solid #f59e0b; box-shadow: 0 6px 20px rgba(0,0,0,0.5);">
                         <img id="campImgPreviewEl" src="" style="width:100%; height:100%; object-fit:cover; display:block;">
-                        <button type="button" onclick="removeCampaignImg()" style="position:absolute; top:8px; right:8px; width:28px; height:28px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.6);"><i class="fa-solid fa-xmark"></i></button>
+                        <button type="button" onclick="removeCampaignImg()" style="position:absolute; top:6px; right:6px; width:26px; height:26px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.6);"><i class="fa-solid fa-xmark"></i></button>
                     </div>
 
-                    <button type="button" onclick="document.getElementById('campaignImgFileInput').click()" style="width:100%; padding:10px; border-radius:10px; background:rgba(245,158,11,0.15); border:1px dashed #f59e0b; color:#fef08a; font-family:inherit; font-size:0.85rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+                    <button type="button" onclick="document.getElementById('campaignImgFileInput').click()" style="width:100%; padding:9px; border-radius:10px; background:rgba(245,158,11,0.15); border:1px dashed #f59e0b; color:#fef08a; font-family:inherit; font-size:0.80rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
                         <i class="fa-solid fa-cloud-arrow-up"></i> Wybierz Grafikę 1:1 z Dysku / Telefonu
                     </button>
                 </div>
 
                 <!-- Action Button Config -->
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 16px;">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom: 14px;">
                     <div>
-                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Napis na Przycisku</label>
-                        <input type="text" id="campBtnText" placeholder="np. Słuchaj Radia CC 📻" style="width:100%; padding:9px 12px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px;" required>
+                        <label style="display:block; font-size:0.74rem; font-weight:700; color:var(--text-secondary); margin-bottom:3px;">Napis na Przycisku</label>
+                        <input type="text" id="campBtnText" placeholder="np. Słuchaj Radia CC 📻" style="width:100%; padding:8px 10px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13px;" required>
                     </div>
                     <div>
-                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Link Docelowy (URL)</label>
-                        <input type="text" id="campBtnUrl" placeholder="https://polskieradio.cc" style="width:100%; padding:9px 12px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px;" required>
+                        <label style="display:block; font-size:0.74rem; font-weight:700; color:var(--text-secondary); margin-bottom:3px;">Link Docelowy (URL)</label>
+                        <input type="text" id="campBtnUrl" placeholder="https://polskieradio.cc" style="width:100%; padding:8px 10px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13px;" required>
                     </div>
                 </div>
 
-                <div style="display:flex; gap:10px;">
-                    <button type="button" onclick="closeModal('campaignModal')" style="flex:1; padding:12px; border-radius:30px; background:rgba(255,255,255,0.08); border:none; color:#fff; font-weight:700; font-family:inherit; cursor:pointer;">Anuluj</button>
-                    <button type="submit" style="flex:1.7; padding:12px; border-radius:30px; background:linear-gradient(90deg,#f59e0b,#ec4899); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 18px rgba(245,158,11,0.4);"><i class="fa-solid fa-bullhorn"></i> Opublikuj na Tablicy ✨</button>
+                <div style="display:flex; gap:8px;">
+                    <button type="button" onclick="closeModal('campaignModal')" style="flex:1; padding:10px; border-radius:24px; background:rgba(255,255,255,0.08); border:none; color:#fff; font-weight:700; font-family:inherit; cursor:pointer;">Anuluj</button>
+                    <button type="submit" style="flex:1.7; padding:10px; border-radius:24px; background:linear-gradient(90deg,#f59e0b,#ec4899); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 16px rgba(245,158,11,0.4);"><i class="fa-solid fa-bullhorn"></i> Opublikuj na Tablicy ✨</button>
                 </div>
             </form>
         </div>
@@ -782,54 +767,84 @@
 
     <!-- ══════════ JAVASCRIPT & ENGINE ══════════ -->
     <script>
-        // ── Sample Default CC Mission Campaigns ──
+        // ── Default Rich CC Mission Campaigns with High-Quality Graphics ──
         const DEFAULT_CC_CAMPAIGNS = [
             {
                 id: 'camp_radio_cc',
                 type: 'ad',
                 title: 'Radio Christian Culture – Słuchaj na Żywo 24/7',
-                desc: 'Dołącz do setek słuchaczy w całej Polsce i na świecie! Najpiękniejsza muzyka uwielbienia, Biblia Śpiewana oraz codzienne rozważania ku Bożej chwale bez reklam.',
-                image: 'lumina_hero_main.jpg',
+                desc: 'Dołącz do tysięcy słuchaczy! Najpiękniejsza polska muzyka uwielbienia, Biblia Śpiewana oraz codzienne rozważania ku Bożej chwale bez reklam.',
+                image: 'tlo_tv_radiocc.jpg',
                 btnText: 'Słuchaj Radia CC na Żywo 📻✨',
                 btnUrl: 'https://polskieradio.cc',
                 author: 'Radio Christian Culture',
                 authorRole: 'Oficjalna Misja Radiowa 🕊️',
                 authorAvatar: 'icon.png',
                 createdAt: 'Wyróżniona Misja CC',
-                likes: 84,
-                amen: 62
+                likes: 128,
+                amen: 94
             },
             {
                 id: 'camp_store_promo',
                 type: 'promo',
-                title: 'Oficjalny Sklep Misji Christian Culture – Kolekcja „Wiara i Nadzieja”',
+                title: 'Oficjalny Sklep Misji CC – Kolekcja „Wiara i Nadzieja”',
                 desc: 'Wspieraj rozwój ewangelizacji i noś przesłanie Chrystusa każdego dnia. Wysokiej jakości koszulki, bluzy i akcesoria z autorskimi motywami wiary.',
-                image: 'avatar_new1.jpg',
+                image: 'tlo_tv_koszulki.jpg',
                 btnText: 'Odwiedź Sklep Misji CC 🛒',
                 btnUrl: 'https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536',
                 author: 'Christian Culture Store',
                 authorRole: 'Wsparcie Misji CC 🛍️',
                 authorAvatar: 'lumina_icon.jpg',
                 createdAt: 'Promocja Sezonowa',
-                likes: 49,
-                amen: 31
+                likes: 76,
+                amen: 48
+            },
+            {
+                id: 'camp_biblia_spiewana',
+                type: 'promo',
+                title: 'Biblia Śpiewana Audio – Księga Psalmów & Pieśni Uwielbienia',
+                desc: 'Niezwykłe muzyczne wydanie Pisma Świętego. Pozwól, aby Słowo Boże napełniło Twoje serce pokojem i mocą Ducha Świętego każdego dnia.',
+                image: 'reklama_biblia.png',
+                btnText: 'Odsłuchaj Album w Radiu CC 🎧',
+                btnUrl: 'https://polskieradio.cc',
+                author: 'Biblia Audio CC',
+                authorRole: 'Słowo Boże w Muzyce 📖',
+                authorAvatar: 'icon.png',
+                createdAt: 'Nowość Muzyczna',
+                likes: 112,
+                amen: 104
             },
             {
                 id: 'camp_worship_event',
                 type: 'event',
-                title: 'Ogólnopolski Wieczór Uwielbienia i Modlitwy „Zjednoczeni za Polskę”',
-                desc: 'Zapraszamy wszystkich wierzących do wspólnego stanięcia w wyłomie za naszą Ojczyznę, rodziny i młodzież. Dołącz stacjonarnie lub oglądaj transmisję na żywo w CCTV24.',
-                image: 'lumina_hero_main.jpg',
+                title: 'Ogólnopolski Wieczór Uwielbienia „Zjednoczeni za Polskę”',
+                desc: 'Zapraszamy wszystkich wierzących do wspólnego stanięcia w wyłomie modlitewnym za naszą Ojczyznę, rodziny i młodzież. Dołącz na żywo!',
+                image: 'zjednoczeni_za_polske_banner.jpg',
                 btnText: 'Szczegóły Wydarzenia & Transmisja 📅',
                 btnUrl: 'https://polskieradio.cc',
                 eventDate: 'Każdy Pierwszy Czwartek Miesiąca, 20:00',
-                eventLoc: 'Transmisja Live & Warszawa',
+                eventLoc: 'Transmisja Live CCTV24 & Warszawa',
                 author: 'Cezary Rogowski',
                 authorRole: 'Założyciel Christian Culture ✨',
                 authorAvatar: 'avatar_new1.jpg',
                 createdAt: 'Wydarzenie Ogólnopolskie',
-                likes: 96,
-                amen: 88
+                likes: 154,
+                amen: 142
+            },
+            {
+                id: 'camp_app_promo',
+                type: 'ad',
+                title: 'Aplikacja „Dobrze, że jesteś” – Codzienna Inspiracja w Telefonie',
+                desc: 'Zainstaluj aplikację i otrzymuj każdego ranka budujące rozważanie, werset dnia oraz bezpośredni dostęp do radia Christian Culture.',
+                image: 'promo_dzj.jpg',
+                btnText: 'Pobierz Aplikację za Darmo 📲',
+                btnUrl: 'https://polskieradio.cc',
+                author: 'Misja Christian Culture',
+                authorRole: 'Aplikacja Mobilna 📱',
+                authorAvatar: 'lumina_icon.jpg',
+                createdAt: 'Darmowa Aplikacja',
+                likes: 89,
+                amen: 67
             }
         ];
 
@@ -856,39 +871,35 @@
                 const cProfile = cJson ? JSON.parse(cJson) : null;
                 const cAvatar = (cProfile && cProfile.avatar) ? cProfile.avatar : 'avatar_new1.jpg';
                 const cName = (cProfile && cProfile.name) ? cProfile.name : 'Cezary Rogowski';
-                const cPosts = (cProfile && Array.isArray(cProfile.posts)) ? cProfile.posts : [
-                    {
-                        id: 'post_c1',
-                        author: cName,
-                        time: 'Dzisiaj, 18:30 • 🌍 Publiczny',
-                        text: 'Witaj na moim profilu w LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku. Szukam bratniej duszy, z którą będziemy wspólnie służyć, modlić się i budować dom pełen pokoju i Bożej miłości. Zapraszam do rozmowy! ☕✨',
-                        likes: 19,
-                        image: null
-                    },
-                    {
-                        id: 'post_c2',
-                        author: cName,
-                        time: 'Wczoraj, 21:15 • 📖 Rozważanie',
-                        text: '„Nie troszczcie się zbytnio o jutro, albowiem jutrzejszy dzień sam o siebie troszczyć się będzie.” (Mt 6, 34). Niech ten werset przyniesie Wam dzisiaj pokój serca i siłę do działania! 🙏',
-                        likes: 34,
-                        image: 'lumina_hero_main.jpg'
-                    }
-                ];
+                
+                posts.push({
+                    id: 'post_c1',
+                    type: 'post',
+                    author: cName,
+                    authorRole: 'Założyciel Christian Culture ✨',
+                    authorAvatar: cAvatar,
+                    authorSlug: 'cezaryrgowski',
+                    time: 'Dzisiaj, 18:30 • 🌍 Publiczny',
+                    title: 'Fundament Bożej Relacji',
+                    text: 'Witaj na portalu LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku. Szukajmy bratnich dusz, z którymi będziemy wspólnie służyć, modlić się i budować Boże Królestwo! ☕✨',
+                    image: 'avatar_new1.jpg',
+                    likes: 42,
+                    amen: 38
+                });
 
-                cPosts.forEach(p => {
-                    posts.push({
-                        id: p.id,
-                        type: 'post',
-                        author: p.author || cName,
-                        authorRole: 'Założyciel Christian Culture ✨',
-                        authorAvatar: cAvatar,
-                        authorSlug: 'cezaryrgowski',
-                        time: p.time,
-                        text: p.text,
-                        image: p.image,
-                        likes: p.likes || 12,
-                        amen: Math.floor((p.likes || 12) * 0.75)
-                    });
+                posts.push({
+                    id: 'post_c2',
+                    type: 'post',
+                    author: cName,
+                    authorRole: 'Założyciel Christian Culture ✨',
+                    authorAvatar: cAvatar,
+                    authorSlug: 'cezaryrgowski',
+                    time: 'Wczoraj, 21:15 • 📖 Rozważanie',
+                    title: 'Pokój w Chrystusie',
+                    text: '„Nie troszczcie się zbytnio o jutro, albowiem jutrzejszy dzień sam o siebie troszczyć się będzie.” (Mt 6, 34). Niech ten werset przyniesie Wam dzisiaj pokój serca i siłę do działania! 🙏',
+                    image: 'tlo_pr_cc.jpg',
+                    likes: 58,
+                    amen: 51
                 });
             } catch(e) {}
 
@@ -898,41 +909,101 @@
                 const wProfile = wJson ? JSON.parse(wJson) : null;
                 const wAvatar = (wProfile && wProfile.avatar) ? wProfile.avatar : 'lumina_anna2.jpg';
                 const wName = (wProfile && wProfile.name) ? wProfile.name : 'Wioletta Rogowska';
-                const wPosts = (wProfile && Array.isArray(wProfile.posts)) ? wProfile.posts : [
-                    {
-                        id: 'post_w1',
-                        author: wName,
-                        time: 'Dzisiaj, 19:15 • 🌍 Publiczny',
-                        text: 'Witaj w LUMINA! Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień. Niech ten portal będzie dla Was miejscem spotkania z Bogiem i bratnią duszą! 💕✨',
-                        likes: 38,
-                        image: null
-                    },
-                    {
-                        id: 'post_w2',
-                        author: wName,
-                        time: 'Wczoraj, 20:40 • 📖 Słowo Życia',
-                        text: '„Przede wszystkim miejcie gorącą miłość jedni ku drugim, bo miłość zakrywa mnóstwo grzechów.” (1 P 4, 8). Błogosławionego wieczoru dla każdego z Was! 🙏',
-                        likes: 52,
-                        image: 'lumina_hero_main.jpg'
-                    }
-                ];
 
-                wPosts.forEach(p => {
-                    posts.push({
-                        id: p.id,
-                        type: 'post',
-                        author: p.author || wName,
-                        authorRole: 'Współzałożycielka Christian Culture 💕',
-                        authorAvatar: wAvatar,
-                        authorSlug: 'wiolettarogowska',
-                        time: p.time,
-                        text: p.text,
-                        image: p.image,
-                        likes: p.likes || 25,
-                        amen: Math.floor((p.likes || 25) * 0.8)
-                    });
+                posts.push({
+                    id: 'post_w1',
+                    type: 'post',
+                    author: wName,
+                    authorRole: 'Współzałożycielka Christian Culture 💕',
+                    authorAvatar: wAvatar,
+                    authorSlug: 'wiolettarogowska',
+                    time: 'Dzisiaj, 19:15 • 🌍 Publiczny',
+                    title: 'Miłość Przewyższająca Perły',
+                    text: 'Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień! 💕✨',
+                    image: 'lumina_anna2.jpg',
+                    likes: 64,
+                    amen: 59
+                });
+
+                posts.push({
+                    id: 'post_w2',
+                    type: 'post',
+                    author: wName,
+                    authorRole: 'Współzałożycielka Christian Culture 💕',
+                    authorAvatar: wAvatar,
+                    authorSlug: 'wiolettarogowska',
+                    time: 'Wczoraj, 20:40 • 📖 Słowo Życia',
+                    title: 'Gorąca Miłość Wzajemna',
+                    text: '„Przede wszystkim miejcie gorącą miłość jedni ku drugim, bo miłość zakrywa mnóstwo grzechów.” (1 P 4, 8). Błogosławionego i pełnego Bożej obecności wieczoru! 🙏',
+                    image: 'tlo_ksiega_nadziei.png',
+                    likes: 72,
+                    amen: 65
                 });
             } catch(e) {}
+
+            // 3. Tomasz Post
+            posts.push({
+                id: 'post_tomek1',
+                type: 'post',
+                author: 'Tomasz',
+                authorRole: 'Użytkownik LUMINA • Pasjonat Gór 🌲',
+                authorAvatar: 'avatar_widget_tomek.jpg',
+                authorSlug: 'tomek',
+                time: 'Dzisiaj, 16:20 • 🏔️ Wędrówki z Bogiem',
+                title: 'Cisza i Boża Obecność na Szlaku',
+                text: 'Nic tak nie przybliża do Stwórcy jak poranna modlitwa w górach przy wschodzie słońca. Pozdrawiam całą chrześcijańską społeczność portalu LUMINA! 🌲⛰️',
+                image: 'worship_bg.jpg',
+                likes: 31,
+                amen: 27
+            });
+
+            // 4. Noemi Post
+            posts.push({
+                id: 'post_noemi1',
+                type: 'post',
+                author: 'Noemi',
+                authorRole: 'Użytkowniczka LUMINA • Wrocław 🌿',
+                authorAvatar: 'avatar_noemi.jpg',
+                authorSlug: 'noemi',
+                time: 'Dzisiaj, 14:05 • ☕ Rozmowy o Wierze',
+                title: 'Wdzięczność za Małe Rzeczy',
+                text: '„Pan jest moją siłą i moją tarczą, w Nim zaufało moje serce i otrzymałem pomoc.” Życzę Wam pięknego dnia pełnego łaski! ✨🌿',
+                image: 'avatar_noemi.jpg',
+                likes: 45,
+                amen: 39
+            });
+
+            // 5. Dawid Post
+            posts.push({
+                id: 'post_dawid1',
+                type: 'post',
+                author: 'Dawid',
+                authorRole: 'Użytkownik LUMINA • Architekt & Muzyk 🎵',
+                authorAvatar: 'avatar_sara.jpg',
+                authorSlug: 'dawid',
+                time: 'Wczoraj, 17:50 • 🎸 Muzyka Uwielbienia',
+                title: 'Nowe Dźwięki Ku Bożej Chwale',
+                text: 'Przygotowujemy z zespołem nową aranżację Psalmów. Nie ma nic piękniejszego niż łączenie talentów ze służbą dla Pana! 🎶🎸',
+                image: 'tlo_dla_kanalu_Biblia_Spiewana.jpg',
+                likes: 53,
+                amen: 48
+            });
+
+            // 6. Weronika Post
+            posts.push({
+                id: 'post_weronika1',
+                type: 'post',
+                author: 'Weronika',
+                authorRole: 'Użytkowniczka LUMINA • Graficzka 🎨',
+                authorAvatar: 'avatar_widget_ania.jpg',
+                authorSlug: 'weronika',
+                time: 'Wczoraj, 15:30 • 🎨 Sztuka i Wiara',
+                title: 'Piękno Stworzenia',
+                text: 'Każdy wschód słońca to nowe płótno namalowane ręką Boga. Szukajmy piękna i dobra we wszystkim, co nas otacza! ✨',
+                image: 'avatar_widget_ania.jpg',
+                likes: 39,
+                amen: 34
+            });
 
             return posts;
         }
@@ -945,20 +1016,20 @@
             const userPosts = getUserFeedPosts();
             const campaigns = getStoredCampaigns();
 
-            // Interleave user posts and CC mission campaigns randomly / harmoniously
+            // Harmonious Interleaving: Post -> Post -> Ad -> Post -> Promo -> Post ...
             let combined = [];
             let cIndex = 0;
 
             userPosts.forEach((post, idx) => {
                 combined.push(post);
-                // Insert a campaign every 2 posts or if campaigns available
-                if ((idx % 2 === 0) && cIndex < campaigns.length) {
+                // Insert campaign after every 2nd user post
+                if ((idx % 2 === 1) && cIndex < campaigns.length) {
                     combined.push(campaigns[cIndex % campaigns.length]);
                     cIndex++;
                 }
             });
 
-            // If there are leftover campaigns, append them
+            // If leftover campaigns, append them
             while (cIndex < campaigns.length) {
                 combined.push(campaigns[cIndex]);
                 cIndex++;
@@ -971,7 +1042,7 @@
 
             if (combined.length === 0) {
                 container.innerHTML = `
-                    <div style="text-align:center; padding:50px 20px; background:var(--bg-card); border-radius:20px; border:1px solid var(--border-glass);">
+                    <div style="grid-column: 1/-1; text-align:center; padding:50px 20px; background:var(--bg-card); border-radius:20px; border:1px solid var(--border-glass);">
                         <div style="font-size:2.4rem; margin-bottom:10px;">🕊️</div>
                         <h3 style="font-size:1.2rem; font-family:'Outfit',sans-serif; margin-bottom:6px;">Brak wpisów w wybranej kategorii</h3>
                         <p style="font-size:0.85rem; color:var(--text-secondary);">Wybierz inną zakładkę lub dodaj nową publikację.</p>
@@ -988,29 +1059,11 @@
                 else if (item.type === 'promo') badgeHtml = '<span class="badge-type-tag badge-type-promo"><i class="fa-solid fa-rocket"></i> Promocja CC</span>';
                 else if (item.type === 'announcement') badgeHtml = '<span class="badge-type-tag badge-type-ann"><i class="fa-solid fa-scroll"></i> Ogłoszenie CC</span>';
                 else if (item.type === 'event') badgeHtml = '<span class="badge-type-tag badge-type-event"><i class="fa-solid fa-calendar-star"></i> Wydarzenie</span>';
-                else badgeHtml = '<span class="badge-type-tag badge-type-post"><i class="fa-solid fa-sparkles"></i> Post Społeczności</span>';
+                else badgeHtml = '<span class="badge-type-tag badge-type-post"><i class="fa-solid fa-sparkles"></i> Społeczność</span>';
 
                 const authorLink = item.authorSlug ? (item.authorSlug === 'cezaryrgowski' ? 'lumina.cezaryrgowski.html' : (item.authorSlug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : `lumina-profile.html?u=${item.authorSlug}`)) : '#';
 
-                // Media: Square 1:1 image OR Typographic Poster
-                let mediaHtml = '';
-                if (item.image) {
-                    mediaHtml = `
-                        <div class="media-container-1x1">
-                            <img src="${item.image}" alt="${item.title || item.author}" class="media-img-1x1" loading="lazy">
-                        </div>
-                    `;
-                } else {
-                    mediaHtml = `
-                        <div class="media-container-1x1">
-                            <div class="typographic-poster-1x1">
-                                <i class="fa-solid fa-quote-left poster-quote-icon"></i>
-                                <div class="poster-text">„${item.text || item.desc}”</div>
-                                <div class="poster-author-sub">— ${item.author}</div>
-                            </div>
-                        </div>
-                    `;
-                }
+                const cardImgSrc = item.image || 'lumina_hero_main.jpg';
 
                 // CTA Button for Campaigns
                 let ctaHtml = '';
@@ -1041,30 +1094,32 @@
                         <!-- Top Header -->
                         <div class="post-top-header">
                             <a href="${authorLink}" class="post-author-box">
-                                <img src="${item.authorAvatar || 'icon.png'}" alt="${item.author}" class="post-author-img">
+                                <img src="${item.authorAvatar || 'icon.png'}" alt="${item.author}" class="post-author-img" onerror="this.src='icon.png'">
                                 <div>
-                                    <div class="post-author-name">${item.author} <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.8rem;"></i></div>
-                                    <div class="post-author-role">${item.authorRole || 'Użytkownik LUMINA'} • ${item.time || item.createdAt || 'Dzisiaj'}</div>
+                                    <div class="post-author-name">${item.author} <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.75rem;"></i></div>
+                                    <div class="post-author-role">${item.time || item.createdAt || 'Dzisiaj'}</div>
                                 </div>
                             </a>
                             <div>${badgeHtml}</div>
                         </div>
 
                         <!-- 1:1 Square Media -->
-                        ${mediaHtml}
+                        <div class="media-container-1x1">
+                            <img src="${cardImgSrc}" alt="${item.title || item.author}" class="media-img-1x1" loading="lazy" onerror="this.src='lumina_hero_main.jpg'">
+                        </div>
 
                         <!-- Details & Text -->
                         <div class="post-details-box">
                             ${item.title ? `<div class="post-headline">${item.title}</div>` : ''}
-                            ${(item.image && item.text) ? `<div class="post-desc-text">${item.text}</div>` : ''}
-                            ${(item.image && item.desc) ? `<div class="post-desc-text">${item.desc}</div>` : ''}
+                            ${item.text ? `<div class="post-desc-text">${item.text}</div>` : ''}
+                            ${item.desc ? `<div class="post-desc-text">${item.desc}</div>` : ''}
                             ${eventInfoHtml}
                             ${ctaHtml}
                         </div>
 
                         <!-- Actions Bar -->
                         <div class="post-actions-bar">
-                            <div style="display:flex; gap:6px;">
+                            <div style="display:flex; gap:4px;">
                                 <button class="post-action-btn" onclick="toggleFeedLike(this)"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 14}</span></button>
                                 <button class="post-action-btn" onclick="toggleFeedAmen(this)"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 9}</span> Amen</button>
                                 <button class="post-action-btn" onclick="toggleComments('${item.id}')"><i class="fa-solid fa-comment-dots"></i> Komentarze</button>
@@ -1078,12 +1133,12 @@
                                 <div class="comment-item">
                                     <img src="avatar_widget_tomek.jpg" alt="Tomek" class="comment-avatar">
                                     <div class="comment-bubble">
-                                        <b style="color:#38bdf8;">Tomasz:</b> Wspaniała inicjatywa, niech Bóg błogosławi to dzieło! 🙏✨
+                                        <b style="color:#38bdf8;">Tomasz:</b> Błogosławieństwa Bożego! Piękne świadectwo i wspaniała inicjatywa! 🙏✨
                                     </div>
                                 </div>
                             </div>
                             <div class="comment-input-row">
-                                <input type="text" class="comment-input" id="input_${item.id}" placeholder="Napisz miły komentarz lub podziel się wersetem..." onkeypress="if(event.key==='Enter') submitComment('${item.id}')">
+                                <input type="text" class="comment-input" id="input_${item.id}" placeholder="Napisz komentarz..." onkeypress="if(event.key==='Enter') submitComment('${item.id}')">
                                 <button class="comment-submit-btn" onclick="submitComment('${item.id}')"><i class="fa-solid fa-paper-plane"></i></button>
                             </div>
                         </div>
@@ -1278,7 +1333,7 @@
                 type: type,
                 title: title,
                 desc: desc,
-                image: attachedCampaignImgDataUrl || 'lumina_hero_main.jpg',
+                image: attachedCampaignImgDataUrl || 'tlo_tv_radiocc.jpg',
                 btnText: btnText,
                 btnUrl: btnUrl,
                 eventDate: eventDate,
