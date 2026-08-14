@@ -49,13 +49,14 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 14px 48px;
+            padding: 12px 32px;
             background: #ffffff;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            gap: 16px;
         }
 
         .nav-logo-text {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: 800;
             letter-spacing: 1.5px;
             color: #1e293b;
@@ -63,19 +64,19 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            z-index: 10;
+            flex-shrink: 0;
         }
         .nav-logo-text i { color: #eab308; }
 
-        /* Centered Nav Links (Permanently anchored in exact horizontal center) */
+        /* Flexible Centered Nav Links (No overlap with right widgets) */
         .nav-links {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
             display: flex;
             align-items: center;
-            gap: 32px;
+            justify-content: center;
+            gap: 18px;
             white-space: nowrap;
+            flex: 1;
+            margin: 0 16px;
         }
 
         .nav-link {
@@ -1174,15 +1175,14 @@
         </a>
 
         <div class="nav-links">
-            <a href="index.html" class="nav-link">Strona Główna</a>
-            <a href="lumina-tablica.html" class="nav-link" style="color: #ec4899; font-weight: 700;"><i class="fa-solid fa-rectangle-list"></i> Główna Tablica</a>
-            <button class="nav-link" onclick="scrollToSection('odkrywaj')">Odkrywaj</button>
-            <button class="nav-link" onclick="showToast('Skrzynka wiadomości – zaloguj się, aby rozmawiać 💬')">Wiadomości</button>
+            <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Główna</a>
+            <a href="lumina-tablica.html" class="nav-link" style="color: #ec4899; font-weight: 700;"><i class="fa-solid fa-rectangle-list"></i> Tablica</a>
+            <button class="nav-link" onclick="scrollToSection('odkrywaj')"><i class="fa-solid fa-compass"></i> Odkrywaj</button>
+            <button class="nav-link" onclick="showToast('Skrzynka wiadomości – zaloguj się, aby rozmawiać 💬')"><i class="fa-solid fa-comments"></i> Wiadomości</button>
             <a href="lumina.cezaryrgowski.html" class="nav-link" style="color: #2563eb; font-weight: 700;"><i class="fa-solid fa-user"></i> Mój Profil</a>
-            <button class="nav-link" onclick="showToast('Sekcja Wydarzeń Lokalnych już wkrótce! 📍')">Wydarzenia</button>
         </div>
 
-        <div style="display:flex;align-items:center;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
             <!-- Integrated Radio CC Mini-Pill in Navbar -->
             <div class="nav-radio-pill" id="radioWidget" onclick="toggleRadio()" title="Włącz / Wyłącz Radio Christian Culture">
                 <button class="nav-radio-play" id="radioPlayBtn">
@@ -1225,7 +1225,7 @@
             </p>
             <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 24px;">
                 <a href="lumina-tablica.html" class="btn-nav-cta" style="background: linear-gradient(90deg, #ec4899, #8b5cf6); padding: 13px 30px; font-size: 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-rectangle-list"></i> Przejdź do Głównej Tablicy ✨
+                    <i class="fa-solid fa-rectangle-list"></i> Przejdź do Tablicy ✨
                 </a>
                 <button onclick="scrollToSection('odkrywaj')" class="btn-nav-cta" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 13px 26px; font-size: 1rem;">
                     <i class="fa-solid fa-compass"></i> Przeglądaj Profile
