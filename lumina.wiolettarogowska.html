@@ -214,11 +214,18 @@
             background: linear-gradient(to bottom, rgba(11, 24, 56, 0.1) 40%, rgba(11, 24, 56, 0.85) 100%);
         }
 
-        .btn-change-cover {
+        .cover-actions-group {
             position: absolute;
             top: 18px;
             right: 18px;
-            background: rgba(15, 23, 42, 0.75);
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            z-index: 8;
+        }
+
+        .btn-change-cover {
+            background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.25);
             color: #fff;
@@ -227,12 +234,117 @@
             font-size: 0.78rem;
             font-weight: 700;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 6px;
             transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-family: inherit;
         }
-        .btn-change-cover:hover { background: rgba(255, 255, 255, 0.2); }
+        .btn-change-cover:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* ── Cover Reposition Toolbar ── */
+        .cover-reposition-toolbar {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            right: 14px;
+            background: rgba(11, 24, 56, 0.95);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(244, 114, 182, 0.45);
+            border-radius: 16px;
+            padding: 12px 18px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            z-index: 25;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
+            animation: fadeInDown 0.2s ease;
+        }
+        .cover-reposition-toolbar.open {
+            display: flex;
+        }
+
+        .reposition-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #f472b6;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .reposition-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 260px;
+            max-width: 520px;
+        }
+
+        .btn-preset {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .btn-preset:hover {
+            background: rgba(244, 114, 182, 0.25);
+            border-color: #f472b6;
+        }
+
+        .cover-slider {
+            flex: 1;
+            cursor: pointer;
+            accent-color: #f472b6;
+            height: 6px;
+        }
+
+        .reposition-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-repo-save {
+            background: linear-gradient(90deg, #ec4899, #f472b6);
+            border: none;
+            color: #fff;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 10px rgba(236, 72, 153, 0.4);
+            font-family: inherit;
+        }
+
+        .btn-repo-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #cbd5e1;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
 
         /* Profile Header Info Card */
         .profile-head-card {
@@ -962,6 +1074,7 @@
     <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
     <input type="file" id="coverFileInput" accept="image/*" style="display:none;" onchange="handleCoverFileSelect(event)">
     <input type="file" id="galleryFileInput" accept="image/*" multiple style="display:none;" onchange="handleGalleryFileSelect(event)">
+    <input type="file" id="postImageFileInput" accept="image/*" style="display:none;" onchange="handlePostImageSelect(event)">
 
     <!-- ══════════ PROFILE CONTAINER ══════════ -->
     <main class="profile-container">
@@ -983,7 +1096,27 @@
         <div class="cover-wrapper">
             <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
             <div class="cover-overlay"></div>
-            <button class="btn-change-cover" onclick="document.getElementById('coverFileInput').click()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle (Wgraj z dysku)</button>
+            
+            <div class="cover-actions-group">
+                <button class="btn-change-cover" onclick="document.getElementById('coverFileInput').click()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
+                <button class="btn-change-cover" onclick="toggleCoverRepositionToolbar()"><i class="fa-solid fa-arrows-up-down"></i> Ustaw Kadr / Wycentruj</button>
+            </div>
+
+            <!-- Interactive Cover Reposition Toolbar -->
+            <div class="cover-reposition-toolbar" id="coverRepositionToolbar">
+                <div class="reposition-title"><i class="fa-solid fa-arrows-up-down"></i> Dopasuj Kadr Zdjęcia w Tle</div>
+                <div class="reposition-controls">
+                    <button type="button" class="btn-preset" onclick="setCoverPosition(0)">Góra</button>
+                    <button type="button" class="btn-preset" onclick="setCoverPosition(50)">Środek</button>
+                    <button type="button" class="btn-preset" onclick="setCoverPosition(100)">Dół</button>
+                    <input type="range" id="coverPosRange" min="0" max="100" value="50" oninput="onCoverRangeChange(this.value)" class="cover-slider">
+                    <span id="coverPosValueLabel" style="font-weight:700; font-size:0.82rem; min-width:38px; color:#f472b6;">50%</span>
+                </div>
+                <div class="reposition-actions">
+                    <button type="button" class="btn-repo-cancel" onclick="closeCoverRepositionToolbar()">Anuluj</button>
+                    <button type="button" class="btn-repo-save" onclick="saveCoverPosition()"><i class="fa-solid fa-check"></i> Zapisz Kadr</button>
+                </div>
+            </div>
         </div>
 
         <!-- Profile Head Info -->
@@ -1121,8 +1254,15 @@
                             <img src="lumina_anna2.jpg" alt="Wioletta" class="composer-avatar" id="myComposerAvatar">
                             <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną...">
                         </div>
+
+                        <!-- Post Image Attachment Preview -->
+                        <div id="composerImgPreviewBox" style="display:none; position:relative; margin: 10px 0 6px; border-radius:12px; overflow:hidden; max-height:220px; background:#0f172a; border: 1px solid rgba(255,255,255,0.15);">
+                            <img id="composerAttachedImg" src="" style="width:100%; height:180px; object-fit:cover; display:block;">
+                            <button type="button" onclick="removeAttachedPostImage()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.5);" title="Usuń dołączoną grafikę"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+
                         <div class="composer-actions">
-                            <button class="composer-btn-attach" onclick="document.getElementById('avatarFileInput').click()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Wgraj Zdjęcie</button>
+                            <button class="composer-btn-attach" onclick="document.getElementById('postImageFileInput').click()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Dołącz Grafikę do Posta</button>
                             <button class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Dodaj Werset</button>
                             <button class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-share"></i> Opublikuj</button>
                         </div>
@@ -1315,6 +1455,7 @@
 
         let pendingProtectedAction = null;
         let isOwnerMode = false;
+        let attachedPostImageDataUrl = null;
 
         const defaultProfile = {
             name: 'Wioletta Rogowska',
@@ -1327,6 +1468,7 @@
             pin: '7777',
             avatar: 'lumina_anna2.jpg',
             cover: 'lumina_hero_main.jpg',
+            coverPosY: '50%',
             job: 'Współzałożycielka Christian Culture',
             church: 'Wspólnota Uwielbieniowa',
             verse: '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły. Serce jej męża ufa jej i nie brak mu zysku.”',
@@ -1451,9 +1593,57 @@
             }
         }
 
+        // ── Cover Repositioning Controls ──
+        function toggleCoverRepositionToolbar() {
+            if (!requestOwnerAccess(toggleCoverRepositionToolbar)) return;
+            const tb = document.getElementById('coverRepositionToolbar');
+            if (!tb) return;
+            const isOpen = tb.classList.contains('open');
+            if (isOpen) {
+                closeCoverRepositionToolbar();
+            } else {
+                tb.classList.add('open');
+                const data = getProfileData();
+                let curVal = parseInt(data.coverPosY, 10);
+                if (isNaN(curVal)) curVal = 50;
+                document.getElementById('coverPosRange').value = curVal;
+                document.getElementById('coverPosValueLabel').textContent = curVal + '%';
+            }
+        }
+
+        function closeCoverRepositionToolbar() {
+            const tb = document.getElementById('coverRepositionToolbar');
+            if (tb) tb.classList.remove('open');
+            const data = getProfileData();
+            document.getElementById('coverPhotoEl').style.objectPosition = 'center ' + (data.coverPosY || '50%');
+        }
+
+        function setCoverPosition(val) {
+            document.getElementById('coverPosRange').value = val;
+            onCoverRangeChange(val);
+        }
+
+        function onCoverRangeChange(val) {
+            document.getElementById('coverPosValueLabel').textContent = val + '%';
+            document.getElementById('coverPhotoEl').style.objectPosition = 'center ' + val + '%';
+        }
+
+        function saveCoverPosition() {
+            const val = document.getElementById('coverPosRange').value;
+            const cur = getProfileData();
+            cur.coverPosY = val + '%';
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+            } catch(e) {}
+            const tb = document.getElementById('coverRepositionToolbar');
+            if (tb) tb.classList.remove('open');
+            showToast('Kadr zdjęcia w tle został pomyślnie zapisany! 🖼️✨');
+        }
+
         // ── Render Views ──
         function renderProfileView() {
             const data = getProfileData();
+            checkOwnerAuthSession();
             document.getElementById('userNameEl').textContent = data.name;
             document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city}`;
             document.getElementById('userDenomEl').innerHTML = `<i class="fa-solid fa-cross"></i> ${data.denom}`;
@@ -1471,6 +1661,7 @@
             if (data.cover) {
                 document.getElementById('coverPhotoEl').src = data.cover;
             }
+            document.getElementById('coverPhotoEl').style.objectPosition = 'center ' + (data.coverPosY || '50%');
 
             const tagsContainer = document.getElementById('userTagsEl');
             if (tagsContainer && data.tags) {
@@ -1563,12 +1754,33 @@
             showToast('Wpis został pomyślnie usunięty z Twojej tablicy! 🗑️');
         }
 
+        // Post Image Attachment
+        function handlePostImageSelect(e) {
+            if (!requestOwnerAccess(() => document.getElementById('postImageFileInput').click())) return;
+            const file = e.target.files[0];
+            if (!file) return;
+            showToast('Dołączanie grafiki do wpisu... ⏳');
+            compressAndReadImage(file, 1000, 1000, 0.82, function(dataUrl) {
+                attachedPostImageDataUrl = dataUrl;
+                document.getElementById('composerAttachedImg').src = dataUrl;
+                document.getElementById('composerImgPreviewBox').style.display = 'block';
+                showToast('Grafika została pomyślnie dołączona do wpisu! 🖼️✨');
+            });
+        }
+
+        function removeAttachedPostImage() {
+            attachedPostImageDataUrl = null;
+            document.getElementById('composerImgPreviewBox').style.display = 'none';
+            document.getElementById('composerAttachedImg').src = '';
+            document.getElementById('postImageFileInput').value = '';
+        }
+
         function publishFeedPost() {
             if (!requestOwnerAccess(publishFeedPost)) return;
             const input = document.getElementById('composerInput');
             const val = input.value.trim();
-            if (!val) {
-                showToast('Wpisz treść przed publikacją!');
+            if (!val && !attachedPostImageDataUrl) {
+                showToast('Wpisz treść lub dołącz grafikę przed publikacją!');
                 return;
             }
             const cur = getProfileData();
@@ -1576,9 +1788,9 @@
                 id: 'post_w_' + Date.now(),
                 author: cur.name,
                 time: 'Przed chwilą • 🌍 Nowy Wpis',
-                text: val,
+                text: val || '',
                 likes: 1,
-                image: null
+                image: attachedPostImageDataUrl || null
             };
             cur.posts = cur.posts || [];
             cur.posts.unshift(newPost);
@@ -1586,6 +1798,7 @@
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
             } catch(e) {}
             input.value = '';
+            removeAttachedPostImage();
             renderPosts();
             showToast('Twój nowy wpis został opublikowany na tablicy! ✨');
         }
