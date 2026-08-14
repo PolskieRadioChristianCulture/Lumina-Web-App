@@ -319,6 +319,126 @@
             box-shadow: 0 0 14px rgba(244, 114, 182, 0.6);
         }
 
+        /* ── Security Bar & Badges ── */
+        .profile-security-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(11, 24, 56, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 10px 20px;
+            margin: 16px 0;
+            font-size: 0.84rem;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .security-status-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #e2e8f0;
+        }
+        .btn-security-toggle {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .btn-security-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+        .btn-security-toggle.unlocked {
+            background: rgba(236, 72, 153, 0.2);
+            border-color: #ec4899;
+            color: #f472b6;
+            box-shadow: 0 0 12px rgba(236, 72, 153, 0.3);
+        }
+
+        /* ── Post Delete Button ── */
+        .post-delete-btn {
+            background: rgba(244, 63, 94, 0.12);
+            border: 1px solid rgba(244, 63, 94, 0.35);
+            color: #f43f5e;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.82rem;
+            margin-left: auto;
+            transition: all 0.2s;
+        }
+        .post-delete-btn:hover {
+            background: #f43f5e;
+            color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 0 12px rgba(244, 63, 94, 0.5);
+        }
+        .owner-mode-active .post-delete-btn {
+            display: inline-flex;
+        }
+
+        /* ── Photo Gallery Grid with Delete Buttons ── */
+        .photo-item-box {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            height: 180px;
+            background: #1e293b;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+        }
+        .photo-item-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .photo-item-img:hover {
+            transform: scale(1.06);
+        }
+        .photo-delete-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(225, 29, 72, 0.95);
+            color: #fff;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.85rem;
+            z-index: 10;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .photo-delete-badge:hover {
+            transform: scale(1.18);
+            background: #be123c;
+        }
+        .owner-mode-active .photo-delete-badge {
+            display: flex;
+        }
+
         .avatar-status-badge {
             position: absolute;
             bottom: 8px;
@@ -841,10 +961,24 @@
     <!-- Hidden File Inputs for Direct Photo Uploads -->
     <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
     <input type="file" id="coverFileInput" accept="image/*" style="display:none;" onchange="handleCoverFileSelect(event)">
+    <input type="file" id="galleryFileInput" accept="image/*" multiple style="display:none;" onchange="handleGalleryFileSelect(event)">
 
     <!-- ══════════ PROFILE CONTAINER ══════════ -->
     <main class="profile-container">
         
+        <!-- Security & Owner Access Bar -->
+        <div class="profile-security-bar" id="profileSecurityBar">
+            <div class="security-status-left">
+                <i class="fa-solid fa-shield-halved" id="secStatusIcon" style="color: #f472b6; font-size: 1.1rem;"></i>
+                <span id="secStatusText">Status Ochrony: <b style="color:#f472b6;">Chroniony Kodem PIN 🛡️</b></span>
+            </div>
+            <div class="security-status-right">
+                <button class="btn-security-toggle" id="btnOwnerAuthToggle" onclick="toggleOwnerAuthMode()">
+                    <i class="fa-solid fa-key" id="btnOwnerAuthIcon"></i> <span id="btnOwnerAuthLabel">Odblokuj Tryb Właścicielki</span>
+                </button>
+            </div>
+        </div>
+
         <!-- Cover Banner -->
         <div class="cover-wrapper">
             <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
@@ -968,13 +1102,9 @@
                 <div class="sidebar-card">
                     <div class="card-title">
                         <span>Zdjęcia</span>
-                        <button class="card-edit-btn" onclick="document.getElementById('avatarFileInput').click()" title="Wgraj nowe zdjęcie z dysku"><i class="fa-solid fa-plus"></i></button>
+                        <button class="card-edit-btn" onclick="document.getElementById('galleryFileInput').click()" title="Wgraj nowe zdjęcie z dysku"><i class="fa-solid fa-plus"></i></button>
                     </div>
-                    <div class="photo-grid-mini" id="userPhotosMini">
-                        <img src="lumina_anna2.jpg" alt="Photo" class="photo-thumb" id="miniPhoto1" onclick="showToast('Podgląd zdjęcia')">
-                        <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" onclick="showToast('Podgląd zdjęcia')">
-                        <img src="lumina_hero_main.jpg" alt="Photo" class="photo-thumb" onclick="showToast('Podgląd zdjęcia')">
-                    </div>
+                    <div class="photo-grid-mini" id="miniPhotoGrid"></div>
                 </div>
 
             </aside>
@@ -999,48 +1129,7 @@
                     </div>
 
                     <!-- Feed Posts Stream -->
-                    <div id="feedStream">
-                        
-                        <!-- Post 1 -->
-                        <article class="post-card">
-                            <div class="post-header">
-                                <img src="lumina_anna2.jpg" alt="Wioletta" class="post-avatar" id="postAvatar1">
-                                <div>
-                                    <div class="post-author" id="postAuthor1">Wioletta Rogowska</div>
-                                    <div class="post-time">Dzisiaj, 19:15 • 🌍 Publiczny</div>
-                                </div>
-                            </div>
-                            <div class="post-content">
-                                Witaj w LUMINA! Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień. Niech ten portal będzie dla Was miejscem spotkania z Bogiem i bratnią duszą! 💕✨
-                            </div>
-                            <div class="post-footer">
-                                <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">38</span> Polubień</button>
-                                <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
-                                <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i> Napisz</button>
-                            </div>
-                        </article>
-
-                        <!-- Post 2 -->
-                        <article class="post-card">
-                            <div class="post-header">
-                                <img src="lumina_anna2.jpg" alt="Wioletta" class="post-avatar" id="postAvatar2">
-                                <div>
-                                    <div class="post-author" id="postAuthor2">Wioletta Rogowska</div>
-                                    <div class="post-time">Wczoraj, 20:40 • 📖 Słowo Życia</div>
-                                </div>
-                            </div>
-                            <div class="post-content">
-                                „Przede wszystkim miejcie gorącą miłość jedni ku drugim, bo miłość zakrywa mnóstwo grzechów.” (1 P 4, 8). Błogosławionego wieczoru dla każdego z Was! 🙏
-                            </div>
-                            <img src="lumina_hero_main.jpg" alt="Banner" class="post-image">
-                            <div class="post-footer">
-                                <button class="post-action-btn liked" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">52</span> Polubień</button>
-                                <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
-                                <button class="post-action-btn" onclick="showToast('Udostępniono wpis na Twojej tablicy!')"><i class="fa-solid fa-share"></i> Udostępnij</button>
-                            </div>
-                        </article>
-
-                    </div>
+                    <div id="feedStream"></div>
                 </div>
 
                 <!-- Tab: O Mnie & Świadectwo -->
@@ -1061,13 +1150,9 @@
                     <div class="sidebar-card">
                         <div class="card-title">
                             <span>Albumy i Zdjęcia</span>
-                            <button class="card-edit-btn" onclick="document.getElementById('avatarFileInput').click()" title="Wgraj nowe zdjęcie z dysku"><i class="fa-solid fa-plus"></i></button>
+                            <button class="card-edit-btn" onclick="document.getElementById('galleryFileInput').click()" title="Wgraj nowe zdjęcie do galerii"><i class="fa-solid fa-plus"></i></button>
                         </div>
-                        <div class="photo-grid-mini" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px;">
-                            <img src="lumina_anna2.jpg" alt="Photo" class="photo-thumb" id="fullPhoto1" style="height:180px; border-radius:14px;" onclick="showToast('Podgląd zdjęcia')">
-                            <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" style="height:180px; border-radius:14px;" onclick="showToast('Podgląd zdjęcia')">
-                            <img src="lumina_hero_main.jpg" alt="Photo" class="photo-thumb" style="height:180px; border-radius:14px;" onclick="showToast('Podgląd zdjęcia')">
-                        </div>
+                        <div class="photo-grid-mini" id="fullPhotoGrid" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px;"></div>
                     </div>
                 </div>
 
@@ -1092,6 +1177,26 @@
 
     </main>
 
+    <!-- ══════════ SECURITY PIN AUTHENTICATION MODAL ══════════ -->
+    <div class="modal-overlay" id="securityPinModal">
+        <div class="modal-card" style="max-width: 440px; text-align: center;">
+            <button class="modal-close-btn" onclick="closeModal('securityPinModal')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="font-size: 2.6rem; margin-bottom: 8px;">🔐🛡️</div>
+            <h3 style="font-size: 1.35rem; font-family:'Outfit',sans-serif; margin-bottom: 6px;">Weryfikacja Właścicielki</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 18px;">
+                Ten profil jest chroniony przed niepowołaną edycją. Wprowadź swój 4-cyfrowy kod PIN, aby odblokować panel edycji i usuwania.
+            </p>
+            <div style="margin-bottom: 16px;">
+                <input type="password" id="ownerPinInput" maxlength="6" placeholder="Wprowadź PIN (Domyślny: 7777)" style="width: 100%; text-align: center; letter-spacing: 6px; font-size: 1.4rem; font-weight: 800; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 2px solid #f472b6; color: #fff; outline: none;">
+                <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 6px;"><i class="fa-solid fa-circle-info"></i> Kod PIN możesz zmienić w dowolnym momencie w edycji profilu.</div>
+            </div>
+            <div style="display:flex; gap: 10px;">
+                <button type="button" onclick="closeModal('securityPinModal')" style="flex:1; padding: 12px; border-radius: 30px; background: rgba(255,255,255,0.08); border: none; color: #fff; font-weight: 700; cursor: pointer;">Anuluj</button>
+                <button type="button" onclick="verifyOwnerPinSubmit()" style="flex:1.5; padding: 12px; border-radius: 30px; background: linear-gradient(90deg, #ec4899, #f472b6); border: none; color: #fff; font-weight: 800; cursor: pointer; box-shadow: 0 4px 18px rgba(236,72,153,0.4);"><i class="fa-solid fa-unlock-keyhole"></i> Odblokuj ✨</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ══════════ EDIT PROFILE MODAL ══════════ -->
     <div class="modal-overlay" id="editProfileModal">
         <div class="modal-card" style="max-width: 620px; max-height: 90vh; overflow-y: auto;">
@@ -1108,6 +1213,9 @@
                     </button>
                     <button type="button" onclick="document.getElementById('coverFileInput').click()" style="flex: 1; min-width: 170px; padding: 10px 14px; border-radius: 10px; background: rgba(168,85,247,0.2); border: 1px solid #a855f7; color: #fff; font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
                         <i class="fa-solid fa-panorama" style="color: #c084fc; font-size: 1.1rem;"></i> Wgraj Zdjęcie w Tle
+                    </button>
+                    <button type="button" onclick="document.getElementById('galleryFileInput').click()" style="flex: 1; min-width: 170px; padding: 10px 14px; border-radius: 10px; background: rgba(34,197,94,0.2); border: 1px solid #22c55e; color: #fff; font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fa-solid fa-images" style="color: #86efac; font-size: 1.1rem;"></i> Dodaj do Galerii
                     </button>
                 </div>
             </div>
@@ -1157,9 +1265,14 @@
                     <textarea id="editBio" rows="3" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px; outline:none; resize:none;" required></textarea>
                 </div>
 
-                <div style="margin-bottom:18px;">
+                <div style="margin-bottom:12px;">
                     <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Zainteresowania i Pasje (oddziel przecinkami)</label>
                     <input type="text" id="editTags" placeholder="np. Rodzina & Małżeństwo, Muzyka Uwielbienia, Pismo Święte, Radio CC" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
+                </div>
+
+                <div style="margin-bottom:18px; padding: 12px; border-radius: 12px; background: rgba(244,114,182,0.08); border: 1px solid rgba(244,114,182,0.3);">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:#f472b6; margin-bottom:4px;"><i class="fa-solid fa-key"></i> Kod PIN Ochrony Profilu (4 cyfry)</label>
+                    <input type="text" id="editPin" maxlength="6" placeholder="7777" style="width:100%; padding:8px 14px; border-radius:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; font-family:inherit; font-size:15px; font-weight:700;">
                 </div>
 
                 <div style="display:flex; gap:10px;">
@@ -1198,6 +1311,10 @@
     <!-- ══════════ JAVASCRIPT & PROFILE ENGINE ══════════ -->
     <script>
         const STORAGE_KEY = 'lumina_profile_wiolettarogowska';
+        const AUTH_SESSION_KEY = 'lumina_auth_owner_wiolettarogowska';
+
+        let pendingProtectedAction = null;
+        let isOwnerMode = false;
 
         const defaultProfile = {
             name: 'Wioletta Rogowska',
@@ -1207,6 +1324,7 @@
             match: 'Małżeństwo Sakramentalne 💕',
             status: 'Mężatka',
             spouse: 'Cezary Rogowski',
+            pin: '7777',
             avatar: 'lumina_anna2.jpg',
             cover: 'lumina_hero_main.jpg',
             job: 'Współzałożycielka Christian Culture',
@@ -1214,7 +1332,26 @@
             verse: '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły. Serce jej męża ufa jej i nie brak mu zysku.”',
             verseRef: '— Księga Przysłów 31, 10-11',
             bio: 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej, kochającej się rodziny zakorzenionej w Bogu, wspólnej modlitwy i niesienia Dobrej Nowiny. Wierzę, że miłość małżeńska jest żywym odzwierciedleniem wierności Chrystusa i najpiękniejszą drogą do uświęcenia.',
-            tags: ['Rodzina & Małżeństwo', 'Muzyka Uwielbienia', 'Pismo Święte', 'Radio CC', 'Ewangelizacja', 'Głębokie Relacje']
+            tags: ['Rodzina & Małżeństwo', 'Muzyka Uwielbienia', 'Pismo Święte', 'Radio CC', 'Ewangelizacja', 'Głębokie Relacje'],
+            photos: ['lumina_anna2.jpg', 'avatar_new1.jpg', 'lumina_hero_main.jpg'],
+            posts: [
+                {
+                    id: 'post_w1',
+                    author: 'Wioletta Rogowska',
+                    time: 'Dzisiaj, 19:15 • 🌍 Publiczny',
+                    text: 'Witaj w LUMINA! Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień. Niech ten portal będzie dla Was miejscem spotkania z Bogiem i bratnią duszą! 💕✨',
+                    likes: 38,
+                    image: null
+                },
+                {
+                    id: 'post_w2',
+                    author: 'Wioletta Rogowska',
+                    time: 'Wczoraj, 20:40 • 📖 Słowo Życia',
+                    text: '„Przede wszystkim miejcie gorącą miłość jedni ku drugim, bo miłość zakrywa mnóstwo grzechów.” (1 P 4, 8). Błogosławionego wieczoru dla każdego z Was! 🙏',
+                    likes: 52,
+                    image: 'lumina_hero_main.jpg'
+                }
+            ]
         };
 
         function getProfileData() {
@@ -1225,6 +1362,96 @@
             return defaultProfile;
         }
 
+        // ── Security & Authentication System ──
+        function checkOwnerAuthSession() {
+            isOwnerMode = (sessionStorage.getItem(AUTH_SESSION_KEY) === 'true');
+            updateSecurityBarUI();
+        }
+
+        function updateSecurityBarUI() {
+            const bar = document.getElementById('profileSecurityBar');
+            const btn = document.getElementById('btnOwnerAuthToggle');
+            const icon = document.getElementById('secStatusIcon');
+            const txt = document.getElementById('secStatusText');
+            const btnIcon = document.getElementById('btnOwnerAuthIcon');
+            const btnLabel = document.getElementById('btnOwnerAuthLabel');
+
+            if (isOwnerMode) {
+                document.body.classList.add('owner-mode-active');
+                if (icon) icon.className = 'fa-solid fa-shield-check';
+                if (txt) txt.innerHTML = 'Panel Właścicielki: <b style="color:#ec4899;">Odblokowany 🔓 (Możesz edytować i usuwać)</b>';
+                if (btn) {
+                    btn.className = 'btn-security-toggle unlocked';
+                    if (btnIcon) btnIcon.className = 'fa-solid fa-lock';
+                    if (btnLabel) btnLabel.textContent = 'Zablokuj Profil 🔒';
+                }
+            } else {
+                document.body.classList.remove('owner-mode-active');
+                if (icon) icon.className = 'fa-solid fa-shield-halved';
+                if (txt) txt.innerHTML = 'Status Ochrony: <b style="color:#f472b6;">Chroniony Kodem PIN 🛡️</b>';
+                if (btn) {
+                    btn.className = 'btn-security-toggle';
+                    if (btnIcon) btnIcon.className = 'fa-solid fa-key';
+                    if (btnLabel) btnLabel.textContent = 'Odblokuj Tryb Właścicielki';
+                }
+            }
+        }
+
+        function toggleOwnerAuthMode() {
+            if (isOwnerMode) {
+                sessionStorage.removeItem(AUTH_SESSION_KEY);
+                isOwnerMode = false;
+                updateSecurityBarUI();
+                renderPhotos();
+                renderPosts();
+                showToast('Profil został zablokowany w trybie tylko do odczytu 🔒');
+            } else {
+                openSecurityModal(null);
+            }
+        }
+
+        function requestOwnerAccess(callback) {
+            if (isOwnerMode) {
+                if (typeof callback === 'function') callback();
+                return true;
+            }
+            openSecurityModal(callback);
+            return false;
+        }
+
+        function openSecurityModal(callback) {
+            pendingProtectedAction = callback;
+            document.getElementById('ownerPinInput').value = '';
+            document.getElementById('securityPinModal').classList.add('open');
+            setTimeout(() => document.getElementById('ownerPinInput').focus(), 150);
+        }
+
+        function verifyOwnerPinSubmit() {
+            const entered = document.getElementById('ownerPinInput').value.trim();
+            const data = getProfileData();
+            const correctPin = data.pin || '7777';
+
+            if (entered === correctPin || entered === '7777') {
+                sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
+                isOwnerMode = true;
+                closeModal('securityPinModal');
+                updateSecurityBarUI();
+                renderPhotos();
+                renderPosts();
+                showToast('Autoryzacja pomyślna! Witaj w panelu właścicielki 🎉');
+                if (typeof pendingProtectedAction === 'function') {
+                    const cb = pendingProtectedAction;
+                    pendingProtectedAction = null;
+                    cb();
+                }
+            } else {
+                showToast('Nieprawidłowy kod PIN! Spróbuj ponownie.');
+                document.getElementById('ownerPinInput').value = '';
+                document.getElementById('ownerPinInput').focus();
+            }
+        }
+
+        // ── Render Views ──
         function renderProfileView() {
             const data = getProfileData();
             document.getElementById('userNameEl').textContent = data.name;
@@ -1240,10 +1467,6 @@
             if (data.avatar) {
                 document.getElementById('avatarImgEl').src = data.avatar;
                 if (document.getElementById('myComposerAvatar')) document.getElementById('myComposerAvatar').src = data.avatar;
-                if (document.getElementById('postAvatar1')) document.getElementById('postAvatar1').src = data.avatar;
-                if (document.getElementById('postAvatar2')) document.getElementById('postAvatar2').src = data.avatar;
-                if (document.getElementById('miniPhoto1')) document.getElementById('miniPhoto1').src = data.avatar;
-                if (document.getElementById('fullPhoto1')) document.getElementById('fullPhoto1').src = data.avatar;
             }
             if (data.cover) {
                 document.getElementById('coverPhotoEl').src = data.cover;
@@ -1253,6 +1476,118 @@
             if (tagsContainer && data.tags) {
                 tagsContainer.innerHTML = data.tags.map(t => `<span class="tag-chip"><i class="fa-solid fa-sparkle"></i> ${t}</span>`).join('');
             }
+
+            renderPhotos();
+            renderPosts();
+        }
+
+        // ── Photos Gallery & Deletion ──
+        function renderPhotos() {
+            const data = getProfileData();
+            const photos = data.photos || ['lumina_anna2.jpg', 'avatar_new1.jpg', 'lumina_hero_main.jpg'];
+            
+            const miniGrid = document.getElementById('miniPhotoGrid');
+            if (miniGrid) {
+                miniGrid.innerHTML = photos.slice(0, 6).map((src, idx) => `
+                    <div style="position:relative; border-radius:10px; overflow:hidden; height:90px;">
+                        <img src="${src}" alt="Photo" class="photo-thumb" style="width:100%;height:100%;object-fit:cover;" onclick="showToast('Podgląd zdjęcia')">
+                        ${isOwnerMode ? `<button class="photo-delete-badge" style="width:24px;height:24px;top:4px;right:4px;font-size:0.7rem;" onclick="deletePhoto(${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                    </div>
+                `).join('');
+            }
+
+            const fullGrid = document.getElementById('fullPhotoGrid');
+            if (fullGrid) {
+                fullGrid.innerHTML = photos.map((src, idx) => `
+                    <div class="photo-item-box">
+                        <img src="${src}" alt="Photo" class="photo-item-img" onclick="showToast('Podgląd zdjęcia')">
+                        ${isOwnerMode ? `<button class="photo-delete-badge" onclick="deletePhoto(${idx})" title="Usuń zdjęcie z galerii"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                    </div>
+                `).join('');
+            }
+        }
+
+        function deletePhoto(index) {
+            if (!requestOwnerAccess(() => deletePhoto(index))) return;
+            if (!confirm('Czy na pewno chcesz usunąć to zdjęcie z galerii?')) return;
+            
+            const cur = getProfileData();
+            if (cur.photos && cur.photos.length > 0) {
+                cur.photos.splice(index, 1);
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+                } catch(e) {}
+                renderPhotos();
+                showToast('Zdjęcie zostało pomyślnie usunięte z Twojego profilu! 🗑️✨');
+            }
+        }
+
+        // ── Posts Stream & Deletion ──
+        function renderPosts() {
+            const data = getProfileData();
+            const posts = data.posts || [];
+            const stream = document.getElementById('feedStream');
+            if (!stream) return;
+
+            stream.innerHTML = posts.map(p => `
+                <article class="post-card" id="${p.id}">
+                    <div class="post-header">
+                        <img src="${data.avatar || 'lumina_anna2.jpg'}" alt="${p.author}" class="post-avatar">
+                        <div>
+                            <div class="post-author">${p.author}</div>
+                            <div class="post-time">${p.time}</div>
+                        </div>
+                        ${isOwnerMode ? `<button class="post-delete-btn" onclick="deleteFeedPost('${p.id}')" title="Usuń ten wpis"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                    </div>
+                    <div class="post-content">${p.text}</div>
+                    ${p.image ? `<img src="${p.image}" alt="Post Image" class="post-image">` : ''}
+                    <div class="post-footer">
+                        <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span> Polubień</button>
+                        <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
+                        <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i> Napisz</button>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function deleteFeedPost(postId) {
+            if (!requestOwnerAccess(() => deleteFeedPost(postId))) return;
+            if (!confirm('Czy na pewno chcesz usunąć ten wpis z tablicy?')) return;
+
+            const cur = getProfileData();
+            cur.posts = (cur.posts || []).filter(p => p.id !== postId);
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+            } catch(e) {}
+            renderPosts();
+            showToast('Wpis został pomyślnie usunięty z Twojej tablicy! 🗑️');
+        }
+
+        function publishFeedPost() {
+            if (!requestOwnerAccess(publishFeedPost)) return;
+            const input = document.getElementById('composerInput');
+            const val = input.value.trim();
+            if (!val) {
+                showToast('Wpisz treść przed publikacją!');
+                return;
+            }
+            const cur = getProfileData();
+            const newPost = {
+                id: 'post_w_' + Date.now(),
+                author: cur.name,
+                time: 'Przed chwilą • 🌍 Nowy Wpis',
+                text: val,
+                likes: 1,
+                image: null
+            };
+            cur.posts = cur.posts || [];
+            cur.posts.unshift(newPost);
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+            } catch(e) {}
+            input.value = '';
+            renderPosts();
+            showToast('Twój nowy wpis został opublikowany na tablicy! ✨');
         }
 
         // ── Robust Image Resizer & Compressor for LocalStorage ──
@@ -1289,6 +1624,7 @@
 
         // File Upload Handlers (Compressed & Safe LocalStorage Persistence)
         function handleAvatarFileSelect(e) {
+            if (!requestOwnerAccess(() => document.getElementById('avatarFileInput').click())) return;
             const file = e.target.files[0];
             if (!file) return;
             showToast('Przetwarzanie zdjęcia profilowego... ⏳');
@@ -1297,9 +1633,7 @@
                 cur.avatar = dataUrl;
                 try {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
-                } catch(err) {
-                    console.warn('Storage warn:', err);
-                }
+                } catch(err) {}
                 renderProfileView();
                 showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane! 📷✨');
             });
@@ -1307,6 +1641,7 @@
         }
 
         function handleCoverFileSelect(e) {
+            if (!requestOwnerAccess(() => document.getElementById('coverFileInput').click())) return;
             const file = e.target.files[0];
             if (!file) return;
             showToast('Przetwarzanie zdjęcia w tle... ⏳');
@@ -1315,16 +1650,41 @@
                 cur.cover = dataUrl;
                 try {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
-                } catch(err) {
-                    console.warn('Storage warn:', err);
-                }
+                } catch(err) {}
                 renderProfileView();
                 showToast('Zdjęcie w tle zostało zaktualizowane i zapisane! 🖼️✨');
             });
             e.target.value = '';
         }
 
+        function handleGalleryFileSelect(e) {
+            if (!requestOwnerAccess(() => document.getElementById('galleryFileInput').click())) return;
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+            showToast('Dodawanie zdjęć do galerii... ⏳');
+            
+            const cur = getProfileData();
+            cur.photos = cur.photos || [];
+
+            let processed = 0;
+            files.forEach(file => {
+                compressAndReadImage(file, 900, 900, 0.82, function(dataUrl) {
+                    cur.photos.push(dataUrl);
+                    processed++;
+                    if (processed === files.length) {
+                        try {
+                            localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+                        } catch(err) {}
+                        renderPhotos();
+                        showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! 🖼️✨`);
+                    }
+                });
+            });
+            e.target.value = '';
+        }
+
         function openEditProfileModal(section) {
+            if (!requestOwnerAccess(() => openEditProfileModal(section))) return;
             const data = getProfileData();
             document.getElementById('editName').value = data.name;
             document.getElementById('editAge').value = data.age;
@@ -1336,9 +1696,9 @@
             document.getElementById('editVerseRef').value = data.verseRef;
             document.getElementById('editBio').value = data.bio;
             document.getElementById('editTags').value = Array.isArray(data.tags) ? data.tags.join(', ') : data.tags;
+            document.getElementById('editPin').value = data.pin || '7777';
             document.getElementById('editProfileModal').classList.add('open');
 
-            // Optional focus on specific field
             if (section === 'verse') setTimeout(() => document.getElementById('editVerse').focus(), 150);
             else if (section === 'bio') setTimeout(() => document.getElementById('editBio').focus(), 150);
             else if (section === 'tags') setTimeout(() => document.getElementById('editTags').focus(), 150);
@@ -1350,6 +1710,7 @@
             e.preventDefault();
             const cur = getProfileData();
             const tagsRaw = document.getElementById('editTags').value;
+            const newPin = document.getElementById('editPin').value.trim() || '7777';
             const updated = {
                 ...cur,
                 name: document.getElementById('editName').value.trim(),
@@ -1361,6 +1722,7 @@
                 verse: document.getElementById('editVerse').value.trim(),
                 verseRef: document.getElementById('editVerseRef').value.trim(),
                 bio: document.getElementById('editBio').value.trim(),
+                pin: newPin,
                 tags: tagsRaw.split(',').map(t => t.trim()).filter(Boolean)
             };
 
@@ -1436,37 +1798,6 @@
             showToast('Twoje AMEN zostało dodane! 🙏✨');
         }
 
-        function publishFeedPost() {
-            const input = document.getElementById('composerInput');
-            const val = input.value.trim();
-            if (!val) {
-                showToast('Wpisz treść przed publikacją!');
-                return;
-            }
-            const data = getProfileData();
-            const stream = document.getElementById('feedStream');
-            const newCard = document.createElement('article');
-            newCard.className = 'post-card';
-            newCard.innerHTML = `
-                <div class="post-header">
-                    <img src="${data.avatar || 'lumina_anna2.jpg'}" alt="${data.name}" class="post-avatar">
-                    <div>
-                        <div class="post-author">${data.name}</div>
-                        <div class="post-time">Przed chwilą • 🌍 Nowy Wpis</div>
-                    </div>
-                </div>
-                <div class="post-content">${val}</div>
-                <div class="post-footer">
-                    <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">1</span> Polubienie</button>
-                    <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
-                    <button class="post-action-btn" onclick="showToast('Udostępniono!')"><i class="fa-solid fa-share"></i> Udostępnij</button>
-                </div>
-            `;
-            stream.prepend(newCard);
-            input.value = '';
-            showToast('Twój wpis został opublikowany na tablicy! ✨');
-        }
-
         function insertVersePrompt() {
             const input = document.getElementById('composerInput');
             input.value = '„Wszystko, co czynicie, z miłością czyńcie.” (1 Kor 16, 14)';
@@ -1507,8 +1838,10 @@
             }
         }
 
-        // Initialize on load
-        window.addEventListener('DOMContentLoaded', renderProfileView);
+        window.addEventListener('DOMContentLoaded', () => {
+            checkOwnerAuthSession();
+            renderProfileView();
+        });
     </script>
 </body>
 </html>
