@@ -142,7 +142,8 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            min-height: 390px;
+            min-height: 490px;
+            padding: 70px 20px 90px;
         }
 
         /* The banner image IS the background */
@@ -158,7 +159,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(11, 24, 56, 0) 50%, rgba(11, 24, 56, 0.45) 75%, #0b1838 100%);
+            background: linear-gradient(to bottom, rgba(11, 24, 56, 0) 40%, rgba(11, 24, 56, 0.45) 75%, #0b1838 100%);
             pointer-events: none;
             z-index: 1;
         }
@@ -166,25 +167,36 @@
         .hero-content {
             position: relative;
             z-index: 5;
-            padding: 60px 32px 90px;
-            max-width: 700px;
+            padding: 20px 20px 10px;
+            max-width: 780px;
+            margin: 0 auto;
         }
 
         .hero-title {
-            font-size: 2.6rem;
+            font-size: 2.85rem;
             font-weight: 800;
-            line-height: 1.18;
+            line-height: 1.2;
             color: #fff;
-            text-shadow: 0 2px 24px rgba(0,0,0,0.6);
-            margin-bottom: 12px;
+            text-shadow: 0 2px 24px rgba(0,0,0,0.65);
+            margin-bottom: 14px;
+            letter-spacing: -0.5px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         .hero-sub {
-            font-size: 1rem;
-            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.94);
             font-weight: 500;
             margin-bottom: 28px;
-            text-shadow: 0 1px 12px rgba(0,0,0,0.7);
+            line-height: 1.5;
+            text-shadow: 0 1px 14px rgba(0,0,0,0.7);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 1.95rem; }
+            .hero-sub { font-size: 0.95rem; }
+            .hero-section { min-height: 420px; padding: 50px 15px 70px; }
         }
 
         .btn-hero-main {
@@ -194,7 +206,7 @@
             background: linear-gradient(90deg, #d946ef, #0ea5e9);
             color: #fff;
             border: none;
-            padding: 15px 42px;
+            padding: 16px 44px;
             border-radius: 40px;
             font-weight: 800;
             font-size: 0.95rem;
@@ -984,10 +996,12 @@
         </div>
     </nav>
 
-    <!-- ══════════ HERO (Clean & Unobstructed) ══════════ -->
-    <section class="hero-section" onclick="openAuth()" style="cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 75px; min-height: 410px; position: relative;">
+    <!-- ══════════ HERO SECTION ══════════ -->
+    <section class="hero-section" id="hero">
         <div class="hero-bg"></div>
-        <div style="position: relative; z-index: 5;">
+        <div class="hero-content">
+            <h1 class="hero-title">Witaj w LUMINA<br>Miejscu Głębszych Relacji.</h1>
+            <p class="hero-sub">Rozpocznij swoją przygodę do miłości z inteligentnym dopasowaniem.</p>
             <button class="btn-hero-main" onclick="openAuth()">ZAREJESTRUJ SIĘ ZA DARMO</button>
         </div>
     </section>
