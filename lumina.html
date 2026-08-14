@@ -807,43 +807,89 @@
             100% { height: 12px; }
         }
 
-        /* ──────────────────── ELEGANT SCRIPTURE STRIP ──────────────────── */
+        /* ──────────────────── FLOATING 3D SCRIPTURE CARDS ──────────────────── */
         .scripture-strip {
-            max-width: 960px;
-            margin: 0 auto 30px;
-            padding: 0 20px;
+            max-width: 1040px;
+            margin: 15px auto 45px;
+            padding: 0 24px;
             display: flex;
-            gap: 20px;
+            gap: 24px;
+            perspective: 1200px;
+            transform-style: preserve-3d;
         }
         .scripture-card {
             flex: 1;
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            border-radius: 16px;
-            padding: 16px 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 20px;
+            padding: 22px 26px;
             text-align: left;
             position: relative;
-            transition: all 0.3s ease;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 22px rgba(168, 85, 247, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            cursor: default;
+        }
+        .scripture-card:nth-child(1) {
+            animation: floatVerseLeft 6s ease-in-out infinite;
+        }
+        .scripture-card:nth-child(2) {
+            animation: floatVerseRight 6.5s ease-in-out infinite 0.6s;
         }
         .scripture-card:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(234, 179, 8, 0.3);
-            transform: translateY(-3px);
+            animation-play-state: paused;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+            border-color: rgba(250, 204, 21, 0.55);
+            transform: translateY(-12px) scale(1.03) rotateX(0deg) rotateY(0deg) translateZ(30px) !important;
+            box-shadow: 0 26px 50px rgba(0, 0, 0, 0.5), 0 0 35px rgba(250, 204, 21, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+        @keyframes floatVerseLeft {
+            0%, 100% {
+                transform: translateY(0px) rotateX(4deg) rotateY(-3deg) translateZ(0);
+                box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 20px rgba(168, 85, 247, 0.12);
+            }
+            50% {
+                transform: translateY(-10px) rotateX(1deg) rotateY(-1deg) translateZ(16px);
+                box-shadow: 0 24px 44px rgba(0, 0, 0, 0.45), 0 0 28px rgba(168, 85, 247, 0.22);
+            }
+        }
+        @keyframes floatVerseRight {
+            0%, 100% {
+                transform: translateY(0px) rotateX(4deg) rotateY(3deg) translateZ(0);
+                box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 20px rgba(6, 182, 212, 0.12);
+            }
+            50% {
+                transform: translateY(-12px) rotateX(2deg) rotateY(1deg) translateZ(18px);
+                box-shadow: 0 26px 46px rgba(0, 0, 0, 0.45), 0 0 30px rgba(6, 182, 212, 0.22);
+            }
         }
         .scripture-text {
-            font-size: 0.85rem;
-            color: #e2e8f0;
-            line-height: 1.5;
+            font-size: 0.92rem;
+            color: #f1f5f9;
+            line-height: 1.6;
             font-style: italic;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.4);
         }
         .scripture-sig {
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             color: #facc15;
-            font-weight: 700;
+            font-weight: 800;
             text-align: right;
+            letter-spacing: 0.4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+        }
+
+        @media (max-width: 800px) {
+            .scripture-strip { flex-direction: column; }
+            .scripture-card:nth-child(1), .scripture-card:nth-child(2) { animation: none; transform: none; }
+            .nav-radio-sub { display: none; }
         }
 
         /* User Profile Pill in Navbar */
@@ -1044,15 +1090,15 @@
         </div>
     </section>
 
-    <!-- ══════════ SCRIPTURE INSPIRATION STRIP ══════════ -->
+    <!-- ══════════ SCRIPTURE INSPIRATION STRIP (Floating 3D) ══════════ -->
     <div class="scripture-strip">
         <div class="scripture-card">
-            <div class="scripture-text">„Bo gdzie są dwaj albo trzej zebrani w imię moje, tam jestem pośród nich.”</div>
-            <div class="scripture-sig">Ewangelia wg św. Mateusza 18, 20</div>
+            <div class="scripture-text"><i class="fa-solid fa-quote-left" style="color: rgba(250, 204, 21, 0.55); margin-right: 8px;"></i>„Bo gdzie są dwaj albo trzej zebrani w imię moje, tam jestem pośród nich.”</div>
+            <div class="scripture-sig"><i class="fa-solid fa-book-bible" style="font-size: 0.75rem;"></i> Ewangelia wg św. Mateusza 18, 20</div>
         </div>
         <div class="scripture-card">
-            <div class="scripture-text">„Jeżeli zaś chodzimy w światłości, tak jak On sam trwa w światłości, wtedy mamy łączność jedni z drugimi…”</div>
-            <div class="scripture-sig">1 List św. Jana 1, 7</div>
+            <div class="scripture-text"><i class="fa-solid fa-quote-left" style="color: rgba(250, 204, 21, 0.55); margin-right: 8px;"></i>„Jeżeli zaś chodzimy w światłości, tak jak On sam trwa w światłości, wtedy mamy łączność jedni z drugimi…”</div>
+            <div class="scripture-sig"><i class="fa-solid fa-book-bible" style="font-size: 0.75rem;"></i> 1 List św. Jana 1, 7</div>
         </div>
     </div>
 
