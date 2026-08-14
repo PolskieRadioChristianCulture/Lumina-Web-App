@@ -234,6 +234,25 @@
             display: block;
         }
 
+        .avatar-edit-overlay {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.4rem;
+            opacity: 0;
+            cursor: pointer;
+            border: none;
+            transition: opacity 0.2s;
+        }
+        .avatar-wrap:hover .avatar-edit-overlay {
+            opacity: 1;
+        }
+
         .avatar-status-badge {
             position: absolute;
             bottom: 8px;
@@ -244,6 +263,7 @@
             background: #22c55e;
             border: 3px solid var(--navy-surface);
             box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+            z-index: 5;
         }
 
         .head-user-details {
@@ -739,34 +759,36 @@
         
         <!-- Cover Banner -->
         <div class="cover-wrapper">
-            <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo">
+            <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
             <div class="cover-overlay"></div>
-            <button class="btn-change-cover" onclick="showToast('Edycja tła profilu')"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
+            <button class="btn-change-cover" onclick="openEditProfileModal()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
         </div>
 
         <!-- Profile Head Info -->
         <section class="profile-head-card">
             <div class="profile-head-top">
                 <div class="avatar-wrap">
-                    <img src="avatar_new1.jpg" alt="Cezary Rogowski" class="avatar-img">
+                    <img src="avatar_new1.jpg" alt="Cezary Rogowski" class="avatar-img" id="avatarImgEl">
+                    <button class="avatar-edit-overlay" onclick="openEditProfileModal()" title="Zmień zdjęcie profilowe"><i class="fa-solid fa-camera"></i></button>
                     <div class="avatar-status-badge" title="Użytkownik Online"></div>
                 </div>
 
                 <div class="head-user-details">
                     <h1 class="head-user-name">
-                        <span>Cezary Rogowski</span>
+                        <span id="userNameEl">Cezary Rogowski</span>
                         <i class="fa-solid fa-circle-check verified-badge" title="Zweryfikowany Profil Chrześcijański"></i>
                     </h1>
                     <div class="head-user-tagline">
-                        <span><i class="fa-solid fa-location-dot"></i> Warszawa, Polska (32 lata)</span>
-                        <span><i class="fa-solid fa-cross"></i> Chrześcijanin</span>
-                        <span style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: 98%</span>
+                        <span id="userAgeCityEl"><i class="fa-solid fa-location-dot"></i> Warszawa, Polska (32 lata)</span>
+                        <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijanin</span>
+                        <span id="userMatchEl" style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: 98%</span>
                     </div>
                 </div>
 
                 <div class="head-actions">
-                    <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Wyślij Wiadomość</button>
-                    <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> Zaproś na Kawę</button>
+                    <button class="btn-action-primary" style="background: linear-gradient(90deg, #3b82f6, #06b6d4); box-shadow: 0 4px 18px rgba(6, 182, 212, 0.4);" onclick="openEditProfileModal()"><i class="fa-solid fa-pen-to-square"></i> Edytuj Mój Profil</button>
+                    <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Wiadomość</button>
+                    <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> Kawa ☕</button>
                     <button class="btn-action-heart" onclick="toggleProfileHeart(this)" title="Polub Profil"><i class="fa-solid fa-heart"></i></button>
                     <button class="btn-action-secondary" onclick="copyProfileLink()" title="Udostępnij Profil"><i class="fa-solid fa-share-nodes"></i></button>
                 </div>
@@ -972,11 +994,76 @@
 
     </main>
 
+    <!-- ══════════ EDIT PROFILE MODAL ══════════ -->
+    <div class="modal-overlay" id="editProfileModal">
+        <div class="modal-card" style="max-width: 580px;">
+            <button class="modal-close-btn" onclick="closeModal('editProfileModal')"><i class="fa-solid fa-xmark"></i></button>
+            <h3 style="font-size: 1.35rem; margin-bottom: 4px; font-family:'Outfit',sans-serif;"><i class="fa-solid fa-pen-to-square" style="color:#c084fc;"></i> Edytuj Swój Profil</h3>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 18px;">Wprowadzone dane są natychmiast widoczne i trwale zapisywane na Twoim profilu.</p>
+            
+            <form id="editProfileForm" onsubmit="saveProfileEdits(event)">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Imię i Nazwisko</label>
+                        <input type="text" id="editName" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Wiek</label>
+                        <input type="number" id="editAge" min="18" max="99" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Miasto / Kraj</label>
+                        <input type="text" id="editCity" placeholder="np. Warszawa, Polska" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Wyznanie / Tradycja</label>
+                        <input type="text" id="editDenom" placeholder="np. Chrześcijanin / Katolik" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Zawód & Pasja</label>
+                        <input type="text" id="editJob" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Wspólnota / Kościół</label>
+                        <input type="text" id="editChurch" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:12px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Przewodni Werset Życiowy</label>
+                    <input type="text" id="editVerse" placeholder="Treść wersetu..." style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px; margin-bottom:6px;" required>
+                    <input type="text" id="editVerseRef" placeholder="Odnośnik, np. — Księga Jozuego 24, 15" style="width:100%; padding:8px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#facc15; font-family:inherit; font-size:14px; font-weight:700;" required>
+                </div>
+
+                <div style="margin-bottom:12px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Świadectwo Wiary & O Mnie</label>
+                    <textarea id="editBio" rows="3" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px; outline:none; resize:none;" required></textarea>
+                </div>
+
+                <div style="margin-bottom:18px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Zainteresowania i Pasje (oddziel przecinkami)</label>
+                    <input type="text" id="editTags" placeholder="np. Muzyka Uwielbienia, Wędrówki Górskie, Pismo Święte, Ewangelizacja" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
+                </div>
+
+                <div style="display:flex; gap:10px;">
+                    <button type="button" onclick="closeModal('editProfileModal')" style="flex:1; padding:12px; border-radius:30px; background:rgba(255,255,255,0.08); border:none; color:#fff; font-weight:700; font-family:inherit; cursor:pointer;">Anuluj</button>
+                    <button type="submit" style="flex:1.6; padding:12px; border-radius:30px; background:linear-gradient(90deg,#22c55e,#06b6d4); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 18px rgba(34,197,94,0.4);"><i class="fa-solid fa-floppy-disk"></i> Zapisz Zmiany Profilu ✨</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ══════════ MESSAGE MODAL ══════════ -->
     <div class="modal-overlay" id="messageModal">
         <div class="modal-card">
             <button class="modal-close-btn" onclick="closeModal('messageModal')"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="font-size: 1.3rem; margin-bottom: 6px; font-family:'Outfit',sans-serif;">Napisz wiadomość do <span style="color:#c084fc;">Cezarego</span></h3>
+            <h3 style="font-size: 1.3rem; margin-bottom: 6px; font-family:'Outfit',sans-serif;">Napisz wiadomość do <span id="msgModalRecipientName" style="color:#c084fc;">Cezarego</span></h3>
             <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">Twoja wiadomość trafi bezpośrednio do skrzynki użytkownika.</p>
             <textarea id="msgTextArea" placeholder="Napisz miłe powitanie, podziel się wersetem lub zrób pierwszy krok..." style="width:100%; height:120px; padding:12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px; margin-bottom:16px; outline:none; resize:none;"></textarea>
             <button class="btn-action-primary" style="width:100%; justify-content:center;" onclick="sendMessageSubmit()"><i class="fa-solid fa-paper-plane"></i> Wyślij Wiadomość</button>
@@ -997,8 +1084,91 @@
     <!-- ══════════ TOAST NOTIFICATION ══════════ -->
     <div class="toast" id="toast"><i class="fa-solid fa-check-circle"></i> <span id="toastMsg">Sukces!</span></div>
 
-    <!-- ══════════ JAVASCRIPT ══════════ -->
+    <!-- ══════════ JAVASCRIPT & PROFILE ENGINE ══════════ -->
     <script>
+        const STORAGE_KEY = 'lumina_profile_cezaryrgowski';
+
+        const defaultProfile = {
+            name: 'Cezary Rogowski',
+            age: '32',
+            city: 'Warszawa, Polska',
+            denom: 'Chrześcijanin',
+            match: '98%',
+            job: 'Twórca & Wizjoner Christian Culture',
+            church: 'Wspólnota Uwielbieniowa',
+            verse: '„Ja i mój dom służyć będziemy Panu.”',
+            verseRef: '— Księga Jozuego 24, 15',
+            bio: 'Moja relacja z Bogiem to fundament każdego dnia. Odkryłem, że prawdziwa radość i pokój pochodzą z zaufania Jego planom. W życiu codziennym łączę pasję do ewangelizacji, tworzenia mediów chrześcijańskich i technologii. Szukam partnerki, która kocha Boga całym sercem, ceni szczerość, poczucie humoru i chce wspólnie iść drogą uświęcenia.',
+            tags: ['Muzyka Uwielbienia', 'Wędrówki Górskie', 'Pismo Święte', 'Ewangelizacja', 'Nowe Technologie', 'Głębokie Rozmowy']
+        };
+
+        function getProfileData() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) return { ...defaultProfile, ...JSON.parse(saved) };
+            } catch (e) {}
+            return defaultProfile;
+        }
+
+        function renderProfileView() {
+            const data = getProfileData();
+            document.getElementById('userNameEl').textContent = data.name;
+            document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} (${data.age} lata)`;
+            document.getElementById('userDenomEl').innerHTML = `<i class="fa-solid fa-cross"></i> ${data.denom}`;
+            document.getElementById('userMatchEl').innerHTML = `<i class="fa-solid fa-heart-pulse"></i> Dopasowanie: ${data.match}`;
+            document.getElementById('userJobEl').textContent = data.job;
+            document.getElementById('userChurchEl').textContent = data.church;
+            document.getElementById('userVerseText').textContent = data.verse;
+            document.getElementById('userVerseRef').textContent = data.verseRef;
+            document.getElementById('userBioFull').textContent = data.bio;
+            document.getElementById('msgModalRecipientName').textContent = data.name.split(' ')[0] || data.name;
+
+            const tagsContainer = document.getElementById('userTagsEl');
+            if (tagsContainer && data.tags) {
+                tagsContainer.innerHTML = data.tags.map(t => `<span class="tag-chip"><i class="fa-solid fa-sparkle"></i> ${t}</span>`).join('');
+            }
+        }
+
+        function openEditProfileModal() {
+            const data = getProfileData();
+            document.getElementById('editName').value = data.name;
+            document.getElementById('editAge').value = data.age;
+            document.getElementById('editCity').value = data.city;
+            document.getElementById('editDenom').value = data.denom;
+            document.getElementById('editJob').value = data.job;
+            document.getElementById('editChurch').value = data.church;
+            document.getElementById('editVerse').value = data.verse;
+            document.getElementById('editVerseRef').value = data.verseRef;
+            document.getElementById('editBio').value = data.bio;
+            document.getElementById('editTags').value = Array.isArray(data.tags) ? data.tags.join(', ') : data.tags;
+            document.getElementById('editProfileModal').classList.add('open');
+        }
+
+        function saveProfileEdits(e) {
+            e.preventDefault();
+            const tagsRaw = document.getElementById('editTags').value;
+            const updated = {
+                name: document.getElementById('editName').value.trim(),
+                age: document.getElementById('editAge').value.trim(),
+                city: document.getElementById('editCity').value.trim(),
+                denom: document.getElementById('editDenom').value.trim(),
+                job: document.getElementById('editJob').value.trim(),
+                church: document.getElementById('editChurch').value.trim(),
+                verse: document.getElementById('editVerse').value.trim(),
+                verseRef: document.getElementById('editVerseRef').value.trim(),
+                bio: document.getElementById('editBio').value.trim(),
+                tags: tagsRaw.split(',').map(t => t.trim()).filter(Boolean)
+            };
+
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+            } catch (err) {}
+
+            renderProfileView();
+            closeModal('editProfileModal');
+            showToast('Twój profil został pomyślnie zaktualizowany i zapisany! ✨');
+        }
+
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content-pane').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -1026,7 +1196,7 @@
             }
             closeModal('messageModal');
             document.getElementById('msgTextArea').value = '';
-            showToast('Wiadomość do Cezarego została pomyślnie wysłana! 💬✨');
+            showToast('Wiadomość została pomyślnie wysłana! 💬✨');
         }
 
         function sendCoffeeInvitation() {
@@ -1037,7 +1207,7 @@
         function toggleProfileHeart(btn) {
             btn.classList.toggle('active');
             if (btn.classList.contains('active')) {
-                showToast('Dodano profil Cezarego do Twoich ulubionych połączeń! ❤️');
+                showToast('Dodano profil do Twoich ulubionych połączeń! ❤️');
             } else {
                 showToast('Usunięto z ulubionych');
             }
@@ -1069,14 +1239,15 @@
                 showToast('Wpisz treść przed publikacją!');
                 return;
             }
+            const data = getProfileData();
             const stream = document.getElementById('feedStream');
             const newCard = document.createElement('article');
             newCard.className = 'post-card';
             newCard.innerHTML = `
                 <div class="post-header">
-                    <img src="avatar_new1.jpg" alt="Cezary" class="post-avatar">
+                    <img src="avatar_new1.jpg" alt="${data.name}" class="post-avatar">
                     <div>
-                        <div class="post-author">Cezary Rogowski</div>
+                        <div class="post-author">${data.name}</div>
                         <div class="post-time">Przed chwilą • 🌍 Nowy Wpis</div>
                     </div>
                 </div>
@@ -1131,6 +1302,9 @@
                 showToast('Radio wstrzymane');
             }
         }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', renderProfileView);
     </script>
 </body>
 </html>
