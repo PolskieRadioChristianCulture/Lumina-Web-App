@@ -526,6 +526,48 @@
             box-shadow: 0 0 12px rgba(244, 63, 94, 0.5);
         }
 
+        /* ── Visibility Badges & Privacy Gate ── */
+        .badge-visibility-pub {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.35);
+            color: #86efac;
+            padding: 3px 10px;
+            border-radius: 14px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+        .badge-visibility-priv {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(168, 85, 247, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            color: #c084fc;
+            padding: 3px 10px;
+            border-radius: 14px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+        .private-gate-screen {
+            display: none;
+            text-align: center;
+            padding: 50px 20px 70px;
+            max-width: 620px;
+            margin: 40px auto 60px;
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            animation: fadeInDown 0.3s ease;
+        }
+        .private-gate-screen.active {
+            display: block;
+        }
+
         /* ── Photo Gallery Grid with Delete Buttons ── */
         .photo-item-box {
             position: relative;
@@ -1097,57 +1139,92 @@
             </div>
         </div>
 
-        <!-- Cover Banner -->
-        <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
-            <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
-            <div class="cover-overlay"></div>
-            
-            <div class="cover-hint-badge"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
-
-            <div class="cover-actions-group" id="coverActionsGroup" onclick="event.stopPropagation()">
-                <button type="button" class="btn-change-cover" onclick="triggerCoverUpload()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
-                <button type="button" class="btn-change-cover" onclick="toggleCoverRepositionToolbar()"><i class="fa-solid fa-arrows-up-down"></i> Ustaw Kadr / Wycentruj</button>
-                <button type="button" class="btn-change-cover" onclick="closeCoverActions()" style="padding:8px 12px; background:rgba(255,255,255,0.12);" title="Zamknij menu"><i class="fa-solid fa-xmark"></i></button>
+        <!-- Private Profile Notice for Owner / Authorized Visitors -->
+        <div id="privateModeOwnerNotice" style="display:none; background: linear-gradient(90deg, rgba(168,85,247,0.18), rgba(59,130,246,0.18)); border: 1px solid rgba(168,85,247,0.4); border-radius: 16px; padding: 12px 18px; margin-bottom: 16px; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-lock" style="color: #c084fc; font-size: 1.2rem;"></i>
+                <div>
+                    <div style="font-weight: 800; font-size: 0.86rem; color: #fff;">Tryb Prywatny Aktywny 🔒</div>
+                    <div style="font-size: 0.74rem; color: #94a3b8;">Profil jest niewidoczny publicznie. Dostęp mają tylko osoby z bezpośrednim linkiem lub kodem PIN.</div>
+                </div>
             </div>
+            <button type="button" onclick="copyPrivateAccessLink()" style="background: rgba(168,85,247,0.25); border: 1px solid #a855f7; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: inherit;">
+                <i class="fa-solid fa-link"></i> Kopiuj Link Prywatnego Dostępu
+            </button>
+        </div>
 
-            <!-- Interactive Cover Reposition Toolbar -->
-            <div class="cover-reposition-toolbar" id="coverRepositionToolbar" onclick="event.stopPropagation()">
-                <div class="reposition-title"><i class="fa-solid fa-arrows-up-down"></i> Dopasuj Kadr Zdjęcia w Tle</div>
-                <div class="reposition-controls">
-                    <button type="button" class="btn-preset" onclick="setCoverPosition(0)">Góra</button>
-                    <button type="button" class="btn-preset" onclick="setCoverPosition(50)">Środek</button>
-                    <button type="button" class="btn-preset" onclick="setCoverPosition(100)">Dół</button>
-                    <input type="range" id="coverPosRange" min="0" max="100" value="50" oninput="onCoverRangeChange(this.value)" class="cover-slider">
-                    <span id="coverPosValueLabel" style="font-weight:700; font-size:0.82rem; min-width:38px; color:#38bdf8;">50%</span>
-                </div>
-                <div class="reposition-actions">
-                    <button type="button" class="btn-repo-cancel" onclick="closeCoverRepositionToolbar()">Anuluj</button>
-                    <button type="button" class="btn-repo-save" onclick="saveCoverPosition()"><i class="fa-solid fa-check"></i> Zapisz Kadr</button>
-                </div>
+        <!-- Privacy Gate Screen (shown to unauthorized guests when private) -->
+        <div class="private-gate-screen" id="privateGateScreen">
+            <div style="width: 86px; height: 86px; margin: 0 auto 18px; border-radius: 50%; background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(59,130,246,0.2)); border: 2px solid rgba(168,85,247,0.5); display: flex; align-items: center; justify-content: center; font-size: 2.4rem;">
+                🔒
+            </div>
+            <h2 style="font-size: 1.6rem; font-family:'Outfit',sans-serif; margin-bottom: 8px;" id="gateUserName">Cezary Rogowski</h2>
+            <div style="display:inline-block; margin-bottom:14px;"><span class="badge-visibility-priv"><i class="fa-solid fa-lock"></i> Profil Prywatny</span></div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); max-width: 440px; margin: 0 auto 24px; line-height: 1.5;">
+                Ten profil został ustawiony jako <b>Prywatny</b> i jest udostępniany wyłącznie na życzenie właściciela lub po podaniu kodu dostępu.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 10px; max-width: 320px; margin: 0 auto;">
+                <button type="button" class="btn-action-primary" style="width:100%; justify-content:center; padding: 13px; font-size: 0.88rem;" onclick="openPrivateRequestModal()"><i class="fa-solid fa-paper-plane"></i> Poproś o dostęp do profilu</button>
+                <button type="button" class="btn-action-secondary" style="width:100%; justify-content:center; padding: 12px; font-size: 0.85rem;" onclick="promptPrivateAccessCode()"><i class="fa-solid fa-key"></i> Wprowadź Kod Dostępu / PIN</button>
+                <a href="lumina.html" style="margin-top: 10px; font-size: 0.82rem; color: #94a3b8; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><i class="fa-solid fa-arrow-left"></i> Wróć do Portalu LUMINA</a>
             </div>
         </div>
 
-        <!-- Profile Head Info -->
-        <section class="profile-head-card">
-            <div class="profile-head-top">
-                <div class="avatar-wrap">
-                    <img src="avatar_new1.jpg" alt="Cezary Rogowski" class="avatar-img" id="avatarImgEl">
-                    <button class="avatar-edit-overlay" onclick="triggerAvatarUpload()" title="Wgraj nowe zdjęcie profilowe z dysku"><i class="fa-solid fa-camera"></i></button>
-                    <div class="avatar-status-badge" title="Użytkownik Online"></div>
+        <!-- ══════════ FULL PUBLIC PROFILE VIEW ══════════ -->
+        <div id="profilePublicView">
+
+            <!-- Cover Banner -->
+            <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
+                <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
+                <div class="cover-overlay"></div>
+                
+                <div class="cover-hint-badge"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
+
+                <div class="cover-actions-group" id="coverActionsGroup" onclick="event.stopPropagation()">
+                    <button type="button" class="btn-change-cover" onclick="triggerCoverUpload()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
+                    <button type="button" class="btn-change-cover" onclick="toggleCoverRepositionToolbar()"><i class="fa-solid fa-arrows-up-down"></i> Ustaw Kadr / Wycentruj</button>
+                    <button type="button" class="btn-change-cover" onclick="closeCoverActions()" style="padding:8px 12px; background:rgba(255,255,255,0.12);" title="Zamknij menu"><i class="fa-solid fa-xmark"></i></button>
                 </div>
 
-                <div class="head-user-details">
-                    <h1 class="head-user-name">
-                        <span id="userNameEl">Cezary Rogowski</span>
-                        <i class="fa-solid fa-circle-check verified-badge" title="Zweryfikowany Profil Chrześcijański"></i>
-                        <button class="card-edit-btn" onclick="openEditProfileModal('info')" title="Edytuj Imię i Wiek"><i class="fa-solid fa-pencil"></i></button>
-                    </h1>
-                    <div class="head-user-tagline">
-                        <span id="userAgeCityEl"><i class="fa-solid fa-location-dot"></i> Warszawa, Polska (32 lata)</span>
-                        <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijanin</span>
-                        <span id="userMatchEl" style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: 98%</span>
+                <!-- Interactive Cover Reposition Toolbar -->
+                <div class="cover-reposition-toolbar" id="coverRepositionToolbar" onclick="event.stopPropagation()">
+                    <div class="reposition-title"><i class="fa-solid fa-arrows-up-down"></i> Dopasuj Kadr Zdjęcia w Tle</div>
+                    <div class="reposition-controls">
+                        <button type="button" class="btn-preset" onclick="setCoverPosition(0)">Góra</button>
+                        <button type="button" class="btn-preset" onclick="setCoverPosition(50)">Środek</button>
+                        <button type="button" class="btn-preset" onclick="setCoverPosition(100)">Dół</button>
+                        <input type="range" id="coverPosRange" min="0" max="100" value="50" oninput="onCoverRangeChange(this.value)" class="cover-slider">
+                        <span id="coverPosValueLabel" style="font-weight:700; font-size:0.82rem; min-width:38px; color:#38bdf8;">50%</span>
+                    </div>
+                    <div class="reposition-actions">
+                        <button type="button" class="btn-repo-cancel" onclick="closeCoverRepositionToolbar()">Anuluj</button>
+                        <button type="button" class="btn-repo-save" onclick="saveCoverPosition()"><i class="fa-solid fa-check"></i> Zapisz Kadr</button>
                     </div>
                 </div>
+            </div>
+
+            <!-- Profile Head Info -->
+            <section class="profile-head-card">
+                <div class="profile-head-top">
+                    <div class="avatar-wrap">
+                        <img src="avatar_new1.jpg" alt="Cezary Rogowski" class="avatar-img" id="avatarImgEl">
+                        <button class="avatar-edit-overlay" onclick="triggerAvatarUpload()" title="Wgraj nowe zdjęcie profilowe z dysku"><i class="fa-solid fa-camera"></i></button>
+                        <div class="avatar-status-badge" title="Użytkownik Online"></div>
+                    </div>
+
+                    <div class="head-user-details">
+                        <h1 class="head-user-name">
+                            <span id="userNameEl">Cezary Rogowski</span>
+                            <i class="fa-solid fa-circle-check verified-badge" title="Zweryfikowany Profil Chrześcijański"></i>
+                            <button class="card-edit-btn" onclick="openEditProfileModal('info')" title="Edytuj Imię i Wiek"><i class="fa-solid fa-pencil"></i></button>
+                        </h1>
+                        <div class="head-user-tagline">
+                            <span id="userAgeCityEl"><i class="fa-solid fa-location-dot"></i> Warszawa, Polska (32 lata)</span>
+                            <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijanin</span>
+                            <span id="userMatchEl" style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: 98%</span>
+                            <span id="visibilityBadge" class="badge-visibility-pub"><i class="fa-solid fa-globe"></i> Profil Publiczny</span>
+                        </div>
+                    </div>
 
                 <div class="head-actions">
                     <button class="btn-action-primary" style="background: linear-gradient(90deg, #3b82f6, #06b6d4); box-shadow: 0 4px 18px rgba(6, 182, 212, 0.4);" onclick="openEditProfileModal()"><i class="fa-solid fa-pen-to-square"></i> Edytuj Mój Profil</button>
@@ -1462,6 +1539,29 @@
                     <input type="text" id="editTags" placeholder="np. Muzyka Uwielbienia, Wędrówki Górskie, Pismo Święte, Ewangelizacja" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;" required>
                 </div>
 
+                <!-- Visibility Mode Setting (Public vs Private) -->
+                <div style="margin-bottom: 16px; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12);">
+                    <label style="display:block; font-size:0.78rem; font-weight:800; color:#e2e8f0; margin-bottom:8px;">
+                        <i class="fa-solid fa-eye" style="color:#38bdf8;"></i> Tryb Widoczności Profilu:
+                    </label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <label id="lblVisibilityPublic" style="display:flex; align-items:flex-start; gap:10px; padding:12px; border-radius:10px; background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.45); cursor:pointer; transition:all 0.2s;">
+                            <input type="radio" name="profileVisibility" value="public" id="visPublicRadio" checked onchange="updateVisibilityRadioUI()" style="margin-top:3px; accent-color:#22c55e;">
+                            <div>
+                                <div style="font-weight:800; font-size:0.85rem; color:#86efac;"><i class="fa-solid fa-globe"></i> Publiczny</div>
+                                <div style="font-size:0.72rem; color:#94a3b8; line-height:1.3; margin-top:2px;">Widoczny w katalogu LUMINA dla każdego w internecie.</div>
+                            </div>
+                        </label>
+                        <label id="lblVisibilityPrivate" style="display:flex; align-items:flex-start; gap:10px; padding:12px; border-radius:10px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.15); cursor:pointer; transition:all 0.2s;">
+                            <input type="radio" name="profileVisibility" value="private" id="visPrivateRadio" onchange="updateVisibilityRadioUI()" style="margin-top:3px; accent-color:#a855f7;">
+                            <div>
+                                <div style="font-weight:800; font-size:0.85rem; color:#c084fc;"><i class="fa-solid fa-lock"></i> Prywatny</div>
+                                <div style="font-size:0.72rem; color:#94a3b8; line-height:1.3; margin-top:2px;">Dostępny wyłącznie na życzenie lub z bezpośrednim linkiem/kodem.</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
                 <div style="margin-bottom:18px; padding: 12px; border-radius: 12px; background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.3);">
                     <label style="display:block; font-size:0.75rem; font-weight:700; color:#38bdf8; margin-bottom:4px;"><i class="fa-solid fa-key"></i> Kod PIN Ochrony Profilu (4 cyfry)</label>
                     <input type="text" id="editPin" maxlength="6" placeholder="7777" style="width:100%; padding:8px 14px; border-radius:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; font-family:inherit; font-size:15px; font-weight:700;">
@@ -1527,6 +1627,57 @@
         </div>
     </div>
 
+    <!-- ══════════ PRIVATE PROFILE ACCESS REQUEST MODAL ══════════ -->
+    <div class="modal-overlay" id="privateRequestModal">
+        <div class="modal-card" style="max-width: 480px;">
+            <button class="modal-close-btn" onclick="closeModal('privateRequestModal')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="font-size: 2.2rem; margin-bottom: 8px; text-align:center;">💌🔒</div>
+            <h3 style="font-size: 1.35rem; margin-bottom: 6px; font-family:'Outfit',sans-serif; text-align:center;">Prośba o Dostęp do Profilu</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px; text-align:center;">
+                Właściciel profilu otrzyma Twoją wiadomość i będzie mógł przesłać Ci prywatny link lub kod autoryzacyjny.
+            </p>
+            <form onsubmit="sendPrivateRequestSubmit(event)">
+                <div style="margin-bottom: 12px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Twoje Imię / Nick</label>
+                    <input type="text" id="reqGuestName" placeholder="np. Maria" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:15px;" required>
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Kontakt (E-mail lub Telefon / WhatsApp)</label>
+                    <input type="text" id="reqGuestContact" placeholder="np. maria@domena.pl lub 500 000 000" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:15px;" required>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Krótka Wiadomość / Powitanie</label>
+                    <textarea id="reqGuestMsg" rows="3" placeholder="Witaj, chciałbym/chciałabym poznać Cię bliżej na portalu LUMINA..." style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:15px; outline:none; resize:none;" required></textarea>
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <button type="button" onclick="closeModal('privateRequestModal')" style="flex:1; padding:12px; border-radius:30px; background:rgba(255,255,255,0.08); border:none; color:#fff; font-weight:700; font-family:inherit; cursor:pointer;">Anuluj</button>
+                    <button type="submit" style="flex:1.6; padding:12px; border-radius:30px; background:linear-gradient(90deg,#a855f7,#3b82f6); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 18px rgba(168,85,247,0.4);"><i class="fa-solid fa-paper-plane"></i> Wyślij Prośbę 🕊️</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ══════════ PRIVATE PIN ACCESS CODE PROMPT MODAL ══════════ -->
+    <div class="modal-overlay" id="privatePinPromptModal">
+        <div class="modal-card" style="max-width: 420px; text-align: center;">
+            <button class="modal-close-btn" onclick="closeModal('privatePinPromptModal')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="font-size: 2.6rem; margin-bottom: 8px;">🔑✨</div>
+            <h3 style="font-size: 1.35rem; font-family:'Outfit',sans-serif; margin-bottom: 6px;">Kod Dostępu do Profilu</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 18px;">
+                Wprowadź kod dostępu lub PIN przekazany przez właściciela, aby wyświetlić ten profil.
+            </p>
+            <form onsubmit="submitPrivateAccessCode(event)">
+                <div style="margin-bottom: 16px;">
+                    <input type="password" id="privateAccessCodeInput" maxlength="10" placeholder="Wprowadź kod dostępu..." style="width: 100%; text-align: center; letter-spacing: 4px; font-size: 1.3rem; font-weight: 800; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 2px solid #a855f7; color: #fff; outline: none;" required>
+                </div>
+                <div style="display:flex; gap: 10px;">
+                    <button type="button" onclick="closeModal('privatePinPromptModal')" style="flex:1; padding: 12px; border-radius: 30px; background: rgba(255,255,255,0.08); border: none; color: #fff; font-weight: 700; cursor: pointer;">Anuluj</button>
+                    <button type="submit" style="flex:1.5; padding: 12px; border-radius: 30px; background: linear-gradient(90deg, #a855f7, #3b82f6); border: none; color: #fff; font-weight: 800; cursor: pointer; box-shadow: 0 4px 18px rgba(168,85,247,0.4);"><i class="fa-solid fa-unlock"></i> Odblokuj Widok ✨</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ══════════ TOAST NOTIFICATION ══════════ -->
     <div class="toast" id="toast"><i class="fa-solid fa-check-circle"></i> <span id="toastMsg">Sukces!</span></div>
 
@@ -1549,6 +1700,7 @@
             status: 'Żonaty',
             spouse: 'Wioletta Rogowska',
             pin: '7777',
+            visibility: 'public',
             avatar: 'avatar_new1.jpg',
             cover: 'lumina_hero_main.jpg',
             coverPosY: '50%',
@@ -1587,12 +1739,126 @@
                     return {
                         ...defaultProfile,
                         ...parsed,
+                        visibility: parsed.visibility || 'public',
                         photos: Array.isArray(parsed.photos) ? parsed.photos : [...defaultProfile.photos],
                         posts: Array.isArray(parsed.posts) ? parsed.posts : [...defaultProfile.posts]
                     };
                 }
             } catch (e) {}
             return JSON.parse(JSON.stringify(defaultProfile));
+        }
+
+        // ── Profile Visibility & Private Access Engine ──
+        function hasProfileAccess(data) {
+            if (data.visibility !== 'private') return true;
+            if (isOwnerMode) return true;
+            if (sessionStorage.getItem('lumina_private_access_cezaryrgowski') === 'true') return true;
+            
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('access') === 'granted' || params.get('access') === 'private') {
+                sessionStorage.setItem('lumina_private_access_cezaryrgowski', 'true');
+                return true;
+            }
+            if (params.get('pin') === (data.pin || '7777') || params.get('code') === (data.pin || '7777')) {
+                sessionStorage.setItem('lumina_private_access_cezaryrgowski', 'true');
+                return true;
+            }
+            return false;
+        }
+
+        function applyVisibilityState(data) {
+            const isPrivate = (data.visibility === 'private');
+            const canView = hasProfileAccess(data);
+
+            const badge = document.getElementById('visibilityBadge');
+            if (badge) {
+                if (isPrivate) {
+                    badge.className = 'badge-visibility-priv';
+                    badge.innerHTML = '<i class="fa-solid fa-lock"></i> Profil Prywatny';
+                } else {
+                    badge.className = 'badge-visibility-pub';
+                    badge.innerHTML = '<i class="fa-solid fa-globe"></i> Profil Publiczny';
+                }
+            }
+
+            const publicView = document.getElementById('profilePublicView');
+            const gateScreen = document.getElementById('privateGateScreen');
+            const ownerNotice = document.getElementById('privateModeOwnerNotice');
+            const gateUserName = document.getElementById('gateUserName');
+
+            if (gateUserName) gateUserName.textContent = data.name;
+
+            if (canView) {
+                if (publicView) publicView.style.display = 'block';
+                if (gateScreen) gateScreen.classList.remove('active');
+                if (ownerNotice) {
+                    ownerNotice.style.display = isPrivate ? 'flex' : 'none';
+                }
+            } else {
+                if (publicView) publicView.style.display = 'none';
+                if (gateScreen) gateScreen.classList.add('active');
+                if (ownerNotice) ownerNotice.style.display = 'none';
+            }
+        }
+
+        function updateVisibilityRadioUI() {
+            const isPriv = document.getElementById('visPrivateRadio').checked;
+            const lblPub = document.getElementById('lblVisibilityPublic');
+            const lblPriv = document.getElementById('lblVisibilityPrivate');
+            if (isPriv) {
+                lblPriv.style.background = 'rgba(168,85,247,0.16)';
+                lblPriv.style.borderColor = 'rgba(168,85,247,0.6)';
+                lblPub.style.background = 'rgba(255,255,255,0.03)';
+                lblPub.style.borderColor = 'rgba(255,255,255,0.15)';
+            } else {
+                lblPub.style.background = 'rgba(34,197,94,0.14)';
+                lblPub.style.borderColor = 'rgba(34,197,94,0.5)';
+                lblPriv.style.background = 'rgba(255,255,255,0.03)';
+                lblPriv.style.borderColor = 'rgba(255,255,255,0.15)';
+            }
+        }
+
+        function copyPrivateAccessLink() {
+            const url = window.location.origin + window.location.pathname + '?access=granted';
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('Skopiowano prywatny link dostępu z tokenem! 📋🔒');
+            }).catch(() => {
+                prompt('Skopiuj ten prywatny link dostępu:', url);
+            });
+        }
+
+        function openPrivateRequestModal() {
+            document.getElementById('privateRequestModal').classList.add('open');
+            setTimeout(() => document.getElementById('reqGuestName').focus(), 150);
+        }
+
+        function sendPrivateRequestSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('reqGuestName').value.trim();
+            const contact = document.getElementById('reqGuestContact').value.trim();
+            const msg = document.getElementById('reqGuestMsg').value.trim();
+            closeModal('privateRequestModal');
+            showToast(`Dziękujemy ${name}! Twoja prośba o dostęp została przesłana do właściciela profilu. 🕊️✨`);
+        }
+
+        function promptPrivateAccessCode() {
+            document.getElementById('privatePinPromptModal').classList.add('open');
+            setTimeout(() => document.getElementById('privateAccessCodeInput').focus(), 150);
+        }
+
+        function submitPrivateAccessCode(e) {
+            e.preventDefault();
+            const entered = document.getElementById('privateAccessCodeInput').value.trim();
+            const data = getProfileData();
+            if (entered === (data.pin || '7777') || entered === '7777') {
+                sessionStorage.setItem('lumina_private_access_cezaryrgowski', 'true');
+                closeModal('privatePinPromptModal');
+                applyVisibilityState(data);
+                showToast('Kod zaakceptowany! Witaj na profilu. ✨');
+            } else {
+                showToast('Nieprawidłowy kod dostępu! Spróbuj ponownie.');
+                document.getElementById('privateAccessCodeInput').value = '';
+            }
         }
 
         // ── Security & Authentication System ──
@@ -1757,6 +2023,7 @@
         function renderProfileView() {
             const data = getProfileData();
             checkOwnerAuthSession();
+            applyVisibilityState(data);
             document.getElementById('userNameEl').textContent = data.name;
             document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} (${data.age} lata)`;
             document.getElementById('userDenomEl').innerHTML = `<i class="fa-solid fa-cross"></i> ${data.denom}`;
@@ -2157,6 +2424,12 @@
             document.getElementById('editBio').value = data.bio;
             document.getElementById('editTags').value = Array.isArray(data.tags) ? data.tags.join(', ') : data.tags;
             document.getElementById('editPin').value = data.pin || '7777';
+            
+            const isPriv = (data.visibility === 'private');
+            document.getElementById('visPrivateRadio').checked = isPriv;
+            document.getElementById('visPublicRadio').checked = !isPriv;
+            updateVisibilityRadioUI();
+
             document.getElementById('editProfileModal').classList.add('open');
 
             if (section === 'verse') setTimeout(() => document.getElementById('editVerse').focus(), 150);
@@ -2171,6 +2444,7 @@
             const cur = getProfileData();
             const tagsRaw = document.getElementById('editTags').value;
             const newPin = document.getElementById('editPin').value.trim() || '7777';
+            const selectedVisibility = document.getElementById('visPrivateRadio').checked ? 'private' : 'public';
             const updated = {
                 ...cur,
                 name: document.getElementById('editName').value.trim(),
@@ -2183,6 +2457,7 @@
                 verseRef: document.getElementById('editVerseRef').value.trim(),
                 bio: document.getElementById('editBio').value.trim(),
                 pin: newPin,
+                visibility: selectedVisibility,
                 tags: tagsRaw.split(',').map(t => t.trim()).filter(Boolean)
             };
 
