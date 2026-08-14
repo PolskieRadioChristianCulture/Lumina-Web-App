@@ -154,6 +154,14 @@
             animation: subtleZoom 25s infinite ease-in-out;
             transform-origin: center center;
         }
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(11, 24, 56, 0) 50%, rgba(11, 24, 56, 0.45) 75%, #0b1838 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
 
         .hero-content {
             position: relative;
@@ -206,7 +214,7 @@
             position: relative;
             max-width: 1040px;
             margin: 0 auto;
-            margin-top: -65px;
+            margin-top: 15px;
             z-index: 20;
             display: flex;
             align-items: center;
@@ -977,7 +985,7 @@
     </nav>
 
     <!-- ══════════ HERO (Clean & Unobstructed) ══════════ -->
-    <section class="hero-section" onclick="openAuth()" style="cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 75px; min-height: 430px; position: relative;">
+    <section class="hero-section" onclick="openAuth()" style="cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 50px; min-height: 480px; position: relative;">
         <div class="hero-bg"></div>
         <div style="position: relative; z-index: 5;">
             <button class="btn-hero-main" onclick="openAuth()">ZAREJESTRUJ SIĘ ZA DARMO</button>
