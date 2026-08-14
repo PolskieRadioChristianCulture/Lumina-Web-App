@@ -1177,7 +1177,7 @@
             <a href="index.html" class="nav-link">Strona Główna</a>
             <button class="nav-link" onclick="scrollToSection('odkrywaj')">Odkrywaj</button>
             <button class="nav-link" onclick="showToast('Skrzynka wiadomości – zaloguj się, aby rozmawiać 💬')">Wiadomości</button>
-            <button class="nav-link" onclick="openProfile('Twój Profil','28','Warszawa','Witaj w LUMINA!','anna-photo','100%')">Profil</button>
+            <a href="lumina.cezaryrgowski.html" class="nav-link" style="color: #2563eb; font-weight: 700;"><i class="fa-solid fa-user"></i> Mój Profil</a>
             <button class="nav-link" onclick="showToast('Sekcja Wydarzeń Lokalnych już wkrótce! 📍')">Wydarzenia</button>
         </div>
 
@@ -1434,10 +1434,11 @@
                 <div id="mLoc" style="font-size:0.82rem;color:#a78bfa;font-weight:700;"></div>
             </div>
             <p id="mDesc" style="font-size:0.85rem;color:var(--text-muted);line-height:1.55;font-style:italic;background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin-bottom:18px;"></p>
-            <div style="display:flex;gap:10px;">
+            <div style="display:flex;gap:10px;margin-bottom:12px;">
                 <button onclick="sendPray()" style="flex:1;padding:11px;border-radius:30px;border:none;background:rgba(255,255,255,0.08);color:#fff;font-weight:700;cursor:pointer;font-family:inherit;font-size:0.85rem;"><i class="fa-solid fa-hands-praying"></i> Modlitwa 🙏</button>
                 <button onclick="sendMsg()" style="flex:1;padding:11px;border-radius:30px;border:none;background:linear-gradient(90deg,#a855f7,#06b6d4);color:#fff;font-weight:700;cursor:pointer;font-family:inherit;font-size:0.85rem;"><i class="fa-solid fa-paper-plane"></i> Wiadomość 💌</button>
             </div>
+            <a id="mFullProfileLink" href="lumina-profile.html" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:30px;background:linear-gradient(90deg,#d946ef,#0ea5e9);color:#fff;font-weight:800;font-size:0.88rem;text-decoration:none;box-shadow:0 4px 16px rgba(217,70,239,0.35);transition:transform 0.2s;"><i class="fa-solid fa-address-card"></i> Zobacz Pełny Profil (Styl Facebook) ➔</a>
         </div>
     </div>
 
@@ -1753,6 +1754,22 @@
             document.getElementById('mName').textContent = `${name}, ${age}`;
             document.getElementById('mLoc').textContent = `📍 ${city}  •  Dopasowanie: ${match}`;
             document.getElementById('mDesc').textContent = `"${desc}"`;
+
+            // Dynamic slug for full Facebook-style profile page
+            const fullLink = document.getElementById('mFullProfileLink');
+            if (fullLink) {
+                const lowerName = (name || '').toLowerCase();
+                let slug = 'cezaryrgowski';
+                if (lowerName.includes('noemi')) slug = 'noemi';
+                else if (lowerName.includes('dawid')) slug = 'dawid';
+                else if (lowerName.includes('weronika')) slug = 'weronika';
+                else if (lowerName.includes('tomek')) slug = 'tomek';
+                else if (lowerName.includes('anna')) slug = 'anna';
+                else if (lowerName.includes('cezary')) slug = 'cezaryrgowski';
+
+                fullLink.href = (slug === 'cezaryrgowski') ? 'lumina.cezaryrgowski.html' : `lumina-profile.html?u=${slug}`;
+            }
+
             document.getElementById('profileModal').classList.add('open');
         }
         // ── Auth modal ──

@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Y4EFTVBPE3');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title id="pageTitle">Profil Użytkownika – LUMINA | Christian Culture</title>
+    <meta name="description" content="Profil na portalu randkowym LUMINA. Odkryj wartościowe relacje oparte na wierze i zaufaniu.">
+    <link rel="icon" type="image/png" href="lumina_icon.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --navy-deep: #0b1838;
+            --navy-surface: #0f1d44;
+            --navy-card: #152554;
+            --purple-glow: #a855f7;
+            --cyan-glow: #06b6d4;
+            --gold-accent: #facc15;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--navy-deep);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ──────────────────── NAVBAR ──────────────────── */
+        .lumina-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 48px;
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        .nav-logo-text {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            color: #1e293b;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-link {
+            background: none;
+            border: none;
+            color: #475569;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: color 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-link:hover, .nav-link.active { color: #2563eb; }
+
+        /* Mini Radio Pill in Navbar */
+        .nav-radio-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border: 1px solid #fde047;
+            padding: 5px 12px 5px 8px;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(250, 204, 21, 0.2);
+            transition: transform 0.2s;
+        }
+        .nav-radio-pill:hover { transform: scale(1.03); }
+        .nav-radio-play {
+            width: 26px; height: 26px; border-radius: 50%;
+            background: #eab308; color: #fff; border: none;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; cursor: pointer;
+        }
+        .nav-radio-info { display: flex; flex-direction: column; text-align: left; }
+        .nav-radio-title { font-size: 0.76rem; font-weight: 800; color: #78350f; line-height: 1.1; }
+        .nav-radio-sub { font-size: 0.62rem; color: #b45309; }
+
+        .btn-nav-back {
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            color: #fff;
+            border: none;
+            padding: 9px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-family: inherit;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-nav-back:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); }
+
+        @media (max-width: 900px) {
+            .lumina-nav { padding: 10px 16px; }
+            .nav-links { display: none; }
+            .nav-radio-sub { display: none; }
+        }
+
+        /* ──────────────────── PROFILE HERO / HEADER (FACEBOOK STYLE) ──────────────────── */
+        .profile-container {
+            max-width: 1060px;
+            margin: 0 auto;
+            padding: 0 16px 80px;
+        }
+
+        .cover-wrapper {
+            position: relative;
+            width: 100%;
+            height: 310px;
+            background: linear-gradient(135deg, #1e1b4b, #312e81, #0f172a);
+            border-radius: 0 0 24px 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .cover-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 35%;
+            filter: brightness(0.92);
+            transition: transform 0.5s ease;
+        }
+
+        .cover-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(11, 24, 56, 0.1) 40%, rgba(11, 24, 56, 0.85) 100%);
+        }
+
+        .btn-change-cover {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-change-cover:hover { background: rgba(255, 255, 255, 0.2); }
+
+        /* Profile Header Info Card */
+        .profile-head-card {
+            position: relative;
+            background: var(--navy-surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 0 32px 28px;
+            margin-top: -75px;
+            z-index: 10;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+        }
+
+        .profile-head-top {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 24px;
+        }
+
+        .avatar-wrap {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid var(--navy-surface);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(168, 85, 247, 0.35);
+            background: #1e293b;
+            flex-shrink: 0;
+            margin-top: -75px;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .avatar-status-badge {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #22c55e;
+            border: 3px solid var(--navy-surface);
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+        }
+
+        .head-user-details {
+            flex: 1;
+            min-width: 260px;
+            margin-top: 15px;
+        }
+
+        .head-user-name {
+            font-size: 1.85rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .verified-badge {
+            color: #38bdf8;
+            font-size: 1.2rem;
+            filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
+        }
+
+        .head-user-tagline {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .head-user-tagline span { display: inline-flex; align-items: center; gap: 5px; }
+
+        .head-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .btn-action-primary {
+            background: linear-gradient(90deg, #d946ef, #0ea5e9);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+            box-shadow: 0 4px 18px rgba(217, 70, 239, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-action-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(217, 70, 239, 0.6);
+        }
+
+        .btn-action-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .btn-action-secondary:hover {
+            background: rgba(255, 255, 255, 0.16);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-action-heart {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(244, 63, 94, 0.15);
+            border: 1px solid rgba(244, 63, 94, 0.4);
+            color: #f43f5e;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .btn-action-heart:hover, .btn-action-heart.active {
+            background: #f43f5e;
+            color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(244, 63, 94, 0.6);
+        }
+
+        /* Profile Nav Bar (Tabs) */
+        .profile-nav-tabs {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-top: 18px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .profile-nav-tabs::-webkit-scrollbar { display: none; }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            font-weight: 700;
+            padding: 8px 4px 12px;
+            cursor: pointer;
+            font-family: inherit;
+            position: relative;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+        .tab-btn:hover { color: #fff; }
+        .tab-btn.active {
+            color: #38bdf8;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #d946ef, #0ea5e9);
+            border-radius: 3px;
+        }
+
+        /* ──────────────────── MAIN 2-COLUMN LAYOUT ──────────────────── */
+        .profile-body-grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .profile-body-grid {
+                grid-template-columns: 1fr;
+            }
+            .cover-wrapper { height: 210px; }
+            .avatar-wrap { width: 110px; height: 110px; margin-top: -55px; }
+            .profile-head-card { padding: 0 18px 20px; }
+            .head-user-name { font-size: 1.5rem; }
+        }
+
+        /* ── Left Sidebar Cards ── */
+        .sidebar-card {
+            background: var(--navy-surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-title i { color: var(--gold-accent); }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            font-size: 0.88rem;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            color: #e2e8f0;
+        }
+        .info-row i {
+            width: 20px;
+            color: #38bdf8;
+            margin-top: 2px;
+            font-size: 1rem;
+        }
+        .info-label { font-size: 0.75rem; color: var(--text-secondary); display: block; }
+        .info-val { font-weight: 600; }
+
+        /* Scripture Card in Sidebar */
+        .verse-box {
+            background: linear-gradient(145deg, rgba(250, 204, 21, 0.08) 0%, rgba(168, 85, 247, 0.05) 100%);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-top: 10px;
+            position: relative;
+        }
+        .verse-text {
+            font-size: 0.86rem;
+            font-style: italic;
+            line-height: 1.5;
+            color: #fef08a;
+            margin-bottom: 6px;
+        }
+        .verse-ref {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--gold-accent);
+            text-align: right;
+        }
+
+        /* Tags / Hobbies Chips */
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .tag-chip {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Photo Grid */
+        .photo-grid-mini {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .photo-thumb {
+            width: 100%;
+            height: 90px;
+            border-radius: 10px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .photo-thumb:hover { transform: scale(1.05); }
+
+        /* ── Right Content / Timeline Wall ── */
+        .feed-composer {
+            background: var(--navy-surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .composer-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .composer-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .composer-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 30px;
+            padding: 11px 18px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .composer-input:focus { border-color: var(--purple-glow); }
+
+        .composer-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .composer-btn-attach {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+        .composer-btn-attach:hover { color: #fff; }
+        .composer-btn-publish {
+            background: linear-gradient(90deg, #a855f7, #3b82f6);
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .composer-btn-publish:hover { transform: scale(1.03); }
+
+        /* Post Card on Wall */
+        .post-card {
+            background: var(--navy-surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: border-color 0.2s;
+        }
+        .post-card:hover { border-color: rgba(168, 85, 247, 0.3); }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .post-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .post-author {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+        .post-time {
+            font-size: 0.74rem;
+            color: var(--text-secondary);
+        }
+
+        .post-content {
+            font-size: 0.92rem;
+            line-height: 1.55;
+            color: #e2e8f0;
+            margin-bottom: 14px;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            max-height: 420px;
+            object-fit: cover;
+        }
+
+        .post-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .post-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        .post-action-btn:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+        .post-action-btn.liked { color: #f43f5e; }
+        .post-action-btn.amen { color: #facc15; }
+
+        /* ──────────────────── MODAL / DIALOG ──────────────────── */
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(14px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.25s;
+            padding: 16px;
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+
+        .modal-card {
+            background: #0f1a3d;
+            border: 1px solid rgba(168,85,247,0.35);
+            border-radius: 20px;
+            padding: 28px;
+            max-width: 480px; width: 100%;
+            position: relative;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close-btn {
+            position: absolute; top: 14px; right: 14px;
+            width: 30px; height: 30px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); border: none;
+            color: #fff; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .toast {
+            position: fixed; bottom: 28px; right: 28px;
+            background: linear-gradient(90deg, #a855f7, #06b6d4);
+            color: #fff; padding: 12px 22px;
+            border-radius: 30px; font-weight: 700; font-size: 0.87rem;
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 8px 28px rgba(168,85,247,0.5);
+            z-index: 99999;
+            transform: translateY(100px); opacity: 0;
+            transition: transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275), opacity 0.3s;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <!-- Audio Player for Radio Christian Culture -->
+    <audio id="ccRadioAudio" preload="none"></audio>
+
+    <!-- ══════════ NAVBAR ══════════ -->
+    <nav class="lumina-nav">
+        <a href="lumina.html" class="nav-logo-text">
+            <img src="lumina_icon.jpg" alt="LUMINA Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+            <span>LUMINA</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="lumina.html" class="nav-link"><i class="fa-solid fa-compass"></i> Odkrywaj</a>
+            <button class="nav-link" onclick="showToast('Skrzynka wiadomości – napisz wiadomość!')"><i class="fa-solid fa-comments"></i> Wiadomości</button>
+            <a href="index.html" class="nav-link"><i class="fa-solid fa-radio"></i> Radio CC</a>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;">
+            <!-- Mini Radio Player -->
+            <div class="nav-radio-pill" id="radioWidget" onclick="toggleRadio()" title="Włącz Radio Christian Culture">
+                <button class="nav-radio-play" id="radioPlayBtn">
+                    <i class="fa-solid fa-play" id="radioPlayIcon"></i>
+                </button>
+                <div class="nav-radio-info">
+                    <span class="nav-radio-title">Radio CC Live</span>
+                    <span class="nav-radio-sub">Global Channel</span>
+                </div>
+            </div>
+
+            <a href="lumina.html" class="btn-nav-back"><i class="fa-solid fa-arrow-left"></i> Wróć do Portalu</a>
+        </div>
+    </nav>
+
+    <!-- ══════════ PROFILE CONTAINER ══════════ -->
+    <main class="profile-container">
+        
+        <!-- Cover Banner -->
+        <div class="cover-wrapper">
+            <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
+            <div class="cover-overlay"></div>
+            <button class="btn-change-cover" onclick="openEditCoverModal()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
+        </div>
+
+        <!-- Profile Head Info -->
+        <section class="profile-head-card">
+            <div class="profile-head-top">
+                <div class="avatar-wrap">
+                    <img src="avatar_new1.jpg" alt="Avatar" class="avatar-img" id="avatarImgEl">
+                    <div class="avatar-status-badge" title="Użytkownik Online"></div>
+                </div>
+
+                <div class="head-user-details">
+                    <h1 class="head-user-name">
+                        <span id="userNameEl">Cezary Rogowski</span>
+                        <i class="fa-solid fa-circle-check verified-badge" title="Zweryfikowany Profil Chrześcijański"></i>
+                    </h1>
+                    <div class="head-user-tagline">
+                        <span id="userAgeCityEl"><i class="fa-solid fa-location-dot"></i> Warszawa, Polska</span>
+                        <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijanin</span>
+                        <span id="userMatchEl" style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: 98%</span>
+                    </div>
+                </div>
+
+                <div class="head-actions">
+                    <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Wyślij Wiadomość</button>
+                    <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> Zaproś na Kawę</button>
+                    <button class="btn-action-heart" id="btnHeartLike" onclick="toggleProfileHeart(this)" title="Polub Profil"><i class="fa-solid fa-heart"></i></button>
+                    <button class="btn-action-secondary" onclick="copyProfileLink()" title="Udostępnij Profil"><i class="fa-solid fa-share-nodes"></i></button>
+                </div>
+            </div>
+
+            <!-- Profile Nav Tabs -->
+            <div class="profile-nav-tabs">
+                <button class="tab-btn active" onclick="switchTab('tab-feed', this)"><i class="fa-solid fa-rss"></i> Tablica & Wpisy</button>
+                <button class="tab-btn" onclick="switchTab('tab-about', this)"><i class="fa-solid fa-user"></i> Świadectwo & O Mnie</button>
+                <button class="tab-btn" onclick="switchTab('tab-photos', this)"><i class="fa-solid fa-images"></i> Galeria Zdjęć</button>
+                <button class="tab-btn" onclick="switchTab('tab-faith', this)"><i class="fa-solid fa-book-bible"></i> Wartości & Wiara</button>
+            </div>
+        </section>
+
+        <!-- Profile 2-Column Grid -->
+        <div class="profile-body-grid">
+            
+            <!-- Left Sidebar -->
+            <aside>
+                
+                <!-- About Card -->
+                <div class="sidebar-card">
+                    <div class="card-title">
+                        <span>Wizytówka</span>
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+                    <div class="info-list">
+                        <div class="info-row">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div>
+                                <span class="info-label">Zawód & Pasja</span>
+                                <span class="info-val" id="userJobEl">Twórca & Wizjoner Christian Culture</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <i class="fa-solid fa-church"></i>
+                            <div>
+                                <span class="info-label">Wspólnota / Kościół</span>
+                                <span class="info-val" id="userChurchEl">Wspólnota Uwielbieniowa</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <i class="fa-solid fa-ring"></i>
+                            <div>
+                                <span class="info-label">Stan Cywilny</span>
+                                <span class="info-val">Kawaler / Szuka żony</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <i class="fa-solid fa-bullseye"></i>
+                            <div>
+                                <span class="info-label">Cel w LUMINA</span>
+                                <span class="info-val">Budowanie trwałego małżeństwa opartego na Chrystusie</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scripture Verse Card -->
+                <div class="sidebar-card">
+                    <div class="card-title">
+                        <span>Przewodni Werset Życiowy</span>
+                        <i class="fa-solid fa-book-bible"></i>
+                    </div>
+                    <div class="verse-box">
+                        <div class="verse-text" id="userVerseText">„Ja i mój dom służyć będziemy Panu.”</div>
+                        <div class="verse-ref" id="userVerseRef">— Księga Jozuego 24, 15</div>
+                    </div>
+                </div>
+
+                <!-- Hobbies & Interests -->
+                <div class="sidebar-card">
+                    <div class="card-title">
+                        <span>Wartości & Zainteresowania</span>
+                        <i class="fa-solid fa-sparkles"></i>
+                    </div>
+                    <div class="tag-cloud" id="userTagsEl">
+                        <span class="tag-chip"><i class="fa-solid fa-guitar"></i> Muzyka Uwielbienia</span>
+                        <span class="tag-chip"><i class="fa-solid fa-mountain"></i> Wędrówki Górskie</span>
+                        <span class="tag-chip"><i class="fa-solid fa-book"></i> Pismo Święte</span>
+                        <span class="tag-chip"><i class="fa-solid fa-microphone"></i> Ewangelizacja</span>
+                        <span class="tag-chip"><i class="fa-solid fa-laptop-code"></i> Nowe Technologie</span>
+                        <span class="tag-chip"><i class="fa-solid fa-mug-saucer"></i> Głębokie Rozmowy</span>
+                    </div>
+                </div>
+
+                <!-- Photo Grid Mini -->
+                <div class="sidebar-card">
+                    <div class="card-title">
+                        <span>Zdjęcia</span>
+                        <i class="fa-solid fa-camera-retro"></i>
+                    </div>
+                    <div class="photo-grid-mini" id="userPhotosMini">
+                        <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoView(this.src)">
+                        <img src="avatar_widget_tomek.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoView(this.src)">
+                        <img src="lumina_hero_main.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoView(this.src)">
+                    </div>
+                </div>
+
+            </aside>
+
+            <!-- Right Timeline Content -->
+            <section class="timeline-area">
+                
+                <!-- Tab: Tablica & Wpisy -->
+                <div id="tab-feed" class="tab-content-pane">
+                    
+                    <!-- Composer -->
+                    <div class="feed-composer">
+                        <div class="composer-top">
+                            <img src="avatar_new1.jpg" alt="You" class="composer-avatar" id="myComposerAvatar">
+                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną...">
+                        </div>
+                        <div class="composer-actions">
+                            <button class="composer-btn-attach" onclick="showToast('Dodawanie zdjęć do wpisów aktywne!')"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Zdjęcie / Grafika</button>
+                            <button class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Dodaj Werset</button>
+                            <button class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-share"></i> Opublikuj</button>
+                        </div>
+                    </div>
+
+                    <!-- Feed Posts Stream -->
+                    <div id="feedStream">
+                        
+                        <!-- Post 1 -->
+                        <article class="post-card">
+                            <div class="post-header">
+                                <img src="avatar_new1.jpg" alt="Author" class="post-avatar" id="postAvatar1">
+                                <div>
+                                    <div class="post-author" id="postAuthor1">Cezary Rogowski</div>
+                                    <div class="post-time">Dzisiaj, 18:30 • 🌍 Publiczny</div>
+                                </div>
+                            </div>
+                            <div class="post-content">
+                                Witaj na moim profilu w LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku. Szukam bratniej duszy, z którą będziemy wspólnie służyć, modlić się i budować dom pełen pokoju i Bożej miłości. Zapraszam do rozmowy! ☕✨
+                            </div>
+                            <div class="post-footer">
+                                <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">14</span> Polubień</button>
+                                <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
+                                <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i> Napisz</button>
+                            </div>
+                        </article>
+
+                        <!-- Post 2 -->
+                        <article class="post-card">
+                            <div class="post-header">
+                                <img src="avatar_new1.jpg" alt="Author" class="post-avatar" id="postAvatar2">
+                                <div>
+                                    <div class="post-author" id="postAuthor2">Cezary Rogowski</div>
+                                    <div class="post-time">Wczoraj, 21:15 • 📖 Rozważanie</div>
+                                </div>
+                            </div>
+                            <div class="post-content">
+                                „Nie troszczcie się zbytnio o jutro, albowiem jutrzejszy dzień sam o siebie troszczyć się będzie.” (Mt 6, 34). Niech ten werset przyniesie Wam dzisiaj pokój serca! 🙏
+                            </div>
+                            <img src="lumina_hero_main.jpg" alt="Banner" class="post-image">
+                            <div class="post-footer">
+                                <button class="post-action-btn liked" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">28</span> Polubień</button>
+                                <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
+                                <button class="post-action-btn" onclick="showToast('Udostępniono wpis na Twojej tablicy!')"><i class="fa-solid fa-share"></i> Udostępnij</button>
+                            </div>
+                        </article>
+
+                    </div>
+                </div>
+
+                <!-- Tab: O Mnie & Świadectwo -->
+                <div id="tab-about" class="tab-content-pane" style="display:none;">
+                    <div class="sidebar-card">
+                        <div class="card-title"><span>Moje Świadectwo Wiary</span><i class="fa-solid fa-cross"></i></div>
+                        <p style="font-size:0.93rem; line-height:1.65; color:#cbd5e1;" id="userBioFull">
+                            Moja relacja z Bogiem to fundament każdego dnia. Odkryłem, że prawdziwa radość i pokój pochodzą z zaufania Jego planom. W życiu codziennym łączę pasję do ewangelizacji, tworzenia mediów chrześcijańskich i technologii. Szukam partnerki, która kocha Boga całym sercem, ceni szczerość, poczucie humoru i chce wspólnie iść drogą uświęcenia.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tab: Galeria Zdjęć -->
+                <div id="tab-photos" class="tab-content-pane" style="display:none;">
+                    <div class="sidebar-card">
+                        <div class="card-title"><span>Albumy i Zdjęcia</span><i class="fa-solid fa-images"></i></div>
+                        <div class="photo-grid-mini" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px;" id="userPhotosFull">
+                            <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" style="height:180px; border-radius:14px;" onclick="openPhotoView(this.src)">
+                            <img src="avatar_widget_tomek.jpg" alt="Photo" class="photo-thumb" style="height:180px; border-radius:14px;" onclick="openPhotoView(this.src)">
+                            <img src="lumina_hero_main.jpg" alt="Photo" class="photo-thumb" style="height:180px; border-radius:14px;" onclick="openPhotoView(this.src)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Wartości & Wiara -->
+                <div id="tab-faith" class="tab-content-pane" style="display:none;">
+                    <div class="sidebar-card">
+                        <div class="card-title"><span>Fundament Duchowy</span><i class="fa-solid fa-dove"></i></div>
+                        <div class="info-list" style="font-size:0.92rem;">
+                            <div class="info-row"><i class="fa-solid fa-heart" style="color:#ec4899;"></i><div><span class="info-label">Podejście do Małżeństwa:</span> Sakrament i przymierze na całe życie.</div></div>
+                            <div class="info-row"><i class="fa-solid fa-music" style="color:#a855f7;"></i><div><span class="info-label">Muzyka Duchowa:</span> Hillsong, Bethel, Polskie Uwielbienie, Biblia Śpiewana CC.</div></div>
+                            <div class="info-row"><i class="fa-solid fa-hands-holding-child" style="color:#06b6d4;"></i><div><span class="info-label">Wizja Rodziny:</span> Otwartość na dar życia, wychowanie w miłości i prawdzie Ewangelii.</div></div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- ══════════ MESSAGE MODAL ══════════ -->
+    <div class="modal-overlay" id="messageModal">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeModal('messageModal')"><i class="fa-solid fa-xmark"></i></button>
+            <h3 style="font-size: 1.3rem; margin-bottom: 6px; font-family:'Outfit',sans-serif;">Napisz wiadomość do <span id="modalMsgRecipient" style="color:#c084fc;">Cezarego</span></h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">Twoja wiadomość trafi bezpośrednio do skrzynki użytkownika.</p>
+            <textarea id="msgTextArea" placeholder="Napisz miłe powitanie, podziel się wersetem lub zrób pierwszy krok..." style="width:100%; height:120px; padding:12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px; margin-bottom:16px; outline:none; resize:none;"></textarea>
+            <button class="btn-action-primary" style="width:100%; justify-content:center;" onclick="sendMessageSubmit()"><i class="fa-solid fa-paper-plane"></i> Wyślij Wiadomość</button>
+        </div>
+    </div>
+
+    <!-- ══════════ COFFEE INVITATION MODAL ══════════ -->
+    <div class="modal-overlay" id="coffeeModal">
+        <div class="modal-card" style="text-align:center;">
+            <button class="modal-close-btn" onclick="closeModal('coffeeModal')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="font-size:2.8rem; margin-bottom:10px;">☕✨</div>
+            <h3 style="font-size: 1.3rem; margin-bottom: 6px; font-family:'Outfit',sans-serif;">Zaproś na Chrześcijańską Kawę</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">Wyślij eleganckie zaproszenie na spokojną rozmowę przy kawie lub spacer w naturze.</p>
+            <button class="btn-action-primary" style="width:100%; justify-content:center; margin-bottom:10px;" onclick="sendCoffeeInvitation()"><i class="fa-solid fa-mug-hot"></i> Wyślij Zaproszenie na Kawę</button>
+        </div>
+    </div>
+
+    <!-- ══════════ TOAST NOTIFICATION ══════════ -->
+    <div class="toast" id="toast"><i class="fa-solid fa-check-circle"></i> <span id="toastMsg">Sukces!</span></div>
+
+    <!-- ══════════ JAVASCRIPT & PROFILE DATABASE ENGINE ══════════ -->
+    <script>
+        // ── Database of Known Profiles ──
+        const PROFILES_DB = {
+            'cezaryrgowski': {
+                name: 'Cezary Rogowski',
+                age: '32',
+                city: 'Warszawa, Polska',
+                avatar: 'avatar_new1.jpg',
+                cover: 'lumina_hero_main.jpg',
+                job: 'Twórca & Wizjoner Christian Culture',
+                church: 'Wspólnota Uwielbieniowa',
+                denom: 'Chrześcijanin',
+                match: '98%',
+                verse: '„Ja i mój dom służyć będziemy Panu.”',
+                verseRef: '— Księga Jozuego 24, 15',
+                bio: 'Moja relacja z Bogiem to fundament każdego dnia. Odkryłem, że prawdziwa radość i pokój pochodzą z zaufania Jego planom. W życiu codziennym łączę pasję do ewangelizacji, tworzenia mediów chrześcijańskich i technologii. Szukam partnerki, która kocha Boga całym sercem, ceni szczerość, poczucie humoru i chce wspólnie iść drogą uświęcenia.',
+                tags: ['Muzyka Uwielbienia', 'Wędrówki Górskie', 'Pismo Święte', 'Ewangelizacja', 'Nowe Technologie', 'Głębokie Rozmowy'],
+                photos: ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg']
+            },
+            'cezaryrogowski': {
+                name: 'Cezary Rogowski',
+                age: '32',
+                city: 'Warszawa, Polska',
+                avatar: 'avatar_new1.jpg',
+                cover: 'lumina_hero_main.jpg',
+                job: 'Twórca & Wizjoner Christian Culture',
+                church: 'Wspólnota Uwielbieniowa',
+                denom: 'Chrześcijanin',
+                match: '98%',
+                verse: '„Ja i mój dom służyć będziemy Panu.”',
+                verseRef: '— Księga Jozuego 24, 15',
+                bio: 'Moja relacja z Bogiem to fundament każdego dnia. W życiu codziennym łączę pasję do ewangelizacji, tworzenia mediów chrześcijańskich i technologii. Szukam partnerki, która kocha Boga całym sercem i chce wspólnie iść drogą uświęcenia.',
+                tags: ['Muzyka Uwielbienia', 'Wędrówki Górskie', 'Pismo Święte', 'Ewangelizacja', 'Nowe Technologie'],
+                photos: ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg']
+            },
+            'noemi': {
+                name: 'Noemi',
+                age: '28',
+                city: 'Wrocław, Polska',
+                avatar: 'avatar_noemi.jpg',
+                cover: 'lumina_hero_main.jpg',
+                job: 'Pedagog & Terapeuta',
+                church: 'Kościół Ewangeliczny / Domowy',
+                denom: 'Chrześcijanka',
+                match: '96%',
+                verse: '„Pan jest moją mocą i moją pieśnią.”',
+                verseRef: '— Psalm 118, 14',
+                bio: 'Spokój, las i głębokie rozmowy o Bogu przy herbacie. Kocham przyrodę, śpiew i pracę z ludźmi. Szukam bratniej duszy i dojrzałego mężczyzny o mocnym kręgosłupie moralnym.',
+                tags: ['Natura & Las', 'Śpiew', 'Herbata i Książki', 'Modlitwa', 'Psychologia'],
+                photos: ['avatar_noemi.jpg', 'avatar_widget_ania.jpg', 'lumina_hero_main.jpg']
+            },
+            'dawid': {
+                name: 'Dawid',
+                age: '30',
+                city: 'Poznań, Polska',
+                avatar: 'avatar_sara.jpg',
+                cover: 'lumina_hero_main.jpg',
+                job: 'Architekt & Projektant',
+                church: 'Wspólnota Katolicka Odnowy',
+                denom: 'Katolik',
+                match: '93%',
+                verse: '„Wszystko mogę w Tym, który mnie umacnia.”',
+                verseRef: '— List do Filipian 4, 13',
+                bio: 'Architekt z sercem do uwielbienia. Pasjonują mnie piękne formy, muzyka na żywo i wyprawy w góry. Chcę budować relację opartą na zaufaniu, wierności i wspólnej modlitwie.',
+                tags: ['Architektura', 'Gitara', 'Góry', 'Kawa', 'Sport'],
+                photos: ['avatar_sara.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg']
+            },
+            'weronika': {
+                name: 'Weronika S.',
+                age: '25',
+                city: 'Kraków, Polska',
+                avatar: 'avatar_widget_ania.jpg',
+                cover: 'lumina_hero_main.jpg',
+                job: 'Graficzka & Fotografka',
+                church: 'Wspólnota Młodych',
+                denom: 'Chrześcijanka',
+                match: '97%',
+                verse: '„Bóg jest miłością: kto trwa w miłości, trwa w Bogu.”',
+                verseRef: '— 1 List św. Jana 4, 16',
+                bio: 'Graficzka z zamiłowaniem do fotografii i sztuki sakralnej. Cenię prostotę, autentyczność i głębokie rozmowy do późna. Szukam kogoś, z kim będziemy dzielić wspólne pasje i wiarę.',
+                tags: ['Fotografia', 'Sztuka', 'Kino Chrześcijańskie', 'Podróże'],
+                photos: ['avatar_widget_ania.jpg', 'avatar_noemi.jpg', 'lumina_hero_main.jpg']
+            },
+            'tomek': {
+                name: 'Tomek K.',
+                age: '27',
+                city: 'Gdańsk, Polska',
+                avatar: 'avatar_widget_tomek.jpg',
+                cover: 'lumina_hero_main.jpg',
+                job: 'Inżynier Środowiska',
+                church: 'Wspólnota Mężczyzn św. Józefa',
+                denom: 'Chrześcijanin',
+                match: '94%',
+                verse: '„Bądź mężny i mocny, nie lękaj się!”',
+                verseRef: '— Księga Jozuego 1, 9',
+                bio: 'Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku. Szukam kobiety o łagodnym sercu, z którą stworzymy bezpieczny i ciepły dom.',
+                tags: ['Survival', 'Leśnictwo', 'Gotowanie', 'Kajaki', 'Biblia'],
+                photos: ['avatar_widget_tomek.jpg', 'avatar_new1.jpg', 'lumina_hero_main.jpg']
+            },
+            'anna': {
+                name: 'Anna',
+                age: '28',
+                city: 'Warszawa, Polska',
+                avatar: 'lumina_anna2.jpg',
+                cover: 'lumina_hero_main.jpg',
+                job: 'Historyk Sztuki',
+                church: 'Wspólnota Akademicka',
+                denom: 'Chrześcijanka',
+                match: '94%',
+                verse: '„Serce człowieka obmyśla drogę, ale Pan kieruje jego krokami.”',
+                verseRef: '— Księga Przysłów 16, 9',
+                bio: 'Uwielbia podróże i sztukę sakralną. Szuka kogoś do wspólnego odkrywania świata i wzrastania w wierze każdego dnia.',
+                tags: ['Sztuka', 'Muzea', 'Podróże', 'Książki'],
+                photos: ['lumina_anna2.jpg', 'avatar_widget_ania.jpg', 'lumina_hero_main.jpg']
+            }
+        };
+
+        // ── Parse Query String or URL Slug ──
+        function getRequestedUserSlug() {
+            const path = window.location.pathname.toLowerCase();
+            if (path.includes('lumina.cezaryrgowski') || path.includes('lumina.cezaryrogowski')) {
+                return 'cezaryrgowski';
+            }
+            const params = new URLSearchParams(window.location.search);
+            return (params.get('u') || params.get('user') || 'cezaryrgowski').toLowerCase();
+        }
+
+        // ── Load & Render Profile Data ──
+        function renderProfile() {
+            const slug = getRequestedUserSlug();
+            const data = PROFILES_DB[slug] || PROFILES_DB['cezaryrgowski'];
+
+            document.getElementById('pageTitle').textContent = `${data.name} – Profil LUMINA | Christian Culture`;
+            document.getElementById('userNameEl').textContent = data.name;
+            document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} (${data.age} lat)`;
+            document.getElementById('userDenomEl').innerHTML = `<i class="fa-solid fa-cross"></i> ${data.denom}`;
+            document.getElementById('userMatchEl').innerHTML = `<i class="fa-solid fa-heart-pulse"></i> Dopasowanie: ${data.match}`;
+            document.getElementById('userJobEl').textContent = data.job;
+            document.getElementById('userChurchEl').textContent = data.church;
+            document.getElementById('userVerseText').textContent = data.verse;
+            document.getElementById('userVerseRef').textContent = data.verseRef;
+            document.getElementById('userBioFull').textContent = data.bio;
+            document.getElementById('avatarImgEl').src = data.avatar;
+            document.getElementById('myComposerAvatar').src = data.avatar;
+            document.getElementById('postAvatar1').src = data.avatar;
+            document.getElementById('postAvatar2').src = data.avatar;
+            document.getElementById('postAuthor1').textContent = data.name;
+            document.getElementById('postAuthor2').textContent = data.name;
+            document.getElementById('modalMsgRecipient').textContent = data.name;
+
+            // Render Tags
+            const tagsContainer = document.getElementById('userTagsEl');
+            if (tagsContainer && data.tags) {
+                tagsContainer.innerHTML = data.tags.map(t => `<span class="tag-chip"><i class="fa-solid fa-sparkle"></i> ${t}</span>`).join('');
+            }
+        }
+
+        // ── Tabs Switching ──
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content-pane').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            const target = document.getElementById(tabId);
+            if (target) target.style.display = 'block';
+            if (btn) btn.classList.add('active');
+        }
+
+        // ── Interactions & Modals ──
+        function openMessageModal() {
+            document.getElementById('messageModal').classList.add('open');
+            document.getElementById('msgTextArea').focus();
+        }
+        function openCoffeeModal() {
+            document.getElementById('coffeeModal').classList.add('open');
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+        }
+
+        function sendMessageSubmit() {
+            const txt = document.getElementById('msgTextArea').value.trim();
+            if (!txt) {
+                showToast('Wpisz treść wiadomości przed wysłaniem!');
+                return;
+            }
+            closeModal('messageModal');
+            document.getElementById('msgTextArea').value = '';
+            showToast('Wiadomość została pomyślnie wysłana! 💬✨');
+        }
+
+        function sendCoffeeInvitation() {
+            closeModal('coffeeModal');
+            showToast('Wysłano zaproszenie na chrześcijańską kawę! ☕❤️');
+        }
+
+        function toggleProfileHeart(btn) {
+            btn.classList.toggle('active');
+            if (btn.classList.contains('active')) {
+                showToast('Dodano profil do Twoich ulubionych połączeń! ❤️');
+            } else {
+                showToast('Usunięto z ulubionych');
+            }
+        }
+
+        function copyProfileLink() {
+            navigator.clipboard.writeText(window.location.href);
+            showToast('Link do profilu został skopiowany do schowka! 🔗');
+        }
+
+        function togglePostLike(btn) {
+            btn.classList.toggle('liked');
+            const countEl = btn.querySelector('.like-count');
+            if (countEl) {
+                let count = parseInt(countEl.textContent, 10) || 0;
+                countEl.textContent = btn.classList.contains('liked') ? count + 1 : count - 1;
+            }
+        }
+
+        function togglePostAmen(btn) {
+            btn.classList.toggle('amen-active');
+            showToast('Twoje AMEN zostało dodane! 🙏✨');
+        }
+
+        function publishFeedPost() {
+            const input = document.getElementById('composerInput');
+            const val = input.value.trim();
+            if (!val) {
+                showToast('Wpisz treść przed publikacją!');
+                return;
+            }
+            const data = PROFILES_DB[getRequestedUserSlug()] || PROFILES_DB['cezaryrgowski'];
+            const stream = document.getElementById('feedStream');
+            const newCard = document.createElement('article');
+            newCard.className = 'post-card';
+            newCard.innerHTML = `
+                <div class="post-header">
+                    <img src="${data.avatar}" alt="Author" class="post-avatar">
+                    <div>
+                        <div class="post-author">${data.name}</div>
+                        <div class="post-time">Przed chwilą • 🌍 Nowy Wpis</div>
+                    </div>
+                </div>
+                <div class="post-content">${val}</div>
+                <div class="post-footer">
+                    <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">1</span> Polubienie</button>
+                    <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
+                    <button class="post-action-btn" onclick="showToast('Udostępniono!')"><i class="fa-solid fa-share"></i> Udostępnij</button>
+                </div>
+            `;
+            stream.prepend(newCard);
+            input.value = '';
+            showToast('Twój wpis został opublikowany na tablicy! ✨');
+        }
+
+        function insertVersePrompt() {
+            const input = document.getElementById('composerInput');
+            input.value = '„Wszystko, co czynicie, z miłością czyńcie.” (1 Kor 16, 14)';
+            input.focus();
+        }
+
+        function openPhotoView(src) {
+            showToast('Podgląd zdjęcia w pełnej rozdzielczości');
+        }
+
+        function openEditCoverModal() {
+            showToast('Funkcja edycji zdjęcia w tle aktywna dla zalogowanego profilu!');
+        }
+
+        // ── Toast Utility ──
+        let toastTimer = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // ── Integrated Radio CC Logic ──
+        let isRadioPlaying = false;
+        const radioStreams = [
+            "https://stream.zeno.fm/f97y7f6w30hvv",
+            "https://stream.zeno.fm/f97y7f6w30hvv.aac",
+            "https://stream-178.zeno.fm/f97y7f6w30hvv"
+        ];
+        function toggleRadio() {
+            const audio = document.getElementById('ccRadioAudio');
+            const playIcon = document.getElementById('radioPlayIcon');
+            if (!isRadioPlaying) {
+                audio.src = radioStreams[0] + "?t=" + Date.now();
+                audio.play().then(() => {
+                    isRadioPlaying = true;
+                    playIcon.className = "fa-solid fa-pause";
+                    showToast('Radio Christian Culture Gra na Żywo! 📻✨');
+                }).catch(e => {
+                    showToast('Błąd strumienia radia');
+                });
+            } else {
+                audio.pause();
+                isRadioPlaying = false;
+                playIcon.className = "fa-solid fa-play";
+                showToast('Radio wstrzymane');
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', renderProfile);
+    </script>
+</body>
+</html>
