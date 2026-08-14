@@ -568,6 +568,81 @@
             display: block;
         }
 
+        /* ── CC Mission Publisher Toolbar (Founder Dedicated) ── */
+        .cc-mission-publisher-bar {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 18px;
+            padding: 16px 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(245, 158, 11, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .cc-mission-publisher-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #f59e0b, #ec4899, #38bdf8);
+        }
+        .cc-mission-publisher-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .cc-mission-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+        }
+        .btn-cc-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+        }
+        .btn-cc-action:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.15);
+        }
+        .btn-cc-ad {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35);
+        }
+        .btn-cc-promo {
+            background: linear-gradient(135deg, #ec4899, #be185d);
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.35);
+        }
+        .btn-cc-ann {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.35);
+        }
+        .btn-cc-event {
+            background: linear-gradient(135deg, #10b981, #047857);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+        }
+        .btn-cc-board-link {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.35);
+        }
+
         /* ── Photo Gallery Grid with Delete Buttons ── */
         .photo-item-box {
             position: relative;
@@ -1096,6 +1171,7 @@
 
         <div class="nav-links">
             <a href="lumina.html" class="nav-link"><i class="fa-solid fa-compass"></i> Odkrywaj</a>
+            <a href="lumina-tablica.html" class="nav-link" style="color: #ec4899; font-weight:700;"><i class="fa-solid fa-rectangle-list"></i> Główna Tablica 1:1</a>
             <button class="nav-link" onclick="openMessageModal()"><i class="fa-solid fa-comments"></i> Wiadomości</button>
             <a href="index.html" class="nav-link"><i class="fa-solid fa-radio"></i> Radio CC</a>
         </div>
@@ -1337,6 +1413,24 @@
                 <!-- Tab: Tablica & Wpisy -->
                 <div id="tab-feed" class="tab-content-pane">
                     
+                    <!-- Dedicated CC Mission Founder Actions -->
+                    <div class="cc-mission-publisher-bar" id="ccMissionPublisherBar">
+                        <div class="cc-mission-publisher-header">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <i class="fa-solid fa-bullhorn" style="color:#f59e0b; font-size:1.15rem;"></i>
+                                <span style="font-weight:800; font-size:0.92rem; color:#fff;">Centrum Nadawcze Misji CC (Główna Tablica 1:1)</span>
+                            </div>
+                            <span style="font-size:0.72rem; color:#fef08a; background:rgba(245,158,11,0.2); border:1px solid rgba(245,158,11,0.45); padding:3px 10px; border-radius:12px; font-weight:800;">Panel Założyciela ✨</span>
+                        </div>
+                        <div class="cc-mission-buttons-grid">
+                            <button type="button" class="btn-cc-action btn-cc-ad" onclick="openCampaignModal('ad')"><i class="fa-solid fa-rectangle-ad"></i> Dodaj Reklamę</button>
+                            <button type="button" class="btn-cc-action btn-cc-promo" onclick="openCampaignModal('promo')"><i class="fa-solid fa-rocket"></i> Dodaj Promocję</button>
+                            <button type="button" class="btn-cc-action btn-cc-ann" onclick="openCampaignModal('announcement')"><i class="fa-solid fa-scroll"></i> Dodaj Ogłoszenie</button>
+                            <button type="button" class="btn-cc-action btn-cc-event" onclick="openCampaignModal('event')"><i class="fa-solid fa-calendar-star"></i> Dodaj Wydarzenie</button>
+                            <a href="lumina-tablica.html" class="btn-cc-action btn-cc-board-link" title="Otwórz Główną Tablicę Portalu LUMINA"><i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz Tablicę</a>
+                        </div>
+                    </div>
+
                     <!-- Composer -->
                     <div class="feed-composer">
                         <div class="composer-top">
@@ -1673,6 +1767,88 @@
                 <div style="display:flex; gap: 10px;">
                     <button type="button" onclick="closeModal('privatePinPromptModal')" style="flex:1; padding: 12px; border-radius: 30px; background: rgba(255,255,255,0.08); border: none; color: #fff; font-weight: 700; cursor: pointer;">Anuluj</button>
                     <button type="submit" style="flex:1.5; padding: 12px; border-radius: 30px; background: linear-gradient(90deg, #a855f7, #3b82f6); border: none; color: #fff; font-weight: 800; cursor: pointer; box-shadow: 0 4px 18px rgba(168,85,247,0.4);"><i class="fa-solid fa-unlock"></i> Odblokuj Widok ✨</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ══════════ CC MISSION CAMPAIGN PUBLISHER MODAL (FOUNDER TOOL) ══════════ -->
+    <div class="modal-overlay" id="campaignModal">
+        <div class="modal-card" style="max-width: 580px; max-height: 90vh; overflow-y: auto;">
+            <button class="modal-close-btn" onclick="closeModal('campaignModal')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom: 6px;">
+                <span id="campModalIcon" style="font-size: 1.6rem;">📢</span>
+                <div>
+                    <h3 style="font-size: 1.35rem; font-family:'Outfit',sans-serif; margin:0;" id="campModalTitle">Dodaj Reklamę Misji CC</h3>
+                    <div style="font-size: 0.76rem; color: #facc15; font-weight:700;">Format 1:1 • Automatyczna rotacja na Głównej Tablicy LUMINA</div>
+                </div>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">
+                Utwórz publikację misyjną, która będzie wyświetlać się użytkownikom na Głównej Tablicy portalu w nowoczesnym formacie 1:1.
+            </p>
+
+            <form onsubmit="saveCampaignSubmit(event)">
+                <input type="hidden" id="campType" value="ad">
+
+                <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px;">
+                    <button type="button" class="btn-cc-action btn-cc-ad" id="btnTypeAd" onclick="selectCampaignType('ad')" style="padding:7px; font-size:0.72rem;"><i class="fa-solid fa-rectangle-ad"></i> Reklama</button>
+                    <button type="button" class="btn-cc-action btn-cc-promo" id="btnTypePromo" onclick="selectCampaignType('promo')" style="padding:7px; font-size:0.72rem; opacity:0.6;"><i class="fa-solid fa-rocket"></i> Promocja</button>
+                    <button type="button" class="btn-cc-action btn-cc-ann" id="btnTypeAnn" onclick="selectCampaignType('announcement')" style="padding:7px; font-size:0.72rem; opacity:0.6;"><i class="fa-solid fa-scroll"></i> Ogłoszenie</button>
+                    <button type="button" class="btn-cc-action btn-cc-event" id="btnTypeEvent" onclick="selectCampaignType('event')" style="padding:7px; font-size:0.72rem; opacity:0.6;"><i class="fa-solid fa-calendar-star"></i> Wydarzenie</button>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Tytuł / Nagłówek Kampanii</label>
+                    <input type="text" id="campTitleInput" placeholder="np. Radio Christian Culture – Kanał Uwielbienia 24/7" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:15px; font-weight:700;" required>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Treść / Opis Kampanii</label>
+                    <textarea id="campDescInput" rows="3" placeholder="Opisz cel, misję, zachętę do udziału lub szczegóły promocji..." style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:15px; outline:none; resize:vertical;" required></textarea>
+                </div>
+
+                <!-- Event Specific Info (Visible when type === 'event') -->
+                <div id="campEventFields" style="display:none; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px; padding:10px; border-radius:10px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3);">
+                    <div>
+                        <label style="display:block; font-size:0.72rem; font-weight:700; color:#6ee7b7; margin-bottom:3px;"><i class="fa-solid fa-calendar-days"></i> Data / Godzina</label>
+                        <input type="text" id="campEventDate" placeholder="np. Każda Niedziela, 19:00" style="width:100%; padding:8px 12px; border-radius:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px;">
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:0.72rem; font-weight:700; color:#6ee7b7; margin-bottom:3px;"><i class="fa-solid fa-location-dot"></i> Miejsce / Transmisja</label>
+                        <input type="text" id="campEventLoc" placeholder="np. Transmisja Live & Warszawa" style="width:100%; padding:8px 12px; border-radius:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px;">
+                    </div>
+                </div>
+
+                <!-- Graphic 1:1 Square Upload & Preview -->
+                <div style="margin-bottom: 14px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:6px;"><i class="fa-solid fa-image"></i> Grafika Kampanii (Format Kwadrat 1:1)</label>
+                    <input type="file" id="campaignImgFileInput" accept="image/*" style="display:none;" onchange="handleCampaignImgSelect(event)">
+                    
+                    <div id="campImgPreviewContainer" style="display:none; position:relative; width: 100%; max-width: 280px; aspect-ratio: 1/1; margin: 0 auto 10px; border-radius: 14px; overflow: hidden; border: 2px solid #f59e0b; box-shadow: 0 8px 24px rgba(0,0,0,0.5);">
+                        <img id="campImgPreviewEl" src="" style="width:100%; height:100%; object-fit:cover; display:block;">
+                        <button type="button" onclick="removeCampaignImg()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.6);"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <button type="button" onclick="document.getElementById('campaignImgFileInput').click()" style="width:100%; padding:10px; border-radius:10px; background:rgba(245,158,11,0.15); border:1px dashed #f59e0b; color:#fef08a; font-family:inherit; font-size:0.85rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Wybierz Grafikę 1:1 z Dysku / Telefonu
+                    </button>
+                </div>
+
+                <!-- Action Button Config -->
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 16px;">
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Napis na Przycisku</label>
+                        <input type="text" id="campBtnText" placeholder="np. Słuchaj Radia CC 📻" style="width:100%; padding:9px 12px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px;" required>
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Link Docelowy (URL)</label>
+                        <input type="text" id="campBtnUrl" placeholder="https://polskieradio.cc" style="width:100%; padding:9px 12px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px;" required>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:10px;">
+                    <button type="button" onclick="closeModal('campaignModal')" style="flex:1; padding:12px; border-radius:30px; background:rgba(255,255,255,0.08); border:none; color:#fff; font-weight:700; font-family:inherit; cursor:pointer;">Anuluj</button>
+                    <button type="submit" style="flex:1.7; padding:12px; border-radius:30px; background:linear-gradient(90deg,#f59e0b,#ec4899); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 18px rgba(245,158,11,0.4);"><i class="fa-solid fa-bullhorn"></i> Opublikuj na Głównej Tablicy ✨</button>
                 </div>
             </form>
         </div>
@@ -2573,6 +2749,118 @@
                 playIcon.className = "fa-solid fa-play";
                 showToast('Radio wstrzymane');
             }
+        }
+
+        // ── CC Mission Publisher Engine (Founder Tools) ──
+        let attachedCampaignImgDataUrl = null;
+
+        function openCampaignModal(type) {
+            if (!requestOwnerAccess(() => openCampaignModal(type))) return;
+            selectCampaignType(type || 'ad');
+            document.getElementById('campaignModal').classList.add('open');
+            setTimeout(() => document.getElementById('campTitleInput').focus(), 150);
+        }
+
+        function selectCampaignType(type) {
+            document.getElementById('campType').value = type;
+            const buttons = {
+                'ad': document.getElementById('btnTypeAd'),
+                'promo': document.getElementById('btnTypePromo'),
+                'announcement': document.getElementById('btnTypeAnn'),
+                'event': document.getElementById('btnTypeEvent')
+            };
+            Object.keys(buttons).forEach(k => {
+                if (buttons[k]) buttons[k].style.opacity = (k === type ? '1' : '0.45');
+            });
+
+            const iconEl = document.getElementById('campModalIcon');
+            const titleEl = document.getElementById('campModalTitle');
+            const btnTextEl = document.getElementById('campBtnText');
+            const eventFields = document.getElementById('campEventFields');
+
+            if (type === 'ad') {
+                iconEl.textContent = '📢';
+                titleEl.textContent = 'Dodaj Reklamę Misji CC';
+                btnTextEl.placeholder = 'np. Słuchaj Radia CC 📻';
+                eventFields.style.display = 'none';
+            } else if (type === 'promo') {
+                iconEl.textContent = '🚀';
+                titleEl.textContent = 'Dodaj Promocję';
+                btnTextEl.placeholder = 'np. Sprawdź Promocję / Kup';
+                eventFields.style.display = 'none';
+            } else if (type === 'announcement') {
+                iconEl.textContent = '📜';
+                titleEl.textContent = 'Dodaj Ogłoszenie';
+                btnTextEl.placeholder = 'np. Przeczytaj Szczegóły 🕊️';
+                eventFields.style.display = 'none';
+            } else if (type === 'event') {
+                iconEl.textContent = '📅';
+                titleEl.textContent = 'Dodaj Wydarzenie';
+                btnTextEl.placeholder = 'np. Weź Udział / Zapisz się';
+                eventFields.style.display = 'grid';
+            }
+        }
+
+        function handleCampaignImgSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            showToast('Przetwarzanie grafiki 1:1... ⏳');
+            compressAndReadImage(file, 900, 900, 0.85, function(dataUrl) {
+                attachedCampaignImgDataUrl = dataUrl;
+                document.getElementById('campImgPreviewEl').src = dataUrl;
+                document.getElementById('campImgPreviewContainer').style.display = 'block';
+                showToast('Grafika 1:1 została dołączona do kampanii! 🖼️✨');
+            });
+            e.target.value = '';
+        }
+
+        function removeCampaignImg() {
+            attachedCampaignImgDataUrl = null;
+            document.getElementById('campImgPreviewContainer').style.display = 'none';
+            document.getElementById('campImgPreviewEl').src = '';
+        }
+
+        function saveCampaignSubmit(e) {
+            e.preventDefault();
+            const type = document.getElementById('campType').value || 'ad';
+            const title = document.getElementById('campTitleInput').value.trim();
+            const desc = document.getElementById('campDescInput').value.trim();
+            const btnText = document.getElementById('campBtnText').value.trim() || 'Zobacz Więcej';
+            const btnUrl = document.getElementById('campBtnUrl').value.trim() || 'https://polskieradio.cc';
+            const eventDate = document.getElementById('campEventDate') ? document.getElementById('campEventDate').value.trim() : '';
+            const eventLoc = document.getElementById('campEventLoc') ? document.getElementById('campEventLoc').value.trim() : '';
+
+            const newCampaign = {
+                id: 'camp_' + Date.now(),
+                type: type,
+                title: title,
+                desc: desc,
+                image: attachedCampaignImgDataUrl || 'lumina_hero_main.jpg',
+                btnText: btnText,
+                btnUrl: btnUrl,
+                eventDate: eventDate,
+                eventLoc: eventLoc,
+                author: 'Cezary Rogowski',
+                authorRole: 'Założyciel Christian Culture ✨',
+                authorAvatar: getProfileData().avatar || 'avatar_new1.jpg',
+                createdAt: 'Przed chwilą • 🌟 Misja CC',
+                likes: 15,
+                amen: 10
+            };
+
+            try {
+                const savedRaw = localStorage.getItem('lumina_cc_campaigns');
+                const list = savedRaw ? JSON.parse(savedRaw) : [];
+                list.unshift(newCampaign);
+                localStorage.setItem('lumina_cc_campaigns', JSON.stringify(list));
+            } catch(err) {}
+
+            closeModal('campaignModal');
+            document.getElementById('campTitleInput').value = '';
+            document.getElementById('campDescInput').value = '';
+            removeCampaignImg();
+
+            showToast('Kampania została pomyślnie opublikowana na Głównej Tablicy 1:1! 📢✨');
         }
 
         // Initialize on load

@@ -1175,6 +1175,7 @@
 
         <div class="nav-links">
             <a href="index.html" class="nav-link">Strona Główna</a>
+            <a href="lumina-tablica.html" class="nav-link" style="color: #ec4899; font-weight: 700;"><i class="fa-solid fa-rectangle-list"></i> Główna Tablica 1:1</a>
             <button class="nav-link" onclick="scrollToSection('odkrywaj')">Odkrywaj</button>
             <button class="nav-link" onclick="showToast('Skrzynka wiadomości – zaloguj się, aby rozmawiać 💬')">Wiadomości</button>
             <a href="lumina.cezaryrgowski.html" class="nav-link" style="color: #2563eb; font-weight: 700;"><i class="fa-solid fa-user"></i> Mój Profil</a>
@@ -1209,14 +1210,29 @@
     </nav>
 
     <!-- ══════════ HERO SECTION ══════════ -->
-    <section class="hero-section" id="hero">
+    <header class="hero-section">
         <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1 class="hero-title">Witaj w LUMINA<br>Miejscu Głębszych Relacji.</h1>
-            <p class="hero-sub">Rozpocznij swoją przygodę do miłości z inteligentnym dopasowaniem.</p>
-            <button class="btn-hero-main" onclick="openAuth()">ZAREJESTRUJ SIĘ ZA DARMO</button>
+            <div class="hero-tagline-badge">
+                <i class="fa-solid fa-cross"></i> Ekosystem Christian Culture & Radio CC
+            </div>
+            <h1 class="hero-title">
+                LUMINA – Chrześcijańska Społeczność i Głębsze Relacje
+            </h1>
+            <p class="hero-subtitle">
+                Odkryj ludzi o tych samych wartościach, przeglądaj posty i inspiracje na żywo na Tablicy Społeczności oraz buduj relacje zakorzenione w Chrystusie.
+            </p>
+            <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 24px;">
+                <a href="lumina-tablica.html" class="btn-nav-cta" style="background: linear-gradient(90deg, #ec4899, #8b5cf6); padding: 13px 30px; font-size: 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-rectangle-list"></i> Przejdź do Głównej Tablicy 1:1 ✨
+                </a>
+                <button onclick="scrollToSection('odkrywaj')" class="btn-nav-cta" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 13px 26px; font-size: 1rem;">
+                    <i class="fa-solid fa-compass"></i> Przeglądaj Profile
+                </button>
+            </div>
         </div>
-    </section>
+    </header>
 
     <!-- ══════════ CARDS ══════════ -->
     <section class="cards-section" id="odkrywaj">
@@ -1242,9 +1258,9 @@
                 </div>
 
                 <!-- Wioletta Rogowska / Współzałożycielka Christian Culture (Mężatka) -->
-                <div class="profile-card featured" onclick="window.location.href='lumina.wiolettarogowska.html'">
+                <div class="profile-card featured" id="my_saved_wioletta_card" onclick="window.location.href='lumina.wiolettarogowska.html'">
                     <div class="card-photo">
-                        <img src="lumina_anna2.jpg" alt="Wioletta Rogowska" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="lumina_anna2.jpg" alt="Wioletta Rogowska" id="homeWiolettaAvatar" onerror="this.src='lumina_anna2.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f472b6); font-size: 0.72rem; width: auto; padding: 0 10px; border-radius: 20px; right: 12px; bottom: -14px;">Współzałożycielka 💕</div>
                     </div>
@@ -1777,35 +1793,55 @@
         }
         loadFirestoreProfiles();
 
-        // ── Instant Sync of Saved Profile from localStorage to Homepage ──
+        // ── Instant Sync of Saved Profiles from localStorage to Homepage ──
         function syncUserSavedProfileToHomepage() {
-            const savedJson = localStorage.getItem('lumina_profile_cezaryrgowski') || localStorage.getItem('lumina_main_user_profile');
-            if (!savedJson) return;
+            // 1. Sync Cezary Rogowski
             try {
-                const p = JSON.parse(savedJson);
-                const nameEl = document.getElementById('homeUserName');
-                const cityEl = document.getElementById('homeUserCity');
-                const descEl = document.getElementById('homeUserDesc');
-                const avEl = document.getElementById('homeUserAvatar');
-                
-                if (nameEl) nameEl.textContent = `${p.name}, ${p.age}`;
-                if (cityEl) cityEl.textContent = `📍 ${p.city}`;
-                if (descEl) descEl.textContent = `"${p.bio ? p.bio.substring(0, 85) + '...' : (p.job || 'Wierzący chrześcijanin')}"`;
-                if (avEl && p.avatar) avEl.src = p.avatar;
+                const savedCezary = localStorage.getItem('lumina_profile_cezaryrgowski') || localStorage.getItem('lumina_main_user_profile');
+                if (savedCezary) {
+                    const p = JSON.parse(savedCezary);
+                    const nameEl = document.getElementById('homeUserName');
+                    const cityEl = document.getElementById('homeUserCity');
+                    const descEl = document.getElementById('homeUserDesc');
+                    const avEl = document.getElementById('homeUserAvatar');
+                    
+                    if (nameEl) nameEl.textContent = `${p.name}, ${p.age}`;
+                    if (cityEl) cityEl.innerHTML = `📍 ${p.city} • <b>${p.status || 'Żonaty'}</b>`;
+                    if (descEl) descEl.textContent = `"${p.bio ? p.bio.substring(0, 85) + '...' : (p.job || 'Wierzący chrześcijanin')}"`;
+                    if (avEl && p.avatar) avEl.src = p.avatar;
 
-                // Sync with Navbar Profile Widget
-                const navProfile = document.getElementById('userNavProfile');
-                const authBtn = document.getElementById('authCtaBtn');
-                const navName = document.getElementById('userNavName');
-                const navAvatar = document.getElementById('userNavAvatar');
-                if (navProfile && navName) {
-                    navProfile.style.display = 'flex';
-                    if (authBtn) authBtn.style.display = 'none';
-                    navName.textContent = p.name;
-                    if (navAvatar && p.avatar) navAvatar.src = p.avatar;
+                    // Sync with Navbar Profile Widget
+                    const navProfile = document.getElementById('userNavProfile');
+                    const authBtn = document.getElementById('authCtaBtn');
+                    const navName = document.getElementById('userNavName');
+                    const navAvatar = document.getElementById('userNavAvatar');
+                    if (navProfile && navName) {
+                        navProfile.style.display = 'flex';
+                        if (authBtn) authBtn.style.display = 'none';
+                        navName.textContent = p.name;
+                        if (navAvatar && p.avatar) navAvatar.src = p.avatar;
+                    }
+                }
+            } catch(e) {}
+
+            // 2. Sync Wioletta Rogowska
+            try {
+                const savedWioletta = localStorage.getItem('lumina_profile_wiolettarogowska');
+                if (savedWioletta) {
+                    const pw = JSON.parse(savedWioletta);
+                    const wNameEl = document.getElementById('homeWiolettaName');
+                    const wCityEl = document.getElementById('homeWiolettaCity');
+                    const wDescEl = document.getElementById('homeWiolettaDesc');
+                    const wAvEl = document.getElementById('homeWiolettaAvatar');
+
+                    if (wNameEl) wNameEl.textContent = `${pw.name}, ${pw.age}`;
+                    if (wCityEl) wCityEl.innerHTML = `📍 ${pw.city} • <b>${pw.status || 'Mężatka'}</b>`;
+                    if (wDescEl) wDescEl.textContent = `"${pw.bio ? pw.bio.substring(0, 85) + '...' : (pw.job || 'Współzałożycielka Christian Culture')}"`;
+                    if (wAvEl && pw.avatar) wAvEl.src = pw.avatar;
                 }
             } catch(e) {}
         }
+        syncUserSavedProfileToHomepage();
         window.addEventListener('DOMContentLoaded', syncUserSavedProfileToHomepage);
         window.addEventListener('storage', syncUserSavedProfileToHomepage);
     </script>

@@ -296,11 +296,12 @@ drawerOverlay.addEventListener("click", closeDrawer);
 // Close drawer when clicking a navigation link
 document.querySelectorAll(".drawer-link").forEach(link => {
     link.addEventListener("click", (e) => {
-        closeDrawer();
-        
-        // Remove active class from all links and add to clicked one
-        document.querySelectorAll(".drawer-link").forEach(l => l.classList.remove("active"));
-        link.classList.add("active");
+        const href = link.getAttribute("href");
+        if (href && href.startsWith("#")) {
+            closeDrawer();
+            document.querySelectorAll(".drawer-link").forEach(l => l.classList.remove("active"));
+            link.classList.add("active");
+        }
     });
 });
 

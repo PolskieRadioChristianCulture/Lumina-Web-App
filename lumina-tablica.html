@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Y4EFTVBPE3');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Główna Tablica 1:1 – LUMINA | Portal Chrześcijański Christian Culture</title>
+    <meta name="description" content="Główna Tablica Portalu LUMINA. Wpisy społeczności, rozważania i inicjatywy Misji Christian Culture w formacie 1:1.">
+    <link rel="icon" type="image/png" href="icon.png">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-base: #090d1a;
+            --bg-card: rgba(18, 26, 47, 0.85);
+            --bg-card-hover: rgba(26, 38, 68, 0.95);
+            --border-glass: rgba(255, 255, 255, 0.12);
+            --border-glass-glow: rgba(168, 85, 247, 0.4);
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-gold: #f59e0b;
+            --accent-pink: #ec4899;
+            --accent-purple: #a855f7;
+            --accent-cyan: #38bdf8;
+            --accent-green: #10b981;
+            --radius-card: 20px;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(ellipse at 15% 10%, rgba(168, 85, 247, 0.14) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 25%, rgba(236, 72, 153, 0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 80%, rgba(56, 189, 248, 0.10) 0%, transparent 60%);
+            background-attachment: fixed;
+        }
+
+        /* ──────────────────── NAVBAR ──────────────────── */
+        .lumina-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 36px;
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border-glass);
+        }
+        .nav-logo-text {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-family: 'Outfit', sans-serif;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .nav-link {
+            color: #cbd5e1;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .nav-link.active {
+            background: linear-gradient(90deg, rgba(236,72,153,0.25), rgba(168,85,247,0.25));
+            border: 1px solid rgba(236,72,153,0.4);
+            color: #f472b6;
+        }
+
+        .nav-radio-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 30px;
+            padding: 6px 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .nav-radio-pill:hover {
+            border-color: #f59e0b;
+            box-shadow: 0 0 14px rgba(245, 158, 11, 0.3);
+        }
+        .nav-radio-play {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* ──────────────────── MAIN FEED CONTAINER ──────────────────── */
+        .board-container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 30px 16px 80px;
+        }
+
+        /* ──────────────────── HERO HEADER ──────────────────── */
+        .board-header {
+            text-align: center;
+            margin-bottom: 28px;
+            padding: 32px 20px 24px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.85));
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+        }
+        .board-tagline {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #fbbf24;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+        .board-title {
+            font-size: 2.1rem;
+            font-weight: 900;
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(90deg, #ffffff, #f472b6, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .board-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            max-width: 580px;
+            margin: 0 auto 20px;
+            line-height: 1.5;
+        }
+
+        /* ──────────────────── FILTER CHIPS ──────────────────── */
+        .filter-chips-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .chip-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+        .chip-btn:hover, .chip-btn.active {
+            background: linear-gradient(90deg, #ec4899, #8b5cf6);
+            border-color: #ec4899;
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(236, 72, 153, 0.35);
+        }
+
+        /* ──────────────────── FOUNDER MISSION CREATOR BAR ──────────────────── */
+        .founder-mission-bar {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(245, 158, 11, 0.45);
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .founder-info-side {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .founder-badge-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #f59e0b;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+        }
+        .founder-buttons-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .btn-camp-quick {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .btn-camp-quick:hover { transform: translateY(-2px); filter: brightness(1.15); }
+        .btn-camp-ad { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .btn-camp-promo { background: linear-gradient(135deg, #ec4899, #be185d); }
+        .btn-camp-ann { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .btn-camp-event { background: linear-gradient(135deg, #10b981, #047857); }
+
+        /* ──────────────────── FEED POST CARD 1:1 ──────────────────── */
+        .feed-stream {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .post-card-1x1 {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .post-card-1x1:hover {
+            border-color: rgba(255, 255, 255, 0.22);
+            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.55);
+        }
+
+        /* Post Card Header */
+        .post-top-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+        }
+        .post-author-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+        }
+        .post-author-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .post-author-name {
+            font-size: 0.95rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .post-author-role {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+        }
+
+        /* Category / Campaign Badges */
+        .badge-type-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+        .badge-type-post { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35); }
+        .badge-type-ad { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.45); }
+        .badge-type-promo { background: rgba(236, 72, 153, 0.18); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.45); }
+        .badge-type-ann { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.45); }
+        .badge-type-event { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45); }
+
+        /* ── SQUARE 1:1 MEDIA CONTAINER ── */
+        .media-container-1x1 {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            position: relative;
+            background: #0b1120;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .media-img-1x1 {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .post-card-1x1:hover .media-img-1x1 {
+            transform: scale(1.02);
+        }
+
+        /* Square Typographic Poster (when text only) */
+        .typographic-poster-1x1 {
+            width: 100%;
+            height: 100%;
+            padding: 36px 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #1e1b4b, #0f172a, #311042);
+            position: relative;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .poster-quote-icon {
+            font-size: 2.2rem;
+            color: rgba(245, 158, 11, 0.35);
+            margin-bottom: 12px;
+        }
+        .poster-text {
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1.6;
+            color: #f8fafc;
+            font-family: 'Outfit', sans-serif;
+            max-width: 520px;
+        }
+        .poster-author-sub {
+            margin-top: 16px;
+            font-size: 0.82rem;
+            color: #facc15;
+            font-weight: 800;
+        }
+
+        /* Post Body Content */
+        .post-details-box {
+            padding: 18px 20px 14px;
+        }
+        .post-headline {
+            font-size: 1.15rem;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .post-desc-text {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            line-height: 1.55;
+            margin-bottom: 14px;
+        }
+
+        /* Event Location Pill */
+        .event-info-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-radius: 12px;
+            padding: 8px 14px;
+            font-size: 0.82rem;
+            color: #6ee7b7;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        /* CTA Button for Ads / Promos / Events */
+        .campaign-cta-row {
+            margin-bottom: 14px;
+        }
+        .btn-campaign-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 0.92rem;
+            font-family: inherit;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+        }
+        .btn-campaign-cta.ad { background: linear-gradient(90deg, #f59e0b, #ea580c); box-shadow: 0 4px 18px rgba(245, 158, 11, 0.35); }
+        .btn-campaign-cta.promo { background: linear-gradient(90deg, #ec4899, #8b5cf6); box-shadow: 0 4px 18px rgba(236, 72, 153, 0.35); }
+        .btn-campaign-cta.ann { background: linear-gradient(90deg, #3b82f6, #06b6d4); box-shadow: 0 4px 18px rgba(59, 130, 246, 0.35); }
+        .btn-campaign-cta.event { background: linear-gradient(90deg, #10b981, #059669); box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35); }
+        .btn-campaign-cta:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+        /* Post Action Buttons Footer */
+        .post-actions-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(15, 23, 42, 0.5);
+        }
+        .post-action-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .post-action-btn:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+        .post-action-btn.liked { color: #f43f5e; }
+        .post-action-btn.amen-active { color: #fbbf24; }
+
+        /* Comments Drawer */
+        .comments-section {
+            padding: 14px 20px;
+            background: rgba(10, 15, 30, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: none;
+        }
+        .comments-section.open { display: block; }
+        .comment-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 0.82rem;
+        }
+        .comment-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .comment-bubble {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 8px 12px;
+            flex: 1;
+        }
+        .comment-input-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .comment-input {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-size: 0.82rem;
+            outline: none;
+            font-family: inherit;
+        }
+        .comment-submit-btn {
+            background: #a855f7;
+            color: #fff;
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ──────────────────── MODALS & TOAST ──────────────────── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-card {
+            background: #0f172a;
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 26px;
+            width: 100%;
+            max-width: 540px;
+            position: relative;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1e293b;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.15);
+            z-index: 2000;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        @media (max-width: 768px) {
+            .lumina-nav { padding: 10px 16px; }
+            .nav-links { display: none; }
+            .board-title { font-size: 1.65rem; }
+            .board-container { padding: 16px 10px 60px; }
+            .post-top-header { padding: 12px 14px; }
+            .post-details-box { padding: 14px 14px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Audio Player for Radio CC -->
+    <audio id="ccRadioAudio" preload="none"></audio>
+
+    <!-- ══════════ NAVBAR ══════════ -->
+    <nav class="lumina-nav">
+        <a href="lumina.html" class="nav-logo-text">
+            <img src="lumina_icon.jpg" alt="LUMINA Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+            <span>LUMINA</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="lumina.html" class="nav-link"><i class="fa-solid fa-compass"></i> Odkrywaj Profile</a>
+            <a href="lumina-tablica.html" class="nav-link active"><i class="fa-solid fa-rectangle-list"></i> Główna Tablica 1:1</a>
+            <a href="lumina.cezaryrgowski.html" class="nav-link" id="navMyProfileLink"><i class="fa-solid fa-user"></i> Mój Profil</a>
+            <a href="index.html" class="nav-link"><i class="fa-solid fa-radio"></i> Radio CC</a>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;">
+            <!-- Mini Radio Player -->
+            <div class="nav-radio-pill" id="radioWidget" onclick="toggleRadio()" title="Włącz Radio Christian Culture">
+                <button class="nav-radio-play" id="radioPlayBtn">
+                    <i class="fa-solid fa-play" id="radioPlayIcon"></i>
+                </button>
+                <div style="display:flex; flex-direction:column; line-height:1.1;">
+                    <span style="font-size:0.75rem; font-weight:800; color:#fff;">Radio CC Live</span>
+                    <span style="font-size:0.65rem; color:#94a3b8;">Muzyka Uwielbienia</span>
+                </div>
+            </div>
+
+            <a href="lumina.html" class="nav-link" style="background: rgba(255,255,255,0.08); border-radius: 20px;"><i class="fa-solid fa-arrow-left"></i> Katalog</a>
+        </div>
+    </nav>
+
+    <!-- ══════════ MAIN CONTENT CONTAINER ══════════ -->
+    <main class="board-container">
+        
+        <!-- Header Banner -->
+        <header class="board-header">
+            <div class="board-tagline"><i class="fa-solid fa-sparkles"></i> Społeczność & Misja Christian Culture</div>
+            <h1 class="board-title">Główna Tablica Portalu LUMINA</h1>
+            <p class="board-subtitle">
+                Odkrywaj codzienne świadectwa, rozważania, wpisy użytkowników oraz oficjalne kampanie i wydarzenia Misji Christian Culture w formacie kwadratu 1:1.
+            </p>
+
+            <!-- Filter Categories Row -->
+            <div class="filter-chips-row">
+                <button class="chip-btn active" onclick="filterFeed('all', this)"><i class="fa-solid fa-grid-2"></i> Wszystko 1:1</button>
+                <button class="chip-btn" onclick="filterFeed('post', this)"><i class="fa-solid fa-users"></i> Wpisy Użytkowników</button>
+                <button class="chip-btn" onclick="filterFeed('ad', this)"><i class="fa-solid fa-bullhorn"></i> Reklamy Misji CC</button>
+                <button class="chip-btn" onclick="filterFeed('promo', this)"><i class="fa-solid fa-rocket"></i> Promocje</button>
+                <button class="chip-btn" onclick="filterFeed('event', this)"><i class="fa-solid fa-calendar-star"></i> Wydarzenia</button>
+            </div>
+        </header>
+
+        <!-- Founder Dedicated Creator Quick Action Bar -->
+        <div class="founder-mission-bar" id="founderMissionBar">
+            <div class="founder-info-side">
+                <img src="avatar_new1.jpg" alt="Cezary Rogowski" class="founder-badge-avatar" id="founderBarAvatar">
+                <div>
+                    <div style="font-weight: 800; font-size: 0.88rem; color:#fff; display:flex; align-items:center; gap:6px;">
+                        Centrum Nadawcze Misji CC <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.8rem;"></i>
+                    </div>
+                    <div style="font-size: 0.74rem; color: #facc15; font-weight:700;">Zalogowano jako Założyciel: Cezary Rogowski</div>
+                </div>
+            </div>
+            <div class="founder-buttons-group">
+                <button type="button" class="btn-camp-quick btn-camp-ad" onclick="openCampaignModal('ad')"><i class="fa-solid fa-rectangle-ad"></i> + Reklama</button>
+                <button type="button" class="btn-camp-quick btn-camp-promo" onclick="openCampaignModal('promo')"><i class="fa-solid fa-rocket"></i> + Promocja</button>
+                <button type="button" class="btn-camp-quick btn-camp-ann" onclick="openCampaignModal('announcement')"><i class="fa-solid fa-scroll"></i> + Ogłoszenie</button>
+                <button type="button" class="btn-camp-quick btn-camp-event" onclick="openCampaignModal('event')"><i class="fa-solid fa-calendar-star"></i> + Wydarzenie</button>
+            </div>
+        </div>
+
+        <!-- ══════════ FEED STREAM 1:1 ══════════ -->
+        <div class="feed-stream" id="feedStream1x1">
+            <!-- Dynamic stream content injected via JS -->
+        </div>
+
+    </main>
+
+    <!-- ══════════ CC MISSION CAMPAIGN PUBLISHER MODAL ══════════ -->
+    <div class="modal-overlay" id="campaignModal">
+        <div class="modal-card" style="max-height: 90vh; overflow-y: auto;">
+            <button class="modal-close-btn" onclick="closeModal('campaignModal')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom: 6px;">
+                <span id="campModalIcon" style="font-size: 1.6rem;">📢</span>
+                <div>
+                    <h3 style="font-size: 1.35rem; font-family:'Outfit',sans-serif; margin:0;" id="campModalTitle">Dodaj Reklamę Misji CC</h3>
+                    <div style="font-size: 0.76rem; color: #facc15; font-weight:700;">Format 1:1 • Automatyczna rotacja na Głównej Tablicy</div>
+                </div>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">
+                Utwórz publikację misyjną, która natychmiast wyświetli się na Głównej Tablicy portalu.
+            </p>
+
+            <form onsubmit="saveCampaignSubmit(event)">
+                <input type="hidden" id="campType" value="ad">
+
+                <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px;">
+                    <button type="button" class="btn-camp-quick btn-camp-ad" id="btnTypeAd" onclick="selectCampaignType('ad')" style="padding:7px; font-size:0.72rem; justify-content:center;"><i class="fa-solid fa-rectangle-ad"></i> Reklama</button>
+                    <button type="button" class="btn-camp-quick btn-camp-promo" id="btnTypePromo" onclick="selectCampaignType('promo')" style="padding:7px; font-size:0.72rem; justify-content:center; opacity:0.5;"><i class="fa-solid fa-rocket"></i> Promocja</button>
+                    <button type="button" class="btn-camp-quick btn-camp-ann" id="btnTypeAnn" onclick="selectCampaignType('announcement')" style="padding:7px; font-size:0.72rem; justify-content:center; opacity:0.5;"><i class="fa-solid fa-scroll"></i> Ogłoszenie</button>
+                    <button type="button" class="btn-camp-quick btn-camp-event" id="btnTypeEvent" onclick="selectCampaignType('event')" style="padding:7px; font-size:0.72rem; justify-content:center; opacity:0.5;"><i class="fa-solid fa-calendar-star"></i> Wydarzenie</button>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Tytuł / Nagłówek Kampanii</label>
+                    <input type="text" id="campTitleInput" placeholder="np. Radio Christian Culture – Kanał Uwielbienia 24/7" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:15px; font-weight:700;" required>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Treść / Opis Kampanii</label>
+                    <textarea id="campDescInput" rows="3" placeholder="Opisz cel, misję, zachętę do udziału lub szczegóły promocji..." style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:15px; outline:none; resize:vertical;" required></textarea>
+                </div>
+
+                <!-- Event Specific Info -->
+                <div id="campEventFields" style="display:none; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:12px; padding:10px; border-radius:10px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3);">
+                    <div>
+                        <label style="display:block; font-size:0.72rem; font-weight:700; color:#6ee7b7; margin-bottom:3px;"><i class="fa-solid fa-calendar-days"></i> Data / Godzina</label>
+                        <input type="text" id="campEventDate" placeholder="np. Każda Niedziela, 19:00" style="width:100%; padding:8px 12px; border-radius:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px;">
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:0.72rem; font-weight:700; color:#6ee7b7; margin-bottom:3px;"><i class="fa-solid fa-location-dot"></i> Miejsce / Transmisja</label>
+                        <input type="text" id="campEventLoc" placeholder="np. Transmisja Live & Warszawa" style="width:100%; padding:8px 12px; border-radius:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px;">
+                    </div>
+                </div>
+
+                <!-- Graphic 1:1 Square Upload & Preview -->
+                <div style="margin-bottom: 14px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:6px;"><i class="fa-solid fa-image"></i> Grafika Kampanii (Format Kwadrat 1:1)</label>
+                    <input type="file" id="campaignImgFileInput" accept="image/*" style="display:none;" onchange="handleCampaignImgSelect(event)">
+                    
+                    <div id="campImgPreviewContainer" style="display:none; position:relative; width: 100%; max-width: 240px; aspect-ratio: 1/1; margin: 0 auto 10px; border-radius: 14px; overflow: hidden; border: 2px solid #f59e0b; box-shadow: 0 8px 24px rgba(0,0,0,0.5);">
+                        <img id="campImgPreviewEl" src="" style="width:100%; height:100%; object-fit:cover; display:block;">
+                        <button type="button" onclick="removeCampaignImg()" style="position:absolute; top:8px; right:8px; width:28px; height:28px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.6);"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <button type="button" onclick="document.getElementById('campaignImgFileInput').click()" style="width:100%; padding:10px; border-radius:10px; background:rgba(245,158,11,0.15); border:1px dashed #f59e0b; color:#fef08a; font-family:inherit; font-size:0.85rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Wybierz Grafikę 1:1 z Dysku / Telefonu
+                    </button>
+                </div>
+
+                <!-- Action Button Config -->
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 16px;">
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Napis na Przycisku</label>
+                        <input type="text" id="campBtnText" placeholder="np. Słuchaj Radia CC 📻" style="width:100%; padding:9px 12px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px;" required>
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Link Docelowy (URL)</label>
+                        <input type="text" id="campBtnUrl" placeholder="https://polskieradio.cc" style="width:100%; padding:9px 12px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px;" required>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:10px;">
+                    <button type="button" onclick="closeModal('campaignModal')" style="flex:1; padding:12px; border-radius:30px; background:rgba(255,255,255,0.08); border:none; color:#fff; font-weight:700; font-family:inherit; cursor:pointer;">Anuluj</button>
+                    <button type="submit" style="flex:1.7; padding:12px; border-radius:30px; background:linear-gradient(90deg,#f59e0b,#ec4899); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 18px rgba(245,158,11,0.4);"><i class="fa-solid fa-bullhorn"></i> Opublikuj na Tablicy ✨</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ══════════ TOAST NOTIFICATION ══════════ -->
+    <div class="toast" id="toast"><i class="fa-solid fa-check-circle"></i> <span id="toastMsg">Sukces!</span></div>
+
+    <!-- ══════════ JAVASCRIPT & ENGINE ══════════ -->
+    <script>
+        // ── Sample Default CC Mission Campaigns ──
+        const DEFAULT_CC_CAMPAIGNS = [
+            {
+                id: 'camp_radio_cc',
+                type: 'ad',
+                title: 'Radio Christian Culture – Słuchaj na Żywo 24/7',
+                desc: 'Dołącz do setek słuchaczy w całej Polsce i na świecie! Najpiękniejsza muzyka uwielbienia, Biblia Śpiewana oraz codzienne rozważania ku Bożej chwale bez reklam.',
+                image: 'lumina_hero_main.jpg',
+                btnText: 'Słuchaj Radia CC na Żywo 📻✨',
+                btnUrl: 'https://polskieradio.cc',
+                author: 'Radio Christian Culture',
+                authorRole: 'Oficjalna Misja Radiowa 🕊️',
+                authorAvatar: 'icon.png',
+                createdAt: 'Wyróżniona Misja CC',
+                likes: 84,
+                amen: 62
+            },
+            {
+                id: 'camp_store_promo',
+                type: 'promo',
+                title: 'Oficjalny Sklep Misji Christian Culture – Kolekcja „Wiara i Nadzieja”',
+                desc: 'Wspieraj rozwój ewangelizacji i noś przesłanie Chrystusa każdego dnia. Wysokiej jakości koszulki, bluzy i akcesoria z autorskimi motywami wiary.',
+                image: 'avatar_new1.jpg',
+                btnText: 'Odwiedź Sklep Misji CC 🛒',
+                btnUrl: 'https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536',
+                author: 'Christian Culture Store',
+                authorRole: 'Wsparcie Misji CC 🛍️',
+                authorAvatar: 'lumina_icon.jpg',
+                createdAt: 'Promocja Sezonowa',
+                likes: 49,
+                amen: 31
+            },
+            {
+                id: 'camp_worship_event',
+                type: 'event',
+                title: 'Ogólnopolski Wieczór Uwielbienia i Modlitwy „Zjednoczeni za Polskę”',
+                desc: 'Zapraszamy wszystkich wierzących do wspólnego stanięcia w wyłomie za naszą Ojczyznę, rodziny i młodzież. Dołącz stacjonarnie lub oglądaj transmisję na żywo w CCTV24.',
+                image: 'lumina_hero_main.jpg',
+                btnText: 'Szczegóły Wydarzenia & Transmisja 📅',
+                btnUrl: 'https://polskieradio.cc',
+                eventDate: 'Każdy Pierwszy Czwartek Miesiąca, 20:00',
+                eventLoc: 'Transmisja Live & Warszawa',
+                author: 'Cezary Rogowski',
+                authorRole: 'Założyciel Christian Culture ✨',
+                authorAvatar: 'avatar_new1.jpg',
+                createdAt: 'Wydarzenie Ogólnopolskie',
+                likes: 96,
+                amen: 88
+            }
+        ];
+
+        let currentFilter = 'all';
+        let attachedCampaignImgDataUrl = null;
+
+        function getStoredCampaigns() {
+            try {
+                const saved = localStorage.getItem('lumina_cc_campaigns');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch(e) {}
+            return [...DEFAULT_CC_CAMPAIGNS];
+        }
+
+        function getUserFeedPosts() {
+            const posts = [];
+
+            // 1. Cezary Rogowski Posts
+            try {
+                const cJson = localStorage.getItem('lumina_profile_cezaryrgowski');
+                const cProfile = cJson ? JSON.parse(cJson) : null;
+                const cAvatar = (cProfile && cProfile.avatar) ? cProfile.avatar : 'avatar_new1.jpg';
+                const cName = (cProfile && cProfile.name) ? cProfile.name : 'Cezary Rogowski';
+                const cPosts = (cProfile && Array.isArray(cProfile.posts)) ? cProfile.posts : [
+                    {
+                        id: 'post_c1',
+                        author: cName,
+                        time: 'Dzisiaj, 18:30 • 🌍 Publiczny',
+                        text: 'Witaj na moim profilu w LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku. Szukam bratniej duszy, z którą będziemy wspólnie służyć, modlić się i budować dom pełen pokoju i Bożej miłości. Zapraszam do rozmowy! ☕✨',
+                        likes: 19,
+                        image: null
+                    },
+                    {
+                        id: 'post_c2',
+                        author: cName,
+                        time: 'Wczoraj, 21:15 • 📖 Rozważanie',
+                        text: '„Nie troszczcie się zbytnio o jutro, albowiem jutrzejszy dzień sam o siebie troszczyć się będzie.” (Mt 6, 34). Niech ten werset przyniesie Wam dzisiaj pokój serca i siłę do działania! 🙏',
+                        likes: 34,
+                        image: 'lumina_hero_main.jpg'
+                    }
+                ];
+
+                cPosts.forEach(p => {
+                    posts.push({
+                        id: p.id,
+                        type: 'post',
+                        author: p.author || cName,
+                        authorRole: 'Założyciel Christian Culture ✨',
+                        authorAvatar: cAvatar,
+                        authorSlug: 'cezaryrgowski',
+                        time: p.time,
+                        text: p.text,
+                        image: p.image,
+                        likes: p.likes || 12,
+                        amen: Math.floor((p.likes || 12) * 0.75)
+                    });
+                });
+            } catch(e) {}
+
+            // 2. Wioletta Rogowska Posts
+            try {
+                const wJson = localStorage.getItem('lumina_profile_wiolettarogowska');
+                const wProfile = wJson ? JSON.parse(wJson) : null;
+                const wAvatar = (wProfile && wProfile.avatar) ? wProfile.avatar : 'lumina_anna2.jpg';
+                const wName = (wProfile && wProfile.name) ? wProfile.name : 'Wioletta Rogowska';
+                const wPosts = (wProfile && Array.isArray(wProfile.posts)) ? wProfile.posts : [
+                    {
+                        id: 'post_w1',
+                        author: wName,
+                        time: 'Dzisiaj, 19:15 • 🌍 Publiczny',
+                        text: 'Witaj w LUMINA! Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień. Niech ten portal będzie dla Was miejscem spotkania z Bogiem i bratnią duszą! 💕✨',
+                        likes: 38,
+                        image: null
+                    },
+                    {
+                        id: 'post_w2',
+                        author: wName,
+                        time: 'Wczoraj, 20:40 • 📖 Słowo Życia',
+                        text: '„Przede wszystkim miejcie gorącą miłość jedni ku drugim, bo miłość zakrywa mnóstwo grzechów.” (1 P 4, 8). Błogosławionego wieczoru dla każdego z Was! 🙏',
+                        likes: 52,
+                        image: 'lumina_hero_main.jpg'
+                    }
+                ];
+
+                wPosts.forEach(p => {
+                    posts.push({
+                        id: p.id,
+                        type: 'post',
+                        author: p.author || wName,
+                        authorRole: 'Współzałożycielka Christian Culture 💕',
+                        authorAvatar: wAvatar,
+                        authorSlug: 'wiolettarogowska',
+                        time: p.time,
+                        text: p.text,
+                        image: p.image,
+                        likes: p.likes || 25,
+                        amen: Math.floor((p.likes || 25) * 0.8)
+                    });
+                });
+            } catch(e) {}
+
+            return posts;
+        }
+
+        // ── Render 1:1 Feed with Interleaved CC Mission Ads ──
+        function renderFeed() {
+            const container = document.getElementById('feedStream1x1');
+            if (!container) return;
+
+            const userPosts = getUserFeedPosts();
+            const campaigns = getStoredCampaigns();
+
+            // Interleave user posts and CC mission campaigns randomly / harmoniously
+            let combined = [];
+            let cIndex = 0;
+
+            userPosts.forEach((post, idx) => {
+                combined.push(post);
+                // Insert a campaign every 2 posts or if campaigns available
+                if ((idx % 2 === 0) && cIndex < campaigns.length) {
+                    combined.push(campaigns[cIndex % campaigns.length]);
+                    cIndex++;
+                }
+            });
+
+            // If there are leftover campaigns, append them
+            while (cIndex < campaigns.length) {
+                combined.push(campaigns[cIndex]);
+                cIndex++;
+            }
+
+            // Filter
+            if (currentFilter !== 'all') {
+                combined = combined.filter(item => item.type === currentFilter);
+            }
+
+            if (combined.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:50px 20px; background:var(--bg-card); border-radius:20px; border:1px solid var(--border-glass);">
+                        <div style="font-size:2.4rem; margin-bottom:10px;">🕊️</div>
+                        <h3 style="font-size:1.2rem; font-family:'Outfit',sans-serif; margin-bottom:6px;">Brak wpisów w wybranej kategorii</h3>
+                        <p style="font-size:0.85rem; color:var(--text-secondary);">Wybierz inną zakładkę lub dodaj nową publikację.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = combined.map(item => {
+                const isCampaign = (item.type === 'ad' || item.type === 'promo' || item.type === 'announcement' || item.type === 'event');
+                
+                let badgeHtml = '';
+                if (item.type === 'ad') badgeHtml = '<span class="badge-type-tag badge-type-ad"><i class="fa-solid fa-rectangle-ad"></i> Reklama Misji CC</span>';
+                else if (item.type === 'promo') badgeHtml = '<span class="badge-type-tag badge-type-promo"><i class="fa-solid fa-rocket"></i> Promocja CC</span>';
+                else if (item.type === 'announcement') badgeHtml = '<span class="badge-type-tag badge-type-ann"><i class="fa-solid fa-scroll"></i> Ogłoszenie CC</span>';
+                else if (item.type === 'event') badgeHtml = '<span class="badge-type-tag badge-type-event"><i class="fa-solid fa-calendar-star"></i> Wydarzenie</span>';
+                else badgeHtml = '<span class="badge-type-tag badge-type-post"><i class="fa-solid fa-sparkles"></i> Post Społeczności</span>';
+
+                const authorLink = item.authorSlug ? (item.authorSlug === 'cezaryrgowski' ? 'lumina.cezaryrgowski.html' : (item.authorSlug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : `lumina-profile.html?u=${item.authorSlug}`)) : '#';
+
+                // Media: Square 1:1 image OR Typographic Poster
+                let mediaHtml = '';
+                if (item.image) {
+                    mediaHtml = `
+                        <div class="media-container-1x1">
+                            <img src="${item.image}" alt="${item.title || item.author}" class="media-img-1x1" loading="lazy">
+                        </div>
+                    `;
+                } else {
+                    mediaHtml = `
+                        <div class="media-container-1x1">
+                            <div class="typographic-poster-1x1">
+                                <i class="fa-solid fa-quote-left poster-quote-icon"></i>
+                                <div class="poster-text">„${item.text || item.desc}”</div>
+                                <div class="poster-author-sub">— ${item.author}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // CTA Button for Campaigns
+                let ctaHtml = '';
+                if (isCampaign) {
+                    const btnClass = item.type;
+                    ctaHtml = `
+                        <div class="campaign-cta-row">
+                            <a href="${item.btnUrl || 'https://polskieradio.cc'}" target="_blank" class="btn-campaign-cta ${btnClass}">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> ${item.btnText || 'Zobacz Szczegóły'}
+                            </a>
+                        </div>
+                    `;
+                }
+
+                // Event details
+                let eventInfoHtml = '';
+                if (item.type === 'event' && (item.eventDate || item.eventLoc)) {
+                    eventInfoHtml = `
+                        <div class="event-info-pill">
+                            ${item.eventDate ? `<span><i class="fa-solid fa-calendar-days"></i> ${item.eventDate}</span>` : ''}
+                            ${item.eventLoc ? `<span><i class="fa-solid fa-location-dot"></i> ${item.eventLoc}</span>` : ''}
+                        </div>
+                    `;
+                }
+
+                return `
+                    <article class="post-card-1x1" id="${item.id}">
+                        <!-- Top Header -->
+                        <div class="post-top-header">
+                            <a href="${authorLink}" class="post-author-box">
+                                <img src="${item.authorAvatar || 'icon.png'}" alt="${item.author}" class="post-author-img">
+                                <div>
+                                    <div class="post-author-name">${item.author} <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.8rem;"></i></div>
+                                    <div class="post-author-role">${item.authorRole || 'Użytkownik LUMINA'} • ${item.time || item.createdAt || 'Dzisiaj'}</div>
+                                </div>
+                            </a>
+                            <div>${badgeHtml}</div>
+                        </div>
+
+                        <!-- 1:1 Square Media -->
+                        ${mediaHtml}
+
+                        <!-- Details & Text -->
+                        <div class="post-details-box">
+                            ${item.title ? `<div class="post-headline">${item.title}</div>` : ''}
+                            ${(item.image && item.text) ? `<div class="post-desc-text">${item.text}</div>` : ''}
+                            ${(item.image && item.desc) ? `<div class="post-desc-text">${item.desc}</div>` : ''}
+                            ${eventInfoHtml}
+                            ${ctaHtml}
+                        </div>
+
+                        <!-- Actions Bar -->
+                        <div class="post-actions-bar">
+                            <div style="display:flex; gap:6px;">
+                                <button class="post-action-btn" onclick="toggleFeedLike(this)"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 14}</span></button>
+                                <button class="post-action-btn" onclick="toggleFeedAmen(this)"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 9}</span> Amen</button>
+                                <button class="post-action-btn" onclick="toggleComments('${item.id}')"><i class="fa-solid fa-comment-dots"></i> Komentarze</button>
+                            </div>
+                            <button class="post-action-btn" onclick="sharePostLink('${item.id}')" title="Udostępnij wpis"><i class="fa-solid fa-share-nodes"></i></button>
+                        </div>
+
+                        <!-- Expandable Comments Drawer -->
+                        <div class="comments-section" id="comments_${item.id}">
+                            <div id="comment_list_${item.id}">
+                                <div class="comment-item">
+                                    <img src="avatar_widget_tomek.jpg" alt="Tomek" class="comment-avatar">
+                                    <div class="comment-bubble">
+                                        <b style="color:#38bdf8;">Tomasz:</b> Wspaniała inicjatywa, niech Bóg błogosławi to dzieło! 🙏✨
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment-input-row">
+                                <input type="text" class="comment-input" id="input_${item.id}" placeholder="Napisz miły komentarz lub podziel się wersetem..." onkeypress="if(event.key==='Enter') submitComment('${item.id}')">
+                                <button class="comment-submit-btn" onclick="submitComment('${item.id}')"><i class="fa-solid fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function filterFeed(type, btn) {
+            currentFilter = type;
+            document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderFeed();
+        }
+
+        function toggleFeedLike(btn) {
+            btn.classList.toggle('liked');
+            const countEl = btn.querySelector('.count');
+            if (countEl) {
+                let cnt = parseInt(countEl.textContent, 10) || 0;
+                countEl.textContent = btn.classList.contains('liked') ? cnt + 1 : cnt - 1;
+            }
+        }
+
+        function toggleFeedAmen(btn) {
+            btn.classList.toggle('amen-active');
+            const countEl = btn.querySelector('.amen-count');
+            if (countEl) {
+                let cnt = parseInt(countEl.textContent, 10) || 0;
+                countEl.textContent = btn.classList.contains('amen-active') ? cnt + 1 : cnt - 1;
+            }
+            showToast('Twoje AMEN zostało dodane! 🙏✨');
+        }
+
+        function toggleComments(postId) {
+            const section = document.getElementById('comments_' + postId);
+            if (section) section.classList.toggle('open');
+        }
+
+        function submitComment(postId) {
+            const input = document.getElementById('input_' + postId);
+            const list = document.getElementById('comment_list_' + postId);
+            if (!input || !list) return;
+            const text = input.value.trim();
+            if (!text) return;
+
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-item';
+            newComment.innerHTML = `
+                <img src="avatar_new1.jpg" alt="Ja" class="comment-avatar">
+                <div class="comment-bubble">
+                    <b style="color:#f472b6;">Ty:</b> ${text}
+                </div>
+            `;
+            list.appendChild(newComment);
+            input.value = '';
+            showToast('Komentarz został pomyślnie dodany! 💬✨');
+        }
+
+        function sharePostLink(postId) {
+            const url = window.location.origin + window.location.pathname + '#' + postId;
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('Link do wpisu 1:1 skopiowany do schowka! 🔗✨');
+            }).catch(() => {
+                prompt('Skopiuj link do wpisu:', url);
+            });
+        }
+
+        // ── Campaign Publisher Modal Logic ──
+        function openCampaignModal(type) {
+            selectCampaignType(type || 'ad');
+            document.getElementById('campaignModal').classList.add('open');
+            setTimeout(() => document.getElementById('campTitleInput').focus(), 150);
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+        }
+
+        function selectCampaignType(type) {
+            document.getElementById('campType').value = type;
+            const buttons = {
+                'ad': document.getElementById('btnTypeAd'),
+                'promo': document.getElementById('btnTypePromo'),
+                'announcement': document.getElementById('btnTypeAnn'),
+                'event': document.getElementById('btnTypeEvent')
+            };
+            Object.keys(buttons).forEach(k => {
+                if (buttons[k]) buttons[k].style.opacity = (k === type ? '1' : '0.5');
+            });
+
+            const iconEl = document.getElementById('campModalIcon');
+            const titleEl = document.getElementById('campModalTitle');
+            const btnTextEl = document.getElementById('campBtnText');
+            const eventFields = document.getElementById('campEventFields');
+
+            if (type === 'ad') {
+                iconEl.textContent = '📢';
+                titleEl.textContent = 'Dodaj Reklamę Misji CC';
+                btnTextEl.placeholder = 'np. Słuchaj Radia CC 📻';
+                eventFields.style.display = 'none';
+            } else if (type === 'promo') {
+                iconEl.textContent = '🚀';
+                titleEl.textContent = 'Dodaj Promocję';
+                btnTextEl.placeholder = 'np. Sprawdź Promocję / Kup';
+                eventFields.style.display = 'none';
+            } else if (type === 'announcement') {
+                iconEl.textContent = '📜';
+                titleEl.textContent = 'Dodaj Ogłoszenie';
+                btnTextEl.placeholder = 'np. Przeczytaj Szczegóły 🕊️';
+                eventFields.style.display = 'none';
+            } else if (type === 'event') {
+                iconEl.textContent = '📅';
+                titleEl.textContent = 'Dodaj Wydarzenie';
+                btnTextEl.placeholder = 'np. Weź Udział / Zapisz się';
+                eventFields.style.display = 'grid';
+            }
+        }
+
+        function handleCampaignImgSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            showToast('Przetwarzanie grafiki 1:1... ⏳');
+            compressAndReadImage(file, 900, 900, 0.85, function(dataUrl) {
+                attachedCampaignImgDataUrl = dataUrl;
+                document.getElementById('campImgPreviewEl').src = dataUrl;
+                document.getElementById('campImgPreviewContainer').style.display = 'block';
+                showToast('Grafika 1:1 została dołączona do kampanii! 🖼️✨');
+            });
+            e.target.value = '';
+        }
+
+        function removeCampaignImg() {
+            attachedCampaignImgDataUrl = null;
+            document.getElementById('campImgPreviewContainer').style.display = 'none';
+            document.getElementById('campImgPreviewEl').src = '';
+        }
+
+        function compressAndReadImage(file, maxWidth, maxHeight, quality, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                            width = Math.round((width * maxHeight) / height);
+                            height = maxHeight;
+                        }
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                    callback(dataUrl);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveCampaignSubmit(e) {
+            e.preventDefault();
+            const type = document.getElementById('campType').value || 'ad';
+            const title = document.getElementById('campTitleInput').value.trim();
+            const desc = document.getElementById('campDescInput').value.trim();
+            const btnText = document.getElementById('campBtnText').value.trim() || 'Zobacz Więcej';
+            const btnUrl = document.getElementById('campBtnUrl').value.trim() || 'https://polskieradio.cc';
+            const eventDate = document.getElementById('campEventDate') ? document.getElementById('campEventDate').value.trim() : '';
+            const eventLoc = document.getElementById('campEventLoc') ? document.getElementById('campEventLoc').value.trim() : '';
+
+            // Author Avatar from Cezary's profile
+            let cezaryAv = 'avatar_new1.jpg';
+            try {
+                const cJson = localStorage.getItem('lumina_profile_cezaryrgowski');
+                if (cJson) {
+                    const cp = JSON.parse(cJson);
+                    if (cp.avatar) cezaryAv = cp.avatar;
+                }
+            } catch(err) {}
+
+            const newCampaign = {
+                id: 'camp_' + Date.now(),
+                type: type,
+                title: title,
+                desc: desc,
+                image: attachedCampaignImgDataUrl || 'lumina_hero_main.jpg',
+                btnText: btnText,
+                btnUrl: btnUrl,
+                eventDate: eventDate,
+                eventLoc: eventLoc,
+                author: 'Cezary Rogowski',
+                authorRole: 'Założyciel Christian Culture ✨',
+                authorAvatar: cezaryAv,
+                createdAt: 'Przed chwilą • 🌟 Misja CC',
+                likes: 12,
+                amen: 8
+            };
+
+            try {
+                const savedRaw = localStorage.getItem('lumina_cc_campaigns');
+                const list = savedRaw ? JSON.parse(savedRaw) : [...DEFAULT_CC_CAMPAIGNS];
+                list.unshift(newCampaign);
+                localStorage.setItem('lumina_cc_campaigns', JSON.stringify(list));
+            } catch(err) {}
+
+            closeModal('campaignModal');
+            document.getElementById('campTitleInput').value = '';
+            document.getElementById('campDescInput').value = '';
+            removeCampaignImg();
+
+            renderFeed();
+            showToast('Kampania została pomyślnie opublikowana na Głównej Tablicy 1:1! 📢✨');
+        }
+
+        // ── Toast System ──
+        let toastTimer = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // ── Radio CC Player ──
+        let isRadioPlaying = false;
+        const radioStreams = [
+            "https://stream.zeno.fm/f97y7f6w30hvv",
+            "https://stream.zeno.fm/f97y7f6w30hvv.aac"
+        ];
+        function toggleRadio() {
+            const audio = document.getElementById('ccRadioAudio');
+            const playIcon = document.getElementById('radioPlayIcon');
+            if (!isRadioPlaying) {
+                audio.src = radioStreams[0] + "?t=" + Date.now();
+                audio.play().then(() => {
+                    isRadioPlaying = true;
+                    playIcon.className = "fa-solid fa-pause";
+                    showToast('Radio Christian Culture Gra na Żywo! 📻✨');
+                }).catch(e => {
+                    showToast('Błąd strumienia radia');
+                });
+            } else {
+                audio.pause();
+                isRadioPlaying = false;
+                playIcon.className = "fa-solid fa-play";
+                showToast('Radio wstrzymane');
+            }
+        }
+
+        // Synchronize Founder Bar Avatar from Cezary's Profile
+        function syncFounderAvatar() {
+            try {
+                const cJson = localStorage.getItem('lumina_profile_cezaryrgowski');
+                if (cJson) {
+                    const cp = JSON.parse(cJson);
+                    if (cp.avatar && document.getElementById('founderBarAvatar')) {
+                        document.getElementById('founderBarAvatar').src = cp.avatar;
+                    }
+                }
+            } catch(e) {}
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            syncFounderAvatar();
+            renderFeed();
+        });
+        window.addEventListener('storage', () => {
+            syncFounderAvatar();
+            renderFeed();
+        });
+    </script>
+</body>
+</html>
