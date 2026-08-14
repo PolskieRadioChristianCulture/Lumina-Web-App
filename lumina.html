@@ -347,6 +347,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            overflow: hidden;
         }
         .profile-card.video-card .card-photo {
             position: absolute;
@@ -357,6 +358,8 @@
             overflow: hidden;
         }
         .profile-card.video-card video {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -930,10 +933,8 @@
     </nav>
 
     <!-- ══════════ HERO (Clean & Unobstructed) ══════════ -->
-    <section class="hero-section" onclick="openAuth()" style="cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 150px; position: relative; overflow: hidden; min-height: 480px; background: #0b1838;">
-        <div class="hero-bg">
-            <img src="lumina_hero_group.jpg" alt="LUMINA Relacje" style="width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; position: absolute; inset: 0;">
-        </div>
+    <section class="hero-section" onclick="openAuth()" style="cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 150px;">
+        <div class="hero-bg"></div>
         <div style="position: relative; z-index: 5; transform: translate(-22px, 2px);">
             <button class="btn-hero-main" onclick="openAuth()" style="width: 380px; height: 64px; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; box-sizing: border-box; border-radius: 50px;">ZAREJESTRUJ SIĘ ZA DARMO</button>
         </div>
@@ -953,9 +954,9 @@
             <div class="profiles-grid" id="profilesCarousel">
 
                 <!-- Anna -->
-                <div class="profile-card" onclick="openProfile('Anna','28','Warszawa','Uwielbia podróże i sztukę','lumina_anna.jpg','94%')">
+                <div class="profile-card" onclick="openProfile('Anna','28','Warszawa','Uwielbia podróże i sztukę','lumina_anna2.jpg','94%')">
                     <div class="card-photo">
-                        <img src="lumina_anna.jpg" alt="Anna" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px 16px 0 0; display: block;">
+                        <img src="lumina_anna2.jpg" alt="Anna" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match">94%</div>
                     </div>
@@ -966,13 +967,17 @@
                     </div>
                 </div>
 
-                <!-- Reklama Wideo: Dobrze, że jesteś (Pełna widoczność wideo) -->
+                <!-- Reklama Wideo: Dobrze, że jesteś (YouTube Shorts) -->
                 <div class="profile-card video-card" onclick="window.open('https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536', '_blank')">
                     <div class="card-photo">
-                        <video id="promoVideoEl" src="czesc_dobrze_ze_jestes.mp4" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:16px;"></video>
-                        <button class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk">
-                            <i class="fa-solid fa-volume-xmark"></i>
-                        </button>
+                        <iframe
+                            src="https://www.youtube.com/embed/vpHsETwWwns?autoplay=1&mute=1&loop=1&playlist=vpHsETwWwns&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                            frameborder="0"
+                            allow="autoplay; fullscreen"
+                            allowfullscreen
+                            onclick="event.stopPropagation();"
+                            style="position:absolute;inset:0;width:100%;height:100%;border-radius:16px;border:none;pointer-events:none;">
+                        </iframe>
                         <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         
                         <!-- Pulsujący Przycisk do Sklepu -->
@@ -983,9 +988,9 @@
                 </div>
 
                 <!-- Piotr -->
-                <div class="profile-card" onclick="openProfile('Piotr','31','Kraków','Szuka spontanicznych przygód','lumina_piotr.jpg','88%')">
+                <div class="profile-card" onclick="openProfile('Piotr','31','Kraków','Szuka spontanicznych przygód','lumina_piotr2.jpg','88%')">
                     <div class="card-photo">
-                        <img src="lumina_piotr.jpg" alt="Piotr" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px 16px 0 0; display: block;">
+                        <img src="lumina_piotr2.jpg" alt="Piotr" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match">88%</div>
                     </div>
@@ -997,9 +1002,9 @@
                 </div>
 
                 <!-- Julia -->
-                <div class="profile-card" onclick="openProfile('Julia','26','Gdańsk','Marzycielka z pasją do muzyki','lumina_julia.jpg','91%')">
+                <div class="profile-card" onclick="openProfile('Julia','26','Gdańsk','Marzycielka z pasją do muzyki','lumina_julia2.jpg','91%')">
                     <div class="card-photo">
-                        <img src="lumina_julia.jpg" alt="Julia" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px 16px 0 0; display: block;">
+                        <img src="lumina_julia2.jpg" alt="Julia" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match">91%</div>
                     </div>
@@ -1249,26 +1254,47 @@
 
         // ── Google Auth ──
         window.handleGoogleLogin = async function() {
-            closeModal('authModal');
-            showToast('Łączenie z Google... ⏳');
+            const btn = document.getElementById('btnGoogleAuth');
+            if (btn) { btn.disabled = true; btn.textContent = '⏳ Łączenie...'; }
+            
             try {
                 const result = await signInWithPopup(auth, provider);
+                closeModal('authModal');
                 showToast(`Witaj w LUMINA, ${result.user.displayName}! 🕊️`);
             } catch (error) {
-                console.warn("Firebase Google Auth fallback:", error);
-                // Fallback for local files/unauthorized domains: create demo session
+                console.warn("Google Auth error:", error.code, error.message);
+                
+                // Dla file:// lub nieautoryzowanych domen – wersja demo
+                closeModal('authModal');
                 const demoUser = {
-                    displayName: "Użytkownik Google",
-                    email: "uzytkownik@lumina.cc",
-                    photoURL: "icon.png",
-                    uid: "demo_google_user"
+                    displayName: "Użytkownik (Wersja Demo)",
+                    email: "demo@lumina.cc",
+                    photoURL: "lumina_icon.jpg",
+                    uid: "demo_" + Date.now()
                 };
                 currentUser = demoUser;
-                document.getElementById('userNavProfile').style.display = 'flex';
-                document.getElementById('authCtaBtn').style.display = 'none';
-                document.getElementById('userNavName').textContent = demoUser.displayName;
-                document.getElementById('userNavAvatar').src = demoUser.photoURL;
-                showToast(`Zalogowano pomyślnie jako ${demoUser.displayName}! 🕊️`);
+                
+                const navProfile = document.getElementById('userNavProfile');
+                const authBtn = document.getElementById('authCtaBtn');
+                const navName = document.getElementById('userNavName');
+                const navAvatar = document.getElementById('userNavAvatar');
+                
+                if (navProfile) navProfile.style.display = 'flex';
+                if (authBtn) authBtn.style.display = 'none';
+                if (navName) navName.textContent = demoUser.displayName;
+                if (navAvatar) navAvatar.src = demoUser.photoURL;
+                
+                if (error.code === 'auth/unauthorized-domain' || error.code === 'auth/operation-not-allowed') {
+                    showToast('✅ Zalogowano w trybie demo. Pełne Google Auth działa na polskieradio.cc');
+                } else if (error.code === 'auth/popup-blocked') {
+                    showToast('⚠️ Popup zablokowany przez przeglądarkę. Zezwól na popupy dla tej strony.');
+                    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-brands fa-google" style="color:#ea4335;"></i> Kontynuuj przez Google'; }
+                    return;
+                } else {
+                    showToast(`✅ Zalogowano pomyślnie (wersja demo) 🕊️`);
+                }
+            } finally {
+                if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-brands fa-google" style="color:#ea4335;"></i> Kontynuuj przez Google'; }
             }
         };
 
