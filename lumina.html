@@ -1241,36 +1241,36 @@
             <div class="profiles-grid" id="profilesCarousel">
 
                 <!-- Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
-                <div class="profile-card featured" id="my_saved_profile_card" onclick="window.location.href='lumina.cezaryrgowski.html'">
+                <div class="profile-card featured home-cezary-card" id="my_saved_profile_card" onclick="window.location.href='lumina.cezaryrgowski.html'">
                     <div class="card-photo">
-                        <img src="avatar_new1.jpg" alt="Cezary Rogowski" id="homeUserAvatar" onerror="this.src='avatar_widget_tomek.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="avatar_new1.jpg" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_widget_tomek.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706); font-size: 0.72rem; width: auto; padding: 0 10px; border-radius: 20px; right: 12px; bottom: -14px;">Założyciel CC ✨</div>
                     </div>
                     <div class="card-body">
                         <div class="card-name" style="display:flex;align-items:center;gap:6px;">
-                            <span id="homeUserName">Cezary Rogowski, 32</span>
+                            <span id="homeUserName" class="home-cezary-name">Cezary Rogowski, 32</span>
                             <i class="fa-solid fa-circle-check" style="color:#38bdf8;font-size:0.85rem;" title="Zweryfikowany Założyciel"></i>
                         </div>
-                        <div class="card-city" id="homeUserCity">📍 Warszawa, Polska • <b>Żonaty</b></div>
-                        <div class="card-desc" id="homeUserDesc">"Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu."</div>
+                        <div class="card-city home-cezary-city" id="homeUserCity">📍 Warszawa, Polska • <b>Żonaty</b></div>
+                        <div class="card-desc home-cezary-desc" id="homeUserDesc">"Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu."</div>
                     </div>
                 </div>
 
                 <!-- Wioletta Rogowska / Współzałożycielka Christian Culture (Mężatka) -->
-                <div class="profile-card featured" id="my_saved_wioletta_card" onclick="window.location.href='lumina.wiolettarogowska.html'">
+                <div class="profile-card featured home-wioletta-card" id="my_saved_wioletta_card" onclick="window.location.href='lumina.wiolettarogowska.html'">
                     <div class="card-photo">
-                        <img src="lumina_anna2.jpg" alt="Wioletta Rogowska" id="homeWiolettaAvatar" onerror="this.src='lumina_anna2.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="lumina_anna2.jpg" alt="Wioletta Rogowska" class="home-wioletta-avatar" id="homeWiolettaAvatar" onerror="this.src='lumina_anna2.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f472b6); font-size: 0.72rem; width: auto; padding: 0 10px; border-radius: 20px; right: 12px; bottom: -14px;">Współzałożycielka 💕</div>
                     </div>
                     <div class="card-body">
                         <div class="card-name" style="display:flex;align-items:center;gap:6px;">
-                            <span>Wioletta Rogowska, 30</span>
+                            <span id="homeWiolettaName" class="home-wioletta-name">Wioletta Rogowska, 30</span>
                             <i class="fa-solid fa-circle-check" style="color:#f472b6;font-size:0.85rem;" title="Zweryfikowana Współzałożycielka"></i>
                         </div>
-                        <div class="card-city">📍 Warszawa, Polska • <b>Mężatka</b></div>
-                        <div class="card-desc">"Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
+                        <div class="card-city home-wioletta-city" id="homeWiolettaCity">📍 Warszawa, Polska • <b>Mężatka</b></div>
+                        <div class="card-desc home-wioletta-desc" id="homeWiolettaDesc">"Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
                     </div>
                 </div>
 
@@ -1800,15 +1800,26 @@
                 const savedCezary = localStorage.getItem('lumina_profile_cezaryrgowski') || localStorage.getItem('lumina_main_user_profile');
                 if (savedCezary) {
                     const p = JSON.parse(savedCezary);
-                    const nameEl = document.getElementById('homeUserName');
-                    const cityEl = document.getElementById('homeUserCity');
-                    const descEl = document.getElementById('homeUserDesc');
-                    const avEl = document.getElementById('homeUserAvatar');
-                    
-                    if (nameEl) nameEl.textContent = `${p.name}, ${p.age}`;
-                    if (cityEl) cityEl.innerHTML = `📍 ${p.city} • <b>${p.status || 'Żonaty'}</b>`;
-                    if (descEl) descEl.textContent = `"${p.bio ? p.bio.substring(0, 85) + '...' : (p.job || 'Wierzący chrześcijanin')}"`;
-                    if (avEl && p.avatar) avEl.src = p.avatar;
+                    if (p.avatar) {
+                        document.querySelectorAll('.home-cezary-avatar, #homeUserAvatar, img[alt="Cezary Rogowski"]').forEach(img => {
+                            img.src = p.avatar;
+                        });
+                    }
+                    if (p.name && p.age) {
+                        document.querySelectorAll('.home-cezary-name, #homeUserName').forEach(el => {
+                            el.textContent = `${p.name}, ${p.age}`;
+                        });
+                    }
+                    if (p.city) {
+                        document.querySelectorAll('.home-cezary-city, #homeUserCity').forEach(el => {
+                            el.innerHTML = `📍 ${p.city} • <b>${p.status || 'Żonaty'}</b>`;
+                        });
+                    }
+                    if (p.bio || p.job) {
+                        document.querySelectorAll('.home-cezary-desc, #homeUserDesc').forEach(el => {
+                            el.textContent = `"${p.bio ? (p.bio.length > 85 ? p.bio.substring(0, 85) + '...' : p.bio) : (p.job || 'Założyciel Christian Culture')}"`;
+                        });
+                    }
 
                     // Sync with Navbar Profile Widget
                     const navProfile = document.getElementById('userNavProfile');
@@ -1822,27 +1833,43 @@
                         if (navAvatar && p.avatar) navAvatar.src = p.avatar;
                     }
                 }
-            } catch(e) {}
+            } catch(e) {
+                console.error("Sync Cezary error:", e);
+            }
 
             // 2. Sync Wioletta Rogowska
             try {
                 const savedWioletta = localStorage.getItem('lumina_profile_wiolettarogowska');
                 if (savedWioletta) {
                     const pw = JSON.parse(savedWioletta);
-                    const wNameEl = document.getElementById('homeWiolettaName');
-                    const wCityEl = document.getElementById('homeWiolettaCity');
-                    const wDescEl = document.getElementById('homeWiolettaDesc');
-                    const wAvEl = document.getElementById('homeWiolettaAvatar');
-
-                    if (wNameEl) wNameEl.textContent = `${pw.name}, ${pw.age}`;
-                    if (wCityEl) wCityEl.innerHTML = `📍 ${pw.city} • <b>${pw.status || 'Mężatka'}</b>`;
-                    if (wDescEl) wDescEl.textContent = `"${pw.bio ? pw.bio.substring(0, 85) + '...' : (pw.job || 'Współzałożycielka Christian Culture')}"`;
-                    if (wAvEl && pw.avatar) wAvEl.src = pw.avatar;
+                    if (pw.avatar) {
+                        document.querySelectorAll('.home-wioletta-avatar, #homeWiolettaAvatar, img[alt="Wioletta Rogowska"]').forEach(img => {
+                            img.src = pw.avatar;
+                        });
+                    }
+                    if (pw.name && pw.age) {
+                        document.querySelectorAll('.home-wioletta-name, #homeWiolettaName').forEach(el => {
+                            el.textContent = `${pw.name}, ${pw.age}`;
+                        });
+                    }
+                    if (pw.city) {
+                        document.querySelectorAll('.home-wioletta-city, #homeWiolettaCity').forEach(el => {
+                            el.innerHTML = `📍 ${pw.city} • <b>${pw.status || 'Mężatka'}</b>`;
+                        });
+                    }
+                    if (pw.bio || pw.job) {
+                        document.querySelectorAll('.home-wioletta-desc, #homeWiolettaDesc').forEach(el => {
+                            el.textContent = `"${pw.bio ? (pw.bio.length > 85 ? pw.bio.substring(0, 85) + '...' : pw.bio) : (pw.job || 'Współzałożycielka Christian Culture')}"`;
+                        });
+                    }
                 }
-            } catch(e) {}
+            } catch(e) {
+                console.error("Sync Wioletta error:", e);
+            }
         }
         syncUserSavedProfileToHomepage();
         window.addEventListener('DOMContentLoaded', syncUserSavedProfileToHomepage);
+        window.addEventListener('load', syncUserSavedProfileToHomepage);
         window.addEventListener('storage', syncUserSavedProfileToHomepage);
     </script>
 
@@ -1941,6 +1968,10 @@
             const carousel = document.getElementById('profilesCarousel');
             if (!carousel || isInfiniteInitialized) return;
 
+            if (typeof syncUserSavedProfileToHomepage === 'function') {
+                syncUserSavedProfileToHomepage();
+            }
+
             const initialCards = Array.from(carousel.children);
             if (initialCards.length < 3) return;
 
@@ -1955,6 +1986,10 @@
             });
 
             isInfiniteInitialized = true;
+
+            if (typeof syncUserSavedProfileToHomepage === 'function') {
+                syncUserSavedProfileToHomepage();
+            }
 
             const cardWidth = initialCards[0].offsetWidth;
             const gap = 24;
