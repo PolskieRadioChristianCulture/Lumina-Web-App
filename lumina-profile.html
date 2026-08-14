@@ -436,7 +436,36 @@
             box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
         }
 
-        /* ── Post Delete Button ── */
+        /* ── Post Action Buttons (Edit & Delete) ── */
+        .post-header-actions {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .owner-mode-active .post-header-actions {
+            display: flex;
+        }
+        .post-edit-btn {
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            color: #38bdf8;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .post-edit-btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+            transform: scale(1.1);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+        }
         .post-delete-btn {
             background: rgba(244, 63, 94, 0.12);
             border: 1px solid rgba(244, 63, 94, 0.35);
@@ -444,12 +473,11 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            display: none;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             font-size: 0.82rem;
-            margin-left: auto;
             transition: all 0.2s;
         }
         .post-delete-btn:hover {
@@ -457,9 +485,6 @@
             color: #fff;
             transform: scale(1.1);
             box-shadow: 0 0 12px rgba(244, 63, 94, 0.5);
-        }
-        .owner-mode-active .post-delete-btn {
-            display: inline-flex;
         }
 
         /* ── Photo Gallery Grid with Delete Buttons ── */
@@ -1015,6 +1040,7 @@
     <input type="file" id="coverFileInput" accept="image/*" style="display:none;" onchange="handleCoverFileSelect(event)">
     <input type="file" id="galleryFileInput" accept="image/*" multiple style="display:none;" onchange="handleGalleryFileSelect(event)">
     <input type="file" id="postImageFileInput" accept="image/*" style="display:none;" onchange="handlePostImageSelect(event)">
+    <input type="file" id="editPostImageFileInput" accept="image/*" style="display:none;" onchange="handleEditPostImageSelect(event)">
 
     <!-- ══════════ PROFILE CONTAINER ══════════ -->
     <main class="profile-container">
@@ -1363,6 +1389,36 @@
         </div>
     </div>
 
+    <!-- ══════════ EDIT POST MODAL ══════════ -->
+    <div class="modal-overlay" id="editPostModal">
+        <div class="modal-card" style="max-width: 540px;">
+            <button class="modal-close-btn" onclick="closeModal('editPostModal')"><i class="fa-solid fa-xmark"></i></button>
+            <h3 style="font-size: 1.3rem; margin-bottom: 6px; font-family:'Outfit',sans-serif;"><i class="fa-solid fa-pen-to-square" style="color:#38bdf8;"></i> Edytuj Wpis na Tablicy</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">Zmień treść wpisu lub załączoną grafikę.</p>
+            
+            <form onsubmit="saveEditedPostSubmit(event)">
+                <textarea id="editPostTextarea" rows="4" placeholder="Treść wpisu..." style="width:100%; padding:12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:15px; margin-bottom:12px; outline:none; resize:vertical;" required></textarea>
+                
+                <!-- Edit Post Image Preview -->
+                <div id="editPostImgPreviewBox" style="display:none; position:relative; margin-bottom: 14px; border-radius:12px; overflow:hidden; max-height:220px; background:#0f172a; border: 1px solid rgba(255,255,255,0.15);">
+                    <img id="editPostAttachedImg" src="" style="width:100%; height:180px; object-fit:cover; display:block;">
+                    <button type="button" onclick="removeEditPostAttachedImage()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.5);" title="Usuń grafikę z wpisu"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+                    <button type="button" onclick="document.getElementById('editPostImageFileInput').click()" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#e2e8f0; padding:8px 14px; border-radius:20px; font-size:0.82rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-image" style="color:#22c55e;"></i> Zmień / Dołącz Grafikę
+                    </button>
+                </div>
+
+                <div style="display:flex; gap:10px;">
+                    <button type="button" onclick="closeModal('editPostModal')" style="flex:1; padding:12px; border-radius:30px; background:rgba(255,255,255,0.08); border:none; color:#fff; font-weight:700; font-family:inherit; cursor:pointer;">Anuluj</button>
+                    <button type="submit" style="flex:1.5; padding:12px; border-radius:30px; background:linear-gradient(90deg,#3b82f6,#06b6d4); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 18px rgba(6,182,212,0.4);"><i class="fa-solid fa-check"></i> Zapisz Zmiany ✨</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ══════════ MESSAGE MODAL ══════════ -->
     <div class="modal-overlay" id="messageModal">
         <div class="modal-card">
@@ -1499,9 +1555,17 @@
             const fallback = PROFILES_DB[slug] || PROFILES_DB['cezaryrgowski'];
             try {
                 const saved = localStorage.getItem('lumina_profile_' + slug);
-                if (saved) return { ...fallback, ...JSON.parse(saved) };
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    return {
+                        ...fallback,
+                        ...parsed,
+                        photos: Array.isArray(parsed.photos) ? parsed.photos : [...fallback.photos],
+                        posts: Array.isArray(parsed.posts) ? parsed.posts : [...fallback.posts]
+                    };
+                }
             } catch (e) {}
-            return fallback;
+            return JSON.parse(JSON.stringify(fallback));
         }
 
         // ── Security & Authentication System ──
@@ -1680,52 +1744,73 @@
         // ── Photos Gallery & Deletion ──
         function renderPhotos() {
             const data = getProfileData();
-            const photos = data.photos || ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg'];
+            const photos = Array.isArray(data.photos) ? data.photos : ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg'];
             
             const miniGrid = document.getElementById('miniPhotoGrid');
             if (miniGrid) {
-                miniGrid.innerHTML = photos.slice(0, 6).map((src, idx) => `
-                    <div style="position:relative; border-radius:10px; overflow:hidden; height:90px;">
-                        <img src="${src}" alt="Photo" class="photo-thumb" style="width:100%;height:100%;object-fit:cover;" onclick="showToast('Podgląd zdjęcia')">
-                        ${isOwnerMode ? `<button class="photo-delete-badge" style="width:24px;height:24px;top:4px;right:4px;font-size:0.7rem;" onclick="deletePhoto(${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>` : ''}
-                    </div>
-                `).join('');
+                if (photos.length === 0) {
+                    miniGrid.innerHTML = '<div style="grid-column: 1/-1; font-size:0.78rem; color:#94a3b8; padding:8px 0;">Brak zdjęć w galerii.</div>';
+                } else {
+                    miniGrid.innerHTML = photos.slice(0, 6).map((src, idx) => `
+                        <div style="position:relative; border-radius:10px; overflow:hidden; height:90px; background:#1e293b;">
+                            <img src="${src}" alt="Photo" class="photo-thumb" style="width:100%;height:100%;object-fit:cover;" onclick="showToast('Podgląd zdjęcia')">
+                            ${isOwnerMode ? `<button type="button" class="photo-delete-badge" style="display:flex; width:26px; height:26px; top:4px; right:4px; font-size:0.72rem; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                        </div>
+                    `).join('');
+                }
             }
 
             const fullGrid = document.getElementById('fullPhotoGrid');
             if (fullGrid) {
-                fullGrid.innerHTML = photos.map((src, idx) => `
-                    <div class="photo-item-box">
-                        <img src="${src}" alt="Photo" class="photo-item-img" onclick="showToast('Podgląd zdjęcia')">
-                        ${isOwnerMode ? `<button class="photo-delete-badge" onclick="deletePhoto(${idx})" title="Usuń zdjęcie z galerii"><i class="fa-solid fa-trash-can"></i></button>` : ''}
-                    </div>
-                `).join('');
+                if (photos.length === 0) {
+                    fullGrid.innerHTML = '<div style="grid-column: 1/-1; font-size:0.88rem; color:#94a3b8; padding:18px 0; text-align:center;">Brak zdjęć w galerii. Użyj przycisku [+], aby dodać nowe zdjęcia.</div>';
+                } else {
+                    fullGrid.innerHTML = photos.map((src, idx) => `
+                        <div class="photo-item-box" style="position:relative;">
+                            <img src="${src}" alt="Photo" class="photo-item-img" onclick="showToast('Podgląd zdjęcia')">
+                            ${isOwnerMode ? `<button type="button" class="photo-delete-badge" style="display:flex; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie z galerii"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                        </div>
+                    `).join('');
+                }
             }
         }
 
-        function deletePhoto(index) {
-            if (!requestOwnerAccess(() => deletePhoto(index))) return;
+        function deletePhoto(event, index) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            if (!requestOwnerAccess(() => deletePhoto(null, index))) return;
             if (!confirm('Czy na pewno chcesz usunąć to zdjęcie z galerii?')) return;
             
             const slug = getRequestedUserSlug();
             const cur = getProfileData();
-            if (cur.photos && cur.photos.length > 0) {
-                cur.photos.splice(index, 1);
-                try {
-                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
-                    localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
-                } catch(e) {}
-                renderPhotos();
-                showToast('Zdjęcie zostało pomyślnie usunięte z Twojego profilu! 🗑️✨');
+            if (!cur.photos || !Array.isArray(cur.photos)) {
+                cur.photos = ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg'];
             }
+            cur.photos.splice(index, 1);
+            try {
+                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+            } catch(e) {}
+            renderPhotos();
+            showToast('Zdjęcie zostało pomyślnie usunięte z Twojego profilu! 🗑️✨');
         }
 
-        // ── Posts Stream & Deletion ──
+        // ── Posts Stream, Editing & Deletion ──
+        let currentEditingPostId = null;
+        let editingPostImageDataUrl = null;
+
         function renderPosts() {
             const data = getProfileData();
-            const posts = data.posts || [];
+            const posts = Array.isArray(data.posts) ? data.posts : [];
             const stream = document.getElementById('feedStream');
             if (!stream) return;
+
+            if (posts.length === 0) {
+                stream.innerHTML = '<div style="background:var(--navy-surface); border:1px dashed rgba(255,255,255,0.1); border-radius:16px; padding:24px; text-align:center; color:#94a3b8; font-size:0.9rem;">Brak wpisów na tablicy. Napisz coś powyżej! ✨</div>';
+                return;
+            }
 
             stream.innerHTML = posts.map(p => `
                 <article class="post-card" id="${p.id}">
@@ -1735,7 +1820,12 @@
                             <div class="post-author">${p.author}</div>
                             <div class="post-time">${p.time}</div>
                         </div>
-                        ${isOwnerMode ? `<button class="post-delete-btn" onclick="deleteFeedPost('${p.id}')" title="Usuń ten wpis"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                        ${isOwnerMode ? `
+                            <div class="post-header-actions" style="display:flex; align-items:center; gap:8px; margin-left:auto;">
+                                <button type="button" class="post-edit-btn" onclick="openEditPostModal('${p.id}')" title="Edytuj ten wpis"><i class="fa-solid fa-pencil"></i></button>
+                                <button type="button" class="post-delete-btn" onclick="deleteFeedPost(event, '${p.id}')" title="Usuń ten wpis"><i class="fa-solid fa-trash-can"></i></button>
+                            </div>
+                        ` : ''}
                     </div>
                     <div class="post-content">${p.text}</div>
                     ${p.image ? `<img src="${p.image}" alt="Post Image" class="post-image">` : ''}
@@ -1748,8 +1838,90 @@
             `).join('');
         }
 
-        function deleteFeedPost(postId) {
-            if (!requestOwnerAccess(() => deleteFeedPost(postId))) return;
+        function openEditPostModal(postId) {
+            if (!requestOwnerAccess(() => openEditPostModal(postId))) return;
+            const cur = getProfileData();
+            const post = (cur.posts || []).find(p => p.id === postId);
+            if (!post) {
+                showToast('Nie znaleziono wpisu do edycji.');
+                return;
+            }
+
+            currentEditingPostId = postId;
+            editingPostImageDataUrl = post.image || null;
+
+            document.getElementById('editPostTextarea').value = post.text || '';
+            
+            const previewBox = document.getElementById('editPostImgPreviewBox');
+            const attachedImg = document.getElementById('editPostAttachedImg');
+            if (editingPostImageDataUrl) {
+                attachedImg.src = editingPostImageDataUrl;
+                previewBox.style.display = 'block';
+            } else {
+                attachedImg.src = '';
+                previewBox.style.display = 'none';
+            }
+
+            document.getElementById('editPostModal').classList.add('open');
+            setTimeout(() => document.getElementById('editPostTextarea').focus(), 150);
+        }
+
+        function handleEditPostImageSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            showToast('Przetwarzanie grafiki do wpisu... ⏳');
+            compressAndReadImage(file, 1000, 1000, 0.82, function(dataUrl) {
+                editingPostImageDataUrl = dataUrl;
+                document.getElementById('editPostAttachedImg').src = dataUrl;
+                document.getElementById('editPostImgPreviewBox').style.display = 'block';
+                showToast('Grafika została zaktualizowana w edytorze! 🖼️✨');
+            });
+            e.target.value = '';
+        }
+
+        function removeEditPostAttachedImage() {
+            editingPostImageDataUrl = null;
+            document.getElementById('editPostImgPreviewBox').style.display = 'none';
+            document.getElementById('editPostAttachedImg').src = '';
+            document.getElementById('editPostImageFileInput').value = '';
+        }
+
+        function saveEditedPostSubmit(e) {
+            if (e) e.preventDefault();
+            if (!currentEditingPostId) return;
+
+            const newText = document.getElementById('editPostTextarea').value.trim();
+            if (!newText && !editingPostImageDataUrl) {
+                showToast('Wpis nie może być pusty!');
+                return;
+            }
+
+            const slug = getRequestedUserSlug();
+            const cur = getProfileData();
+            cur.posts = cur.posts || [];
+            const idx = cur.posts.findIndex(p => p.id === currentEditingPostId);
+            if (idx !== -1) {
+                cur.posts[idx].text = newText;
+                cur.posts[idx].image = editingPostImageDataUrl || null;
+                if (!cur.posts[idx].time.includes('(edytowano)')) {
+                    cur.posts[idx].time += ' • (edytowano)';
+                }
+                try {
+                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                    localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                } catch(err) {}
+                renderPosts();
+                closeModal('editPostModal');
+                showToast('Wpis został pomyślnie zaktualizowany! ✏️✨');
+            }
+        }
+
+        function deleteFeedPost(event, postId) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            if (!requestOwnerAccess(() => deleteFeedPost(null, postId))) return;
             if (!confirm('Czy na pewno chcesz usunąć ten wpis z tablicy?')) return;
 
             const slug = getRequestedUserSlug();
@@ -1757,6 +1929,7 @@
             cur.posts = (cur.posts || []).filter(p => p.id !== postId);
             try {
                 localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
             } catch(e) {}
             renderPosts();
             showToast('Wpis został pomyślnie usunięty z Twojej tablicy! 🗑️');
