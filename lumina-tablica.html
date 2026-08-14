@@ -26,6 +26,8 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
         import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
+        // ── Projekt Mission Control (web_inspirations = treści dla WWW) ──
+        // TODO: Przepiąć na cuda-398c0 / reflections gdy znany będzie web apiKey
         const firebaseConfig = {
             apiKey: "AIzaSyDou1gYyuJnuF2WocXEqglfRPqqwMm0Ge4",
             authDomain: "cc-mission-control.firebaseapp.com",
@@ -35,39 +37,56 @@
             appId: "1:519207260358:web:d875a610f438ecad2c47c7"
         };
 
-        // Fetch today's reflection and inject into board
+        // Pobierz dzisiejsze (lub najnowsze) rozważanie z kolekcji "web_inspirations"
         async function loadDailyReflection() {
             try {
                 const app = initializeApp(firebaseConfig, 'lumina-board');
                 const db = getFirestore(app);
                 const today = new Date().toISOString().split('T')[0];
+
                 const q = query(
                     collection(db, 'web_inspirations'),
                     orderBy('date', 'desc'),
-                    limit(1)
+                    limit(5)
                 );
                 const snap = await getDocs(q);
                 if (!snap.empty) {
-                    const data = snap.docs[0].data();
-                    // Only show if it's today's or the most recent
+                    // Preferuj rozważanie z datą dzisiejszą
+                    let data = snap.docs[0].data();
+                    for (const doc of snap.docs) {
+                        if (doc.data().date === today) {
+                            data = doc.data();
+                            break;
+                        }
+                    }
+
+                    // Pełna treść – bez żadnego skracania
+                    const fullContent = data.contentWeb || data.fullText || data.teaser || '';
+
+                    // Przeformatuj tekst: nowe linie → akapity HTML
+                    const formattedContent = fullContent
+                        .split(/\n\n+/)
+                        .filter(p => p.trim())
+                        .map(p => `<p style="margin:0 0 14px; line-height:1.75;">${p.trim().replace(/\n/g, '<br>')}</p>`)
+                        .join('');
+
                     window._luminaDailyReflection = {
-                        id: 'daily_rozważanie_' + (data.dayNumber || Date.now()),
-                        type: 'announcement',
-                        author: 'Christian Culture',
-                        authorRole: '☀️ Rozważanie Dnia • Misja CC',
+                        id: 'daily_rozwazanie_' + (data.date || today),
+                        type: 'reflection',
+                        author: 'Dobrze, że jesteś',
+                        authorRole: `☀️ Rozważanie Dnia • ${data.date || today}`,
                         authorAvatar: 'icon.png',
                         authorSlug: 'cezaryrgowski',
-                        time: 'Dzisiaj • 📖 Słowo na dziś • ' + (data.date || today),
+                        time: `${data.date || today} • 📖 Rozważanie`,
                         title: data.title || '☀️ Rozważanie na dziś',
-                        text: (data.contentWeb || data.fullText || '').substring(0, 320) + '...',
-                        image: data.imageUrl || 'tlo_pr_cc.jpg',
-                        btnText: 'Czytaj Pełne Rozważanie →',
-                        btnUrl: 'https://polskieradio.cc',
-                        likes: data.dayNumber ? (data.dayNumber * 3 + 40) : 42,
-                        amen: data.dayNumber ? (data.dayNumber * 3 + 35) : 38,
-                        _pinned: true
+                        fullTextHtml: formattedContent,
+                        image: data.imageUrl || '',
+                        likes: 48,
+                        amen: 41,
+                        _pinned: true,
+                        _isReflection: true
                     };
-                    // Re-render if feed already loaded
+                    // Re-render jeśli feed już załadowany
                     if (typeof renderFeed === 'function') renderFeed();
                 }
             } catch(e) {
@@ -79,7 +98,6 @@
             loadDailyReflection();
         });
     </script>
-
     <style>
         :root {
             --bg-base: #090d1a;
@@ -1214,6 +1232,50 @@
             }
 
             container.innerHTML = combined.map(item => {
+                // ── Specjalna karta rozważania "Dobrze, że jesteś" ──
+                if (item._isReflection) {
+                    const imgHtml = item.image
+                        ? `<div style="width:100%; aspect-ratio:16/9; border-radius:14px; overflow:hidden; margin-bottom:18px;">
+                                <img src="${item.image}" alt="${item.title}" style="width:100%; height:100%; object-fit:cover; display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
+                           </div>`
+                        : '';
+                    return `
+                        <article class="post-card-1x1" id="${item.id}" style="grid-column: 1 / -1; max-width: 680px; margin: 0 auto; width: 100%;">
+                            <!-- Top Header -->
+                            <div class="post-top-header">
+                                <a href="lumina.cezaryrgowski.html" class="post-author-box">
+                                    <img src="icon.png" alt="Dobrze, że jesteś" class="post-author-img" style="border-radius:50%; background:#1e1b4b;" onerror="this.src='icon.png'">
+                                    <div>
+                                        <div class="post-author-name">Dobrze, że jesteś <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.75rem;"></i></div>
+                                        <div class="post-author-role">${item.time}</div>
+                                    </div>
+                                </a>
+                                <span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(250,204,21,0.15));border-color:rgba(245,158,11,0.6);color:#fbbf24;"><i class="fa-solid fa-sun"></i> Rozważanie Dnia</span>
+                            </div>
+
+                            <!-- Grafika (jeśli jest) -->
+                            <div class="post-details-box" style="padding-top:4px;">
+                                ${imgHtml}
+                                ${item.title ? `<div class="post-headline" style="font-size:1.15rem; margin-bottom:16px;">${item.title}</div>` : ''}
+                                <!-- Pełna treść rozważania -->
+                                <div style="font-size:0.93rem; color:#e2e8f0; line-height:1.8; font-family:'Plus Jakarta Sans',sans-serif;">
+                                    ${item.fullTextHtml || '<p style="color:var(--text-secondary);">Trwa ładowanie rozważania...</p>'}
+                                </div>
+                            </div>
+
+                            <!-- Actions Bar -->
+                            <div class="post-actions-bar">
+                                <div style="display:flex; gap:4px;">
+                                    <button class="post-action-btn" onclick="toggleFeedLike(this)"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 48}</span></button>
+                                    <button class="post-action-btn" onclick="toggleFeedAmen(this)"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 41}</span> Amen</button>
+                                    <button class="post-action-btn" onclick="toggleComments('${item.id}')"><i class="fa-solid fa-comment-dots"></i> Komentarze</button>
+                                </div>
+                                <button class="post-action-btn" onclick="sharePostLink('${item.id}')" title="Udostępnij"><i class="fa-solid fa-share-nodes"></i></button>
+                            </div>
+                        </article>
+                    `;
+                }
+
                 const isCampaign = (item.type === 'ad' || item.type === 'promo' || item.type === 'announcement' || item.type === 'event');
                 
                 let badgeHtml = '';
@@ -1289,6 +1351,7 @@
                             </div>
                             <button class="post-action-btn" onclick="sharePostLink('${item.id}')" title="Udostępnij wpis"><i class="fa-solid fa-share-nodes"></i></button>
                         </div>
+
 
                         <!-- Expandable Comments Drawer -->
                         <div class="comments-section" id="comments_${item.id}">
