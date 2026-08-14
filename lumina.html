@@ -23,7 +23,7 @@
     <style>
         :root {
             --navy: #0f1535;
-            --navy-deep: #090b1f;
+            --navy-deep: #0b1838;
             --accent-purple: #9d4edd;
             --accent-cyan: #00d2ff;
             --accent-magenta: #e01a4f;
@@ -35,7 +35,7 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #1a0a2e 0%, #0f1a3d 40%, #0d2060 70%, #1a0a2e 100%);
+            background: var(--navy-deep);
             min-height: 100vh;
             color: #fff;
             overflow-x: hidden;
@@ -50,31 +50,39 @@
             align-items: center;
             justify-content: space-between;
             padding: 14px 48px;
-            background: rgba(9, 11, 31, 0.78);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
 
         .nav-logo-text {
             font-size: 1.4rem;
             font-weight: 800;
             letter-spacing: 1.5px;
-            color: #fff;
+            color: #1e293b;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
         }
+        .nav-logo-text i { color: #eab308; }
 
+        /* Centered Nav Links (Permanently anchored in exact horizontal center) */
         .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             align-items: center;
             gap: 32px;
+            white-space: nowrap;
         }
 
         .nav-link {
             background: none;
             border: none;
-            color: rgba(255,255,255,0.82);
-            font-size: 0.9rem;
+            color: #475569;
+            font-size: 0.92rem;
             font-weight: 600;
             cursor: pointer;
             font-family: inherit;
@@ -84,18 +92,15 @@
             align-items: center;
             gap: 5px;
         }
-        .nav-link:hover { color: #fff; }
+        .nav-link:hover { color: #0f172a; }
         .nav-badge {
-            background: var(--accent-magenta);
-            color: #fff;
-            font-size: 0.68rem;
-            font-weight: 900;
-            padding: 1px 6px;
-            border-radius: 10px;
+            color: #ef4444;
+            font-size: 0.9rem;
+            font-weight: 700;
         }
 
         .btn-nav-cta {
-            background: linear-gradient(90deg, #0072ff, #00c6ff);
+            background: #2563eb;
             color: #fff;
             border: none;
             padding: 10px 26px;
@@ -104,19 +109,30 @@
             font-size: 0.88rem;
             cursor: pointer;
             font-family: inherit;
-            box-shadow: 0 4px 16px rgba(0, 114, 255, 0.45);
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
             transition: transform 0.2s, box-shadow 0.2s;
             white-space: nowrap;
         }
         .btn-nav-cta:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 22px rgba(0,198,255,0.6);
+            box-shadow: 0 6px 22px rgba(37, 99, 235, 0.4);
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1100px) {
+            .nav-links { gap: 16px; }
+            .nav-link { font-size: 0.85rem; }
+        }
+
+        @media (max-width: 900px) {
             .nav-links { display: none; }
             .lumina-nav { padding: 14px 20px; }
         }
+
+        /* ──────────────────── ANIMATIONS & 3D ──────────────────── */
+        @keyframes subtleZoom { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(168,85,247, 0.6); } 70% { box-shadow: 0 0 0 14px rgba(168,85,247, 0); } 100% { box-shadow: 0 0 0 0 rgba(168,85,247, 0); } }
+        @keyframes statusPulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { transform: scale(1.2); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
+        @keyframes floatWidget { 0% { transform: translateY(0); } 50% { transform: translateY(-12px); } 100% { transform: translateY(0); } }
 
         /* ──────────────────── HERO ──────────────────── */
         .hero-section {
@@ -135,31 +151,8 @@
             inset: 0;
             background: url('lumina_banner.png') center center / cover no-repeat;
             z-index: 0;
-        }
-
-        /* Subtle overlay to ensure text contrast without hiding the photo */
-        .hero-bg::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                90deg,
-                rgba(10,15,45,0.62) 0%,
-                rgba(10,15,45,0.12) 28%,
-                rgba(10,15,45,0.12) 72%,
-                rgba(10,15,45,0.62) 100%
-            );
-        }
-        /* Bottom fade to merge with wave */
-        .hero-bg::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                180deg,
-                transparent 50%,
-                rgba(10,15,45,0.55) 100%
-            );
+            animation: subtleZoom 25s infinite ease-in-out;
+            transform-origin: center center;
         }
 
         .hero-content {
@@ -188,7 +181,7 @@
 
         .btn-hero-main {
             display: inline-block;
-            background: linear-gradient(90deg, #a855f7, #3b82f6, #06b6d4);
+            background: linear-gradient(90deg, #d946ef, #0ea5e9);
             color: #fff;
             border: none;
             padding: 15px 42px;
@@ -198,12 +191,12 @@
             letter-spacing: 0.8px;
             cursor: pointer;
             font-family: inherit;
-            box-shadow: 0 0 32px rgba(168,85,247,0.65), 0 0 60px rgba(6,182,212,0.3);
+            box-shadow: 0 0 32px rgba(217,70,239,0.5), 0 0 60px rgba(14,165,233,0.3);
             transition: transform 0.25s, box-shadow 0.25s;
         }
         .btn-hero-main:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 42px rgba(168,85,247,0.8), 0 0 70px rgba(6,182,212,0.5);
+            box-shadow: 0 0 42px rgba(217,70,239,0.7), 0 0 70px rgba(14,165,233,0.5);
         }
 
         /* ──────────────────── WAVE ──────────────────── */
@@ -211,111 +204,195 @@
             position: relative;
             z-index: 10;
             line-height: 0;
-            margin-top: -2px;
+            margin-top: -79px;
         }
         .wave-wrap svg { display: block; width: 100%; }
 
-        /* ──────────────────── CARDS SECTION ──────────────────── */
-        .cards-section {
-            background: #fff;
-            padding: 0 48px 60px;
+        /* ──────────────────── SPRITES ──────────────────── */
+        .sprite-photo {
+            background-image: url('lumina_profiles.png');
+            background-size: 300% 200%;
+            background-repeat: no-repeat;
+            width: 100%; height: 100%;
+            border-radius: 16px 16px 0 0;
         }
+        .anna-photo { background-position: 0% 100%; }
+        .piotr-photo { background-position: 50% 100%; }
+        .julia-photo { background-position: 100% 100%; }
+
+        .modal-sprite {
+            background-image: url('lumina_profiles.png');
+            background-size: 300% 200%;
+            background-repeat: no-repeat;
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            border: 3px solid #a855f7;
+            box-shadow: 0 0 18px rgba(168,85,247,0.5);
+            margin: 0 auto;
+        }
+
+        .widget-sprite {
+            background-image: url('lumina_profiles.png');
+            background-size: 300% 200%;
+            background-repeat: no-repeat;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ──────────────────── CARDS SECTION ──────────────────── */
+        .carousel-container {
+            position: relative;
+            max-width: 1040px;
+            margin: 0 auto;
+            margin-top: -120px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+        }
+        
+        .carousel-btn {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(255, 255, 255, 1);
+            color: #0f172a;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 30;
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            font-size: 1.15rem;
+        }
+        .carousel-btn:hover {
+            background: #ffffff;
+            color: #2563eb;
+            transform: scale(1.12);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35);
+        }
+        .carousel-btn.left { margin-right: 15px; }
+        .carousel-btn.right { margin-left: 15px; }
 
         .profiles-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            max-width: 900px;
-            margin: 0 auto;
-            /* Pull cards UP into the wave area */
-            margin-top: -70px;
-            position: relative;
-            z-index: 20;
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+            padding: 40px 15px 55px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            width: 100%;
+            align-items: center;
         }
-
-        @media (max-width: 900px) {
-            .profiles-grid {
-                grid-template-columns: repeat(2, 1fr);
-                margin-top: -30px;
-            }
-            .cards-section { padding: 0 20px 40px; }
-        }
-        @media (max-width: 580px) {
-            .profiles-grid { grid-template-columns: 1fr; }
-        }
+        .profiles-grid::-webkit-scrollbar { display: none; }
 
         .profile-card {
+            flex: 0 0 calc(33.333% - 16px);
+            scroll-snap-align: center;
             background: #fff;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.45s ease, opacity 0.45s ease;
             position: relative;
+            transform-style: preserve-3d;
+            opacity: 0.82;
+            transform: scale(0.92);
+            z-index: 1;
         }
-        .profile-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 18px 42px rgba(0,0,0,0.22);
-        }
-        /* Piotr (middle / featured) – slightly bigger shadow */
+
         .profile-card.featured {
-            transform: translateY(-12px);
-            box-shadow: 0 18px 48px rgba(0,0,0,0.28);
+            transform: translateY(-22px) scale(1.08) !important;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.45), 0 0 25px rgba(168,85,247,0.25);
+            border: 2px solid rgba(255,255,255,0.4);
+            opacity: 1;
+            z-index: 10;
         }
-        .profile-card.featured:hover {
-            transform: translateY(-17px);
+
+        @media (max-width: 900px) {
+            .profile-card { flex: 0 0 calc(50% - 12px); }
+        }
+        @media (max-width: 600px) {
+            .profile-card { flex: 0 0 85%; }
+            .carousel-btn { display: none; }
+        }
+
+        .profile-card:hover {
+            opacity: 1;
+            z-index: 15;
         }
 
         .card-photo {
             position: relative;
             height: 240px;
-            overflow: hidden;
             background: #e2e8f0;
+            border-radius: 16px 16px 0 0;
         }
         .card-photo img {
             width: 100%; height: 100%; object-fit: cover; display: block;
+            border-radius: 16px 16px 0 0;
         }
 
-        /* Heart button – top right */
         .card-heart {
             position: absolute;
-            top: 10px; right: 10px;
-            width: 30px; height: 30px;
+            top: 12px; right: 12px;
+            width: 38px; height: 38px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(6px);
-            border: none; cursor: pointer;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+            cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            color: #cbd5e1; font-size: 0.9rem;
-            transition: color 0.2s, background 0.2s;
+            color: #f43f5e; font-size: 1.1rem;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5;
         }
-        .card-heart:hover, .card-heart.liked {
-            color: #ef4444;
-            background: rgba(255,255,255,0.92);
+        .card-heart:hover {
+            background: #f43f5e;
+            color: #ffffff;
+            transform: scale(1.18);
+            box-shadow: 0 6px 20px rgba(244, 63, 94, 0.5);
+        }
+        .card-heart.liked {
+            background: #f43f5e;
+            color: #ffffff;
+            box-shadow: 0 4px 16px rgba(244, 63, 94, 0.5);
+        }
+        .card-heart.liked i {
+            animation: heartPop 0.35s ease;
+        }
+        @keyframes heartPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.35); }
+            100% { transform: scale(1); }
         }
 
         /* Match % badge – bottom right */
         .card-match {
             position: absolute;
-            bottom: 10px; right: 10px;
+            bottom: -22px; right: 20px;
             width: 44px; height: 44px;
             border-radius: 50%;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: #fff;
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.72rem; font-weight: 900; color: #fff;
-            background: linear-gradient(135deg, #a855f7, #3b82f6);
-            box-shadow: 0 2px 10px rgba(168,85,247,0.5);
-        }
-        .profile-card:nth-child(2) .card-match {
-            background: linear-gradient(135deg, #3b82f6, #06b6d4);
-            box-shadow: 0 2px 10px rgba(59,130,246,0.5);
-        }
-        .profile-card:nth-child(3) .card-match {
-            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            font-weight: 800; font-size: 0.85rem;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            animation: pulseGlow 2.5s infinite;
         }
 
         /* Card body */
         .card-body {
-            padding: 14px 16px 18px;
+            padding: 24px 16px 18px; 
+            border-radius: 0 0 16px 16px;
         }
         .card-name {
             font-size: 1rem; font-weight: 800; color: #0f172a;
@@ -329,61 +406,130 @@
             font-size: 0.78rem; color: #475569; line-height: 1.4;
         }
 
+        /* ──────────────────── BOTTOM LAYOUT ──────────────────── */
+        .bottom-layout {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 48px 80px;
+        }
+        @media (max-width: 850px) {
+            .bottom-layout { grid-template-columns: 1fr; }
+        }
+
         /* ──────────────────── WHY LUMINA ──────────────────── */
         .why-section {
-            background: #fff;
-            padding: 20px 48px 60px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .why-title-line {
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             font-weight: 800;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #1e293b;
-            margin-bottom: 36px;
+            color: #fff;
+            margin-bottom: 40px;
         }
 
         .why-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-            max-width: 560px;
-            margin: 0 auto;
         }
-        @media (max-width: 560px) { .why-grid { grid-template-columns: 1fr; } }
 
         .why-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
             cursor: pointer;
         }
         .why-icon-wrap {
-            width: 54px; height: 54px;
-            border: 2px solid #e2e8f0;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem;
-            color: #334155;
-            transition: border-color 0.2s, color 0.2s, transform 0.2s;
+            font-size: 2rem;
+            color: #eab308;
+            transition: transform 0.2s, text-shadow 0.2s;
         }
         .why-item:hover .why-icon-wrap {
-            border-color: #a855f7;
-            color: #a855f7;
-            transform: scale(1.08);
+            transform: scale(1.1);
+            text-shadow: 0 0 15px rgba(234,179,8,0.4);
         }
         .why-label {
-            font-size: 0.88rem; font-weight: 700;
-            color: #1e293b; line-height: 1.3;
+            font-size: 0.9rem; font-weight: 600;
+            color: #e2e8f0; line-height: 1.4;
+        }
+
+        /* ──────────────────── QUICK MESSAGES WIDGET ──────────────────── */
+        .widget-panel {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 24px;
+            width: 280px;
+            flex-shrink: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: left;
+            animation: floatWidget 7s ease-in-out infinite;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s;
+            transform-style: preserve-3d;
+        }
+        .widget-panel:hover {
+            animation-play-state: paused;
+            transform: translateY(-8px) perspective(1000px) rotateY(-6deg) scale(1.03);
+            box-shadow: -25px 25px 50px rgba(0,0,0,0.4);
+        }
+        .widget-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+        .notif-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #fff;
+            padding: 10px 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .notif-icon {
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: #fff;
+        }
+        .notif-icon.blue { background: #3b82f6; }
+        .notif-icon.orange { background: #f59e0b; }
+        .notif-count {
+            margin-left: auto; width: 18px; height: 18px; border-radius: 50%;
+            background: #ef4444; color: #fff; font-size: 0.65rem;
+            display: flex; align-items: center; justify-content: center; font-weight: bold;
+        }
+        .users-title {
+            font-size: 0.9rem; font-weight: 700; margin: 20px 0 12px;
+        }
+        .user-item {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+        }
+        .user-item img {
+            width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
+        }
+        .user-info { flex: 1; }
+        .user-name { font-size: 0.85rem; font-weight: 700; }
+        .user-status { font-size: 0.75rem; color: #64748b; }
+        .status-dot {
+            width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
+            animation: statusPulse 2s infinite;
         }
 
         /* ──────────────────── FOOTER ──────────────────── */
         .page-footer {
-            background: var(--navy-deep);
-            border-top: 1px solid rgba(255,255,255,0.07);
+            background: transparent;
+            border-top: 1px solid rgba(255,255,255,0.1);
             padding: 22px 48px;
             display: flex;
             align-items: center;
@@ -391,16 +537,36 @@
             flex-wrap: wrap;
             gap: 14px;
             font-size: 0.8rem;
-            color: var(--text-muted);
+            color: #94a3b8;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
         }
         .footer-links-row { display: flex; gap: 18px; flex-wrap: wrap; }
-        .footer-links-row a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-        .footer-links-row a:hover { color: var(--accent-cyan); }
-        .footer-social { display: flex; gap: 14px; font-size: 1rem; }
-        .footer-social a { color: var(--text-muted); transition: color 0.2s; }
-        .footer-social a:hover { color: var(--accent-cyan); }
+        .footer-links-row a { color: #94a3b8; text-decoration: none; transition: color 0.2s; }
+        .footer-links-row a:hover { color: #fff; }
+        .footer-social { display: flex; gap: 14px; font-size: 1.1rem; }
+        .footer-social a { color: #94a3b8; transition: color 0.2s; }
+        .footer-social a:hover { color: #fff; }
 
         /* ──────────────────── MODALS ──────────────────── */
+        .btn-google {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; background: #fff; color: #1e293b; border: none;
+            padding: 12px; border-radius: 8px; font-weight: 700; font-size: 0.95rem;
+            cursor: pointer; margin-bottom: 18px; transition: background 0.2s;
+            font-family: inherit; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .btn-google:hover { background: #f1f5f9; }
+        .auth-divider {
+            display: flex; align-items: center; text-align: center; margin-bottom: 18px;
+            color: var(--text-muted); font-size: 0.75rem; font-weight: 700;
+        }
+        .auth-divider::before, .auth-divider::after {
+            content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .auth-divider span { padding: 0 10px; letter-spacing: 0.5px; }
+
         .modal-overlay {
             position: fixed; inset: 0; z-index: 9999;
             background: rgba(0,0,0,0.82);
@@ -470,34 +636,206 @@
             transition: transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275), opacity 0.3s;
         }
         .toast.show { transform: translateY(0); opacity: 1; }
+
+        /* ──────────────────── ELEGANT INTEGRATED RADIO (IN NAVBAR) ──────────────────── */
+        .nav-radio-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border: 1px solid #fde047;
+            padding: 5px 14px 5px 8px;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(234, 179, 8, 0.15);
+            transition: all 0.25s ease;
+        }
+        .nav-radio-pill:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(234, 179, 8, 0.3);
+            border-color: #eab308;
+        }
+        .nav-radio-play {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #eab308, #ca8a04);
+            color: #0f172a;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            box-shadow: 0 2px 6px rgba(234, 179, 8, 0.4);
+            cursor: pointer;
+        }
+        .nav-radio-info {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            line-height: 1.15;
+        }
+        .nav-radio-title {
+            font-size: 0.76rem;
+            font-weight: 800;
+            color: #854d0e;
+            letter-spacing: 0.3px;
+        }
+        .nav-radio-sub {
+            font-size: 0.65rem;
+            color: #a16207;
+            font-weight: 600;
+        }
+        .sound-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 12px;
+        }
+        .sound-bar {
+            width: 2.5px;
+            background: #ca8a04;
+            border-radius: 2px;
+            height: 3px;
+        }
+        .radio-playing .sound-bar:nth-child(1) { animation: soundWave 0.8s infinite ease-in-out alternate; }
+        .radio-playing .sound-bar:nth-child(2) { animation: soundWave 1.1s infinite ease-in-out alternate 0.2s; }
+        .radio-playing .sound-bar:nth-child(3) { animation: soundWave 0.7s infinite ease-in-out alternate 0.4s; }
+        .radio-playing .sound-bar:nth-child(4) { animation: soundWave 0.9s infinite ease-in-out alternate 0.1s; }
+        @keyframes soundWave {
+            0% { height: 3px; }
+            100% { height: 12px; }
+        }
+
+        /* ──────────────────── ELEGANT SCRIPTURE STRIP ──────────────────── */
+        .scripture-strip {
+            max-width: 960px;
+            margin: 0 auto 30px;
+            padding: 0 20px;
+            display: flex;
+            gap: 20px;
+        }
+        .scripture-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 16px;
+            padding: 16px 20px;
+            text-align: left;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .scripture-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(234, 179, 8, 0.3);
+            transform: translateY(-3px);
+        }
+        .scripture-text {
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            line-height: 1.5;
+            font-style: italic;
+            margin-bottom: 6px;
+        }
+        .scripture-sig {
+            font-size: 0.75rem;
+            color: #facc15;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        /* User Profile Pill in Navbar */
+        .user-nav-profile {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            background: #f1f5f9;
+            padding: 4px 14px 4px 6px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+        }
+        .user-nav-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .user-nav-name {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .btn-nav-logout {
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-left: 4px;
+        }
+        .btn-nav-logout:hover { color: #ef4444; }
+
+        @media (max-width: 800px) {
+            .scripture-strip { flex-direction: column; }
+            .nav-radio-sub { display: none; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- Audio Player Element for Christian Culture Radio -->
+    <audio id="ccRadioAudio" preload="none"></audio>
+
     <!-- ══════════ NAVBAR ══════════ -->
     <nav class="lumina-nav">
-        <a href="index.html" class="nav-logo-text">LUMINA</a>
+        <a href="index.html" class="nav-logo-text">
+            <i class="fa-solid fa-sparkles"></i> LUMINA
+        </a>
 
         <div class="nav-links">
-            <button class="nav-link">Strona Główna</button>
+            <a href="index.html" class="nav-link">Strona Główna</a>
             <button class="nav-link" onclick="scrollToSection('odkrywaj')">Odkrywaj</button>
             <button class="nav-link" onclick="showToast('Masz 3 nowe wiadomości! 💬')">
-                Wiadomości <span class="nav-badge">3</span>
+                Wiadomości <span class="nav-badge">(3)</span>
             </button>
-            <button class="nav-link" onclick="openProfile('Twój Profil','28','Warszawa','Witaj w LUMINA!','https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=500','100%')">Profil</button>
+            <button class="nav-link" onclick="openProfile('Twój Profil','28','Warszawa','Witaj w LUMINA!','anna-photo','100%')">Profil</button>
             <button class="nav-link" onclick="showToast('Sekcja Wydarzeń Lokalnych już wkrótce! 📍')">Wydarzenia</button>
         </div>
 
-        <button class="btn-nav-cta" onclick="openAuth()">Zaloguj / Rejestracja</button>
+        <div style="display:flex;align-items:center;gap:14px;">
+            <!-- Integrated Radio CC Mini-Pill in Navbar -->
+            <div class="nav-radio-pill" id="radioWidget" onclick="toggleRadio()" title="Włącz / Wyłącz Radio Christian Culture">
+                <button class="nav-radio-play" id="radioPlayBtn">
+                    <i class="fa-solid fa-play" id="radioPlayIcon"></i>
+                </button>
+                <div class="nav-radio-info">
+                    <span class="nav-radio-title">Radio CC Live</span>
+                    <span class="nav-radio-sub">Global Channel</span>
+                </div>
+                <div class="sound-bars">
+                    <div class="sound-bar"></div>
+                    <div class="sound-bar"></div>
+                    <div class="sound-bar"></div>
+                    <div class="sound-bar"></div>
+                </div>
+            </div>
+
+            <div class="user-nav-profile" id="userNavProfile">
+                <img src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar">
+                <span class="user-nav-name" id="userNavName">Użytkownik</span>
+                <button class="btn-nav-logout" onclick="handleLogout()" title="Wyloguj"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+            <button class="btn-nav-cta" id="authCtaBtn" onclick="openAuth()">Zaloguj / Rejestracja</button>
+        </div>
     </nav>
 
-    <!-- ══════════ HERO ══════════ -->
-    <section class="hero-section">
+    <!-- ══════════ HERO (Clean & Unobstructed) ══════════ -->
+    <section class="hero-section" onclick="openAuth()" style="cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 150px;">
         <div class="hero-bg"></div>
-        <div class="hero-content">
-            <h1 class="hero-title">Witaj w LUMINA&nbsp;–<br>Miejscu Głębszych Relacji.</h1>
-            <p class="hero-sub">Rozpocznij swoją podróż do miłości z inteligentnym dopasowaniem.</p>
-            <button class="btn-hero-main" onclick="openAuth()">ZAREJESTRUJ SIĘ ZA DARMO</button>
+        <div style="position: relative; z-index: 5; transform: translate(-22px, 2px);">
+            <button class="btn-hero-main" onclick="openAuth()" style="width: 380px; height: 64px; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; box-sizing: border-box; border-radius: 50px;">ZAREJESTRUJ SIĘ ZA DARMO</button>
         </div>
     </section>
 
@@ -508,86 +846,165 @@
         </svg>
     </div>
 
-    <!-- ══════════ PROFILE CARDS (on white) ══════════ -->
+    <!-- ══════════ CARDS ══════════ -->
     <section class="cards-section" id="odkrywaj">
-        <div class="profiles-grid">
+        <div class="carousel-container">
+            <button class="carousel-btn left" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="profiles-grid" id="profilesCarousel">
 
-            <!-- Anna -->
-            <div class="profile-card" onclick="openProfile('Anna','28','Warszawa','Uwielbia podróże, sztukę i muzykę worship','https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=500','94%')">
-                <div class="card-photo">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=500" alt="Anna" loading="lazy">
-                    <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                    <div class="card-match">94%</div>
+                <!-- Anna -->
+                <div class="profile-card" onclick="openProfile('Anna','28','Warszawa','Uwielbia podróże i sztukę','anna-photo','94%')">
+                    <div class="card-photo">
+                        <div class="sprite-photo anna-photo"></div>
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match">94%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Anna, 28</div>
+                        <div class="card-city">📍 Warszawa</div>
+                        <div class="card-desc">"Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania świata."</div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="card-name">Anna, 28</div>
-                    <div class="card-city">Warszawa</div>
-                    <div class="card-desc">Uwielbia podróżne i sztukę</div>
+
+                <!-- Piotr -->
+                <div class="profile-card" onclick="openProfile('Piotr','31','Kraków','Szuka spontanicznych przygód','piotr-photo','88%')">
+                    <div class="card-photo">
+                        <div class="sprite-photo piotr-photo"></div>
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match">88%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Piotr, 31</div>
+                        <div class="card-city">📍 Kraków</div>
+                        <div class="card-desc">"Szuka spontanicznych przygód. Entuzjasta górskich wędrówek."</div>
+                    </div>
                 </div>
+
+                <!-- Julia -->
+                <div class="profile-card" onclick="openProfile('Julia','26','Gdańsk','Marzycielka z pasją do muzyki','julia-photo','91%')">
+                    <div class="card-photo">
+                        <div class="sprite-photo julia-photo"></div>
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match">91%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Julia, 26</div>
+                        <div class="card-city">📍 Gdańsk</div>
+                        <div class="card-desc">"Marzycielka z pasją do muzyki. Szukam głębokich, szczerych relacji."</div>
+                    </div>
+                </div>
+                
+                <!-- Noemi -->
+                <div class="profile-card" onclick="openProfile('Noemi','27','Wrocław','Głęboka wiara i pasja do natury','anna-photo','96%')">
+                    <div class="card-photo">
+                        <img src="avatar_noemi.jpg" alt="Noemi" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #0369a1, #06b6d4);">96%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Noemi, 27</div>
+                        <div class="card-city">📍 Wrocław</div>
+                        <div class="card-desc">"Spokój, las i głębokie rozmowy o Bogu przy herbacie. Szukam bratniej duszy."</div>
+                    </div>
+                </div>
+                
+                <!-- Sara -->
+                <div class="profile-card" onclick="openProfile('Sara','29','Poznań','Muzyka uwielbienia i architektura','julia-photo','92%')">
+                    <div class="card-photo">
+                        <img src="avatar_sara.jpg" alt="Sara" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #6d28d9, #ec4899);">92%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Sara, 29</div>
+                        <div class="card-city">📍 Poznań</div>
+                        <div class="card-desc">"Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu."</div>
+                    </div>
+                </div>
+
             </div>
-
-            <!-- Piotr (featured / center) -->
-            <div class="profile-card featured" onclick="openProfile('Piotr','31','Kraków','Szuka wartościowej relacji prowadzącej do sakramentu małżeństwa','https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=500','88%')">
-                <div class="card-photo">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=500" alt="Piotr" loading="lazy">
-                    <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                    <div class="card-match">88%</div>
-                </div>
-                <div class="card-body">
-                    <div class="card-name">Piotr, 31</div>
-                    <div class="card-city">Kraków</div>
-                    <div class="card-desc">Szuka spontanicznych przygód</div>
-                </div>
-            </div>
-
-            <!-- Julia -->
-            <div class="profile-card" onclick="openProfile('Julia','26','Gdańsk','Marzycielka z pasją do muzyki i fotografii','https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=500','91%')">
-                <div class="card-photo">
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=500" alt="Julia" loading="lazy">
-                    <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                    <div class="card-match">91%</div>
-                </div>
-                <div class="card-body">
-                    <div class="card-name">Julia, 26</div>
-                    <div class="card-city">Gdańsk</div>
-                    <div class="card-desc">Marzycka z pasją do muzyki</div>
-                </div>
-            </div>
-
+            <button class="carousel-btn right" onclick="scrollCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
     </section>
 
-    <!-- ══════════ DLACZEGO LUMINA? ══════════ -->
-    <section class="why-section">
-        <div class="why-title-line">DLACZEGO LUMINA?</div>
-        <div class="why-grid">
-            <div class="why-item" onclick="showToast('Inteligentne Dopasowanie na podstawie wartości i wiary!')">
-                <div class="why-icon-wrap"><i class="fa-regular fa-user-group"></i></div>
-                <div class="why-label">Inteligentne<br>Doposowanie</div>
+    <!-- ══════════ SCRIPTURE INSPIRATION STRIP ══════════ -->
+    <div class="scripture-strip">
+        <div class="scripture-card">
+            <div class="scripture-text">„Bo gdzie są dwaj albo trzej zebrani w imię moje, tam jestem pośród nich.”</div>
+            <div class="scripture-sig">Ewangelia wg św. Mateusza 18, 20</div>
+        </div>
+        <div class="scripture-card">
+            <div class="scripture-text">„Jeżeli zaś chodzimy w światłości, tak jak On sam trwa w światłości, wtedy mamy łączność jedni z drugimi…”</div>
+            <div class="scripture-sig">1 List św. Jana 1, 7</div>
+        </div>
+    </div>
+
+    <!-- ══════════ BOTTOM LAYOUT (WHY LUMINA + WIDGET) ══════════ -->
+    <section class="bottom-layout">
+        <div class="why-section">
+            <div class="why-title-line">DLACZEGO LUMINA?</div>
+            <div class="why-grid">
+                <div class="why-item" onclick="showToast('Inteligentne Dopasowanie na podstawie wartości i wiary!')">
+                    <div class="why-icon-wrap"><i class="fa-solid fa-user-group"></i></div>
+                    <div class="why-label">Inteligentne<br>Dopasowanie</div>
+                </div>
+                <div class="why-item" onclick="window.location.href='lumina-safety.html'">
+                    <div class="why-icon-wrap"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="why-label">Weryfikacja<br>Profili</div>
+                </div>
+                <div class="why-item" onclick="showToast('Rekolekcje i spotkania singli chrześcijańskich!')">
+                    <div class="why-icon-wrap"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="why-label">Wydarzenia<br>Lokalne</div>
+                </div>
             </div>
-            <div class="why-item" onclick="window.location.href='lumina-safety.html'">
-                <div class="why-icon-wrap"><i class="fa-regular fa-shield-check"></i></div>
-                <div class="why-label">Weryfikacja<br>Profili</div>
+        </div>
+
+        <div class="messages-widget">
+            <div class="widget-title">Szybkie Wiadomości</div>
+            <div class="notif-item">
+                <div class="notif-icon blue"><i class="fa-solid fa-bell"></i></div>
+                <div>Notyfikacja o nowościach w aplikacji</div>
+                <div class="notif-count">1</div>
             </div>
-            <div class="why-item" onclick="showToast('Rekolekcje i spotkania singli chrześcijańskich!')">
-                <div class="why-icon-wrap"><i class="fa-regular fa-location-dot"></i></div>
-                <div class="why-label">Wydarzenia<br>Lokalne</div>
+            <div class="notif-item">
+                <div class="notif-icon orange"><i class="fa-solid fa-bell"></i></div>
+                <div>Notyfikacja o nowym dopasowaniu</div>
+                <div class="notif-count">3</div>
+            </div>
+
+            <div class="users-title">Użytkownicy</div>
+            <div class="user-item">
+                <div class="widget-sprite anna-photo"></div>
+                <div class="user-info">
+                    <div class="user-name">Ania W.</div>
+                    <div class="user-status">Online</div>
+                </div>
+                <div class="status-dot"></div>
+            </div>
+            <div class="user-item">
+                <div class="widget-sprite piotr-photo"></div>
+                <div class="user-info">
+                    <div class="user-name">Tomek K.</div>
+                    <div class="user-status">Online</div>
+                </div>
+                <div class="status-dot"></div>
             </div>
         </div>
     </section>
 
     <!-- ══════════ FOOTER ══════════ -->
     <footer class="page-footer">
-        <div>LUMINA © 2026 &bull; Ekosystem Christian Culture</div>
+        <div>&copy; 2026 LUMINA. Wszelkie prawa zastrzeżone.</div>
         <div class="footer-links-row">
-            <a href="index.html">Strona Główna</a>
-            <a href="lumina-safety.html">Regulamin & Ochrona</a>
-            <a href="privacy.html">Prywatność</a>
+            <a href="lumina-safety.html">Regulamin</a>
+            <a href="privacy.html">Polityka Prywatności</a>
+            <a href="#">O Nas</a>
             <a href="index.html#contact-section">Kontakt</a>
         </div>
         <div class="footer-social">
             <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
             <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
     </footer>
 
@@ -596,7 +1013,7 @@
         <div class="modal-card">
             <button class="modal-close-btn" onclick="closeModal('profileModal')"><i class="fa-solid fa-xmark"></i></button>
             <div style="text-align:center;margin-bottom:18px;">
-                <img id="mImg" src="" alt="" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);">
+                <div id="mImg"></div>
                 <h3 id="mName" style="font-size:1.2rem;font-weight:800;margin:10px 0 4px;"></h3>
                 <div id="mLoc" style="font-size:0.82rem;color:#a78bfa;font-weight:700;"></div>
             </div>
@@ -613,12 +1030,19 @@
         <div class="modal-card">
             <button class="modal-close-btn" onclick="closeModal('authModal')"><i class="fa-solid fa-xmark"></i></button>
             <h3 style="text-align:center;font-size:1.3rem;font-weight:800;margin-bottom:6px;">Dołącz do LUMINA</h3>
-            <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);margin-bottom:20px;">Chrześcijański portal randkowy</p>
-            <form onsubmit="handleReg(event)">
-                <div class="form-row"><label>Imię i wiek</label><input type="text" placeholder="np. Mateusz, 27" required></div>
-                <div class="form-row"><label>Miasto</label><input type="text" placeholder="np. Kraków" required></div>
-                <div class="form-row"><label>Kilka słów o sobie</label><textarea rows="3" placeholder="Co jest dla Ciebie ważne..." required></textarea></div>
-                <button type="submit" class="btn-modal-submit">ZAREJESTRUJ MNIE ✨</button>
+            <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);margin-bottom:20px;">Chrześcijański portal głębokich relacji</p>
+            
+            <button type="button" class="btn-google" id="btnGoogleAuth" onclick="handleGoogleLogin()">
+                <i class="fa-brands fa-google" style="color: #ea4335;"></i> Kontynuuj przez Google
+            </button>
+            <div class="auth-divider"><span>LUB TRADYCYJNIE</span></div>
+
+            <form id="traditionalRegForm" onsubmit="handleTraditionalReg(event)">
+                <div class="form-row"><label>Imię</label><input type="text" id="regName" placeholder="np. Mateusz" required></div>
+                <div class="form-row"><label>Wiek</label><input type="number" id="regAge" min="18" max="99" placeholder="np. 27" required></div>
+                <div class="form-row"><label>Miasto</label><input type="text" id="regCity" placeholder="np. Kraków" required></div>
+                <div class="form-row"><label>Kilka słów o sobie i wierze</label><textarea id="regBio" rows="3" placeholder="Co jest dla Ciebie ważne w życiu i relacji..." required></textarea></div>
+                <button type="submit" class="btn-modal-submit">ZAPISZ MÓJ PROFIL ✨</button>
             </form>
         </div>
     </div>
@@ -629,18 +1053,272 @@
         <span id="toastTxt"></span>
     </div>
 
+    <!-- ══════════ FIREBASE & ENGINE SCRIPTS ══════════ -->
+    <script type="module">
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithPopup, 
+            GoogleAuthProvider, 
+            onAuthStateChanged, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            setDoc, 
+            getDoc, 
+            getDocs, 
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            projectId: "cc-mission-control",
+            appId: "1:519207260358:web:d875a610f438ecad2c47c7",
+            apiKey: "AIzaSyDou1gYyuJnuF2WocXEqglfRPqqwMm0Ge4",
+            authDomain: "cc-mission-control.firebaseapp.com",
+            storageBucket: "cc-mission-control.firebasestorage.app",
+            messagingSenderId: "519207260358"
+        };
+
+        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        let currentUser = null;
+
+        // ── Auth State Listener ──
+        onAuthStateChanged(auth, async (user) => {
+            currentUser = user;
+            const profilePill = document.getElementById('userNavProfile');
+            const authBtn = document.getElementById('authCtaBtn');
+            const navName = document.getElementById('userNavName');
+            const navAvatar = document.getElementById('userNavAvatar');
+
+            if (user) {
+                profilePill.style.display = 'flex';
+                authBtn.style.display = 'none';
+                navName.textContent = user.displayName || user.email.split('@')[0];
+                if (user.photoURL) navAvatar.src = user.photoURL;
+
+                // Sync/load profile data from Firestore
+                try {
+                    const userDocRef = doc(db, "lumina_users", user.uid);
+                    const userDoc = await getDoc(userDocRef);
+                    if (!userDoc.exists()) {
+                        // Create initial profile in Firestore
+                        await setDoc(userDocRef, {
+                            uid: user.uid,
+                            name: user.displayName || 'Użytkownik LUMINA',
+                            email: user.email,
+                            photoURL: user.photoURL || '',
+                            city: 'Polska',
+                            age: 26,
+                            bio: 'Chrześcijanin szukający Bożej relacji.',
+                            matchRate: '95%',
+                            createdAt: serverTimestamp()
+                        });
+                    }
+                } catch (err) {
+                    console.warn("Brak uprawnień zapisu do Firestore (tryb demonstracyjny):", err);
+                }
+                showToast(`Witaj w LUMINA, ${user.displayName || 'Użytkowniku'}! ✨`);
+            } else {
+                profilePill.style.display = 'none';
+                authBtn.style.display = 'block';
+            }
+        });
+
+        // ── Google Auth ──
+        window.handleGoogleLogin = async function() {
+            closeModal('authModal');
+            showToast('Łączenie z Google... ⏳');
+            try {
+                const result = await signInWithPopup(auth, provider);
+                showToast(`Witaj w LUMINA, ${result.user.displayName}! 🕊️`);
+            } catch (error) {
+                console.warn("Firebase Google Auth fallback:", error);
+                // Fallback for local files/unauthorized domains: create demo session
+                const demoUser = {
+                    displayName: "Użytkownik Google",
+                    email: "uzytkownik@lumina.cc",
+                    photoURL: "icon.png",
+                    uid: "demo_google_user"
+                };
+                currentUser = demoUser;
+                document.getElementById('userNavProfile').style.display = 'flex';
+                document.getElementById('authCtaBtn').style.display = 'none';
+                document.getElementById('userNavName').textContent = demoUser.displayName;
+                document.getElementById('userNavAvatar').src = demoUser.photoURL;
+                showToast(`Zalogowano pomyślnie jako ${demoUser.displayName}! 🕊️`);
+            }
+        };
+
+        // ── Logout ──
+        window.handleLogout = async function() {
+            try {
+                await signOut(auth);
+            } catch (err) {
+                console.log(err);
+            }
+            currentUser = null;
+            document.getElementById('userNavProfile').style.display = 'none';
+            document.getElementById('authCtaBtn').style.display = 'block';
+            showToast('Wylogowano z portalu LUMINA');
+        };
+
+        // ── Traditional / Manual Registration ──
+        window.handleTraditionalReg = async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const age = document.getElementById('regAge').value;
+            const city = document.getElementById('regCity').value;
+            const bio = document.getElementById('regBio').value;
+
+            closeModal('authModal');
+            
+            // Set user profile in state
+            currentUser = {
+                displayName: name,
+                email: `${name.toLowerCase()}@lumina.cc`,
+                uid: 'user_' + Date.now()
+            };
+            document.getElementById('userNavProfile').style.display = 'flex';
+            document.getElementById('authCtaBtn').style.display = 'none';
+            document.getElementById('userNavName').textContent = `${name}, ${age}`;
+            document.getElementById('userNavAvatar').src = "icon.png";
+
+            // Add new profile card directly to the beginning of the carousel!
+            const carousel = document.getElementById('profilesCarousel');
+            if (carousel) {
+                const newCard = document.createElement('div');
+                newCard.className = 'profile-card featured';
+                newCard.onclick = () => window.openProfile(name, age, city, bio, 'anna-photo', '100%');
+                newCard.innerHTML = `
+                    <div class="card-photo">
+                        <div class="sprite-photo anna-photo"></div>
+                        <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #10b981, #06b6d4);">Twój Profil</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">${name}, ${age} (Ty)</div>
+                        <div class="card-city">📍 ${city}</div>
+                        <div class="card-desc">"${bio}"</div>
+                    </div>
+                `;
+                carousel.insertBefore(newCard, carousel.firstChild);
+                carousel.scrollTo({ left: 0, behavior: 'smooth' });
+            }
+
+            showToast(`Witaj ${name}! Twój profil został pomyślnie utworzony ✨`);
+
+            try {
+                await setDoc(doc(db, "lumina_users", currentUser.uid), {
+                    uid: currentUser.uid,
+                    name: `${name}`,
+                    age: parseInt(age) || 25,
+                    city: city,
+                    bio: bio,
+                    createdAt: serverTimestamp()
+                });
+            } catch (err) {
+                console.log("Firestore sync info:", err);
+            }
+        };
+
+        // ── Radio Player Control (Official Stream ZenoFM) ──
+        const RADIO_STREAM_URL = "https://stream.zeno.fm/umej2cuqncluv";
+        let isPlayingRadio = false;
+        
+        window.toggleRadio = function() {
+            const audio = document.getElementById('ccRadioAudio');
+            const widget = document.getElementById('radioWidget');
+            const icon = document.getElementById('radioPlayIcon');
+
+            if (!isPlayingRadio) {
+                audio.src = RADIO_STREAM_URL;
+                audio.load();
+                audio.play().then(() => {
+                    isPlayingRadio = true;
+                    widget.classList.add('radio-playing');
+                    icon.className = 'fa-solid fa-pause';
+                    showToast('Radio Christian Culture Global gra na żywo! 🎵');
+                }).catch(err => {
+                    console.error("Audio playback error:", err);
+                    showToast('Kliknij ponownie, aby odtworzyć radio');
+                });
+            } else {
+                audio.pause();
+                audio.src = "";
+                isPlayingRadio = false;
+                widget.classList.remove('radio-playing');
+                icon.className = 'fa-solid fa-play';
+                showToast('Wstrzymano radio');
+            }
+        };
+
+        // ── Heart FAB Match Action ──
+        window.handleFabMatch = function() {
+            showToast('Wysłano wielkie serce do aktualnie przeglądanego profilu! 💖✨');
+            const heartBtn = document.querySelector('.profile-card.featured .card-heart');
+            if (heartBtn) heartBtn.classList.add('liked');
+        };
+
+        // ── Load Dynamic Profiles ──
+        async function loadFirestoreProfiles() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "lumina_users"));
+                if (!querySnapshot.empty) {
+                    const carousel = document.getElementById('profilesCarousel');
+                    carousel.innerHTML = '';
+                    querySnapshot.forEach((docSnap) => {
+                        const data = docSnap.data();
+                        const card = document.createElement('div');
+                        card.className = 'profile-card';
+                        card.onclick = () => window.openProfile(data.name || 'Użytkownik', data.age || 26, data.city || 'Polska', data.bio || 'Witaj!', 'anna-photo', data.matchRate || '93%');
+                        card.innerHTML = `
+                            <div class="card-photo">
+                                <div class="sprite-photo anna-photo"></div>
+                                <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                                <div class="card-match">${data.matchRate || '90%'}</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-name">${data.name || 'Anonim'}, ${data.age || 25}</div>
+                                <div class="card-city">📍 ${data.city || 'Polska'}</div>
+                                <div class="card-desc">"${data.bio || 'Wierzący chrześcijanin'}"</div>
+                            </div>
+                        `;
+                        carousel.appendChild(card);
+                    });
+                    if (window.setupInfiniteCarousel) {
+                        window.isInfiniteInitialized = false;
+                        window.setupInfiniteCarousel();
+                    }
+                }
+            } catch (err) {
+                // Fallback silently to static profiles if offline/no permissions
+                console.log("Ładowanie profili domyślnych.");
+            }
+        }
+        loadFirestoreProfiles();
+    </script>
+
     <script>
         // ── Profile modal ──
-        function openProfile(name, age, city, desc, img, match) {
-            document.getElementById('mImg').src = img;
+        function openProfile(name, age, city, desc, spriteClass, match) {
+            document.getElementById('mImg').className = 'modal-sprite ' + spriteClass;
             document.getElementById('mName').textContent = `${name}, ${age}`;
             document.getElementById('mLoc').textContent = `📍 ${city}  •  Dopasowanie: ${match}`;
             document.getElementById('mDesc').textContent = `"${desc}"`;
             document.getElementById('profileModal').classList.add('open');
         }
-        function openAuth() { document.getElementById('authModal').classList.add('open'); }
+        // ── Auth modal ──
+        function openAuth() {
+            document.getElementById('authModal').classList.add('open');
+        }
         function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-        function handleReg(e) { e.preventDefault(); closeModal('authModal'); showToast('Rejestracja udana! Profil LUMINA aktywny ✨'); }
 
         // ── Interactions ──
         function toggleLike(e, btn) {
@@ -651,6 +1329,115 @@
         function sendPray() { closeModal('profileModal'); showToast('Wysłano intencję modlitewną! 🙏'); }
         function sendMsg()  { closeModal('profileModal'); showToast('Otwarto czat w LUMINA 💌'); }
         function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
+
+        // ── True Infinite Carousel Engine ──
+        let isInfiniteInitialized = false;
+        let singleSetWidth = 0;
+
+        window.setupInfiniteCarousel = function() {
+            const carousel = document.getElementById('profilesCarousel');
+            if (!carousel || isInfiniteInitialized) return;
+
+            const initialCards = Array.from(carousel.children);
+            if (initialCards.length < 3) return;
+
+            // Clone cards to create infinite left and right buffers: [Set A] [Originals] [Set B]
+            initialCards.forEach(card => {
+                const cloneBefore = card.cloneNode(true);
+                carousel.insertBefore(cloneBefore, carousel.firstChild);
+            });
+            initialCards.forEach(card => {
+                const cloneAfter = card.cloneNode(true);
+                carousel.appendChild(cloneAfter);
+            });
+
+            isInfiniteInitialized = true;
+
+            const cardWidth = initialCards[0].offsetWidth;
+            const gap = 24;
+            singleSetWidth = initialCards.length * (cardWidth + gap);
+
+            // Start in the exact center set
+            carousel.scrollLeft = singleSetWidth;
+            if (window.updateCenterCard) window.updateCenterCard();
+        }
+
+        function checkInfiniteWrap() {
+            const carousel = document.getElementById('profilesCarousel');
+            if (!carousel || !singleSetWidth) return;
+
+            if (carousel.scrollLeft <= 20) {
+                carousel.scrollLeft += singleSetWidth;
+            } else if (carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth - 20) {
+                carousel.scrollLeft -= singleSetWidth;
+            }
+        }
+
+        window.updateCenterCard = function() {
+            const carousel = document.getElementById('profilesCarousel');
+            if (!carousel) return;
+            const cards = carousel.querySelectorAll('.profile-card');
+            if (!cards.length) return;
+
+            const carouselRect = carousel.getBoundingClientRect();
+            const carouselCenter = carouselRect.left + carouselRect.width / 2;
+
+            let closestCard = null;
+            let minDistance = Infinity;
+
+            cards.forEach(card => {
+                const cardRect = card.getBoundingClientRect();
+                const cardCenter = cardRect.left + cardRect.width / 2;
+                const distance = Math.abs(carouselCenter - cardCenter);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestCard = card;
+                }
+            });
+
+            cards.forEach(card => {
+                if (card === closestCard) {
+                    card.classList.add('featured');
+                } else {
+                    card.classList.remove('featured');
+                }
+            });
+        };
+
+        window.scrollCarousel = function(direction) {
+            const carousel = document.getElementById('profilesCarousel');
+            if (!carousel) return;
+            const cards = carousel.querySelectorAll('.profile-card');
+            if (!cards.length) return;
+            const cardWidth = cards[0].offsetWidth;
+            const gap = 24;
+            const step = (cardWidth + gap) * direction;
+
+            carousel.scrollBy({ left: step, behavior: 'smooth' });
+            setTimeout(() => {
+                checkInfiniteWrap();
+                window.updateCenterCard();
+            }, 320);
+        };
+
+        // Attach scroll listener to carousel
+        document.addEventListener('DOMContentLoaded', () => {
+            setupInfiniteCarousel();
+            const carousel = document.getElementById('profilesCarousel');
+            if (carousel) {
+                let scrollTimeout;
+                carousel.addEventListener('scroll', () => {
+                    requestAnimationFrame(window.updateCenterCard);
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(checkInfiniteWrap, 150);
+                }, { passive: true });
+            }
+            window.addEventListener('resize', () => {
+                isInfiniteInitialized = false;
+                setupInfiniteCarousel();
+            });
+        });
 
         // ── Toast ──
         let toastTimer;
@@ -666,6 +1453,40 @@
         document.querySelectorAll('.modal-overlay').forEach(bg =>
             bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); })
         );
+
+        // ── 3D Reveal & Interactions ──
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = entry.target.dataset.origTrans || 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.profile-card, .why-item, .widget-panel').forEach((el, i) => {
+                if (el.classList.contains('widget-panel')) {
+                    el.style.opacity = '0';
+                    el.style.transition = `opacity 1s ease ${i * 0.1}s`;
+                } else {
+                    const comp = window.getComputedStyle(el);
+                    el.dataset.origTrans = comp.transform !== 'none' ? comp.transform : 'translateY(0)';
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(40px)';
+                    el.style.transition = `opacity 0.8s cubic-bezier(0.2, 1, 0.2, 1) ${i * 0.1}s, transform 0.8s cubic-bezier(0.2, 1, 0.2, 1) ${i * 0.1}s`;
+                }
+                observer.observe(el);
+                
+                el.addEventListener('transitionend', function handler(e) {
+                    if(e.propertyName === 'opacity') {
+                        el.style.transition = ''; 
+                        el.style.transform = ''; 
+                        el.removeEventListener('transitionend', handler);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
