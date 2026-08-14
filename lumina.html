@@ -1224,6 +1224,23 @@
             <button class="carousel-btn left" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="profiles-grid" id="profilesCarousel">
 
+                <!-- Cezary Rogowski / Twój Profil (Zawsze na początku) -->
+                <div class="profile-card featured" id="my_saved_profile_card" onclick="window.location.href='lumina.cezaryrgowski.html'">
+                    <div class="card-photo">
+                        <img src="avatar_new1.jpg" alt="Cezary Rogowski" id="homeUserAvatar" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #10b981, #06b6d4); font-size: 0.72rem; width: auto; padding: 0 10px; border-radius: 20px; right: 12px; bottom: -14px;">Twój Profil ✨</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            <span id="homeUserName">Cezary Rogowski, 32</span>
+                            <i class="fa-solid fa-circle-check" style="color:#38bdf8;font-size:0.85rem;" title="Zweryfikowany Profil"></i>
+                        </div>
+                        <div class="card-city" id="homeUserCity">📍 Warszawa, Polska</div>
+                        <div class="card-desc" id="homeUserDesc">"Twórca & Wizjoner Christian Culture. Ja i mój dom służyć będziemy Panu."</div>
+                    </div>
+                </div>
+
                 <!-- Noemi (Nowa Kobieta) -->
                 <div class="profile-card" onclick="openProfile('Noemi','28','Wrocław','Głęboka wiara i pasja do natury','avatar_noemi.jpg','96%')">
                     <div class="card-photo">
@@ -1742,6 +1759,38 @@
             }
         }
         loadFirestoreProfiles();
+
+        // ── Instant Sync of Saved Profile from localStorage to Homepage ──
+        function syncUserSavedProfileToHomepage() {
+            const savedJson = localStorage.getItem('lumina_profile_cezaryrgowski') || localStorage.getItem('lumina_main_user_profile');
+            if (!savedJson) return;
+            try {
+                const p = JSON.parse(savedJson);
+                const nameEl = document.getElementById('homeUserName');
+                const cityEl = document.getElementById('homeUserCity');
+                const descEl = document.getElementById('homeUserDesc');
+                const avEl = document.getElementById('homeUserAvatar');
+                
+                if (nameEl) nameEl.textContent = `${p.name}, ${p.age}`;
+                if (cityEl) cityEl.textContent = `📍 ${p.city}`;
+                if (descEl) descEl.textContent = `"${p.bio ? p.bio.substring(0, 85) + '...' : (p.job || 'Wierzący chrześcijanin')}"`;
+                if (avEl && p.avatar) avEl.src = p.avatar;
+
+                // Sync with Navbar Profile Widget
+                const navProfile = document.getElementById('userNavProfile');
+                const authBtn = document.getElementById('authCtaBtn');
+                const navName = document.getElementById('userNavName');
+                const navAvatar = document.getElementById('userNavAvatar');
+                if (navProfile && navName) {
+                    navProfile.style.display = 'flex';
+                    if (authBtn) authBtn.style.display = 'none';
+                    navName.textContent = p.name;
+                    if (navAvatar && p.avatar) navAvatar.src = p.avatar;
+                }
+            } catch(e) {}
+        }
+        window.addEventListener('DOMContentLoaded', syncUserSavedProfileToHomepage);
+        window.addEventListener('storage', syncUserSavedProfileToHomepage);
     </script>
 
     <script>

@@ -253,6 +253,30 @@
             opacity: 1;
         }
 
+        .card-edit-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(250, 204, 21, 0.35);
+            color: var(--gold-accent);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.84rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
+        }
+        .card-edit-btn:hover {
+            background: linear-gradient(135deg, #a855f7, #06b6d4);
+            color: #fff;
+            border-color: transparent;
+            transform: scale(1.12);
+            box-shadow: 0 0 14px rgba(168, 85, 247, 0.6);
+        }
+
         .avatar-status-badge {
             position: absolute;
             bottom: 8px;
@@ -754,6 +778,10 @@
         </div>
     </nav>
 
+    <!-- Hidden File Inputs for Direct Photo Uploads -->
+    <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
+    <input type="file" id="coverFileInput" accept="image/*" style="display:none;" onchange="handleCoverFileSelect(event)">
+
     <!-- ══════════ PROFILE CONTAINER ══════════ -->
     <main class="profile-container">
         
@@ -761,7 +789,7 @@
         <div class="cover-wrapper">
             <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
             <div class="cover-overlay"></div>
-            <button class="btn-change-cover" onclick="openEditProfileModal()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
+            <button class="btn-change-cover" onclick="document.getElementById('coverFileInput').click()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle (Wgraj z dysku)</button>
         </div>
 
         <!-- Profile Head Info -->
@@ -769,7 +797,7 @@
             <div class="profile-head-top">
                 <div class="avatar-wrap">
                     <img src="avatar_new1.jpg" alt="Avatar" class="avatar-img" id="avatarImgEl">
-                    <button class="avatar-edit-overlay" onclick="openEditProfileModal()" title="Zmień zdjęcie profilowe"><i class="fa-solid fa-camera"></i></button>
+                    <button class="avatar-edit-overlay" onclick="document.getElementById('avatarFileInput').click()" title="Wgraj nowe zdjęcie profilowe z dysku"><i class="fa-solid fa-camera"></i></button>
                     <div class="avatar-status-badge" title="Użytkownik Online"></div>
                 </div>
 
@@ -777,6 +805,7 @@
                     <h1 class="head-user-name">
                         <span id="userNameEl">Cezary Rogowski</span>
                         <i class="fa-solid fa-circle-check verified-badge" title="Zweryfikowany Profil Chrześcijański"></i>
+                        <button class="card-edit-btn" onclick="openEditProfileModal('info')" title="Edytuj Imię i Wiek"><i class="fa-solid fa-pencil"></i></button>
                     </h1>
                     <div class="head-user-tagline">
                         <span id="userAgeCityEl"><i class="fa-solid fa-location-dot"></i> Warszawa, Polska</span>
@@ -813,7 +842,7 @@
                 <div class="sidebar-card">
                     <div class="card-title">
                         <span>Wizytówka</span>
-                        <i class="fa-solid fa-id-card"></i>
+                        <button class="card-edit-btn" onclick="openEditProfileModal('job')" title="Edytuj wizytówkę"><i class="fa-solid fa-pencil"></i></button>
                     </div>
                     <div class="info-list">
                         <div class="info-row">
@@ -851,7 +880,7 @@
                 <div class="sidebar-card">
                     <div class="card-title">
                         <span>Przewodni Werset Życiowy</span>
-                        <i class="fa-solid fa-book-bible"></i>
+                        <button class="card-edit-btn" onclick="openEditProfileModal('verse')" title="Edytuj werset"><i class="fa-solid fa-pencil"></i></button>
                     </div>
                     <div class="verse-box">
                         <div class="verse-text" id="userVerseText">„Ja i mój dom służyć będziemy Panu.”</div>
@@ -863,7 +892,7 @@
                 <div class="sidebar-card">
                     <div class="card-title">
                         <span>Wartości & Zainteresowania</span>
-                        <i class="fa-solid fa-sparkles"></i>
+                        <button class="card-edit-btn" onclick="openEditProfileModal('tags')" title="Edytuj zainteresowania"><i class="fa-solid fa-pencil"></i></button>
                     </div>
                     <div class="tag-cloud" id="userTagsEl">
                         <span class="tag-chip"><i class="fa-solid fa-guitar"></i> Muzyka Uwielbienia</span>
@@ -879,10 +908,10 @@
                 <div class="sidebar-card">
                     <div class="card-title">
                         <span>Zdjęcia</span>
-                        <i class="fa-solid fa-camera-retro"></i>
+                        <button class="card-edit-btn" onclick="document.getElementById('avatarFileInput').click()" title="Wgraj nowe zdjęcie z dysku"><i class="fa-solid fa-plus"></i></button>
                     </div>
                     <div class="photo-grid-mini" id="userPhotosMini">
-                        <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoView(this.src)">
+                        <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" id="miniPhoto1" onclick="openPhotoView(this.src)">
                         <img src="avatar_widget_tomek.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoView(this.src)">
                         <img src="lumina_hero_main.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoView(this.src)">
                     </div>
@@ -903,7 +932,7 @@
                             <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną...">
                         </div>
                         <div class="composer-actions">
-                            <button class="composer-btn-attach" onclick="showToast('Dodawanie zdjęć do wpisów aktywne!')"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Zdjęcie / Grafika</button>
+                            <button class="composer-btn-attach" onclick="document.getElementById('avatarFileInput').click()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Wgraj Zdjęcie</button>
                             <button class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Dodaj Werset</button>
                             <button class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-share"></i> Opublikuj</button>
                         </div>
@@ -957,7 +986,10 @@
                 <!-- Tab: O Mnie & Świadectwo -->
                 <div id="tab-about" class="tab-content-pane" style="display:none;">
                     <div class="sidebar-card">
-                        <div class="card-title"><span>Moje Świadectwo Wiary</span><i class="fa-solid fa-cross"></i></div>
+                        <div class="card-title">
+                            <span>Moje Świadectwo Wiary</span>
+                            <button class="card-edit-btn" onclick="openEditProfileModal('bio')" title="Edytuj świadectwo"><i class="fa-solid fa-pencil"></i></button>
+                        </div>
                         <p style="font-size:0.93rem; line-height:1.65; color:#cbd5e1;" id="userBioFull">
                             Moja relacja z Bogiem to fundament każdego dnia. Odkryłem, że prawdziwa radość i pokój pochodzą z zaufania Jego planom. W życiu codziennym łączę pasję do ewangelizacji, tworzenia mediów chrześcijańskich i technologii. Szukam partnerki, która kocha Boga całym sercem, ceni szczerość, poczucie humoru i chce wspólnie iść drogą uświęcenia.
                         </p>
@@ -967,9 +999,12 @@
                 <!-- Tab: Galeria Zdjęć -->
                 <div id="tab-photos" class="tab-content-pane" style="display:none;">
                     <div class="sidebar-card">
-                        <div class="card-title"><span>Albumy i Zdjęcia</span><i class="fa-solid fa-images"></i></div>
+                        <div class="card-title">
+                            <span>Albumy i Zdjęcia</span>
+                            <button class="card-edit-btn" onclick="document.getElementById('avatarFileInput').click()" title="Wgraj nowe zdjęcie z dysku"><i class="fa-solid fa-plus"></i></button>
+                        </div>
                         <div class="photo-grid-mini" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px;" id="userPhotosFull">
-                            <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" style="height:180px; border-radius:14px;" onclick="openPhotoView(this.src)">
+                            <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" id="fullPhoto1" style="height:180px; border-radius:14px;" onclick="openPhotoView(this.src)">
                             <img src="avatar_widget_tomek.jpg" alt="Photo" class="photo-thumb" style="height:180px; border-radius:14px;" onclick="openPhotoView(this.src)">
                             <img src="lumina_hero_main.jpg" alt="Photo" class="photo-thumb" style="height:180px; border-radius:14px;" onclick="openPhotoView(this.src)">
                         </div>
@@ -979,7 +1014,10 @@
                 <!-- Tab: Wartości & Wiara -->
                 <div id="tab-faith" class="tab-content-pane" style="display:none;">
                     <div class="sidebar-card">
-                        <div class="card-title"><span>Fundament Duchowy</span><i class="fa-solid fa-dove"></i></div>
+                        <div class="card-title">
+                            <span>Fundament Duchowy</span>
+                            <button class="card-edit-btn" onclick="openEditProfileModal('faith')" title="Edytuj wartości"><i class="fa-solid fa-pencil"></i></button>
+                        </div>
                         <div class="info-list" style="font-size:0.92rem;">
                             <div class="info-row"><i class="fa-solid fa-heart" style="color:#ec4899;"></i><div><span class="info-label">Podejście do Małżeństwa:</span> Sakrament i przymierze na całe życie.</div></div>
                             <div class="info-row"><i class="fa-solid fa-music" style="color:#a855f7;"></i><div><span class="info-label">Muzyka Duchowa:</span> Hillsong, Bethel, Polskie Uwielbienie, Biblia Śpiewana CC.</div></div>
@@ -996,11 +1034,24 @@
 
     <!-- ══════════ EDIT PROFILE MODAL ══════════ -->
     <div class="modal-overlay" id="editProfileModal">
-        <div class="modal-card" style="max-width: 580px;">
+        <div class="modal-card" style="max-width: 620px; max-height: 90vh; overflow-y: auto;">
             <button class="modal-close-btn" onclick="closeModal('editProfileModal')"><i class="fa-solid fa-xmark"></i></button>
             <h3 style="font-size: 1.35rem; margin-bottom: 4px; font-family:'Outfit',sans-serif;"><i class="fa-solid fa-pen-to-square" style="color:#c084fc;"></i> Edytuj Swój Profil</h3>
-            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 18px;">Wprowadzone dane są natychmiast widoczne i trwale zapisywane na Twoim profilu.</p>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 18px;">Wprowadzone dane i wgrane zdjęcia są natychmiast widoczne na profilu i stronie głównej LUMINA.</p>
             
+            <!-- Photo Upload Quick Controls -->
+            <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(168,85,247,0.4); border-radius: 14px; padding: 14px; margin-bottom: 18px;">
+                <div style="font-size: 0.82rem; font-weight: 700; color: #facc15; margin-bottom: 10px;"><i class="fa-solid fa-camera"></i> Wgraj Zdjęcia z Dysku / Telefonu:</div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button type="button" onclick="document.getElementById('avatarFileInput').click()" style="flex: 1; min-width: 170px; padding: 10px 14px; border-radius: 10px; background: rgba(59,130,246,0.2); border: 1px solid #3b82f6; color: #fff; font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fa-solid fa-user-circle" style="color: #60a5fa; font-size: 1.1rem;"></i> Wgraj Zdjęcie Profilowe
+                    </button>
+                    <button type="button" onclick="document.getElementById('coverFileInput').click()" style="flex: 1; min-width: 170px; padding: 10px 14px; border-radius: 10px; background: rgba(168,85,247,0.2); border: 1px solid #a855f7; color: #fff; font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fa-solid fa-panorama" style="color: #c084fc; font-size: 1.1rem;"></i> Wgraj Zdjęcie w Tle
+                    </button>
+                </div>
+            </div>
+
             <form id="editProfileForm" onsubmit="saveProfileEdits(event)">
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
                     <div>
@@ -1086,6 +1137,8 @@
 
     <!-- ══════════ JAVASCRIPT & PROFILE DATABASE ENGINE ══════════ -->
     <script>
+        const MAIN_USER_KEY = 'lumina_main_user_profile';
+
         // ── Database of Known Profiles ──
         const PROFILES_DB = {
             'cezaryrgowski': {
@@ -1236,10 +1289,19 @@
             document.getElementById('userVerseText').textContent = data.verse;
             document.getElementById('userVerseRef').textContent = data.verseRef;
             document.getElementById('userBioFull').textContent = data.bio;
-            document.getElementById('avatarImgEl').src = data.avatar;
-            document.getElementById('myComposerAvatar').src = data.avatar;
-            document.getElementById('postAvatar1').src = data.avatar;
-            document.getElementById('postAvatar2').src = data.avatar;
+            
+            if (data.avatar) {
+                document.getElementById('avatarImgEl').src = data.avatar;
+                if (document.getElementById('myComposerAvatar')) document.getElementById('myComposerAvatar').src = data.avatar;
+                if (document.getElementById('postAvatar1')) document.getElementById('postAvatar1').src = data.avatar;
+                if (document.getElementById('postAvatar2')) document.getElementById('postAvatar2').src = data.avatar;
+                if (document.getElementById('miniPhoto1')) document.getElementById('miniPhoto1').src = data.avatar;
+                if (document.getElementById('fullPhoto1')) document.getElementById('fullPhoto1').src = data.avatar;
+            }
+            if (data.cover) {
+                document.getElementById('coverPhotoEl').src = data.cover;
+            }
+
             document.getElementById('postAuthor1').textContent = data.name;
             document.getElementById('postAuthor2').textContent = data.name;
             document.getElementById('modalMsgRecipient').textContent = data.name.split(' ')[0] || data.name;
@@ -1251,7 +1313,46 @@
             }
         }
 
-        function openEditProfileModal() {
+        // File Upload Handlers (FileReader for instant base64 persistence)
+        function handleAvatarFileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const dataUrl = evt.target.result;
+                const slug = getRequestedUserSlug();
+                const cur = getProfileData();
+                cur.avatar = dataUrl;
+                try {
+                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                    localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                } catch(err) {}
+                renderProfile();
+                showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane! 📷✨');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleCoverFileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const dataUrl = evt.target.result;
+                const slug = getRequestedUserSlug();
+                const cur = getProfileData();
+                cur.cover = dataUrl;
+                try {
+                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                    localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                } catch(err) {}
+                renderProfile();
+                showToast('Zdjęcie w tle zostało zaktualizowane i zapisane! 🖼️✨');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function openEditProfileModal(section) {
             const data = getProfileData();
             document.getElementById('editName').value = data.name;
             document.getElementById('editAge').value = data.age;
@@ -1264,13 +1365,22 @@
             document.getElementById('editBio').value = data.bio;
             document.getElementById('editTags').value = Array.isArray(data.tags) ? data.tags.join(', ') : data.tags;
             document.getElementById('editProfileModal').classList.add('open');
+
+            // Optional focus on specific field
+            if (section === 'verse') setTimeout(() => document.getElementById('editVerse').focus(), 150);
+            else if (section === 'bio') setTimeout(() => document.getElementById('editBio').focus(), 150);
+            else if (section === 'tags') setTimeout(() => document.getElementById('editTags').focus(), 150);
+            else if (section === 'job') setTimeout(() => document.getElementById('editJob').focus(), 150);
+            else setTimeout(() => document.getElementById('editName').focus(), 150);
         }
 
         function saveProfileEdits(e) {
             e.preventDefault();
             const slug = getRequestedUserSlug();
+            const cur = getProfileData();
             const tagsRaw = document.getElementById('editTags').value;
             const updated = {
+                ...cur,
                 name: document.getElementById('editName').value.trim(),
                 age: document.getElementById('editAge').value.trim(),
                 city: document.getElementById('editCity').value.trim(),
@@ -1285,11 +1395,12 @@
 
             try {
                 localStorage.setItem('lumina_profile_' + slug, JSON.stringify(updated));
+                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(updated));
             } catch (err) {}
 
             renderProfile();
             closeModal('editProfileModal');
-            showToast('Twój profil został pomyślnie zaktualizowany i zapisany! ✨');
+            showToast('Twój profil został zaktualizowany i dodany na stronę główną LUMINA! ✨');
         }
 
         // ── Tabs Switching ──
@@ -1370,7 +1481,7 @@
             newCard.className = 'post-card';
             newCard.innerHTML = `
                 <div class="post-header">
-                    <img src="${data.avatar}" alt="Author" class="post-avatar">
+                    <img src="${data.avatar || 'avatar_new1.jpg'}" alt="Author" class="post-avatar">
                     <div>
                         <div class="post-author">${data.name}</div>
                         <div class="post-time">Przed chwilą • 🌍 Nowy Wpis</div>
