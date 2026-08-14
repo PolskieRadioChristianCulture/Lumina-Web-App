@@ -155,6 +155,7 @@
             border-radius: 0 0 24px 24px;
             overflow: hidden;
             box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            cursor: pointer;
         }
 
         .cover-photo {
@@ -176,10 +177,48 @@
             position: absolute;
             top: 18px;
             right: 18px;
-            display: flex;
+            display: none;
             gap: 8px;
             flex-wrap: wrap;
-            z-index: 8;
+            z-index: 30;
+            background: rgba(11, 24, 56, 0.92);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            padding: 8px 12px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            animation: fadeInDown 0.25s ease;
+        }
+        .cover-actions-group.active {
+            display: flex;
+        }
+
+        .cover-hint-badge {
+            position: absolute;
+            bottom: 14px;
+            right: 18px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #94a3b8;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            pointer-events: none;
+            transition: all 0.2s;
+            z-index: 5;
+        }
+        .owner-mode-active .cover-hint-badge {
+            display: inline-flex;
+        }
+        .cover-wrapper:hover .cover-hint-badge {
+            background: rgba(15, 23, 42, 0.95);
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.4);
         }
 
         .btn-change-cover {
@@ -1059,17 +1098,20 @@
         </div>
 
         <!-- Cover Banner -->
-        <div class="cover-wrapper">
+        <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
             <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
             <div class="cover-overlay"></div>
             
-            <div class="cover-actions-group">
-                <button class="btn-change-cover" onclick="triggerCoverUpload()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
-                <button class="btn-change-cover" onclick="toggleCoverRepositionToolbar()"><i class="fa-solid fa-arrows-up-down"></i> Ustaw Kadr / Wycentruj</button>
+            <div class="cover-hint-badge"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
+
+            <div class="cover-actions-group" id="coverActionsGroup" onclick="event.stopPropagation()">
+                <button type="button" class="btn-change-cover" onclick="triggerCoverUpload()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
+                <button type="button" class="btn-change-cover" onclick="toggleCoverRepositionToolbar()"><i class="fa-solid fa-arrows-up-down"></i> Ustaw Kadr / Wycentruj</button>
+                <button type="button" class="btn-change-cover" onclick="closeCoverActions()" style="padding:8px 12px; background:rgba(255,255,255,0.12);" title="Zamknij menu"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <!-- Interactive Cover Reposition Toolbar -->
-            <div class="cover-reposition-toolbar" id="coverRepositionToolbar">
+            <div class="cover-reposition-toolbar" id="coverRepositionToolbar" onclick="event.stopPropagation()">
                 <div class="reposition-title"><i class="fa-solid fa-arrows-up-down"></i> Dopasuj Kadr Zdjęcia w Tle</div>
                 <div class="reposition-controls">
                     <button type="button" class="btn-preset" onclick="setCoverPosition(0)">Góra</button>
@@ -1659,8 +1701,28 @@
             }
         }
 
-        // ── Cover Repositioning Controls ──
+        // ── Cover Actions & Repositioning Controls (On-Demand) ──
+        function toggleCoverActions(event) {
+            if (event) {
+                const target = event.target;
+                if (target && (target.closest('#coverRepositionToolbar') || target.closest('#coverActionsGroup'))) {
+                    return;
+                }
+            }
+            if (!requestOwnerAccess(() => toggleCoverActions(null))) return;
+            const group = document.getElementById('coverActionsGroup');
+            if (group) {
+                group.classList.toggle('active');
+            }
+        }
+
+        function closeCoverActions() {
+            const group = document.getElementById('coverActionsGroup');
+            if (group) group.classList.remove('active');
+        }
+
         function toggleCoverRepositionToolbar() {
+            closeCoverActions();
             if (!requestOwnerAccess(toggleCoverRepositionToolbar)) return;
             const tb = document.getElementById('coverRepositionToolbar');
             if (!tb) return;
