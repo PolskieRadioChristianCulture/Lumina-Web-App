@@ -1369,6 +1369,53 @@
             return [...DEFAULT_CC_CAMPAIGNS];
         }
 
+        function formatPostTimestamp(timestampOrDate, fallbackLabel) {
+            if (!timestampOrDate) return fallbackLabel || 'Przed chwilą';
+            let date;
+            if (typeof timestampOrDate === 'object' && timestampOrDate.seconds) {
+                date = new Date(timestampOrDate.seconds * 1000);
+            } else if (typeof timestampOrDate === 'number') {
+                date = new Date(timestampOrDate);
+            } else if (typeof timestampOrDate === 'string') {
+                const parsed = Date.parse(timestampOrDate);
+                if (!isNaN(parsed) && (timestampOrDate.includes('-') || timestampOrDate.includes('T') || timestampOrDate.includes(':'))) {
+                    date = new Date(parsed);
+                } else {
+                    return timestampOrDate; // Już sformatowany tekst
+                }
+            } else {
+                return fallbackLabel || 'Przed chwilą';
+            }
+
+            const now = new Date();
+            const diffMs = now - date;
+            const diffSec = Math.floor(diffMs / 1000);
+            const diffMin = Math.floor(diffSec / 60);
+            const diffHours = Math.floor(diffMin / 60);
+            const diffDays = Math.floor(diffHours / 24);
+
+            const pad = (n) => n < 10 ? '0' + n : n;
+            const timeStr = `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+
+            if (diffSec < 60) return 'Przed chwilą';
+            if (diffMin < 60) return `${diffMin} min temu`;
+            
+            const isToday = now.toDateString() === date.toDateString();
+            if (isToday) return `Dzisiaj o ${timeStr}`;
+
+            const yesterday = new Date(now);
+            yesterday.setDate(now.getDate() - 1);
+            const isYesterday = yesterday.toDateString() === date.toDateString();
+            if (isYesterday) return `Wczoraj o ${timeStr}`;
+
+            if (diffDays < 7) {
+                const days = ['W niedzielę', 'W poniedziałek', 'We wtorek', 'W środę', 'W czwartek', 'W piątek', 'W sobotę'];
+                return `${days[date.getDay()]} o ${timeStr}`;
+            }
+
+            return `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()}, ${timeStr}`;
+        }
+
         let cloudFeedPosts = [];
 
         function getUserFeedPosts() {
@@ -1384,7 +1431,7 @@
                         authorRole: cp.authorRole || 'Społeczność LUMINA ✨',
                         authorAvatar: cp.authorAvatar || 'icon.png',
                         authorSlug: cp.authorSlug || '',
-                        time: cp.time || 'Przed chwilą • ☁️ Chmura',
+                        time: formatPostTimestamp(cp.createdAtTimestamp || cp.createdAtDateStr || cp.time, 'Przed chwilą') + ' • ☁️ Chmura',
                         title: cp.title || '',
                         text: cp.text || '',
                         image: cp.image || null,
@@ -1394,13 +1441,16 @@
                 });
             }
 
-            // 1. Cezary Rogowski Posts
+            // 1. Cezary Rogowski Posts (Dynamiczne daty)
             try {
                 const cJson = localStorage.getItem('lumina_profile_cezaryrgowski');
                 const cProfile = cJson ? JSON.parse(cJson) : null;
                 const cAvatar = (cProfile && cProfile.avatar && !cProfile.avatar.includes('avatar_new1')) ? cProfile.avatar : 'avatar_cezary_official.jpg';
                 const cName = (cProfile && cProfile.name) ? cProfile.name : 'Cezary Rogowski';
                 
+                const timeC1 = formatPostTimestamp(new Date(Date.now() - 22 * 3600 * 1000)) + ' • 🌍 Publiczny';
+                const timeC2 = formatPostTimestamp(new Date(Date.now() - 46 * 3600 * 1000)) + ' • 📖 Rozważanie';
+
                 posts.push({
                     id: 'post_c1',
                     type: 'post',
@@ -1408,7 +1458,7 @@
                     authorRole: 'Założyciel Christian Culture ✨',
                     authorAvatar: cAvatar,
                     authorSlug: 'cezaryrgowski',
-                    time: 'Dzisiaj, 18:30 • 🌍 Publiczny',
+                    time: timeC1,
                     title: 'Fundament Bożej Relacji',
                     text: 'Witaj na portalu LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku. Szukajmy bratnich dusz, z którymi będziemy wspólnie służyć, modlić się i budować Boże Królestwo! ☕✨',
                     image: cAvatar || 'avatar_cezary_official.jpg',
@@ -1423,7 +1473,7 @@
                     authorRole: 'Założyciel Christian Culture ✨',
                     authorAvatar: cAvatar,
                     authorSlug: 'cezaryrgowski',
-                    time: 'Wczoraj, 21:15 • 📖 Rozważanie',
+                    time: timeC2,
                     title: 'Pokój w Chrystusie',
                     text: '„Nie troszczcie się zbytnio o jutro, albowiem jutrzejszy dzień sam o siebie troszczyć się będzie.” (Mt 6, 34). Niech ten werset przyniesie Wam dzisiaj pokój serca i siłę do działania! 🙏',
                     image: 'tlo_pr_cc.jpg',
@@ -1432,12 +1482,15 @@
                 });
             } catch(e) {}
 
-            // 2. Wioletta Rogowska Posts
+            // 2. Wioletta Rogowska Posts (Dynamiczne daty)
             try {
                 const wJson = localStorage.getItem('lumina_profile_wiolettarogowska');
                 const wProfile = wJson ? JSON.parse(wJson) : null;
                 const wAvatar = (wProfile && wProfile.avatar) ? wProfile.avatar : 'lumina_anna2.jpg';
                 const wName = (wProfile && wProfile.name) ? wProfile.name : 'Wioletta Rogowska';
+
+                const timeW1 = formatPostTimestamp(new Date(Date.now() - 20 * 3600 * 1000)) + ' • 🌍 Publiczny';
+                const timeW2 = formatPostTimestamp(new Date(Date.now() - 44 * 3600 * 1000)) + ' • 📖 Słowo Życia';
 
                 posts.push({
                     id: 'post_w1',
@@ -1446,7 +1499,7 @@
                     authorRole: 'Współzałożycielka Christian Culture 💕',
                     authorAvatar: wAvatar,
                     authorSlug: 'wiolettarogowska',
-                    time: 'Dzisiaj, 19:15 • 🌍 Publiczny',
+                    time: timeW1,
                     title: 'Miłość Przewyższająca Perły',
                     text: 'Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień! 💕✨',
                     image: wAvatar || 'lumina_anna2.jpg',
@@ -1461,7 +1514,7 @@
                     authorRole: 'Współzałożycielka Christian Culture 💕',
                     authorAvatar: wAvatar,
                     authorSlug: 'wiolettarogowska',
-                    time: 'Wczoraj, 20:40 • 📖 Słowo Życia',
+                    time: timeW2,
                     title: 'Gorąca Miłość Wzajemna',
                     text: '„Przede wszystkim miejcie gorącą miłość jedni ku drugim, bo miłość zakrywa mnóstwo grzechów.” (1 P 4, 8). Błogosławionego i pełnego Bożej obecności wieczoru! 🙏',
                     image: 'tlo_ksiega_nadziei.png',
