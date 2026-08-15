@@ -1690,14 +1690,44 @@
         </div>
     </div>
 
-    <!-- ══════════ MESSAGE MODAL ══════════ -->
+    <!-- ══════════ REALTIME MESSAGE & CHAT MODAL (Etap 3) ══════════ -->
     <div class="modal-overlay" id="messageModal">
-        <div class="modal-card">
-            <button class="modal-close-btn" onclick="closeModal('messageModal')"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="font-size: 1.3rem; margin-bottom: 6px; font-family:'Outfit',sans-serif;">Napisz wiadomość do <span id="modalMsgRecipient" style="color:#c084fc;">użytkownika</span></h3>
-            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">Twoja wiadomość trafi bezpośrednio do skrzynki użytkownika.</p>
-            <textarea id="msgTextArea" placeholder="Napisz miłe powitanie, podziel się wersetem lub zrób pierwszy krok..." style="width:100%; height:120px; padding:12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px; margin-bottom:16px; outline:none; resize:none;"></textarea>
-            <button class="btn-action-primary" style="width:100%; justify-content:center;" onclick="sendMessageSubmit()"><i class="fa-solid fa-paper-plane"></i> Wyślij Wiadomość</button>
+        <div class="modal-card" style="max-width: 480px; width: 94%; padding: 0; max-height: 88vh; height: 580px; display: flex; flex-direction: column; overflow: hidden; border-radius: 24px;">
+            <!-- Header -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img id="profileChatHeaderAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+                    <div>
+                        <div id="modalMsgRecipient" style="font-weight: 800; font-size: 0.95rem; color: #fff;">Rozmowa</div>
+                        <div style="font-size: 0.7rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
+                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Aktywny w Chrystusie 🕊️
+                        </div>
+                    </div>
+                </div>
+                <button class="modal-close-btn" onclick="closeModal('messageModal')" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Messages Box -->
+            <div id="profileChatMessagesBox" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.15);">
+                <div style="text-align: center; margin: 10px 0;">
+                    <span style="font-size: 0.72rem; color: #64748b; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">Rozpoczęto bezpieczną rozmowę w portalu LUMINA 🕊️</span>
+                </div>
+            </div>
+
+            <!-- Quick Christian Shortcuts -->
+            <div style="display: flex; gap: 6px; padding: 6px 14px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05);">
+                <button type="button" onclick="insertProfileChatQuickText('Niech Bóg Ci błogosławi! 🕊️')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer;">🕊️ Błogosławieństwo</button>
+                <button type="button" onclick="insertProfileChatQuickText('Chętnie pomodlę się w Twojej intencji! 🙏')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer;">🙏 Modlitwa</button>
+                <button type="button" onclick="insertProfileChatQuickText('Masz ochotę na chrześcijańską kawę? ☕')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer;">☕ Kawa</button>
+            </div>
+
+            <!-- Form -->
+            <form onsubmit="handleProfileChatMessageSubmit(event)" style="display: flex; gap: 8px; padding: 10px 14px; background: rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.1);">
+                <input type="text" id="profileChatInput" placeholder="Napisz wiadomość..." style="flex: 1; padding: 10px 14px; border-radius: 20px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: inherit; font-size: 0.85rem;" required>
+                <button type="submit" style="padding: 10px 18px; border-radius: 20px; background: linear-gradient(90deg, #ec4899, #8b5cf6); border: none; color: #fff; font-weight: 800; cursor: pointer; font-family: inherit; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
         </div>
     </div>
 
@@ -2778,41 +2808,92 @@
             if (btn) btn.classList.add('active');
         }
 
-        function openMessageModal() {
-            document.getElementById('messageModal').classList.add('open');
-            document.getElementById('msgTextArea').focus();
-        }
-        function openCoffeeModal() {
-            document.getElementById('coffeeModal').classList.add('open');
-        }
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('open');
+        let profileChatUnsubscribe = null;
+
+        function insertProfileChatQuickText(txt) {
+            const input = document.getElementById('profileChatInput');
+            if (input) {
+                input.value = txt;
+                input.focus();
+            }
         }
 
-        function sendMessageSubmit() {
-            const txt = document.getElementById('msgTextArea').value.trim();
-            if (!txt) {
-                showToast('Wpisz treść wiadomości przed wysłaniem!');
-                return;
+        function openMessageModal() {
+            const cur = getProfileData();
+            const slug = getRequestedUserSlug();
+            const myUser = window.LuminaDB?.getCurrentUser();
+            const fromId = myUser ? myUser.uid : (localStorage.getItem('lumina_guest_id') || 'guest');
+            const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, slug) : [fromId, slug].sort().join('_');
+
+            document.getElementById('modalMsgRecipient').textContent = cur.name || 'Użytkownik';
+            document.getElementById('profileChatHeaderAvatar').src = cur.avatar || 'lumina_icon.jpg';
+
+            document.getElementById('messageModal').classList.add('open');
+
+            if (profileChatUnsubscribe) profileChatUnsubscribe();
+
+            if (window.LuminaDB) {
+                profileChatUnsubscribe = window.LuminaDB.subscribeToDirectMessages(chatId, (messages) => {
+                    renderProfileChatMessages(messages, fromId);
+                });
             }
+            setTimeout(() => document.getElementById('profileChatInput').focus(), 150);
+        }
+
+        function renderProfileChatMessages(messages, myId) {
+            const box = document.getElementById('profileChatMessagesBox');
+            if (!box) return;
+
+            let html = `
+                <div style="text-align:center;margin:8px 0;">
+                    <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Początek rozmowy 🕊️</span>
+                </div>
+            `;
+
+            (messages || []).forEach(msg => {
+                const isMe = (msg.senderId === myId);
+                const align = isMe ? 'flex-end' : 'flex-start';
+                const bg = isMe ? 'linear-gradient(135deg, #a855f7, #06b6d4)' : 'rgba(255,255,255,0.08)';
+                const color = '#fff';
+                const radius = isMe ? '16px 16px 4px 16px' : '16px 16px 16px 4px';
+                const time = msg.dateStr || (msg.timestamp?.seconds ? new Date(msg.timestamp.seconds * 1000).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : 'Teraz');
+
+                html += `
+                    <div style="display:flex; justify-content:${align}; margin-bottom:4px;">
+                        <div style="max-width:78%; padding:10px 14px; border-radius:${radius}; background:${bg}; color:${color}; font-size:0.86rem; line-height:1.45; box-shadow:0 2px 8px rgba(0,0,0,0.25);">
+                            <div>${msg.text}</div>
+                            <div style="font-size:0.65rem; color:rgba(255,255,255,0.6); text-align:right; margin-top:4px;">${time}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            box.innerHTML = html;
+            box.scrollTop = box.scrollHeight;
+        }
+
+        async function handleProfileChatMessageSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('profileChatInput');
+            const txt = input.value.trim();
+            if (!txt) return;
+
             const slug = getRequestedUserSlug();
             const cur = getProfileData();
             const myUser = window.LuminaDB?.getCurrentUser();
-            const fromId = myUser ? myUser.uid : 'guest_' + (localStorage.getItem('lumina_guest_id') || 'anon');
-            const chatId = [fromId, slug].sort().join('_');
+            const fromId = myUser ? myUser.uid : (localStorage.getItem('lumina_guest_id') || 'guest');
+            const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, slug) : [fromId, slug].sort().join('_');
+
+            input.value = '';
 
             if (window.LuminaDB) {
-                window.LuminaDB.sendDirectMessageToCloud(chatId, {
+                await window.LuminaDB.sendDirectMessageToCloud(chatId, {
                     senderId: fromId,
                     senderName: myUser?.displayName || 'Użytkownik LUMINA',
                     text: txt,
                     receiverId: slug
                 });
             }
-
-            closeModal('messageModal');
-            document.getElementById('msgTextArea').value = '';
-            showToast('Wiadomość została wysłana w czasie rzeczywistym! 💬✨');
         }
 
         function sendCoffeeInvitation() {

@@ -401,35 +401,101 @@ export async function addCampaignToCloud(campData) {
     }
 }
 
+export function getChatId(userA, userB) {
+    return [userA, userB].sort().join('_');
+}
+
 export function subscribeToDirectMessages(chatId, onUpdate) {
+    // 1. Check local cached messages
+    try {
+        const cached = localStorage.getItem(`lumina_chat_${chatId}`);
+        if (cached) onUpdate(JSON.parse(cached));
+    } catch(e) {}
+
     if (!db || !chatId) return () => {};
     try {
         const msgsQuery = query(
             collection(db, `lumina_chats/${chatId}/messages`),
             orderBy('timestamp', 'asc'),
-            limit(100)
+            limit(120)
         );
 
         return onSnapshot(msgsQuery, (snap) => {
             const msgs = [];
             snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
+            try {
+                localStorage.setItem(`lumina_chat_${chatId}`, JSON.stringify(msgs));
+            } catch(e) {}
             onUpdate(msgs);
-        });
+        }, (err) => console.warn('Lumina Direct Messages sync notice:', err));
     } catch(e) {
         return () => {};
     }
 }
 
 export async function sendDirectMessageToCloud(chatId, messageObj) {
-    if (!db || !chatId) return null;
+    const user = currentUserState;
+    const fromId = messageObj.senderId || (user ? user.uid : (localStorage.getItem('lumina_guest_id') || 'guest'));
+    const senderName = messageObj.senderName || currentProfileState?.name || user?.displayName || 'Użytkownik LUMINA';
+    const senderAvatar = messageObj.senderAvatar || currentProfileState?.avatar || user?.photoURL || 'lumina_icon.jpg';
+
+    const fullMsg = {
+        senderId: fromId,
+        senderName: senderName,
+        senderAvatar: senderAvatar,
+        receiverId: messageObj.receiverId || '',
+        text: messageObj.text || '',
+        type: messageObj.type || 'text',
+        timestamp: serverTimestamp(),
+        dateStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    // Save locally immediately
     try {
-        const msgRef = await addDoc(collection(db, `lumina_chats/${chatId}/messages`), {
-            ...messageObj,
-            timestamp: serverTimestamp()
-        });
+        const localKey = `lumina_chat_${chatId}`;
+        const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
+        cached.push({ ...fullMsg, id: 'local_' + Date.now(), timestamp: { seconds: Date.now() / 1000 } });
+        localStorage.setItem(localKey, JSON.stringify(cached));
+    } catch(e) {}
+
+    if (!db || !chatId) return 'local_' + Date.now();
+
+    try {
+        const msgRef = await addDoc(collection(db, `lumina_chats/${chatId}/messages`), fullMsg);
+
+        // Update chat room metadata
+        await setDoc(doc(db, 'lumina_chats', chatId), {
+            chatId: chatId,
+            lastMessageText: fullMsg.text,
+            lastMessageTimestamp: serverTimestamp(),
+            lastSenderId: fromId,
+            lastSenderName: senderName,
+            users: chatId.split('_')
+        }, { merge: true });
+
         return msgRef.id;
     } catch(e) {
+        console.warn('Lumina send message error:', e.message);
         return null;
+    }
+}
+
+export function subscribeToUserChats(userId, onUpdate) {
+    if (!db || !userId) return () => {};
+    try {
+        const chatsQuery = query(
+            collection(db, 'lumina_chats'),
+            where('users', 'array-contains', userId),
+            orderBy('lastMessageTimestamp', 'desc'),
+            limit(30)
+        );
+        return onSnapshot(chatsQuery, (snap) => {
+            const chats = [];
+            snap.forEach(d => chats.push({ id: d.id, ...d.data() }));
+            onUpdate(chats);
+        });
+    } catch(e) {
+        return () => {};
     }
 }
 
@@ -546,8 +612,10 @@ window.LuminaDB = {
     togglePostReactionInCloud,
     subscribeToCampaigns,
     addCampaignToCloud,
+    getChatId,
     subscribeToDirectMessages,
     sendDirectMessageToCloud,
+    subscribeToUserChats,
     recordProfileLike,
     subscribeToUserMatches
 };
