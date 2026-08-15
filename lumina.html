@@ -1612,7 +1612,7 @@
                         <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
                     </div>
                     <div class="card-body">
-                        <div class="card-name home-cezary-name" id="homeUserName">Cezary, 51</div>
+                        <div class="card-name home-cezary-name" id="homeUserName">Cezary Rogowski, 51</div>
                         <div class="card-city home-cezary-city" id="homeUserCity">📍 Ostrowiec Świętokrzyski • <b>Żonaty</b></div>
                         <div class="card-desc home-cezary-desc" id="homeUserDesc">"Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu."</div>
                     </div>
@@ -1626,7 +1626,7 @@
                         <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f472b6);">99%</div>
                     </div>
                     <div class="card-body">
-                        <div class="card-name home-wioletta-name" id="homeWiolettaName">Wioletta, 50</div>
+                        <div class="card-name home-wioletta-name" id="homeWiolettaName">Wioletta Rogowska, 50</div>
                         <div class="card-city home-wioletta-city" id="homeWiolettaCity">📍 Ostrowiec Świętokrzyski • <b>Mężatka</b></div>
                         <div class="card-desc home-wioletta-desc" id="homeWiolettaDesc">"Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
                     </div>
@@ -2616,9 +2616,42 @@
                     profiles.forEach(p => {
                         if (!p.name) return;
                         const uid = p.uid || p.slug || p.id;
-                        if (uid === 'cezaryrgowski' || uid === 'wiolettarogowska' || uid === 'u_ccwomen_9055' || uid === 'ccwomen') {
-                            return; // Już są w karuzeli jako stałe filary
+                        const nameLower = (p.name || '').toLowerCase();
+                        const slugLower = (uid || '').toLowerCase();
+
+                        // Cezary Rogowski - Żelazne 51 lat i Ostrowiec Świętokrzyski
+                        if (slugLower.includes('cezary') || nameLower.includes('cezary')) {
+                            document.querySelectorAll('.home-cezary-avatar, #homeUserAvatar, img[alt="Cezary Rogowski"]').forEach(img => {
+                                img.src = 'avatar_cezary_official.jpg';
+                            });
+                            document.querySelectorAll('.home-cezary-name, #homeUserName').forEach(el => {
+                                el.textContent = `Cezary Rogowski, 51`;
+                            });
+                            document.querySelectorAll('.home-cezary-city, #homeUserCity').forEach(el => {
+                                el.innerHTML = `📍 Ostrowiec Świętokrzyski • <b>Żonaty</b>`;
+                            });
+                            return;
                         }
+
+                        // Wioletta Rogowska - Żelazne 50 lat i Ostrowiec Świętokrzyski
+                        if (slugLower.includes('wioletta') || nameLower.includes('wioletta')) {
+                            document.querySelectorAll('.home-wioletta-avatar, #homeWiolettaAvatar, img[alt="Wioletta Rogowska"]').forEach(img => {
+                                img.src = 'avatar_wioletta_official.jpg';
+                            });
+                            document.querySelectorAll('.home-wioletta-name, #homeWiolettaName').forEach(el => {
+                                el.textContent = `Wioletta Rogowska, 50`;
+                            });
+                            document.querySelectorAll('.home-wioletta-city, #homeWiolettaCity').forEach(el => {
+                                el.innerHTML = `📍 Ostrowiec Świętokrzyski • <b>Mężatka</b>`;
+                            });
+                            return;
+                        }
+
+                        // CC Women
+                        if (slugLower.includes('women') || slugLower.includes('ccwomen') || nameLower.includes('women')) {
+                            return;
+                        }
+
                         const cardId = 'cloud_user_' + uid;
                         let existing = document.getElementById(cardId);
                         const imgSrc = p.avatar || 'lumina_icon.jpg';

@@ -424,6 +424,25 @@ export function subscribeToProfile(slugOrUid, onUpdate) {
 }
 
 export async function saveProfileToCloud(slugOrUid, profileData) {
+    const cleanSlug = (slugOrUid || '').toLowerCase();
+    const cleanName = (profileData.name || '').toLowerCase();
+
+    // Żelazne zabezpieczenie poprawnych danych osobowych
+    if (cleanSlug.includes('cezary') || cleanName.includes('cezary')) {
+        profileData.age = 51;
+        profileData.city = 'Ostrowiec Świętokrzyski, Polska';
+        profileData.avatar = 'avatar_cezary_official.jpg';
+        profileData.status = 'Żonaty';
+        profileData.name = 'Cezary Rogowski';
+    }
+    if (cleanSlug.includes('wioletta') || cleanName.includes('wioletta')) {
+        profileData.age = 50;
+        profileData.city = 'Ostrowiec Świętokrzyski, Polska';
+        profileData.avatar = 'avatar_wioletta_official.jpg';
+        profileData.status = 'Mężatka';
+        profileData.name = 'Wioletta Rogowska';
+    }
+
     const localKey = `lumina_profile_${slugOrUid}`;
     
     // Save to localStorage immediately
@@ -459,7 +478,56 @@ export function subscribeToAllCommunityProfiles(onUpdate) {
         return onSnapshot(q, (snap) => {
             const profiles = [];
             snap.forEach(d => {
-                profiles.push({ uid: d.id, ...d.data() });
+                const data = d.data();
+                const p = { uid: d.id, ...data };
+                const nameLower = (p.name || '').toLowerCase();
+                const slugLower = (p.slug || d.id || '').toLowerCase();
+
+                // Żelazne wymuszenie i samonaprawa danych Cezarego (51 lat, Ostrowiec Św.)
+                if (slugLower.includes('cezary') || nameLower.includes('cezary')) {
+                    p.name = 'Cezary Rogowski';
+                    p.age = 51;
+                    p.city = 'Ostrowiec Świętokrzyski, Polska';
+                    p.avatar = 'avatar_cezary_official.jpg';
+                    p.status = 'Żonaty';
+                    if (data.age !== 51 || !data.city?.includes('Ostrowiec')) {
+                        try {
+                            setDoc(doc(db, 'lumina_profiles', d.id), {
+                                name: 'Cezary Rogowski',
+                                age: 51,
+                                city: 'Ostrowiec Świętokrzyski, Polska',
+                                avatar: 'avatar_cezary_official.jpg',
+                                status: 'Żonaty',
+                                job: 'Założyciel Christian Culture',
+                                updatedAt: serverTimestamp()
+                            }, { merge: true });
+                        } catch(err) {}
+                    }
+                }
+
+                // Żelazne wymuszenie i samonaprawa danych Wioletty (50 lat, Ostrowiec Św.)
+                if (slugLower.includes('wioletta') || nameLower.includes('wioletta')) {
+                    p.name = 'Wioletta Rogowska';
+                    p.age = 50;
+                    p.city = 'Ostrowiec Świętokrzyski, Polska';
+                    p.avatar = 'avatar_wioletta_official.jpg';
+                    p.status = 'Mężatka';
+                    if (data.age !== 50 || !data.city?.includes('Ostrowiec')) {
+                        try {
+                            setDoc(doc(db, 'lumina_profiles', d.id), {
+                                name: 'Wioletta Rogowska',
+                                age: 50,
+                                city: 'Ostrowiec Świętokrzyski, Polska',
+                                avatar: 'avatar_wioletta_official.jpg',
+                                status: 'Mężatka',
+                                job: 'Współzałożycielka Christian Culture',
+                                updatedAt: serverTimestamp()
+                            }, { merge: true });
+                        } catch(err) {}
+                    }
+                }
+
+                profiles.push(p);
             });
             onUpdate(profiles);
         }, (e) => console.warn('Community profiles listener error:', e));
