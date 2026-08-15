@@ -282,6 +282,34 @@
             box-shadow: 0 0 42px rgba(217,70,239,0.75), 0 0 70px rgba(14,165,233,0.55);
         }
 
+        /* ──────────────────── DISCOVERY FILTER CHIPS & MATCH ANIMATION ──────────────────── */
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .filter-chip:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        .filter-chip.active {
+            background: linear-gradient(135deg, #a855f7, #06b6d4);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 14px rgba(168, 85, 247, 0.4);
+        }
+
         /* ──────────────────── CARDS SECTION ──────────────────── */
         .carousel-container {
             position: relative;
@@ -1275,6 +1303,15 @@
 
     <!-- ══════════ CARDS ══════════ -->
     <section class="cards-section" id="odkrywaj">
+        <!-- Discovery Match Filters -->
+        <div style="display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; margin: 0 auto 26px; padding: 0 16px; max-width: 900px;">
+            <button class="filter-chip active" id="chip_all" onclick="applyDiscoveryFilter('all', this)"><i class="fa-solid fa-sparkles"></i> Wszyscy</button>
+            <button class="filter-chip" id="chip_kobiety" onclick="applyDiscoveryFilter('kobieta', this)"><i class="fa-solid fa-venus"></i> Kobiety</button>
+            <button class="filter-chip" id="chip_mezczyzni" onclick="applyDiscoveryFilter('mezczyzna', this)"><i class="fa-solid fa-mars"></i> Mężczyźni</button>
+            <button class="filter-chip" id="chip_mlodzi" onclick="applyDiscoveryFilter('mlodzi', this)"><i class="fa-solid fa-bolt"></i> 18–30 lat</button>
+            <button class="filter-chip" id="chip_zalozyciele" onclick="applyDiscoveryFilter('zalozyciele', this)"><i class="fa-solid fa-crown"></i> Założyciele</button>
+        </div>
+
         <div class="carousel-container">
             <button class="carousel-btn left" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="profiles-grid" id="profilesCarousel">
@@ -1608,6 +1645,40 @@
                 <button onclick="sendMsg()" style="flex:1;padding:11px;border-radius:30px;border:none;background:linear-gradient(90deg,#a855f7,#06b6d4);color:#fff;font-weight:700;cursor:pointer;font-family:inherit;font-size:0.85rem;"><i class="fa-solid fa-paper-plane"></i> Wiadomość 💌</button>
             </div>
             <a id="mFullProfileLink" href="lumina-profile.html" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:30px;background:linear-gradient(90deg,#d946ef,#0ea5e9);color:#fff;font-weight:800;font-size:0.88rem;text-decoration:none;box-shadow:0 4px 16px rgba(217,70,239,0.35);transition:transform 0.2s;"><i class="fa-solid fa-address-card"></i> Zobacz Pełny Profil (Styl Facebook) ➔</a>
+        </div>
+    </div>
+
+    <!-- ══════════ IT'S A MATCH CELEBRATION MODAL ══════════ -->
+    <div class="modal-overlay" id="matchCelebrationModal" style="z-index: 10000; background: rgba(5, 8, 22, 0.88); backdrop-filter: blur(12px);">
+        <div class="modal-card" style="max-width: 440px; text-align: center; padding: 32px 24px; border: 1.5px solid rgba(236, 72, 153, 0.4); box-shadow: 0 0 40px rgba(236, 72, 153, 0.3);">
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">💖✨</div>
+            <h2 style="font-size: 1.8rem; font-weight: 900; margin-bottom: 6px; background: linear-gradient(135deg, #f472b6, #c084fc, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Outfit', sans-serif;">TO DOPASOWANIE!</h2>
+            <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 24px;">Oboje wyraziliście chęć bliższego poznania w Bożym pokoju!</p>
+            
+            <!-- Overlapping Glowing Avatars -->
+            <div style="display: flex; align-items: center; justify-content: center; position: relative; height: 110px; margin-bottom: 24px;">
+                <div style="width: 88px; height: 88px; border-radius: 50%; overflow: hidden; border: 3px solid #ec4899; box-shadow: 0 0 20px rgba(236,72,153,0.6); position: absolute; left: calc(50% - 75px); z-index: 1;">
+                    <img id="matchUserAvatar" src="lumina_icon.jpg" alt="Twój Profil" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #8b5cf6); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1rem; z-index: 3; box-shadow: 0 0 14px rgba(236,72,153,0.8); border: 2px solid #0b1838;">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                <div style="width: 88px; height: 88px; border-radius: 50%; overflow: hidden; border: 3px solid #06b6d4; box-shadow: 0 0 20px rgba(6,182,212,0.6); position: absolute; right: calc(50% - 75px); z-index: 2;">
+                    <img id="matchPartnerAvatar" src="avatar_noemi.jpg" alt="Dopasowany Partner" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+
+            <h3 id="matchPartnerName" style="font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 4px;">Noemi</h3>
+            <p id="matchPartnerVerse" style="font-size: 0.78rem; color: #a78bfa; font-style: italic; margin-bottom: 22px;">„Bóg jest miłością”</p>
+
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button type="button" id="btnMatchSendMsg" onclick="handleMatchStartChat()" style="width: 100%; padding: 13px; border-radius: 30px; border: none; background: linear-gradient(90deg, #ec4899, #8b5cf6); color: #fff; font-weight: 800; font-family: inherit; font-size: 0.92rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 6px 20px rgba(236,72,153,0.45);">
+                    <i class="fa-solid fa-paper-plane"></i> Napisz Pierwszą Wiadomość 💌
+                </button>
+                <button type="button" onclick="closeModal('matchCelebrationModal')" style="width: 100%; padding: 11px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #94a3b8; font-weight: 700; font-family: inherit; font-size: 0.84rem; cursor: pointer;">
+                    Odkrywaj Dalej ✨
+                </button>
+            </div>
         </div>
     </div>
 
@@ -2207,54 +2278,118 @@
         }
         function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-        // ── Interactions ──
-        function toggleLike(e, btn) {
-            e.stopPropagation();
-            btn.classList.toggle('liked');
-            showToast(btn.classList.contains('liked') ? 'Polubiono profil! 💖' : 'Usunięto polubienie');
-        }
+        // ── Match & Discovery Engine (Etap 2) ──
+        let currentMatchedPartner = null;
 
-        // ── Video / YouTube Sound Toggle ──
-        let isYtMuted = true;
-        window.toggleYtSound = window.toggleVideoSound = function(e, btn) {
-            e.stopPropagation();
-            const icon = btn.querySelector('i');
-            const iframe = document.getElementById('ytPromoIframe');
-            const card = btn.closest('.card-photo');
-            const video = card ? card.querySelector('video') : null;
+        window.applyDiscoveryFilter = function(filterType, btn) {
+            document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
 
-            if (iframe && iframe.contentWindow) {
-                if (isYtMuted) {
-                    iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
-                    iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
-                    isYtMuted = false;
-                    if (icon) icon.className = 'fa-solid fa-volume-high';
-                    btn.classList.add('sound-on');
-                    showToast('Włączono dźwięk wideo 🔊');
-                } else {
-                    iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
-                    isYtMuted = true;
-                    if (icon) icon.className = 'fa-solid fa-volume-xmark';
-                    btn.classList.remove('sound-on');
-                    showToast('Wyciszono wideo 🔇');
+            const cards = document.querySelectorAll('.profiles-grid .profile-card');
+            cards.forEach(card => {
+                const nameText = (card.querySelector('.card-name')?.textContent || '').toLowerCase();
+                const descText = (card.querySelector('.card-desc')?.textContent || '').toLowerCase();
+                const cityText = (card.querySelector('.card-city')?.textContent || '').toLowerCase();
+
+                let show = true;
+                if (filterType === 'kobieta') {
+                    show = nameText.includes('wioletta') || nameText.includes('noemi') || nameText.includes('weronika') || nameText.includes('anna') || descText.includes('niewiast') || descText.includes('kobieta');
+                } else if (filterType === 'mezczyzna') {
+                    show = nameText.includes('cezary') || nameText.includes('tomek') || nameText.includes('dawid') || descText.includes('mężczyzn');
+                } else if (filterType === 'mlodzi') {
+                    const matchAge = nameText.match(/\b(1[8-9]|2[0-9]|30)\b/);
+                    show = !!matchAge;
+                } else if (filterType === 'zalozyciele') {
+                    show = nameText.includes('cezary') || nameText.includes('wioletta');
                 }
-            } else if (video) {
-                video.muted = !video.muted;
-                if (video.muted) {
-                    if (icon) icon.className = 'fa-solid fa-volume-xmark';
-                    btn.classList.remove('sound-on');
-                    showToast('Wyciszono wideo 🔇');
-                } else {
-                    if (icon) icon.className = 'fa-solid fa-volume-high';
-                    btn.classList.add('sound-on');
-                    video.play();
-                    showToast('Włączono dźwięk wideo 🔊');
+
+                card.style.display = show ? 'block' : 'none';
+            });
+            showToast(`Filtrowanie: ${btn ? btn.textContent.trim() : filterType} ✨`);
+        };
+
+        window.toggleLike = async function(e, btn, targetId = null, targetName = null, targetAvatar = null) {
+            if (e && e.stopPropagation) e.stopPropagation();
+            if (btn) btn.classList.toggle('liked');
+            
+            // Extract partner info from card if not explicitly provided
+            const card = btn ? btn.closest('.profile-card') : null;
+            const name = targetName || (card ? card.querySelector('.card-name')?.textContent.split(',')[0].trim() : 'Użytkownik');
+            const avatar = targetAvatar || (card ? card.querySelector('.card-photo img')?.src : 'avatar_noemi.jpg');
+            const id = targetId || name.toLowerCase().replace(/\s+/g, '');
+
+            if (window.LuminaDB) {
+                const res = await window.LuminaDB.recordProfileLike(id, { name, avatar }, 'like');
+                if (res && res.isMatch) {
+                    showMatchModal(res.partner);
+                    return;
                 }
+            }
+
+            showToast(btn && btn.classList.contains('liked') ? `Polubiono profil ${name}! 💖` : 'Usunięto polubienie');
+        };
+
+        window.sendPray = async function() {
+            closeModal('profileModal');
+            const nameEl = document.getElementById('mName');
+            const partnerName = nameEl ? nameEl.textContent.split(',')[0].trim() : 'Użytkownik';
+            const avatarEl = document.querySelector('#mImg img');
+            const avatarSrc = avatarEl ? avatarEl.src : 'avatar_noemi.jpg';
+            const partnerId = partnerName.toLowerCase().replace(/\s+/g, '');
+
+            if (window.LuminaDB) {
+                const res = await window.LuminaDB.recordProfileLike(partnerId, { name: partnerName, avatar: avatarSrc }, 'pray');
+                if (res && res.isMatch) {
+                    showMatchModal(res.partner);
+                    return;
+                }
+            }
+            showToast(`Wysłano intencję modlitewną za: ${partnerName}! 🙏✨`);
+        };
+
+        window.sendMsg = function() {
+            closeModal('profileModal');
+            const nameEl = document.getElementById('mName');
+            const partnerName = nameEl ? nameEl.textContent.split(',')[0].trim() : 'Użytkownik';
+            const partnerId = partnerName.toLowerCase().replace(/\s+/g, '');
+            const avatarEl = document.querySelector('#mImg img');
+            const avatarSrc = avatarEl ? avatarEl.src : 'avatar_noemi.jpg';
+
+            openChatWith(partnerName, avatarSrc, partnerId);
+        };
+
+        window.showMatchModal = function(partner) {
+            currentMatchedPartner = partner;
+            const myProfile = window.LuminaDB?.getCurrentProfile();
+            const myUser = window.LuminaDB?.getCurrentUser();
+
+            const myAvatar = document.getElementById('matchUserAvatar');
+            if (myAvatar) {
+                myAvatar.src = myProfile?.avatar || myUser?.photoURL || 'lumina_icon.jpg';
+            }
+
+            const pAvatar = document.getElementById('matchPartnerAvatar');
+            if (pAvatar && partner.avatar) pAvatar.src = partner.avatar;
+
+            const pName = document.getElementById('matchPartnerName');
+            if (pName && partner.name) pName.textContent = partner.name;
+
+            const pVerse = document.getElementById('matchPartnerVerse');
+            if (pVerse && partner.verse) pVerse.textContent = `„${partner.verse}”`;
+
+            const m = document.getElementById('matchCelebrationModal');
+            if (m) m.classList.add('open');
+        };
+
+        window.handleMatchStartChat = function() {
+            closeModal('matchCelebrationModal');
+            if (currentMatchedPartner) {
+                openChatWith(currentMatchedPartner.name, currentMatchedPartner.avatar, currentMatchedPartner.id);
+            } else {
+                openDirectMessagesModal();
             }
         };
 
-        function sendPray() { closeModal('profileModal'); showToast('Wysłano intencję modlitewną! 🙏'); }
-        function sendMsg()  { closeModal('profileModal'); showToast('Otwarto czat w LUMINA 💌'); }
         function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
 
         // ── True Infinite Carousel Engine ──

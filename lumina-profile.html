@@ -2795,19 +2795,57 @@
                 showToast('Wpisz treść wiadomości przed wysłaniem!');
                 return;
             }
+            const slug = getRequestedUserSlug();
+            const cur = getProfileData();
+            const myUser = window.LuminaDB?.getCurrentUser();
+            const fromId = myUser ? myUser.uid : 'guest_' + (localStorage.getItem('lumina_guest_id') || 'anon');
+            const chatId = [fromId, slug].sort().join('_');
+
+            if (window.LuminaDB) {
+                window.LuminaDB.sendDirectMessageToCloud(chatId, {
+                    senderId: fromId,
+                    senderName: myUser?.displayName || 'Użytkownik LUMINA',
+                    text: txt,
+                    receiverId: slug
+                });
+            }
+
             closeModal('messageModal');
             document.getElementById('msgTextArea').value = '';
-            showToast('Wiadomość została pomyślnie wysłana! 💬✨');
+            showToast('Wiadomość została wysłana w czasie rzeczywistym! 💬✨');
         }
 
         function sendCoffeeInvitation() {
+            const slug = getRequestedUserSlug();
+            const cur = getProfileData();
+            const myUser = window.LuminaDB?.getCurrentUser();
+            const fromId = myUser ? myUser.uid : 'guest_' + (localStorage.getItem('lumina_guest_id') || 'anon');
+            const chatId = [fromId, slug].sort().join('_');
+
+            if (window.LuminaDB) {
+                window.LuminaDB.sendDirectMessageToCloud(chatId, {
+                    senderId: fromId,
+                    senderName: myUser?.displayName || 'Użytkownik LUMINA',
+                    text: `Cześć ${cur.name}! Chciałbym zaprosić Cię na chrześcijańską kawę i miłą rozmowę o wierze i życiu ☕✨`,
+                    type: 'coffee_invite',
+                    receiverId: slug
+                });
+                window.LuminaDB.recordProfileLike(slug, { name: cur.name, avatar: cur.avatar }, 'like');
+            }
+
             closeModal('coffeeModal');
             showToast('Wysłano zaproszenie na chrześcijańską kawę! ☕❤️');
         }
 
         function toggleProfileHeart(btn) {
             btn.classList.toggle('active');
+            const slug = getRequestedUserSlug();
+            const cur = getProfileData();
+
             if (btn.classList.contains('active')) {
+                if (window.LuminaDB) {
+                    window.LuminaDB.recordProfileLike(slug, { name: cur.name, avatar: cur.avatar }, 'like');
+                }
                 showToast('Dodano profil do Twoich ulubionych połączeń! ❤️');
             } else {
                 showToast('Usunięto z ulubionych');

@@ -433,6 +433,102 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     }
 }
 
+// ══════════════════════════════════════════════════════════════════════════
+// 5. MATCH & DISCOVERY ENGINE (Polubienia, Modlitwy, Wzajemne Dopasowania)
+// ══════════════════════════════════════════════════════════════════════════
+
+export async function recordProfileLike(targetIdOrSlug, targetData = {}, type = 'like') {
+    const user = currentUserState;
+    const fromId = user ? user.uid : 'guest_' + (localStorage.getItem('lumina_guest_id') || Math.random().toString(36).substring(2, 9));
+    if (!user && !localStorage.getItem('lumina_guest_id')) {
+        localStorage.setItem('lumina_guest_id', fromId);
+    }
+
+    const likeDocId = `${fromId}_${targetIdOrSlug}`;
+    const reciprocalLikeDocId = `${targetIdOrSlug}_${fromId}`;
+
+    // 1. Local Cache for instant UI state
+    try {
+        localStorage.setItem(`lumina_like_${targetIdOrSlug}`, 'true');
+    } catch(e) {}
+
+    let isMatch = false;
+
+    if (db) {
+        try {
+            // Save our like in Firestore
+            await setDoc(doc(db, 'lumina_likes', likeDocId), {
+                from: fromId,
+                to: targetIdOrSlug,
+                fromName: currentProfileState?.name || user?.displayName || 'Anonimowy Użytkownik',
+                fromAvatar: currentProfileState?.avatar || user?.photoURL || 'lumina_icon.jpg',
+                toName: targetData.name || targetIdOrSlug,
+                toAvatar: targetData.avatar || 'lumina_icon.jpg',
+                type: type,
+                timestamp: serverTimestamp()
+            });
+
+            // Check if reciprocal like exists
+            const recipSnap = await getDoc(doc(db, 'lumina_likes', reciprocalLikeDocId));
+            if (recipSnap.exists()) {
+                isMatch = true;
+                const matchId = [fromId, targetIdOrSlug].sort().join('_');
+                await setDoc(doc(db, 'lumina_matches', matchId), {
+                    users: [fromId, targetIdOrSlug],
+                    userProfiles: {
+                        [fromId]: {
+                            name: currentProfileState?.name || user?.displayName || 'Użytkownik',
+                            avatar: currentProfileState?.avatar || user?.photoURL || 'lumina_icon.jpg'
+                        },
+                        [targetIdOrSlug]: {
+                            name: targetData.name || targetIdOrSlug,
+                            avatar: targetData.avatar || 'lumina_icon.jpg'
+                        }
+                    },
+                    createdAt: serverTimestamp()
+                }, { merge: true });
+            }
+        } catch(err) {
+            console.warn('Lumina Match Engine notice:', err.message);
+        }
+    }
+
+    // Demo / interactive simulation match trigger for key profiles
+    if (!isMatch && (targetIdOrSlug === 'noemi' || targetIdOrSlug === 'tomek' || targetIdOrSlug === 'weronika' || Math.random() < 0.35)) {
+        isMatch = true;
+    }
+
+    return {
+        success: true,
+        isMatch: isMatch,
+        type: type,
+        partner: {
+            id: targetIdOrSlug,
+            name: targetData.name || targetIdOrSlug,
+            avatar: targetData.avatar || 'lumina_icon.jpg',
+            city: targetData.city || 'Polska',
+            verse: targetData.verse || ''
+        }
+    };
+}
+
+export function subscribeToUserMatches(userId, onUpdate) {
+    if (!db || !userId) return () => {};
+    try {
+        const matchesQuery = query(
+            collection(db, 'lumina_matches'),
+            where('users', 'array-contains', userId)
+        );
+        return onSnapshot(matchesQuery, (snap) => {
+            const matches = [];
+            snap.forEach(d => matches.push({ id: d.id, ...d.data() }));
+            onUpdate(matches);
+        });
+    } catch(e) {
+        return () => {};
+    }
+}
+
 // Global window attachment for seamless cross-script integration
 window.LuminaDB = {
     loginWithGoogle,
@@ -451,5 +547,7 @@ window.LuminaDB = {
     subscribeToCampaigns,
     addCampaignToCloud,
     subscribeToDirectMessages,
-    sendDirectMessageToCloud
+    sendDirectMessageToCloud,
+    recordProfileLike,
+    subscribeToUserMatches
 };
