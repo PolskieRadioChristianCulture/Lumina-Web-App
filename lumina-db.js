@@ -33,31 +33,41 @@ import {
     serverTimestamp,
     increment
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { getAnalytics, isSupported as isAnalyticsSupported } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js';
 
-// ── Firebase Configuration ──
+// ── Oficjalna Produkcyjna Konfiguracja Firebase (lumina-cc) ──
 const LUMINA_FIREBASE_CONFIG = {
-    projectId: "lumina-cc",
-    appId: "1:413985877183:web:60aaff1699a6d8bd75aa0a",
-    apiKey: "AIzaSyCKUXrKHCujilk2FgeOQ959B7ZqWgKowRs",
+    apiKey: "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M",
     authDomain: "lumina-cc.firebaseapp.com",
+    databaseURL: "https://lumina-cc-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "lumina-cc",
     storageBucket: "lumina-cc.firebasestorage.app",
-    messagingSenderId: "413985877183"
+    messagingSenderId: "413985877183",
+    appId: "1:413985877183:web:b0c99a686a4fb1b875aa0a",
+    measurementId: "G-6440T9VBQB"
 };
 
 let app = null;
 let db = null;
 let auth = null;
+let analytics = null;
 const googleProvider = new GoogleAuthProvider();
 
 try {
     app = !getApps().length ? initializeApp(LUMINA_FIREBASE_CONFIG, 'lumina-app') : getApp('lumina-app');
     db = getFirestore(app);
     auth = getAuth(app);
+    isAnalyticsSupported().then(supported => {
+        if (supported && app) analytics = getAnalytics(app);
+    }).catch(() => {});
 } catch(e) {
     try {
         app = initializeApp(LUMINA_FIREBASE_CONFIG);
         db = getFirestore(app);
         auth = getAuth(app);
+        isAnalyticsSupported().then(supported => {
+            if (supported && app) analytics = getAnalytics(app);
+        }).catch(() => {});
     } catch(err) {
         console.warn('Lumina Firebase Init Warning:', err);
     }
