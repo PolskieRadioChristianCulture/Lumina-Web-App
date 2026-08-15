@@ -292,24 +292,28 @@
 
         .head-user-details {
             flex: 1;
-            min-width: 240px;
+            min-width: 0;
             padding-bottom: 6px;
         }
 
         .head-user-name {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.75rem;
+            font-size: clamp(1.2rem, 2.2vw, 1.8rem);
             font-weight: 800;
             color: #fff;
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .verified-badge {
             color: #ec4899;
             font-size: 1.15rem;
+            flex-shrink: 0;
         }
 
         .head-user-tagline {
@@ -862,13 +866,13 @@
         <nav class="nav-center-links">
             <a href="lumina.html" class="nav-link"><i class="fa-solid fa-house"></i> Odkrywaj</a>
             <a href="lumina-tablica.html" class="nav-link"><i class="fa-solid fa-globe"></i> Tablica Społeczności</a>
-            <a href="https://www.youtube.com/@ChristianCulture" target="_blank" class="nav-link active"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i> Kanał YouTube</a>
+            <a href="https://www.youtube.com/@CCWomen7" target="_blank" class="nav-link active"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i> Kanał YouTube</a>
             <a href="lumina.wiolettarogowska.html" class="nav-link"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> Wioletta Rogowska</a>
             <a href="lumina.cezaryrgowski.html" class="nav-link"><i class="fa-solid fa-crown" style="color:#facc15;"></i> Cezary Rogowski</a>
         </nav>
 
         <div class="nav-right-actions">
-            <a href="https://www.youtube.com/@ChristianCulture?sub_confirmation=1" target="_blank" class="btn-nav-action" style="background: linear-gradient(90deg, #ec4899, #f472b6); border:none; box-shadow: 0 2px 10px rgba(236,72,153,0.4);">
+            <a href="https://www.youtube.com/@CCWomen7?sub_confirmation=1" target="_blank" class="btn-nav-action" style="background: linear-gradient(90deg, #ec4899, #f472b6); border:none; box-shadow: 0 2px 10px rgba(236,72,153,0.4);">
                 <i class="fa-brands fa-youtube"></i> Subskrybuj YouTube 🌸
             </a>
             <button class="btn-nav-action" onclick="toggleRadio()">
@@ -884,7 +888,7 @@
             <img src="lumina_hero_main.jpg" alt="CC Women Cover" class="cover-img" id="coverPhotoEl">
             <div class="cover-gradient-overlay"></div>
             <div class="cover-actions">
-                <a href="https://www.youtube.com/@ChristianCulture" target="_blank" class="btn-cover-edit" style="text-decoration:none;">
+                <a href="https://www.youtube.com/@CCWomen7" target="_blank" class="btn-cover-edit" style="text-decoration:none;">
                     <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> Odwiedź Oficjalny YouTube
                 </a>
             </div>
@@ -912,7 +916,7 @@
                 </div>
 
                 <div class="head-actions">
-                    <a href="https://www.youtube.com/@ChristianCulture?sub_confirmation=1" target="_blank" class="btn-action-primary" style="text-decoration:none;">
+                    <a href="https://www.youtube.com/@CCWomen7?sub_confirmation=1" target="_blank" class="btn-action-primary" style="text-decoration:none;">
                         <i class="fa-brands fa-youtube"></i> Subskrybuj Kanał 🌸
                     </a>
                     <button class="btn-action-secondary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Napisz do Redakcji</button>
@@ -1209,7 +1213,7 @@
                     ` : ''}
                     <div class="post-actions-bar">
                         <button class="post-action-btn" onclick="showToast('Dziękujemy za polubienie wpisu CC Women! 🌸')"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> ${p.likes || 1} Polubień</button>
-                        <a href="https://www.youtube.com/@ChristianCulture?sub_confirmation=1" target="_blank" class="post-action-btn" style="text-decoration:none; color:#facc15;"><i class="fa-brands fa-youtube"></i> Dołącz do YouTube</a>
+                        <a href="https://www.youtube.com/@CCWomen7?sub_confirmation=1" target="_blank" class="post-action-btn" style="text-decoration:none; color:#facc15;"><i class="fa-brands fa-youtube"></i> Dołącz do YouTube</a>
                         <button class="post-action-btn" onclick="copyProfileLink()"><i class="fa-solid fa-share-nodes"></i> Udostępnij</button>
                     </div>
                 </article>
