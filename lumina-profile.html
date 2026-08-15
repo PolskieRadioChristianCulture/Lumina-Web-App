@@ -2187,6 +2187,17 @@
 
         function getProfileData() {
             const slug = getRequestedUserSlug();
+            
+            // Twarde zabezpieczenie kanału CC Women
+            if (slug.includes('ccwomen') || slug.includes('women') || slug === 'u_ccwomen_9055') {
+                const ccw = PROFILES_DB['u_ccwomen_9055'] || PROFILES_DB['ccwomen'];
+                return {
+                    ...ccw,
+                    avatar: 'logo_cc_women.jpg',
+                    cover: 'lumina_hero_main.jpg'
+                };
+            }
+
             const fallback = PROFILES_DB[slug] || {
                 name: 'Profil LUMINA',
                 role: 'Społeczność LUMINA ✨',
@@ -2222,6 +2233,9 @@
                 }
                 if (saved) {
                     const parsed = JSON.parse(saved);
+                    if (slug !== 'cezaryrgowski' && parsed.name && parsed.name.toLowerCase().includes('cezary')) {
+                        return JSON.parse(JSON.stringify(fallback));
+                    }
                     return {
                         ...fallback,
                         ...parsed,
@@ -2523,6 +2537,9 @@
             if (document.getElementById('userStatusEl')) document.getElementById('userStatusEl').textContent = data.status || 'Panna / Kawaler';
             if (document.getElementById('userVerseText')) document.getElementById('userVerseText').textContent = data.verse || '„Wszystko mogę w Tym, który mnie umacnia”';
             if (document.getElementById('userVerseRef')) document.getElementById('userVerseRef').textContent = data.verseRef || '— Flp 4, 13';
+            if (document.getElementById('userMatchEl')) {
+                document.getElementById('userMatchEl').innerHTML = `<i class="fa-solid fa-heart-pulse"></i> ${data.match || 'Dopasowanie: 98%'}`;
+            }
             document.getElementById('userBioFull').textContent = data.bio || 'Witaj na profilu w społeczności LUMINA!';
             document.getElementById('modalMsgRecipient').textContent = data.name.split(' ')[0] || data.name;
 
