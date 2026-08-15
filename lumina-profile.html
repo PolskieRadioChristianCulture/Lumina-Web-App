@@ -2150,14 +2150,17 @@
                 posts: []
             };
             try {
-                const saved = localStorage.getItem('lumina_profile_' + slug);
+                let saved = localStorage.getItem('lumina_profile_' + slug);
+                if (!saved && (slug.startsWith('u_') || slug.startsWith('user_') || slug.length > 15)) {
+                    saved = localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_profile_current');
+                }
                 if (saved) {
                     const parsed = JSON.parse(saved);
                     return {
                         ...fallback,
                         ...parsed,
                         visibility: parsed.visibility || 'public',
-                        photos: Array.isArray(parsed.photos) && parsed.photos.length ? parsed.photos : [...fallback.photos],
+                        photos: Array.isArray(parsed.photos) && parsed.photos.length ? parsed.photos : (parsed.avatar ? [parsed.avatar] : [...fallback.photos]),
                         posts: Array.isArray(parsed.posts) ? parsed.posts : [...fallback.posts]
                     };
                 }
