@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -1545,7 +1545,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Kod PIN Zarządzania Kanałem</label>
-                    <input type="text" id="editPin" class="form-input" placeholder="7777">
+                    <input type="text" id="editPin" class="form-input" placeholder="••••">
                 </div>
 
                 <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
@@ -1565,7 +1565,7 @@
             <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:18px;">Wpisz kod PIN zarządzania kanałem misyjnym, aby odblokować pełną edycję.</p>
             
             <form onsubmit="event.preventDefault(); verifyOwnerPinSubmit();">
-                <input type="password" id="ownerPinInput" class="form-input" placeholder="Wpisz PIN (domyślnie 7777)" style="text-align:center; font-size:1.2rem; letter-spacing:4px; margin-bottom:16px;" maxlength="10" required>
+                <input type="password" id="ownerPinInput" class="form-input" placeholder="Wpisz kod PIN" style="text-align:center; font-size:1.2rem; letter-spacing:4px; margin-bottom:16px;" maxlength="10" required>
                 <button type="submit" class="btn-action-primary" style="width:100%; justify-content:center;">
                     <i class="fa-solid fa-unlock"></i> Odblokuj Panel Edycji
                 </button>
@@ -2303,3 +2303,4 @@
     </script>
 </body>
 </html>
+
