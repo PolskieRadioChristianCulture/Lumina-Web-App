@@ -1705,9 +1705,9 @@
                 </div>
 
                 <!-- Anna -->
-                <div class="profile-card" onclick="openProfile('Anna','28','Warszawa','Uwielbia podróże i sztukę','lumina_anna2.jpg','94%')">
+                <div class="profile-card" onclick="openProfile('Anna','28','Warszawa','Uwielbia podróże i sztukę','avatar_widget_ania.jpg','94%')">
                     <div class="card-photo">
-                        <img src="lumina_anna2.jpg" alt="Anna" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="avatar_widget_ania.jpg" alt="Anna" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match">94%</div>
                     </div>
@@ -2636,41 +2636,44 @@
         function syncUserSavedProfileToHomepage() {
             // 1. Sync Cezary Rogowski
             try {
-                const savedCezary = localStorage.getItem('lumina_profile_cezaryrgowski') || localStorage.getItem('lumina_main_user_profile');
-                if (savedCezary) {
-                    const p = JSON.parse(savedCezary);
-                    if (p.avatar) {
-                        document.querySelectorAll('.home-cezary-avatar, #homeUserAvatar, img[alt="Cezary Rogowski"]').forEach(img => {
-                            img.src = p.avatar;
-                        });
-                    }
-                    if (p.name && p.age) {
-                        document.querySelectorAll('.home-cezary-name, #homeUserName').forEach(el => {
-                            el.textContent = `${p.name}, ${p.age}`;
-                        });
-                    }
-                    if (p.city) {
-                        document.querySelectorAll('.home-cezary-city, #homeUserCity').forEach(el => {
-                            el.innerHTML = `📍 ${p.city} • <b>${p.status || 'Żonaty'}</b>`;
-                        });
-                    }
-                    if (p.bio || p.job) {
-                        document.querySelectorAll('.home-cezary-desc, #homeUserDesc').forEach(el => {
-                            el.textContent = `"${p.bio ? (p.bio.length > 85 ? p.bio.substring(0, 85) + '...' : p.bio) : (p.job || 'Założyciel Christian Culture')}"`;
-                        });
-                    }
+                const savedCezary = localStorage.getItem('lumina_profile_cezaryrgowski');
+                let p = savedCezary ? JSON.parse(savedCezary) : null;
+                if (!p || !p.avatar || p.avatar.includes('worship') || p.avatar.includes('tlo') || p.avatar.includes('oddaj')) {
+                    p = {
+                        name: 'Cezary Rogowski',
+                        age: 32,
+                        city: 'Warszawa, Polska',
+                        status: 'Żonaty',
+                        avatar: 'avatar_cezary_official.jpg',
+                        job: 'Założyciel Christian Culture',
+                        bio: 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.'
+                    };
+                    localStorage.setItem('lumina_profile_cezaryrgowski', JSON.stringify(p));
+                }
 
-                    // Sync with Navbar Profile Widget
-                    const navProfile = document.getElementById('userNavProfile');
-                    const authBtn = document.getElementById('authCtaBtn');
-                    const navName = document.getElementById('userNavName');
-                    const navAvatar = document.getElementById('userNavAvatar');
-                    if (navProfile && navName) {
-                        navProfile.style.display = 'flex';
-                        if (authBtn) authBtn.style.display = 'none';
-                        navName.textContent = p.name;
-                        if (navAvatar && p.avatar) navAvatar.src = p.avatar;
-                    }
+                document.querySelectorAll('.home-cezary-avatar, #homeUserAvatar, img[alt="Cezary Rogowski"]').forEach(img => {
+                    img.src = 'avatar_cezary_official.jpg';
+                });
+                document.querySelectorAll('.home-cezary-name, #homeUserName').forEach(el => {
+                    el.textContent = `${p.name || 'Cezary'}, ${p.age || 32}`;
+                });
+                document.querySelectorAll('.home-cezary-city, #homeUserCity').forEach(el => {
+                    el.innerHTML = `📍 ${p.city || 'Warszawa'} • <b>${p.status || 'Żonaty'}</b>`;
+                });
+                document.querySelectorAll('.home-cezary-desc, #homeUserDesc').forEach(el => {
+                    el.textContent = `"${p.bio ? (p.bio.length > 85 ? p.bio.substring(0, 85) + '...' : p.bio) : (p.job || 'Założyciel Christian Culture')}"`;
+                });
+
+                // Sync with Navbar Profile Widget
+                const navProfile = document.getElementById('userNavProfile');
+                const authBtn = document.getElementById('authCtaBtn');
+                const navName = document.getElementById('userNavName');
+                const navAvatar = document.getElementById('userNavAvatar');
+                if (navProfile && navName) {
+                    navProfile.style.display = 'flex';
+                    if (authBtn) authBtn.style.display = 'none';
+                    navName.textContent = p.name;
+                    if (navAvatar) navAvatar.src = 'avatar_cezary_official.jpg';
                 }
             } catch(e) {
                 console.error("Sync Cezary error:", e);
@@ -2679,29 +2682,32 @@
             // 2. Sync Wioletta Rogowska
             try {
                 const savedWioletta = localStorage.getItem('lumina_profile_wiolettarogowska');
-                if (savedWioletta) {
-                    const pw = JSON.parse(savedWioletta);
-                    if (pw.avatar) {
-                        document.querySelectorAll('.home-wioletta-avatar, #homeWiolettaAvatar, img[alt="Wioletta Rogowska"]').forEach(img => {
-                            img.src = pw.avatar;
-                        });
-                    }
-                    if (pw.name && pw.age) {
-                        document.querySelectorAll('.home-wioletta-name, #homeWiolettaName').forEach(el => {
-                            el.textContent = `${pw.name}, ${pw.age}`;
-                        });
-                    }
-                    if (pw.city) {
-                        document.querySelectorAll('.home-wioletta-city, #homeWiolettaCity').forEach(el => {
-                            el.innerHTML = `📍 ${pw.city} • <b>${pw.status || 'Mężatka'}</b>`;
-                        });
-                    }
-                    if (pw.bio || pw.job) {
-                        document.querySelectorAll('.home-wioletta-desc, #homeWiolettaDesc').forEach(el => {
-                            el.textContent = `"${pw.bio ? (pw.bio.length > 85 ? pw.bio.substring(0, 85) + '...' : pw.bio) : (pw.job || 'Współzałożycielka Christian Culture')}"`;
-                        });
-                    }
+                let pw = savedWioletta ? JSON.parse(savedWioletta) : null;
+                if (!pw || !pw.avatar || pw.avatar.includes('worship') || pw.avatar.includes('tlo') || pw.avatar.includes('oddaj')) {
+                    pw = {
+                        name: 'Wioletta Rogowska',
+                        age: 30,
+                        city: 'Warszawa, Polska',
+                        status: 'Mężatka',
+                        avatar: 'avatar_wioletta_official.jpg',
+                        job: 'Współzałożycielka Christian Culture',
+                        bio: 'Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.'
+                    };
+                    localStorage.setItem('lumina_profile_wiolettarogowska', JSON.stringify(pw));
                 }
+
+                document.querySelectorAll('.home-wioletta-avatar, #homeWiolettaAvatar, img[alt="Wioletta Rogowska"]').forEach(img => {
+                    img.src = 'avatar_wioletta_official.jpg';
+                });
+                document.querySelectorAll('.home-wioletta-name, #homeWiolettaName').forEach(el => {
+                    el.textContent = `${pw.name || 'Wioletta'}, ${pw.age || 30}`;
+                });
+                document.querySelectorAll('.home-wioletta-city, #homeWiolettaCity').forEach(el => {
+                    el.innerHTML = `📍 ${pw.city || 'Warszawa'} • <b>${pw.status || 'Mężatka'}</b>`;
+                });
+                document.querySelectorAll('.home-wioletta-desc, #homeWiolettaDesc').forEach(el => {
+                    el.textContent = `"${pw.bio ? (pw.bio.length > 85 ? pw.bio.substring(0, 85) + '...' : pw.bio) : (pw.job || 'Współzałożycielka Christian Culture')}"`;
+                });
             } catch(e) {
                 console.error("Sync Wioletta error:", e);
             }

@@ -1973,9 +1973,14 @@
                 const saved = localStorage.getItem(STORAGE_KEY);
                 if (saved) {
                     const parsed = JSON.parse(saved);
+                    let avatar = parsed.avatar;
+                    if (!avatar || avatar.includes('worship') || avatar.includes('tlo') || avatar.includes('oddaj') || avatar.includes('anna')) {
+                        avatar = 'avatar_wioletta_official.jpg';
+                    }
                     return {
                         ...defaultProfile,
                         ...parsed,
+                        avatar: avatar,
                         visibility: parsed.visibility || 'public',
                         photos: Array.isArray(parsed.photos) ? parsed.photos : [...defaultProfile.photos],
                         posts: Array.isArray(parsed.posts) ? parsed.posts : [...defaultProfile.posts]
