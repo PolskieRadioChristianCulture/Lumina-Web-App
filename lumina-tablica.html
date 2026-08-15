@@ -316,11 +316,14 @@
             padding: 14px 18px;
             margin-bottom: 24px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.35);
-            display: flex;
+            display: none; /* hidden by default – shown only in admin mode */
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
+        }
+        .founder-mission-bar.admin-active {
+            display: flex;
         }
         .founder-info-side {
             display: flex;
@@ -2834,6 +2837,28 @@
         );
 
         window.addEventListener('DOMContentLoaded', () => {
+            // ── ADMIN MODE DETECTION ────────────────────────────────────────
+            // Panel "Występujesz jako" is ONLY visible for the founder.
+            // Activate via: ?admin=1 in URL (stores in localStorage).
+            // Clear via: ?admin=0 or removing localStorage key.
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === '1') {
+                localStorage.setItem('lumina_admin', '1');
+                // Clean URL without reload
+                const cleanUrl = window.location.pathname + window.location.hash;
+                window.history.replaceState({}, '', cleanUrl);
+            } else if (urlParams.get('admin') === '0') {
+                localStorage.removeItem('lumina_admin');
+                const cleanUrl = window.location.pathname + window.location.hash;
+                window.history.replaceState({}, '', cleanUrl);
+            }
+            const isAdmin = localStorage.getItem('lumina_admin') === '1';
+            const founderHub = document.getElementById('founderMissionHub');
+            if (isAdmin && founderHub) {
+                founderHub.classList.add('admin-active');
+            }
+            // ────────────────────────────────────────────────────────────────
+
             syncFounderAvatar();
             renderFeed();
 
