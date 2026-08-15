@@ -1229,6 +1229,58 @@
                 font-size: 16px !important;
             }
         }
+
+        /* ── LUMINA FLOATING SCROLL TO TOP BUTTON ── */
+        .lumina-scroll-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 28px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.92), rgba(234, 179, 8, 0.92));
+            color: #ffffff;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 24px rgba(168, 85, 247, 0.45), 0 0 15px rgba(245, 158, 11, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.85);
+            transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.35s;
+            backdrop-filter: blur(8px);
+        }
+
+        .lumina-scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .lumina-scroll-top-btn:hover {
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 12px 28px rgba(168, 85, 247, 0.65), 0 0 20px rgba(245, 158, 11, 0.55);
+            background: linear-gradient(135deg, #c084fc, #f59e0b);
+        }
+
+        .lumina-scroll-top-btn:active {
+            transform: translateY(1px) scale(0.96);
+        }
+
+        @media (max-width: 900px) {
+            .lumina-scroll-top-btn {
+                bottom: 85px; /* Elevated above the mobile nav bar */
+                right: 18px;
+                width: 44px;
+                height: 44px;
+                font-size: 1.05rem;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -3189,6 +3241,25 @@
         document.querySelectorAll('.modal-overlay').forEach(bg =>
             bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); })
         );
+
+        
+        // ── Smooth Scroll to Top Logic ──
+        window.scrollToTopFeed = function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        };
+
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('btnScrollToTop');
+            if (!btn) return;
+            if (window.scrollY > 380) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        }, { passive: true });
 
         window.addEventListener('DOMContentLoaded', () => {
             // ── ADMIN MODE DETECTION ────────────────────────────────────────
