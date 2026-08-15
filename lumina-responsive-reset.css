@@ -361,6 +361,8 @@ div.cc-nav-modal.open {
 .btn-gear-settings,
 .settings-dropdown-wrap,
 .post-creator-box,
+.feed-composer,
+#channelComposer,
 .cover-hint-badge,
 .cover-upload-btn,
 .cover-reposition-toolbar,
@@ -379,7 +381,9 @@ body.owner-mode-active .settings-dropdown-wrap {
     display: block !important;
 }
 
-body.owner-mode-active .post-creator-box {
+body.owner-mode-active .post-creator-box,
+body.owner-mode-active .feed-composer,
+body.owner-mode-active #channelComposer {
     display: block !important;
 }
 
@@ -390,4 +394,3 @@ body.owner-mode-active .post-header-actions,
 body.owner-mode-active .owner-only {
     display: inline-flex !important;
 }
-

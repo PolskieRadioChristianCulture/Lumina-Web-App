@@ -2275,7 +2275,7 @@
 
         window.toggleOwnerAuthMode = function() {
             if (isOwnerMode) {
-                sessionStorage.removeItem('lumina_auth_master_admin');
+                sessionStorage.removeItem('lumina_auth_master_admin'); localStorage.removeItem('lumina_auth_master_admin');
                 isOwnerMode = false;
                 document.body.classList.remove('owner-mode-active');
                 const statusEl = document.getElementById('settingsMenuStatus');
@@ -2408,7 +2408,7 @@
         // ── Initialization ──
         window.addEventListener('DOMContentLoaded', () => {
             // Check exclusive Administrator permissions
-        if (sessionStorage.getItem('lumina_auth_master_admin') === 'true') {
+        if (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true') {
             isOwnerMode = true;
             document.body.classList.add('owner-mode-active');
         } else {
