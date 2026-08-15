@@ -1580,24 +1580,12 @@
             <div class="universal-search-container" id="universalSearchBox">
                 <div class="search-input-wrapper">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="omniSearchInput" class="omni-search-input" placeholder="Wyszukaj profil, kanał lub temat (np. @ccwomen, @cezary, #modlitwa)..." oninput="handleOmniSearchInput(this.value)" onkeydown="if(event.key==='Enter') executeOmniSearch()">
+                    <input type="text" id="omniSearchInput" class="omni-search-input" placeholder="Wyszukaj profil, kanał lub temat @ # ..." oninput="handleOmniSearchInput(this.value)" onkeydown="if(event.key==='Enter') executeOmniSearch()">
                     <button type="button" class="btn-omni-action" onclick="executeOmniSearch()" title="Szukaj"><i class="fa-solid fa-arrow-right"></i></button>
                 </div>
 
                 <!-- Dynamic Live Results Dropdown -->
                 <div class="omni-dropdown" id="omniDropdown"></div>
-
-                <!-- Instant Shortcuts & Actions -->
-                <div class="omni-shortcuts-row">
-                    <span style="font-size:0.75rem; color:#94a3b8; font-weight:700; display:flex; align-items:center; gap:4px;"><i class="fa-solid fa-bolt" style="color:#facc15;"></i> Skróty:</span>
-                    <button type="button" class="shortcut-chip" onclick="quickJumpTo('@ccwomen')">🌸 @ccwomen</button>
-                    <button type="button" class="shortcut-chip" onclick="quickJumpTo('@cezary')">👑 @cezary</button>
-                    <button type="button" class="shortcut-chip" onclick="quickJumpTo('@wioletta')">🌸 @wioletta</button>
-                    <button type="button" class="shortcut-chip" onclick="quickJumpTo('#modlitwa')">🕊️ #modlitwa</button>
-                    <button type="button" class="shortcut-chip" onclick="quickJumpTo('#uwielbienie')">🎵 #uwielbienie</button>
-                    <a href="lumina-tablica.html" class="shortcut-chip special-board"><i class="fa-solid fa-rectangle-list"></i> Tablica</a>
-                    <button type="button" class="shortcut-chip special-catalog" onclick="scrollToSection('odkrywaj')"><i class="fa-solid fa-compass"></i> Katalog</button>
-                </div>
             </div>
         </div>
     </header>
