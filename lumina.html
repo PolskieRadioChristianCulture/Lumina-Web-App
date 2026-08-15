@@ -2503,38 +2503,42 @@
             }
         }
 
-        // ── Google Auth ──
+        // ── Direct Google Auth (Zero Blocking Flags) ──
         window.handleGoogleAuthAction = async function() {
             const btn = document.getElementById('btnGoogleAuth');
             if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Łączenie z Google...'; }
             setAuthStatusMsg('⏳ Otwieranie bezpiecznego logowania Google...', false);
             
             try {
-                const dbEngine = await getLuminaDBEngine();
-                if (!dbEngine || typeof dbEngine.loginWithGoogle !== 'function') {
-                    throw new Error('Inicjalizacja silnika bazy danych w toku. Spróbuj ponownie.');
+                let authFn = window.loginWithGoogle;
+                if (typeof authFn !== 'function') {
+                    const dbEngine = await getLuminaDBEngine();
+                    authFn = (dbEngine && dbEngine.loginWithGoogle) || window.loginWithGoogle;
                 }
-                const res = await dbEngine.loginWithGoogle();
+
+                if (typeof authFn !== 'function') {
+                    // Direct dynamic import execution
+                    const mod = await import('./lumina-db.js?v=direct_' + Date.now());
+                    authFn = mod.loginWithGoogle || window.loginWithGoogle;
+                }
+
+                const res = await authFn();
                 if (res && res.isRedirecting) {
                     setAuthStatusMsg('🕊️ Przekierowanie do strony logowania Google...', false);
                     return;
                 }
-                if (res && res.user) {
-                    const { user, profile, isNewUser } = res;
+                const authUser = (res && res.user) ? res.user : res;
+                if (authUser && authUser.uid) {
                     closeModal('authModal');
-                    if (isNewUser) {
-                        showToast(`Witaj w LUMINA, ${user.displayName || ''}! Uzupełnij swój profil.`);
-                        window.location.href = `lumina-profile.html?u=${user.uid}`;
-                    } else {
-                        showToast(`Witaj ponownie, ${profile?.name || user.displayName}! ✨`);
-                    }
+                    showToast(`Witaj w LUMINA, ${authUser.displayName || 'Użytkowniku'}! ✨`);
+                    setTimeout(() => window.location.reload(), 600);
                 }
             } catch (error) {
                 console.error("Google Auth error:", error);
                 if (error.code === 'auth/popup-closed-by-user') {
-                    setAuthStatusMsg('ℹ️ Okno logowania zostało zamknięte przed ukończeniem.', true);
+                    setAuthStatusMsg('ℹ️ Okno logowania zostało zamknięte.', true);
                 } else if (error.code === 'auth/operation-not-allowed') {
-                    setAuthStatusMsg('⚠️ Logowanie Google nie jest jeszcze włączone w Firebase Console.', true);
+                    setAuthStatusMsg('⚠️ Włącz metodę logowania Google w Firebase Console.', true);
                 } else {
                     setAuthStatusMsg('❌ Błąd logowania Google: ' + (error.message || error.code), true);
                 }
@@ -2542,6 +2546,8 @@
                 if (btn) { btn.disabled = false; btn.innerHTML = '<img src="google_logo_custom.jpg" alt="Google" style="width: 22px; height: 22px; object-fit: contain; border-radius: 50%;"> Kontynuuj przez Google'; }
             }
         };
+
+        window.loginWithGoogleDirect = window.handleGoogleAuthAction;
 
         // ── Email Login ──
         window.handleEmailLoginSubmit = async function(e) {

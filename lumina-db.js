@@ -1727,3 +1727,12 @@ export {
 };
 
 export default window.LuminaDB;
+
+// Global window direct access
+window.loginWithGoogle = loginWithGoogle;
+window.luminaAuth = auth;
+window.luminaDb = db;
+window.firebaseAuth = auth;
+window.firebaseDb = db;
+window.LuminaDB = window.LuminaDB || {};
+window.LuminaDB.loginWithGoogle = loginWithGoogle;
