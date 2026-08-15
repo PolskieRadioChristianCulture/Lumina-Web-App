@@ -28,6 +28,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        (function() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const u = (params.get('u') || params.get('user') || '').toLowerCase();
+                if (u.includes('ccwomen') || u.includes('women') || u === 'u_ccwomen_9055') {
+                    window.location.replace('lumina.ccwomen.html');
+                }
+            } catch(e) {}
+        })();
+    </script>
     <!-- Lumina Realtime Firestore Engine -->
     <script type="module" src="lumina-db.js"></script>
     <script type="module" src="lumina-i18n.js"></script>
@@ -1426,19 +1437,19 @@
             <section class="profile-head-card">
                 <div class="profile-head-top">
                     <div class="avatar-wrap">
-                        <img src="avatar_new1.jpg" alt="Avatar" class="avatar-img" id="avatarImgEl">
+                        <img src="lumina_icon.jpg" alt="Avatar" class="avatar-img" id="avatarImgEl">
                         <button class="avatar-edit-overlay" onclick="triggerAvatarUpload()" title="Wgraj nowe zdjęcie profilowe z dysku"><i class="fa-solid fa-camera"></i></button>
                         <div class="avatar-status-badge" title="Użytkownik Online"></div>
                     </div>
 
                     <div class="head-user-details">
                         <h1 class="head-user-name">
-                            <span id="userNameEl">Cezary Rogowski</span>
+                            <span id="userNameEl">Profil Społeczności</span>
                             <i class="fa-solid fa-circle-check verified-badge" title="Zweryfikowany Profil Chrześcijański"></i>
                             <button class="card-edit-btn" onclick="openEditProfileModal('info')" title="Edytuj Imię i Wiek"><i class="fa-solid fa-pencil"></i></button>
                         </h1>
                         <div class="head-user-tagline">
-                            <span id="userAgeCityEl"><i class="fa-solid fa-location-dot"></i> Warszawa, Polska</span>
+                            <span id="userAgeCityEl"><i class="fa-solid fa-location-dot"></i> Polska</span>
                             <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijanin</span>
                             <span id="userMatchEl" style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: 98%</span>
                             <span id="visibilityBadge" class="badge-visibility-pub"><i class="fa-solid fa-globe"></i> Profil Publiczny</span>
@@ -1481,21 +1492,21 @@
                             <i class="fa-solid fa-briefcase"></i>
                             <div>
                                 <span class="info-label">Zawód & Pasja</span>
-                                <span class="info-val" id="userJobEl">Twórca & Wizjoner Christian Culture</span>
+                                <span class="info-val" id="userJobEl">Profil Społeczności LUMINA ✨</span>
                             </div>
                         </div>
                         <div class="info-row">
                             <i class="fa-solid fa-church"></i>
                             <div>
                                 <span class="info-label">Wspólnota / Kościół</span>
-                                <span class="info-val" id="userChurchEl">Wspólnota Uwielbieniowa</span>
+                                <span class="info-val" id="userChurchEl">Wspólnota Chrześcijańska</span>
                             </div>
                         </div>
                         <div class="info-row">
                             <i class="fa-solid fa-ring"></i>
                             <div>
                                 <span class="info-label">Stan Cywilny</span>
-                                <span class="info-val" id="userStatusEl">Kawaler / Panna</span>
+                                <span class="info-val" id="userStatusEl">Chrześcijanin / Chrześcijanka</span>
                             </div>
                         </div>
                         <div class="info-row">
@@ -1515,8 +1526,8 @@
                         <button class="card-edit-btn" onclick="openEditProfileModal('verse')" title="Edytuj werset"><i class="fa-solid fa-pencil"></i></button>
                     </div>
                     <div class="verse-box">
-                        <div class="verse-text" id="userVerseText">„Ja i mój dom służyć będziemy Panu.”</div>
-                        <div class="verse-ref" id="userVerseRef">— Księga Jozuego 24, 15</div>
+                        <div class="verse-text" id="userVerseText">„Wszystko mogę w Tym, który mnie umacnia.”</div>
+                        <div class="verse-ref" id="userVerseRef">— Flp 4, 13</div>
                     </div>
                 </div>
 
@@ -1527,12 +1538,9 @@
                         <button class="card-edit-btn" onclick="openEditProfileModal('tags')" title="Edytuj zainteresowania"><i class="fa-solid fa-pencil"></i></button>
                     </div>
                     <div class="tag-cloud" id="userTagsEl">
-                        <span class="tag-chip"><i class="fa-solid fa-guitar"></i> Muzyka Uwielbienia</span>
-                        <span class="tag-chip"><i class="fa-solid fa-mountain"></i> Wędrówki Górskie</span>
+                        <span class="tag-chip"><i class="fa-solid fa-sparkles"></i> Wiara</span>
                         <span class="tag-chip"><i class="fa-solid fa-book"></i> Pismo Święte</span>
-                        <span class="tag-chip"><i class="fa-solid fa-microphone"></i> Ewangelizacja</span>
-                        <span class="tag-chip"><i class="fa-solid fa-laptop-code"></i> Nowe Technologie</span>
-                        <span class="tag-chip"><i class="fa-solid fa-mug-saucer"></i> Głębokie Rozmowy</span>
+                        <span class="tag-chip"><i class="fa-solid fa-dove"></i> Ewangelizacja</span>
                     </div>
                 </div>
 

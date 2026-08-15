@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">CC Women • Christian Culture | Oficjalny Kanał YouTube & Profil LUMINA</title>
+    
+    <!-- Meta SEO & Social Sharing -->
+    <meta name="description" content="Oficjalny profil i kanał YouTube CC Women – przestrzeń wzrostu, modlitwy, kobiecej mądrości i głębokich świadectw Bożego działania w portalu LUMINA.">
+    <link rel="icon" type="image/png" sizes="192x192" href="lumina-icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="lumina-icon-512.png">
+    <link rel="icon" type="image/jpeg" href="lumina-app-icon.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="lumina-apple-touch-icon.png">
+    <link rel="manifest" href="manifest-lumina.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LUMINA">
+    <meta name="theme-color" content="#090d1a">
+    <meta property="og:title" content="CC Women • Christian Culture | LUMINA">
+    <meta property="og:description" content="Oficjalny profil i kanał YouTube CC Women w portalu LUMINA.">
+    <meta property="og:image" content="logo_cc_women.jpg">
+    <meta property="og:type" content="profile">
+
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Lumina Realtime Firestore Engine -->
+    <script type="module" src="lumina-db.js"></script>
+
+    <style>
+        :root {
+            --navy-dark: #070e24;
+            --navy-surface: #0b1838;
+            --navy-card: #112350;
+            --navy-border: rgba(255, 255, 255, 0.12);
+            --gold-accent: #facc15;
+            --gold-glow: rgba(250, 204, 21, 0.4);
+            --pink-accent: #ec4899;
+            --pink-glow: rgba(236, 72, 153, 0.4);
+            --purple-glow: #a855f7;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--navy-dark);
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Top Navbar ── */
+        .profile-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 14, 36, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--navy-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 28px;
+            gap: 16px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .nav-logo-wrap {
+            position: relative;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(236, 72, 153, 0.4);
+            box-shadow: 0 0 15px var(--pink-glow);
+        }
+
+        .nav-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .nav-brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #fff 40%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-center-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #ec4899;
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-nav-action {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--navy-border);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-nav-action:hover {
+            background: rgba(236, 72, 153, 0.15);
+            border-color: #ec4899;
+            color: #fff;
+        }
+
+        /* ── Container Layout ── */
+        .profile-container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 24px 20px 80px;
+        }
+
+        /* ── Cover Hero Header ── */
+        .cover-hero {
+            position: relative;
+            height: 300px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background: #0d1b3e;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--navy-border);
+        }
+
+        .cover-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 50%;
+            transition: object-position 0.1s ease;
+        }
+
+        .cover-gradient-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(7,14,36,0.1) 0%, rgba(7,14,36,0.85) 100%);
+        }
+
+        .cover-actions {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .btn-cover-edit {
+            background: rgba(7, 14, 36, 0.75);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-cover-edit:hover {
+            background: rgba(236, 72, 153, 0.85);
+            border-color: #ec4899;
+        }
+
+        /* ── Profile Head Card ── */
+        .profile-head-card {
+            position: relative;
+            margin-top: -60px;
+            padding: 0 24px 20px;
+            z-index: 20;
+        }
+
+        .profile-head-top {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .avatar-wrap {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 4px solid var(--navy-dark);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px var(--pink-glow);
+            background: #0f172a;
+            flex-shrink: 0;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .avatar-edit-overlay {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1.2rem;
+        }
+
+        .avatar-wrap:hover .avatar-edit-overlay {
+            opacity: 1;
+        }
+
+        .avatar-status-badge {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            width: 22px;
+            height: 22px;
+            background: #22c55e;
+            border: 3px solid var(--navy-dark);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+        }
+
+        .head-user-details {
+            flex: 1;
+            min-width: 240px;
+            padding-bottom: 6px;
+        }
+
+        .head-user-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .verified-badge {
+            color: #ec4899;
+            font-size: 1.15rem;
+        }
+
+        .head-user-tagline {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 4px;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            flex-wrap: wrap;
+        }
+
+        .badge-visibility-pub {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #86efac;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .head-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-bottom: 6px;
+        }
+
+        .btn-action-primary {
+            background: linear-gradient(90deg, #ec4899, #f472b6);
+            box-shadow: 0 4px 18px rgba(236, 72, 153, 0.4);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-action-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(236, 72, 153, 0.6);
+            color: #fff;
+        }
+
+        .btn-action-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--navy-border);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-action-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+
+        .btn-action-heart {
+            background: rgba(236, 72, 153, 0.15);
+            border: 1px solid rgba(236, 72, 153, 0.4);
+            color: #ec4899;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+        }
+
+        .btn-action-heart:hover, .btn-action-heart.active {
+            background: #ec4899;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        /* ── Profile Nav Tabs ── */
+        .profile-nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin-top: 18px;
+            border-bottom: 1px solid var(--navy-border);
+            padding-bottom: 10px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: #fff;
+            background: rgba(236, 72, 153, 0.2);
+            border: 1px solid rgba(236, 72, 153, 0.4);
+        }
+
+        /* ── 2-Column Grid Layout ── */
+        .profile-body-grid {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .profile-body-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── Sidebar Cards ── */
+        .sidebar-card {
+            background: var(--navy-surface);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-edit-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.82rem;
+            transition: color 0.2s ease;
+        }
+
+        .card-edit-btn:hover {
+            color: #ec4899;
+        }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.88rem;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            color: #cbd5e1;
+        }
+
+        .info-row i {
+            color: #ec4899;
+            font-size: 1rem;
+            margin-top: 3px;
+            width: 18px;
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: block;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-val {
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .verse-box {
+            background: rgba(236, 72, 153, 0.08);
+            border-left: 3px solid #ec4899;
+            border-radius: 0 12px 12px 0;
+            padding: 14px 16px;
+            font-style: italic;
+        }
+
+        .verse-text {
+            font-size: 0.92rem;
+            color: #fce7f3;
+            line-height: 1.55;
+            margin-bottom: 6px;
+        }
+
+        .verse-ref {
+            font-size: 0.8rem;
+            color: #facc15;
+            font-weight: 700;
+            text-align: right;
+            font-style: normal;
+        }
+
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag-chip {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tag-chip i {
+            color: #ec4899;
+        }
+
+        .photo-grid-mini {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .photo-thumb {
+            width: 100%;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .photo-thumb:hover {
+            transform: scale(1.04);
+        }
+
+        /* ── Feed & Composer ── */
+        .feed-composer {
+            background: var(--navy-surface);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .composer-top {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .composer-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(236, 72, 153, 0.5);
+        }
+
+        .composer-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 30px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .composer-input:focus {
+            border-color: #ec4899;
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        .composer-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .composer-btn-attach {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .composer-btn-attach:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+        }
+
+        .composer-btn-publish {
+            background: linear-gradient(90deg, #ec4899, #f472b6);
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.2s ease;
+        }
+
+        .composer-btn-publish:hover {
+            transform: scale(1.03);
+        }
+
+        /* ── Feed Post Card ── */
+        .post-card {
+            background: var(--navy-surface);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .post-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .post-author-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .post-author-img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1.5px solid rgba(236, 72, 153, 0.4);
+        }
+
+        .post-author-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+
+        .post-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .post-content {
+            font-size: 0.94rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        .post-image-box {
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            max-height: 380px;
+            background: #0f172a;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .post-actions-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .post-action-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s ease;
+        }
+
+        .post-action-btn:hover {
+            color: #ec4899;
+        }
+
+        /* ── Modals & Notifications ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-card {
+            background: #0e1b3d;
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            max-width: 520px;
+            position: relative;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast-notify {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #0f172a;
+            border: 1px solid #ec4899;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            font-size: 0.88rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .toast-notify.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ══════════ TOP NAVBAR ══════════ -->
+    <header class="profile-navbar">
+        <a href="lumina.html" class="nav-brand">
+            <div class="nav-logo-wrap">
+                <img src="logo_cc_women.jpg" alt="CC Women" class="nav-logo-img">
+            </div>
+            <span class="nav-brand-title">LUMINA</span>
+        </a>
+
+        <nav class="nav-center-links">
+            <a href="lumina.html" class="nav-link"><i class="fa-solid fa-house"></i> Odkrywaj</a>
+            <a href="lumina-tablica.html" class="nav-link"><i class="fa-solid fa-globe"></i> Tablica Społeczności</a>
+            <a href="https://www.youtube.com/@ChristianCulture" target="_blank" class="nav-link active"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i> Kanał YouTube</a>
+            <a href="lumina.wiolettarogowska.html" class="nav-link"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> Wioletta Rogowska</a>
+            <a href="lumina.cezaryrgowski.html" class="nav-link"><i class="fa-solid fa-crown" style="color:#facc15;"></i> Cezary Rogowski</a>
+        </nav>
+
+        <div class="nav-right-actions">
+            <a href="https://www.youtube.com/@ChristianCulture?sub_confirmation=1" target="_blank" class="btn-nav-action" style="background: linear-gradient(90deg, #ec4899, #f472b6); border:none; box-shadow: 0 2px 10px rgba(236,72,153,0.4);">
+                <i class="fa-brands fa-youtube"></i> Subskrybuj YouTube 🌸
+            </a>
+            <button class="btn-nav-action" onclick="toggleRadio()">
+                <i class="fa-solid fa-play" id="radioPlayIcon"></i> Radio CC Live
+            </button>
+        </div>
+    </header>
+
+    <main class="profile-container">
+        
+        <!-- ══════════ COVER HERO ══════════ -->
+        <div class="cover-hero">
+            <img src="lumina_hero_main.jpg" alt="CC Women Cover" class="cover-img" id="coverPhotoEl">
+            <div class="cover-gradient-overlay"></div>
+            <div class="cover-actions">
+                <a href="https://www.youtube.com/@ChristianCulture" target="_blank" class="btn-cover-edit" style="text-decoration:none;">
+                    <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> Odwiedź Oficjalny YouTube
+                </a>
+            </div>
+        </div>
+
+        <!-- ══════════ PROFILE HEAD INFO ══════════ -->
+        <section class="profile-head-card">
+            <div class="profile-head-top">
+                <div class="avatar-wrap">
+                    <img src="logo_cc_women.jpg" alt="CC Women Logo" class="avatar-img" id="avatarImgEl">
+                    <div class="avatar-status-badge" title="Kanał Aktywny & Nadający"></div>
+                </div>
+
+                <div class="head-user-details">
+                    <h1 class="head-user-name">
+                        <span id="userNameEl">CC Women • Christian Culture</span>
+                        <i class="fa-solid fa-circle-check verified-badge" title="Oficjalny Zweryfikowany Profil Misji CC"></i>
+                    </h1>
+                    <div class="head-user-tagline">
+                        <span id="userAgeCityEl"><i class="fa-solid fa-location-dot"></i> Warszawa, Polska • <b style="color:#ec4899;">🌸 Kanał YouTube CC Women</b></span>
+                        <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijański Kanał YouTube</span>
+                        <span id="userMatchEl" style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-star"></i> 100% Boża Misja</span>
+                        <span class="badge-visibility-pub"><i class="fa-solid fa-globe"></i> Profil Oficjalny</span>
+                    </div>
+                </div>
+
+                <div class="head-actions">
+                    <a href="https://www.youtube.com/@ChristianCulture?sub_confirmation=1" target="_blank" class="btn-action-primary" style="text-decoration:none;">
+                        <i class="fa-brands fa-youtube"></i> Subskrybuj Kanał 🌸
+                    </a>
+                    <button class="btn-action-secondary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Napisz do Redakcji</button>
+                    <button class="btn-action-heart" id="btnHeartLike" onclick="toggleProfileHeart(this)" title="Polub Kanał CC Women"><i class="fa-solid fa-heart"></i></button>
+                    <button class="btn-action-secondary" onclick="copyProfileLink()" title="Udostępnij Profil"><i class="fa-solid fa-share-nodes"></i></button>
+                </div>
+            </div>
+
+            <!-- Profile Nav Tabs -->
+            <div class="profile-nav-tabs">
+                <button class="tab-btn active" onclick="switchTab('tab-feed', this)"><i class="fa-solid fa-rss"></i> Tablica Misji & Wpisy</button>
+                <button class="tab-btn" onclick="switchTab('tab-about', this)"><i class="fa-solid fa-heart"></i> O Kanale & Misja</button>
+                <button class="tab-btn" onclick="switchTab('tab-faith', this)"><i class="fa-solid fa-book-bible"></i> Werset & Wartości</button>
+            </div>
+        </section>
+
+        <!-- ══════════ 2-COLUMN GRID ══════════ -->
+        <div class="profile-body-grid">
+            
+            <!-- Left Sidebar -->
+            <aside>
+                
+                <!-- About Card -->
+                <div class="sidebar-card">
+                    <div class="card-title">
+                        <span>Wizytówka Kanału</span>
+                    </div>
+                    <div class="info-list">
+                        <div class="info-row">
+                            <i class="fa-solid fa-tv"></i>
+                            <div>
+                                <span class="info-label">Powołanie i Format</span>
+                                <span class="info-val" id="userJobEl" style="color:#ec4899; font-weight:800;">Oficjalny Kanał YouTube CC Women 🌸</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <i class="fa-solid fa-church"></i>
+                            <div>
+                                <span class="info-label">Dzieło & Społeczność</span>
+                                <span class="info-val" id="userChurchEl">Christian Culture</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <i class="fa-solid fa-users" style="color:#ec4899;"></i>
+                            <div>
+                                <span class="info-label">Misja</span>
+                                <span class="info-val" id="userStatusEl" style="color:#fff; font-weight:700;">Kobiety Wiary, Modlitwa i Wzrost</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <i class="fa-solid fa-bullseye"></i>
+                            <div>
+                                <span class="info-label">Cel w LUMINA</span>
+                                <span class="info-val" id="userGoalEl">Ewangelizacja, budowanie kobiecej tożsamości w Bogu i głębokie świadectwa wiary</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scripture Verse Card -->
+                <div class="sidebar-card">
+                    <div class="card-title">
+                        <span>Przewodni Werset Życiowy</span>
+                    </div>
+                    <div class="verse-box">
+                        <div class="verse-text" id="userVerseText">„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.”</div>
+                        <div class="verse-ref" id="userVerseRef">— Przypowieści Salomona 31, 10</div>
+                    </div>
+                </div>
+
+                <!-- Hobbies & Interests -->
+                <div class="sidebar-card">
+                    <div class="card-title">
+                        <span>Obszary Służby & Tematy</span>
+                    </div>
+                    <div class="tag-cloud" id="userTagsEl">
+                        <span class="tag-chip"><i class="fa-solid fa-heart"></i> Kobiety Wiary</span>
+                        <span class="tag-chip"><i class="fa-brands fa-youtube"></i> YouTube CC Women</span>
+                        <span class="tag-chip"><i class="fa-solid fa-hands-praying"></i> Modlitwa i Wstawiennictwo</span>
+                        <span class="tag-chip"><i class="fa-solid fa-book-bible"></i> Pismo Święte</span>
+                        <span class="tag-chip"><i class="fa-solid fa-dove"></i> Świadectwa Życia</span>
+                        <span class="tag-chip"><i class="fa-solid fa-sparkles"></i> Wzrost Duchowy</span>
+                    </div>
+                </div>
+
+                <!-- Links Card -->
+                <div class="sidebar-card">
+                    <div class="card-title">
+                        <span>Połączone Profile</span>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <a href="lumina.wiolettarogowska.html" style="display:flex; align-items:center; gap:10px; text-decoration:none; padding:8px 12px; background:rgba(255,255,255,0.04); border-radius:10px; border:1px solid rgba(255,255,255,0.08); transition:all 0.2s ease;">
+                            <img src="avatar_wioletta_official.jpg" style="width:34px; height:34px; border-radius:50%; object-fit:cover;">
+                            <div>
+                                <div style="font-weight:700; font-size:0.85rem; color:#fff;">Wioletta Rogowska</div>
+                                <div style="font-size:0.72rem; color:#ec4899;">🌸 Współzałożycielka CC</div>
+                            </div>
+                        </a>
+                        <a href="lumina.cezaryrgowski.html" style="display:flex; align-items:center; gap:10px; text-decoration:none; padding:8px 12px; background:rgba(255,255,255,0.04); border-radius:10px; border:1px solid rgba(255,255,255,0.08); transition:all 0.2s ease;">
+                            <img src="avatar_cezary_official.jpg" style="width:34px; height:34px; border-radius:50%; object-fit:cover;">
+                            <div>
+                                <div style="font-weight:700; font-size:0.85rem; color:#fff;">Cezary Rogowski</div>
+                                <div style="font-size:0.72rem; color:#facc15;">👑 Założyciel CC</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            </aside>
+
+            <!-- Right Timeline Content -->
+            <section class="timeline-area">
+                
+                <!-- Tab: Tablica & Wpisy -->
+                <div id="tab-feed" class="tab-content-pane">
+                    
+                    <!-- Welcome Post -->
+                    <div class="post-card">
+                        <div class="post-head">
+                            <div class="post-author-wrap">
+                                <img src="logo_cc_women.jpg" alt="CC Women" class="post-author-img">
+                                <div>
+                                    <div class="post-author-name">CC Women • Christian Culture</div>
+                                    <div class="post-time">Oficjalny Komunikat Misji • 🌸 Kanał YouTube</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="post-content">
+                            Szczęść Boże wszystkim Kobietom! Witajcie na oficjalnym profilu kanału **CC Women** na portalu **LUMINA**.  
+                            Naszym pragnieniem jest tworzenie przestrzeni wzajemnego wsparcia, modlitwy i odkrywania piękna powołania w świetle Słowa Bożego. Subskrybujcie nasz kanał na YouTube i bądźcie częścią tej niezwykłej społeczności! 🌸🕊️
+                        </div>
+
+                        <div class="post-image-box">
+                            <img src="logo_cc_women.jpg" alt="Logo CC Women" class="post-image" style="max-height: 280px; object-fit: contain; background:#000; padding:20px;">
+                        </div>
+
+                        <div class="post-actions-bar">
+                            <button class="post-action-btn" onclick="showToast('Dziękujemy za polubienie wpisu CC Women! 🌸')"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> 148 Polubień</button>
+                            <a href="https://www.youtube.com/@ChristianCulture?sub_confirmation=1" target="_blank" class="post-action-btn" style="text-decoration:none; color:#facc15;"><i class="fa-brands fa-youtube"></i> Dołącz do YouTube</a>
+                            <button class="post-action-btn" onclick="copyProfileLink()"><i class="fa-solid fa-share-nodes"></i> Udostępnij</button>
+                        </div>
+                    </div>
+
+                    <!-- Second Post -->
+                    <div class="post-card">
+                        <div class="post-head">
+                            <div class="post-author-wrap">
+                                <img src="logo_cc_women.jpg" alt="CC Women" class="post-author-img">
+                                <div>
+                                    <div class="post-author-name">CC Women • Christian Culture</div>
+                                    <div class="post-time">Wczoraj • 📖 Słowo Dnia</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="post-content">
+                            „Kłamliwy jest wdzięk i zwiewna jest uroda, lecz niewiasta, która boi się Pana, zasługuje na chwałę.” (Prz 31, 30).  
+                            Bądźcie odważne i pamiętajcie, że w oczach Boga każda z Was jest bezcenna! ✨
+                        </div>
+
+                        <div class="post-actions-bar">
+                            <button class="post-action-btn" onclick="showToast('Dziękujemy za polubienie wpisu CC Women! 🌸')"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> 92 Polubienia</button>
+                            <button class="post-action-btn" onclick="copyProfileLink()"><i class="fa-solid fa-share-nodes"></i> Udostępnij</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Tab: O Kanale & Misja -->
+                <div id="tab-about" class="tab-content-pane" style="display:none;">
+                    <div class="sidebar-card">
+                        <div class="card-title">
+                            <span>Misja & Przesłanie Kanału CC Women</span>
+                        </div>
+                        <p style="font-size:0.95rem; line-height:1.75; color:#cbd5e1;" id="userBioFull">
+                            Oficjalny profil i kanał YouTube **CC Women** to wyjątkowa przestrzeń wzrostu duchowego, modlitwy, kobiecej mądrości i głębokich świadectw Bożego działania w życiu kobiet. Tworzymy treści, które inspirują do pogłębiania relacji z Bogiem, budowania silnych rodzin oraz odkrywania własnej wartości w Jezusie Chrystusie.  
+                            Subskrybuj nasz kanał i dołącz do grona kobiet budujących swoje życie na fundamencie wiary! 🌸✨
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tab: Wartości & Wiara -->
+                <div id="tab-faith" class="tab-content-pane" style="display:none;">
+                    <div class="sidebar-card">
+                        <div class="card-title">
+                            <span>Fundament Duchowy Kanału</span>
+                        </div>
+                        <div class="info-list" style="font-size:0.92rem;">
+                            <div class="info-row"><i class="fa-solid fa-heart" style="color:#ec4899;"></i><div><span class="info-label">Wizja Kobiety Wiary:</span> Oparta na prawdzie Pisma Świętego, pełna miłości, odwagi i roztropności.</div></div>
+                            <div class="info-row"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i><div><span class="info-label">Ewangelizacja Medialna:</span> Najwyższa jakość nagrań, autentyczne rozmowy i inspirujące świadectwa.</div></div>
+                            <div class="info-row"><i class="fa-solid fa-hands-praying" style="color:#f472b6;"></i><div><span class="info-label">Modlitwa & Wstawiennictwo:</span> Stała wspólnota modlitewna za kobiety, małżeństwa i rodziny.</div></div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- Message Modal -->
+    <div class="modal-overlay" id="messageModal">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeModal('messageModal')"><i class="fa-solid fa-xmark"></i></button>
+            <h3 style="font-size:1.3rem; margin-bottom:8px; font-family:'Outfit',sans-serif; color:#fff;"><i class="fa-solid fa-envelope" style="color:#ec4899;"></i> Kontakt z Redakcją CC Women</h3>
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:16px;">Prześlij swoje świadectwo, intencję modlitewną lub pytanie do redakcji kanału.</p>
+            <textarea id="msgContent" rows="4" placeholder="Twoja wiadomość do redakcji..." style="width:100%; padding:12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; margin-bottom:14px; outline:none; resize:none;"></textarea>
+            <button onclick="sendMessageSubmit()" style="width:100%; padding:12px; border-radius:30px; background:linear-gradient(90deg,#ec4899,#f472b6); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer;">Wyślij Wiadomość 🌸</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notify" id="toast">
+        <i class="fa-solid fa-circle-check" style="color:#ec4899;"></i>
+        <span id="toastMsg">Powiadomienie</span>
+    </div>
+
+    <!-- Hidden Audio Player for Radio CC -->
+    <audio id="ccRadioAudio" preload="none"></audio>
+
+    <script>
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content-pane').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            const target = document.getElementById(tabId);
+            if (target) target.style.display = 'block';
+            if (btn) btn.classList.add('active');
+        }
+
+        function toggleProfileHeart(btn) {
+            btn.classList.toggle('active');
+            if (btn.classList.contains('active')) {
+                showToast('Dziękujemy! Zaobserwowano kanał CC Women 🌸💕');
+            } else {
+                showToast('Usunięto z obserwowanych');
+            }
+        }
+
+        function copyProfileLink() {
+            navigator.clipboard.writeText(window.location.href);
+            showToast('Link do oficjalnego profilu CC Women skopiowany! 📋✨');
+        }
+
+        function openMessageModal() {
+            document.getElementById('messageModal').classList.add('open');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+        }
+
+        function sendMessageSubmit() {
+            const txt = document.getElementById('msgContent').value.trim();
+            if (!txt) return;
+            closeModal('messageModal');
+            document.getElementById('msgContent').value = '';
+            showToast('Twoja wiadomość została pomyślnie wysłana do redakcji CC Women! 🌸🙏');
+        }
+
+        let toastTimer = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        let isRadioPlaying = false;
+        const radioStreams = [
+            "https://stream.zeno.fm/f97y7f6w30hvv",
+            "https://stream.zeno.fm/f97y7f6w30hvv.aac"
+        ];
+        function toggleRadio() {
+            const audio = document.getElementById('ccRadioAudio');
+            const playIcon = document.getElementById('radioPlayIcon');
+            if (!isRadioPlaying) {
+                audio.src = radioStreams[0] + "?t=" + Date.now();
+                audio.play().then(() => {
+                    isRadioPlaying = true;
+                    playIcon.className = "fa-solid fa-pause";
+                    showToast('Radio Christian Culture Gra na Żywo! 📻✨');
+                }).catch(e => {
+                    showToast('Błąd strumienia radia');
+                });
+            } else {
+                audio.pause();
+                isRadioPlaying = false;
+                playIcon.className = "fa-solid fa-play";
+                showToast('Radio wstrzymane');
+            }
+        }
+
+        // Close modal on backdrop click
+        document.querySelectorAll('.modal-overlay').forEach(bg =>
+            bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); })
+        );
+    </script>
+</body>
+</html>

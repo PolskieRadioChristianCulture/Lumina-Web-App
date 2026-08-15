@@ -570,8 +570,8 @@ export const MISSION_ACCOUNTS = {
         name: 'CC Women • YouTube',
         role: '🌸 Misja Kobiet Wiary',
         avatar: 'logo_cc_women.jpg',
-        slug: 'u_ccwomen_9055',
-        profileUrl: 'lumina-profile.html?u=u_ccwomen_9055',
+        slug: 'ccwomen',
+        profileUrl: 'lumina.ccwomen.html',
         badge: '🌸 CC Women Official',
         isMissionAccount: true
     },
