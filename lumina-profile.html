@@ -1967,7 +1967,28 @@
 
         function getProfileData() {
             const slug = getRequestedUserSlug();
-            const fallback = PROFILES_DB[slug] || PROFILES_DB['cezaryrgowski'];
+            const fallback = PROFILES_DB[slug] || {
+                name: 'Użytkownik LUMINA',
+                role: 'Społeczność LUMINA ✨',
+                age: 26,
+                city: 'Polska',
+                denom: 'Chrześcijanin',
+                church: '',
+                job: '',
+                status: 'Panna/Kawaler',
+                verse: '„Wszystko mogę w Tym, który mnie umacnia”',
+                verseRef: 'Flp 4, 13',
+                bio: 'Chrześcijanin szukający Bożej relacji opartej na zaufaniu, wierze i miłości.',
+                avatar: 'lumina_icon.jpg',
+                cover: 'lumina_hero_clean.jpg',
+                coverPosition: '50% 50%',
+                visibility: 'public',
+                pin: '7777',
+                tags: ['Modlitwa', 'Wierność', 'Wartości', 'Relacja'],
+                stats: { friends: '1', posts: '1', likes: '24' },
+                photos: ['lumina_icon.jpg'],
+                posts: []
+            };
             try {
                 const saved = localStorage.getItem('lumina_profile_' + slug);
                 if (saved) {
@@ -1976,7 +1997,7 @@
                         ...fallback,
                         ...parsed,
                         visibility: parsed.visibility || 'public',
-                        photos: Array.isArray(parsed.photos) ? parsed.photos : [...fallback.photos],
+                        photos: Array.isArray(parsed.photos) && parsed.photos.length ? parsed.photos : [...fallback.photos],
                         posts: Array.isArray(parsed.posts) ? parsed.posts : [...fallback.posts]
                     };
                 }
@@ -2103,7 +2124,15 @@
         // ── Security & Authentication System ──
         function checkOwnerAuthSession() {
             const slug = getRequestedUserSlug();
-            isOwnerMode = (sessionStorage.getItem('lumina_auth_owner_' + slug) === 'true');
+            const sessionAuth = (sessionStorage.getItem('lumina_auth_owner_' + slug) === 'true');
+            let isUserSelf = false;
+            if (window.LuminaDB) {
+                const currentUser = window.LuminaDB.getCurrentUser();
+                if (currentUser && (currentUser.uid === slug || currentUser.email?.startsWith(slug))) {
+                    isUserSelf = true;
+                }
+            }
+            isOwnerMode = sessionAuth || isUserSelf;
             updateSecurityBarUI();
         }
 

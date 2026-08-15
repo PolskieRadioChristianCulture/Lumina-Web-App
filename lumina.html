@@ -1611,25 +1611,152 @@
         </div>
     </div>
 
-    <!-- ══════════ AUTH MODAL ══════════ -->
+    <!-- ══════════ AUTH & DATING ONBOARDING MODAL ══════════ -->
     <div class="modal-overlay" id="authModal">
-        <div class="modal-card">
+        <div class="modal-card" style="max-width: 520px; max-height: 90vh; overflow-y: auto; padding: 24px;">
             <button class="modal-close-btn" onclick="closeModal('authModal')"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="text-align:center;font-size:1.3rem;font-weight:800;margin-bottom:6px;">Dołącz do LUMINA</h3>
-            <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);margin-bottom:20px;">Chrześcijański portal głębokich relacji</p>
             
-            <button type="button" class="btn-google" id="btnGoogleAuth" onclick="handleGoogleLogin()">
-                <i class="fa-brands fa-google" style="color: #ea4335;"></i> Kontynuuj przez Google
-            </button>
-            <div class="auth-divider"><span>LUB TRADYCYJNIE</span></div>
+            <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:14px;">
+                <img src="lumina_icon.jpg" alt="LUMINA" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1.5px solid #c084fc;">
+                <h3 style="font-size:1.35rem; font-weight:800; margin:0; background:linear-gradient(135deg,#fff,#f3e8ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">LUMINA</h3>
+            </div>
 
-            <form id="traditionalRegForm" onsubmit="handleTraditionalReg(event)">
-                <div class="form-row"><label>Imię</label><input type="text" id="regName" placeholder="np. Mateusz" required></div>
-                <div class="form-row"><label>Wiek</label><input type="number" id="regAge" min="18" max="99" placeholder="np. 27" required></div>
-                <div class="form-row"><label>Miasto</label><input type="text" id="regCity" placeholder="np. Kraków" required></div>
-                <div class="form-row"><label>Kilka słów o sobie i wierze</label><textarea id="regBio" rows="3" placeholder="Co jest dla Ciebie ważne w życiu i relacji..." required></textarea></div>
-                <button type="submit" class="btn-modal-submit">ZAPISZ MÓJ PROFIL ✨</button>
-            </form>
+            <!-- Tab Switcher -->
+            <div style="display:flex; background:rgba(255,255,255,0.06); border-radius:12px; padding:4px; margin-bottom:20px;">
+                <button type="button" id="authTabLoginBtn" onclick="switchAuthTab('login')" style="flex:1; padding:9px; border-radius:8px; border:none; background:#a855f7; color:#fff; font-weight:700; font-family:inherit; font-size:0.86rem; cursor:pointer; transition:all 0.2s;">Logowanie</button>
+                <button type="button" id="authTabRegBtn" onclick="switchAuthTab('register')" style="flex:1; padding:9px; border-radius:8px; border:none; background:transparent; color:#94a3b8; font-weight:700; font-family:inherit; font-size:0.86rem; cursor:pointer; transition:all 0.2s;">Załóż Profil Randkowy ✨</button>
+            </div>
+
+            <!-- ── PANEL 1: LOGOWANIE ── -->
+            <div id="authLoginPanel">
+                <button type="button" class="btn-google" id="btnGoogleAuth" onclick="handleGoogleAuthAction()">
+                    <i class="fa-brands fa-google" style="color: #ea4335;"></i> Kontynuuj przez Google
+                </button>
+                <div class="auth-divider"><span>LUB E-MAIL I HASŁO</span></div>
+
+                <form id="loginForm" onsubmit="handleEmailLoginSubmit(event)">
+                    <div class="form-row">
+                        <label>Adres E-mail</label>
+                        <input type="email" id="loginEmail" placeholder="twoj@email.com" required>
+                    </div>
+                    <div class="form-row">
+                        <label>Hasło</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-modal-submit" id="btnLoginSubmit">ZALOGUJ SIĘ ➔</button>
+                </form>
+            </div>
+
+            <!-- ── PANEL 2: 3-KROKOWY KREATOR PROFILU ONBOARDING ── -->
+            <div id="authRegisterPanel" style="display:none;">
+                <!-- Step Indicator -->
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; position:relative;">
+                    <div style="position:absolute; top:50%; left:15%; right:15%; height:2px; background:rgba(255,255,255,0.1); z-index:1;"></div>
+                    <div id="stepDot1" style="width:30px; height:30px; border-radius:50%; background:#a855f7; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.8rem; z-index:2; position:relative; box-shadow:0 0 10px rgba(168,85,247,0.5);">1</div>
+                    <div id="stepDot2" style="width:30px; height:30px; border-radius:50%; background:rgba(255,255,255,0.1); color:#94a3b8; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.8rem; z-index:2; position:relative;">2</div>
+                    <div id="stepDot3" style="width:30px; height:30px; border-radius:50%; background:rgba(255,255,255,0.1); color:#94a3b8; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.8rem; z-index:2; position:relative;">3</div>
+                </div>
+
+                <form id="onboardingWizardForm" onsubmit="handleOnboardingSubmit(event)">
+                    <!-- KROK 1: Tożsamość i Szukana Relacja -->
+                    <div id="wizardStep1">
+                        <div style="font-size:0.9rem; font-weight:700; color:#c084fc; margin-bottom:12px; text-align:center;">Krok 1: Kim jesteś i kogo szukasz</div>
+                        <div class="form-row">
+                            <label>Twoje Imię</label>
+                            <input type="text" id="obName" placeholder="np. Joanna lub Michał" required>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+                            <div>
+                                <label style="font-size:0.78rem; color:#94a3b8; display:block; margin-bottom:4px;">Jestem:</label>
+                                <select id="obGender" style="width:100%; padding:10px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#fff; font-family:inherit;">
+                                    <option value="kobieta" style="background:#0b1838;">Kobietą</option>
+                                    <option value="mezczyzna" style="background:#0b1838;">Mężczyzną</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="font-size:0.78rem; color:#94a3b8; display:block; margin-bottom:4px;">Szukam:</label>
+                                <select id="obLookingFor" style="width:100%; padding:10px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#fff; font-family:inherit;">
+                                    <option value="mezczyzna" style="background:#0b1838;">Mężczyzny</option>
+                                    <option value="kobieta" style="background:#0b1838;">Kobiety</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+                            <div>
+                                <label style="font-size:0.78rem; color:#94a3b8; display:block; margin-bottom:4px;">Wiek (18+)</label>
+                                <input type="number" id="obAge" min="18" max="99" placeholder="np. 26" required style="width:100%; padding:10px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#fff; font-family:inherit;">
+                            </div>
+                            <div>
+                                <label style="font-size:0.78rem; color:#94a3b8; display:block; margin-bottom:4px;">Miasto</label>
+                                <input type="text" id="obCity" placeholder="np. Warszawa" required style="width:100%; padding:10px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#fff; font-family:inherit;">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>E-mail (do logowania)</label>
+                            <input type="email" id="obEmail" placeholder="twoj@email.com" required>
+                        </div>
+                        <div class="form-row">
+                            <label>Hasło (min. 6 znaków)</label>
+                            <input type="password" id="obPassword" placeholder="••••••••" minlength="6" required>
+                        </div>
+                        <button type="button" class="btn-modal-submit" onclick="goToWizardStep(2)">DALEJ: WIARA I WARTOŚCI ➔</button>
+                    </div>
+
+                    <!-- KROK 2: Wiara i Wartości -->
+                    <div id="wizardStep2" style="display:none;">
+                        <div style="font-size:0.9rem; font-weight:700; color:#c084fc; margin-bottom:12px; text-align:center;">Krok 2: Wiara i Duchowość</div>
+                        <div class="form-row">
+                            <label>Wyznanie / Tradycja</label>
+                            <select id="obDenom" style="width:100%; padding:10px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#fff; font-family:inherit;">
+                                <option value="Rzymskokatolickie" style="background:#0b1838;">Rzymskokatolickie</option>
+                                <option value="Ewangeliczne / Protestant" style="background:#0b1838;">Ewangeliczne / Protestant</option>
+                                <option value="Prawosławne" style="background:#0b1838;">Prawosławne</option>
+                                <option value="Chrześcijanin poszukujący" style="background:#0b1838;">Chrześcijanin poszukujący</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label>Wspólnota / Ruch (opcjonalnie)</label>
+                            <input type="text" id="obChurch" placeholder="np. Oaza, Odnowa w Duchu Świętym, Domowy Kościół">
+                        </div>
+                        <div class="form-row">
+                            <label>Ulubiony Werset Biblijny</label>
+                            <input type="text" id="obVerse" placeholder="np. 1 Kor 13, 4: Miłość cierpliwa jest, łaskawa jest...">
+                        </div>
+                        <div class="form-row">
+                            <label>O mnie i o relacji, której szukam w Bogu</label>
+                            <textarea id="obBio" rows="3" placeholder="Napisz kilka zdań o sobie, pasjach i wartościach..." required></textarea>
+                        </div>
+                        <div style="display:flex; gap:10px;">
+                            <button type="button" onclick="goToWizardStep(1)" style="flex:1; padding:11px; border-radius:24px; background:rgba(255,255,255,0.08); border:none; color:#fff; font-weight:700; font-family:inherit; cursor:pointer;">⬅ Wróć</button>
+                            <button type="button" class="btn-modal-submit" style="flex:2; margin-top:0;" onclick="goToWizardStep(3)">DALEJ: ZDJĘCIE ➔</button>
+                        </div>
+                    </div>
+
+                    <!-- KROK 3: Zdjęcie Profilowe & Akceptacja -->
+                    <div id="wizardStep3" style="display:none;">
+                        <div style="font-size:0.9rem; font-weight:700; color:#c084fc; margin-bottom:12px; text-align:center;">Krok 3: Zdjęcie Profilowe i Gotowość</div>
+                        
+                        <div style="text-align:center; margin-bottom:16px;">
+                            <div style="position:relative; width:100px; height:100px; margin:0 auto 12px; border-radius:50%; overflow:hidden; border:2.5px solid #a855f7; box-shadow:0 0 16px rgba(168,85,247,0.4);">
+                                <img id="obAvatarPreview" src="lumina_icon.jpg" alt="Podgląd zdjęcia" style="width:100%; height:100%; object-fit:cover;">
+                            </div>
+                            <input type="file" id="obAvatarInput" accept="image/*" style="display:none;" onchange="handleObAvatarChange(event)">
+                            <button type="button" onclick="document.getElementById('obAvatarInput').click()" style="padding:8px 16px; border-radius:20px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#fff; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit;">
+                                <i class="fa-solid fa-camera"></i> Wybierz Zdjęcie z Telefonu / PC
+                            </button>
+                        </div>
+
+                        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 12px; font-size:0.75rem; color:#94a3b8; margin-bottom:16px; line-height:1.45;">
+                            🕊️ <b>Zasady Społeczności LUMINA:</b> Deklaruję czystość intencji, szacunek dla wartości chrześcijańskich oraz kulturę osobistą w kontaktach z innymi użytkownikami.
+                        </div>
+
+                        <div style="display:flex; gap:10px;">
+                            <button type="button" onclick="goToWizardStep(2)" style="flex:1; padding:11px; border-radius:24px; background:rgba(255,255,255,0.08); border:none; color:#fff; font-weight:700; font-family:inherit; cursor:pointer;">⬅ Wróć</button>
+                            <button type="submit" class="btn-modal-submit" id="btnSubmitWizard" style="flex:2; margin-top:0;">STWÓRZ MÓJ PROFIL ✨</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -1639,202 +1766,233 @@
         <span id="toastTxt"></span>
     </div>
 
-    <!-- ══════════ FIREBASE & ENGINE SCRIPTS ══════════ -->
-    <script type="module">
-        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-        import { 
-            getAuth, 
-            signInWithPopup, 
-            GoogleAuthProvider, 
-            onAuthStateChanged, 
-            signOut 
-        } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-        import { 
-            getFirestore, 
-            collection, 
-            doc, 
-            setDoc, 
-            getDoc, 
-            getDocs, 
-            serverTimestamp 
-        } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+    <!-- ══════════ ENGINE INTEGRATION ══════════ -->
+    <script>
+        let obAvatarDataUrl = 'lumina_icon.jpg';
 
-        const firebaseConfig = {
-            projectId: "lumina-cc",
-            appId: "1:413985877183:web:60aaff1699a6d8bd75aa0a",
-            apiKey: "AIzaSyCKUXrKHCujilk2FgeOQ959B7ZqWgKowRs",
-            authDomain: "lumina-cc.firebaseapp.com",
-            storageBucket: "lumina-cc.firebasestorage.app",
-            messagingSenderId: "413985877183"
+        window.switchAuthTab = function(tab) {
+            const loginPanel = document.getElementById('authLoginPanel');
+            const regPanel = document.getElementById('authRegisterPanel');
+            const loginBtn = document.getElementById('authTabLoginBtn');
+            const regBtn = document.getElementById('authTabRegBtn');
+
+            if (tab === 'login') {
+                loginPanel.style.display = 'block';
+                regPanel.style.display = 'none';
+                loginBtn.style.background = '#a855f7';
+                loginBtn.style.color = '#fff';
+                regBtn.style.background = 'transparent';
+                regBtn.style.color = '#94a3b8';
+            } else {
+                loginPanel.style.display = 'none';
+                regPanel.style.display = 'block';
+                regBtn.style.background = '#a855f7';
+                regBtn.style.color = '#fff';
+                loginBtn.style.background = 'transparent';
+                loginBtn.style.color = '#94a3b8';
+            }
         };
 
-        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
+        window.goToWizardStep = function(step) {
+            if (step === 2) {
+                const name = document.getElementById('obName').value.trim();
+                const age = parseInt(document.getElementById('obAge').value);
+                const city = document.getElementById('obCity').value.trim();
+                const email = document.getElementById('obEmail').value.trim();
+                const pass = document.getElementById('obPassword').value;
 
-        let currentUser = null;
-
-        // ── Auth State Listener ──
-        onAuthStateChanged(auth, async (user) => {
-            currentUser = user;
-            const profilePill = document.getElementById('userNavProfile');
-            const authBtn = document.getElementById('authCtaBtn');
-            const navName = document.getElementById('userNavName');
-            const navAvatar = document.getElementById('userNavAvatar');
-
-            if (user) {
-                profilePill.style.display = 'flex';
-                authBtn.style.display = 'none';
-                navName.textContent = user.displayName || user.email.split('@')[0];
-                if (user.photoURL) navAvatar.src = user.photoURL;
-
-                // Sync/load profile data from Firestore
-                try {
-                    const userDocRef = doc(db, "lumina_users", user.uid);
-                    const userDoc = await getDoc(userDocRef);
-                    if (!userDoc.exists()) {
-                        // Create initial profile in Firestore
-                        await setDoc(userDocRef, {
-                            uid: user.uid,
-                            name: user.displayName || 'Użytkownik LUMINA',
-                            email: user.email,
-                            photoURL: user.photoURL || '',
-                            city: 'Polska',
-                            age: 26,
-                            bio: 'Chrześcijanin szukający Bożej relacji.',
-                            matchRate: '95%',
-                            createdAt: serverTimestamp()
-                        });
-                    }
-                } catch (err) {
-                    console.warn("Brak uprawnień zapisu do Firestore (tryb demonstracyjny):", err);
+                if (!name || !age || !city || !email || !pass) {
+                    showToast('Wypełnij wszystkie pola w Kroku 1!');
+                    return;
                 }
-                showToast(`Witaj w LUMINA, ${user.displayName || 'Użytkowniku'}! ✨`);
-            } else {
-                profilePill.style.display = 'none';
-                authBtn.style.display = 'block';
+                if (age < 18) {
+                    showToast('Portal LUMINA jest dostępny wyłącznie dla osób pełnoletnich (18+).');
+                    return;
+                }
+                if (pass.length < 6) {
+                    showToast('Hasło musi mieć minimum 6 znaków.');
+                    return;
+                }
             }
-        });
+
+            document.getElementById('wizardStep1').style.display = step === 1 ? 'block' : 'none';
+            document.getElementById('wizardStep2').style.display = step === 2 ? 'block' : 'none';
+            document.getElementById('wizardStep3').style.display = step === 3 ? 'block' : 'none';
+
+            // Dots update
+            for (let i = 1; i <= 3; i++) {
+                const dot = document.getElementById('stepDot' + i);
+                if (i <= step) {
+                    dot.style.background = '#a855f7';
+                    dot.style.color = '#fff';
+                    dot.style.boxShadow = '0 0 10px rgba(168,85,247,0.5)';
+                } else {
+                    dot.style.background = 'rgba(255,255,255,0.1)';
+                    dot.style.color = '#94a3b8';
+                    dot.style.boxShadow = 'none';
+                }
+            }
+        };
+
+        window.handleObAvatarChange = function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let w = img.width, h = img.height;
+                    const max = 400;
+                    if (w > h) { if (w > max) { h = Math.round(h * max / w); w = max; } }
+                    else { if (h > max) { w = Math.round(w * max / h); h = max; } }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    obAvatarDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                    document.getElementById('obAvatarPreview').src = obAvatarDataUrl;
+                    showToast('Zdjęcie wgrane pomyślnie! ✨');
+                };
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
 
         // ── Google Auth ──
-        window.handleGoogleLogin = async function() {
+        window.handleGoogleAuthAction = async function() {
             const btn = document.getElementById('btnGoogleAuth');
-            if (btn) { btn.disabled = true; btn.textContent = '⏳ Łączenie...'; }
+            if (btn) { btn.disabled = true; btn.textContent = '⏳ Łączenie z Google...'; }
             
             try {
-                const result = await signInWithPopup(auth, provider);
-                closeModal('authModal');
-                showToast(`Witaj w LUMINA, ${result.user.displayName}! 🕊️`);
-            } catch (error) {
-                console.warn("Google Auth error:", error.code, error.message);
-                
-                // Dla file:// lub nieautoryzowanych domen – wersja demo
-                closeModal('authModal');
-                const demoUser = {
-                    displayName: "Użytkownik (Wersja Demo)",
-                    email: "demo@lumina.cc",
-                    photoURL: "lumina_icon.jpg",
-                    uid: "demo_" + Date.now()
-                };
-                currentUser = demoUser;
-                
-                const navProfile = document.getElementById('userNavProfile');
-                const authBtn = document.getElementById('authCtaBtn');
-                const navName = document.getElementById('userNavName');
-                const navAvatar = document.getElementById('userNavAvatar');
-                
-                if (navProfile) navProfile.style.display = 'flex';
-                if (authBtn) authBtn.style.display = 'none';
-                if (navName) navName.textContent = demoUser.displayName;
-                if (navAvatar) navAvatar.src = demoUser.photoURL;
-                
-                if (error.code === 'auth/unauthorized-domain' || error.code === 'auth/operation-not-allowed') {
-                    showToast('✅ Zalogowano w trybie demo. Pełne Google Auth działa na polskieradio.cc');
-                } else if (error.code === 'auth/popup-blocked') {
-                    showToast('⚠️ Popup zablokowany przez przeglądarkę. Zezwól na popupy dla tej strony.');
-                    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-brands fa-google" style="color:#ea4335;"></i> Kontynuuj przez Google'; }
-                    return;
-                } else {
-                    showToast(`✅ Zalogowano pomyślnie (wersja demo) 🕊️`);
+                if (window.LuminaDB) {
+                    const { user, profile, isNewUser } = await window.LuminaDB.loginWithGoogle();
+                    closeModal('authModal');
+                    if (isNewUser) {
+                        showToast(`Witaj w LUMINA, ${user.displayName || ''}! Uzupełnij swój profil.`);
+                        window.location.href = `lumina-profile.html?u=${user.uid}`;
+                    } else {
+                        showToast(`Witaj ponownie, ${profile?.name || user.displayName}! ✨`);
+                    }
                 }
+            } catch (error) {
+                console.warn("Google Auth note:", error);
+                showToast(`Logowanie w toku... 🕊️`);
+                closeModal('authModal');
             } finally {
                 if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-brands fa-google" style="color:#ea4335;"></i> Kontynuuj przez Google'; }
             }
         };
 
+        // ── Email Login ──
+        window.handleEmailLoginSubmit = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('btnLoginSubmit');
+            if (btn) { btn.disabled = true; btn.textContent = '⏳ Logowanie...'; }
+
+            try {
+                if (window.LuminaDB) {
+                    const { user, profile } = await window.LuminaDB.loginWithEmail(email, pass);
+                    closeModal('authModal');
+                    showToast(`Witaj ponownie, ${profile?.name || user.email}! 🕊️✨`);
+                }
+            } catch(err) {
+                showToast('Błąd logowania: Sprawdź poprawność e-maila lub hasła.');
+            } finally {
+                if (btn) { btn.disabled = false; btn.textContent = 'ZALOGUJ SIĘ ➔'; }
+            }
+        };
+
+        // ── Onboarding Registration ──
+        window.handleOnboardingSubmit = async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('obName').value.trim();
+            const gender = document.getElementById('obGender').value;
+            const lookingFor = document.getElementById('obLookingFor').value;
+            const age = parseInt(document.getElementById('obAge').value);
+            const city = document.getElementById('obCity').value.trim();
+            const email = document.getElementById('obEmail').value.trim();
+            const pass = document.getElementById('obPassword').value;
+            const denom = document.getElementById('obDenom').value;
+            const church = document.getElementById('obChurch').value.trim();
+            const verse = document.getElementById('obVerse').value.trim();
+            const bio = document.getElementById('obBio').value.trim();
+
+            const btn = document.getElementById('btnSubmitWizard');
+            if (btn) { btn.disabled = true; btn.textContent = '⏳ Tworzenie profilu w chmurze...'; }
+
+            try {
+                if (window.LuminaDB) {
+                    const { user, profile } = await window.LuminaDB.registerWithEmail(email, pass, {
+                        name,
+                        gender,
+                        lookingFor,
+                        age,
+                        city,
+                        denom,
+                        church,
+                        verse: verse || '„Bóg jest miłością” (1 J 4, 8)',
+                        bio,
+                        avatar: obAvatarDataUrl
+                    });
+
+                    closeModal('authModal');
+                    showToast(`Gratulacje ${name}! Twój chrześcijański profil LUMINA został pomyślnie utworzony! 🎉✨`);
+                    
+                    // Direct to user's personalized profile
+                    setTimeout(() => {
+                        window.location.href = `lumina-profile.html?u=${user.uid}`;
+                    }, 1200);
+                }
+            } catch(err) {
+                console.error("Onboarding error:", err);
+                showToast('Błąd rejestracji: ' + (err.message || 'Spróbuj ponownie.'));
+            } finally {
+                if (btn) { btn.disabled = false; btn.textContent = 'STWÓRZ MÓJ PROFIL ✨'; }
+            }
+        };
+
+        // ── Global Auth State Synchronization ──
+        window.addEventListener('DOMContentLoaded', () => {
+            const checkAuth = () => {
+                if (window.LuminaDB) {
+                    window.LuminaDB.onAuthChange((user, profile) => {
+                        const profilePill = document.getElementById('userNavProfile');
+                        const authBtn = document.getElementById('authCtaBtn');
+                        const navName = document.getElementById('userNavName');
+                        const navAvatar = document.getElementById('userNavAvatar');
+
+                        if (user) {
+                            if (profilePill) profilePill.style.display = 'flex';
+                            if (authBtn) authBtn.style.display = 'none';
+                            if (navName) navName.textContent = profile?.name || user.displayName || user.email.split('@')[0];
+                            if (navAvatar && (profile?.avatar || user.photoURL)) {
+                                navAvatar.src = profile?.avatar || user.photoURL;
+                            }
+                        } else {
+                            if (profilePill) profilePill.style.display = 'none';
+                            if (authBtn) authBtn.style.display = 'block';
+                        }
+                    });
+                } else {
+                    setTimeout(checkAuth, 250);
+                }
+            };
+            checkAuth();
+        });
+
         // ── Logout ──
         window.handleLogout = async function() {
-            try {
-                await signOut(auth);
-            } catch (err) {
-                console.log(err);
+            if (window.LuminaDB) {
+                await window.LuminaDB.logoutUser();
             }
-            currentUser = null;
-            document.getElementById('userNavProfile').style.display = 'none';
-            document.getElementById('authCtaBtn').style.display = 'block';
             showToast('Wylogowano z portalu LUMINA');
         };
+    </script>
 
-        // ── Traditional / Manual Registration ──
-        window.handleTraditionalReg = async function(e) {
-            e.preventDefault();
-            const name = document.getElementById('regName').value;
-            const age = document.getElementById('regAge').value;
-            const city = document.getElementById('regCity').value;
-            const bio = document.getElementById('regBio').value;
-
-            closeModal('authModal');
-            
-            // Set user profile in state
-            currentUser = {
-                displayName: name,
-                email: `${name.toLowerCase()}@lumina.cc`,
-                uid: 'user_' + Date.now()
-            };
-            document.getElementById('userNavProfile').style.display = 'flex';
-            document.getElementById('authCtaBtn').style.display = 'none';
-            document.getElementById('userNavName').textContent = `${name}, ${age}`;
-            document.getElementById('userNavAvatar').src = "icon.png";
-
-            // Add new profile card directly to the beginning of the carousel!
-            const carousel = document.getElementById('profilesCarousel');
-            if (carousel) {
-                const newCard = document.createElement('div');
-                newCard.className = 'profile-card featured';
-                newCard.onclick = () => window.openProfile(name, age, city, bio, 'anna-photo', '100%');
-                newCard.innerHTML = `
-                    <div class="card-photo">
-                        <div class="sprite-photo anna-photo"></div>
-                        <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #10b981, #06b6d4);">Twój Profil</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name">${name}, ${age} (Ty)</div>
-                        <div class="card-city">📍 ${city}</div>
-                        <div class="card-desc">"${bio}"</div>
-                    </div>
-                `;
-                carousel.insertBefore(newCard, carousel.firstChild);
-                carousel.scrollTo({ left: 0, behavior: 'smooth' });
-            }
-
-            showToast(`Witaj ${name}! Twój profil został pomyślnie utworzony ✨`);
-
-            try {
-                await setDoc(doc(db, "lumina_users", currentUser.uid), {
-                    uid: currentUser.uid,
-                    name: `${name}`,
-                    age: parseInt(age) || 25,
-                    city: city,
-                    bio: bio,
-                    createdAt: serverTimestamp()
-                });
-            } catch (err) {
-                console.log("Firestore sync info:", err);
-            }
-        };
-
+    <script>
         // ── Radio Player Control (Official Stream ZenoFM) ──
         const RADIO_STREAM_URL = "https://stream.zeno.fm/umej2cuqncluv";
         let isPlayingRadio = false;
@@ -1849,8 +2007,8 @@
                 audio.load();
                 audio.play().then(() => {
                     isPlayingRadio = true;
-                    widget.classList.add('radio-playing');
-                    icon.className = 'fa-solid fa-pause';
+                    if (widget) widget.classList.add('radio-playing');
+                    if (icon) icon.className = 'fa-solid fa-pause';
                     showToast('Radio Christian Culture Global gra na żywo! 🎵');
                 }).catch(err => {
                     console.error("Audio playback error:", err);
@@ -1860,8 +2018,8 @@
                 audio.pause();
                 audio.src = "";
                 isPlayingRadio = false;
-                widget.classList.remove('radio-playing');
-                icon.className = 'fa-solid fa-play';
+                if (widget) widget.classList.remove('radio-playing');
+                if (icon) icon.className = 'fa-solid fa-play';
                 showToast('Wstrzymano radio');
             }
         };
@@ -1873,44 +2031,45 @@
             if (heartBtn) heartBtn.classList.add('liked');
         };
 
-        // ── Load Dynamic Profiles ──
-        async function loadFirestoreProfiles() {
-            try {
-                if (window.setupInfiniteCarousel && !window.isInfiniteInitialized) {
-                    window.setupInfiniteCarousel();
-                }
-                const querySnapshot = await getDocs(collection(db, "lumina_users"));
-                if (!querySnapshot.empty) {
+        // ── Realtime Community Profiles from Firestore ──
+        function initCommunityProfilesListener() {
+            if (window.LuminaDB) {
+                window.LuminaDB.subscribeToAllCommunityProfiles((profiles) => {
                     const carousel = document.getElementById('profilesCarousel');
-                    querySnapshot.forEach((docSnap) => {
-                        const data = docSnap.data();
-                        if (data && data.name && !document.getElementById('user_card_' + docSnap.id)) {
+                    if (!carousel || !profiles || !profiles.length) return;
+
+                    profiles.forEach(p => {
+                        if (!p.name) return;
+                        const cardId = 'cloud_user_' + (p.uid || p.slug);
+                        let existing = document.getElementById(cardId);
+                        const imgSrc = p.avatar || 'lumina_icon.jpg';
+
+                        if (!existing) {
                             const card = document.createElement('div');
                             card.className = 'profile-card';
-                            card.id = 'user_card_' + docSnap.id;
-                            const imgSrc = data.photoURL || 'lumina_anna2.jpg';
-                            card.onclick = () => window.openProfile(data.name || 'Użytkownik', data.age || 26, data.city || 'Polska', data.bio || 'Witaj w LUMINA!', imgSrc, data.matchRate || '95%');
+                            card.id = cardId;
+                            card.onclick = () => window.openProfile(p.name, p.age || 25, p.city || 'Polska', p.bio || '', imgSrc, p.matchScore || '96%');
                             card.innerHTML = `
                                 <div class="card-photo">
-                                    <img src="${imgSrc}" alt="${data.name || 'Użytkownik'}" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;display:block;">
+                                    <img src="${imgSrc}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;display:block;">
                                     <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                                    <div class="card-match">${data.matchRate || '95%'}</div>
+                                    <div class="card-match" style="background:linear-gradient(135deg,#ec4899,#8b5cf6);">${p.matchScore || '96%'}</div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="card-name">${data.name || 'Anonim'}, ${data.age || 25}</div>
-                                    <div class="card-city">📍 ${data.city || 'Polska'}</div>
-                                    <div class="card-desc">"${data.bio || 'Wierzący chrześcijanin'}"</div>
+                                    <div class="card-name">${p.name}, ${p.age || 25}</div>
+                                    <div class="card-city">📍 ${p.city || 'Polska'}</div>
+                                    <div class="card-desc">"${p.bio ? (p.bio.length > 80 ? p.bio.substring(0,80) + '...' : p.bio) : (p.verse || 'Chrześcijanin szukający Bożej relacji.')}"</div>
                                 </div>
                             `;
                             carousel.appendChild(card);
                         }
                     });
-                }
-            } catch (err) {
-                console.log("Działanie w trybie lokalnym / domyślnych profili.");
+                });
+            } else {
+                setTimeout(initCommunityProfilesListener, 300);
             }
         }
-        loadFirestoreProfiles();
+        initCommunityProfilesListener();
 
         // ── Instant Sync of Saved Profiles from localStorage to Homepage ──
         function syncUserSavedProfileToHomepage() {
