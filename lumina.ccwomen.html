@@ -155,55 +155,118 @@
             color: #fff;
         }
 
-        /* ── Security & Founder Management Bar ── */
-        .profile-security-bar {
-            background: linear-gradient(90deg, rgba(236, 72, 153, 0.15) 0%, rgba(168, 85, 247, 0.15) 50%, rgba(250, 204, 21, 0.1) 100%);
-            border-bottom: 1px solid rgba(236, 72, 153, 0.35);
-            padding: 10px 28px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.84rem;
-            color: #e2e8f0;
-            gap: 12px;
-            flex-wrap: wrap;
+        /* ── Settings Gear & Dropdown Menu ── */
+        .settings-dropdown-wrap {
+            position: relative;
         }
 
-        .security-status-wrap {
+        .btn-gear-settings {
+            width: 38px;
+            height: 38px;
+            padding: 0 !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50% !important;
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--navy-border);
+            cursor: pointer;
+        }
+
+        .btn-gear-settings:hover, .btn-gear-settings.active {
+            background: rgba(236, 72, 153, 0.25);
+            border-color: #ec4899;
+            color: #fff;
+            transform: rotate(45deg);
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.4);
+        }
+
+        .settings-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            width: 270px;
+            background: rgba(15, 23, 42, 0.96);
+            border: 1px solid rgba(236, 72, 153, 0.35);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(236, 72, 153, 0.15);
+            border-radius: 16px;
+            padding: 8px;
+            display: none;
+            flex-direction: column;
+            gap: 3px;
+            z-index: 1000;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            animation: fadeInMenu 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .settings-dropdown-menu.open {
+            display: flex;
+        }
+
+        @keyframes fadeInMenu {
+            from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .settings-menu-header {
+            padding: 8px 12px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 4px;
+        }
+
+        .settings-menu-title {
+            font-size: 0.84rem;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-menu-status {
+            font-size: 0.72rem;
+            color: #86efac;
+            margin-top: 2px;
+        }
+
+        .settings-menu-item {
+            background: transparent;
+            border: none;
+            color: #e2e8f0;
+            padding: 9px 12px;
+            border-radius: 10px;
+            font-size: 0.83rem;
+            font-weight: 600;
+            font-family: inherit;
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .security-status-wrap i {
-            color: #ec4899;
-            font-size: 1.1rem;
-        }
-
-        .btn-security-toggle {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(236, 72, 153, 0.4);
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 700;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
+            width: 100%;
+            text-align: left;
+            transition: all 0.15s ease;
         }
 
-        .btn-security-toggle:hover {
-            background: rgba(236, 72, 153, 0.25);
-            border-color: #ec4899;
+        .settings-menu-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
         }
 
-        .btn-security-toggle.unlocked {
-            background: rgba(34, 197, 94, 0.2);
-            border-color: #22c55e;
-            color: #86efac;
+        .settings-menu-item i {
+            width: 18px;
+            font-size: 0.9rem;
+            text-align: center;
+            color: #ec4899;
+        }
+
+        .settings-menu-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+            margin: 4px 0;
         }
 
         /* ── Main Container ── */
@@ -1114,25 +1177,40 @@
             <button class="btn-nav-action" onclick="toggleRadio()">
                 <i class="fa-solid fa-play" id="radioPlayIcon"></i> Radio CC Live
             </button>
+
+            <!-- Settings Gear & Dropdown Panel -->
+            <div class="settings-dropdown-wrap">
+                <button type="button" class="btn-gear-settings" id="btnChannelSettings" onclick="toggleSettingsDropdown(event)" title="Ustawienia & Zarządzanie Kanałem">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+                <div class="settings-dropdown-menu" id="settingsDropdownMenu" onclick="event.stopPropagation()">
+                    <div class="settings-menu-header">
+                        <div class="settings-menu-title"><i class="fa-solid fa-crown" style="color:#facc15;"></i> Zarządzanie Kanałem</div>
+                        <div class="settings-menu-status" id="settingsMenuStatus">Status: <b style="color:#86efac;">Panel Założyciela 🔓</b></div>
+                    </div>
+                    <button type="button" class="settings-menu-item" onclick="closeSettingsDropdown(); openEditChannelModal('general');">
+                        <i class="fa-solid fa-pencil"></i> Edytuj Dane i Opis Kanału
+                    </button>
+                    <button type="button" class="settings-menu-item" onclick="closeSettingsDropdown(); triggerCoverUpload();">
+                        <i class="fa-solid fa-camera"></i> Zmień Tło Kanału 📷
+                    </button>
+                    <button type="button" class="settings-menu-item" onclick="closeSettingsDropdown(); toggleCoverRepositionToolbar();">
+                        <i class="fa-solid fa-up-down"></i> Dopasuj Kadr Tła
+                    </button>
+                    <button type="button" class="settings-menu-item" onclick="closeSettingsDropdown(); triggerAvatarUpload();">
+                        <i class="fa-solid fa-circle-user"></i> Zmień Logo Kanału
+                    </button>
+                    <button type="button" class="settings-menu-item" onclick="closeSettingsDropdown(); triggerGalleryUpload();">
+                        <i class="fa-solid fa-images"></i> Wgraj Zdjęcia do Galerii
+                    </button>
+                    <div class="settings-menu-divider"></div>
+                    <button type="button" class="settings-menu-item" onclick="closeSettingsDropdown(); toggleOwnerAuthMode();" id="btnMenuAuthToggle" style="color:#f87171;">
+                        <i class="fa-solid fa-lock" id="btnMenuAuthIcon"></i> <span id="btnMenuAuthText">Zablokuj Edycję 🔒</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </header>
-
-    <!-- ══════════ SECURITY / FOUNDER MANAGEMENT BAR ══════════ -->
-    <div class="profile-security-bar" id="profileSecurityBar">
-        <div class="security-status-wrap">
-            <i class="fa-solid fa-shield-check" id="secStatusIcon" style="color:#22c55e;"></i>
-            <span id="secStatusText">Panel Zarządzania Misją CC Women: <b style="color:#86efac;">Aktywny 🔓 (Możesz edytować wszystko)</b></span>
-        </div>
-        <div style="display:flex; align-items:center; gap:10px;">
-            <button type="button" class="btn-security-toggle" onclick="openEditChannelModal('general')" style="background:rgba(236,72,153,0.2); border-color:#ec4899;">
-                <i class="fa-solid fa-pencil"></i> Edytuj Dane Kanału
-            </button>
-            <button type="button" class="btn-security-toggle" id="btnOwnerAuthToggle" onclick="toggleOwnerAuthMode()">
-                <i class="fa-solid fa-lock" id="btnOwnerAuthIcon"></i>
-                <span id="btnOwnerAuthLabel">Zablokuj Edycję 🔒</span>
-            </button>
-        </div>
-    </div>
 
     <main class="profile-container">
         
@@ -2034,31 +2112,48 @@
             input.focus();
         }
 
+        // ── Settings Gear Dropdown Engine ──
+        function toggleSettingsDropdown(event) {
+            if (event) event.stopPropagation();
+            const menu = document.getElementById('settingsDropdownMenu');
+            const btn = document.getElementById('btnChannelSettings');
+            if (menu) {
+                menu.classList.toggle('open');
+                if (btn) btn.classList.toggle('active', menu.classList.contains('open'));
+            }
+        }
+
+        function closeSettingsDropdown() {
+            const menu = document.getElementById('settingsDropdownMenu');
+            const btn = document.getElementById('btnChannelSettings');
+            if (menu) menu.classList.remove('open');
+            if (btn) btn.classList.remove('active');
+        }
+
+        // Close settings dropdown on window click
+        window.addEventListener('click', (e) => {
+            if (!e.target.closest('.settings-dropdown-wrap')) {
+                closeSettingsDropdown();
+            }
+        });
+
         // ── Security & Authentication ──
         function toggleOwnerAuthMode() {
             isOwnerMode = !isOwnerMode;
             document.body.classList.toggle('owner-mode-active', isOwnerMode);
-            const icon = document.getElementById('secStatusIcon');
-            const txt = document.getElementById('secStatusText');
-            const btn = document.getElementById('btnOwnerAuthToggle');
-            const btnIcon = document.getElementById('btnOwnerAuthIcon');
-            const btnLabel = document.getElementById('btnOwnerAuthLabel');
+            const statusEl = document.getElementById('settingsMenuStatus');
+            const btnIcon = document.getElementById('btnMenuAuthIcon');
+            const btnText = document.getElementById('btnMenuAuthText');
 
             if (isOwnerMode) {
-                icon.className = 'fa-solid fa-shield-check';
-                icon.style.color = '#22c55e';
-                txt.innerHTML = 'Panel Zarządzania Misją CC Women: <b style="color:#86efac;">Aktywny 🔓 (Możesz edytować wszystko)</b>';
-                btn.className = 'btn-security-toggle unlocked';
-                btnIcon.className = 'fa-solid fa-lock';
-                btnLabel.textContent = 'Zablokuj Edycję 🔒';
+                if (statusEl) statusEl.innerHTML = 'Status: <b style="color:#86efac;">Panel Założyciela 🔓</b>';
+                if (btnIcon) btnIcon.className = 'fa-solid fa-lock';
+                if (btnText) btnText.textContent = 'Zablokuj Edycję 🔒';
                 showToast('Tryb edycji kanału aktywny! 🔓');
             } else {
-                icon.className = 'fa-solid fa-shield-halved';
-                icon.style.color = '#ec4899';
-                txt.innerHTML = 'Panel Zarządzania Misją CC Women: <b style="color:#ec4899;">Tylko do odczytu 🛡️</b>';
-                btn.className = 'btn-security-toggle';
-                btnIcon.className = 'fa-solid fa-key';
-                btnLabel.textContent = 'Odblokuj Edycję';
+                if (statusEl) statusEl.innerHTML = 'Status: <b style="color:#f87171;">Tylko do odczytu 🛡️</b>';
+                if (btnIcon) btnIcon.className = 'fa-solid fa-key';
+                if (btnText) btnText.textContent = 'Odblokuj Edycję';
                 showToast('Zablokowano edycję kanału 🔒');
             }
         }
