@@ -1,0 +1,288 @@
+/**
+ * ══════════════════════════════════════════════════════════════════════════
+ * LUMINA TABLICA ENGINE (lumina-tablica.js)
+ * Dynamiczna Synchronizacja Tablicy Społeczności LIVE + Reakcje Amen/Serce + Rotacja Misji CC
+ * Ekosystem: Christian Culture | Standard: Premium
+ * ══════════════════════════════════════════════════════════════════════════
+ */
+
+import * as LuminaDB from './lumina-db.js';
+import * as LuminaCore from './lumina-core.js';
+
+class LuminaTablicaEngine {
+    constructor() {
+        this.db = LuminaDB;
+        this.core = LuminaCore.default || window.LuminaCore;
+        this.feedContainer = null;
+        this.currentPosts = [];
+        this.isFirstLoad = true;
+        this.attachedImageDataUrl = null;
+    }
+
+    init() {
+        this.feedContainer = document.getElementById('communityFeed') || document.getElementById('feedStream') || document.querySelector('.feed-posts-stream');
+        
+        // 1. Wyświetlenie Skeleton UI Loader podczas ładowania
+        this.renderSkeletonLoader();
+
+        // 2. Podpięcie Real-time Feedu z Chmury Firestore
+        this.subscribeToLiveFeed();
+
+        // 3. Podpięcie formularza publikacji wpisów
+        this.bindComposerEvents();
+    }
+
+    // ── 1. SKELETON LOADER UI ──
+    renderSkeletonLoader() {
+        if (!this.feedContainer || !this.isFirstLoad) return;
+        
+        const skeletonHtml = `
+            <div class="skeleton-card" style="background:var(--navy-card, #112350); border:1px solid rgba(255,255,255,0.08); border-radius:20px; padding:22px; margin-bottom:20px; animation:pulseSkeleton 1.5s infinite ease-in-out;">
+                <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+                    <div style="width:48px; height:48px; border-radius:50%; background:rgba(255,255,255,0.1);"></div>
+                    <div style="flex:1;">
+                        <div style="width:140px; height:14px; background:rgba(255,255,255,0.1); border-radius:6px; margin-bottom:8px;"></div>
+                        <div style="width:90px; height:10px; background:rgba(255,255,255,0.06); border-radius:4px;"></div>
+                    </div>
+                </div>
+                <div style="width:100%; height:12px; background:rgba(255,255,255,0.08); border-radius:4px; margin-bottom:8px;"></div>
+                <div style="width:80%; height:12px; background:rgba(255,255,255,0.08); border-radius:4px; margin-bottom:18px;"></div>
+                <div style="width:100%; height:200px; background:rgba(255,255,255,0.05); border-radius:12px;"></div>
+            </div>
+            <style>
+                @keyframes pulseSkeleton {
+                    0% { opacity: 0.6; }
+                    50% { opacity: 0.9; }
+                    100% { opacity: 0.6; }
+                }
+            </style>
+        `;
+        this.feedContainer.innerHTML = skeletonHtml + skeletonHtml;
+    }
+
+    // ── 2. REAL-TIME FEED LISTENER ──
+    subscribeToLiveFeed() {
+        if (this.db.subscribeToFeedPosts) {
+            this.db.subscribeToFeedPosts((cloudPosts) => {
+                this.isFirstLoad = false;
+                this.currentPosts = cloudPosts || [];
+                this.renderFeed(this.currentPosts);
+            });
+        }
+    }
+
+    // ── 3. RENDEROWANIE TABLICY Z ROTACJĄ MISYJNĄ ──
+    renderFeed(posts) {
+        if (!this.feedContainer) return;
+
+        if (!posts || posts.length === 0) {
+            this.feedContainer.innerHTML = `
+                <div style="background:var(--navy-surface, #0b1838); border:1px dashed rgba(255,255,255,0.15); border-radius:20px; padding:32px; text-align:center; color:#94a3b8;">
+                    <i class="fa-solid fa-seedling" style="font-size:2.5rem; color:#facc15; margin-bottom:12px;"></i>
+                    <h3 style="color:#fff; font-size:1.2rem; margin-bottom:6px;">Bądź pierwszym, który podzieli się świadectwem!</h3>
+                    <p style="font-size:0.9rem;">Napisz swój wpis powyżej i zbuduj naszą społeczność w Chrystusie. ✨🕊️</p>
+                </div>
+            `;
+            return;
+        }
+
+        const missionBanners = [
+            {
+                type: 'mission_women',
+                title: 'CC Women • Kobiety Wiary i Modlitwy',
+                tag: '✨ KANAŁ OFICJALNY CC',
+                desc: 'Dołącz do wspólnoty chrześcijanek. Świadectwa, wzajemne budowanie i modlitwa wstawiennicza.',
+                image: 'logo_cc_women.jpg',
+                link: 'lumina.ccwomen.html'
+            },
+            {
+                type: 'mission_radio',
+                title: 'Radio CC • Muzyka Uwielbienia & Pismo Święte 24/7',
+                tag: '📻 TRANSMISJA NA ŻYWO',
+                desc: 'Słuchaj Bożego Słowa, Biblii Śpiewanej i najpiękniejszych pieśni chwały bez reklam przez całą dobę.',
+                image: 'tlo_dla_kanalu_Biblia_Spiewana.jpg',
+                link: 'snadaniowa-live.html'
+            }
+        ];
+
+        let html = '';
+        let bannerIdx = 0;
+
+        posts.forEach((post, index) => {
+            // Wstrzyknięcie banera misyjnego co 3 wpisy
+            if (index > 0 && index % 3 === 0 && bannerIdx < missionBanners.length) {
+                const b = missionBanners[bannerIdx % missionBanners.length];
+                bannerIdx++;
+                html += `
+                    <div class="mission-rotator-card" style="background:linear-gradient(135deg, rgba(17,35,80,0.9), rgba(11,24,56,0.95)); border:1.5px solid rgba(250,204,21,0.3); border-radius:20px; padding:20px; margin-bottom:24px; box-shadow:0 10px 30px rgba(0,0,0,0.4);">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                            <span style="font-size:0.75rem; font-weight:800; color:#facc15; letter-spacing:0.5px; background:rgba(250,204,21,0.15); padding:4px 10px; border-radius:20px; border:1px solid rgba(250,204,21,0.3);">${b.tag}</span>
+                            <span style="font-size:0.75rem; color:#94a3b8;"><i class="fa-solid fa-dove"></i> Misja Christian Culture</span>
+                        </div>
+                        <h4 style="color:#fff; font-size:1.1rem; font-weight:700; margin-bottom:6px;">${b.title}</h4>
+                        <p style="color:#cbd5e1; font-size:0.88rem; margin-bottom:14px; line-height:1.5;">${b.desc}</p>
+                        <div style="width:100%; border-radius:14px; overflow:hidden; margin-bottom:14px; background:#070e24; display:flex; align-items:center; justify-content:center;">
+                            <img src="${b.image}" alt="${b.title}" style="width:100%; max-height:280px; object-fit:contain !important;" loading="lazy">
+                        </div>
+                        <a href="${b.link}" class="btn-action-primary" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; padding:10px 18px; border-radius:14px; font-weight:700; font-size:0.88rem; background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff;">
+                            Otwórz Kanał <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                `;
+            }
+
+            // Renderowanie pojedynczego posta
+            const rich = this.db.formatRichTextAndMedia ? this.db.formatRichTextAndMedia(post.text || '') : { html: post.text || '', embedHtml: '' };
+            const postAvatar = post.authorAvatar || 'avatar_new1.jpg';
+            const likesCount = post.likes || 1;
+            const amenCount = post.amen || 0;
+
+            html += `
+                <article class="post-card" id="${post.id}" style="background:var(--navy-card, #112350); border:1px solid rgba(255,255,255,0.08); border-radius:20px; padding:22px; margin-bottom:22px; box-shadow:0 8px 24px rgba(0,0,0,0.35);">
+                    <div class="post-header" style="display:flex; align-items:center; gap:14px; margin-bottom:14px;">
+                        <a href="lumina-profile.html?u=${post.authorSlug || 'user'}" style="text-decoration:none;">
+                            <img src="${postAvatar}" alt="${post.author}" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:1.5px solid #facc15;">
+                        </a>
+                        <div style="flex:1;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <a href="lumina-profile.html?u=${post.authorSlug || 'user'}" style="color:#fff; font-weight:800; font-size:1rem; text-decoration:none;">${post.author}</a>
+                                ${post.authorRole ? `<span style="font-size:0.72rem; color:#facc15; background:rgba(250,204,21,0.12); padding:2px 8px; border-radius:12px; border:1px solid rgba(250,204,21,0.25);">${post.authorRole}</span>` : ''}
+                            </div>
+                            <div style="font-size:0.78rem; color:#94a3b8;">${post.time || 'Przed chwilą'}</div>
+                        </div>
+                    </div>
+                    <div class="post-content" style="color:#f8fafc; font-size:0.95rem; line-height:1.6; margin-bottom:14px; word-break:break-word;">
+                        ${rich.html}
+                    </div>
+                    ${rich.embedHtml || ''}
+                    ${post.image ? `
+                        <div style="width:100%; border-radius:14px; overflow:hidden; margin-bottom:14px; background:#070e24; display:flex; align-items:center; justify-content:center;">
+                            <img src="${post.image}" alt="Post Image" style="width:100%; max-height:480px; object-fit:contain !important;" loading="lazy">
+                        </div>
+                    ` : ''}
+                    <div class="post-footer" style="display:flex; align-items:center; gap:10px; border-top:1px solid rgba(255,255,255,0.06); padding-top:12px;">
+                        <button class="post-action-btn" onclick="window.LuminaTablica.toggleReaction('${post.id}', 'likes')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:8px 14px; border-radius:20px; font-size:0.85rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-heart" style="color:#ec4899;"></i> <span>${likesCount}</span> Polubień
+                        </button>
+                        <button class="post-action-btn amen" onclick="window.LuminaTablica.toggleReaction('${post.id}', 'amen')" style="background:rgba(250,204,21,0.1); border:1px solid rgba(250,204,21,0.3); color:#facc15; padding:8px 14px; border-radius:20px; font-size:0.85rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-hands-praying"></i> <span>${amenCount ? amenCount + ' ' : ''}Amen!</span>
+                        </button>
+                        <button class="post-action-btn" onclick="window.openMessageModal?.('${post.author}', '${postAvatar}', '${post.authorSlug || 'user'}')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#cbd5e1; padding:8px 14px; border-radius:20px; font-size:0.85rem; font-weight:600; cursor:pointer; margin-left:auto;">
+                            <i class="fa-solid fa-comment-dots"></i> Napisz
+                        </button>
+                    </div>
+                </article>
+            `;
+        });
+
+        this.feedContainer.innerHTML = html;
+    }
+
+    // ── 4. PUBLIKACJA NOWYCH POSTÓW ──
+    bindComposerEvents() {
+        const composerForm = document.getElementById('feedComposerForm') || document.querySelector('.post-composer-form');
+        const publishBtn = document.getElementById('btnPublishPost') || document.getElementById('btnSubmitFeedPost');
+        
+        if (publishBtn) {
+            publishBtn.onclick = (e) => this.handlePublishPost(e);
+        }
+        if (composerForm) {
+            composerForm.onsubmit = (e) => this.handlePublishPost(e);
+        }
+    }
+
+    async handlePublishPost(e) {
+        if (e && e.preventDefault) e.preventDefault();
+
+        const textarea = document.getElementById('composerTextarea') || document.getElementById('composerInput') || document.getElementById('postContentInput');
+        const rawText = textarea ? textarea.value.trim() : '';
+
+        if (!rawText && !this.attachedImageDataUrl) {
+            if (typeof window.showToast === 'function') {
+                window.showToast('Napisz treść świadectwa lub dołącz grafikę przed publikacją!');
+            }
+            if (textarea) textarea.focus();
+            return;
+        }
+
+        // Trust & Safety Moderacja
+        const cleanText = this.core?.moderateText ? this.core.moderateText(rawText) : rawText;
+
+        const curUser = this.db.getCurrentUser?.();
+        const curProf = this.db.getCurrentProfile?.() || JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null');
+
+        const authorName = curProf?.name || curUser?.displayName || 'Użytkownik LUMINA';
+        const authorAvatar = curProf?.avatar || curUser?.photoURL || 'avatar_new1.jpg';
+        const authorSlug = curProf?.slug || (curUser ? curUser.uid : 'user_' + Date.now());
+        const authorRole = curProf?.job || curProf?.role || 'Społeczność LUMINA ✨';
+
+        const postPayload = {
+            id: 'post_' + Date.now(),
+            author: authorName,
+            authorSlug: authorSlug,
+            authorAvatar: authorAvatar,
+            authorRole: authorRole,
+            authorUid: curUser?.uid || authorSlug,
+            time: 'Przed chwilą • 🕊️ Świadectwo Wiary',
+            text: cleanText,
+            image: this.attachedImageDataUrl || null,
+            likes: 1,
+            amen: 0,
+            timestamp: new Date()
+        };
+
+        const publishBtn = document.getElementById('btnPublishPost') || document.getElementById('btnSubmitFeedPost');
+        if (publishBtn) {
+            publishBtn.disabled = true;
+            publishBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publikacja...';
+        }
+
+        // Zapis w chmurze
+        if (this.db.createFeedPost) {
+            await this.db.createFeedPost(postPayload);
+        } else if (this.db.publishUniversalPost) {
+            await this.db.publishUniversalPost(postPayload);
+        }
+
+        // Czyszczenie formularza
+        if (textarea) textarea.value = '';
+        this.attachedImageDataUrl = null;
+        const preview = document.getElementById('composerImgPreviewBox');
+        if (preview) preview.style.display = 'none';
+
+        if (publishBtn) {
+            publishBtn.disabled = false;
+            publishBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Opublikuj Wpis';
+        }
+
+        if (typeof window.showToast === 'function') {
+            window.showToast('Twój wpis został pomyślnie opublikowany na Tablicy Społeczności! ✨🕊️');
+        }
+    }
+
+    // ── 5. ASYNCHRONICZNE REAKCJE (Amen, Polubienia) ──
+    async toggleReaction(postId, reactionType) {
+        if (!postId) return;
+
+        // Optymistyczna aktualizacja UI
+        const post = this.currentPosts.find(p => p.id === postId);
+        if (post) {
+            post[reactionType] = (post[reactionType] || 0) + 1;
+            this.renderFeed(this.currentPosts);
+        }
+
+        if (this.db.togglePostReactionInCloud) {
+            await this.db.togglePostReactionInCloud(postId, reactionType);
+        }
+    }
+}
+
+window.LuminaTablica = new LuminaTablicaEngine();
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => window.LuminaTablica.init());
+} else {
+    window.LuminaTablica.init();
+}
+
+export default window.LuminaTablica;
