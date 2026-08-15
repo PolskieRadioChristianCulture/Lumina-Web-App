@@ -96,3 +96,95 @@ img, video, iframe, canvas, svg {
     max-width: 100vw !important;
     -webkit-overflow-scrolling: touch !important;
 }
+
+/* ── 7. ULTRA-CLEAN MOBILE TOP NAVBAR (ICONS-ONLY STANDARD) ── */
+@media (max-width: 768px) {
+    .lumina-nav, .profile-navbar, .header-container {
+        padding: 8px 12px !important;
+        gap: 8px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    /* Hide desktop navigation links */
+    .lumina-nav .nav-links {
+        display: none !important;
+    }
+
+    /* Hide text descriptions in header widgets */
+    .nav-radio-info, 
+    .sound-bars,
+    .nav-radio-sub,
+    .user-nav-name,
+    .btn-nav-cta-text {
+        display: none !important;
+    }
+
+    /* Compact Radio CC widget */
+    .nav-radio-pill {
+        padding: 3px !important;
+        min-width: 34px !important;
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0 !important;
+    }
+
+    .nav-radio-play {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 0.72rem !important;
+        margin: 0 !important;
+    }
+
+    /* Compact Notification Bell */
+    .nav-notif-btn, #notif-bell-btn {
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 0.95rem !important;
+    }
+
+    /* Compact Language Switcher */
+    .lang-switcher-btn {
+        padding: 5px 7px !important;
+        font-size: 0.82rem !important;
+        border-radius: 16px !important;
+    }
+
+    /* Compact Login / Register Button (Icon Only on Mobile) */
+    .btn-nav-cta {
+        padding: 7px 11px !important;
+        border-radius: 20px !important;
+        font-size: 0.85rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-width: 34px !important;
+        height: 34px !important;
+    }
+
+    .btn-nav-cta i {
+        margin: 0 !important;
+    }
+
+    /* Compact User Profile Pill */
+    .user-nav-profile {
+        padding: 3px 6px !important;
+        gap: 6px !important;
+        background: rgba(255,255,255,0.06) !important;
+    }
+
+    .user-nav-avatar {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    .btn-nav-logout {
+        padding: 4px 6px !important;
+        font-size: 0.8rem !important;
+    }
+}
