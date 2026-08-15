@@ -664,6 +664,183 @@
         .btn-campaign-cta.event { background: linear-gradient(90deg, #10b981, #059669); box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35); }
         .btn-campaign-cta:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
+        /* ── Rotating Broadcast Card (nadawaj.html integration) ── */
+        .broadcast-rotating-card {
+            border: 1px solid rgba(245, 158, 11, 0.4) !important;
+            background: linear-gradient(180deg, rgba(30, 27, 75, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 158, 11, 0.12) !important;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .broadcast-rotating-card:hover {
+            border-color: rgba(245, 158, 11, 0.7) !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(245, 158, 11, 0.25) !important;
+        }
+
+        .broadcast-live-dot-pulse {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ef4444, #f59e0b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1rem;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
+            flex-shrink: 0;
+            animation: pulseLive 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseLive {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .btn-broadcast-shuffle {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #fef08a;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-broadcast-shuffle:hover {
+            background: #f59e0b;
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        .broadcast-preview-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .broadcast-preview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease, opacity 0.3s ease;
+        }
+
+        .broadcast-rotating-card:hover .broadcast-preview-img {
+            transform: scale(1.03);
+        }
+
+        .broadcast-overlay-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
+            pointer-events: none;
+        }
+
+        .broadcast-floating-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.70rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .broadcast-play-overlay-btn {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 2.8rem;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            z-index: 3;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .broadcast-play-overlay-btn:hover {
+            color: #f59e0b;
+            transform: scale(1.1);
+            background: rgba(0, 0, 0, 0.35);
+        }
+
+        .broadcast-actions-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .btn-broadcast-main {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            color: #000;
+            font-weight: 800;
+            font-size: 0.82rem;
+            font-family: inherit;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35);
+        }
+
+        .btn-broadcast-main:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+        }
+
+        .btn-broadcast-all {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.80rem;
+            font-family: inherit;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-broadcast-all:hover {
+            background: rgba(255, 255, 255, 0.16);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
         /* Post Action Buttons Footer */
         .post-actions-bar {
             display: flex;
@@ -1322,6 +1499,243 @@
 
     <!-- ══════════ JAVASCRIPT & ENGINE ══════════ -->
     <script>
+        // ── 15 Oficjalnych Kanałów Nadawczych (z nadawaj.html) do Rotacji na Tablicy ──
+        const LUMINA_BROADCAST_CHANNELS = [
+            {
+                id: 'cctv24_pl',
+                title: 'Christian Culture TV 24/7 (16:9)',
+                tag: 'Główny Kanał TV',
+                badgeColor: '#d4af37',
+                textColor: '#000',
+                desc: 'Całodobowy główny program telewizyjny MCR. Zegary, ramówka na żywo, werset dnia, pogoda oraz płynne przełączanie pasm.',
+                image: 'snadaniowa_pl_thumbnail.png',
+                url: 'cctv24-pl.html',
+                category: 'Główne Pasma TV'
+            },
+            {
+                id: 'zapolske_live',
+                title: 'Zjednoczeni za Polskę (16:9)',
+                tag: 'Wydanie Specjalne',
+                badgeColor: '#dc143c',
+                textColor: '#fff',
+                desc: 'Dedykowany strumień modlitewny za Ojczyznę. Modlitwy poranne, intencje widzów wyświetlane automatycznie na żywo.',
+                image: 'POLAND.jpg',
+                url: 'zapolske-live.html',
+                category: 'Modlitwa za Polskę'
+            },
+            {
+                id: 'apokalipsa_live',
+                title: 'Apokalipsa: Księga Nadziei (16:9)',
+                tag: 'Kurs Biblijny • 10:00 & 22:00',
+                badgeColor: '#ffc107',
+                textColor: '#000',
+                desc: '24-lekcyjny kompletny kurs biblijny o proroctwach Księgi Objawienia. Zegar cyklu i obsługa wygaszania.',
+                image: 'tlo_ksiega_nadziei.png',
+                url: 'apokalipsa-ksiega-nadziei-live.html',
+                category: 'Kursy Biblijne'
+            },
+            {
+                id: 'studium_live',
+                title: 'Studium Telewizyjne Pisma Świętego',
+                tag: 'Studium Biblijne • 08:00 & 20:00',
+                badgeColor: '#ff5e7e',
+                textColor: '#fff',
+                desc: '572-odcinkowy cykl wykładów werset po wersecie. Systematyczny rozwój wiedzy biblijnej bez opóźnień.',
+                image: 'tlo_studium.png',
+                url: 'studium-live.html',
+                category: 'Studium Biblijne'
+            },
+            {
+                id: 'kino_live',
+                title: 'Chrześcijański Blok Filmowy (16:9)',
+                tag: 'Kino & Dokumenty • Weekendy 18:00',
+                badgeColor: '#f3e5ab',
+                textColor: '#000',
+                desc: 'Seanse filmowe i dokumentalne z przesłaniem. Emisja w weekendy od 18:00 oraz stały dostęp na życzenie.',
+                image: 'tlo_ksiega_nadziei.png',
+                url: 'kino-live.html',
+                category: 'Kino Chrześcijańskie'
+            },
+            {
+                id: 'spiewajmy_panu',
+                title: 'Śpiewajmy Panu (16:9)',
+                tag: 'Blok Muzyczny • 16:00',
+                badgeColor: '#d4af37',
+                textColor: '#000',
+                desc: 'Codzienny 60-minutowy blok muzyczny. Utwory uwielbienia, pieśni chwały i nowości muzyczne Christian Culture Music.',
+                image: 'spiewajmy-panu-thumb.png',
+                url: 'spiewajmy-panu-live.html',
+                category: 'Muzyka Uwielbienia'
+            },
+            {
+                id: 'swiadectwa_live',
+                title: 'Świadectwa — Historie Wiary (16:9)',
+                tag: 'Niedziela • 18:00 - 20:00',
+                badgeColor: '#ff5e7e',
+                textColor: '#fff',
+                desc: 'Poruszające historie nawróceń, uzdrowień i uwolnień. 11 wyselekcjonowanych filmów w rotacji na niedzielne wieczory.',
+                image: 'tlo_tv_live2.png',
+                url: 'swiadectwa-live.html',
+                category: 'Świadectwa Wiary'
+            },
+            {
+                id: 'nocne_czuwanie',
+                title: 'Muzyka Instrumentalna & Nocne Czuwanie',
+                tag: '23 Filmy w Rotacji • 00:00 - 06:00',
+                badgeColor: '#d19eff',
+                textColor: '#000',
+                desc: 'Głębokie wyciszenie, 1 unikalny film relaksacyjny z cyklu 23 pozycji na dobę. Przestrzeń modlitwy, kontemplacji i snu.',
+                image: 'tlo_tv_nocna.jpg',
+                url: 'nocne-czuwanie-live.html',
+                category: 'Nocne Czuwanie'
+            },
+            {
+                id: 'biblia_spiewana_169',
+                title: 'Biblia Śpiewana (16:9)',
+                tag: 'Muzyka & Słowo Boże',
+                badgeColor: '#D4AF37',
+                textColor: '#000',
+                desc: 'Pozioma scena nadawcza dla programu Biblia Śpiewana (Śpiewane Przypowieści Salomona). Wyjątkowa oprawa muzyczna.',
+                image: 'Logo_Biblia_Spiewana.jpg',
+                url: 'biblia-spiewana-live.html',
+                category: 'Biblia Śpiewana'
+            },
+            {
+                id: 'stream_scene_169',
+                title: 'Radio Biblia Audio (16:9)',
+                tag: 'Radio Internetowe PL 24/7',
+                badgeColor: '#38bdf8',
+                textColor: '#000',
+                desc: 'Pozioma scena zintegrowana ze strumieniem audio radia Zeno.fm. Wizualizacja fal dźwiękowych, zegar z datownikiem i werset dnia.',
+                image: 'Logo Biblia Audio CC.jpg',
+                url: 'stream-scene.html',
+                category: 'Radio Biblia Audio'
+            },
+            {
+                id: 'stream_scene_916',
+                title: 'Radio Biblia Audio (9:16 Pion)',
+                tag: 'Format Mobilny / Shorts / TikTok',
+                badgeColor: '#a855f7',
+                textColor: '#fff',
+                desc: 'Pionowa scena stworzona specjalnie dla formatów mobilnych na TikTok Live, YouTube Shorts i Instagram Reels.',
+                image: 'Logo Globalna Biblia Audio.jpg',
+                url: 'stream-scene-vertical.html',
+                category: 'Formaty Mobilne'
+            },
+            {
+                id: 'dzj_916',
+                title: 'Dobrze, że jesteś (9:16 Pion)',
+                tag: 'Format Mobilny / Relacje',
+                badgeColor: '#f59e0b',
+                textColor: '#000',
+                desc: 'Pionowy wariant popularnego programu śniadaniowego zoptymalizowany dla urządzeń mobilnych i relacji.',
+                image: 'dzj-916-thumb.png',
+                url: 'dzj-vertical-live.html',
+                category: 'Formaty Mobilne'
+            },
+            {
+                id: 'biblia_spiewana_916',
+                title: 'Biblia Śpiewana (9:16 Pion)',
+                tag: 'Format Mobilny / Pion',
+                badgeColor: '#D4AF37',
+                textColor: '#000',
+                desc: 'Pionowy szablon nadawczy Biblia Śpiewana dla widzów na YouTube Shorts, TikTok Live lub Instagram Reels.',
+                image: 'Logo_Biblia_Spiewana.jpg',
+                url: 'biblia-spiewana-vertical.html',
+                category: 'Formaty Mobilne'
+            },
+            {
+                id: 'cctv24_global',
+                title: 'Good to have you Global (16:9)',
+                tag: 'Global TV 24/7 English',
+                badgeColor: '#00a2ff',
+                textColor: '#000',
+                desc: 'Global English version of the breakfast show. Blue-navy themed styling, Christian Culture Global radio signal.',
+                image: 'GLOBAL.jpg',
+                url: 'cctv24-global.html',
+                category: 'Global English'
+            },
+            {
+                id: 'bibleaudio_global',
+                title: 'Bible Audio Global (16:9)',
+                tag: 'English Edition 24/7',
+                badgeColor: '#00a2ff',
+                textColor: '#000',
+                desc: 'Anglojęzyczny wirtualny stream modlitewny ze zsynchronizowanym sygnałem Bible Audio Global oraz intencjami widzów.',
+                image: 'Logo Globalna Biblia Audio.jpg',
+                url: 'bibleaudio-global.html',
+                category: 'Global English'
+            }
+        ];
+
+        let currentBroadcastIndex = Math.floor(Math.random() * LUMINA_BROADCAST_CHANNELS.length);
+        let broadcastRotateTimer = null;
+
+        function startBroadcastRotation() {
+            if (broadcastRotateTimer) clearInterval(broadcastRotateTimer);
+            broadcastRotateTimer = setInterval(() => {
+                rotateToRandomBroadcastChannel();
+            }, 12000);
+        }
+
+        function rotateToRandomBroadcastChannel() {
+            let nextIdx = Math.floor(Math.random() * LUMINA_BROADCAST_CHANNELS.length);
+            if (nextIdx === currentBroadcastIndex && LUMINA_BROADCAST_CHANNELS.length > 1) {
+                nextIdx = (nextIdx + 1) % LUMINA_BROADCAST_CHANNELS.length;
+            }
+            currentBroadcastIndex = nextIdx;
+            updateBroadcastCardUI(true);
+        }
+
+        function shuffleNextBroadcastChannel(event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            rotateToRandomBroadcastChannel();
+            startBroadcastRotation(); // restart timer
+        }
+
+        function updateBroadcastCardUI(animated = true) {
+            const ch = LUMINA_BROADCAST_CHANNELS[currentBroadcastIndex];
+            if (!ch) return;
+
+            const imgEl = document.getElementById('broadcastCardImg');
+            const titleEl = document.getElementById('broadcastCardTitle');
+            const descEl = document.getElementById('broadcastCardDesc');
+            const tagEl = document.getElementById('broadcastCardTag');
+            const catEl = document.getElementById('broadcastCategoryLabel');
+            const openBtn = document.getElementById('broadcastCardOpenBtn');
+            const playOverlay = document.getElementById('broadcastCardPlayOverlay');
+            const statusEl = document.getElementById('broadcastRotateStatus');
+
+            if (imgEl && animated) {
+                imgEl.style.opacity = '0.2';
+                imgEl.style.transform = 'scale(0.97)';
+                setTimeout(() => {
+                    imgEl.src = ch.image;
+                    imgEl.alt = ch.title;
+                    imgEl.style.opacity = '1';
+                    imgEl.style.transform = 'scale(1)';
+                }, 220);
+            } else if (imgEl) {
+                imgEl.src = ch.image;
+                imgEl.alt = ch.title;
+            }
+
+            if (titleEl) titleEl.textContent = ch.title;
+            if (descEl) descEl.textContent = ch.desc;
+            if (tagEl) {
+                tagEl.textContent = ch.tag;
+                tagEl.style.background = ch.badgeColor;
+                tagEl.style.color = ch.textColor;
+            }
+            if (catEl) catEl.textContent = `${ch.category} • Rotacja Scen 24/7 🔄`;
+            if (openBtn) openBtn.href = ch.url;
+            if (playOverlay) playOverlay.href = ch.url;
+            if (statusEl) statusEl.innerHTML = `Rotacja automatyczna • Kanał <b style="color:#fef08a;">${currentBroadcastIndex + 1}</b> z 15`;
+        }
+
         // ── Default Rich CC Mission Campaigns with High-Quality Graphics ──
         const DEFAULT_CC_CAMPAIGNS = [
             {
@@ -1653,6 +2067,14 @@
             if (window._luminaDailyReflection) {
                 combined.push(window._luminaDailyReflection);
             }
+
+            // ── Rotacyjna Karta Transmisji z nadawaj.html (Rotacja i losowe pasma) ──
+            combined.push({
+                id: 'broadcast_rotating_slot',
+                _isBroadcastRotating: true,
+                type: 'all'
+            });
+
             let cIndex = 0;
 
             userPosts.forEach((post, idx) => {
@@ -1692,6 +2114,7 @@
             if (activeQuery) {
                 const qClean = activeQuery.toLowerCase().replace(/^[@#]/, '');
                 combined = combined.filter(item => {
+                    if (item._isBroadcastRotating) return true;
                     const textMatch = (item.text || item.desc || '').toLowerCase().includes(qClean);
                     const titleMatch = (item.title || '').toLowerCase().includes(qClean);
                     const authorMatch = (item.author || '').toLowerCase().includes(qClean) || (item.authorSlug || '').toLowerCase().includes(qClean);
@@ -1701,11 +2124,12 @@
 
             // Filter by category
             if (currentFilter !== 'all') {
-                combined = combined.filter(item => item.type === currentFilter);
+                combined = combined.filter(item => item._isBroadcastRotating || item.type === currentFilter);
             }
 
             // Filter out blocked users (Etap 4)
             combined = combined.filter(item => {
+                if (item._isBroadcastRotating) return true;
                 const authorKey = item.authorSlug || item.author;
                 return !window.LuminaDB?.isUserBlocked(authorKey);
             });
@@ -1722,6 +2146,68 @@
             }
 
             container.innerHTML = combined.map(item => {
+                // ── Specjalna Karta Rotacji Kanałów Nadawczych (nadawaj.html) ──
+                if (item._isBroadcastRotating) {
+                    const ch = LUMINA_BROADCAST_CHANNELS[currentBroadcastIndex] || LUMINA_BROADCAST_CHANNELS[0];
+                    return `
+                        <article class="post-card-1x1 broadcast-rotating-card" id="rotatingBroadcastCard" style="width: 100%;">
+                            <!-- Top Header -->
+                            <div class="post-top-header">
+                                <div class="post-author-box">
+                                    <div class="broadcast-live-dot-pulse">
+                                        <i class="fa-solid fa-tower-broadcast"></i>
+                                    </div>
+                                    <div>
+                                        <div class="post-author-name">Nadawaj z Christian Culture <i class="fa-solid fa-circle-check" style="color:#f59e0b; font-size:0.75rem;"></i></div>
+                                        <div class="post-author-role" id="broadcastCategoryLabel">${ch.category} • Rotacja Scen 24/7 🔄</div>
+                                    </div>
+                                </div>
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <button type="button" class="btn-broadcast-shuffle" onclick="shuffleNextBroadcastChannel(event)" title="Wylosuj inny kanał nadawczy">
+                                        <i class="fa-solid fa-shuffle"></i> Losuj Kanał
+                                    </button>
+                                    <span class="badge-type-tag" style="background:rgba(239,68,68,0.2); border-color:#ef4444; color:#fca5a5;">
+                                        <i class="fa-solid fa-circle" style="color:#ef4444; font-size:0.5rem; margin-right:2px;"></i> NA ŻYWO
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Podgląd i Szczegóły Kanału -->
+                            <div class="post-details-box" style="padding-top:4px;">
+                                <div class="broadcast-preview-wrap">
+                                    <img src="${ch.image}" alt="${ch.title}" class="broadcast-preview-img" id="broadcastCardImg" onerror="this.src='tlo_pr_cc.jpg'">
+                                    <div class="broadcast-overlay-gradient"></div>
+                                    <div class="broadcast-floating-badge" id="broadcastCardTag" style="background:${ch.badgeColor}; color:${ch.textColor};">${ch.tag}</div>
+                                    <a href="${ch.url}" target="_blank" class="broadcast-play-overlay-btn" id="broadcastCardPlayOverlay" title="Oglądaj kanał na żywo">
+                                        <i class="fa-solid fa-circle-play"></i>
+                                    </a>
+                                </div>
+
+                                <div class="post-headline" id="broadcastCardTitle" style="font-size:1.15rem; margin-bottom:6px; color:#fff;">${ch.title}</div>
+                                <p class="post-description" id="broadcastCardDesc" style="font-size:0.86rem; color:#cbd5e1; line-height:1.55; margin-bottom:14px;">${ch.desc}</p>
+                                
+                                <div class="broadcast-actions-grid">
+                                    <a href="${ch.url}" target="_blank" class="btn-broadcast-main" id="broadcastCardOpenBtn">
+                                        <i class="fa-solid fa-play"></i> Oglądaj / Uruchom w OBS
+                                    </a>
+                                    <a href="nadawaj.html" class="btn-broadcast-all" title="Otwórz pełny panel ze wszystkimi 15 scenami">
+                                        <i class="fa-solid fa-layer-group"></i> Wszystkie Sceny (15)
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Actions Bar -->
+                            <div class="post-actions-bar">
+                                <div style="display:flex; gap:6px; align-items:center; font-size:0.75rem; color:#94a3b8;">
+                                    <i class="fa-solid fa-rotate" style="color:#f59e0b;"></i>
+                                    <span id="broadcastRotateStatus">Rotacja automatyczna • Kanał <b style="color:#fef08a;">${currentBroadcastIndex + 1}</b> z 15</span>
+                                </div>
+                                <a href="nadawaj.html" class="post-action-btn" style="text-decoration:none;" title="Panel Nadawania OBS"><i class="fa-solid fa-tv"></i> Panel OBS</a>
+                            </div>
+                        </article>
+                    `;
+                }
+
                 // ── Specjalna karta rozważania "Dobrze, że jesteś" ──
                 if (item._isReflection) {
                     const imgHtml = item.image
@@ -1873,6 +2359,9 @@
                     </article>
                 `;
             }).join('');
+
+            // Inicjalizacja / restart rotacji kanałów nadawczych
+            startBroadcastRotation();
         }
 
         function filterFeed(type, btn) {
