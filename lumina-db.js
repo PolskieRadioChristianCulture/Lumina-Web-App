@@ -535,7 +535,7 @@ export const MISSION_ACCOUNTS = {
         id: 'wioletta_rogowska',
         name: 'Wioletta Rogowska',
         role: '🌸 Współzałożycielka Christian Culture',
-        avatar: 'lumina_anna2.jpg',
+        avatar: 'avatar_wioletta_official.jpg',
         slug: 'wiolettarogowska',
         profileUrl: 'lumina.wiolettarogowska.html',
         badge: '🌸 Współzałożycielka CC',

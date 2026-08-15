@@ -1486,7 +1486,7 @@
             try {
                 const wJson = localStorage.getItem('lumina_profile_wiolettarogowska');
                 const wProfile = wJson ? JSON.parse(wJson) : null;
-                const wAvatar = (wProfile && wProfile.avatar) ? wProfile.avatar : 'lumina_anna2.jpg';
+                const wAvatar = (wProfile && wProfile.avatar && !wProfile.avatar.includes('lumina_anna')) ? wProfile.avatar : 'avatar_wioletta_official.jpg';
                 const wName = (wProfile && wProfile.name) ? wProfile.name : 'Wioletta Rogowska';
 
                 const timeW1 = formatPostTimestamp(new Date(Date.now() - 20 * 3600 * 1000)) + ' • 🌍 Publiczny';
@@ -1502,7 +1502,7 @@
                     time: timeW1,
                     title: 'Miłość Przewyższająca Perły',
                     text: 'Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień! 💕✨',
-                    image: wAvatar || 'lumina_anna2.jpg',
+                    image: wAvatar || 'avatar_wioletta_official.jpg',
                     likes: 64,
                     amen: 59
                 });
