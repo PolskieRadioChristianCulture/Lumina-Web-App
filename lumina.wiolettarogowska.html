@@ -1271,7 +1271,61 @@
             transform: translateY(0);
             opacity: 1;
         }
-    </style>
+    
+        /* ── LUMINA FLOATING SCROLL TO TOP BUTTON ── */
+        .lumina-scroll-top-btn {
+            position: fixed !important;
+            bottom: 32px !important;
+            right: 28px !important;
+            width: 52px !important;
+            height: 52px !important;
+            border-radius: 50% !important;
+            background: linear-gradient(135deg, #9333ea, #eab308) !important;
+            color: #ffffff !important;
+            border: 2px solid rgba(255, 255, 255, 0.7) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(168, 85, 247, 0.6) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 1.3rem !important;
+            cursor: pointer !important;
+            z-index: 99999 !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transform: translateY(24px) scale(0.8) !important;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s !important;
+            backdrop-filter: blur(12px) !important;
+        }
+
+        .lumina-scroll-top-btn.visible {
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+            transform: translateY(0) scale(1) !important;
+        }
+
+        .lumina-scroll-top-btn:hover {
+            transform: translateY(-5px) scale(1.1) !important;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.75), 0 0 26px rgba(245, 158, 11, 0.7) !important;
+            background: linear-gradient(135deg, #c084fc, #f59e0b) !important;
+        }
+
+        .lumina-scroll-top-btn:active {
+            transform: translateY(1px) scale(0.95) !important;
+        }
+
+        @media (max-width: 900px) {
+            .lumina-scroll-top-btn {
+                bottom: 92px !important; /* Elevated clearly above mobile nav */
+                right: 20px !important;
+                width: 48px !important;
+                height: 48px !important;
+                font-size: 1.15rem !important;
+            }
+        }
+
+</style>
 </head>
 <body>
 
@@ -2870,6 +2924,33 @@
             };
             initCloudSync();
         });
+    
+        // ── Universal Smooth Scroll to Top Logic ──
+        window.scrollToTopPage = function() {
+            try {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+                document.body.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch(e) {
+                window.scrollTo(0, 0);
+            }
+        };
+
+        function checkScrollPositionUniversal() {
+            const btn = document.getElementById('btnScrollToTop');
+            if (!btn) return;
+            const scrolled = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            if (scrolled > 160) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        }
+
+        window.addEventListener('scroll', checkScrollPositionUniversal, { passive: true });
+        document.addEventListener('scroll', checkScrollPositionUniversal, { passive: true });
+        window.addEventListener('resize', checkScrollPositionUniversal, { passive: true });
+
     </script>
 </body>
 </html>
