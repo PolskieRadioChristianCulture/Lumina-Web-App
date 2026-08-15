@@ -541,6 +541,16 @@ export const MISSION_ACCOUNTS = {
         badge: '🌸 Współzałożycielka CC',
         isMissionAccount: true
     },
+    'cc_women': {
+        id: 'cc_women',
+        name: 'CC Women • YouTube',
+        role: '🌸 Misja Kobiet Wiary',
+        avatar: 'avatar_wioletta_official.jpg',
+        slug: 'u_ccwomen_9055',
+        profileUrl: 'lumina-profile.html?u=u_ccwomen_9055',
+        badge: '🌸 CC Women Official',
+        isMissionAccount: true
+    },
     'radio_cc': {
         id: 'radio_cc',
         name: 'Polskie Radio Christian Culture',

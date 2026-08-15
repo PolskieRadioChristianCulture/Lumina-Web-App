@@ -2024,6 +2024,66 @@
         let attachedPostImageDataUrl = null;
 
         const PROFILES_DB = {
+            'u_ccwomen_9055': {
+                name: 'CC Women • Christian Culture',
+                age: 'Kanał YT',
+                city: 'Warszawa, Polska',
+                avatar: 'avatar_wioletta_official.jpg',
+                cover: 'lumina_hero_main.jpg',
+                coverPosY: '50%',
+                job: 'Oficjalny Kanał YouTube CC Women 🌸',
+                church: 'Christian Culture',
+                denom: 'Chrześcijański Kanał',
+                status: 'Misja & Kobiety',
+                pin: '7777',
+                visibility: 'public',
+                match: '100% Boża Misja',
+                verse: '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.”',
+                verseRef: '— Przypowieści Salomona 31, 10',
+                bio: 'Oficjalny profil i kanał YouTube CC Women – przestrzeń wzrostu, modlitwy, kobiecej mądrości i głębokich świadectw Bożego działania w życiu kobiet. Subskrybuj i bądź częścią naszej społeczności! 🌸✨',
+                tags: ['Kobiety Wiary', 'YouTube CC Women', 'Modlitwa', 'Świadectwa', 'Wzrost Duchowy'],
+                photos: ['avatar_wioletta_official.jpg', 'avatar_cezary_official.jpg', 'lumina_hero_main.jpg'],
+                posts: [
+                    {
+                        id: 'post_ccw_1',
+                        author: 'CC Women',
+                        time: 'Przed chwilą • 🌸 Kanał YouTube',
+                        text: 'Szczęść Boże wszystkim Kobietom! Witajcie na oficjalnym profilu CC Women na portalu LUMINA. Dzielmy się wiarą, pięknem i budujmy relacje z Chrystusem w sercu! 🌸🕊️',
+                        likes: 24,
+                        image: 'avatar_wioletta_official.jpg'
+                    }
+                ]
+            },
+            'ccwomen': {
+                name: 'CC Women • Christian Culture',
+                age: 'Kanał YT',
+                city: 'Warszawa, Polska',
+                avatar: 'avatar_wioletta_official.jpg',
+                cover: 'lumina_hero_main.jpg',
+                coverPosY: '50%',
+                job: 'Oficjalny Kanał YouTube CC Women 🌸',
+                church: 'Christian Culture',
+                denom: 'Chrześcijański Kanał',
+                status: 'Misja & Kobiety',
+                pin: '7777',
+                visibility: 'public',
+                match: '100% Boża Misja',
+                verse: '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.”',
+                verseRef: '— Przypowieści Salomona 31, 10',
+                bio: 'Oficjalny profil i kanał YouTube CC Women – przestrzeń wzrostu, modlitwy, kobiecej mądrości i głębokich świadectw Bożego działania w życiu kobiet. Subskrybuj i bądź częścią naszej społeczności! 🌸✨',
+                tags: ['Kobiety Wiary', 'YouTube CC Women', 'Modlitwa', 'Świadectwa', 'Wzrost Duchowy'],
+                photos: ['avatar_wioletta_official.jpg', 'avatar_cezary_official.jpg', 'lumina_hero_main.jpg'],
+                posts: [
+                    {
+                        id: 'post_ccw_1',
+                        author: 'CC Women',
+                        time: 'Przed chwilą • 🌸 Kanał YouTube',
+                        text: 'Szczęść Boże wszystkim Kobietom! Witajcie na oficjalnym profilu CC Women na portalu LUMINA. Dzielmy się wiarą, pięknem i budujmy relacje z Chrystusem w sercu! 🌸🕊️',
+                        likes: 24,
+                        image: 'avatar_wioletta_official.jpg'
+                    }
+                ]
+            },
             'cezaryrgowski': {
                 name: 'Cezary Rogowski',
                 age: '32',
@@ -2128,31 +2188,37 @@
         function getProfileData() {
             const slug = getRequestedUserSlug();
             const fallback = PROFILES_DB[slug] || {
-                name: 'Użytkownik LUMINA',
+                name: 'Profil LUMINA',
                 role: 'Społeczność LUMINA ✨',
-                age: 26,
+                age: 25,
                 city: 'Polska',
                 denom: 'Chrześcijanin',
-                church: '',
-                job: '',
+                church: 'Wspólnota Chrześcijańska',
+                job: 'Społeczność LUMINA ✨',
                 status: 'Panna/Kawaler',
                 verse: '„Wszystko mogę w Tym, który mnie umacnia”',
                 verseRef: 'Flp 4, 13',
-                bio: 'Chrześcijanin szukający Bożej relacji opartej na zaufaniu, wierze i miłości.',
+                bio: 'Chrześcijański kanał / profil na portalu LUMINA.',
                 avatar: 'lumina_icon.jpg',
                 cover: 'lumina_hero_clean.jpg',
                 coverPosition: '50% 50%',
                 visibility: 'public',
                 pin: '7777',
-                tags: ['Modlitwa', 'Wierność', 'Wartości', 'Relacja'],
-                stats: { friends: '1', posts: '1', likes: '24' },
+                tags: ['Ewangelizacja', 'Pismo Święte', 'Wartości', 'Misja CC'],
+                stats: { friends: '1', posts: '1', likes: '12' },
                 photos: ['lumina_icon.jpg'],
                 posts: []
             };
             try {
                 let saved = localStorage.getItem('lumina_profile_' + slug);
-                if (!saved && (slug.startsWith('u_') || slug.startsWith('user_') || slug.length > 15)) {
-                    saved = localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_profile_current');
+                if (!saved) {
+                    const curRaw = localStorage.getItem('lumina_current_user_profile');
+                    if (curRaw) {
+                        const cur = JSON.parse(curRaw);
+                        if (cur && (cur.uid === slug || cur.uid === 'u_' + slug)) {
+                            saved = curRaw;
+                        }
+                    }
                 }
                 if (saved) {
                     const parsed = JSON.parse(saved);
@@ -2287,19 +2353,12 @@
         // ── Security & Authentication System ──
         function checkOwnerAuthSession() {
             const slug = getRequestedUserSlug();
-            const sessionAuth = (sessionStorage.getItem('lumina_auth_owner_' + slug) === 'true');
-            let isUserSelf = false;
-            if (window.LuminaDB) {
-                const currentUser = window.LuminaDB.getCurrentUser();
-                if (currentUser && (currentUser.uid === slug || currentUser.email?.startsWith(slug))) {
-                    isUserSelf = true;
-                }
-            }
-            isOwnerMode = sessionAuth || isUserSelf;
+            isOwnerMode = (sessionStorage.getItem('lumina_auth_owner_' + slug) === 'true');
             updateSecurityBarUI();
         }
 
         function updateSecurityBarUI() {
+            const bar = document.getElementById('profileSecurityBar');
             const btn = document.getElementById('btnOwnerAuthToggle');
             const icon = document.getElementById('secStatusIcon');
             const txt = document.getElementById('secStatusText');
@@ -2309,7 +2368,7 @@
             if (isOwnerMode) {
                 document.body.classList.add('owner-mode-active');
                 if (icon) icon.className = 'fa-solid fa-shield-check';
-                if (txt) txt.innerHTML = 'Panel Właściciela: <b style="color:#22c55e;">Odblokowany 🔓 (Możesz edytować i usuwać)</b>';
+                if (txt) txt.innerHTML = 'Panel Właściciela: <b style="color:#a855f7;">Odblokowany 🔓 (Możesz edytować i zarządzać profilem)</b>';
                 if (btn) {
                     btn.className = 'btn-security-toggle unlocked';
                     if (btnIcon) btnIcon.className = 'fa-solid fa-lock';
@@ -2370,7 +2429,7 @@
                 updateSecurityBarUI();
                 renderPhotos();
                 renderPosts();
-                showToast('Autoryzacja pomyślna! Witaj w panelu właściciela 🎉');
+                showToast('Autoryzacja pomyślna! Witaj w panelu zarządzania 🎉');
                 if (typeof pendingProtectedAction === 'function') {
                     const cb = pendingProtectedAction;
                     pendingProtectedAction = null;
@@ -2393,13 +2452,13 @@
             }
             const group = document.getElementById('coverActionsGroup');
             if (group) {
-                group.classList.toggle('active');
+                group.classList.toggle('open');
             }
         }
 
         function closeCoverActions() {
             const group = document.getElementById('coverActionsGroup');
-            if (group) group.classList.remove('active');
+            if (group) group.classList.remove('open');
         }
 
         function toggleCoverRepositionToolbar() {
@@ -2458,12 +2517,13 @@
             document.getElementById('pageTitle').textContent = `${data.name} – Profil LUMINA | Christian Culture`;
             document.getElementById('userNameEl').textContent = data.name;
             document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} (${data.age} lat)`;
-            document.getElementById('userDenomEl').innerHTML = `<i class="fa-solid fa-cross"></i> ${data.denom}`;
-            document.getElementById('userJobEl').textContent = data.job;
-            document.getElementById('userChurchEl').textContent = data.church;
-            document.getElementById('userVerseText').textContent = data.verse;
-            document.getElementById('userVerseRef').textContent = data.verseRef;
-            document.getElementById('userBioFull').textContent = data.bio;
+            if (document.getElementById('userDenomEl')) document.getElementById('userDenomEl').innerHTML = `<i class="fa-solid fa-cross"></i> ${data.denom || 'Chrześcijanin'}`;
+            if (document.getElementById('userJobEl')) document.getElementById('userJobEl').textContent = data.job || data.role || 'Kanał / Profil LUMINA ✨';
+            if (document.getElementById('userChurchEl')) document.getElementById('userChurchEl').textContent = data.church || 'Wspólnota Chrześcijańska';
+            if (document.getElementById('userStatusEl')) document.getElementById('userStatusEl').textContent = data.status || 'Panna / Kawaler';
+            if (document.getElementById('userVerseText')) document.getElementById('userVerseText').textContent = data.verse || '„Wszystko mogę w Tym, który mnie umacnia”';
+            if (document.getElementById('userVerseRef')) document.getElementById('userVerseRef').textContent = data.verseRef || '— Flp 4, 13';
+            document.getElementById('userBioFull').textContent = data.bio || 'Witaj na profilu w społeczności LUMINA!';
             document.getElementById('modalMsgRecipient').textContent = data.name.split(' ')[0] || data.name;
 
             if (data.avatar) {
