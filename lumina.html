@@ -1632,6 +1632,20 @@
                     </div>
                 </div>
 
+                <!-- CC Women / Oficjalny Kanał YouTube Misji Kobiet -->
+                <div class="profile-card home-ccwomen-card" id="home_ccwomen_card" onclick="window.location.href='lumina-profile.html?u=u_ccwomen_9055'">
+                    <div class="card-photo">
+                        <img src="logo_cc_women.jpg" alt="CC Women" class="home-ccwomen-avatar" id="homeCcwomenAvatar" onerror="this.src='logo_cc_women.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;background:#000;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this, 'u_ccwomen_9055', 'CC Women', 'logo_cc_women.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); font-size: 0.72rem; padding: 4px 8px;">🌸 Kanał YT</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">CC Women • YouTube</div>
+                        <div class="card-city">📍 Warszawa • <b style="color:#ec4899;">Misja Kobiet Wiary</b></div>
+                        <div class="card-desc">"Oficjalny profil i kanał YouTube CC Women. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
+                    </div>
+                </div>
+
                 <!-- Noemi (Nowa Kobieta) -->
                 <div class="profile-card" onclick="openProfile('Noemi','28','Wrocław','Głęboka wiara i pasja do natury','avatar_noemi.jpg','96%')">
                     <div class="card-photo">
@@ -2601,7 +2615,11 @@
 
                     profiles.forEach(p => {
                         if (!p.name) return;
-                        const cardId = 'cloud_user_' + (p.uid || p.slug);
+                        const uid = p.uid || p.slug || p.id;
+                        if (uid === 'cezaryrgowski' || uid === 'wiolettarogowska' || uid === 'u_ccwomen_9055' || uid === 'ccwomen') {
+                            return; // Już są w karuzeli jako stałe filary
+                        }
+                        const cardId = 'cloud_user_' + uid;
                         let existing = document.getElementById(cardId);
                         const imgSrc = p.avatar || 'lumina_icon.jpg';
 
@@ -2609,16 +2627,22 @@
                             const card = document.createElement('div');
                             card.className = 'profile-card';
                             card.id = cardId;
-                            card.onclick = () => window.openProfile(p.name, p.age || 25, p.city || 'Polska', p.bio || '', imgSrc, p.matchScore || '96%');
+                            if (p.isMissionAccount || p.profileUrl || uid.startsWith('u_')) {
+                                card.onclick = () => {
+                                    window.location.href = p.profileUrl || `lumina-profile.html?u=${uid}`;
+                                };
+                            } else {
+                                card.onclick = () => window.openProfile(p.name, p.age || 25, p.city || 'Polska', p.bio || '', imgSrc, p.matchScore || '96%');
+                            }
                             card.innerHTML = `
                                 <div class="card-photo">
                                     <img src="${imgSrc}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;display:block;">
-                                    <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                                    <div class="card-match" style="background:linear-gradient(135deg,#ec4899,#8b5cf6);">${p.matchScore || '96%'}</div>
+                                    <button class="card-heart" onclick="toggleLike(event,this, '${uid}', '${p.name}', '${imgSrc}')"><i class="fa-solid fa-heart"></i></button>
+                                    <div class="card-match" style="background:linear-gradient(135deg,#ec4899,#8b5cf6);">${p.badge || p.matchScore || '96%'}</div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="card-name">${p.name}, ${p.age || 25}</div>
-                                    <div class="card-city">📍 ${p.city || 'Polska'}</div>
+                                    <div class="card-name">${p.name}${p.age ? ', ' + p.age : ''}</div>
+                                    <div class="card-city">📍 ${p.city || 'Polska'}${p.role ? ' • <b style="color:#ec4899;">' + p.role + '</b>' : ''}</div>
                                     <div class="card-desc">"${p.bio ? (p.bio.length > 80 ? p.bio.substring(0,80) + '...' : p.bio) : (p.verse || 'Chrześcijanin szukający Bożej relacji.')}"</div>
                                 </div>
                             `;
@@ -2789,14 +2813,14 @@
 
                 let show = true;
                 if (filterType === 'kobieta') {
-                    show = nameText.includes('wioletta') || nameText.includes('noemi') || nameText.includes('weronika') || nameText.includes('anna') || descText.includes('niewiast') || descText.includes('kobieta');
+                    show = nameText.includes('wioletta') || nameText.includes('women') || nameText.includes('noemi') || nameText.includes('weronika') || nameText.includes('anna') || descText.includes('niewiast') || descText.includes('kobieta') || descText.includes('misja');
                 } else if (filterType === 'mezczyzna') {
                     show = nameText.includes('cezary') || nameText.includes('tomek') || nameText.includes('dawid') || descText.includes('mężczyzn');
                 } else if (filterType === 'mlodzi') {
                     const matchAge = nameText.match(/\b(1[8-9]|2[0-9]|30)\b/);
                     show = !!matchAge;
                 } else if (filterType === 'zalozyciele') {
-                    show = nameText.includes('cezary') || nameText.includes('wioletta');
+                    show = nameText.includes('cezary') || nameText.includes('wioletta') || nameText.includes('women');
                 }
 
                 card.style.display = show ? 'block' : 'none';

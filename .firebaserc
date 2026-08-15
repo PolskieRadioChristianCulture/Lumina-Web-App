@@ -1,12 +1,21 @@
 {
   "projects": {
-    "default": "lumina-cc"
+    "default": "lumina-cc",
+    "lumina-cc": "lumina-cc",
+    "christian-culture-global": "christian-culture-global"
   },
   "targets": {
     "lumina-cc": {
       "hosting": {
-        "lumina-cc-b90b0": [
+        "lumina": [
           "lumina-cc-b90b0"
+        ]
+      }
+    },
+    "christian-culture-global": {
+      "hosting": {
+        "ccglobal": [
+          "christian-culture-global"
         ]
       }
     }
