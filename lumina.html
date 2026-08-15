@@ -1667,9 +1667,9 @@
 
         <div class="carousel-container">
             <button class="carousel-btn left" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="profiles-grid" id="profilesCarousel">
+                        <div class="profiles-grid" id="profilesCarousel">
 
-                <!-- Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
+                <!-- 1. Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
                 <div class="profile-card home-cezary-card" id="my_saved_profile_card" onclick="window.location.href='lumina.cezaryrgowski.html'">
                     <div class="card-photo">
                         <img src="avatar_cezary_official.jpg" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_cezary_official.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
@@ -1683,35 +1683,7 @@
                     </div>
                 </div>
 
-                <!-- Wioletta Rogowska / Współzałożycielka Christian Culture (Mężatka) -->
-                <div class="profile-card home-wioletta-card" id="my_saved_wioletta_card" onclick="window.location.href='lumina.wiolettarogowska.html'">
-                    <div class="card-photo">
-                        <img src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" class="home-wioletta-avatar" id="homeWiolettaAvatar" onerror="this.src='avatar_wioletta_official.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f472b6);">99%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name home-wioletta-name" id="homeWiolettaName">Wioletta Rogowska, 50</div>
-                        <div class="card-city home-wioletta-city" id="homeWiolettaCity">📍 Ostrowiec Świętokrzyski • <b>Mężatka</b></div>
-                        <div class="card-desc home-wioletta-desc" id="homeWiolettaDesc">"Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
-                    </div>
-                </div>
-
-                <!-- CC Women / Oficjalny Kanał YouTube Misji Kobiet -->
-                <div class="profile-card home-ccwomen-card" id="home_ccwomen_card" onclick="window.location.href='lumina.ccwomen.html'">
-                    <div class="card-photo">
-                        <img src="logo_cc_women.jpg" alt="CC Women" class="home-ccwomen-avatar" id="homeCcwomenAvatar" onerror="this.src='logo_cc_women.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;background:#000;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this, 'ccwomen', 'CC Women', 'logo_cc_women.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">100%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name">CC Women • YouTube</div>
-                        <div class="card-city">📍 Warszawa • <b style="color:#ec4899;">🌸 Kanał YouTube CC Women</b></div>
-                        <div class="card-desc">"Oficjalny profil i kanał YouTube CC Women. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
-                    </div>
-                </div>
-
-                <!-- Noemi (Nowa Kobieta) -->
+                <!-- 2. Noemi (Kobieta) -->
                 <div class="profile-card" onclick="openProfile('Noemi','28','Wrocław','Głęboka wiara i pasja do natury','avatar_noemi.jpg','96%')">
                     <div class="card-photo">
                         <img src="avatar_noemi.jpg" alt="Noemi" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
@@ -1725,7 +1697,23 @@
                     </div>
                 </div>
 
-                <!-- Dawid (Nowy Mężczyzna) -->
+                <!-- 3. MISJA 1: OSOBOWOŚĆ + (YouTube) -->
+                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.osobowoscplus.html'" style="border:1.5px solid rgba(139, 92, 246, 0.45); background:linear-gradient(180deg, rgba(139,92,246,0.12), rgba(11,24,56,0.95));">
+                    <div class="card-photo">
+                        <img src="avatar_new2.jpg" alt="OSOBOWOŚĆ +" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'osobowoscplus','OSOBOWOŚĆ +','avatar_new2.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #8b5cf6, #a855f7);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            OSOBOWOŚĆ + <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Christian Culture • <b style="color:#8b5cf6;">🧠 Formacja & Wiara</b></div>
+                        <div class="card-desc">"Oficjalny kanał YouTube OSOBOWOŚĆ +. Rozwój dojrzałości, tożsamość w Bogu i mądre relacje."</div>
+                    </div>
+                </div>
+
+                <!-- 4. Dawid (Mężczyzna) -->
                 <div class="profile-card" onclick="openProfile('Dawid','30','Poznań','Muzyka uwielbienia i architektura','avatar_sara.jpg','93%')">
                     <div class="card-photo">
                         <img src="avatar_sara.jpg" alt="Dawid" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
@@ -1739,7 +1727,37 @@
                     </div>
                 </div>
 
-                <!-- Weronika (Nowa Kobieta) -->
+                <!-- 5. Wioletta Rogowska / Współzałożycielka Christian Culture (Mężatka) -->
+                <div class="profile-card home-wioletta-card" id="my_saved_wioletta_card" onclick="window.location.href='lumina.wiolettarogowska.html'">
+                    <div class="card-photo">
+                        <img src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" class="home-wioletta-avatar" id="homeWiolettaAvatar" onerror="this.src='avatar_wioletta_official.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f472b6);">99%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name home-wioletta-name" id="homeWiolettaName">Wioletta Rogowska, 50</div>
+                        <div class="card-city home-wioletta-city" id="homeWiolettaCity">📍 Ostrowiec Świętokrzyski • <b>Mężatka</b></div>
+                        <div class="card-desc home-wioletta-desc" id="homeWiolettaDesc">"Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
+                    </div>
+                </div>
+
+                <!-- 6. MISJA 2: Polskie Radio CC (YouTube) -->
+                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.radiocc.html'" style="border:1.5px solid rgba(245, 158, 11, 0.45); background:linear-gradient(180deg, rgba(245,158,11,0.12), rgba(11,24,56,0.95));">
+                    <div class="card-photo">
+                        <img src="Logo_Biblia_Spiewana.jpg" alt="Polskie Radio CC" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'radiocc','Polskie Radio CC','Logo_Biblia_Spiewana.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Polskie Radio CC <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Cała Polska • <b style="color:#f59e0b;">📻 Radio Uwielbienia 24/7</b></div>
+                        <div class="card-desc">"Muzyka chwały, Biblia Śpiewana, audycje na żywo i codzienne rozważania przez całą dobę."</div>
+                    </div>
+                </div>
+
+                <!-- 7. Weronika (Kobieta) -->
                 <div class="profile-card" onclick="openProfile('Weronika','25','Kraków','Graficzka z zamiłowaniem do fotografii i sztuki','avatar_widget_ania.jpg','97%')">
                     <div class="card-photo">
                         <img src="avatar_widget_ania.jpg" alt="Weronika" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
@@ -1753,7 +1771,23 @@
                     </div>
                 </div>
 
-                <!-- Tomek (Nowy Mężczyzna) -->
+                <!-- 8. MISJA 3: Christian Culture TV (YouTube) -->
+                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.cctv.html'" style="border:1.5px solid rgba(239, 68, 68, 0.45); background:linear-gradient(180deg, rgba(239,68,68,0.12), rgba(11,24,56,0.95));">
+                    <div class="card-photo">
+                        <img src="CCTV_NOCA.jpg" alt="Christian Culture TV" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'cctv','Christian Culture TV','CCTV_NOCA.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Christian Culture TV <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Warszawa • <b style="color:#ef4444;">📺 Telewizja CCTV24</b></div>
+                        <div class="card-desc">"Oficjalna telewizja chrześcijańska. Pasma wideo, debaty, świadectwa i transmisje ewangelizacyjne."</div>
+                    </div>
+                </div>
+
+                <!-- 9. Tomek (Mężczyzna) -->
                 <div class="profile-card" onclick="openProfile('Tomek','27','Gdańsk','Pasjonat leśnych wędrówek i natury','avatar_widget_tomek.jpg','94%')">
                     <div class="card-photo">
                         <img src="avatar_widget_tomek.jpg" alt="Tomek" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
@@ -1767,7 +1801,39 @@
                     </div>
                 </div>
 
-                <!-- Reklama Wideo: Dobrze, że jesteś (Natywne Wideo MP4) - ZAWSZE W CENTRUM -->
+                <!-- 10. MISJA 4: CC MEN (YouTube) -->
+                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.ccmen.html'" style="border:1.5px solid rgba(14, 165, 233, 0.45); background:linear-gradient(180deg, rgba(14,165,233,0.12), rgba(11,24,56,0.95));">
+                    <div class="card-photo">
+                        <img src="avatar_widget_tomek.jpg" alt="CC MEN" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'ccmen','CC MEN','avatar_widget_tomek.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            CC MEN <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Polska • <b style="color:#0ea5e9;">🛡️ Męska Wspólnota Wiary</b></div>
+                        <div class="card-desc">"Mężczyźni w Chrystusie. Męstwo, odpowiedzialność za rodzinę, wierność i braterstwo."</div>
+                    </div>
+                </div>
+
+                <!-- 11. MISJA 5: CC Women (YouTube) -->
+                <div class="profile-card home-ccwomen-card" id="home_ccwomen_card" onclick="window.location.href='lumina.ccwomen.html'" style="border:1.5px solid rgba(236, 72, 153, 0.45); background:linear-gradient(180deg, rgba(236,72,153,0.12), rgba(11,24,56,0.95));">
+                    <div class="card-photo">
+                        <img src="logo_cc_women.jpg" alt="CC Women" class="home-ccwomen-avatar" id="homeCcwomenAvatar" onerror="this.src='logo_cc_women.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;background:#000;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this, 'ccwomen', 'CC Women', 'logo_cc_women.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            CC Women <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Warszawa • <b style="color:#ec4899;">🌸 Kobiety Wiary</b></div>
+                        <div class="card-desc">"Oficjalny profil i kanał YouTube CC Women. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
+                    </div>
+                </div>
+
+                <!-- 12. Reklama Wideo: Dobrze, że jesteś (Natywne Wideo MP4) -->
                 <div class="profile-card video-card featured original-promo-card" id="promoAdCard" onclick="window.open('https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536', '_blank')">
                     <div class="card-photo">
                         <video id="promoVideoEl" src="czesc_dobrze_ze_jestes.mp4" autoplay loop muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:16px;"></video>
@@ -1783,7 +1849,7 @@
                     </div>
                 </div>
 
-                <!-- Anna -->
+                <!-- 13. Anna (Kobieta) -->
                 <div class="profile-card" onclick="openProfile('Anna','28','Warszawa','Uwielbia podróże i sztukę','avatar_widget_ania.jpg','94%')">
                     <div class="card-photo">
                         <img src="avatar_widget_ania.jpg" alt="Anna" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
@@ -1797,7 +1863,7 @@
                     </div>
                 </div>
 
-                <!-- Piotr -->
+                <!-- 14. Piotr (Mężczyzna) -->
                 <div class="profile-card" onclick="openProfile('Piotr','31','Kraków','Szuka spontanicznych przygód','lumina_piotr2.jpg','88%')">
                     <div class="card-photo">
                         <img src="lumina_piotr2.jpg" alt="Piotr" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
@@ -1811,7 +1877,7 @@
                     </div>
                 </div>
 
-                <!-- Julia -->
+                <!-- 15. Julia (Kobieta) -->
                 <div class="profile-card" onclick="openProfile('Julia','26','Gdańsk','Marzycielka z pasją do muzyki','lumina_julia2.jpg','91%')">
                     <div class="card-photo">
                         <img src="lumina_julia2.jpg" alt="Julia" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
