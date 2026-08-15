@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
     <!-- Google Analytics -->
@@ -2055,43 +2055,133 @@
             return posts;
         }
 
-        // ── Render 1:1 Feed with Interleaved CC Mission Ads ──
+        // ── Admin Pinning Management ──
+        function getPinnedPostIds() {
+            try {
+                return JSON.parse(localStorage.getItem('lumina_pinned_post_ids') || '[]');
+            } catch(e) {
+                return [];
+            }
+        }
+
+        function toggleAdminPinPost(postId) {
+            if (!postId) return;
+            let pinned = getPinnedPostIds();
+            const idx = pinned.indexOf(postId);
+            if (idx > -1) {
+                pinned.splice(idx, 1);
+                showToast('Wpis został odpięty z góry tablicy 📌');
+            } else {
+                pinned.unshift(postId);
+                showToast('Wpis został przypięty na samej górze tablicy! 📌⭐');
+            }
+            localStorage.setItem('lumina_pinned_post_ids', JSON.stringify(pinned));
+            renderFeed();
+        }
+
+        // ── Render 1:1 Feed with Interleaved CC Mission Ads & Admin Pinning ──
         function renderFeed() {
             const container = document.getElementById('feedStream1x1');
             if (!container) return;
 
             const userPosts = getUserFeedPosts();
             const campaigns = getStoredCampaigns();
+            const pinnedPostIds = getPinnedPostIds();
+            const isAdmin = localStorage.getItem('lumina_admin') === '1';
 
-            // Harmonious Interleaving: Post -> Post -> Ad -> Post -> Promo -> Post ...
+            // ── Each broadcast channel appears as a separate card between posts ──
+            // Fisher-Yates shuffle to build a random cycle of all 15 channels
+            if (!window._broadcastCycleOrder || window._broadcastCycleOrder.length === 0) {
+                const arr = LUMINA_BROADCAST_CHANNELS.map((_, i) => i);
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                window._broadcastCycleOrder = arr;
+                window._broadcastCyclePos = 0;
+            }
+
+            // Returns the next broadcast channel slot (cycles through all 15, then reshuffles)
+            function nextBroadcastSlot() {
+                const pos = (window._broadcastCyclePos || 0) % window._broadcastCycleOrder.length;
+                const idx = window._broadcastCycleOrder[pos];
+                window._broadcastCyclePos = pos + 1;
+                if (window._broadcastCyclePos >= window._broadcastCycleOrder.length) {
+                    const arr = LUMINA_BROADCAST_CHANNELS.map((_, i) => i);
+                    for (let i = arr.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [arr[i], arr[j]] = [arr[j], arr[i]];
+                    }
+                    window._broadcastCycleOrder = arr;
+                    window._broadcastCyclePos = 0;
+                }
+                return { id: 'broadcast_ch_' + idx, _isBroadcastChannel: true, _chIdx: idx, type: 'all' };
+            }
+
             let combined = [];
 
-            // ── Pinned Daily Reflection (top of feed, from Firestore) ──
+            // 1. Pinned Daily Reflection (top of feed)
             if (window._luminaDailyReflection) {
                 combined.push(window._luminaDailyReflection);
             }
 
-            // ── Rotacyjna Karta Transmisji z nadawaj.html (Rotacja i losowe pasma) ──
-            combined.push({
-                id: 'broadcast_rotating_slot',
-                _isBroadcastRotating: true,
-                type: 'all'
+            // 2. Separate pinned vs unpinned items
+            const pinnedItems = [];
+            const normalUserPosts = [];
+            const normalCampaigns = [];
+
+            userPosts.forEach(p => {
+                if (pinnedPostIds.includes(p.id)) {
+                    p._isPinnedByAdmin = true;
+                    pinnedItems.push(p);
+                } else {
+                    p._isPinnedByAdmin = false;
+                    normalUserPosts.push(p);
+                }
             });
+
+            campaigns.forEach(c => {
+                if (pinnedPostIds.includes(c.id)) {
+                    c._isPinnedByAdmin = true;
+                    pinnedItems.push(c);
+                } else {
+                    c._isPinnedByAdmin = false;
+                    normalCampaigns.push(c);
+                }
+            });
+
+            // Push all admin-pinned posts right under Daily Reflection
+            pinnedItems.forEach(pi => combined.push(pi));
+
+            // First broadcast channel card below pinned items
+            combined.push(nextBroadcastSlot());
 
             let cIndex = 0;
 
-            userPosts.forEach((post, idx) => {
+            normalUserPosts.forEach((post, idx) => {
                 combined.push(post);
-                // Insert campaign after every 2nd user post
-                if ((idx % 2 === 1) && cIndex < campaigns.length) {
-                    combined.push(campaigns[cIndex % campaigns.length]);
+                // Insert a broadcast channel card after every 2nd user post
+                if ((idx + 1) % 2 === 0) {
+                    combined.push(nextBroadcastSlot());
+                }
+                // Insert campaign after every 3rd user post
+                if ((idx % 3 === 2) && cIndex < normalCampaigns.length) {
+                    combined.push(normalCampaigns[cIndex % normalCampaigns.length]);
                     cIndex++;
                 }
             });
 
+            // If very few posts — pad with extra broadcast channel cards
+            if (normalUserPosts.length < 4) {
+                const needed = Math.min(4, 4 - Math.floor(normalUserPosts.length / 2));
+                for (let n = 0; n < needed; n++) {
+                    combined.push(nextBroadcastSlot());
+                }
+            }
+
             // If leftover campaigns, append them
-            while (cIndex < campaigns.length) {
-                combined.push(campaigns[cIndex]);
+            while (cIndex < normalCampaigns.length) {
+                combined.push(normalCampaigns[cIndex]);
                 cIndex++;
             }
 
@@ -2117,7 +2207,7 @@
             if (activeQuery) {
                 const qClean = activeQuery.toLowerCase().replace(/^[@#]/, '');
                 combined = combined.filter(item => {
-                    if (item._isBroadcastRotating) return true;
+                    if (item._isBroadcastChannel) return true;
                     const textMatch = (item.text || item.desc || '').toLowerCase().includes(qClean);
                     const titleMatch = (item.title || '').toLowerCase().includes(qClean);
                     const authorMatch = (item.author || '').toLowerCase().includes(qClean) || (item.authorSlug || '').toLowerCase().includes(qClean);
@@ -2127,12 +2217,12 @@
 
             // Filter by category
             if (currentFilter !== 'all') {
-                combined = combined.filter(item => item._isBroadcastRotating || item.type === currentFilter);
+                combined = combined.filter(item => item._isBroadcastChannel || item.type === currentFilter);
             }
 
             // Filter out blocked users (Etap 4)
             combined = combined.filter(item => {
-                if (item._isBroadcastRotating) return true;
+                if (item._isBroadcastChannel) return true;
                 const authorKey = item.authorSlug || item.author;
                 return !window.LuminaDB?.isUserBlocked(authorKey);
             });
@@ -2149,11 +2239,12 @@
             }
 
             container.innerHTML = combined.map(item => {
-                // ── Specjalna Karta Rotacji Kanałów Nadawczych (nadawaj.html) ──
-                if (item._isBroadcastRotating) {
-                    const ch = LUMINA_BROADCAST_CHANNELS[currentBroadcastIndex] || LUMINA_BROADCAST_CHANNELS[0];
+                // ── Indywidualna Karta Kanału Nadawczego (1 kanał = 1 karta między postami) ──
+                if (item._isBroadcastChannel) {
+                    const ch = LUMINA_BROADCAST_CHANNELS[item._chIdx] || LUMINA_BROADCAST_CHANNELS[0];
+                    const cardNum = item._chIdx + 1;
                     return `
-                        <article class="post-card-1x1 broadcast-rotating-card" id="rotatingBroadcastCard" style="width: 100%;">
+                        <article class="post-card-1x1 broadcast-rotating-card" id="broadcastCard_${item._chIdx}" style="width: 100%;">
                             <!-- Top Header -->
                             <div class="post-top-header">
                                 <div class="post-author-box">
@@ -2162,35 +2253,30 @@
                                     </div>
                                     <div>
                                         <div class="post-author-name">Nadawaj z Christian Culture <i class="fa-solid fa-circle-check" style="color:#f59e0b; font-size:0.75rem;"></i></div>
-                                        <div class="post-author-role" id="broadcastCategoryLabel">${ch.category} • Rotacja Scen 24/7 🔄</div>
+                                        <div class="post-author-role">${ch.category}</div>
                                     </div>
                                 </div>
-                                <div style="display:flex; align-items:center; gap:6px;">
-                                    <button type="button" class="btn-broadcast-shuffle" onclick="shuffleNextBroadcastChannel(event)" title="Wylosuj inny kanał nadawczy">
-                                        <i class="fa-solid fa-shuffle"></i> Losuj Kanał
-                                    </button>
-                                    <span class="badge-type-tag" style="background:rgba(239,68,68,0.2); border-color:#ef4444; color:#fca5a5;">
-                                        <i class="fa-solid fa-circle" style="color:#ef4444; font-size:0.5rem; margin-right:2px;"></i> NA ŻYWO
-                                    </span>
-                                </div>
+                                <span class="badge-type-tag" style="background:rgba(239,68,68,0.2); border-color:#ef4444; color:#fca5a5;">
+                                    <i class="fa-solid fa-circle" style="color:#ef4444; font-size:0.5rem; margin-right:2px;"></i> NA ŻYWO
+                                </span>
                             </div>
 
                             <!-- Podgląd i Szczegóły Kanału -->
                             <div class="post-details-box" style="padding-top:4px;">
                                 <div class="broadcast-preview-wrap">
-                                    <img src="${ch.image}" alt="${ch.title}" class="broadcast-preview-img" id="broadcastCardImg" onerror="this.src='tlo_pr_cc.jpg'">
+                                    <img src="${ch.image}" alt="${ch.title}" class="broadcast-preview-img" onerror="this.src='tlo_pr_cc.jpg'">
                                     <div class="broadcast-overlay-gradient"></div>
-                                    <div class="broadcast-floating-badge" id="broadcastCardTag" style="background:${ch.badgeColor}; color:${ch.textColor};">${ch.tag}</div>
-                                    <a href="${ch.url}" target="_blank" class="broadcast-play-overlay-btn" id="broadcastCardPlayOverlay" title="Oglądaj kanał na żywo">
+                                    <div class="broadcast-floating-badge" style="background:${ch.badgeColor}; color:${ch.textColor};">${ch.tag}</div>
+                                    <a href="${ch.url}" target="_blank" class="broadcast-play-overlay-btn" title="Oglądaj kanał na żywo">
                                         <i class="fa-solid fa-circle-play"></i>
                                     </a>
                                 </div>
 
-                                <div class="post-headline" id="broadcastCardTitle" style="font-size:1.15rem; margin-bottom:6px; color:#fff;">${ch.title}</div>
-                                <p class="post-description" id="broadcastCardDesc" style="font-size:0.86rem; color:#cbd5e1; line-height:1.55; margin-bottom:14px;">${ch.desc}</p>
-                                
+                                <div class="post-headline" style="font-size:1.15rem; margin-bottom:6px; color:#fff;">${ch.title}</div>
+                                <p class="post-description" style="font-size:0.86rem; color:#cbd5e1; line-height:1.55; margin-bottom:14px;">${ch.desc}</p>
+
                                 <div class="broadcast-actions-grid">
-                                    <a href="${ch.url}" target="_blank" class="btn-broadcast-main" id="broadcastCardOpenBtn">
+                                    <a href="${ch.url}" target="_blank" class="btn-broadcast-main">
                                         <i class="fa-solid fa-play"></i> Oglądaj / Uruchom w OBS
                                     </a>
                                     <a href="nadawaj.html" class="btn-broadcast-all" title="Otwórz pełny panel ze wszystkimi 15 scenami">
@@ -2202,8 +2288,8 @@
                             <!-- Actions Bar -->
                             <div class="post-actions-bar">
                                 <div style="display:flex; gap:6px; align-items:center; font-size:0.75rem; color:#94a3b8;">
-                                    <i class="fa-solid fa-rotate" style="color:#f59e0b;"></i>
-                                    <span id="broadcastRotateStatus">Rotacja automatyczna • Kanał <b style="color:#fef08a;">${currentBroadcastIndex + 1}</b> z 15</span>
+                                    <i class="fa-solid fa-tv" style="color:#f59e0b;"></i>
+                                    <span>Kanał <b style="color:#fef08a;">${cardNum}</b> z 15 • Scena OBS</span>
                                 </div>
                                 <a href="nadawaj.html" class="post-action-btn" style="text-decoration:none;" title="Panel Nadawania OBS"><i class="fa-solid fa-tv"></i> Panel OBS</a>
                             </div>
@@ -2258,7 +2344,8 @@
                 const isCampaign = (item.type === 'ad' || item.type === 'promo' || item.type === 'announcement' || item.type === 'event');
                 
                 let badgeHtml = '';
-                if (item._pinned) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(168,85,247,0.25));border-color:rgba(245,158,11,0.5);color:#fbbf24;"><i class="fa-solid fa-sun"></i> Rozważanie Dnia</span>';
+                if (item._isPinnedByAdmin) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(135deg, rgba(245,158,11,0.25), rgba(234,179,8,0.35)); border:1px solid #f59e0b; color:#fef08a; font-weight:800; box-shadow:0 0 12px rgba(245,158,11,0.35);"><i class="fa-solid fa-thumbtack" style="transform:rotate(-45deg); color:#fbbf24; margin-right:4px;"></i> Przypięty Wpis</span>';
+                else if (item._pinned) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(168,85,247,0.25));border-color:rgba(245,158,11,0.5);color:#fbbf24;"><i class="fa-solid fa-sun"></i> Rozważanie Dnia</span>';
                 else if (item.type === 'ad') badgeHtml = '<span class="badge-type-tag badge-type-ad"><i class="fa-solid fa-rectangle-ad"></i> Reklama Misji CC</span>';
                 else if (item.type === 'promo') badgeHtml = '<span class="badge-type-tag badge-type-promo"><i class="fa-solid fa-rocket"></i> Promocja CC</span>';
                 else if (item.type === 'announcement') badgeHtml = '<span class="badge-type-tag badge-type-ann"><i class="fa-solid fa-scroll"></i> Ogłoszenie CC</span>';
@@ -2299,7 +2386,7 @@
                     : { html: rawBody, embedHtml: '' };
 
                 return `
-                    <article class="post-card-1x1" id="${item.id}">
+                    <article class="post-card-1x1 ${item._isPinnedByAdmin ? 'post-card-pinned-admin' : ''}" id="${item.id}">
                         <!-- Top Header -->
                         <div class="post-top-header">
                             <a href="${authorLink}" class="post-author-box">
@@ -2332,12 +2419,17 @@
 
                         <!-- Actions Bar -->
                         <div class="post-actions-bar">
-                            <div style="display:flex; gap:4px;">
+                            <div style="display:flex; gap:4px; flex-wrap:wrap;">
                                 <button class="post-action-btn" onclick="toggleFeedLike(this)"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 14}</span></button>
                                 <button class="post-action-btn" onclick="toggleFeedAmen(this)"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 9}</span> Amen</button>
                                 <button class="post-action-btn" onclick="toggleComments('${item.id}')"><i class="fa-solid fa-comment-dots"></i> Komentarze</button>
                             </div>
-                            <div style="display:flex; gap:4px;">
+                            <div style="display:flex; gap:4px; align-items:center;">
+                                ${isAdmin ? `
+                                    <button class="post-action-btn ${item._isPinnedByAdmin ? 'pin-active' : ''}" onclick="toggleAdminPinPost('${item.id}')" title="${item._isPinnedByAdmin ? 'Odepnij wpis z góry tablicy (Admin)' : 'Przypnij wpis na samej górze tablicy (Admin)'}" style="${item._isPinnedByAdmin ? 'color:#facc15; border-color:rgba(250,204,21,0.5); font-weight:800; background:rgba(250,204,21,0.12);' : 'color:#cbd5e1;'}">
+                                        <i class="fa-solid fa-thumbtack" style="${item._isPinnedByAdmin ? 'transform:rotate(-45deg); color:#facc15;' : ''}"></i> <span>${item._isPinnedByAdmin ? 'Odepnij' : 'Przypnij'}</span>
+                                    </button>
+                                ` : ''}
                                 <button class="post-action-btn" onclick="openReportModal('post', '${item.id}', '${item.authorSlug || item.author}')" title="Zgłoś naruszenie"><i class="fa-solid fa-flag"></i></button>
                                 <button class="post-action-btn" onclick="sharePostLink('${item.id}')" title="Udostępnij wpis"><i class="fa-solid fa-share-nodes"></i></button>
                             </div>
@@ -2362,9 +2454,6 @@
                     </article>
                 `;
             }).join('');
-
-            // Inicjalizacja / restart rotacji kanałów nadawczych
-            startBroadcastRotation();
         }
 
         function filterFeed(type, btn) {
@@ -2894,3 +2983,7 @@
     </script>
 </body>
 </html>
+
+
+
+
