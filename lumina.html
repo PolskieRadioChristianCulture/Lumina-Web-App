@@ -13,6 +13,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUMINA – Odkryj Prawdziwe Połączenie | Christian Culture</title>
     <meta name="description" content="Witaj w LUMINA – Miejscu Głębszych Relacji. Chrześcijański portal randkowy z inteligentnym dopasowaniem w ekosystemie Christian Culture.">
+        <meta property="og:type" content="website">
+    <meta property="og:title" content="LUMINA – Chrześcijański Portal Randkowy i Społeczność">
+    <meta property="og:description" content="Poznaj ludzi o wspólnych wartościach wiary. Inteligentne dopasowanie, bezpieczna społeczność i wartościowe relacje na całe życie.">
+    <meta property="og:image" content="https://polskieradio.cc/lumina_banner.png">
+    <meta property="og:url" content="https://polskieradio.cc/lumina.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="LUMINA – Chrześcijański Portal Randkowy">
+    <meta name="twitter:description" content="Poznaj ludzi o wspólnych wartościach wiary. Inteligentne dopasowanie i bezpieczna społeczność.">
+    <meta name="twitter:image" content="https://polskieradio.cc/lumina_banner.png">
     <link rel="icon" type="image/png" sizes="192x192" href="lumina-icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="lumina-icon-512.png">
     <link rel="icon" type="image/jpeg" href="lumina-app-icon.jpg">
@@ -2187,8 +2196,17 @@
                             </button>
                         </div>
 
-                        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 12px; font-size:0.75rem; color:#94a3b8; margin-bottom:16px; line-height:1.45;">
+                        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 12px; font-size:0.75rem; color:#94a3b8; margin-bottom:14px; line-height:1.45;">
                             🕊️ <b>Zasady Społeczności LUMINA:</b> Deklaruję czystość intencji, szacunek dla wartości chrześcijańskich oraz kulturę osobistą w kontaktach z innymi użytkownikami.
+                        </div>
+
+                        <div style="margin-bottom:16px; text-align:left;">
+                            <label style="display:flex; align-items:flex-start; gap:10px; font-size:0.76rem; color:#cbd5e1; cursor:pointer; line-height:1.45;">
+                                <input type="checkbox" id="obTermsAccepted" required style="margin-top:2px; accent-color:#a855f7; width:16px; height:16px; cursor:pointer;" checked>
+                                <span>
+                                    Akceptuję <a href="javascript:void(0)" onclick="openModal('termsModal')" style="color:#c084fc; text-decoration:underline; font-weight:700;">Regulamin Portalu</a> oraz <a href="javascript:void(0)" onclick="openModal('termsModal')" style="color:#c084fc; text-decoration:underline; font-weight:700;">Politykę Prywatności & RODO</a> portalu LUMINA.
+                                </span>
+                            </label>
                         </div>
 
                         <div style="display:flex; gap:10px;">
@@ -2201,7 +2219,39 @@
         </div>
     </div>
 
-    <!-- ══════════ TOAST ══════════ -->
+        <!-- ══════════ REGULAMIN & POLITYKA PRYWATNOŚCI MODAL ══════════ -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal-card" style="max-width: 650px; max-height: 85vh; overflow-y: auto;">
+            <button class="modal-close-btn" onclick="closeModal('termsModal')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+                <span style="font-size:1.8rem;">📜</span>
+                <div>
+                    <h3 style="font-size:1.25rem; font-family:'Outfit',sans-serif; margin:0; color:#fff;">Regulamin i Polityka Prywatności LUMINA</h3>
+                    <div style="font-size:0.75rem; color:#c084fc; font-weight:700;">Standardy Społeczności i Ochrona Danych (RODO)</div>
+                </div>
+            </div>
+
+            <div style="font-size:0.84rem; color:#cbd5e1; line-height:1.7; font-family:'Plus Jakarta Sans',sans-serif;">
+                <h4 style="color:#facc15; font-size:0.92rem; margin:14px 0 6px;">1. Postanowienia Ogólne i Misja Portalu</h4>
+                <p>Portal LUMINA jest chrześcijańskim portalem społecznościowo-randkowym stworzonym w ramach misji Christian Culture. Jego celem jest łączenie ludzi wyznających chrześcijańskie wartości w bezpiecznym, pełnym szacunku i czystości środowisku.</p>
+
+                <h4 style="color:#facc15; font-size:0.92rem; margin:14px 0 6px;">2. Standardy Społeczności i Kultura Osobista</h4>
+                <p>Użytkownicy zobowiązują się do traktowania innych z szacunkiem i godnością. Bezwzględnie zabrania się publikowania treści o charakterze wulgarnym, pornograficznym, nienawistnym, komercyjnego spamu oraz nękania innych użytkowników. Konta naruszające te zasady są natychmiastowo i trwale blokowane.</p>
+
+                <h4 style="color:#facc15; font-size:0.92rem; margin:14px 0 6px;">3. Ochrona Danych Osobowych (RODO)</h4>
+                <p>Administratorem danych jest Christian Culture. Dane podane w profilu (imię, wiek, miasto, stan cywilny, opis, werset) przetwarzane są wyłącznie w celu umożliwienia nawiązywania relacji i prezentacji w społeczności LUMINA. Dane nie są odsprzedawane ani przekazywane podmiotom trzecim.</p>
+
+                <h4 style="color:#facc15; font-size:0.92rem; margin:14px 0 6px;">4. Moderacja i Bezpieczeństwo</h4>
+                <p>Każdy użytkownik ma prawo zgłosić profil lub wpis naruszający regulamin za pomocą przycisku zgłoszenia. Zespół moderacyjny rozpatruje zgłoszenia na bieżąco. Użytkownik w dowolnym momencie może edytować lub usunąć swoje konto.</p>
+            </div>
+
+            <div style="margin-top:20px; text-align:right;">
+                <button type="button" class="btn-modal-submit" style="width:auto; padding:8px 24px;" onclick="closeModal('termsModal')">Rozumiem i Akceptuję</button>
+            </div>
+        </div>
+    </div>
+
+<!-- ══════════ TOAST ══════════ -->
     <div class="toast" id="toastEl">
         <i class="fa-solid fa-sparkles"></i>
         <span id="toastTxt"></span>
@@ -2236,7 +2286,12 @@
 
         window.goToWizardStep = function(step) {
             if (step === 2) {
-                const name = document.getElementById('obName').value.trim();
+                const termsAccepted = document.getElementById('obTermsAccepted');
+            if (termsAccepted && !termsAccepted.checked) {
+                showToast('Prosimy o zaakceptowanie Regulaminu i Polityki Prywatności.');
+                return;
+            }
+            const name = document.getElementById('obName').value.trim();
                 const age = parseInt(document.getElementById('obAge').value);
                 const city = document.getElementById('obCity').value.trim();
                 const email = document.getElementById('obEmail').value.trim();
