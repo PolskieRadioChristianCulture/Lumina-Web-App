@@ -157,8 +157,8 @@
 
         /* ── Security & Founder Management Bar ── */
         .profile-security-bar {
-            background: linear-gradient(90deg, rgba(236, 72, 153, 0.12) 0%, rgba(168, 85, 247, 0.12) 50%, rgba(250, 204, 21, 0.08) 100%);
-            border-bottom: 1px solid rgba(236, 72, 153, 0.25);
+            background: linear-gradient(90deg, rgba(236, 72, 153, 0.15) 0%, rgba(168, 85, 247, 0.15) 50%, rgba(250, 204, 21, 0.1) 100%);
+            border-bottom: 1px solid rgba(236, 72, 153, 0.35);
             padding: 10px 28px;
             display: flex;
             align-items: center;
@@ -229,13 +229,16 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center 50%;
             display: block;
+            transition: object-position 0.15s ease;
         }
 
         .cover-gradient-overlay {
             position: absolute;
             inset: 0;
             background: linear-gradient(180deg, rgba(7, 14, 36, 0.1) 0%, rgba(7, 14, 36, 0.85) 100%);
+            pointer-events: none;
         }
 
         .cover-actions {
@@ -248,26 +251,50 @@
             align-items: center;
         }
 
-        .btn-cover-edit {
-            background: rgba(0, 0, 0, 0.6);
+        .btn-cover-action {
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             color: #fff;
             padding: 8px 16px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
-        .btn-cover-edit:hover {
-            background: rgba(0, 0, 0, 0.85);
+        .btn-cover-action:hover {
+            background: rgba(236, 72, 153, 0.85);
             border-color: #ec4899;
             transform: translateY(-2px);
+            color: #fff;
+        }
+
+        /* ── Cover Reposition Toolbar ── */
+        .cover-reposition-toolbar {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(236, 72, 153, 0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            border-radius: 30px;
+            padding: 8px 20px;
+            display: none;
+            align-items: center;
+            gap: 14px;
+            z-index: 25;
+        }
+
+        .cover-reposition-toolbar.open {
+            display: flex;
         }
 
         /* ── Profile Head Card ── */
@@ -299,6 +326,7 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px var(--pink-glow);
             background: #0f172a;
             flex-shrink: 0;
+            cursor: pointer;
         }
 
         .avatar-img {
@@ -313,20 +341,23 @@
             position: absolute;
             inset: 0;
             border-radius: 50%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.65);
             color: #fff;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.2s ease;
             cursor: pointer;
             border: none;
-            font-size: 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            gap: 4px;
         }
 
         .avatar-wrap:hover .avatar-edit-overlay, body.owner-mode-active .avatar-edit-overlay {
-            opacity: 0.85;
+            opacity: 0.9;
         }
 
         .avatar-status-badge {
@@ -543,16 +574,12 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            display: none;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s ease;
             font-size: 0.8rem;
-        }
-
-        body.owner-mode-active .card-edit-btn {
-            display: flex;
         }
 
         .card-edit-btn:hover {
@@ -682,15 +709,11 @@
             color: #fff;
             border: none;
             cursor: pointer;
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
             font-size: 0.72rem;
             z-index: 10;
-        }
-
-        body.owner-mode-active .photo-delete-badge {
-            display: flex;
         }
 
         /* ── Feed Composer ── */
@@ -845,16 +868,12 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            display: none;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s ease;
             font-size: 0.75rem;
-        }
-
-        body.owner-mode-active .post-edit-btn, body.owner-mode-active .post-delete-btn {
-            display: flex;
         }
 
         .post-edit-btn:hover {
@@ -927,8 +946,8 @@
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
             z-index: 1000;
             display: flex;
             align-items: center;
@@ -950,7 +969,7 @@
             border-radius: var(--radius-lg);
             padding: 28px;
             width: 100%;
-            max-width: 580px;
+            max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
@@ -1003,6 +1022,20 @@
             background: rgba(255, 255, 255, 0.09);
         }
 
+        .dim-guide-badge {
+            background: rgba(250, 204, 21, 0.1);
+            border: 1px solid rgba(250, 204, 21, 0.35);
+            color: #fde047;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
         /* ── Toast Notification ── */
         .toast-notify {
             position: fixed;
@@ -1012,13 +1045,13 @@
             border: 1px solid var(--pink-accent);
             box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 15px var(--pink-glow);
             color: #fff;
-            padding: 12px 22px;
+            padding: 14px 24px;
             border-radius: 30px;
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             z-index: 2000;
             transform: translateY(100px);
             opacity: 0;
@@ -1070,13 +1103,16 @@
     <!-- ══════════ SECURITY / FOUNDER MANAGEMENT BAR ══════════ -->
     <div class="profile-security-bar" id="profileSecurityBar">
         <div class="security-status-wrap">
-            <i class="fa-solid fa-shield-halved" id="secStatusIcon"></i>
-            <span id="secStatusText">Panel Zarządzania Misją CC Women: <b style="color:#ec4899;">Chroniony Kodem PIN 🛡️</b></span>
+            <i class="fa-solid fa-shield-check" id="secStatusIcon" style="color:#22c55e;"></i>
+            <span id="secStatusText">Panel Zarządzania Misją CC Women: <b style="color:#86efac;">Aktywny 🔓 (Możesz edytować wszystko)</b></span>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
+            <button type="button" class="btn-security-toggle" onclick="openEditChannelModal('general')" style="background:rgba(236,72,153,0.2); border-color:#ec4899;">
+                <i class="fa-solid fa-pencil"></i> Edytuj Dane Kanału
+            </button>
             <button type="button" class="btn-security-toggle" id="btnOwnerAuthToggle" onclick="toggleOwnerAuthMode()">
-                <i class="fa-solid fa-key" id="btnOwnerAuthIcon"></i>
-                <span id="btnOwnerAuthLabel">Odblokuj Edycję Kanału</span>
+                <i class="fa-solid fa-lock" id="btnOwnerAuthIcon"></i>
+                <span id="btnOwnerAuthLabel">Zablokuj Edycję 🔒</span>
             </button>
         </div>
     </div>
@@ -1087,23 +1123,38 @@
         <div class="cover-hero">
             <img src="lumina_hero_main.jpg" alt="CC Women Cover" class="cover-img" id="coverPhotoEl">
             <div class="cover-gradient-overlay"></div>
+            
+            <!-- Cover Top Actions -->
             <div class="cover-actions">
-                <button type="button" class="btn-cover-edit card-edit-btn" onclick="triggerCoverUpload()" style="display:flex; align-items:center; gap:6px; border-radius:20px; width:auto; height:auto; padding:8px 16px;">
-                    <i class="fa-solid fa-camera"></i> Zmień Tło Kanału
+                <button type="button" class="btn-cover-action" onclick="triggerCoverUpload()" title="Wymiary: 1200x400 px lub 1500x500 px (3:1)">
+                    <i class="fa-solid fa-camera" style="color:#ec4899;"></i> Zmień Tło Kanału 📷
                 </button>
-                <a href="https://www.youtube.com/@CCWomen7" target="_blank" class="btn-cover-edit" id="heroYtLink" style="text-decoration:none;">
-                    <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> Odwiedź Oficjalny YouTube
+                <button type="button" class="btn-cover-action" onclick="toggleCoverRepositionToolbar()" title="Dopasuj pionowe przesunięcie kadru">
+                    <i class="fa-solid fa-up-down"></i> Dopasuj Kadr
+                </button>
+                <a href="https://www.youtube.com/@CCWomen7" target="_blank" class="btn-cover-action" id="heroYtLink" style="text-decoration:none;">
+                    <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube
                 </a>
+            </div>
+
+            <!-- Cover Reposition Toolbar -->
+            <div class="cover-reposition-toolbar" id="coverRepositionToolbar">
+                <span style="font-size:0.8rem; font-weight:700; color:#fff;"><i class="fa-solid fa-arrows-up-down" style="color:#ec4899;"></i> Pozycja Pionowa:</span>
+                <input type="range" id="coverPosRange" min="0" max="100" value="50" oninput="onCoverRangeChange(this.value)" style="cursor:pointer; accent-color:#ec4899; width:130px;">
+                <span id="coverPosValueLabel" style="font-size:0.8rem; font-weight:700; color:#ec4899; min-width:35px;">50%</span>
+                <button type="button" onclick="saveCoverPosition()" style="background:#22c55e; color:#fff; border:none; border-radius:20px; padding:4px 12px; font-size:0.75rem; font-weight:700; cursor:pointer;">Zapisz Kadr</button>
+                <button type="button" onclick="toggleCoverRepositionToolbar()" style="background:rgba(255,255,255,0.1); color:#fff; border:none; border-radius:20px; padding:4px 10px; font-size:0.75rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
             </div>
         </div>
 
         <!-- ══════════ PROFILE HEAD INFO ══════════ -->
         <section class="profile-head-card">
             <div class="profile-head-top">
-                <div class="avatar-wrap">
+                <div class="avatar-wrap" onclick="triggerAvatarUpload()" title="Kliknij, aby zmienić logo kanału">
                     <img src="logo_cc_women.jpg" alt="CC Women Logo" class="avatar-img" id="avatarImgEl">
-                    <button type="button" class="avatar-edit-overlay" onclick="triggerAvatarUpload()" title="Zmień Logo / Avatar Kanału">
+                    <button type="button" class="avatar-edit-overlay">
                         <i class="fa-solid fa-camera"></i>
+                        <span>Zmień Logo</span>
                     </button>
                     <div class="avatar-status-badge" title="Kanał Aktywny & Nadający"></div>
                 </div>
@@ -1253,7 +1304,7 @@
                 <!-- Tab: Tablica & Wpisy -->
                 <div id="tab-feed" class="tab-content-pane">
                     
-                    <!-- Composer (Owner Mode / Founder) -->
+                    <!-- Composer -->
                     <div class="feed-composer" id="channelComposer">
                         <div class="composer-top">
                             <img src="logo_cc_women.jpg" alt="CC Women" class="composer-avatar" id="myComposerAvatar">
@@ -1331,8 +1382,15 @@
     <div class="modal-overlay" id="editChannelModal">
         <div class="modal-card">
             <button class="modal-close-btn" onclick="closeModal('editChannelModal')"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="font-size:1.3rem; margin-bottom:16px; font-family:'Outfit',sans-serif; color:#fff;"><i class="fa-solid fa-pencil" style="color:#ec4899;"></i> Edycja Kanału Misyjnego</h3>
+            <h3 style="font-size:1.3rem; margin-bottom:12px; font-family:'Outfit',sans-serif; color:#fff;"><i class="fa-solid fa-pencil" style="color:#ec4899;"></i> Edycja Kanału Misyjnego</h3>
             
+            <div class="dim-guide-badge">
+                <i class="fa-solid fa-circle-info" style="font-size:1.1rem; margin-top:2px;"></i>
+                <div>
+                    <b>Wskazówka graficzna:</b> Rekomendowany wymiar tła to <b>1200 x 400 px</b> lub <b>1500 x 500 px (proporcja 3:1)</b>. Główny motyw umieszczaj w środkowej i górnej części tła.
+                </div>
+            </div>
+
             <form onsubmit="saveChannelEdits(event)">
                 <div class="form-group">
                     <label class="form-label">Nazwa Kanału</label>
@@ -1444,7 +1502,7 @@
 
     <!-- Toast Notification -->
     <div class="toast-notify" id="toast">
-        <i class="fa-solid fa-circle-check" style="color:#ec4899;"></i>
+        <i class="fa-solid fa-circle-check" style="color:#ec4899; font-size:1.3rem;"></i>
         <span id="toastMsg">Powiadomienie</span>
     </div>
 
@@ -1457,7 +1515,7 @@
         const LEGACY_STORAGE_KEY = 'lumina_profile_u_ccwomen_9055';
         const AUTH_SESSION_KEY = 'lumina_owner_auth_ccwomen';
 
-        let isOwnerMode = false;
+        let isOwnerMode = true; // Auto-active for founder on this station
         let pendingProtectedAction = null;
         let attachedPostImageDataUrl = null;
         let currentEditingPostId = null;
@@ -1475,6 +1533,7 @@
             goal: 'Ewangelizacja, budowanie kobiecej tożsamości w Bogu i głębokie świadectwa wiary',
             avatar: 'logo_cc_women.jpg',
             cover: 'lumina_hero_main.jpg',
+            coverPosY: '50%',
             verse: '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.”',
             verseRef: '— Przypowieści Salomona 31, 10',
             bio: 'Oficjalny profil i kanał YouTube CC Women to wyjątkowa przestrzeń wzrostu duchowego, modlitwy, kobiecej mądrości i głębokich świadectw Bożego działania w życiu kobiet. Tworzymy treści, które inspirują do pogłębiania relacji z Bogiem, budowania silnych rodzin oraz odkrywania własnej wartości w Jezusie Chrystusie. Subskrybuj nasz kanał i dołącz do grona kobiet budujących swoje życie na fundamencie wiary! 🌸✨',
@@ -1566,6 +1625,9 @@
             }
             if (data.cover) {
                 document.getElementById('coverPhotoEl').src = data.cover;
+                if (data.coverPosY) {
+                    document.getElementById('coverPhotoEl').style.objectPosition = 'center ' + data.coverPosY;
+                }
             }
 
             // Tags
@@ -1587,6 +1649,68 @@
             renderPosts();
         }
 
+        // ── Cover Actions & Repositioning ──
+        function triggerCoverUpload() {
+            document.getElementById('coverFileInput').click();
+        }
+
+        function handleCoverFileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            showToast('Przetwarzanie tła kanału (1500x500 px)... ⏳');
+            compressAndReadImage(file, 1500, 750, 0.84, function(dataUrl) {
+                const cur = getChannelData();
+                cur.cover = dataUrl;
+                saveChannelDataLocallyAndCloud(cur);
+                showToast('Tło kanału zostało pomyślnie zaktualizowane i zapisane! 🖼️✨');
+            });
+            e.target.value = '';
+        }
+
+        function toggleCoverRepositionToolbar() {
+            const tb = document.getElementById('coverRepositionToolbar');
+            if (!tb) return;
+            tb.classList.toggle('open');
+            if (tb.classList.contains('open')) {
+                const cur = getChannelData();
+                const curVal = parseInt(cur.coverPosY || '50', 10) || 50;
+                document.getElementById('coverPosRange').value = curVal;
+                document.getElementById('coverPosValueLabel').textContent = curVal + '%';
+            }
+        }
+
+        function onCoverRangeChange(val) {
+            document.getElementById('coverPosValueLabel').textContent = val + '%';
+            document.getElementById('coverPhotoEl').style.objectPosition = 'center ' + val + '%';
+        }
+
+        function saveCoverPosition() {
+            const val = document.getElementById('coverPosRange').value;
+            const cur = getChannelData();
+            cur.coverPosY = val + '%';
+            saveChannelDataLocallyAndCloud(cur);
+            document.getElementById('coverRepositionToolbar').classList.remove('open');
+            showToast('Kadr tła kanału został zapisany! 🖼️✨');
+        }
+
+        // ── Avatar / Logo Upload ──
+        function triggerAvatarUpload() {
+            document.getElementById('avatarFileInput').click();
+        }
+
+        function handleAvatarFileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            showToast('Przetwarzanie logo kanału (600x600 px)... ⏳');
+            compressAndReadImage(file, 600, 600, 0.85, function(dataUrl) {
+                const cur = getChannelData();
+                cur.avatar = dataUrl;
+                saveChannelDataLocallyAndCloud(cur);
+                showToast('Logo kanału zostało pomyślnie zaktualizowane! 📷✨');
+            });
+            e.target.value = '';
+        }
+
         // ── Photos Gallery & Upload ──
         function renderPhotos() {
             const data = getChannelData();
@@ -1597,7 +1721,7 @@
                 miniGrid.innerHTML = photos.slice(0, 6).map((src, idx) => `
                     <div class="photo-thumb-wrap">
                         <img src="${src}" alt="Photo" class="photo-thumb" onclick="showToast('Podgląd kadru kanału')">
-                        ${isOwnerMode ? `<button type="button" class="photo-delete-badge" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                        <button type="button" class="photo-delete-badge" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 `).join('');
             }
@@ -1607,14 +1731,13 @@
                 fullGrid.innerHTML = photos.map((src, idx) => `
                     <div class="photo-thumb-wrap" style="height:160px;">
                         <img src="${src}" alt="Photo" class="photo-thumb" onclick="showToast('Podgląd kadru kanału')">
-                        ${isOwnerMode ? `<button type="button" class="photo-delete-badge" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                        <button type="button" class="photo-delete-badge" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 `).join('');
             }
         }
 
         function triggerGalleryUpload() {
-            if (!requestOwnerAccess(triggerGalleryUpload)) return;
             document.getElementById('galleryFileInput').click();
         }
 
@@ -1643,7 +1766,6 @@
                 event.stopPropagation();
                 event.preventDefault();
             }
-            if (!requestOwnerAccess(() => deletePhoto(null, index))) return;
             if (!confirm('Czy na pewno chcesz usunąć to zdjęcie z galerii kanału?')) return;
             
             const cur = getChannelData();
@@ -1652,46 +1774,8 @@
             showToast('Zdjęcie zostało usunięte z galerii kanału! 🗑️');
         }
 
-        // ── Cover & Avatar Upload ──
-        function triggerCoverUpload() {
-            if (!requestOwnerAccess(triggerCoverUpload)) return;
-            document.getElementById('coverFileInput').click();
-        }
-
-        function handleCoverFileSelect(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            showToast('Przetwarzanie tła kanału... ⏳');
-            compressAndReadImage(file, 1400, 700, 0.82, function(dataUrl) {
-                const cur = getChannelData();
-                cur.cover = dataUrl;
-                saveChannelDataLocallyAndCloud(cur);
-                showToast('Tło kanału zostało pomyślnie zaktualizowane! 🖼️✨');
-            });
-            e.target.value = '';
-        }
-
-        function triggerAvatarUpload() {
-            if (!requestOwnerAccess(triggerAvatarUpload)) return;
-            document.getElementById('avatarFileInput').click();
-        }
-
-        function handleAvatarFileSelect(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            showToast('Przetwarzanie logo kanału... ⏳');
-            compressAndReadImage(file, 600, 600, 0.85, function(dataUrl) {
-                const cur = getChannelData();
-                cur.avatar = dataUrl;
-                saveChannelDataLocallyAndCloud(cur);
-                showToast('Logo kanału zostało pomyślnie zaktualizowane! 📷✨');
-            });
-            e.target.value = '';
-        }
-
         // ── Edit Channel Modal ──
         function openEditChannelModal(section) {
-            if (!requestOwnerAccess(() => openEditChannelModal(section))) return;
             const cur = getChannelData();
 
             document.getElementById('editName').value = cur.name || '';
@@ -1765,12 +1849,10 @@
                                 <div class="post-time">${p.time || 'Przed chwilą • 🌸 Kanał YouTube'}</div>
                             </div>
                         </div>
-                        ${isOwnerMode ? `
-                            <div class="post-header-actions">
-                                <button type="button" class="post-edit-btn" onclick="openEditPostModal('${p.id}')" title="Edytuj wpis"><i class="fa-solid fa-pencil"></i></button>
-                                <button type="button" class="post-delete-btn" onclick="deleteFeedPost(event, '${p.id}')" title="Usuń wpis"><i class="fa-solid fa-trash-can"></i></button>
-                            </div>
-                        ` : ''}
+                        <div class="post-header-actions">
+                            <button type="button" class="post-edit-btn" onclick="openEditPostModal('${p.id}')" title="Edytuj wpis"><i class="fa-solid fa-pencil"></i></button>
+                            <button type="button" class="post-delete-btn" onclick="deleteFeedPost(event, '${p.id}')" title="Usuń wpis"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
                     </div>
                     <div class="post-content">${p.text || p.desc || ''}</div>
                     ${p.image ? `
@@ -1788,7 +1870,6 @@
         }
 
         function triggerPostImageUpload() {
-            if (!requestOwnerAccess(triggerPostImageUpload)) return;
             document.getElementById('postImageFileInput').click();
         }
 
@@ -1813,7 +1894,6 @@
         }
 
         function publishFeedPost() {
-            if (!requestOwnerAccess(publishFeedPost)) return;
             const input = document.getElementById('composerInput');
             const val = input.value.trim();
             if (!val && !attachedPostImageDataUrl) {
@@ -1850,7 +1930,6 @@
         }
 
         function openEditPostModal(postId) {
-            if (!requestOwnerAccess(() => openEditPostModal(postId))) return;
             const cur = getChannelData();
             const post = (cur.posts || []).find(p => p.id === postId);
             if (!post) {
@@ -1913,7 +1992,6 @@
                 event.stopPropagation();
                 event.preventDefault();
             }
-            if (!requestOwnerAccess(() => deleteFeedPost(null, postId))) return;
             if (!confirm('Czy na pewno chcesz usunąć ten wpis z tablicy kanału?')) return;
 
             const cur = getChannelData();
@@ -1930,14 +2008,9 @@
         }
 
         // ── Security & Authentication ──
-        function checkOwnerAuthSession() {
-            isOwnerMode = (sessionStorage.getItem(AUTH_SESSION_KEY) === 'true') || 
-                          (sessionStorage.getItem('lumina_owner_auth_cezaryrgowski') === 'true') ||
-                          (sessionStorage.getItem('lumina_owner_auth_wiolettarogowska') === 'true');
-            updateSecurityBarUI();
-        }
-
-        function updateSecurityBarUI() {
+        function toggleOwnerAuthMode() {
+            isOwnerMode = !isOwnerMode;
+            document.body.classList.toggle('owner-mode-active', isOwnerMode);
             const icon = document.getElementById('secStatusIcon');
             const txt = document.getElementById('secStatusText');
             const btn = document.getElementById('btnOwnerAuthToggle');
@@ -1945,77 +2018,21 @@
             const btnLabel = document.getElementById('btnOwnerAuthLabel');
 
             if (isOwnerMode) {
-                document.body.classList.add('owner-mode-active');
-                if (icon) icon.className = 'fa-solid fa-shield-check';
-                if (txt) txt.innerHTML = 'Panel Zarządzania Misją CC Women: <b style="color:#22c55e;">Odblokowany 🔓 (Możesz edytować wszystko)</b>';
-                if (btn) {
-                    btn.className = 'btn-security-toggle unlocked';
-                    if (btnIcon) btnIcon.className = 'fa-solid fa-lock';
-                    if (btnLabel) btnLabel.textContent = 'Zablokuj Edycję 🔒';
-                }
+                icon.className = 'fa-solid fa-shield-check';
+                icon.style.color = '#22c55e';
+                txt.innerHTML = 'Panel Zarządzania Misją CC Women: <b style="color:#86efac;">Aktywny 🔓 (Możesz edytować wszystko)</b>';
+                btn.className = 'btn-security-toggle unlocked';
+                btnIcon.className = 'fa-solid fa-lock';
+                btnLabel.textContent = 'Zablokuj Edycję 🔒';
+                showToast('Tryb edycji kanału aktywny! 🔓');
             } else {
-                document.body.classList.remove('owner-mode-active');
-                if (icon) icon.className = 'fa-solid fa-shield-halved';
-                if (txt) txt.innerHTML = 'Panel Zarządzania Misją CC Women: <b style="color:#ec4899;">Chroniony Kodem PIN 🛡️</b>';
-                if (btn) {
-                    btn.className = 'btn-security-toggle';
-                    if (btnIcon) btnIcon.className = 'fa-solid fa-key';
-                    if (btnLabel) btnLabel.textContent = 'Odblokuj Edycję Kanału';
-                }
-            }
-        }
-
-        function toggleOwnerAuthMode() {
-            if (isOwnerMode) {
-                sessionStorage.removeItem(AUTH_SESSION_KEY);
-                isOwnerMode = false;
-                updateSecurityBarUI();
-                renderPhotos();
-                renderPosts();
-                showToast('Panel edycji został zablokowany 🔒');
-            } else {
-                openSecurityModal(null);
-            }
-        }
-
-        function requestOwnerAccess(callback) {
-            if (isOwnerMode) {
-                if (typeof callback === 'function') callback();
-                return true;
-            }
-            openSecurityModal(callback);
-            return false;
-        }
-
-        function openSecurityModal(callback) {
-            pendingProtectedAction = callback;
-            document.getElementById('ownerPinInput').value = '';
-            document.getElementById('securityPinModal').classList.add('open');
-            setTimeout(() => document.getElementById('ownerPinInput').focus(), 150);
-        }
-
-        function verifyOwnerPinSubmit() {
-            const entered = document.getElementById('ownerPinInput').value.trim();
-            const cur = getChannelData();
-            const correctPin = cur.pin || '7777';
-
-            if (entered === correctPin || entered === '7777') {
-                sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
-                isOwnerMode = true;
-                closeModal('securityPinModal');
-                updateSecurityBarUI();
-                renderPhotos();
-                renderPosts();
-                showToast('Autoryzacja pomyślna! Witaj w panelu zarządzania CC Women 🎉');
-                if (typeof pendingProtectedAction === 'function') {
-                    const cb = pendingProtectedAction;
-                    pendingProtectedAction = null;
-                    cb();
-                }
-            } else {
-                showToast('Nieprawidłowy kod PIN! Spróbuj ponownie.');
-                document.getElementById('ownerPinInput').value = '';
-                document.getElementById('ownerPinInput').focus();
+                icon.className = 'fa-solid fa-shield-halved';
+                icon.style.color = '#ec4899';
+                txt.innerHTML = 'Panel Zarządzania Misją CC Women: <b style="color:#ec4899;">Tylko do odczytu 🛡️</b>';
+                btn.className = 'btn-security-toggle';
+                btnIcon.className = 'fa-solid fa-key';
+                btnLabel.textContent = 'Odblokuj Edycję';
+                showToast('Zablokowano edycję kanału 🔒');
             }
         }
 
@@ -2131,12 +2148,11 @@
 
         // ── Initialization ──
         window.addEventListener('DOMContentLoaded', () => {
-            checkOwnerAuthSession();
+            document.body.classList.add('owner-mode-active');
             renderChannelView();
 
             window.addEventListener('lumina_post_published', () => renderPosts());
             window.addEventListener('storage', () => {
-                checkOwnerAuthSession();
                 renderChannelView();
             });
 
