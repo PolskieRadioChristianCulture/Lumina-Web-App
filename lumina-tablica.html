@@ -1622,6 +1622,8 @@
                             ${item.eventLoc ? `<span><i class="fa-solid fa-location-dot"></i> ${item.eventLoc}</span>` : ''}
                         </div>
                     `;
+                }
+
                 const rawBody = item.text || item.desc || '';
                 const richResult = window.LuminaDB?.formatRichTextAndMedia 
                     ? window.LuminaDB.formatRichTextAndMedia(rawBody)
