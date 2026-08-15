@@ -1285,6 +1285,297 @@
             }
         }
 
+    
+        /* ══════════════════════════════════════════════════════════════════════════
+         * 3-COLUMN DESKTOP LAYOUT WITH 9:16 VERTICAL SPONSOR & PATRONAGE SIDEBARS
+         * ══════════════════════════════════════════════════════════════════════════ */
+        .board-container {
+            max-width: 1420px !important;
+            margin: 0 auto !important;
+            padding: 24px 20px 80px 20px !important;
+            display: grid !important;
+            grid-template-columns: 290px minmax(0, 1fr) 290px !important;
+            gap: 28px !important;
+            align-items: start !important;
+        }
+
+        .feed-center-column {
+            min-width: 0;
+            width: 100%;
+        }
+
+        .sidebar-916 {
+            position: sticky;
+            top: 84px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            z-index: 10;
+        }
+
+        /* 9:16 Vertical Card Design */
+        .card-916 {
+            background: rgba(11, 24, 56, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .card-916:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75);
+            border-color: rgba(250, 204, 21, 0.4);
+        }
+
+        .card-916-header {
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .badge-gold {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #facc15;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .badge-patron {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #f43f5e;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .badge-store {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .badge-blue {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #60a5fa;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .card-916-media-wrap {
+            display: block;
+            position: relative;
+            aspect-ratio: 9 / 13.5;
+            width: 100%;
+            overflow: hidden;
+            text-decoration: none;
+            background: #000;
+        }
+
+        .card-916-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .card-916:hover .card-916-img {
+            transform: scale(1.05);
+        }
+
+        .card-916-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(7, 14, 36, 0.95) 0%, rgba(7, 14, 36, 0.4) 50%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 16px;
+            color: #fff;
+        }
+
+        .card-916-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.12rem;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        .card-916-sub {
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+            line-height: 1.35;
+        }
+
+        .btn-916-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 9px 12px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            font-weight: 800;
+            font-size: 0.84rem;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+
+        .card-916-content {
+            padding: 18px 16px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .card-916-content h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin: 0 0 6px 0;
+            color: #fff;
+        }
+
+        .card-916-content p {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            margin: 0 0 16px 0;
+            line-height: 1.45;
+        }
+
+        .patron-avatar-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: -8px;
+            margin-bottom: 12px;
+        }
+
+        .mini-patron-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #facc15;
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.35);
+        }
+
+        .btn-patronite-cta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #e11d48, #be123c);
+            color: #fff;
+            font-weight: 800;
+            font-size: 0.84rem;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(225, 29, 72, 0.4);
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-patronite-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(225, 29, 72, 0.6);
+            color: #fff;
+        }
+
+        .btn-zrzutka-cta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 9px 14px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-weight: 800;
+            font-size: 0.82rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-zrzutka-cta:hover {
+            background: rgba(255, 255, 255, 0.16);
+            color: #fff;
+        }
+
+        .btn-916-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 9px 12px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #fff;
+            font-weight: 800;
+            font-size: 0.82rem;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+        }
+
+        .partner-icon-wrap {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(96, 165, 250, 0.15);
+            border: 1px solid rgba(96, 165, 250, 0.35);
+            color: #60a5fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin: 0 auto 10px auto;
+        }
+
+        /* ── RESPONSIVE COLLAPSE (Tablet & Mobile) ── */
+        @media (max-width: 1239px) {
+            .board-container {
+                grid-template-columns: minmax(0, 1fr) !important;
+                max-width: 760px !important;
+                padding: 16px 12px 80px 12px !important;
+            }
+
+            .sidebar-916 {
+                display: none !important;
+            }
+        }
+
     </style>
     <link rel="stylesheet" href="lumina-responsive-reset.css">
 </head>
@@ -1325,84 +1616,132 @@
     </nav>
 
     <!-- ══════════ MAIN CONTENT CONTAINER ══════════ -->
+    <!-- ══════════ MAIN 3-COLUMN CONTENT CONTAINER ══════════ -->
     <main class="board-container">
         
-        <!-- Header Banner -->
-        <header class="board-header">
-            <h1 class="board-title">Tablica Portalu LUMINA</h1>
-            <p class="board-subtitle">
-                Posty i aktywność społeczności LUMINA – poznaj nowych ludzi, dziel się chwilami i buduj relacje zakorzenione w wierze.
-            </p>
-
-            <!-- Filter Categories Row -->
-            <div class="filter-chips-row">
-                <button class="chip-btn active" onclick="filterFeed('all', this)"><i class="fa-solid fa-grid-2"></i> Wszystkie Wpisy</button>
-                <button class="chip-btn" onclick="filterFeed('post', this)"><i class="fa-solid fa-users"></i> Wpisy Użytkowników</button>
-                <button class="chip-btn" onclick="filterFeed('ad', this)"><i class="fa-solid fa-bullhorn"></i> Reklamy Misji CC</button>
-                <button class="chip-btn" onclick="filterFeed('promo', this)"><i class="fa-solid fa-rocket"></i> Promocje</button>
-                <button class="chip-btn" onclick="filterFeed('event', this)"><i class="fa-solid fa-calendar-star"></i> Wydarzenia</button>
-            </div>
-        </header>
-
-
-
-        <!-- ══════════ FOUNDER & MISSION PERSONA PUBLISHER HUB ══════════ -->
-        <div class="founder-mission-bar" id="founderMissionHub">
-            <div class="founder-info-side">
-                <img src="avatar_cezary_official.jpg" alt="Persona" class="founder-badge-avatar" id="activePersonaAvatar">
-                <div>
-                    <div style="font-size:0.72rem; color:#facc15; font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">Występujesz jako:</div>
-                    <select id="personaSelector" onchange="handlePersonaSelectChange(this.value)" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; font-weight:800; font-size:0.85rem; padding:4px 10px; border-radius:8px; font-family:inherit; cursor:pointer;">
-                        <option value="cezary_rogowski" style="background:#0f172a;">👑 Cezary Rogowski (Założyciel CC)</option>
-                        <option value="wioletta_rogowska" style="background:#0f172a;">🌸 Wioletta Rogowska (Współzałożycielka CC)</option>
-                        <option value="cc_women" style="background:#0f172a;">🌸 CC Women (Kanał YouTube)</option>
-                        <option value="radio_cc" style="background:#0f172a;">📻 Polskie Radio Christian Culture</option>
-                        <option value="lumina_official" style="background:#0f172a;">🕊️ LUMINA • Oficjalna Redakcja</option>
-                        <option value="noemi_misja" style="background:#0f172a;">🌿 Noemi (Konto Misyjne)</option>
-                        <option value="dawid_misja" style="background:#0f172a;">🎵 Dawid (Konto Misyjne)</option>
-                    </select>
+        <!-- ══════════ LEWY SIDEBAR 9:16 (SPONSORZY & PARTNERZY BIZNESOWI) ══════════ -->
+        <aside class="sidebar-916 sidebar-left-916">
+            <!-- 1. Karta Koncept Studio 9:16 -->
+            <div class="card-916 sponsor-card-916">
+                <div class="card-916-header">
+                    <span class="badge-gold"><i class="fa-solid fa-crown"></i> Oficjalny Sponsor</span>
                 </div>
-            </div>
-            <div class="founder-buttons-group">
-                <button type="button" class="btn-camp-quick btn-camp-ad" onclick="openCampaignModal('ad')"><i class="fa-solid fa-plus-circle"></i> Opublikuj Wpis Misyjny</button>
-                <button type="button" class="btn-camp-quick btn-camp-promo" onclick="openCampaignModal('promo')"><i class="fa-solid fa-bullhorn"></i> Reklama / Kampania</button>
-                <button type="button" class="btn-camp-quick" onclick="openAdminReportsModal()" style="background:rgba(239,68,68,0.22); border-color:#ef4444; color:#fca5a5;"><i class="fa-solid fa-shield-halved"></i> Zgłoszenia Moderacji <span id="adminReportsBadge" style="background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; padding:1px 6px; border-radius:10px; margin-left:4px;">0</span></button>
-            </div>
-        </div>
-
-        <!-- Query Filter Banner -->
-        <div id="queryFilterBanner" style="display:none; align-items:center; justify-content:space-between; padding:12px 18px; border-radius:14px; background:rgba(168,85,247,0.16); border:1px solid rgba(168,85,247,0.4); margin-bottom:16px; font-size:0.88rem; color:#e2e8f0;"></div>
-
-        
-        <!-- ══════════ OFICJALNY SPONSOR MISJI CHRISTIAN CULTURE ══════════ -->
-        <aside class="official-sponsor-banner-card" style="margin-bottom: 24px; background: linear-gradient(135deg, rgba(15,23,42,0.92), rgba(30,41,59,0.92)); border: 1.5px solid rgba(250,204,21,0.45); border-radius: 20px; overflow: hidden; box-shadow: 0 12px 36px rgba(0,0,0,0.65);">
-            <div style="padding: 10px 18px; background: rgba(250,204,21,0.12); border-bottom: 1px solid rgba(250,204,21,0.25); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-                <div style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 800; color: #facc15; text-transform: uppercase; letter-spacing: 0.8px;">
-                    <i class="fa-solid fa-crown"></i> Oficjalny Sponsor Misji Christian Culture
-                </div>
-                <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="font-size: 0.78rem; font-weight: 700; color: #38bdf8; text-decoration: none; display: flex; align-items: center; gap: 5px;">
-                    koncept-studio.pl <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.75rem;"></i>
+                <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" class="card-916-media-wrap">
+                    <img src="oficjalny_sponsor.jpg" alt="Koncept Studio - Oficjalny Sponsor" class="card-916-img">
+                    <div class="card-916-overlay">
+                        <div class="card-916-title">Koncept Studio</div>
+                        <div class="card-916-sub">Kreacja Wizualna, Druk & Branding na najwyższym poziomie.</div>
+                        <span class="btn-916-action">Odwiedź Studio ➔</span>
+                    </div>
                 </a>
             </div>
-            <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="display: block; text-decoration: none; position: relative; overflow: hidden;">
-                <img src="oficjalny_sponsor.jpg" alt="Koncept Studio - Oficjalny Sponsor Christian Culture" style="width: 100%; max-height: 320px; object-fit: cover; display: block; transition: transform 0.3s ease;">
-            </a>
-            <div style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 240px;">
-                    <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; color: #fff; margin: 0 0 4px 0;">Koncept Studio • Kreacja Wizualna, Druk & Branding</h3>
-                    <p style="font-size: 0.82rem; color: #94a3b8; margin: 0; line-height: 1.4;">Dziękujemy naszemu oficjalnemu sponsorowi za wsparcie rozwoju chrześcijańskich mediów i dzieła ewangelizacyjnego CC.</p>
+
+            <!-- 2. Karta Zostań Sponsorem CC 9:16 -->
+            <div class="card-916 partner-cta-card-916">
+                <div class="card-916-header">
+                    <span class="badge-blue"><i class="fa-solid fa-handshake"></i> Strefa Biznesu CC</span>
                 </div>
-                <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="padding: 9px 18px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(245,158,11,0.35); flex-shrink: 0;">
-                    Odwiedź Koncept Studio ➔
-                </a>
+                <div class="card-916-content">
+                    <div class="partner-icon-wrap"><i class="fa-solid fa-building-columns"></i></div>
+                    <h4>Zostań Sponsorem Misji</h4>
+                    <p>Dotrzyj do tysięcy chrześcijańskich odbiorców i rozwijaj markę z Bożymi wartościami.</p>
+                    <a href="mailto:kontakt@polskieradio.cc?subject=Wspolpraca%20Sponsorska%20LUMINA" class="btn-916-cta">Napisz do Redakcji ✉️</a>
+                </div>
             </div>
         </aside>
 
-        <!-- ══════════ FEED STREAM ══════════ -->
-        <div class="feed-stream" id="feedStream1x1">
-            <!-- Dynamic stream content injected via JS -->
-        </div>
+        <!-- ══════════ CENTRUM: GŁÓWNY STRUMIEŃ TABLICY ══════════ -->
+        <section class="feed-center-column">
+            
+            <!-- Header Banner -->
+            <header class="board-header">
+                <h1 class="board-title">Tablica Portalu LUMINA</h1>
+                <p class="board-subtitle">
+                    Posty i aktywność społeczności LUMINA – poznaj nowych ludzi, dziel się chwilami i buduj relacje zakorzenione w wierze.
+                </p>
 
+                <!-- Filter Categories Row -->
+                <div class="filter-chips-row">
+                    <button class="chip-btn active" onclick="filterFeed('all', this)"><i class="fa-solid fa-grid-2"></i> Wszystkie Wpisy</button>
+                    <button class="chip-btn" onclick="filterFeed('post', this)"><i class="fa-solid fa-users"></i> Wpisy Użytkowników</button>
+                    <button class="chip-btn" onclick="filterFeed('ad', this)"><i class="fa-solid fa-bullhorn"></i> Reklamy Misji CC</button>
+                    <button class="chip-btn" onclick="filterFeed('promo', this)"><i class="fa-solid fa-rocket"></i> Promocje</button>
+                    <button class="chip-btn" onclick="filterFeed('event', this)"><i class="fa-solid fa-calendar-star"></i> Wydarzenia</button>
+                </div>
+            </header>
+
+            <!-- ══════════ FOUNDER & MISSION PERSONA PUBLISHER HUB ══════════ -->
+            <div class="founder-mission-bar" id="founderMissionHub">
+                <div class="founder-info-side">
+                    <img src="avatar_cezary_official.jpg" alt="Persona" class="founder-badge-avatar" id="activePersonaAvatar">
+                    <div>
+                        <div style="font-size:0.72rem; color:#facc15; font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">Występujesz jako:</div>
+                        <select id="personaSelector" onchange="handlePersonaSelectChange(this.value)" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; font-weight:800; font-size:0.85rem; padding:4px 10px; border-radius:8px; font-family:inherit; cursor:pointer;">
+                            <option value="cezary_rogowski" style="background:#0f172a;">👑 Cezary Rogowski (Założyciel CC)</option>
+                            <option value="wioletta_rogowska" style="background:#0f172a;">🌸 Wioletta Rogowska (Współzałożycielka CC)</option>
+                            <option value="cc_women" style="background:#0f172a;">🌸 CC Women (Kanał YouTube)</option>
+                            <option value="radio_cc" style="background:#0f172a;">📻 Polskie Radio Christian Culture</option>
+                            <option value="lumina_official" style="background:#0f172a;">🕊️ LUMINA • Oficjalna Redakcja</option>
+                            <option value="noemi_misja" style="background:#0f172a;">🌿 Noemi (Konto Misyjne)</option>
+                            <option value="dawid_misja" style="background:#0f172a;">🎵 Dawid (Konto Misyjne)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="founder-buttons-group">
+                    <button type="button" class="btn-camp-quick btn-camp-ad" onclick="openCampaignModal('ad')"><i class="fa-solid fa-plus-circle"></i> Opublikuj Wpis Misyjny</button>
+                    <button type="button" class="btn-camp-quick btn-camp-promo" onclick="openCampaignModal('promo')"><i class="fa-solid fa-bullhorn"></i> Reklama / Kampania</button>
+                    <button type="button" class="btn-camp-quick" onclick="openAdminReportsModal()" style="background:rgba(239,68,68,0.22); border-color:#ef4444; color:#fca5a5;"><i class="fa-solid fa-shield-halved"></i> Zgłoszenia Moderacji <span id="adminReportsBadge" style="background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; padding:1px 6px; border-radius:10px; margin-left:4px;">0</span></button>
+                </div>
+            </div>
+
+            <!-- Query Filter Banner -->
+            <div id="queryFilterBanner" style="display:none; align-items:center; justify-content:space-between; padding:12px 18px; border-radius:14px; background:rgba(168,85,247,0.16); border:1px solid rgba(168,85,247,0.4); margin-bottom:16px; font-size:0.88rem; color:#e2e8f0;"></div>
+
+            <!-- ══════════ FEED STREAM ══════════ -->
+            <div class="feed-stream" id="feedStream1x1">
+                <!-- Dynamic stream content injected via JS -->
+            </div>
+        </section>
+
+        <!-- ══════════ PRAWY SIDEBAR 9:16 (PATRONITE, ZRZUTKA & SKLEP CC) ══════════ -->
+        <aside class="sidebar-916 sidebar-right-916">
+            <!-- 1. Karta Wsparcia Misji: Patronite & Zrzutka.pl -->
+            <div class="card-916 patron-card-916">
+                <div class="card-916-header">
+                    <span class="badge-patron"><i class="fa-solid fa-heart"></i> Wesprzyj Misję CC</span>
+                </div>
+                <div class="card-916-content">
+                    <div class="patron-avatar-row">
+                        <img src="avatar_cezary_official.jpg" alt="Cezary Rogowski" class="mini-patron-avatar" style="margin-right:-10px; z-index:2;">
+                        <img src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" class="mini-patron-avatar" style="z-index:1; border-color:#ec4899;">
+                    </div>
+                    <h4>Buduj z Nami Dzieło Boże</h4>
+                    <p>Twoje wsparcie pozwala nam transmitować Polskie Radio CC 24/7, nagrywać Biblię Śpiewaną i docierać z Ewangelią bez reklam komercyjnych.</p>
+                    
+                    <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="btn-patronite-cta">
+                        <i class="fa-solid fa-heart"></i> Zostań Patronem (Patronite) ➔
+                    </a>
+                    <a href="https://zrzutka.pl/3bbxzn" target="_blank" rel="noopener noreferrer" class="btn-zrzutka-cta">
+                        <i class="fa-solid fa-hand-holding-dollar" style="color:#facc15;"></i> Wpłać na Zrzutka.pl ➔
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2. Karta Sklepu Christian Culture 9:16 -->
+            <div class="card-916 store-card-916">
+                <div class="card-916-header">
+                    <span class="badge-store"><i class="fa-solid fa-bag-shopping"></i> Market CC</span>
+                </div>
+                <a href="https://my-store-1009741.creator-spring.com/" target="_blank" rel="noopener noreferrer" class="card-916-media-wrap">
+                    <img src="tlo_tv_koszulki.jpg" alt="Sklep Christian Culture" class="card-916-img">
+                    <div class="card-916-overlay">
+                        <div class="card-916-title">Kolekcja Wiara & Styl</div>
+                        <div class="card-916-sub">Oficjalna odzież chrześcijańska, koszulki i bluzy wspierające misję.</div>
+                        <span class="btn-916-action" style="background:linear-gradient(135deg, #0284c7, #2563eb);">Odwiedź Sklep CC 🛒</span>
+                    </div>
+                </a>
+            </div>
+        </aside>
     </main>
 
         <!-- ══════════ ADMIN MODERATION & REPORTS MODAL ══════════ -->
