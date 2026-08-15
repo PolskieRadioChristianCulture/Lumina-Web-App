@@ -2073,7 +2073,7 @@
                 time: 'Wczoraj, 17:50 • 🎸 Muzyka Uwielbienia',
                 title: 'Nowe Dźwięki Ku Bożej Chwale',
                 text: 'Przygotowujemy z zespołem nową aranżację Psalmów. Nie ma nic piękniejszego niż łączenie talentów ze służbą dla Pana! 🎶🎸',
-                image: 'tlo_dla_kanalu_Biblia_Spiewana.jpg',
+                image: '',
                 likes: 53,
                 amen: 48
             });
@@ -2396,7 +2396,8 @@
 
                 const authorLink = item.authorSlug ? (item.authorSlug === 'cezaryrgowski' ? 'lumina.cezaryrgowski.html' : (item.authorSlug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : `lumina-profile.html?u=${item.authorSlug}`)) : '#';
 
-                const cardImgSrc = item.image || 'lumina_hero_main.jpg';
+                                const authorAvatarSrc = item.authorAvatar || (item.authorSlug === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (item.authorSlug === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'icon.png'));
+                const cardImgSrc = (item.image && item.image.trim() !== '') ? item.image : authorAvatarSrc;
 
                 // CTA Button for Campaigns
                 let ctaHtml = '';
@@ -2447,7 +2448,7 @@
                         <!-- 1:1 Square Media (if image provided and not just standard placeholder when embed is present) -->
                         ${(!item.image && richResult.embedHtml) ? '' : `
                         <div class="media-container-1x1">
-                            <img src="${cardImgSrc}" alt="${item.title || item.author}" class="media-img-1x1" loading="lazy" onerror="this.src='lumina_hero_main.jpg'">
+                            <img src="${cardImgSrc}" alt="${item.title || item.author}" class="media-img-1x1" loading="lazy" onerror="this.onerror=null; this.src='${authorAvatarSrc}'">
                         </div>`}
 
                         <!-- Details & Text -->
@@ -3025,6 +3026,7 @@
     </script>
 </body>
 </html>
+
 
 
 

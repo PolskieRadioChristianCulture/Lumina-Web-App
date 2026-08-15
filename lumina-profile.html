@@ -2675,7 +2675,7 @@
                     </div>
                     <div class="post-content">${rich.html}</div>
                     ${rich.embedHtml || ''}
-                    ${p.image ? `<img src="${p.image}" alt="Post Image" class="post-image">` : ''}
+                    ${`<img src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'avatar_new1.jpg')}" alt="Post Image" class="post-image" onerror="this.onerror=null; this.src='${data.avatar || 'avatar_new1.jpg'}'">`}
                     <div class="post-footer">
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span> Polubień</button>
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
@@ -3328,4 +3328,5 @@
     </script>
 </body>
 </html>
+
 

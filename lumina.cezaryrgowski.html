@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
     <!-- Google Analytics -->
@@ -2547,7 +2547,7 @@
                         ` : ''}
                     </div>
                     <div class="post-content">${p.text || ''}</div>
-                    ${p.image ? `<img src="${p.image}" alt="Post Image" class="post-image">` : ''}
+                    ${`<img src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'avatar_cezary_official.jpg')}" alt="Post Image" class="post-image" onerror="this.onerror=null; this.src='${data.avatar || 'avatar_cezary_official.jpg'}'">`}
                     <div class="post-footer">
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span> Polubień</button>
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
@@ -3156,3 +3156,4 @@
     </script>
 </body>
 </html>
+

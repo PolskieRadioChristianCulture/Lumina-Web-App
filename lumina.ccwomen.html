@@ -1968,11 +1968,9 @@
                         </div>
                     </div>
                     <div class="post-content">${p.text || p.desc || ''}</div>
-                    ${p.image ? `
-                        <div class="post-image-box">
-                            <img src="${p.image}" alt="Post Image" class="post-image">
-                        </div>
-                    ` : ''}
+                    <div class="post-image-box">
+                        <img src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'logo_cc_women.jpg')}" alt="Post Image" class="post-image" onerror="this.onerror=null; this.src='${data.avatar || 'logo_cc_women.jpg'}'">
+                    </div>
                     <div class="post-actions-bar">
                         <button class="post-action-btn" onclick="showToast('Dziękujemy za polubienie wpisu CC Women! 🌸')"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> ${p.likes || 1} Polubień</button>
                         <a href="https://www.youtube.com/@CCWomen7?sub_confirmation=1" target="_blank" class="post-action-btn" style="text-decoration:none; color:#facc15;"><i class="fa-brands fa-youtube"></i> Dołącz do YouTube</a>
@@ -2303,4 +2301,5 @@
     </script>
 </body>
 </html>
+
 
