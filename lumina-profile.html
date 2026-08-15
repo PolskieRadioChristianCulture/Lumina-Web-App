@@ -2212,16 +2212,54 @@
             
             // Twarde zabezpieczenie kanału CC Women
             if (slug.includes('ccwomen') || slug.includes('women') || slug === 'u_ccwomen_9055') {
-                const ccw = PROFILES_DB['u_ccwomen_9055'] || PROFILES_DB['ccwomen'];
+                const ccw = PROFILES_DB['u_ccwomen_9055'] || PROFILES_DB['ccwomen'] || {};
                 return {
                     ...ccw,
+                    name: 'CC Women Official',
                     avatar: 'logo_cc_women.jpg',
                     cover: 'lumina_hero_main.jpg'
                 };
             }
 
+            // 1. In-memory cloud profile if available
+            if (window._cloudProfileData && (window._cloudProfileData.slug === slug || window._cloudProfileData.uid === slug)) {
+                return window._cloudProfileData;
+            }
+
+            // 2. Direct check in localStorage
+            let saved = localStorage.getItem('lumina_profile_' + slug);
+
+            // 3. Check current user profile
+            if (!saved) {
+                const curRaw = localStorage.getItem('lumina_current_user_profile');
+                if (curRaw) {
+                    try {
+                        const cur = JSON.parse(curRaw);
+                        if (cur && (cur.slug === slug || cur.uid === slug || ('u_' + slug) === cur.slug)) {
+                            saved = curRaw;
+                        }
+                    } catch(e) {}
+                }
+            }
+
+            // 4. Scan all localStorage keys for matching slug/uid
+            if (!saved) {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith('lumina_profile_')) {
+                        try {
+                            const candidate = JSON.parse(localStorage.getItem(key) || '{}');
+                            if (candidate && (candidate.slug === slug || candidate.uid === slug || (candidate.slug && candidate.slug.toLowerCase() === slug.toLowerCase()))) {
+                                saved = localStorage.getItem(key);
+                                break;
+                            }
+                        } catch(e) {}
+                    }
+                }
+            }
+
             const fallback = PROFILES_DB[slug] || {
-                name: 'Profil LUMINA',
+                name: 'Nowy Użytkownik LUMINA',
                 role: 'Społeczność LUMINA ✨',
                 age: 25,
                 city: 'Polska',
@@ -2231,29 +2269,20 @@
                 status: 'Panna/Kawaler',
                 verse: '„Wszystko mogę w Tym, który mnie umacnia”',
                 verseRef: 'Flp 4, 13',
-                bio: 'Chrześcijański kanał / profil na portalu LUMINA.',
-                avatar: 'lumina_icon.jpg',
+                bio: 'Chrześcijański profil w społeczności LUMINA.',
+                avatar: 'avatar_new1.jpg',
                 cover: 'lumina_hero_clean.jpg',
                 coverPosition: '50% 50%',
                 visibility: 'public',
                 pin: '7777',
-                tags: ['Ewangelizacja', 'Pismo Święte', 'Wartości', 'Misja CC'],
+                tags: ['Modlitwa', 'Pismo Święte', 'Wartości', 'Chrześcijaństwo'],
                 stats: { friends: '1', posts: '1', likes: '12' },
-                photos: ['lumina_icon.jpg'],
+                photos: ['avatar_new1.jpg'],
                 posts: []
             };
-            try {
-                let saved = localStorage.getItem('lumina_profile_' + slug);
-                if (!saved) {
-                    const curRaw = localStorage.getItem('lumina_current_user_profile');
-                    if (curRaw) {
-                        const cur = JSON.parse(curRaw);
-                        if (cur && (cur.uid === slug || cur.uid === 'u_' + slug)) {
-                            saved = curRaw;
-                        }
-                    }
-                }
-                if (saved) {
+
+            if (saved) {
+                try {
                     const parsed = JSON.parse(saved);
                     if (slug !== 'cezaryrgowski' && parsed.name && parsed.name.toLowerCase().includes('cezary')) {
                         return JSON.parse(JSON.stringify(fallback));
@@ -2265,8 +2294,8 @@
                         photos: Array.isArray(parsed.photos) && parsed.photos.length ? parsed.photos : (parsed.avatar ? [parsed.avatar] : [...fallback.photos]),
                         posts: Array.isArray(parsed.posts) ? parsed.posts : [...fallback.posts]
                     };
-                }
-            } catch (e) {}
+                } catch (e) {}
+            }
             return JSON.parse(JSON.stringify(fallback));
         }
 
@@ -2390,6 +2419,22 @@
         function checkOwnerAuthSession() {
             const slug = getRequestedUserSlug();
             isOwnerMode = (sessionStorage.getItem('lumina_auth_owner_' + slug) === 'true');
+
+            // Auto unlock owner mode if user is authenticated and matches this profile
+            if (!isOwnerMode) {
+                try {
+                    const curUser = window.LuminaDB?.getCurrentUser();
+                    const curProf = window.LuminaDB?.getCurrentProfile() || JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null');
+                    if (curProf && (curProf.slug === slug || curProf.uid === slug || (curProf.slug && curProf.slug.toLowerCase() === slug.toLowerCase()))) {
+                        isOwnerMode = true;
+                        sessionStorage.setItem('lumina_auth_owner_' + slug, 'true');
+                    }
+                    if (curUser && curUser.uid === slug) {
+                        isOwnerMode = true;
+                        sessionStorage.setItem('lumina_auth_owner_' + slug, 'true');
+                    }
+                } catch(e) {}
+            }
             updateSecurityBarUI();
         }
 
@@ -3326,6 +3371,11 @@
                     const slug = getRequestedUserSlug();
                     window.LuminaDB.subscribeToProfile(slug, (cloudData) => {
                         if (cloudData) {
+                            window._cloudProfileData = cloudData;
+                            try {
+                                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cloudData));
+                            } catch(e) {}
+                            checkOwnerAuthSession();
                             renderProfile();
                         }
                     });

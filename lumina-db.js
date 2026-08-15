@@ -211,12 +211,15 @@ export async function registerWithEmail(email, password, basicData) {
         const user = cred.user;
         
         if (basicData && basicData.name) {
-            await updateProfile(user, { displayName: basicData.name });
+            try { await updateProfile(user, { displayName: basicData.name }); } catch(e) {}
         }
 
-        // Save initial profile
+        const userSlug = basicData.slug || basicData.uid || ('u_' + (basicData.name || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000));
+
+        // Save complete profile
         const initialProfile = {
             uid: user.uid,
+            slug: userSlug,
             email: user.email,
             name: basicData.name || 'Użytkownik LUMINA',
             age: basicData.age || 25,
@@ -225,22 +228,43 @@ export async function registerWithEmail(email, password, basicData) {
             lookingFor: basicData.lookingFor || 'mezczyzna',
             denom: basicData.denom || 'Chrześcijanin',
             church: basicData.church || '',
+            job: basicData.job || 'Społeczność LUMINA ✨',
             verse: basicData.verse || '„Wszystko mogę w Tym, który mnie umacnia.”',
             verseRef: basicData.verseRef || 'Flp 4, 13',
             bio: basicData.bio || '',
             status: basicData.status || 'Panna/Kawaler',
-            avatar: basicData.avatar || 'lumina-icon-192.png',
-            cover: 'lumina_hero_clean.jpg',
-            visibility: 'public',
-            matchScore: '96%',
+            avatar: basicData.avatar || 'avatar_new1.jpg',
+            cover: basicData.cover || 'lumina_hero_clean.jpg',
+            tags: basicData.tags || ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+            visibility: basicData.visibility || 'public',
+            pin: basicData.pin || '7777',
+            matchScore: basicData.matchScore || '98%',
             isVerified: true,
+            photos: basicData.photos || [basicData.avatar || 'avatar_new1.jpg'],
+            posts: basicData.posts || [],
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp()
         };
 
-        await setDoc(doc(db, 'lumina_profiles', user.uid), initialProfile);
+        if (db) {
+            try {
+                await setDoc(doc(db, 'lumina_profiles', user.uid), initialProfile, { merge: true });
+                if (userSlug && userSlug !== user.uid) {
+                    await setDoc(doc(db, 'lumina_profiles', userSlug), initialProfile, { merge: true });
+                }
+            } catch(e) { console.warn('Firestore setDoc notice:', e.message); }
+        }
+
         currentProfileState = initialProfile;
         
+        try {
+            localStorage.setItem('lumina_profile_' + user.uid, JSON.stringify(initialProfile));
+            if (userSlug) localStorage.setItem('lumina_profile_' + userSlug, JSON.stringify(initialProfile));
+            localStorage.setItem('lumina_current_user_profile', JSON.stringify(initialProfile));
+            sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
+            if (userSlug) sessionStorage.setItem('lumina_auth_owner_' + userSlug, 'true');
+        } catch(e) {}
+
         return { user, profile: initialProfile };
     } catch(err) {
         console.error('Lumina Email Register error:', err);
@@ -392,11 +416,19 @@ export async function confirmPhoneVerificationCode(confirmationResult, verificat
 // ══════════════════════════════════════════════════════════════════════════
 
 export function subscribeToProfile(slugOrUid, onUpdate) {
+    if (!slugOrUid) return () => {};
     const localKey = `lumina_profile_${slugOrUid}`;
     
     // 1. Immediate local cache emission
     try {
-        const cached = localStorage.getItem(localKey);
+        let cached = localStorage.getItem(localKey);
+        if (!cached) {
+            const cur = localStorage.getItem('lumina_current_user_profile');
+            if (cur) {
+                const p = JSON.parse(cur);
+                if (p && (p.slug === slugOrUid || p.uid === slugOrUid)) cached = cur;
+            }
+        }
         if (cached) {
             onUpdate(JSON.parse(cached));
         }
@@ -406,13 +438,27 @@ export function subscribeToProfile(slugOrUid, onUpdate) {
 
     try {
         const profileDocRef = doc(db, 'lumina_profiles', slugOrUid);
-        return onSnapshot(profileDocRef, (snap) => {
+        return onSnapshot(profileDocRef, async (snap) => {
             if (snap.exists()) {
                 const cloudData = snap.data();
                 try {
                     localStorage.setItem(localKey, JSON.stringify(cloudData));
+                    if (cloudData.slug) localStorage.setItem(`lumina_profile_${cloudData.slug}`, JSON.stringify(cloudData));
+                    if (cloudData.uid) localStorage.setItem(`lumina_profile_${cloudData.uid}`, JSON.stringify(cloudData));
                 } catch(e) {}
                 onUpdate(cloudData);
+            } else {
+                try {
+                    const q = query(collection(db, 'lumina_profiles'), where('slug', '==', slugOrUid), limit(1));
+                    const querySnap = await getDocs(q);
+                    if (!querySnap.empty) {
+                        const cloudData = querySnap.docs[0].data();
+                        try {
+                            localStorage.setItem(localKey, JSON.stringify(cloudData));
+                        } catch(e) {}
+                        onUpdate(cloudData);
+                    }
+                } catch(qErr) {}
             }
         }, (err) => {
             console.warn(`Lumina Realtime Profile [${slugOrUid}] sync error:`, err.message);
@@ -424,10 +470,11 @@ export function subscribeToProfile(slugOrUid, onUpdate) {
 }
 
 export async function saveProfileToCloud(slugOrUid, profileData) {
+    if (!slugOrUid) return profileData;
     const cleanSlug = (slugOrUid || '').toLowerCase();
     const cleanName = (profileData.name || '').toLowerCase();
 
-    // Żelazne zabezpieczenie poprawnych danych osobowych
+    // Żelazne zabezpieczenie poprawnych danych osobowych Cezarego i Wioletty
     if (cleanSlug.includes('cezary') || cleanName.includes('cezary')) {
         profileData.age = 51;
         profileData.city = 'Ostrowiec Świętokrzyski, Polska';
@@ -443,23 +490,33 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
         profileData.name = 'Wioletta Rogowska';
     }
 
-    const localKey = `lumina_profile_${slugOrUid}`;
-    
-    // Save to localStorage immediately
+    // Save to localStorage under all relevant keys
     try {
-        localStorage.setItem(localKey, JSON.stringify(profileData));
+        localStorage.setItem(`lumina_profile_${slugOrUid}`, JSON.stringify(profileData));
+        if (profileData.slug) localStorage.setItem(`lumina_profile_${profileData.slug}`, JSON.stringify(profileData));
+        if (profileData.uid) localStorage.setItem(`lumina_profile_${profileData.uid}`, JSON.stringify(profileData));
+        localStorage.setItem('lumina_current_user_profile', JSON.stringify(profileData));
+        sessionStorage.setItem(`lumina_auth_owner_${slugOrUid}`, 'true');
+        if (profileData.slug) sessionStorage.setItem(`lumina_auth_owner_${profileData.slug}`, 'true');
+        if (profileData.uid) sessionStorage.setItem(`lumina_auth_owner_${profileData.uid}`, 'true');
         window.dispatchEvent(new Event('storage'));
     } catch(e) {}
 
     if (!db) return profileData;
 
     try {
-        const profileDocRef = doc(db, 'lumina_profiles', slugOrUid);
-        await setDoc(profileDocRef, {
+        const payload = {
             ...profileData,
-            slug: slugOrUid,
+            slug: profileData.slug || slugOrUid,
             updatedAt: serverTimestamp()
-        }, { merge: true });
+        };
+        await setDoc(doc(db, 'lumina_profiles', slugOrUid), payload, { merge: true });
+        if (profileData.uid && profileData.uid !== slugOrUid) {
+            await setDoc(doc(db, 'lumina_profiles', profileData.uid), payload, { merge: true });
+        }
+        if (profileData.slug && profileData.slug !== slugOrUid && profileData.slug !== profileData.uid) {
+            await setDoc(doc(db, 'lumina_profiles', profileData.slug), payload, { merge: true });
+        }
         console.log(`Lumina: Profil [${slugOrUid}] zsynchronizowany z chmurą Firestore! ☁️✨`);
     } catch(err) {
         console.warn(`Lumina: Błąd zapisu profilu [${slugOrUid}] w Firestore:`, err.message);
