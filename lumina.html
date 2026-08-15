@@ -2180,7 +2180,7 @@
             <!-- ── PANEL 1: LOGOWANIE ── -->
             <div id="authLoginPanel">
                 <button type="button" class="btn-google" id="btnGoogleAuth" onclick="handleGoogleAuthAction()">
-                    <i class="fa-brands fa-google" style="color: #ea4335;"></i> Kontynuuj przez Google
+                    <img src="google_logo_custom.jpg" alt="Google" style="width: 22px; height: 22px; object-fit: contain; border-radius: 50%;"> Kontynuuj przez Google
                 </button>
                 <div class="auth-divider"><span>LUB E-MAIL I HASŁO</span></div>
 
@@ -2539,7 +2539,7 @@
                     setAuthStatusMsg('❌ Błąd logowania Google: ' + (error.message || error.code), true);
                 }
             } finally {
-                if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-brands fa-google" style="color:#ea4335;"></i> Kontynuuj przez Google'; }
+                if (btn) { btn.disabled = false; btn.innerHTML = '<img src="google_logo_custom.jpg" alt="Google" style="width: 22px; height: 22px; object-fit: contain; border-radius: 50%;"> Kontynuuj przez Google'; }
             }
         };
 
