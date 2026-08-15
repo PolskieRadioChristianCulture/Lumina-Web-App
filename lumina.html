@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
     <script type="module" src="lumina-db.js"></script>
+    <script type="module" src="lumina-i18n.js"></script>
 
     <style>
         :root {
@@ -1275,6 +1276,7 @@
                 <span class="user-nav-name" id="userNavName">Użytkownik</span>
                 <button class="btn-nav-logout" onclick="handleLogout()" title="Wyloguj"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
+            <button type="button" class="lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" style="padding:7px 12px; border-radius:20px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#fff; font-weight:800; font-size:0.8rem; cursor:pointer; font-family:inherit; transition:all 0.2s;">🇵🇱 PL</button>
             <button class="btn-nav-cta" id="authCtaBtn" onclick="openAuth()">Zaloguj / Rejestracja</button>
         </div>
     </nav>
