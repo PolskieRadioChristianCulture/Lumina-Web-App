@@ -179,11 +179,11 @@
                 <span>Kanały CC</span>
             </button>
 
-            <!-- 5. Sklep CC (Market) -->
-            <button type="button" class="lumina-nav-tab" id="navTabStore" onclick="window.openCcStoreModal()" title="Sklep Christian Culture • Książki, Płyty, Bluzy i Dewocjonalia">
+            <!-- 5. Market CC (Sklep Christian Culture) -->
+            <a href="https://my-store-1009741.creator-spring.com/" target="_blank" rel="noopener noreferrer" class="lumina-nav-tab" id="navTabStore" title="Oficjalny Sklep Christian Culture (Market Creator Spring)">
                 <i class="fa-solid fa-bag-shopping" style="color: #38bdf8;"></i>
-                <span>Sklep CC</span>
-            </button>
+                <span>Market CC</span>
+            </a>
 
             <!-- 6. Mój Profil -->
             <a href="${myProfileHref}" class="lumina-nav-tab ${isProfile ? 'active' : ''}" id="navTabProfile" title="Mój Profil / Panel Właściciela">
@@ -327,8 +327,8 @@
                     </div>
                 </div>
 
-                <a href="https://polskieradio.cc/index.html#support" target="_blank" rel="noopener noreferrer" style="display:block; width:100%; padding:12px 18px; border-radius:14px; background:linear-gradient(135deg, #38bdf8, #2563eb); color:#fff; text-decoration:none; font-weight:800; font-size:0.92rem; box-shadow:0 6px 20px rgba(56,189,248,0.35);">
-                    Przejdź do Sklepu & Wsparcia Misji ➔
+                <a href="https://my-store-1009741.creator-spring.com/" target="_blank" rel="noopener noreferrer" style="display:block; width:100%; padding:12px 18px; border-radius:14px; background:linear-gradient(135deg, #38bdf8, #2563eb); color:#fff; text-decoration:none; font-weight:800; font-size:0.92rem; box-shadow:0 6px 20px rgba(56,189,248,0.35);">
+                    Otwórz Sklep Creator Spring (Market CC) ➔
                 </a>
             </div>
         </div>
