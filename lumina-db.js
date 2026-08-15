@@ -517,6 +517,113 @@ export async function togglePostReactionInCloud(postId, reactionType = 'likes') 
 }
 
 // ══════════════════════════════════════════════════════════════════════════
+// 3B. MISSION ACCOUNTS & MULTI-PERSONA ENGINE (Dowódca, Żona, Misje, AI)
+// ══════════════════════════════════════════════════════════════════════════
+
+export const MISSION_ACCOUNTS = {
+    'cezary_rogowski': {
+        id: 'cezary_rogowski',
+        name: 'Cezary Rogowski',
+        role: '👑 Założyciel Christian Culture',
+        avatar: 'avatar_new1.jpg',
+        slug: 'cezaryrgowski',
+        profileUrl: 'lumina.cezaryrgowski.html',
+        badge: '👑 Założyciel CC',
+        isMissionAccount: true
+    },
+    'wioletta_rogowska': {
+        id: 'wioletta_rogowska',
+        name: 'Wioletta Rogowska',
+        role: '🌸 Współzałożycielka Christian Culture',
+        avatar: 'lumina_anna2.jpg',
+        slug: 'wiolettarogowska',
+        profileUrl: 'lumina.wiolettarogowska.html',
+        badge: '🌸 Współzałożycielka CC',
+        isMissionAccount: true
+    },
+    'radio_cc': {
+        id: 'radio_cc',
+        name: 'Polskie Radio Christian Culture',
+        role: '📻 Oficjalny Głos Ewangelizacyjny',
+        avatar: 'lumina_icon.jpg',
+        slug: 'radio_cc',
+        profileUrl: 'index.html',
+        badge: '📻 Radio CC',
+        isMissionAccount: true
+    },
+    'lumina_official': {
+        id: 'lumina_official',
+        name: 'LUMINA • Społeczność',
+        role: '🕊️ Redakcja i Moderacja',
+        avatar: 'lumina_icon.jpg',
+        slug: 'lumina_official',
+        profileUrl: 'lumina-tablica.html',
+        badge: '🕊️ LUMINA Official',
+        isMissionAccount: true
+    },
+    'noemi_misja': {
+        id: 'noemi_misja',
+        name: 'Noemi',
+        role: '🌿 Ewangelizacja i Świadectwa',
+        avatar: 'avatar_noemi.jpg',
+        slug: 'noemi',
+        profileUrl: 'lumina-profile.html?u=noemi',
+        badge: '🌿 Misja CC',
+        isMissionAccount: true
+    },
+    'dawid_misja': {
+        id: 'dawid_misja',
+        name: 'Dawid',
+        role: '🎵 Uwielbienie i Świadectwa',
+        avatar: 'avatar_sara.jpg',
+        slug: 'dawid',
+        profileUrl: 'lumina-profile.html?u=dawid',
+        badge: '🎵 Misja CC',
+        isMissionAccount: true
+    }
+};
+
+export function getMissionAccounts() {
+    return Object.values(MISSION_ACCOUNTS);
+}
+
+export function getActiveMissionPersona() {
+    try {
+        const savedId = localStorage.getItem('lumina_active_mission_persona') || 'cezary_rogowski';
+        return MISSION_ACCOUNTS[savedId] || MISSION_ACCOUNTS['cezary_rogowski'];
+    } catch(e) {
+        return MISSION_ACCOUNTS['cezary_rogowski'];
+    }
+}
+
+export function setActiveMissionPersona(personaId) {
+    if (MISSION_ACCOUNTS[personaId]) {
+        try {
+            localStorage.setItem('lumina_active_mission_persona', personaId);
+            window.dispatchEvent(new CustomEvent('lumina-persona-changed', { detail: MISSION_ACCOUNTS[personaId] }));
+        } catch(e) {}
+        return MISSION_ACCOUNTS[personaId];
+    }
+    return null;
+}
+
+export async function publishAsMissionAccount(personaId, postData) {
+    const persona = MISSION_ACCOUNTS[personaId] || getActiveMissionPersona();
+    const payload = {
+        ...postData,
+        author: persona.name,
+        authorRole: persona.role,
+        avatar: persona.avatar,
+        authorSlug: persona.slug,
+        authorBadge: persona.badge,
+        isMissionPost: true,
+        personaId: persona.id,
+        createdAtDateStr: new Date().toISOString()
+    };
+    return await addPostToCloud(payload);
+}
+
+// ══════════════════════════════════════════════════════════════════════════
 // 4. CAMPAIGNS & DIRECT MESSAGES REALTIME SYNC
 // ══════════════════════════════════════════════════════════════════════════
 
@@ -949,6 +1056,10 @@ window.LuminaDB = {
     blockUser,
     unblockUser,
     requestNotificationPermission,
+    getMissionAccounts,
+    getActiveMissionPersona,
+    setActiveMissionPersona,
+    publishAsMissionAccount,
     extractYouTubeId,
     formatRichTextAndMedia
 };

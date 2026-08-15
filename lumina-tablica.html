@@ -980,6 +980,28 @@
 
 
 
+        <!-- ══════════ FOUNDER & MISSION PERSONA PUBLISHER HUB ══════════ -->
+        <div class="founder-mission-bar" id="founderMissionHub">
+            <div class="founder-info-side">
+                <img src="avatar_new1.jpg" alt="Persona" class="founder-badge-avatar" id="activePersonaAvatar">
+                <div>
+                    <div style="font-size:0.72rem; color:#facc15; font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">Występujesz jako:</div>
+                    <select id="personaSelector" onchange="handlePersonaSelectChange(this.value)" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; font-weight:800; font-size:0.85rem; padding:4px 10px; border-radius:8px; font-family:inherit; cursor:pointer;">
+                        <option value="cezary_rogowski" style="background:#0f172a;">👑 Cezary Rogowski (Założyciel CC)</option>
+                        <option value="wioletta_rogowska" style="background:#0f172a;">🌸 Wioletta Rogowska (Współzałożycielka CC)</option>
+                        <option value="radio_cc" style="background:#0f172a;">📻 Polskie Radio Christian Culture</option>
+                        <option value="lumina_official" style="background:#0f172a;">🕊️ LUMINA • Oficjalna Redakcja</option>
+                        <option value="noemi_misja" style="background:#0f172a;">🌿 Noemi (Konto Misyjne)</option>
+                        <option value="dawid_misja" style="background:#0f172a;">🎵 Dawid (Konto Misyjne)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="founder-buttons-group">
+                <button type="button" class="btn-camp-quick btn-camp-ad" onclick="openCampaignModal('ad')"><i class="fa-solid fa-plus-circle"></i> Opublikuj Wpis Misyjny</button>
+                <button type="button" class="btn-camp-quick btn-camp-promo" onclick="openCampaignModal('promo')"><i class="fa-solid fa-bullhorn"></i> Reklama / Kampania</button>
+            </div>
+        </div>
+
         <!-- ══════════ FEED STREAM ══════════ -->
         <div class="feed-stream" id="feedStream1x1">
             <!-- Dynamic stream content injected via JS -->
@@ -1884,6 +1906,15 @@
             reader.readAsDataURL(file);
         }
 
+        window.handlePersonaSelectChange = function(personaId) {
+            if (window.LuminaDB?.setActiveMissionPersona) {
+                const persona = window.LuminaDB.setActiveMissionPersona(personaId);
+                const avatarEl = document.getElementById('activePersonaAvatar');
+                if (avatarEl && persona) avatarEl.src = persona.avatar;
+                if (persona) showToast(`Aktywna tożsamość: ${persona.name} (${persona.role}) ✨`);
+            }
+        };
+
         function saveCampaignSubmit(e) {
             e.preventDefault();
             const type = document.getElementById('campType').value || 'ad';
@@ -1894,15 +1925,14 @@
             const eventDate = document.getElementById('campEventDate') ? document.getElementById('campEventDate').value.trim() : '';
             const eventLoc = document.getElementById('campEventLoc') ? document.getElementById('campEventLoc').value.trim() : '';
 
-            // Author Avatar from Cezary's profile
-            let cezaryAv = 'avatar_new1.jpg';
-            try {
-                const cJson = localStorage.getItem('lumina_profile_cezaryrgowski');
-                if (cJson) {
-                    const cp = JSON.parse(cJson);
-                    if (cp.avatar) cezaryAv = cp.avatar;
-                }
-            } catch(err) {}
+            const persona = (window.LuminaDB && window.LuminaDB.getActiveMissionPersona) ? window.LuminaDB.getActiveMissionPersona() : {
+                id: 'cezary_rogowski',
+                name: 'Cezary Rogowski',
+                role: '👑 Założyciel Christian Culture',
+                avatar: 'avatar_new1.jpg',
+                slug: 'cezaryrgowski',
+                badge: '👑 Założyciel CC'
+            };
 
             const newCampaign = {
                 id: 'camp_' + Date.now(),
@@ -1914,13 +1944,20 @@
                 btnUrl: btnUrl,
                 eventDate: eventDate,
                 eventLoc: eventLoc,
-                author: 'Cezary Rogowski',
-                authorRole: 'Założyciel Christian Culture ✨',
-                authorAvatar: cezaryAv,
+                author: persona.name,
+                authorRole: persona.role,
+                authorAvatar: persona.avatar,
+                authorSlug: persona.slug,
+                authorBadge: persona.badge,
                 createdAt: 'Przed chwilą • 🌟 Misja CC',
                 likes: 12,
                 amen: 8
             };
+
+            // Save to Firestore in cloud as Mission Account
+            if (window.LuminaDB?.publishAsMissionAccount) {
+                window.LuminaDB.publishAsMissionAccount(persona.id, newCampaign);
+            }
 
             try {
                 const savedRaw = localStorage.getItem('lumina_cc_campaigns');
@@ -1935,7 +1972,7 @@
             removeCampaignImg();
 
             renderFeed();
-            showToast('Kampania została pomyślnie opublikowana na Głównej Tablicy! 📢✨');
+            showToast(`Opublikowano w imieniu: ${persona.name}! 📢✨`);
         }
 
         // ── Toast System ──
