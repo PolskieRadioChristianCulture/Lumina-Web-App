@@ -575,6 +575,48 @@ export function subscribeToProfile(slugOrUid, onUpdate) {
     }
 }
 
+
+// ── Pobieranie profilu użytkownika z chmury (Firestore / LocalStorage) ──
+export async function getProfileFromCloud(slugOrUid) {
+    if (!slugOrUid) return null;
+    try {
+        const localKey = `lumina_profile_${slugOrUid}`;
+        let localData = localStorage.getItem(localKey);
+        if (!localData && currentUserState && slugOrUid === currentUserState.uid) {
+            localData = localStorage.getItem('lumina_current_user_profile');
+        }
+
+        if (db) {
+            const docSnap = await getDoc(doc(db, 'lumina_profiles', slugOrUid));
+            if (docSnap.exists()) {
+                const cloudProfile = docSnap.data();
+                try {
+                    localStorage.setItem(localKey, JSON.stringify(cloudProfile));
+                } catch(e) {}
+                return cloudProfile;
+            } else {
+                const q = query(collection(db, 'lumina_profiles'), where('slug', '==', slugOrUid), limit(1));
+                const querySnap = await getDocs(q);
+                if (!querySnap.empty) {
+                    const cloudProfile = querySnap.docs[0].data();
+                    try {
+                        localStorage.setItem(localKey, JSON.stringify(cloudProfile));
+                    } catch(e) {}
+                    return cloudProfile;
+                }
+            }
+        }
+
+        return localData ? JSON.parse(localData) : null;
+    } catch(err) {
+        console.warn(`Lumina getProfileFromCloud [${slugOrUid}] error:`, err.message);
+        return null;
+    }
+}
+
+export const registerUser = registerWithEmail;
+export const loginUser = loginWithEmail;
+
 export async function saveProfileToCloud(slugOrUid, profileData) {
     if (!slugOrUid) return profileData;
     const cleanSlug = (slugOrUid || '').toLowerCase();
@@ -1498,7 +1540,10 @@ export function formatRichTextAndMedia(rawText) {
 window.LuminaDB = {
     loginWithGoogle,
     registerWithEmail,
+    registerUser,
     loginWithEmail,
+    loginUser,
+    getProfileFromCloud,
     logoutUser,
     setupPhoneRecaptcha,
     sendPhoneVerificationCode,
@@ -1539,3 +1584,26 @@ window.LuminaDB = {
     normalizePhoneNumber
 };
 
+
+export {
+    loginWithGoogle,
+    registerWithEmail,
+    registerUser,
+    loginWithEmail,
+    loginUser,
+    logoutUser,
+    getProfileFromCloud,
+    saveProfileToCloud,
+    subscribeToProfile,
+    getChatId,
+    sendDirectMessageToCloud,
+    subscribeToDirectMessages,
+    subscribeToUserChats,
+    subscribeToFeedPosts,
+    publishUniversalPost,
+    recordProfileLike,
+    subscribeToUserMatches,
+    reportContent
+};
+
+export default window.LuminaDB;
