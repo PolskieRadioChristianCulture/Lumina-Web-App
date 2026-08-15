@@ -1217,6 +1217,44 @@
             }
         }
     
+    
+        /* ══════════════════════════════════════════════════════════════════════════
+         * STRICT PROFILE OWNER SECURITY (GUEST READ-ONLY BY DEFAULT)
+         * ══════════════════════════════════════════════════════════════════════════ */
+        .card-edit-btn,
+        .btn-gear-settings,
+        .settings-dropdown-wrap,
+        .post-creator-box,
+        .cover-hint-badge,
+        .cover-upload-btn,
+        .cover-reposition-toolbar,
+        .photo-delete-badge,
+        .post-header-actions,
+        .owner-only {
+            display: none !important;
+        }
+
+        body.owner-mode-active .card-edit-btn {
+            display: inline-flex !important;
+        }
+
+        body.owner-mode-active .btn-gear-settings,
+        body.owner-mode-active .settings-dropdown-wrap {
+            display: block !important;
+        }
+
+        body.owner-mode-active .post-creator-box {
+            display: block !important;
+        }
+
+        body.owner-mode-active .cover-hint-badge,
+        body.owner-mode-active .cover-upload-btn,
+        body.owner-mode-active .photo-delete-badge,
+        body.owner-mode-active .post-header-actions,
+        body.owner-mode-active .owner-only {
+            display: inline-flex !important;
+        }
+    
     </style>
     <link rel="stylesheet" href="lumina-responsive-reset.css">
 </head>
@@ -1683,7 +1721,7 @@
         const LEGACY_STORAGE_KEY = 'lumina_profile_u_cctv';
         const AUTH_SESSION_KEY = 'lumina_owner_auth_ccwomen';
 
-        let isOwnerMode = true; // Auto-active for founder on this station
+        let isOwnerMode = false;
         let pendingProtectedAction = null;
         let attachedPostImageDataUrl = null;
         let currentEditingPostId = null;
@@ -2199,25 +2237,44 @@
             }
         });
 
-        // ── Security & Authentication ──
-        function toggleOwnerAuthMode() {
-            isOwnerMode = !isOwnerMode;
-            document.body.classList.toggle('owner-mode-active', isOwnerMode);
-            const statusEl = document.getElementById('settingsMenuStatus');
-            const btnIcon = document.getElementById('btnMenuAuthIcon');
-            const btnText = document.getElementById('btnMenuAuthText');
-
-            if (isOwnerMode) {
+        // ── Secure Owner PIN Authentication Gate ──
+        window.promptOwnerPinUnlock = function() {
+            const inputPin = prompt('🔐 Wprowadź 4-cyfrowy PIN Założyciela / Właściciela Kanału:');
+            if (!inputPin) return;
+            if (inputPin.trim() === '7777' || inputPin.trim() === '1234') {
+                sessionStorage.setItem('lumina_auth_owner_cctv', 'true');
+                sessionStorage.setItem('lumina_auth_owner_founder', 'true');
+                isOwnerMode = true;
+                document.body.classList.add('owner-mode-active');
+                const statusEl = document.getElementById('settingsMenuStatus');
                 if (statusEl) statusEl.innerHTML = 'Status: <b style="color:#86efac;">Panel Założyciela 🔓</b>';
-                if (btnIcon) btnIcon.className = 'fa-solid fa-lock';
-                if (btnText) btnText.textContent = 'Zablokuj Edycję 🔒';
-                showToast('Tryb edycji kanału aktywny! 🔓');
+                showToast('🔓 Panel Właściciela aktywowany pomyślnie!');
             } else {
-                if (statusEl) statusEl.innerHTML = 'Status: <b style="color:#f87171;">Tylko do odczytu 🛡️</b>';
-                if (btnIcon) btnIcon.className = 'fa-solid fa-key';
-                if (btnText) btnText.textContent = 'Odblokuj Edycję';
-                showToast('Zablokowano edycję kanału 🔒');
+                showToast('❌ Błędny kod PIN! Dostęp zablokowany.');
             }
+        };
+
+        window.toggleOwnerAuthMode = function() {
+            if (isOwnerMode) {
+                sessionStorage.removeItem('lumina_auth_owner_cctv');
+                sessionStorage.removeItem('lumina_auth_owner_founder');
+                isOwnerMode = false;
+                document.body.classList.remove('owner-mode-active');
+                const statusEl = document.getElementById('settingsMenuStatus');
+                if (statusEl) statusEl.innerHTML = 'Status: <b style="color:#f87171;">Tylko do odczytu 🛡️</b>';
+                showToast('🔒 Zablokowano edycję kanału (Tryb Gościa)');
+            } else {
+                window.promptOwnerPinUnlock();
+            }
+        };
+
+        // Keyboard shortcut for founder PIN unlock: Ctrl + Shift + E
+        window.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'E' || e.key === 'e')) {
+                e.preventDefault();
+                window.toggleOwnerAuthMode();
+            }
+        });
         }
 
         // ── Robust Image Resizer & Compressor ──
@@ -2332,7 +2389,14 @@
 
         // ── Initialization ──
         window.addEventListener('DOMContentLoaded', () => {
+            // Check verified owner session
+        if (sessionStorage.getItem('lumina_auth_owner_cctv') === 'true' || sessionStorage.getItem('lumina_auth_owner_founder') === 'true') {
+            isOwnerMode = true;
             document.body.classList.add('owner-mode-active');
+        } else {
+            isOwnerMode = false;
+            document.body.classList.remove('owner-mode-active');
+        }
             renderChannelView();
 
             window.addEventListener('lumina_post_published', () => renderPosts());

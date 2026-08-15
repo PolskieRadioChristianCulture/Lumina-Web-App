@@ -1415,6 +1415,44 @@
             }
         }
     
+    
+        /* ══════════════════════════════════════════════════════════════════════════
+         * STRICT PROFILE OWNER SECURITY (GUEST READ-ONLY BY DEFAULT)
+         * ══════════════════════════════════════════════════════════════════════════ */
+        .card-edit-btn,
+        .btn-gear-settings,
+        .settings-dropdown-wrap,
+        .post-creator-box,
+        .cover-hint-badge,
+        .cover-upload-btn,
+        .cover-reposition-toolbar,
+        .photo-delete-badge,
+        .post-header-actions,
+        .owner-only {
+            display: none !important;
+        }
+
+        body.owner-mode-active .card-edit-btn {
+            display: inline-flex !important;
+        }
+
+        body.owner-mode-active .btn-gear-settings,
+        body.owner-mode-active .settings-dropdown-wrap {
+            display: block !important;
+        }
+
+        body.owner-mode-active .post-creator-box {
+            display: block !important;
+        }
+
+        body.owner-mode-active .cover-hint-badge,
+        body.owner-mode-active .cover-upload-btn,
+        body.owner-mode-active .photo-delete-badge,
+        body.owner-mode-active .post-header-actions,
+        body.owner-mode-active .owner-only {
+            display: inline-flex !important;
+        }
+    
     </style>
     <link rel="stylesheet" href="lumina-responsive-reset.css">
 </head>
@@ -2269,7 +2307,14 @@
             const btnLabel = document.getElementById('btnOwnerAuthLabel');
 
             if (isOwnerMode) {
-                document.body.classList.add('owner-mode-active');
+                // Check verified owner session
+        if (sessionStorage.getItem('lumina_auth_owner_wiolettarogowska') === 'true' || sessionStorage.getItem('lumina_auth_owner_founder') === 'true') {
+            isOwnerMode = true;
+            document.body.classList.add('owner-mode-active');
+        } else {
+            isOwnerMode = false;
+            document.body.classList.remove('owner-mode-active');
+        }
                 if (icon) icon.className = 'fa-solid fa-shield-check';
                 if (txt) txt.innerHTML = 'Panel Właścicielki: <b style="color:#ec4899;">Odblokowany 🔓 (Możesz edytować i usuwać)</b>';
                 if (btn) {

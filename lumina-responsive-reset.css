@@ -352,3 +352,42 @@ div.cc-nav-modal.open {
     -webkit-overflow-scrolling: touch !important;
     transform: none !important;
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+ * 12. GLOBAL STRICT OWNER SECURITY (READ-ONLY GUEST STANDARD)
+ * Ukrycie wszelkich kontrolek edycji, ołówków i paneli dla niezalogowanych gości
+ * ══════════════════════════════════════════════════════════════════════════ */
+.card-edit-btn,
+.btn-gear-settings,
+.settings-dropdown-wrap,
+.post-creator-box,
+.cover-hint-badge,
+.cover-upload-btn,
+.cover-reposition-toolbar,
+.photo-delete-badge,
+.post-header-actions,
+.owner-only {
+    display: none !important;
+}
+
+body.owner-mode-active .card-edit-btn {
+    display: inline-flex !important;
+}
+
+body.owner-mode-active .btn-gear-settings,
+body.owner-mode-active .settings-dropdown-wrap {
+    display: block !important;
+}
+
+body.owner-mode-active .post-creator-box {
+    display: block !important;
+}
+
+body.owner-mode-active .cover-hint-badge,
+body.owner-mode-active .cover-upload-btn,
+body.owner-mode-active .photo-delete-badge,
+body.owner-mode-active .post-header-actions,
+body.owner-mode-active .owner-only {
+    display: inline-flex !important;
+}
+
