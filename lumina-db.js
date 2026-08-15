@@ -6,6 +6,8 @@ import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebase
 import { 
     getAuth, 
     signInWithPopup, 
+    signInWithRedirect,
+    getRedirectResult,
     GoogleAuthProvider, 
     signInWithEmailAndPassword, 
     createUserWithEmailAndPassword, 
@@ -61,7 +63,7 @@ googleProvider.setCustomParameters({
 });
 
 try {
-    app = !getApps().length ? initializeApp(LUMINA_FIREBASE_CONFIG, 'lumina-app') : getApp('lumina-app');
+    app = !getApps().length ? initializeApp(LUMINA_FIREBASE_CONFIG) : getApp();
     db = getFirestore(app);
     auth = getAuth(app);
     isAnalyticsSupported().then(supported => {
@@ -71,7 +73,6 @@ try {
         if (supported && app) {
             messaging = getMessaging(app);
             onMessage(messaging, (payload) => {
-                console.log('Foreground Push Message:', payload);
                 const title = payload.notification?.title || 'LUMINA • Nowa Wiadomość 💌';
                 const body = payload.notification?.body || 'Nowa aktywność w społeczności.';
                 window.dispatchEvent(new CustomEvent('lumina-push-message', { detail: { title, body, payload } }));
@@ -83,12 +84,9 @@ try {
     }).catch(() => {});
 } catch(e) {
     try {
-        app = initializeApp(LUMINA_FIREBASE_CONFIG);
+        app = getApps()[0] || initializeApp(LUMINA_FIREBASE_CONFIG);
         db = getFirestore(app);
         auth = getAuth(app);
-        isAnalyticsSupported().then(supported => {
-            if (supported && app) analytics = getAnalytics(app);
-        }).catch(() => {});
     } catch(err) {
         console.warn('Lumina Firebase Init Warning:', err);
     }
