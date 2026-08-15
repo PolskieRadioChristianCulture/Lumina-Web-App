@@ -2672,17 +2672,25 @@
                         job: 'Założyciel Christian Culture',
                         bio: 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.'
                     };
-                    localStorage.setItem('lumina_profile_cezaryrgowski', JSON.stringify(p));
                 }
+                // Bezwzględna migracja wieku i lokalizacji
+                if (!p.age || p.age === 32 || p.age === '32' || p.age === 30 || p.age === '30') {
+                    p.age = 51;
+                }
+                if (!p.city || p.city.includes('Warszawa') || p.city.includes('Ostrowiec Św.')) {
+                    p.city = 'Ostrowiec Świętokrzyski, Polska';
+                }
+                p.avatar = 'avatar_cezary_official.jpg';
+                localStorage.setItem('lumina_profile_cezaryrgowski', JSON.stringify(p));
 
                 document.querySelectorAll('.home-cezary-avatar, #homeUserAvatar, img[alt="Cezary Rogowski"]').forEach(img => {
                     img.src = 'avatar_cezary_official.jpg';
                 });
                 document.querySelectorAll('.home-cezary-name, #homeUserName').forEach(el => {
-                    el.textContent = `${p.name || 'Cezary'}, ${p.age || 51}`;
+                    el.textContent = `${p.name || 'Cezary Rogowski'}, 51`;
                 });
                 document.querySelectorAll('.home-cezary-city, #homeUserCity').forEach(el => {
-                    el.innerHTML = `📍 ${p.city || 'Ostrowiec Świętokrzyski'} • <b>${p.status || 'Żonaty'}</b>`;
+                    el.innerHTML = `📍 Ostrowiec Świętokrzyski • <b>${p.status || 'Żonaty'}</b>`;
                 });
                 document.querySelectorAll('.home-cezary-desc, #homeUserDesc').forEach(el => {
                     el.textContent = `"${p.bio ? (p.bio.length > 85 ? p.bio.substring(0, 85) + '...' : p.bio) : (p.job || 'Założyciel Christian Culture')}"`;
@@ -2717,17 +2725,25 @@
                         job: 'Współzałożycielka Christian Culture',
                         bio: 'Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.'
                     };
-                    localStorage.setItem('lumina_profile_wiolettarogowska', JSON.stringify(pw));
                 }
+                // Bezwzględna migracja wieku i lokalizacji
+                if (!pw.age || pw.age === 30 || pw.age === '30' || pw.age === 28 || pw.age === '28' || pw.age === 32) {
+                    pw.age = 50;
+                }
+                if (!pw.city || pw.city.includes('Warszawa') || pw.city.includes('Ostrowiec Św.')) {
+                    pw.city = 'Ostrowiec Świętokrzyski, Polska';
+                }
+                pw.avatar = 'avatar_wioletta_official.jpg';
+                localStorage.setItem('lumina_profile_wiolettarogowska', JSON.stringify(pw));
 
                 document.querySelectorAll('.home-wioletta-avatar, #homeWiolettaAvatar, img[alt="Wioletta Rogowska"]').forEach(img => {
                     img.src = 'avatar_wioletta_official.jpg';
                 });
                 document.querySelectorAll('.home-wioletta-name, #homeWiolettaName').forEach(el => {
-                    el.textContent = `${pw.name || 'Wioletta'}, ${pw.age || 50}`;
+                    el.textContent = `${pw.name || 'Wioletta Rogowska'}, 50`;
                 });
                 document.querySelectorAll('.home-wioletta-city, #homeWiolettaCity').forEach(el => {
-                    el.innerHTML = `📍 ${pw.city || 'Ostrowiec Świętokrzyski'} • <b>${pw.status || 'Mężatka'}</b>`;
+                    el.innerHTML = `📍 Ostrowiec Świętokrzyski • <b>${pw.status || 'Mężatka'}</b>`;
                 });
                 document.querySelectorAll('.home-wioletta-desc, #homeWiolettaDesc').forEach(el => {
                     el.textContent = `"${pw.bio ? (pw.bio.length > 85 ? pw.bio.substring(0, 85) + '...' : pw.bio) : (pw.job || 'Współzałożycielka Christian Culture')}"`;

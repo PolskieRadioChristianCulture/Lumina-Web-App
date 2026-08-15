@@ -1977,10 +1977,16 @@
                     if (!avatar || avatar.includes('worship') || avatar.includes('tlo') || avatar.includes('oddaj') || avatar.includes('anna')) {
                         avatar = 'avatar_wioletta_official.jpg';
                     }
+                    let age = parsed.age;
+                    if (!age || age === '30' || age === 30 || age === '28' || age === 28 || age === '32' || age === 32) {
+                        age = '50';
+                    }
                     return {
                         ...defaultProfile,
                         ...parsed,
                         avatar: avatar,
+                        age: age,
+                        city: 'Ostrowiec Świętokrzyski, Polska',
                         visibility: parsed.visibility || 'public',
                         photos: Array.isArray(parsed.photos) ? parsed.photos : [...defaultProfile.photos],
                         posts: Array.isArray(parsed.posts) ? parsed.posts : [...defaultProfile.posts]
