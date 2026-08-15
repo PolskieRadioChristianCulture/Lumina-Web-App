@@ -233,43 +233,70 @@
         .hero-content {
             position: relative;
             z-index: 5;
-            padding: 20px 20px 10px;
-            max-width: 780px;
+            padding: 24px 20px 10px;
+            max-width: 860px;
             margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 15px;
+            border-radius: 30px;
+            background: rgba(168, 85, 247, 0.18);
+            border: 1px solid rgba(192, 132, 252, 0.35);
+            color: #e9d5ff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            letter-spacing: 0.2px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
         }
 
         .hero-title {
-            font-size: 2.85rem;
+            font-size: clamp(1.85rem, 4vw, 2.75rem);
             font-weight: 800;
-            line-height: 1.2;
+            line-height: 1.22;
             color: #fff;
-            text-shadow: 0 2px 24px rgba(0,0,0,0.65);
-            margin-bottom: 14px;
-            letter-spacing: -0.5px;
+            text-shadow: 0 4px 24px rgba(0,0,0,0.75);
+            margin: 0 auto 14px;
+            letter-spacing: -0.02em;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            text-wrap: balance;
         }
 
-        .hero-sub {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.94);
+        .hero-title-accent {
+            color: #c084fc;
+            font-weight: 400;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(0.92rem, 1.8vw, 1.05rem);
+            color: rgba(241, 245, 249, 0.94);
             font-weight: 500;
-            margin-bottom: 28px;
-            line-height: 1.5;
-            text-shadow: 0 1px 14px rgba(0,0,0,0.7);
+            line-height: 1.55;
+            max-width: 680px;
+            margin: 0 auto 20px;
+            text-shadow: 0 2px 14px rgba(0,0,0,0.85);
             font-family: 'Plus Jakarta Sans', sans-serif;
+            text-wrap: balance;
         }
 
         @media (max-width: 768px) {
-            .hero-title { font-size: 1.85rem; line-height: 1.24; margin-bottom: 12px; }
-            .hero-sub { font-size: 0.92rem; line-height: 1.45; margin-bottom: 22px; }
+            .hero-title { font-size: clamp(1.5rem, 5.5vw, 1.95rem); line-height: 1.25; margin-bottom: 10px; }
+            .hero-subtitle { font-size: 0.9rem; line-height: 1.45; margin-bottom: 18px; }
             .hero-section { min-height: 380px; padding: 45px 16px 65px; }
-            .hero-content { padding: 10px; max-width: 100%; }
+            .hero-content { padding: 10px 12px; max-width: 100%; }
+            .hero-break { display: none; }
         }
 
         @media (max-width: 480px) {
-            .hero-title { font-size: 1.55rem; line-height: 1.25; }
-            .hero-sub { font-size: 0.85rem; }
-            .hero-section { min-height: 350px; padding: 35px 12px 55px; }
+            .hero-title { font-size: 1.45rem; line-height: 1.24; }
+            .hero-subtitle { font-size: 0.84rem; }
+            .hero-section { min-height: 350px; padding: 35px 10px 55px; }
+            .hero-pill-badge { font-size: 0.72rem; padding: 4px 10px; margin-bottom: 10px; }
         }
 
         .btn-hero-main {
@@ -1639,11 +1666,14 @@
         <div class="hero-bg"></div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
+            <div class="hero-pill-badge">
+                <i class="fa-solid fa-sparkles" style="color:#facc15;"></i> Społeczność Ludzi Wiary & Wartości
+            </div>
             <h1 class="hero-title">
-                LUMINA – Chrześcijańska Społeczność i Głębsze Relacje
+                LUMINA <span class="hero-title-accent">•</span> Chrześcijańska Społeczność<br class="hero-break">i Głębsze Relacje
             </h1>
             <p class="hero-subtitle">
-                Odkryj ludzi o tych samych wartościach, przeglądaj posty i inspiracje na żywo na Tablicy Społeczności oraz buduj relacje zakorzenione w Chrystusie.
+                Odkrywaj wartościowe profile, inspiruj się na żywo na Tablicy Społeczności<br class="hero-break">i buduj relacje zakorzenione w Chrystusie.
             </p>
             <!-- ══════════ UNIWERSALNA WYSZUKIWARKA PORTALU LUMINA ══════════ -->
             <div class="universal-search-container" id="universalSearchBox">
