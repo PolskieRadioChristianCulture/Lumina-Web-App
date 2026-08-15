@@ -552,13 +552,16 @@
         }
         .omni-search-input {
             flex: 1;
+            min-width: 0;
             background: transparent;
             border: none;
             outline: none;
             color: #fff;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             font-family: inherit;
             font-weight: 600;
+            padding-right: 8px;
+            text-overflow: ellipsis;
         }
         .omni-search-input::placeholder {
             color: #94a3b8;
@@ -1646,7 +1649,7 @@
             <div class="universal-search-container" id="universalSearchBox">
                 <div class="search-input-wrapper">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="omniSearchInput" class="omni-search-input" placeholder="Wyszukaj profil, kanał lub temat @ # ..." oninput="handleOmniSearchInput(this.value)" onkeydown="if(event.key==='Enter') executeOmniSearch()">
+                    <input type="text" id="omniSearchInput" class="omni-search-input" placeholder="Szukaj @ # ..." oninput="handleOmniSearchInput(this.value)" onkeydown="if(event.key==='Enter') executeOmniSearch()">
                     <button type="button" class="btn-omni-action" onclick="executeOmniSearch()" title="Szukaj"><i class="fa-solid fa-arrow-right"></i></button>
                 </div>
 
