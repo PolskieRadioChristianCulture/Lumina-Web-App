@@ -1209,11 +1209,16 @@
         }
 
         .post-image {
-            width: 100%;
+            width: 100% !important;
             border-radius: 12px;
             margin-bottom: 14px;
-            max-height: 420px;
-            object-fit: cover;
+            max-height: 520px !important;
+            object-fit: contain !important;
+            object-position: center center !important;
+            background: radial-gradient(circle at center, rgba(30, 41, 59, 0.6), #070b14);
+            display: block !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
         }
 
         .post-footer {
@@ -3156,4 +3161,5 @@
     </script>
 </body>
 </html>
+
 
