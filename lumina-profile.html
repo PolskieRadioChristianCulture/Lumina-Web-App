@@ -1358,6 +1358,7 @@
                     <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Wiadomość</button>
                     <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> Kawa ☕</button>
                     <button class="btn-action-heart" id="btnHeartLike" onclick="toggleProfileHeart(this)" title="Polub Profil"><i class="fa-solid fa-heart"></i></button>
+                    <button class="btn-action-secondary" onclick="openReportProfileModal()" title="Zgłoś Profil / Blokada"><i class="fa-solid fa-flag"></i></button>
                     <button class="btn-action-secondary" onclick="copyProfileLink()" title="Udostępnij Profil"><i class="fa-solid fa-share-nodes"></i></button>
                 </div>
             </div>
@@ -1793,7 +1794,44 @@
         </div>
     </div>
 
-    <!-- ══════════ MOBILE BOTTOM NAVIGATION BAR ══════════ -->
+    <!-- ══════════ REPORT & SAFETY MODAL (Etap 4) ══════════ -->
+    <div class="modal-overlay" id="reportProfileModal" style="z-index: 10005;">
+        <div class="modal-card" style="max-width: 460px; padding: 24px;">
+            <button class="modal-close-btn" onclick="closeModal('reportProfileModal')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+                <div style="width:40px; height:40px; border-radius:50%; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); display:flex; align-items:center; justify-content:center; color:#ef4444; font-size:1.1rem;">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <h3 style="font-size:1.15rem; font-weight:800; margin:0; color:#fff; font-family:'Outfit',sans-serif;">Zgłoś Profil lub Zablokuj</h3>
+                    <div style="font-size:0.72rem; color:#94a3b8;">Dbamy o czystość i Boży pokój w społeczności</div>
+                </div>
+            </div>
+
+            <form onsubmit="handleReportProfileSubmit(event)">
+                <label style="display:block; font-size:0.78rem; font-weight:700; color:#cbd5e1; margin-bottom:6px;">Powód zgłoszenia:</label>
+                <select id="reportProfileReason" style="width:100%; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:0.84rem; margin-bottom:14px; outline:none;" required>
+                    <option value="Fałszywy profil / Podszywanie się" style="background:#0f172a;">Fałszywy profil / Podszywanie się</option>
+                    <option value="Treści niezgodne z chrześcijańskimi wartościami" style="background:#0f172a;">Treści niezgodne z chrześcijańskimi wartościami</option>
+                    <option value="Wulgaryzmy / Nękanie / Brak szacunku" style="background:#0f172a;">Wulgaryzmy / Nękanie / Brak szacunku</option>
+                    <option value="Spam / Oferty komercyjne" style="background:#0f172a;">Spam / Oferty komercyjne</option>
+                    <option value="Próba wyłudzenia pieniędzy" style="background:#0f172a;">Próba wyłudzenia pieniędzy</option>
+                </select>
+
+                <label style="display:block; font-size:0.78rem; font-weight:700; color:#cbd5e1; margin-bottom:6px;">Dodatkowe informacje dla moderatorów (opcjonalnie):</label>
+                <textarea id="reportProfileDetails" placeholder="Opisz krótko sytuację..." style="width:100%; height:80px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:0.82rem; margin-bottom:16px; outline:none; resize:none;"></textarea>
+
+                <div style="display:flex; gap:10px; margin-bottom:10px;">
+                    <button type="submit" style="flex:1; padding:12px; border-radius:24px; background:linear-gradient(90deg,#ef4444,#dc2626); border:none; color:#fff; font-weight:800; font-family:inherit; font-size:0.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <i class="fa-solid fa-flag"></i> Zgłoś Profil
+                    </button>
+                    <button type="button" onclick="handleBlockCurrentProfile()" style="padding:12px 14px; border-radius:24px; background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; font-weight:800; font-family:inherit; font-size:0.84rem; cursor:pointer;">
+                        <i class="fa-solid fa-user-slash"></i> Zablokuj
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
     <nav class="lumina-mobile-nav" aria-label="Nawigacja mobilna">
         <a href="lumina.html" class="m-nav-item">
             <i class="fa-solid fa-compass"></i>
@@ -2936,6 +2974,50 @@
         function copyProfileLink() {
             navigator.clipboard.writeText(window.location.href);
             showToast('Link do profilu został skopiowany do schowka! 🔗');
+        }
+
+        // ── Community Safety & Moderation Handlers (Etap 4) ──
+        function openReportProfileModal() {
+            document.getElementById('reportProfileDetails').value = '';
+            document.getElementById('reportProfileModal').classList.add('open');
+        }
+
+        async function handleReportProfileSubmit(e) {
+            e.preventDefault();
+            const slug = getRequestedUserSlug();
+            const cur = getProfileData();
+            const reason = document.getElementById('reportProfileReason').value;
+            const details = document.getElementById('reportProfileDetails').value.trim();
+
+            closeModal('reportProfileModal');
+
+            if (window.LuminaDB) {
+                const res = await window.LuminaDB.reportContent({
+                    targetType: 'profile',
+                    targetId: slug,
+                    targetAuthorId: cur.name || slug,
+                    reason: reason,
+                    details: details
+                });
+                showToast(res.message);
+            } else {
+                showToast('Zgłoszenie profilu przesłane do moderatorów LUMINA! 🛡️🕊️');
+            }
+        }
+
+        async function handleBlockCurrentProfile() {
+            const slug = getRequestedUserSlug();
+            const cur = getProfileData();
+            const confirmed = confirm(`Czy na pewno chcesz zablokować profil "${cur.name}"? Treści tej osoby nie będą dla Ciebie widoczne.`);
+            if (!confirmed) return;
+
+            closeModal('reportProfileModal');
+
+            if (window.LuminaDB) {
+                await window.LuminaDB.blockUser(slug);
+            }
+            showToast(`Profil ${cur.name} został zablokowany. 🚫`);
+            setTimeout(() => { window.location.href = 'lumina.html'; }, 1500);
         }
 
         function togglePostLike(btn) {

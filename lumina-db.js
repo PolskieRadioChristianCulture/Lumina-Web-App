@@ -595,6 +595,86 @@ export function subscribeToUserMatches(userId, onUpdate) {
     }
 }
 
+// ══════════════════════════════════════════════════════════════════════════
+// 6. COMMUNITY SAFETY & MODERATION (Zgłaszanie, Blokowanie, Bezpieczeństwo)
+// ══════════════════════════════════════════════════════════════════════════
+
+export async function reportContent({ targetType, targetId, targetAuthorId, reason, details }) {
+    const user = currentUserState;
+    const reporterId = user ? user.uid : (localStorage.getItem('lumina_guest_id') || 'guest');
+    const reportData = {
+        reporterId: reporterId,
+        reporterName: currentProfileState?.name || user?.displayName || 'Anonimowy Zgłaszający',
+        targetType: targetType || 'post', // 'post' | 'profile' | 'message'
+        targetId: targetId || '',
+        targetAuthorId: targetAuthorId || '',
+        reason: reason || 'Niewłaściwa treść',
+        details: details || '',
+        status: 'pending',
+        timestamp: serverTimestamp(),
+        createdAtStr: new Date().toISOString()
+    };
+
+    if (db) {
+        try {
+            await addDoc(collection(db, 'lumina_reports'), reportData);
+        } catch(err) {
+            console.warn('Lumina Report submission notice:', err.message);
+        }
+    }
+
+    return {
+        success: true,
+        message: 'Dziękujemy. Twoje zgłoszenie zostało przesłane do moderatorów społeczności LUMINA. Dbamy o czystość i Boży pokój na platformie! 🛡️🕊️'
+    };
+}
+
+export function getBlockedUsers() {
+    try {
+        return JSON.parse(localStorage.getItem('lumina_blocked_users') || '[]');
+    } catch(e) {
+        return [];
+    }
+}
+
+export function isUserBlocked(targetIdOrSlug) {
+    if (!targetIdOrSlug) return false;
+    const blocked = getBlockedUsers();
+    return blocked.includes(targetIdOrSlug.toLowerCase());
+}
+
+export async function blockUser(targetIdOrSlug) {
+    if (!targetIdOrSlug) return false;
+    const normalized = targetIdOrSlug.toLowerCase();
+    const blocked = getBlockedUsers();
+    if (!blocked.includes(normalized)) {
+        blocked.push(normalized);
+        localStorage.setItem('lumina_blocked_users', JSON.stringify(blocked));
+    }
+
+    const user = currentUserState;
+    if (db && user) {
+        try {
+            await setDoc(doc(db, 'lumina_user_blocks', `${user.uid}_${normalized}`), {
+                blockerUid: user.uid,
+                blockedTargetId: normalized,
+                timestamp: serverTimestamp()
+            });
+        } catch(e) {}
+    }
+
+    return true;
+}
+
+export function unblockUser(targetIdOrSlug) {
+    if (!targetIdOrSlug) return false;
+    const normalized = targetIdOrSlug.toLowerCase();
+    let blocked = getBlockedUsers();
+    blocked = blocked.filter(id => id !== normalized);
+    localStorage.setItem('lumina_blocked_users', JSON.stringify(blocked));
+    return true;
+}
+
 // Global window attachment for seamless cross-script integration
 window.LuminaDB = {
     loginWithGoogle,
@@ -617,5 +697,10 @@ window.LuminaDB = {
     sendDirectMessageToCloud,
     subscribeToUserChats,
     recordProfileLike,
-    subscribeToUserMatches
+    subscribeToUserMatches,
+    reportContent,
+    getBlockedUsers,
+    isUserBlocked,
+    blockUser,
+    unblockUser
 };

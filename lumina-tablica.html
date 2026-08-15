@@ -227,11 +227,11 @@
             cursor: pointer;
         }
 
-        /* ──────────────────── MAIN FEED CONTAINER (RESPONSIVE GRID) ──────────────────── */
+        /* ──────────────────── MAIN FEED CONTAINER (ELEGANT SINGLE-COLUMN FEED) ──────────────────── */
         .board-container {
-            max-width: 1200px;
+            max-width: 740px;
             margin: 0 auto;
-            padding: 24px 18px 80px;
+            padding: 24px 16px 80px;
         }
 
         /* ──────────────────── HERO HEADER ──────────────────── */
@@ -360,12 +360,12 @@
         .btn-camp-ann { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
         .btn-camp-event { background: linear-gradient(135deg, #10b981, #047857); }
 
-        /* ──────────────────── COMPACT MULTI-COLUMN 1:1 FEED GRID ──────────────────── */
+        /* ──────────────────── SINGLE-COLUMN 1:1 VERTICAL FEED STREAM ──────────────────── */
         .feed-stream {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 22px;
-            align-items: start;
+            display: flex;
+            flex-direction: column;
+            gap: 26px;
+            width: 100%;
         }
 
         .post-card-1x1 {
@@ -1079,6 +1079,49 @@
         </div>
     </div>
 
+    <!-- ══════════ REPORT & SAFETY MODAL (Etap 4) ══════════ -->
+    <div class="modal-overlay" id="reportModal" style="z-index: 10005;">
+        <div class="modal-card" style="max-width: 460px; padding: 24px;">
+            <button class="modal-close-btn" onclick="closeModal('reportModal')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+                <div style="width:40px; height:40px; border-radius:50%; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); display:flex; align-items:center; justify-content:center; color:#ef4444; font-size:1.1rem;">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <h3 style="font-size:1.15rem; font-weight:800; margin:0; color:#fff; font-family:'Outfit',sans-serif;">Zgłoś Naruszenie Zasad</h3>
+                    <div style="font-size:0.72rem; color:#94a3b8;">Dbamy o czystość i Boży pokój w społeczności</div>
+                </div>
+            </div>
+
+            <form onsubmit="handleReportSubmit(event)">
+                <input type="hidden" id="reportTargetType" value="post">
+                <input type="hidden" id="reportTargetId" value="">
+                <input type="hidden" id="reportTargetAuthor" value="">
+
+                <label style="display:block; font-size:0.78rem; font-weight:700; color:#cbd5e1; margin-bottom:6px;">Powód zgłoszenia:</label>
+                <select id="reportReason" style="width:100%; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:0.84rem; margin-bottom:14px; outline:none;" required>
+                    <option value="Treści niezgodne z chrześcijańskimi wartościami" style="background:#0f172a;">Treści niezgodne z chrześcijańskimi wartościami</option>
+                    <option value="Wulgaryzmy / Nękanie / Brak szacunku" style="background:#0f172a;">Wulgaryzmy / Nękanie / Brak szacunku</option>
+                    <option value="Spam / Fałszywy profil / Komercja" style="background:#0f172a;">Spam / Fałszywy profil / Komercja</option>
+                    <option value="Próba wyłudzenia / Oszustwo" style="background:#0f172a;">Próba wyłudzenia / Oszustwo</option>
+                    <option value="Inny powód" style="background:#0f172a;">Inny powód</option>
+                </select>
+
+                <label style="display:block; font-size:0.78rem; font-weight:700; color:#cbd5e1; margin-bottom:6px;">Dodatkowe informacje (opcjonalnie):</label>
+                <textarea id="reportDetails" placeholder="Opisz krótko sytuację..." style="width:100%; height:80px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:0.82rem; margin-bottom:18px; outline:none; resize:none;"></textarea>
+
+                <div style="display:flex; gap:10px;">
+                    <button type="submit" style="flex:1; padding:12px; border-radius:24px; background:linear-gradient(90deg,#ef4444,#dc2626); border:none; color:#fff; font-weight:800; font-family:inherit; font-size:0.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <i class="fa-solid fa-flag"></i> Prześlij Zgłoszenie
+                    </button>
+                    <button type="button" onclick="closeModal('reportModal')" style="padding:12px 18px; border-radius:24px; background:rgba(255,255,255,0.08); border:none; color:#94a3b8; font-weight:700; font-family:inherit; font-size:0.84rem; cursor:pointer;">
+                        Anuluj
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ══════════ TOAST NOTIFICATION ══════════ -->
     <div class="toast" id="toast"><i class="fa-solid fa-check-circle"></i> <span id="toastMsg">Sukces!</span></div>
 
@@ -1379,14 +1422,20 @@
                 cIndex++;
             }
 
-            // Filter
+            // Filter by category
             if (currentFilter !== 'all') {
                 combined = combined.filter(item => item.type === currentFilter);
             }
 
+            // Filter out blocked users (Etap 4)
+            combined = combined.filter(item => {
+                const authorKey = item.authorSlug || item.author;
+                return !window.LuminaDB?.isUserBlocked(authorKey);
+            });
+
             if (combined.length === 0) {
                 container.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align:center; padding:50px 20px; background:var(--bg-card); border-radius:20px; border:1px solid var(--border-glass);">
+                    <div style="text-align:center; padding:50px 20px; background:var(--bg-card); border-radius:20px; border:1px solid var(--border-glass);">
                         <div style="font-size:2.4rem; margin-bottom:10px;">🕊️</div>
                         <h3 style="font-size:1.2rem; font-family:'Outfit',sans-serif; margin-bottom:6px;">Brak wpisów w wybranej kategorii</h3>
                         <p style="font-size:0.85rem; color:var(--text-secondary);">Wybierz inną zakładkę lub dodaj nową publikację.</p>
@@ -1404,7 +1453,7 @@
                            </div>`
                         : '';
                     return `
-                        <article class="post-card-1x1" id="${item.id}" style="grid-column: 1 / -1; max-width: 680px; margin: 0 auto; width: 100%;">
+                        <article class="post-card-1x1" id="${item.id}" style="width: 100%;">
                             <!-- Top Header -->
                             <div class="post-top-header">
                                 <a href="lumina.cezaryrgowski.html" class="post-author-box">
@@ -1489,7 +1538,10 @@
                                     <div class="post-author-role">${item.time || item.createdAt || 'Dzisiaj'}</div>
                                 </div>
                             </a>
-                            <div>${badgeHtml}</div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <div>${badgeHtml}</div>
+                                <button type="button" onclick="openReportModal('post', '${item.id}', '${item.authorSlug || item.author}')" title="Zgłoś / Moderacja" style="background:none; border:none; color:#64748b; cursor:pointer; font-size:0.75rem; padding:4px;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                            </div>
                         </div>
 
                         <!-- 1:1 Square Media -->
@@ -1513,7 +1565,10 @@
                                 <button class="post-action-btn" onclick="toggleFeedAmen(this)"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 9}</span> Amen</button>
                                 <button class="post-action-btn" onclick="toggleComments('${item.id}')"><i class="fa-solid fa-comment-dots"></i> Komentarze</button>
                             </div>
-                            <button class="post-action-btn" onclick="sharePostLink('${item.id}')" title="Udostępnij wpis"><i class="fa-solid fa-share-nodes"></i></button>
+                            <div style="display:flex; gap:4px;">
+                                <button class="post-action-btn" onclick="openReportModal('post', '${item.id}', '${item.authorSlug || item.author}')" title="Zgłoś naruszenie"><i class="fa-solid fa-flag"></i></button>
+                                <button class="post-action-btn" onclick="sharePostLink('${item.id}')" title="Udostępnij wpis"><i class="fa-solid fa-share-nodes"></i></button>
+                            </div>
                         </div>
 
 
@@ -1916,6 +1971,51 @@
                     text: text
                 });
             }
+        }
+
+        // ── Community Safety & Moderation Handlers (Etap 4) ──
+        function openReportModal(targetType, targetId, targetAuthor) {
+            document.getElementById('reportTargetType').value = targetType || 'post';
+            document.getElementById('reportTargetId').value = targetId || '';
+            document.getElementById('reportTargetAuthor').value = targetAuthor || '';
+            document.getElementById('reportDetails').value = '';
+            document.getElementById('reportModal').classList.add('open');
+        }
+
+        async function handleReportSubmit(e) {
+            e.preventDefault();
+            const targetType = document.getElementById('reportTargetType').value;
+            const targetId = document.getElementById('reportTargetId').value;
+            const targetAuthor = document.getElementById('reportTargetAuthor').value;
+            const reason = document.getElementById('reportReason').value;
+            const details = document.getElementById('reportDetails').value.trim();
+
+            closeModal('reportModal');
+
+            if (window.LuminaDB) {
+                const res = await window.LuminaDB.reportContent({
+                    targetType,
+                    targetId,
+                    targetAuthorId: targetAuthor,
+                    reason,
+                    details
+                });
+                showToast(res.message);
+            } else {
+                showToast('Zgłoszenie zostało przesłane do moderatorów LUMINA! 🛡️🕊️');
+            }
+        }
+
+        async function handleBlockAuthor(authorSlugOrName) {
+            if (!authorSlugOrName) return;
+            const confirmed = confirm(`Czy na pewno chcesz zablokować użytkownika "${authorSlugOrName}"? Jego wpisy i profil zostaną ukryte.`);
+            if (!confirmed) return;
+
+            if (window.LuminaDB) {
+                await window.LuminaDB.blockUser(authorSlugOrName);
+            }
+            showToast(`Użytkownik ${authorSlugOrName} został zablokowany. 🚫`);
+            renderFeed();
         }
 
         // Close modals on backdrop click
