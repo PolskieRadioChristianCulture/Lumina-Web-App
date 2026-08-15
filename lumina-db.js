@@ -954,6 +954,34 @@ export function extractYouTubeId(url) {
     return (match && match[1]) ? match[1] : null;
 }
 
+export const LUMINA_HANDLES = {
+    'cezary': { slug: 'cezaryrgowski', name: 'Cezary Rogowski', url: 'lumina.cezaryrgowski.html', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel CC' },
+    'cezaryrgowski': { slug: 'cezaryrgowski', name: 'Cezary Rogowski', url: 'lumina.cezaryrgowski.html', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel CC' },
+    'cezaryrogowski': { slug: 'cezaryrgowski', name: 'Cezary Rogowski', url: 'lumina.cezaryrgowski.html', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel CC' },
+    'wioletta': { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', url: 'lumina.wiolettarogowska.html', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Współzałożycielka CC' },
+    'wiolettarogowska': { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', url: 'lumina.wiolettarogowska.html', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Współzałożycielka CC' },
+    'ccwomen': { slug: 'u_ccwomen_9055', name: 'CC Women • YouTube', url: 'lumina-profile.html?u=u_ccwomen_9055', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Kanał CC Women' },
+    'women': { slug: 'u_ccwomen_9055', name: 'CC Women • YouTube', url: 'lumina-profile.html?u=u_ccwomen_9055', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Kanał CC Women' },
+    'cc_women': { slug: 'u_ccwomen_9055', name: 'CC Women • YouTube', url: 'lumina-profile.html?u=u_ccwomen_9055', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Kanał CC Women' },
+    'radiocc': { slug: 'radio_cc', name: 'Radio Christian Culture', url: 'index.html', avatar: 'lumina_icon.jpg', badge: '📻 Radio Live' },
+    'radio': { slug: 'radio_cc', name: 'Radio Christian Culture', url: 'index.html', avatar: 'lumina_icon.jpg', badge: '📻 Radio Live' },
+    'lumina': { slug: 'lumina_official', name: 'LUMINA Społeczność', url: 'lumina-tablica.html', avatar: 'lumina_icon.jpg', badge: '🕊️ Tablica Portalu' },
+    'noemi': { slug: 'noemi', name: 'Noemi', url: 'lumina-profile.html?u=noemi', avatar: 'avatar_noemi.jpg', badge: '🌿 Misja CC' },
+    'dawid': { slug: 'dawid', name: 'Dawid', url: 'lumina-profile.html?u=dawid', avatar: 'avatar_sara.jpg', badge: '🎵 Misja CC' },
+    'tomek': { slug: 'tomek', name: 'Tomasz', url: 'lumina-profile.html?u=tomek', avatar: 'avatar_widget_tomek.jpg', badge: '🌲 Pasjonat Gór' }
+};
+
+export function resolveMentionHandle(handle) {
+    const clean = (handle || '').toLowerCase().replace(/^[@#]/, '');
+    return LUMINA_HANDLES[clean] || {
+        slug: clean,
+        name: '@' + clean,
+        url: `lumina-profile.html?u=${clean}`,
+        avatar: 'lumina_icon.jpg',
+        badge: 'Profil LUMINA'
+    };
+}
+
 export function formatRichTextAndMedia(rawText) {
     if (!rawText) return { html: '', embedHtml: '', urls: [] };
     
@@ -966,6 +994,17 @@ export function formatRichTextAndMedia(rawText) {
         let display = url.replace(/^https?:\/\/(www\.)?/, '');
         if (display.length > 38) display = display.substring(0, 35) + '...';
         return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="post-rich-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>`;
+    });
+
+    // Replace @mentions with clickable profile pills
+    formattedText = formattedText.replace(/@([a-zA-Z0-9_]+)/g, (match, handle) => {
+        const hInfo = resolveMentionHandle(handle);
+        return `<a href="${hInfo.url}" class="lumina-mention-pill" title="Przejdź do profilu: ${hInfo.name}" onclick="event.stopPropagation()"><i class="fa-solid fa-at"></i>${handle}</a>`;
+    });
+
+    // Replace #hashtags with clickable search pills
+    formattedText = formattedText.replace(/#([a-zA-Z0-9_ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)/g, (match, tag) => {
+        return `<a href="lumina-tablica.html?q=%23${encodeURIComponent(tag)}" class="lumina-hashtag-pill" title="Filtruj wpisy #${tag}" onclick="event.stopPropagation()"><i class="fa-solid fa-hashtag"></i>${tag}</a>`;
     });
 
     // Replace linebreaks with <br>
@@ -1071,6 +1110,8 @@ window.LuminaDB = {
     setActiveMissionPersona,
     publishAsMissionAccount,
     extractYouTubeId,
-    formatRichTextAndMedia
+    formatRichTextAndMedia,
+    LUMINA_HANDLES,
+    resolveMentionHandle
 };
 

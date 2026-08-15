@@ -504,6 +504,50 @@
             box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
         }
 
+        .lumina-mention-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.45);
+            color: #c084fc;
+            font-weight: 800;
+            font-size: 0.88em;
+            text-decoration: none;
+            transition: all 0.2s;
+            vertical-align: baseline;
+        }
+        .lumina-mention-pill:hover {
+            background: #a855f7;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(168, 85, 247, 0.4);
+        }
+
+        .lumina-hashtag-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: rgba(56, 189, 248, 0.16);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #38bdf8;
+            font-weight: 800;
+            font-size: 0.88em;
+            text-decoration: none;
+            transition: all 0.2s;
+            vertical-align: baseline;
+        }
+        .lumina-hashtag-pill:hover {
+            background: #0284c7;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(56, 189, 248, 0.4);
+        }
+
         /* Responsive YouTube / Video Embed */
         .rich-youtube-embed {
             width: 100%;
@@ -983,12 +1027,13 @@
         <!-- ══════════ FOUNDER & MISSION PERSONA PUBLISHER HUB ══════════ -->
         <div class="founder-mission-bar" id="founderMissionHub">
             <div class="founder-info-side">
-                <img src="avatar_new1.jpg" alt="Persona" class="founder-badge-avatar" id="activePersonaAvatar">
+                <img src="avatar_cezary_official.jpg" alt="Persona" class="founder-badge-avatar" id="activePersonaAvatar">
                 <div>
                     <div style="font-size:0.72rem; color:#facc15; font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">Występujesz jako:</div>
                     <select id="personaSelector" onchange="handlePersonaSelectChange(this.value)" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; font-weight:800; font-size:0.85rem; padding:4px 10px; border-radius:8px; font-family:inherit; cursor:pointer;">
                         <option value="cezary_rogowski" style="background:#0f172a;">👑 Cezary Rogowski (Założyciel CC)</option>
                         <option value="wioletta_rogowska" style="background:#0f172a;">🌸 Wioletta Rogowska (Współzałożycielka CC)</option>
+                        <option value="cc_women" style="background:#0f172a;">🌸 CC Women (Kanał YouTube)</option>
                         <option value="radio_cc" style="background:#0f172a;">📻 Polskie Radio Christian Culture</option>
                         <option value="lumina_official" style="background:#0f172a;">🕊️ LUMINA • Oficjalna Redakcja</option>
                         <option value="noemi_misja" style="background:#0f172a;">🌿 Noemi (Konto Misyjne)</option>
@@ -1001,6 +1046,9 @@
                 <button type="button" class="btn-camp-quick btn-camp-promo" onclick="openCampaignModal('promo')"><i class="fa-solid fa-bullhorn"></i> Reklama / Kampania</button>
             </div>
         </div>
+
+        <!-- Query Filter Banner -->
+        <div id="queryFilterBanner" style="display:none; align-items:center; justify-content:space-between; padding:12px 18px; border-radius:14px; background:rgba(168,85,247,0.16); border:1px solid rgba(168,85,247,0.4); margin-bottom:16px; font-size:0.88rem; color:#e2e8f0;"></div>
 
         <!-- ══════════ FEED STREAM ══════════ -->
         <div class="feed-stream" id="feedStream1x1">
@@ -1622,6 +1670,35 @@
                 cIndex++;
             }
 
+            // Filter by search query (?q=... or #tag/@mention)
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeQuery = urlParams.get('q') || window._activeFeedQuery;
+            const qBanner = document.getElementById('queryFilterBanner');
+            if (qBanner) {
+                if (activeQuery) {
+                    qBanner.style.display = 'flex';
+                    qBanner.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-magnifying-glass" style="color:#c084fc;"></i>
+                            <span>Filtrowanie wpisów: <b style="color:#facc15;">${activeQuery}</b></span>
+                        </div>
+                        <button onclick="clearQueryFilter()" style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); color:#fff; border-radius:20px; padding:4px 12px; cursor:pointer; font-size:0.75rem; font-weight:800; font-family:inherit;"><i class="fa-solid fa-xmark"></i> Wyczyść</button>
+                    `;
+                } else {
+                    qBanner.style.display = 'none';
+                }
+            }
+
+            if (activeQuery) {
+                const qClean = activeQuery.toLowerCase().replace(/^[@#]/, '');
+                combined = combined.filter(item => {
+                    const textMatch = (item.text || item.desc || '').toLowerCase().includes(qClean);
+                    const titleMatch = (item.title || '').toLowerCase().includes(qClean);
+                    const authorMatch = (item.author || '').toLowerCase().includes(qClean) || (item.authorSlug || '').toLowerCase().includes(qClean);
+                    return textMatch || titleMatch || authorMatch;
+                });
+            }
+
             // Filter by category
             if (currentFilter !== 'all') {
                 combined = combined.filter(item => item.type === currentFilter);
@@ -1802,6 +1879,14 @@
             currentFilter = type;
             document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
+            renderFeed();
+        }
+
+        function clearQueryFilter() {
+            window._activeFeedQuery = null;
+            const url = new URL(window.location.href);
+            url.searchParams.delete('q');
+            window.history.replaceState({}, '', url.pathname + (url.search ? url.search : ''));
             renderFeed();
         }
 
