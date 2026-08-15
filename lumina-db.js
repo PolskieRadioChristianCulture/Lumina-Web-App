@@ -34,6 +34,7 @@ import {
     increment
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { getAnalytics, isSupported as isAnalyticsSupported } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js';
+import { getMessaging, getToken, onMessage, isSupported as isMessagingSupported } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
 
 // ── Oficjalna Produkcyjna Konfiguracja Firebase (lumina-cc) ──
 const LUMINA_FIREBASE_CONFIG = {
@@ -47,10 +48,13 @@ const LUMINA_FIREBASE_CONFIG = {
     measurementId: "G-6440T9VBQB"
 };
 
+const LUMINA_VAPID_KEY = "BD_YXGFbonkuMphLzVdYqADfcPX4TMnN4PowO2eu673JnZQR3RJRMM3F8nJN9Zpk8qQlSb4VEcFN39KXlZ85TPw";
+
 let app = null;
 let db = null;
 let auth = null;
 let analytics = null;
+let messaging = null;
 const googleProvider = new GoogleAuthProvider();
 
 try {
@@ -59,6 +63,20 @@ try {
     auth = getAuth(app);
     isAnalyticsSupported().then(supported => {
         if (supported && app) analytics = getAnalytics(app);
+    }).catch(() => {});
+    isMessagingSupported().then(supported => {
+        if (supported && app) {
+            messaging = getMessaging(app);
+            onMessage(messaging, (payload) => {
+                console.log('Foreground Push Message:', payload);
+                const title = payload.notification?.title || 'LUMINA • Nowa Wiadomość 💌';
+                const body = payload.notification?.body || 'Nowa aktywność w społeczności.';
+                window.dispatchEvent(new CustomEvent('lumina-push-message', { detail: { title, body, payload } }));
+                if (typeof window.showToast === 'function') {
+                    window.showToast(`💌 ${title}: ${body}`);
+                }
+            });
+        }
     }).catch(() => {});
 } catch(e) {
     try {
@@ -70,6 +88,41 @@ try {
         }).catch(() => {});
     } catch(err) {
         console.warn('Lumina Firebase Init Warning:', err);
+    }
+}
+
+// ── Web Push Notifications (FCM) Permission & Token Request ──
+export async function requestNotificationPermission(userUid) {
+    if (!('Notification' in window)) return null;
+    try {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            if (!messaging && isMessagingSupported) {
+                const supported = await isMessagingSupported();
+                if (supported && app) messaging = getMessaging(app);
+            }
+            if (messaging) {
+                const registration = await navigator.serviceWorker.register('firebase-messaging-sw.js');
+                const token = await getToken(messaging, {
+                    vapidKey: LUMINA_VAPID_KEY,
+                    serviceWorkerRegistration: registration
+                });
+                if (token && userUid && db) {
+                    try {
+                        await updateDoc(doc(db, 'lumina_profiles', userUid), {
+                            fcmToken: token,
+                            notificationsEnabled: true,
+                            updatedAt: serverTimestamp()
+                        });
+                    } catch(e) {}
+                }
+                return token;
+            }
+        }
+        return null;
+    } catch(err) {
+        console.warn('FCM Token request warning:', err);
+        return null;
     }
 }
 
@@ -895,6 +948,7 @@ window.LuminaDB = {
     isUserBlocked,
     blockUser,
     unblockUser,
+    requestNotificationPermission,
     extractYouTubeId,
     formatRichTextAndMedia
 };
