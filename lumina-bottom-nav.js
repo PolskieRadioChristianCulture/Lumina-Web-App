@@ -469,9 +469,8 @@
 
     document.body.insertAdjacentHTML('beforeend', navHtml + `
 
-    <!-- ══════════ TAJNY SUBTELNY PRZYCISK ADMINISTRATORA ══════════ -->
-    <div id="luminaSecretAdminBtn" onclick="window.triggerSecretAdminPrompt(event)" title="LUMINA Security" style="position:fixed; bottom:10px; right:8px; width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); color:rgba(255,255,255,0.18); font-size:10px; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:999999; transition:all 0.25s ease;" onmouseenter="this.style.color='#facc15'; this.style.borderColor='rgba(250,204,21,0.4)'; this.style.background='rgba(250,204,21,0.12)'; this.style.transform='scale(1.15)';" onmouseleave="this.style.color='rgba(255,255,255,0.18)'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)'; this.style.transform='scale(1)';">
-        <i class="fa-solid fa-crown"></i>
+    <!-- ══════════ TAJNY SUBTELNY PUNKT ADMINISTRATORA (LEWA STRONA, BEZ EFEKTÓW HOVER) ══════════ -->
+    <div id="luminaSecretAdminBtn" onclick="window.triggerSecretAdminPrompt(event)" style="position:fixed; bottom:10px; left:8px; width:24px; height:24px; border-radius:50%; background:transparent; border:none; color:transparent; cursor:default; z-index:999999; user-select:none; -webkit-tap-highlight-color:transparent; outline:none;">
     </div>
 `);
 })();
