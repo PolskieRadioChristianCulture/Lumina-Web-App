@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
     <!-- Google Analytics -->
@@ -2560,10 +2560,29 @@
 
         // ── Logout ──
         window.handleLogout = async function() {
-            if (window.LuminaDB) {
-                await window.LuminaDB.logoutUser();
+            try {
+                if (window.LuminaDB) {
+                    await window.LuminaDB.logoutUser();
+                }
+            } catch(e) {
+                console.warn('Logout notice:', e);
             }
-            showToast('Wylogowano z portalu LUMINA');
+            // Clear all local session owner auth tokens
+            for (let i = sessionStorage.length - 1; i >= 0; i--) {
+                const k = sessionStorage.key(i);
+                if (k && k.startsWith('lumina_auth_owner_')) {
+                    sessionStorage.removeItem(k);
+                }
+            }
+            localStorage.removeItem('lumina_current_user_profile');
+            
+            // Immediate UI update
+            const profilePill = document.getElementById('userNavProfile');
+            const authBtn = document.getElementById('authCtaBtn');
+            if (profilePill) profilePill.style.display = 'none';
+            if (authBtn) authBtn.style.display = 'block';
+
+            showToast('Wylogowano pomyślnie z portalu LUMINA 👋');
         };
     </script>
 
@@ -2729,17 +2748,7 @@
                     el.textContent = `"${p.bio ? (p.bio.length > 85 ? p.bio.substring(0, 85) + '...' : p.bio) : (p.job || 'Założyciel Christian Culture')}"`;
                 });
 
-                // Sync with Navbar Profile Widget
-                const navProfile = document.getElementById('userNavProfile');
-                const authBtn = document.getElementById('authCtaBtn');
-                const navName = document.getElementById('userNavName');
-                const navAvatar = document.getElementById('userNavAvatar');
-                if (navProfile && navName) {
-                    navProfile.style.display = 'flex';
-                    if (authBtn) authBtn.style.display = 'none';
-                    navName.textContent = p.name;
-                    if (navAvatar) navAvatar.src = 'avatar_cezary_official.jpg';
-                }
+
             } catch(e) {
                 console.error("Sync Cezary error:", e);
             }
@@ -3399,3 +3408,4 @@
     </script>
 </body>
 </html>
+
