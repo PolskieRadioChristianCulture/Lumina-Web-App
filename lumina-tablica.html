@@ -1398,7 +1398,7 @@
             try {
                 const cJson = localStorage.getItem('lumina_profile_cezaryrgowski');
                 const cProfile = cJson ? JSON.parse(cJson) : null;
-                const cAvatar = (cProfile && cProfile.avatar) ? cProfile.avatar : 'avatar_new1.jpg';
+                const cAvatar = (cProfile && cProfile.avatar && !cProfile.avatar.includes('avatar_new1')) ? cProfile.avatar : 'avatar_cezary_official.jpg';
                 const cName = (cProfile && cProfile.name) ? cProfile.name : 'Cezary Rogowski';
                 
                 posts.push({
@@ -1411,7 +1411,7 @@
                     time: 'Dzisiaj, 18:30 • 🌍 Publiczny',
                     title: 'Fundament Bożej Relacji',
                     text: 'Witaj na portalu LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku. Szukajmy bratnich dusz, z którymi będziemy wspólnie służyć, modlić się i budować Boże Królestwo! ☕✨',
-                    image: cAvatar || 'avatar_new1.jpg',
+                    image: cAvatar || 'avatar_cezary_official.jpg',
                     likes: 42,
                     amen: 38
                 });

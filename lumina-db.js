@@ -525,7 +525,7 @@ export const MISSION_ACCOUNTS = {
         id: 'cezary_rogowski',
         name: 'Cezary Rogowski',
         role: '👑 Założyciel Christian Culture',
-        avatar: 'avatar_new1.jpg',
+        avatar: 'avatar_cezary_official.jpg',
         slug: 'cezaryrgowski',
         profileUrl: 'lumina.cezaryrgowski.html',
         badge: '👑 Założyciel CC',
