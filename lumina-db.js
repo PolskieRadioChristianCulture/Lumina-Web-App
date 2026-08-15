@@ -11,7 +11,9 @@ import {
     createUserWithEmailAndPassword, 
     signOut, 
     onAuthStateChanged,
-    updateProfile
+    updateProfile,
+    RecaptchaVerifier,
+    signInWithPhoneNumber
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { 
     getFirestore, 
@@ -209,6 +211,92 @@ export async function logoutUser() {
         localStorage.removeItem('lumina_current_user_profile');
     } catch(err) {
         console.error('Lumina Logout error:', err);
+    }
+}
+
+// ── Phone (SMS OTP) Authentication ──
+export function setupPhoneRecaptcha(containerId = 'recaptcha-container') {
+    if (!auth) throw new Error('Baza autoryzacji niedostępna.');
+    if (window._luminaRecaptchaVerifier) {
+        return window._luminaRecaptchaVerifier;
+    }
+    // Check if element exists or create a hidden container
+    let containerEl = document.getElementById(containerId);
+    if (!containerEl) {
+        containerEl = document.createElement('div');
+        containerEl.id = containerId;
+        document.body.appendChild(containerEl);
+    }
+    window._luminaRecaptchaVerifier = new RecaptchaVerifier(auth, containerId, {
+        'size': 'invisible',
+        'callback': () => {
+            console.log('reCAPTCHA verified');
+        },
+        'expired-callback': () => {
+            console.warn('reCAPTCHA expired');
+        }
+    });
+    return window._luminaRecaptchaVerifier;
+}
+
+export async function sendPhoneVerificationCode(phoneNumber, appVerifier) {
+    if (!auth) throw new Error('Baza autoryzacji niedostępna.');
+    try {
+        const verifier = appVerifier || setupPhoneRecaptcha();
+        const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, verifier);
+        window._luminaPhoneConfirmationResult = confirmationResult;
+        return confirmationResult;
+    } catch(err) {
+        console.error('Lumina Phone Auth Send Code Error:', err);
+        throw err;
+    }
+}
+
+export async function confirmPhoneVerificationCode(confirmationResult, verificationCode, basicData) {
+    if (!confirmationResult && window._luminaPhoneConfirmationResult) {
+        confirmationResult = window._luminaPhoneConfirmationResult;
+    }
+    if (!confirmationResult) throw new Error('Brak aktywnej sesji weryfikacji SMS.');
+    try {
+        const result = await confirmationResult.confirm(verificationCode);
+        const user = result.user;
+        
+        let existingProfile = null;
+        try {
+            const docSnap = await getDoc(doc(db, 'lumina_profiles', user.uid));
+            if (docSnap.exists()) {
+                existingProfile = docSnap.data();
+            }
+        } catch(e) {}
+
+        if (!existingProfile && basicData) {
+            const initialProfile = {
+                uid: user.uid,
+                phoneNumber: user.phoneNumber,
+                name: basicData.name || 'Użytkownik LUMINA',
+                age: basicData.age || 25,
+                city: basicData.city || 'Polska',
+                gender: basicData.gender || 'kobieta',
+                lookingFor: basicData.lookingFor || 'mezczyzna',
+                denom: basicData.denom || 'Chrześcijanin',
+                status: basicData.status || 'Panna/Kawaler',
+                avatar: basicData.avatar || 'lumina-icon-192.png',
+                cover: 'lumina_hero_clean.jpg',
+                visibility: 'public',
+                matchScore: '96%',
+                isVerified: true,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            };
+            await setDoc(doc(db, 'lumina_profiles', user.uid), initialProfile);
+            currentProfileState = initialProfile;
+            existingProfile = initialProfile;
+        }
+
+        return { user, profile: existingProfile, isNewUser: !existingProfile };
+    } catch(err) {
+        console.error('Lumina Phone Auth Confirm Error:', err);
+        throw err;
     }
 }
 
@@ -772,6 +860,9 @@ window.LuminaDB = {
     registerWithEmail,
     loginWithEmail,
     logoutUser,
+    setupPhoneRecaptcha,
+    sendPhoneVerificationCode,
+    confirmPhoneVerificationCode,
     onAuthChange,
     getCurrentUser,
     getCurrentProfile,

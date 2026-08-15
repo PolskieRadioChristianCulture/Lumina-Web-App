@@ -1780,6 +1780,29 @@
                     </div>
                     <button type="submit" class="btn-modal-submit" id="btnLoginSubmit">ZALOGUJ SIĘ ➔</button>
                 </form>
+
+                <div class="auth-divider" style="margin-top:16px;"><span>LUB PRZEZ NUMER TELEFONU</span></div>
+                
+                <button type="button" onclick="togglePhoneAuthBox()" style="width:100%; padding:11px; border-radius:24px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-weight:700; font-size:0.84rem; cursor:pointer; font-family:inherit; display:flex; align-items:center; justify-content:center; gap:8px;">
+                    <i class="fa-solid fa-mobile-screen-button" style="color:#38bdf8;"></i> Zaloguj kodem SMS (Telefon)
+                </button>
+
+                <!-- Phone Auth Box (SMS) -->
+                <div id="phoneAuthBox" style="display:none; margin-top:12px; padding:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(56,189,248,0.25); border-radius:14px;">
+                    <div style="font-size:0.78rem; color:#94a3b8; margin-bottom:8px;">Podaj numer telefonu z numerem kierunkowym (np. +48...):</div>
+                    <div style="display:flex; gap:8px; margin-bottom:10px;">
+                        <input type="tel" id="phoneAuthInput" placeholder="+48 600 000 000" style="flex:1; padding:9px 12px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#fff; font-family:inherit;">
+                        <button type="button" id="btnSendPhoneCode" onclick="handleSendPhoneCode()" style="padding:9px 14px; border-radius:8px; background:#0284c7; border:none; color:#fff; font-weight:700; font-size:0.78rem; cursor:pointer; font-family:inherit; white-space:nowrap;">Wyślij SMS</button>
+                    </div>
+                    <div id="phoneCodeVerifyRow" style="display:none;">
+                        <div style="font-size:0.78rem; color:#94a3b8; margin-bottom:6px;">Wpisz 6-cyfrowy kod z SMS:</div>
+                        <div style="display:flex; gap:8px;">
+                            <input type="text" id="phoneVerifyCodeInput" placeholder="123456" maxlength="6" style="flex:1; padding:9px 12px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#fff; font-family:inherit; letter-spacing:2px; font-weight:700; text-align:center;">
+                            <button type="button" id="btnConfirmPhoneCode" onclick="handleVerifyPhoneCode()" style="padding:9px 14px; border-radius:8px; background:#10b981; border:none; color:#fff; font-weight:700; font-size:0.78rem; cursor:pointer; font-family:inherit; white-space:nowrap;">Potwierdź ➔</button>
+                        </div>
+                    </div>
+                    <div id="recaptcha-container"></div>
+                </div>
             </div>
 
             <!-- ── PANEL 2: 3-KROKOWY KREATOR PROFILU ONBOARDING ── -->
@@ -2037,6 +2060,67 @@
                 showToast('Błąd logowania: Sprawdź poprawność e-maila lub hasła.');
             } finally {
                 if (btn) { btn.disabled = false; btn.textContent = 'ZALOGUJ SIĘ ➔'; }
+            }
+        };
+
+        // ── Phone Auth (SMS OTP) ──
+        window.togglePhoneAuthBox = function() {
+            const box = document.getElementById('phoneAuthBox');
+            if (box) {
+                box.style.display = box.style.display === 'none' ? 'block' : 'none';
+            }
+        };
+
+        let phoneConfirmationResultGlobal = null;
+
+        window.handleSendPhoneCode = async function() {
+            const phone = document.getElementById('phoneAuthInput').value.trim();
+            const btn = document.getElementById('btnSendPhoneCode');
+            if (!phone || phone.length < 9) {
+                showToast('Podaj poprawny numer telefonu z numerem kierunkowym (np. +48...)');
+                return;
+            }
+            if (btn) { btn.disabled = true; btn.textContent = '⏳ Wysyłanie...'; }
+
+            try {
+                if (window.LuminaDB) {
+                    phoneConfirmationResultGlobal = await window.LuminaDB.sendPhoneVerificationCode(phone);
+                    document.getElementById('phoneCodeVerifyRow').style.display = 'block';
+                    showToast('Kod weryfikacyjny SMS został wysłany! 📩');
+                }
+            } catch(err) {
+                console.error('Phone code send error:', err);
+                showToast('Błąd wysyłania SMS: ' + (err.message || 'Spróbuj ponownie.'));
+            } finally {
+                if (btn) { btn.disabled = false; btn.textContent = 'Wyślij SMS'; }
+            }
+        };
+
+        window.handleVerifyPhoneCode = async function() {
+            const code = document.getElementById('phoneVerifyCodeInput').value.trim();
+            const btn = document.getElementById('btnConfirmPhoneCode');
+            if (!code || code.length !== 6) {
+                showToast('Wpisz 6-cyfrowy kod z wiadomości SMS.');
+                return;
+            }
+            if (btn) { btn.disabled = true; btn.textContent = '⏳ Weryfikacja...'; }
+
+            try {
+                if (window.LuminaDB) {
+                    const { user, profile, isNewUser } = await window.LuminaDB.confirmPhoneVerificationCode(phoneConfirmationResultGlobal, code);
+                    closeModal('authModal');
+                    if (isNewUser) {
+                        showToast(`Weryfikacja udana! Uzupełnij swój profil.`);
+                        window.location.href = `lumina-profile.html?u=${user.uid}`;
+                    } else {
+                        showToast(`Witaj ponownie, ${profile?.name || user.phoneNumber}! 🕊️✨`);
+                    }
+                }
+            } catch(err) {
+                console.error('Phone verify error:', err);
+                showToast('Nieprawidłowy kod SMS lub kod wygasł.');
+            } finally {
+                if (btn) { btn.disabled = false; btn.textContent = 'Potwierdź ➔'; }
             }
         };
 
