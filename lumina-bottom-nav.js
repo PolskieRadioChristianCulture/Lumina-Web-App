@@ -2,6 +2,7 @@
  * ══════════════════════════════════════════════════════════════════════════
  * LUMINA BOTTOM NAV PWA MODULE (lumina-bottom-nav.js)
  * Pływający Dolny Pasek Nawigacyjny UX (Mobile-First) dla Ekosystemu LUMINA
+ * 1. Odkrywaj | 2. Tablica | 3. Kanały CC (CC Network) | 4. Sklep CC | 5. Mój Profil
  * ══════════════════════════════════════════════════════════════════════════
  */
 (() => {
@@ -25,7 +26,7 @@
             display: flex !important;
             align-items: center !important;
             justify-content: space-around !important;
-            padding: 0 10px !important;
+            padding: 0 8px !important;
             padding-bottom: env(safe-area-inset-bottom, 6px) !important;
             z-index: 10000 !important;
             transition: transform 0.3s ease !important;
@@ -40,13 +41,16 @@
             text-decoration: none !important;
             color: #94a3b8 !important;
             font-family: 'Plus Jakarta Sans', sans-serif !important;
-            font-size: 0.72rem !important;
+            font-size: 0.70rem !important;
             font-weight: 700 !important;
             gap: 4px !important;
-            padding: 6px 2px !important;
+            padding: 6px 1px !important;
             position: relative !important;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
             -webkit-tap-highlight-color: transparent !important;
+            cursor: pointer !important;
+            background: none !important;
+            border: none !important;
         }
 
         .lumina-nav-tab i {
@@ -75,45 +79,42 @@
         .lumina-nav-badge {
             position: absolute !important;
             top: 2px !important;
-            right: calc(50% - 16px) !important;
+            right: calc(50% - 14px) !important;
             width: 8px !important;
             height: 8px !important;
             border-radius: 50% !important;
-            background: #ec4899 !important;
-            box-shadow: 0 0 8px #ec4899 !important;
+            background: #ef4444 !important;
+            box-shadow: 0 0 8px #ef4444 !important;
         }
 
-        /* Dedykowany podgląd centralnego przycisku Radia CC */
-        .lumina-nav-tab.tab-radio {
-            position: relative !important;
-        }
-        .lumina-nav-tab.tab-radio .radio-glow {
+        /* Centralny akcent na Kanały CC */
+        .lumina-nav-tab.tab-network .network-glow {
             position: absolute !important;
-            width: 38px !important;
-            height: 38px !important;
+            width: 36px !important;
+            height: 36px !important;
             border-radius: 50% !important;
             background: rgba(234, 179, 8, 0.12) !important;
             border: 1px dashed rgba(234, 179, 8, 0.4) !important;
-            animation: radioPulse 2.5s infinite linear !important;
+            animation: networkPulse 2.5s infinite linear !important;
             top: 4px !important;
             pointer-events: none !important;
         }
 
-        @keyframes radioPulse {
+        @keyframes networkPulse {
             0% { transform: scale(0.9); opacity: 0.7; }
             50% { transform: scale(1.15); opacity: 0.3; }
             100% { transform: scale(0.9); opacity: 0.7; }
         }
 
-        /* Dodanie bezpiecznego odstępu u dołu strony, aby treść nie była zasłonięta */
+        /* Odstęp u dołu strony */
         body {
             padding-bottom: 78px !important;
         }
 
-        /* Ukrycie na dużych monitorach jeśli nie jest w trybie responsive/mobile */
+        /* Responsywny Desktop */
         @media (min-width: 1024px) {
             .lumina-bottom-nav {
-                max-width: 540px !important;
+                max-width: 560px !important;
                 left: 50% !important;
                 right: auto !important;
                 transform: translateX(-50%) !important;
@@ -121,6 +122,31 @@
                 border: 1.5px solid rgba(250, 204, 21, 0.3) !important;
                 border-bottom: none !important;
             }
+        }
+
+        /* Modale CC Network & Sklep */
+        .cc-nav-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(7, 14, 36, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            z-index: 100001;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .cc-nav-modal.open {
+            display: flex !important;
+            animation: fadeInModal 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
     `;
 
@@ -133,7 +159,6 @@
     const pathname = window.location.pathname.toLowerCase();
     const isDiscover = pathname.includes('lumina.html') || (pathname.endsWith('/lumina') && !pathname.includes('tablica') && !pathname.includes('women'));
     const isTablica = pathname.includes('lumina-tablica');
-    const isWomen = pathname.includes('ccwomen') || pathname.includes('women');
     const isProfile = pathname.includes('lumina-profile') || pathname.includes('cezaryrgowski') || pathname.includes('wiolettarogowska');
 
     // Dynamiczny link do Mojego Profilu
@@ -147,40 +172,145 @@
 
     // 3. Wstrzyknięcie Struktury HTML
     const navHtml = `
-        <nav class="lumina-bottom-nav" id="luminaBottomNav" role="navigation" aria-label="Nawigacja mobilna LUMINA">
+        <nav class="lumina-bottom-nav" id="luminaBottomNav" role="navigation" aria-label="Nawigacja dolna LUMINA">
             <!-- 1. Odkrywaj -->
-            <a href="lumina.html" class="lumina-nav-tab ${isDiscover ? 'active' : ''}" id="navTabDiscover">
+            <a href="lumina.html" class="lumina-nav-tab ${isDiscover ? 'active' : ''}" id="navTabDiscover" title="Odkrywaj Chrześcijańskie Profile">
                 <i class="fa-solid fa-heart-circle-bolt"></i>
                 <span>Odkrywaj</span>
             </a>
 
             <!-- 2. Tablica Społeczności -->
-            <a href="lumina-tablica.html" class="lumina-nav-tab ${isTablica ? 'active' : ''}" id="navTabFeed">
+            <a href="lumina-tablica.html" class="lumina-nav-tab ${isTablica ? 'active' : ''}" id="navTabFeed" title="Główna Tablica Społeczności">
                 <i class="fa-solid fa-users-viewfinder"></i>
                 <span>Tablica</span>
             </a>
 
-            <!-- 3. Radio CC -->
-            <a href="snadaniowa-live.html" class="lumina-nav-tab tab-radio" id="navTabRadio" title="Radio CC • Muzyka Uwielbienia">
-                <div class="radio-glow"></div>
-                <i class="fa-solid fa-radio" style="color: #facc15;"></i>
-                <span>Radio CC</span>
-            </a>
-
-            <!-- 4. Czat Women -->
-            <a href="lumina.ccwomen.html" class="lumina-nav-tab ${isWomen ? 'active' : ''}" id="navTabWomen">
-                <i class="fa-solid fa-comments"></i>
+            <!-- 3. Kanały CC (Christian Culture NETWORK) -->
+            <button type="button" class="lumina-nav-tab tab-network" id="navTabNetwork" onclick="window.openCcNetworkModal()" title="Kanały Nadawcze & YouTube Christian Culture NETWORK">
+                <div class="network-glow"></div>
+                <i class="fa-solid fa-tower-broadcast" style="color: #facc15;"></i>
                 <div class="lumina-nav-badge"></div>
-                <span>CC Women</span>
-            </a>
+                <span>Kanały CC</span>
+            </button>
+
+            <!-- 4. Sklep CC (Market) -->
+            <button type="button" class="lumina-nav-tab" id="navTabStore" onclick="window.openCcStoreModal()" title="Sklep Christian Culture • Książki, Płyty, Bluzy i Dewocjonalia">
+                <i class="fa-solid fa-bag-shopping" style="color: #38bdf8;"></i>
+                <span>Sklep CC</span>
+            </button>
 
             <!-- 5. Mój Profil -->
-            <a href="${myProfileHref}" class="lumina-nav-tab ${isProfile ? 'active' : ''}" id="navTabProfile">
+            <a href="${myProfileHref}" class="lumina-nav-tab ${isProfile ? 'active' : ''}" id="navTabProfile" title="Mój Profil / Panel Właściciela">
                 <i class="fa-solid fa-user-gear"></i>
                 <span>Mój Profil</span>
             </a>
         </nav>
+
+        <!-- ══════════ MODAL KANAŁÓW CC NETWORK (40+ KANAŁÓW YT & STREAMY LIVE) ══════════ -->
+        <div class="cc-nav-modal" id="modalCcNetwork" onclick="if(event.target===this) this.classList.remove('open')">
+            <div style="background:#0b1838; border:1.5px solid rgba(250,204,21,0.4); border-radius:24px; padding:24px 20px; max-width:480px; width:94%; max-height:85vh; overflow-y:auto; box-shadow:0 24px 60px rgba(0,0,0,0.85); color:#fff; position:relative;">
+                <button type="button" onclick="document.getElementById('modalCcNetwork').classList.remove('open')" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center;">&times;</button>
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <div style="width:44px; height:44px; border-radius:14px; background:linear-gradient(135deg, #ef4444, #f59e0b); display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:#fff; box-shadow:0 0 16px rgba(239,68,68,0.4);">
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-family:'Outfit',sans-serif; font-size:1.25rem; font-weight:800; color:#fff; margin:0;">Christian Culture NETWORK</h3>
+                        <p style="font-size:0.78rem; color:#facc15; margin:0; font-weight:700;">📺 Kanały Nadawcze & 40+ Kanałów YouTube</p>
+                    </div>
+                </div>
+                <p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:16px; line-height:1.5;">Oglądaj, słuchaj i buduj swoją wiarę w oficjalnych kanałach ekosystemu Christian Culture:</p>
+                
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <a href="snadaniowa-live.html" class="network-item-link" style="display:flex; align-items:center; gap:14px; padding:12px 14px; border-radius:16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); text-decoration:none; color:#fff; transition:background 0.2s;">
+                        <i class="fa-solid fa-radio" style="font-size:1.3rem; color:#facc15; width:28px; text-align:center;"></i>
+                        <div style="flex:1;">
+                            <div style="font-weight:800; font-size:0.92rem;">Radio CC • Śniadaniowa & Live 24/7</div>
+                            <div style="font-size:0.75rem; color:#94a3b8;">Muzyka uwielbienia, transmisje na żywo, RDS</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right" style="color:#64748b; font-size:0.85rem;"></i>
+                    </a>
+
+                    <a href="cctv24.html" class="network-item-link" style="display:flex; align-items:center; gap:14px; padding:12px 14px; border-radius:16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); text-decoration:none; color:#fff; transition:background 0.2s;">
+                        <i class="fa-solid fa-tv" style="font-size:1.3rem; color:#ef4444; width:28px; text-align:center;"></i>
+                        <div style="flex:1;">
+                            <div style="font-weight:800; font-size:0.92rem;">CCTV24 • Telewizja Chrześcijańska</div>
+                            <div style="font-size:0.75rem; color:#94a3b8;">Pasma wideo, kazania, nauczania i świadectwa</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right" style="color:#64748b; font-size:0.85rem;"></i>
+                    </a>
+
+                    <a href="lumina.ccwomen.html" class="network-item-link" style="display:flex; align-items:center; gap:14px; padding:12px 14px; border-radius:16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); text-decoration:none; color:#fff; transition:background 0.2s;">
+                        <i class="fa-solid fa-venus" style="font-size:1.3rem; color:#ec4899; width:28px; text-align:center;"></i>
+                        <div style="flex:1;">
+                            <div style="font-weight:800; font-size:0.92rem;">CC Women Official • Kobiety Wiary</div>
+                            <div style="font-size:0.75rem; color:#94a3b8;">Oficjalny kanał YT i wspólnota modlitewna kobiet</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right" style="color:#64748b; font-size:0.85rem;"></i>
+                    </a>
+
+                    <a href="modlitwa.html" class="network-item-link" style="display:flex; align-items:center; gap:14px; padding:12px 14px; border-radius:16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); text-decoration:none; color:#fff; transition:background 0.2s;">
+                        <i class="fa-solid fa-hands-praying" style="font-size:1.3rem; color:#38bdf8; width:28px; text-align:center;"></i>
+                        <div style="flex:1;">
+                            <div style="font-weight:800; font-size:0.92rem;">Zjednoczeni za Polskę • Modlitwa 21:00</div>
+                            <div style="font-size:0.75rem; color:#94a3b8;">Codzienna modlitwa wstawiennicza o Ojczyznę</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right" style="color:#64748b; font-size:0.85rem;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════ MODAL SKLEPU CHRISTIAN CULTURE ══════════ -->
+        <div class="cc-nav-modal" id="modalCcStore" onclick="if(event.target===this) this.classList.remove('open')">
+            <div style="background:#0b1838; border:1.5px solid rgba(56,189,248,0.4); border-radius:24px; padding:24px 20px; max-width:480px; width:94%; max-height:85vh; overflow-y:auto; box-shadow:0 24px 60px rgba(0,0,0,0.85); color:#fff; position:relative; text-align:center;">
+                <button type="button" onclick="document.getElementById('modalCcStore').classList.remove('open')" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center;">&times;</button>
+                <div style="width:54px; height:54px; border-radius:50%; background:linear-gradient(135deg, rgba(56,189,248,0.2), rgba(168,85,247,0.2)); border:2px solid #38bdf8; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:1.6rem; color:#38bdf8; box-shadow:0 0 20px rgba(56,189,248,0.35);">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <h3 style="font-family:'Outfit',sans-serif; font-size:1.35rem; font-weight:800; color:#fff; margin-bottom:6px;">Sklep Christian Culture</h3>
+                <p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:18px; line-height:1.5;">Kupując publikacje, muzykę i odzież z symbolami wiary, wspierasz rozwój ewangelizacji i darmowych mediów CC.</p>
+                
+                <div style="display:flex; flex-direction:column; gap:10px; text-align:left; margin-bottom:20px;">
+                    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:12px 14px; display:flex; align-items:center; gap:12px;">
+                        <i class="fa-solid fa-compact-disc" style="color:#facc15; font-size:1.4rem;"></i>
+                        <div>
+                            <div style="font-weight:700; font-size:0.9rem;">Albumy & Biblia Śpiewana Audio</div>
+                            <div style="font-size:0.75rem; color:#94a3b8;">Kompletne wydania MP3 i płyty CD audio</div>
+                        </div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:12px 14px; display:flex; align-items:center; gap:12px;">
+                        <i class="fa-solid fa-shirt" style="color:#ec4899; font-size:1.4rem;"></i>
+                        <div>
+                            <div style="font-weight:700; font-size:0.9rem;">Bluzy & Odzież Christian Culture</div>
+                            <div style="font-size:0.75rem; color:#94a3b8;">Wysokiej jakości odzież z biblijnym przesłaniem</div>
+                        </div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:12px 14px; display:flex; align-items:center; gap:12px;">
+                        <i class="fa-solid fa-book-bible" style="color:#38bdf8; font-size:1.4rem;"></i>
+                        <div>
+                            <div style="font-weight:700; font-size:0.9rem;">Książki, Rozważania i E-booki</div>
+                            <div style="font-size:0.75rem; color:#94a3b8;">Duchowe wsparcie i literatura budująca wiarę</div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="https://polskieradio.cc/index.html#support" target="_blank" rel="noopener noreferrer" style="display:block; width:100%; padding:12px 18px; border-radius:14px; background:linear-gradient(135deg, #38bdf8, #2563eb); color:#fff; text-decoration:none; font-weight:800; font-size:0.92rem; box-shadow:0 6px 20px rgba(56,189,248,0.35);">
+                    Przejdź do Sklepu & Wsparcia Misji ➔
+                </a>
+            </div>
+        </div>
     `;
+
+    // Globalne funkcje otwierania modali
+    window.openCcNetworkModal = function() {
+        const m = document.getElementById('modalCcNetwork');
+        if (m) m.classList.add('open');
+    };
+    window.openCcStoreModal = function() {
+        const m = document.getElementById('modalCcStore');
+        if (m) m.classList.add('open');
+    };
 
     // Usuń ewentualne stare wersje paska nawigacji
     document.querySelectorAll('.lumina-mobile-nav, #mobileNav').forEach(el => el.remove());
