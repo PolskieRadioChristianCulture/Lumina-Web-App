@@ -675,6 +675,97 @@ export function unblockUser(targetIdOrSlug) {
     return true;
 }
 
+// ══════════════════════════════════════════════════════════════════════════
+// 7. RICH MEDIA & SOCIAL LINKS PARSER (Etap: Clickable Links & Media Embeds)
+// ══════════════════════════════════════════════════════════════════════════
+
+export function extractYouTubeId(url) {
+    if (!url) return null;
+    const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([^"&?\/\s]{11})/i;
+    const match = url.match(regExp);
+    return (match && match[1]) ? match[1] : null;
+}
+
+export function formatRichTextAndMedia(rawText) {
+    if (!rawText) return { html: '', embedHtml: '', urls: [] };
+    
+    // Regex for URLs
+    const urlRegex = /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/gi;
+    const foundUrls = rawText.match(urlRegex) || [];
+    
+    // Replace URLs in text with rich styled <a> links
+    let formattedText = rawText.replace(urlRegex, (url) => {
+        let display = url.replace(/^https?:\/\/(www\.)?/, '');
+        if (display.length > 38) display = display.substring(0, 35) + '...';
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="post-rich-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>`;
+    });
+
+    // Replace linebreaks with <br>
+    formattedText = formattedText.replace(/\n/g, '<br>');
+
+    // Generate Rich Embed Card if URL is present
+    let embedHtml = '';
+    if (foundUrls.length > 0) {
+        const firstUrl = foundUrls[0];
+        const ytId = extractYouTubeId(firstUrl);
+
+        if (ytId) {
+            // YouTube Interactive Video Player Embed
+            embedHtml = `
+                <div class="rich-youtube-embed">
+                    <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?rel=0&modestbranding=1" 
+                            title="Odtwarzacz wideo YouTube" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen></iframe>
+                </div>
+            `;
+        } else {
+            // Social Media / OpenGraph Style Rich Preview Card
+            try {
+                const parsedUrl = new URL(firstUrl);
+                const host = parsedUrl.hostname.replace(/^www\./, '');
+                let cardTitle = host.toUpperCase();
+                let cardDesc = 'Otwórz stronę w nowej karcie...';
+                let iconClass = 'fa-globe';
+
+                if (host.includes('polskieradio.cc')) {
+                    cardTitle = 'Polskie Radio Christian Culture';
+                    cardDesc = 'Słuchaj na żywo 24/7, muzyka uwielbienia, Biblia Śpiewana oraz codzienne inspiracje ku Bożej chwale.';
+                    iconClass = 'fa-radio';
+                } else if (host.includes('facebook.com') || host.includes('fb.watch')) {
+                    cardTitle = 'Facebook Post / Transmisja';
+                    cardDesc = 'Zobacz materiał w serwisie Facebook.';
+                    iconClass = 'fa-brands fa-facebook';
+                } else if (host.includes('instagram.com')) {
+                    cardTitle = 'Instagram';
+                    cardDesc = 'Zobacz zdjęcie lub relację na Instagramie.';
+                    iconClass = 'fa-brands fa-instagram';
+                } else if (host.includes('spotify.com')) {
+                    cardTitle = 'Spotify Music & Podcast';
+                    cardDesc = 'Odsłuchaj nagranie w serwisie Spotify.';
+                    iconClass = 'fa-brands fa-spotify';
+                }
+
+                embedHtml = `
+                    <a href="${firstUrl}" target="_blank" rel="noopener noreferrer" class="rich-og-card" onclick="event.stopPropagation()">
+                        <div class="rich-og-body">
+                            <div class="rich-og-host"><i class="fa-solid ${iconClass}" style="color:#38bdf8;"></i> ${host}</div>
+                            <div class="rich-og-title">${cardTitle}</div>
+                            <div class="rich-og-desc">${cardDesc}</div>
+                        </div>
+                    </a>
+                `;
+            } catch(e) {}
+        }
+    }
+
+    return {
+        html: formattedText,
+        embedHtml: embedHtml,
+        urls: foundUrls
+    };
+}
+
 // Global window attachment for seamless cross-script integration
 window.LuminaDB = {
     loginWithGoogle,
@@ -702,5 +793,8 @@ window.LuminaDB = {
     getBlockedUsers,
     isUserBlocked,
     blockUser,
-    unblockUser
+    unblockUser,
+    extractYouTubeId,
+    formatRichTextAndMedia
 };
+

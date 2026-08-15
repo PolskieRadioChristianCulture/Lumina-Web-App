@@ -476,10 +476,105 @@
             line-height: 1.35;
         }
         .post-desc-text {
-            font-size: 0.84rem;
-            color: #cbd5e1;
-            line-height: 1.5;
+            font-size: 0.88rem;
+            color: #e2e8f0;
+            line-height: 1.6;
             margin-bottom: 12px;
+            word-break: break-word;
+        }
+
+        /* ── RICH CLICKABLE LINKS & SOCIAL PREVIEWS ── */
+        .post-rich-link {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            transition: all 0.2s ease;
+        }
+        .post-rich-link:hover {
+            color: #fff;
+            background: linear-gradient(90deg, #a855f7, #06b6d4);
+            border-color: transparent;
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+        }
+
+        /* Responsive YouTube / Video Embed */
+        .rich-youtube-embed {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            margin: 12px 0 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            background: #000;
+        }
+        .rich-youtube-embed iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* OpenGraph / Social Media Link Preview Card (Facebook / LinkedIn Style) */
+        .rich-og-card {
+            display: block;
+            text-decoration: none;
+            border-radius: 14px;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            margin: 12px 0 14px;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        }
+        .rich-og-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 10px 28px rgba(168, 85, 247, 0.25);
+        }
+        .rich-og-thumb {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+            background: #0f172a;
+        }
+        .rich-og-body {
+            padding: 12px 14px;
+        }
+        .rich-og-host {
+            font-size: 0.70rem;
+            color: #94a3b8;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .rich-og-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 4px;
+            line-height: 1.35;
+        }
+        .rich-og-desc {
+            font-size: 0.78rem;
+            color: #cbd5e1;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         /* Event Location Pill */
@@ -1527,7 +1622,10 @@
                             ${item.eventLoc ? `<span><i class="fa-solid fa-location-dot"></i> ${item.eventLoc}</span>` : ''}
                         </div>
                     `;
-                }
+                const rawBody = item.text || item.desc || '';
+                const richResult = window.LuminaDB?.formatRichTextAndMedia 
+                    ? window.LuminaDB.formatRichTextAndMedia(rawBody)
+                    : { html: rawBody, embedHtml: '' };
 
                 return `
                     <article class="post-card-1x1" id="${item.id}">
@@ -1546,16 +1644,17 @@
                             </div>
                         </div>
 
-                        <!-- 1:1 Square Media -->
+                        <!-- 1:1 Square Media (if image provided and not just standard placeholder when embed is present) -->
+                        ${(!item.image && richResult.embedHtml) ? '' : `
                         <div class="media-container-1x1">
                             <img src="${cardImgSrc}" alt="${item.title || item.author}" class="media-img-1x1" loading="lazy" onerror="this.src='lumina_hero_main.jpg'">
-                        </div>
+                        </div>`}
 
                         <!-- Details & Text -->
                         <div class="post-details-box">
                             ${item.title ? `<div class="post-headline">${item.title}</div>` : ''}
-                            ${item.text ? `<div class="post-desc-text">${item.text}</div>` : ''}
-                            ${item.desc ? `<div class="post-desc-text">${item.desc}</div>` : ''}
+                            ${richResult.html ? `<div class="post-desc-text">${richResult.html}</div>` : ''}
+                            ${richResult.embedHtml || ''}
                             ${eventInfoHtml}
                             ${ctaHtml}
                         </div>
