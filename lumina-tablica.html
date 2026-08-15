@@ -1617,36 +1617,46 @@
 
     <!-- ══════════ MAIN CONTENT CONTAINER ══════════ -->
     <!-- ══════════ MAIN 3-COLUMN CONTENT CONTAINER ══════════ -->
+    <!-- ══════════ MAIN 3-COLUMN CONTENT CONTAINER ══════════ -->
     <main class="board-container">
         
-        <!-- ══════════ LEWY SIDEBAR 9:16 (SPONSORZY & PARTNERZY BIZNESOWI) ══════════ -->
+        <!-- ══════════ LEWY SIDEBAR 9:16 (PATRONAT MISYJNY & EWANGELIZACJA) ══════════ -->
         <aside class="sidebar-916 sidebar-left-916">
-            <!-- 1. Karta Koncept Studio 9:16 -->
-            <div class="card-916 sponsor-card-916">
+            <!-- 1. Karta Główna: Patronite & Zrzutka.pl -->
+            <div class="card-916 patron-card-916">
                 <div class="card-916-header">
-                    <span class="badge-gold"><i class="fa-solid fa-crown"></i> Oficjalny Sponsor</span>
-                </div>
-                <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" class="card-916-media-wrap">
-                    <img src="oficjalny_sponsor.jpg" alt="Koncept Studio - Oficjalny Sponsor" class="card-916-img">
-                    <div class="card-916-overlay">
-                        <div class="card-916-title">Koncept Studio</div>
-                        <div class="card-916-sub">Kreacja Wizualna, Druk & Branding na najwyższym poziomie.</div>
-                        <span class="btn-916-action">Odwiedź Studio ➔</span>
-                    </div>
-                </a>
-            </div>
-
-            <!-- 2. Karta Zostań Sponsorem CC 9:16 -->
-            <div class="card-916 partner-cta-card-916">
-                <div class="card-916-header">
-                    <span class="badge-blue"><i class="fa-solid fa-handshake"></i> Strefa Biznesu CC</span>
+                    <span class="badge-patron"><i class="fa-solid fa-heart"></i> Patronat Misyjny CC</span>
                 </div>
                 <div class="card-916-content">
-                    <div class="partner-icon-wrap"><i class="fa-solid fa-building-columns"></i></div>
-                    <h4>Zostań Sponsorem Misji</h4>
-                    <p>Dotrzyj do tysięcy chrześcijańskich odbiorców i rozwijaj markę z Bożymi wartościami.</p>
-                    <a href="mailto:kontakt@polskieradio.cc?subject=Wspolpraca%20Sponsorska%20LUMINA" class="btn-916-cta">Napisz do Redakcji ✉️</a>
+                    <div class="patron-avatar-row">
+                        <img src="avatar_cezary_official.jpg" alt="Cezary Rogowski" class="mini-patron-avatar" style="margin-right:-10px; z-index:2;">
+                        <img src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" class="mini-patron-avatar" style="z-index:1; border-color:#ec4899;">
+                    </div>
+                    <h4>Wspieraj Dzieło Boże</h4>
+                    <p>Twoje dobrowolne wsparcie pozwala nam nadawać Polskie Radio CC 24/7, nagrywać rozważania i rozwijać portal bez reklam komercyjnych.</p>
+                    
+                    <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="btn-patronite-cta">
+                        <i class="fa-solid fa-heart"></i> Zostań Patronem (Patronite) ➔
+                    </a>
+                    <a href="https://zrzutka.pl/3bbxzn" target="_blank" rel="noopener noreferrer" class="btn-zrzutka-cta">
+                        <i class="fa-solid fa-hand-holding-dollar" style="color:#facc15;"></i> Złóż Darowiznę (Zrzutka.pl) ➔
+                    </a>
                 </div>
+            </div>
+
+            <!-- 2. Karta: Biblia Śpiewana Audio (Cegiełka Misyjna) -->
+            <div class="card-916 biblia-card-916">
+                <div class="card-916-header">
+                    <span class="badge-gold"><i class="fa-solid fa-book-bible"></i> Słowo Boże w Muzyce</span>
+                </div>
+                <a href="https://polskieradio.cc" target="_blank" rel="noopener noreferrer" class="card-916-media-wrap">
+                    <img src="reklama_biblia.png" alt="Biblia Śpiewana Audio" class="card-916-img">
+                    <div class="card-916-overlay">
+                        <div class="card-916-title">Biblia Śpiewana Audio</div>
+                        <div class="card-916-sub">Księga Psalmów i Pieśni Chwały. Wspieraj nagrania kolejnych ksiąg Pisma Świętego.</div>
+                        <span class="btn-916-action">Pobierz & Wspieraj Dzieło 🎧</span>
+                    </div>
+                </a>
             </div>
         </aside>
 
@@ -1664,9 +1674,9 @@
                 <div class="filter-chips-row">
                     <button class="chip-btn active" onclick="filterFeed('all', this)"><i class="fa-solid fa-grid-2"></i> Wszystkie Wpisy</button>
                     <button class="chip-btn" onclick="filterFeed('post', this)"><i class="fa-solid fa-users"></i> Wpisy Użytkowników</button>
-                    <button class="chip-btn" onclick="filterFeed('ad', this)"><i class="fa-solid fa-bullhorn"></i> Reklamy Misji CC</button>
-                    <button class="chip-btn" onclick="filterFeed('promo', this)"><i class="fa-solid fa-rocket"></i> Promocje</button>
-                    <button class="chip-btn" onclick="filterFeed('event', this)"><i class="fa-solid fa-calendar-star"></i> Wydarzenia</button>
+                    <button class="chip-btn" onclick="filterFeed('ad', this)"><i class="fa-solid fa-bullhorn"></i> Dzieła Misji CC</button>
+                    <button class="chip-btn" onclick="filterFeed('promo', this)"><i class="fa-solid fa-gift"></i> Cegiełki Misyjne</button>
+                    <button class="chip-btn" onclick="filterFeed('event', this)"><i class="fa-solid fa-calendar-star"></i> Wydarzenia Wiary</button>
                 </div>
             </header>
 
@@ -1689,13 +1699,37 @@
                 </div>
                 <div class="founder-buttons-group">
                     <button type="button" class="btn-camp-quick btn-camp-ad" onclick="openCampaignModal('ad')"><i class="fa-solid fa-plus-circle"></i> Opublikuj Wpis Misyjny</button>
-                    <button type="button" class="btn-camp-quick btn-camp-promo" onclick="openCampaignModal('promo')"><i class="fa-solid fa-bullhorn"></i> Reklama / Kampania</button>
-                    <button type="button" class="btn-camp-quick" onclick="openAdminReportsModal()" style="background:rgba(239,68,68,0.22); border-color:#ef4444; color:#fca5a5;"><i class="fa-solid fa-shield-halved"></i> Zgłoszenia Moderacji <span id="adminReportsBadge" style="background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; padding:1px 6px; border-radius:10px; margin-left:4px;">0</span></button>
+                    <button type="button" class="btn-camp-quick btn-camp-promo" onclick="openCampaignModal('promo')"><i class="fa-solid fa-heart"></i> Patronat / Apel</button>
+                    <button type="button" class="btn-camp-quick" onclick="openAdminReportsModal()" style="background:rgba(239,68,68,0.22); border-color:#ef4444; color:#fca5a5;"><i class="fa-solid fa-shield-halved"></i> Moderacja <span id="adminReportsBadge" style="background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; padding:1px 6px; border-radius:10px; margin-left:4px;">0</span></button>
                 </div>
             </div>
 
             <!-- Query Filter Banner -->
             <div id="queryFilterBanner" style="display:none; align-items:center; justify-content:space-between; padding:12px 18px; border-radius:14px; background:rgba(168,85,247,0.16); border:1px solid rgba(168,85,247,0.4); margin-bottom:16px; font-size:0.88rem; color:#e2e8f0;"></div>
+
+            <!-- ══════════ OFICJALNY SPONSOR MISJI CHRISTIAN CULTURE (PRZYWRÓCONY GŁÓWNY BANER) ══════════ -->
+            <aside class="official-sponsor-banner-card" style="margin-bottom: 24px; background: linear-gradient(135deg, rgba(15,23,42,0.92), rgba(30,41,59,0.92)); border: 1.5px solid rgba(250,204,21,0.45); border-radius: 20px; overflow: hidden; box-shadow: 0 12px 36px rgba(0,0,0,0.65);">
+                <div style="padding: 10px 18px; background: rgba(250,204,21,0.12); border-bottom: 1px solid rgba(250,204,21,0.25); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 800; color: #facc15; text-transform: uppercase; letter-spacing: 0.8px;">
+                        <i class="fa-solid fa-crown"></i> Oficjalny Sponsor Misji Christian Culture
+                    </div>
+                    <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="font-size: 0.78rem; font-weight: 700; color: #38bdf8; text-decoration: none; display: flex; align-items: center; gap: 5px;">
+                        koncept-studio.pl <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.75rem;"></i>
+                    </a>
+                </div>
+                <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="display: block; text-decoration: none; position: relative; overflow: hidden;">
+                    <img src="oficjalny_sponsor.jpg" alt="Koncept Studio - Oficjalny Sponsor Christian Culture" style="width: 100%; max-height: 320px; object-fit: cover; display: block; transition: transform 0.3s ease;">
+                </a>
+                <div style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 240px;">
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; color: #fff; margin: 0 0 4px 0;">Koncept Studio • Kreacja Wizualna, Druk & Branding</h3>
+                        <p style="font-size: 0.82rem; color: #94a3b8; margin: 0; line-height: 1.4;">Dziękujemy naszemu oficjalnemu sponsorowi za nieocenione wsparcie rozwoju chrześcijańskich mediów i dzieła ewangelizacyjnego CC.</p>
+                    </div>
+                    <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="padding: 9px 18px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(245,158,11,0.35); flex-shrink: 0;">
+                        Odwiedź Koncept Studio ➔
+                    </a>
+                </div>
+            </aside>
 
             <!-- ══════════ FEED STREAM ══════════ -->
             <div class="feed-stream" id="feedStream1x1">
@@ -1703,41 +1737,34 @@
             </div>
         </section>
 
-        <!-- ══════════ PRAWY SIDEBAR 9:16 (PATRONITE, ZRZUTKA & SKLEP CC) ══════════ -->
+        <!-- ══════════ PRAWY SIDEBAR 9:16 (SKLEP WSPARCIA MISJI & JEDNOŚĆ MODLITWY) ══════════ -->
         <aside class="sidebar-916 sidebar-right-916">
-            <!-- 1. Karta Wsparcia Misji: Patronite & Zrzutka.pl -->
-            <div class="card-916 patron-card-916">
-                <div class="card-916-header">
-                    <span class="badge-patron"><i class="fa-solid fa-heart"></i> Wesprzyj Misję CC</span>
-                </div>
-                <div class="card-916-content">
-                    <div class="patron-avatar-row">
-                        <img src="avatar_cezary_official.jpg" alt="Cezary Rogowski" class="mini-patron-avatar" style="margin-right:-10px; z-index:2;">
-                        <img src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" class="mini-patron-avatar" style="z-index:1; border-color:#ec4899;">
-                    </div>
-                    <h4>Buduj z Nami Dzieło Boże</h4>
-                    <p>Twoje wsparcie pozwala nam transmitować Polskie Radio CC 24/7, nagrywać Biblię Śpiewaną i docierać z Ewangelią bez reklam komercyjnych.</p>
-                    
-                    <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="btn-patronite-cta">
-                        <i class="fa-solid fa-heart"></i> Zostań Patronem (Patronite) ➔
-                    </a>
-                    <a href="https://zrzutka.pl/3bbxzn" target="_blank" rel="noopener noreferrer" class="btn-zrzutka-cta">
-                        <i class="fa-solid fa-hand-holding-dollar" style="color:#facc15;"></i> Wpłać na Zrzutka.pl ➔
-                    </a>
-                </div>
-            </div>
-
-            <!-- 2. Karta Sklepu Christian Culture 9:16 -->
+            <!-- 1. Karta Sklepu Wsparcia Misji (Creator Spring) -->
             <div class="card-916 store-card-916">
                 <div class="card-916-header">
-                    <span class="badge-store"><i class="fa-solid fa-bag-shopping"></i> Market CC</span>
+                    <span class="badge-store"><i class="fa-solid fa-gift"></i> Cegiełki Misyjne CC</span>
                 </div>
                 <a href="https://my-store-1009741.creator-spring.com/" target="_blank" rel="noopener noreferrer" class="card-916-media-wrap">
-                    <img src="tlo_tv_koszulki.jpg" alt="Sklep Christian Culture" class="card-916-img">
+                    <img src="tlo_tv_koszulki.jpg" alt="Sklep Wsparcia Misji CC" class="card-916-img">
                     <div class="card-916-overlay">
-                        <div class="card-916-title">Kolekcja Wiara & Styl</div>
-                        <div class="card-916-sub">Oficjalna odzież chrześcijańska, koszulki i bluzy wspierające misję.</div>
-                        <span class="btn-916-action" style="background:linear-gradient(135deg, #0284c7, #2563eb);">Odwiedź Sklep CC 🛒</span>
+                        <div class="card-916-title">Kolekcja Wiara & Nadzieja</div>
+                        <div class="card-916-sub">Każdy zakup odzieży i symboli wiary stanowi bezpośrednią cegiełkę na rozwój radia i transmisji.</div>
+                        <span class="btn-916-action" style="background:linear-gradient(135deg, #0284c7, #2563eb);">Zobacz Kolekcję w Sklepie 🛒</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 2. Karta: Zjednoczeni za Polskę (Wydarzenie & Modlitwa) -->
+            <div class="card-916 prayer-card-916">
+                <div class="card-916-header">
+                    <span class="badge-patron" style="color:#ec4899;"><i class="fa-solid fa-hands-praying"></i> Zjednoczeni za Polskę</span>
+                </div>
+                <a href="zapolske-live.html" class="card-916-media-wrap">
+                    <img src="zjednoczeni_za_polske_banner.jpg" alt="Zjednoczeni za Polskę" class="card-916-img">
+                    <div class="card-916-overlay">
+                        <div class="card-916-title">Ogólnopolska Modlitwa</div>
+                        <div class="card-916-sub">Stańmy razem w wyłomie modlitewnym za Ojczyznę, rodziny i Boże błogosławieństwo.</div>
+                        <span class="btn-916-action" style="background:linear-gradient(135deg, #ec4899, #be185d);">Dołącz do Modlitwy Live 🙏</span>
                     </div>
                 </a>
             </div>
