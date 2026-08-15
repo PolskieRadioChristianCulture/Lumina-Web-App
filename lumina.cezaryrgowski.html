@@ -2479,8 +2479,8 @@
             const btnLabel = document.getElementById('btnOwnerAuthLabel');
 
             if (isOwnerMode) {
-                // Check verified owner session
-        if (sessionStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true' || sessionStorage.getItem('lumina_auth_owner_founder') === 'true') {
+                // Check exclusive Administrator permissions
+        if (sessionStorage.getItem('lumina_auth_master_admin') === 'true') {
             isOwnerMode = true;
             document.body.classList.add('owner-mode-active');
         } else {

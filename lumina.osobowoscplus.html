@@ -2239,30 +2239,28 @@
 
         // ── Secure Owner PIN Authentication Gate ──
         window.promptOwnerPinUnlock = function() {
-            const inputPin = prompt('🔐 Wprowadź 4-cyfrowy PIN Założyciela / Właściciela Kanału:');
+            const inputPin = prompt('🔐 Panel Administratora Portalu LUMINA (Wyłączność Dowódcy):');
             if (!inputPin) return;
             if (inputPin.trim() === '7777' || inputPin.trim() === '1234') {
-                sessionStorage.setItem('lumina_auth_owner_osobowoscplus', 'true');
-                sessionStorage.setItem('lumina_auth_owner_founder', 'true');
+                sessionStorage.setItem('lumina_auth_master_admin', 'true');
                 isOwnerMode = true;
                 document.body.classList.add('owner-mode-active');
                 const statusEl = document.getElementById('settingsMenuStatus');
-                if (statusEl) statusEl.innerHTML = 'Status: <b style="color:#86efac;">Panel Założyciela 🔓</b>';
-                showToast('🔓 Panel Właściciela aktywowany pomyślnie!');
+                if (statusEl) statusEl.innerHTML = 'Status: <b style="color:#facc15;">Administrator Portalu 👑</b>';
+                showToast('👑 Panel Administratora aktywowany pomyślnie!');
             } else {
-                showToast('❌ Błędny kod PIN! Dostęp zablokowany.');
+                showToast('❌ Błędny kod PIN! Odmowa dostępu.');
             }
         };
 
         window.toggleOwnerAuthMode = function() {
             if (isOwnerMode) {
-                sessionStorage.removeItem('lumina_auth_owner_osobowoscplus');
-                sessionStorage.removeItem('lumina_auth_owner_founder');
+                sessionStorage.removeItem('lumina_auth_master_admin');
                 isOwnerMode = false;
                 document.body.classList.remove('owner-mode-active');
                 const statusEl = document.getElementById('settingsMenuStatus');
                 if (statusEl) statusEl.innerHTML = 'Status: <b style="color:#f87171;">Tylko do odczytu 🛡️</b>';
-                showToast('🔒 Zablokowano edycję kanału (Tryb Gościa)');
+                showToast('🔒 Zablokowano panel edycji (Tryb Gościa)');
             } else {
                 window.promptOwnerPinUnlock();
             }
@@ -2389,8 +2387,8 @@
 
         // ── Initialization ──
         window.addEventListener('DOMContentLoaded', () => {
-            // Check verified owner session
-        if (sessionStorage.getItem('lumina_auth_owner_osobowoscplus') === 'true' || sessionStorage.getItem('lumina_auth_owner_founder') === 'true') {
+            // Check exclusive Administrator permissions
+        if (sessionStorage.getItem('lumina_auth_master_admin') === 'true') {
             isOwnerMode = true;
             document.body.classList.add('owner-mode-active');
         } else {

@@ -2554,68 +2554,76 @@
             }
         }
 
-        // ── Security & Authentication System ──
+        
+        // ── Security & Authentication System (RBAC: Self-Only or Master Admin) ──
         function checkOwnerAuthSession() {
             const slug = getRequestedUserSlug();
-            isOwnerMode = (sessionStorage.getItem('lumina_auth_owner_' + slug) === 'true');
+            const curProf = window.LuminaDB?.getCurrentProfile() || JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null');
+            const targetUid = curProf?.uid || null;
 
-            // Auto unlock owner mode if user is authenticated and matches this profile
-            if (!isOwnerMode) {
-                try {
-                    const curUser = window.LuminaDB?.getCurrentUser();
-                    const curProf = window.LuminaDB?.getCurrentProfile() || JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null');
-                    if (curProf && (curProf.slug === slug || curProf.uid === slug || (curProf.slug && curProf.slug.toLowerCase() === slug.toLowerCase()))) {
-                        isOwnerMode = true;
-                        sessionStorage.setItem('lumina_auth_owner_' + slug, 'true');
-                    }
-                    if (curUser && curUser.uid === slug) {
-                        isOwnerMode = true;
-                        sessionStorage.setItem('lumina_auth_owner_' + slug, 'true');
-                    }
-                } catch(e) {}
-            }
-            updateSecurityBarUI();
-        }
+            // 1. Sprawdzenie czy użytkownik to Główny Administrator lub Właściciel Profilu
+            const isMaster = (sessionStorage.getItem('lumina_auth_master_admin') === 'true');
+            let isSelf = false;
 
-        function updateSecurityBarUI() {
-            const bar = document.getElementById('profileSecurityBar');
-            const btn = document.getElementById('btnOwnerAuthToggle');
-            const icon = document.getElementById('secStatusIcon');
-            const txt = document.getElementById('secStatusText');
-            const btnIcon = document.getElementById('btnOwnerAuthIcon');
-            const btnLabel = document.getElementById('btnOwnerAuthLabel');
+            try {
+                const curUser = window.LuminaDB?.getCurrentUser();
+                if (curUser && curProf && (curProf.slug === slug || curProf.uid === slug || curUser.uid === slug)) {
+                    isSelf = true;
+                }
+            } catch(e) {}
+
+            isOwnerMode = isMaster || isSelf;
 
             if (isOwnerMode) {
                 document.body.classList.add('owner-mode-active');
-                if (icon) icon.className = 'fa-solid fa-shield-check';
-                if (txt) txt.innerHTML = 'Panel Właściciela: <b style="color:#a855f7;">Odblokowany 🔓 (Możesz edytować i zarządzać profilem)</b>';
-                if (btn) {
-                    btn.className = 'btn-security-toggle unlocked';
-                    if (btnIcon) btnIcon.className = 'fa-solid fa-lock';
-                    if (btnLabel) btnLabel.textContent = 'Zablokuj Profil 🔒';
-                }
+            } else {
+                document.body.classList.remove('owner-mode-active');
+            }
+            updateSecurityBarUI(isMaster, isSelf);
+        }
+
+        function updateSecurityBarUI(isMaster, isSelf) {
+            const bar = document.getElementById('profileSecurityBar');
+            const icon = document.getElementById('secStatusIcon');
+            const txt = document.getElementById('secStatusText');
+            const btn = document.getElementById('btnOwnerAuthToggle');
+
+            if (isMaster) {
+                document.body.classList.add('owner-mode-active');
+                if (icon) icon.className = 'fa-solid fa-crown';
+                if (txt) txt.innerHTML = 'Status: <b style="color:#facc15;">Administrator Portalu LUMINA 👑 (Pełny dostęp do edycji profilu)</b>';
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-lock"></i> Zablokuj Tryb Admina';
+            } else if (isSelf) {
+                document.body.classList.add('owner-mode-active');
+                if (icon) icon.className = 'fa-solid fa-circle-check';
+                if (txt) txt.innerHTML = 'Status: <b style="color:#86efac;">Twój Własny Profil 🔓 (Możesz edytować swoje dane)</b>';
+                if (btn) btn.style.display = 'none'; // Właściciel zawsze edytuje swój profil
             } else {
                 document.body.classList.remove('owner-mode-active');
                 if (icon) icon.className = 'fa-solid fa-shield-halved';
-                if (txt) txt.innerHTML = 'Status Ochrony: <b style="color:#38bdf8;">Chroniony Kodem PIN 🛡️</b>';
-                if (btn) {
-                    btn.className = 'btn-security-toggle';
-                    if (btnIcon) btnIcon.className = 'fa-solid fa-key';
-                    if (btnLabel) btnLabel.textContent = 'Odblokuj Tryb Właściciela';
-                }
+                if (txt) txt.innerHTML = 'Status: <b style="color:#38bdf8;">Profil Publiczny 🛡️ (Tylko do odczytu)</b>';
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-key"></i> Autoryzacja Administratora';
             }
         }
 
         function toggleOwnerAuthMode() {
-            const slug = getRequestedUserSlug();
-            if (isOwnerMode) {
-                sessionStorage.removeItem('lumina_auth_owner_' + slug);
-                isOwnerMode = false;
-                updateSecurityBarUI();
-                renderPhotos();
-                renderPosts();
-                showToast('Profil został zablokowany w trybie tylko do odczytu 🔒');
+            const isMaster = (sessionStorage.getItem('lumina_auth_master_admin') === 'true');
+            if (isMaster) {
+                sessionStorage.removeItem('lumina_auth_master_admin');
+                showToast('🔒 Zablokowano tryb Administratora');
+                checkOwnerAuthSession();
             } else {
+                const pin = prompt('🔐 Autoryzacja Administratora LUMINA (Wyłączność Dowódcy):');
+                if (pin && (pin.trim() === '7777' || pin.trim() === '1234')) {
+                    sessionStorage.setItem('lumina_auth_master_admin', 'true');
+                    showToast('👑 Tryb Administratora Portalu Aktywowany!');
+                    checkOwnerAuthSession();
+                } else if (pin) {
+                    showToast('❌ Błędny kod autoryzacji! Odmowa dostępu.');
+                }
+            }
+        }
+ else {
                 openSecurityModal(null);
             }
         }
