@@ -1612,8 +1612,8 @@
                         <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
                     </div>
                     <div class="card-body">
-                        <div class="card-name home-cezary-name" id="homeUserName">Cezary, 32</div>
-                        <div class="card-city home-cezary-city" id="homeUserCity">📍 Warszawa • <b>Żonaty</b></div>
+                        <div class="card-name home-cezary-name" id="homeUserName">Cezary, 51</div>
+                        <div class="card-city home-cezary-city" id="homeUserCity">📍 Ostrowiec Świętokrzyski • <b>Żonaty</b></div>
                         <div class="card-desc home-cezary-desc" id="homeUserDesc">"Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu."</div>
                     </div>
                 </div>
@@ -1627,7 +1627,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name home-wioletta-name" id="homeWiolettaName">Wioletta, 50</div>
-                        <div class="card-city home-wioletta-city" id="homeWiolettaCity">📍 Warszawa • <b>Mężatka</b></div>
+                        <div class="card-city home-wioletta-city" id="homeWiolettaCity">📍 Ostrowiec Świętokrzyski • <b>Mężatka</b></div>
                         <div class="card-desc home-wioletta-desc" id="homeWiolettaDesc">"Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
                     </div>
                 </div>
@@ -2665,8 +2665,8 @@
                 if (!p || !p.avatar || p.avatar.includes('worship') || p.avatar.includes('tlo') || p.avatar.includes('oddaj')) {
                     p = {
                         name: 'Cezary Rogowski',
-                        age: 32,
-                        city: 'Warszawa, Polska',
+                        age: 51,
+                        city: 'Ostrowiec Świętokrzyski, Polska',
                         status: 'Żonaty',
                         avatar: 'avatar_cezary_official.jpg',
                         job: 'Założyciel Christian Culture',
@@ -2679,10 +2679,10 @@
                     img.src = 'avatar_cezary_official.jpg';
                 });
                 document.querySelectorAll('.home-cezary-name, #homeUserName').forEach(el => {
-                    el.textContent = `${p.name || 'Cezary'}, ${p.age || 32}`;
+                    el.textContent = `${p.name || 'Cezary'}, ${p.age || 51}`;
                 });
                 document.querySelectorAll('.home-cezary-city, #homeUserCity').forEach(el => {
-                    el.innerHTML = `📍 ${p.city || 'Warszawa'} • <b>${p.status || 'Żonaty'}</b>`;
+                    el.innerHTML = `📍 ${p.city || 'Ostrowiec Świętokrzyski'} • <b>${p.status || 'Żonaty'}</b>`;
                 });
                 document.querySelectorAll('.home-cezary-desc, #homeUserDesc').forEach(el => {
                     el.textContent = `"${p.bio ? (p.bio.length > 85 ? p.bio.substring(0, 85) + '...' : p.bio) : (p.job || 'Założyciel Christian Culture')}"`;
@@ -2711,7 +2711,7 @@
                     pw = {
                         name: 'Wioletta Rogowska',
                         age: 50,
-                        city: 'Warszawa, Polska',
+                        city: 'Ostrowiec Świętokrzyski, Polska',
                         status: 'Mężatka',
                         avatar: 'avatar_wioletta_official.jpg',
                         job: 'Współzałożycielka Christian Culture',
@@ -2727,7 +2727,7 @@
                     el.textContent = `${pw.name || 'Wioletta'}, ${pw.age || 50}`;
                 });
                 document.querySelectorAll('.home-wioletta-city, #homeWiolettaCity').forEach(el => {
-                    el.innerHTML = `📍 ${pw.city || 'Warszawa'} • <b>${pw.status || 'Mężatka'}</b>`;
+                    el.innerHTML = `📍 ${pw.city || 'Ostrowiec Świętokrzyski'} • <b>${pw.status || 'Mężatka'}</b>`;
                 });
                 document.querySelectorAll('.home-wioletta-desc, #homeWiolettaDesc').forEach(el => {
                     el.textContent = `"${pw.bio ? (pw.bio.length > 85 ? pw.bio.substring(0, 85) + '...' : pw.bio) : (pw.job || 'Współzałożycielka Christian Culture')}"`;
