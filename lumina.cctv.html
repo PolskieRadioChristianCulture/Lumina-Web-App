@@ -1617,8 +1617,8 @@
 
     <script>
         // ── Storage Keys & Profile State ──
-        const STORAGE_KEY = 'lumina_profile_ccwomen';
-        const LEGACY_STORAGE_KEY = 'lumina_profile_u_ccwomen_9055';
+        const STORAGE_KEY = 'lumina_profile_cctv';
+        const LEGACY_STORAGE_KEY = 'lumina_profile_u_cctv';
         const AUTH_SESSION_KEY = 'lumina_owner_auth_ccwomen';
 
         let isOwnerMode = true; // Auto-active for founder on this station
@@ -1628,45 +1628,36 @@
         let editingPostImageDataUrl = null;
 
         const defaultChannelData = {
-            slug: 'ccwomen',
-            name: 'Christian Culture TV',
-            age: '',
-            city: 'Warszawa, Polska',
-            denom: 'Chrześcijański Kanał YouTube',
-            job: 'Oficjalny Kanał YouTube CC Women 🌸',
-            church: 'Christian Culture',
-            status: 'Kobiety Wiary, Modlitwa i Wzrost',
-            goal: 'Ewangelizacja, budowanie kobiecej tożsamości w Bogu i głębokie świadectwa wiary',
+            slug: 'cctv',
+            name: 'Christian Culture TV • Telewizja CCTV24',
+            age: 'Misja',
+            city: 'Warszawa, Polska • CCTV24',
+            denom: 'Telewizja Internetowa & Ewangelizacja',
+            job: 'Oficjalna Telewizja CCTV24',
+            church: 'Christian Culture NETWORK',
+            status: 'Pasma Wideo, Świadectwa i Transmisje',
+            goal: 'Tworzenie profesjonalnych produkcji wideo na chwałę Bożą',
+            verse: '„Idźcie więc i nauczajcie wszystkie narody, udzielając im chrztu w imię Ojca i Syna, i Ducha Świętego!”',
+            verseRef: '— Ewangelia wg św. Mateusza 28, 19',
+            bio: 'Oficjalna Telewizja Internetowa CCTV24 Christian Culture. Tworzymy i emitujemy profesjonalne pasma wideo, reportaże, wywiady z liderami chrześcijańskimi, debaty o wierze, nauczania biblijne oraz relacje z wydarzeń ewangelizacyjnych w całej Polsce.',
             avatar: 'CCTV_NOCA.jpg',
-            cover: 'lumina_hero_main.jpg',
+            cover: 'tlo_tv_radiocc.jpg',
             coverPosY: '50%',
-            verse: '„„Idźcie więc i nauczajcie wszystkie narody, udzielając im chrztu w imię Ojca i Syna, i Ducha Świętego!””',
-            verseRef: '— Przypowieści Salomona 31, 10',
-            bio: 'Oficjalny profil i kanał YouTube CC Women to wyjątkowa przestrzeń wzrostu duchowego, modlitwy, kobiecej mądrości i głębokich świadectw Bożego działania w życiu kobiet. Tworzymy treści, które inspirują do pogłębiania relacji z Bogiem, budowania silnych rodzin oraz odkrywania własnej wartości w Jezusie Chrystusie. Subskrybuj nasz kanał i dołącz do grona kobiet budujących swoje życie na fundamencie wiary! 🌸✨',
-            tags: ['Kobiety Wiary', 'YouTube CC Women', 'Modlitwa i Wstawiennictwo', 'Pismo Święte', 'Świadectwa Życia', 'Wzrost Duchowy'],
-            youtubeUrl: 'https://www.youtube.com/@CCWomen7',
+            visibility: 'public',
             pin: '7777',
-            photos: ['CCTV_NOCA.jpg', 'lumina_hero_main.jpg', 'avatar_wioletta_official.jpg'],
+            tags: ["Telewizja","CCTV24","Świadectwa","Transmisje","Publicystyka","Wiara"],
+            youtubeUrl: 'https://www.youtube.com/@ChristianCultureTV',
+            photos: ['CCTV_NOCA.jpg'],
             posts: [
                 {
-                    id: 'post_ccw_1',
-                    author: 'Christian Culture TV',
+                    id: 'post_cctv_1',
+                    author: 'Christian Culture TV • Telewizja CCTV24',
                     authorAvatar: 'CCTV_NOCA.jpg',
-                    time: 'Oficjalny Komunikat Misji • 🌸 Kanał YouTube',
-                    text: 'Szczęść Boże wszystkim Kobietom! Witajcie na oficjalnym profilu kanału **CC Women** na portalu **LUMINA**. Naszym pragnieniem jest tworzenie przestrzeni wzajemnego wsparcia, modlitwy i odkrywania piękna powołania w świetle Słowa Bożego. Subskrybujcie nasz kanał na YouTube i bądźcie częścią tej niezwykłej społeczności! 🌸🕊️',
+                    time: 'Oficjalny Komunikat Misji • 🕊️ Christian Culture',
+                    text: 'Oficjalna Telewizja Internetowa CCTV24 Christian Culture. Tworzymy i emitujemy profesjonalne pasma wideo, reportaże, wywiady z liderami chrześcijańskimi, debaty o wierze, nauczania biblijne oraz relacje z wydarzeń ewangelizacyjnych w całej Polsce.',
                     image: 'CCTV_NOCA.jpg',
-                    likes: 148,
-                    amen: 132
-                },
-                {
-                    id: 'post_ccw_2',
-                    author: 'Christian Culture TV',
-                    authorAvatar: 'CCTV_NOCA.jpg',
-                    time: 'Wczoraj • 📖 Słowo Dnia',
-                    text: '„Kłamliwy jest wdzięk i zwiewna jest uroda, lecz niewiasta, która boi się Pana, zasługuje na chwałę.” (Prz 31, 30). Bądźcie odważne i pamiętajcie, że w oczach Boga każda z Was jest bezcenna! ✨',
-                    image: null,
-                    likes: 92,
-                    amen: 85
+                    likes: 120,
+                    amen: 98
                 }
             ]
         };
@@ -1694,8 +1685,8 @@
             } catch (e) {}
 
             if (window.LuminaDB?.saveProfileToCloud) {
-                window.LuminaDB.saveProfileToCloud('ccwomen', data);
-                window.LuminaDB.saveProfileToCloud('u_ccwomen_9055', data);
+                window.LuminaDB.saveProfileToCloud('cctv', data);
+                window.LuminaDB.saveProfileToCloud('u_cctv', data);
             }
             renderChannelView();
         }

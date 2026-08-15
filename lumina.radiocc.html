@@ -1617,8 +1617,8 @@
 
     <script>
         // ── Storage Keys & Profile State ──
-        const STORAGE_KEY = 'lumina_profile_ccwomen';
-        const LEGACY_STORAGE_KEY = 'lumina_profile_u_ccwomen_9055';
+        const STORAGE_KEY = 'lumina_profile_radiocc';
+        const LEGACY_STORAGE_KEY = 'lumina_profile_u_radiocc';
         const AUTH_SESSION_KEY = 'lumina_owner_auth_ccwomen';
 
         let isOwnerMode = true; // Auto-active for founder on this station
@@ -1628,45 +1628,36 @@
         let editingPostImageDataUrl = null;
 
         const defaultChannelData = {
-            slug: 'ccwomen',
-            name: 'Polskie Radio CC',
-            age: '',
-            city: 'Warszawa, Polska',
-            denom: 'Chrześcijański Kanał YouTube',
-            job: 'Oficjalny Kanał YouTube CC Women 🌸',
-            church: 'Christian Culture',
-            status: 'Kobiety Wiary, Modlitwa i Wzrost',
-            goal: 'Ewangelizacja, budowanie kobiecej tożsamości w Bogu i głębokie świadectwa wiary',
+            slug: 'radiocc',
+            name: 'Polskie Radio CC • Christian Culture',
+            age: 'Misja',
+            city: 'Cała Polska • Christian Culture',
+            denom: 'Rozgłośnia Ewangelizacyjna 24/7',
+            job: 'Oficjalne Radio Christian Culture',
+            church: 'Christian Culture NETWORK',
+            status: 'Muzyka Chwały, Słowo Boże i Modlitwa',
+            goal: 'Ewangelizacja radiowa i nieustanne uwielbienie Boga',
+            verse: '„Śpiewajcie Panu pieśń nową, śpiewajcie Panu, cała ziemio! Śpiewajcie Panu, błogosławcie Jego imię!”',
+            verseRef: '— Księga Psalmów 96, 1-2',
+            bio: 'Oficjalna stacja radiowa Christian Culture nadająca przez całą dobę. Transmitujemy najpiękniejszą muzykę uwielbienia, Biblię Śpiewaną, poranną audycję śniadaniową, codzienne rozważania oraz wieczorny różaniec i modlitwę Zjednoczeni za Polskę o 21:00.',
             avatar: 'Logo_Biblia_Spiewana.jpg',
-            cover: 'lumina_hero_main.jpg',
+            cover: 'tlo_tv_radiocc.jpg',
             coverPosY: '50%',
-            verse: '„„Śpiewajcie Panu pieśń nową, śpiewajcie Panu, cała ziemio! Śpiewajcie Panu, błogosławcie Jego imię!””',
-            verseRef: '— Przypowieści Salomona 31, 10',
-            bio: 'Oficjalny profil i kanał YouTube CC Women to wyjątkowa przestrzeń wzrostu duchowego, modlitwy, kobiecej mądrości i głębokich świadectw Bożego działania w życiu kobiet. Tworzymy treści, które inspirują do pogłębiania relacji z Bogiem, budowania silnych rodzin oraz odkrywania własnej wartości w Jezusie Chrystusie. Subskrybuj nasz kanał i dołącz do grona kobiet budujących swoje życie na fundamencie wiary! 🌸✨',
-            tags: ['Kobiety Wiary', 'YouTube CC Women', 'Modlitwa i Wstawiennictwo', 'Pismo Święte', 'Świadectwa Życia', 'Wzrost Duchowy'],
-            youtubeUrl: 'https://www.youtube.com/@CCWomen7',
+            visibility: 'public',
             pin: '7777',
-            photos: ['Logo_Biblia_Spiewana.jpg', 'lumina_hero_main.jpg', 'avatar_wioletta_official.jpg'],
+            tags: ["Radio 24/7","Uwielbienie","Biblia Śpiewana","Modlitwa","Ewangelizacja"],
+            youtubeUrl: 'https://www.youtube.com/@RadioChristianCulture',
+            photos: ['Logo_Biblia_Spiewana.jpg'],
             posts: [
                 {
-                    id: 'post_ccw_1',
-                    author: 'Polskie Radio CC',
+                    id: 'post_radiocc_1',
+                    author: 'Polskie Radio CC • Christian Culture',
                     authorAvatar: 'Logo_Biblia_Spiewana.jpg',
-                    time: 'Oficjalny Komunikat Misji • 🌸 Kanał YouTube',
-                    text: 'Szczęść Boże wszystkim Kobietom! Witajcie na oficjalnym profilu kanału **CC Women** na portalu **LUMINA**. Naszym pragnieniem jest tworzenie przestrzeni wzajemnego wsparcia, modlitwy i odkrywania piękna powołania w świetle Słowa Bożego. Subskrybujcie nasz kanał na YouTube i bądźcie częścią tej niezwykłej społeczności! 🌸🕊️',
+                    time: 'Oficjalny Komunikat Misji • 🕊️ Christian Culture',
+                    text: 'Oficjalna stacja radiowa Christian Culture nadająca przez całą dobę. Transmitujemy najpiękniejszą muzykę uwielbienia, Biblię Śpiewaną, poranną audycję śniadaniową, codzienne rozważania oraz wieczorny różaniec i modlitwę Zjednoczeni za Polskę o 21:00.',
                     image: 'Logo_Biblia_Spiewana.jpg',
-                    likes: 148,
-                    amen: 132
-                },
-                {
-                    id: 'post_ccw_2',
-                    author: 'Polskie Radio CC',
-                    authorAvatar: 'Logo_Biblia_Spiewana.jpg',
-                    time: 'Wczoraj • 📖 Słowo Dnia',
-                    text: '„Kłamliwy jest wdzięk i zwiewna jest uroda, lecz niewiasta, która boi się Pana, zasługuje na chwałę.” (Prz 31, 30). Bądźcie odważne i pamiętajcie, że w oczach Boga każda z Was jest bezcenna! ✨',
-                    image: null,
-                    likes: 92,
-                    amen: 85
+                    likes: 120,
+                    amen: 98
                 }
             ]
         };
@@ -1694,8 +1685,8 @@
             } catch (e) {}
 
             if (window.LuminaDB?.saveProfileToCloud) {
-                window.LuminaDB.saveProfileToCloud('ccwomen', data);
-                window.LuminaDB.saveProfileToCloud('u_ccwomen_9055', data);
+                window.LuminaDB.saveProfileToCloud('radiocc', data);
+                window.LuminaDB.saveProfileToCloud('u_radiocc', data);
             }
             renderChannelView();
         }
