@@ -469,17 +469,18 @@
         }
 
         .head-user-name {
-            font-family: 'Outfit', sans-serif;
-            font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+            font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(1.2rem, 2.8vw, 1.85rem);
             font-weight: 800;
             color: #fff;
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-wrap: nowrap;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            flex-wrap: wrap;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            line-height: 1.25;
         }
 
         .verified-badge {

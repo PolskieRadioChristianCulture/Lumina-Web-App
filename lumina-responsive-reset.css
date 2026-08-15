@@ -275,3 +275,29 @@ html, body {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.55; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+ * 10. UNIVERSAL FULL TITLE & PROFILE NAME VISIBILITY (ZERO TRUNCATION)
+ * Gwarancja pełnego wyświetlania nazw i tytułów wszystkich profili bez ucinania
+ * ══════════════════════════════════════════════════════════════════════════ */
+.head-user-name, 
+.profile-name, 
+.user-name, 
+.card-name,
+#userNameEl,
+h1.head-user-name {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    line-height: 1.25 !important;
+}
+
+.head-user-details {
+    min-width: 0 !important;
+    overflow: visible !important;
+}
