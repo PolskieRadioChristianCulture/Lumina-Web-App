@@ -1028,58 +1028,7 @@
                 
                 <!-- Tab: Tablica & Wpisy -->
                 <div id="tab-feed" class="tab-content-pane">
-                    
-                    <!-- Welcome Post -->
-                    <div class="post-card">
-                        <div class="post-head">
-                            <div class="post-author-wrap">
-                                <img src="logo_cc_women.jpg" alt="CC Women" class="post-author-img">
-                                <div>
-                                    <div class="post-author-name">CC Women • Christian Culture</div>
-                                    <div class="post-time">Oficjalny Komunikat Misji • 🌸 Kanał YouTube</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="post-content">
-                            Szczęść Boże wszystkim Kobietom! Witajcie na oficjalnym profilu kanału **CC Women** na portalu **LUMINA**.  
-                            Naszym pragnieniem jest tworzenie przestrzeni wzajemnego wsparcia, modlitwy i odkrywania piękna powołania w świetle Słowa Bożego. Subskrybujcie nasz kanał na YouTube i bądźcie częścią tej niezwykłej społeczności! 🌸🕊️
-                        </div>
-
-                        <div class="post-image-box">
-                            <img src="logo_cc_women.jpg" alt="Logo CC Women" class="post-image" style="max-height: 280px; object-fit: contain; background:#000; padding:20px;">
-                        </div>
-
-                        <div class="post-actions-bar">
-                            <button class="post-action-btn" onclick="showToast('Dziękujemy za polubienie wpisu CC Women! 🌸')"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> 148 Polubień</button>
-                            <a href="https://www.youtube.com/@ChristianCulture?sub_confirmation=1" target="_blank" class="post-action-btn" style="text-decoration:none; color:#facc15;"><i class="fa-brands fa-youtube"></i> Dołącz do YouTube</a>
-                            <button class="post-action-btn" onclick="copyProfileLink()"><i class="fa-solid fa-share-nodes"></i> Udostępnij</button>
-                        </div>
-                    </div>
-
-                    <!-- Second Post -->
-                    <div class="post-card">
-                        <div class="post-head">
-                            <div class="post-author-wrap">
-                                <img src="logo_cc_women.jpg" alt="CC Women" class="post-author-img">
-                                <div>
-                                    <div class="post-author-name">CC Women • Christian Culture</div>
-                                    <div class="post-time">Wczoraj • 📖 Słowo Dnia</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="post-content">
-                            „Kłamliwy jest wdzięk i zwiewna jest uroda, lecz niewiasta, która boi się Pana, zasługuje na chwałę.” (Prz 31, 30).  
-                            Bądźcie odważne i pamiętajcie, że w oczach Boga każda z Was jest bezcenna! ✨
-                        </div>
-
-                        <div class="post-actions-bar">
-                            <button class="post-action-btn" onclick="showToast('Dziękujemy za polubienie wpisu CC Women! 🌸')"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> 92 Polubienia</button>
-                            <button class="post-action-btn" onclick="copyProfileLink()"><i class="fa-solid fa-share-nodes"></i> Udostępnij</button>
-                        </div>
-                    </div>
-
+                    <div id="feedStream"></div>
                 </div>
 
                 <!-- Tab: O Kanale & Misja -->
@@ -1208,10 +1157,84 @@
             }
         }
 
+        // ── Realtime Posts Render & Live Sync ──
+        function renderPosts() {
+            const posts = (window.LuminaDB?.getAuthorPosts) 
+                ? window.LuminaDB.getAuthorPosts('ccwomen', 'CC Women')
+                : [];
+            
+            const stream = document.getElementById('feedStream');
+            if (!stream) return;
+
+            // Domyślne wpisy jeśli pusto
+            const displayPosts = posts.length > 0 ? posts : [
+                {
+                    id: 'post_ccw_1',
+                    author: 'CC Women • Christian Culture',
+                    authorAvatar: 'logo_cc_women.jpg',
+                    time: 'Oficjalny Komunikat Misji • 🌸 Kanał YouTube',
+                    text: 'Szczęść Boże wszystkim Kobietom! Witajcie na oficjalnym profilu kanału **CC Women** na portalu **LUMINA**. Naszym pragnieniem jest tworzenie przestrzeni wzajemnego wsparcia, modlitwy i odkrywania piękna powołania w świetle Słowa Bożego. Subskrybujcie nasz kanał na YouTube i bądźcie częścią tej niezwykłej społeczności! 🌸🕊️',
+                    image: 'logo_cc_women.jpg',
+                    likes: 148,
+                    amen: 132
+                },
+                {
+                    id: 'post_ccw_2',
+                    author: 'CC Women • Christian Culture',
+                    authorAvatar: 'logo_cc_women.jpg',
+                    time: 'Wczoraj • 📖 Słowo Dnia',
+                    text: '„Kłamliwy jest wdzięk i zwiewna jest uroda, lecz niewiasta, która boi się Pana, zasługuje na chwałę.” (Prz 31, 30). Bądźcie odważne i pamiętajcie, że w oczach Boga każda z Was jest bezcenna! ✨',
+                    image: null,
+                    likes: 92,
+                    amen: 85
+                }
+            ];
+
+            stream.innerHTML = displayPosts.map(p => `
+                <article class="post-card" id="${p.id}">
+                    <div class="post-head">
+                        <div class="post-author-wrap">
+                            <img src="${p.authorAvatar || 'logo_cc_women.jpg'}" alt="${p.author}" class="post-author-img">
+                            <div>
+                                <div class="post-author-name">${p.author}</div>
+                                <div class="post-time">${p.time || 'Przed chwilą • 🌸 Kanał YouTube'}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-content">${p.text || p.desc || ''}</div>
+                    ${p.image ? `
+                        <div class="post-image-box">
+                            <img src="${p.image}" alt="Post Image" class="post-image" style="max-height: 280px; object-fit: contain; background:#000; padding:12px;">
+                        </div>
+                    ` : ''}
+                    <div class="post-actions-bar">
+                        <button class="post-action-btn" onclick="showToast('Dziękujemy za polubienie wpisu CC Women! 🌸')"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> ${p.likes || 1} Polubień</button>
+                        <a href="https://www.youtube.com/@ChristianCulture?sub_confirmation=1" target="_blank" class="post-action-btn" style="text-decoration:none; color:#facc15;"><i class="fa-brands fa-youtube"></i> Dołącz do YouTube</a>
+                        <button class="post-action-btn" onclick="copyProfileLink()"><i class="fa-solid fa-share-nodes"></i> Udostępnij</button>
+                    </div>
+                </article>
+            `).join('');
+        }
+
         // Close modal on backdrop click
         document.querySelectorAll('.modal-overlay').forEach(bg =>
             bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); })
         );
-    </script>
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderPosts();
+
+            window.addEventListener('lumina_post_published', () => renderPosts());
+            window.addEventListener('storage', () => renderPosts());
+
+            const initCloudSync = () => {
+                if (window.LuminaDB?.subscribeToFeedPosts) {
+                    window.LuminaDB.subscribeToFeedPosts(() => renderPosts());
+                } else {
+                    setTimeout(initCloudSync, 300);
+                }
+            };
+            initCloudSync();
+        });
 </body>
 </html>

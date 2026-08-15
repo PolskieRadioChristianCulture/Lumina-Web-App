@@ -2356,7 +2356,9 @@
 
         function renderPosts() {
             const data = getProfileData();
-            const posts = Array.isArray(data.posts) ? data.posts : [];
+            const posts = (window.LuminaDB?.getAuthorPosts) 
+                ? window.LuminaDB.getAuthorPosts('wiolettarogowska', data.name)
+                : (Array.isArray(data.posts) ? data.posts : []);
             const stream = document.getElementById('feedStream');
             if (!stream) return;
 
@@ -2368,10 +2370,10 @@
             stream.innerHTML = posts.map(p => `
                 <article class="post-card" id="${p.id}">
                     <div class="post-header">
-                        <img src="${data.avatar || 'lumina_anna2.jpg'}" alt="${p.author}" class="post-avatar">
+                        <img src="${p.authorAvatar || data.avatar || 'avatar_wioletta_official.jpg'}" alt="${p.author}" class="post-avatar">
                         <div>
                             <div class="post-author">${p.author}</div>
-                            <div class="post-time">${p.time}</div>
+                            <div class="post-time">${p.time || 'Przed chwilą'}</div>
                         </div>
                         ${isOwnerMode ? `
                             <div class="post-header-actions" style="display:flex; align-items:center; gap:8px; margin-left:auto;">
@@ -2380,7 +2382,7 @@
                             </div>
                         ` : ''}
                     </div>
-                    <div class="post-content">${p.text}</div>
+                    <div class="post-content">${p.text || ''}</div>
                     ${p.image ? `<img src="${p.image}" alt="Post Image" class="post-image">` : ''}
                     <div class="post-footer">
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span> Polubień</button>
@@ -2517,38 +2519,30 @@
             const newPost = {
                 id: 'post_w_' + Date.now(),
                 author: cur.name,
+                authorSlug: 'wiolettarogowska',
+                authorAvatar: cur.avatar || 'avatar_wioletta_official.jpg',
+                authorRole: '🌸 Współzałożycielka Christian Culture',
                 time: 'Przed chwilą • 🌍 Nowy Wpis',
                 text: val || '',
                 likes: 1,
+                amen: 0,
                 image: attachedPostImageDataUrl || null
             };
-            cur.posts = cur.posts || [];
-            cur.posts.unshift(newPost);
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
-            } catch(e) {}
 
-            // Save to Firestore Cloud in real-time
-            if (window.LuminaDB) {
-                window.LuminaDB.addPostToCloud({
-                    author: cur.name,
-                    authorSlug: 'wiolettarogowska',
-                    authorAvatar: cur.avatar || 'lumina_anna2.jpg',
-                    authorRole: 'Współzałożycielka Christian Culture 💕',
-                    time: 'Przed chwilą • 🌍 Nowy Wpis',
-                    text: val || '',
-                    image: attachedPostImageDataUrl || null,
-                    type: 'post',
-                    likes: 1,
-                    amen: 0
-                });
-                window.LuminaDB.saveProfileToCloud('wiolettarogowska', cur);
+            if (window.LuminaDB?.publishUniversalPost) {
+                window.LuminaDB.publishUniversalPost(newPost);
+            } else {
+                cur.posts = cur.posts || [];
+                cur.posts.unshift(newPost);
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+                } catch(e) {}
             }
 
             input.value = '';
             removeAttachedPostImage();
             renderPosts();
-            showToast('Twój nowy wpis został opublikowany na tablicy! ✨');
+            showToast('Twój wpis został pomyślnie opublikowany na profilu i tablicy! ✨🕊️');
         }
 
         // ── Robust Image Resizer & Compressor for LocalStorage ──
@@ -2857,6 +2851,9 @@
             checkOwnerAuthSession();
             renderProfileView();
 
+            window.addEventListener('lumina_post_published', () => renderPosts());
+            window.addEventListener('storage', () => renderPosts());
+
             const initCloudSync = () => {
                 if (window.LuminaDB) {
                     window.LuminaDB.subscribeToProfile('wiolettarogowska', (cloudData) => {
@@ -2864,6 +2861,9 @@
                             renderProfileView();
                         }
                     });
+                    if (window.LuminaDB.subscribeToFeedPosts) {
+                        window.LuminaDB.subscribeToFeedPosts(() => renderPosts());
+                    }
                 } else {
                     setTimeout(initCloudSync, 300);
                 }

@@ -540,6 +540,172 @@ export async function togglePostReactionInCloud(postId, reactionType = 'likes') 
     }
 }
 
+// ── Universal Bi-Directional Post Publishing & Author Sync Engine ──
+export async function publishUniversalPost(postData) {
+    const slug = postData.authorSlug || postData.authorId || (postData.author ? postData.author.toLowerCase().replace(/\s+/g, '') : 'cezaryrgowski');
+    const authorName = postData.author || 'Użytkownik LUMINA';
+    const authorAvatar = postData.authorAvatar || 'lumina_icon.jpg';
+    const authorRole = postData.authorRole || 'Społeczność LUMINA ✨';
+
+    const normalizedPost = {
+        id: postData.id || ('post_' + Date.now()),
+        type: postData.type || 'post',
+        title: postData.title || '',
+        text: postData.text || postData.desc || '',
+        image: postData.image || null,
+        author: authorName,
+        authorSlug: slug,
+        authorAvatar: authorAvatar,
+        authorRole: authorRole,
+        likes: postData.likes || 1,
+        amen: postData.amen || 0,
+        time: postData.time || 'Przed chwilą • 🌍 Publiczny',
+        createdAtTimestamp: postData.createdAtTimestamp || Date.now(),
+        createdAtDateStr: new Date().toISOString()
+    };
+
+    // 1. Save to Author's Local Profile Posts
+    try {
+        const storageKeys = [
+            `lumina_profile_${slug}`,
+            slug.includes('cezary') ? 'lumina_profile_cezaryrgowski' : null,
+            slug.includes('wioletta') ? 'lumina_profile_wiolettarogowska' : null,
+            (slug.includes('women') || slug.includes('ccwomen')) ? 'lumina_profile_u_ccwomen_9055' : null
+        ].filter(Boolean);
+
+        storageKeys.forEach(k => {
+            const raw = localStorage.getItem(k);
+            let profile = raw ? JSON.parse(raw) : null;
+            if (!profile) profile = { name: authorName, posts: [] };
+            if (!Array.isArray(profile.posts)) profile.posts = [];
+            
+            // Check if already in array
+            const exists = profile.posts.some(p => p.id === normalizedPost.id || (p.text === normalizedPost.text && Math.abs((p.createdAtTimestamp || 0) - (normalizedPost.createdAtTimestamp || 0)) < 10000));
+            if (!exists) {
+                profile.posts.unshift(normalizedPost);
+                localStorage.setItem(k, JSON.stringify(profile));
+            }
+        });
+    } catch(e) {
+        console.warn('Lumina: Błąd zapisu posta w profilu autora:', e);
+    }
+
+    // 2. Save to Public Feed Local Cache (lumina_cloud_posts_cache & lumina_cc_campaigns)
+    try {
+        const rawFeed = localStorage.getItem('lumina_cloud_posts_cache');
+        const feedList = rawFeed ? JSON.parse(rawFeed) : [];
+        const fExists = feedList.some(p => p.id === normalizedPost.id);
+        if (!fExists) {
+            feedList.unshift(normalizedPost);
+            localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(feedList));
+        }
+
+        const rawCamp = localStorage.getItem('lumina_cc_campaigns');
+        const campList = rawCamp ? JSON.parse(rawCamp) : [];
+        const cExists = campList.some(p => p.id === normalizedPost.id);
+        if (!cExists) {
+            campList.unshift(normalizedPost);
+            localStorage.setItem('lumina_cc_campaigns', JSON.stringify(campList));
+        }
+    } catch(e) {}
+
+    // 3. Save to Firestore Cloud Collection lumina_posts
+    if (db) {
+        try {
+            await addDoc(collection(db, 'lumina_posts'), {
+                ...normalizedPost,
+                createdAtTimestamp: serverTimestamp()
+            });
+        } catch(err) {
+            console.warn('Lumina Firestore addDoc error:', err.message);
+        }
+    }
+
+    // 4. Dispatch Global Events to trigger instant reactive re-renders
+    window.dispatchEvent(new CustomEvent('lumina_post_published', { detail: normalizedPost }));
+    window.dispatchEvent(new Event('storage'));
+
+    return normalizedPost;
+}
+
+// ── Aggregated Posts Getter for Specific Profile / Author ──
+export function getAuthorPosts(authorSlug, authorName) {
+    const cleanSlug = (authorSlug || '').toLowerCase();
+    const cleanName = (authorName || '').toLowerCase();
+
+    const collected = [];
+    const seenIds = new Set();
+    const seenTexts = new Set();
+
+    function addIfMatch(p) {
+        if (!p || !p.text) return;
+        const pSlug = (p.authorSlug || p.authorId || '').toLowerCase();
+        const pAuthor = (p.author || p.authorName || '').toLowerCase();
+
+        let isMatch = false;
+        if (cleanSlug) {
+            if (pSlug === cleanSlug || pSlug.includes(cleanSlug) || cleanSlug.includes(pSlug)) isMatch = true;
+            if (cleanSlug.includes('cezary') && (pAuthor.includes('cezary') || pSlug.includes('cezary'))) isMatch = true;
+            if (cleanSlug.includes('wioletta') && (pAuthor.includes('wioletta') || pSlug.includes('wioletta'))) isMatch = true;
+            if ((cleanSlug.includes('women') || cleanSlug.includes('ccwomen')) && (pAuthor.includes('women') || pSlug.includes('women'))) isMatch = true;
+        }
+        if (cleanName && (pAuthor.includes(cleanName) || cleanName.includes(pAuthor))) {
+            isMatch = true;
+        }
+
+        if (isMatch) {
+            const key = p.id || p.text;
+            if (!seenIds.has(p.id) && !seenTexts.has(p.text)) {
+                if (p.id) seenIds.add(p.id);
+                seenTexts.add(p.text);
+                collected.push(p);
+            }
+        }
+    }
+
+    // A. From Local Profile storage
+    try {
+        const rawProfile = localStorage.getItem(`lumina_profile_${authorSlug}`) || 
+                           (cleanSlug.includes('cezary') ? localStorage.getItem('lumina_profile_cezaryrgowski') : null) ||
+                           (cleanSlug.includes('wioletta') ? localStorage.getItem('lumina_profile_wiolettarogowska') : null) ||
+                           ((cleanSlug.includes('women') || cleanSlug.includes('ccwomen')) ? localStorage.getItem('lumina_profile_u_ccwomen_9055') : null);
+        if (rawProfile) {
+            const pObj = JSON.parse(rawProfile);
+            if (Array.isArray(pObj.posts)) pObj.posts.forEach(addIfMatch);
+        }
+    } catch(e) {}
+
+    // B. From Cloud Posts Cache
+    try {
+        const rawCloud = localStorage.getItem('lumina_cloud_posts_cache');
+        if (rawCloud) {
+            const cList = JSON.parse(rawCloud);
+            if (Array.isArray(cList)) cList.forEach(addIfMatch);
+        }
+    } catch(e) {}
+
+    // C. From Campaigns Cache
+    try {
+        const rawCamp = localStorage.getItem('lumina_cc_campaigns');
+        if (rawCamp) {
+            const campList = JSON.parse(rawCamp);
+            if (Array.isArray(campList)) campList.forEach(addIfMatch);
+        }
+    } catch(e) {}
+
+    // D. From in-memory cloud feed
+    if (window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts)) {
+        window.cloudFeedPosts.forEach(addIfMatch);
+    }
+
+    // Sort newest first
+    return collected.sort((a, b) => {
+        const tA = a.createdAtTimestamp ? (typeof a.createdAtTimestamp === 'number' ? a.createdAtTimestamp : a.createdAtTimestamp.seconds * 1000) : 0;
+        const tB = b.createdAtTimestamp ? (typeof b.createdAtTimestamp === 'number' ? b.createdAtTimestamp : b.createdAtTimestamp.seconds * 1000) : 0;
+        return tB - tA;
+    });
+}
+
 // ══════════════════════════════════════════════════════════════════════════
 // 3B. MISSION ACCOUNTS & MULTI-PERSONA ENGINE (Dowódca, Żona, Misje, AI)
 // ══════════════════════════════════════════════════════════════════════════
@@ -1114,6 +1280,8 @@ window.LuminaDB = {
     subscribeToAllCommunityProfiles,
     subscribeToFeedPosts,
     addPostToCloud,
+    publishUniversalPost,
+    getAuthorPosts,
     togglePostReactionInCloud,
     subscribeToCampaigns,
     addCampaignToCloud,

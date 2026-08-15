@@ -2641,7 +2641,10 @@
 
         function renderPosts() {
             const data = getProfileData();
-            const posts = Array.isArray(data.posts) ? data.posts : [];
+            const slug = getRequestedUserSlug();
+            const posts = (window.LuminaDB?.getAuthorPosts) 
+                ? window.LuminaDB.getAuthorPosts(slug, data.name)
+                : (Array.isArray(data.posts) ? data.posts : []);
             const stream = document.getElementById('feedStream');
             if (!stream) return;
 
@@ -2658,10 +2661,10 @@
                 return `
                 <article class="post-card" id="${p.id}">
                     <div class="post-header">
-                        <img src="${data.avatar || 'avatar_new1.jpg'}" alt="${p.author}" class="post-avatar">
+                        <img src="${p.authorAvatar || data.avatar || 'lumina_icon.jpg'}" alt="${p.author}" class="post-avatar">
                         <div>
                             <div class="post-author">${p.author}</div>
-                            <div class="post-time">${p.time}</div>
+                            <div class="post-time">${p.time || 'Przed chwilą'}</div>
                         </div>
                         ${isOwnerMode ? `
                             <div class="post-header-actions" style="display:flex; align-items:center; gap:8px; margin-left:auto;">
@@ -2813,38 +2816,30 @@
             const newPost = {
                 id: 'post_' + Date.now(),
                 author: cur.name,
+                authorSlug: slug,
+                authorAvatar: cur.avatar || 'lumina_icon.jpg',
+                authorRole: cur.job ? `${cur.job} ✨` : 'Społeczność LUMINA ✨',
                 time: 'Przed chwilą • 🌍 Nowy Wpis',
                 text: val || '',
                 likes: 1,
+                amen: 0,
                 image: attachedPostImageDataUrl || null
             };
-            cur.posts = cur.posts || [];
-            cur.posts.unshift(newPost);
-            try {
-                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
-            } catch(e) {}
 
-            // Save to Firestore Cloud in real-time
-            if (window.LuminaDB) {
-                window.LuminaDB.addPostToCloud({
-                    author: cur.name,
-                    authorSlug: slug,
-                    authorAvatar: cur.avatar || 'icon.png',
-                    authorRole: cur.job ? `${cur.job} ✨` : 'Społeczność LUMINA ✨',
-                    time: 'Przed chwilą • 🌍 Nowy Wpis',
-                    text: val || '',
-                    image: attachedPostImageDataUrl || null,
-                    type: 'post',
-                    likes: 1,
-                    amen: 0
-                });
-                window.LuminaDB.saveProfileToCloud(slug, cur);
+            if (window.LuminaDB?.publishUniversalPost) {
+                window.LuminaDB.publishUniversalPost(newPost);
+            } else {
+                cur.posts = cur.posts || [];
+                cur.posts.unshift(newPost);
+                try {
+                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                } catch(e) {}
             }
 
             input.value = '';
             removeAttachedPostImage();
             renderPosts();
-            showToast('Twój nowy wpis został opublikowany na tablicy! ✨');
+            showToast('Twój wpis został pomyślnie opublikowany na profilu i tablicy! ✨🕊️');
         }
 
         // ── Robust Image Resizer & Compressor for LocalStorage ──
@@ -3309,6 +3304,9 @@
         window.addEventListener('DOMContentLoaded', () => {
             renderProfile();
 
+            window.addEventListener('lumina_post_published', () => renderPosts());
+            window.addEventListener('storage', () => renderPosts());
+
             const initCloudSync = () => {
                 if (window.LuminaDB) {
                     const slug = getRequestedUserSlug();
@@ -3317,6 +3315,9 @@
                             renderProfile();
                         }
                     });
+                    if (window.LuminaDB.subscribeToFeedPosts) {
+                        window.LuminaDB.subscribeToFeedPosts(() => renderPosts());
+                    }
                 } else {
                     setTimeout(initCloudSync, 300);
                 }

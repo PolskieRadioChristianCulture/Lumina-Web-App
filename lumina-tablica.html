@@ -2092,8 +2092,23 @@
                 amen: 8
             };
 
-            // Save to Firestore in cloud as Mission Account
-            if (window.LuminaDB?.publishAsMissionAccount) {
+            // Save to Firestore in cloud and author's profile automatically
+            if (window.LuminaDB?.publishUniversalPost) {
+                window.LuminaDB.publishUniversalPost({
+                    id: newCampaign.id,
+                    type: newCampaign.type,
+                    title: newCampaign.title,
+                    text: newCampaign.desc,
+                    image: newCampaign.image,
+                    author: persona.name,
+                    authorSlug: persona.slug,
+                    authorAvatar: persona.avatar,
+                    authorRole: persona.role,
+                    likes: newCampaign.likes,
+                    amen: newCampaign.amen,
+                    time: newCampaign.createdAt
+                });
+            } else if (window.LuminaDB?.publishAsMissionAccount) {
                 window.LuminaDB.publishAsMissionAccount(persona.id, newCampaign);
             }
 
@@ -2110,7 +2125,7 @@
             removeCampaignImg();
 
             renderFeed();
-            showToast(`Opublikowano w imieniu: ${persona.name}! 📢✨`);
+            showToast(`Opublikowano na tablicy i w profilu: ${persona.name}! 📢✨`);
         }
 
         // ── Toast System ──
