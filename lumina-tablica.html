@@ -442,7 +442,37 @@
         .badge-type-ann { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.45); }
         .badge-type-event { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45); }
 
-                /* ── GLOBAL STRICT IMAGE & MEDIA CENTERING FOR FEED POSTS ── */
+                        /* ── CC MISSION CAMPAIGN FULL UNTOUCHED GRAPHIC CONTAINER (NO CROPPING) ── */
+        .campaign-media-container {
+            width: 100%;
+            position: relative;
+            background: radial-gradient(circle at center, rgba(30, 41, 59, 0.6), #070b14);
+            overflow: hidden;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            margin: 0 auto !important;
+            min-height: 220px;
+            max-height: 520px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .campaign-img-full {
+            width: 100% !important;
+            height: auto !important;
+            max-height: 500px !important;
+            object-fit: contain !important;
+            object-position: center center !important;
+            display: block !important;
+            margin: 0 auto !important;
+            transition: transform 0.35s ease;
+        }
+        .post-card-1x1:hover .campaign-img-full {
+            transform: scale(1.015);
+        }
+
+        /* ── GLOBAL STRICT IMAGE & MEDIA CENTERING FOR FEED POSTS ── */
         .media-container-1x1 {
             width: 100%;
             aspect-ratio: 1 / 1;
@@ -2595,11 +2625,18 @@
                             </div>
                         </div>
 
-                        <!-- 1:1 Square Media (if image provided and not just standard placeholder when embed is present) -->
-                        ${(!item.image && richResult.embedHtml) ? '' : `
-                        <div class="media-container-1x1">
-                            <img src="${cardImgSrc}" alt="${item.title || item.author}" class="media-img-1x1" loading="lazy" onerror="this.onerror=null; this.src='${authorAvatarSrc}'">
-                        </div>`}
+                        <!-- Media Container (Campaigns: FULL uncropped graphic; User Posts: 1:1 square) -->
+                        ${(!item.image && richResult.embedHtml) ? '' : (
+                            isCampaign ? `
+                                <div class="campaign-media-container">
+                                    <img src="${cardImgSrc}" alt="${item.title || item.author}" class="campaign-img-full" loading="lazy" onerror="this.onerror=null; this.src='${authorAvatarSrc}'">
+                                </div>
+                            ` : `
+                                <div class="media-container-1x1">
+                                    <img src="${cardImgSrc}" alt="${item.title || item.author}" class="media-img-1x1" loading="lazy" onerror="this.onerror=null; this.src='${authorAvatarSrc}'">
+                                </div>
+                            `
+                        )}
 
                         <!-- Details & Text -->
                         <div class="post-details-box">
@@ -3176,6 +3213,7 @@
     </script>
 </body>
 </html>
+
 
 
 
