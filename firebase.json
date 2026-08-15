@@ -1,0 +1,28 @@
+{
+  "hosting": {
+    "site": "lumina-cc-b90b0",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/*.py",
+      "**/*.bat",
+      "**/*.zip"
+    ],
+    "rewrites": [
+      {
+        "source": "/lumina",
+        "destination": "/lumina.html"
+      },
+      {
+        "source": "/tablica",
+        "destination": "/lumina-tablica.html"
+      },
+      {
+        "source": "/profil",
+        "destination": "/lumina-profile.html"
+      }
+    ]
+  }
+}
