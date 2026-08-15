@@ -175,7 +175,7 @@
 
             <!-- 4. Kanały CC (Christian Culture NETWORK) -->
             <button type="button" class="lumina-nav-tab" id="navTabNetwork" onclick="window.openCcNetworkModal()" title="Kanały Nadawcze & YouTube Christian Culture NETWORK">
-                <i class="fa-solid fa-tower-broadcast" style="color: #facc15;"></i>
+                <i class="fa-solid fa-tv" style="color: #facc15;"></i>
                 <span>Kanały CC</span>
             </button>
 
