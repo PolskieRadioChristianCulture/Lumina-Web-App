@@ -106,6 +106,24 @@ class LuminaTablicaEngine {
         ];
 
         let html = '';
+
+            // Pinned Founder Welcome Post for Soft Beta Launch
+            const softLaunchWelcome = {
+                id: 'post_founder_soft_launch',
+                isPinned: true,
+                author: 'Cezary Rogowski',
+                authorSlug: 'cezaryrgowski',
+                authorAvatar: 'avatar_cezary_official.jpg',
+                authorRole: 'Założyciel Christian Culture 🕊️',
+                time: 'Przypięty Komunikat • ✨ Oficjalny Start Soft Beta',
+                text: 'Szczęść Boże wszystkim Użytkownikom i Testerom! 🕊️✨\n\nZ wielką wdzięcznością Bogu otwieramy etap Soft Launch chrześcijańskiego portalu LUMINA. Naszym celem jest łączenie ludzi o czystych sercach, poszukujących wartościowych, Bożych relacji i małżeństwa opartego na fundamencie Chrystusa.\n\nZachęcam do tworzenia autentycznych profili, zapraszania na Chrześcijańską Kawę ☕ oraz dzielenia się świadectwami na naszej Tablicy. Niech Pan obficie błogosławi ten czas i każdą nowo zawartą znajomość!',
+                image: 'lumina_hero_clean.jpg',
+                likes: 48,
+                amen: 34
+            };
+
+        // Render pinned founder post first
+        posts = [softLaunchWelcome, ...posts.filter(p => p.id !== 'post_founder_soft_launch')];
         let bannerIdx = 0;
 
         posts.forEach((post, index) => {
