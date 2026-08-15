@@ -56,6 +56,9 @@ let auth = null;
 let analytics = null;
 let messaging = null;
 const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+    prompt: 'select_account'
+});
 
 try {
     app = !getApps().length ? initializeApp(LUMINA_FIREBASE_CONFIG, 'lumina-app') : getApp('lumina-app');
@@ -134,6 +137,34 @@ let currentUserState = null;
 let currentProfileState = null;
 const authSubscribers = [];
 
+
+// Check Google Redirect Auth on startup
+if (auth) {
+    try {
+        getRedirectResult(auth).then(async (result) => {
+            if (result && result.user) {
+                const user = result.user;
+                console.log('Lumina Google Redirect Auth Success:', user.displayName);
+                let existingProfile = null;
+                try {
+                    const docSnap = await getDoc(doc(db, 'lumina_profiles', user.uid));
+                    if (docSnap.exists()) existingProfile = docSnap.data();
+                } catch(e) {}
+                if (existingProfile) {
+                    currentProfileState = existingProfile;
+                    currentUserState = user;
+                    localStorage.setItem('lumina_profile_' + user.uid, JSON.stringify(existingProfile));
+                    if (existingProfile.slug) localStorage.setItem('lumina_profile_' + existingProfile.slug, JSON.stringify(existingProfile));
+                    localStorage.setItem('lumina_current_user_profile', JSON.stringify(existingProfile));
+                    sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
+                    if (existingProfile.slug) sessionStorage.setItem('lumina_auth_owner_' + existingProfile.slug, 'true');
+                    window.dispatchEvent(new CustomEvent('lumina-auth-state', { detail: { user, profile: existingProfile } }));
+                }
+            }
+        }).catch(err => console.warn('getRedirectResult notice:', err.message));
+    } catch(e) {}
+}
+
 if (auth) {
     onAuthStateChanged(auth, async (user) => {
         currentUserState = user;
@@ -185,16 +216,91 @@ export function getCurrentProfile() {
 export async function loginWithGoogle() {
     if (!auth) throw new Error('Baza autoryzacji niedostępna.');
     try {
-        const result = await signInWithPopup(auth, googleProvider);
+        let result;
+        try {
+            result = await signInWithPopup(auth, googleProvider);
+        } catch(popupErr) {
+            console.warn('Popup blocked/closed, redirecting to standard Google login screen...', popupErr.message);
+            if (popupErr.code === 'auth/popup-blocked' || popupErr.code === 'auth/cancelled-popup-request') {
+                await signInWithRedirect(auth, googleProvider);
+                return null;
+            }
+            throw popupErr;
+        }
+
         const user = result.user;
         
-        // Check if user has an existing dating profile
+        // Check if user has an existing profile in Firestore
         let existingProfile = null;
         try {
             const docSnap = await getDoc(doc(db, 'lumina_profiles', user.uid));
             if (docSnap.exists()) {
                 existingProfile = docSnap.data();
             }
+        } catch(e) {}
+
+        if (!existingProfile) {
+            // Auto-create rich starter profile for Google User so they NEVER see an empty screen!
+            const cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000);
+            const userAvatar = user.photoURL || 'avatar_new1.jpg';
+            
+            existingProfile = {
+                uid: user.uid,
+                slug: cleanSlug,
+                name: user.displayName || 'Użytkownik LUMINA',
+                email: user.email || '',
+                age: 28,
+                city: 'Warszawa, Polska',
+                gender: 'kobieta',
+                lookingFor: 'mezczyzna',
+                denom: 'Rzymskokatolickie',
+                church: 'Wspólnota Chrześcijańska',
+                job: 'Społeczność LUMINA ✨',
+                status: 'Panna/Kawaler',
+                verse: '„Wszystko mogę w Tym, który mnie umacnia”',
+                verseRef: 'Flp 4, 13',
+                bio: 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
+                avatar: userAvatar,
+                cover: 'lumina_hero_clean.jpg',
+                coverPosY: '50%',
+                visibility: 'public',
+                pin: '7777',
+                tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+                photos: [userAvatar],
+                posts: [
+                    {
+                        id: 'post_' + Date.now(),
+                        author: user.displayName || 'Użytkownik LUMINA',
+                        authorSlug: cleanSlug,
+                        authorAvatar: userAvatar,
+                        time: 'Przed chwilą • ✨ Witaj w LUMINA',
+                        text: 'Szczęść Boże wszystkim! Witam serdecznie w społeczności LUMINA. Niech Pan błogosławi nasze rozmowy i spotkania! 🕊️',
+                        likes: 2,
+                        amen: 1,
+                        image: userAvatar
+                    }
+                ],
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            };
+            
+            if (db) {
+                try {
+                    await setDoc(doc(db, 'lumina_profiles', user.uid), existingProfile, { merge: true });
+                    await setDoc(doc(db, 'lumina_profiles', cleanSlug), existingProfile, { merge: true });
+                } catch(e) {}
+            }
+        }
+
+        currentProfileState = existingProfile;
+        currentUserState = user;
+
+        try {
+            localStorage.setItem('lumina_profile_' + user.uid, JSON.stringify(existingProfile));
+            if (existingProfile.slug) localStorage.setItem('lumina_profile_' + existingProfile.slug, JSON.stringify(existingProfile));
+            localStorage.setItem('lumina_current_user_profile', JSON.stringify(existingProfile));
+            sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
+            if (existingProfile.slug) sessionStorage.setItem('lumina_auth_owner_' + existingProfile.slug, 'true');
         } catch(e) {}
 
         return { user, profile: existingProfile, isNewUser: !existingProfile };

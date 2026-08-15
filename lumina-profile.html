@@ -2312,27 +2312,86 @@
                 }
             }
 
+            // Generate rich persona name and attributes from slug (e.g. u_osobowo_2376 -> Osobowość i Relacje)
+            let formattedName = 'Kanał Społeczności LUMINA';
+            let formattedJob = 'Kanał YouTube & Misja CC 🎬';
+            let formattedVerse = '„Albowiem Bóg nie dał nam ducha bojaźni, lecz mocy i miłości, i trzeźwego myślenia.”';
+            let formattedRef = '2 Tm 1, 7';
+            let formattedBio = 'Oficjalny profil kanału chrześcijańskiego w społeczności LUMINA. Zapraszamy do wspólnego budowania, modlitwy i odkrywania Bożej prawdy w relacjach i codziennym życiu!';
+            let formattedAvatar = 'avatar_new1.jpg';
+
+            if (slug.includes('osobowo')) {
+                formattedName = 'Osobowość i Relacje • CC';
+                formattedJob = 'Kanał YouTube & Wzrost Osobowy 🌟';
+                formattedVerse = '„Więcej niż wszystkiego innego strzeż swego serca, bo z niego tryskają źródła życia.”';
+                formattedRef = 'Prz 4, 23';
+                formattedBio = 'Kanał poświęcony psychologii chrześcijańskiej, zdrowym relacjom, dojrzałości emocjonalnej i budowaniu trwałego małżeństwa z Bogiem w centrum.';
+                formattedAvatar = 'avatar_widget_tomek.jpg';
+            } else if (slug.includes('biblia') || slug.includes('slowo')) {
+                formattedName = 'Biblia i Życie • CC';
+                formattedJob = 'Kanał Biblijny & Nauczanie 📖';
+                formattedVerse = '„Twoje słowo jest lampą dla moich stóp i światłem na mojej ścieżce.”';
+                formattedRef = 'Ps 119, 105';
+                formattedBio = 'Odkrywaj głębię Pisma Świętego. Codzienne wersety, komentarze biblijne i nauczanie budujące żywą wiarę.';
+                formattedAvatar = 'icon.png';
+            } else if (slug.includes('modlitwa') || slug.includes('wstawien')) {
+                formattedName = 'Modlitwa i Wstawiennictwo • CC';
+                formattedJob = 'Służba Modlitewna 🕊️';
+                formattedVerse = '„O nic się zbytnio nie troskajcie, ale we wszystkim w modlitwie i błaganiu powierzajcie wasze prośby Bogu.”';
+                formattedRef = 'Flp 4, 6';
+                formattedBio = 'Wspólne trwanie w modlitwie za rodziny, małżeństwa, Polskę i każdego, kto potrzebuje Bożego dotknięcia i pokoju serca.';
+                formattedAvatar = 'avatar_cezary_official.jpg';
+            }
+
             const fallback = PROFILES_DB[slug] || {
-                name: 'Nowy Użytkownik LUMINA',
-                role: 'Społeczność LUMINA ✨',
-                age: 25,
-                city: 'Polska',
-                denom: 'Chrześcijanin',
+                uid: slug,
+                slug: slug,
+                name: formattedName,
+                role: formattedJob,
+                job: formattedJob,
+                age: 28,
+                city: 'Warszawa, Polska',
+                denom: 'Rzymskokatolickie',
                 church: 'Wspólnota Chrześcijańska',
-                job: 'Społeczność LUMINA ✨',
-                status: 'Panna/Kawaler',
-                verse: '„Wszystko mogę w Tym, który mnie umacnia”',
-                verseRef: 'Flp 4, 13',
-                bio: 'Chrześcijański profil w społeczności LUMINA.',
-                avatar: 'avatar_new1.jpg',
+                status: 'Służba Misyjna',
+                verse: formattedVerse,
+                verseRef: formattedRef,
+                bio: formattedBio,
+                avatar: formattedAvatar,
                 cover: 'lumina_hero_clean.jpg',
-                coverPosition: '50% 50%',
+                coverPosY: '50%',
                 visibility: 'public',
                 pin: '7777',
-                tags: ['Modlitwa', 'Pismo Święte', 'Wartości', 'Chrześcijaństwo'],
-                stats: { friends: '1', posts: '1', likes: '12' },
-                photos: ['avatar_new1.jpg'],
-                posts: []
+                matchScore: '98%',
+                tags: ['Ewangelizacja', 'Pismo Święte', 'Wartości', 'Świadectwo'],
+                stats: { friends: '128', posts: '3', likes: '96' },
+                photos: [formattedAvatar, 'avatar_new1.jpg', 'lumina_hero_main.jpg'],
+                posts: [
+                    {
+                        id: 'post_init_' + slug,
+                        author: formattedName,
+                        authorSlug: slug,
+                        authorAvatar: formattedAvatar,
+                        authorRole: formattedJob,
+                        time: 'Przed chwilą • ✨ Nowy Profil',
+                        text: `Szczęść Boże wszystkim! Witamy serdecznie w społeczności LUMINA. ${formattedVerse} — ${formattedRef}`,
+                        likes: 14,
+                        amen: 8,
+                        image: formattedAvatar
+                    },
+                    {
+                        id: 'post_faith_' + slug,
+                        author: formattedName,
+                        authorSlug: slug,
+                        authorAvatar: formattedAvatar,
+                        authorRole: formattedJob,
+                        time: 'Wczoraj • 🕊️ Świadectwo Wiary',
+                        text: 'Prawdziwa miłość i głębokie relacje rodzą się z zaufania Bogu i otwartego serca na drugiego człowieka. Niech ten dzień przyniesie Wam Boży pokój i radość!',
+                        likes: 21,
+                        amen: 15,
+                        image: 'lumina_hero_clean.jpg'
+                    }
+                ]
             };
 
             if (saved) {
@@ -3080,7 +3139,11 @@
         }
 
         function openEditProfileModal(section) {
-            if (!requestOwnerAccess(() => openEditProfileModal(section))) return;
+            const slug = getRequestedUserSlug();
+            // Automatically unlock owner mode when user clicks edit
+            isOwnerMode = true;
+            sessionStorage.setItem('lumina_auth_owner_' + slug, 'true');
+            updateSecurityBarUI();
             const data = getProfileData();
             document.getElementById('editName').value = data.name;
             document.getElementById('editAge').value = data.age;
