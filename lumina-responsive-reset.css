@@ -188,3 +188,42 @@ img, video, iframe, canvas, svg {
         font-size: 0.8rem !important;
     }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+ * 8. UNIFIED PROFESSIONAL NAVBAR COLOR THEME (TOP & BOTTOM BARS - ALL DEVICES)
+ * Color: Dark Luxury Navy Obsidian Glass [ rgba(9, 14, 30, 0.94) ]
+ * ══════════════════════════════════════════════════════════════════════════ */
+:root {
+    --lumina-bar-bg: rgba(9, 14, 30, 0.94);
+    --lumina-bar-blur: blur(24px) saturate(180%);
+    --lumina-bar-border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* TOP NAVBAR (Desktop, Tablet, Mobile) */
+.lumina-nav, 
+.profile-navbar, 
+.header-container,
+nav.lumina-nav {
+    background: var(--lumina-bar-bg) !important;
+    backdrop-filter: var(--lumina-bar-blur) !important;
+    -webkit-backdrop-filter: var(--lumina-bar-blur) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* BOTTOM NAVBAR (Mobile, Tablet, PWA) */
+.lumina-bottom-nav, 
+.lumina-mobile-nav,
+nav.lumina-bottom-nav {
+    background: var(--lumina-bar-bg) !important;
+    backdrop-filter: var(--lumina-bar-blur) !important;
+    -webkit-backdrop-filter: var(--lumina-bar-blur) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.45) !important;
+}

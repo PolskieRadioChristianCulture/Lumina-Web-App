@@ -20,10 +20,10 @@
             right: 0 !important;
             width: 100% !important;
             height: 68px !important;
-            background: rgba(11, 24, 56, 0.96) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border-top: 1.5px solid rgba(250, 204, 21, 0.25) !important;
+            background: rgba(9, 14, 30, 0.94) !important;
+            backdrop-filter: blur(24px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
             box-shadow: 0 -8px 26px rgba(0, 0, 0, 0.7), 0 0 15px rgba(250, 204, 21, 0.1) !important;
             display: flex !important;
             align-items: center !important;
