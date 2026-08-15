@@ -946,10 +946,10 @@
 
         @media (max-width: 900px) {
             .lumina-mobile-nav {
-                display: flex;
+                display: flex !important;
             }
             body {
-                padding-bottom: 75px;
+                padding-bottom: 95px !important;
             }
             .profile-body-grid {
                 grid-template-columns: 1fr;
@@ -987,8 +987,12 @@
                 padding: 10px 14px;
             }
             .modal-card {
-                padding: 20px 14px;
+                padding: 20px 16px;
                 max-width: 95vw;
+                border-radius: 20px;
+            }
+            .form-input, textarea {
+                font-size: 16px !important;
             }
         }
 

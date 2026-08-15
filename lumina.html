@@ -412,14 +412,102 @@
             .profile-card.featured { transform: translateY(-10px) scale(1.03) !important; }
         }
 
-        @media (max-width: 600px) {
-            .carousel-container { margin-top: 0; padding: 0 6px; }
-            .profiles-grid { gap: 14px; padding: 32px 8px 32px; scroll-padding: 0 16px; }
-            .profile-card { flex: 0 0 80vw; max-width: 290px; opacity: 1 !important; transform: none !important; }
-            .profile-card.featured { transform: scale(1.02) !important; }
-            .carousel-btn { width: 38px; height: 38px; font-size: 0.95rem; }
-            .carousel-btn.left { margin-right: -8px; z-index: 35; }
-            .carousel-btn.right { margin-left: -8px; z-index: 35; }
+        @media (max-width: 680px) {
+            .hero-section {
+                padding: 105px 16px 15px;
+            }
+            .hero-title {
+                font-size: 2.2rem;
+                line-height: 1.15;
+            }
+            .hero-subtitle {
+                font-size: 0.95rem;
+                margin-bottom: 20px;
+            }
+            .btn-hero-main {
+                width: 100%;
+                max-width: 320px;
+                padding: 14px 24px;
+                font-size: 0.95rem;
+            }
+            .discovery-filters-wrap {
+                margin: 10px 0 20px;
+                padding: 4px 16px 10px;
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                gap: 8px;
+                max-width: 100vw;
+            }
+            .discovery-filters-wrap::-webkit-scrollbar { display: none; }
+            .filter-chip {
+                flex-shrink: 0;
+                padding: 8px 16px;
+                font-size: 0.82rem;
+            }
+            .carousel-container {
+                margin-top: 0;
+                padding: 0 4px;
+                overflow: hidden;
+            }
+            .carousel-btn {
+                display: none !important;
+            }
+            .profiles-grid {
+                gap: 16px;
+                padding: 24px 12px 36px;
+                scroll-padding: 0 16px;
+            }
+            .profile-card {
+                flex: 0 0 84vw;
+                max-width: 320px;
+                border-radius: 20px;
+                opacity: 0.95;
+                transform: scale(0.97);
+            }
+            .profile-card.featured {
+                transform: translateY(-8px) scale(1.02) !important;
+                opacity: 1 !important;
+            }
+            .card-photo {
+                height: 255px;
+                border-radius: 20px 20px 0 0;
+            }
+            .profile-card.video-card {
+                min-height: 425px;
+                border-radius: 20px;
+            }
+            .profile-card.video-card .card-photo {
+                border-radius: 20px;
+            }
+            .profile-card.video-card video {
+                border-radius: 20px;
+            }
+            .btn-video-shop-pulse {
+                width: 88%;
+                padding: 13px 18px;
+                font-size: 0.90rem;
+                bottom: 20px;
+            }
+            .modal-card {
+                width: 95vw;
+                max-width: 95vw;
+                padding: 20px 14px;
+                max-height: 90vh;
+                border-radius: 20px;
+            }
+            .form-input {
+                font-size: 16px !important;
+            }
+            body {
+                padding-bottom: 95px !important;
+            }
+            .lumina-mobile-nav {
+                display: flex !important;
+            }
         }
 
         .profile-card:hover {
@@ -432,9 +520,6 @@
             height: 240px;
             background: #e2e8f0;
             border-radius: 16px 16px 0 0;
-        }
-        @media (max-width: 600px) {
-            .card-photo { height: 215px; }
         }
         .card-photo img {
             width: 100%; height: 100%; object-fit: cover; display: block;
@@ -450,9 +535,6 @@
             flex-direction: column;
             position: relative;
             overflow: hidden;
-        }
-        @media (max-width: 600px) {
-            .profile-card.video-card { min-height: 360px; }
         }
         .profile-card.video-card .card-photo {
             position: absolute;

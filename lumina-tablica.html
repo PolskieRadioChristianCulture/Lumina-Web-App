@@ -855,41 +855,69 @@
             }
         }
         @media (max-width: 640px) {
-            .lumina-nav { padding: 10px 12px; }
+            .lumina-nav { padding: 10px 14px; }
             .nav-links { display: none; }
-            .board-title { font-size: 1.35rem; line-height: 1.25; }
-            .board-subtitle { font-size: 0.85rem; }
-            .board-container { padding: 12px 8px 80px; }
+            .board-title { font-size: 1.45rem; line-height: 1.25; }
+            .board-subtitle { font-size: 0.86rem; margin-bottom: 12px; }
+            .board-container { padding: 10px 10px 95px; }
+            body { padding-bottom: 95px !important; }
+            .lumina-mobile-nav { display: flex !important; }
             .filter-chips-row {
                 display: flex;
                 overflow-x: auto;
-                padding-bottom: 8px;
+                padding-bottom: 10px;
                 scrollbar-width: none;
                 -webkit-overflow-scrolling: touch;
                 flex-wrap: nowrap;
                 justify-content: flex-start;
+                gap: 8px;
             }
             .filter-chips-row::-webkit-scrollbar { display: none; }
             .chip-btn {
                 flex-shrink: 0;
-                font-size: 0.76rem;
-                padding: 7px 14px;
+                font-size: 0.80rem;
+                padding: 8px 15px;
+            }
+            .founder-mission-bar {
+                padding: 12px 14px;
+                border-radius: 16px;
+            }
+            .founder-buttons-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .btn-camp-quick {
+                flex: 1 1 calc(50% - 6px);
+                justify-content: center;
+                padding: 9px 8px;
+                font-size: 0.75rem;
             }
             .feed-stream {
                 grid-template-columns: 1fr;
-                gap: 16px;
+                gap: 18px;
+            }
+            .post-card-1x1 {
+                border-radius: 18px;
             }
             .post-actions-row {
-                flex-wrap: wrap;
-                gap: 6px;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 4px;
+                padding-top: 8px;
             }
             .btn-post-action {
-                font-size: 0.72rem;
-                padding: 6px 8px;
+                font-size: 0.74rem;
+                padding: 8px 4px;
+                justify-content: center;
+                border-radius: 10px;
             }
             .modal-card {
-                padding: 20px 14px;
+                padding: 20px 16px;
                 max-width: 95vw;
+                border-radius: 20px;
+            }
+            .form-input, .input-composer {
+                font-size: 16px !important;
             }
         }
     </style>
