@@ -302,11 +302,35 @@ export function setupPhoneRecaptcha(containerId = 'recaptcha-container') {
     return window._luminaRecaptchaVerifier;
 }
 
+export function normalizePhoneNumber(raw) {
+    if (!raw) return '';
+    let cleaned = String(raw).trim().replace(/[\s\-\(\)\.]/g, '');
+    if (cleaned.startsWith('00')) {
+        cleaned = '+' + cleaned.substring(2);
+    } else if (cleaned.startsWith('+')) {
+        // already has + prefix
+    } else if (cleaned.startsWith('48') && cleaned.length === 11) {
+        cleaned = '+' + cleaned;
+    } else if (cleaned.length === 9 && /^\d{9}$/.test(cleaned)) {
+        // 9-digit Polish number without prefix (e.g. 501234567) -> add +48
+        cleaned = '+48' + cleaned;
+    } else if (cleaned.startsWith('0') && cleaned.length === 10) {
+        cleaned = '+48' + cleaned.substring(1);
+    } else if (!cleaned.startsWith('+')) {
+        cleaned = '+' + cleaned;
+    }
+    return cleaned;
+}
+
 export async function sendPhoneVerificationCode(phoneNumber, appVerifier) {
     if (!auth) throw new Error('Baza autoryzacji niedostępna.');
+    const normalized = normalizePhoneNumber(phoneNumber);
+    if (!normalized || !/^\+[1-9]\d{7,14}$/.test(normalized)) {
+        throw new Error(`Nieprawidłowy format numeru: "${phoneNumber}". Podaj 9 cyfr (np. 500 123 456) lub z prefiksem (+48 500 123 456).`);
+    }
     try {
         const verifier = appVerifier || setupPhoneRecaptcha();
-        const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, verifier);
+        const confirmationResult = await signInWithPhoneNumber(auth, normalized, verifier);
         window._luminaPhoneConfirmationResult = confirmationResult;
         return confirmationResult;
     } catch(err) {
@@ -1112,6 +1136,7 @@ window.LuminaDB = {
     extractYouTubeId,
     formatRichTextAndMedia,
     LUMINA_HANDLES,
-    resolveMentionHandle
+    resolveMentionHandle,
+    normalizePhoneNumber
 };
 

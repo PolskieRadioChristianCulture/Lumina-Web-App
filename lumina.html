@@ -2355,23 +2355,32 @@
         let phoneConfirmationResultGlobal = null;
 
         window.handleSendPhoneCode = async function() {
-            const phone = document.getElementById('phoneAuthInput').value.trim();
+            const rawPhone = document.getElementById('phoneAuthInput').value.trim();
             const btn = document.getElementById('btnSendPhoneCode');
-            if (!phone || phone.length < 9) {
-                showToast('Podaj poprawny numer telefonu z numerem kierunkowym (np. +48...)');
+            if (!rawPhone || rawPhone.replace(/\D/g, '').length < 9) {
+                showToast('Podaj 9-cyfrowy numer telefonu (np. 500 123 456 lub +48 500 123 456)');
                 return;
             }
             if (btn) { btn.disabled = true; btn.textContent = '⏳ Wysyłanie...'; }
 
             try {
                 if (window.LuminaDB) {
-                    phoneConfirmationResultGlobal = await window.LuminaDB.sendPhoneVerificationCode(phone);
+                    const normalizedPhone = window.LuminaDB.normalizePhoneNumber ? window.LuminaDB.normalizePhoneNumber(rawPhone) : rawPhone;
+                    phoneConfirmationResultGlobal = await window.LuminaDB.sendPhoneVerificationCode(normalizedPhone);
                     document.getElementById('phoneCodeVerifyRow').style.display = 'block';
-                    showToast('Kod weryfikacyjny SMS został wysłany! 📩');
+                    showToast(`Kod SMS został wysłany na numer ${normalizedPhone}! 📩`);
                 }
             } catch(err) {
                 console.error('Phone code send error:', err);
-                showToast('Błąd wysyłania SMS: ' + (err.message || 'Spróbuj ponownie.'));
+                let userMsg = err.message || 'Wystąpił błąd.';
+                if (err.code === 'auth/invalid-phone-number' || userMsg.includes('invalid-phone-number')) {
+                    userMsg = 'Nieprawidłowy format numeru telefonu. Wpisz np. 500 123 456 lub +48 500 123 456.';
+                } else if (err.code === 'auth/too-many-requests') {
+                    userMsg = 'Zbyt wiele prób wysłania SMS. Odczekaj chwilę i spróbuj ponownie.';
+                } else if (err.code === 'auth/quota-exceeded') {
+                    userMsg = 'Dzienny limit wiadomości SMS został wyczerpany. Zaloguj się przez Google lub E-mail.';
+                }
+                showToast(userMsg);
             } finally {
                 if (btn) { btn.disabled = false; btn.textContent = 'Wyślij SMS'; }
             }
