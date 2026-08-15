@@ -1781,84 +1781,234 @@
             if (statusEl) statusEl.innerHTML = `Rotacja automatyczna • Kanał <b style="color:#fef08a;">${currentBroadcastIndex + 1}</b> z 15`;
         }
 
-        // ── Default Rich CC Mission Campaigns with High-Quality Graphics ──
+        // ── Wszystkie Oficjalne Reklamy i Kampanie Misyjne z polskieradio.cc ──
         const DEFAULT_CC_CAMPAIGNS = [
             {
                 id: 'camp_radio_cc',
                 type: 'ad',
                 title: 'Radio Christian Culture – Słuchaj na Żywo 24/7',
-                desc: 'Dołącz do tysięcy słuchaczy! Najpiękniejsza polska muzyka uwielbienia, Biblia Śpiewana oraz codzienne rozważania ku Bożej chwale bez reklam.',
+                desc: 'Dołącz do tysięcy słuchaczy w Polsce i na świecie! Najpiękniejsza muzyka uwielbienia, Biblia Śpiewana oraz codzienne rozważania ku Bożej chwale bez reklam komercyjnych.',
                 image: 'tlo_tv_radiocc.jpg',
                 btnText: 'Słuchaj Radia CC na Żywo 📻✨',
                 btnUrl: 'https://polskieradio.cc',
                 author: 'Radio Christian Culture',
                 authorRole: 'Oficjalna Misja Radiowa 🕊️',
                 authorAvatar: 'icon.png',
-                createdAt: 'Wyróżniona Misja CC',
-                likes: 128,
-                amen: 94
+                createdAt: 'Misja Radiowa 24/7',
+                likes: 134,
+                amen: 112
             },
             {
                 id: 'camp_store_promo',
                 type: 'promo',
-                title: 'Oficjalny Sklep Misji CC – Kolekcja „Wiara i Nadzieja”',
-                desc: 'Wspieraj rozwój ewangelizacji i noś przesłanie Chrystusa każdego dnia. Wysokiej jakości koszulki, bluzy i akcesoria z autorskimi motywami wiary.',
+                title: 'Oficjalny Sklep Misji CC – Kolekcja Odzieży „Wiara i Nadzieja”',
+                desc: 'Wspieraj ewangelizację i noś przesłanie Chrystusa każdego dnia. Wysokiej jakości koszulki, bluzy i odzież chrześcijańska z autorskimi grafikami wiary.',
                 image: 'tlo_tv_koszulki.jpg',
-                btnText: 'Odwiedź Sklep Misji CC 🛒',
+                btnText: 'Zobacz Kolekcję w Sklepie 🛒',
                 btnUrl: 'https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536',
                 author: 'Christian Culture Store',
-                authorRole: 'Wsparcie Misji CC 🛍️',
+                authorRole: 'Wsparcie Dzieła CC 🛍️',
                 authorAvatar: 'lumina_icon.jpg',
-                createdAt: 'Promocja Sezonowa',
-                likes: 76,
-                amen: 48
+                createdAt: 'Kolekcja Sezonowa',
+                likes: 88,
+                amen: 56
             },
             {
                 id: 'camp_biblia_spiewana',
                 type: 'promo',
                 title: 'Biblia Śpiewana Audio – Księga Psalmów & Pieśni Uwielbienia',
-                desc: 'Niezwykłe muzyczne wydanie Pisma Świętego. Pozwól, aby Słowo Boże napełniło Twoje serce pokojem i mocą Ducha Świętego każdego dnia.',
+                desc: 'Niezwykłe muzyczne wydanie Pisma Świętego. Pozwól, aby Słowo Boże napełniło Twoje serce pokojem i mocą Ducha Świętego podczas pracy, modlitwy i odpoczynku.',
                 image: 'reklama_biblia.png',
-                btnText: 'Odsłuchaj Album w Radiu CC 🎧',
+                btnText: 'Pobierz & Odsłuchaj Album 🎧',
                 btnUrl: 'https://polskieradio.cc',
                 author: 'Biblia Audio CC',
                 authorRole: 'Słowo Boże w Muzyce 📖',
                 authorAvatar: 'icon.png',
                 createdAt: 'Nowość Muzyczna',
-                likes: 112,
-                amen: 104
+                likes: 145,
+                amen: 128
             },
             {
                 id: 'camp_worship_event',
                 type: 'event',
-                title: 'Ogólnopolski Wieczór Uwielbienia „Zjednoczeni za Polskę”',
-                desc: 'Zapraszamy wszystkich wierzących do wspólnego stanięcia w wyłomie modlitewnym za naszą Ojczyznę, rodziny i młodzież. Dołącz na żywo!',
+                title: 'Ogólnopolski Wieczór Modlitwy „Zjednoczeni za Polskę”',
+                desc: 'Zapraszamy wszystkich wierzących do wspólnego stanięcia w wyłomie modlitewnym za naszą Ojczyznę, rodziny, pokój i duchowe przebudzenie w narodzie.',
                 image: 'zjednoczeni_za_polske_banner.jpg',
-                btnText: 'Szczegóły Wydarzenia & Transmisja 📅',
-                btnUrl: 'https://polskieradio.cc',
+                btnText: 'Szczegóły & Transmisja Live 📅',
+                btnUrl: 'zapolske-live.html',
                 eventDate: 'Każdy Pierwszy Czwartek Miesiąca, 20:00',
-                eventLoc: 'Transmisja Live CCTV24 & Warszawa',
+                eventLoc: 'Transmisja Live CCTV24 & Cała Polska',
                 author: 'Cezary Rogowski',
                 authorRole: 'Założyciel Christian Culture ✨',
-                authorAvatar: 'avatar_new1.jpg',
-                createdAt: 'Wydarzenie Ogólnopolskie',
-                likes: 154,
-                amen: 142
+                authorAvatar: 'avatar_cezary_official.jpg',
+                createdAt: 'Wydarzenie Narodowe',
+                likes: 178,
+                amen: 165
             },
             {
                 id: 'camp_app_promo',
                 type: 'ad',
                 title: 'Aplikacja „Dobrze, że jesteś” – Codzienna Inspiracja w Telefonie',
-                desc: 'Zainstaluj aplikację i otrzymuj każdego ranka budujące rozważanie, werset dnia oraz bezpośredni dostęp do radia Christian Culture.',
+                desc: 'Zainstaluj bezpłatną aplikację i otrzymuj każdego ranka budujące rozważanie, werset dnia, wersję audio TTS oraz bezpośredni dostęp do radia Christian Culture.',
                 image: 'promo_dzj.jpg',
                 btnText: 'Pobierz Aplikację za Darmo 📲',
                 btnUrl: 'https://polskieradio.cc',
                 author: 'Misja Christian Culture',
                 authorRole: 'Aplikacja Mobilna 📱',
-                authorAvatar: 'lumina_icon.jpg',
+                authorAvatar: 'icon.png',
                 createdAt: 'Darmowa Aplikacja',
-                likes: 89,
-                amen: 67
+                likes: 119,
+                amen: 94
+            },
+            {
+                id: 'camp_cc_women',
+                type: 'promo',
+                title: 'CC Women – Oficjalny Kanał YouTube dla Kobiet Wiary',
+                desc: 'Miejsce budowania, modlitwy i inspiracji dla kobiet szukających Bożej mądrości w codziennym życiu, małżeństwie i macierzyństwie. Dołącz do społeczności CC Women!',
+                image: 'logo_cc_women.jpg',
+                btnText: 'Subskrybuj Kanał YouTube 🌸▶️',
+                btnUrl: 'https://www.youtube.com/@CCWomen7',
+                author: 'CC Women',
+                authorRole: 'Kanał Misyjny YouTube 🌸',
+                authorAvatar: 'logo_cc_women.jpg',
+                createdAt: 'Kanał YouTube',
+                likes: 96,
+                amen: 82
+            },
+            {
+                id: 'camp_ksiega_nadziei',
+                type: 'ad',
+                title: 'Apokalipsa: Księga Nadziei – Telewizyjny Kurs Biblijny',
+                desc: 'Odkrywaj fascynujące proroctwa i Boże obietnice w przejrzysty, budujący wiarę sposób. Poznaj plan zbawienia i nadzieję, którą przynosi Słowo Boże.',
+                image: 'tlo_ksiega_nadziei.png',
+                btnText: 'Oglądaj Pasmo Telewizyjne 📺',
+                btnUrl: 'apokalipsa-ksiega-nadziei-live.html',
+                author: 'Redakcja Biblijna CC',
+                authorRole: 'Kurs Biblijny TV 📜',
+                authorAvatar: 'icon.png',
+                createdAt: 'Pasmo Telewizyjne',
+                likes: 104,
+                amen: 91
+            },
+            {
+                id: 'camp_studium_tv',
+                type: 'ad',
+                title: 'Studium Telewizyjne Pisma Świętego – Wersy, Komentarze i Analizy',
+                desc: 'Codzienne pasmo studyjne Pisma Świętego z komentarzami, tłem historycznym i praktycznymi wnioskami do codziennego chrześcijańskiego życia.',
+                image: 'tlo_studium.png',
+                btnText: 'Uruchom Studium na Żywo 📖',
+                btnUrl: 'studium-live.html',
+                author: 'Studium Biblijne CC',
+                authorRole: 'Edukacja Biblijna 💡',
+                authorAvatar: 'icon.png',
+                createdAt: 'Codzienne Pasmo Studyjne',
+                likes: 85,
+                amen: 73
+            },
+            {
+                id: 'camp_instrumental_worship',
+                type: 'promo',
+                title: 'Muzyka Instrumentalna & Nocne Czuwanie Modlitewne 24/7',
+                desc: 'Głębokie, nastrojowe aranżacje fortepianowe i orkiestrowe pieśni chwały, które tworzą atmosferę modlitwy, pokoju i wyciszenia przez całą dobę.',
+                image: 'INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg',
+                btnText: 'Odsłuchaj Pasmo Nocne 🌙🕊️',
+                btnUrl: 'nocne-czuwanie-live.html',
+                author: 'Worship CC',
+                authorRole: 'Muzyka Uwielbienia 🎹',
+                authorAvatar: 'icon.png',
+                createdAt: 'Pasmo Modlitewne',
+                likes: 142,
+                amen: 130
+            },
+            {
+                id: 'camp_spiewajmy_panu',
+                type: 'promo',
+                title: 'Śpiewajmy Panu – Najpiękniejsze Chrześcijańskie Pieśni Chwały',
+                desc: 'Muzyczny program telewizyjny prezentujący najpiękniejsze polskie i światowe pieśni uwielbienia z tekstem na ekranie. Śpiewaj razem z nami!',
+                image: 'spiewajmy-panu-thumb.png',
+                btnText: 'Śpiewaj z Nami na Żywo 🎶',
+                btnUrl: 'spiewajmy-panu-live.html',
+                author: 'Śpiewajmy Panu',
+                authorRole: 'Program Muzyczny 🎵',
+                authorAvatar: 'icon.png',
+                createdAt: 'Program Telewizyjny',
+                likes: 110,
+                amen: 99
+            },
+            {
+                id: 'camp_herbatki_zdrowie',
+                type: 'announcement',
+                title: 'Naturalne Herbatki Ziołowe i Zdrowie – Kolekcja Zdrowia Misji CC',
+                desc: 'Dbaj o świątynię Ducha Świętego. Autorskie mieszanki ziół, naturalne herbaty oraz poradniki zdrowotne wspierające witalność ciała i spokój umysłu.',
+                image: 'baner_herbatki.png',
+                btnText: 'Poznaj Produkty Zdrowia 🌿🍵',
+                btnUrl: 'https://polskieradio.cc',
+                author: 'Zdrowie & Natura CC',
+                authorRole: 'Zdrowy Styl Życia 🍃',
+                authorAvatar: 'lumina_icon.jpg',
+                createdAt: 'Strefa Zdrowia',
+                likes: 72,
+                amen: 51
+            },
+            {
+                id: 'camp_store_mugs',
+                type: 'promo',
+                title: 'Kubki i Akcesoria z Wersetami Biblijnymi – Misja CC Store',
+                desc: 'Zacznij każdy poranek od Bożego Słowa przy ulubionej kawie lub herbacie. Ceramiczne kubki z inspirującymi wersetami z Księgi Psalmów i Listów.',
+                image: 'kubek_cc_2026.jpg',
+                btnText: 'Zamów Kubek Misyjny ☕📖',
+                btnUrl: 'https://my-store-1009741.creator-spring.com',
+                author: 'Christian Culture Store',
+                authorRole: 'Akcesoria Misyjne 🎁',
+                authorAvatar: 'lumina_icon.jpg',
+                createdAt: 'Kolekcja Kubków',
+                likes: 81,
+                amen: 60
+            },
+            {
+                id: 'camp_ksiazki_biblioteka',
+                type: 'announcement',
+                title: 'Biblioteka Dobrej Nowiny – Książki i Publikacje Biblijne',
+                desc: 'Pogłębiaj wiedzę teologiczną i historyczną. Pobierz bezpłatne opracowania, komentarze biblijne oraz e-booki wydane pod patronatem Christian Culture.',
+                image: 'ksiazka_kosciol_dogmatow.jpg',
+                btnText: 'Pobierz Publikacje za Darmo 📚',
+                btnUrl: 'https://polskieradio.cc',
+                author: 'Wydawnictwo CC',
+                authorRole: 'Literatura Chrześcijańska 📖',
+                authorAvatar: 'icon.png',
+                createdAt: 'Biblioteka Misyjna',
+                likes: 93,
+                amen: 85
+            },
+            {
+                id: 'camp_app_lite',
+                type: 'ad',
+                title: 'Aplikacja CC Lite – Słuchaj Radia bez Ograniczeń i Zużycia Danych',
+                desc: 'Ultralekka wersja odtwarzacza radiowego dla każdego telefonu i słabego łącza internetowego. Ciesz się czystym dźwiękiem gdziekolwiek jesteś.',
+                image: 'Aplikacja CC Lite.jpg',
+                btnText: 'Uruchom Wersję CC Lite 🚀',
+                btnUrl: 'https://cclite.pl',
+                author: 'Technologia CC',
+                authorRole: 'Mobilne Radio 📡',
+                authorAvatar: 'icon.png',
+                createdAt: 'Aplikacja Webowa',
+                likes: 84,
+                amen: 69
+            },
+            {
+                id: 'camp_wsparcie_mecenas',
+                type: 'promo',
+                title: 'Zostań Mecenasem Ewangelizacji – Wspieraj Rozwój Mediów CC',
+                desc: 'Dzięki Twoim modlitwom i darowiznom możemy docierać ze Słowem Bożym do setek tysięcy serc każdego miesiąca. Dziękujemy za każde wsparcie!',
+                image: 'wsparcie_cc_qr.png',
+                btnText: 'Wspieraj Dzieło Ewangelizacji 💖🙏',
+                btnUrl: 'https://polskieradio.cc',
+                author: 'Fundacja Christian Culture',
+                authorRole: 'Wsparcie Misyjne 🤝',
+                authorAvatar: 'icon.png',
+                createdAt: 'Mecenat Ewangelizacyjny',
+                likes: 195,
+                amen: 182
             }
         ];
 
@@ -2202,29 +2352,29 @@
 
             normalUserPosts.forEach((post, idx) => {
                 combined.push(post);
-                // Insert a broadcast channel card after every 2nd user post
-                if ((idx + 1) % 2 === 0) {
+                
+                // Harmonious interleaving:
+                // Alternate between Broadcast Channel and CC Mission Campaign after every post
+                if (idx % 2 === 0) {
+                    // After post 1, 3, 5... insert a CC Mission Campaign
+                    if (cIndex < normalCampaigns.length) {
+                        combined.push(normalCampaigns[cIndex]);
+                        cIndex++;
+                    }
+                } else {
+                    // After post 2, 4, 6... insert a Broadcast Channel
                     combined.push(nextBroadcastSlot());
-                }
-                // Insert campaign after every 3rd user post
-                if ((idx % 3 === 2) && cIndex < normalCampaigns.length) {
-                    combined.push(normalCampaigns[cIndex % normalCampaigns.length]);
-                    cIndex++;
                 }
             });
 
-            // If very few posts — pad with extra broadcast channel cards
-            if (normalUserPosts.length < 4) {
-                const needed = Math.min(4, 4 - Math.floor(normalUserPosts.length / 2));
-                for (let n = 0; n < needed; n++) {
-                    combined.push(nextBroadcastSlot());
-                }
-            }
-
-            // If leftover campaigns, append them
+            // Append all remaining CC Mission campaigns and additional broadcast slots
             while (cIndex < normalCampaigns.length) {
                 combined.push(normalCampaigns[cIndex]);
                 cIndex++;
+                // Add a broadcast scene slot every 2 campaigns for a rich dynamic feed
+                if (cIndex % 2 === 0) {
+                    combined.push(nextBroadcastSlot());
+                }
             }
 
             // Filter by search query (?q=... or #tag/@mention)
@@ -3026,6 +3176,7 @@
     </script>
 </body>
 </html>
+
 
 
 
