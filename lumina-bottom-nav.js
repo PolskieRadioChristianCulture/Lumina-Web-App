@@ -2,7 +2,7 @@
  * ══════════════════════════════════════════════════════════════════════════
  * LUMINA BOTTOM NAV PWA MODULE (lumina-bottom-nav.js)
  * Pływający Dolny Pasek Nawigacyjny UX (Mobile-First) dla Ekosystemu LUMINA
- * 1. Odkrywaj | 2. Tablica | 3. Kanały CC (CC Network) | 4. Sklep CC | 5. Mój Profil
+ * 1. Odkrywaj | 2. Tablica | 3. Wiadomości (Koperta) | 4. Kanały CC | 5. Sklep CC | 6. Mój Profil
  * ══════════════════════════════════════════════════════════════════════════
  */
 (() => {
@@ -18,15 +18,15 @@
             right: 0 !important;
             width: 100% !important;
             height: 68px !important;
-            background: rgba(11, 24, 56, 0.94) !important;
-            backdrop-filter: blur(18px) !important;
-            -webkit-backdrop-filter: blur(18px) !important;
+            background: rgba(11, 24, 56, 0.95) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
             border-top: 1.5px solid rgba(250, 204, 21, 0.25) !important;
-            box-shadow: 0 -8px 26px rgba(0, 0, 0, 0.65), 0 0 15px rgba(250, 204, 21, 0.1) !important;
+            box-shadow: 0 -8px 26px rgba(0, 0, 0, 0.7), 0 0 15px rgba(250, 204, 21, 0.1) !important;
             display: flex !important;
             align-items: center !important;
             justify-content: space-around !important;
-            padding: 0 8px !important;
+            padding: 0 4px !important;
             padding-bottom: env(safe-area-inset-bottom, 6px) !important;
             z-index: 10000 !important;
             transition: transform 0.3s ease !important;
@@ -41,9 +41,9 @@
             text-decoration: none !important;
             color: #94a3b8 !important;
             font-family: 'Plus Jakarta Sans', sans-serif !important;
-            font-size: 0.70rem !important;
+            font-size: 0.65rem !important;
             font-weight: 700 !important;
-            gap: 4px !important;
+            gap: 3px !important;
             padding: 6px 1px !important;
             position: relative !important;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -54,7 +54,7 @@
         }
 
         .lumina-nav-tab i {
-            font-size: 1.25rem !important;
+            font-size: 1.2rem !important;
             transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease !important;
         }
 
@@ -79,31 +79,12 @@
         .lumina-nav-badge {
             position: absolute !important;
             top: 2px !important;
-            right: calc(50% - 14px) !important;
+            right: calc(50% - 12px) !important;
             width: 8px !important;
             height: 8px !important;
             border-radius: 50% !important;
             background: #ef4444 !important;
             box-shadow: 0 0 8px #ef4444 !important;
-        }
-
-        /* Centralny akcent na Kanały CC */
-        .lumina-nav-tab.tab-network .network-glow {
-            position: absolute !important;
-            width: 36px !important;
-            height: 36px !important;
-            border-radius: 50% !important;
-            background: rgba(234, 179, 8, 0.12) !important;
-            border: 1px dashed rgba(234, 179, 8, 0.4) !important;
-            animation: networkPulse 2.5s infinite linear !important;
-            top: 4px !important;
-            pointer-events: none !important;
-        }
-
-        @keyframes networkPulse {
-            0% { transform: scale(0.9); opacity: 0.7; }
-            50% { transform: scale(1.15); opacity: 0.3; }
-            100% { transform: scale(0.9); opacity: 0.7; }
         }
 
         /* Odstęp u dołu strony */
@@ -114,7 +95,7 @@
         /* Responsywny Desktop */
         @media (min-width: 1024px) {
             .lumina-bottom-nav {
-                max-width: 560px !important;
+                max-width: 580px !important;
                 left: 50% !important;
                 right: auto !important;
                 transform: translateX(-50%) !important;
@@ -124,7 +105,7 @@
             }
         }
 
-        /* Modale CC Network & Sklep */
+        /* Modale CC Network, Wiadomości & Sklep */
         .cc-nav-modal {
             display: none;
             position: fixed;
@@ -185,26 +166,77 @@
                 <span>Tablica</span>
             </a>
 
-            <!-- 3. Kanały CC (Christian Culture NETWORK) -->
-            <button type="button" class="lumina-nav-tab tab-network" id="navTabNetwork" onclick="window.openCcNetworkModal()" title="Kanały Nadawcze & YouTube Christian Culture NETWORK">
-                <div class="network-glow"></div>
-                <i class="fa-solid fa-tower-broadcast" style="color: #facc15;"></i>
+            <!-- 3. Wiadomości (Koperta) -->
+            <button type="button" class="lumina-nav-tab" id="navTabMessages" onclick="window.openCcMessagesModal()" title="Wiadomości, Czaty & Kawa ☕">
+                <i class="fa-solid fa-envelope" style="color: #ec4899;"></i>
                 <div class="lumina-nav-badge"></div>
+                <span>Wiadomości</span>
+            </button>
+
+            <!-- 4. Kanały CC (Christian Culture NETWORK) -->
+            <button type="button" class="lumina-nav-tab" id="navTabNetwork" onclick="window.openCcNetworkModal()" title="Kanały Nadawcze & YouTube Christian Culture NETWORK">
+                <i class="fa-solid fa-tower-broadcast" style="color: #facc15;"></i>
                 <span>Kanały CC</span>
             </button>
 
-            <!-- 4. Sklep CC (Market) -->
+            <!-- 5. Sklep CC (Market) -->
             <button type="button" class="lumina-nav-tab" id="navTabStore" onclick="window.openCcStoreModal()" title="Sklep Christian Culture • Książki, Płyty, Bluzy i Dewocjonalia">
                 <i class="fa-solid fa-bag-shopping" style="color: #38bdf8;"></i>
                 <span>Sklep CC</span>
             </button>
 
-            <!-- 5. Mój Profil -->
+            <!-- 6. Mój Profil -->
             <a href="${myProfileHref}" class="lumina-nav-tab ${isProfile ? 'active' : ''}" id="navTabProfile" title="Mój Profil / Panel Właściciela">
                 <i class="fa-solid fa-user-gear"></i>
                 <span>Mój Profil</span>
             </a>
         </nav>
+
+        <!-- ══════════ MODAL WIADOMOŚCI & CZATÓW ══════════ -->
+        <div class="cc-nav-modal" id="modalCcMessages" onclick="if(event.target===this) this.classList.remove('open')">
+            <div style="background:#0b1838; border:1.5px solid rgba(236,72,153,0.4); border-radius:24px; padding:24px 20px; max-width:480px; width:94%; max-height:85vh; overflow-y:auto; box-shadow:0 24px 60px rgba(0,0,0,0.85); color:#fff; position:relative;">
+                <button type="button" onclick="document.getElementById('modalCcMessages').classList.remove('open')" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center;">&times;</button>
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <div style="width:44px; height:44px; border-radius:14px; background:linear-gradient(135deg, #ec4899, #f59e0b); display:flex; align-items:center; justify-content:center; font-size:1.3rem; color:#fff; box-shadow:0 0 16px rgba(236,72,153,0.4);">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-family:'Outfit',sans-serif; font-size:1.25rem; font-weight:800; color:#fff; margin:0;">Wiadomości & Czat</h3>
+                        <p style="font-size:0.78rem; color:#ec4899; margin:0; font-weight:700;">☕ Zaproszenia na Kawę i Bezpośrednie Rozmowy</p>
+                    </div>
+                </div>
+                
+                <div style="display:flex; flex-direction:column; gap:10px;" id="ccMessagesModalList">
+                    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href='lumina.html'">
+                        <img src="avatar_cezary_official.jpg" alt="Cezary" style="width:46px; height:46px; border-radius:50%; object-fit:cover; border:1.5px solid #facc15;">
+                        <div style="flex:1;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight:800; font-size:0.92rem; color:#fff;">Cezary Rogowski</span>
+                                <span style="font-size:0.72rem; color:#facc15; font-weight:700;">☕ Kawa</span>
+                            </div>
+                            <div style="font-size:0.78rem; color:#cbd5e1; margin-top:2px;">Witaj w portalu LUMINA! Szczęść Boże 🕊️</div>
+                        </div>
+                    </div>
+
+                    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href='lumina.ccwomen.html'">
+                        <img src="logo_cc_women.jpg" alt="CC Women" style="width:46px; height:46px; border-radius:50%; object-fit:cover; border:1.5px solid #ec4899;">
+                        <div style="flex:1;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight:800; font-size:0.92rem; color:#fff;">Wspólnota CC Women</span>
+                                <span style="font-size:0.72rem; color:#94a3b8;">Grupa</span>
+                            </div>
+                            <div style="font-size:0.78rem; color:#cbd5e1; margin-top:2px;">Codzienna modlitwa wstawiennicza kobiet ✨</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:16px; text-align:center;">
+                    <a href="lumina.html" style="display:inline-block; font-size:0.82rem; color:#facc15; text-decoration:none; font-weight:700;">
+                        Odkryj nowe profile i zaproś kogoś na Kawę ☕
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <!-- ══════════ MODAL KANAŁÓW CC NETWORK (40+ KANAŁÓW YT & STREAMY LIVE) ══════════ -->
         <div class="cc-nav-modal" id="modalCcNetwork" onclick="if(event.target===this) this.classList.remove('open')">
@@ -303,6 +335,10 @@
     `;
 
     // Globalne funkcje otwierania modali
+    window.openCcMessagesModal = function() {
+        const m = document.getElementById('modalCcMessages');
+        if (m) m.classList.add('open');
+    };
     window.openCcNetworkModal = function() {
         const m = document.getElementById('modalCcNetwork');
         if (m) m.classList.add('open');
