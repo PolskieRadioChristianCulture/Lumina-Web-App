@@ -213,16 +213,53 @@ export function getCurrentProfile() {
     return currentProfileState;
 }
 
+
+// ── Globalna obietnica gotowości bazy ──
+let dbReadyPromise = null;
+
+export function ensureDbReady() {
+    if (!dbReadyPromise) {
+        dbReadyPromise = new Promise((resolve) => {
+            if (auth && db) {
+                window.firebaseAuth = auth;
+                window.firebaseDb = db;
+                return resolve({ auth, db, app });
+            }
+            const checkInterval = setInterval(() => {
+                if (auth && db) {
+                    clearInterval(checkInterval);
+                    window.firebaseAuth = auth;
+                    window.firebaseDb = db;
+                    resolve({ auth, db, app });
+                }
+            }, 50);
+            
+            setTimeout(() => {
+                clearInterval(checkInterval);
+                window.firebaseAuth = auth;
+                window.firebaseDb = db;
+                resolve({ auth, db, app });
+            }, 4000);
+        });
+    }
+    return dbReadyPromise;
+}
+
+
 export async function loginWithGoogle() {
-    if (!auth) throw new Error('Baza autoryzacji niedostępna.');
     try {
+        const { auth: activeAuth, db: activeDb } = await ensureDbReady();
+        if (!activeAuth) {
+            throw new Error("Nie udało się połączyć z usługą Firebase Auth. Odśwież stronę.");
+        }
+
         let result;
         try {
-            result = await signInWithPopup(auth, googleProvider);
+            result = await signInWithPopup(activeAuth, googleProvider);
         } catch(popupErr) {
             console.warn('Popup zablokowany (Incognito?), próba Redirect...', popupErr.code, popupErr.message);
             if (popupErr.code === 'auth/popup-blocked' || popupErr.code === 'auth/cancelled-popup-request' || popupErr.code === 'auth/popup-closed-by-user') {
-                await signInWithRedirect(auth, googleProvider);
+                await signInWithRedirect(activeAuth, googleProvider);
                 return { isRedirecting: true };
             }
             throw popupErr;
@@ -231,7 +268,7 @@ export async function loginWithGoogle() {
         const user = result.user;
         let existingProfile = null;
         try {
-            const docSnap = await getDoc(doc(db, 'lumina_profiles', user.uid));
+            const docSnap = await getDoc(doc(activeDb, 'lumina_profiles', user.uid));
             if (docSnap.exists()) existingProfile = docSnap.data();
         } catch(e) {}
 
@@ -279,10 +316,10 @@ export async function loginWithGoogle() {
                 updatedAt: serverTimestamp()
             };
             
-            if (db) {
+            if (activeDb) {
                 try {
-                    await setDoc(doc(db, 'lumina_profiles', user.uid), existingProfile, { merge: true });
-                    await setDoc(doc(db, 'lumina_profiles', cleanSlug), existingProfile, { merge: true });
+                    await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
+                    await setDoc(doc(activeDb, 'lumina_profiles', cleanSlug), existingProfile, { merge: true });
                 } catch(e) {}
             }
         }
@@ -1615,6 +1652,7 @@ window.LuminaDB = {
     subscribeToCoffeeInvites,
     createFeedPost,
     subscribeToFeedPosts,
+    ensureDbReady,
     loginWithGoogle,
     registerWithEmail,
     registerUser,
