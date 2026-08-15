@@ -2351,7 +2351,6 @@
                     return;
                 }
             }
-            if (!requestOwnerAccess(() => toggleCoverActions(null))) return;
             const group = document.getElementById('coverActionsGroup');
             if (group) {
                 group.classList.toggle('active');
@@ -2365,7 +2364,6 @@
 
         function toggleCoverRepositionToolbar() {
             closeCoverActions();
-            if (!requestOwnerAccess(toggleCoverRepositionToolbar)) return;
             const tb = document.getElementById('coverRepositionToolbar');
             if (!tb) return;
             const isOpen = tb.classList.contains('open');
@@ -2737,9 +2735,9 @@
             reader.readAsDataURL(file);
         }
 
-        // ── Direct Protected Upload Triggers (Strict PIN Check Before File Dialog) ──
+        // ── Direct Upload Triggers ──
         function triggerCoverUpload() {
-            if (!requestOwnerAccess(triggerCoverUpload)) return;
+            closeCoverActions();
             document.getElementById('coverFileInput').click();
         }
 
@@ -2778,7 +2776,6 @@
         }
 
         function handleCoverFileSelect(e) {
-            if (!requestOwnerAccess(() => document.getElementById('coverFileInput').click())) return;
             const file = e.target.files[0];
             if (!file) return;
             showToast('Przetwarzanie zdjęcia w tle... ⏳');
