@@ -1710,7 +1710,7 @@
                         <div class="profiles-grid" id="profilesCarousel">
 
                 <!-- 1. Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
-                <div class="profile-card home-cezary-card" id="my_saved_profile_card" onclick="window.location.href='lumina.cezaryrgowski.html'">
+                <div class="profile-card home-cezary-card" data-category="mezczyzna zalozyciele" id="my_saved_profile_card" onclick="window.location.href='lumina.cezaryrgowski.html'" data-category="mezczyzna zalozyciele">
                     <div class="card-photo">
                         <img src="avatar_cezary_official.jpg" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_cezary_official.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
@@ -1724,7 +1724,7 @@
                 </div>
 
                 <!-- 2. Noemi (Kobieta) -->
-                <div class="profile-card" onclick="openProfile('Noemi','28','Wrocław','Głęboka wiara i pasja do natury','avatar_noemi.jpg','96%')">
+                <div class="profile-card" onclick="openProfile('Noemi','28','Wrocław','Głęboka wiara i pasja do natury','avatar_noemi.jpg','96%')" data-category="kobieta mlodzi">
                     <div class="card-photo">
                         <img src="avatar_noemi.jpg" alt="Noemi" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
@@ -1738,7 +1738,7 @@
                 </div>
 
                 <!-- 3. MISJA 1: OSOBOWOŚĆ + (YouTube) -->
-                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.osobowoscplus.html'">
+                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.osobowoscplus.html'" data-category="misja mezczyzna">
                     <div class="card-photo">
                         <img src="logo_osobowosc_plus.jpg" alt="OSOBOWOŚĆ +" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'osobowoscplus','OSOBOWOŚĆ +','logo_osobowosc_plus.jpg')"><i class="fa-solid fa-heart"></i></button>
@@ -1754,7 +1754,7 @@
                 </div>
 
                 <!-- 4. Dawid (Mężczyzna) -->
-                <div class="profile-card" onclick="openProfile('Dawid','30','Poznań','Muzyka uwielbienia i architektura','avatar_sara.jpg','93%')">
+                <div class="profile-card" onclick="openProfile('Dawid','30','Poznań','Muzyka uwielbienia i architektura','avatar_sara.jpg','93%')" data-category="mezczyzna mlodzi">
                     <div class="card-photo">
                         <img src="avatar_sara.jpg" alt="Dawid" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
@@ -1768,7 +1768,7 @@
                 </div>
 
                 <!-- 5. Wioletta Rogowska / Współzałożycielka Christian Culture (Mężatka) -->
-                <div class="profile-card home-wioletta-card" id="my_saved_wioletta_card" onclick="window.location.href='lumina.wiolettarogowska.html'">
+                <div class="profile-card home-wioletta-card" data-category="kobieta zalozyciele" id="my_saved_wioletta_card" onclick="window.location.href='lumina.wiolettarogowska.html'" data-category="kobieta zalozyciele">
                     <div class="card-photo">
                         <img src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" class="home-wioletta-avatar" id="homeWiolettaAvatar" onerror="this.src='avatar_wioletta_official.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
@@ -1782,7 +1782,7 @@
                 </div>
 
                 <!-- 6. MISJA 2: Polskie Radio CC (YouTube) -->
-                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.radiocc.html'">
+                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.radiocc.html'" data-category="misja">
                     <div class="card-photo">
                         <img src="logo_radio_cc.jpg" alt="Polskie Radio CC" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'radiocc','Polskie Radio CC','logo_radio_cc.jpg')"><i class="fa-solid fa-heart"></i></button>
@@ -1798,7 +1798,7 @@
                 </div>
 
                 <!-- 7. Weronika (Kobieta) -->
-                <div class="profile-card" onclick="openProfile('Weronika','25','Kraków','Graficzka z zamiłowaniem do fotografii i sztuki','avatar_widget_ania.jpg','97%')">
+                <div class="profile-card" onclick="openProfile('Weronika','25','Kraków','Graficzka z zamiłowaniem do fotografii i sztuki','avatar_widget_ania.jpg','97%')" data-category="kobieta mlodzi">
                     <div class="card-photo">
                         <img src="avatar_widget_ania.jpg" alt="Weronika" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
@@ -1812,7 +1812,7 @@
                 </div>
 
                 <!-- 8. MISJA 3: Christian Culture TV (YouTube) -->
-                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.cctv.html'">
+                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.cctv.html'" data-category="misja">
                     <div class="card-photo">
                         <img src="logo_cctv.png" alt="Christian Culture TV" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'cctv','Christian Culture TV','logo_cctv.png')"><i class="fa-solid fa-heart"></i></button>
@@ -1828,7 +1828,7 @@
                 </div>
 
                 <!-- 9. Tomek (Mężczyzna) -->
-                <div class="profile-card" onclick="openProfile('Tomek','27','Gdańsk','Pasjonat leśnych wędrówek i natury','avatar_widget_tomek.jpg','94%')">
+                <div class="profile-card" onclick="openProfile('Tomek','27','Gdańsk','Pasjonat leśnych wędrówek i natury','avatar_widget_tomek.jpg','94%')" data-category="mezczyzna mlodzi">
                     <div class="card-photo">
                         <img src="avatar_widget_tomek.jpg" alt="Tomek" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
@@ -1842,7 +1842,7 @@
                 </div>
 
                 <!-- 10. MISJA 4: CC MEN (YouTube) -->
-                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.ccmen.html'">
+                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.ccmen.html'" data-category="misja mezczyzna">
                     <div class="card-photo">
                         <img src="logo_cc_men.jpg" alt="CC MEN" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'ccmen','CC MEN','logo_cc_men.jpg')"><i class="fa-solid fa-heart"></i></button>
@@ -1858,7 +1858,7 @@
                 </div>
 
                 <!-- 11. MISJA 5: CC Women (YouTube) -->
-                <div class="profile-card home-ccwomen-card" id="home_ccwomen_card" onclick="window.location.href='lumina.ccwomen.html'">
+                <div class="profile-card home-ccwomen-card" data-category="misja kobieta" id="home_ccwomen_card" onclick="window.location.href='lumina.ccwomen.html'" data-category="misja kobieta">
                     <div class="card-photo">
                         <img src="logo_cc_women.jpg" alt="CC Women" class="home-ccwomen-avatar" id="homeCcwomenAvatar" onerror="this.src='logo_cc_women.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;background:#000;">
                         <button class="card-heart liked" onclick="toggleLike(event,this, 'ccwomen', 'CC Women', 'logo_cc_women.jpg')"><i class="fa-solid fa-heart"></i></button>
@@ -1874,7 +1874,7 @@
                 </div>
 
                 <!-- 12. Reklama Wideo: Dobrze, że jesteś (Natywne Wideo MP4) -->
-                <div class="profile-card video-card featured original-promo-card" id="promoAdCard" onclick="window.open('https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536', '_blank')">
+                <div class="profile-card video-card" data-category="all misja" featured original-promo-card" id="promoAdCard" onclick="window.open('https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536', '_blank')" data-category="all misja">
                     <div class="card-photo">
                         <video id="promoVideoEl" src="czesc_dobrze_ze_jestes.mp4" autoplay loop muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:16px;"></video>
                         <button class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
@@ -3140,35 +3140,7 @@
         }
         function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-        // ── Match & Discovery Engine (Etap 2) ──
-        let currentMatchedPartner = null;
-
-        window.applyDiscoveryFilter = function(filterType, btn) {
-            document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-
-            const cards = document.querySelectorAll('.profiles-grid .profile-card');
-            cards.forEach(card => {
-                const nameText = (card.querySelector('.card-name')?.textContent || '').toLowerCase();
-                const descText = (card.querySelector('.card-desc')?.textContent || '').toLowerCase();
-                const cityText = (card.querySelector('.card-city')?.textContent || '').toLowerCase();
-
-                let show = true;
-                if (filterType === 'kobieta') {
-                    show = nameText.includes('wioletta') || nameText.includes('women') || nameText.includes('noemi') || nameText.includes('weronika') || nameText.includes('anna') || descText.includes('niewiast') || descText.includes('kobieta') || descText.includes('misja');
-                } else if (filterType === 'mezczyzna') {
-                    show = nameText.includes('cezary') || nameText.includes('tomek') || nameText.includes('dawid') || descText.includes('mężczyzn');
-                } else if (filterType === 'mlodzi') {
-                    const matchAge = nameText.match(/\b(1[8-9]|2[0-9]|30)\b/);
-                    show = !!matchAge;
-                } else if (filterType === 'zalozyciele') {
-                    show = nameText.includes('cezary') || nameText.includes('wioletta') || nameText.includes('women');
-                }
-
-                card.style.display = show ? 'block' : 'none';
-            });
-            showToast(`Filtrowanie: ${btn ? btn.textContent.trim() : filterType} ✨`);
-        };
+        
 
         window.toggleLike = async function(e, btn, targetId = null, targetName = null, targetAvatar = null) {
             if (e && e.stopPropagation) e.stopPropagation();
@@ -3254,183 +3226,92 @@
 
         function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
 
-        // ── True Infinite Carousel Engine ──
-        let isInfiniteInitialized = false;
-        let singleSetWidth = 0;
+        
 
-        window.setupInfiniteCarousel = function() {
-            const carousel = document.getElementById('profilesCarousel');
-            if (!carousel || isInfiniteInitialized) return;
+        
+        /* ══════════════════════════════════════════════════════════════════════════
+         * ROBUST JITTER-FREE CAROUSEL & DISCOVERY FILTER ENGINE
+         * ══════════════════════════════════════════════════════════════════════════ */
+        window.applyDiscoveryFilter = function(filterType, btn) {
+            document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
 
-            if (typeof syncUserSavedProfileToHomepage === 'function') {
-                syncUserSavedProfileToHomepage();
-            }
-
-            const initialCards = Array.from(carousel.children);
-            if (initialCards.length < 3) return;
-
-            // Mark originals
-            initialCards.forEach(card => card.classList.add('original-set'));
-
-            // Clone cards to create infinite left and right buffers: [Set A] [Originals] [Set B]
-            initialCards.forEach(card => {
-                const cloneBefore = card.cloneNode(true);
-                cloneBefore.classList.remove('original-set');
-                carousel.insertBefore(cloneBefore, carousel.firstChild);
-            });
-            initialCards.forEach(card => {
-                const cloneAfter = card.cloneNode(true);
-                cloneAfter.classList.remove('original-set');
-                carousel.appendChild(cloneAfter);
-            });
-
-            isInfiniteInitialized = true;
-
-            if (typeof syncUserSavedProfileToHomepage === 'function') {
-                syncUserSavedProfileToHomepage();
-            }
-
-            const cardWidth = initialCards[0].offsetWidth || 300;
-            const gap = 24;
-            singleSetWidth = initialCards.length * (cardWidth + gap);
-
-            // Centrowanie na Karcie Reklamowej Wideo (ZAWSZE W ŚRODKU NA START)
-            const targetAdCard = carousel.querySelector('.original-set.video-card') || carousel.querySelector('.video-card');
-            if (targetAdCard) {
-                const targetOffset = targetAdCard.offsetLeft;
-                const scrollPos = targetOffset - (carousel.clientWidth / 2) + (targetAdCard.offsetWidth / 2);
-                carousel.scrollLeft = Math.max(0, scrollPos);
-            } else {
-                carousel.scrollLeft = singleSetWidth;
-            }
-
-            setTimeout(() => {
-                if (window.updateCenterCard) window.updateCenterCard();
-            }, 60);
-        }
-
-        function checkInfiniteWrap() {
-            const carousel = document.getElementById('profilesCarousel');
-            if (!carousel || !singleSetWidth) return;
-
-            if (carousel.scrollLeft <= 20) {
-                carousel.scrollLeft += singleSetWidth;
-            } else if (carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth - 20) {
-                carousel.scrollLeft -= singleSetWidth;
-            }
-        }
-
-        window.updateCenterCard = function() {
             const carousel = document.getElementById('profilesCarousel');
             if (!carousel) return;
+
             const cards = carousel.querySelectorAll('.profile-card');
-            if (!cards.length) return;
-
-            const carouselRect = carousel.getBoundingClientRect();
-            const carouselCenter = carouselRect.left + carouselRect.width / 2;
-
-            let closestCard = null;
-            let minDistance = Infinity;
+            let visibleCount = 0;
 
             cards.forEach(card => {
-                const cardRect = card.getBoundingClientRect();
-                const cardCenter = cardRect.left + cardRect.width / 2;
-                const distance = Math.abs(carouselCenter - cardCenter);
+                const category = (card.getAttribute('data-category') || '').toLowerCase();
+                const nameText = (card.querySelector('.card-name')?.textContent || '').toLowerCase();
 
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestCard = card;
+                let isMatch = false;
+
+                if (filterType === 'all') {
+                    isMatch = true;
+                } else if (filterType === 'kobieta') {
+                    isMatch = category.includes('kobieta') || nameText.includes('wioletta') || nameText.includes('noemi') || nameText.includes('weronika') || nameText.includes('anna') || nameText.includes('women');
+                } else if (filterType === 'mezczyzna') {
+                    isMatch = category.includes('mezczyzna') || nameText.includes('cezary') || nameText.includes('tomek') || nameText.includes('dawid') || nameText.includes('men') || nameText.includes('osobowosc');
+                } else if (filterType === 'mlodzi') {
+                    isMatch = category.includes('mlodzi') || nameText.match(/\b(1[8-9]|2[0-9]|30)\b/);
+                } else if (filterType === 'misja') {
+                    isMatch = category.includes('misja');
                 }
-            });
 
-            cards.forEach(card => {
-                if (card === closestCard) {
-                    card.classList.add('featured');
+                if (isMatch) {
+                    card.style.display = '';
+                    card.style.opacity = '1';
+                    card.style.transform = 'scale(1)';
+                    visibleCount++;
                 } else {
-                    card.classList.remove('featured');
+                    card.style.display = 'none';
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.95)';
                 }
             });
+
+            // Smoothly scroll back to beginning of filtered results
+            carousel.scrollTo({ left: 0, behavior: 'smooth' });
+
+            const filterName = btn ? btn.textContent.trim() : filterType;
+            showToast(`Filtrowanie: ${filterName} (${visibleCount} profili) ✨`);
         };
 
         window.scrollCarousel = function(direction) {
             const carousel = document.getElementById('profilesCarousel');
             if (!carousel) return;
-            const cards = carousel.querySelectorAll('.profile-card');
-            if (!cards.length) return;
-            const cardWidth = cards[0].offsetWidth;
-            const gap = 24;
-            const step = (cardWidth + gap) * direction;
+            const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
+            if (!visibleCards.length) return;
 
-            carousel.scrollBy({ left: step, behavior: 'smooth' });
-            setTimeout(() => {
-                checkInfiniteWrap();
-                window.updateCenterCard();
-            }, 320);
+            const cardWidth = visibleCards[0].offsetWidth || 300;
+            const gap = 24;
+            const scrollAmount = (cardWidth + gap) * direction;
+
+            carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         };
 
-        // Attach scroll listener to carousel & setup Inactivity Auto-Rotation
+        // Initialize Carousel smoothly on DOM load
         document.addEventListener('DOMContentLoaded', () => {
-            setupInfiniteCarousel();
+            if (typeof syncUserSavedProfileToHomepage === 'function') {
+                syncUserSavedProfileToHomepage();
+            }
+
             const carousel = document.getElementById('profilesCarousel');
             if (carousel) {
-                let scrollTimeout;
-                carousel.addEventListener('scroll', () => {
-                    requestAnimationFrame(window.updateCenterCard);
-                    clearTimeout(scrollTimeout);
-                    scrollTimeout = setTimeout(checkInfiniteWrap, 150);
-                }, { passive: true });
-            }
-            window.addEventListener('resize', () => {
-                isInfiniteInitialized = false;
-                setupInfiniteCarousel();
-            });
-
-            // ── 30-Second Inactivity Auto-Rotation Engine ──
-            let inactivityTimer = null;
-            let autoRotationInterval = null;
-            const INACTIVITY_DELAY = 30000; // 30 seconds of inactivity
-            const ROTATION_STEP_INTERVAL = 3800; // auto-scroll every 3.8s when idle
-
-            function startAutoRotation() {
-                if (autoRotationInterval) return;
-                autoRotationInterval = setInterval(() => {
-                    const c = document.getElementById('profilesCarousel');
-                    if (c && !document.hidden) {
-                        window.scrollCarousel(1);
-                    }
-                }, ROTATION_STEP_INTERVAL);
-            }
-
-            function stopAutoRotation() {
-                if (autoRotationInterval) {
-                    clearInterval(autoRotationInterval);
-                    autoRotationInterval = null;
+                // Focus on video promo ad initially if available
+                const promoCard = carousel.querySelector('.video-card');
+                if (promoCard) {
+                    setTimeout(() => {
+                        const targetOffset = promoCard.offsetLeft;
+                        const scrollPos = targetOffset - (carousel.clientWidth / 2) + (promoCard.offsetWidth / 2);
+                        carousel.scrollTo({ left: Math.max(0, scrollPos), behavior: 'smooth' });
+                    }, 200);
                 }
             }
-
-            function resetInactivityCountdown() {
-                stopAutoRotation();
-                clearTimeout(inactivityTimer);
-                inactivityTimer = setTimeout(() => {
-                    startAutoRotation();
-                }, INACTIVITY_DELAY);
-            }
-
-            // Listen for any user activity to reset countdown
-            ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'click', 'wheel'].forEach(evt => {
-                window.addEventListener(evt, resetInactivityCountdown, { passive: true });
-            });
-
-            // Pause auto-rotation on direct carousel hover
-            if (carousel) {
-                carousel.addEventListener('mouseenter', stopAutoRotation);
-                carousel.addEventListener('mouseleave', resetInactivityCountdown);
-                carousel.addEventListener('touchstart', stopAutoRotation, { passive: true });
-            }
-
-            // Start initial 30s countdown
-            resetInactivityCountdown();
         });
+
 
         // ── Toast ──
         let toastTimer;
