@@ -1,3 +1,5 @@
+// Initialize global window container immediately
+window.LuminaDB = window.LuminaDB || {};
 // ══════════════════════════════════════════════════════════════════════════
 // LUMINA REALTIME ENGINE (Firebase Auth + Firestore + Storage Hybrid Sync)
 // ══════════════════════════════════════════════════════════════════════════

@@ -2489,6 +2489,20 @@
             el.innerHTML = msg;
         }
 
+        async function getLuminaDBEngine() {
+            if (window.LuminaDB && typeof window.LuminaDB.loginWithGoogle === 'function') {
+                return window.LuminaDB;
+            }
+            try {
+                const mod = await import('./lumina-db.js');
+                window.LuminaDB = mod.default || mod || window.LuminaDB;
+                return window.LuminaDB;
+            } catch(e) {
+                console.error('Dynamic import of lumina-db.js failed:', e);
+                return window.LuminaDB;
+            }
+        }
+
         // ── Google Auth ──
         window.handleGoogleAuthAction = async function() {
             const btn = document.getElementById('btnGoogleAuth');
@@ -2496,10 +2510,11 @@
             setAuthStatusMsg('⏳ Otwieranie bezpiecznego logowania Google...', false);
             
             try {
-                if (!window.LuminaDB) {
-                    throw new Error('Inicjalizacja modułu bazy danych. Spróbuj ponownie za sekundę.');
+                const dbEngine = await getLuminaDBEngine();
+                if (!dbEngine || typeof dbEngine.loginWithGoogle !== 'function') {
+                    throw new Error('Inicjalizacja silnika bazy danych w toku. Spróbuj ponownie.');
                 }
-                const res = await window.LuminaDB.loginWithGoogle();
+                const res = await dbEngine.loginWithGoogle();
                 if (res && res.isRedirecting) {
                     setAuthStatusMsg('🕊️ Przekierowanie do strony logowania Google...', false);
                     return;
@@ -2546,10 +2561,11 @@
             setAuthStatusMsg('⏳ Logowanie do społeczności LUMINA...', false);
 
             try {
-                if (!window.LuminaDB) {
-                    throw new Error('Moduł bazy danych nie jest jeszcze gotowy. Odczekaj chwilę.');
+                const dbEngine = await getLuminaDBEngine();
+                if (!dbEngine || typeof dbEngine.loginWithEmail !== 'function') {
+                    throw new Error('Moduł bazy danych nie jest jeszcze gotowy. Spróbuj ponownie.');
                 }
-                const { user, profile } = await window.LuminaDB.loginWithEmail(email, pass);
+                const { user, profile } = await dbEngine.loginWithEmail(email, pass);
                 closeModal('authModal');
                 showToast(`Witaj ponownie, ${profile?.name || user.email}! 🕊️✨`);
             } catch(err) {
