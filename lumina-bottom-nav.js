@@ -400,5 +400,78 @@
     // Usuń ewentualne stare wersje paska nawigacji
     document.querySelectorAll('.lumina-mobile-nav, #mobileNav').forEach(el => el.remove());
 
-    document.body.insertAdjacentHTML('beforeend', navHtml);
+    
+    // ══════════════════════════════════════════════════════════════════════════
+    // TAJNY SUBTELNY PRZYCISK & DOWIĄZANIA ADMINISTRATORA PORTALU LUMINA
+    // ══════════════════════════════════════════════════════════════════════════
+    const ADMIN_HASH = 'eec0ae2663b74fdb9fb9981e92f1b2cc2a8b42444d358776d872580c79454c91';
+
+    window.triggerSecretAdminPrompt = async function(e) {
+        if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+
+        const isCurrentlyAdmin = (sessionStorage.getItem('lumina_auth_master_admin') === 'true');
+        if (isCurrentlyAdmin) {
+            const confirmLock = confirm('👑 Jesteś obecnie zalogowany jako Główny Administrator Portalu LUMINA.\n\nCzy chcesz ZABLOKOWAĆ tryb Administratora i przejść do widoku zwykłego gościa?');
+            if (confirmLock) {
+                sessionStorage.removeItem('lumina_auth_master_admin');
+                document.body.classList.remove('owner-mode-active');
+                if (typeof window.checkOwnerAuthSession === 'function') window.checkOwnerAuthSession();
+                const toastFn = window.showToast || window.luminaToast || alert;
+                toastFn('🔒 Zablokowano tryb Administratora (Tryb Gościa)');
+                setTimeout(() => window.location.reload(), 400);
+            }
+            return;
+        }
+
+        const inputPin = prompt('🔐 Autoryzacja Administratora Portalu LUMINA:');
+        if (!inputPin) return;
+
+        try {
+            const msgBuffer = new TextEncoder().encode(inputPin.trim());
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            if (hash === ADMIN_HASH) {
+                sessionStorage.setItem('lumina_auth_master_admin', 'true');
+                document.body.classList.add('owner-mode-active');
+                if (typeof window.checkOwnerAuthSession === 'function') window.checkOwnerAuthSession();
+                const toastFn = window.showToast || window.luminaToast || alert;
+                toastFn('👑 Witaj Dowódco! Panel Administratora Portalu Aktywowany.');
+                setTimeout(() => window.location.reload(), 500);
+            } else {
+                const toastFn = window.showToast || window.luminaToast || alert;
+                toastFn('❌ Błędny kod autoryzacji! Odmowa dostępu.');
+            }
+        } catch(err) {
+            console.error('Błąd weryfikacji:', err);
+        }
+    };
+
+    // Skrót klawiszowy: Ctrl + Shift + A lub Ctrl + Shift + E
+    window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a' || e.key === 'E' || e.key === 'e')) {
+            e.preventDefault();
+            window.triggerSecretAdminPrompt();
+        }
+    });
+
+    // Tajne podpięcie pod logo LUMINA w nagłówku
+    setTimeout(() => {
+        const brands = document.querySelectorAll('.nav-brand, .lumina-brand, #navBrandLogo, .nav-logo-wrap');
+        brands.forEach(el => {
+            el.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                window.triggerSecretAdminPrompt();
+            });
+        });
+    }, 1000);
+
+    document.body.insertAdjacentHTML('beforeend', navHtml + `
+
+    <!-- ══════════ TAJNY SUBTELNY PRZYCISK ADMINISTRATORA ══════════ -->
+    <div id="luminaSecretAdminBtn" onclick="window.triggerSecretAdminPrompt(event)" title="LUMINA Security" style="position:fixed; bottom:10px; right:8px; width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); color:rgba(255,255,255,0.18); font-size:10px; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:999999; transition:all 0.25s ease;" onmouseenter="this.style.color='#facc15'; this.style.borderColor='rgba(250,204,21,0.4)'; this.style.background='rgba(250,204,21,0.12)'; this.style.transform='scale(1.15)';" onmouseleave="this.style.color='rgba(255,255,255,0.18)'; this.style.borderColor='rgba(255,255,255,0.05)'; this.style.background='rgba(255,255,255,0.02)'; this.style.transform='scale(1)';">
+        <i class="fa-solid fa-crown"></i>
+    </div>
+`);
 })();
