@@ -1178,7 +1178,8 @@
             <a href="lumina.cezaryrgowski.html" class="nav-link"><i class="fa-solid fa-crown" style="color:#facc15;"></i> Cezary Rogowski</a>
         </nav>
 
-        <div class="nav-right-actions">
+        <div class="nav-right-actions"><button type="button" class="btn-nav-action" onclick="toggleSecurityBar()" title="Zabezpieczenia i Opcje Profilu" aria-label="Ustawienia Profilu" style="padding: 8px 12px;"><i class="fa-solid fa-gear"></i></button>
+
             <a href="https://www.youtube.com/@CCWomen7?sub_confirmation=1" target="_blank" class="btn-nav-action" id="navYtSubBtn" style="background: linear-gradient(90deg, #ec4899, #f472b6); border:none; box-shadow: 0 2px 10px rgba(236,72,153,0.4);">
                 <i class="fa-brands fa-youtube"></i> Subskrybuj YouTube 🌸
             </a>
@@ -2298,6 +2299,16 @@
             };
             initCloudSync();
         });
+    
+        window.toggleSecurityBar = function() {
+            const bar = document.getElementById('profileSecurityBar');
+            if (!bar) return;
+            bar.classList.toggle('visible');
+            if (bar.classList.contains('visible')) {
+                bar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        };
+        
     </script>
 </body>
 </html>

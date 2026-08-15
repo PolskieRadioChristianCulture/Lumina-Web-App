@@ -461,8 +461,13 @@
         }
 
         /* ── Security Bar & Badges ── */
+        .profile-security-bar.visible {
+            display: flex !important;
+        }
         .profile-security-bar {
-            display: flex;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
             align-items: center;
             justify-content: space-between;
             background: rgba(11, 24, 56, 0.9);
@@ -3530,6 +3535,16 @@
         document.addEventListener('scroll', checkScrollPositionUniversal, { passive: true });
         window.addEventListener('resize', checkScrollPositionUniversal, { passive: true });
 
+    
+        window.toggleSecurityBar = function() {
+            const bar = document.getElementById('profileSecurityBar');
+            if (!bar) return;
+            bar.classList.toggle('visible');
+            if (bar.classList.contains('visible')) {
+                bar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        };
+        
     </script>
 </body>
 </html>
