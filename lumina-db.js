@@ -1700,31 +1700,7 @@ window.LuminaDB = {
 };
 
 
-export {
-    onAuthChange,
-    getCurrentUser,
-    getCurrentProfile,
-    subscribeToCoffeeInvites,
-    createFeedPost,
-    subscribeToFeedPosts,
-    loginWithGoogle,
-    registerWithEmail,
-    registerUser,
-    loginWithEmail,
-    loginUser,
-    logoutUser,
-    getProfileFromCloud,
-    saveProfileToCloud,
-    subscribeToProfile,
-    getChatId,
-    sendDirectMessageToCloud,
-    subscribeToDirectMessages,
-    subscribeToUserChats,
-    publishUniversalPost,
-    recordProfileLike,
-    subscribeToUserMatches,
-    reportContent
-};
+// End of module exports
 
 export default window.LuminaDB;
 
