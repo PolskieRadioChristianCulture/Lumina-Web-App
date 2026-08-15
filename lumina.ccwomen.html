@@ -264,7 +264,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
@@ -273,6 +273,23 @@
             border-color: #ec4899;
             transform: translateY(-2px);
             color: #fff;
+        }
+
+        /* Editing buttons visible ONLY on hover or when cover is clicked */
+        .cover-edit-btn {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-6px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cover-hero:hover .cover-edit-btn,
+        .cover-hero.cover-tools-active .cover-edit-btn {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
         }
 
         /* ── Cover Reposition Toolbar ── */
@@ -1120,25 +1137,25 @@
     <main class="profile-container">
         
         <!-- ══════════ COVER HERO ══════════ -->
-        <div class="cover-hero">
+        <div class="cover-hero" id="coverHeroBox" onclick="toggleCoverHeroClick(event)" title="Najedź lub kliknij w tło, aby pokazać opcje edycji kadru">
             <img src="lumina_hero_main.jpg" alt="CC Women Cover" class="cover-img" id="coverPhotoEl">
             <div class="cover-gradient-overlay"></div>
             
             <!-- Cover Top Actions -->
             <div class="cover-actions">
-                <button type="button" class="btn-cover-action" onclick="triggerCoverUpload()" title="Wymiary: 1200x400 px lub 1500x500 px (3:1)">
+                <button type="button" class="btn-cover-action cover-edit-btn" onclick="event.stopPropagation(); triggerCoverUpload();" title="Wymiary: 1200x400 px lub 1500x500 px (3:1)">
                     <i class="fa-solid fa-camera" style="color:#ec4899;"></i> Zmień Tło Kanału 📷
                 </button>
-                <button type="button" class="btn-cover-action" onclick="toggleCoverRepositionToolbar()" title="Dopasuj pionowe przesunięcie kadru">
+                <button type="button" class="btn-cover-action cover-edit-btn" onclick="event.stopPropagation(); toggleCoverRepositionToolbar();" title="Dopasuj pionowe przesunięcie kadru">
                     <i class="fa-solid fa-up-down"></i> Dopasuj Kadr
                 </button>
-                <a href="https://www.youtube.com/@CCWomen7" target="_blank" class="btn-cover-action" id="heroYtLink" style="text-decoration:none;">
+                <a href="https://www.youtube.com/@CCWomen7" target="_blank" class="btn-cover-action" id="heroYtLink" style="text-decoration:none;" onclick="event.stopPropagation();">
                     <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube
                 </a>
             </div>
 
             <!-- Cover Reposition Toolbar -->
-            <div class="cover-reposition-toolbar" id="coverRepositionToolbar">
+            <div class="cover-reposition-toolbar" id="coverRepositionToolbar" onclick="event.stopPropagation();">
                 <span style="font-size:0.8rem; font-weight:700; color:#fff;"><i class="fa-solid fa-arrows-up-down" style="color:#ec4899;"></i> Pozycja Pionowa:</span>
                 <input type="range" id="coverPosRange" min="0" max="100" value="50" oninput="onCoverRangeChange(this.value)" style="cursor:pointer; accent-color:#ec4899; width:130px;">
                 <span id="coverPosValueLabel" style="font-size:0.8rem; font-weight:700; color:#ec4899; min-width:35px;">50%</span>
@@ -1650,6 +1667,16 @@
         }
 
         // ── Cover Actions & Repositioning ──
+        function toggleCoverHeroClick(event) {
+            if (event.target.closest('.cover-actions') || event.target.closest('.cover-reposition-toolbar')) {
+                return;
+            }
+            const box = document.getElementById('coverHeroBox');
+            if (box) {
+                box.classList.toggle('cover-tools-active');
+            }
+        }
+
         function triggerCoverUpload() {
             document.getElementById('coverFileInput').click();
         }
