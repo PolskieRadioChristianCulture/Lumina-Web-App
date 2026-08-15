@@ -235,10 +235,7 @@ nav.lumina-bottom-nav {
 html, body {
     -webkit-backface-visibility: hidden !important;
     backface-visibility: hidden !important;
-    -webkit-perspective: 1000 !important;
-    perspective: 1000 !important;
     -webkit-tap-highlight-color: transparent !important;
-    transform: translateZ(0) !important;
 }
 
 /* Wymuszenie stabilnej warstwy kompozycji dla pasków fixed */
@@ -300,4 +297,54 @@ h1.head-user-name {
 .head-user-details {
     min-width: 0 !important;
     overflow: visible !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+ * 11. PERFECT VIEWPORT MODAL CENTERING (FIX FALLING MODALS)
+ * ══════════════════════════════════════════════════════════════════════════ */
+.modal-overlay,
+.cc-nav-modal,
+div.modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 99999 !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+    will-change: auto !important;
+}
+
+.modal-overlay:not(.open) {
+    display: none !important;
+}
+
+.modal-overlay.open {
+    display: flex !important;
+}
+
+.modal-card, 
+.auth-modal-card, 
+.coffee-modal-card, 
+.pin-modal-card, 
+.chat-modal-window,
+.profile-modal-card,
+.modal-box {
+    margin: auto !important;
+    position: relative !important;
+    width: calc(100% - 16px) !important;
+    max-width: 500px !important;
+    max-height: calc(90vh - 32px) !important;
+    max-height: calc(90dvh - 32px) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    transform: none !important;
 }
