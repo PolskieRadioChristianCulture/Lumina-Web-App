@@ -2606,6 +2606,15 @@
             }
         }
 
+        
+        async function verifyAdminPinHash(pin) {
+            const msgBuffer = new TextEncoder().encode((pin || '').trim());
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hash === 'eec0ae2663b74fdb9fb9981e92f1b2cc2a8b42444d358776d872580c79454c91';
+        }
+
         function toggleOwnerAuthMode() {
             const isMaster = (sessionStorage.getItem('lumina_auth_master_admin') === 'true');
             if (isMaster) {
@@ -2613,13 +2622,17 @@
                 showToast('🔒 Zablokowano tryb Administratora');
                 checkOwnerAuthSession();
             } else {
-                const pin = prompt('🔐 Autoryzacja Administratora LUMINA (Wyłączność Dowódcy):');
-                if (pin && (pin.trim() === '7777' || pin.trim() === '1234')) {
-                    sessionStorage.setItem('lumina_auth_master_admin', 'true');
-                    showToast('👑 Tryb Administratora Portalu Aktywowany!');
-                    checkOwnerAuthSession();
-                } else if (pin) {
-                    showToast('❌ Błędny kod autoryzacji! Odmowa dostępu.');
+                const pin = prompt('🔐 Autoryzacja Administratora Portalu LUMINA:');
+                if (pin) {
+                    verifyAdminPinHash(pin).then(isValid => {
+                        if (isValid) {
+                            sessionStorage.setItem('lumina_auth_master_admin', 'true');
+                            showToast('👑 Tryb Administratora Portalu Aktywowany!');
+                            checkOwnerAuthSession();
+                        } else {
+                            showToast('❌ Błędny kod autoryzacji! Odmowa dostępu.');
+                        }
+                    });
                 }
             }
         }

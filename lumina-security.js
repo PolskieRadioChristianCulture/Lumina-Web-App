@@ -36,9 +36,23 @@ class LuminaSecurityEngine {
     /**
      * Odblokowanie uprawnień Administratora Master PIN-em (Wyłączność Dowódcy)
      */
-    unlockMasterAdmin(pin) {
+    /**
+     * Bezpieczne kryptograficzne hashowanie SHA-256 w przeglądarce
+     */
+    async _hashPin(pin) {
+        const msgBuffer = new TextEncoder().encode((pin || '').trim());
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    /**
+     * Odblokowanie uprawnień Administratora wyłącznie bezpiecznym hashem SHA-256
+     */
+    async unlockMasterAdmin(pin) {
         if (!pin) return false;
-        if (pin.trim() === '7777') {
+        const hash = await this._hashPin(pin);
+        if (hash === 'eec0ae2663b74fdb9fb9981e92f1b2cc2a8b42444d358776d872580c79454c91') {
             sessionStorage.setItem('lumina_auth_master_admin', 'true');
             return true;
         }
