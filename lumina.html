@@ -2186,13 +2186,14 @@
                 <form id="loginForm" onsubmit="handleEmailLoginSubmit(event)">
                     <div class="form-row">
                         <label>Adres E-mail</label>
-                        <input type="email" id="loginEmail" placeholder="twoj@email.com" required>
+                        <input type="email" id="loginEmail" placeholder="twoj@email.com" required autocomplete="email">
                     </div>
                     <div class="form-row">
                         <label>Hasło</label>
-                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
                     </div>
-                    <button type="submit" class="btn-modal-submit" id="btnLoginSubmit">ZALOGUJ SIĘ ➔</button>
+                    <button type="submit" class="btn-modal-submit" id="btnLoginSubmit" style="position:relative; z-index:10; cursor:pointer;">ZALOGUJ SIĘ ➔</button>
+                    <div id="authStatusMsg" style="display:none; margin-top:12px; padding:10px 14px; border-radius:12px; font-size:0.83rem; text-align:center; font-weight:700; line-height:1.4;"></div>
                 </form>
 
                 <div class="auth-divider" style="margin-top:16px;"><span>LUB PRZEZ NUMER TELEFONU</span></div>
@@ -2477,33 +2478,49 @@
             reader.readAsDataURL(file);
         };
 
+        function setAuthStatusMsg(msg, isError = true) {
+            const el = document.getElementById('authStatusMsg');
+            if (!el) return;
+            el.style.display = 'block';
+            el.style.background = isError ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)';
+            el.style.border = isError ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid rgba(16, 185, 129, 0.4)';
+            el.style.color = isError ? '#fca5a5' : '#86efac';
+            el.innerHTML = msg;
+        }
+
         // ── Google Auth ──
         window.handleGoogleAuthAction = async function() {
             const btn = document.getElementById('btnGoogleAuth');
-            if (btn) { btn.disabled = true; btn.textContent = '⏳ Łączenie z Google...'; }
+            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Łączenie z Google...'; }
+            setAuthStatusMsg('⏳ Otwieranie bezpiecznego logowania Google...', false);
             
             try {
-                if (window.LuminaDB) {
-                    const res = await window.LuminaDB.loginWithGoogle();
-                    if (res && res.isRedirecting) {
-                        showToast(`Przekierowanie do logowania Google... 🕊️`);
-                        return;
-                    }
-                    if (res && res.user) {
-                        const { user, profile, isNewUser } = res;
-                        closeModal('authModal');
-                        if (isNewUser) {
-                            showToast(`Witaj w LUMINA, ${user.displayName || ''}! Uzupełnij swój profil.`);
-                            window.location.href = `lumina-profile.html?u=${user.uid}`;
-                        } else {
-                            showToast(`Witaj ponownie, ${profile?.name || user.displayName}! ✨`);
-                        }
+                if (!window.LuminaDB) {
+                    throw new Error('Inicjalizacja modułu bazy danych. Spróbuj ponownie za sekundę.');
+                }
+                const res = await window.LuminaDB.loginWithGoogle();
+                if (res && res.isRedirecting) {
+                    setAuthStatusMsg('🕊️ Przekierowanie do strony logowania Google...', false);
+                    return;
+                }
+                if (res && res.user) {
+                    const { user, profile, isNewUser } = res;
+                    closeModal('authModal');
+                    if (isNewUser) {
+                        showToast(`Witaj w LUMINA, ${user.displayName || ''}! Uzupełnij swój profil.`);
+                        window.location.href = `lumina-profile.html?u=${user.uid}`;
+                    } else {
+                        showToast(`Witaj ponownie, ${profile?.name || user.displayName}! ✨`);
                     }
                 }
             } catch (error) {
-                console.warn("Google Auth note:", error);
-                if (error.code !== 'auth/popup-closed-by-user') {
-                    showToast(`Błąd logowania Google: ${error.message || 'Spróbuj ponownie'}`);
+                console.error("Google Auth error:", error);
+                if (error.code === 'auth/popup-closed-by-user') {
+                    setAuthStatusMsg('ℹ️ Okno logowania zostało zamknięte przed ukończeniem.', true);
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    setAuthStatusMsg('⚠️ Logowanie Google nie jest jeszcze włączone w Firebase Console.', true);
+                } else {
+                    setAuthStatusMsg('❌ Błąd logowania Google: ' + (error.message || error.code), true);
                 }
             } finally {
                 if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-brands fa-google" style="color:#ea4335;"></i> Kontynuuj przez Google'; }
@@ -2512,20 +2529,40 @@
 
         // ── Email Login ──
         window.handleEmailLoginSubmit = async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value.trim();
-            const pass = document.getElementById('loginPassword').value;
+            if (e) e.preventDefault();
+            const emailInput = document.getElementById('loginEmail');
+            const passInput = document.getElementById('loginPassword');
+            const email = emailInput ? emailInput.value.trim() : '';
+            const pass = passInput ? passInput.value : '';
             const btn = document.getElementById('btnLoginSubmit');
-            if (btn) { btn.disabled = true; btn.textContent = '⏳ Logowanie...'; }
+
+            if (!email || !pass) {
+                setAuthStatusMsg('⚠️ Wpisz swój adres e-mail oraz hasło.', true);
+                return;
+            }
+
+            if (btn) { btn.disabled = true; btn.textContent = '⏳ Weryfikacja danych...'; }
+            setAuthStatusMsg('⏳ Logowanie do społeczności LUMINA...', false);
 
             try {
-                if (window.LuminaDB) {
-                    const { user, profile } = await window.LuminaDB.loginWithEmail(email, pass);
-                    closeModal('authModal');
-                    showToast(`Witaj ponownie, ${profile?.name || user.email}! 🕊️✨`);
+                if (!window.LuminaDB) {
+                    throw new Error('Moduł bazy danych nie jest jeszcze gotowy. Odczekaj chwilę.');
                 }
+                const { user, profile } = await window.LuminaDB.loginWithEmail(email, pass);
+                closeModal('authModal');
+                showToast(`Witaj ponownie, ${profile?.name || user.email}! 🕊️✨`);
             } catch(err) {
-                showToast('Błąd logowania: Sprawdź poprawność e-maila lub hasła.');
+                console.error('Email Login Error:', err);
+                const code = err.code || '';
+                if (code === 'auth/invalid-credential' || code === 'auth/user-not-found' || code === 'auth/wrong-password') {
+                    setAuthStatusMsg('❌ Nieprawidłowy e-mail lub hasło.<br><span style="font-size:0.78rem; color:#cbd5e1; font-weight:normal;">Nie masz jeszcze konta? Załóż je w zakładce <b>«Załóż Profil Randkowy ✨»</b> lub zaloguj się przez Google!</span>', true);
+                } else if (code === 'auth/invalid-email') {
+                    setAuthStatusMsg('⚠️ Podaj prawidłowy format adresu e-mail.', true);
+                } else if (code === 'auth/too-many-requests') {
+                    setAuthStatusMsg('⚠️ Zbyt wiele nieudanych prób. Odczekaj chwilę lub zresetuj hasło.', true);
+                } else {
+                    setAuthStatusMsg('❌ Błąd logowania: ' + (err.message || code), true);
+                }
             } finally {
                 if (btn) { btn.disabled = false; btn.textContent = 'ZALOGUJ SIĘ ➔'; }
             }
