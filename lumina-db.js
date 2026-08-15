@@ -1097,6 +1097,52 @@ export async function publishAsMissionAccount(personaId, postData) {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
+
+// ── Dedykowany nasłuch zaproszeń na chrześcijańską kawę ☕ ──
+export function subscribeToCoffeeInvites(userId, callback) {
+    if (!userId || typeof callback !== 'function') return () => {};
+    
+    // 1. Sprawdź lokalny bufor
+    try {
+        const localInvites = JSON.parse(localStorage.getItem('lumina_coffee_invites') || '[]');
+        const forMe = localInvites.filter(inv => inv.receiverId === userId && inv.status === 'pending_invitation');
+        if (forMe.length) {
+            callback(forMe[forMe.length - 1]);
+        }
+    } catch(e) {}
+
+    // 2. Realtime nasłuch z chmury Firestore
+    if (!db) return () => {};
+    try {
+        const chatsQuery = query(
+            collection(db, 'lumina_chats'),
+            where('users', 'array-contains', userId),
+            orderBy('lastMessageTimestamp', 'desc'),
+            limit(15)
+        );
+        return onSnapshot(chatsQuery, (snap) => {
+            snap.forEach(docSnap => {
+                const data = docSnap.data();
+                if (data.lastMessageText && data.lastMessageText.includes('☕') && data.lastSenderId !== userId) {
+                    callback({
+                        id: docSnap.id,
+                        senderId: data.lastSenderId,
+                        senderName: data.lastSenderName || 'Użytkownik LUMINA',
+                        senderAvatar: data.lastSenderAvatar || 'avatar_new1.jpg',
+                        note: data.lastMessageText,
+                        status: 'pending_invitation'
+                    });
+                }
+            });
+        });
+    } catch(e) {
+        return () => {};
+    }
+}
+
+// ── Alias dla tworzenia i publikacji postów na Tablicy Live ──
+export const createFeedPost = publishUniversalPost;
+
 // 4. CAMPAIGNS & DIRECT MESSAGES REALTIME SYNC
 // ══════════════════════════════════════════════════════════════════════════
 
@@ -1538,6 +1584,12 @@ export function formatRichTextAndMedia(rawText) {
 
 // Global window attachment for seamless cross-script integration
 window.LuminaDB = {
+    onAuthChange,
+    getCurrentUser,
+    getCurrentProfile,
+    subscribeToCoffeeInvites,
+    createFeedPost,
+    subscribeToFeedPosts,
     loginWithGoogle,
     registerWithEmail,
     registerUser,
@@ -1586,6 +1638,12 @@ window.LuminaDB = {
 
 
 export {
+    onAuthChange,
+    getCurrentUser,
+    getCurrentProfile,
+    subscribeToCoffeeInvites,
+    createFeedPost,
+    subscribeToFeedPosts,
     loginWithGoogle,
     registerWithEmail,
     registerUser,
@@ -1599,7 +1657,6 @@ export {
     sendDirectMessageToCloud,
     subscribeToDirectMessages,
     subscribeToUserChats,
-    subscribeToFeedPosts,
     publishUniversalPost,
     recordProfileLike,
     subscribeToUserMatches,
