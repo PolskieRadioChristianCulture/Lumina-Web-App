@@ -1419,8 +1419,8 @@
                     </div>
                 </div>
 
-                <!-- Reklama Wideo: Dobrze, że jesteś (Natywne Wideo MP4) -->
-                <div class="profile-card video-card" onclick="window.open('https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536', '_blank')">
+                <!-- Reklama Wideo: Dobrze, że jesteś (Natywne Wideo MP4) - ZAWSZE W CENTRUM -->
+                <div class="profile-card video-card featured original-promo-card" id="promoAdCard" onclick="window.open('https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536', '_blank')">
                     <div class="card-photo">
                         <video id="promoVideoEl" src="czesc_dobrze_ze_jestes.mp4" autoplay loop muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:16px;"></video>
                         <button class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
@@ -2555,13 +2555,18 @@
             const initialCards = Array.from(carousel.children);
             if (initialCards.length < 3) return;
 
+            // Mark originals
+            initialCards.forEach(card => card.classList.add('original-set'));
+
             // Clone cards to create infinite left and right buffers: [Set A] [Originals] [Set B]
             initialCards.forEach(card => {
                 const cloneBefore = card.cloneNode(true);
+                cloneBefore.classList.remove('original-set');
                 carousel.insertBefore(cloneBefore, carousel.firstChild);
             });
             initialCards.forEach(card => {
                 const cloneAfter = card.cloneNode(true);
+                cloneAfter.classList.remove('original-set');
                 carousel.appendChild(cloneAfter);
             });
 
@@ -2571,13 +2576,23 @@
                 syncUserSavedProfileToHomepage();
             }
 
-            const cardWidth = initialCards[0].offsetWidth;
+            const cardWidth = initialCards[0].offsetWidth || 300;
             const gap = 24;
             singleSetWidth = initialCards.length * (cardWidth + gap);
 
-            // Start in the exact center set
-            carousel.scrollLeft = singleSetWidth;
-            if (window.updateCenterCard) window.updateCenterCard();
+            // Centrowanie na Karcie Reklamowej Wideo (ZAWSZE W ŚRODKU NA START)
+            const targetAdCard = carousel.querySelector('.original-set.video-card') || carousel.querySelector('.video-card');
+            if (targetAdCard) {
+                const targetOffset = targetAdCard.offsetLeft;
+                const scrollPos = targetOffset - (carousel.clientWidth / 2) + (targetAdCard.offsetWidth / 2);
+                carousel.scrollLeft = Math.max(0, scrollPos);
+            } else {
+                carousel.scrollLeft = singleSetWidth;
+            }
+
+            setTimeout(() => {
+                if (window.updateCenterCard) window.updateCenterCard();
+            }, 60);
         }
 
         function checkInfiniteWrap() {
