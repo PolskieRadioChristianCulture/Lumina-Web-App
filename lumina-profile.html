@@ -2525,16 +2525,26 @@
         // ── Load & Render Profile Data ──
         function renderProfile() {
             const data = getProfileData();
+            const slug = getRequestedUserSlug();
             checkOwnerAuthSession();
             applyVisibilityState(data);
 
+            const isCCWomen = (slug.includes('ccwomen') || slug.includes('women') || slug.includes('9055'));
+
             document.getElementById('pageTitle').textContent = `${data.name} – Profil LUMINA | Christian Culture`;
             document.getElementById('userNameEl').textContent = data.name;
-            document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} (${data.age} lat)`;
+            
+            if (isCCWomen || data.isMissionAccount || !data.age || isNaN(data.age)) {
+                document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} • <b style="color:#ec4899;">🌸 Kanał YouTube CC Women</b>`;
+            } else {
+                document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} (${data.age} lat)`;
+            }
+            
             if (document.getElementById('userDenomEl')) document.getElementById('userDenomEl').innerHTML = `<i class="fa-solid fa-cross"></i> ${data.denom || 'Chrześcijanin'}`;
             if (document.getElementById('userJobEl')) document.getElementById('userJobEl').textContent = data.job || data.role || 'Kanał / Profil LUMINA ✨';
             if (document.getElementById('userChurchEl')) document.getElementById('userChurchEl').textContent = data.church || 'Wspólnota Chrześcijańska';
             if (document.getElementById('userStatusEl')) document.getElementById('userStatusEl').textContent = data.status || 'Panna / Kawaler';
+            if (document.getElementById('userGoalEl')) document.getElementById('userGoalEl').textContent = data.goal || (isCCWomen ? 'Ewangelizacja i wzrost duchowy kobiet 🌸' : 'Budowanie trwałej relacji opartej na Chrystusie');
             if (document.getElementById('userVerseText')) document.getElementById('userVerseText').textContent = data.verse || '„Wszystko mogę w Tym, który mnie umacnia”';
             if (document.getElementById('userVerseRef')) document.getElementById('userVerseRef').textContent = data.verseRef || '— Flp 4, 13';
             if (document.getElementById('userMatchEl')) {
@@ -3281,7 +3291,13 @@
             bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); })
         );
 
-        // Initialize on load
+        // Initialize immediately and on DOM load
+        try {
+            renderProfile();
+        } catch(e) {
+            console.error("Immediate renderProfile error:", e);
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             renderProfile();
 
@@ -3299,6 +3315,7 @@
             };
             initCloudSync();
         });
+        window.addEventListener('load', renderProfile);
     </script>
 </body>
 </html>
