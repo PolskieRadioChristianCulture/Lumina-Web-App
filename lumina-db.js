@@ -220,27 +220,22 @@ export async function loginWithGoogle() {
         try {
             result = await signInWithPopup(auth, googleProvider);
         } catch(popupErr) {
-            console.warn('Popup blocked/closed, redirecting to standard Google login screen...', popupErr.message);
-            if (popupErr.code === 'auth/popup-blocked' || popupErr.code === 'auth/cancelled-popup-request') {
+            console.warn('Popup zablokowany (Incognito?), próba Redirect...', popupErr.code, popupErr.message);
+            if (popupErr.code === 'auth/popup-blocked' || popupErr.code === 'auth/cancelled-popup-request' || popupErr.code === 'auth/popup-closed-by-user') {
                 await signInWithRedirect(auth, googleProvider);
-                return null;
+                return { isRedirecting: true };
             }
             throw popupErr;
         }
 
         const user = result.user;
-        
-        // Check if user has an existing profile in Firestore
         let existingProfile = null;
         try {
             const docSnap = await getDoc(doc(db, 'lumina_profiles', user.uid));
-            if (docSnap.exists()) {
-                existingProfile = docSnap.data();
-            }
+            if (docSnap.exists()) existingProfile = docSnap.data();
         } catch(e) {}
 
         if (!existingProfile) {
-            // Auto-create rich starter profile for Google User so they NEVER see an empty screen!
             const cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000);
             const userAvatar = user.photoURL || 'avatar_new1.jpg';
             
@@ -458,12 +453,42 @@ export async function sendPhoneVerificationCode(phoneNumber, appVerifier) {
     if (!normalized || !/^\+[1-9]\d{7,14}$/.test(normalized)) {
         throw new Error(`Nieprawidłowy format numeru: "${phoneNumber}". Podaj 9 cyfr (np. 500 123 456) lub z prefiksem (+48 500 123 456).`);
     }
+
     try {
-        const verifier = appVerifier || setupPhoneRecaptcha();
+        let containerEl = document.getElementById('recaptcha-container');
+        if (!containerEl) {
+            containerEl = document.createElement('div');
+            containerEl.id = 'recaptcha-container';
+            document.body.appendChild(containerEl);
+        }
+
+        if (!window.recaptchaVerifier && !window._luminaRecaptchaVerifier) {
+            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                'size': 'invisible',
+                'callback': () => {
+                    console.log('Invisible reCAPTCHA solved');
+                },
+                'expired-callback': () => {
+                    if (window.recaptchaVerifier) {
+                        try { window.recaptchaVerifier.clear(); } catch(e) {}
+                        window.recaptchaVerifier = null;
+                    }
+                }
+            });
+            window._luminaRecaptchaVerifier = window.recaptchaVerifier;
+        }
+
+        const verifier = appVerifier || window.recaptchaVerifier || window._luminaRecaptchaVerifier;
         const confirmationResult = await signInWithPhoneNumber(auth, normalized, verifier);
+        window.confirmationResult = confirmationResult;
         window._luminaPhoneConfirmationResult = confirmationResult;
         return confirmationResult;
     } catch(err) {
+        if (window.recaptchaVerifier) {
+            try { window.recaptchaVerifier.clear(); } catch(e) {}
+            window.recaptchaVerifier = null;
+            window._luminaRecaptchaVerifier = null;
+        }
         console.error('Lumina Phone Auth Send Code Error:', err);
         throw err;
     }

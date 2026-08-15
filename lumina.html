@@ -2418,19 +2418,27 @@
             
             try {
                 if (window.LuminaDB) {
-                    const { user, profile, isNewUser } = await window.LuminaDB.loginWithGoogle();
-                    closeModal('authModal');
-                    if (isNewUser) {
-                        showToast(`Witaj w LUMINA, ${user.displayName || ''}! Uzupełnij swój profil.`);
-                        window.location.href = `lumina-profile.html?u=${user.uid}`;
-                    } else {
-                        showToast(`Witaj ponownie, ${profile?.name || user.displayName}! ✨`);
+                    const res = await window.LuminaDB.loginWithGoogle();
+                    if (res && res.isRedirecting) {
+                        showToast(`Przekierowanie do logowania Google... 🕊️`);
+                        return;
+                    }
+                    if (res && res.user) {
+                        const { user, profile, isNewUser } = res;
+                        closeModal('authModal');
+                        if (isNewUser) {
+                            showToast(`Witaj w LUMINA, ${user.displayName || ''}! Uzupełnij swój profil.`);
+                            window.location.href = `lumina-profile.html?u=${user.uid}`;
+                        } else {
+                            showToast(`Witaj ponownie, ${profile?.name || user.displayName}! ✨`);
+                        }
                     }
                 }
             } catch (error) {
                 console.warn("Google Auth note:", error);
-                showToast(`Logowanie w toku... 🕊️`);
-                closeModal('authModal');
+                if (error.code !== 'auth/popup-closed-by-user') {
+                    showToast(`Błąd logowania Google: ${error.message || 'Spróbuj ponownie'}`);
+                }
             } finally {
                 if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-brands fa-google" style="color:#ea4335;"></i> Kontynuuj przez Google'; }
             }
