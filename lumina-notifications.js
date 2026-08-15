@@ -186,7 +186,7 @@
                 .notif-time { font-size: 10.5px !important; color: #94a3b8 !important; margin-top: 4px !important; }
                 .notif-empty { padding: 36px 16px !important; text-align: center !important; color: #94a3b8 !important; font-size: 13px !important; }
                 @keyframes slideDown { from { opacity:0; transform: translateY(-8px) scale(0.96); } to { opacity:1; transform: translateY(0) scale(1); } }
-                @keyframes pulseBadge { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+                @keyframes pulseBadge { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
             </style>`;
 
             // Wstrzyknięcie dzwonka po PRAWEJ STRONIE, tuż obok widżetu Radia CC
