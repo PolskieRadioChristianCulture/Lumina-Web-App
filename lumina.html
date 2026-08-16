@@ -51,7 +51,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786857497941"></script>
+    <script type="module" src="lumina-db.js?v=1786859669999"></script>
     <script type="module" src="lumina-core.js?v=2.2"></script>
     <script type="module" src="lumina-security.js?v=2.2"></script>
     <script type="module" src="lumina-i18n.js?v=1786850740820.2"></script>
@@ -1651,7 +1651,7 @@
         }
 
 </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786857497941">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786859669999">
 </head>
 <body>
 
@@ -2563,11 +2563,11 @@
                 return window.LuminaDB;
             }
             try {
-                const mod = await import('./lumina-db.js?v=1786857497941?t=' + Date.now());
+                const mod = await import('./lumina-db.js?v=1786859669999?t=' + Date.now());
                 window.LuminaDB = mod.default || mod || window.LuminaDB;
                 return window.LuminaDB;
             } catch(e) {
-                console.error('Dynamic import of lumina-db.js?v=1786857497941 failed:', e);
+                console.error('Dynamic import of lumina-db.js?v=1786859669999 failed:', e);
                 return window.LuminaDB;
             }
         }
@@ -2587,7 +2587,7 @@
 
                 if (typeof authFn !== 'function') {
                     // Direct dynamic import execution
-                    const mod = await import('./lumina-db.js?v=1786857497941?v=direct_' + Date.now());
+                    const mod = await import('./lumina-db.js?v=1786859669999?v=direct_' + Date.now());
                     authFn = mod.loginWithGoogle || window.loginWithGoogle;
                 }
 
