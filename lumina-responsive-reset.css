@@ -125,6 +125,15 @@ img, video, iframe, canvas, svg {
     border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
+.nav-logo-text, 
+.nav-logo-text span, 
+.nav-logo-text strong {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    font-family: 'Outfit', sans-serif !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+}
+
 /* Unified style for all navbar icon buttons */
 .nav-radio-play,
 .nav-notif-btn, 
