@@ -23,18 +23,35 @@
   gtag('config', 'G-M24C85RG49');
 </script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>LUMINA – Odkryj Prawdziwe Połączenie | Christian Culture</title>
-    <meta name="description" content="Witaj w LUMINA – Miejscu Głębszych Relacji. Chrześcijański portal randkowy z inteligentnym dopasowaniem w ekosystemie Christian Culture.">
-        <meta property="og:type" content="website">
-    <meta property="og:title" content="LUMINA – Chrześcijański Portal Randkowy i Społeczność">
+<!-- ══════════ OPEN GRAPH & SOCIAL PREVIEWS (WhatsApp / FB / Twitter) ══════════ -->
+    <title>LUMINA – Chrześcijański Portal Randkowy & Społeczność | Christian Culture</title>
+    <meta name="description" content="Poznaj ludzi o wspólnych wartościach wiary. Inteligentne dopasowanie, bezpieczna społeczność i wartościowe relacje na całe życie.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="LUMINA – Christian Culture">
+    <meta property="og:title" content="LUMINA – Chrześcijański Portal Randkowy & Społeczność | Christian Culture">
     <meta property="og:description" content="Poznaj ludzi o wspólnych wartościach wiary. Inteligentne dopasowanie, bezpieczna społeczność i wartościowe relacje na całe życie.">
-    <meta property="og:image" content="https://polskieradio.cc/lumina_banner.png">
+    <meta property="og:image" content="https://polskieradio.cc/lumina_icon.jpg">
+    <meta property="og:image:secure_url" content="https://polskieradio.cc/lumina_icon.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://polskieradio.cc/lumina.html">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="LUMINA – Chrześcijański Portal Randkowy">
-    <meta name="twitter:description" content="Poznaj ludzi o wspólnych wartościach wiary. Inteligentne dopasowanie i bezpieczna społeczność.">
-    <meta name="twitter:image" content="https://polskieradio.cc/lumina_banner.png">
+    <meta name="twitter:title" content="LUMINA – Chrześcijański Portal Randkowy & Społeczność | Christian Culture">
+    <meta name="twitter:description" content="Poznaj ludzi o wspólnych wartościach wiary. Inteligentne dopasowanie, bezpieczna społeczność i wartościowe relacje na całe życie.">
+    <meta name="twitter:image" content="https://polskieradio.cc/lumina_icon.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
     <link rel="icon" type="image/png" sizes="192x192" href="lumina-icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="lumina-icon-512.png">
     <link rel="icon" type="image/jpeg" href="lumina-app-icon.jpg">
@@ -51,7 +68,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786862050270"></script>
+    <script type="module" src="lumina-db.js?v=1786863793432"></script>
     <script type="module" src="lumina-core.js?v=2.2"></script>
     <script type="module" src="lumina-security.js?v=2.2"></script>
     <script type="module" src="lumina-i18n.js?v=1786850740820.2"></script>
@@ -1651,7 +1668,7 @@
         }
 
 </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786862050270">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786863793432">
 </head>
 <body>
 
@@ -2579,11 +2596,11 @@
                 return window.LuminaDB;
             }
             try {
-                const mod = await import('./lumina-db.js?v=1786862050270?t=' + Date.now());
+                const mod = await import('./lumina-db.js?v=1786863793432?t=' + Date.now());
                 window.LuminaDB = mod.default || mod || window.LuminaDB;
                 return window.LuminaDB;
             } catch(e) {
-                console.error('Dynamic import of lumina-db.js?v=1786862050270 failed:', e);
+                console.error('Dynamic import of lumina-db.js?v=1786863793432 failed:', e);
                 return window.LuminaDB;
             }
         }
@@ -2603,7 +2620,7 @@
 
                 if (typeof authFn !== 'function') {
                     // Direct dynamic import execution
-                    const mod = await import('./lumina-db.js?v=1786862050270?v=direct_' + Date.now());
+                    const mod = await import('./lumina-db.js?v=1786863793432?v=direct_' + Date.now());
                     authFn = mod.loginWithGoogle || window.loginWithGoogle;
                 }
 
