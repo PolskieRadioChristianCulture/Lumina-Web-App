@@ -112,7 +112,7 @@
         })();
     </script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786876692502"></script>
+    <script type="module" src="lumina-db.js?v=1786904328333"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
     <script type="module" src="lumina-i18n.js?v=1786850740820"></script>
@@ -1587,7 +1587,7 @@
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786876692502">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786904328333">
 </head>
 <body>
 
@@ -2333,6 +2333,44 @@
         let attachedPostImageDataUrl = null;
 
         const PROFILES_DB = {
+            'magdalena': {
+                uid: 'magdalena',
+                slug: 'magdalena',
+                name: 'Magdalena',
+                age: '43',
+                city: 'Poznań, Polska',
+                avatar: 'avatar_magdalena.png',
+                cover: 'lumina_hero_clean.jpg',
+                coverPosY: '50%',
+                job: 'Społeczność LUMINA 🕊️',
+                church: 'Wspólnota Chrześcijańska w Poznaniu',
+                denom: 'Rzymskokatolickie',
+                status: 'Panna',
+                pin: '7777',
+                visibility: 'public',
+                match: '98%',
+                matchScore: '98%',
+                verse: '„Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu i miłości.”',
+                verseRef: '— List do Filipian 4, 13',
+                bio: 'Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu i miłości. Wierzę w siłę wspólnej modlitwy, zaufanie Bogu i budowanie trwałej relacji na fundamencie Chrystusa.',
+                tags: ['Modlitwa', 'Zaufanie', 'Wierność', 'Pismo Święte', 'Poznań'],
+                photos: ['avatar_magdalena.png', 'avatar_new1.jpg', 'lumina_hero_clean.jpg'],
+                posts: [
+                    {
+                        id: 'post_magdalena_1',
+                        author: 'Magdalena',
+                        authorSlug: 'magdalena',
+                        authorAvatar: 'avatar_magdalena.png',
+                        authorRole: 'Poznań • Społeczność LUMINA 🕊️',
+                        time: 'Dzisiaj • ✨ Nowy Profil',
+                        text: 'Szczęść Boże wszystkim! Wierzę, że najpiękniejsze relacje rodzą się z zaufania Bogu i otwartego serca. Pozdrawiam serdecznie całą społeczność LUMINA z Poznania! 🌸🕊️',
+                        likes: 24,
+                        amen: 19,
+                        image: 'avatar_magdalena.png'
+                    }
+                ]
+            },
+
 
             'studiodobregoslowa': {
                 name: 'Studio Dobrego Słowa',
@@ -2543,6 +2581,12 @@
 
         function getProfileData() {
             const slug = getRequestedUserSlug();
+
+            if (slug.includes('magdalena') || slug === 'magda') {
+                const magda = PROFILES_DB['magdalena'];
+                if (magda) return magda;
+            }
+    
             
             // Twarde zabezpieczenie kanału CC Women
             if (slug.includes('ccwomen') || slug.includes('women') || slug === 'u_ccwomen_9055') {
@@ -3860,7 +3904,7 @@
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786876692502" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786904328333" defer></script>
     <script src="lumina-notifications.js?v=1786851592174" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">

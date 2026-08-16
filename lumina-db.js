@@ -1598,6 +1598,7 @@ export function extractYouTubeId(url) {
 }
 
 export const LUMINA_HANDLES = {
+    'magdalena': { slug: 'magdalena', name: 'Magdalena (43)', url: 'lumina-profile.html?u=magdalena', avatar: 'avatar_magdalena.png', badge: '🕊️ Poznań' },
     'cezary': { slug: 'cezaryrgowski', name: 'Cezary Rogowski', url: 'lumina.cezaryrgowski.html', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel CC' },
     'cezaryrgowski': { slug: 'cezaryrgowski', name: 'Cezary Rogowski', url: 'lumina.cezaryrgowski.html', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel CC' },
     'cezaryrogowski': { slug: 'cezaryrgowski', name: 'Cezary Rogowski', url: 'lumina.cezaryrgowski.html', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel CC' },
