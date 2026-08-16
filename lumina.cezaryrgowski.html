@@ -69,7 +69,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786864586527"></script>
+    <script type="module" src="lumina-db.js?v=1786864811862"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1842,12 +1842,7 @@
             z-index: 25 !important;
         }
 
-        .avatar-edit-overlay, .cover-edit-btn {
-            display: flex !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            cursor: pointer !important;
-        }
+        .avatar-edit-overlay, .cover-edit-btn { display: none !important; }
 
     
         /* Avatar Edit Overlay: Hidden by default, visible ONLY on hover */
@@ -1879,7 +1874,7 @@
         }
     
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786864586527">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786864811862">
 </head>
 <body>
 
@@ -3931,7 +3926,7 @@
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786864586527" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786864811862" defer></script>
     <script src="lumina-notifications.js" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
