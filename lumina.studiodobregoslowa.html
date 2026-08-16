@@ -50,7 +50,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786862375464"></script>
+    <script type="module" src="lumina-db.js?v=1786862520728"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1526,7 +1526,7 @@
         }
     
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786862375464">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786862520728">
 </head>
 <body>
 
@@ -1864,23 +1864,45 @@
                     </div>
 
                     
-                    <!-- Composer -->
-                    <div class="feed-composer">
-                        <div class="composer-top">
-                            <img src="studiodobregoslowa_avatar.jpg" alt="Studio Dobrego Słowa" class="composer-avatar" id="myComposerAvatar">
-                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onfocus="if(!isOwnerMode) requestOwnerAccess(()=>document.getElementById('composerInput').focus())">
+                    <!-- 🎙️ MULTIMEDIA POST COMPOSER FOR STUDIO DOBREGO SŁOWA -->
+                    <div class="feed-composer" style="background: linear-gradient(145deg, rgba(15,23,42,0.92), rgba(30,41,59,0.95)); border: 1px solid rgba(245,158,11,0.35); border-radius: 18px; padding: 18px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:1.1rem;">🎙️</span>
+                                <span style="font-weight:800; font-size:0.92rem; color:#facc15; font-family:'Outfit',sans-serif;">Publikator Medialny Studio Dobrego Słowa</span>
+                            </div>
+                            <span style="font-size:0.75rem; background:rgba(34,197,94,0.18); color:#86efac; border:1px solid rgba(34,197,94,0.35); padding:2px 10px; border-radius:12px; font-weight:700;">Emisja Publiczna 🌍</span>
+                        </div>
+
+                        <div class="composer-top" style="display:flex; gap:12px; align-items:flex-start;">
+                            <img src="studiodobregoslowa_avatar.jpg" alt="Studio Dobrego Słowa" class="composer-avatar" id="myComposerAvatar" style="width:48px; height:48px; border-radius:50%; border:2px solid #f59e0b; object-fit:cover;">
+                            <textarea id="composerInput" class="composer-input" placeholder="Napisz wpis, ogłoszenie o nowym odcinku, zwiastun audycji lub refleksję biblijną..." style="flex:1; min-height:85px; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:0.92rem; resize:vertical; outline:none; line-height:1.5;"></textarea>
                         </div>
 
                         <!-- Post Image Attachment Preview -->
-                        <div id="composerImgPreviewBox" style="display:none; position:relative; margin: 10px 0 6px; border-radius:12px; overflow:hidden; max-height:220px; background:#0f172a; border: 1px solid rgba(255,255,255,0.15);">
-                            <img id="composerAttachedImg" src="" style="width:100%; height:180px; object-fit:cover; display:block;">
-                            <button type="button" onclick="removeAttachedPostImage()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.5);" title="Usuń dołączoną grafikę"><i class="fa-solid fa-xmark"></i></button>
+                        <div id="composerImgPreviewBox" style="display:none; position:relative; margin: 12px 0 8px; border-radius:14px; overflow:hidden; max-height:260px; background:#050508; border: 1px solid rgba(245,158,11,0.4);">
+                            <img id="composerAttachedImg" src="" style="width:100%; height:220px; object-fit:cover; display:block;">
+                            <button type="button" onclick="removeAttachedPostImage()" style="position:absolute; top:10px; right:10px; width:32px; height:32px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.6);" title="Usuń dołączoną grafikę"><i class="fa-solid fa-xmark"></i></button>
                         </div>
 
-                        <div class="composer-actions">
-                            <button class="composer-btn-attach" onclick="triggerPostImageUpload()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Dołącz Grafikę do Posta</button>
-                            <button class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Dodaj Werset</button>
-                            <button class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-share"></i> Opublikuj</button>
+                        <!-- Video YouTube Attachment Box (Optional input) -->
+                        <div id="composerVideoBox" style="display:none; margin: 10px 0; padding: 10px 14px; border-radius: 12px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.35);">
+                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                                <i class="fa-brands fa-youtube" style="color:#ef4444;"></i>
+                                <span style="font-size:0.8rem; font-weight:700; color:#fff;">Dołącz wideo YouTube lub link:</span>
+                                <button type="button" onclick="document.getElementById('composerVideoBox').style.display='none'; document.getElementById('composerVideoUrl').value='';" style="margin-left:auto; background:none; border:none; color:#94a3b8; cursor:pointer;">✕</button>
+                            </div>
+                            <input type="text" id="composerVideoUrl" placeholder="Wklej link do YouTube (np. https://youtu.be/... lub https://www.youtube.com/watch?v=...)" style="width:100%; padding:8px 12px; border-radius:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; font-size:0.82rem;">
+                        </div>
+
+                        <div class="composer-actions" style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; flex-wrap:wrap; gap:10px;">
+                            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                                <button type="button" class="composer-btn-attach" onclick="triggerPostImageUpload()" style="display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:20px; background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.35); color:#86efac; font-size:0.82rem; font-weight:700; cursor:pointer;"><i class="fa-solid fa-image"></i> Dołącz Zdjęcie</button>
+                                <button type="button" class="composer-btn-attach" onclick="toggleComposerVideoBox()" style="display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:20px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.35); color:#fca5a5; font-size:0.82rem; font-weight:700; cursor:pointer;"><i class="fa-brands fa-youtube"></i> Wideo YouTube</button>
+                                <button type="button" class="composer-btn-attach" onclick="insertVersePrompt()" style="display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:20px; background:rgba(245,158,11,0.15); border:1px solid rgba(245,158,11,0.35); color:#fde047; font-size:0.82rem; font-weight:700; cursor:pointer;"><i class="fa-solid fa-quote-left"></i> Werset</button>
+                                <button type="button" class="composer-btn-attach" onclick="insertLiveStreamLink()" style="display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:20px; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.35); color:#7dd3fc; font-size:0.82rem; font-weight:700; cursor:pointer;"><i class="fa-solid fa-tower-broadcast"></i> Apokalipsa Live</button>
+                            </div>
+                            <button type="button" class="composer-btn-publish" onclick="publishFeedPost()" style="display:inline-flex; align-items:center; gap:8px; padding:10px 22px; border-radius:24px; background:linear-gradient(135deg,#f59e0b,#ea580c); color:#fff; border:none; font-size:0.88rem; font-weight:800; cursor:pointer; box-shadow:0 4px 16px rgba(245,158,11,0.4);"><i class="fa-solid fa-paper-plane"></i> Opublikuj Wpis</button>
                         </div>
                     </div>
 
@@ -2700,7 +2722,123 @@
 
         // ── Posts Stream, Editing & Deletion ──
         let currentEditingPostId = null;
-        let editingPostImageDataUrl = null;
+let editingPostImageDataUrl = null;
+
+function toggleComposerVideoBox() {
+            const b = document.getElementById('composerVideoBox');
+            if (!b) return;
+            b.style.display = (b.style.display === 'none' || !b.style.display) ? 'block' : 'none';
+            if (b.style.display === 'block') {
+                setTimeout(() => document.getElementById('composerVideoUrl').focus(), 150);
+            }
+        }
+
+        function extractYouTubeId(url) {
+            if (!url) return null;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        function insertLiveStreamLink() {
+            const input = document.getElementById('composerInput');
+            const txt = '🔴 Zapraszamy na transmisję na żywo: „Apokalipsa: Księga Nadziei Live” – oglądajcie z nami tutaj na profilu oraz na https://polskieradio.cc/apokalipsa-ksiega-nadziei-live.html ✨';
+            if (input.value) {
+                input.value += '\n\n' + txt;
+            } else {
+                input.value = txt;
+            }
+            input.focus();
+        }
+
+        function insertVersePrompt() {
+            const input = document.getElementById('composerInput');
+            const txt = '📖 „Wiara tedy jest ze słuchania, a słuchanie przez Słowo Chrystusowe.” (List do Rzymian 10, 17)';
+            if (input.value) {
+                input.value += '\n\n' + txt;
+            } else {
+                input.value = txt;
+            }
+            input.focus();
+        }
+
+        function triggerPostImageUpload() {
+            const inp = document.getElementById('postImageFileInput');
+            if (inp) {
+                inp.value = '';
+                inp.click();
+            }
+        }
+
+        function handlePostImageSelect(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            showToast('Dołączanie grafiki do wpisu... ⏳');
+            compressAndReadImage(file, 1200, 1200, 0.85, function(dataUrl) {
+                attachedPostImageDataUrl = dataUrl;
+                document.getElementById('composerAttachedImg').src = dataUrl;
+                document.getElementById('composerImgPreviewBox').style.display = 'block';
+                showToast('Grafika została pomyślnie dołączona do wpisu! 🖼️✨');
+            });
+        }
+
+        function removeAttachedPostImage() {
+            attachedPostImageDataUrl = null;
+            document.getElementById('composerImgPreviewBox').style.display = 'none';
+            document.getElementById('composerAttachedImg').src = '';
+            document.getElementById('postImageFileInput').value = '';
+        }
+
+        function publishFeedPost() {
+            const input = document.getElementById('composerInput');
+            const val = input.value.trim();
+            const videoUrlInput = document.getElementById('composerVideoUrl');
+            const videoUrl = videoUrlInput ? videoUrlInput.value.trim() : '';
+            const ytId = extractYouTubeId(videoUrl) || extractYouTubeId(val);
+
+            if (!val && !attachedPostImageDataUrl && !ytId) {
+                showToast('Wpisz treść, dodaj link YouTube lub dołącz grafikę przed publikacją!');
+                return;
+            }
+
+            const cur = getProfileData();
+            const newPost = {
+                id: 'post_sds_' + Date.now(),
+                author: cur.name || 'Studio Dobrego Słowa',
+                authorSlug: 'studiodobregoslowa',
+                authorAvatar: cur.avatar || 'studiodobregoslowa_avatar.jpg',
+                authorRole: '🎙️ Studio Dobrego Słowa • Misja Medialna',
+                time: 'Przed chwilą • 🌍 Nowy Wpis',
+                text: val || '',
+                likes: 1,
+                amen: 0,
+                image: attachedPostImageDataUrl || null,
+                youtubeId: ytId || null
+            };
+
+            // 1. Add locally
+            cur.posts = cur.posts || [];
+            cur.posts.unshift(newPost);
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+            } catch(e) {}
+
+            // 2. Publish to universal feed in LuminaDB
+            if (window.LuminaDB && typeof window.LuminaDB.publishUniversalPost === 'function') {
+                window.LuminaDB.publishUniversalPost(newPost);
+                window.LuminaDB.saveProfileToCloud('studiodobregoslowa', cur).catch(()=>{});
+            }
+
+            // 3. Reset form
+            input.value = '';
+            if (videoUrlInput) videoUrlInput.value = '';
+            document.getElementById('composerVideoBox').style.display = 'none';
+            removeAttachedPostImage();
+
+            // 4. Render
+            renderPosts();
+            showToast('Wpis Studia Dobrego Słowa został opublikowany i pojawił się na tablicy! 🎙️🚀✨');
+        }
 
         function renderPosts() {
             const data = getProfileData();
@@ -2711,125 +2849,58 @@
             if (!stream) return;
 
             if (posts.length === 0) {
-                stream.innerHTML = '<div style="background:var(--navy-surface); border:1px dashed rgba(255,255,255,0.1); border-radius:16px; padding:24px; text-align:center; color:#94a3b8; font-size:0.9rem;">Brak wpisów na tablicy. Napisz coś powyżej! ✨</div>';
+                stream.innerHTML = '<div style="background:var(--navy-surface); border:1px dashed rgba(255,255,255,0.1); border-radius:16px; padding:24px; text-align:center; color:#94a3b8; font-size:0.9rem;">Brak wpisów na tablicy. Opublikuj pierwszy wpis powyżej! 🎙️✨</div>';
                 return;
             }
 
-            stream.innerHTML = posts.map(p => `
-                <article class="post-card" id="${p.id}">
-                    <div class="post-header">
-                        <img src="${p.authorAvatar || data.avatar || 'studiodobregoslowa_avatar.jpg'}" alt="${p.author}" class="post-avatar">
+            stream.innerHTML = posts.map(p => {
+                const ytId = p.youtubeId || extractYouTubeId(p.text || '');
+                return `
+                <article class="post-card" id="${p.id}" style="background:linear-gradient(145deg, rgba(15,23,42,0.85), rgba(30,41,59,0.85)); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:18px; margin-bottom:18px; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+                    <div class="post-header" style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                        <img src="${p.authorAvatar || data.avatar || 'studiodobregoslowa_avatar.jpg'}" alt="${p.author}" class="post-avatar" style="width:42px; height:42px; border-radius:50%; object-fit:cover; border:2px solid #f59e0b;">
                         <div>
-                            <div class="post-author">${p.author}</div>
-                            <div class="post-time">${p.time || 'Przed chwilą'}</div>
+                            <div class="post-author" style="font-weight:800; font-size:0.95rem; color:#fff;">${p.author || 'Studio Dobrego Słowa'}</div>
+                            <div class="post-time" style="font-size:0.75rem; color:#94a3b8;">${p.time || 'Przed chwilą'}</div>
                         </div>
-                        ${isOwnerMode ? `
-                            <div class="post-header-actions" style="display:flex; align-items:center; gap:8px; margin-left:auto;">
-                                <button type="button" class="post-edit-btn" onclick="openEditPostModal('${p.id}')" title="Edytuj ten wpis"><i class="fa-solid fa-pencil"></i></button>
-                                <button type="button" class="post-delete-btn" onclick="deleteFeedPost(event, '${p.id}')" title="Usuń ten wpis"><i class="fa-solid fa-trash-can"></i></button>
-                            </div>
-                        ` : ''}
+                        
+                        <div class="post-header-actions" style="display:flex; align-items:center; gap:8px; margin-left:auto;">
+                            <button type="button" class="post-edit-btn" onclick="openEditPostModal('${p.id}')" title="Edytuj ten wpis" style="background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:30px; height:30px; border-radius:50%; cursor:pointer;"><i class="fa-solid fa-pencil"></i></button>
+                            <button type="button" class="post-delete-btn" onclick="deleteFeedPost(event, '${p.id}')" title="Usuń ten wpis" style="background:rgba(225,29,72,0.15); border:1px solid rgba(225,29,72,0.3); color:#fca5a5; width:30px; height:30px; border-radius:50%; cursor:pointer;"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
                     </div>
-                    <div class="post-content">${p.text || ''}</div>
-                    ${`<img src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'studiodobregoslowa_avatar.jpg')}" alt="Post Image" class="post-image" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" onerror="this.onerror=null; this.src='${data.avatar || 'studiodobregoslowa_avatar.jpg'}'">`}
-                    <div class="post-footer">
-                        <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span> Polubień</button>
-                        <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
-                        <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i> Napisz</button>
+
+                    <div class="post-content" style="font-size:0.92rem; color:#e2e8f0; line-height:1.6; margin-bottom:12px; white-space:pre-wrap;">${p.text || ''}</div>
+                    
+                    ${ytId ? `
+                        <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:12px; overflow:hidden; margin-bottom:12px; border:1px solid rgba(239,68,68,0.4); box-shadow:0 8px 20px rgba(0,0,0,0.6); background:#000;">
+                            <iframe src="https://www.youtube-nocookie.com/embed/${ytId}" style="width:100%; height:100%; border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    ` : ''}
+
+                    ${p.image ? `
+                        <img src="${p.image}" alt="Post Image" class="post-image" style="width:100%; max-height:420px; object-fit:cover; border-radius:12px; margin-bottom:12px; cursor:pointer; border:1px solid rgba(255,255,255,0.1);" onclick="openPhotoLightbox(this.src, 'Zdjęcie ze Studio Dobrego Słowa ✨')">
+                    ` : ''}
+
+                    <div class="post-footer" style="display:flex; gap:12px; align-items:center; border-top:1px solid rgba(255,255,255,0.08); padding-top:10px; margin-top:8px;">
+                        <button class="post-action-btn" onclick="togglePostLike(this)" style="background:rgba(255,255,255,0.06); border:none; color:#cbd5e1; padding:6px 14px; border-radius:20px; font-size:0.8rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> <span class="like-count">${p.likes || 1}</span> Polubień</button>
+                        <button class="post-action-btn amen" onclick="togglePostAmen(this)" style="background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.3); color:#fde047; padding:6px 14px; border-radius:20px; font-size:0.8rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
+                        <button class="post-action-btn" onclick="openMessageModal()" style="margin-left:auto; background:none; border:none; color:#94a3b8; font-size:0.8rem; cursor:pointer;"><i class="fa-solid fa-comment-dots"></i> Skomentuj</button>
                     </div>
                 </article>
-            `).join('');
-        }
-
-        function openEditPostModal(postId) {
-            if (!requestOwnerAccess(() => openEditPostModal(postId))) return;
-            const cur = getProfileData();
-            const post = (cur.posts || []).find(p => p.id === postId);
-            if (!post) {
-                showToast('Nie znaleziono wpisu do edycji.');
-                return;
-            }
-
-            currentEditingPostId = postId;
-            editingPostImageDataUrl = post.image || null;
-
-            document.getElementById('editPostTextarea').value = post.text || '';
-            
-            const previewBox = document.getElementById('editPostImgPreviewBox');
-            const attachedImg = document.getElementById('editPostAttachedImg');
-            if (editingPostImageDataUrl) {
-                attachedImg.src = editingPostImageDataUrl;
-                previewBox.style.display = 'block';
-            } else {
-                attachedImg.src = '';
-                previewBox.style.display = 'none';
-            }
-
-            document.getElementById('editPostModal').classList.add('open');
-            setTimeout(() => document.getElementById('editPostTextarea').focus(), 150);
-        }
-
-        function handleEditPostImageSelect(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            showToast('Przetwarzanie grafiki do wpisu... ⏳');
-            compressAndReadImage(file, 1000, 1000, 0.82, function(dataUrl) {
-                editingPostImageDataUrl = dataUrl;
-                document.getElementById('editPostAttachedImg').src = dataUrl;
-                document.getElementById('editPostImgPreviewBox').style.display = 'block';
-                showToast('Grafika została zaktualizowana w edytorze! 🖼️✨');
-            });
-            e.target.value = '';
-        }
-
-        function removeEditPostAttachedImage() {
-            editingPostImageDataUrl = null;
-            document.getElementById('editPostImgPreviewBox').style.display = 'none';
-            document.getElementById('editPostAttachedImg').src = '';
-            document.getElementById('editPostImageFileInput').value = '';
-        }
-
-        function saveEditedPostSubmit(e) {
-            if (e) e.preventDefault();
-            if (!currentEditingPostId) return;
-
-            const newText = document.getElementById('editPostTextarea').value.trim();
-            if (!newText && !editingPostImageDataUrl) {
-                showToast('Wpis nie może być pusty!');
-                return;
-            }
-
-            const cur = getProfileData();
-            cur.posts = cur.posts || [];
-            const idx = cur.posts.findIndex(p => p.id === currentEditingPostId);
-            if (idx !== -1) {
-                cur.posts[idx].text = newText;
-                cur.posts[idx].image = editingPostImageDataUrl || null;
-                if (!cur.posts[idx].time.includes('(edytowano)')) {
-                    cur.posts[idx].time += ' • (edytowano)';
-                }
-                try {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
-                } catch(err) {}
-                renderPosts();
-                closeModal('editPostModal');
-                showToast('Wpis został pomyślnie zaktualizowany! ✏️✨');
-            }
+                `;
+            }).join('');
         }
 
         function deleteFeedPost(event, postId) {
-            if (event) {
-                event.stopPropagation();
-                event.preventDefault();
-            }
-            if (!requestOwnerAccess(() => deleteFeedPost(null, postId))) return;
+            if (event) { event.stopPropagation(); event.preventDefault(); }
             if (!confirm('Czy na pewno chcesz usunąć ten wpis z tablicy?')) return;
-
             const cur = getProfileData();
             cur.posts = (cur.posts || []).filter(p => p.id !== postId);
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
-            } catch(e) {}
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cur)); } catch(e) {}
+            if (window.LuminaDB && typeof window.LuminaDB.deleteUniversalPost === 'function') {
+                window.LuminaDB.deleteUniversalPost(postId);
+            }
             renderPosts();
             showToast('Wpis został pomyślnie usunięty z Twojej tablicy! 🗑️');
         }
