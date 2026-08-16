@@ -50,7 +50,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786855459975"></script>
+    <script type="module" src="lumina-db.js?v=1786857416425"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1476,7 +1476,7 @@
         }
     
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786856430660">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786857416425">
 </head>
 <body>
 
@@ -2331,14 +2331,7 @@
             const btnLabel = document.getElementById('btnOwnerAuthLabel');
 
             if (isOwnerMode) {
-                // Check exclusive Administrator permissions
-        if (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true') {
-            isOwnerMode = true;
-            document.body.classList.add('owner-mode-active');
-        } else {
-            isOwnerMode = false;
-            document.body.classList.remove('owner-mode-active');
-        }
+                
                 if (icon) icon.className = 'fa-solid fa-shield-check';
                 if (txt) txt.innerHTML = 'Panel Właścicielki: <b style="color:#ec4899;">Odblokowany 🔓 (Możesz edytować i usuwać)</b>';
                 if (btn) {

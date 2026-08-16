@@ -52,7 +52,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786857306804"></script>
+    <script type="module" src="lumina-db.js?v=1786857416425"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1771,7 +1771,7 @@
         }
 
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786857306804">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786857416425">
 </head>
 <body>
 
@@ -2905,8 +2905,38 @@
         }
 
         // ── Security & Authentication System ──
-        function checkOwnerAuthSession() {
-            isOwnerMode = (sessionStorage.getItem(AUTH_SESSION_KEY) === 'true');
+                function checkOwnerAuthSession() {
+            let u = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
+            if (!u) {
+                try { u = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
+            }
+            let p = null;
+            try { p = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null'); } catch(e) {}
+
+            let ownerAccess = (sessionStorage.getItem(AUTH_SESSION_KEY) === 'true') || 
+                              (localStorage.getItem(AUTH_SESSION_KEY) === 'true') ||
+                              (localStorage.getItem('lumina_user_session') === 'active') ||
+                              (sessionStorage.getItem('lumina_auth_master_admin') === 'true') ||
+                              (localStorage.getItem('lumina_auth_master_admin') === 'true');
+
+            if (u || p) {
+                const uEmail = ((u && u.email) || (p && p.email) || '').toLowerCase();
+                const uName = ((u && (u.displayName || u.name)) || (p && p.name) || '').toLowerCase();
+                const uSlug = ((p && p.slug) || (u && u.slug) || '').toLowerCase();
+
+                if (uEmail.includes('christianculture') || uName.includes('cezary') || uSlug.includes('cezary') || (u && u.uid)) {
+                    ownerAccess = true;
+                    sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
+                    localStorage.setItem(AUTH_SESSION_KEY, 'true');
+                }
+            }
+
+            isOwnerMode = ownerAccess;
+            if (isOwnerMode) {
+                document.body.classList.add('owner-mode-active');
+            } else {
+                document.body.classList.remove('owner-mode-active');
+            }
             updateSecurityBarUI();
         }
 
@@ -2917,16 +2947,10 @@
             const txt = document.getElementById('secStatusText');
             const btnIcon = document.getElementById('btnOwnerAuthIcon');
             const btnLabel = document.getElementById('btnOwnerAuthLabel');
+            const hud = document.getElementById('founderAnalyticsHud');
 
             if (isOwnerMode) {
-                // Check exclusive Administrator permissions
-        if (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true') {
-            isOwnerMode = true;
-            document.body.classList.add('owner-mode-active');
-        } else {
-            isOwnerMode = false;
-            document.body.classList.remove('owner-mode-active');
-        }
+                document.body.classList.add('owner-mode-active');
                 if (icon) icon.className = 'fa-solid fa-shield-check';
                 if (txt) txt.innerHTML = 'Panel Właściciela: <b style="color:#22c55e;">Odblokowany 🔓 (Możesz edytować i usuwać)</b>';
                 if (btn) {
@@ -2934,17 +2958,21 @@
                     if (btnIcon) btnIcon.className = 'fa-solid fa-lock';
                     if (btnLabel) btnLabel.textContent = 'Zablokuj Profil 🔒';
                 }
+                if (hud) hud.style.display = 'grid';
             } else {
                 document.body.classList.remove('owner-mode-active');
                 if (icon) icon.className = 'fa-solid fa-shield-halved';
-                if (txt) txt.innerHTML = 'Status Ochrony: <b style="color:#38bdf8;">Chroniony Kodem PIN 🛡️</b>';
+                if (txt) txt.innerHTML = 'Status Ochrony: <b style="color:#38bdf8;">Chroniony 🛡️</b>';
                 if (btn) {
-                    btn.className = 'btn-security-toggle';
+                    btn.className = 'btn-security-toggle locked';
                     if (btnIcon) btnIcon.className = 'fa-solid fa-key';
-                    if (btnLabel) btnLabel.textContent = 'Odblokuj Tryb Właściciela';
+                    if (btnLabel) btnLabel.textContent = 'Zaloguj się jako Właściciel';
                 }
+                if (hud) hud.style.display = 'none';
             }
         }
+
+}
 
         function toggleOwnerAuthMode() {
             if (isOwnerMode) {
@@ -3794,6 +3822,7 @@
 
         // Initialize on load & listen to new posts from Tablica
         window.addEventListener('DOMContentLoaded', () => {
+            checkOwnerAuthSession();
             renderProfileView();
 
             window.addEventListener('lumina_post_published', () => renderPosts());
