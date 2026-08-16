@@ -1415,7 +1415,7 @@
         }
 
 </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786852792494">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786855039661">
 </head>
 <body>
 
@@ -2055,7 +2055,7 @@
             </div>
             <span>Wiadomości</span>
         </a>
-        <a href="lumina.cezaryrgowski.html" class="m-nav-item active" id="mNavProfileItem">
+        <a href="javascript:void(0)" onclick="handleMyProfileNavigation(event)" class="m-nav-item active" id="mNavProfileItem">
             <i class="fa-solid fa-user"></i>
             <span>Mój Profil</span>
         </a>
@@ -3650,6 +3650,55 @@ if (localStorage.getItem('lumina_cookie_consent')) {
         });
     }
 }
+
+        // ── Smart Navigation for "Mój Profil" (Auth-Guarded) ──
+        window.handleMyProfileNavigation = function(event) {
+            if (event && event.preventDefault) event.preventDefault();
+
+            let user = null;
+            if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
+                user = window.LuminaDB.getCurrentUser();
+            }
+            if (!user) {
+                try {
+                    user = JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
+                } catch(e) {}
+            }
+
+            let savedProfile = null;
+            try {
+                savedProfile = JSON.parse(localStorage.getItem('lumina_my_profile') || 'null');
+            } catch(e) {}
+
+            // If NOT logged in: Open Auth Modal or Redirect to lumina.html?auth=register
+            if (!user && !savedProfile) {
+                if (typeof openAuth === 'function') {
+                    if (typeof switchAuthTab === 'function') switchAuthTab('register');
+                    openAuth();
+                } else if (document.getElementById('authModal')) {
+                    if (typeof switchAuthTab === 'function') switchAuthTab('register');
+                    const m = document.getElementById('authModal');
+                    m.classList.add('open');
+                    m.style.display = 'flex';
+                } else {
+                    window.location.href = 'lumina.html?auth=register';
+                }
+                return;
+            }
+
+            // If logged in: Route to user's personalized profile
+            const targetSlug = (savedProfile && (savedProfile.slug || savedProfile.id)) || (user && (user.slug || user.uid));
+            if (targetSlug === 'cezaryrgowski' || targetSlug === 'cezary') {
+                window.location.href = 'lumina.cezaryrgowski.html';
+            } else if (targetSlug === 'wiolettarogowska' || targetSlug === 'wioletta') {
+                window.location.href = 'lumina.wiolettarogowska.html';
+            } else if (targetSlug) {
+                window.location.href = 'lumina-profile.html?u=' + encodeURIComponent(targetSlug);
+            } else {
+                window.location.href = 'lumina-profile.html';
+            }
+        };
+
 </script>
 </body>
 </html>
