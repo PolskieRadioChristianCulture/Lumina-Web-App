@@ -50,7 +50,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786860875686"></script>
+    <script type="module" src="lumina-db.js?v=1786861104912"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1476,7 +1476,7 @@
         }
     
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786860875686">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786861104912">
 </head>
 <body>
 
@@ -1493,7 +1493,7 @@
         <div class="nav-center-links">
             <a href="lumina.html" class="nav-link"><i class="fa-solid fa-compass"></i> Odkrywaj</a>
             <a href="lumina-tablica.html" class="nav-link" style="color:#ec4899; font-weight:700;"><i class="fa-solid fa-rectangle-list"></i> Tablica</a>
-            <a href="lumina.cezaryrgowski.html" class="nav-link" style="color:#60a5fa; font-weight:700;"><i class="fa-solid fa-heart"></i> Profil Męża (Cezary)</a>
+            <button class="nav-link" onclick="openMessageModal()"><i class="fa-solid fa-comments"></i> Kontakt</button>
             <a href="index.html" class="nav-link"><i class="fa-solid fa-radio"></i> Radio CC</a>
         </div>
 
@@ -1617,7 +1617,7 @@
                             <button class="card-edit-btn" onclick="openEditProfileModal('info')" title="Edytuj Imię i Wiek"><i class="fa-solid fa-pencil"></i></button>
                         </h1>
                         <div class="head-user-tagline">
-                            <span id="userAgeCityEl"><i class="fa-solid fa-location-dot"></i> Polska • Studio Medialne</span>
+                            <span id="userAgeCityEl"><i class="fa-solid fa-location-dot"></i> Piła, Polska • Studio Medialne</span>
                             <span id="userDenomEl"><i class="fa-solid fa-microphone-lines" style="color:#38bdf8;"></i> Ewangelizacja & Multimedia</span>
                             <span id="userMatchEl" style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-star"></i> Oficjalny Partner Medialny</span>
                             <span id="visibilityBadge" class="badge-visibility-pub"><i class="fa-solid fa-globe"></i> Profil Publiczny</span>
@@ -2208,7 +2208,7 @@
         const defaultProfile = {
             name: 'Studio Dobrego Słowa',
             age: 'Studio Medialne',
-            city: 'Polska • Christian Culture',
+            city: 'Piła, Polska',
             denom: 'Ewangelizacja & Multimedia',
             match: '100%',
             status: 'Oficjalny Partner Medialny',
@@ -2254,7 +2254,7 @@
                         ...parsed,
                         avatar: avatar,
                         age: age,
-                        city: 'Ostrowiec Świętokrzyski, Polska',
+                        city: 'Piła, Polska',
                         visibility: parsed.visibility || 'public',
                         photos: Array.isArray(parsed.photos) ? parsed.photos : [...defaultProfile.photos],
                         posts: Array.isArray(parsed.posts) ? parsed.posts : [...defaultProfile.posts]
