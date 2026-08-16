@@ -53,7 +53,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
         <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786850740820"></script>
+    <script type="module" src="lumina-db.js?v=1786855459975"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-tablica.js"></script>
     <script type="module" src="lumina-i18n.js?v=1786850740820"></script>
@@ -1590,7 +1590,7 @@
         }
 
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786855039661">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786855459975">
 </head>
 <body>
 
@@ -3459,27 +3459,46 @@
         }
 
         
-        // ── Smart Navigation for "Mój Profil" (Auth-Guarded) ──
+        /// ── Smart Multi-Source Navigation for "Mój Profil" ──
         window.handleMyProfileNavigation = function(event) {
             if (event && event.preventDefault) event.preventDefault();
 
-            let user = null;
-            if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
-                user = window.LuminaDB.getCurrentUser();
-            }
+            // 1. Check memory Firebase user
+            let user = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
+            
+            // 2. Check localStorage user & profile
+            let profile = null;
+            try {
+                profile = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null');
+            } catch(e) {}
+
             if (!user) {
                 try {
                     user = JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
                 } catch(e) {}
             }
 
-            let savedProfile = null;
+            // 3. Check Firebase Auth key in localStorage
+            let hasFirebaseToken = false;
             try {
-                savedProfile = JSON.parse(localStorage.getItem('lumina_my_profile') || 'null');
+                for (let i = 0; i < localStorage.length; i++) {
+                    const k = localStorage.key(i);
+                    if (k && k.startsWith('firebase:authUser:')) {
+                        hasFirebaseToken = true;
+                        if (!user) {
+                            try {
+                                const fData = JSON.parse(localStorage.getItem(k));
+                                if (fData && fData.uid) user = fData;
+                            } catch(e) {}
+                        }
+                        break;
+                    }
+                }
             } catch(e) {}
 
-            // If NOT logged in: Open Auth Modal or Redirect to lumina.html?auth=register
-            if (!user && !savedProfile) {
+            const isLoggedIn = !!(user || profile || hasFirebaseToken || localStorage.getItem('lumina_user_session') === 'active');
+
+            if (!isLoggedIn) {
                 if (typeof openAuth === 'function') {
                     if (typeof switchAuthTab === 'function') switchAuthTab('register');
                     openAuth();
@@ -3494,20 +3513,28 @@
                 return;
             }
 
-            // If logged in: Route to user's personalized profile
-            const targetSlug = (savedProfile && (savedProfile.slug || savedProfile.id)) || (user && (user.slug || user.uid));
-            if (targetSlug === 'cezaryrgowski' || targetSlug === 'cezary') {
+            // Route to user's personalized profile
+            const email = (user && user.email) || (profile && profile.email) || '';
+            const name = (user && (user.displayName || user.name)) || (profile && profile.name) || '';
+            const slug = (profile && (profile.slug || profile.id)) || (user && (user.slug || user.uid)) || '';
+
+            const isCezary = slug === 'cezaryrgowski' || slug === 'cezary' || email.includes('christianculture') || name.toLowerCase().includes('cezary');
+            const isWioletta = slug === 'wiolettarogowska' || slug === 'wioletta' || name.toLowerCase().includes('wioletta');
+
+            if (isCezary) {
                 window.location.href = 'lumina.cezaryrgowski.html';
-            } else if (targetSlug === 'wiolettarogowska' || targetSlug === 'wioletta') {
+            } else if (isWioletta) {
                 window.location.href = 'lumina.wiolettarogowska.html';
-            } else if (targetSlug) {
-                window.location.href = 'lumina-profile.html?u=' + encodeURIComponent(targetSlug);
+            } else if (slug) {
+                window.location.href = 'lumina-profile.html?u=' + encodeURIComponent(slug);
+            } else if (user && user.uid) {
+                window.location.href = 'lumina-profile.html?u=' + encodeURIComponent(user.uid);
             } else {
                 window.location.href = 'lumina-profile.html';
             }
         };
 
-        // ── Toast System ──
+// ── Toast System ──
         let toastTimer = null;
         function showToast(msg) {
             const toast = document.getElementById('toast');

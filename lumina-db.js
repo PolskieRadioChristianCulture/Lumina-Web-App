@@ -190,6 +190,20 @@ if (auth) {
     onAuthStateChanged(auth, async (user) => {
         currentUserState = user;
         if (user) {
+            // Save basic user session in localStorage immediately
+            try {
+                const uData = {
+                    uid: user.uid,
+                    email: user.email || '',
+                    displayName: user.displayName || '',
+                    photoURL: user.photoURL || '',
+                    phoneNumber: user.phoneNumber || ''
+                };
+                localStorage.setItem('lumina_current_user', JSON.stringify(uData));
+                localStorage.setItem('lumina_user_session', 'active');
+                sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
+            } catch(e) {}
+
             // Load user profile from Firestore
             try {
                 const userDoc = await getDoc(doc(db, 'lumina_profiles', user.uid));
@@ -197,9 +211,33 @@ if (auth) {
                     currentProfileState = { uid: user.uid, ...userDoc.data() };
                     try {
                         localStorage.setItem('lumina_current_user_profile', JSON.stringify(currentProfileState));
+                        localStorage.setItem('lumina_my_profile', JSON.stringify(currentProfileState));
+                        if (currentProfileState.slug) {
+                            localStorage.setItem('lumina_profile_' + currentProfileState.slug, JSON.stringify(currentProfileState));
+                            sessionStorage.setItem('lumina_auth_owner_' + currentProfileState.slug, 'true');
+                        }
                     } catch(e) {}
                 } else {
-                    currentProfileState = null;
+                    // Check if Cezary Rogowski by email/name
+                    const isCezary = (user.email && user.email.includes('christianculture')) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
+                    const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta'));
+                    const cleanSlug = isCezary ? 'cezaryrgowski' : (isWioletta ? 'wiolettarogowska' : ('u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000)));
+                    
+                    currentProfileState = {
+                        uid: user.uid,
+                        slug: cleanSlug,
+                        name: user.displayName || (isCezary ? 'Cezary Rogowski' : 'Użytkownik LUMINA'),
+                        email: user.email || '',
+                        avatar: user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : 'icon.png'),
+                        age: isCezary ? 51 : 28,
+                        city: isCezary ? 'Ostrowiec Świętokrzyski' : 'Polska',
+                        role: isCezary ? 'Założyciel Christian Culture' : 'Członek Społeczności LUMINA ✨',
+                        createdAt: new Date().toISOString()
+                    };
+                    try {
+                        localStorage.setItem('lumina_current_user_profile', JSON.stringify(currentProfileState));
+                        localStorage.setItem('lumina_my_profile', JSON.stringify(currentProfileState));
+                    } catch(e) {}
                 }
             } catch(e) {
                 console.warn('Error loading user profile:', e);
@@ -207,7 +245,10 @@ if (auth) {
         } else {
             currentProfileState = null;
             try {
+                localStorage.removeItem('lumina_current_user');
                 localStorage.removeItem('lumina_current_user_profile');
+                localStorage.removeItem('lumina_my_profile');
+                localStorage.removeItem('lumina_user_session');
             } catch(e) {}
         }
         
@@ -349,9 +390,19 @@ export async function loginWithGoogle() {
         currentUserState = user;
 
         try {
+            const uData = {
+                uid: user.uid,
+                email: user.email || '',
+                displayName: user.displayName || '',
+                photoURL: user.photoURL || '',
+                phoneNumber: user.phoneNumber || ''
+            };
+            localStorage.setItem('lumina_current_user', JSON.stringify(uData));
+            localStorage.setItem('lumina_user_session', 'active');
             localStorage.setItem('lumina_profile_' + user.uid, JSON.stringify(existingProfile));
             if (existingProfile.slug) localStorage.setItem('lumina_profile_' + existingProfile.slug, JSON.stringify(existingProfile));
             localStorage.setItem('lumina_current_user_profile', JSON.stringify(existingProfile));
+            localStorage.setItem('lumina_my_profile', JSON.stringify(existingProfile));
             sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
             if (existingProfile.slug) sessionStorage.setItem('lumina_auth_owner_' + existingProfile.slug, 'true');
         } catch(e) {}
