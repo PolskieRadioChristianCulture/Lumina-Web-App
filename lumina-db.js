@@ -96,7 +96,10 @@ try {
 
 // ── Web Push Notifications (FCM) Permission & Token Request ──
 export async function requestNotificationPermission(userUid) {
-    if (!('Notification' in window)) return null;
+    if (!('Notification' in window)) {
+        console.warn('Notifications not supported in this browser.');
+        return null;
+    }
     try {
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {
@@ -110,14 +113,32 @@ export async function requestNotificationPermission(userUid) {
                     vapidKey: LUMINA_VAPID_KEY,
                     serviceWorkerRegistration: registration
                 });
-                if (token && userUid && db) {
+                
+                if (token && db) {
                     try {
-                        await updateDoc(doc(db, 'lumina_profiles', userUid), {
-                            fcmToken: token,
-                            notificationsEnabled: true,
+                        const tokenKey = token.replace(/[^a-zA-Z0-9_-]/g, '').slice(-32);
+                        await setDoc(doc(db, 'LuminaDeviceTokens', tokenKey), {
+                            token: token,
+                            uid: userUid || localStorage.getItem('lumina_current_user_slug') || 'anonymous',
+                            platform: 'web',
+                            userAgent: navigator.userAgent || 'unknown',
+                            enabled: true,
                             updatedAt: serverTimestamp()
-                        });
-                    } catch(e) {}
+                        }, { merge: true });
+                        console.log('[LUMINA Push] Token saved to LuminaDeviceTokens collection in Firestore');
+                    } catch(e) {
+                        console.warn('[LUMINA Push] Error saving to LuminaDeviceTokens:', e);
+                    }
+
+                    if (userUid) {
+                        try {
+                            await updateDoc(doc(db, 'lumina_profiles', userUid), {
+                                fcmToken: token,
+                                notificationsEnabled: true,
+                                updatedAt: serverTimestamp()
+                            });
+                        } catch(e) {}
+                    }
                 }
                 return token;
             }

@@ -71,6 +71,10 @@
                         </div>
                         <button onclick="window.LuminaNotifications.markAllAsRead()" class="notif-mark-read">Oznacz jako przeczytane</button>
                     </div>
+                    <div id="notif-push-bar" style="padding:10px 14px; background:rgba(245,158,11,0.08); border-bottom:1px solid rgba(255,255,255,0.07); display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                    </div>
+                        <button onclick="window.LuminaNotifications.markAllAsRead()" class="notif-mark-read">Oznacz jako przeczytane</button>
+                    </div>
                     <div id="notif-list" class="notif-list">
                         <div class="notif-empty">Brak nowych powiadomień ✨</div>
                     </div>
@@ -330,7 +334,7 @@
         toggleDropdown(e) {
             if (e) e.stopPropagation();
             const dd = document.getElementById('notif-dropdown');
-            if (dd) dd.classList.toggle('active');
+            if (dd) { dd.classList.toggle('active'); this.updatePushBar(); }
         }
 
         markAllAsRead() {
