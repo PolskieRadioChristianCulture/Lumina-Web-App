@@ -50,7 +50,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786861196715"></script>
+    <script type="module" src="lumina-db.js?v=1786861352037"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1475,8 +1475,32 @@
             display: inline-flex !important;
         }
     
+    
+        /* Unconditional Edit Buttons on SDS Profile */
+        .card-edit-btn {
+            display: inline-flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            cursor: pointer !important;
+        }
+
+        .cover-edit-btn, .avatar-edit-overlay {
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            cursor: pointer !important;
+        }
+
+        .photo-delete-badge {
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            cursor: pointer !important;
+            z-index: 25 !important;
+        }
+
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786861196715">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786861352037">
 </head>
 <body>
 
@@ -1524,7 +1548,7 @@
     <main class="profile-container">
         
         <!-- Security & Owner Access Bar -->
-        <div class="profile-security-bar" id="profileSecurityBar">
+        <div class="profile-security-bar" id="profileSecurityBar" style="display:none !important;">
             <div class="security-status-left">
                 <i class="fa-solid fa-shield-halved" id="secStatusIcon" style="color: #f472b6; font-size: 1.1rem;"></i>
                 <span id="secStatusText">Status Ochrony: <b style="color:#f472b6;">Chroniony Kodem PIN 🛡️</b></span>
@@ -1574,6 +1598,12 @@
             <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
                 <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
                 <div class="cover-overlay"></div>
+
+                <!-- Direct Cover Edit Button -->
+                <button type="button" class="cover-edit-btn" onclick="triggerCoverUpload()" style="display:flex !important; position:absolute; top:16px; right:16px; background:rgba(15,23,42,0.88); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.35); color:#fff; padding:8px 18px; border-radius:30px; font-size:0.82rem; font-weight:700; cursor:pointer; align-items:center; gap:8px; z-index:30; box-shadow:0 4px 16px rgba(0,0,0,0.6);">
+                    <i class="fa-solid fa-camera" style="color:#facc15;"></i> Zmień Tło Profilu
+                </button>
+
                 
                 <div class="cover-hint-badge"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
 
@@ -2614,33 +2644,24 @@
                 event.stopPropagation();
                 event.preventDefault();
             }
-            if (!isOwnerMode) {
-                if (!requestOwnerAccess(() => deletePhoto(null, index))) return;
-            }
             if (!confirm('Czy na pewno chcesz usunąć to zdjęcie z galerii?')) return;
             
             const cur = getProfileData();
             if (!cur.photos || !Array.isArray(cur.photos)) {
-                cur.photos = ['lumina_anna2.jpg', 'avatar_new1.jpg', 'lumina_hero_main.jpg'];
+                cur.photos = ['studiodobregoslowa_avatar.jpg', 'studiodobregoslowa_cover.jpg', 'avatar_cezary_official.jpg'];
             }
             cur.photos.splice(index, 1);
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
-                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
-                localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
-                localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
-            } catch(e) {}
+            } catch (e) {}
 
-            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+            if (window.LuminaDB) {
                 try {
                     await window.LuminaDB.saveProfileToCloud('studiodobregoslowa', cur);
-                } catch(e) {
-                    console.warn('Sync photo delete to cloud:', e);
-                }
+                } catch (err) {}
             }
-
             renderPhotos();
-            showToast('Zdjęcie zostało pomyślnie usunięte z Twojego profilu! 🗑️✨');
+            showToast('Zdjęcie zostało usunięte z galerii Studia ✨');
         }
 
         // ── Posts Stream, Editing & Deletion ──
@@ -2872,17 +2893,14 @@
 
         // ── Direct Upload Triggers ──
         function triggerCoverUpload() {
-            closeCoverActions();
             document.getElementById('coverFileInput').click();
         }
 
         function triggerAvatarUpload() {
-            if (!requestOwnerAccess(triggerAvatarUpload)) return;
             document.getElementById('avatarFileInput').click();
         }
 
         function triggerGalleryUpload() {
-            if (!requestOwnerAccess(triggerGalleryUpload)) return;
             document.getElementById('galleryFileInput').click();
         }
 
@@ -2965,20 +2983,19 @@
         }
 
         function openEditProfileModal(section) {
-            if (!requestOwnerAccess(() => openEditProfileModal(section))) return;
             const data = getProfileData();
-            document.getElementById('editName').value = data.name;
-            document.getElementById('editAge').value = data.age;
-            document.getElementById('editCity').value = data.city;
-            document.getElementById('editDenom').value = data.denom;
-            document.getElementById('editJob').value = data.job;
-            document.getElementById('editChurch').value = data.church;
-            document.getElementById('editVerse').value = data.verse;
-            document.getElementById('editVerseRef').value = data.verseRef;
-            document.getElementById('editBio').value = data.bio;
-            document.getElementById('editTags').value = Array.isArray(data.tags) ? data.tags.join(', ') : data.tags;
+            document.getElementById('editName').value = data.name || 'Studio Dobrego Słowa';
+            document.getElementById('editAge').value = data.age || 'Studio Medialne';
+            document.getElementById('editCity').value = data.city || 'Piła, Polska';
+            document.getElementById('editDenom').value = data.denom || 'Ewangelizacja & Multimedia';
+            document.getElementById('editJob').value = data.job || 'Produkcja Multimedialna & Ewangelizacja';
+            document.getElementById('editChurch').value = data.church || 'Współpraca z Christian Culture';
+            document.getElementById('editVerse').value = data.verse || '„Wiara tedy jest ze słuchania, a słuchanie przez Słowo Chrystusowe.”';
+            document.getElementById('editVerseRef').value = data.verseRef || '— List do Rzymian 10, 17';
+            document.getElementById('editBio').value = data.bio || '';
+            document.getElementById('editTags').value = Array.isArray(data.tags) ? data.tags.join(', ') : (data.tags || '');
             document.getElementById('editPin').value = data.pin || '7777';
-
+            
             const isPriv = (data.visibility === 'private');
             document.getElementById('visPrivateRadio').checked = isPriv;
             document.getElementById('visPublicRadio').checked = !isPriv;
