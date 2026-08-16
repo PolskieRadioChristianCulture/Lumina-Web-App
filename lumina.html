@@ -141,22 +141,32 @@
         }
 
         .btn-nav-cta {
-            background: #2563eb;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
             color: #fff;
-            border: none;
-            padding: 10px 26px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 8px 18px;
             border-radius: 30px;
             font-weight: 700;
-            font-size: 0.88rem;
+            font-size: 0.84rem;
             cursor: pointer;
             font-family: inherit;
-            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 14px rgba(109, 40, 217, 0.35);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             white-space: nowrap;
+            transition: all 0.2s ease;
+            height: 38px;
+        }
+        .btn-nav-cta i {
+            font-size: 0.95rem;
+            color: #ffffff;
         }
         .btn-nav-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 22px rgba(37, 99, 235, 0.4);
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(109, 40, 217, 0.5);
         }
 
         @media (max-width: 1100px) {
@@ -1640,7 +1650,7 @@
         }
 
 </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786850740820">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786852138088">
 </head>
 <body>
 
@@ -1662,31 +1672,27 @@
             <a href="lumina.cezaryrgowski.html" class="nav-link" style="color: #2563eb; font-weight: 700;"><i class="fa-solid fa-user"></i> Mój Profil</a>
         </div>
 
-        <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
-            <!-- Integrated Radio CC Mini-Pill in Navbar -->
-            <div class="nav-radio-pill" id="radioWidget" onclick="toggleRadio()" title="Włącz / Wyłącz Radio Christian Culture">
-                <button class="nav-radio-play" id="radioPlayBtn">
-                    <i class="fa-solid fa-play" id="radioPlayIcon"></i>
-                </button>
-                <div class="nav-radio-info">
-                    <span class="nav-radio-title">Radio CC Live</span>
-                    <span class="nav-radio-sub">Global Channel</span>
-                </div>
-                <div class="sound-bars">
-                    <div class="sound-bar"></div>
-                    <div class="sound-bar"></div>
-                    <div class="sound-bar"></div>
-                    <div class="sound-bar"></div>
-                </div>
-            </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+            <!-- 1. Mini Radio Player (Single Round 38px Button) -->
+            <button type="button" class="nav-circle-btn nav-radio-btn" id="radioWidget" onclick="toggleRadio()" title="Włącz / Wyłącz Radio Christian Culture">
+                <i class="fa-solid fa-play" id="radioPlayIcon" style="margin-left:2px;"></i>
+            </button>
 
+            <!-- 2. Language Switcher (Single Round 38px Button) -->
+            <button type="button" class="nav-circle-btn lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" title="Zmień język">🇵🇱</button>
+
+            <!-- 3. User Avatar Profile (when logged in) -->
             <div class="user-nav-profile" id="userNavProfile">
                 <img src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar" onclick="window.location.href='lumina.cezaryrgowski.html'" title="Mój Profil">
                 <span class="user-nav-name" id="userNavName">Użytkownik</span>
                 <button class="btn-nav-logout" onclick="handleLogout()" title="Wyloguj"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
-            <button type="button" class="lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" title="Zmień język">🇵🇱</button>
-            <button class="btn-nav-cta" id="authCtaBtn" onclick="openAuth()" title="Zaloguj / Rejestracja"><i class="fa-solid fa-arrow-right-to-bracket"></i> <span class="btn-nav-cta-text">Zaloguj / Rejestracja</span></button>
+
+            <!-- 4. Login / Register CTA (when logged out) -->
+            <button class="btn-nav-cta" id="authCtaBtn" onclick="openAuth()" title="Zaloguj / Rejestracja">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                <span class="btn-nav-cta-text">Zaloguj / Rejestracja</span>
+            </button>
         </div>
     </nav>
 
