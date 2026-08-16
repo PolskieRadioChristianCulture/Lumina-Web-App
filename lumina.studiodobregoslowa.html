@@ -67,7 +67,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786866548186"></script>
+    <script type="module" src="lumina-db.js?v=1786876692502"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1622,8 +1622,21 @@
             border-color: rgba(255, 255, 255, 0.4) !important;
         }
         /* ══════════ END PERFECT PILL */
+    /* ══════════ ACTIVE REFLECTION & POST LINKS ══════════ */
+        .reflection-link, .post-rich-link {
+            color: #facc15 !important;
+            font-weight: 700 !important;
+            text-decoration: underline !important;
+            word-break: break-word !important;
+            transition: all 0.2s ease !important;
+            display: inline !important;
+        }
+        .reflection-link:hover, .post-rich-link:hover {
+            color: #fef08a !important;
+            text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
+        }
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786866548186">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786876692502">
 
     <script>
         if ('serviceWorker' in navigator) {
@@ -3014,6 +3027,25 @@ function toggleComposerVideoBox() {
             showToast('Wpis Studia Dobrego Słowa został opublikowany i pojawił się na tablicy! 🎙️🚀✨');
         }
 
+        function formatPostTextWithLinks(rawText) {
+            if (!rawText) return '';
+            let text = rawText.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, (m, label, url) => {
+                return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-link">${label} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>`;
+            });
+            const urlRegex = /(^|[\s(>])(https?:\/\/[^\s<)]+)/gi;
+            text = text.replace(urlRegex, (m, prefix, url) => {
+                let cleanUrl = url;
+                let trailing = '';
+                const punct = cleanUrl.match(/[.,;!?:)]+$/);
+                if (punct) {
+                    trailing = punct[0];
+                    cleanUrl = cleanUrl.slice(0, -trailing.length);
+                }
+                return `${prefix}<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="reflection-link">${cleanUrl} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>${trailing}`;
+            });
+            return text;
+        }
+
         function renderPosts() {
             const data = getProfileData();
             const posts = (window.LuminaDB?.getAuthorPosts) 
@@ -3044,7 +3076,7 @@ function toggleComposerVideoBox() {
                         </div>
                     </div>
 
-                    <div class="post-content" style="font-size:0.92rem; color:#e2e8f0; line-height:1.6; margin-bottom:12px; white-space:pre-wrap;">${p.text || ''}</div>
+                    <div class="post-content" style="font-size:0.92rem; color:#e2e8f0; line-height:1.6; margin-bottom:12px; white-space:pre-wrap;">${formatPostTextWithLinks(p.text || '')}</div>
                     
                     ${ytId ? `
                         <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:12px; overflow:hidden; margin-bottom:12px; border:1px solid rgba(239,68,68,0.4); box-shadow:0 8px 20px rgba(0,0,0,0.6); background:#000;">
@@ -3486,7 +3518,7 @@ function toggleComposerVideoBox() {
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786866548186" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786876692502" defer></script>
     <script src="lumina-notifications.js" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
