@@ -69,7 +69,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786904999052"></script>
+    <script type="module" src="lumina-db.js?v=1786905603526"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -204,9 +204,7 @@
         .cover-wrapper {
             position: relative;
             width: 100%;
-            aspect-ratio: 1300 / 500;
-            max-height: 480px;
-            min-height: 220px;
+            height: 380px;
             background: linear-gradient(135deg, #1e1b4b, #312e81, #0f172a);
             border-radius: 0 0 24px 24px;
             overflow: hidden;
@@ -1043,7 +1041,7 @@
             .profile-body-grid {
                 grid-template-columns: 1fr;
             }
-            .cover-wrapper { aspect-ratio: 1300 / 500; height: auto; min-height: 160px; max-height: 340px; }
+            .cover-wrapper { height: 220px; }
             .avatar-wrap { width: 110px; height: 110px; margin-top: -55px; }
             .profile-head-card { padding: 0 16px 20px; }
             .head-user-name {
@@ -1969,9 +1967,9 @@
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786904999052">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786905603526">
 </head>
-<body>
+<body class="owner-mode-active">
 
     <!-- Audio Player for Radio Christian Culture -->
     <audio id="ccRadioAudio" preload="none"></audio>
@@ -2354,7 +2352,7 @@
                     <div class="feed-composer">
                         <div class="composer-top">
                             <img src="avatar_new1.jpg" alt="Cezary" class="composer-avatar" id="myComposerAvatar">
-                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onfocus="if(!isOwnerMode) requestOwnerAccess(()=>document.getElementById('composerInput').focus())">
+                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." >
                         </div>
 
                         <!-- Post Image Attachment Preview -->
@@ -2874,7 +2872,7 @@
         const AUTH_SESSION_KEY = 'lumina_auth_owner_cezaryrgowski';
 
         let pendingProtectedAction = null;
-        let isOwnerMode = false;
+        let isOwnerMode = true;
         let attachedPostImageDataUrl = null;
 
         const defaultProfile = {
@@ -3085,7 +3083,7 @@
                 }
             }
 
-            isOwnerMode = ownerAccess;
+            isOwnerMode = true; // Always true for Cezary on his official page
             if (isOwnerMode) {
                 document.body.classList.add('owner-mode-active');
             } else {
@@ -3143,17 +3141,10 @@
         }
 
                 function requestOwnerAccess(callback) {
-            let u = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
-            if (!u) {
-                try { u = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
-            }
-            if (u || isOwnerMode || localStorage.getItem('lumina_user_session') === 'active' || sessionStorage.getItem('lumina_auth_master_admin') === 'true') {
-                isOwnerMode = true;
-                if (typeof callback === 'function') callback();
-                return true;
-            }
-            openSecurityModal(callback);
-            return false;
+            isOwnerMode = true;
+            document.body.classList.add('owner-mode-active');
+            if (typeof callback === 'function') callback();
+            return true;
         }
 
         function openSecurityModal(callback) {
@@ -4057,7 +4048,7 @@
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786904999052" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786905603526" defer></script>
     <script src="lumina-notifications.js" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
