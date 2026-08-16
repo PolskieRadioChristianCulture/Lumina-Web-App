@@ -1651,7 +1651,7 @@
         }
 
 </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786855039661">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786855199838">
 </head>
 <body>
 
@@ -1740,7 +1740,7 @@
                         <div class="profiles-grid" id="profilesCarousel">
 
                 <!-- 1. Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
-                <div class="profile-card home-cezary-card" data-category="mezczyzna zalozyciele" id="my_saved_profile_card" onclick="window.location.href='lumina.cezaryrgowski.html'" data-category="mezczyzna zalozyciele">
+                <div class="profile-card home-cezary-card" data-category="mezczyzna zalozyciele" id="my_saved_profile_card" onclick="openProfile('Cezary Rogowski','51','Ostrowiec Świętokrzyski','Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.','avatar_cezary_official.jpg','98%')" data-category="mezczyzna zalozyciele">
                     <div class="card-photo">
                         <img src="avatar_cezary_official.jpg" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_cezary_official.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
@@ -2192,7 +2192,7 @@
                 <button onclick="sendPray()" style="flex:1;padding:11px;border-radius:30px;border:none;background:rgba(255,255,255,0.08);color:#fff;font-weight:700;cursor:pointer;font-family:inherit;font-size:0.85rem;"><i class="fa-solid fa-hands-praying"></i> Modlitwa 🙏</button>
                 <button onclick="sendMsg()" style="flex:1;padding:11px;border-radius:30px;border:none;background:linear-gradient(90deg,#a855f7,#06b6d4);color:#fff;font-weight:700;cursor:pointer;font-family:inherit;font-size:0.85rem;"><i class="fa-solid fa-paper-plane"></i> Wiadomość 💌</button>
             </div>
-            <a id="mFullProfileLink" href="lumina-profile.html" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:30px;background:linear-gradient(90deg,#d946ef,#0ea5e9);color:#fff;font-weight:800;font-size:0.88rem;text-decoration:none;box-shadow:0 4px 16px rgba(217,70,239,0.35);transition:transform 0.2s;"><i class="fa-solid fa-address-card"></i> Zobacz Pełny Profil (Styl Facebook) ➔</a>
+            <a id="mFullProfileLink" href="javascript:void(0)" onclick="navigateToFullProfile(event)" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:30px;background:linear-gradient(90deg,#d946ef,#0ea5e9);color:#fff;font-weight:800;font-size:0.88rem;text-decoration:none;box-shadow:0 4px 16px rgba(217,70,239,0.35);transition:transform 0.2s;"><i class="fa-solid fa-address-card"></i> Zobacz Pełny Profil (Dla Członków) ➔</a>
         </div>
     </div>
 
@@ -3132,38 +3132,68 @@
 
     <script>
         // ── Profile modal ──
+        // ── Profile modal & Auth Guarded Full Profile Navigation ──
+        window._currentModalProfileSlug = 'cezaryrgowski';
+
         function openProfile(name, age, city, desc, imgSrc, match) {
             const mImg = document.getElementById('mImg');
             if (mImg) {
                 mImg.innerHTML = `<img src="${imgSrc || 'lumina_anna2.jpg'}" alt="${name}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);margin:0 auto;display:block;">`;
             }
             const lowerName = (name || '').toLowerCase();
-            const isDemo = !lowerName.includes('cezary') && !lowerName.includes('wioletta');
+            const isFounder = lowerName.includes('cezary') || lowerName.includes('wioletta');
             
             document.getElementById('mName').textContent = `${name}, ${age}`;
-            document.getElementById('mLoc').innerHTML = `📍 ${city}  •  Dopasowanie: ${match}${isDemo ? '  •  <span style="color:#c084fc;font-weight:700;">Profil Poglądowy</span>' : ''}`;
+            document.getElementById('mLoc').innerHTML = `📍 ${city}  •  Dopasowanie: ${match}${!isFounder ? '  •  <span style="color:#c084fc;font-weight:700;">Profil Społeczności</span>' : ''}`;
             document.getElementById('mDesc').textContent = `"${desc}"`;
 
-            // Dynamic slug for full Facebook-style profile page
-            const fullLink = document.getElementById('mFullProfileLink');
-            if (fullLink) {
-                const lowerName = (name || '').toLowerCase();
-                let slug = 'cezaryrgowski';
-                if (lowerName.includes('wioletta')) slug = 'wiolettarogowska';
-                else if (lowerName.includes('noemi')) slug = 'noemi';
-                else if (lowerName.includes('dawid')) slug = 'dawid';
-                else if (lowerName.includes('weronika')) slug = 'weronika';
-                else if (lowerName.includes('tomek')) slug = 'tomek';
-                else if (lowerName.includes('anna')) slug = 'anna';
-                else if (lowerName.includes('cezary')) slug = 'cezaryrgowski';
+            // Dynamic slug for full profile
+            let slug = 'cezaryrgowski';
+            if (lowerName.includes('wioletta')) slug = 'wiolettarogowska';
+            else if (lowerName.includes('noemi')) slug = 'noemi';
+            else if (lowerName.includes('dawid')) slug = 'dawid';
+            else if (lowerName.includes('weronika')) slug = 'weronika';
+            else if (lowerName.includes('tomek')) slug = 'tomek';
+            else if (lowerName.includes('anna')) slug = 'anna';
+            else if (lowerName.includes('cezary')) slug = 'cezaryrgowski';
+            else slug = lowerName.replace(/\s+/g, '');
 
-                if (slug === 'cezaryrgowski') fullLink.href = 'lumina.cezaryrgowski.html';
-                else if (slug === 'wiolettarogowska') fullLink.href = 'lumina.wiolettarogowska.html';
-                else fullLink.href = `lumina-profile.html?u=${slug}`;
-            }
-
+            window._currentModalProfileSlug = slug;
             document.getElementById('profileModal').classList.add('open');
         }
+
+        window.navigateToFullProfile = function(e) {
+            if (e && e.preventDefault) e.preventDefault();
+
+            let user = null;
+            if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
+                user = window.LuminaDB.getCurrentUser();
+            }
+            if (!user) {
+                try {
+                    user = JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
+                } catch(err) {}
+            }
+            let savedProfile = null;
+            try {
+                savedProfile = JSON.parse(localStorage.getItem('lumina_my_profile') || 'null');
+            } catch(err) {}
+
+            // If NOT logged in: require membership to see full profile!
+            if (!user && !savedProfile) {
+                closeModal('profileModal');
+                if (typeof switchAuthTab === 'function') switchAuthTab('register');
+                openAuth();
+                showToast('Pełne profile są dostępne wyłącznie dla członków społeczności LUMINA. Załóż darmowy profil lub zaloguj się! ✨');
+                return;
+            }
+
+            // If logged in: Navigate to requested full profile
+            const slug = window._currentModalProfileSlug || 'cezaryrgowski';
+            if (slug === 'cezaryrgowski') window.location.href = 'lumina.cezaryrgowski.html';
+            else if (slug === 'wiolettarogowska') window.location.href = 'lumina.wiolettarogowska.html';
+            else window.location.href = 'lumina-profile.html?u=' + encodeURIComponent(slug);
+        };
         // ── Auth modal ──
         function openAuth() {
             document.getElementById('authModal').classList.add('open');
@@ -3219,6 +3249,14 @@
         };
 
         window.sendPray = async function() {
+            let user = (window.LuminaDB && window.LuminaDB.getCurrentUser()) || JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
+            if (!user) {
+                closeModal('profileModal');
+                if (typeof switchAuthTab === 'function') switchAuthTab('register');
+                openAuth();
+                showToast('Dołącz do społeczności LUMINA, aby wysyłać modlitwy i wsparcie! 🙏');
+                return;
+            }
             closeModal('profileModal');
             const nameEl = document.getElementById('mName');
             const partnerName = nameEl ? nameEl.textContent.split(',')[0].trim() : 'Użytkownik';
@@ -3237,6 +3275,14 @@
         };
 
         window.sendMsg = function() {
+            let user = (window.LuminaDB && window.LuminaDB.getCurrentUser()) || JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
+            if (!user) {
+                closeModal('profileModal');
+                if (typeof switchAuthTab === 'function') switchAuthTab('register');
+                openAuth();
+                showToast('Dołącz do społeczności LUMINA, aby wysyłać wiadomości! 💌');
+                return;
+            }
             closeModal('profileModal');
             const nameEl = document.getElementById('mName');
             const partnerName = nameEl ? nameEl.textContent.split(',')[0].trim() : 'Użytkownik';
@@ -3392,6 +3438,7 @@
             // Check for ?auth=register or ?auth=login in URL
             const urlParams = new URLSearchParams(window.location.search);
             const authParam = urlParams.get('auth');
+            const refParam = urlParams.get('ref');
             if (authParam === 'register' || authParam === 'login') {
                 setTimeout(() => {
                     if (typeof switchAuthTab === 'function') switchAuthTab(authParam);

@@ -23,6 +23,19 @@
 </script>
 
     <meta charset="UTF-8">
+    
+    <!-- LUMINA MEMBERS-ONLY FULL PROFILE GATE -->
+    <script>
+        (function() {
+            try {
+                const hasUser = localStorage.getItem('lumina_current_user') || localStorage.getItem('lumina_my_profile') || localStorage.getItem('lumina_user_session');
+                if (!hasUser) {
+                    window.location.replace('lumina.html?auth=register&ref=members_only');
+                }
+            } catch(e) {}
+        })();
+    </script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title id="pageTitle">Wioletta Rogowska – Współzałożycielka Christian Culture | Profil LUMINA</title>
     
@@ -1475,7 +1488,7 @@
         }
     
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786855039661">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786855199838">
 </head>
 <body>
 
