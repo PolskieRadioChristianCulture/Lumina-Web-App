@@ -67,7 +67,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786864586527"></script>
+    <script type="module" src="lumina-db.js?v=1786864753453"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1543,7 +1543,7 @@
         }
     
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786864586527">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786864753453">
 
     <script>
         if ('serviceWorker' in navigator) {
@@ -1650,7 +1650,7 @@
 
             <!-- Cover Banner -->
             <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
-                <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
+                <img src="studiodobregoslowa_cover.jpg" alt="Cover Studio Dobrego Słowa" class="cover-photo" id="coverPhotoEl">
                 <div class="cover-overlay"></div>
 
                 <!-- Direct Cover Edit Button -->
@@ -1935,7 +1935,39 @@
                     </div>
 
                     <!-- Feed Posts Stream -->
-                    <div id="feedStream"></div>
+                    <div id="feedStream">
+                        <!-- 🎬 NAJNOWSZY PODCAST WIDEO SDS -->
+                        <article class="post-card" id="post_sds_video_hHug_C6XDPU" style="background:linear-gradient(145deg, rgba(15,23,42,0.85), rgba(30,41,59,0.85)); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:18px; margin-bottom:18px; box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+                            <div class="post-header" style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                                <img src="studiodobregoslowa_avatar.jpg" alt="Studio Dobrego Słowa" class="post-avatar" style="width:42px; height:42px; border-radius:50%; object-fit:cover; border:2px solid #f59e0b;">
+                                <div>
+                                    <div class="post-author" style="font-weight:800; font-size:0.95rem; color:#fff;">Studio Dobrego Słowa</div>
+                                    <div class="post-time" style="font-size:0.75rem; color:#94a3b8;">Przed chwilą • 🎬 Nowy Podcast Wideo</div>
+                                </div>
+                                <div class="post-header-actions" style="display:flex; align-items:center; gap:8px; margin-left:auto;">
+                                    <button type="button" class="post-edit-btn" onclick="openEditPostModal('post_sds_video_hHug_C6XDPU')" title="Edytuj ten wpis" style="background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:30px; height:30px; border-radius:50%; cursor:pointer;"><i class="fa-solid fa-pencil"></i></button>
+                                    <button type="button" class="post-delete-btn" onclick="deleteFeedPost(event, 'post_sds_video_hHug_C6XDPU')" title="Usuń ten wpis" style="background:rgba(225,29,72,0.15); border:1px solid rgba(225,29,72,0.3); color:#fca5a5; width:30px; height:30px; border-radius:50%; cursor:pointer;"><i class="fa-solid fa-trash-can"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="post-content" style="font-size:0.92rem; color:#e2e8f0; line-height:1.6; margin-bottom:12px; white-space:pre-wrap;">🎬 Najnowszy Podcast Wideo Studio Dobrego Słowa! 🎙️✨
+
+Zapraszamy do wysłuchania i obejrzenia naszego najnowszego materiału! Dzielimy się Słowem Bożym, inspiracjami i żywą wiarą. Niech ten przekaz będzie dla Was źródłem nadziei, pokoju i duchowego wzmocnienia.
+
+Oglądajcie tutaj oraz na naszym kanale YouTube: @StudioDeeS i odwiedźcie https://studiods.pl/ oraz naszą Herbaciarnię!</div>
+
+                            <!-- Responsive 16:9 YouTube Video Embed -->
+                            <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:12px; overflow:hidden; margin-bottom:12px; border:1px solid rgba(239,68,68,0.4); box-shadow:0 8px 20px rgba(0,0,0,0.6); background:#000;">
+                                <iframe src="https://www.youtube-nocookie.com/embed/hHug_C6XDPU" style="width:100%; height:100%; border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+
+                            <div class="post-footer" style="display:flex; gap:12px; align-items:center; border-top:1px solid rgba(255,255,255,0.08); padding-top:10px; margin-top:8px;">
+                                <button class="post-action-btn" onclick="togglePostLike(this)" style="background:rgba(255,255,255,0.06); border:none; color:#cbd5e1; padding:6px 14px; border-radius:20px; font-size:0.8rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> <span class="like-count">58</span> Polubień</button>
+                                <button class="post-action-btn amen" onclick="togglePostAmen(this)" style="background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.3); color:#fde047; padding:6px 14px; border-radius:20px; font-size:0.8rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
+                                <button class="post-action-btn" onclick="openMessageModal()" style="margin-left:auto; background:none; border:none; color:#94a3b8; font-size:0.8rem; cursor:pointer;"><i class="fa-solid fa-comment-dots"></i> Skomentuj</button>
+                            </div>
+                        </article>
+                    </div>
                 </div>
 
                 <!-- Tab: O Mnie & Świadectwo -->
@@ -2310,7 +2342,7 @@
 
     <!-- ══════════ JAVASCRIPT & PROFILE ENGINE ══════════ -->
     <script>
-        const STORAGE_KEY = 'lumina_profile_studiodobregoslowa';
+        const STORAGE_KEY = 'lumina_profile_studiodobregoslowa_v5';
         const AUTH_SESSION_KEY = 'lumina_auth_owner_studiodobregoslowa';
 
         let pendingProtectedAction = null;
@@ -3354,7 +3386,7 @@ function toggleComposerVideoBox() {
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786864586527" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786864753453" defer></script>
     <script src="lumina-notifications.js" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
