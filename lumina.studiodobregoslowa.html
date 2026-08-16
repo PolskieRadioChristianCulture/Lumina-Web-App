@@ -50,7 +50,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786862520728"></script>
+    <script type="module" src="lumina-db.js?v=1786863083563"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1526,7 +1526,18 @@
         }
     
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786862520728">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786863083563">
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.update();
+                }
+            });
+        }
+    </script>
+
 </head>
 <body>
 
@@ -2330,26 +2341,22 @@
                         avatar = 'studiodobregoslowa_avatar.jpg';
                     }
                     let cover = parsed.cover;
-                    if (!cover || cover.includes('hero') || cover.includes('worship') || cover.includes('anna')) {
+                    if (!cover || cover.includes('hero') || cover.includes('worship') || cover.includes('anna') || cover.includes('lumina_hero')) {
                         cover = 'studiodobregoslowa_cover.jpg';
-                    }
-                    let age = parsed.age;
-                    if (!age || age === '30' || age === 30 || age === '28' || age === 28 || age === '32' || age === 32) {
-                        age = 'Studio Medialne';
                     }
                     return {
                         ...defaultProfile,
                         ...parsed,
-                        avatar: avatar,
-                        cover: cover,
-                        ...defaultProfile,
-                        ...parsed,
-                        avatar: avatar,
-                        age: age,
+                        name: 'Studio Dobrego Słowa',
+                        avatar: avatar || 'studiodobregoslowa_avatar.jpg',
+                        cover: cover || 'studiodobregoslowa_cover.jpg',
+                        age: 'Studio Medialne',
                         city: 'Piła, Polska',
+                        denom: 'Ewangelizacja & Multimedia',
+                        status: 'Oficjalny Partner Medialny',
                         visibility: parsed.visibility || 'public',
-                        photos: Array.isArray(parsed.photos) ? parsed.photos : [...defaultProfile.photos],
-                        posts: Array.isArray(parsed.posts) ? parsed.posts : [...defaultProfile.posts]
+                        photos: (Array.isArray(parsed.photos) && parsed.photos.length) ? parsed.photos : [...defaultProfile.photos],
+                        posts: (Array.isArray(parsed.posts) && parsed.posts.length) ? parsed.posts : [...defaultProfile.posts]
                     };
                 }
             } catch (e) {}

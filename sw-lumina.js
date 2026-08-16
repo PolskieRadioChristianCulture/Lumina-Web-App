@@ -1,8 +1,8 @@
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA SERVICE WORKER (PWA Network-First High-Speed Shell)
+// LUMINA SERVICE WORKER - DIRECT NETWORK FLUSH
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-v2.4-infinite-carousel-cache';
+const CACHE_NAME = 'lumina-v3.0-flush-' + Date.now();
 
 self.addEventListener('install', (event) => {
     self.skipWaiting();
@@ -20,23 +20,8 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
     if (event.request.method !== 'GET') return;
-    const url = new URL(event.request.url);
-
-    // Bypass external APIs and Firebase
-    if (url.hostname.includes('firestore') || url.hostname.includes('googleapis') || url.hostname.includes('firebase') || url.hostname.includes('googletagmanager')) {
-        return;
-    }
-
-    // Network-first for everything to prevent stale UI
+    // Direct network pass-through to ensure instant live updates
     event.respondWith(
-        fetch(event.request)
-            .then((response) => {
-                if (response.status === 200) {
-                    const respClone = response.clone();
-                    caches.open(CACHE_NAME).then((cache) => cache.put(event.request, respClone));
-                }
-                return response;
-            })
-            .catch(() => caches.match(event.request))
+        fetch(event.request).catch(() => caches.match(event.request))
     );
 });
