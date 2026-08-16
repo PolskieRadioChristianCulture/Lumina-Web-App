@@ -117,6 +117,22 @@ img, video, iframe, canvas, svg {
     -webkit-overflow-scrolling: touch !important;
 }
 
+/* ── BULLETPROOF 3D CENTER MAGNIFICATION STANDARD ── */
+.profile-card.active-center-card,
+.profile-card.featured {
+    opacity: 1 !important;
+    transform: scale(1.12) translateY(-14px) !important;
+    filter: brightness(1) grayscale(0%) !important;
+    z-index: 25 !important;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(250, 204, 21, 0.35) !important;
+    border: 2px solid #facc15 !important;
+}
+
+.profile-card.video-card.active-center-card {
+    box-shadow: 0 24px 65px rgba(0, 0, 0, 0.95), 0 0 45px rgba(147, 51, 234, 0.6) !important;
+    border: 2px solid #eab308 !important;
+}
+
 /* ── 7. ULTRA-CLEAN UNIFIED TOP NAVBAR (ICONS-ONLY STANDARD) ── */
 .lumina-nav, .profile-navbar, .header-container {
     background: rgba(9, 14, 30, 0.92) !important;
