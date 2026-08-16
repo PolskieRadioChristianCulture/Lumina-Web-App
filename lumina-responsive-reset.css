@@ -502,3 +502,67 @@ body.owner-mode-active .post-header-actions,
 body.owner-mode-active .owner-only {
     display: inline-flex !important;
 }
+
+        /* ── EXPANDED FULL-WIDTH HORIZONTAL PROFILE HEAD ── */
+        .profile-head-top {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 22px;
+        }
+
+        .profile-head-main {
+            display: flex;
+            align-items: flex-end;
+            gap: 24px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .head-user-details {
+            flex: 1 1 500px;
+            min-width: 280px;
+            margin-top: 8px;
+        }
+
+        .head-user-name {
+            font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(1.45rem, 3.2vw, 2.2rem);
+            font-weight: 800;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            white-space: normal;
+            line-height: 1.25;
+            margin: 0 0 6px 0;
+        }
+
+        .head-user-tagline {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+            width: 100%;
+        }
+
+        .head-user-tagline span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .head-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+            width: 100%;
+        }
