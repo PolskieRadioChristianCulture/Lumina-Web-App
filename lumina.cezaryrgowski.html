@@ -1495,7 +1495,7 @@
         }
     
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786855756703">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786856099743">
 </head>
 <body>
 
@@ -2712,12 +2712,14 @@
             }
         }
 
-        function deletePhoto(event, index) {
+                async function deletePhoto(event, index) {
             if (event) {
                 event.stopPropagation();
                 event.preventDefault();
             }
-            if (!requestOwnerAccess(() => deletePhoto(null, index))) return;
+            if (!isOwnerMode) {
+                if (!requestOwnerAccess(() => deletePhoto(null, index))) return;
+            }
             if (!confirm('Czy na pewno chcesz usunąć to zdjęcie z galerii?')) return;
             
             const cur = getProfileData();
@@ -2728,7 +2730,19 @@
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
                 localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
+                localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
             } catch(e) {}
+
+            // Sync deletion to Firestore Cloud
+            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                try {
+                    await window.LuminaDB.saveProfileToCloud('cezaryrgowski', cur);
+                } catch(e) {
+                    console.warn('Sync photo delete to cloud:', e);
+                }
+            }
+
             renderPhotos();
             showToast('Zdjęcie zostało pomyślnie usunięte z Twojego profilu! 🗑️✨');
         }
