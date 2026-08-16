@@ -1897,16 +1897,16 @@
                 </div>
 
                 <!-- 12. Reklama Wideo: Dobrze, że jesteś (Natywne Wideo MP4) -->
-                <div class="profile-card video-card" data-category="all misja" featured original-promo-card" id="promoAdCard" onclick="window.open('https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536', '_blank')" data-category="all misja">
+                <div class="profile-card video-card featured original-promo-card" id="promoAdCard" data-category="all misja">
                     <div class="card-photo">
                         <video id="promoVideoEl" src="czesc_dobrze_ze_jestes.mp4" autoplay loop muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:16px;"></video>
-                        <button class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
+                        <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
                             <i class="fa-solid fa-volume-xmark"></i>
                         </button>
-                        <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         
                         <!-- Pulsujący Przycisk do Sklepu -->
-                        <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
+                        <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
                             <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➔
                         </a>
                     </div>
@@ -3163,7 +3163,32 @@
         }
         function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-        
+        // ── Video Sound Toggle ──
+        window.toggleVideoSound = function(e, btn) {
+            if (e) {
+                if (e.stopPropagation) e.stopPropagation();
+                if (e.preventDefault) e.preventDefault();
+            }
+            const card = btn ? btn.closest('.video-card') : document.getElementById('promoAdCard');
+            const video = card ? card.querySelector('video') : document.getElementById('promoVideoEl');
+            if (!video) return;
+
+            video.muted = !video.muted;
+            const button = btn || (card ? card.querySelector('.card-sound-btn') : null);
+            const icon = button ? button.querySelector('i') : null;
+
+            if (!video.muted) {
+                video.volume = 1.0;
+                video.play().catch(() => {});
+                if (button) button.classList.add('sound-on');
+                if (icon) icon.className = 'fa-solid fa-volume-high';
+                showToast('Dźwięk wideo włączony 🔊');
+            } else {
+                if (button) button.classList.remove('sound-on');
+                if (icon) icon.className = 'fa-solid fa-volume-xmark';
+                showToast('Dźwięk wideo wyciszony 🔇');
+            }
+        };
 
         window.toggleLike = async function(e, btn, targetId = null, targetName = null, targetAvatar = null) {
             if (e && e.stopPropagation) e.stopPropagation();
