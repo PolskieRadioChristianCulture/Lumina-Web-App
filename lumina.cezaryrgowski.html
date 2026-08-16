@@ -178,7 +178,8 @@
 
         /* ──────────────────── PROFILE HERO / HEADER (FACEBOOK STYLE) ──────────────────── */
         .profile-container {
-            max-width: 1060px;
+            max-width: 1480px;
+            width: 96%;
             margin: 0 auto;
             padding: 0 16px 80px;
         }
@@ -898,8 +899,8 @@
         /* ══════════ 3-COLUMN PANORAMIC FOUNDER LAYOUT ══════════ */
         .profile-body-grid {
             display: grid !important;
-            grid-template-columns: 340px 1fr 310px !important;
-            gap: 22px;
+            grid-template-columns: 310px 1fr 310px !important;
+            gap: 24px;
             margin-top: 24px;
             align-items: start;
         }
@@ -907,7 +908,7 @@
         .left-founder-wing, .right-founder-wing {
             display: flex !important;
             flex-direction: column !important;
-            gap: 18px !important;
+            gap: 20px !important;
             min-width: 0;
         }
 
@@ -918,19 +919,16 @@
             gap: 20px;
         }
 
-        @media (max-width: 1200px) {
+        /* Tablet & Laptop View (Keep Left & Right visible or side-by-side) */
+        @media (max-width: 1100px) {
             .profile-body-grid {
-                grid-template-columns: 320px 1fr !important;
-            }
-            .right-founder-wing {
-                grid-column: 1 / -1;
-                display: grid !important;
-                grid-template-columns: 1fr 1fr;
-                gap: 18px;
+                grid-template-columns: 290px 1fr 290px !important;
+                gap: 16px;
             }
         }
 
-        @media (max-width: 900px) {
+        /* Mobile View: Stack gracefully */
+        @media (max-width: 960px) {
             .profile-body-grid {
                 grid-template-columns: 1fr !important;
             }
@@ -1811,7 +1809,7 @@
         }
 
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786858782167">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786858965891">
 </head>
 <body>
 
