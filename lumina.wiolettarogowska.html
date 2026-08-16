@@ -67,7 +67,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786876692502"></script>
+    <script type="module" src="lumina-db.js?v=1786903962918"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1615,7 +1615,7 @@
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786876692502">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786903962918">
 </head>
 <body>
 
@@ -1895,7 +1895,7 @@
                     <!-- Composer -->
                     <div class="feed-composer">
                         <div class="composer-top">
-                            <img src="lumina_anna2.jpg" alt="Wioletta" class="composer-avatar" id="myComposerAvatar">
+                            <img src="avatar_wioletta_official.jpg" alt="Wioletta" class="composer-avatar" id="myComposerAvatar">
                             <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onfocus="if(!isOwnerMode) requestOwnerAccess(()=>document.getElementById('composerInput').focus())">
                         </div>
 
@@ -2248,9 +2248,9 @@
                     <span style="background:#ec4899; color:#fff; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:10px;">1</span>
                 </div>
 
-                <div onclick="openChatWith('Anna', 'lumina_anna2.jpg', 'anna')" style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; cursor:pointer; transition:all 0.2s;">
+                <div onclick="openChatWith('Anna', 'avatar_wioletta_official.jpg', 'anna')" style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; cursor:pointer; transition:all 0.2s;">
                     <div style="position:relative;">
-                        <img src="lumina_anna2.jpg" alt="Anna" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block;">
+                        <img src="avatar_wioletta_official.jpg" alt="Anna" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block;">
                         <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
                     </div>
                     <div style="flex:1; min-width:0;">
@@ -2671,7 +2671,7 @@
         // ── Photos Gallery & Deletion ──
         function renderPhotos() {
             const data = getProfileData();
-            const photos = Array.isArray(data.photos) ? data.photos : ['lumina_anna2.jpg', 'avatar_new1.jpg', 'lumina_hero_main.jpg'];
+            const photos = Array.isArray(data.photos) ? data.photos : ['avatar_wioletta_official.jpg', 'avatar_new1.jpg', 'lumina_hero_main.jpg'];
             
             const miniGrid = document.getElementById('miniPhotoGrid');
             if (miniGrid) {
@@ -2714,7 +2714,7 @@
             
             const cur = getProfileData();
             if (!cur.photos || !Array.isArray(cur.photos)) {
-                cur.photos = ['lumina_anna2.jpg', 'avatar_new1.jpg', 'lumina_hero_main.jpg'];
+                cur.photos = ['avatar_wioletta_official.jpg', 'avatar_new1.jpg', 'lumina_hero_main.jpg'];
             }
             cur.photos.splice(index, 1);
             try {
@@ -3310,7 +3310,7 @@
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786876692502" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786903962918" defer></script>
     <script src="lumina-notifications.js" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
