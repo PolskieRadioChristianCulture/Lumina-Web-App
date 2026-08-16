@@ -52,7 +52,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786855459975"></script>
+    <script type="module" src="lumina-db.js?v=1786857306804"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1771,7 +1771,7 @@
         }
 
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786857039485">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786857306804">
 </head>
 <body>
 
@@ -1992,35 +1992,35 @@
                     <div class="activity-chart-wrap">
                         <div class="chart-title-row">
                             <span><i class="fa-solid fa-chart-simple" style="color:#38bdf8;"></i> Wzrost Nowych Profili (7 Dni)</span>
-                            <span style="color:#22c55e; font-size:0.75rem;"><i class="fa-solid fa-arrow-trend-up"></i> +12 Dzisiaj</span>
+                            <span id="hudTodayCount" style="color:#22c55e; font-size:0.75rem;"><i class="fa-solid fa-arrow-trend-up"></i> +0 Dzisiaj</span>
                         </div>
                         <div class="bar-chart-flex">
                             <div class="chart-col">
-                                <div class="chart-bar" style="height: 42%;" title="Poniedziałek: 8 profili"></div>
+                                <div class="chart-bar" id="barMon" style="height: 35%;" title="Poniedziałek"></div>
                                 <span class="chart-day">Pn</span>
                             </div>
                             <div class="chart-col">
-                                <div class="chart-bar" style="height: 58%;" title="Wtorek: 11 profili"></div>
+                                <div class="chart-bar" id="barTue" style="height: 45%;" title="Wtorek"></div>
                                 <span class="chart-day">Wt</span>
                             </div>
                             <div class="chart-col">
-                                <div class="chart-bar" style="height: 50%;" title="Środa: 9 profili"></div>
+                                <div class="chart-bar" id="barWed" style="height: 40%;" title="Środa"></div>
                                 <span class="chart-day">Śr</span>
                             </div>
                             <div class="chart-col">
-                                <div class="chart-bar" style="height: 75%;" title="Czwartek: 15 profili"></div>
+                                <div class="chart-bar" id="barThu" style="height: 60%;" title="Czwartek"></div>
                                 <span class="chart-day">Czw</span>
                             </div>
                             <div class="chart-col">
-                                <div class="chart-bar" style="height: 68%;" title="Piątek: 13 profili"></div>
+                                <div class="chart-bar" id="barFri" style="height: 55%;" title="Piątek"></div>
                                 <span class="chart-day">Pt</span>
                             </div>
                             <div class="chart-col">
-                                <div class="chart-bar" style="height: 88%;" title="Sobota: 18 profili"></div>
+                                <div class="chart-bar" id="barSat" style="height: 70%;" title="Sobota"></div>
                                 <span class="chart-day">So</span>
                             </div>
                             <div class="chart-col">
-                                <div class="chart-bar today" style="height: 60%;" title="Niedziela (Dziś): 12 profili"></div>
+                                <div class="chart-bar today" id="barSun" style="height: 50%;" title="Niedziela (Dziś)"></div>
                                 <span class="chart-day" style="color:#facc15;">Nd</span>
                             </div>
                         </div>
