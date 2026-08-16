@@ -12,6 +12,86 @@
 
     // 1. Wstrzyknięcie Stylów CSS
     const styles = `
+        
+    /* ── LUMINA MOBILE TOP AUTH BAR (ZAŁÓŻ KONTO | LOGOWANIE) ── */
+    .lumina-mobile-auth-bar {
+        display: none;
+    }
+
+    @media (max-width: 900px) {
+        .lumina-mobile-auth-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 42px;
+            background: linear-gradient(90deg, #131032 0%, #35084a 50%, #131032 100%);
+            border-bottom: 1.5px solid rgba(236, 72, 153, 0.4);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+            position: sticky;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            padding: 0 10px;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body.user-is-authenticated .lumina-mobile-auth-bar {
+            display: none !important;
+        }
+
+        .mobile-auth-btn {
+            background: transparent !important;
+            border: none !important;
+            color: #ffffff !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-size: 0.82rem !important;
+            font-weight: 800 !important;
+            letter-spacing: 0.8px !important;
+            text-transform: uppercase !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            cursor: pointer !important;
+            padding: 6px 10px !important;
+            border-radius: 8px !important;
+            text-decoration: none !important;
+            transition: all 0.2s ease !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+
+        .mobile-auth-btn:active {
+            transform: scale(0.96) !important;
+            background: rgba(255, 255, 255, 0.12) !important;
+        }
+
+        .mobile-auth-btn.btn-reg {
+            color: #fbcfe8 !important;
+        }
+
+        .mobile-auth-btn.btn-reg i {
+            color: #f472b6 !important;
+        }
+
+        .mobile-auth-btn.btn-login {
+            color: #fef08a !important;
+        }
+
+        .mobile-auth-btn.btn-login i {
+            color: #facc15 !important;
+        }
+
+        .mobile-auth-sep {
+            color: rgba(255, 255, 255, 0.25) !important;
+            font-weight: 300 !important;
+            font-size: 0.95rem !important;
+            margin: 0 4px !important;
+            user-select: none !important;
+        }
+    }
+
         /* ── LUMINA BOTTOM NAVIGATION BAR (PWA / Mobile) ── */
         .lumina-bottom-nav {
             position: fixed !important;
@@ -473,4 +553,119 @@
     <div id="luminaSecretAdminBtn" onclick="window.triggerSecretAdminPrompt(event)" style="position:fixed; bottom:10px; left:8px; width:24px; height:24px; border-radius:50%; background:transparent; border:none; color:transparent; cursor:default; z-index:999999; user-select:none; -webkit-tap-highlight-color:transparent; outline:none;">
     </div>
 `);
+    // ══════════════════════════════════════════════════════════════════════════
+    // GLOBALNY MOBILNY PASEK LOGOWANIA / REJESTRACJI (ZAŁÓŻ KONTO | LOGOWANIE)
+    // ══════════════════════════════════════════════════════════════════════════
+    window.triggerLuminaRegister = function(e) {
+        if (e && typeof e.preventDefault === 'function') e.preventDefault();
+        const authModal = document.getElementById('authModal');
+        if (typeof window.switchAuthTab === 'function' && authModal) {
+            window.switchAuthTab('register');
+            authModal.classList.add('open');
+            authModal.style.display = 'flex';
+        } else {
+            window.location.href = 'lumina.html?auth=register';
+        }
+    };
+
+    window.triggerLuminaLogin = function(e) {
+        if (e && typeof e.preventDefault === 'function') e.preventDefault();
+        const authModal = document.getElementById('authModal');
+        if (typeof window.switchAuthTab === 'function' && authModal) {
+            window.switchAuthTab('login');
+            authModal.classList.add('open');
+            authModal.style.display = 'flex';
+        } else {
+            window.location.href = 'lumina.html?auth=login';
+        }
+    };
+
+    window.checkLuminaAuthState = function() {
+        let isAuthenticated = false;
+
+        // 1. Sprawdź tryb Administratora
+        if (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || 
+            localStorage.getItem('lumina_auth_master_admin') === 'true') {
+            isAuthenticated = true;
+        }
+
+        // 2. Sprawdź zalogowanego użytkownika LuminaDB / Firebase
+        if (!isAuthenticated && window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
+            const u = window.LuminaDB.getCurrentUser();
+            if (u && (u.uid || u.email)) isAuthenticated = true;
+        }
+
+        if (!isAuthenticated && window.firebaseAuth && window.firebaseAuth.currentUser) {
+            isAuthenticated = true;
+        }
+
+        // 3. Sprawdź klucze pamięci podręcznej sesji użytkownika
+        if (!isAuthenticated) {
+            for (let i = 0; i < localStorage.length; i++) {
+                const k = localStorage.key(i);
+                if (k && (k.startsWith('firebase:authUser:') || k === 'lumina_user_profile' || k === 'lumina_current_user_data')) {
+                    const val = localStorage.getItem(k);
+                    if (val && val !== 'null' && val !== '{}') {
+                        isAuthenticated = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        const bar = document.getElementById('luminaMobileAuthBar');
+        if (isAuthenticated) {
+            document.body.classList.add('user-is-authenticated');
+            if (bar) bar.style.setProperty('display', 'none', 'important');
+        } else {
+            document.body.classList.remove('user-is-authenticated');
+            if (bar && window.innerWidth <= 900) {
+                bar.style.display = 'flex';
+            }
+        }
+    };
+
+    // Wstrzyknięcie Paska do DOM (pod nagłówek)
+    function injectMobileAuthBar() {
+        if (document.getElementById('luminaMobileAuthBar')) return;
+
+        const barHtml = `
+            <div id="luminaMobileAuthBar" class="lumina-mobile-auth-bar">
+                <button type="button" class="mobile-auth-btn btn-reg" onclick="window.triggerLuminaRegister(event)">
+                    <i class="fa-solid fa-sparkles"></i> ZAŁÓŻ KONTO
+                </button>
+                <span class="mobile-auth-sep">|</span>
+                <button type="button" class="mobile-auth-btn btn-login" onclick="window.triggerLuminaLogin(event)">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i> LOGOWANIE
+                </button>
+            </div>
+        `;
+
+        // Znajdź górny navbar (.portal-nav lub .profile-navbar lub nav)
+        const topNav = document.querySelector('.portal-nav, .profile-navbar, nav');
+        if (topNav && topNav.parentNode) {
+            topNav.insertAdjacentHTML('afterend', barHtml);
+        } else {
+            document.body.insertAdjacentHTML('afterbegin', barHtml);
+        }
+
+        window.checkLuminaAuthState();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            injectMobileAuthBar();
+            window.checkLuminaAuthState();
+        });
+    } else {
+        injectMobileAuthBar();
+        window.checkLuminaAuthState();
+    }
+
+    // Nasłuchiwanie zmian sesji
+    window.addEventListener('lumina_auth_changed', window.checkLuminaAuthState);
+    window.addEventListener('storage', window.checkLuminaAuthState);
+    window.addEventListener('resize', window.checkLuminaAuthState);
+    setInterval(window.checkLuminaAuthState, 1200);
+
 })();

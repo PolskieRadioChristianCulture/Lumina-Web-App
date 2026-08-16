@@ -3292,7 +3292,22 @@
             carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         };
 
-        // Initialize Carousel smoothly on DOM load
+        
+            // Check for ?auth=register or ?auth=login in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const authParam = urlParams.get('auth');
+            if (authParam === 'register' || authParam === 'login') {
+                setTimeout(() => {
+                    if (typeof switchAuthTab === 'function') switchAuthTab(authParam);
+                    const modal = document.getElementById('authModal');
+                    if (modal) {
+                        modal.classList.add('open');
+                        modal.style.display = 'flex';
+                    }
+                }, 400);
+            }
+
+            // Initialize Carousel smoothly on DOM load
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof syncUserSavedProfileToHomepage === 'function') {
                 syncUserSavedProfileToHomepage();
