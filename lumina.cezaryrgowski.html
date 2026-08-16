@@ -1497,9 +1497,12 @@
     
         /* ══════════ FOUNDER HUD SPECIAL ANALYTICS WINGS ══════════ */
         .founder-hud-container {
-            display: none;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
             width: 100%;
-            margin-bottom: 24px;
+            margin: 20px 0 24px 0;
+            animation: fadeInHud 0.5s ease-out forwards;
         }
 
         .owner-mode-active .founder-hud-container {
@@ -1771,7 +1774,7 @@
         }
 
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786857497941">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786858195238">
 </head>
 <body>
 
@@ -1819,7 +1822,7 @@
     <main class="profile-container">
         
         <!-- Security & Owner Access Bar -->
-        <div class="profile-security-bar" id="profileSecurityBar">
+        <div class="profile-security-bar" id="profileSecurityBar" style="display:none !important;">
             <div class="security-status-left">
                 <i class="fa-solid fa-shield-halved" id="secStatusIcon" style="color: #38bdf8; font-size: 1.1rem;"></i>
                 <span id="secStatusText">Status Ochrony: <b style="color:#38bdf8;">Chroniony Kodem PIN 🛡️</b></span>
