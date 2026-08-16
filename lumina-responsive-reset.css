@@ -77,11 +77,31 @@ img, video, iframe, canvas, svg {
     .lumina-nav .nav-links {
         display: none !important; /* Managed by PWA Bottom Nav */
     }
+    .hero-section {
+        min-height: auto !important;
+        padding: 12px 14px 10px !important;
+    }
+    .hero-content {
+        padding: 0 !important;
+        max-width: 100% !important;
+    }
+    .hero-pill-badge {
+        font-size: 0.72rem !important;
+        padding: 4px 12px !important;
+        margin-bottom: 8px !important;
+    }
     .hero-title {
-        font-size: clamp(1.45rem, 5.5vw, 2.2rem) !important;
+        font-size: clamp(1.35rem, 5vw, 1.8rem) !important;
+        line-height: 1.2 !important;
+        margin-bottom: 8px !important;
     }
     .hero-subtitle {
-        font-size: clamp(0.85rem, 3vw, 1rem) !important;
+        font-size: 0.86rem !important;
+        line-height: 1.38 !important;
+        margin-bottom: 12px !important;
+    }
+    .hero-search-wrap {
+        margin: 0 auto 10px auto !important;
     }
 }
 
