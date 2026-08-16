@@ -102,7 +102,7 @@ export function applyLuminaTranslations() {
 
     // Update Flag Buttons (Flag Only - No Text)
     document.querySelectorAll('.lang-switcher-btn').forEach((btn) => {
-        btn.textContent = currentLuminaLang === 'pl' ? '🇵🇱' : '🇬🇧';
+        btn.textContent = currentLuminaLang === 'pl' ? '\u{1F1F5}\u{1F1F1}' : '\u{1F1EC}\u{1F1E7}';
     });
 }
 

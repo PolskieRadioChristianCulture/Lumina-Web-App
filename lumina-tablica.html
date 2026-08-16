@@ -1615,16 +1615,19 @@
             <a href="index.html" class="nav-link"><i class="fa-solid fa-radio"></i> Radio CC</a>
         </div>
 
-        <div style="display:flex;align-items:center;gap:12px;">
-            <!-- Mini Radio Player (Icon Only) -->
-            <div class="nav-radio-pill" id="radioWidget" onclick="toggleRadio()" title="Włącz / Wyłącz Radio CC" style="cursor:pointer;">
-                <button type="button" class="nav-radio-play" id="radioPlayBtn">
-                    <i class="fa-solid fa-play" id="radioPlayIcon" style="color:#facc15;"></i>
-                </button>
-            </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+            <!-- 1. Mini Radio Player (Single Round Button) -->
+            <button type="button" class="nav-circle-btn nav-radio-btn" id="radioWidget" onclick="toggleRadio()" title="Włącz / Wyłącz Radio CC">
+                <i class="fa-solid fa-play" id="radioPlayIcon" style="margin-left:2px;"></i>
+            </button>
 
-            <button type="button" class="lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" title="Zmień język">🇵🇱</button>
-            <a href="lumina.html" class="nav-back-icon-btn" title="Powrót do portalu" style="text-decoration:none !important; -webkit-text-decoration:none !important; border-bottom:none !important; outline:none !important; display:inline-flex !important; align-items:center !important; justify-content:center !important; width:36px !important; height:36px !important; min-width:36px !important; border-radius:50% !important; background:rgba(255,255,255,0.07) !important; border:1px solid rgba(255,255,255,0.14) !important; color:#ffffff !important; box-shadow:0 2px 8px rgba(0,0,0,0.3) !important;"><i class="fa-solid fa-arrow-left" style="text-decoration:none !important; -webkit-text-decoration:none !important; border:none !important; font-size:0.95rem; color:#ffffff;"></i></a>
+            <!-- 2. Language Switcher (Single Round Button) -->
+            <button type="button" class="nav-circle-btn lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" title="Zmień język">🇵🇱</button>
+            
+            <!-- 3. Back Arrow (Single Round Button) -->
+            <a href="lumina.html" class="nav-circle-btn nav-back-icon-btn" title="Powrót do portalu">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
         </div>
     </nav>
 

@@ -2,7 +2,7 @@
 // LUMINA SERVICE WORKER (PWA Network-First High-Speed Shell)
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-v2.2-clean-ui-cache';
+const CACHE_NAME = 'lumina-v2.3-unified-icons-cache';
 
 self.addEventListener('install', (event) => {
     self.skipWaiting();
