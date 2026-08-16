@@ -189,11 +189,11 @@
                 @keyframes pulseBadge { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
             </style>`;
 
-            // Wstrzyknięcie dzwonka po PRAWEJ STRONIE, tuż obok widżetu Radia CC
+            // Wstrzyknięcie dzwonka po PRAWEJ STRONIE widżetu Radia CC (Radio pierwsze, potem Dzwonek)
             const radioWidget = document.getElementById('radioWidget') || document.querySelector('.nav-radio-pill') || document.querySelector('.radio-widget');
             
             if (radioWidget && radioWidget.parentElement) {
-                radioWidget.insertAdjacentHTML('beforebegin', html);
+                radioWidget.insertAdjacentHTML('afterend', html);
             } else {
                 const rightContainer = document.querySelector('.header-right') || 
                                        document.querySelector('.nav-actions') || 
