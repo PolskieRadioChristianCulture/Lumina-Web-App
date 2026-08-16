@@ -1476,7 +1476,7 @@
         }
     
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786856099743">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786856341811">
 </head>
 <body>
 
@@ -2522,7 +2522,7 @@
                 } else {
                     miniGrid.innerHTML = photos.slice(0, 6).map((src, idx) => `
                         <div style="position:relative; border-radius:10px; overflow:hidden; height:90px; background:#1e293b;">
-                            <img src="${src}" alt="Photo" class="photo-thumb" style="width:100%;height:100%;object-fit:cover;" onclick="showToast('Podgląd zdjęcia')">
+                            <img src="${src}" alt="Photo" class="photo-thumb" style="width:100%;height:100%;object-fit:cover;" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
                             ${isOwnerMode ? `<button type="button" class="photo-delete-badge" style="display:flex; width:26px; height:26px; top:4px; right:4px; font-size:0.72rem; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>` : ''}
                         </div>
                     `).join('');
@@ -2536,7 +2536,7 @@
                 } else {
                     fullGrid.innerHTML = photos.map((src, idx) => `
                         <div class="photo-item-box" style="position:relative;">
-                            <img src="${src}" alt="Photo" class="photo-item-img" onclick="showToast('Podgląd zdjęcia')">
+                            <img src="${src}" alt="Photo" class="photo-item-img" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
                             ${isOwnerMode ? `<button type="button" class="photo-delete-badge" style="display:flex; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie z galerii"><i class="fa-solid fa-trash-can"></i></button>` : ''}
                         </div>
                     `).join('');
@@ -2611,7 +2611,7 @@
                         ` : ''}
                     </div>
                     <div class="post-content">${p.text || ''}</div>
-                    ${`<img src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'avatar_wioletta_official.jpg')}" alt="Post Image" class="post-image" onerror="this.onerror=null; this.src='${data.avatar || 'avatar_wioletta_official.jpg'}'">`}
+                    ${`<img src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'avatar_wioletta_official.jpg')}" alt="Post Image" class="post-image" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" onerror="this.onerror=null; this.src='${data.avatar || 'avatar_wioletta_official.jpg'}'">`}
                     <div class="post-footer">
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span> Polubień</button>
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
@@ -3262,6 +3262,20 @@ if (localStorage.getItem('lumina_cookie_consent')) {
         };
 
 </script>
+
+    <!-- ══════════ FULLSCREEN PHOTO LIGHTBOX MODAL ══════════ -->
+    <div class="modal-overlay" id="photoLightboxModal" onclick="closePhotoLightbox()" style="z-index: 999999; background: rgba(3, 7, 18, 0.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
+        <div class="lightbox-dialog" onclick="event.stopPropagation()" style="position: relative; max-width: 94vw; max-height: 92vh; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: auto;">
+            <button type="button" class="lightbox-close-btn" onclick="closePhotoLightbox()" title="Zamknij podgląd (ESC)" style="position: absolute; top: -16px; right: -16px; width: 42px; height: 42px; border-radius: 50%; background: rgba(15, 23, 42, 0.9); border: 2px solid rgba(255,255,255,0.4); color: #fff; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.8); z-index: 1000; transition: transform 0.2s, background 0.2s;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div style="position: relative; overflow: hidden; border-radius: 16px; box-shadow: 0 25px 70px rgba(0,0,0,0.95); border: 1px solid rgba(255,255,255,0.15); background: #000; display: flex; align-items: center; justify-content: center;">
+                <img id="lightboxImg" src="" alt="Pełny Podgląd Zdjęcia" style="max-width: 90vw; max-height: 80vh; width: auto; height: auto; object-fit: contain; display: block; border-radius: 16px;">
+            </div>
+            <div id="lightboxCaption" style="margin-top: 14px; color: #f8fafc; font-size: 0.92rem; font-weight: 700; background: rgba(15, 23, 42, 0.85); padding: 8px 22px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 4px 16px rgba(0,0,0,0.5); text-align: center;"></div>
+        </div>
+    </div>
+
 </body>
 </html>
 
