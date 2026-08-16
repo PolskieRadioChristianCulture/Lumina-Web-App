@@ -1476,7 +1476,7 @@
         }
     
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786856341811">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786856430660">
 </head>
 <body>
 
@@ -2371,8 +2371,13 @@
             }
         }
 
-        function requestOwnerAccess(callback) {
-            if (isOwnerMode) {
+                function requestOwnerAccess(callback) {
+            let u = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
+            if (!u) {
+                try { u = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
+            }
+            if (u || isOwnerMode || localStorage.getItem('lumina_user_session') === 'active' || sessionStorage.getItem('lumina_auth_master_admin') === 'true') {
+                isOwnerMode = true;
                 if (typeof callback === 'function') callback();
                 return true;
             }
