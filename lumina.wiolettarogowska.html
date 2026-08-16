@@ -67,7 +67,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786903962918"></script>
+    <script type="module" src="lumina-db.js?v=1786904999052"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -246,11 +246,13 @@
         .cover-wrapper {
             position: relative;
             width: 100%;
-            height: 310px;
+            aspect-ratio: 1300 / 500;
+            max-height: 480px;
+            min-height: 220px;
+            background: linear-gradient(135deg, #1e1b4b, #312e81, #0f172a);
             border-radius: 0 0 24px 24px;
             overflow: hidden;
-            background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
             cursor: pointer;
         }
 
@@ -258,7 +260,9 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center center;
             display: block;
+            transition: transform 0.4s ease;
         }
 
         .cover-overlay {
@@ -961,7 +965,7 @@
                 padding-bottom: 95px !important;
             }
             .profile-body-grid { grid-template-columns: 1fr; }
-            .cover-wrapper { height: 210px; }
+            .cover-wrapper { aspect-ratio: 1300 / 500; height: auto; min-height: 160px; max-height: 340px; }
             .avatar-wrap { width: 110px; height: 110px; margin-top: -55px; }
             .profile-head-card { padding: 0 16px 20px; }
             .head-user-name {
@@ -1615,7 +1619,7 @@
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786903962918">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786904999052">
 </head>
 <body>
 
@@ -1711,7 +1715,7 @@
 
             <!-- Cover Banner -->
             <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
-                <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
+                <img src="lumina_default_cover.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
                 <div class="cover-overlay"></div>
                 
                 <div class="cover-hint-badge"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
@@ -2306,7 +2310,7 @@
             pin: '7777',
             visibility: 'public',
             avatar: 'avatar_wioletta_official.jpg',
-            cover: 'lumina_hero_main.jpg',
+            cover: 'lumina_default_cover.jpg',
             coverPosY: '50%',
             job: 'Współzałożycielka Christian Culture',
             church: 'Wspólnota Uwielbieniowa',
@@ -2314,7 +2318,7 @@
             verseRef: '— Księga Przysłów 31, 10-11',
             bio: 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej, kochającej się rodziny zakorzenionej w Bogu, wspólnej modlitwy i niesienia Dobrej Nowiny. Wierzę, że miłość małżeńska jest żywym odzwierciedleniem wierności Chrystusa i najpiękniejszą drogą do uświęcenia.',
             tags: ['Rodzina & Małżeństwo', 'Muzyka Uwielbienia', 'Pismo Święte', 'Radio CC', 'Ewangelizacja', 'Głębokie Relacje'],
-            photos: ['avatar_wioletta_official.jpg', 'avatar_cezary_official.jpg', 'lumina_hero_main.jpg'],
+            photos: ['avatar_wioletta_official.jpg', 'avatar_cezary_official.jpg', 'lumina_default_cover.jpg'],
             posts: [
                 {
                     id: 'post_w1',
@@ -2330,7 +2334,7 @@
                     time: 'Wczoraj, 20:40 • 📖 Słowo Życia',
                     text: '„Przede wszystkim miejcie gorącą miłość jedni ku drugim, bo miłość zakrywa mnóstwo grzechów.” (1 P 4, 8). Błogosławionego wieczoru dla każdego z Was! 🙏',
                     likes: 52,
-                    image: 'lumina_hero_main.jpg'
+                    image: 'lumina_default_cover.jpg'
                 }
             ]
         };
@@ -2671,7 +2675,7 @@
         // ── Photos Gallery & Deletion ──
         function renderPhotos() {
             const data = getProfileData();
-            const photos = Array.isArray(data.photos) ? data.photos : ['avatar_wioletta_official.jpg', 'avatar_new1.jpg', 'lumina_hero_main.jpg'];
+            const photos = Array.isArray(data.photos) ? data.photos : ['avatar_wioletta_official.jpg', 'avatar_new1.jpg', 'lumina_default_cover.jpg'];
             
             const miniGrid = document.getElementById('miniPhotoGrid');
             if (miniGrid) {
@@ -2714,7 +2718,7 @@
             
             const cur = getProfileData();
             if (!cur.photos || !Array.isArray(cur.photos)) {
-                cur.photos = ['avatar_wioletta_official.jpg', 'avatar_new1.jpg', 'lumina_hero_main.jpg'];
+                cur.photos = ['avatar_wioletta_official.jpg', 'avatar_new1.jpg', 'lumina_default_cover.jpg'];
             }
             cur.photos.splice(index, 1);
             try {
@@ -3310,7 +3314,7 @@
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786903962918" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786904999052" defer></script>
     <script src="lumina-notifications.js" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">

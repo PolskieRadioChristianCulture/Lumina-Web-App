@@ -112,7 +112,7 @@
         })();
     </script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786904328333"></script>
+    <script type="module" src="lumina-db.js?v=1786904999052"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
     <script type="module" src="lumina-i18n.js?v=1786850740820"></script>
@@ -247,7 +247,9 @@
         .cover-wrapper {
             position: relative;
             width: 100%;
-            height: 310px;
+            aspect-ratio: 1300 / 500;
+            max-height: 480px;
+            min-height: 220px;
             background: linear-gradient(135deg, #1e1b4b, #312e81, #0f172a);
             border-radius: 0 0 24px 24px;
             overflow: hidden;
@@ -259,9 +261,9 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 35%;
-            filter: brightness(0.92);
-            transition: transform 0.5s ease;
+            object-position: center center;
+            display: block;
+            transition: transform 0.4s ease;
         }
 
         .cover-overlay {
@@ -1061,7 +1063,7 @@
             .profile-body-grid {
                 grid-template-columns: 1fr;
             }
-            .cover-wrapper { height: 210px; }
+            .cover-wrapper { aspect-ratio: 1300 / 500; height: auto; min-height: 160px; max-height: 340px; }
             .avatar-wrap { width: 110px; height: 110px; margin-top: -55px; }
             .profile-head-card { padding: 0 16px 20px; }
             .head-user-name {
@@ -1587,7 +1589,7 @@
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786904328333">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786904999052">
 </head>
 <body>
 
@@ -1684,7 +1686,7 @@
 
             <!-- Cover Banner -->
             <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
-                <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
+                <img src="lumina_default_cover.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
                 <div class="cover-overlay"></div>
                 
                 <div class="cover-hint-badge"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
@@ -2340,7 +2342,7 @@
                 age: '43',
                 city: 'Poznań, Polska',
                 avatar: 'avatar_magdalena.png',
-                cover: 'lumina_hero_clean.jpg',
+                cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
                 job: 'Społeczność LUMINA 🕊️',
                 church: 'Wspólnota Chrześcijańska w Poznaniu',
@@ -2354,7 +2356,7 @@
                 verseRef: '— List do Filipian 4, 13',
                 bio: 'Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu i miłości. Wierzę w siłę wspólnej modlitwy, zaufanie Bogu i budowanie trwałej relacji na fundamencie Chrystusa.',
                 tags: ['Modlitwa', 'Zaufanie', 'Wierność', 'Pismo Święte', 'Poznań'],
-                photos: ['avatar_magdalena.png', 'avatar_new1.jpg', 'lumina_hero_clean.jpg'],
+                photos: ['avatar_magdalena.png', 'avatar_new1.jpg', 'lumina_default_cover.jpg'],
                 posts: [
                     {
                         id: 'post_magdalena_1',
@@ -2423,7 +2425,7 @@
                 age: 'Kanał YT',
                 city: 'Warszawa, Polska',
                 avatar: 'logo_cc_women.jpg',
-                cover: 'lumina_hero_main.jpg',
+                cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
                 job: 'Oficjalny Kanał YouTube CC Women 🌸',
                 church: 'Christian Culture',
@@ -2436,7 +2438,7 @@
                 verseRef: '— Przypowieści Salomona 31, 10',
                 bio: 'Oficjalny profil i kanał YouTube CC Women – przestrzeń wzrostu, modlitwy, kobiecej mądrości i głębokich świadectw Bożego działania w życiu kobiet. Subskrybuj i bądź częścią naszej społeczności! 🌸✨',
                 tags: ['Kobiety Wiary', 'YouTube CC Women', 'Modlitwa', 'Świadectwa', 'Wzrost Duchowy'],
-                photos: ['logo_cc_women.jpg', 'avatar_wioletta_official.jpg', 'lumina_hero_main.jpg'],
+                photos: ['logo_cc_women.jpg', 'avatar_wioletta_official.jpg', 'lumina_default_cover.jpg'],
                 posts: [
                     {
                         id: 'post_ccw_1',
@@ -2453,7 +2455,7 @@
                 age: 'Kanał YT',
                 city: 'Warszawa, Polska',
                 avatar: 'logo_cc_women.jpg',
-                cover: 'lumina_hero_main.jpg',
+                cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
                 job: 'Oficjalny Kanał YouTube CC Women 🌸',
                 church: 'Christian Culture',
@@ -2466,7 +2468,7 @@
                 verseRef: '— Przypowieści Salomona 31, 10',
                 bio: 'Oficjalny profil i kanał YouTube CC Women – przestrzeń wzrostu, modlitwy, kobiecej mądrości i głębokich świadectw Bożego działania w życiu kobiet. Subskrybuj i bądź częścią naszej społeczności! 🌸✨',
                 tags: ['Kobiety Wiary', 'YouTube CC Women', 'Modlitwa', 'Świadectwa', 'Wzrost Duchowy'],
-                photos: ['logo_cc_women.jpg', 'avatar_wioletta_official.jpg', 'lumina_hero_main.jpg'],
+                photos: ['logo_cc_women.jpg', 'avatar_wioletta_official.jpg', 'lumina_default_cover.jpg'],
                 posts: [
                     {
                         id: 'post_ccw_1',
@@ -2483,7 +2485,7 @@
                 age: '51',
                 city: 'Ostrowiec Świętokrzyski, Polska',
                 avatar: 'avatar_cezary_official.jpg',
-                cover: 'lumina_hero_main.jpg',
+                cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
                 job: 'Założyciel Christian Culture',
                 church: 'Wspólnota Uwielbieniowa',
@@ -2497,7 +2499,7 @@
                 verseRef: '— Księga Jozuego 24, 15',
                 bio: 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture.',
                 tags: ['Muzyka Uwielbienia', 'Wędrówki Górskie', 'Pismo Święte', 'Ewangelizacja', 'Nowe Technologie'],
-                photos: ['avatar_cezary_official.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg'],
+                photos: ['avatar_cezary_official.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'],
                 posts: [
                     {
                         id: 'post_c1',
@@ -2514,7 +2516,7 @@
                 age: '50',
                 city: 'Ostrowiec Świętokrzyski, Polska',
                 avatar: 'avatar_wioletta_official.jpg',
-                cover: 'lumina_hero_main.jpg',
+                cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
                 job: 'Współzałożycielka Christian Culture',
                 church: 'Wspólnota Uwielbieniowa',
@@ -2528,7 +2530,7 @@
                 verseRef: '— Księga Przysłów 31, 10-11',
                 bio: 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej rodziny zakorzenionej w Bogu.',
                 tags: ['Rodzina & Małżeństwo', 'Muzyka Uwielbienia', 'Pismo Święte', 'Radio CC'],
-                photos: ['avatar_wioletta_official.jpg', 'avatar_cezary_official.jpg', 'lumina_hero_main.jpg'],
+                photos: ['avatar_wioletta_official.jpg', 'avatar_cezary_official.jpg', 'lumina_default_cover.jpg'],
                 posts: [
                     {
                         id: 'post_w1',
@@ -2545,7 +2547,7 @@
                 age: '31',
                 city: 'Kraków, Polska',
                 avatar: 'avatar_widget_tomek.jpg',
-                cover: 'lumina_hero_main.jpg',
+                cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
                 job: 'Inżynier Środowiska',
                 church: 'Wspólnota Mężczyzn św. Józefa',
@@ -2557,7 +2559,7 @@
                 verseRef: '— Księga Jozuego 1, 9',
                 bio: 'Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku. Szukam kobiety o łagodnym sercu, z którą stworzymy bezpieczny i ciepły dom.',
                 tags: ['Survival', 'Leśnictwo', 'Gotowanie', 'Kajaki', 'Biblia'],
-                photos: ['avatar_widget_tomek.jpg', 'avatar_new1.jpg', 'lumina_hero_main.jpg'],
+                photos: ['avatar_widget_tomek.jpg', 'avatar_new1.jpg', 'lumina_default_cover.jpg'],
                 posts: [
                     {
                         id: 'post_t1',
@@ -2565,7 +2567,7 @@
                         time: 'Wczoraj, 14:20 • 🌲 Wyprawa',
                         text: 'Niezwykły czas wyciszenia i modlitwy w górach. Bóg przemawia w ciszy! 🌄',
                         likes: 22,
-                        image: 'lumina_hero_main.jpg'
+                        image: 'lumina_default_cover.jpg'
                     }
                 ]
             }
@@ -2595,7 +2597,7 @@
                     ...ccw,
                     name: 'CC Women Official',
                     avatar: 'logo_cc_women.jpg',
-                    cover: 'lumina_hero_main.jpg'
+                    cover: 'lumina_default_cover.jpg'
                 };
             }
 
@@ -2682,14 +2684,14 @@
                 verseRef: formattedRef,
                 bio: formattedBio,
                 avatar: formattedAvatar,
-                cover: 'lumina_hero_clean.jpg',
+                cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
                 visibility: 'public',
                 pin: '7777',
                 matchScore: '98%',
                 tags: ['Ewangelizacja', 'Pismo Święte', 'Wartości', 'Świadectwo'],
                 stats: { friends: '128', posts: '3', likes: '96' },
-                photos: [formattedAvatar, 'avatar_new1.jpg', 'lumina_hero_main.jpg'],
+                photos: [formattedAvatar, 'avatar_new1.jpg', 'lumina_default_cover.jpg'],
                 posts: [
                     {
                         id: 'post_init_' + slug,
@@ -2713,7 +2715,7 @@
                         text: 'Prawdziwa miłość i głębokie relacje rodzą się z zaufania Bogu i otwartego serca na drugiego człowieka. Niech ten dzień przyniesie Wam Boży pokój i radość!',
                         likes: 21,
                         amen: 15,
-                        image: 'lumina_hero_clean.jpg'
+                        image: 'lumina_default_cover.jpg'
                     }
                 ]
             };
@@ -3104,7 +3106,7 @@
         // ── Photos Gallery & Deletion ──
         function renderPhotos() {
             const data = getProfileData();
-            const photos = Array.isArray(data.photos) ? data.photos : ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg'];
+            const photos = Array.isArray(data.photos) ? data.photos : ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'];
             
             const miniGrid = document.getElementById('miniPhotoGrid');
             if (miniGrid) {
@@ -3146,7 +3148,7 @@
             const slug = getRequestedUserSlug();
             const cur = getProfileData();
             if (!cur.photos || !Array.isArray(cur.photos)) {
-                cur.photos = ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg'];
+                cur.photos = ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'];
             }
             cur.photos.splice(index, 1);
             try {
@@ -3904,7 +3906,7 @@
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786904328333" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786904999052" defer></script>
     <script src="lumina-notifications.js?v=1786851592174" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">

@@ -69,7 +69,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786876692502"></script>
+    <script type="module" src="lumina-db.js?v=1786904999052"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -204,7 +204,9 @@
         .cover-wrapper {
             position: relative;
             width: 100%;
-            height: 310px;
+            aspect-ratio: 1300 / 500;
+            max-height: 480px;
+            min-height: 220px;
             background: linear-gradient(135deg, #1e1b4b, #312e81, #0f172a);
             border-radius: 0 0 24px 24px;
             overflow: hidden;
@@ -216,9 +218,9 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 35%;
-            filter: brightness(0.92);
-            transition: transform 0.5s ease;
+            object-position: center center;
+            display: block;
+            transition: transform 0.4s ease;
         }
 
         .cover-overlay {
@@ -1041,7 +1043,7 @@
             .profile-body-grid {
                 grid-template-columns: 1fr;
             }
-            .cover-wrapper { height: 210px; }
+            .cover-wrapper { aspect-ratio: 1300 / 500; height: auto; min-height: 160px; max-height: 340px; }
             .avatar-wrap { width: 110px; height: 110px; margin-top: -55px; }
             .profile-head-card { padding: 0 16px 20px; }
             .head-user-name {
@@ -1967,7 +1969,7 @@
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786876692502">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786904999052">
 </head>
 <body>
 
@@ -2063,7 +2065,7 @@
 
             <!-- Cover Banner -->
             <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
-                <img src="lumina_hero_main.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
+                <img src="lumina_default_cover.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
                 <div class="cover-overlay"></div>
                 
                 <div class="cover-hint-badge"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
@@ -2318,7 +2320,7 @@
                     <div class="photo-grid-mini" id="miniPhotoGrid">
                         <img src="avatar_cezary_official.jpg" alt="Photo" class="photo-thumb" id="miniPhoto1" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
                         <img src="avatar_widget_tomek.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
-                        <img src="lumina_hero_main.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
+                        <img src="lumina_default_cover.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
                     </div>
                 </div>
 
@@ -2403,7 +2405,7 @@
                             <div class="post-content">
                                 „Nie troszczcie się zbytnio o jutro, albowiem jutrzejszy dzień sam o siebie troszczyć się będzie.” (Mt 6, 34). Niech ten werset przyniesie Wam dzisiaj pokój serca i siłę do działania! 🙏
                             </div>
-                            <img src="lumina_hero_main.jpg" alt="Wschód Słońca" class="post-image" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')">
+                            <img src="lumina_default_cover.jpg" alt="Wschód Słońca" class="post-image" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')">
                             <div class="post-footer">
                                 <button class="post-action-btn liked" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">34</span> Polubień</button>
                                 <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
@@ -2886,7 +2888,7 @@
             pin: '7777',
             visibility: 'public',
             avatar: 'avatar_cezary_official.jpg',
-            cover: 'lumina_hero_main.jpg',
+            cover: 'lumina_default_cover.jpg',
             coverPosY: '50%',
             job: 'Założyciel Christian Culture',
             church: 'Wspólnota Uwielbieniowa',
@@ -2894,7 +2896,7 @@
             verseRef: '— Księga Jozuego 24, 15',
             bio: 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture. Wierzymy, że małżeństwo oparte na Chrystusie jest źródłem niesamowitej siły, pokoju i ewangelizacyjnego świadectwa.',
             tags: ['Muzyka Uwielbienia', 'Wędrówki Górskie', 'Pismo Święte', 'Ewangelizacja', 'Nowe Technologie', 'Głębokie Rozmowy'],
-            photos: ['avatar_cezary_official.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg'],
+            photos: ['avatar_cezary_official.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'],
             posts: [
                 {
                     id: 'post_1',
@@ -2910,7 +2912,7 @@
                     time: 'Wczoraj, 21:15 • 📖 Rozważanie',
                     text: '„Nie troszczcie się zbytnio o jutro, albowiem jutrzejszy dzień sam o siebie troszczyć się będzie.” (Mt 6, 34). Niech ten werset przyniesie Wam dzisiaj pokój serca i siłę do działania! 🙏',
                     likes: 34,
-                    image: 'lumina_hero_main.jpg'
+                    image: 'lumina_default_cover.jpg'
                 }
             ]
         };
@@ -3288,7 +3290,7 @@
         // ── Photos Gallery & Deletion ──
         function renderPhotos() {
             const data = getProfileData();
-            const photos = Array.isArray(data.photos) ? data.photos : ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg'];
+            const photos = Array.isArray(data.photos) ? data.photos : ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'];
             
             // Mini sidebar grid
             const miniGrid = document.getElementById('miniPhotoGrid');
@@ -3330,7 +3332,7 @@
             
             const cur = getProfileData();
             if (!cur.photos || !Array.isArray(cur.photos)) {
-                cur.photos = ['avatar_cezary_official.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg'];
+                cur.photos = ['avatar_cezary_official.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'];
             }
             cur.photos.splice(index, 1);
             try {
@@ -3942,7 +3944,7 @@
                 type: type,
                 title: title,
                 desc: desc,
-                image: attachedCampaignImgDataUrl || 'lumina_hero_main.jpg',
+                image: attachedCampaignImgDataUrl || 'lumina_default_cover.jpg',
                 btnText: btnText,
                 btnUrl: btnUrl,
                 eventDate: eventDate,
@@ -4055,7 +4057,7 @@
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786876692502" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786904999052" defer></script>
     <script src="lumina-notifications.js" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
