@@ -7,7 +7,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   
-  // Domyślne ustawienie zgody na 'denied' (przed uzyskaniem interakcji)
+  // Domyślnie blokujemy cookies do momentu uzyskania zgody
   gtag('consent', 'default', {
     'ad_storage': 'denied',
     'ad_user_data': 'denied',
@@ -15,16 +15,6 @@
     'analytics_storage': 'denied',
     'wait_for_update': 500
   });
-
-  // Automatyczne odnowienie zgody jeśli użytkownik zaakceptował wcześniej
-  if (localStorage.getItem('lumina_cookie_consent') === 'granted') {
-    gtag('consent', 'update', {
-      'ad_storage': 'granted',
-      'ad_user_data': 'granted',
-      'ad_personalization': 'granted',
-      'analytics_storage': 'granted'
-    });
-  }
 </script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-M24C85RG49"></script>
@@ -3639,6 +3629,53 @@
     <script src="lumina-scroll-top.js" defer></script>
     <script src="lumina-bottom-nav.js" defer></script>
     <script src="lumina-notifications.js" defer></script>
+<!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
+<div id="lumina-cookie-banner" style="position: fixed; bottom: 0; left: 0; right: 0; background: rgba(11, 22, 51, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #fff; padding: 16px 20px; z-index: 99999; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(245,158,11,0.3); font-family: inherit; font-size: 13px; gap: 16px; box-shadow: 0 -4px 20px rgba(0,0,0,0.5);">
+    <div style="line-height: 1.4; max-width: 800px;">
+        🕊️ Portal <strong>LUMINA</strong> (Christian Culture) używa plików cookies w celach analitycznych oraz zapewnienia bezpieczeństwa i prawidłowego działania społeczności. Korzystając z portalu, wyrażasz na to zgodę. 
+        <a href="lumina.html" style="color: #f59e0b; text-decoration: underline;">Polityka Prywatności</a>
+    </div>
+    <div style="display: flex; gap: 10px; flex-shrink: 0;">
+        <button type="button" onclick="acceptCookies()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit;">Akceptuję</button>
+        <button type="button" onclick="rejectCookies()" style="background: rgba(255,255,255,0.1); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: inherit;">Odrzuć</button>
+    </div>
+</div>
+
+<script>
+function acceptCookies() {
+    localStorage.setItem('lumina_cookie_consent', 'granted');
+    if (typeof gtag === 'function') {
+        gtag('consent', 'update', {
+            'ad_storage': 'granted',
+            'ad_user_data': 'granted',
+            'ad_personalization': 'granted',
+            'analytics_storage': 'granted'
+        });
+    }
+    const b = document.getElementById('lumina-cookie-banner');
+    if (b) b.style.display = 'none';
+}
+
+function rejectCookies() {
+    localStorage.setItem('lumina_cookie_consent', 'denied');
+    const b = document.getElementById('lumina-cookie-banner');
+    if (b) b.style.display = 'none';
+}
+
+// Sprawdzenie czy użytkownik już podjął decyzję
+if (localStorage.getItem('lumina_cookie_consent')) {
+    const b = document.getElementById('lumina-cookie-banner');
+    if (b) b.style.display = 'none';
+    if (localStorage.getItem('lumina_cookie_consent') === 'granted' && typeof gtag === 'function') {
+        gtag('consent', 'update', {
+            'ad_storage': 'granted',
+            'ad_user_data': 'granted',
+            'ad_personalization': 'granted',
+            'analytics_storage': 'granted'
+        });
+    }
+}
+</script>
 </body>
 </html>
 
