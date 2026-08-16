@@ -67,7 +67,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786866017930"></script>
+    <script type="module" src="lumina-db.js?v=1786866312786"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1543,7 +1543,7 @@
         }
     
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786866017930">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786866312786">
 
     <script>
         if ('serviceWorker' in navigator) {
@@ -1709,27 +1709,40 @@
                     </div><!-- end profile-head-main -->
 
                 
-                <div class="head-actions">
-                    <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" class="btn-action-primary" style="background: linear-gradient(90deg, #dc2626, #991b1b); box-shadow: 0 0 20px rgba(220, 38, 38, 0.45); text-decoration:none;"><i class="fa-solid fa-tower-broadcast"></i> Apokalipsa Live 🔴</a>
-                    <a href="https://www.youtube.com/@StudioDeeS" target="_blank" class="btn-action-primary" style="background: linear-gradient(90deg, #ef4444, #dc2626); text-decoration:none;"><i class="fa-brands fa-youtube"></i> YouTube @StudioDeeS</a>
-                    <a href="https://studiods.pl/" target="_blank" class="btn-action-primary" style="background: linear-gradient(90deg, #0284c7, #38bdf8); text-decoration:none;"><i class="fa-solid fa-globe"></i> studiods.pl</a>
-                    <a href="https://polskieradio.cc/herbatka/index.html" target="_blank" class="btn-action-secondary" style="background: linear-gradient(90deg, #f59e0b, #d97706); color:#fff; border:none; text-decoration:none;"><i class="fa-solid fa-mug-hot"></i> Herbaciarnia ☕</a>
-                    <button class="btn-action-secondary btn-action-gear" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear" style="font-size:1.15rem;"></i></button>
-                    <button class="btn-action-secondary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Kontakt</button>
-                    <!-- 👥 OBSERWUJ / OBSERWUJESZ Z LICZNIKIEM -->
-                    <button type="button" class="btn-action-follow" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(37,99,235,0.35); transition:all 0.25s ease;">
-                        <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
-                        <span id="followBtnText">Obserwuj</span>
-                        <span style="opacity:0.5; font-weight:400;">|</span>
-                        <span id="followCountBadge">392</span>
-                    </button>
+                <div class="head-actions" style="display:flex; flex-direction:column; gap:10px; align-items:flex-start;">
+                    <!-- Rząd 1: Media, Transmisja, Linki Zewnętrzne i Ustawienia -->
+                    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                        <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" class="btn-action-primary" style="background: linear-gradient(90deg, #dc2626, #991b1b); box-shadow: 0 0 20px rgba(220, 38, 38, 0.45); text-decoration:none;"><i class="fa-solid fa-tower-broadcast"></i> Apokalipsa Live 🔴</a>
+                        <a href="https://www.youtube.com/@StudioDeeS" target="_blank" class="btn-action-primary" style="background: linear-gradient(90deg, #ef4444, #dc2626); text-decoration:none;"><i class="fa-brands fa-youtube"></i> YouTube @StudioDeeS</a>
+                        <a href="https://studiods.pl/" target="_blank" class="btn-action-primary" style="background: linear-gradient(90deg, #0284c7, #38bdf8); text-decoration:none;"><i class="fa-solid fa-globe"></i> studiods.pl</a>
+                        <a href="https://polskieradio.cc/herbatka/index.html" target="_blank" class="btn-action-secondary" style="background: linear-gradient(90deg, #f59e0b, #d97706); color:#fff; border:none; text-decoration:none;"><i class="fa-solid fa-mug-hot"></i> Herbaciarnia ☕</a>
+                        <button class="btn-action-secondary btn-action-gear" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear" style="font-size:1.15rem;"></i></button>
+                    </div>
 
-                    <!-- ❤️ POLUBIENIE PROFILU Z LICZNIKIEM -->
-                    <button type="button" class="btn-action-heart" id="btnProfileHeart" onclick="toggleProfileHeart(this)" title="Polub Profil" style="display:inline-flex; align-items:center; gap:6px; padding:0 14px; height:42px; border-radius:24px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer; font-size:0.84rem; font-weight:700; transition:all 0.25s ease;">
-                        <i class="fa-solid fa-heart" id="heartBtnIcon" style="color:#cbd5e1; font-size:0.95rem;"></i>
-                        <span id="heartCountBadge">148</span>
-                    </button>
-                    <button class="btn-action-secondary" onclick="copyProfileLink()" title="Udostępnij Profil"><i class="fa-solid fa-share-nodes"></i></button>
+                    <!-- Rząd 2: Relacje, Obserwowanie, Polubienia, Kontakt i Udostępnianie -->
+                    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                        <!-- 👥 OBSERWUJ / OBSERWUJESZ Z LICZNIKIEM -->
+                        <button type="button" class="btn-action-follow" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(37,99,235,0.35); transition:all 0.25s ease;">
+                            <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
+                            <span id="followBtnText">Obserwuj</span>
+                            <span style="opacity:0.5; font-weight:400;">|</span>
+                            <span id="followCountBadge">392</span>
+                        </button>
+
+                        <!-- ❤️ POLUB / POLUBIONO Z LICZNIKIEM (SPÓJNY STYL) -->
+                        <button type="button" class="btn-action-heart" id="btnProfileHeart" onclick="toggleProfileHeart(this)" title="Polub Profil" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#db2777,#be185d); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(219,39,119,0.35); transition:all 0.25s ease;">
+                            <i class="fa-solid fa-heart" id="heartBtnIcon"></i>
+                            <span id="heartBtnText">Polub</span>
+                            <span style="opacity:0.5; font-weight:400;">|</span>
+                            <span id="heartCountBadge">148</span>
+                        </button>
+
+                        <!-- ✉️ KONTAKT -->
+                        <button class="btn-action-secondary" onclick="openMessageModal()" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; font-size:0.84rem; font-weight:700; cursor:pointer;"><i class="fa-solid fa-paper-plane"></i> Kontakt</button>
+
+                        <!-- 🔗 UDOSTĘPNIJ -->
+                        <button class="btn-action-secondary" onclick="copyProfileLink()" title="Udostępnij Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-share-nodes"></i></button>
+                    </div>
                 </div>
 </div>
             <!-- Profile Nav Tabs -->
@@ -3393,7 +3406,7 @@ function toggleComposerVideoBox() {
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786866017930" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786866312786" defer></script>
     <script src="lumina-notifications.js" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
