@@ -1833,12 +1833,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
         }
     
         
-    
-        /* HIDE OPERATOR PANEL FOR PUBLIC VIEWERS */
-        .operator-panel, .toggle-panel-trigger, .live-outer-controls, #live-outer-controls {
-            display: none !important;
-        }
-</style>
+    </style>
     <script>
         // initStream in HEAD - global before any onclick fires
         function initStream() {
@@ -2193,6 +2188,7 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                 const w = window.innerWidth || document.documentElement.clientWidth || 0;
                 const h = window.innerHeight || document.documentElement.clientHeight || 0;
                 
+                // If dimensions are not ready yet, default to a safe scale and top/left 0
                 if (w <= 0 || h <= 0) {
                     container.style.transform = "scale(0.29)";
                     container.style.left = "0px";
@@ -2204,13 +2200,13 @@ body.za-polske-wallpaper #livePrayerOverlay { position: fixed !important; bottom
                 const scaleY = h / targetH;
                 const scale = Math.min(scaleX, scaleY);
                 
-                container.style.transformOrigin = "top left";
                 container.style.transform = "scale(" + scale + ")";
                 
+                // Center the container within window
                 const leftOffset = (w - (targetW * scale)) / 2;
                 const topOffset = (h - (targetH * scale)) / 2;
-                container.style.left = Math.max(0, leftOffset) + "px";
-                container.style.top = Math.max(0, topOffset) + "px";
+                container.style.left = leftOffset + "px";
+                container.style.top = topOffset + "px";
             }
             window.addEventListener("resize", resizeViewport);
             resizeViewport();
@@ -2474,13 +2470,10 @@ function getWeatherPreset(city) {
                 
                 const greetingsText = `<span class="ticker-announcement">ZA CHWILĘ: GŁOS WIDZÓW 📺</span> <span class="ticker-highlight-msg">💬 Pozdrawiamy wszystkich uczestników wspólnej modlitwy! Niech ten dzień przyniesie Wam Boży pokój ~Redakcja CC &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 💬 Dziękujemy za Wasze wiadomości i codzienne wsparcie naszej misji. Jesteście wspaniali! ~Zespół Christian Culture</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
 
-                const specialRds = window.mcSpecialRdsMessage || "";
                 const defaultMissionText = `
-                    ${specialRds}
                     ${greetingsText}
                      <span style="background: #dc143c; color: #ffffff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">🇵🇱 PILNE WEZWANIE DO MODLITWY 🙏🔥</span> 
                     <span style="background: #FFCC00; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">WWW.POLSKIERADIO.CC | CCLITE.PL</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                    <span style="background: linear-gradient(135deg, #00C6FF, #0072FF); color: #ffffff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block; box-shadow: 0 0 10px rgba(0,198,255,0.5);">📱 APLIKACJA WEBOWA CHRISTIAN CULTURE: CHRISTIAN-CULTURE.WEB.APP</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     📧 NAPISZ DO NAS: <strong>polskiercctv@gmail.com</strong> | <strong>radiochristianculture@gmail.com</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     📖 BEZPŁATNA BIBLIA DLA KAŻDEGO — wyślij SMS o treści: <strong>BIBLIA</strong> pod numer <strong>507 821 789</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     📱 DOŁĄCZ NA WHATSAPP — szczegóły w bocznej ramce &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -3297,26 +3290,7 @@ function getWeatherPreset(city) {
                     initCtaRotation();
                     initTickerFlipper();
                     fetchRealWeather();
-                    setInterval(fetchRealWeather, 900000); 
-        // --- MISSION CONTROL: GLOBAL CONFIG LISTENER ---
-        onSnapshot(doc(db, "mission_control_live", "global_config"), (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                const liveBadges = document.querySelectorAll(".live-badge");
-                liveBadges.forEach(badge => {
-                    if (data.isLive) badge.style.display = "flex";
-                    else badge.style.display = "none";
-                });
-                if (data.tickerMessage && data.tickerMessage.trim()) {
-                    window.mcSpecialRdsMessage = `<span style="background: #FF0033; color: #FFFFFF; padding: 2px 10px; border-radius: 4px; font-weight: 900; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block; box-shadow: 0 0 10px rgba(255,0,51,0.6);"><i class="fa-solid fa-bullhorn"></i> WIADOMOŚĆ SPECJALNA RDS</span> <span style="color: #FFD700; font-weight: 800; margin-right: 25px;">${data.tickerMessage}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
-                } else {
-                    window.mcSpecialRdsMessage = "";
-                }
-                if (typeof window.loadNewsMarquee === "function") {
-                    window.loadNewsMarquee();
-                }
-            }
-        });
+                    setInterval(fetchRealWeather, 900000); // Refresh weather from API every 15 minutes
                     loadNewsMarquee();
                     setInterval(loadNewsMarquee, 600000); // Refresh news headlines every 10 minutes
                     runQrSidecarLoop(); // Start weather/Patronite QR sidecar loop
@@ -3550,21 +3524,6 @@ function getWeatherPreset(city) {
     function autoStartIfEmbedded() {
         var isIframe = (window.self !== window.top);
         var isAutoplay = new URLSearchParams(window.location.search).get('autoplay') === '1';
-        var isMuted = new URLSearchParams(window.location.search).get('muted') === '1';
-
-        if (isMuted) {
-            var overlay = document.getElementById('startOverlay');
-            if (overlay) {
-                overlay.style.display = 'none';
-                overlay.classList.add('hidden');
-            }
-            var audio = document.getElementById('stream-audio');
-            if (audio) {
-                audio.muted = true;
-            }
-            return;
-        }
-
         if (isIframe || isAutoplay) {
             var overlay = document.getElementById('startOverlay');
             if (overlay) {
@@ -3586,23 +3545,6 @@ function getWeatherPreset(city) {
     setTimeout(autoStartIfEmbedded, 200);
     setTimeout(autoStartIfEmbedded, 800);
     setTimeout(autoStartIfEmbedded, 2000);
-
-    window.addEventListener('message', function(e) {
-        if (!e || !e.data) return;
-        var type = e.data.type || e.data;
-        var audio = document.getElementById('stream-audio');
-        if (type === 'MUTE_AUDIO' || type === 'mute') {
-            if (audio) {
-                audio.muted = true;
-                audio.pause();
-            }
-        } else if (type === 'UNMUTE_AUDIO' || type === 'unMute') {
-            if (audio) {
-                audio.muted = false;
-                audio.play().catch(function(){});
-            }
-        }
-    });
 })();
 </script>
 
