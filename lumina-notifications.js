@@ -58,7 +58,7 @@
 
             const html = `
             <div id="lumina-notification-center" class="notif-wrapper">
-                <button id="lumina-notif-btn" class="notif-bell-btn" title="Powiadomienia LUMINA" onclick="window.LuminaNotifications.toggleDropdown(event)">
+                <button type="button" id="lumina-notif-btn" class="notif-bell-btn" title="Powiadomienia LUMINA" onclick="window.LuminaNotifications.toggleDropdown(event)">
                     <i class="fa-solid fa-bell"></i>
                     <span id="notif-badge" class="notif-badge" style="display:none;">0</span>
                 </button>
@@ -69,16 +69,15 @@
                             <i class="fa-solid fa-bell" style="color:#f59e0b;"></i>
                             <h4>Powiadomienia</h4>
                         </div>
-                        <button onclick="window.LuminaNotifications.markAllAsRead()" class="notif-mark-read">Oznacz jako przeczytane</button>
+                        <button type="button" onclick="window.LuminaNotifications.markAllAsRead()" class="notif-mark-read">Oznacz jako przeczytane</button>
                     </div>
                     <div id="notif-push-bar" style="padding:10px 14px; background:rgba(245,158,11,0.08); border-bottom:1px solid rgba(255,255,255,0.07); display:flex; align-items:center; justify-content:space-between; gap:10px;">
-                    </div>
-                        <button onclick="window.LuminaNotifications.markAllAsRead()" class="notif-mark-read">Oznacz jako przeczytane</button>
                     </div>
                     <div id="notif-list" class="notif-list">
                         <div class="notif-empty">Brak nowych powiadomień ✨</div>
                     </div>
                 </div>
+            </div>
             </div>
 
             <style>
