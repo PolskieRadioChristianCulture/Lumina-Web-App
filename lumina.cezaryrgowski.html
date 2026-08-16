@@ -1808,8 +1808,32 @@
             }
         }
 
+    
+        /* Unconditional Edit Buttons & Badges for Profile Owner */
+        .card-edit-btn {
+            display: inline-flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            cursor: pointer !important;
+        }
+
+        .photo-delete-badge {
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            cursor: pointer !important;
+            z-index: 25 !important;
+        }
+
+        .avatar-edit-overlay, .cover-edit-btn {
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            cursor: pointer !important;
+        }
+
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786858965891">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786859303562">
 </head>
 <body>
 
@@ -2207,7 +2231,8 @@
                             <div class="post-footer">
                                 <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">19</span> Polubień</button>
                                 <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
-                                <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i> Napisz</button>
+                                <button class="post-action-btn" onclick="openEditPostModal('${p.id || idx}')" title="Edytuj wpis"><i class="fa-solid fa-pencil"></i> Edytuj</button>
+     <button class="post-action-btn" style="color:#f43f5e;" onclick="deletePostPrompt('${p.id || idx}')" title="Usuń wpis"><i class="fa-solid fa-trash-can"></i> Usuń</button>
                             </div>
                         </article>
 
@@ -3119,7 +3144,7 @@
                     miniGrid.innerHTML = photos.slice(0, 6).map((src, idx) => `
                         <div style="position:relative; border-radius:10px; overflow:hidden; height:90px; background:#1e293b;">
                             <img src="${src}" alt="Photo" class="photo-thumb" style="width:100%;height:100%;object-fit:cover;" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
-                            ${isOwnerMode ? `<button type="button" class="photo-delete-badge" style="display:flex; width:26px; height:26px; top:4px; right:4px; font-size:0.72rem; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                            <button type="button" class="photo-delete-badge" style="display:flex; width:26px; height:26px; top:4px; right:4px; font-size:0.72rem; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     `).join('');
                 }
@@ -3134,7 +3159,7 @@
                     fullGrid.innerHTML = photos.map((src, idx) => `
                         <div class="photo-item-box" style="position:relative;">
                             <img src="${src}" alt="Photo" class="photo-item-img" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
-                            ${isOwnerMode ? `<button type="button" class="photo-delete-badge" style="display:flex; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie z galerii"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                            <button type="button" class="photo-delete-badge" style="display:flex; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie z galerii"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     `).join('');
                 }
@@ -3146,34 +3171,25 @@
                 event.stopPropagation();
                 event.preventDefault();
             }
-            if (!isOwnerMode) {
-                if (!requestOwnerAccess(() => deletePhoto(null, index))) return;
-            }
             if (!confirm('Czy na pewno chcesz usunąć to zdjęcie z galerii?')) return;
             
             const cur = getProfileData();
             if (!cur.photos || !Array.isArray(cur.photos)) {
-                cur.photos = ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg'];
+                cur.photos = ['avatar_cezary_official.jpg', 'avatar_widget_tomek.jpg', 'lumina_hero_main.jpg'];
             }
             cur.photos.splice(index, 1);
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
                 localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
-                localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
-                localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
-            } catch(e) {}
+            } catch (e) {}
 
-            // Sync deletion to Firestore Cloud
-            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+            if (window.LuminaDB) {
                 try {
                     await window.LuminaDB.saveProfileToCloud('cezaryrgowski', cur);
-                } catch(e) {
-                    console.warn('Sync photo delete to cloud:', e);
-                }
+                } catch (err) {}
             }
-
             renderPhotos();
-            showToast('Zdjęcie zostało pomyślnie usunięte z Twojego profilu! 🗑️✨');
+            showToast('Zdjęcie zostało trwale usunięte z Twojej galerii ✨');
         }
 
         // ── Posts Stream, Editing & Deletion ──
@@ -3486,6 +3502,25 @@
             e.target.value = '';
         }
 
+        
+        async function deletePostPrompt(postId) {
+            if (!confirm('Czy na pewno chcesz usunąć ten wpis z tablicy?')) return;
+            const cur = getProfileData();
+            if (!cur.posts || !Array.isArray(cur.posts)) return;
+            cur.posts = cur.posts.filter((p, idx) => (p.id !== postId && String(idx) !== String(postId)));
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+            } catch (e) {}
+            if (window.LuminaDB) {
+                try {
+                    await window.LuminaDB.saveProfileToCloud('cezaryrgowski', cur);
+                } catch (err) {}
+            }
+            renderPosts();
+            showToast('Wpis został usunięty z Twojej tablicy ✨');
+        }
+    
         function openEditProfileModal(section) {
             const data = getProfileData();
             document.getElementById('editName').value = data.name;
