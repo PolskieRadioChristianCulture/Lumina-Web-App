@@ -52,7 +52,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786857497941"></script>
+    <script type="module" src="lumina-db.js?v=1786858557533"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -895,11 +895,47 @@
         }
 
         /* ──────────────────── MAIN 2-COLUMN LAYOUT ──────────────────── */
+        /* ══════════ 3-COLUMN PANORAMIC FOUNDER LAYOUT ══════════ */
         .profile-body-grid {
             display: grid;
-            grid-template-columns: 360px 1fr;
-            gap: 24px;
+            grid-template-columns: 340px 1fr 310px;
+            gap: 22px;
             margin-top: 24px;
+            align-items: start;
+        }
+
+        .left-founder-wing, .right-founder-wing {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .timeline-area {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .profile-body-grid {
+                grid-template-columns: 320px 1fr;
+            }
+            .right-founder-wing {
+                grid-column: 1 / -1;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 18px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .profile-body-grid {
+                grid-template-columns: 1fr;
+            }
+            .right-founder-wing {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* ──────────────────── MOBILE BOTTOM NAVIGATION BAR ──────────────────── */
@@ -1774,7 +1810,7 @@
         }
 
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786858195238">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786858557533">
 </head>
 <body>
 
@@ -1942,42 +1978,7 @@
         </section>
 
 
-            <!-- ══════════ EXCLUSIVE FOUNDER TELEMETRY & ANALYTICS WINGS (OWNER ONLY) ══════════ -->
-            <div class="founder-hud-container" id="founderAnalyticsHud">
-                
-                <!-- Left Wing: Community Demographics & Realtime Telemetry -->
-                <div class="hud-card">
-                    <div class="hud-header">
-                        <div class="hud-title">
-                            <i class="fa-solid fa-chart-pie" style="color:#facc15;"></i> Telemetria Społeczności LUMINA
-                        </div>
-                        <div class="hud-badge-live">
-                            <span class="live-dot"></span> LIVE TELEMETRY
-                        </div>
-                    </div>
-
-                    <!-- Stats Grid 1 -->
-                    <div class="hud-stats-grid">
-                        <div class="hud-stat-box" title="Łączna liczba zarejestrowanych członków">
-                            <div class="hud-stat-icon-3d icon-blue">
-                                <i class="fa-solid fa-users"></i>
-                            </div>
-                            <div class="hud-stat-info">
-                                <span class="hud-stat-num" id="hudTotalMembers">1 482</span>
-                                <span class="hud-stat-label">Wszyscy Członkowie</span>
-                            </div>
-                        </div>
-
-                        <div class="hud-stat-box" title="Zalogowani w tej chwili na portalu">
-                            <div class="hud-stat-icon-3d icon-green">
-                                <i class="fa-solid fa-wifi"></i>
-                            </div>
-                            <div class="hud-stat-info">
-                                <span class="hud-stat-num" id="hudOnlineRealtime" style="color:#4ade80;">142</span>
-                                <span class="hud-stat-label">Zalogowani Online</span>
-                            </div>
-                        </div>
-                    </div>
+            
 
                     <!-- Gender Ratio Diagram -->
                     <div class="gender-ratio-card">
@@ -2091,10 +2092,94 @@
 
         <!-- Profile 2-Column Grid -->
         <div class="profile-body-grid">
-            
-            <!-- Left Sidebar -->
-            <aside>
-                
+
+            <!-- ══════════ LEWY BOK (LEWA KOLUMNA TELEMETRII & DANYCH) ══════════ -->
+            <aside class="left-founder-wing">
+
+                <!-- 👑 Telemetria Społeczności na Żywo -->
+                <div class="hud-card" style="margin-bottom:0;">
+                    <div class="hud-header">
+                        <div class="hud-title">
+                            <i class="fa-solid fa-chart-pie" style="color:#facc15;"></i> Telemetria Społeczności
+                        </div>
+                        <div class="hud-badge-live">
+                            <span class="live-dot"></span> LIVE
+                        </div>
+                    </div>
+
+                    <div class="hud-stats-grid">
+                        <div class="hud-stat-box" title="Łączna liczba zarejestrowanych członków">
+                            <div class="hud-stat-icon-3d icon-blue">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div class="hud-stat-info">
+                                <span class="hud-stat-num" id="hudTotalMembers">1 482</span>
+                                <span class="hud-stat-label">Wszyscy Członkowie</span>
+                            </div>
+                        </div>
+
+                        <div class="hud-stat-box" title="Zalogowani w tej chwili na portalu">
+                            <div class="hud-stat-icon-3d icon-green">
+                                <i class="fa-solid fa-wifi"></i>
+                            </div>
+                            <div class="hud-stat-info">
+                                <span class="hud-stat-num" id="hudOnlineRealtime" style="color:#4ade80;">142</span>
+                                <span class="hud-stat-label">Zalogowani Online</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gender Ratio Diagram -->
+                    <div class="gender-ratio-card">
+                        <div class="gender-labels">
+                            <span class="gender-female"><i class="fa-solid fa-venus"></i> Kobiety: <b id="hudFemaleCount">800 (54%)</b></span>
+                            <span class="gender-male"><i class="fa-solid fa-mars"></i> Mężczyźni: <b id="hudMaleCount">682 (46%)</b></span>
+                        </div>
+                        <div class="gender-bar-wrap">
+                            <div class="gender-bar-female" id="hudFemaleBar" style="width: 54%;" title="Kobiety: 54%"></div>
+                            <div class="gender-bar-male" id="hudMaleBar" style="width: 46%;" title="Mężczyźni: 46%"></div>
+                        </div>
+                    </div>
+
+                    <!-- 7-Day Activity Chart -->
+                    <div class="activity-chart-wrap">
+                        <div class="chart-title-row">
+                            <span><i class="fa-solid fa-chart-simple" style="color:#38bdf8;"></i> Wzrost Profili (7 Dni)</span>
+                            <span id="hudTodayCount" style="color:#22c55e; font-size:0.75rem;"><i class="fa-solid fa-arrow-trend-up"></i> +12 Dzisiaj</span>
+                        </div>
+                        <div class="bar-chart-flex">
+                            <div class="chart-col">
+                                <div class="chart-bar" id="barMon" style="height: 42%;" title="Poniedziałek"></div>
+                                <span class="chart-day">Pn</span>
+                            </div>
+                            <div class="chart-col">
+                                <div class="chart-bar" id="barTue" style="height: 58%;" title="Wtorek"></div>
+                                <span class="chart-day">Wt</span>
+                            </div>
+                            <div class="chart-col">
+                                <div class="chart-bar" id="barWed" style="height: 50%;" title="Środa"></div>
+                                <span class="chart-day">Śr</span>
+                            </div>
+                            <div class="chart-col">
+                                <div class="chart-bar" id="barThu" style="height: 75%;" title="Czwartek"></div>
+                                <span class="chart-day">Czw</span>
+                            </div>
+                            <div class="chart-col">
+                                <div class="chart-bar" id="barFri" style="height: 68%;" title="Piątek"></div>
+                                <span class="chart-day">Pt</span>
+                            </div>
+                            <div class="chart-col">
+                                <div class="chart-bar" id="barSat" style="height: 88%;" title="Sobota"></div>
+                                <span class="chart-day">So</span>
+                            </div>
+                            <div class="chart-col">
+                                <div class="chart-bar today" id="barSun" style="height: 60%;" title="Niedziela (Dziś)"></div>
+                                <span class="chart-day" style="color:#facc15;">Nd</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- About Card -->
                 <div class="sidebar-card">
                     <div class="card-title">
@@ -2168,7 +2253,7 @@
                         <button class="card-edit-btn" onclick="triggerGalleryUpload()" title="Wgraj nowe zdjęcie z dysku"><i class="fa-solid fa-plus"></i></button>
                     </div>
                     <div class="photo-grid-mini" id="miniPhotoGrid">
-                        <img src="avatar_new1.jpg" alt="Photo" class="photo-thumb" id="miniPhoto1" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
+                        <img src="avatar_cezary_official.jpg" alt="Photo" class="photo-thumb" id="miniPhoto1" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
                         <img src="avatar_widget_tomek.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
                         <img src="lumina_hero_main.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
                     </div>
@@ -2176,7 +2261,7 @@
 
             </aside>
 
-            <!-- Right Timeline Content -->
+            <!-- Center Profile & Timeline Area -->
             <section class="timeline-area">
                 
                 <!-- Tab: Tablica & Wpisy -->
@@ -3444,17 +3529,14 @@
         }
 
         function triggerAvatarUpload() {
-            if (!requestOwnerAccess(triggerAvatarUpload)) return;
             document.getElementById('avatarFileInput').click();
         }
 
         function triggerGalleryUpload() {
-            if (!requestOwnerAccess(triggerGalleryUpload)) return;
             document.getElementById('galleryFileInput').click();
         }
 
         function triggerPostImageUpload() {
-            if (!requestOwnerAccess(triggerPostImageUpload)) return;
             document.getElementById('postImageFileInput').click();
         }
 
@@ -3521,7 +3603,6 @@
         }
 
         function openEditProfileModal(section) {
-            if (!requestOwnerAccess(() => openEditProfileModal(section))) return;
             const data = getProfileData();
             document.getElementById('editName').value = data.name;
             document.getElementById('editAge').value = data.age;
@@ -3693,7 +3774,6 @@
         let attachedCampaignImgDataUrl = null;
 
         function openCampaignModal(type) {
-            if (!requestOwnerAccess(() => openCampaignModal(type))) return;
             selectCampaignType(type || 'ad');
             document.getElementById('campaignModal').classList.add('open');
             setTimeout(() => document.getElementById('campTitleInput').focus(), 150);
