@@ -100,9 +100,9 @@ export function applyLuminaTranslations() {
         }
     });
 
-    // Update Flag Buttons
+    // Update Flag Buttons (Flag Only - No Text)
     document.querySelectorAll('.lang-switcher-btn').forEach((btn) => {
-        btn.textContent = currentLuminaLang === 'pl' ? '🇵🇱 PL' : '🇬🇧 EN';
+        btn.textContent = currentLuminaLang === 'pl' ? '🇵🇱' : '🇬🇧';
     });
 }
 

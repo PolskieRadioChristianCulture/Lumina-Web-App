@@ -122,19 +122,43 @@ img, video, iframe, canvas, svg {
     justify-content: center !important;
     transition: all 0.2s ease !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+    outline: none !important;
 }
 
 .lang-switcher-btn {
     width: 36px !important;
+    min-width: 36px !important;
     padding: 0 !important;
     font-size: 1.15rem !important;
     border-radius: 50% !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
 }
 
-.nav-back-icon-btn {
+.nav-back-icon-btn,
+.nav-back-icon-btn:hover,
+.nav-back-icon-btn:focus,
+.nav-back-icon-btn:visited,
+.nav-back-icon-btn:active {
     width: 36px !important;
+    min-width: 36px !important;
     padding: 0 !important;
     border-radius: 50% !important;
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+}
+
+.nav-back-icon-btn i,
+.nav-back-icon-btn * {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important;
 }
 
 @media (max-width: 900px) {
