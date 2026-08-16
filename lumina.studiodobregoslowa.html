@@ -52,7 +52,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786859669999"></script>
+    <script type="module" src="lumina-db.js?v=1786859784986"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1833,7 +1833,7 @@
         }
 
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786859669999">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786859784986">
 </head>
 <body>
 
@@ -1984,7 +1984,8 @@
 
                 
                 <div class="head-actions">
-                    <a href="https://www.youtube.com/@StudioDeeS" target="_blank" class="btn-action-primary" style="background: linear-gradient(90deg, #ef4444, #dc2626); box-shadow: 0 4px 18px rgba(239, 68, 68, 0.4); text-decoration:none;"><i class="fa-brands fa-youtube"></i> YouTube @StudioDeeS</a>
+                    <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" class="btn-action-primary" style="background: linear-gradient(90deg, #dc2626, #b91c1c); box-shadow: 0 0 20px rgba(220, 38, 38, 0.5); text-decoration:none;"><i class="fa-solid fa-tower-broadcast" style="animation: pulse 1.5s infinite;"></i> Apokalipsa Live 🔴</a>
+    <a href="https://www.youtube.com/@StudioDeeS" target="_blank" class="btn-action-primary" style="background: linear-gradient(90deg, #ef4444, #dc2626); text-decoration:none;"><i class="fa-brands fa-youtube"></i> YouTube</a>
                     <a href="https://studiods.pl/" target="_blank" class="btn-action-primary" style="background: linear-gradient(90deg, #3b82f6, #06b6d4); box-shadow: 0 4px 18px rgba(6, 182, 212, 0.4); text-decoration:none;"><i class="fa-solid fa-globe"></i> studiods.pl</a>
                     <a href="https://polskieradio.cc/herbatka/index.html" target="_blank" class="btn-action-secondary" style="background: linear-gradient(90deg, #f59e0b, #d97706); color:#fff; border:none; text-decoration:none;"><i class="fa-solid fa-mug-hot"></i> Herbaciarnia ☕</a>
                     <button class="btn-action-primary" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);" onclick="openEditProfileModal()"><i class="fa-solid fa-pen-to-square"></i> Edytuj Profil</button>
@@ -1995,7 +1996,8 @@
 </div>
             <!-- Profile Nav Tabs -->
             <div class="profile-nav-tabs">
-                <button class="tab-btn active" onclick="switchTab('tab-feed', this)"><i class="fa-solid fa-rss"></i> Tablica & Wpisy</button>
+                <button class="tab-btn active" onclick="switchTab('tab-live', this)"><i class="fa-solid fa-tower-broadcast" style="color:#ef4444;"></i> Kanał Nadawczy Live</button>
+     <button class="tab-btn" onclick="switchTab('tab-feed', this)"><i class="fa-solid fa-rss"></i> Tablica & Wpisy</button>
                 <button class="tab-btn" onclick="switchTab('tab-about', this)"><i class="fa-solid fa-user"></i> Świadectwo & O Mnie</button>
                 <button class="tab-btn" onclick="switchTab('tab-photos', this)"><i class="fa-solid fa-images"></i> Galeria Zdjęć</button>
                 <button class="tab-btn" onclick="switchTab('tab-faith', this)"><i class="fa-solid fa-book-bible"></i> Wartości & Wiara</button>
@@ -2182,7 +2184,49 @@
             <section class="timeline-area">
                 
                 <!-- Tab: Tablica & Wpisy -->
-                <div id="tab-feed" class="tab-content-pane">
+                
+                <!-- 🔴 DEDYKOWANY KANAŁ NADAWCZY LIVE: APOKALIPSA - KSIĘGA NADZIEI -->
+                <div id="tab-live" class="tab-content-pane" style="display:block;">
+                    <div class="sidebar-card" style="margin-bottom:22px; padding: 20px; border: 2px solid rgba(220,38,38,0.5); background: linear-gradient(145deg, rgba(30,5,10,0.95), rgba(10,15,30,0.98)); box-shadow: 0 10px 35px rgba(220,38,38,0.25);">
+                        <div class="card-title" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <span style="position:relative; display:flex; height:12px; width:12px;">
+                                    <span style="position:absolute; inset:0; border-radius:50%; background:#ef4444; opacity:0.75; animation:ping 1.5s cubic-bezier(0,0,0.2,1) infinite;"></span>
+                                    <span style="position:relative; display:inline-flex; border-radius:50%; height:12px; width:12px; background:#dc2626;"></span>
+                                </span>
+                                <span style="color:#fff; font-weight:800; font-size:1.05rem; font-family:'Outfit',sans-serif;">
+                                    Kanał Nadawczy: <span style="background:linear-gradient(90deg, #facc15, #f59e0b); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Apokalipsa: Księga Nadziei</span>
+                                </span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <button type="button" onclick="toggleIframeFullscreen()" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; padding:6px 12px; border-radius:10px; font-size:0.78rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                                    <i class="fa-solid fa-expand"></i> Pełny Ekran
+                                </button>
+                                <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" style="background:linear-gradient(90deg,#dc2626,#991b1b); color:#fff; padding:6px 14px; border-radius:10px; font-size:0.78rem; font-weight:800; text-decoration:none; display:flex; align-items:center; gap:6px; box-shadow:0 0 15px rgba(220,38,38,0.4);">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz w Nowej Karcie
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- 16:9 Responsive Broadcast Screen Frame -->
+                        <div id="livePlayerFrameWrap" style="position:relative; width:100%; aspect-ratio:16/9; border-radius:16px; overflow:hidden; border:2px solid rgba(212,175,55,0.35); box-shadow:0 12px 36px rgba(0,0,0,0.8); background:#050508;">
+                            <iframe id="apokalipsaLiveIframe" src="apokalipsa-ksiega-nadziei-live.html" style="width:100%; height:100%; border:none; display:block;" allow="autoplay; fullscreen; encrypted-media"></iframe>
+                        </div>
+
+                        <!-- Live Stream Bar & Info -->
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.1); flex-wrap:wrap; gap:10px;">
+                            <div style="font-size:0.82rem; color:#cbd5e1; display:flex; align-items:center; gap:8px;">
+                                <i class="fa-solid fa-circle-play" style="color:#22c55e;"></i> Emisja Ciągła • Kurs Biblijny • Radio Christian Culture TV
+                            </div>
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <span style="font-size:0.76rem; color:#facc15; font-weight:700;"><i class="fa-solid fa-signal"></i> Jakość HD 1080p</span>
+                                <span style="font-size:0.76rem; color:#86efac; font-weight:700;"><i class="fa-solid fa-lock-open"></i> Otwarta Emisja</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-feed" class="tab-content-pane" style="display:none;">
 
                     <!-- 🎬 Studio Dobrego Słowa Multimedia & YouTube Hub -->
                     <div class="sidebar-card" style="margin-bottom: 20px; border: 1px solid rgba(239, 68, 68, 0.4); background: linear-gradient(145deg, rgba(35, 10, 20, 0.9), rgba(15, 23, 42, 0.95));">
@@ -3569,6 +3613,19 @@
             showToast('Wpis został usunięty z Twojej tablicy ✨');
         }
     
+        
+        function toggleIframeFullscreen() {
+            const wrap = document.getElementById('livePlayerFrameWrap');
+            if (!wrap) return;
+            if (!document.fullscreenElement) {
+                if (wrap.requestFullscreen) wrap.requestFullscreen();
+                else if (wrap.webkitRequestFullscreen) wrap.webkitRequestFullscreen();
+                else if (wrap.msRequestFullscreen) wrap.msRequestFullscreen();
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
         function openEditProfileModal(section) {
             const data = getProfileData();
             document.getElementById('editName').value = data.name;
