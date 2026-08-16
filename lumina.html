@@ -1671,11 +1671,11 @@
             </div>
 
             <div class="user-nav-profile" id="userNavProfile">
-                <img src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar">
+                <img src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar" onclick="window.location.href='lumina.cezaryrgowski.html'" title="Mój Profil">
                 <span class="user-nav-name" id="userNavName">Użytkownik</span>
                 <button class="btn-nav-logout" onclick="handleLogout()" title="Wyloguj"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
-            <button type="button" class="lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" style="padding:7px 12px; border-radius:20px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#fff; font-weight:800; font-size:0.8rem; cursor:pointer; font-family:inherit; transition:all 0.2s;">🇵🇱 PL</button>
+            <button type="button" class="lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" title="Zmień język">🇵🇱</button>
             <button class="btn-nav-cta" id="authCtaBtn" onclick="openAuth()" title="Zaloguj / Rejestracja"><i class="fa-solid fa-arrow-right-to-bracket"></i> <span class="btn-nav-cta-text">Zaloguj / Rejestracja</span></button>
         </div>
     </nav>

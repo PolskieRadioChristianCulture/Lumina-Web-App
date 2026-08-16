@@ -97,8 +97,47 @@ img, video, iframe, canvas, svg {
     -webkit-overflow-scrolling: touch !important;
 }
 
-/* ── 7. ULTRA-CLEAN MOBILE TOP NAVBAR (ICONS-ONLY STANDARD) ── */
-@media (max-width: 768px) {
+/* ── 7. ULTRA-CLEAN UNIFIED TOP NAVBAR (ICONS-ONLY STANDARD) ── */
+.lumina-nav, .profile-navbar, .header-container {
+    background: rgba(9, 14, 30, 0.92) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Unified style for all navbar icon buttons */
+.nav-radio-play,
+.nav-notif-btn, 
+#notif-bell-btn,
+.lang-switcher-btn,
+.nav-back-icon-btn,
+.btn-nav-cta {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    color: #ffffff !important;
+    height: 36px !important;
+    border-radius: 18px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.lang-switcher-btn {
+    width: 36px !important;
+    padding: 0 !important;
+    font-size: 1.15rem !important;
+    border-radius: 50% !important;
+}
+
+.nav-back-icon-btn {
+    width: 36px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+}
+
+@media (max-width: 900px) {
     .lumina-nav, .profile-navbar, .header-container {
         padding: 8px 12px !important;
         gap: 8px !important;
@@ -107,12 +146,12 @@ img, video, iframe, canvas, svg {
         align-items: center !important;
     }
 
-    /* Hide desktop navigation links */
+    /* Hide desktop links */
     .lumina-nav .nav-links {
         display: none !important;
     }
 
-    /* Hide text descriptions in header widgets */
+    /* Hide text labels in header widgets */
     .nav-radio-info, 
     .sound-bars,
     .nav-radio-sub,
@@ -121,71 +160,60 @@ img, video, iframe, canvas, svg {
         display: none !important;
     }
 
-    /* Compact Radio CC widget */
+    /* Compact Radio CC widget - single icon circle */
     .nav-radio-pill {
-        padding: 3px !important;
-        min-width: 34px !important;
-        width: 34px !important;
-        height: 34px !important;
+        padding: 0 !important;
+        min-width: 36px !important;
+        width: 36px !important;
+        height: 36px !important;
         border-radius: 50% !important;
-        display: flex !important;
+        background: rgba(255, 255, 255, 0.07) !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+        gap: 0 !important;
+    }
+
+    .nav-radio-play {
+        width: 100% !important;
+        height: 100% !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        font-size: 0.85rem !important;
+        color: #facc15 !important;
+    }
+
+    /* Clean Avatar Only on Mobile (No duplicate logout icon) */
+    .user-nav-profile {
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
         gap: 0 !important;
     }
 
-    .nav-radio-play {
-        width: 28px !important;
-        height: 28px !important;
-        font-size: 0.72rem !important;
-        margin: 0 !important;
-    }
-
-    /* Compact Notification Bell */
-    .nav-notif-btn, #notif-bell-btn {
-        width: 34px !important;
-        height: 34px !important;
-        font-size: 0.95rem !important;
-    }
-
-    /* Compact Language Switcher */
-    .lang-switcher-btn {
-        padding: 5px 7px !important;
-        font-size: 0.82rem !important;
-        border-radius: 16px !important;
-    }
-
-    /* Compact Login / Register Button (Icon Only on Mobile) */
-    .btn-nav-cta {
-        padding: 7px 11px !important;
-        border-radius: 20px !important;
-        font-size: 0.85rem !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        min-width: 34px !important;
-        height: 34px !important;
-    }
-
-    .btn-nav-cta i {
-        margin: 0 !important;
-    }
-
-    /* Compact User Profile Pill */
-    .user-nav-profile {
-        padding: 3px 6px !important;
-        gap: 6px !important;
-        background: rgba(255,255,255,0.06) !important;
-    }
-
     .user-nav-avatar {
-        width: 28px !important;
-        height: 28px !important;
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 50% !important;
+        border: 2px solid #facc15 !important;
+        box-shadow: 0 0 10px rgba(250, 204, 21, 0.4) !important;
+        cursor: pointer !important;
     }
 
     .btn-nav-logout {
-        padding: 4px 6px !important;
-        font-size: 0.8rem !important;
+        display: none !important; /* Eliminate duplicate logout icon on mobile */
+    }
+
+    body.user-is-authenticated .btn-nav-cta,
+    body.logged-in .btn-nav-cta {
+        display: none !important;
     }
 }
 

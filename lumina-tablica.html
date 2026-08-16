@@ -1612,19 +1612,15 @@
         </div>
 
         <div style="display:flex;align-items:center;gap:12px;">
-            <!-- Mini Radio Player -->
-            <div class="nav-radio-pill" id="radioWidget" onclick="toggleRadio()" title="Włącz Radio Christian Culture">
-                <button class="nav-radio-play" id="radioPlayBtn">
-                    <i class="fa-solid fa-play" id="radioPlayIcon"></i>
+            <!-- Mini Radio Player (Icon Only) -->
+            <div class="nav-radio-pill" id="radioWidget" onclick="toggleRadio()" title="Włącz / Wyłącz Radio CC" style="cursor:pointer;">
+                <button type="button" class="nav-radio-play" id="radioPlayBtn">
+                    <i class="fa-solid fa-play" id="radioPlayIcon" style="color:#facc15;"></i>
                 </button>
-                <div style="display:flex; flex-direction:column; line-height:1.1;">
-                    <span style="font-size:0.75rem; font-weight:800; color:#fff;">Radio CC Live</span>
-                    <span style="font-size:0.65rem; color:#94a3b8;">Muzyka Uwielbienia</span>
-                </div>
             </div>
 
-            <button type="button" class="lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" style="padding:7px 12px; border-radius:20px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#fff; font-weight:800; font-size:0.8rem; cursor:pointer; font-family:inherit; transition:all 0.2s;">🇵🇱 PL</button>
-            <a href="lumina.html" class="nav-link" style="background: rgba(255,255,255,0.08); border-radius: 20px;"><i class="fa-solid fa-arrow-left"></i> Katalog</a>
+            <button type="button" class="lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" title="Zmień język">🇵🇱</button>
+            <a href="lumina.html" class="nav-back-icon-btn" title="Powrót do portalu"><i class="fa-solid fa-arrow-left"></i></a>
         </div>
     </nav>
 
