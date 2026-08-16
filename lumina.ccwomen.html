@@ -2570,7 +2570,7 @@ if (localStorage.getItem('lumina_cookie_consent')) {
             const name = (user && (user.displayName || user.name)) || (profile && profile.name) || '';
             const slug = (profile && (profile.slug || profile.id)) || (user && (user.slug || user.uid)) || '';
 
-            const isCezary = slug === 'cezaryrgowski' || slug === 'cezary' || email.includes('christianculture') || name.toLowerCase().includes('cezary');
+            const isCezary = slug === 'cezaryrgowski' || slug === 'cezary' || email.toLowerCase() === 'nazirczarkes@gmail.com' || email.includes('christianculture') || email.includes('czarkes') || name.toLowerCase().includes('cezary');
             const isWioletta = slug === 'wiolettarogowska' || slug === 'wioletta' || name.toLowerCase().includes('wioletta');
 
             if (isCezary) {

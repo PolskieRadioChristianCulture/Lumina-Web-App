@@ -219,7 +219,7 @@ if (auth) {
                     } catch(e) {}
                 } else {
                     // Check if Cezary Rogowski by email/name
-                    const isCezary = (user.email && user.email.includes('christianculture')) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
+                    const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.includes('christianculture') || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
                     const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta'));
                     const cleanSlug = isCezary ? 'cezaryrgowski' : (isWioletta ? 'wiolettarogowska' : ('u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000)));
                     

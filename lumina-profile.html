@@ -63,7 +63,7 @@
         })();
     </script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786855459975"></script>
+    <script type="module" src="lumina-db.js?v=1786857497941"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
     <script type="module" src="lumina-i18n.js?v=1786850740820"></script>
@@ -1416,7 +1416,7 @@
         }
 
 </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786856430660">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786857497941">
 </head>
 <body>
 
@@ -3718,7 +3718,7 @@ if (localStorage.getItem('lumina_cookie_consent')) {
             const name = (user && (user.displayName || user.name)) || (profile && profile.name) || '';
             const slug = (profile && (profile.slug || profile.id)) || (user && (user.slug || user.uid)) || '';
 
-            const isCezary = slug === 'cezaryrgowski' || slug === 'cezary' || email.includes('christianculture') || name.toLowerCase().includes('cezary');
+            const isCezary = slug === 'cezaryrgowski' || slug === 'cezary' || email.toLowerCase() === 'nazirczarkes@gmail.com' || email.includes('christianculture') || email.includes('czarkes') || name.toLowerCase().includes('cezary');
             const isWioletta = slug === 'wiolettarogowska' || slug === 'wioletta' || name.toLowerCase().includes('wioletta');
 
             if (isCezary) {
