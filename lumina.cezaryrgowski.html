@@ -52,7 +52,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786861835411"></script>
+    <script type="module" src="lumina-db.js?v=1786862050270"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1862,7 +1862,7 @@
         }
     
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786861835411">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786862050270">
 </head>
 <body>
 
@@ -3917,127 +3917,61 @@
     <script src="lumina-bottom-nav.js" defer></script>
     <script src="lumina-notifications.js" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
-<div id="lumina-cookie-banner" style="position: fixed; bottom: 0; left: 0; right: 0; background: rgba(11, 22, 51, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #fff; padding: 16px 20px; z-index: 99999; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(245,158,11,0.3); font-family: inherit; font-size: 13px; gap: 16px; box-shadow: 0 -4px 20px rgba(0,0,0,0.5);">
-    <div style="line-height: 1.4; max-width: 800px;">
-        🕊️ Portal <strong>LUMINA</strong> (Christian Culture) używa plików cookies w celach analitycznych oraz zapewnienia bezpieczeństwa i prawidłowego działania społeczności. Korzystając z portalu, wyrażasz na to zgodę. 
-        <a href="lumina.html" style="color: #f59e0b; text-decoration: underline;">Polityka Prywatności</a>
+<!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
+<div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999999; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+        <div style="line-height: 1.45; color: #e2e8f0;">
+            🕊️ Portal <strong>LUMINA</strong> używa plików cookies w celach analitycznych oraz prawidłowego działania społeczności.
+        </div>
+        <button type="button" onclick="acceptCookies()" style="background: transparent; border: none; color: #94a3b8; font-size: 16px; cursor: pointer; padding: 2px 6px; line-height: 1;" title="Zamknij">✕</button>
     </div>
-    <div style="display: flex; gap: 10px; flex-shrink: 0;">
-        <button type="button" onclick="acceptCookies()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit;">Akceptuję</button>
-        <button type="button" onclick="rejectCookies()" style="background: rgba(255,255,255,0.1); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: inherit;">Odrzuć</button>
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 2px;">
+        <a href="lumina.html" style="color: #f59e0b; text-decoration: underline; font-size: 11.5px;">Polityka Prywatności</a>
+        <div style="display: flex; gap: 8px;">
+            <button type="button" onclick="rejectCookies()" style="background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit;">Odrzuć</button>
+            <button type="button" onclick="acceptCookies()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none; padding: 6px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 12px; font-family: inherit; box-shadow: 0 2px 8px rgba(245,158,11,0.4);">Akceptuję</button>
+        </div>
     </div>
 </div>
 
 <script>
-function acceptCookies() {
-    localStorage.setItem('lumina_cookie_consent', 'granted');
-    if (typeof gtag === 'function') {
-        gtag('consent', 'update', {
-            'ad_storage': 'granted',
-            'ad_user_data': 'granted',
-            'ad_personalization': 'granted',
-            'analytics_storage': 'granted'
-        });
+(function() {
+    function hideBanner() {
+        const b = document.getElementById('lumina-cookie-banner');
+        if (b) {
+            b.style.opacity = '0';
+            b.style.pointerEvents = 'none';
+            setTimeout(() => b.remove(), 200);
+        }
     }
-    const b = document.getElementById('lumina-cookie-banner');
-    if (b) b.style.display = 'none';
-}
 
-function rejectCookies() {
-    localStorage.setItem('lumina_cookie_consent', 'denied');
-    const b = document.getElementById('lumina-cookie-banner');
-    if (b) b.style.display = 'none';
-}
-
-// Sprawdzenie czy użytkownik już podjął decyzję
-if (localStorage.getItem('lumina_cookie_consent')) {
-    const b = document.getElementById('lumina-cookie-banner');
-    if (b) b.style.display = 'none';
-    if (localStorage.getItem('lumina_cookie_consent') === 'granted' && typeof gtag === 'function') {
-        gtag('consent', 'update', {
-            'ad_storage': 'granted',
-            'ad_user_data': 'granted',
-            'ad_personalization': 'granted',
-            'analytics_storage': 'granted'
-        });
-    }
-}
-
-        /// ── Smart Multi-Source Navigation for "Mój Profil" ──
-        window.handleMyProfileNavigation = function(event) {
-            if (event && event.preventDefault) event.preventDefault();
-
-            // 1. Check memory Firebase user
-            let user = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
-            
-            // 2. Check localStorage user & profile
-            let profile = null;
+    window.acceptCookies = function() {
+        try { localStorage.setItem('lumina_cookie_consent', 'granted'); } catch(e) {}
+        if (typeof gtag === 'function') {
             try {
-                profile = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null');
+                gtag('consent', 'update', {
+                    'ad_storage': 'granted',
+                    'ad_user_data': 'granted',
+                    'ad_personalization': 'granted',
+                    'analytics_storage': 'granted'
+                });
             } catch(e) {}
+        }
+        hideBanner();
+    };
 
-            if (!user) {
-                try {
-                    user = JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
-                } catch(e) {}
-            }
+    window.rejectCookies = function() {
+        try { localStorage.setItem('lumina_cookie_consent', 'denied'); } catch(e) {}
+        hideBanner();
+    };
 
-            // 3. Check Firebase Auth key in localStorage
-            let hasFirebaseToken = false;
-            try {
-                for (let i = 0; i < localStorage.length; i++) {
-                    const k = localStorage.key(i);
-                    if (k && k.startsWith('firebase:authUser:')) {
-                        hasFirebaseToken = true;
-                        if (!user) {
-                            try {
-                                const fData = JSON.parse(localStorage.getItem(k));
-                                if (fData && fData.uid) user = fData;
-                            } catch(e) {}
-                        }
-                        break;
-                    }
-                }
-            } catch(e) {}
-
-            const isLoggedIn = !!(user || profile || hasFirebaseToken || localStorage.getItem('lumina_user_session') === 'active');
-
-            if (!isLoggedIn) {
-                if (typeof openAuth === 'function') {
-                    if (typeof switchAuthTab === 'function') switchAuthTab('register');
-                    openAuth();
-                } else if (document.getElementById('authModal')) {
-                    if (typeof switchAuthTab === 'function') switchAuthTab('register');
-                    const m = document.getElementById('authModal');
-                    m.classList.add('open');
-                    m.style.display = 'flex';
-                } else {
-                    window.location.href = 'lumina.html?auth=register';
-                }
-                return;
-            }
-
-            // Route to user's personalized profile
-            const email = (user && user.email) || (profile && profile.email) || '';
-            const name = (user && (user.displayName || user.name)) || (profile && profile.name) || '';
-            const slug = (profile && (profile.slug || profile.id)) || (user && (user.slug || user.uid)) || '';
-
-            const isCezary = slug === 'cezaryrgowski' || slug === 'cezary' || email.toLowerCase() === 'nazirczarkes@gmail.com' || email.includes('christianculture') || email.includes('czarkes') || name.toLowerCase().includes('cezary');
-            const isWioletta = slug === 'wiolettarogowska' || slug === 'wioletta' || name.toLowerCase().includes('wioletta');
-
-            if (isCezary) {
-                window.location.href = 'lumina.cezaryrgowski.html';
-            } else if (isWioletta) {
-                window.location.href = 'lumina.wiolettarogowska.html';
-            } else if (slug) {
-                window.location.href = 'lumina-profile.html?u=' + encodeURIComponent(slug);
-            } else if (user && user.uid) {
-                window.location.href = 'lumina-profile.html?u=' + encodeURIComponent(user.uid);
-            } else {
-                window.location.href = 'lumina-profile.html';
-            }
-        };
-
+    try {
+        if (localStorage.getItem('lumina_cookie_consent')) {
+            const b = document.getElementById('lumina-cookie-banner');
+            if (b) b.remove();
+        }
+    } catch(e) {}
+})();
 </script>
 
     <!-- ══════════ FULLSCREEN PHOTO LIGHTBOX MODAL ══════════ -->
