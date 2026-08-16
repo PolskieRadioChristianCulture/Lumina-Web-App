@@ -1,6 +1,38 @@
 ﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
+
+    <script>
+        (function() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const raw = (params.get('u') || params.get('user') || params.get('slug') || '').toLowerCase();
+                if (!raw) return;
+                const slug = decodeURIComponent(raw).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ł/g, 'l').replace(/Ł/g, 'l');
+                if (slug.includes('studiodobregoslowa') || slug.includes('studiods') || slug.includes('studiodobre')) {
+                    window.location.replace('lumina.studiodobregoslowa.html' + (window.location.hash || ''));
+                    return;
+                }
+                if (slug === 'cezaryrgowski' || slug === 'cezary' || slug === 'nazirczarkes@gmail.com') {
+                    window.location.replace('lumina.cezaryrgowski.html' + (window.location.hash || ''));
+                    return;
+                }
+                if (slug === 'wiolettarogowska' || slug === 'wioletta') {
+                    window.location.replace('lumina.wiolettarogowska.html' + (window.location.hash || ''));
+                    return;
+                }
+                if (slug === 'radiocc' || slug === 'polskieradiocc') {
+                    window.location.replace('lumina.radiocc.html' + (window.location.hash || ''));
+                    return;
+                }
+                if (slug === 'osobowoscplus') {
+                    window.location.replace('lumina.osobowoscplus.html' + (window.location.hash || ''));
+                    return;
+                }
+            } catch(e) {}
+        })();
+    </script>
+
     <!-- Google Analytics -->
     <!-- Google Consent Mode v2 (Default Denied) -->
 <script>
@@ -63,7 +95,7 @@
         })();
     </script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786862050270"></script>
+    <script type="module" src="lumina-db.js?v=1786863590045"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
     <script type="module" src="lumina-i18n.js?v=1786850740820"></script>
@@ -1445,7 +1477,7 @@
         }
     
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786862050270">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786863590045">
 </head>
 <body>
 
@@ -2171,6 +2203,38 @@
         let attachedPostImageDataUrl = null;
 
         const PROFILES_DB = {
+
+            'studiodobregoslowa': {
+                name: 'Studio Dobrego Słowa',
+                age: 'Studio Medialne',
+                city: 'Piła, Polska',
+                avatar: 'studiodobregoslowa_avatar.jpg',
+                cover: 'studiodobregoslowa_cover.jpg',
+                coverPosY: '50%',
+                job: 'Produkcja Multimedialna & Ewangelizacja',
+                church: 'Współpraca z Christian Culture',
+                denom: 'Ewangelizacja & Multimedia',
+                status: 'Oficjalny Partner Medialny',
+                pin: '7777',
+                visibility: 'public',
+                match: '100%',
+                verse: '„Wiara tedy jest ze słuchania, a słuchanie przez Słowo Chrystusowe.”',
+                verseRef: '— List do Rzymian 10, 17',
+                bio: 'Studio Dobrego Słowa to profesjonalna przestrzeń tworzenia wartościowych treści chrześcijańskich, audycji, wywiadów, podcastów oraz materiałów ewangelizacyjnych. Razem z Christian Culture budujemy media, które niosą nadzieję, prawdę i Boże Słowo do każdego serca.',
+                tags: ['YouTube DeeS', 'Podcasty Chrześcijańskie', 'Wideo-Świadectwa', 'Słowo Boże', 'Herbaciarnia', 'Polskie Radio CC'],
+                photos: ['studiodobregoslowa_avatar.jpg', 'studiodobregoslowa_cover.jpg', 'avatar_cezary_official.jpg'],
+                posts: [
+                    {
+                        id: 'post_sds_1',
+                        author: 'Studio Dobrego Słowa',
+                        time: 'Dzisiaj, 10:00 • 🌍 Publiczny',
+                        text: 'Witajcie na oficjalnym profilu Studio Dobrego Słowa w portalu LUMINA! 🎙️✨ Zapraszamy do oglądania transmisji „Apokalipsa: Księga Nadziei Live”, subskrybowania naszego kanału na YouTube: @StudioDeeS oraz odwiedzenia naszej strony https://studiods.pl/ i wirtualnej Herbaciarni!',
+                        likes: 42,
+                        image: 'studiodobregoslowa_avatar.jpg'
+                    }
+                ]
+            },
+
             'u_ccwomen_9055': {
                 name: 'CC Women • Christian Culture',
                 age: 'Kanał YT',

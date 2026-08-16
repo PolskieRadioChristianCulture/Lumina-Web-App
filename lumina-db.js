@@ -1602,6 +1602,15 @@ export const LUMINA_HANDLES = {
     'cezaryrgowski': { slug: 'cezaryrgowski', name: 'Cezary Rogowski', url: 'lumina.cezaryrgowski.html', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel CC' },
     'cezaryrogowski': { slug: 'cezaryrgowski', name: 'Cezary Rogowski', url: 'lumina.cezaryrgowski.html', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel CC' },
     'wioletta': { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', url: 'lumina.wiolettarogowska.html', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Współzałożycielka CC' },
+    'studiodobregoslowa': {
+        name: 'Studio Dobrego Słowa',
+        avatar: 'studiodobregoslowa_avatar.jpg',
+        cover: 'studiodobregoslowa_cover.jpg',
+        city: 'Piła, Polska',
+        job: 'Produkcja Multimedialna & Ewangelizacja',
+        status: 'Oficjalny Partner Medialny',
+        bio: 'Oficjalny profil Studio Dobrego Słowa.'
+    },
     'wiolettarogowska': { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', url: 'lumina.wiolettarogowska.html', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Współzałożycielka CC' },
     'ccwomen': { slug: 'ccwomen', name: 'CC Women • YouTube', url: 'lumina.ccwomen.html', avatar: 'logo_cc_women.jpg', badge: '🌸 Kanał CC Women' },
     'women': { slug: 'ccwomen', name: 'CC Women • YouTube', url: 'lumina.ccwomen.html', avatar: 'logo_cc_women.jpg', badge: '🌸 Kanał CC Women' },
