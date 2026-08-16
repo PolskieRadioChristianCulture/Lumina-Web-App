@@ -50,7 +50,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786861420520"></script>
+    <script type="module" src="lumina-db.js?v=1786861784213"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1500,7 +1500,7 @@
         }
 
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786861420520">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786861784213">
 </head>
 <body>
 
@@ -2281,11 +2281,19 @@
                     if (!avatar || avatar.includes('worship') || avatar.includes('tlo') || avatar.includes('oddaj') || avatar.includes('anna')) {
                         avatar = 'studiodobregoslowa_avatar.jpg';
                     }
+                    let cover = parsed.cover;
+                    if (!cover || cover.includes('hero') || cover.includes('worship') || cover.includes('anna')) {
+                        cover = 'studiodobregoslowa_cover.jpg';
+                    }
                     let age = parsed.age;
                     if (!age || age === '30' || age === 30 || age === '28' || age === 28 || age === '32' || age === 32) {
-                        age = '50';
+                        age = 'Studio Medialne';
                     }
                     return {
+                        ...defaultProfile,
+                        ...parsed,
+                        avatar: avatar,
+                        cover: cover,
                         ...defaultProfile,
                         ...parsed,
                         avatar: avatar,
@@ -2893,52 +2901,31 @@
 
         // ── Direct Upload Triggers ──
         function triggerCoverUpload() {
-            document.getElementById('coverFileInput').click();
-        }
-
-        function triggerAvatarUpload() {
-            document.getElementById('avatarFileInput').click();
-        }
-
-        function triggerGalleryUpload() {
-            document.getElementById('galleryFileInput').click();
-        }
-
-        function triggerPostImageUpload() {
-            if (!requestOwnerAccess(triggerPostImageUpload)) return;
-            document.getElementById('postImageFileInput').click();
-        }
-
-        // File Upload Handlers (Compressed & Safe LocalStorage Persistence)
-        function handleAvatarFileSelect(e) {
-            if (!requestOwnerAccess(triggerAvatarUpload)) return;
-            const file = e.target.files[0];
-            if (!file) return;
-            showToast('Przetwarzanie zdjęcia profilowego... ⏳');
-            compressAndReadImage(file, 500, 500, 0.85, function(dataUrl) {
-                const cur = getProfileData();
-                cur.avatar = dataUrl;
-                try {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
-                } catch(err) {}
-                renderProfileView();
-                showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane! 📷✨');
-            });
-            e.target.value = '';
+            const inp = document.getElementById('coverFileInput');
+            if (inp) {
+                inp.value = '';
+                inp.click();
+            }
         }
 
         function handleCoverFileSelect(e) {
-            const file = e.target.files[0];
+            const file = e.target.files && e.target.files[0];
             if (!file) return;
-            showToast('Przetwarzanie zdjęcia w tle... ⏳');
-            compressAndReadImage(file, 1200, 600, 0.80, function(dataUrl) {
+            showToast('Przetwarzanie nowego zdjęcia w tle... ⏳');
+            compressAndReadImage(file, 1600, 800, 0.85, function(dataUrl) {
                 const cur = getProfileData();
                 cur.cover = dataUrl;
                 try {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
                 } catch(err) {}
-                renderProfileView();
-                showToast('Zdjęcie w tle zostało zaktualizowane i zapisane! 🖼️✨');
+                
+                const coverImg = document.getElementById('coverPhotoEl');
+                if (coverImg) coverImg.src = dataUrl;
+                
+                if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                    window.LuminaDB.saveProfileToCloud('studiodobregoslowa', cur).catch(()=>{});
+                }
+                showToast('Tło profilu zostało pomyślnie zmienione i zapisane! 🖼️✨');
             });
             e.target.value = '';
         }
