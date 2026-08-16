@@ -50,7 +50,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786857497941"></script>
+    <script type="module" src="lumina-db.js?v=1786861835411"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -1475,8 +1475,37 @@
             display: inline-flex !important;
         }
     
+    
+        /* Avatar Edit Overlay: Hidden by default, visible ONLY on hover */
+        .avatar-wrap .avatar-edit-overlay,
+        .head-avatar-wrapper .avatar-edit-overlay {
+            position: absolute !important;
+            inset: 0 !important;
+            border-radius: 50% !important;
+            background: rgba(0, 0, 0, 0.65) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: #fff !important;
+            font-size: 1.4rem !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            cursor: pointer !important;
+            border: none !important;
+            transition: opacity 0.25s ease, visibility 0.25s ease, background 0.25s ease !important;
+            z-index: 10 !important;
+        }
+
+        .avatar-wrap:hover .avatar-edit-overlay,
+        .head-avatar-wrapper:hover .avatar-edit-overlay {
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+        }
+    
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786857497941">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786861835411">
 </head>
 <body>
 
