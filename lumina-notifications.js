@@ -16,7 +16,7 @@
             this.initAudio();
             this.initUI();
             this.loadStoredNotifications();
-            this.requestBrowserPermission();
+            // Browser push permissions asked only on explicit user click
             this.listenToEvents();
         }
 
