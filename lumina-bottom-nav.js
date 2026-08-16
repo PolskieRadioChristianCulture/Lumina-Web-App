@@ -668,4 +668,63 @@
     window.addEventListener('resize', window.checkLuminaAuthState);
     setInterval(window.checkLuminaAuthState, 1200);
 
+    // ══════════════════════════════════════════════════════════════════════════
+    // GOOGLE CONSENT MODE V2 & RODO BANNER PORTALU LUMINA
+    // ══════════════════════════════════════════════════════════════════════════
+    window.acceptLuminaCookies = function() {
+        localStorage.setItem('lumina_cookie_consent', 'granted');
+        if (typeof window.gtag === 'function') {
+            window.gtag('consent', 'update', {
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted',
+                'analytics_storage': 'granted'
+            });
+        }
+        const banner = document.getElementById('luminaCookieConsentBanner');
+        if (banner) {
+            banner.style.opacity = '0';
+            banner.style.transform = 'translateY(100%)';
+            setTimeout(() => banner.remove(), 300);
+        }
+    };
+
+    function injectCookieConsentBanner() {
+        if (localStorage.getItem('lumina_cookie_consent') === 'granted') {
+            if (typeof window.gtag === 'function') {
+                window.gtag('consent', 'update', {
+                    'ad_storage': 'granted',
+                    'ad_user_data': 'granted',
+                    'ad_personalization': 'granted',
+                    'analytics_storage': 'granted'
+                });
+            }
+            return;
+        }
+
+        if (document.getElementById('luminaCookieConsentBanner')) return;
+
+        const bannerHtml = `
+            <div id="luminaCookieConsentBanner" style="position:fixed; bottom:74px; left:12px; right:12px; max-width:540px; margin:0 auto; background:rgba(9,14,30,0.95); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(250,204,21,0.35); border-radius:18px; padding:14px 18px; box-shadow:0 12px 35px rgba(0,0,0,0.8); z-index:999999; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; font-family:'Plus Jakarta Sans',sans-serif; color:#e2e8f0; transition:all 0.3s ease;">
+                <div style="font-size:0.8rem; line-height:1.4; flex:1; min-width:200px;">
+                    <i class="fa-solid fa-shield-halved" style="color:#facc15; margin-right:4px;"></i>
+                    Portal <b>LUMINA</b> szanuje Twoją prywatność. Używamy plików cookies i analityki do prawidłowego działania serwisu.
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <button type="button" onclick="window.acceptLuminaCookies()" style="background:linear-gradient(135deg, #f59e0b, #d97706); border:none; color:#fff; font-weight:800; font-size:0.78rem; padding:8px 14px; border-radius:10px; cursor:pointer; font-family:inherit; box-shadow:0 4px 12px rgba(245,158,11,0.35);">
+                        Zgadzam się ➔
+                    </button>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', bannerHtml);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', injectCookieConsentBanner);
+    } else {
+        injectCookieConsentBanner();
+    }
+
 })();
