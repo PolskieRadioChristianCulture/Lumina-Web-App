@@ -897,17 +897,18 @@
         /* ──────────────────── MAIN 2-COLUMN LAYOUT ──────────────────── */
         /* ══════════ 3-COLUMN PANORAMIC FOUNDER LAYOUT ══════════ */
         .profile-body-grid {
-            display: grid;
-            grid-template-columns: 340px 1fr 310px;
+            display: grid !important;
+            grid-template-columns: 340px 1fr 310px !important;
             gap: 22px;
             margin-top: 24px;
             align-items: start;
         }
 
         .left-founder-wing, .right-founder-wing {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 18px !important;
+            min-width: 0;
         }
 
         .timeline-area {
@@ -919,11 +920,11 @@
 
         @media (max-width: 1200px) {
             .profile-body-grid {
-                grid-template-columns: 320px 1fr;
+                grid-template-columns: 320px 1fr !important;
             }
             .right-founder-wing {
                 grid-column: 1 / -1;
-                display: grid;
+                display: grid !important;
                 grid-template-columns: 1fr 1fr;
                 gap: 18px;
             }
@@ -931,10 +932,10 @@
 
         @media (max-width: 900px) {
             .profile-body-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
             }
             .right-founder-wing {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
             }
         }
 
@@ -1810,7 +1811,7 @@
         }
 
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786858557533">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786858782167">
 </head>
 <body>
 
@@ -1977,123 +1978,8 @@
             </div>
         </section>
 
-
-            
-
-                    <!-- Gender Ratio Diagram -->
-                    <div class="gender-ratio-card">
-                        <div class="gender-labels">
-                            <span class="gender-female"><i class="fa-solid fa-venus"></i> Kobiety: <b id="hudFemaleCount">800 (54%)</b></span>
-                            <span class="gender-male"><i class="fa-solid fa-mars"></i> Mężczyźni: <b id="hudMaleCount">682 (46%)</b></span>
-                        </div>
-                        <div class="gender-bar-wrap">
-                            <div class="gender-bar-female" id="hudFemaleBar" style="width: 54%;" title="Kobiety: 54%"></div>
-                            <div class="gender-bar-male" id="hudMaleBar" style="width: 46%;" title="Mężczyźni: 46%"></div>
-                        </div>
-                    </div>
-
-                    <!-- 7-Day Growth Chart -->
-                    <div class="activity-chart-wrap">
-                        <div class="chart-title-row">
-                            <span><i class="fa-solid fa-chart-simple" style="color:#38bdf8;"></i> Wzrost Nowych Profili (7 Dni)</span>
-                            <span id="hudTodayCount" style="color:#22c55e; font-size:0.75rem;"><i class="fa-solid fa-arrow-trend-up"></i> +0 Dzisiaj</span>
-                        </div>
-                        <div class="bar-chart-flex">
-                            <div class="chart-col">
-                                <div class="chart-bar" id="barMon" style="height: 35%;" title="Poniedziałek"></div>
-                                <span class="chart-day">Pn</span>
-                            </div>
-                            <div class="chart-col">
-                                <div class="chart-bar" id="barTue" style="height: 45%;" title="Wtorek"></div>
-                                <span class="chart-day">Wt</span>
-                            </div>
-                            <div class="chart-col">
-                                <div class="chart-bar" id="barWed" style="height: 40%;" title="Środa"></div>
-                                <span class="chart-day">Śr</span>
-                            </div>
-                            <div class="chart-col">
-                                <div class="chart-bar" id="barThu" style="height: 60%;" title="Czwartek"></div>
-                                <span class="chart-day">Czw</span>
-                            </div>
-                            <div class="chart-col">
-                                <div class="chart-bar" id="barFri" style="height: 55%;" title="Piątek"></div>
-                                <span class="chart-day">Pt</span>
-                            </div>
-                            <div class="chart-col">
-                                <div class="chart-bar" id="barSat" style="height: 70%;" title="Sobota"></div>
-                                <span class="chart-day">So</span>
-                            </div>
-                            <div class="chart-col">
-                                <div class="chart-bar today" id="barSun" style="height: 50%;" title="Niedziela (Dziś)"></div>
-                                <span class="chart-day" style="color:#facc15;">Nd</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Wing: Live Interactions, Broadcast Monitor & Commander Tools -->
-                <div class="hud-card">
-                    <div class="hud-header">
-                        <div class="hud-title">
-                            <i class="fa-solid fa-satellite-dish" style="color:#ec4899;"></i> Puls Interakcji & Nadawanie
-                        </div>
-                        <div class="hud-badge-live" style="background:rgba(168,85,247,0.15); border-color:rgba(168,85,247,0.4); color:#c084fc;">
-                            <i class="fa-solid fa-crown" style="color:#facc15;"></i> PANEL DOWODZENIA
-                        </div>
-                    </div>
-
-                    <!-- Stats Grid 2 -->
-                    <div class="hud-stats-grid">
-                        <div class="hud-stat-box" title="Wysłane wiadomości prywatne">
-                            <div class="hud-stat-icon-3d icon-purple">
-                                <i class="fa-solid fa-comments"></i>
-                            </div>
-                            <div class="hud-stat-info">
-                                <span class="hud-stat-num" id="hudMsgCount">3 840</span>
-                                <span class="hud-stat-label">Wiadomości</span>
-                            </div>
-                        </div>
-
-                        <div class="hud-stat-box" title="Wysłane intencje i modlitwy wstawiennicze">
-                            <div class="hud-stat-icon-3d icon-pink">
-                                <i class="fa-solid fa-hands-praying"></i>
-                            </div>
-                            <div class="hud-stat-info">
-                                <span class="hud-stat-num" id="hudPrayCount" style="color:#f472b6;">1 290</span>
-                                <span class="hud-stat-label">Modlitwy & Amen</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Broadcast & Streaming Monitor -->
-                    <div class="gender-ratio-card" style="margin-bottom:12px;">
-                        <div class="gender-labels" style="margin-bottom:0;">
-                            <span style="color:#38bdf8; display:flex; align-items:center; gap:8px;">
-                                <i class="fa-solid fa-radio"></i> Radio CC Live: <b style="color:#22c55e;">Sygnał 320kbps HD</b>
-                            </span>
-                            <span style="color:#e2e8f0; display:flex; align-items:center; gap:8px;">
-                                <i class="fa-solid fa-tv" style="color:#facc15;"></i> CCTV24 Worship: <b style="color:#22c55e;">Emisja 24/7</b>
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Commander Special Actions -->
-                    <div class="hud-actions-grid">
-                        <button type="button" class="hud-btn" onclick="openCampaignModal('ad')" style="background: linear-gradient(90deg, rgba(234,179,8,0.2), rgba(249,115,22,0.2)); border-color: rgba(250,204,21,0.4);">
-                            <i class="fa-solid fa-bullhorn" style="color:#facc15;"></i> Globalny Komunikat
-                        </button>
-                        <button type="button" class="hud-btn" onclick="refreshFounderAnalytics()" style="background: linear-gradient(90deg, rgba(56,189,248,0.2), rgba(59,130,246,0.2)); border-color: rgba(56,189,248,0.4);">
-                            <i class="fa-solid fa-arrows-rotate" style="color:#38bdf8;"></i> Odśwież Telemetrię
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-
-        <!-- Profile 2-Column Grid -->
+        <!-- Profile 3-Column Grid -->
         <div class="profile-body-grid">
-
-            <!-- ══════════ LEWY BOK (LEWA KOLUMNA TELEMETRII & DANYCH) ══════════ -->
             <aside class="left-founder-wing">
 
                 <!-- 👑 Telemetria Społeczności na Żywo -->
