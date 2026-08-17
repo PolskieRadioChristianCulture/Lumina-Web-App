@@ -1,0 +1,285 @@
+/* ══════════════════════════════════════════════════════════════════════════
+ * LUMINA PROFILE SYSTEM & OWNER STUDIO
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+.profile-page-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px 80px;
+}
+
+/* ── Cover Photo Container ── */
+.cover-wrapper {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    background: linear-gradient(135deg, #1e1b4b, #312e81, #0f172a);
+    border-radius: 0 0 24px 24px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    cursor: pointer;
+}
+.cover-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 50%;
+    display: block;
+    transition: transform 0.4s ease;
+}
+.cover-wrapper:hover .cover-photo {
+    transform: scale(1.02);
+}
+
+.cover-hint-badge {
+    position: absolute;
+    bottom: 14px;
+    right: 18px;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #94a3b8;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    display: none;
+    align-items: center;
+    gap: 6px;
+    pointer-events: none;
+    z-index: 5;
+}
+body.owner-mode-active .cover-hint-badge {
+    display: inline-flex;
+}
+
+/* ── Cover Reposition Toolbar ── */
+.cover-reposition-toolbar {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    right: 14px;
+    background: rgba(11, 24, 56, 0.95);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    border-radius: 16px;
+    padding: 12px 18px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    z-index: 25;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
+}
+.cover-reposition-toolbar.open {
+    display: flex;
+}
+
+/* ── Profile Header Card ── */
+.profile-head-card {
+    position: relative;
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass);
+    border-radius: 24px;
+    padding: 0 32px 28px;
+    margin-top: -60px;
+    z-index: 10;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.profile-head-top {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.avatar-wrap {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: #0f172a;
+    border: 4px solid var(--bg-base);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    flex-shrink: 0;
+    margin-top: -70px;
+}
+.avatar-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+.avatar-edit-badge {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ec4899, #8b5cf6);
+    border: 2px solid #fff;
+    color: #fff;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+body.owner-mode-active .avatar-edit-badge {
+    display: flex;
+}
+
+.head-user-name {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: #fff;
+    font-family: var(--font-heading);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.head-user-location {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.head-user-bio {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 14px 0 20px;
+    max-width: 860px;
+}
+
+.user-tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.tag-chip {
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e2e8f0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ── Profile 2-Column Grid Layout ── */
+.profile-body-grid {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 24px;
+    margin-top: 24px;
+    align-items: start;
+}
+
+.profile-sidebar-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.profile-section-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #fff;
+    font-family: var(--font-heading);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 0.86rem;
+}
+.detail-label {
+    color: var(--text-muted);
+    font-weight: 600;
+    min-width: 90px;
+}
+.detail-val {
+    color: #fff;
+    font-weight: 700;
+}
+
+/* ── Mini Gallery Grid ── */
+.mini-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+}
+.photo-thumb-wrap {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 90px;
+    background: #1e293b;
+}
+.photo-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.photo-thumb:hover {
+    transform: scale(1.08);
+}
+.photo-delete-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(225, 29, 72, 0.9);
+    color: #fff;
+    border: none;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.72rem;
+    z-index: 10;
+}
+body.owner-mode-active .photo-delete-badge {
+    display: flex;
+}
+
+@media (max-width: 900px) {
+    .profile-body-grid { grid-template-columns: 1fr; }
+    .cover-wrapper { height: 220px; }
+    .avatar-wrap { width: 110px; height: 110px; margin-top: -55px; }
+    .profile-head-card { padding: 0 16px 20px; }
+    .head-user-name { font-size: 1.5rem; }
+}

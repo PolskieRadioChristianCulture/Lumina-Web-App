@@ -1,0 +1,92 @@
+/* ══════════════════════════════════════════════════════════════════════════
+ * LUMINA MODAL DIALOGS & OVERLAYS
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(9, 13, 26, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-card {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 24px;
+    padding: 28px 24px;
+    max-width: 520px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(168, 85, 247, 0.25);
+    transform: scale(0.95);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #fff;
+}
+.modal-overlay.open .modal-card {
+    transform: scale(1);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+.modal-close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* ── Form Inputs Inside Modals ── */
+.modal-form-group {
+    margin-bottom: 14px;
+}
+.modal-label {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.modal-input, .modal-textarea, .modal-select {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+.modal-input:focus, .modal-textarea:focus, .modal-select:focus {
+    border-color: var(--accent-purple);
+    background: rgba(255, 255, 255, 0.08);
+}

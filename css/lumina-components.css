@@ -1,0 +1,332 @@
+/* ══════════════════════════════════════════════════════════════════════════
+ * LUMINA SHARED COMPONENTS & INTERACTION BUTTONS
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Top Navigation Bar ── */
+.lumina-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 36px;
+    background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border-glass);
+}
+.nav-logo-text {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--font-heading);
+}
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.nav-link {
+    color: #cbd5e1;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: var(--radius-full);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+.nav-link:hover, .nav-link.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+.nav-circle-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #cbd5e1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+.nav-circle-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* ── Mobile Bottom Navigation Bar ── */
+.lumina-mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(9, 13, 26, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+    z-index: 999;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.6);
+}
+.m-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.70rem;
+    font-weight: 700;
+    gap: 4px;
+    padding: 6px 12px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+.m-nav-item i {
+    font-size: 1.15rem;
+}
+.m-nav-item.active, .m-nav-item:hover {
+    color: #facc15;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ── Universal Pill Action Buttons ── */
+.head-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    align-items: flex-start !important;
+    margin-top: 14px !important;
+    width: 100% !important;
+}
+.head-actions-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    align-items: center !important;
+}
+.btn-action-primary,
+.btn-action-secondary,
+.btn-action-follow,
+.btn-action-heart {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 10px 20px !important;
+    height: 42px !important;
+    width: auto !important;
+    min-width: auto !important;
+    border-radius: 30px !important;
+    font-weight: 800 !important;
+    font-size: 0.86rem !important;
+    cursor: pointer !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    white-space: nowrap !important;
+    font-family: inherit !important;
+    text-decoration: none !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+}
+
+.btn-action-primary {
+    background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(236, 72, 153, 0.35) !important;
+}
+.btn-action-primary:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.55) !important;
+}
+
+.btn-action-secondary {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
+}
+.btn-action-secondary:hover {
+    background: rgba(255, 255, 255, 0.16) !important;
+    transform: translateY(-2px) !important;
+}
+
+.btn-action-follow {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+}
+.btn-action-follow:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.55) !important;
+}
+.btn-action-follow.following {
+    background: rgba(37, 99, 235, 0.25) !important;
+    border: 1px solid rgba(37, 99, 235, 0.6) !important;
+    color: #93c5fd !important;
+}
+
+.btn-action-heart {
+    background: linear-gradient(135deg, #db2777, #be185d) !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(219, 39, 119, 0.35) !important;
+}
+.btn-action-heart:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(219, 39, 119, 0.55) !important;
+}
+.btn-action-heart.active {
+    background: linear-gradient(135deg, #f43f5e, #e11d48) !important;
+    box-shadow: 0 0 18px rgba(244, 63, 94, 0.7) !important;
+}
+
+.btn-action-icon-circle {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    max-width: 42px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #cbd5e1 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+}
+.btn-action-icon-circle:hover {
+    background: rgba(255, 255, 255, 0.18) !important;
+    color: #fff !important;
+    transform: translateY(-2px) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* ── Crystal Clear Glassmorphic Search Bar ── */
+.universal-search-container {
+    width: 100%;
+    max-width: 660px;
+    margin: 22px auto 0;
+    position: relative;
+    z-index: 50;
+}
+.search-input-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(8px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(180%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.45) !important;
+    border-radius: 50px !important;
+    padding: 6px 8px 6px 20px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.25) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+.search-input-wrapper:hover {
+    background: rgba(255, 255, 255, 0.10) !important;
+    border-color: rgba(255, 255, 255, 0.7) !important;
+    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.2) !important;
+}
+.search-input-wrapper:focus-within {
+    background: rgba(255, 255, 255, 0.14) !important;
+    border-color: #f472b6 !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 25px rgba(244, 114, 182, 0.4) !important;
+    transform: translateY(-2px);
+}
+.search-icon {
+    color: #fbcfe8;
+    font-size: 1.15rem;
+    margin-right: 12px;
+    text-shadow: 0 0 10px rgba(244, 114, 182, 0.7);
+}
+.omni-search-input {
+    flex: 1;
+    min-width: 0;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    color: #ffffff !important;
+    font-size: 0.95rem !important;
+    font-family: inherit !important;
+    font-weight: 600 !important;
+    padding-right: 8px !important;
+    text-overflow: ellipsis !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8) !important;
+}
+.omni-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.82) !important;
+    font-weight: 500 !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7) !important;
+}
+.btn-omni-action {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.8), rgba(139, 92, 246, 0.8)) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    color: #fff !important;
+    font-size: 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+    box-shadow: 0 4px 14px rgba(236, 72, 153, 0.35) !important;
+}
+.btn-omni-action:hover {
+    transform: scale(1.08) !important;
+    filter: brightness(1.2) !important;
+    background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
+}
+.omni-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: rgba(15, 23, 42, 0.78) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 20px !important;
+    padding: 10px !important;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7) !important;
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 100;
+}
+.omni-dropdown.open {
+    display: flex !important;
+}
+
+@media (max-width: 900px) {
+    .lumina-nav { padding: 10px 16px; }
+    .lumina-mobile-nav { display: flex !important; }
+    body { padding-bottom: 85px !important; }
+}
