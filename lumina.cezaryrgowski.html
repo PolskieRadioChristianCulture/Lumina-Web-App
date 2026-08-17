@@ -2020,7 +2020,7 @@
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="css/lumina-theme.css?v=1786941394472">
     <link rel="stylesheet" href="css/lumina-components.css?v=1786941394472">
-    <link rel="stylesheet" href="css/lumina-profile.css?v=1786942227077">
+    <link rel="stylesheet" href="css/lumina-profile.css?v=1786949938571">
     <link rel="stylesheet" href="css/lumina-feed.css?v=1786937908032">
     <link rel="stylesheet" href="css/lumina-modals.css?v=1786937908032">
     
@@ -2338,10 +2338,17 @@
                             <button type="button" onclick="removeAttachedPostImage()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.5);" title="Usuń dołączoną grafikę"><i class="fa-solid fa-xmark"></i></button>
                         </div>
 
+                        <!-- Post Video Attachment Preview -->
+                        <div id="composerVideoPreviewBox" style="display:none; position:relative; margin: 10px 0 6px; border-radius:14px; overflow:hidden; background:#0f172a; border: 1px solid rgba(56,189,248,0.3);">
+                            <div id="composerVideoPreviewFrame"></div>
+                            <button type="button" onclick="removeAttachedPostVideo()" style="position:absolute; top:10px; right:10px; width:32px; height:32px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(0,0,0,0.6); z-index:10;" title="Usuń dołączone wideo"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+
                         <div class="composer-actions">
-                            <button class="composer-btn-attach" onclick="triggerPostImageUpload()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Dołącz Grafikę do Posta</button>
-                            <button class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Dodaj Werset</button>
-                            <button class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-share"></i> Opublikuj</button>
+                            <button type="button" class="composer-btn-attach" onclick="triggerPostImageUpload()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Dołącz Grafikę</button>
+                            <button type="button" class="composer-btn-attach" onclick="promptEmbedVideo()"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Osadź Wideo</button>
+                            <button type="button" class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Dodaj Werset</button>
+                            <button type="button" class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-share"></i> Opublikuj</button>
                         </div>
                     </div>
 
@@ -3209,8 +3216,6 @@
             }
         }
 
-}
-
         function toggleOwnerAuthMode() {
             if (isOwnerMode) {
                 // Lock profile
@@ -3477,7 +3482,8 @@
                         ` : ''}
                     </div>
                     <div class="post-content">${formatPostTextWithLinks(p.text || '')}</div>
-                    ${`<img src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'avatar_cezary_official.jpg')}" alt="Post Image" class="post-image" onerror="this.onerror=null; this.src='${data.avatar || 'avatar_cezary_official.jpg'}'">`}
+                    ${(p.video || p.videoUrl) ? renderVideoPlayerHtml(p.video || p.videoUrl) : ''}
+                    ${(p.image && p.image.trim() !== '') ? `<img src="${p.image}" alt="Post Image" class="post-image" onclick="openPhotoLightbox(this.src, 'Fotografia z wpisu • LUMINA ✨')" style="cursor:pointer; border-radius:16px; margin-top:12px; max-height:480px; width:100%; object-fit:cover; display:block; box-shadow:0 8px 24px rgba(0,0,0,0.4);">` : ''}
                     <div class="post-footer">
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span> Polubień</button>
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
@@ -3603,12 +3609,64 @@
             document.getElementById('postImageFileInput').value = '';
         }
 
+        
+        let attachedPostVideoUrl = null;
+
+        function promptEmbedVideo() {
+            const url = prompt('Wklej link do wideo (YouTube, Shorts, Vimeo lub plik MP4):');
+            if (!url || !url.trim()) return;
+            const clean = url.trim();
+            attachedPostVideoUrl = clean;
+            
+            const previewBox = document.getElementById('composerVideoPreviewBox');
+            const previewFrame = document.getElementById('composerVideoPreviewFrame');
+            if (previewBox && previewFrame) {
+                const embedHtml = renderVideoPlayerHtml(clean);
+                previewFrame.innerHTML = embedHtml;
+                previewBox.style.display = 'block';
+            }
+            showToast('Wideo zostało dołączone do wpisu! 🎥✨');
+        }
+
+        function removeAttachedPostVideo() {
+            attachedPostVideoUrl = null;
+            const previewBox = document.getElementById('composerVideoPreviewBox');
+            const previewFrame = document.getElementById('composerVideoPreviewFrame');
+            if (previewBox) previewBox.style.display = 'none';
+            if (previewFrame) previewFrame.innerHTML = '';
+        }
+
+        function getYouTubeId(url) {
+            if (!url) return null;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        function renderVideoPlayerHtml(videoUrl) {
+            if (!videoUrl) return '';
+            const ytId = getYouTubeId(videoUrl);
+            if (ytId) {
+                return `<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:16px; margin-top:12px; background:#000; box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+                    <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border-radius:16px;"></iframe>
+                </div>`;
+            }
+            if (videoUrl.endsWith('.mp4') || videoUrl.includes('firebasestorage') || videoUrl.includes('.mp4?')) {
+                return `<div style="border-radius:16px; overflow:hidden; margin-top:12px; background:#000; box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+                    <video src="${videoUrl}" controls playsinline style="width:100%; max-height:420px; display:block; border-radius:16px;"></video>
+                </div>`;
+            }
+            return `<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:16px; margin-top:12px; background:#000;">
+                <iframe src="${videoUrl}" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border-radius:16px;"></iframe>
+            </div>`;
+        }
+
         function publishFeedPost() {
             if (!requestOwnerAccess(publishFeedPost)) return;
             const input = document.getElementById('composerInput');
             const val = input.value.trim();
-            if (!val && !attachedPostImageDataUrl) {
-                showToast('Wpisz treść lub dołącz grafikę przed publikacją!');
+            if (!val && !attachedPostImageDataUrl && !attachedPostVideoUrl) {
+                showToast('Wpisz treść, dołącz grafikę lub osadź wideo przed publikacją!');
                 return;
             }
             const cur = getProfileData();
@@ -3622,7 +3680,9 @@
                 text: val || '',
                 likes: 1,
                 amen: 0,
-                image: attachedPostImageDataUrl || null
+                image: attachedPostImageDataUrl || null,
+                video: attachedPostVideoUrl || null,
+                videoUrl: attachedPostVideoUrl || null
             };
 
             if (window.LuminaDB?.publishUniversalPost) {
@@ -3638,6 +3698,7 @@
 
             input.value = '';
             removeAttachedPostImage();
+            removeAttachedPostVideo();
             renderPosts();
             showToast('Twój wpis został pomyślnie opublikowany na profilu i tablicy! ✨🕊️');
         }
@@ -3870,11 +3931,6 @@
         function sendCoffeeInvitation() {
             closeModal('coffeeModal');
             showToast('Wysłano zaproszenie na chrześcijańską kawę! ☕❤️');
-        }
-
-         else {
-                showToast('Usunięto z ulubionych');
-            }
         }
 
         function copyProfileLink() {
