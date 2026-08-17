@@ -70,7 +70,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
         <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786906715319"></script>
+    <script type="module" src="lumina-db.js?v=1786937603614"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-tablica.js"></script>
     <script type="module" src="lumina-i18n.js?v=1786850740820"></script>
@@ -1644,8 +1644,203 @@
             color: #fef08a !important;
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
+    
+        /* ══════════ 9:16 CUSTOM ADVERTISING SYSTEM & ADMIN CONTROLS ══════════ */
+        .admin-only-btn {
+            display: none !important;
+        }
+        body.lumina-admin-mode .admin-only-btn {
+            display: flex !important;
+        }
+
+        .btn-admin-add-ad-916 {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            background: rgba(245, 158, 11, 0.12);
+            border: 1.5px dashed rgba(245, 158, 11, 0.6);
+            color: #fef08a;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            margin-top: 4px;
+        }
+        .btn-admin-add-ad-916:hover {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(236, 72, 153, 0.25));
+            border-color: #f59e0b;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(245, 158, 11, 0.35);
+        }
+
+        .custom-ads-container {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .custom-ad-card-916 {
+            position: relative;
+            background: rgba(11, 24, 56, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+        .custom-ad-card-916:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75);
+            border-color: rgba(250, 204, 21, 0.5);
+        }
+
+        .ad-admin-bar {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: none;
+            gap: 6px;
+            z-index: 25;
+        }
+        body.lumina-admin-mode .ad-admin-bar {
+            display: flex;
+        }
+
+        .btn-ad-admin-action {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            font-size: 0.76rem;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .btn-ad-admin-edit {
+            background: rgba(37, 99, 235, 0.85);
+        }
+        .btn-ad-admin-edit:hover {
+            background: #2563eb;
+            transform: scale(1.1);
+        }
+        .btn-ad-admin-delete {
+            background: rgba(225, 29, 72, 0.85);
+        }
+        .btn-ad-admin-delete:hover {
+            background: #e11d48;
+            transform: scale(1.1);
+        }
+
+        .card-916-media-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 9 / 16;
+            min-height: 420px;
+            overflow: hidden;
+            display: block;
+            text-decoration: none;
+            background: #090d1a;
+        }
+        .card-916-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .custom-ad-card-916:hover .card-916-img {
+            transform: scale(1.04);
+        }
+
+        .card-916-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(9, 13, 26, 0.96) 0%, rgba(9, 13, 26, 0.65) 45%, rgba(9, 13, 26, 0.1) 80%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 16px 14px;
+            z-index: 5;
+        }
+
+        .card-916-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 6px;
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.25;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
+        .card-916-sub {
+            font-size: 0.78rem;
+            color: #cbd5e1;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+        }
+        .btn-916-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 14px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #f59e0b, #ec4899);
+            color: #fff;
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+            transition: all 0.2s ease;
+            text-align: center;
+            width: 100%;
+        }
+        .btn-916-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6);
+            filter: brightness(1.1);
+        }
+
+        /* 9:16 Live Preview Container in Modal */
+        .ad916-preview-box {
+            width: 100%;
+            max-width: 220px;
+            aspect-ratio: 9 / 16;
+            margin: 0 auto 12px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            background: #090d1a;
+            border: 2px solid #f59e0b;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+        }
+        .ad916-preview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786906715319">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786937603614">
 </head>
 <body>
 
@@ -1733,6 +1928,13 @@
                     </div>
                 </a>
             </div>
+        
+            <!-- Dynamiczne Reklamy 9:16 (Lewa Strona) -->
+            <div id="customAdsLeft" class="custom-ads-container"></div>
+            <button type="button" class="btn-admin-add-ad-916 admin-only-btn" id="btnAddAdLeft" onclick="openAd916Modal('left')" title="Dodaj Nową Reklamę 9:16 (Lewa strona)">
+                <i class="fa-solid fa-plus-circle" style="font-size:1.1rem; color:#facc15;"></i> Dodaj Reklamę 9:16 (Lewy Panel)
+            </button>
+
         </aside>
 
         <!-- ══════════ CENTRUM: GŁÓWNY STRUMIEŃ TABLICY ══════════ -->
@@ -1819,6 +2021,13 @@
                     </div>
                 </a>
             </div>
+        
+            <!-- Dynamiczne Reklamy 9:16 (Prawa Strona) -->
+            <div id="customAdsRight" class="custom-ads-container"></div>
+            <button type="button" class="btn-admin-add-ad-916 admin-only-btn" id="btnAddAdRight" onclick="openAd916Modal('right')" title="Dodaj Nową Reklamę 9:16 (Prawa strona)">
+                <i class="fa-solid fa-plus-circle" style="font-size:1.1rem; color:#facc15;"></i> Dodaj Reklamę 9:16 (Prawy Panel)
+            </button>
+
         </aside>
     </main>
 
@@ -1840,6 +2049,102 @@
                     Brak oczekujących zgłoszeń naruszeń. Społeczność funkcjonuje bezpiecznie!
                 </div>
             </div>
+        </div>
+    </div>
+
+
+    <!-- ══════════ MODAL PUBLIKACJI I EDYCJI REKLAMY 9:16 (ADMIN EXCLUSIVE) ══════════ -->
+    <div class="modal-overlay" id="ad916Modal">
+        <div class="modal-card" style="max-width: 580px; max-height: 90vh; overflow-y: auto; padding: 22px 20px;">
+            <button class="modal-close-btn" onclick="closeModal('ad916Modal')"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <div style="width:42px; height:42px; border-radius:12px; background:linear-gradient(135deg, #f59e0b, #ec4899); display:flex; align-items:center; justify-content:center; font-size:1.3rem; color:#fff; box-shadow:0 4px 12px rgba(245,158,11,0.4);">
+                    <i class="fa-solid fa-rectangle-ad"></i>
+                </div>
+                <div>
+                    <h3 style="font-size: 1.25rem; font-family:'Outfit',sans-serif; margin:0; color:#fff; font-weight:800;" id="ad916ModalHeader">Kreator Reklamy 9:16</h3>
+                    <div style="font-size: 0.74rem; color: #facc15; font-weight:700;" id="ad916TargetSideLabel">Pozycja: Lewy Panel Boczny</div>
+                </div>
+            </div>
+
+            <form onsubmit="handleAd916FormSubmit(event)">
+                <input type="hidden" id="ad916Id" value="">
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 12px;">
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Lokalizacja Reklamy</label>
+                        <select id="ad916SideSelect" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-weight:700; font-family:inherit; font-size:13px; cursor:pointer;">
+                            <option value="left" style="background:#0f172a;">⬅️ Lewy Panel Boczny</option>
+                            <option value="right" style="background:#0f172a;">➡️ Prawy Panel Boczny</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Tytuł Okna / Belki (Badge)</label>
+                        <input type="text" id="ad916WindowBadge" placeholder="np. Patronat Misyjny CC" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px; font-weight:700;" required>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Tytuł Treści (Nagłówek Reklamy)</label>
+                    <input type="text" id="ad916ContentTitle" placeholder="np. Wspieraj Dzieło Boże 24/7" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px; font-weight:800;" required>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Treść / Opis Reklamy</label>
+                    <textarea id="ad916ContentDesc" rows="3" placeholder="Wpisz treść reklamy, zachętę do działania lub opis dzieła..." style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px; outline:none; resize:vertical;" required></textarea>
+                </div>
+
+                <!-- 9:16 Graphic Upload & Live Preview -->
+                <div style="margin-bottom: 14px; padding:12px; border-radius:14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:#facc15; margin-bottom:6px;">
+                        <i class="fa-solid fa-image"></i> Grafika Reklamy (Format Pionowy 9:16)
+                    </label>
+                    
+                    <input type="file" id="ad916FileInput" accept="image/*" style="display:none;" onchange="handleAd916FileSelect(event)">
+                    
+                    <div id="ad916PreviewWrapper" style="display:none; position:relative;" class="ad916-preview-box">
+                        <img id="ad916PreviewImg" src="" alt="Podgląd 9:16" class="ad916-preview-img">
+                        <button type="button" onclick="clearAd916Image()" style="position:absolute; top:8px; right:8px; width:28px; height:28px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.6);" title="Usuń grafikę"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <div style="display:flex; gap:8px;">
+                        <button type="button" onclick="document.getElementById('ad916FileInput').click()" style="flex:1; padding:9px 12px; border-radius:10px; background:rgba(245,158,11,0.15); border:1px dashed #f59e0b; color:#fef08a; font-family:inherit; font-size:0.80rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Wgraj Grafikę 9:16 z Dysku
+                        </button>
+                    </div>
+                    <input type="hidden" id="ad916ImageDataUrl" value="">
+                </div>
+
+                <!-- Button CTA & Target URL -->
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 16px;">
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Tytuł Przycisku (CTA)</label>
+                        <input type="text" id="ad916BtnText" placeholder="np. Zostań Patronem 💖" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px; font-weight:700;" required>
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Link Docelowy (URL)</label>
+                        <input type="text" id="ad916BtnUrl" placeholder="https://patronite.pl/..." style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px;" required>
+                    </div>
+                </div>
+
+                <!-- Action Controls: Save Draft, Publish, Delete, Cancel -->
+                <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1);">
+                    <button type="button" id="btnDeleteAd916" onclick="deleteCurrentEditingAd916()" style="display:none; padding:10px 16px; border-radius:20px; background:rgba(225,29,72,0.2); border:1px solid #e11d48; color:#fda4af; font-weight:800; font-family:inherit; font-size:0.80rem; cursor:pointer;">
+                        <i class="fa-solid fa-trash-can"></i> Usuń
+                    </button>
+                    
+                    <div style="display:flex; gap:8px; margin-left:auto;">
+                        <button type="button" onclick="closeModal('ad916Modal')" style="padding:10px 16px; border-radius:20px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; font-family:inherit; font-size:0.82rem; cursor:pointer;">Anuluj</button>
+                        <button type="button" onclick="saveAd916Action(false)" style="padding:10px 16px; border-radius:20px; background:rgba(59,130,246,0.2); border:1px solid #3b82f6; color:#93c5fd; font-weight:800; font-family:inherit; font-size:0.82rem; cursor:pointer;">
+                            <i class="fa-solid fa-floppy-disk"></i> Zapisz
+                        </button>
+                        <button type="button" onclick="saveAd916Action(true)" style="padding:10px 20px; border-radius:20px; background:linear-gradient(135deg,#f59e0b,#ec4899); border:none; color:#fff; font-weight:800; font-family:inherit; font-size:0.84rem; cursor:pointer; box-shadow:0 4px 16px rgba(245,158,11,0.4);">
+                            <i class="fa-solid fa-bullhorn"></i> Opublikuj ✨
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -3855,6 +4160,264 @@
             }
             // ────────────────────────────────────────────────────────────────
 
+            
+        /* ══════════ 9:16 ADVERTISING ENGINE & ADMIN VERIFICATION ══════════ */
+        const STORAGE_ADS_916_KEY = 'lumina_custom_ads_916';
+
+        function isLuminaAdmin() {
+            let u = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
+            if (!u) {
+                try { u = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
+            }
+            let p = null;
+            try { p = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null'); } catch(e) {}
+            
+            const email = ((u && u.email) || (p && p.email) || localStorage.getItem('lumina_user_email') || '').toLowerCase();
+            const slug = ((p && p.slug) || (u && u.slug) || '').toLowerCase();
+            const isMaster = (sessionStorage.getItem('lumina_auth_master_admin') === 'true') || 
+                             (localStorage.getItem('lumina_auth_master_admin') === 'true') ||
+                             (sessionStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') ||
+                             (localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') ||
+                             (localStorage.getItem('lumina_admin') === '1');
+            
+            const isAdmin = (email === 'nazirczarkes@gmail.com' || email.includes('czarkes') || email.includes('christianculture') || slug.includes('cezary') || isMaster);
+            if (isAdmin) {
+                localStorage.setItem('lumina_admin', '1');
+                localStorage.setItem('lumina_auth_master_admin', 'true');
+            }
+            return isAdmin;
+        }
+
+        function checkAdminStatusAndToggleUI() {
+            const isAdmin = isLuminaAdmin();
+            if (isAdmin) {
+                document.body.classList.add('lumina-admin-mode');
+                const founderHub = document.getElementById('founderMissionHub');
+                if (founderHub) founderHub.classList.add('admin-active');
+            } else {
+                document.body.classList.remove('lumina-admin-mode');
+            }
+        }
+
+        function getCustomAds916() {
+            try {
+                const raw = localStorage.getItem(STORAGE_ADS_916_KEY);
+                if (raw) return JSON.parse(raw);
+            } catch(e) {}
+            return [];
+        }
+
+        function saveCustomAds916ToStorage(ads) {
+            try {
+                localStorage.setItem(STORAGE_ADS_916_KEY, JSON.stringify(ads));
+            } catch(e) {}
+            // Sync with LuminaDB Firestore if available
+            if (window.LuminaDB && typeof window.LuminaDB.saveCustomAds916 === 'function') {
+                window.LuminaDB.saveCustomAds916(ads);
+            }
+        }
+
+        function openAd916Modal(side = 'left', existingId = null) {
+            document.getElementById('ad916Id').value = existingId || '';
+            document.getElementById('ad916SideSelect').value = side;
+            document.getElementById('ad916TargetSideLabel').textContent = side === 'left' ? 'Pozycja: Lewy Panel Boczny' : 'Pozycja: Prawy Panel Boczny';
+            
+            const btnDelete = document.getElementById('btnDeleteAd916');
+
+            if (existingId) {
+                const ads = getCustomAds916();
+                const ad = ads.find(a => a.id === existingId);
+                if (ad) {
+                    document.getElementById('ad916ModalHeader').textContent = 'Edytuj Reklamę 9:16';
+                    document.getElementById('ad916SideSelect').value = ad.side || side;
+                    document.getElementById('ad916WindowBadge').value = ad.windowBadge || '';
+                    document.getElementById('ad916ContentTitle').value = ad.contentTitle || '';
+                    document.getElementById('ad916ContentDesc').value = ad.contentDesc || '';
+                    document.getElementById('ad916BtnText').value = ad.btnText || '';
+                    document.getElementById('ad916BtnUrl').value = ad.btnUrl || '';
+                    document.getElementById('ad916ImageDataUrl').value = ad.image || '';
+                    
+                    if (ad.image) {
+                        document.getElementById('ad916PreviewImg').src = ad.image;
+                        document.getElementById('ad916PreviewWrapper').style.display = 'block';
+                    } else {
+                        document.getElementById('ad916PreviewWrapper').style.display = 'none';
+                    }
+                    if (btnDelete) btnDelete.style.display = 'inline-flex';
+                }
+            } else {
+                document.getElementById('ad916ModalHeader').textContent = 'Dodaj Nową Reklamę 9:16';
+                document.getElementById('ad916WindowBadge').value = side === 'left' ? 'Patronat Misyjny CC' : 'Cegiełki Misyjne CC';
+                document.getElementById('ad916ContentTitle').value = '';
+                document.getElementById('ad916ContentDesc').value = '';
+                document.getElementById('ad916BtnText').value = 'Sprawdź Szczegóły 🚀';
+                document.getElementById('ad916BtnUrl').value = 'https://polskieradio.cc';
+                document.getElementById('ad916ImageDataUrl').value = '';
+                document.getElementById('ad916PreviewWrapper').style.display = 'none';
+                if (btnDelete) btnDelete.style.display = 'none';
+            }
+
+            document.getElementById('ad916Modal').classList.add('open');
+        }
+
+        function handleAd916FileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let targetW = 540;
+                    let targetH = 960; // Exact 9:16
+                    canvas.width = targetW;
+                    canvas.height = targetH;
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Cover draw to maintain 9:16 aspect ratio
+                    const hRatio = targetW / img.width;
+                    const vRatio = targetH / img.height;
+                    const ratio = Math.max(hRatio, vRatio);
+                    const centerShiftX = (targetW - img.width * ratio) / 2;
+                    const centerShiftY = (targetH - img.height * ratio) / 2;
+                    ctx.drawImage(img, 0, 0, img.width, img.height, centerShiftX, centerShiftY, img.width * ratio, img.height * ratio);
+
+                    const compressed = canvas.toDataURL('image/jpeg', 0.88);
+                    document.getElementById('ad916ImageDataUrl').value = compressed;
+                    document.getElementById('ad916PreviewImg').src = compressed;
+                    document.getElementById('ad916PreviewWrapper').style.display = 'block';
+                    showToast('Grafika 9:16 została wgrana i dopasowana! 🖼️✨');
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearAd916Image() {
+            document.getElementById('ad916ImageDataUrl').value = '';
+            document.getElementById('ad916FileInput').value = '';
+            document.getElementById('ad916PreviewWrapper').style.display = 'none';
+        }
+
+        function saveAd916Action(isPublish = true) {
+            const id = document.getElementById('ad916Id').value.trim() || ('ad916_' + Date.now());
+            const side = document.getElementById('ad916SideSelect').value;
+            const windowBadge = document.getElementById('ad916WindowBadge').value.trim() || 'Oficjalna Reklama';
+            const contentTitle = document.getElementById('ad916ContentTitle').value.trim();
+            const contentDesc = document.getElementById('ad916ContentDesc').value.trim();
+            const btnText = document.getElementById('ad916BtnText').value.trim() || 'Odwiedź Stronę 🔗';
+            const btnUrl = document.getElementById('ad916BtnUrl').value.trim() || 'https://polskieradio.cc';
+            const image = document.getElementById('ad916ImageDataUrl').value.trim() || 'patronat_misyjny_916.jpg';
+
+            if (!contentTitle || !contentDesc) {
+                showToast('Wypełnij tytuł treści oraz opis reklamy!');
+                return;
+            }
+
+            let ads = getCustomAds916();
+            const existingIdx = ads.findIndex(a => a.id === id);
+
+            const adObj = {
+                id: id,
+                side: side,
+                windowBadge: windowBadge,
+                contentTitle: contentTitle,
+                contentDesc: contentDesc,
+                btnText: btnText,
+                btnUrl: btnUrl,
+                image: image,
+                published: isPublish,
+                updatedAt: Date.now()
+            };
+
+            if (existingIdx >= 0) {
+                ads[existingIdx] = adObj;
+            } else {
+                ads.push(adObj);
+            }
+
+            saveCustomAds916ToStorage(ads);
+            closeModal('ad916Modal');
+            renderCustomAds916();
+            showToast(isPublish ? 'Reklama 9:16 została opublikowana w panelu bocznym! 📢✨' : 'Zapisano wersję roboczą reklamy 💾');
+        }
+
+        function handleAd916FormSubmit(e) {
+            e.preventDefault();
+            saveAd916Action(true);
+        }
+
+        function editAd916(id) {
+            const ads = getCustomAds916();
+            const ad = ads.find(a => a.id === id);
+            if (ad) {
+                openAd916Modal(ad.side || 'left', id);
+            }
+        }
+
+        function deleteCurrentEditingAd916() {
+            const id = document.getElementById('ad916Id').value.trim();
+            if (!id) return;
+            if (confirm('Czy na pewno chcesz usunąć tę reklamę 9:16?')) {
+                deleteAd916(id);
+                closeModal('ad916Modal');
+            }
+        }
+
+        function deleteAd916(id) {
+            let ads = getCustomAds916();
+            ads = ads.filter(a => a.id !== id);
+            saveCustomAds916ToStorage(ads);
+            renderCustomAds916();
+            showToast('Reklama została pomyślnie usunięta! 🗑️');
+        }
+
+        function renderCustomAds916() {
+            const ads = getCustomAds916();
+            const leftContainer = document.getElementById('customAdsLeft');
+            const rightContainer = document.getElementById('customAdsRight');
+            const isAdmin = isLuminaAdmin();
+
+            if (leftContainer) leftContainer.innerHTML = '';
+            if (rightContainer) rightContainer.innerHTML = '';
+
+            ads.forEach(ad => {
+                if (!ad.published && !isAdmin) return; // Non-admins only see published ads
+
+                const targetEl = (ad.side === 'right') ? rightContainer : leftContainer;
+                if (!targetEl) return;
+
+                const card = document.createElement('div');
+                card.className = 'custom-ad-card-916 card-916';
+                card.id = 'card_' + ad.id;
+                card.innerHTML = `
+                    <div class="card-916-header">
+                        <span class="badge-patron" style="color:#facc15;"><i class="fa-solid fa-rectangle-ad"></i> ${ad.windowBadge || 'Reklama CC'}</span>
+                    </div>
+                    
+                    ${isAdmin ? `
+                    <div class="ad-admin-bar">
+                        <button type="button" class="btn-ad-admin-action btn-ad-admin-edit" onclick="editAd916('${ad.id}')" title="Edytuj reklamę"><i class="fa-solid fa-pen"></i></button>
+                        <button type="button" class="btn-ad-admin-action btn-ad-admin-delete" onclick="deleteAd916('${ad.id}')" title="Usuń reklamę"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                    ` : ''}
+
+                    <a href="${ad.btnUrl || '#'}" target="_blank" rel="noopener noreferrer" class="card-916-media-wrap">
+                        <img src="${ad.image || 'patronat_misyjny_916.jpg'}" alt="${ad.contentTitle}" class="card-916-img" onerror="this.onerror=null; this.src='patronat_misyjny_916.jpg';">
+                        <div class="card-916-overlay">
+                            <div class="card-916-title">${ad.contentTitle}</div>
+                            <div class="card-916-sub">${ad.contentDesc}</div>
+                            <span class="btn-916-action">${ad.btnText || 'Sprawdź Szczegóły 🔗'}</span>
+                        </div>
+                    </a>
+                `;
+                targetEl.appendChild(card);
+            });
+        }
+
+            checkAdminStatusAndToggleUI();
+            renderCustomAds916();
             syncFounderAvatar();
             renderFeed();
 
@@ -3889,7 +4452,7 @@
         });
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786906715319" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786937603614" defer></script>
     <script src="lumina-notifications.js?v=1786851592174" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
