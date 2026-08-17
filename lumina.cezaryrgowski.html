@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
     <!-- Google Analytics -->
@@ -69,7 +69,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786937913306"></script>
+    <script type="module" src="lumina-db.js?v=1786939633464"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
 
@@ -916,31 +916,33 @@
         /* ══════════ 3-COLUMN PANORAMIC FOUNDER LAYOUT ══════════ */
         .profile-body-grid {
             display: grid !important;
-            grid-template-columns: 310px 1fr 310px !important;
-            gap: 24px;
-            margin-top: 24px;
-            align-items: start;
+            grid-template-columns: 300px minmax(0, 1fr) 330px !important;
+            gap: 24px !important;
+            margin-top: 24px !important;
+            align-items: start !important;
         }
 
         .left-founder-wing, .right-founder-wing {
             display: flex !important;
             flex-direction: column !important;
             gap: 20px !important;
-            min-width: 0;
+            min-width: 0 !important;
+            width: 100% !important;
         }
 
         .timeline-area {
-            min-width: 0;
+            min-width: 0 !important;
+            width: 100% !important;
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
-        /* Tablet & Laptop View (Keep Left & Right visible or side-by-side) */
-        @media (max-width: 1100px) {
+        /* Tablet & Laptop View */
+        @media (max-width: 1200px) {
             .profile-body-grid {
-                grid-template-columns: 290px 1fr 290px !important;
-                gap: 16px;
+                grid-template-columns: 270px minmax(0, 1fr) 290px !important;
+                gap: 16px !important;
             }
         }
 
@@ -949,9 +951,9 @@
             .profile-body-grid {
                 grid-template-columns: 1fr !important;
             }
-            .right-founder-wing {
-                grid-template-columns: 1fr !important;
-            }
+            .left-founder-wing { order: 2; }
+            .timeline-area { order: 1; }
+            .right-founder-wing { order: 3; }
         }
 
         /* ──────────────────── MOBILE BOTTOM NAVIGATION BAR ──────────────────── */
@@ -1570,13 +1572,15 @@
         }
 
         .hud-card {
-            background: linear-gradient(145deg, rgba(15, 29, 68, 0.95), rgba(11, 24, 56, 0.98));
-            border: 1px solid rgba(250, 204, 21, 0.35);
+            background: linear-gradient(145deg, rgba(15, 29, 68, 0.96), rgba(11, 24, 56, 0.98));
+            border: 1.5px solid rgba(250, 204, 21, 0.4);
             border-radius: 20px;
-            padding: 22px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            padding: 18px 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
             position: relative;
             overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .hud-card::before {
@@ -1639,37 +1643,42 @@
 
         .hud-stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin-bottom: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 14px;
+            width: 100%;
         }
 
         .hud-stat-box {
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 14px;
-            padding: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 10px 10px;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
+            min-width: 0;
+            box-sizing: border-box;
             transition: transform 0.2s, background 0.2s;
         }
 
         .hud-stat-box:hover {
             transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(250, 204, 21, 0.3);
         }
 
         .hud-stat-icon-3d {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             flex-shrink: 0;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
         }
 
         .icon-blue { background: linear-gradient(135deg, #0284c7, #38bdf8); color: #fff; }
@@ -1678,32 +1687,36 @@
         .icon-gold { background: linear-gradient(135deg, #d97706, #facc15); color: #fff; }
         .icon-purple { background: linear-gradient(135deg, #7c3aed, #c084fc); color: #fff; }
 
-        .hud-stat-info { display: flex; flex-direction: column; }
-        .hud-stat-num { font-size: 1.35rem; font-weight: 800; color: #fff; line-height: 1.1; }
-        .hud-stat-label { font-size: 0.76rem; color: #94a3b8; margin-top: 3px; font-weight: 600; }
+        .hud-stat-info { display: flex; flex-direction: column; min-width: 0; flex: 1; overflow: hidden; }
+        .hud-stat-num { font-size: 1.1rem; font-weight: 800; color: #fff; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .hud-stat-label { font-size: 0.66rem; color: #94a3b8; margin-top: 2px; font-weight: 700; line-height: 1.3; word-break: break-word; }
 
         /* Gender Ratio Bar */
         .gender-ratio-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            padding: 14px 16px;
-            margin-bottom: 16px;
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .gender-labels {
             display: flex;
             justify-content: space-between;
-            font-size: 0.82rem;
+            font-size: 0.74rem;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 7px;
+            gap: 4px;
+            flex-wrap: wrap;
         }
 
-        .gender-female { color: #f472b6; display: flex; align-items: center; gap: 6px; }
-        .gender-male { color: #38bdf8; display: flex; align-items: center; gap: 6px; }
+        .gender-female { color: #f472b6; display: flex; align-items: center; gap: 4px; }
+        .gender-male { color: #38bdf8; display: flex; align-items: center; gap: 4px; }
 
         .gender-bar-wrap {
-            height: 12px;
+            height: 10px;
             width: 100%;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 10px;
@@ -1730,18 +1743,22 @@
         .activity-chart-wrap {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            padding: 14px 16px;
+            border-radius: 12px;
+            padding: 10px 12px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .chart-title-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.8rem;
+            font-size: 0.74rem;
             font-weight: 700;
             color: #cbd5e1;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 4px;
         }
 
         .bar-chart-flex {
@@ -1967,7 +1984,7 @@
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786937913306">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786939633464">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="css/lumina-theme.css?v=1786937908032">
     <link rel="stylesheet" href="css/lumina-components.css?v=1786937908032">
@@ -1977,7 +1994,7 @@
     
     <script type="module" src="js/lumina-db-profiles.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-actions.js?v=1786937908032"></script>
-    <script type="module" src="js/lumina-editor.js?v=1786937908032"></script>
+    <script type="module" src="js/lumina-editor.js?v=1786938148537"></script>
     <script type="module" src="js/lumina-feed.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-search.js?v=1786937908032"></script>
 </head>
@@ -2170,90 +2187,6 @@
         <!-- Profile 3-Column Grid -->
         <div class="profile-body-grid">
             <aside class="left-founder-wing">
-
-                <!-- 👑 Telemetria Społeczności na Żywo -->
-                <div class="hud-card" style="margin-bottom:0;">
-                    <div class="hud-header">
-                        <div class="hud-title">
-                            <i class="fa-solid fa-chart-pie" style="color:#facc15;"></i> Telemetria Społeczności
-                        </div>
-                        <div class="hud-badge-live">
-                            <span class="live-dot"></span> LIVE
-                        </div>
-                    </div>
-
-                    <div class="hud-stats-grid">
-                        <div class="hud-stat-box" title="Łączna liczba zarejestrowanych członków">
-                            <div class="hud-stat-icon-3d icon-blue">
-                                <i class="fa-solid fa-users"></i>
-                            </div>
-                            <div class="hud-stat-info">
-                                <span class="hud-stat-num" id="hudTotalMembers">1 482</span>
-                                <span class="hud-stat-label">Wszyscy Członkowie</span>
-                            </div>
-                        </div>
-
-                        <div class="hud-stat-box" title="Zalogowani w tej chwili na portalu">
-                            <div class="hud-stat-icon-3d icon-green">
-                                <i class="fa-solid fa-wifi"></i>
-                            </div>
-                            <div class="hud-stat-info">
-                                <span class="hud-stat-num" id="hudOnlineRealtime" style="color:#4ade80;">142</span>
-                                <span class="hud-stat-label">Zalogowani Online</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Gender Ratio Diagram -->
-                    <div class="gender-ratio-card">
-                        <div class="gender-labels">
-                            <span class="gender-female"><i class="fa-solid fa-venus"></i> Kobiety: <b id="hudFemaleCount">800 (54%)</b></span>
-                            <span class="gender-male"><i class="fa-solid fa-mars"></i> Mężczyźni: <b id="hudMaleCount">682 (46%)</b></span>
-                        </div>
-                        <div class="gender-bar-wrap">
-                            <div class="gender-bar-female" id="hudFemaleBar" style="width: 54%;" title="Kobiety: 54%"></div>
-                            <div class="gender-bar-male" id="hudMaleBar" style="width: 46%;" title="Mężczyźni: 46%"></div>
-                        </div>
-                    </div>
-
-                    <!-- 7-Day Activity Chart -->
-                    <div class="activity-chart-wrap">
-                        <div class="chart-title-row">
-                            <span><i class="fa-solid fa-chart-simple" style="color:#38bdf8;"></i> Wzrost Profili (7 Dni)</span>
-                            <span id="hudTodayCount" style="color:#22c55e; font-size:0.75rem;"><i class="fa-solid fa-arrow-trend-up"></i> +12 Dzisiaj</span>
-                        </div>
-                        <div class="bar-chart-flex">
-                            <div class="chart-col">
-                                <div class="chart-bar" id="barMon" style="height: 42%;" title="Poniedziałek"></div>
-                                <span class="chart-day">Pn</span>
-                            </div>
-                            <div class="chart-col">
-                                <div class="chart-bar" id="barTue" style="height: 58%;" title="Wtorek"></div>
-                                <span class="chart-day">Wt</span>
-                            </div>
-                            <div class="chart-col">
-                                <div class="chart-bar" id="barWed" style="height: 50%;" title="Środa"></div>
-                                <span class="chart-day">Śr</span>
-                            </div>
-                            <div class="chart-col">
-                                <div class="chart-bar" id="barThu" style="height: 75%;" title="Czwartek"></div>
-                                <span class="chart-day">Czw</span>
-                            </div>
-                            <div class="chart-col">
-                                <div class="chart-bar" id="barFri" style="height: 68%;" title="Piątek"></div>
-                                <span class="chart-day">Pt</span>
-                            </div>
-                            <div class="chart-col">
-                                <div class="chart-bar" id="barSat" style="height: 88%;" title="Sobota"></div>
-                                <span class="chart-day">So</span>
-                            </div>
-                            <div class="chart-col">
-                                <div class="chart-bar today" id="barSun" style="height: 60%;" title="Niedziela (Dziś)"></div>
-                                <span class="chart-day" style="color:#facc15;">Nd</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- About Card -->
                 <div class="sidebar-card">
@@ -2465,6 +2398,114 @@
                 </div>
 
             </section>
+
+
+            <!-- ══════════ PRAWY PANEL BOCZNY (TELEMETRIA SPOŁECZNOŚCI & MISJA ZAŁOŻYCIELA) ══════════ -->
+            <aside class="right-founder-wing">
+
+                <!-- 👑 Telemetria Społeczności na Żywo -->
+                <div class="hud-card" id="hudCardTelemetry" style="margin-bottom:0;">
+                    <div class="hud-header">
+                        <div class="hud-title">
+                            <i class="fa-solid fa-chart-pie" style="color:#facc15;"></i> Telemetria Społeczności
+                        </div>
+                        <div class="hud-badge-live">
+                            <span class="live-dot"></span> LIVE
+                        </div>
+                    </div>
+
+                    <div class="hud-stats-grid">
+                        <div class="hud-stat-box" title="Łączna liczba zarejestrowanych członków">
+                            <div class="hud-stat-icon-3d icon-blue">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div class="hud-stat-info">
+                                <span class="hud-stat-num" id="hudTotalMembers">1 482</span>
+                                <span class="hud-stat-label">Wszyscy Członkowie</span>
+                            </div>
+                        </div>
+
+                        <div class="hud-stat-box" title="Zalogowani w tej chwili na portalu">
+                            <div class="hud-stat-icon-3d icon-green">
+                                <i class="fa-solid fa-wifi"></i>
+                            </div>
+                            <div class="hud-stat-info">
+                                <span class="hud-stat-num" id="hudOnlineRealtime" style="color:#4ade80;">142</span>
+                                <span class="hud-stat-label">Zalogowani Online</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gender Ratio Diagram -->
+                    <div class="gender-ratio-card">
+                        <div class="gender-labels">
+                            <span class="gender-female"><i class="fa-solid fa-venus"></i> Kobiety: <b id="hudFemaleCount">800 (54%)</b></span>
+                            <span class="gender-male"><i class="fa-solid fa-mars"></i> Mężczyźni: <b id="hudMaleCount">682 (46%)</b></span>
+                        </div>
+                        <div class="gender-bar-wrap">
+                            <div class="gender-bar-female" id="hudFemaleBar" style="width: 54%;" title="Kobiety: 54%"></div>
+                            <div class="gender-bar-male" id="hudMaleBar" style="width: 46%;" title="Mężczyźni: 46%"></div>
+                        </div>
+                    </div>
+
+                    <!-- 7-Day Activity Chart -->
+                    <div class="activity-chart-wrap">
+                        <div class="chart-title-row">
+                            <span><i class="fa-solid fa-chart-simple" style="color:#38bdf8;"></i> Wzrost Profili (7 Dni)</span>
+                            <span id="hudTodayCount" style="color:#22c55e; font-size:0.75rem;"><i class="fa-solid fa-arrow-trend-up"></i> +12 Dzisiaj</span>
+                        </div>
+                        <div class="bar-chart-flex">
+                            <div class="chart-col">
+                                <div class="chart-bar" id="barMon" style="height: 42%;" title="Poniedziałek"></div>
+                                <span class="chart-day">Pn</span>
+                            </div>
+                            <div class="chart-col">
+                                <div class="chart-bar" id="barTue" style="height: 58%;" title="Wtorek"></div>
+                                <span class="chart-day">Wt</span>
+                            </div>
+                            <div class="chart-col">
+                                <div class="chart-bar" id="barWed" style="height: 50%;" title="Środa"></div>
+                                <span class="chart-day">Śr</span>
+                            </div>
+                            <div class="chart-col">
+                                <div class="chart-bar" id="barThu" style="height: 75%;" title="Czwartek"></div>
+                                <span class="chart-day">Czw</span>
+                            </div>
+                            <div class="chart-col">
+                                <div class="chart-bar" id="barFri" style="height: 68%;" title="Piątek"></div>
+                                <span class="chart-day">Pt</span>
+                            </div>
+                            <div class="chart-col">
+                                <div class="chart-bar" id="barSat" style="height: 88%;" title="Sobota"></div>
+                                <span class="chart-day">So</span>
+                            </div>
+                            <div class="chart-col">
+                                <div class="chart-bar today" id="barSun" style="height: 60%;" title="Niedziela (Dziś)"></div>
+                                <span class="chart-day" style="color:#facc15;">Nd</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Szybkie Skróty Założyciela & Misji CC -->
+                <div class="sidebar-card" style="border-color:rgba(168,85,247,0.35);">
+                    <div class="card-title">
+                        <span style="color:#c084fc;"><i class="fa-solid fa-compass"></i> Ekosystem CC</span>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <a href="lumina-tablica.html" class="btn-action-secondary" style="width:100%; justify-content:flex-start; text-decoration:none; padding:10px 14px; font-size:0.82rem;">
+                            <i class="fa-solid fa-rectangle-list" style="color:#facc15;"></i> Główna Tablica LUMINA
+                        </a>
+                        <a href="lumina.wiolettarogowska.html" class="btn-action-secondary" style="width:100%; justify-content:flex-start; text-decoration:none; padding:10px 14px; font-size:0.82rem;">
+                            <i class="fa-solid fa-heart" style="color:#ec4899;"></i> Profil Wioletty Rogowskiej
+                        </a>
+                        <a href="index.html" class="btn-action-secondary" style="width:100%; justify-content:flex-start; text-decoration:none; padding:10px 14px; font-size:0.82rem;">
+                            <i class="fa-solid fa-radio" style="color:#38bdf8;"></i> Radio Christian Culture
+                        </a>
+                    </div>
+                </div>
+
+            </aside>
 
         </div>
 
@@ -4060,7 +4101,7 @@
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786937913306" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786939633464" defer></script>
     <script src="lumina-notifications.js" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
