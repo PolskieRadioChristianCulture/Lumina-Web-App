@@ -6,26 +6,37 @@
 
 export function isLuminaAdmin() {
     let u = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
+    let p = (window.LuminaDB && typeof window.LuminaDB.getCurrentProfile === 'function') ? window.LuminaDB.getCurrentProfile() : null;
+    
     if (!u) {
         try { u = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
     }
-    let p = null;
-    try { p = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null'); } catch(e) {}
-    
-    const email = ((u && u.email) || (p && p.email) || localStorage.getItem('lumina_user_email') || '').toLowerCase();
-    const slug = ((p && p.slug) || (u && u.slug) || '').toLowerCase();
-    const isMaster = (sessionStorage.getItem('lumina_auth_master_admin') === 'true') || 
-                     (localStorage.getItem('lumina_auth_master_admin') === 'true') ||
-                     (sessionStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') ||
-                     (localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') ||
-                     (localStorage.getItem('lumina_admin') === '1');
-    
-    const isAdmin = (email === 'nazirczarkes@gmail.com' || email.includes('czarkes') || email.includes('christianculture') || slug.includes('cezary') || isMaster);
-    if (isAdmin) {
-        localStorage.setItem('lumina_admin', '1');
-        localStorage.setItem('lumina_auth_master_admin', 'true');
+    if (!p) {
+        try { p = JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null'); } catch(e) {}
     }
-    return isAdmin;
+
+    if (!u) {
+        try {
+            for (let i = 0; i < localStorage.length; i++) {
+                const k = localStorage.key(i);
+                if (k && k.startsWith('firebase:authUser:')) {
+                    const fData = JSON.parse(localStorage.getItem(k));
+                    if (fData && fData.email) {
+                        u = fData;
+                        break;
+                    }
+                }
+            }
+        } catch(e) {}
+    }
+
+    const email = ((u && u.email) || (p && p.email) || '').toLowerCase().trim();
+    if (!email) {
+        if (typeof document !== 'undefined') document.body.classList.remove('lumina-admin-mode');
+        return false;
+    }
+
+    return (email === 'nazirczarkes@gmail.com' || email.includes('czarkes') || email.includes('christianculture'));
 }
 
 export function openEditProfileModal(profileData) {

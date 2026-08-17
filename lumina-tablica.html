@@ -70,7 +70,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
         <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786937913306"></script>
+    <script type="module" src="lumina-db.js?v=1786938148537"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-tablica.js"></script>
     <script type="module" src="lumina-i18n.js?v=1786850740820"></script>
@@ -1840,7 +1840,7 @@
         }
 
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786937913306">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786938148537">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="css/lumina-theme.css?v=1786937908032">
     <link rel="stylesheet" href="css/lumina-components.css?v=1786937908032">
@@ -1850,7 +1850,7 @@
     
     <script type="module" src="js/lumina-db-profiles.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-actions.js?v=1786937908032"></script>
-    <script type="module" src="js/lumina-editor.js?v=1786937908032"></script>
+    <script type="module" src="js/lumina-editor.js?v=1786938148537"></script>
     <script type="module" src="js/lumina-feed.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-search.js?v=1786937908032"></script>
 </head>
@@ -4173,40 +4173,65 @@
             // ────────────────────────────────────────────────────────────────
 
             
-        /* ══════════ 9:16 ADVERTISING ENGINE & ADMIN VERIFICATION ══════════ */
+        /* ══════════ 9:16 ADVERTISING ENGINE & STRICT ADMIN AUTH ══════════ */
         const STORAGE_ADS_916_KEY = 'lumina_custom_ads_916';
 
         function isLuminaAdmin() {
             let u = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
+            let p = (window.LuminaDB && typeof window.LuminaDB.getCurrentProfile === 'function') ? window.LuminaDB.getCurrentProfile() : null;
+            
             if (!u) {
                 try { u = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
             }
-            let p = null;
-            try { p = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null'); } catch(e) {}
-            
-            const email = ((u && u.email) || (p && p.email) || localStorage.getItem('lumina_user_email') || '').toLowerCase();
-            const slug = ((p && p.slug) || (u && u.slug) || '').toLowerCase();
-            const isMaster = (sessionStorage.getItem('lumina_auth_master_admin') === 'true') || 
-                             (localStorage.getItem('lumina_auth_master_admin') === 'true') ||
-                             (sessionStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') ||
-                             (localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') ||
-                             (localStorage.getItem('lumina_admin') === '1');
-            
-            const isAdmin = (email === 'nazirczarkes@gmail.com' || email.includes('czarkes') || email.includes('christianculture') || slug.includes('cezary') || isMaster);
-            if (isAdmin) {
-                localStorage.setItem('lumina_admin', '1');
-                localStorage.setItem('lumina_auth_master_admin', 'true');
+            if (!p) {
+                try { p = JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null'); } catch(e) {}
             }
+
+            // Check Firebase Auth Key in localStorage if user not set
+            if (!u) {
+                try {
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const k = localStorage.key(i);
+                        if (k && k.startsWith('firebase:authUser:')) {
+                            const fData = JSON.parse(localStorage.getItem(k));
+                            if (fData && fData.email) {
+                                u = fData;
+                                break;
+                            }
+                        }
+                    }
+                } catch(e) {}
+            }
+
+            // STRICT: Must have an active user with matching admin email
+            const email = ((u && u.email) || (p && p.email) || '').toLowerCase().trim();
+            if (!email) {
+                document.body.classList.remove('lumina-admin-mode');
+                return false;
+            }
+
+            const isAdmin = (email === 'nazirczarkes@gmail.com' || email.includes('czarkes') || email.includes('christianculture'));
             return isAdmin;
         }
 
         function checkAdminStatusAndToggleUI() {
             const isAdmin = isLuminaAdmin();
+            const founderHub = document.getElementById('founderMissionHub');
+            const leftBtn = document.getElementById('btnAddAdLeft');
+            const rightBtn = document.getElementById('btnAddAdRight');
+
             if (isAdmin) {
                 document.body.classList.add('lumina-admin-mode');
-                const founderHub = document.getElementById('founderMissionHub');
                 if (founderHub) founderHub.classList.add('admin-active');
+                if (leftBtn) leftBtn.style.setProperty('display', 'flex', 'important');
+                if (rightBtn) rightBtn.style.setProperty('display', 'flex', 'important');
             } else {
+                document.body.classList.remove('lumina-admin-mode');
+                if (founderHub) founderHub.classList.remove('admin-active');
+                if (leftBtn) leftBtn.style.setProperty('display', 'none', 'important');
+                if (rightBtn) rightBtn.style.setProperty('display', 'none', 'important');
+            }
+        } else {
                 document.body.classList.remove('lumina-admin-mode');
             }
         }
@@ -4429,6 +4454,12 @@
         }
 
             checkAdminStatusAndToggleUI();
+            if (window.LuminaDB && typeof window.LuminaDB.onAuthStateChanged === 'function') {
+                window.LuminaDB.onAuthStateChanged((user) => {
+                    checkAdminStatusAndToggleUI();
+                    renderCustomAds916();
+                });
+            }
             renderCustomAds916();
             syncFounderAvatar();
             renderFeed();
@@ -4464,7 +4495,7 @@
         });
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786937913306" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786938148537" defer></script>
     <script src="lumina-notifications.js?v=1786851592174" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">

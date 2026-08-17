@@ -500,14 +500,39 @@ export async function loginWithEmail(email, password) {
 }
 
 export async function logoutUser() {
-    if (!auth) return;
-    try {
-        await signOut(auth);
-        currentUserState = null;
-        currentProfileState = null;
-        localStorage.removeItem('lumina_current_user_profile');
-    } catch(err) {
-        console.error('Lumina Logout error:', err);
+    if (auth) {
+        try {
+            await signOut(auth);
+        } catch(err) {
+            console.error('Lumina Logout error:', err);
+        }
+    }
+    currentUserState = null;
+    currentProfileState = null;
+    localStorage.removeItem('lumina_current_user_profile');
+    localStorage.removeItem('lumina_current_user');
+    localStorage.removeItem('lumina_my_profile');
+    localStorage.removeItem('lumina_user_email');
+    localStorage.removeItem('lumina_admin');
+    localStorage.removeItem('lumina_auth_master_admin');
+    
+    for (let i = sessionStorage.length - 1; i >= 0; i--) {
+        const k = sessionStorage.key(i);
+        if (k && (k.startsWith('lumina_auth_') || k.startsWith('lumina_'))) {
+            sessionStorage.removeItem(k);
+        }
+    }
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('lumina_auth_owner_')) {
+            localStorage.removeItem(k);
+        }
+    }
+    if (typeof document !== 'undefined') {
+        document.body.classList.remove('lumina-admin-mode');
+        document.body.classList.remove('owner-mode-active');
+        const founderHub = document.getElementById('founderMissionHub');
+        if (founderHub) founderHub.classList.remove('admin-active');
     }
 }
 
