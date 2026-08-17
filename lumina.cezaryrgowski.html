@@ -912,54 +912,82 @@
             border-radius: 3px;
         }
 
-        /* ──────────────────── MAIN 2-COLUMN LAYOUT ──────────────────── */
-        /* ══════════ 3-COLUMN PANORAMIC FOUNDER LAYOUT ══════════ */
-        .profile-body-grid {
-            display: grid !important;
-            grid-template-columns: 300px minmax(0, 1fr) 330px !important;
+        /* ══════════ 3-COLUMN PANORAMIC FOUNDER LAYOUT (ROCK SOLID FLEXBOX) ══════════ */
+        .profile-body-grid,
+        .profile-body-grid.founder-3col {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: flex-start !important;
+            justify-content: space-between !important;
             gap: 24px !important;
             margin-top: 24px !important;
-            align-items: start !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
         }
 
-        .left-founder-wing, .right-founder-wing {
+        .left-founder-wing {
+            flex: 0 0 280px !important;
+            width: 280px !important;
+            min-width: 250px !important;
+            max-width: 300px !important;
             display: flex !important;
             flex-direction: column !important;
             gap: 20px !important;
-            min-width: 0 !important;
-            width: 100% !important;
         }
 
         .timeline-area {
+            flex: 1 1 auto !important;
             min-width: 0 !important;
             width: 100% !important;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 20px !important;
         }
 
-        /* Tablet & Laptop View */
-        @media (max-width: 1200px) {
-            .profile-body-grid {
-                grid-template-columns: 260px minmax(0, 1fr) 280px !important;
-                gap: 14px !important;
+        .right-founder-wing {
+            flex: 0 0 320px !important;
+            width: 320px !important;
+            min-width: 290px !important;
+            max-width: 340px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 20px !important;
+        }
+
+        @media (max-width: 1150px) {
+            .profile-body-grid, .profile-body-grid.founder-3col {
+                gap: 16px !important;
             }
-        }
-
-        @media (max-width: 992px) {
-            .profile-body-grid {
-                grid-template-columns: 230px minmax(0, 1fr) 250px !important;
-                gap: 12px !important;
+            .left-founder-wing {
+                flex: 0 0 240px !important;
+                width: 240px !important;
+                min-width: 220px !important;
+            }
+            .right-founder-wing {
+                flex: 0 0 280px !important;
+                width: 280px !important;
+                min-width: 260px !important;
             }
         }
 
         /* Mobile View: Stack gracefully only on phones */
         @media (max-width: 768px) {
-            .profile-body-grid {
-                grid-template-columns: 1fr !important;
+            .profile-body-grid,
+            .profile-body-grid.founder-3col {
+                flex-direction: column !important;
+                flex-wrap: wrap !important;
             }
-            .left-founder-wing { order: 2; }
+            .left-founder-wing,
+            .timeline-area,
+            .right-founder-wing {
+                flex: 1 1 100% !important;
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+            }
             .timeline-area { order: 1; }
+            .left-founder-wing { order: 2; }
             .right-founder-wing { order: 3; }
         }
 
@@ -1990,9 +2018,9 @@
     </style>
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786939633464">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
-    <link rel="stylesheet" href="css/lumina-theme.css?v=1786940887015">
-    <link rel="stylesheet" href="css/lumina-components.css?v=1786940887015">
-    <link rel="stylesheet" href="css/lumina-profile.css?v=1786940887015">
+    <link rel="stylesheet" href="css/lumina-theme.css?v=1786941394472">
+    <link rel="stylesheet" href="css/lumina-components.css?v=1786941394472">
+    <link rel="stylesheet" href="css/lumina-profile.css?v=1786941394472">
     <link rel="stylesheet" href="css/lumina-feed.css?v=1786937908032">
     <link rel="stylesheet" href="css/lumina-modals.css?v=1786937908032">
     
