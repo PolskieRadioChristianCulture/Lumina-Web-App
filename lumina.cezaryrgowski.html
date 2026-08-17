@@ -941,13 +941,20 @@
         /* Tablet & Laptop View */
         @media (max-width: 1200px) {
             .profile-body-grid {
-                grid-template-columns: 270px minmax(0, 1fr) 290px !important;
-                gap: 16px !important;
+                grid-template-columns: 260px minmax(0, 1fr) 280px !important;
+                gap: 14px !important;
             }
         }
 
-        /* Mobile View: Stack gracefully */
-        @media (max-width: 960px) {
+        @media (max-width: 992px) {
+            .profile-body-grid {
+                grid-template-columns: 230px minmax(0, 1fr) 250px !important;
+                gap: 12px !important;
+            }
+        }
+
+        /* Mobile View: Stack gracefully only on phones */
+        @media (max-width: 768px) {
             .profile-body-grid {
                 grid-template-columns: 1fr !important;
             }
@@ -1033,15 +1040,12 @@
             border: 2px solid #090d1a;
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 768px) {
             .lumina-mobile-nav {
                 display: flex !important;
             }
             body {
                 padding-bottom: 95px !important;
-            }
-            .profile-body-grid {
-                grid-template-columns: 1fr;
             }
             .cover-wrapper { height: 220px; }
             .avatar-wrap { width: 110px; height: 110px; margin-top: -55px; }
@@ -1986,9 +1990,9 @@
     </style>
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786939633464">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
-    <link rel="stylesheet" href="css/lumina-theme.css?v=1786940468365">
-    <link rel="stylesheet" href="css/lumina-components.css?v=1786940468365">
-    <link rel="stylesheet" href="css/lumina-profile.css?v=1786940468365">
+    <link rel="stylesheet" href="css/lumina-theme.css?v=1786940887015">
+    <link rel="stylesheet" href="css/lumina-components.css?v=1786940887015">
+    <link rel="stylesheet" href="css/lumina-profile.css?v=1786940887015">
     <link rel="stylesheet" href="css/lumina-feed.css?v=1786937908032">
     <link rel="stylesheet" href="css/lumina-modals.css?v=1786937908032">
     
@@ -2357,9 +2361,9 @@
                         </article>
 
                     </div>
-                </div>
-
-            <div class="sidebar-card">
+                <!-- Tab: Świadectwo & O Mnie -->
+                <div id="tab-about" class="tab-content-pane" style="display:none;">
+                    <div class="sidebar-card">
                         <div class="card-title">
                             <span>Moje Świadectwo Wiary</span>
                             <button class="card-edit-btn" onclick="openEditProfileModal('bio')" title="Edytuj świadectwo"><i class="fa-solid fa-pencil"></i></button>

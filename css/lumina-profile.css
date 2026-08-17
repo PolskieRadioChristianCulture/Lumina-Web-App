@@ -202,15 +202,26 @@ body.owner-mode-active .avatar-edit-badge {
 @media (max-width: 1200px) {
     .profile-body-grid.founder-3col,
     .profile-body-grid:has(.right-founder-wing) {
-        grid-template-columns: 280px minmax(0, 1fr) 300px !important;
-        gap: 16px !important;
+        grid-template-columns: 260px minmax(0, 1fr) 280px !important;
+        gap: 14px !important;
     }
 }
 
-@media (max-width: 960px) {
+@media (max-width: 992px) {
+    .profile-body-grid.founder-3col,
+    .profile-body-grid:has(.right-founder-wing) {
+        grid-template-columns: 230px minmax(0, 1fr) 250px !important;
+        gap: 12px !important;
+    }
+}
+
+@media (max-width: 768px) {
     .profile-body-grid.founder-3col,
     .profile-body-grid:has(.right-founder-wing) {
         grid-template-columns: 100% !important;
+    }
+    .profile-body-grid {
+        grid-template-columns: 1fr;
     }
 }
 
