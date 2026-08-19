@@ -489,11 +489,12 @@
     window.triggerSecretAdminPrompt = async function(e) {
         if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
 
-        const isCurrentlyAdmin = (sessionStorage.getItem('lumina_auth_master_admin') === 'true');
+        const isCurrentlyAdmin = (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true');
         if (isCurrentlyAdmin) {
             const confirmLock = confirm('👑 Jesteś obecnie zalogowany jako Główny Administrator Portalu LUMINA.\n\nCzy chcesz ZABLOKOWAĆ tryb Administratora i przejść do widoku zwykłego gościa?');
             if (confirmLock) {
                 sessionStorage.removeItem('lumina_auth_master_admin');
+                localStorage.removeItem('lumina_auth_master_admin');
                 document.body.classList.remove('owner-mode-active');
                 if (typeof window.checkOwnerAuthSession === 'function') window.checkOwnerAuthSession();
                 const toastFn = window.showToast || window.luminaToast || alert;
@@ -514,6 +515,7 @@
 
             if (hash === ADMIN_HASH) {
                 sessionStorage.setItem('lumina_auth_master_admin', 'true');
+                localStorage.setItem('lumina_auth_master_admin', 'true');
                 document.body.classList.add('owner-mode-active');
                 if (typeof window.checkOwnerAuthSession === 'function') window.checkOwnerAuthSession();
                 const toastFn = window.showToast || window.luminaToast || alert;
@@ -725,9 +727,23 @@
     }
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", injectCookieConsentBanner);
+        document.addEventListener("DOMContentLoaded", () => {
+            injectCookieConsentBanner();
+            loadLuminaRadioScript();
+        });
     } else {
         injectCookieConsentBanner();
+        loadLuminaRadioScript();
+    }
+
+    function loadLuminaRadioScript() {
+        if (window.LuminaRadioEngineInitialized) return;
+        if (!document.querySelector('script[src*="lumina-radio.js"]')) {
+            const radioScript = document.createElement('script');
+            radioScript.src = 'lumina-radio.js?v=' + Date.now();
+            radioScript.defer = true;
+            document.body.appendChild(radioScript);
+        }
     }
 
 })();

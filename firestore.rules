@@ -2,23 +2,31 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
+    // Master admin helper
+    function isMasterAdmin() {
+      return request.auth != null && (
+        request.auth.token.email == 'nazirczarkes@gmail.com' ||
+        request.auth.uid == 'nazirczarkes'
+      );
+    }
+    
     // Public read and author edit for Lumina profiles
     match /lumina_profiles/{profileId} {
       allow read: if true;
-      allow write: if request.auth != null || resource == null;
+      allow write: if isMasterAdmin() || request.auth != null || resource == null;
     }
     
     // Public read, authenticated or guest create for posts
     match /lumina_posts/{postId} {
       allow read: if true;
       allow create: if true;
-      allow update, delete: if request.auth != null;
+      allow update, delete: if isMasterAdmin() || request.auth != null;
     }
     
     // Public read for CC Mission Campaigns
     match /lumina_campaigns/{campaignId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isMasterAdmin() || request.auth != null;
     }
     
     // Direct Chats & Messages
@@ -30,16 +38,16 @@ service cloud.firestore {
       }
     }
     
-    // Moderation Reports (Any user can submit a report, read restricted)
+    // Moderation Reports (Any user can submit a report, admin has full read/manage access)
     match /lumina_reports/{reportId} {
       allow create: if true;
-      allow read, update, delete: if request.auth != null;
+      allow read, update, delete: if isMasterAdmin() || request.auth != null;
     }
     
     // Default fallback
     match /{document=**} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isMasterAdmin() || request.auth != null;
     }
   }
 }

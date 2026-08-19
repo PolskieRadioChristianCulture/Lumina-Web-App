@@ -1,0 +1,250 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#140e0a"/>
+      <stop offset="35%" stop-color="#2c1a0e"/>
+      <stop offset="65%" stop-color="#4d2c14"/>
+      <stop offset="100%" stop-color="#1f1207"/>
+    </linearGradient>
+
+    <!-- Sun Glow Gradient -->
+    <radialGradient id="sunGlow" cx="68%" cy="28%" r="65%">
+      <stop offset="0%" stop-color="#fff8db" stop-opacity="1"/>
+      <stop offset="15%" stop-color="#ffd56b" stop-opacity="0.9"/>
+      <stop offset="35%" stop-color="#f59e0b" stop-opacity="0.6"/>
+      <stop offset="65%" stop-color="#b45309" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Bokeh Light 1 -->
+    <radialGradient id="bokeh1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.7"/>
+      <stop offset="70%" stop-color="#f59e0b" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Bokeh Light 2 -->
+    <radialGradient id="bokeh2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8"/>
+      <stop offset="60%" stop-color="#fed7aa" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#fed7aa" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Dark Vignette Overlay -->
+    <linearGradient id="leftDark" x1="0%" y1="50%" x2="70%" y2="50%">
+      <stop offset="0%" stop-color="#070a12" stop-opacity="0.92"/>
+      <stop offset="45%" stop-color="#0b1120" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.1"/>
+    </linearGradient>
+
+    <linearGradient id="bottomShadow" x1="50%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" stop-color="#050811" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#050811" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Filter for text shadow -->
+    <filter id="textDropShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.7"/>
+    </filter>
+
+    <filter id="badgeGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="1200" height="600" fill="url(#bgGrad)"/>
+
+  <!-- Forest Canopy Silhouettes -->
+  <g opacity="0.45">
+    <circle cx="950" cy="120" r="180" fill="#182214"/>
+    <circle cx="820" cy="80" r="140" fill="#222f1b"/>
+    <circle cx="700" cy="110" r="120" fill="#1c2817"/>
+    <circle cx="600" cy="70" r="110" fill="#131a10"/>
+    <circle cx="480" cy="130" r="130" fill="#10170e"/>
+    <circle cx="350" cy="90" r="150" fill="#0d140b"/>
+    <circle cx="150" cy="110" r="170" fill="#0a0f08"/>
+    <circle cx="1100" cy="160" r="220" fill="#151e12"/>
+  </g>
+
+  <!-- Golden Sun Rays and Ambient Glow -->
+  <rect width="1200" height="600" fill="url(#sunGlow)"/>
+
+  <!-- Atmospheric Light Rays (God Rays) -->
+  <g opacity="0.28" fill="#fffbeb">
+    <polygon points="810,120 1200,600 1020,600"/>
+    <polygon points="810,120 950,600 800,600"/>
+    <polygon points="810,120 730,600 610,600"/>
+    <polygon points="810,120 540,600 420,600"/>
+    <polygon points="810,120 1200,320 1200,480"/>
+  </g>
+
+  <!-- Warm Bokeh Spheres -->
+  <circle cx="880" cy="220" r="65" fill="url(#bokeh1)"/>
+  <circle cx="760" cy="180" r="45" fill="url(#bokeh2)"/>
+  <circle cx="980" cy="310" r="85" fill="url(#bokeh1)"/>
+  <circle cx="690" cy="280" r="50" fill="url(#bokeh2)"/>
+  <circle cx="820" cy="380" r="95" fill="url(#bokeh1)"/>
+  <circle cx="620" cy="160" r="40" fill="url(#bokeh2)"/>
+  <circle cx="1060" cy="220" r="55" fill="url(#bokeh1)"/>
+  <circle cx="740" cy="110" r="30" fill="url(#bokeh2)"/>
+
+  <!-- Left Dark Gradient for Crystal-Clear Typography Contrast -->
+  <rect width="1200" height="600" fill="url(#leftDark)"/>
+  <rect width="1200" height="600" fill="url(#bottomShadow)"/>
+
+  <!-- Silhouette of person with arms raised in praise & prayer -->
+  <g id="personSilhouette" fill="#160e09" opacity="0.96">
+    <!-- Head & Hair -->
+    <ellipse cx="805" cy="460" rx="42" ry="52" fill="#1c120c"/>
+    <path d="M765 470 C 765 420, 845 420, 845 470 C 845 520, 825 540, 805 540 C 785 540, 765 520, 765 470 Z" fill="#1c120c"/>
+    <!-- Shoulders & Torso -->
+    <path d="M720 600 L740 520 C 755 500, 780 490, 805 490 C 830 490, 855 500, 870 520 L890 600 Z" fill="#160e09"/>
+    <!-- Left Arm Raised Up -->
+    <path d="M750 515 C 735 480, 715 390, 710 300 C 710 270, 722 250, 730 250 C 738 250, 742 270, 746 300 C 755 380, 770 470, 778 505 Z" fill="#20140d"/>
+    <!-- Left Hand & Fingers reaching up -->
+    <path d="M718 255 L705 180 C705 170, 715 170, 718 180 L728 245 Z" fill="#26170e"/>
+    <path d="M726 248 L724 165 C724 155, 734 155, 736 165 L738 245 Z" fill="#26170e"/>
+    <path d="M734 250 L742 170 C742 160, 752 160, 752 170 L746 250 Z" fill="#26170e"/>
+    <path d="M740 255 L756 185 C756 175, 766 175, 764 185 L752 255 Z" fill="#26170e"/>
+    <path d="M715 260 L695 215 C690 208, 700 202, 706 210 L722 260 Z" fill="#26170e"/>
+
+    <!-- Right Arm Raised Up -->
+    <path d="M860 515 C 875 480, 895 390, 900 300 C 900 270, 888 250, 880 250 C 872 250, 868 270, 864 300 C 855 380, 840 470, 832 505 Z" fill="#20140d"/>
+    <!-- Right Hand & Fingers reaching up -->
+    <path d="M892 255 L905 180 C905 170, 895 170, 892 180 L882 245 Z" fill="#26170e"/>
+    <path d="M884 248 L886 165 C886 155, 876 155, 874 165 L872 245 Z" fill="#26170e"/>
+    <path d="M876 250 L868 170 C868 160, 858 160, 858 170 L864 250 Z" fill="#26170e"/>
+    <path d="M870 255 L854 185 C854 175, 844 175, 846 185 L858 255 Z" fill="#26170e"/>
+    <path d="M895 260 L915 215 C920 208, 910 202, 904 210 L888 260 Z" fill="#26170e"/>
+
+    <!-- Bracelets on wrists -->
+    <rect x="710" y="275" width="36" height="8" rx="4" fill="#a16207" opacity="0.9"/>
+    <rect x="712" y="290" width="34" height="6" rx="3" fill="#78350f" opacity="0.8"/>
+    <rect x="864" y="275" width="36" height="8" rx="4" fill="#a16207" opacity="0.9"/>
+    <rect x="866" y="290" width="34" height="6" rx="3" fill="#78350f" opacity="0.8"/>
+  </g>
+
+  <!-- Golden rim lighting on silhouette -->
+  <g fill="none" stroke="#fed7aa" stroke-width="3" opacity="0.6">
+    <path d="M718 255 L705 180"/>
+    <path d="M726 248 L724 165"/>
+    <path d="M892 255 L905 180"/>
+    <path d="M884 248 L886 165"/>
+  </g>
+
+  <!-- ══════════ LEFT TYPOGRAPHY: PODŁĄCZ SIĘ DO ŹRÓDŁA MOCY! ══════════ -->
+  <g filter="url(#textDropShadow)">
+    <!-- Subtitle: PODŁĄCZ SIĘ -->
+    <text x="90" y="210" 
+          font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+          font-size="28" 
+          font-weight="600" 
+          letter-spacing="12" 
+          fill="#fef08a" 
+          opacity="0.95">
+      PODŁĄCZ SIĘ
+    </text>
+
+    <!-- Main Headline Line 1: DO ŹRÓDŁA -->
+    <text x="90" y="325" 
+          font-family="'Outfit', 'Cinzel', 'Playfair Display', Georgia, serif" 
+          font-size="78" 
+          font-weight="800" 
+          letter-spacing="2" 
+          fill="#ffffff">
+      DO ŹRÓDŁA
+    </text>
+
+    <!-- Main Headline Line 2: MOCY! -->
+    <text x="90" y="445" 
+          font-family="'Outfit', 'Cinzel', 'Playfair Display', Georgia, serif" 
+          font-size="94" 
+          font-weight="900" 
+          letter-spacing="3" 
+          fill="#ffffff">
+      MOCY!
+    </text>
+    
+    <!-- Accent Underline Bar -->
+    <rect x="90" y="475" width="280" height="4" rx="2" fill="url(#sunGlow)"/>
+    
+    <!-- Daily Subline -->
+    <text x="90" y="520" 
+          font-family="'Plus Jakarta Sans', sans-serif" 
+          font-size="16" 
+          font-weight="600" 
+          letter-spacing="2" 
+          fill="#cbd5e1" 
+          opacity="0.9">
+      ROZWAŻANIE DNIA • ANDRZEJ THIEL • PORTAL LUMINA
+    </text>
+  </g>
+
+  <!-- ══════════ UPPER RIGHT: CUDA KAŻDEGO DNIA EMBLEM ══════════ -->
+  <g transform="translate(1060, 100)" filter="url(#badgeGlow)">
+    <!-- Decorative Ray burst around emblem -->
+    <g stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.85">
+      <line x1="0" y1="-68" x2="0" y2="-56"/>
+      <line x1="26" y1="-62" x2="20" y2="-52"/>
+      <line x1="48" y1="-48" x2="40" y2="-40"/>
+      <line x1="62" y1="-26" x2="52" y2="-20"/>
+      <line x1="68" y1="0" x2="56" y2="0"/>
+      <line x1="62" y1="26" x2="52" y2="20"/>
+      <line x1="48" y1="48" x2="40" y2="40"/>
+      <line x1="26" y1="62" x2="20" y2="52"/>
+      <line x1="0" y1="68" x2="0" y2="56"/>
+      <line x1="-26" y1="62" x2="-20" y2="52"/>
+      <line x1="-48" y1="48" x2="-40" y2="40"/>
+      <line x1="-62" y1="26" x2="-52" y2="20"/>
+      <line x1="-68" y1="0" x2="-56" y2="0"/>
+      <line x1="-62" y1="-26" x2="-52" y2="-20"/>
+      <line x1="-48" y1="-48" x2="-40" y2="-40"/>
+      <line x1="-26" y1="-62" x2="-20" y2="-52"/>
+    </g>
+
+    <!-- Little Star Sparks -->
+    <g fill="#fef08a" opacity="0.9">
+      <circle cx="-35" cy="-25" r="2.5"/>
+      <circle cx="35" cy="-25" r="2.5"/>
+      <circle cx="-30" cy="28" r="2"/>
+      <circle cx="30" cy="28" r="2"/>
+    </g>
+
+    <!-- Badge Title: Cuda -->
+    <text x="0" y="-12" 
+          text-anchor="middle" 
+          font-family="'Playfair Display', 'Brush Script MT', 'Outfit', cursive, serif" 
+          font-size="28" 
+          font-style="italic"
+          font-weight="700" 
+          fill="#ffffff"
+          letter-spacing="1">
+      Cuda
+    </text>
+
+    <!-- Badge Title: Każdego -->
+    <text x="0" y="14" 
+          text-anchor="middle" 
+          font-family="'Plus Jakarta Sans', sans-serif" 
+          font-size="17" 
+          font-weight="800" 
+          fill="#ffffff" 
+          letter-spacing="2">
+      KAŻDEGO
+    </text>
+
+    <!-- Badge Title: Dnia -->
+    <text x="0" y="38" 
+          text-anchor="middle" 
+          font-family="'Playfair Display', 'Brush Script MT', cursive, serif" 
+          font-size="24" 
+          font-style="italic"
+          font-weight="700" 
+          fill="#ffffff"
+          letter-spacing="1">
+      Dnia
+    </text>
+  </g>
+</svg>

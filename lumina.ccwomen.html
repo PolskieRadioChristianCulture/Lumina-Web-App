@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
 <!-- Google Consent Mode v2 (Default Denied) -->
@@ -6,7 +6,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   
-  // Domyślnie blokujemy cookies do momentu uzyskania zgody
   gtag('consent', 'default', {
     'ad_storage': 'denied',
     'ad_user_data': 'denied',
@@ -23,29 +22,50 @@
 </script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>CC Women • Christian Culture | Profil Oficjalny LUMINA</title>
-    <link rel="icon" type="image/jpeg" href="logo_cc_women.jpg">
-
-    <meta name="description" content="Oficjalny profil i kanał YouTube CC Women w portalu LUMINA. Kobiety Wiary, modlitwa, świadectwa i wzajemne budowanie w Chrystusie.">
-    <meta name="keywords" content="CC Women, Christian Culture, kobiety wiary, YouTube, LUMINA, chrześcijański portal, modlitwa, świadectwa">
-    <meta name="author" content="Christian Culture">
-
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="CC Women • Christian Culture | LUMINA">
-    <meta property="og:description" content="Oficjalny profil i kanał YouTube CC Women w portalu LUMINA.">
-    <meta property="og:image" content="logo_cc_women.jpg">
+<!-- ══════════ OPEN GRAPH & SOCIAL PREVIEWS (WhatsApp / FB / Twitter) ══════════ -->
+    <title>CC Women • Społeczność Kobiet Wiary | LUMINA</title>
+    <meta name="description" content="Oficjalny profil CC Women w portalu LUMINA. Formacja chrześcijańska dla kobiet, modlitwa, wewnętrzne piękno i siostrzeństwo w Chrystusie.">
     <meta property="og:type" content="profile">
+    <meta property="og:site_name" content="LUMINA – Christian Culture">
+    <meta property="og:title" content="CC Women • Społeczność Kobiet Wiary | LUMINA">
+    <meta property="og:description" content="Służba dla kobiet w ramach Christian Culture. Spotkania formacyjne, rozważania i siostrzeństwo w wierze.">
+    <meta property="og:image" content="https://polskieradio.cc/avatar_ccwomen_official.jpg">
+    <meta property="og:image:secure_url" content="https://polskieradio.cc/avatar_ccwomen_official.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://polskieradio.cc/lumina.ccwomen.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CC Women • Społeczność Kobiet Wiary | LUMINA">
+    <meta name="twitter:description" content="Oficjalny profil CC Women w portalu LUMINA.">
+    <meta name="twitter:image" content="https://polskieradio.cc/avatar_ccwomen_official.jpg">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <link rel="icon" type="image/png" sizes="192x192" href="lumina-icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="lumina-icon-512.png">
+    <link rel="icon" type="image/jpeg" href="lumina-app-icon.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="lumina-apple-touch-icon.png">
+    <link rel="manifest" href="manifest-lumina.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LUMINA">
+    <meta name="theme-color" content="#090d1a">
 
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js"></script>
+    
+    <!-- Lumina Realtime Engine -->
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=2.5">
+    <script type="module" src="lumina-db.js?v=1786937913306"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
+    <script type="module" src="lumina-admin-profile-suite.js?v=2.0"></script>
+    <script src="lumina-pwa-installer.js?v=3.2"></script>
 
     <style>
         :root {
@@ -53,11 +73,8 @@
             --navy-surface: #0b1838;
             --navy-card: #112350;
             --navy-border: rgba(255, 255, 255, 0.12);
-            --gold-accent: #facc15;
-            --gold-glow: rgba(250, 204, 21, 0.4);
-            --pink-accent: #ec4899;
-            --pink-glow: rgba(236, 72, 153, 0.4);
-            --purple-glow: #a855f7;
+            --rose-accent: #ec4899;
+            --rose-glow: rgba(236, 72, 153, 0.45);
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --radius-lg: 20px;
@@ -74,7 +91,7 @@
             background-color: var(--navy-dark);
             color: var(--text-primary);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            line-height: 1.6;
+            line-height: 1.65;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -84,47 +101,39 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(7, 14, 36, 0.88);
+            background: rgba(7, 14, 36, 0.92);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--navy-border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 28px;
+            padding: 12px 24px;
             gap: 16px;
         }
 
-        .nav-brand {
+        .nav-logo-wrap {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             text-decoration: none;
-            color: #fff;
         }
 
-        .nav-logo-wrap {
-            position: relative;
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid rgba(236, 72, 153, 0.4);
-            box-shadow: 0 0 15px var(--pink-glow);
-        }
-
-        .nav-logo-img {
-            width: 100%;
-            height: 100%;
+        .nav-logo-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             object-fit: cover;
+            border: 2px solid var(--rose-accent);
+            box-shadow: 0 0 14px var(--rose-glow);
         }
 
         .nav-brand-title {
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
-            font-size: 1.25rem;
-            letter-spacing: 0.5px;
-            background: linear-gradient(135deg, #fff 40%, #ec4899 100%);
+            font-size: 1.35rem;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #fff 40%, var(--rose-accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -132,287 +141,128 @@
         .nav-center-links {
             display: flex;
             align-items: center;
-            gap: 22px;
+            gap: 14px;
         }
 
-        .nav-link {
+        .nav-link-btn {
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: color 0.2s ease;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            color: #fff;
-        }
-
-        .nav-right-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .btn-nav-action {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--navy-border);
-            color: #fff;
-            padding: 8px 16px;
+            gap: 6px;
+            padding: 7px 14px;
             border-radius: 20px;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .nav-link-btn:hover {
+            color: #fff;
+            background: rgba(236, 72, 153, 0.2);
+            border-color: var(--rose-accent);
+            transform: translateY(-1px);
+        }
+
+        .btn-nav-back {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(219, 39, 119, 0.1));
+            border: 1px solid var(--rose-accent);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 30px;
             font-size: 0.85rem;
             font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
             text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .btn-nav-action:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-            color: #fff;
-        }
-
-        /* ── Settings Gear & Dropdown Menu ── */
-        .settings-dropdown-wrap {
-            position: relative;
-        }
-
-        .btn-gear-settings {
-            width: 38px;
-            height: 38px;
-            padding: 0 !important;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            border-radius: 50% !important;
-            font-size: 1.05rem;
-            color: #cbd5e1;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--navy-border);
-            cursor: pointer;
-        }
-
-        .btn-gear-settings:hover, .btn-gear-settings.active {
-            background: rgba(236, 72, 153, 0.25);
-            border-color: #ec4899;
-            color: #fff;
-            transform: rotate(45deg);
-            box-shadow: 0 0 15px rgba(236, 72, 153, 0.4);
-        }
-
-        .settings-dropdown-menu {
-            position: absolute;
-            top: calc(100% + 12px);
-            right: 0;
-            width: 270px;
-            background: rgba(15, 23, 42, 0.96);
-            border: 1px solid rgba(236, 72, 153, 0.35);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(236, 72, 153, 0.15);
-            border-radius: 16px;
-            padding: 8px;
-            display: none;
-            flex-direction: column;
-            gap: 3px;
-            z-index: 1000;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            animation: fadeInMenu 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .settings-dropdown-menu.open {
-            display: flex;
-        }
-
-        @keyframes fadeInMenu {
-            from { opacity: 0; transform: translateY(-8px) scale(0.96); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .settings-menu-header {
-            padding: 8px 12px 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            margin-bottom: 4px;
-        }
-
-        .settings-menu-title {
-            font-size: 0.84rem;
-            font-weight: 800;
-            color: #fff;
-            display: flex;
-            align-items: center;
             gap: 8px;
+            transition: all 0.2s;
         }
-
-        .settings-menu-status {
-            font-size: 0.72rem;
-            color: #86efac;
-            margin-top: 2px;
-        }
-
-        .settings-menu-item {
-            background: transparent;
-            border: none;
-            color: #e2e8f0;
-            padding: 9px 12px;
-            border-radius: 10px;
-            font-size: 0.83rem;
-            font-weight: 600;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            width: 100%;
-            text-align: left;
-            transition: all 0.15s ease;
-        }
-
-        .settings-menu-item:hover {
-            background: rgba(255, 255, 255, 0.08);
+        .btn-nav-back:hover {
+            background: var(--rose-accent);
             color: #fff;
+            box-shadow: 0 0 16px var(--rose-glow);
+            transform: translateX(-2px);
         }
 
-        .settings-menu-item i {
-            width: 18px;
-            font-size: 0.9rem;
-            text-align: center;
-            color: #ec4899;
+        @media (max-width: 768px) {
+            .nav-link-btn .btn-text,
+            .nav-center-links a .btn-text {
+                display: none;
+            }
+            .nav-link-btn,
+            .nav-center-links a {
+                padding: 7px 10px;
+            }
         }
 
-        .settings-menu-divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.08);
-            margin: 4px 0;
-        }
-
-        /* ── Main Container ── */
+        /* ── Profile Container ── */
         .profile-container {
-            max-width: 1180px;
+            max-width: 1140px;
             margin: 0 auto;
-            padding: 24px 20px 80px;
+            padding: 0 16px 60px;
         }
 
-        /* ── Cover Hero ── */
-        .cover-hero {
+        /* Cover Banner */
+        .cover-wrapper {
             position: relative;
             width: 100%;
-            height: 280px;
-            border-radius: var(--radius-lg);
+            aspect-ratio: 1300 / 460;
+            max-height: 420px;
+            min-height: 200px;
+            background: linear-gradient(135deg, #1e1b4b, #500724, #0b1838);
+            border-radius: 0 0 24px 24px;
             overflow: hidden;
-            background: #0f172a;
-            border: 1px solid var(--navy-border);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
 
-        .cover-img {
+        .cover-photo {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 50%;
+            object-position: center 30%;
             display: block;
-            transition: object-position 0.15s ease;
         }
 
-        .cover-gradient-overlay {
+        .cover-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(7, 14, 36, 0.1) 0%, rgba(7, 14, 36, 0.85) 100%);
-            pointer-events: none;
+            background: linear-gradient(to bottom, rgba(7, 14, 36, 0.2) 30%, rgba(7, 14, 36, 0.9) 100%);
         }
 
-        .cover-actions {
+        .cover-badge-banner {
             position: absolute;
-            top: 16px;
-            right: 16px;
-            z-index: 10;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .btn-cover-action {
-            background: rgba(0, 0, 0, 0.7);
+            top: 20px;
+            right: 20px;
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: #fff;
+            border: 1px solid var(--rose-accent);
+            color: #fbcfe8;
             padding: 8px 16px;
-            border-radius: 20px;
+            border-radius: 30px;
             font-size: 0.82rem;
-            font-weight: 700;
-            cursor: pointer;
+            font-weight: 800;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
 
-        .btn-cover-action:hover {
-            background: rgba(236, 72, 153, 0.85);
-            border-color: #ec4899;
-            transform: translateY(-2px);
-            color: #fff;
-        }
-
-        /* Editing buttons visible ONLY on hover or when cover is clicked */
-        .cover-edit-btn {
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-6px) scale(0.95);
-            pointer-events: none;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .cover-hero:hover .cover-edit-btn,
-        .cover-hero.cover-tools-active .cover-edit-btn {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-            pointer-events: auto;
-        }
-
-        /* ── Cover Reposition Toolbar ── */
-        .cover-reposition-toolbar {
-            position: absolute;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(236, 72, 153, 0.4);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-            border-radius: 30px;
-            padding: 8px 20px;
-            display: none;
-            align-items: center;
-            gap: 14px;
-            z-index: 25;
-        }
-
-        .cover-reposition-toolbar.open {
-            display: flex;
-        }
-
-        /* ── Profile Head Card ── */
+        /* Profile Head Card */
         .profile-head-card {
-            background: var(--navy-surface);
+            background: rgba(11, 24, 56, 0.85);
             border: 1px solid var(--navy-border);
             border-radius: var(--radius-lg);
-            padding: 24px 28px 20px;
-            margin-top: -50px;
+            padding: 24px 28px;
+            margin-top: -60px;
             position: relative;
-            z-index: 20;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+            z-index: 10;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.5);
         }
 
-        .profile-head-top {
+        .head-top-row {
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
@@ -422,14 +272,13 @@
 
         .avatar-wrap {
             position: relative;
-            width: 130px;
-            height: 130px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            border: 4px solid var(--navy-dark);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px var(--pink-glow);
-            background: #0f172a;
-            flex-shrink: 0;
-            cursor: pointer;
+            border: 4px solid var(--navy-surface);
+            box-shadow: 0 0 25px var(--rose-glow);
+            margin-top: -60px;
+            background: #0b1838;
         }
 
         .avatar-img {
@@ -440,128 +289,50 @@
             display: block;
         }
 
-        .avatar-edit-overlay {
+        .avatar-badge-check {
             position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.72);
+            bottom: 4px;
+            right: 4px;
+            background: #ec4899;
             color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-            border: none;
-            font-size: 0.78rem;
-            font-weight: 700;
-            gap: 4px;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-        }
-
-        .avatar-wrap:hover .avatar-edit-overlay,
-        .avatar-wrap:active .avatar-edit-overlay,
-        .avatar-wrap.avatar-tools-active .avatar-edit-overlay {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-        }
-
-        .avatar-status-badge {
-            position: absolute;
-            bottom: 6px;
-            right: 6px;
-            width: 22px;
-            height: 22px;
-            background: #22c55e;
-            border: 3px solid var(--navy-dark);
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
-        }
-
-        .head-user-details {
-            flex: 1;
-            min-width: 0;
-            padding-bottom: 6px;
-        }
-
-        .head-user-name {
-            font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-            font-size: clamp(1.2rem, 2.8vw, 1.85rem);
-            font-weight: 800;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            white-space: normal;
-            overflow: visible;
-            text-overflow: clip;
-            line-height: 1.25;
-        }
-
-        .verified-badge {
-            color: #ec4899;
-            font-size: 1.15rem;
-            flex-shrink: 0;
-        }
-
-        .head-user-tagline {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-top: 4px;
-            color: var(--text-secondary);
-            font-size: 0.88rem;
-            flex-wrap: wrap;
-        }
-
-        .badge-visibility-pub {
-            background: rgba(34, 197, 94, 0.15);
-            border: 1px solid rgba(34, 197, 94, 0.4);
-            color: #86efac;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            border: 3px solid var(--navy-surface);
+            box-shadow: 0 0 10px var(--rose-glow);
         }
 
         .head-actions {
             display: flex;
-            gap: 10px;
             align-items: center;
+            gap: 10px;
             flex-wrap: wrap;
-            padding-bottom: 6px;
         }
 
         .btn-action-primary {
-            background: linear-gradient(90deg, #ec4899, #f472b6);
-            box-shadow: 0 4px 18px rgba(236, 72, 153, 0.4);
+            background: linear-gradient(135deg, var(--rose-accent), #be185d);
             color: #fff;
             border: none;
             padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 0.88rem;
-            font-weight: 800;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px var(--rose-glow);
+            transition: all 0.2s;
             text-decoration: none;
         }
-
         .btn-action-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 22px rgba(236, 72, 153, 0.6);
-            color: #fff;
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.7);
         }
 
         .btn-action-secondary {
@@ -569,84 +340,88 @@
             border: 1px solid var(--navy-border);
             color: #fff;
             padding: 10px 18px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            font-weight: 700;
+            border-radius: 25px;
+            font-size: 0.88rem;
+            font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
             text-decoration: none;
         }
-
         .btn-action-secondary:hover {
             background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-            color: #fff;
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
         }
 
-        .btn-action-heart {
-            background: rgba(236, 72, 153, 0.15);
-            border: 1px solid rgba(236, 72, 153, 0.4);
-            color: #ec4899;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
+        .profile-title-name {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #fff;
+            margin-top: 16px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 1.1rem;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
-        .btn-action-heart:hover, .btn-action-heart.active {
-            background: #ec4899;
-            color: #fff;
-            transform: scale(1.1);
-        }
-
-        /* ── Profile Nav Tabs ── */
-        .profile-nav-tabs {
+        .profile-meta-row {
             display: flex;
-            gap: 8px;
-            margin-top: 18px;
-            border-bottom: 1px solid var(--navy-border);
-            padding-bottom: 10px;
-            overflow-x: auto;
-        }
-
-        .tab-btn {
-            background: transparent;
-            border: none;
+            align-items: center;
+            gap: 18px;
+            margin-top: 8px;
+            font-size: 0.9rem;
             color: var(--text-secondary);
-            font-family: inherit;
-            font-size: 0.92rem;
-            font-weight: 700;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            display: inline-flex;
+            flex-wrap: wrap;
+        }
+
+        .profile-tags-row {
+            display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.2s ease;
-            white-space: nowrap;
+            margin-top: 14px;
+            flex-wrap: wrap;
         }
 
-        .tab-btn:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.05);
+        .tag-pill {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .tag-pill.rose {
+            background: rgba(236, 72, 153, 0.15);
+            border-color: var(--rose-accent);
+            color: #fbcfe8;
+            font-weight: 700;
         }
 
-        .tab-btn.active {
-            color: #fff;
-            background: rgba(236, 72, 153, 0.2);
-            border: 1px solid rgba(236, 72, 153, 0.5);
+        .verse-box {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.08), rgba(11, 24, 56, 0.8));
+            border-left: 4px solid var(--rose-accent);
+            padding: 14px 18px;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin-top: 18px;
+            font-style: italic;
+            color: #f1f5f9;
+            font-size: 0.95rem;
+        }
+        .verse-ref {
+            display: block;
+            margin-top: 6px;
+            font-style: normal;
+            font-weight: 700;
+            color: #fbcfe8;
+            font-size: 0.85rem;
         }
 
-        /* ── 2-Column Grid Layout ── */
-        .profile-body-grid {
+        /* ── Profile Content Grid (2 Columns) ── */
+        .profile-content-grid {
             display: grid;
             grid-template-columns: 340px 1fr;
             gap: 24px;
@@ -654,51 +429,36 @@
         }
 
         @media (max-width: 900px) {
-            .profile-body-grid {
+            .profile-content-grid {
                 grid-template-columns: 1fr;
             }
         }
 
-        /* ── Sidebar Cards ── */
-        .sidebar-card {
-            background: var(--navy-surface);
-            border: 1px solid var(--navy-border);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            margin-bottom: 20px;
+        /* Sidebar Col */
+        .sidebar-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .card-title {
-            font-family: 'Outfit', sans-serif;
+        .side-card {
+            background: rgba(11, 24, 56, 0.85);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            backdrop-filter: blur(16px);
+        }
+
+        .side-title {
             font-size: 1.05rem;
-            font-weight: 700;
+            font-weight: 800;
             color: #fff;
             margin-bottom: 14px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-        }
-
-        .card-edit-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #94a3b8;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.8rem;
-        }
-
-        .card-edit-btn:hover {
-            background: #ec4899;
-            color: #fff;
-            border-color: #ec4899;
-            transform: scale(1.1);
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 10px;
         }
 
         .info-list {
@@ -707,1902 +467,540 @@
             gap: 12px;
             font-size: 0.88rem;
         }
-
-        .info-row {
+        .info-item {
             display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            color: #cbd5e1;
+            justify-content: space-between;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            padding-bottom: 8px;
         }
-
-        .info-row i {
-            color: var(--pink-accent);
-            margin-top: 3px;
-            font-size: 0.95rem;
-            width: 18px;
-            text-align: center;
-        }
-
         .info-label {
-            font-size: 0.72rem;
             color: var(--text-secondary);
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 700;
         }
-
         .info-val {
+            color: #fff;
             font-weight: 600;
-            color: #f1f5f9;
-        }
-
-        /* ── Verse Box ── */
-        .verse-box {
-            background: linear-gradient(135deg, rgba(236, 72, 153, 0.08), rgba(250, 204, 21, 0.05));
-            border-left: 3px solid var(--pink-accent);
-            border-radius: 8px;
-            padding: 14px 16px;
-            margin-top: 6px;
-        }
-
-        .verse-text {
-            font-style: italic;
-            color: #f8fafc;
-            font-size: 0.92rem;
-            line-height: 1.6;
-        }
-
-        .verse-ref {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--gold-accent);
             text-align: right;
-            margin-top: 6px;
         }
 
-        /* ── Tag Chips ── */
-        .tag-cloud {
+        /* Main Feed Col */
+        .main-feed-col {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+            flex-direction: column;
+            gap: 24px;
         }
 
-        .tag-chip {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e2e8f0;
-            font-size: 0.78rem;
-            font-weight: 600;
-            padding: 5px 12px;
-            border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* ── Mini Photos Grid ── */
-        .photo-grid-mini {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-top: 6px;
-        }
-
-        .photo-thumb-wrap {
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-            height: 90px;
-            background: #1e293b;
-        }
-
-        .photo-thumb {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .photo-thumb:hover {
-            transform: scale(1.05);
-        }
-
-        .photo-delete-badge {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: rgba(225, 29, 72, 0.95);
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.72rem;
-            z-index: 10;
-        }
-
-        /* ── Feed Composer ── */
-        .feed-composer {
-            background: var(--navy-surface);
+        .feed-post-card {
+            background: rgba(11, 24, 56, 0.85);
             border: 1px solid var(--navy-border);
-            border-radius: var(--radius-md);
-            padding: 18px 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .composer-top {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .composer-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(236, 72, 153, 0.5);
-            flex-shrink: 0;
-        }
-
-        .composer-input {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #fff;
-            padding: 12px 18px;
-            border-radius: 30px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            outline: none;
-            transition: border-color 0.2s ease;
-        }
-
-        .composer-input:focus {
-            border-color: #ec4899;
-            background: rgba(255, 255, 255, 0.09);
-        }
-
-        .composer-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 14px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .composer-btn-attach {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 0.82rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            transition: all 0.2s ease;
-        }
-
-        .composer-btn-attach:hover {
-            background: rgba(255, 255, 255, 0.06);
-            color: #fff;
-        }
-
-        .composer-btn-submit {
-            background: linear-gradient(90deg, #ec4899, #f472b6);
-            color: #fff;
-            border: none;
-            padding: 8px 22px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 800;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 10px rgba(236, 72, 153, 0.4);
-        }
-
-        .composer-btn-submit:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 14px rgba(236, 72, 153, 0.6);
-        }
-
-        /* ── Post Cards ── */
-        .post-card {
-            background: var(--navy-surface);
-            border: 1px solid var(--navy-border);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s ease;
-        }
-
-        .post-head {
+        .post-top-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 14px;
+            gap: 14px;
+            margin-bottom: 16px;
         }
 
-        .post-author-wrap {
+        .post-author-box {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
         .post-author-img {
-            width: 44px;
-            height: 44px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(236, 72, 153, 0.4);
+            border: 2px solid var(--rose-accent);
         }
 
         .post-author-name {
             font-weight: 700;
             color: #fff;
-            font-size: 0.95rem;
+            font-size: 0.98rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .post-badge-daily {
+            font-size: 0.72rem;
+            background: rgba(236, 72, 153, 0.2);
+            color: #fbcfe8;
+            border: 1px solid rgba(236, 72, 153, 0.4);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 700;
         }
 
         .post-time {
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             color: var(--text-secondary);
         }
 
-        .post-header-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-left: auto;
-        }
-
-        .post-edit-btn, .post-delete-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #94a3b8;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
+        .post-series-tag {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.75rem;
+            gap: 6px;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.25), rgba(219, 39, 119, 0.15));
+            border: 1px solid var(--rose-accent);
+            color: #fce7f3;
+            font-weight: 800;
+            font-size: 0.82rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 14px;
         }
 
-        .post-edit-btn:hover {
-            background: #3b82f6;
+        .post-title {
+            font-size: 1.3rem;
+            font-weight: 800;
             color: #fff;
-            border-color: #3b82f6;
+            margin-bottom: 12px;
+            line-height: 1.35;
         }
 
-        .post-delete-btn:hover {
-            background: #ef4444;
-            color: #fff;
-            border-color: #ef4444;
-        }
-
-        .post-content {
+        .post-text-content {
+            font-size: 0.95rem;
             color: #e2e8f0;
-            font-size: 0.92rem;
-            line-height: 1.65;
-            margin-bottom: 14px;
-            word-break: break-word;
-        }
-
-        .post-image-box {
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: #000;
-            text-align: center;
-        }
-
-        .post-image {
-            max-width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            display: block;
-            margin: 0 auto;
+            line-height: 1.75;
+            margin-bottom: 18px;
+            white-space: pre-line;
         }
 
         .post-actions-bar {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding-top: 12px;
+            justify-content: space-between;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 14px;
+            margin-top: 14px;
             flex-wrap: wrap;
+            gap: 10px;
         }
 
         .post-action-btn {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #cbd5e1;
+            color: var(--text-secondary);
             padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 0.82rem;
+            font-weight: 700;
             cursor: pointer;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
+            text-decoration: none;
         }
-
         .post-action-btn:hover {
             background: rgba(255, 255, 255, 0.12);
             color: #fff;
         }
+        .post-action-btn.active-heart {
+            background: rgba(236, 72, 153, 0.2);
+            border-color: #ec4899;
+            color: #f472b6;
+        }
+        .post-action-btn.active-amen {
+            background: rgba(245, 158, 11, 0.2);
+            border-color: #f59e0b;
+            color: #fef08a;
+        }
 
-        /* ── Modals & Overlays ── */
+        /* ── Modal Overlays ── */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0,0,0,0.85);
             backdrop-filter: blur(10px);
             z-index: 1000;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
+            padding: 16px;
         }
-
         .modal-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
+            display: flex;
         }
-
-        .modal-card {
-            background: #0f172a;
+        .modal-box {
+            background: #0f1d44;
             border: 1px solid var(--navy-border);
-            border-radius: var(--radius-lg);
-            padding: 28px;
+            border-radius: 20px;
             width: 100%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
+            max-width: 480px;
+            padding: 24px;
             position: relative;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
         }
-
-        .modal-close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: transparent;
-            border: none;
-            color: #94a3b8;
+        .modal-title {
             font-size: 1.2rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .modal-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.4rem;
             cursor: pointer;
         }
 
-        .modal-close-btn:hover {
+        .share-links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .share-item-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #fff;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #94a3b8;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .form-input, .form-textarea {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #fff;
-            padding: 10px 14px;
-            border-radius: 10px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            outline: none;
-        }
-
-        .form-input:focus, .form-textarea:focus {
-            border-color: #ec4899;
-            background: rgba(255, 255, 255, 0.09);
-        }
-
-        .dim-guide-badge {
-            background: rgba(250, 204, 21, 0.1);
-            border: 1px solid rgba(250, 204, 21, 0.35);
-            color: #fde047;
-            padding: 10px 14px;
-            border-radius: 10px;
-            font-size: 0.82rem;
-            line-height: 1.5;
-            margin-bottom: 16px;
+            padding: 12px;
+            border-radius: 12px;
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 10px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .share-item-btn:hover {
+            background: rgba(236, 72, 153, 0.2);
+            border-color: var(--rose-accent);
         }
 
-        /* ── Toast Notification ── */
         .toast-notify {
             position: fixed;
             bottom: 24px;
             right: 24px;
-            background: #0f172a;
-            border: 1px solid var(--pink-accent);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 15px var(--pink-glow);
+            background: #10b981;
             color: #fff;
-            padding: 14px 24px;
+            padding: 12px 20px;
             border-radius: 30px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 2000;
+            font-weight: 700;
+            font-size: 0.88rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            z-index: 9999;
             transform: translateY(100px);
             opacity: 0;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         .toast-notify.show {
             transform: translateY(0);
             opacity: 1;
         }
-    
-        /* ── ONE-LINE CLEAN NAVBAR STANDARD ── */
-        .profile-navbar {
-            display: flex !important;
-            flex-wrap: nowrap !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-            padding: 10px 20px !important;
-            gap: 12px !important;
-            white-space: nowrap !important;
-        }
-
-        .nav-center-links {
-            display: flex !important;
-            align-items: center !important;
-            gap: 16px !important;
-            flex-shrink: 1 !important;
-            overflow: hidden !important;
-        }
-
-        .nav-link {
-            white-space: nowrap !important;
-            font-size: 0.85rem !important;
-            gap: 6px !important;
-            flex-shrink: 0 !important;
-        }
-
-        .nav-right-actions {
-            display: flex !important;
-            align-items: center !important;
-            gap: 10px !important;
-            flex-shrink: 0 !important;
-            white-space: nowrap !important;
-        }
-
-        .btn-yt-subscribe {
-            background: #cc0000 !important;
-            border: none !important;
-            color: #ffffff !important;
-            padding: 7px 14px !important;
-            border-radius: 20px !important;
-            font-size: 0.82rem !important;
-            font-weight: 700 !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            gap: 6px !important;
-            text-decoration: none !important;
-            box-shadow: 0 2px 10px rgba(204, 0, 0, 0.45) !important;
-            transition: all 0.2s ease !important;
-        }
-
-        .btn-yt-subscribe:hover {
-            background: #e60000 !important;
-            transform: translateY(-1px) !important;
-            box-shadow: 0 4px 14px rgba(204, 0, 0, 0.6) !important;
-            color: #fff !important;
-        }
-
-        @media (max-width: 1024px) {
-            .nav-center-links {
-                display: none !important; /* Managed by PWA bottom nav */
-            }
-        }
-    
-    
-        /* ══════════════════════════════════════════════════════════════════════════
-         * STRICT PROFILE OWNER SECURITY (GUEST READ-ONLY BY DEFAULT)
-         * ══════════════════════════════════════════════════════════════════════════ */
-        .card-edit-btn,
-        .btn-gear-settings,
-        .settings-dropdown-wrap,
-        .post-creator-box,
-        .cover-hint-badge,
-        .cover-upload-btn,
-        .cover-reposition-toolbar,
-        .photo-delete-badge,
-        .post-header-actions,
-        .owner-only {
-            display: none !important;
-        }
-
-        body.owner-mode-active .card-edit-btn {
-            display: inline-flex !important;
-        }
-
-        body.owner-mode-active .btn-gear-settings,
-        body.owner-mode-active .settings-dropdown-wrap {
-            display: block !important;
-        }
-
-        body.owner-mode-active .post-creator-box {
-            display: block !important;
-        }
-
-        body.owner-mode-active .cover-hint-badge,
-        body.owner-mode-active .cover-upload-btn,
-        body.owner-mode-active .photo-delete-badge,
-        body.owner-mode-active .post-header-actions,
-        body.owner-mode-active .owner-only {
-            display: inline-flex !important;
-        }
-    
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css">
 </head>
 <body>
 
-    <!-- Hidden file inputs for uploads -->
-    <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
-    <input type="file" id="coverFileInput" accept="image/*" style="display:none;" onchange="handleCoverFileSelect(event)">
-    <input type="file" id="galleryFileInput" accept="image/*" multiple style="display:none;" onchange="handleGalleryFileSelect(event)">
-    <input type="file" id="postImageFileInput" accept="image/*" style="display:none;" onchange="handlePostImageSelect(event)">
-    <input type="file" id="editPostImageFileInput" accept="image/*" style="display:none;" onchange="handleEditPostImageSelect(event)">
-
-    <!-- ══════════ TOP NAVBAR ══════════ -->
-    <header class="profile-navbar">
-        <a href="lumina.html" class="nav-brand">
-            <div class="nav-logo-wrap">
-                <img src="logo_cc_women.jpg" alt="LUMINA" class="nav-logo-img" id="navBrandLogo">
-            </div>
+    <!-- ── Top Navbar ── -->
+    <nav class="profile-navbar">
+        <a href="lumina.html" class="nav-logo-wrap" title="Portal Społeczności LUMINA">
+            <img src="avatar_ccwomen_official.jpg" onerror="this.src='logo_cc_women.jpg'" alt="CC Women" class="nav-logo-badge">
             <span class="nav-brand-title">LUMINA</span>
         </a>
 
-        <nav class="nav-center-links">
-            <a href="lumina.html" class="nav-link"><i class="fa-solid fa-house"></i> Odkrywaj</a>
-            <a href="lumina-tablica.html" class="nav-link"><i class="fa-solid fa-globe"></i> Tablica</a>
-            <a href="https://www.youtube.com/@CCWomen7" target="_blank" class="nav-link" id="navYtLink"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube</a>
-            <a href="lumina.wiolettarogowska.html" class="nav-link"><i class="fa-solid fa-heart" style="color:#f43f5e;"></i> Wioletta</a>
-            <a href="lumina.cezaryrgowski.html" class="nav-link"><i class="fa-solid fa-crown" style="color:#facc15;"></i> Cezary</a>
-        </nav>
-
-        <div class="nav-right-actions">
-
-            <a href="https://www.youtube.com/@CCWomen7?sub_confirmation=1" target="_blank" class="btn-yt-subscribe" id="navYtSubBtn" title="Subskrybuj oficjalny kanał YouTube"><i class="fa-brands fa-youtube" style="font-size:1.05rem;"></i> <span>Subskrybuj</span></a>
-            <button class="btn-nav-action" onclick="toggleRadio()" title="Włącz / Wyłącz Radio CC"><i class="fa-solid fa-play" id="radioPlayIcon"></i> Radio CC</button>
-
-            <!-- Settings Gear & Dropdown Panel -->
-            <div class="settings-dropdown-wrap">
-                <button type="button" class="btn-gear-settings" id="btnChannelSettings" onclick="toggleSettingsDropdown(event)" title="Ustawienia & Zarządzanie Kanałem">
-                    <i class="fa-solid fa-gear"></i>
-                </button>
-                <div class="settings-dropdown-menu" id="settingsDropdownMenu" onclick="event.stopPropagation()">
-                    <div class="settings-menu-header">
-                        <div class="settings-menu-title"><i class="fa-solid fa-crown" style="color:#facc15;"></i> Zarządzanie Kanałem</div>
-                        <div class="settings-menu-status" id="settingsMenuStatus">Status: <b style="color:#86efac;">Panel Założyciela 🔓</b></div>
-                    </div>
-                    <button type="button" class="settings-menu-item" onclick="closeSettingsDropdown(); openEditChannelModal('general');">
-                        <i class="fa-solid fa-pencil"></i> Edytuj Dane i Opis Kanału
-                    </button>
-                    <button type="button" class="settings-menu-item" onclick="closeSettingsDropdown(); triggerCoverUpload();">
-                        <i class="fa-solid fa-camera"></i> Zmień Tło Kanału 📷
-                    </button>
-                    <button type="button" class="settings-menu-item" onclick="closeSettingsDropdown(); toggleCoverRepositionToolbar();">
-                        <i class="fa-solid fa-up-down"></i> Dopasuj Kadr Tła
-                    </button>
-                    <button type="button" class="settings-menu-item" onclick="closeSettingsDropdown(); triggerAvatarUpload();">
-                        <i class="fa-solid fa-circle-user"></i> Zmień Logo Kanału
-                    </button>
-                    <button type="button" class="settings-menu-item" onclick="closeSettingsDropdown(); triggerGalleryUpload();">
-                        <i class="fa-solid fa-images"></i> Wgraj Zdjęcia do Galerii
-                    </button>
-                    <div class="settings-menu-divider"></div>
-                    <button type="button" class="settings-menu-item" onclick="closeSettingsDropdown(); toggleOwnerAuthMode();" id="btnMenuAuthToggle" style="color:#f87171;">
-                        <i class="fa-solid fa-lock" id="btnMenuAuthIcon"></i> <span id="btnMenuAuthText">Zablokuj Edycję 🔒</span>
-                    </button>
-                </div>
-            </div>
+        <div class="nav-center-links">
+            <a href="lumina-tablica.html" class="nav-link-btn" title="Tablica Społeczności">
+                <i class="fa-solid fa-earth-europe"></i> <span class="btn-text">Tablica Społeczności</span>
+            </a>
+            <button class="nav-link-btn" onclick="openShareModal()" title="Poleć CC Women">
+                <i class="fa-solid fa-share-nodes"></i> <span class="btn-text">Polecaj</span>
+            </button>
         </div>
-    </header>
 
-    <main class="profile-container">
-        
-        <!-- ══════════ COVER HERO ══════════ -->
-        <div class="cover-hero" id="coverHeroBox" onclick="toggleCoverHeroClick(event)" title="Najedź lub kliknij w tło, aby pokazać opcje edycji kadru">
-            <img src="lumina_hero_main.jpg" alt="CC Women Cover" class="cover-img" id="coverPhotoEl">
-            <div class="cover-gradient-overlay"></div>
-            
-            <!-- Cover Top Actions -->
-            <div class="cover-actions">
-                <button type="button" class="btn-cover-action cover-edit-btn" onclick="event.stopPropagation(); triggerCoverUpload();" title="Wymiary: 1200x400 px lub 1500x500 px (3:1)">
-                    <i class="fa-solid fa-camera" style="color:#ec4899;"></i> Zmień Tło Kanału 📷
-                </button>
-                <button type="button" class="btn-cover-action cover-edit-btn" onclick="event.stopPropagation(); toggleCoverRepositionToolbar();" title="Dopasuj pionowe przesunięcie kadru">
-                    <i class="fa-solid fa-up-down"></i> Dopasuj Kadr
-                </button>
-                <a href="https://www.youtube.com/@CCWomen7" target="_blank" class="btn-cover-action" id="heroYtLink" style="text-decoration:none;" onclick="event.stopPropagation();">
-                    <i class="fa-brands fa-youtube" style="color:#ff0000;"></i> YouTube
-                </a>
-            </div>
+        <a href="lumina.html" class="btn-nav-back">
+            <i class="fa-solid fa-arrow-left"></i> Wróć do LUMINA
+        </a>
+    </nav>
 
-            <!-- Cover Reposition Toolbar -->
-            <div class="cover-reposition-toolbar" id="coverRepositionToolbar" onclick="event.stopPropagation();">
-                <span style="font-size:0.8rem; font-weight:700; color:#fff;"><i class="fa-solid fa-arrows-up-down" style="color:#ec4899;"></i> Pozycja Pionowa:</span>
-                <input type="range" id="coverPosRange" min="0" max="100" value="50" oninput="onCoverRangeChange(this.value)" style="cursor:pointer; accent-color:#ec4899; width:130px;">
-                <span id="coverPosValueLabel" style="font-size:0.8rem; font-weight:700; color:#ec4899; min-width:35px;">50%</span>
-                <button type="button" onclick="saveCoverPosition()" style="background:#22c55e; color:#fff; border:none; border-radius:20px; padding:4px 12px; font-size:0.75rem; font-weight:700; cursor:pointer;">Zapisz Kadr</button>
-                <button type="button" onclick="toggleCoverRepositionToolbar()" style="background:rgba(255,255,255,0.1); color:#fff; border:none; border-radius:20px; padding:4px 10px; font-size:0.75rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+    <!-- ── Profile Container ── -->
+    <div class="profile-container">
+
+        <!-- Cover Banner -->
+        <div class="cover-wrapper">
+            <img src="lumina_default_cover.jpg" onerror="this.src='tlo_1_sie_2026.jpg'" alt="CC Women Tło" class="cover-photo">
+            <div class="cover-overlay"></div>
+            <div class="cover-badge-banner">
+                <i class="fa-solid fa-gem"></i> CC WOMEN • DLA KOBIET WIARY
             </div>
         </div>
 
-        <!-- ══════════ PROFILE HEAD INFO ══════════ -->
-        <section class="profile-head-card">
-            <div class="profile-head-top">
-                <div class="avatar-wrap" onclick="triggerAvatarUpload()" title="Kliknij, aby zmienić logo kanału">
-                    <img src="logo_cc_women.jpg" alt="CC Women Logo" class="avatar-img" id="avatarImgEl">
-                    <button type="button" class="avatar-edit-overlay">
-                        <i class="fa-solid fa-camera"></i>
-                        <span>Zmień Logo</span>
-                    </button>
-                    <div class="avatar-status-badge" title="Kanał Aktywny & Nadający"></div>
-                </div>
-
-                <div class="head-user-details">
-                    <h1 class="head-user-name">
-                        <span id="userNameEl">CC Women • Christian Culture</span>
-                        <i class="fa-solid fa-circle-check verified-badge" title="Oficjalny Zweryfikowany Profil Misji CC"></i>
-                        <button type="button" class="card-edit-btn" onclick="openEditChannelModal('general')" title="Edytuj dane kanału"><i class="fa-solid fa-pencil"></i></button>
-                    </h1>
-                    <div class="head-user-tagline">
-                        <span id="userAgeCityEl"><i class="fa-solid fa-location-dot"></i> Warszawa, Polska • <b style="color:#ec4899;" id="userRoleEl">🌸 Kanał YouTube CC Women</b></span>
-                        <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijański Kanał YouTube</span>
-                        <span id="userMatchEl" style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-star"></i> 100% Boża Misja</span>
-                        <span class="badge-visibility-pub"><i class="fa-solid fa-globe"></i> Profil Oficjalny</span>
-                    </div>
+        <!-- Profile Head Info Card -->
+        <div class="profile-head-card">
+            <div class="head-top-row">
+                <div class="avatar-wrap">
+                    <img src="avatar_ccwomen_official.jpg" onerror="this.src='logo_cc_women.jpg'" alt="CC Women" class="avatar-img">
+                    <span class="avatar-badge-check" title="Oficjalny Zweryfikowany Profil Misji CC"><i class="fa-solid fa-check"></i></span>
                 </div>
 
                 <div class="head-actions">
-                    <a href="https://www.youtube.com/@CCWomen7?sub_confirmation=1" target="_blank" class="btn-action-primary" id="headYtSubBtn" style="text-decoration:none;">
-                        <i class="fa-brands fa-youtube"></i> Subskrybuj Kanał
+                    <button class="btn-action-primary" onclick="toggleFollowProfile(this)">
+                        <i class="fa-solid fa-heart"></i> Obserwuj / Polub
+                    </button>
+                    <button class="btn-action-secondary" onclick="openShareModal()">
+                        <i class="fa-solid fa-share-nodes"></i> Polecaj Profil
+                    </button>
+                    <a href="lumina-tablica.html" class="btn-action-secondary">
+                        <i class="fa-solid fa-earth-americas"></i> Zobacz na Tablicy
                     </a>
-                    <button class="btn-action-secondary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Napisz do Redakcji</button>
-                    <button class="btn-action-heart" id="btnHeartLike" onclick="toggleProfileHeart(this)" title="Polub Kanał CC Women"><i class="fa-solid fa-heart"></i></button>
-                    <button class="btn-action-secondary" onclick="copyProfileLink()" title="Udostępnij Profil"><i class="fa-solid fa-share-nodes"></i></button>
                 </div>
             </div>
 
-            <!-- Profile Nav Tabs -->
-            <div class="profile-nav-tabs">
-                <button class="tab-btn active" onclick="switchTab('tab-feed', this)"><i class="fa-solid fa-rss"></i> Tablica Misji & Wpisy</button>
-                <button class="tab-btn" onclick="switchTab('tab-about', this)"><i class="fa-solid fa-heart"></i> O Kanale & Misja</button>
-                <button class="tab-btn" onclick="switchTab('tab-faith', this)"><i class="fa-solid fa-book-bible"></i> Werset & Wartości</button>
-                <button class="tab-btn" onclick="switchTab('tab-gallery', this)"><i class="fa-solid fa-images"></i> Galeria & Kadry</button>
+            <div class="profile-title-name">
+                CC Women
+                <span style="font-size:0.8rem;background:linear-gradient(135deg,#ec4899,#be185d);color:#fff;padding:4px 12px;border-radius:12px;font-weight:800;">
+                    🌸 Służba Kobiet • Wiara, Piękno Wewnętrzne & Siostrzeństwo
+                </span>
             </div>
-        </section>
 
-        <!-- ══════════ 2-COLUMN GRID ══════════ -->
-        <div class="profile-body-grid">
-            
+            <div class="profile-meta-row">
+                <span><i class="fa-solid fa-location-dot" style="color:#ec4899;"></i> Cała Polska</span>
+                <span><i class="fa-solid fa-gem" style="color:#ec4899;"></i> Format: <b>Formacja Kobiet & Modlitwa</b></span>
+                <span><i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Zweryfikowany Profil Misji CC</span>
+                <span><i class="fa-solid fa-heart" style="color:#ec4899;"></i> Kobiety według Serca Bożego</span>
+            </div>
+
+            <div class="profile-tags-row">
+                <span class="tag-pill rose">🌸 CC Women</span>
+                <span class="tag-pill">💎 Piękno Wewnętrzne</span>
+                <span class="tag-pill">🙏 Kobiety Modlitwy</span>
+                <span class="tag-pill">📖 Słowo & Relacje</span>
+                <span class="tag-pill">🌍 Portal LUMINA</span>
+                <span class="tag-pill">🔥 100% Boża Misja</span>
+            </div>
+
+            <!-- Verse Box -->
+            <div class="verse-box">
+                „Kobieta, która boi się Pana, zasługuje na pochwałę!”
+                <span class="verse-ref">— Księga Przysłów 31, 30</span>
+            </div>
+        </div>
+
+        <!-- Profile Content Grid -->
+        <div class="profile-content-grid">
+
             <!-- Left Sidebar -->
-            <aside>
+            <aside class="sidebar-col">
                 
-                <!-- About Card -->
-                <div class="sidebar-card">
-                    <div class="card-title">
-                        <span>Wizytówka Kanału</span>
-                        <button class="card-edit-btn" onclick="openEditChannelModal('about')" title="Edytuj wizytówkę"><i class="fa-solid fa-pencil"></i></button>
-                    </div>
+                <!-- About CC Women Card -->
+                <div class="side-card">
+                    <h3 class="side-title"><i class="fa-solid fa-gem" style="color:#ec4899;"></i> O Służbie & Misja</h3>
+                    <p style="font-size:0.92rem;color:#cbd5e1;line-height:1.7;">
+                        <b>CC Women</b> to bezpieczna przestrzeń modlitwy, duchowego wzrostu i siostrzeństwa dla chrześcijanek w każdym wieku. Odkrywamy naszą tożsamość w Chrystusie, budując głębokie relacje i wspierając się nawzajem.
+                    </p>
+                </div>
+
+                <!-- Info Card -->
+                <div class="side-card">
+                    <h3 class="side-title"><i class="fa-solid fa-address-card" style="color:#ec4899;"></i> Informacje</h3>
                     <div class="info-list">
-                        <div class="info-row">
-                            <i class="fa-solid fa-tv"></i>
-                            <div>
-                                <span class="info-label">Powołanie i Format</span>
-                                <span class="info-val" id="userJobEl" style="color:#ec4899; font-weight:800;">Oficjalny Kanał YouTube CC Women 🌸</span>
-                            </div>
+                        <div class="info-item">
+                            <span class="info-label">Służba:</span>
+                            <span class="info-val">CC Women</span>
                         </div>
-                        <div class="info-row">
-                            <i class="fa-solid fa-church"></i>
-                            <div>
-                                <span class="info-label">Dzieło & Społeczność</span>
-                                <span class="info-val" id="userChurchEl">Christian Culture</span>
-                            </div>
+                        <div class="info-item">
+                            <span class="info-label">Zakres:</span>
+                            <span class="info-val">Formacja & Modlitwa Kobiet</span>
                         </div>
-                        <div class="info-row">
-                            <i class="fa-solid fa-users" style="color:#ec4899;"></i>
-                            <div>
-                                <span class="info-label">Misja</span>
-                                <span class="info-val" id="userStatusEl" style="color:#fff; font-weight:700;">Kobiety Wiary, Modlitwa i Wzrost</span>
-                            </div>
+                        <div class="info-item">
+                            <span class="info-label">Dzieło:</span>
+                            <span class="info-val">Christian Culture</span>
                         </div>
-                        <div class="info-row">
-                            <i class="fa-solid fa-bullseye"></i>
-                            <div>
-                                <span class="info-label">Cel w LUMINA</span>
-                                <span class="info-val" id="userGoalEl">Ewangelizacja, budowanie kobiecej tożsamości w Bogu i głębokie świadectwa wiary</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Scripture Verse Card -->
-                <div class="sidebar-card">
-                    <div class="card-title">
-                        <span>Przewodni Werset Życiowy</span>
-                        <button class="card-edit-btn" onclick="openEditChannelModal('verse')" title="Edytuj werset"><i class="fa-solid fa-pencil"></i></button>
-                    </div>
-                    <div class="verse-box">
-                        <div class="verse-text" id="userVerseText">„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.”</div>
-                        <div class="verse-ref" id="userVerseRef">— Przypowieści Salomona 31, 10</div>
-                    </div>
-                </div>
-
-                <!-- Hobbies & Interests -->
-                <div class="sidebar-card">
-                    <div class="card-title">
-                        <span>Obszary Służby & Tematy</span>
-                        <button class="card-edit-btn" onclick="openEditChannelModal('tags')" title="Edytuj tematy"><i class="fa-solid fa-pencil"></i></button>
-                    </div>
-                    <div class="tag-cloud" id="userTagsEl">
-                        <span class="tag-chip"><i class="fa-solid fa-heart"></i> Kobiety Wiary</span>
-                        <span class="tag-chip"><i class="fa-brands fa-youtube"></i> YouTube CC Women</span>
-                        <span class="tag-chip"><i class="fa-solid fa-hands-praying"></i> Modlitwa i Wstawiennictwo</span>
-                        <span class="tag-chip"><i class="fa-solid fa-book-bible"></i> Pismo Święte</span>
-                        <span class="tag-chip"><i class="fa-solid fa-dove"></i> Świadectwa Życia</span>
-                        <span class="tag-chip"><i class="fa-solid fa-sparkles"></i> Wzrost Duchowy</span>
-                    </div>
-                </div>
-
-                <!-- Mini Photo Gallery Card -->
-                <div class="sidebar-card">
-                    <div class="card-title">
-                        <span>Kadry & Galeria Misji</span>
-                        <button class="card-edit-btn" onclick="triggerGalleryUpload()" title="Wgraj nowe zdjęcie"><i class="fa-solid fa-plus"></i></button>
-                    </div>
-                    <div class="photo-grid-mini" id="miniPhotoGrid"></div>
-                </div>
-
-                <!-- Connected Profiles -->
-                <div class="sidebar-card">
-                    <div class="card-title">
-                        <span>Połączone Profile Założycieli</span>
-                    </div>
-                    <div style="display:flex; flex-direction:column; gap:10px;">
-                        <a href="lumina.wiolettarogowska.html" style="display:flex; align-items:center; gap:10px; text-decoration:none; padding:8px 12px; background:rgba(255,255,255,0.04); border-radius:10px; border:1px solid rgba(255,255,255,0.08); transition:all 0.2s ease;">
-                            <img src="avatar_wioletta_official.jpg" style="width:34px; height:34px; border-radius:50%; object-fit:cover;">
-                            <div>
-                                <div style="font-weight:700; font-size:0.85rem; color:#fff;">Wioletta Rogowska</div>
-                                <div style="font-size:0.72rem; color:#ec4899;">🌸 Współzałożycielka CC</div>
-                            </div>
-                        </a>
-                        <a href="lumina.cezaryrgowski.html" style="display:flex; align-items:center; gap:10px; text-decoration:none; padding:8px 12px; background:rgba(255,255,255,0.04); border-radius:10px; border:1px solid rgba(255,255,255,0.08); transition:all 0.2s ease;">
-                            <img src="avatar_cezary_official.jpg" style="width:34px; height:34px; border-radius:50%; object-fit:cover;">
-                            <div>
-                                <div style="font-weight:700; font-size:0.85rem; color:#fff;">Cezary Rogowski</div>
-                                <div style="font-size:0.72rem; color:#facc15;">👑 Założyciel CC</div>
-                            </div>
-                        </a>
                     </div>
                 </div>
 
             </aside>
 
-            <!-- Right Timeline Content -->
-            <section class="timeline-area">
-                
-                <!-- Tab: Tablica & Wpisy -->
-                <div id="tab-feed" class="tab-content-pane">
-                    
-                    <!-- Composer -->
-                    <div class="feed-composer" id="channelComposer">
-                        <div class="composer-top">
-                            <img src="logo_cc_women.jpg" alt="CC Women" class="composer-avatar" id="myComposerAvatar">
-                            <input type="text" id="composerInput" class="composer-input" placeholder="Opublikuj nowy komunikat, werset lub świadectwo w imieniu CC Women...">
-                        </div>
+            <!-- Main Feed Stream -->
+            <main class="main-feed-col">
 
-                        <!-- Post Image Attachment Preview -->
-                        <div id="composerImgPreviewBox" style="display:none; position:relative; margin: 10px 0 6px; border-radius:12px; overflow:hidden; max-height:220px; background:#0f172a; border: 1px solid rgba(255,255,255,0.15);">
-                            <img id="composerAttachedImg" src="" style="width:100%; height:180px; object-fit:cover; display:block;">
-                            <button type="button" onclick="removeAttachedPostImage()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.5);" title="Usuń dołączoną grafikę"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-
-                        <div class="composer-actions">
-                            <div style="display:flex; gap:8px;">
-                                <button type="button" class="composer-btn-attach" onclick="triggerPostImageUpload()"><i class="fa-solid fa-image" style="color:#ec4899;"></i> Dołącz grafikę</button>
-                                <button type="button" class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-book-bible" style="color:#facc15;"></i> Wstaw werset</button>
+                <!-- 🌟 POST 1 🌟 -->
+                <article class="feed-post-card" id="post_ccwomen_1">
+                    <div class="post-top-header">
+                        <div class="post-author-box">
+                            <img src="avatar_ccwomen_official.jpg" onerror="this.src='logo_cc_women.jpg'" alt="CC Women" class="post-author-img">
+                            <div>
+                                <div class="post-author-name">
+                                    CC Women
+                                    <span class="post-badge-daily">Refleksja</span>
+                                </div>
+                                <div class="post-time">19 SIERPNIA 2026 • 📍 Polska • 🌍 Publiczny</div>
                             </div>
-                            <button type="button" class="composer-btn-submit" onclick="publishFeedPost()">
-                                <i class="fa-solid fa-paper-plane"></i> Opublikuj Wpis
+                        </div>
+                        <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareModal()">
+                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                        </button>
+                    </div>
+
+                    <div class="post-body">
+                        <div class="post-series-tag">
+                            <i class="fa-solid fa-heart"></i> TWOJA TOŻSAMOŚĆ W OCZACH BOGA
+                        </div>
+
+                        <h2 class="post-title">JESTEŚ CENNIEJSZA NIŻ PERŁY — ODKRYJ SPOKÓJ W BOŻEJ MIŁOŚCI</h2>
+
+                        <div class="post-text-content">
+Świat często narzuca kobietom nierealne wymagania i pośpiech. Bóg zaprasza nas do odpocznienia w Jego obecności. Twoja wartość nie wynika z tego, ile zrobiłaś, ale z tego, kim jesteś dla Niego — umiłowaną córką Króla.
+                        </div>
+
+                        <p style="margin-top:18px;font-weight:800;font-size:1.05rem;color:#fce7f3;">
+                            Niech Boży pokój napełni Twoje serce! 🌸
+                        </p>
+                    </div>
+
+                    <!-- Post Actions Bar -->
+                    <div class="post-actions-bar">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <button class="post-action-btn active-heart" id="btnPostLikeCcwomen1" onclick="togglePostLike(this, 'likeCountCcwomen1')">
+                                <i class="fa-solid fa-heart"></i> <span id="likeCountCcwomen1">162</span>
+                            </button>
+                            <button class="post-action-btn active-amen" id="btnPostAmenCcwomen1" onclick="togglePostAmen(this, 'amenCountCcwomen1')">
+                                <i class="fa-solid fa-hands-praying"></i> Amen (<span id="amenCountCcwomen1">154</span>)
+                            </button>
+                        </div>
+
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <button class="post-action-btn" onclick="openShareModal()">
+                                <i class="fa-solid fa-share-nodes"></i> Poleć Kobietom
                             </button>
                         </div>
                     </div>
+                </article>
 
-                    <!-- Feed Stream -->
-                    <div id="feedStream"></div>
-                </div>
-
-                <!-- Tab: O Kanale & Misja -->
-                <div id="tab-about" class="tab-content-pane" style="display:none;">
-                    <div class="sidebar-card">
-                        <div class="card-title">
-                            <span>Misja & Przesłanie Kanału CC Women</span>
-                            <button class="card-edit-btn" onclick="openEditChannelModal('about')" title="Edytuj opis"><i class="fa-solid fa-pencil"></i></button>
-                        </div>
-                        <p style="font-size:0.95rem; line-height:1.75; color:#cbd5e1;" id="userBioFull">
-                            Oficjalny profil i kanał YouTube **CC Women** to wyjątkowa przestrzeń wzrostu duchowego, modlitwy, kobiecej mądrości i głębokich świadectw Bożego działania w życiu kobiet. Tworzymy treści, które inspirują do pogłębiania relacji z Bogiem, budowania silnych rodzin oraz odkrywania własnej wartości w Jezusie Chrystusie.  
-                            Subskrybuj nasz kanał i dołącz do grona kobiet budujących swoje życie na fundamencie wiary! 🌸✨
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Tab: Wartości & Wiara -->
-                <div id="tab-faith" class="tab-content-pane" style="display:none;">
-                    <div class="sidebar-card">
-                        <div class="card-title">
-                            <span>Fundament Duchowy Kanału</span>
-                            <button class="card-edit-btn" onclick="openEditChannelModal('faith')" title="Edytuj fundament"><i class="fa-solid fa-pencil"></i></button>
-                        </div>
-                        <div class="info-list" style="font-size:0.92rem;">
-                            <div class="info-row"><i class="fa-solid fa-heart" style="color:#ec4899;"></i><div><span class="info-label">Wizja Kobiety Wiary:</span> Oparta na prawdzie Pisma Świętego, pełna miłości, odwagi i roztropności.</div></div>
-                            <div class="info-row"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i><div><span class="info-label">Ewangelizacja Medialna:</span> Najwyższa jakość nagrań, autentyczne rozmowy i inspirujące świadectwa.</div></div>
-                            <div class="info-row"><i class="fa-solid fa-hands-praying" style="color:#f472b6;"></i><div><span class="info-label">Modlitwa & Wstawiennictwo:</span> Stała wspólnota modlitewna za kobiety, małżeństwa i rodziny.</div></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab: Full Gallery -->
-                <div id="tab-gallery" class="tab-content-pane" style="display:none;">
-                    <div class="sidebar-card">
-                        <div class="card-title">
-                            <span>Pełna Galeria Kanału & Kadry</span>
-                            <button class="card-edit-btn" onclick="triggerGalleryUpload()" title="Wgraj nowe zdjęcie"><i class="fa-solid fa-plus"></i> Dodaj Zdjęcie</button>
-                        </div>
-                        <div id="fullPhotoGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:12px; margin-top:10px;"></div>
-                    </div>
-                </div>
-
-            </section>
+            </main>
 
         </div>
 
-    </main>
-
-    <!-- ══════════ EDIT CHANNEL MODAL ══════════ -->
-    <div class="modal-overlay" id="editChannelModal">
-        <div class="modal-card">
-            <button class="modal-close-btn" onclick="closeModal('editChannelModal')"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="font-size:1.3rem; margin-bottom:12px; font-family:'Outfit',sans-serif; color:#fff;"><i class="fa-solid fa-pencil" style="color:#ec4899;"></i> Edycja Kanału Misyjnego</h3>
-            
-            <div class="dim-guide-badge">
-                <i class="fa-solid fa-circle-info" style="font-size:1.1rem; margin-top:2px;"></i>
-                <div>
-                    <b>Wskazówka graficzna:</b> Rekomendowany wymiar tła to <b>1200 x 400 px</b> lub <b>1500 x 500 px (proporcja 3:1)</b>. Główny motyw umieszczaj w środkowej i górnej części tła.
-                </div>
-            </div>
-
-            <form onsubmit="saveChannelEdits(event)">
-                <div class="form-group">
-                    <label class="form-label">Nazwa Kanału</label>
-                    <input type="text" id="editName" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Rola / Format / Podtytuł</label>
-                    <input type="text" id="editJob" class="form-input" placeholder="np. Oficjalny Kanał YouTube CC Women 🌸">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Lokalizacja & Miasto</label>
-                    <input type="text" id="editCity" class="form-input" placeholder="np. Warszawa, Polska">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Format / Wyznanie</label>
-                    <input type="text" id="editDenom" class="form-input" placeholder="np. Chrześcijański Kanał YouTube">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Dzieło & Społeczność</label>
-                    <input type="text" id="editChurch" class="form-input" placeholder="np. Christian Culture">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Misja Krótka</label>
-                    <input type="text" id="editStatus" class="form-input" placeholder="np. Kobiety Wiary, Modlitwa i Wzrost">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Cel w LUMINA</label>
-                    <input type="text" id="editGoal" class="form-input">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Przewodni Werset</label>
-                    <textarea id="editVerse" class="form-textarea" rows="2"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Siglum Wersetu</label>
-                    <input type="text" id="editVerseRef" class="form-input" placeholder="np. Przypowieści Salomona 31, 10">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Pełny Opis & Przesłanie Kanału</label>
-                    <textarea id="editBio" class="form-textarea" rows="4"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Obszary Służby & Tematy (oddzielone przecinkami)</label>
-                    <input type="text" id="editTags" class="form-input" placeholder="Kobiety Wiary, YouTube, Modlitwa, Pismo Święte">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Link do Kanału YouTube</label>
-                    <input type="url" id="editYtUrl" class="form-input" placeholder="https://www.youtube.com/@CCWomen7">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Kod PIN Zarządzania Kanałem</label>
-                    <input type="text" id="editPin" class="form-input" placeholder="••••">
-                </div>
-
-                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
-                    <button type="button" class="btn-action-secondary" onclick="closeModal('editChannelModal')">Anuluj</button>
-                    <button type="submit" class="btn-action-primary"><i class="fa-solid fa-floppy-disk"></i> Zapisz Zmiany Kanału</button>
-                </div>
-            </form>
-        </div>
     </div>
 
-    <!-- ══════════ SECURITY PIN MODAL ══════════ -->
-    <div class="modal-overlay" id="securityPinModal">
-        <div class="modal-card" style="max-width: 420px; text-align:center;">
-            <button class="modal-close-btn" onclick="closeModal('securityPinModal')"><i class="fa-solid fa-xmark"></i></button>
-            <i class="fa-solid fa-shield-keyhole" style="font-size:2.5rem; color:#ec4899; margin-bottom:12px;"></i>
-            <h3 style="font-size:1.3rem; margin-bottom:8px; font-family:'Outfit',sans-serif; color:#fff;">Autoryzacja Założyciela</h3>
-            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:18px;">Wpisz kod PIN zarządzania kanałem misyjnym, aby odblokować pełną edycję.</p>
-            
-            <form onsubmit="event.preventDefault(); verifyOwnerPinSubmit();">
-                <input type="password" id="ownerPinInput" class="form-input" placeholder="Wpisz kod PIN" style="text-align:center; font-size:1.2rem; letter-spacing:4px; margin-bottom:16px;" maxlength="10" required>
-                <button type="submit" class="btn-action-primary" style="width:100%; justify-content:center;">
-                    <i class="fa-solid fa-unlock"></i> Odblokuj Panel Edycji
+    <!-- ── Share Modal ── -->
+    <div class="modal-overlay" id="shareProfileModal" onclick="closeShareModal(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <div class="modal-title">
+                <span><i class="fa-solid fa-share-nodes" style="color:#ec4899;"></i> Poleć CC Women</span>
+                <button class="modal-close-btn" onclick="closeShareModal()">&times;</button>
+            </div>
+            <p style="font-size:0.9rem;color:#cbd5e1;">
+                Udostępnij społeczność CC Women:
+            </p>
+
+            <div class="share-links-grid">
+                <button class="share-item-btn" onclick="shareToWhatsApp()">
+                    <i class="fa-brands fa-whatsapp" style="color:#22c55e;font-size:1.1rem;"></i> WhatsApp
                 </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ══════════ EDIT POST MODAL ══════════ -->
-    <div class="modal-overlay" id="editPostModal">
-        <div class="modal-card">
-            <button class="modal-close-btn" onclick="closeModal('editPostModal')"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="font-size:1.3rem; margin-bottom:14px; font-family:'Outfit',sans-serif; color:#fff;"><i class="fa-solid fa-pencil" style="color:#ec4899;"></i> Edytuj Wpis Kanału</h3>
-            <textarea id="editPostTextarea" class="form-textarea" rows="4" style="margin-bottom:12px;"></textarea>
-            
-            <div id="editPostImgPreviewBox" style="display:none; position:relative; margin-bottom:12px; border-radius:10px; overflow:hidden; max-height:200px; background:#000;">
-                <img id="editPostAttachedImg" src="" style="width:100%; height:160px; object-fit:contain;">
-                <button type="button" onclick="removeEditPostAttachedImage()" style="position:absolute; top:8px; right:8px; width:28px; height:28px; border-radius:50%; background:rgba(225,29,72,0.9); color:#fff; border:none; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+                <button class="share-item-btn" onclick="shareToFacebook()">
+                    <i class="fa-brands fa-facebook" style="color:#3b82f6;font-size:1.1rem;"></i> Facebook
+                </button>
+                <button class="share-item-btn" onclick="shareToTelegram()">
+                    <i class="fa-brands fa-telegram" style="color:#0ea5e9;font-size:1.1rem;"></i> Telegram
+                </button>
+                <button class="share-item-btn" onclick="copyProfileLink()">
+                    <i class="fa-solid fa-link" style="color:#ec4899;font-size:1.1rem;"></i> Kopiuj Link
+                </button>
             </div>
-
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <button type="button" class="btn-action-secondary" onclick="document.getElementById('editPostImageFileInput').click()"><i class="fa-solid fa-image"></i> Zmień grafikę</button>
-                <button type="button" class="btn-action-primary" onclick="saveEditPostSubmit()"><i class="fa-solid fa-floppy-disk"></i> Zapisz Zmiany</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Message Modal -->
-    <div class="modal-overlay" id="messageModal">
-        <div class="modal-card">
-            <button class="modal-close-btn" onclick="closeModal('messageModal')"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="font-size:1.3rem; margin-bottom:8px; font-family:'Outfit',sans-serif; color:#fff;"><i class="fa-solid fa-envelope" style="color:#ec4899;"></i> Kontakt z Redakcją CC Women</h3>
-            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:16px;">Prześlij swoje świadectwo, intencję modlitewną lub pytanie do redakcji kanału.</p>
-            <textarea id="msgContent" rows="4" placeholder="Twoja wiadomość do redakcji..." style="width:100%; padding:12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; margin-bottom:14px; outline:none; resize:none;"></textarea>
-            <button onclick="sendMessageSubmit()" style="width:100%; padding:12px; border-radius:30px; background:linear-gradient(90deg,#ec4899,#f472b6); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer;">Wyślij Wiadomość 🌸</button>
         </div>
     </div>
 
     <!-- Toast Notification -->
-    <div class="toast-notify" id="toast">
-        <i class="fa-solid fa-circle-check" style="color:#ec4899; font-size:1.3rem;"></i>
-        <span id="toastMsg">Powiadomienie</span>
-    </div>
-
-    <!-- Hidden Audio Player for Radio CC -->
-    <audio id="ccRadioAudio" preload="none"></audio>
+    <div class="toast-notify" id="toastNotify">✨ Skopiowano link do schowka!</div>
 
     <script>
-        // ── Storage Keys & Profile State ──
-        const STORAGE_KEY = 'lumina_profile_ccwomen';
-        const LEGACY_STORAGE_KEY = 'lumina_profile_u_ccwomen_9055';
-        const AUTH_SESSION_KEY = 'lumina_owner_auth_ccwomen';
-
-        let isOwnerMode = false;
-        let pendingProtectedAction = null;
-        let attachedPostImageDataUrl = null;
-        let currentEditingPostId = null;
-        let editingPostImageDataUrl = null;
-
-        const defaultChannelData = {
-            slug: 'ccwomen',
-            name: 'CC Women • Christian Culture',
-            age: '',
-            city: 'Warszawa, Polska',
-            denom: 'Chrześcijański Kanał YouTube',
-            job: 'Oficjalny Kanał YouTube CC Women 🌸',
-            church: 'Christian Culture',
-            status: 'Kobiety Wiary, Modlitwa i Wzrost',
-            goal: 'Ewangelizacja, budowanie kobiecej tożsamości w Bogu i głębokie świadectwa wiary',
-            avatar: 'logo_cc_women.jpg',
-            cover: 'lumina_hero_main.jpg',
-            coverPosY: '50%',
-            verse: '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.”',
-            verseRef: '— Przypowieści Salomona 31, 10',
-            bio: 'Oficjalny profil i kanał YouTube CC Women to wyjątkowa przestrzeń wzrostu duchowego, modlitwy, kobiecej mądrości i głębokich świadectw Bożego działania w życiu kobiet. Tworzymy treści, które inspirują do pogłębiania relacji z Bogiem, budowania silnych rodzin oraz odkrywania własnej wartości w Jezusie Chrystusie. Subskrybuj nasz kanał i dołącz do grona kobiet budujących swoje życie na fundamencie wiary! 🌸✨',
-            tags: ['Kobiety Wiary', 'YouTube CC Women', 'Modlitwa i Wstawiennictwo', 'Pismo Święte', 'Świadectwa Życia', 'Wzrost Duchowy'],
-            youtubeUrl: 'https://www.youtube.com/@CCWomen7',
-            pin: '7777',
-            photos: ['logo_cc_women.jpg', 'lumina_hero_main.jpg', 'avatar_wioletta_official.jpg'],
-            posts: [
-                {
-                    id: 'post_ccw_1',
-                    author: 'CC Women • Christian Culture',
-                    authorAvatar: 'logo_cc_women.jpg',
-                    time: 'Oficjalny Komunikat Misji • 🌸 Kanał YouTube',
-                    text: 'Szczęść Boże wszystkim Kobietom! Witajcie na oficjalnym profilu kanału **CC Women** na portalu **LUMINA**. Naszym pragnieniem jest tworzenie przestrzeni wzajemnego wsparcia, modlitwy i odkrywania piękna powołania w świetle Słowa Bożego. Subskrybujcie nasz kanał na YouTube i bądźcie częścią tej niezwykłej społeczności! 🌸🕊️',
-                    image: 'logo_cc_women.jpg',
-                    likes: 148,
-                    amen: 132
-                },
-                {
-                    id: 'post_ccw_2',
-                    author: 'CC Women • Christian Culture',
-                    authorAvatar: 'logo_cc_women.jpg',
-                    time: 'Wczoraj • 📖 Słowo Dnia',
-                    text: '„Kłamliwy jest wdzięk i zwiewna jest uroda, lecz niewiasta, która boi się Pana, zasługuje na chwałę.” (Prz 31, 30). Bądźcie odważne i pamiętajcie, że w oczach Boga każda z Was jest bezcenna! ✨',
-                    image: null,
-                    likes: 92,
-                    amen: 85
-                }
-            ]
-        };
-
-        function getChannelData() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    return {
-                        ...defaultChannelData,
-                        ...parsed,
-                        photos: Array.isArray(parsed.photos) ? parsed.photos : [...defaultChannelData.photos],
-                        posts: Array.isArray(parsed.posts) ? parsed.posts : [...defaultChannelData.posts]
-                    };
-                }
-            } catch (e) {}
-            return JSON.parse(JSON.stringify(defaultChannelData));
+        function showToast(msg) {
+            const toast = document.getElementById('toastNotify');
+            if (!toast) return;
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
 
-        function saveChannelDataLocallyAndCloud(data) {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-                localStorage.setItem(LEGACY_STORAGE_KEY, JSON.stringify(data));
-            } catch (e) {}
-
-            if (window.LuminaDB?.saveProfileToCloud) {
-                window.LuminaDB.saveProfileToCloud('ccwomen', data);
-                window.LuminaDB.saveProfileToCloud('u_ccwomen_9055', data);
-            }
-            renderChannelView();
+        function openShareModal() {
+            document.getElementById('shareProfileModal').classList.add('open');
         }
 
-        // ── Render View ──
-        function renderChannelView() {
-            const data = getChannelData();
-
-            // Head details
-            document.getElementById('userNameEl').textContent = data.name;
-            document.getElementById('userRoleEl').textContent = data.job || '🌸 Kanał YouTube CC Women';
-            document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city || 'Warszawa, Polska'} • <b style="color:#ec4899;">${data.job || '🌸 Kanał YouTube CC Women'}</b>`;
-            document.getElementById('userDenomEl').innerHTML = `<i class="fa-solid fa-cross"></i> ${data.denom || 'Chrześcijański Kanał YouTube'}`;
-
-            // Sidebar details
-            document.getElementById('userJobEl').textContent = data.job || 'Oficjalny Kanał YouTube CC Women 🌸';
-            document.getElementById('userChurchEl').textContent = data.church || 'Christian Culture';
-            document.getElementById('userStatusEl').textContent = data.status || 'Kobiety Wiary, Modlitwa i Wzrost';
-            document.getElementById('userGoalEl').textContent = data.goal || 'Ewangelizacja i budowanie kobiet wiary';
-
-            // Verse
-            document.getElementById('userVerseText').textContent = data.verse || '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.”';
-            document.getElementById('userVerseRef').textContent = data.verseRef || '— Przypowieści Salomona 31, 10';
-
-            // Bio
-            document.getElementById('userBioFull').textContent = data.bio || defaultChannelData.bio;
-
-            // Media
-            if (data.avatar) {
-                document.getElementById('avatarImgEl').src = data.avatar;
-                if (document.getElementById('navBrandLogo')) document.getElementById('navBrandLogo').src = data.avatar;
-                if (document.getElementById('myComposerAvatar')) document.getElementById('myComposerAvatar').src = data.avatar;
-            }
-            if (data.cover) {
-                document.getElementById('coverPhotoEl').src = data.cover;
-                if (data.coverPosY) {
-                    document.getElementById('coverPhotoEl').style.objectPosition = 'center ' + data.coverPosY;
-                }
-            }
-
-            // Tags
-            const tagsContainer = document.getElementById('userTagsEl');
-            if (tagsContainer && Array.isArray(data.tags)) {
-                tagsContainer.innerHTML = data.tags.map(t => `<span class="tag-chip"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> ${t}</span>`).join('');
-            }
-
-            // YouTube Links
-            const ytUrl = data.youtubeUrl || 'https://www.youtube.com/@CCWomen7';
-            const subUrl = ytUrl.includes('?') ? (ytUrl + '&sub_confirmation=1') : (ytUrl + '?sub_confirmation=1');
-            
-            if (document.getElementById('navYtLink')) document.getElementById('navYtLink').href = ytUrl;
-            if (document.getElementById('navYtSubBtn')) document.getElementById('navYtSubBtn').href = subUrl;
-            if (document.getElementById('heroYtLink')) document.getElementById('heroYtLink').href = ytUrl;
-            if (document.getElementById('headYtSubBtn')) document.getElementById('headYtSubBtn').href = subUrl;
-
-            renderPhotos();
-            renderPosts();
-        }
-
-        // ── Cover Actions & Repositioning ──
-        function toggleCoverHeroClick(event) {
-            if (event.target.closest('.cover-actions') || event.target.closest('.cover-reposition-toolbar')) {
-                return;
-            }
-            const box = document.getElementById('coverHeroBox');
-            if (box) {
-                box.classList.toggle('cover-tools-active');
-            }
-        }
-
-        function triggerCoverUpload() {
-            document.getElementById('coverFileInput').click();
-        }
-
-        function handleCoverFileSelect(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            showToast('Przetwarzanie tła kanału (1500x500 px)... ⏳');
-            compressAndReadImage(file, 1500, 750, 0.84, function(dataUrl) {
-                const cur = getChannelData();
-                cur.cover = dataUrl;
-                saveChannelDataLocallyAndCloud(cur);
-                showToast('Tło kanału zostało pomyślnie zaktualizowane i zapisane! 🖼️✨');
-            });
-            e.target.value = '';
-        }
-
-        function toggleCoverRepositionToolbar() {
-            const tb = document.getElementById('coverRepositionToolbar');
-            if (!tb) return;
-            tb.classList.toggle('open');
-            if (tb.classList.contains('open')) {
-                const cur = getChannelData();
-                const curVal = parseInt(cur.coverPosY || '50', 10) || 50;
-                document.getElementById('coverPosRange').value = curVal;
-                document.getElementById('coverPosValueLabel').textContent = curVal + '%';
-            }
-        }
-
-        function onCoverRangeChange(val) {
-            document.getElementById('coverPosValueLabel').textContent = val + '%';
-            document.getElementById('coverPhotoEl').style.objectPosition = 'center ' + val + '%';
-        }
-
-        function saveCoverPosition() {
-            const val = document.getElementById('coverPosRange').value;
-            const cur = getChannelData();
-            cur.coverPosY = val + '%';
-            saveChannelDataLocallyAndCloud(cur);
-            document.getElementById('coverRepositionToolbar').classList.remove('open');
-            showToast('Kadr tła kanału został zapisany! 🖼️✨');
-        }
-
-        // ── Avatar / Logo Upload ──
-        function triggerAvatarUpload() {
-            document.getElementById('avatarFileInput').click();
-        }
-
-        function handleAvatarFileSelect(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            showToast('Przetwarzanie logo kanału (600x600 px)... ⏳');
-            compressAndReadImage(file, 600, 600, 0.85, function(dataUrl) {
-                const cur = getChannelData();
-                cur.avatar = dataUrl;
-                saveChannelDataLocallyAndCloud(cur);
-                showToast('Logo kanału zostało pomyślnie zaktualizowane! 📷✨');
-            });
-            e.target.value = '';
-        }
-
-        // ── Photos Gallery & Upload ──
-        function renderPhotos() {
-            const data = getChannelData();
-            const photos = Array.isArray(data.photos) ? data.photos : defaultChannelData.photos;
-            
-            const miniGrid = document.getElementById('miniPhotoGrid');
-            if (miniGrid) {
-                miniGrid.innerHTML = photos.slice(0, 6).map((src, idx) => `
-                    <div class="photo-thumb-wrap">
-                        <img src="${src}" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
-                        <button type="button" class="photo-delete-badge" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                `).join('');
-            }
-
-            const fullGrid = document.getElementById('fullPhotoGrid');
-            if (fullGrid) {
-                fullGrid.innerHTML = photos.map((src, idx) => `
-                    <div class="photo-thumb-wrap" style="height:160px;">
-                        <img src="${src}" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
-                        <button type="button" class="photo-delete-badge" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function triggerGalleryUpload() {
-            document.getElementById('galleryFileInput').click();
-        }
-
-        function handleGalleryFileSelect(e) {
-            const files = Array.from(e.target.files);
-            if (!files.length) return;
-            showToast('Dodawanie kadrów do galerii... ⏳');
-            
-            const cur = getChannelData();
-            let processed = 0;
-            files.forEach(file => {
-                compressAndReadImage(file, 900, 900, 0.82, function(dataUrl) {
-                    cur.photos.push(dataUrl);
-                    processed++;
-                    if (processed === files.length) {
-                        saveChannelDataLocallyAndCloud(cur);
-                        showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii kanału! 🖼️✨`);
-                    }
-                });
-            });
-            e.target.value = '';
-        }
-
-        function deletePhoto(event, index) {
-            if (event) {
-                event.stopPropagation();
-                event.preventDefault();
-            }
-            if (!confirm('Czy na pewno chcesz usunąć to zdjęcie z galerii kanału?')) return;
-            
-            const cur = getChannelData();
-            cur.photos.splice(index, 1);
-            saveChannelDataLocallyAndCloud(cur);
-            showToast('Zdjęcie zostało usunięte z galerii kanału! 🗑️');
-        }
-
-        // ── Edit Channel Modal ──
-        function openEditChannelModal(section) {
-            const cur = getChannelData();
-
-            document.getElementById('editName').value = cur.name || '';
-            document.getElementById('editJob').value = cur.job || '';
-            document.getElementById('editCity').value = cur.city || '';
-            document.getElementById('editDenom').value = cur.denom || '';
-            document.getElementById('editChurch').value = cur.church || '';
-            document.getElementById('editStatus').value = cur.status || '';
-            document.getElementById('editGoal').value = cur.goal || '';
-            document.getElementById('editVerse').value = cur.verse || '';
-            document.getElementById('editVerseRef').value = cur.verseRef || '';
-            document.getElementById('editBio').value = cur.bio || '';
-            document.getElementById('editTags').value = Array.isArray(cur.tags) ? cur.tags.join(', ') : (cur.tags || '');
-            document.getElementById('editYtUrl').value = cur.youtubeUrl || 'https://www.youtube.com/@CCWomen7';
-            document.getElementById('editPin').value = cur.pin || '7777';
-
-            document.getElementById('editChannelModal').classList.add('open');
-
-            if (section === 'verse') setTimeout(() => document.getElementById('editVerse').focus(), 150);
-            else if (section === 'about') setTimeout(() => document.getElementById('editBio').focus(), 150);
-            else if (section === 'tags') setTimeout(() => document.getElementById('editTags').focus(), 150);
-            else setTimeout(() => document.getElementById('editName').focus(), 150);
-        }
-
-        function saveChannelEdits(e) {
-            e.preventDefault();
-            const cur = getChannelData();
-            const tagsRaw = document.getElementById('editTags').value;
-
-            const updated = {
-                ...cur,
-                name: document.getElementById('editName').value.trim() || cur.name,
-                job: document.getElementById('editJob').value.trim() || cur.job,
-                city: document.getElementById('editCity').value.trim() || cur.city,
-                denom: document.getElementById('editDenom').value.trim() || cur.denom,
-                church: document.getElementById('editChurch').value.trim() || cur.church,
-                status: document.getElementById('editStatus').value.trim() || cur.status,
-                goal: document.getElementById('editGoal').value.trim() || cur.goal,
-                verse: document.getElementById('editVerse').value.trim() || cur.verse,
-                verseRef: document.getElementById('editVerseRef').value.trim() || cur.verseRef,
-                bio: document.getElementById('editBio').value.trim() || cur.bio,
-                tags: tagsRaw.split(',').map(t => t.trim()).filter(Boolean),
-                youtubeUrl: document.getElementById('editYtUrl').value.trim() || 'https://www.youtube.com/@CCWomen7',
-                pin: document.getElementById('editPin').value.trim() || '7777'
-            };
-
-            saveChannelDataLocallyAndCloud(updated);
-            closeModal('editChannelModal');
-            showToast('Dane kanału CC Women zostały zaktualizowane i zapisane w chmurze! ✨🌸');
-        }
-
-        // ── Feed Posts Engine & Realtime Sync ──
-        function renderPosts() {
-            const data = getChannelData();
-            const posts = (window.LuminaDB?.getAuthorPosts) 
-                ? window.LuminaDB.getAuthorPosts('ccwomen', data.name)
-                : (Array.isArray(data.posts) ? data.posts : defaultChannelData.posts);
-            
-            const stream = document.getElementById('feedStream');
-            if (!stream) return;
-
-            const displayPosts = posts.length > 0 ? posts : defaultChannelData.posts;
-
-            stream.innerHTML = displayPosts.map(p => `
-                <article class="post-card" id="${p.id}">
-                    <div class="post-head">
-                        <div class="post-author-wrap">
-                            <img src="${p.authorAvatar || data.avatar || 'logo_cc_women.jpg'}" alt="${p.author}" class="post-author-img">
-                            <div>
-                                <div class="post-author-name">${p.author}</div>
-                                <div class="post-time">${p.time || 'Przed chwilą • 🌸 Kanał YouTube'}</div>
-                            </div>
-                        </div>
-                        <div class="post-header-actions">
-                            <button type="button" class="post-edit-btn" onclick="openEditPostModal('${p.id}')" title="Edytuj wpis"><i class="fa-solid fa-pencil"></i></button>
-                            <button type="button" class="post-delete-btn" onclick="deleteFeedPost(event, '${p.id}')" title="Usuń wpis"><i class="fa-solid fa-trash-can"></i></button>
-                        </div>
-                    </div>
-                    <div class="post-content">${p.text || p.desc || ''}</div>
-                    <div class="post-image-box">
-                        <img src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'logo_cc_women.jpg')}" alt="Post Image" class="post-image" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" onerror="this.onerror=null; this.src='${data.avatar || 'logo_cc_women.jpg'}'">
-                    </div>
-                    <div class="post-actions-bar">
-                        <button class="post-action-btn" onclick="showToast('Dziękujemy za polubienie wpisu CC Women! 🌸')"><i class="fa-solid fa-heart" style="color:#ec4899;"></i> ${p.likes || 1} Polubień</button>
-                        <a href="https://www.youtube.com/@CCWomen7?sub_confirmation=1" target="_blank" class="post-action-btn" style="text-decoration:none; color:#facc15;"><i class="fa-brands fa-youtube"></i> Dołącz do YouTube</a>
-                        <button class="post-action-btn" onclick="copyProfileLink()"><i class="fa-solid fa-share-nodes"></i> Udostępnij</button>
-                    </div>
-                </article>
-            `).join('');
-        }
-
-        function triggerPostImageUpload() {
-            document.getElementById('postImageFileInput').click();
-        }
-
-        function handlePostImageSelect(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            showToast('Dołączanie grafiki do wpisu... ⏳');
-            compressAndReadImage(file, 1000, 1000, 0.82, function(dataUrl) {
-                attachedPostImageDataUrl = dataUrl;
-                document.getElementById('composerAttachedImg').src = dataUrl;
-                document.getElementById('composerImgPreviewBox').style.display = 'block';
-                showToast('Grafika została dołączona! 🖼️✨');
-            });
-            e.target.value = '';
-        }
-
-        function removeAttachedPostImage() {
-            attachedPostImageDataUrl = null;
-            document.getElementById('composerImgPreviewBox').style.display = 'none';
-            document.getElementById('composerAttachedImg').src = '';
-            document.getElementById('postImageFileInput').value = '';
-        }
-
-        function publishFeedPost() {
-            const input = document.getElementById('composerInput');
-            const val = input.value.trim();
-            if (!val && !attachedPostImageDataUrl) {
-                showToast('Wpisz treść lub dołącz grafikę przed publikacją!');
-                return;
-            }
-
-            const cur = getChannelData();
-            const newPost = {
-                id: 'post_ccw_' + Date.now(),
-                author: cur.name || 'CC Women • Christian Culture',
-                authorSlug: 'ccwomen',
-                authorAvatar: cur.avatar || 'logo_cc_women.jpg',
-                authorRole: cur.job || '🌸 Kanał YouTube CC Women',
-                time: 'Przed chwilą • 🌸 Kanał YouTube',
-                text: val || '',
-                likes: 1,
-                amen: 0,
-                image: attachedPostImageDataUrl || null
-            };
-
-            if (window.LuminaDB?.publishUniversalPost) {
-                window.LuminaDB.publishUniversalPost(newPost);
-            } else {
-                cur.posts = cur.posts || [];
-                cur.posts.unshift(newPost);
-                saveChannelDataLocallyAndCloud(cur);
-            }
-
-            input.value = '';
-            removeAttachedPostImage();
-            renderPosts();
-            showToast('Wpis został pomyślnie opublikowany na profilu i tablicy społeczności! 🌸🕊️');
-        }
-
-        function openEditPostModal(postId) {
-            const cur = getChannelData();
-            const post = (cur.posts || []).find(p => p.id === postId);
-            if (!post) {
-                showToast('Nie znaleziono wpisu do edycji.');
-                return;
-            }
-
-            currentEditingPostId = postId;
-            editingPostImageDataUrl = post.image || null;
-
-            document.getElementById('editPostTextarea').value = post.text || '';
-            const previewBox = document.getElementById('editPostImgPreviewBox');
-            const attachedImg = document.getElementById('editPostAttachedImg');
-            if (editingPostImageDataUrl) {
-                attachedImg.src = editingPostImageDataUrl;
-                previewBox.style.display = 'block';
-            } else {
-                attachedImg.src = '';
-                previewBox.style.display = 'none';
-            }
-
-            document.getElementById('editPostModal').classList.add('open');
-        }
-
-        function handleEditPostImageSelect(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            showToast('Przetwarzanie grafiki... ⏳');
-            compressAndReadImage(file, 1000, 1000, 0.82, function(dataUrl) {
-                editingPostImageDataUrl = dataUrl;
-                document.getElementById('editPostAttachedImg').src = dataUrl;
-                document.getElementById('editPostImgPreviewBox').style.display = 'block';
-            });
-            e.target.value = '';
-        }
-
-        function removeEditPostAttachedImage() {
-            editingPostImageDataUrl = null;
-            document.getElementById('editPostImgPreviewBox').style.display = 'none';
-            document.getElementById('editPostAttachedImg').src = '';
-            document.getElementById('editPostImageFileInput').value = '';
-        }
-
-        function saveEditPostSubmit() {
-            const newText = document.getElementById('editPostTextarea').value.trim();
-            const cur = getChannelData();
-            const idx = (cur.posts || []).findIndex(p => p.id === currentEditingPostId);
-            if (idx !== -1) {
-                cur.posts[idx].text = newText;
-                cur.posts[idx].image = editingPostImageDataUrl || null;
-                saveChannelDataLocallyAndCloud(cur);
-                closeModal('editPostModal');
-                renderPosts();
-                showToast('Wpis został pomyślnie zaktualizowany! ✏️✨');
-            }
-        }
-
-        function deleteFeedPost(event, postId) {
-            if (event) {
-                event.stopPropagation();
-                event.preventDefault();
-            }
-            if (!confirm('Czy na pewno chcesz usunąć ten wpis z tablicy kanału?')) return;
-
-            const cur = getChannelData();
-            cur.posts = (cur.posts || []).filter(p => p.id !== postId);
-            saveChannelDataLocallyAndCloud(cur);
-            renderPosts();
-            showToast('Wpis został usunięty! 🗑️');
-        }
-
-        function insertVersePrompt() {
-            const input = document.getElementById('composerInput');
-            input.value = '„Kłamliwy jest wdzięk i zwiewna jest uroda, lecz niewiasta, która boi się Pana, zasługuje na chwałę.” (Prz 31, 30)';
-            input.focus();
-        }
-
-        // ── Settings Gear Dropdown Engine ──
-        function toggleSettingsDropdown(event) {
-            if (event) event.stopPropagation();
-            const menu = document.getElementById('settingsDropdownMenu');
-            const btn = document.getElementById('btnChannelSettings');
-            if (menu) {
-                menu.classList.toggle('open');
-                if (btn) btn.classList.toggle('active', menu.classList.contains('open'));
-            }
-        }
-
-        function closeSettingsDropdown() {
-            const menu = document.getElementById('settingsDropdownMenu');
-            const btn = document.getElementById('btnChannelSettings');
-            if (menu) menu.classList.remove('open');
-            if (btn) btn.classList.remove('active');
-        }
-
-        // Close settings dropdown on window click
-        window.addEventListener('click', (e) => {
-            if (!e.target.closest('.settings-dropdown-wrap')) {
-                closeSettingsDropdown();
-            }
-        });
-
-        // ── Secure Owner PIN Authentication Gate ──
-        
-        async function verifyAdminPinHash(pin) {
-            const msgBuffer = new TextEncoder().encode((pin || '').trim());
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hash === 'eec0ae2663b74fdb9fb9981e92f1b2cc2a8b42444d358776d872580c79454c91';
-        }
-
-        window.promptOwnerPinUnlock = function() {
-            const inputPin = prompt('🔐 Panel Administratora Portalu LUMINA:');
-            if (!inputPin) return;
-            verifyAdminPinHash(inputPin).then(isValid => {
-                if (isValid) {
-                    sessionStorage.setItem('lumina_auth_master_admin', 'true');
-                    isOwnerMode = true;
-                    document.body.classList.add('owner-mode-active');
-                    const statusEl = document.getElementById('settingsMenuStatus');
-                    if (statusEl) statusEl.innerHTML = 'Status: <b style="color:#facc15;">Administrator Portalu 👑</b>';
-                    showToast('👑 Panel Administratora aktywowany pomyślnie!');
-                } else {
-                    showToast('❌ Błędny kod PIN! Odmowa dostępu.');
-                }
-            });
-        };
-
-        window.toggleOwnerAuthMode = function() {
-            if (isOwnerMode) {
-                sessionStorage.removeItem('lumina_auth_master_admin'); localStorage.removeItem('lumina_auth_master_admin');
-                isOwnerMode = false;
-                document.body.classList.remove('owner-mode-active');
-                const statusEl = document.getElementById('settingsMenuStatus');
-                if (statusEl) statusEl.innerHTML = 'Status: <b style="color:#f87171;">Tylko do odczytu 🛡️</b>';
-                showToast('🔒 Zablokowano panel edycji (Tryb Gościa)');
-            } else {
-                window.promptOwnerPinUnlock();
-            }
-        };
-
-        // Keyboard shortcut for founder PIN unlock: Ctrl + Shift + E
-        window.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'E' || e.key === 'e')) {
-                e.preventDefault();
-                window.toggleOwnerAuthMode();
-            }
-        });
-        }
-
-        // ── Robust Image Resizer & Compressor ──
-        function compressAndReadImage(file, maxWidth, maxHeight, quality, callback) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    let width = img.width;
-                    let height = img.height;
-                    if (width > height) {
-                        if (width > maxWidth) {
-                            height = Math.round((height * maxWidth) / width);
-                            width = maxWidth;
-                        }
-                    } else {
-                        if (height > maxHeight) {
-                            width = Math.round((width * maxHeight) / height);
-                            height = maxHeight;
-                        }
-                    }
-                    const canvas = document.createElement('canvas');
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    const dataUrl = canvas.toDataURL('image/jpeg', quality);
-                    callback(dataUrl);
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // ── Tabs Navigation ──
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.tab-content-pane').forEach(p => p.style.display = 'none');
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            const target = document.getElementById(tabId);
-            if (target) target.style.display = 'block';
-            if (btn) btn.classList.add('active');
-        }
-
-        function toggleProfileHeart(btn) {
-            btn.classList.toggle('active');
-            if (btn.classList.contains('active')) {
-                showToast('Dziękujemy! Zaobserwowano kanał CC Women 🌸💕');
-            } else {
-                showToast('Usunięto z obserwowanych');
-            }
+        function closeShareModal(e) {
+            if (e && e.target && e.target !== document.getElementById('shareProfileModal')) return;
+            document.getElementById('shareProfileModal').classList.remove('open');
         }
 
         function copyProfileLink() {
-            navigator.clipboard.writeText(window.location.href);
-            showToast('Link do oficjalnego profilu CC Women skopiowany! 📋✨');
-        }
-
-        function openMessageModal() {
-            document.getElementById('messageModal').classList.add('open');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('open');
-        }
-
-        function sendMessageSubmit() {
-            const txt = document.getElementById('msgContent').value.trim();
-            if (!txt) return;
-            closeModal('messageModal');
-            document.getElementById('msgContent').value = '';
-            showToast('Twoja wiadomość została pomyślnie wysłana do redakcji CC Women! 🌸🙏');
-        }
-
-        let toastTimer = null;
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastMsg').textContent = msg;
-            toast.classList.add('show');
-            if (toastTimer) clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
-        }
-
-        let isRadioPlaying = false;
-        const radioStreams = [
-            "https://stream.zeno.fm/f97y7f6w30hvv",
-            "https://stream.zeno.fm/f97y7f6w30hvv.aac"
-        ];
-        function toggleRadio() {
-            const audio = document.getElementById('ccRadioAudio');
-            const playIcon = document.getElementById('radioPlayIcon');
-            if (!isRadioPlaying) {
-                audio.src = radioStreams[0] + "?t=" + Date.now();
-                audio.play().then(() => {
-                    isRadioPlaying = true;
-                    playIcon.className = "fa-solid fa-pause";
-                    showToast('Radio Christian Culture Gra na Żywo! 📻✨');
-                }).catch(e => {
-                    showToast('Błąd strumienia radia');
+            const url = window.location.href;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast('🔗 Skopiowano link do profilu CC Women!');
+                    document.getElementById('shareProfileModal').classList.remove('open');
+                }).catch(() => {
+                    prompt('Skopiuj link:', url);
                 });
             } else {
-                audio.pause();
-                isRadioPlaying = false;
-                playIcon.className = "fa-solid fa-play";
-                showToast('Radio wstrzymane');
+                prompt('Skopiuj link:', url);
             }
         }
 
-        // Close modal on backdrop click
-        document.querySelectorAll('.modal-overlay').forEach(bg =>
-            bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); })
-        );
+        function shareToWhatsApp() {
+            const text = encodeURIComponent('CC Women na portalu LUMINA: ' + window.location.href);
+            window.open('https://api.whatsapp.com/send?text=' + text, '_blank');
+        }
 
-        // ── Initialization ──
-        window.addEventListener('DOMContentLoaded', () => {
-            
-            renderChannelView();
+        function shareToFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '_blank');
+        }
 
-            window.addEventListener('lumina_post_published', () => renderPosts());
-            window.addEventListener('storage', () => {
-                renderChannelView();
-            });
+        function shareToTelegram() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent('CC Women w portalu LUMINA:');
+            window.open('https://t.me/share/url?url=' + url + '&text=' + text, '_blank');
+        }
 
-            const initCloudSync = () => {
-                if (window.LuminaDB) {
-                    window.LuminaDB.subscribeToProfile('ccwomen', (cloudData) => {
-                        if (cloudData) renderChannelView();
-                    });
-                    if (window.LuminaDB.subscribeToFeedPosts) {
-                        window.LuminaDB.subscribeToFeedPosts(() => renderPosts());
-                    }
-                } else {
-                    setTimeout(initCloudSync, 300);
-                }
-            };
-            initCloudSync();
-        });
-    
-        window.toggleSecurityBar = function() {
-            const bar = document.getElementById('profileSecurityBar');
-            if (!bar) return;
-            bar.classList.toggle('visible');
-            if (bar.classList.contains('visible')) {
-                bar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        };
-        
-    </script>
-    <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js" defer></script>
-    <script src="lumina-notifications.js" defer></script>
-<!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
-<div id="lumina-cookie-banner" style="position: fixed; bottom: 0; left: 0; right: 0; background: rgba(11, 22, 51, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #fff; padding: 16px 20px; z-index: 99999; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(245,158,11,0.3); font-family: inherit; font-size: 13px; gap: 16px; box-shadow: 0 -4px 20px rgba(0,0,0,0.5);">
-    <div style="line-height: 1.4; max-width: 800px;">
-        🕊️ Portal <strong>LUMINA</strong> (Christian Culture) używa plików cookies w celach analitycznych oraz zapewnienia bezpieczeństwa i prawidłowego działania społeczności. Korzystając z portalu, wyrażasz na to zgodę. 
-        <a href="lumina.html" style="color: #f59e0b; text-decoration: underline;">Polityka Prywatności</a>
-    </div>
-    <div style="display: flex; gap: 10px; flex-shrink: 0;">
-        <button type="button" onclick="acceptCookies()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit;">Akceptuję</button>
-        <button type="button" onclick="rejectCookies()" style="background: rgba(255,255,255,0.1); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: inherit;">Odrzuć</button>
-    </div>
-</div>
+        function togglePostLike(btn, id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            let count = parseInt(el.textContent) || 0;
+            const isLiked = btn.classList.toggle('active-heart');
+            count += isLiked ? 1 : -1;
+            el.textContent = count;
+            if (isLiked) showToast('❤️ Polubiono wpis CC Women!');
+        }
 
-<script>
-function acceptCookies() {
-    localStorage.setItem('lumina_cookie_consent', 'granted');
-    if (typeof gtag === 'function') {
-        gtag('consent', 'update', {
-            'ad_storage': 'granted',
-            'ad_user_data': 'granted',
-            'ad_personalization': 'granted',
-            'analytics_storage': 'granted'
-        });
-    }
-    const b = document.getElementById('lumina-cookie-banner');
-    if (b) b.style.display = 'none';
-}
+        function togglePostAmen(btn, id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            let count = parseInt(el.textContent) || 0;
+            const isAmen = btn.classList.toggle('active-amen');
+            count += isAmen ? 1 : -1;
+            el.textContent = count;
+            if (isAmen) showToast('🙏 Wypowiedziano Amen!');
+        }
 
-function rejectCookies() {
-    localStorage.setItem('lumina_cookie_consent', 'denied');
-    const b = document.getElementById('lumina-cookie-banner');
-    if (b) b.style.display = 'none';
-}
-
-// Sprawdzenie czy użytkownik już podjął decyzję
-if (localStorage.getItem('lumina_cookie_consent')) {
-    const b = document.getElementById('lumina-cookie-banner');
-    if (b) b.style.display = 'none';
-    if (localStorage.getItem('lumina_cookie_consent') === 'granted' && typeof gtag === 'function') {
-        gtag('consent', 'update', {
-            'ad_storage': 'granted',
-            'ad_user_data': 'granted',
-            'ad_personalization': 'granted',
-            'analytics_storage': 'granted'
-        });
-    }
-}
-
-        /// ── Smart Multi-Source Navigation for "Mój Profil" ──
-        window.handleMyProfileNavigation = function(event) {
-            if (event && event.preventDefault) event.preventDefault();
-
-            // 1. Check memory Firebase user
-            let user = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
-            
-            // 2. Check localStorage user & profile
-            let profile = null;
-            try {
-                profile = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null');
-            } catch(e) {}
-
-            if (!user) {
-                try {
-                    user = JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
-                } catch(e) {}
-            }
-
-            // 3. Check Firebase Auth key in localStorage
-            let hasFirebaseToken = false;
-            try {
-                for (let i = 0; i < localStorage.length; i++) {
-                    const k = localStorage.key(i);
-                    if (k && k.startsWith('firebase:authUser:')) {
-                        hasFirebaseToken = true;
-                        if (!user) {
-                            try {
-                                const fData = JSON.parse(localStorage.getItem(k));
-                                if (fData && fData.uid) user = fData;
-                            } catch(e) {}
-                        }
-                        break;
-                    }
-                }
-            } catch(e) {}
-
-            const isLoggedIn = !!(user || profile || hasFirebaseToken || localStorage.getItem('lumina_user_session') === 'active');
-
-            if (!isLoggedIn) {
-                if (typeof openAuth === 'function') {
-                    if (typeof switchAuthTab === 'function') switchAuthTab('register');
-                    openAuth();
-                } else if (document.getElementById('authModal')) {
-                    if (typeof switchAuthTab === 'function') switchAuthTab('register');
-                    const m = document.getElementById('authModal');
-                    m.classList.add('open');
-                    m.style.display = 'flex';
-                } else {
-                    window.location.href = 'lumina.html?auth=register';
-                }
-                return;
-            }
-
-            // Route to user's personalized profile
-            const email = (user && user.email) || (profile && profile.email) || '';
-            const name = (user && (user.displayName || user.name)) || (profile && profile.name) || '';
-            const slug = (profile && (profile.slug || profile.id)) || (user && (user.slug || user.uid)) || '';
-
-            const isCezary = slug === 'cezaryrgowski' || slug === 'cezary' || email.toLowerCase() === 'nazirczarkes@gmail.com' || email.includes('christianculture') || email.includes('czarkes') || name.toLowerCase().includes('cezary');
-            const isWioletta = slug === 'wiolettarogowska' || slug === 'wioletta' || name.toLowerCase().includes('wioletta');
-
-            if (isCezary) {
-                window.location.href = 'lumina.cezaryrgowski.html';
-            } else if (isWioletta) {
-                window.location.href = 'lumina.wiolettarogowska.html';
-            } else if (slug) {
-                window.location.href = 'lumina-profile.html?u=' + encodeURIComponent(slug);
-            } else if (user && user.uid) {
-                window.location.href = 'lumina-profile.html?u=' + encodeURIComponent(user.uid);
+        let isFollowing = false;
+        function toggleFollowProfile(btn) {
+            isFollowing = !isFollowing;
+            if (isFollowing) {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
+                btn.style.background = '#10b981';
+                showToast('✨ Obserwujesz profil CC Women!');
             } else {
-                window.location.href = 'lumina-profile.html';
+                btn.innerHTML = '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
+                btn.style.background = 'linear-gradient(135deg, var(--rose-accent), #be185d)';
             }
-        };
-
-</script>
-
-    <!-- ══════════ FULLSCREEN PHOTO LIGHTBOX MODAL ══════════ -->
-    <div class="modal-overlay" id="photoLightboxModal" onclick="closePhotoLightbox()" style="z-index: 999999; background: rgba(3, 7, 18, 0.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
-        <div class="lightbox-dialog" onclick="event.stopPropagation()" style="position: relative; max-width: 94vw; max-height: 92vh; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: auto;">
-            <button type="button" class="lightbox-close-btn" onclick="closePhotoLightbox()" title="Zamknij podgląd (ESC)" style="position: absolute; top: -16px; right: -16px; width: 42px; height: 42px; border-radius: 50%; background: rgba(15, 23, 42, 0.9); border: 2px solid rgba(255,255,255,0.4); color: #fff; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.8); z-index: 1000; transition: transform 0.2s, background 0.2s;">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div style="position: relative; overflow: hidden; border-radius: 16px; box-shadow: 0 25px 70px rgba(0,0,0,0.95); border: 1px solid rgba(255,255,255,0.15); background: #000; display: flex; align-items: center; justify-content: center;">
-                <img id="lightboxImg" src="" alt="Pełny Podgląd Zdjęcia" style="max-width: 90vw; max-height: 80vh; width: auto; height: auto; object-fit: contain; display: block; border-radius: 16px;">
-            </div>
-            <div id="lightboxCaption" style="margin-top: 14px; color: #f8fafc; font-size: 0.92rem; font-weight: 700; background: rgba(15, 23, 42, 0.85); padding: 8px 22px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 4px 16px rgba(0,0,0,0.5); text-align: center;"></div>
-        </div>
-    </div>
-
+        }
+    </script>
 </body>
 </html>
-
-
-

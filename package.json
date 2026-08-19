@@ -1,0 +1,16 @@
+{
+  "name": "polskieradio-christian-culture",
+  "version": "1.0.0",
+  "description": "PolskieRadio.cc - Globalne Polskie Radio Internetowe & Christian Culture",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "echo 'No build required for static site'"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "sharp": "^0.35.3"
+  }
+}

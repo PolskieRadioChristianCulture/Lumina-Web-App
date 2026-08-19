@@ -1,4 +1,4 @@
-﻿const fs = require('fs');
+const fs = require('fs');
 const https = require('https');
 
 https.get('https://wiadomosci.wp.pl/rss.xml', (res) => {

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
 <!-- Google Consent Mode v2 (Default Denied) -->
@@ -70,6 +70,8 @@
     <script type="module" src="lumina-db.js?v=1786937913306"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
+    <script type="module" src="lumina-admin-profile-suite.js?v=2.0"></script>
+    <script src="lumina-pwa-installer.js?v=3.2"></script>
 
     <style>
         :root {
@@ -3178,11 +3180,6 @@
             showToast('Wysłano zaproszenie na chrześcijańską kawę! ☕❤️');
         }
 
-         else {
-                showToast('Usunięto z ulubionych');
-            }
-        }
-
         function copyProfileLink() {
             navigator.clipboard.writeText(window.location.href);
             showToast('Link do profilu został skopiowany do schowka! 🔗');
@@ -3217,28 +3214,24 @@
             toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
-        let isRadioPlaying = false;
-        const radioStreams = [
-            "https://stream.zeno.fm/f97y7f6w30hvv",
-            "https://stream.zeno.fm/f97y7f6w30hvv.aac"
-        ];
         function toggleRadio() {
-            const audio = document.getElementById('ccRadioAudio');
-            const playIcon = document.getElementById('radioPlayIcon');
-            if (!isRadioPlaying) {
-                audio.src = radioStreams[0] + "?t=" + Date.now();
-                audio.play().then(() => {
-                    isRadioPlaying = true;
-                    playIcon.className = "fa-solid fa-pause";
-                    showToast('Radio Christian Culture Gra na Żywo! 📻✨');
-                }).catch(e => {
-                    showToast('Błąd strumienia radia');
-                });
+            if (window.LuminaRadio) {
+                window.LuminaRadio.toggle(true);
             } else {
-                audio.pause();
-                isRadioPlaying = false;
-                playIcon.className = "fa-solid fa-play";
-                showToast('Radio wstrzymane');
+                const audio = document.getElementById('ccRadioAudio');
+                if (audio) {
+                    if (audio.paused) {
+                        audio.src = "https://stream.zeno.fm/umej2cuqncluv?t=" + Date.now();
+                        audio.play().then(() => {
+                            localStorage.setItem('lumina_radio_playing', 'true');
+                            showToast('Radio Christian Culture Gra na Żywo! 📻✨');
+                        }).catch(() => showToast('Kliknij ponownie, aby odtworzyć radio'));
+                    } else {
+                        audio.pause();
+                        localStorage.setItem('lumina_radio_playing', 'false');
+                        showToast('Radio wstrzymane');
+                    }
+                }
             }
         }
 
@@ -3406,6 +3399,7 @@
         </div>
     </div>
 
+    <script src="lumina-admin-profile-suite.js"></script>
 </body>
 </html>
 

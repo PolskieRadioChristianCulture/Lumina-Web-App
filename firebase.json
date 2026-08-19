@@ -9,7 +9,10 @@
         "**/node_modules/**",
         "**/*.py",
         "**/*.bat",
-        "**/*.zip"
+        "**/*.ps1",
+        "**/*.zip",
+        "audio/**",
+        "downloads/**"
       ],
       "rewrites": [
         { "source": "/lumina", "destination": "/lumina.html" },
@@ -26,7 +29,10 @@
         "**/node_modules/**",
         "**/*.py",
         "**/*.bat",
-        "**/*.zip"
+        "**/*.ps1",
+        "**/*.zip",
+        "audio/**",
+        "downloads/**"
       ],
       "rewrites": [
         { "source": "/lumina", "destination": "/lumina.html" },

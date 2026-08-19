@@ -1,0 +1,295 @@
+/**
+ * ══════════════════════════════════════════════════════════════════════════
+ * LUMINA COMMUNITY POSTS - IMMUTABLE PERMANENT POSTS REPOSITORY & SAFETY SHIELD
+ * Centralny, zabezpieczony rejestr wszystkich wpisów społeczności LUMINA
+ * Zapewnia 100% odporność na utratę treści i awarie skryptów.
+ * ══════════════════════════════════════════════════════════════════════════
+ */
+
+(function(global) {
+    'use strict';
+
+    function safeFormatTimestamp(dateOrString, fallback) {
+        if (!dateOrString) return fallback || 'Przed chwilą';
+        try {
+            let d;
+            if (typeof dateOrString === 'object' && dateOrString instanceof Date) {
+                d = dateOrString;
+            } else if (typeof dateOrString === 'number') {
+                d = new Date(dateOrString);
+            } else if (typeof dateOrString === 'string') {
+                const parsed = Date.parse(dateOrString);
+                if (!isNaN(parsed) && (dateOrString.includes('-') || dateOrString.includes('T') || dateOrString.includes(':'))) {
+                    d = new Date(parsed);
+                } else {
+                    return dateOrString;
+                }
+            } else {
+                return fallback || 'Przed chwilą';
+            }
+
+            const now = new Date();
+            const diffMs = now - d;
+            const diffMin = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMin / 60);
+            const pad = (n) => n < 10 ? '0' + n : n;
+            const timeStr = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+
+            if (diffMin < 60) return `${Math.max(1, diffMin)} min temu`;
+            if (now.toDateString() === d.toDateString()) return `Dzisiaj o ${timeStr}`;
+
+            const yesterday = new Date(now);
+            yesterday.setDate(now.getDate() - 1);
+            if (yesterday.toDateString() === d.toDateString()) return `Wczoraj o ${timeStr}`;
+
+            return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()}, ${timeStr}`;
+        } catch(e) {
+            return fallback || 'Przed chwilą';
+        }
+    }
+
+    const LUMINA_CORE_POSTS_DATA = [
+        {
+            id: 'post_ckd_2026_08_18',
+            type: 'post',
+            author: 'Andrzej Thiel',
+            authorRole: 'Opracowuje Rozważania „Cuda Każdego Dnia” ✨ • Sieradz',
+            authorAvatar: 'avatar_andrzej_thiel.jpg',
+            authorSlug: 'andrzejthiel',
+            time: '18 Sierpnia 2026 • 📖 Cuda Każdego Dnia',
+            title: 'MASZ ZADANIE! • Cuda Każdego Dnia ✨',
+            text: `CUDA KAŻDEGO DNIA! 
+18 SIERPNIA 2026.
+Przeczytaj i zobacz jak Bóg przemienia twoje życie.
+
+MASZ ZADANIE!
+
+Czytając Biblię zwróćcie uwagę na związek pomiędzy zadaniem, jakie Bóg dał Adamowi i Ewie w raju – „Rozradzajcie się i rozmnażajcie się, i napełniajcie ziemię, i czyńcie ją sobie poddaną (…) i wziął Pan Bóg człowieka i osadził go w ogrodzie Eden, aby go uprawiał i strzegł” (Rdz.1,28; Rdz.2,15) – i poleceniem Jezusa, które dał swoim uczniom: „Ja jestem krzewem winnym, wy jesteście latoroślami (…) wybrałem was i przeznaczyłem was, abyście szli i owoc wydawali i aby owoc wasz był trwały” (J.15,5,16). Czy dostrzegacie to podobieństwo? Sam Bóg chce, byśmy mieli wpływ na to, co dzieje się tu na ziemi. By nasze życie nie było bezowocne, ale zmieniało ten świat na lepsze. Jak to się nam udaje? Nie bardzo. Skutki tego widzimy. Nasza ingerencja stała się dewastacją tego, co zostało nam powierzone. Z powodu grzechu straciliśmy wrażliwość, empatię, czyste intencje, a co najważniejsze: nie czerpiemy mądrości z góry. A przecież dostaliśmy zadanie, by się troszczyć, by dbać i chronić to, co należy do Boga. To wielki honor i przywilej. Ziemia nie należy do nas: „Pańska jest ziemia i to, co ją napełnia, świat i ci, którzy na nim mieszkają (Ps.24,1). Mamy działać w najlepszym interesie właściciela, bo pewnego dnia będziemy musieli zdać z tego rachunek. Może czujesz przytłoczenie tym zdaniem? Myślisz: „Tak niewiele mogę”, „Sam nie zmienię świata”, „Czy to coś zmieni, jeśli ja przestanę używać foliowych torebek, palić czym popadnie? Co za różnica?”, „Po co się przejmować?”, „Uczciwość nie popłaca”. To bardzo niebezpieczna postawa. Wystrzegaj się jej. To, co robisz na co dzień, ma znaczenie. Jeśli nie dla ciebie bezpośrednio, z pewnością dotknie kogoś innego. Bóg widzi i docenia twoje wysiłki.
+
+„Panie, pomóż mi być dobrym szafarzem tego, co mi powierzyłeś. Chcę odpowiedzialnie i mądrze zarządzać i przyczyniać się do tego, by piękno Twojego stworzenia nadal mogło cieszyć wszystkich dokoła”.
+/opr. na podst. wiad. B.K./.
+
+Dziękuję, że jesteś! ❤️`,
+            image: 'ckd_art_2026_08_18.jpg',
+            likes: 67,
+            amen: 61
+        },
+        {
+            id: 'post_ckd_2026_08_17',
+            type: 'post',
+            author: 'Andrzej Thiel',
+            authorRole: 'Opracowuje Rozważania „Cuda Każdego Dnia” ✨ • Sieradz',
+            authorAvatar: 'avatar_andrzej_thiel.jpg',
+            authorSlug: 'andrzejthiel',
+            time: 'Dzisiaj, 17 Sierpnia 2026 • 📖 Cuda Każdego Dnia',
+            title: 'JAK KONIKI POLNE! • Cuda Każdego Dnia ✨',
+            text: `CUDA KAŻDEGO DNIA! 
+17 SIERPNIA 2026.
+Przeczytaj i zobacz jak Bóg przemienia twoje życie.
+
+JAK KONIKI POLNE!
+
+Czujesz się czasem, kimś tak słabym, niewidocznym, bezsilnym – w porównaniu z górą problemów, wielką troską, zmartwieniem – jak jakiś mały robaczek? Ciąży to nad tobą jak groźny cień jastrzębia, szukającego swojej ofiary? Szpiedzy, którzy wrócili z misji wywiadowczej w Kanaanie, tak się właśnie czuli. Malutcy wobec olbrzymów. Oto co mówili: „Widzieliśmy tam olbrzymów, synów Anaka, z rodu olbrzymów, i wydawaliśmy się sobie w porównaniu z nimi jak szarańcza, i takimi też byliśmy w ich oczach” (Lb. 13,33).  Szarańcza! Czy jak czytamy w innym tłumaczeniu: koniki polne. Zwątpili. Strach ma wielkie oczy, mówi przysłowie. Kiedy zaczynasz się bać, zagrożenie rośnie, aż jego wielki cień odbiera ci nadzieję. A przecież szpiedzy nie mieli pojęcia, co tak naprawdę mogli myśleć ich wrogowie. Wiemy z późniejszej relacji, że Bóg wzbudził strach w sercach mieszkańców Kanaanu na wieść, że Izraelici zbliżają się pod mury Jerycha. Mieszkanka Jerycha, Rachab, tak powiedziała: „Wiem, że Pan dał wam tę ziemię, gdyż padł na nas strach przed wami i wszyscy mieszkańcy tej ziemi drżą przed wami” (Joz. 2,9). Widzisz to? Jeśli idziesz z Bogiem, nie ma takich olbrzymów, których On by nie mógł pokonać. Potrafi sprawić, że uciekną ze strachu.  Przed czym drżysz? Czego się boisz dzisiaj? Nazwij to, a potem przynieś Bogu, który wszystko może. Oddaj Mu to i zaufaj Mu. Nie warto ulegać strachowi, którym świetnie posługuje się szatan, by cię zniechęcić. Niestety jako ludzie niczego się nie uczymy na błędach innych, choć ten przykład jest tak wymowny.  Spełnienie obietnicy było na wyciągnięcie ręki. Nie musiało kosztować 40 lat tułaczki. Dlaczego nie skorzystali z cudu, który Bóg był gotowy dla nich uczynić? Masz wielkiego Boga, niezależnie jak słaby, mały i nic nie znaczący się sobie wydajesz! Idź z wiarą pomimo przeszkód i olbrzymów na drodze. Twój Bóg jest Bogiem cudów i to On będzie walczył za ciebie. Nie wycofuj się, nie stchórz. To, co widzisz i co cię przeraża, przepuść przez Boży teleskop, a doświadczysz cudu! 
+
+„Boże, Ty jesteś wielki i łaskawy. Masz wspaniały plan, według którego chcesz mnie prowadzić. Pomóż mi ufać, dodaj odwagi, chcę widzieć Ciebie takiego, jakim jesteś”.
+/opr. na podst. wiad. B.K./.
+
+Dziękuję, że jesteś! ❤️`,
+            image: 'ckd_art_2026_08_17.jpg',
+            likes: 58,
+            amen: 52
+        },
+        {
+            id: 'post_c1',
+            type: 'post',
+            author: 'Cezary Rogowski',
+            authorRole: 'Założyciel Christian Culture ✨',
+            authorAvatar: 'avatar_cezary_official.jpg',
+            authorSlug: 'cezaryrgowski',
+            get dynamicTime() { return safeFormatTimestamp(new Date(Date.now() - 22 * 3600 * 1000)) + ' • 🌍 Publiczny'; },
+            title: 'Fundament Bożej Relacji',
+            text: 'Witaj na portalu LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku. Szukajmy bratnich dusz, z którymi będziemy wspólnie służyć, modlić się i budować Boże Królestwo! ☕✨',
+            image: 'avatar_cezary_official.jpg',
+            likes: 42,
+            amen: 38
+        },
+        {
+            id: 'post_c2',
+            type: 'post',
+            author: 'Cezary Rogowski',
+            authorRole: 'Założyciel Christian Culture ✨',
+            authorAvatar: 'avatar_cezary_official.jpg',
+            authorSlug: 'cezaryrgowski',
+            get dynamicTime() { return safeFormatTimestamp(new Date(Date.now() - 46 * 3600 * 1000)) + ' • 📖 Rozważanie'; },
+            title: 'Pokój w Chrystusie',
+            text: '„Nie troszczcie się zbytnio o jutro, albowiem jutrzejszy dzień sam o siebie troszczyć się będzie.” (Mt 6, 34). Niech ten werset przyniesie Wam dzisiaj pokój serca i siłę do działania! 🙏',
+            image: 'tlo_pr_cc.jpg',
+            likes: 58,
+            amen: 51
+        },
+        {
+            id: 'post_w1',
+            type: 'post',
+            author: 'Wioletta Rogowska',
+            authorRole: 'Współzałożycielka Christian Culture 💕',
+            authorAvatar: 'avatar_wioletta_official.jpg',
+            authorSlug: 'wiolettarogowska',
+            get dynamicTime() { return safeFormatTimestamp(new Date(Date.now() - 20 * 3600 * 1000)) + ' • 🌍 Publiczny'; },
+            title: 'Miłość Przewyższająca Perły',
+            text: 'Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień! 💕✨',
+            image: 'avatar_wioletta_official.jpg',
+            likes: 64,
+            amen: 59
+        },
+        {
+            id: 'post_w2',
+            type: 'post',
+            author: 'Wioletta Rogowska',
+            authorRole: 'Współzałożycielka Christian Culture 💕',
+            authorAvatar: 'avatar_wioletta_official.jpg',
+            authorSlug: 'wiolettarogowska',
+            get dynamicTime() { return safeFormatTimestamp(new Date(Date.now() - 44 * 3600 * 1000)) + ' • 📖 Słowo Życia'; },
+            title: 'Gorąca Miłość Wzajemna',
+            text: '„Przede wszystkim miejcie gorącą miłość jedni ku drugim, bo miłość zakrywa mnóstwo grzechów.” (1 P 4, 8). Błogosławionego i pełnego Bożej obecności wieczoru! 🙏',
+            image: 'tlo_ksiega_nadziei.png',
+            likes: 72,
+            amen: 65
+        },
+        {
+            id: 'post_sds_1',
+            type: 'post',
+            author: 'Studio Dobrego Słowa',
+            authorRole: 'Kanał YouTube @StudioDeeS 🎙️',
+            authorAvatar: 'studiodobregoslowa_avatar.jpg',
+            authorSlug: 'studiodobregoslowa',
+            get dynamicTime() { return safeFormatTimestamp(new Date(Date.now() - 30 * 3600 * 1000)) + ' • 🎬 Nowy Podcast Wideo'; },
+            title: 'Nowy Podcast Wideo: Boże Prowadzenie w Relacjach',
+            text: 'Premiera nowego odcinka! Zapraszamy do obejrzenia i wysłuchania głębokiej rozmowy o Bożym prowadzeniu w relacjach. Link: https://youtu.be/hHug_C6XDPU ☕🕊️ Zapraszamy także do naszej Herbaciarni Dobrego Słowa!',
+            image: 'https://img.youtube.com/vi/hHug_C6XDPU/maxresdefault.jpg',
+            likes: 64,
+            amen: 52
+        },
+        {
+            id: 'post_ccw_1',
+            type: 'post',
+            author: 'CC Women Official',
+            authorRole: 'Oficjalny Kanał YouTube CC Women 🌸',
+            authorAvatar: 'logo_cc_women.jpg',
+            authorSlug: 'ccwomen',
+            get dynamicTime() { return safeFormatTimestamp(new Date(Date.now() - 50 * 3600 * 1000)) + ' • 🌸 Wzrost Kobiet'; },
+            title: 'Kobiety Wiary i Boże Powołanie',
+            text: 'Nowy materiał dla kobiet wiary już dostępny na naszym kanale YouTube! Zobacz jak budować poczucie własnej wartości w Bożych oczach i odkrywać Boże powołanie do miłości i mądrości. 🌸🕊️',
+            image: 'logo_cc_women.jpg',
+            likes: 47,
+            amen: 41
+        },
+        {
+            id: 'post_magdalena_1',
+            type: 'post',
+            author: 'Magdalena',
+            authorRole: 'Poznań • Społeczność LUMINA 🕊️',
+            authorAvatar: 'avatar_magdalena.png',
+            authorSlug: 'magdalena',
+            get dynamicTime() { return safeFormatTimestamp(new Date(Date.now() - 14 * 3600 * 1000)) + ' • 🌟 Nowy Profil'; },
+            title: 'Zaufanie Bogu i Otwarte Serce',
+            text: 'Szczęść Boże wszystkim! Wierzę, że najpiękniejsze relacje rodzą się z zaufania Bogu i otwartego serca. Pozdrawiam serdecznie całą społeczność LUMINA z Poznania! 🕊️✨',
+            image: 'avatar_magdalena.png',
+            likes: 28,
+            amen: 24
+        },
+        {
+            id: 'post_tomek1',
+            type: 'post',
+            author: 'Tomasz',
+            authorRole: 'Profil Poglądowy • Pasjonat Gór 🌲',
+            authorAvatar: 'avatar_widget_tomek.jpg',
+            authorSlug: 'tomek',
+            get dynamicTime() { return safeFormatTimestamp(new Date(Date.now() - 16 * 3600 * 1000)) + ' • 🏔️ Wędrówki z Bogiem'; },
+            title: 'Cisza i Boża Obecność na Szlaku',
+            text: 'Nic tak nie przybliża do Stwórcy jak poranna modlitwa w górach przy wschodzie słońca. Pozdrawiam całą chrześcijańską społeczność portalu LUMINA! 🌲⛰️',
+            image: 'worship_bg.jpg',
+            likes: 31,
+            amen: 27
+        },
+        {
+            id: 'post_noemi1',
+            type: 'post',
+            author: 'Noemi',
+            authorRole: 'Profil Poglądowy • Wrocław 🌿',
+            authorAvatar: 'avatar_noemi.jpg',
+            authorSlug: 'noemi',
+            get dynamicTime() { return safeFormatTimestamp(new Date(Date.now() - 18 * 3600 * 1000)) + ' • ☕ Rozmowy o Wierze'; },
+            title: 'Wdzięczność za Małe Rzeczy',
+            text: '„Pan jest moją siłą i moją tarczą, w Nim zaufało moje serce i otrzymałem pomoc.” Życzę Wam pięknego dnia pełnego łaski! ✨🌿',
+            image: 'avatar_noemi.jpg',
+            likes: 45,
+            amen: 39
+        },
+        {
+            id: 'post_dawid1',
+            type: 'post',
+            author: 'Dawid',
+            authorRole: 'Profil Poglądowy • Architekt & Muzyk 🎵',
+            authorAvatar: 'avatar_sara.jpg',
+            authorSlug: 'dawid',
+            get dynamicTime() { return safeFormatTimestamp(new Date(Date.now() - 26 * 3600 * 1000)) + ' • 🎸 Muzyka Uwielbienia'; },
+            title: 'Nowe Dźwięki Ku Bożej Chwale',
+            text: 'Przygotowujemy z zespołem nową aranżację Psalmów. Nie ma nic piękniejszego niż łączenie talentów ze służbą dla Pana! 🎶🎸',
+            image: '',
+            likes: 53,
+            amen: 48
+        },
+        {
+            id: 'post_weronika1',
+            type: 'post',
+            author: 'Weronika',
+            authorRole: 'Profil Poglądowy • Graficzka 🎨',
+            authorAvatar: 'avatar_widget_ania.jpg',
+            authorSlug: 'weronika',
+            get dynamicTime() { return safeFormatTimestamp(new Date(Date.now() - 28 * 3600 * 1000)) + ' • 🎨 Sztuka i Wiara'; },
+            title: 'Piękno Stworzenia',
+            text: 'Każdy wschód słońca to nowe płótno namalowane ręką Boga. Szukajmy piękna i dobra we wszystkim, co nas otacza! ✨',
+            image: 'avatar_widget_ania.jpg',
+            likes: 39,
+            amen: 34
+        }
+    ];
+
+    /**
+     * Zwraca bezpieczną, zaktualizowaną listę wszystkich postów z uwzględnieniem
+     * dynamicznych zmian profili w localStorage (np. zmiana avatara lub imienia Cezarego/Wioletty/Andrzeja)
+     */
+    function getSafeCommunityPosts() {
+        const posts = [];
+        
+        LUMINA_CORE_POSTS_DATA.forEach(baseItem => {
+            try {
+                const item = { ...baseItem };
+                item.time = item.dynamicTime || item.time || 'Dzisiaj';
+
+                // Synchronizacja dynamicznego avatara i imienia z localStorage
+                if (item.authorSlug) {
+                    try {
+                        const localProfileStr = localStorage.getItem('lumina_profile_' + item.authorSlug);
+                        if (localProfileStr) {
+                            const p = JSON.parse(localProfileStr);
+                            if (p && p.name) item.author = p.name;
+                            if (p && p.avatar && !p.avatar.includes('avatar_new1')) item.authorAvatar = p.avatar;
+                        }
+                    } catch(e) {}
+                }
+
+                posts.push(item);
+            } catch(e) {
+                console.warn('Lumina Post parsing error:', e);
+            }
+        });
+
+        return posts;
+    }
+
+    // Eksport globalny do window
+    global.LUMINA_CORE_POSTS_DATA = LUMINA_CORE_POSTS_DATA;
+    global.getSafeCommunityPosts = getSafeCommunityPosts;
+
+})(typeof window !== 'undefined' ? window : globalThis);

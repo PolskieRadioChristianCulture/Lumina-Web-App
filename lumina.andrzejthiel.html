@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<!-- Google Consent Mode v2 (Default Denied) -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  
+  // Domyślnie blokujemy cookies do momentu uzyskania zgody
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M24C85RG49"></script>
+<script>
+  gtag('js', new Date());
+  gtag('config', 'G-M24C85RG49');
+</script>
+
+    <meta charset="UTF-8">
+<!-- ══════════ OPEN GRAPH & SOCIAL PREVIEWS (WhatsApp / FB / Twitter) ══════════ -->
+    <title>Andrzej Thiel, 70 • Cuda Każdego Dnia | LUMINA</title>
+    <meta name="description" content="Profil Andrzeja Thiela (Sieradz) w chrześcijańskiej społeczności LUMINA. Codzienne rozważania 'Cuda Każdego Dnia' – przeczytaj i zobacz, jak Bóg przemienia twoje życie.">
+    <meta property="og:type" content="profile">
+    <meta property="og:site_name" content="LUMINA – Christian Culture">
+    <meta property="og:title" content="Andrzej Thiel, 70 • Cuda Każdego Dnia | LUMINA">
+    <meta property="og:description" content="Codzienne rozważania 'Cuda Każdego Dnia' autorstwa Andrzeja Thiela. Sieradz, Polska. Podłącz się dzisiaj do źródła Bożej mocy!">
+    <meta property="og:image" content="https://polskieradio.cc/avatar_andrzej_thiel.jpg">
+    <meta property="og:image:secure_url" content="https://polskieradio.cc/avatar_andrzej_thiel.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://polskieradio.cc/lumina.andrzejthiel.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Andrzej Thiel, 70 • Cuda Każdego Dnia | LUMINA">
+    <meta name="twitter:description" content="Codzienne rozważania 'Cuda Każdego Dnia' na portalu LUMINA. Sieradz, Polska.">
+    <meta name="twitter:image" content="https://polskieradio.cc/avatar_andrzej_thiel.jpg">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title id="pageTitle">Andrzej Thiel, 70 – Cuda Każdego Dnia | LUMINA</title>
+    
+    <link rel="icon" type="image/png" sizes="192x192" href="lumina-icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="lumina-icon-512.png">
+    <link rel="icon" type="image/jpeg" href="lumina-app-icon.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="lumina-apple-touch-icon.png">
+    <link rel="manifest" href="manifest-lumina.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LUMINA">
+    <meta name="theme-color" content="#090d1a">
+
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Lumina Realtime Engine -->
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=2.5">
+    <script type="module" src="lumina-db.js?v=1786937913306"></script>
+    <script type="module" src="lumina-core.js"></script>
+    <script type="module" src="lumina-security.js"></script>
+    <script type="module" src="lumina-admin-profile-suite.js?v=2.0"></script>
+    <script type="module" src="lumina-i18n.js?v=3.5"></script>
+    <script src="lumina-sharing-suite.js?v=1.0"></script>
+    <script src="lumina-pwa-installer.js?v=3.2"></script>
+
+    <style>
+        :root {
+            --navy-dark: #070e24;
+            --navy-surface: #0b1838;
+            --navy-card: #112350;
+            --navy-border: rgba(255, 255, 255, 0.12);
+            --gold-accent: #f59e0b;
+            --gold-glow: rgba(245, 158, 11, 0.45);
+            --amber-accent: #eab308;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--navy-dark);
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.65;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Top Navbar ── */
+        .profile-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 14, 36, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--navy-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            gap: 16px;
+        }
+
+        .nav-logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-accent);
+            box-shadow: 0 0 14px var(--gold-glow);
+        }
+
+        .nav-brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.35rem;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #fff 40%, var(--gold-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-center-links {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .nav-link-btn {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .nav-link-btn:hover {
+            color: #fff;
+            background: rgba(245, 158, 11, 0.2);
+            border-color: var(--gold-accent);
+            transform: translateY(-1px);
+        }
+
+        .btn-nav-back {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(234, 179, 8, 0.1));
+            border: 1px solid var(--gold-accent);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-nav-back:hover {
+            background: var(--gold-accent);
+            color: #000;
+            box-shadow: 0 0 16px var(--gold-glow);
+            transform: translateX(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .nav-link-btn .btn-text,
+            .nav-center-links a .btn-text {
+                display: none;
+            }
+            .nav-link-btn,
+            .nav-center-links a {
+                padding: 7px 10px;
+            }
+        }
+
+        /* ── Profile Container ── */
+        .profile-container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 16px 60px;
+        }
+
+        /* Cover Banner */
+        .cover-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1300 / 460;
+            max-height: 420px;
+            min-height: 200px;
+            background: linear-gradient(135deg, #1e1b4b, #3b280a, #0b1838);
+            border-radius: 0 0 24px 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        .cover-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+            display: block;
+        }
+
+        .cover-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(7, 14, 36, 0.2) 30%, rgba(7, 14, 36, 0.9) 100%);
+        }
+
+        .cover-badge-banner {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--gold-accent);
+            color: var(--gold-accent);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        /* Profile Header Info Card */
+        .profile-head-card {
+            position: relative;
+            background: var(--navy-surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 0 32px 30px;
+            margin-top: -70px;
+            z-index: 10;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+        }
+
+        .head-top-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .avatar-wrap {
+            position: relative;
+            margin-top: -65px;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 4px solid var(--gold-accent);
+            box-shadow: 0 0 25px var(--gold-glow);
+            background: var(--navy-surface);
+            flex-shrink: 0;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+
+        .avatar-badge-check {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: linear-gradient(135deg, var(--gold-accent), #d97706);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            border: 3px solid var(--navy-surface);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .head-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding-top: 15px;
+        }
+
+        .btn-action-primary {
+            background: linear-gradient(135deg, var(--gold-accent), #d97706);
+            color: #000;
+            font-weight: 800;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-size: 0.88rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px var(--gold-glow);
+            font-family: inherit;
+        }
+        .btn-action-primary:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .btn-action-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .btn-action-secondary:hover {
+            background: rgba(255, 255, 255, 0.16);
+            border-color: var(--gold-accent);
+            transform: translateY(-2px);
+        }
+
+        .profile-title-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.95rem;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .age-tag {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--gold-accent);
+            background: rgba(245, 158, 11, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .profile-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .profile-meta-row span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .profile-tags-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+
+        .tag-pill {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #e2e8f0;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+        .tag-pill.gold {
+            background: rgba(245, 158, 11, 0.18);
+            border-color: var(--gold-accent);
+            color: var(--gold-accent);
+            font-weight: 800;
+        }
+
+        /* ── Quote / Golden Verse Banner ── */
+        .verse-box {
+            margin-top: 22px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(17, 35, 80, 0.6));
+            border-left: 4px solid var(--gold-accent);
+            border-radius: 0 16px 16px 0;
+            padding: 16px 20px;
+            font-size: 0.96rem;
+            font-style: italic;
+            color: #fef08a;
+            position: relative;
+        }
+        .verse-ref {
+            display: block;
+            margin-top: 6px;
+            font-style: normal;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--gold-accent);
+            text-align: right;
+        }
+
+        /* ── Layout Content Grid ── */
+        .profile-content-grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 24px;
+            margin-top: 28px;
+        }
+
+        @media (max-width: 900px) {
+            .profile-content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar Cards */
+        .side-card {
+            background: var(--navy-surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .side-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 10px;
+        }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.88rem;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .info-label {
+            color: var(--text-secondary);
+        }
+        .info-val {
+            color: #fff;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        /* ── Main Stream / Post Card ── */
+        .feed-post-card {
+            background: var(--navy-surface);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+            margin-bottom: 24px;
+        }
+
+        .post-top-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: rgba(15, 23, 42, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .post-author-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .post-author-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-accent);
+            box-shadow: 0 0 10px var(--gold-glow);
+        }
+
+        .post-author-name {
+            font-weight: 800;
+            color: #fff;
+            font-size: 1.02rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .post-badge-daily {
+            background: linear-gradient(135deg, var(--gold-accent), #d97706);
+            color: #000;
+            font-weight: 800;
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .post-time {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .post-body {
+            padding: 24px 26px;
+        }
+
+        .post-series-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--gold-accent);
+            font-size: 0.84rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .post-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 14px;
+            line-height: 1.3;
+        }
+
+        .post-text-content {
+            font-size: 0.98rem;
+            color: #e2e8f0;
+            line-height: 1.75;
+            white-space: pre-line;
+        }
+
+        .post-prayer-highlight {
+            margin-top: 20px;
+            background: rgba(17, 35, 80, 0.85);
+            border-left: 4px solid var(--amber-accent);
+            padding: 16px 20px;
+            border-radius: 0 14px 14px 0;
+            font-style: italic;
+            color: #fef08a;
+            font-size: 0.95rem;
+        }
+
+        .post-actions-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .post-action-btn {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .post-action-btn:hover {
+            background: rgba(245, 158, 11, 0.25);
+            border-color: var(--gold-accent);
+            transform: translateY(-1px);
+        }
+        .post-action-btn.active-heart {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: #ef4444;
+            color: #fca5a5;
+        }
+        .post-action-btn.active-amen {
+            background: rgba(245, 158, 11, 0.3);
+            border-color: var(--gold-accent);
+            color: #fef08a;
+        }
+
+        /* ── Share Modal ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--navy-surface);
+            border: 1px solid var(--gold-accent);
+            border-radius: 20px;
+            max-width: 480px;
+            width: 100%;
+            padding: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .share-links-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .share-item-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .share-item-btn:hover {
+            background: var(--gold-accent);
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        /* Toast notification */
+        .toast-notify {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #10b981;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 300;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+        .toast-notify.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Top Navbar ── -->
+    <nav class="profile-navbar">
+        <a href="lumina.html" class="nav-logo-wrap" title="Portal Społeczności LUMINA">
+            <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="nav-logo-badge">
+            <span class="nav-brand-title">LUMINA</span>
+        </a>
+
+        <div class="nav-center-links">
+            <a href="lumina-tablica.html" class="nav-link-btn" title="Tablica Społeczności">
+                <i class="fa-solid fa-earth-europe"></i> <span class="btn-text">Tablica Społeczności</span>
+            </a>
+            <button class="nav-link-btn" onclick="openShareAndrzejModal()" title="Poleć profil Andrzeja">
+                <i class="fa-solid fa-share-nodes"></i> <span class="btn-text">Polecaj</span>
+            </button>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:8px;">
+            <button type="button" class="lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" title="Zmień język" style="width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); font-size:1.05rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s;">🇵🇱</button>
+            <a href="lumina.html" class="btn-nav-back">
+                <i class="fa-solid fa-arrow-left"></i> Wróć do LUMINA
+            </a>
+        </div>
+    </nav>
+
+    <!-- ── Profile Container ── -->
+    <div class="profile-container">
+
+        <!-- Cover Banner -->
+        <div class="cover-wrapper">
+            <img src="tlo_1_sie_2026.jpg" onerror="this.src='lumina_hero_main.jpg'" alt="Cuda Każdego Dnia Tło" class="cover-photo">
+            <div class="cover-overlay"></div>
+            <div class="cover-badge-banner">
+                <i class="fa-solid fa-book-bible"></i> CUDA KAŻDEGO DNIA
+            </div>
+        </div>
+
+        <!-- Profile Head Info Card -->
+        <div class="profile-head-card">
+            <div class="head-top-row">
+                <div class="avatar-wrap">
+                    <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="avatar-img">
+                    <span class="avatar-badge-check" title="Zweryfikowany Profil"><i class="fa-solid fa-check"></i></span>
+                </div>
+
+                <div class="head-actions">
+                    <button class="btn-action-primary" onclick="toggleFollowAndrzej(this)">
+                        <i class="fa-solid fa-heart"></i> Obserwuj / Polub
+                    </button>
+                    <button class="btn-action-secondary" onclick="openShareAndrzejModal()">
+                        <i class="fa-solid fa-share-nodes"></i> Polecaj Profil
+                    </button>
+                    <a href="lumina-tablica.html" class="btn-action-secondary">
+                        <i class="fa-solid fa-earth-americas"></i> Zobacz na Tablicy
+                    </a>
+                </div>
+            </div>
+
+            <div class="profile-title-name">
+                Andrzej Thiel
+                <span class="age-tag">70 lat</span>
+                <span style="font-size:0.8rem;background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;padding:3px 10px;border-radius:12px;font-weight:800;">
+                    ✨ Autor: Cuda Każdego Dnia
+                </span>
+            </div>
+
+            <div class="profile-meta-row">
+                <span><i class="fa-solid fa-location-dot" style="color:#f59e0b;"></i> Sieradz, Polska</span>
+                <span><i class="fa-solid fa-cake-candles" style="color:#f59e0b;"></i> Data urodzenia: <b>30 listopada 1955</b></span>
+                <span><i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Zweryfikowany Członek Społeczności</span>
+                <span><i class="fa-solid fa-cross" style="color:#f59e0b;"></i> Chrześcijanin</span>
+            </div>
+
+            <div class="profile-tags-row">
+                <span class="tag-pill gold">📖 Cuda Każdego Dnia</span>
+                <span class="tag-pill">🕊️ Duch Święty</span>
+                <span class="tag-pill">🌱 Codzienne Rozważania</span>
+                <span class="tag-pill">📍 Sieradz</span>
+                <span class="tag-pill">🙏 Modlitwa i Wiara</span>
+                <span class="tag-pill">❤️ 99% Dopasowania</span>
+            </div>
+
+            <!-- Verse Box -->
+            <div class="verse-box">
+                „Trzymajcie się mnie. Trwajcie we mnie. Beze mnie nic uczynić nie możecie.”
+                <span class="verse-ref">— Ewangelia wg św. Jana 15, 5</span>
+            </div>
+        </div>
+
+        <!-- Profile Content Grid -->
+        <div class="profile-content-grid">
+
+            <!-- Left Sidebar -->
+            <aside class="sidebar-col">
+                
+                <!-- About Me Card -->
+                <div class="side-card">
+                    <h3 class="side-title"><i class="fa-solid fa-user-pen" style="color:#f59e0b;"></i> O Mnie & Misja</h3>
+                    <p style="font-size:0.92rem;color:#cbd5e1;line-height:1.7;">
+                        Co dzień publikuję na swoim profilu: <b>Cuda Każdego Dnia</b>, które automatycznie pojawiają się na tablicy społeczności portalu LUMINA.
+                    </p>
+                    <p style="font-size:0.92rem;color:#cbd5e1;line-height:1.7;margin-top:10px;">
+                        Wierzę, że tajemnicą zwycięskiego życia każdego chrześcijanina jest nieprzerwane podłączenie do źródła Bożej mocy – trwanie w Jezusie Chrystusie każdego dnia!
+                    </p>
+                </div>
+
+                <!-- Personal Information -->
+                <div class="side-card">
+                    <h3 class="side-title"><i class="fa-solid fa-address-card" style="color:#f59e0b;"></i> Informacje</h3>
+                    <div class="info-list">
+                        <div class="info-item">
+                            <span class="info-label">Imię i Nazwisko:</span>
+                            <span class="info-val">Andrzej Thiel</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Wiek:</span>
+                            <span class="info-val">70 lat</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Data urodzenia:</span>
+                            <span class="info-val">30 listopada 1955</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Miejsce zamieszkania:</span>
+                            <span class="info-val">Sieradz, Polska</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Płeć:</span>
+                            <span class="info-val">Mężczyzna</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Publikacje:</span>
+                            <span class="info-val">Codziennie na Tablicy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Connect Banner -->
+                <div class="side-card" style="background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(11,24,56,0.9));border-color:rgba(245,158,11,0.3);">
+                    <h3 class="side-title" style="color:#fef08a;"><i class="fa-solid fa-bullhorn"></i> Dołącz do Dyskusji</h3>
+                    <p style="font-size:0.88rem;color:#cbd5e1;margin-bottom:14px;">
+                        Każde rozważanie Andrzeja możesz komentować i wspierać wspólną modlitwą na Tablicy Społeczności portalu LUMINA.
+                    </p>
+                    <a href="lumina-tablica.html" class="btn-action-primary" style="width:100%;justify-content:center;text-decoration:none;">
+                        Przejdź na Tablicę ➔
+                    </a>
+                </div>
+
+            </aside>
+
+            <!-- Main Feed Stream -->
+            <main class="main-feed-col">
+
+                <!-- 🌟 THE FEATURED POST: 19 SIERPNIA 2026 🌟 -->
+                <article class="feed-post-card" id="post_cuda_19_sie_2026">
+                    <div class="post-top-header">
+                        <div class="post-author-box">
+                            <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
+                            <div>
+                                <div class="post-author-name">
+                                    Andrzej Thiel
+                                    <span class="post-badge-daily">Cuda Każdego Dnia</span>
+                                </div>
+                                <div class="post-time">19 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny</div>
+                            </div>
+                        </div>
+                        <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
+                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                        </button>
+                    </div>
+
+                    <div class="post-body">
+                        <div class="post-series-tag">
+                            <i class="fa-solid fa-sun"></i> CUDA KAŻDEGO DNIA! • 19 SIERPNIA 2026
+                        </div>
+
+                        <!-- Featured Devotional Artwork (Cuda Każdego Dnia) -->
+                        <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
+                            <img id="cudaDevotionFeaturedImg" src="cuda_kazdego_dnia_mocy.svg" alt="Cuda Każdego Dnia - Podłącz się do źródła mocy!" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block; transition:transform 0.3s ease;" onerror="this.src='cuda_kazdego_dnia.svg'">
+                            <div class="admin-cuda-change-btn-wrap" style="position:absolute; bottom:12px; right:12px;">
+                                <button type="button" class="admin-inline-edit-btn" onclick="document.getElementById('adminCudaGraphicInput').click()" style="width:auto; height:auto; padding:8px 14px; border-radius:20px; background:rgba(15,23,42,0.88); border:1px solid #f59e0b; color:#facc15; font-size:0.78rem; font-weight:800; cursor:pointer; backdrop-filter:blur(6px); display:none; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(0,0,0,0.5);" title="Zmień grafikę tego rozważania">
+                                    <i class="fa-solid fa-camera"></i> Zmień grafikę rozważania
+                                </button>
+                            </div>
+                        </div>
+
+                        <p style="font-weight:700;color:#fef08a;margin-bottom:12px;font-size:1.05rem;">
+                            Przeczytaj i zobacz jak Bóg przemienia twoje życie.
+                        </p>
+
+                        <h2 class="post-title">TO NIE DZIAŁA?</h2>
+
+                        <div class="post-text-content">
+Niedawno próbowałem uruchomić pewne urządzenie do sprzątania. Mimo, że wszystko z pozoru wyglądało na sprawne, niestety nie zadziałało. W końcu namierzyłem problem. Choć wtyczka tkwiła w kontakcie, urządzenie nie mogło działać, ponieważ poluzował się kabelek łączący je z zasilaniem. Dlaczego jest tak wielu rozczarowanych, zniechęconych chrześcijan? Ich argument najczęściej brzmi: „To nie działa”. Odwracają się i szukają czegoś innego… Znasz takie osoby?
+
+Jezus tuż przed swoją śmiercią dał uczniom najważniejsze wskazówki. Powiedział, co mają robić, kiedy Jego już z nimi nie będzie. Wiedział, że pojawi się u nich niepewność, że stracą poczucie bezpieczeństwa, sytuacja ich przytłoczy. Że będą niezrozumiani, fałszywie oskarżani, że szybko ogarną ich wyczerpanie i słabość. Że doświadczą trudności, cierpienia, głodu, prześladowań, że mogą stracić z oczu Boga, którego plany rozminą się z ich wyobrażeniami. Dlatego stale i na nowo przypominał: „Trzymajcie się mnie. Trwajcie we mnie. Beze mnie nic uczynić nie możecie” (J.15,5).
+
+Może też, zadajesz sobie to pytanie: „Czy to działa?”. Nie dostrzegasz Jego działania, nie widzisz odpowiedzi na swoje modlitwy? Zastanawiasz się, skąd inni, których podziwiasz, biorą siłę i radość w życiu? Jezus mówi, że tajemnicą sukcesu jest stałe połączenie z Nim. Trwanie w nieprzerwanym kontakcie. Tak jak to urządzenie – by zadziałało, musiało być podłączone do źródła mocy. Bez tego okazało się bezużyteczne. Jezus cię nie zostawi, bo wie, że bez Niego nie dasz rady. Bez Niego nic nie jest takie, jak ma być. Obiecał ci swojego Ducha, który będzie z tobą i w tobie: „Ja prosić będę Ojca i da wam innego Pocieszyciela, aby był z wami na wieki – Ducha Prawdy, którego świat przyjąć nie może, bo Go nie widzi i nie zna; wy Go znacie, bo przebywa wśród was i w was będzie” (J.14,16-17). Nie próbuj po swojemu, podłącz się dzisiaj do Niego. Niech popłynie Jego moc i wypełni energią każdą twoją komórkę.
+                        </div>
+
+                        <!-- Prayer highlight block -->
+                        <div class="post-prayer-highlight">
+                            „Ojcze, wypełnij mnie na nowo obecnością Twojego Ducha. Dziękuję Ci, że On przypomina mi dzisiaj Twoje słowa o tym, że mam trwać w Tobie, że we wszystkim, co robię, potrzebuję Ciebie. Dziękuję, że dzięki Niemu możemy być w stałej łączności. Dziękuję, że niezależnie od moich uczuć, sytuacji, Ty w swojej łasce jesteś dzisiaj ze mną”.
+                            <div style="margin-top:8px;font-size:0.8rem;color:#facc15;font-weight:700;text-align:right;">
+                                /opr. na podst. wiad. B.K./
+                            </div>
+                        </div>
+
+                        <p style="margin-top:18px;font-weight:800;font-size:1.05rem;color:#fef08a;">
+                            Dziękuję, że jesteś! ❤️
+                        </p>
+                    </div>
+
+                    <!-- Post Actions Bar -->
+                    <div class="post-actions-bar">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <button class="post-action-btn active-heart" id="btnPostLike" onclick="togglePostLike(this)">
+                                <i class="fa-solid fa-heart"></i> <span id="likeCount">128</span>
+                            </button>
+                            <button class="post-action-btn active-amen" id="btnPostAmen" onclick="togglePostAmen(this)">
+                                <i class="fa-solid fa-hands-praying"></i> Amen (<span id="amenCount">114</span>)
+                            </button>
+                        </div>
+
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <button class="post-action-btn" onclick="openShareAndrzejModal()">
+                                <i class="fa-solid fa-share-nodes"></i> Poleć Rozważanie
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <!-- ── Share Modal ── -->
+    <div class="modal-overlay" id="shareAndrzejModal" onclick="closeShareModal(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <div class="modal-title">
+                <span><i class="fa-solid fa-share-nodes" style="color:#f59e0b;"></i> Poleć Profil i Rozważanie</span>
+                <button class="modal-close-btn" onclick="closeShareModal()">&times;</button>
+            </div>
+            <p style="font-size:0.9rem;color:#cbd5e1;">
+                Udostępnij codzienne rozważania Andrzeja Thiela swoim bliskim i znajomym:
+            </p>
+
+            <div class="share-links-grid">
+                <button class="share-item-btn" onclick="shareToWhatsApp()">
+                    <i class="fa-brands fa-whatsapp" style="color:#22c55e;font-size:1.1rem;"></i> WhatsApp
+                </button>
+                <button class="share-item-btn" onclick="shareToFacebook()">
+                    <i class="fa-brands fa-facebook" style="color:#3b82f6;font-size:1.1rem;"></i> Facebook
+                </button>
+                <button class="share-item-btn" onclick="shareToTelegram()">
+                    <i class="fa-brands fa-telegram" style="color:#0ea5e9;font-size:1.1rem;"></i> Telegram
+                </button>
+                <button class="share-item-btn" onclick="copyAndrzejLink()">
+                    <i class="fa-solid fa-link" style="color:#f59e0b;font-size:1.1rem;"></i> Kopiuj Link
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notify" id="toastNotify">✨ Skopiowano link do schowka!</div>
+
+    <script>
+        function showToast(msg) {
+            const toast = document.getElementById('toastNotify');
+            if (!toast) return;
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function openShareAndrzejModal() {
+            document.getElementById('shareAndrzejModal').classList.add('open');
+        }
+
+        function closeShareModal(e) {
+            if (e && e.target && e.target !== document.getElementById('shareAndrzejModal')) return;
+            document.getElementById('shareAndrzejModal').classList.remove('open');
+        }
+
+        function copyAndrzejLink() {
+            const url = window.location.href;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast('🔗 Skopiowano link do profilu Andrzeja Thiela!');
+                    document.getElementById('shareAndrzejModal').classList.remove('open');
+                }).catch(() => {
+                    prompt('Skopiuj link:', url);
+                });
+            } else {
+                prompt('Skopiuj link:', url);
+            }
+        }
+
+        function shareToWhatsApp() {
+            const text = encodeURIComponent('Przeczytaj codzienne rozważanie Andrzeja Thiela: "Cuda Każdego Dnia – TO NIE DZIAŁA?": ' + window.location.href);
+            window.open('https://api.whatsapp.com/send?text=' + text, '_blank');
+        }
+
+        function shareToFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '_blank');
+        }
+
+        function shareToTelegram() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent('Cuda Każdego Dnia – Andrzej Thiel:');
+            window.open('https://t.me/share/url?url=' + url + '&text=' + text, '_blank');
+        }
+
+        let isLiked = true;
+        let likeCount = 128;
+        function togglePostLike(btn) {
+            isLiked = !isLiked;
+            likeCount += isLiked ? 1 : -1;
+            document.getElementById('likeCount').textContent = likeCount;
+            if (isLiked) {
+                btn.classList.add('active-heart');
+                showToast('❤️ Polubiono rozważanie Andrzeja!');
+            } else {
+                btn.classList.remove('active-heart');
+            }
+        }
+
+        let isAmen = true;
+        let amenCount = 114;
+        function togglePostAmen(btn) {
+            isAmen = !isAmen;
+            amenCount += isAmen ? 1 : -1;
+            document.getElementById('amenCount').textContent = amenCount;
+            if (isAmen) {
+                btn.classList.add('active-amen');
+                showToast('🙏 Wypowiedziano Amen!');
+            } else {
+                btn.classList.remove('active-amen');
+            }
+        }
+
+        let isFollowing = false;
+        function toggleFollowAndrzej(btn) {
+            isFollowing = !isFollowing;
+            if (isFollowing) {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
+                btn.style.background = '#10b981';
+                showToast('✨ Obserwujesz profil Andrzeja Thiela!');
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
+                btn.style.background = 'linear-gradient(135deg, var(--gold-accent), #d97706)';
+            }
+        }
+
+        // Cuda Każdego Dnia devotion graphic handler
+        function handleCudaGraphicUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const dataUrl = e.target.result;
+                localStorage.setItem('lumina_cuda_image', dataUrl);
+                const imgEl = document.getElementById('cudaDevotionFeaturedImg');
+                if (imgEl) imgEl.src = dataUrl;
+                showToast('📸 Zaktualizowano grafikę rozważania Cuda Każdego Dnia!');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Initialize saved devotion graphic
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedCudaImg = localStorage.getItem('lumina_cuda_image');
+            if (savedCudaImg) {
+                const imgEl = document.getElementById('cudaDevotionFeaturedImg');
+                if (imgEl) imgEl.src = savedCudaImg;
+            }
+        });
+    </script>
+    <input type="file" id="adminCudaGraphicInput" accept="image/*" style="display:none;" onchange="handleCudaGraphicUpload(event)">
+    <script src="lumina-admin-profile-suite.js"></script>
+</body>
+</html>

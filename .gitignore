@@ -6,3 +6,12 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.log
+
+# Large binary & build files
+downloads/
+audio/
+audio/worship_downloads/
+*.zip
+*.wav
+.firebase/
+temp_google_ai_studio/

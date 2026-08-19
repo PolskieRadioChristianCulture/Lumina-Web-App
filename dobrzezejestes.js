@@ -120,15 +120,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 let formattedContent = rawContent
                     .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
                         const href = url.startsWith('http') ? url : 'https://' + url;
-                        let label = url;
+                        let label = 'Otwórz odnośnik';
                         if (url.includes('chat.whatsapp.com')) {
-                            label = 'Dołącz do grupy WhatsApp';
+                            label = 'Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp)';
                         } else if (url.includes('play.google.com')) {
-                            label = 'Nasze Aplikacje w Google Play';
+                            label = 'Pobierz bezpłatne aplikacje w Google Play';
                         } else if (url.includes('polskieradio.cc')) {
-                            label = 'Polskie Radio CC';
+                            label = 'Polskie Radio Christian Culture';
                         } else if (url.includes('cclite.pl')) {
-                            label = 'Portal CC Lite';
+                            label = 'Telewizja CC Lite';
                         } else {
                             try {
                                 const urlObj = new URL(href);
@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 label = 'Otwórz odnośnik';
                             }
                         }
-                        return `<a href="${href}" target="_blank" style="color: #E2B859; text-decoration: underline; font-weight: bold;">${label}</a>`;
+                        return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: #facc15; text-decoration: underline; font-weight: bold;">${label}</a>`;
                     })
                     .replace(/\n\n/g, '</p><p class="mt-4">')
                     .replace(/\n/g, '<br/>')
@@ -149,23 +149,25 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         } catch (e) {
             console.error("Błąd pobierania rozważania z Firestore:", e);
-            const defaultTitle = "☀️ Lato ku Bożej chwale";
-            const defaultDate = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
-            const rawContent = `☀️ Lato ku Bożej chwale
-Dzień 26 – Taktyka Synowskiej Śmiałości i Dotyku Ojcowskiej Miłości.
+            const defaultTitle = "☀️ Lato z Jezusem — Wielkie Pytania";
+            const defaultDate = "19 sierpnia 2026";
+            const rawContent = `☀️ Lato z Jezusem — Wielkie Pytania
+Dzień 19 — 31 bardzo osobistych pytań Syna/Córki do Ojca: Dlaczego tak łatwo ulegam zatruciu przeszłością i żalom do dawnych lat?
 
-Zwycięstwo na duchowym froncie wymaga dziś przełamania wstydu i fałszywego dystansu wobec Boga. Wróg próbuje wykorzystać Twoje słabości i potknięcia, wmawiając Ci, że jesteś zbyt nieczysty, by stanąć przed obliczem Stwórcy. Oddanie Bogu chwały polega na radykalnym odrzuceniu tego oskarżenia. Twój Niebiański Ojciec nie brzydzi się Twoimi ranami – On wyciąga rękę, by dotknąć Twojej codzienności i przynieść Ci natychmiastowe oczyszczenie. Jako Jego syn i córka masz pełne prawo przychodzić do bazy dowodzenia w każdym stanie, szukając ratunku i odnowienia sił.
+W dziewiętnastym dniu cyklu „Lato z Jezusem — Wielkie Pytania” rozbrajamy destrukcyjny nawyk zamrożenia w przeszłości oraz pielęgnowania dawnych żalów.
+
+W psychologii klinicznej pojęcie „utknięcia w narracji urazu” (trauma narrative fixation) opisuje stan, w którym człowiek definiuje swoją teraźniejszość wyłącznie przez pryzmat dawnych kryzysów i zranień. Wróg bezwzględnie wykorzystuje ten mechanizm, paraliżując nasz potencjał rozwoju. Słowo Boże przez proroka Izajasza wzywa nas do radykalnej zmiany perspektywy: „Nie wspomina się rzeczy dawnych... Oto Ja stwarzam nowe rzeczy”. Chrześcijański lider najwyższej klasy nie pozwala, by historia dyktowała mu warunki — wyciąga wnioski, odcina toksyczny bagaż z nienaganną klasą i z pasją realizuje cel tu i teraz.
 
 Jezus mówi dziś do Ciebie:
-„A oto zbliżył się trędowaty, upadł przed Nim i prosił Go: Panie, jeśli chcesz, możesz mnie oczyścić. Jezus wyciągnął rękę, dotknął go i rzekł: Chcę, bądź oczyszczony! I natychmiast został oczyszczony z trądu." (Mateusza 8,2-3)
+„Oto Ja stwarzam nowe rzeczy; teraz one wschodzą, czyż ich nie poznajecie?..." (Izajasza 43,19)
 
 Zadanie Taktyczne:
-Zdemaskuj dziś wszelkie mechanizmy duchowej ucieczki i ukrywania się przed Bogiem. Jeśli odczuwasz ciężar w sumieniu, stań natychmiast w prawdzie przed Ojcem na modlitwie. Przyjmij Jego przebaczenie i realizuj swoje obowiązki zawodowe, społeczne oraz rodzinne z pozycji człowieka wolnego, podniesionego przez Bożą miłość.
+Zmiażdż dziś więzienie przeszłości na swoim polu bitwy. Zidentyfikuj stary żal lub wspomnienie porażki, które wciąż wywołuje w Tobie emocjonalny ból. Podejmij decyzję woli: zamknij ten rozdział, oddaj go Bogu i przekieruj całą energię na budowanie dzisiejszego dnia. Wnieś do swojego domu i firmy standard świeżości, dynamizmu i niezachwianego autorytetu.
 
-W Christian Culture subskrypcje i aplikacje są zawsze BEZPŁATNE.
+W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
 
 Modlitwa Bojowa:
-„Ojcze Niebieski, dziękuję, że Twoja miłość jest większa niż moje słabości. Odrzucam potępienie podsuwane przez nieprzyjaciela. Upadam przed Tobą z ufnością dziecka i proszę o Twój oczyszczający dotyk. Napełnij mnie siłą i mądrością, by moje dzisiejsze działania były wolne od strachu i przynosiły Ci pełną chwałę."
+„Ojcze, odrzucam kłamstwa nieprzyjaciela i kurczowe trzymanie się przeszłości. Przepraszam, że pozwalałem dawnym żalom odbierać mi radość z dzisiejszego dnia. Dziękuję, że w Tobie mam nowość życia. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą kroczył naprzód, zdobywając ten świat dla Twojej chwały.”
 
 Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
 
@@ -179,15 +181,15 @@ Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
             let formattedContent = rawContent
                 .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
                     const href = url.startsWith('http') ? url : 'https://' + url;
-                    let label = url;
+                    let label = 'Otwórz odnośnik';
                     if (url.includes('chat.whatsapp.com')) {
-                        label = 'Dołącz do grupy WhatsApp';
+                        label = 'Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp)';
                     } else if (url.includes('play.google.com')) {
-                        label = 'Nasze Aplikacje w Google Play';
+                        label = 'Pobierz bezpłatne aplikacje w Google Play';
                     } else if (url.includes('polskieradio.cc')) {
-                        label = 'Polskie Radio CC';
+                        label = 'Polskie Radio Christian Culture';
                     } else if (url.includes('cclite.pl')) {
-                        label = 'Portal CC Lite';
+                        label = 'Telewizja CC Lite';
                     } else {
                         try {
                             const urlObj = new URL(href);
@@ -196,7 +198,7 @@ Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
                             label = 'Otwórz odnośnik';
                         }
                     }
-                    return `<a href="${href}" target="_blank" style="color: #E2B859; text-decoration: underline; font-weight: bold;">${label}</a>`;
+                    return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: #facc15; text-decoration: underline; font-weight: bold;">${label}</a>`;
                 })
                 .replace(/\n\n/g, '</p><p class="mt-4">')
                 .replace(/\n/g, '<br/>')
