@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ══════════════════════════════════════════════════════════════════════════
  * LUMINA BOTTOM NAV PWA MODULE (lumina-bottom-nav.js)
  * Pływający Dolny Pasek Nawigacyjny UX (Mobile-First) dla Ekosystemu LUMINA
@@ -400,6 +400,15 @@
                         <i class="fa-solid fa-chevron-right" style="color:#64748b; font-size:0.85rem;"></i>
                     </a>
 
+                    <a href="https://youtube.com/@robertlukaszpio?si=aHMr3p3vs8sXwrUT" target="_blank" rel="noopener noreferrer" class="network-item-link" style="display:flex; align-items:center; gap:14px; padding:12px 14px; border-radius:16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); text-decoration:none; color:#fff; transition:background 0.2s;">
+                        <i class="fa-brands fa-youtube" style="font-size:1.3rem; color:#ef4444; width:28px; text-align:center;"></i>
+                        <div style="flex:1;">
+                            <div style="font-weight:800; font-size:0.92rem;">Robert Dla Jezusa</div>
+                            <div style="font-size:0.75rem; color:#94a3b8;">Świadectwa wiary, modlitwa i ewangelizacja</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right" style="color:#64748b; font-size:0.85rem;"></i>
+                    </a>
+
                     <a href="modlitwa.html" class="network-item-link" style="display:flex; align-items:center; gap:14px; padding:12px 14px; border-radius:16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); text-decoration:none; color:#fff; transition:background 0.2s;">
                         <i class="fa-solid fa-hands-praying" style="font-size:1.3rem; color:#38bdf8; width:28px; text-align:center;"></i>
                         <div style="flex:1;">
@@ -489,12 +498,11 @@
     window.triggerSecretAdminPrompt = async function(e) {
         if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
 
-        const isCurrentlyAdmin = (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true');
+        const isCurrentlyAdmin = (sessionStorage.getItem('lumina_auth_master_admin') === 'true');
         if (isCurrentlyAdmin) {
             const confirmLock = confirm('👑 Jesteś obecnie zalogowany jako Główny Administrator Portalu LUMINA.\n\nCzy chcesz ZABLOKOWAĆ tryb Administratora i przejść do widoku zwykłego gościa?');
             if (confirmLock) {
                 sessionStorage.removeItem('lumina_auth_master_admin');
-                localStorage.removeItem('lumina_auth_master_admin');
                 document.body.classList.remove('owner-mode-active');
                 if (typeof window.checkOwnerAuthSession === 'function') window.checkOwnerAuthSession();
                 const toastFn = window.showToast || window.luminaToast || alert;
@@ -515,7 +523,6 @@
 
             if (hash === ADMIN_HASH) {
                 sessionStorage.setItem('lumina_auth_master_admin', 'true');
-                localStorage.setItem('lumina_auth_master_admin', 'true');
                 document.body.classList.add('owner-mode-active');
                 if (typeof window.checkOwnerAuthSession === 'function') window.checkOwnerAuthSession();
                 const toastFn = window.showToast || window.luminaToast || alert;
@@ -727,23 +734,9 @@
     }
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", () => {
-            injectCookieConsentBanner();
-            loadLuminaRadioScript();
-        });
+        document.addEventListener("DOMContentLoaded", injectCookieConsentBanner);
     } else {
         injectCookieConsentBanner();
-        loadLuminaRadioScript();
-    }
-
-    function loadLuminaRadioScript() {
-        if (window.LuminaRadioEngineInitialized) return;
-        if (!document.querySelector('script[src*="lumina-radio.js"]')) {
-            const radioScript = document.createElement('script');
-            radioScript.src = 'lumina-radio.js?v=' + Date.now();
-            radioScript.defer = true;
-            document.body.appendChild(radioScript);
-        }
     }
 
 })();

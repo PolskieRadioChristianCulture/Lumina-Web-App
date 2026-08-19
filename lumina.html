@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
     <!-- Google Analytics -->
@@ -72,9 +72,6 @@
     <script type="module" src="lumina-core.js?v=2.2"></script>
     <script type="module" src="lumina-security.js?v=2.2"></script>
     <script type="module" src="lumina-i18n.js?v=1786850740820.2"></script>
-    <script src="lumina-terms-modal.js?v=1.0"></script>
-    <script src="lumina-sharing-suite.js?v=1.0"></script>
-    <script src="lumina-pwa-installer.js?v=3.2"></script>
 
     <style>
         :root {
@@ -242,121 +239,48 @@
         }
 
         /* ──────────────────── ANIMATIONS & 3D ──────────────────── */
-        @keyframes subtleZoom { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        @keyframes subtleZoom { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(168,85,247, 0.6); } 70% { box-shadow: 0 0 0 14px rgba(168,85,247, 0); } 100% { box-shadow: 0 0 0 0 rgba(168,85,247, 0); } }
         @keyframes statusPulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { transform: scale(1.2); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
         @keyframes floatWidget { 0% { transform: translateY(0); } 50% { transform: translateY(-12px); } 100% { transform: translateY(0); } }
 
-        /* ──────────────────── HERO INTRO DISSOLVE EFFECT ──────────────────── */
-        .hero-intro-wrapper {
-            max-height: 500px;
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0px);
-            transition: max-height 1.2s cubic-bezier(0.4, 0, 0.2, 1),
-                        opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
-                        transform 0.9s cubic-bezier(0.4, 0, 0.2, 1),
-                        filter 0.9s cubic-bezier(0.4, 0, 0.2, 1),
-                        margin 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .hero-intro-wrapper.dissolving {
-            animation: celestialDissolve 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-
-        .hero-intro-wrapper.dissolved {
-            max-height: 0 !important;
-            opacity: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            pointer-events: none !important;
-            visibility: hidden;
-            transform: translateY(-20px) scale(0.95);
-            filter: blur(12px);
-        }
-
-        @keyframes celestialDissolve {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-                filter: blur(0px) brightness(1);
-                text-shadow: 0 0 0px rgba(250, 204, 21, 0);
-            }
-            30% {
-                opacity: 0.95;
-                transform: translateY(-4px) scale(1.01);
-                filter: blur(0.5px) brightness(1.3);
-                text-shadow: 0 0 24px rgba(250, 204, 21, 0.8), 0 0 40px rgba(168, 85, 247, 0.6);
-            }
-            70% {
-                opacity: 0.4;
-                transform: translateY(-14px) scale(0.97);
-                filter: blur(6px) brightness(1.6);
-                text-shadow: 0 0 35px rgba(250, 204, 21, 0.9), 0 0 60px rgba(168, 85, 247, 0.8);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-24px) scale(0.93);
-                filter: blur(14px) brightness(2);
-                max-height: 0;
-                margin: 0;
-                padding: 0;
-                visibility: hidden;
-            }
-        }
-
+        /* ──────────────────── HERO ──────────────────── */
         .hero-section {
             position: relative;
-            overflow: visible !important;
-            z-index: 100;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            min-height: 440px;
-            background-color: #0b1838;
-            padding: 55px 20px 40px;
-            transition: min-height 1.2s cubic-bezier(0.4, 0, 0.2, 1), padding 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 490px;
+            padding: 70px 20px 90px;
         }
 
-        .hero-section.compact-mode {
-            min-height: 310px;
-            padding: 35px 20px 25px;
-        }
-
-        /* Pełnowymiarowa, czysta grafika tła - twarze w 100% widoczne bez zniekształceń i bez różnic kolorów */
+        /* The banner image IS the background */
         .hero-bg {
             position: absolute;
             inset: 0;
             background: url('lumina_default_cover.jpg') center center / cover no-repeat;
-            background-color: #0b1838;
             z-index: 0;
-            border-radius: 0;
-            overflow: hidden;
+            animation: subtleZoom 25s infinite ease-in-out;
+            transform-origin: center center;
         }
         .hero-bg::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, transparent 75%, rgba(11, 24, 56, 0.5) 90%, #0b1838 100%);
+            background: linear-gradient(to bottom, rgba(11, 24, 56, 0) 35%, rgba(11, 24, 56, 0.45) 70%, #0b1838 100%);
             pointer-events: none;
             z-index: 1;
         }
 
-        .hero-overlay {
-            display: none;
-        }
-
         .hero-content {
             position: relative;
-            z-index: 110;
-            padding: 10px 20px 0;
-            max-width: 880px;
+            z-index: 5;
+            padding: 24px 20px 10px;
+            max-width: 860px;
             margin: 0 auto;
             text-align: center;
-            width: 100%;
         }
 
         .hero-pill-badge {
@@ -407,15 +331,15 @@
         @media (max-width: 768px) {
             .hero-title { font-size: clamp(1.5rem, 5.5vw, 1.95rem); line-height: 1.25; margin-bottom: 10px; }
             .hero-subtitle { font-size: 0.9rem; line-height: 1.45; margin-bottom: 18px; }
-            .hero-section { min-height: 390px; padding: 35px 14px 16px; }
-            .hero-content { padding: 8px 10px 0; max-width: 100%; }
+            .hero-section { min-height: 380px; padding: 45px 16px 65px; }
+            .hero-content { padding: 10px 12px; max-width: 100%; }
             .hero-break { display: none; }
         }
 
         @media (max-width: 480px) {
             .hero-title { font-size: 1.45rem; line-height: 1.24; }
             .hero-subtitle { font-size: 0.84rem; }
-            .hero-section { min-height: 360px; padding: 25px 10px 14px; }
+            .hero-section { min-height: 350px; padding: 35px 10px 55px; }
             .hero-pill-badge { font-size: 0.72rem; padding: 4px 10px; margin-bottom: 10px; }
         }
 
@@ -450,8 +374,8 @@
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            margin: 0 auto;
-            padding: 16px 16px 4px;
+            margin: 20px auto 45px;
+            padding: 0 16px;
             max-width: 850px;
         }
 
@@ -487,133 +411,15 @@
             transform: translateY(-2px);
         }
 
-        /* ══════════ DYNAMIC 3D "POLECAJ" BUTTON ══════════ */
-        .btn-3d-recommend {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 22px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.88rem;
-            font-weight: 800;
-            letter-spacing: 0.03em;
-            color: #ffffff;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-            background: linear-gradient(180deg, #ec4899 0%, #db2777 55%, #be185d 100%);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-bottom: 3px solid #831843;
-            border-radius: 24px;
-            cursor: pointer;
-            outline: none;
-            box-shadow: 
-                0 4px 0 #9d174d,
-                0 8px 22px rgba(219, 39, 119, 0.48),
-                0 0 16px rgba(244, 114, 182, 0.35);
-            transform: translateY(0);
-            transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
-            user-select: none;
-            -webkit-user-select: none;
-            z-index: 52;
-            text-decoration: none;
-        }
-
-        .btn-3d-recommend:hover {
-            background: linear-gradient(180deg, #f472b6 0%, #ec4899 55%, #db2777 100%);
-            transform: translateY(-2px);
-            box-shadow: 
-                0 6px 0 #9d174d,
-                0 14px 28px rgba(219, 39, 119, 0.6),
-                0 0 24px rgba(244, 114, 182, 0.55);
-            border-color: rgba(255, 255, 255, 0.65);
-        }
-
-        .btn-3d-recommend:active {
-            transform: translateY(3px);
-            border-bottom: 1px solid #831843;
-            box-shadow: 
-                0 1px 0 #9d174d,
-                0 4px 12px rgba(219, 39, 119, 0.35);
-        }
-
-        .btn-3d-recommend i {
-            font-size: 0.95rem;
-            color: #fef08a;
-            transition: transform 0.25s ease;
-        }
-
-        .btn-3d-recommend:hover i {
-            transform: rotate(-12deg) scale(1.2);
-        }
-
-        .btn-3d-recommend .btn-3d-sparkle {
-            display: inline-block;
-            animation: sparklePulse 1.8s infinite ease-in-out;
-        }
-
-        @media (max-width: 992px) {
-            .btn-3d-recommend {
-                padding: 0 !important;
-                width: 40px !important;
-                min-width: 40px !important;
-                max-width: 40px !important;
-                height: 40px !important;
-                border-radius: 50% !important;
-                gap: 0 !important;
-                display: inline-flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                flex-shrink: 0 !important;
-            }
-            .btn-3d-recommend .btn-3d-text,
-            .btn-3d-recommend .btn-3d-sparkle,
-            .btn-3d-recommend span {
-                display: none !important;
-                visibility: hidden !important;
-                width: 0 !important;
-                height: 0 !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                overflow: hidden !important;
-            }
-            .btn-3d-recommend i {
-                font-size: 1.05rem !important;
-                margin: 0 !important;
-                color: #fef08a !important;
-            }
-        }
-
-        @keyframes sparklePulse {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.3) rotate(15deg); opacity: 1; }
-        }
-
-        .share-channel-btn:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.08);
-        }
-        .share-channel-btn:active {
-            transform: translateY(1px);
-        }
-
         /* ──────────────────── CARDS SECTION ──────────────────── */
-        .cards-section {
-            position: relative;
-            padding-top: 8px;
-            padding-bottom: 24px;
-            overflow: visible;
-        }
-
         .carousel-container {
             position: relative;
             max-width: 1040px;
             margin: 0 auto;
-            margin-top: 16px; /* Przestrzeń pod przyciskami filtrów */
+            margin-top: 0;
             z-index: 20;
             display: flex;
             align-items: center;
-            overflow: visible; /* Zapobiega ucinaniu wysuniętych u góry kart i reklamy */
         }
         
         .carousel-btn {
@@ -648,7 +454,7 @@
             overflow-x: auto;
             scroll-behavior: smooth;
             scroll-snap-type: x mandatory;
-            padding: 48px 15px 55px; /* Bezpieczna przestrzeń u góry i na dole */
+            padding: 48px 15px 55px;
             scrollbar-width: none;
             -ms-overflow-style: none;
             width: 100%;
@@ -675,7 +481,7 @@
 
         .profile-card.active-center-card,
         .profile-card.featured {
-            transform: translateY(-16px) scale(1.06) !important;
+            transform: translateY(-22px) scale(1.08) !important;
             box-shadow: 0 20px 45px rgba(0,0,0,0.45), 0 0 25px rgba(168,85,247,0.25);
             border: 2px solid rgba(255,255,255,0.4);
             opacity: 1;
@@ -683,8 +489,8 @@
         }
 
         @media (max-width: 992px) {
-            .carousel-container { margin-top: 24px; padding: 0 10px; overflow: visible; }
-            .profiles-grid { gap: 18px; padding: 42px 10px 45px; }
+            .carousel-container { margin-top: 0; padding: 0 10px; }
+            .profiles-grid { gap: 18px; padding: 40px 10px 45px; }
             .profile-card { flex: 0 0 270px; opacity: 0.95; transform: scale(0.96); }
             .profile-card.featured { transform: translateY(-10px) scale(1.03) !important; }
         }
@@ -731,25 +537,17 @@
                 padding: 8px 16px;
                 font-size: 0.82rem;
             }
-            .btn-3d-recommend {
-                flex-shrink: 0 !important;
-                width: 40px !important;
-                height: 40px !important;
-                min-width: 40px !important;
-                padding: 0 !important;
-                border-radius: 50% !important;
-            }
             .carousel-container {
-                margin-top: 20px;
+                margin-top: 0;
                 padding: 0 4px;
-                overflow: visible;
+                overflow: hidden;
             }
             .carousel-btn {
                 display: none !important;
             }
             .profiles-grid {
                 gap: 16px;
-                padding: 34px 12px 40px;
+                padding: 24px 12px 36px;
                 scroll-padding: 0 16px;
             }
             .profile-card {
@@ -801,54 +599,35 @@
             }
         }
 
-        /* ── UNIVERSAL SEARCH BAR & SHORTCUTS ENGINE (ON-DEMAND HOVER & TAP TOGGLE) ── */
+        /* ── UNIVERSAL SEARCH BAR & SHORTCUTS ENGINE (CRYSTAL CLEAR GLASS) ── */
         .universal-search-container {
             width: 100%;
             max-width: 660px;
-            margin: 0 auto;
+            margin: 22px auto 0;
             position: relative;
             z-index: 50;
-            opacity: 0;
-            max-height: 0;
-            transform: translateY(12px) scale(0.96);
-            pointer-events: none;
-            transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.35s ease, margin 0.35s ease;
-            overflow: visible;
         }
-
-        /* Hover on Hero, Click/Tap on Background or Active Focus reveals search bar smoothly */
-        .hero-section:hover .universal-search-container,
-        .hero-section.search-active .universal-search-container,
-        .universal-search-container.is-visible,
-        .universal-search-container:focus-within {
-            opacity: 1;
-            max-height: 140px;
-            margin-top: 18px;
-            transform: translateY(0) scale(1);
-            pointer-events: auto;
-        }
-
         .search-input-wrapper {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.08) !important;
-            backdrop-filter: blur(12px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
-            border: 1.5px solid rgba(255, 255, 255, 0.45) !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+            backdrop-filter: blur(8px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(8px) saturate(180%) !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
             border-radius: 50px !important;
             padding: 6px 8px 6px 20px !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.25) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.25) !important;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         .search-input-wrapper:hover {
-            background: rgba(255, 255, 255, 0.12) !important;
-            border-color: rgba(255, 255, 255, 0.75) !important;
-            box-shadow: 0 10px 36px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 255, 255, 0.2) !important;
+            background: rgba(255, 255, 255, 0.10) !important;
+            border-color: rgba(255, 255, 255, 0.7) !important;
+            box-shadow: 0 10px 36px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.2) !important;
         }
         .search-input-wrapper:focus-within {
-            background: rgba(255, 255, 255, 0.16) !important;
+            background: rgba(255, 255, 255, 0.14) !important;
             border-color: #f472b6 !important;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 25px rgba(244, 114, 182, 0.45) !important;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 25px rgba(244, 114, 182, 0.4) !important;
             transform: translateY(-2px);
         }
         .search-icon {
@@ -903,19 +682,18 @@
             top: calc(100% + 8px);
             left: 0;
             right: 0;
-            background: rgba(15, 23, 42, 0.98);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1.5px solid rgba(168, 85, 247, 0.5);
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(168, 85, 247, 0.3);
             border-radius: 20px;
-            padding: 12px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(168, 85, 247, 0.35);
+            padding: 10px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
             display: none;
             flex-direction: column;
             gap: 6px;
-            max-height: 420px;
+            max-height: 380px;
             overflow-y: auto;
-            z-index: 999999 !important;
+            z-index: 100;
         }
         .omni-dropdown.open {
             display: flex;
@@ -1406,80 +1184,6 @@
             }
         }
 
-        /* ── Awatary Zalogowanych Użytkowników z Seledynową Obręczą & Ikona + ── */
-        .tablica-online-avatars-wrap {
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-        .tablica-online-avatar-item {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            margin-left: -7px;
-            transition: transform 0.22s ease, z-index 0.22s ease, box-shadow 0.22s ease;
-            cursor: pointer;
-        }
-        .tablica-online-avatar-item:first-child {
-            margin-left: 0;
-            z-index: 4;
-        }
-        .tablica-online-avatar-item:hover {
-            transform: translateY(-3px) scale(1.18);
-            z-index: 20 !important;
-        }
-        .tablica-online-avatar-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #34d399; /* Seledynowa obręcz */
-            box-shadow: 0 0 10px rgba(52, 211, 153, 0.6), inset 0 0 4px rgba(52, 211, 153, 0.35);
-            background: #090d1a;
-            display: block;
-        }
-        .tablica-online-dot {
-            position: absolute;
-            bottom: -1px;
-            right: -1px;
-            width: 9px;
-            height: 9px;
-            background: #34d399; /* Seledynowy wskaźnik aktywności online */
-            border-radius: 50%;
-            border: 1.5px solid #090d1a;
-            box-shadow: 0 0 6px #34d399;
-        }
-        .tablica-online-more-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(52, 211, 153, 0.16);
-            border: 2px solid #34d399; /* Seledynowa obręcz */
-            color: #34d399;
-            box-shadow: 0 0 10px rgba(52, 211, 153, 0.5);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: 800;
-            margin-left: -7px;
-            z-index: 1;
-            transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease;
-            backdrop-filter: blur(8px);
-            cursor: pointer;
-        }
-        .tablica-online-more-btn:hover {
-            transform: translateY(-3px) scale(1.18);
-            background: rgba(52, 211, 153, 0.32);
-            color: #ffffff;
-            box-shadow: 0 0 14px rgba(52, 211, 153, 0.8);
-            z-index: 20 !important;
-        }
-
         /* ──────────────────── FOOTER ──────────────────── */
         .page-footer {
             background: transparent;
@@ -1607,64 +1311,6 @@
             }
             body {
                 padding-bottom: 70px;
-            }
-        }
-
-        /* ── Discrete Admin Shield Icon (Bottom-Left) ── */
-        .admin-secret-shield-btn {
-            position: fixed;
-            bottom: 14px;
-            left: 14px;
-            z-index: 9999;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(15, 23, 42, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #64748b;
-            opacity: 0.22;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.95rem;
-            cursor: pointer;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            outline: none;
-            padding: 0;
-        }
-
-        .admin-secret-shield-btn:hover,
-        .admin-secret-shield-btn:focus-visible {
-            opacity: 0.95;
-            color: #f59e0b;
-            border-color: rgba(245, 158, 11, 0.5);
-            background: rgba(15, 23, 42, 0.9);
-            box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
-            transform: scale(1.12);
-        }
-
-        .admin-secret-shield-btn.admin-unlocked {
-            opacity: 0.55;
-            color: #10b981;
-            border-color: rgba(16, 185, 129, 0.4);
-        }
-
-        .admin-secret-shield-btn.admin-unlocked:hover {
-            opacity: 1;
-            color: #34d399;
-            box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
-        }
-
-        @media (max-width: 900px) {
-            .admin-secret-shield-btn {
-                bottom: 74px; /* Above bottom mobile nav */
-                left: 10px;
-                width: 28px;
-                height: 28px;
-                font-size: 0.85rem;
-                opacity: 0.18;
             }
         }
 
@@ -2037,9 +1683,9 @@
 </style>
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786937913306">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
-    <link rel="stylesheet" href="css/lumina-theme.css?v=1786940887015">
-    <link rel="stylesheet" href="css/lumina-components.css?v=1786940887015">
-    <link rel="stylesheet" href="css/lumina-profile.css?v=1786940887015">
+    <link rel="stylesheet" href="css/lumina-theme.css?v=1786941394472">
+    <link rel="stylesheet" href="css/lumina-components.css?v=1786941394472">
+    <link rel="stylesheet" href="css/lumina-profile.css?v=1786951604399">
     <link rel="stylesheet" href="css/lumina-feed.css?v=1786937908032">
     <link rel="stylesheet" href="css/lumina-modals.css?v=1786937908032">
     
@@ -2048,6 +1694,8 @@
     <script type="module" src="js/lumina-editor.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-feed.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-search.js?v=1786937908032"></script>
+    <script src="js/lumina-radio.js?v=1786970525527"></script>
+    <script src="js/lumina-presence.js?v=1786993322235"></script>
 </head>
 <body>
 
@@ -2057,7 +1705,7 @@
     <!-- ══════════ NAVBAR ══════════ -->
     <nav class="lumina-nav">
         <a href="index.html" class="nav-logo-text" style="display: flex; align-items: center; gap: 9px;">
-            <img src="lumina_icon.jpg" alt="LUMINA Logo" onerror="this.src='icon.png'" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(192,132,252,0.6); box-shadow: 0 0 10px rgba(168,85,247,0.4);">
+            <img src="lumina_icon.jpg" alt="LUMINA Logo" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(192,132,252,0.6); box-shadow: 0 0 10px rgba(168,85,247,0.4);">
             <span>LUMINA</span>
         </a>
 
@@ -2066,7 +1714,6 @@
             <a href="lumina-tablica.html" class="nav-link" style="color: #ec4899; font-weight: 700;"><i class="fa-solid fa-rectangle-list"></i> Tablica</a>
             <button class="nav-link" onclick="scrollToSection('odkrywaj')"><i class="fa-solid fa-compass"></i> Odkrywaj</button>
             <button class="nav-link" onclick="showToast('Skrzynka wiadomości – zaloguj się, aby rozmawiać 💬')"><i class="fa-solid fa-comments"></i> Wiadomości</button>
-            <button type="button" class="nav-link" onclick="openShareLuminaModal()" style="color: #f472b6; font-weight: 800; background: none; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" title="Poleć portal LUMINA znajomym ✨"><i class="fa-solid fa-share-nodes"></i> Polecaj</button>
             <a href="javascript:void(0)" onclick="handleMyProfileNavigation(event)" class="nav-link" id="navMyProfileLink" style="color: #2563eb; font-weight: 700;"><i class="fa-solid fa-user"></i> Mój Profil</a>
         </div>
 
@@ -2095,30 +1742,24 @@
     </nav>
 
     <!-- ══════════ HERO SECTION ══════════ -->
-    <header class="hero-section" id="heroHeader" onclick="handleHeroBackgroundClick(event)">
-        <div class="hero-bg" id="heroBg" onclick="toggleHeroSearch(event, true)"></div>
-        <div class="hero-overlay" id="heroOverlay" onclick="toggleHeroSearch(event, true)"></div>
-        <div class="hero-content" id="heroContent">
-            <div class="hero-intro-wrapper" id="heroIntroText">
-                <div class="hero-pill-badge">
-                    <i class="fa-solid fa-sparkles" style="color:#facc15;"></i> Społeczność Ludzi Wiary & Wartości
-                </div>
-                <h1 class="hero-title">
-                    LUMINA <span class="hero-title-accent">•</span> Chrześcijańska Społeczność<br class="hero-break">i Głębsze Relacje
-                </h1>
-                <p class="hero-subtitle">
-                    Odkrywaj wartościowe profile, inspiruj się na żywo na Tablicy Społeczności<br class="hero-break">i buduj relacje zakorzenione w Chrystusie.
-                </p>
+    <header class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-pill-badge">
+                <i class="fa-solid fa-sparkles" style="color:#facc15;"></i> Społeczność Ludzi Wiary & Wartości
             </div>
-
+            <h1 class="hero-title">
+                LUMINA <span class="hero-title-accent">•</span> Chrześcijańska Społeczność<br class="hero-break">i Głębsze Relacje
+            </h1>
+            <p class="hero-subtitle">
+                Odkrywaj wartościowe profile, inspiruj się na żywo na Tablicy Społeczności<br class="hero-break">i buduj relacje zakorzenione w Chrystusie.
+            </p>
             <!-- ══════════ UNIWERSALNA WYSZUKIWARKA PORTALU LUMINA ══════════ -->
-            <div class="universal-search-container" id="universalSearchBox" onclick="event.stopPropagation()">
-                <div class="search-input-wrapper">
+            <div class="universal-search-container" id="universalSearchBox">
+                <div class="search-input-wrapper" style="background: rgba(255, 255, 255, 0.05) !important; backdrop-filter: blur(8px) saturate(180%) !important; -webkit-backdrop-filter: blur(8px) saturate(180%) !important; border: 1.5px solid rgba(255, 255, 255, 0.45) !important; box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.25) !important;">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="omniSearchInput" class="omni-search-input" placeholder="Szukaj po imieniu, nazwisku, mieście, powołaniu..." oninput="handleOmniSearchInput(this.value)" onkeydown="if(event.key==='Enter') executeOmniSearch()" autocomplete="off">
-                    <button type="button" class="btn-omni-close" onclick="toggleHeroSearch(event, false)" title="Zwiń wyszukiwarkę" style="background:transparent; border:none; color:#94a3b8; font-size:1rem; cursor:pointer; padding:6px 10px; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#94a3b8'">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
+                    <input type="text" id="omniSearchInput" class="omni-search-input" placeholder="Szukaj w portalu LUMINA..." oninput="handleOmniSearchInput(this.value)" onkeydown="if(event.key==='Enter') executeOmniSearch()">
                     <button type="button" class="btn-omni-action" onclick="executeOmniSearch()" title="Szukaj"><i class="fa-solid fa-arrow-right"></i></button>
                 </div>
 
@@ -2130,29 +1771,22 @@
 
     <!-- ══════════ CARDS ══════════ -->
     <section class="cards-section" id="odkrywaj">
-        <!-- Discovery Match Filters (Wszyscy, Kobiety, Mężczyźni, 18-30 lat) - pod zdjęciem tła, nad karuzelą -->
+        <!-- Discovery Match Filters -->
         <div class="discovery-filters-wrap">
-            <button class="filter-chip active" id="chip_all" onclick="applyDiscoveryFilter('all', this)" title="Wszyscy" aria-label="Wszyscy"><i class="fa-solid fa-users"></i> <span class="filter-chip-text">Wszyscy</span></button>
-            <button class="filter-chip" id="chip_kobiety" onclick="applyDiscoveryFilter('kobieta', this)" title="Kobiety" aria-label="Kobiety"><i class="fa-solid fa-venus"></i> <span class="filter-chip-text">Kobiety</span></button>
-            <button class="filter-chip" id="chip_mezczyzni" onclick="applyDiscoveryFilter('mezczyzna', this)" title="Mężczyźni" aria-label="Mężczyźni"><i class="fa-solid fa-mars"></i> <span class="filter-chip-text">Mężczyźni</span></button>
-            <button class="filter-chip" id="chip_mlodzi" onclick="applyDiscoveryFilter('mlodzi', this)" title="18–30 lat" aria-label="18–30 lat"><i class="fa-solid fa-bolt"></i> <span class="filter-chip-text">18–30 lat</span></button>
-
-            <!-- 🌟 DYNAMICZNY PRZYCISK 3D "POLECAJ" (POLEĆ ZNAJOMEMU) 🌟 -->
-            <button type="button" class="btn-3d-recommend" id="btnRecommendLumina" onclick="openShareLuminaModal()" title="Poleć portal LUMINA znajomemu ✨" aria-label="Poleć portal znajomym">
-                <i class="fa-solid fa-paper-plane"></i>
-                <span class="btn-3d-text">Polecaj</span>
-                <span class="btn-3d-sparkle">✨</span>
-            </button>
+            <button class="filter-chip active" id="chip_all" onclick="applyDiscoveryFilter('all', this)"><i class="fa-solid fa-sparkles"></i> Wszyscy</button>
+            <button class="filter-chip" id="chip_kobiety" onclick="applyDiscoveryFilter('kobieta', this)"><i class="fa-solid fa-venus"></i> Kobiety</button>
+            <button class="filter-chip" id="chip_mezczyzni" onclick="applyDiscoveryFilter('mezczyzna', this)"><i class="fa-solid fa-mars"></i> Mężczyźni</button>
+            <button class="filter-chip" id="chip_mlodzi" onclick="applyDiscoveryFilter('mlodzi', this)"><i class="fa-solid fa-bolt"></i> 18–30 lat</button>
         </div>
 
         <div class="carousel-container">
             <button class="carousel-btn left" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="profiles-grid" id="profilesCarousel">
+                        <div class="profiles-grid" id="profilesCarousel">
 
                 <!-- 🎙️ STUDIO DOBREGO SŁOWA (YouTube @StudioDeeS, studiods.pl & Herbaciarnia) -->
-                <div class="profile-card mission-profile-card" id="card_profile_studiodobregoslowa" data-profile-slug="studiodobregoslowa" onclick="window.location.href='lumina.studiodobregoslowa.html'" data-category="misja media" style="cursor:pointer;">
+                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.studiodobregoslowa.html'" data-category="misja media" style="cursor:pointer;">
                     <div class="card-photo">
-                        <img src="studiodobregoslowa_avatar.webp" onerror="this.src='studiodobregoslowa_avatar.jpg'" alt="Studio Dobrego Słowa" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="studiodobregoslowa_avatar.jpg" alt="Studio Dobrego Słowa" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'studiodobregoslowa','Studio Dobrego Słowa','studiodobregoslowa_avatar.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #ef4444, #dc2626);">100%</div>
                     </div>
@@ -2165,30 +1799,11 @@
                     </div>
                 </div>
 
-                <!-- 🌟 REKLAMA WIDEO: Dobrze, że jesteś (CENTRUM NA START) -->
-                <div class="profile-card video-card featured original-promo-card active-center-card" id="promoAdCard" data-category="all misja">
-                    <div class="card-photo">
-                        <video id="promoVideoEl" src="czesc_dobrze_ze_jestes.mp4" autoplay muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:16px;">
-                            <source src="czesc_dobrze_ze_jestes.mp4" type="video/mp4">
-                            <source src="Cześć_dobrze_że_jesteś_Taki.mp4" type="video/mp4">
-                        </video>
-                        <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
-                            <i class="fa-solid fa-volume-xmark"></i>
-                        </button>
-                        <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
-                        
-                        <!-- Pulsujący Przycisk do Sklepu -->
-                        <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
-                            <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➔
-                        </a>
-                    </div>
-                </div>
-
                 <!-- 1. Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
-                <div class="profile-card home-cezary-card" id="card_profile_cezaryrgowski" data-profile-slug="cezaryrgowski" data-category="mezczyzna zalozyciele" onclick="openCommunityProfile('cezaryrgowski')">
+                <div class="profile-card home-cezary-card" data-category="mezczyzna zalozyciele" id="my_saved_profile_card" onclick="openProfile('Cezary Rogowski','51','Ostrowiec Świętokrzyski','Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.','avatar_cezary_official.jpg','98%')" data-category="mezczyzna zalozyciele">
                     <div class="card-photo">
-                        <img src="avatar_cezary_official.webp" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_cezary_official.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'cezaryrgowski','Cezary Rogowski','avatar_cezary_official.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <img src="avatar_cezary_official.jpg" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_cezary_official.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
                     </div>
                     <div class="card-body">
@@ -2198,40 +1813,38 @@
                     </div>
                 </div>
 
-                <!-- 🌟 Andrzej Thiel (Cuda Każdego Dnia • Sieradz) -->
-                <div class="profile-card" id="card_profile_andrzejthiel" data-profile-slug="andrzejthiel" onclick="openCommunityProfile('andrzejthiel')" data-category="mezczyzna misja" style="cursor:pointer;">
+                <!-- Andrzej Thiel (Cuda Każdego Dnia) -->
+                <div class="profile-card home-andrzej-card" id="home_andrzej_card" onclick="window.location.href='lumina.andrzejthiel.html'" data-category="all mezczyzna misja" style="cursor:pointer;">
                     <div class="card-photo">
-                        <img src="avatar_andrzej_thiel.webp" alt="Andrzej Thiel" onerror="this.src='Andrzej Thiel.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="avatar_andrzej_thiel.jpg" alt="Andrzej Thiel" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'andrzejthiel','Andrzej Thiel','avatar_andrzej_thiel.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #eab308);">99%</div>
+                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #eab308);">98%</div>
                     </div>
                     <div class="card-body">
-                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
-                            Andrzej Thiel, 70 <span style="font-size:0.72rem; background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff; padding:2px 7px; border-radius:10px; font-weight:700;">✨ Cuda Każdego Dnia</span>
-                        </div>
-                        <div class="card-city">📍 Sieradz, Polska • <b style="color:#f59e0b;">📖 30 listopada 1955</b></div>
-                        <div class="card-desc">"Co dzień publikuję: Cuda Każdego Dnia. Trzymajmy się Jezusa – On jest jedynym i prawdziwym źródłem mocy."</div>
+                        <div class="card-name">Andrzej Thiel, 70</div>
+                        <div class="card-city">📍 Sieradz, Polska • <b>Wdowiec</b> • <b style="color:#facc15;">📖 Cuda Każdego Dnia</b></div>
+                        <div class="card-desc">"Opracowuje codzienne rozważania „Cuda Każdego Dnia”. Idź z wiarą pomimo przeszkód!"</div>
                     </div>
                 </div>
 
                 <!-- 2. Noemi (Kobieta) -->
-                <div class="profile-card" id="card_profile_noemi" data-profile-slug="noemi" onclick="openCommunityProfile('noemi')" data-category="kobieta mlodzi">
+                <div class="profile-card" onclick="openProfile('Noemi','28','Wrocław','Głęboka wiara i pasja do natury','avatar_noemi.jpg','96%')" data-category="kobieta mlodzi">
                     <div class="card-photo">
-                        <img src="avatar_noemi.webp" onerror="this.src='avatar_noemi.jpg'" alt="Noemi" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'noemi','Noemi','avatar_noemi.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <img src="avatar_noemi.jpg" alt="Noemi" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #0369a1, #06b6d4);">96%</div>
                     </div>
                     <div class="card-body">
                         <div class="card-name">Noemi, 28</div>
-                        <div class="card-city">📍 Wrocław • <span style="color:#a855f7;font-weight:700;">Profil Społeczności</span></div>
+                        <div class="card-city">📍 Wrocław • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Spokój, las i głębokie rozmowy o Bogu przy herbacie. Szukam bratniej duszy."</div>
                     </div>
                 </div>
 
                 <!-- 3. MISJA 1: OSOBOWOŚĆ + (YouTube) -->
-                <div class="profile-card mission-profile-card" id="card_profile_osobowoscplus" data-profile-slug="osobowoscplus" onclick="window.location.href='lumina.osobowoscplus.html'" data-category="misja mezczyzna" style="cursor:pointer;">
+                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.osobowoscplus.html'" data-category="misja mezczyzna">
                     <div class="card-photo">
-                        <img src="logo_osobowosc_plus.webp" onerror="this.src='logo_osobowosc_plus.jpg'" alt="OSOBOWOŚĆ +" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="logo_osobowosc_plus.jpg" alt="OSOBOWOŚĆ +" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'osobowoscplus','OSOBOWOŚĆ +','logo_osobowosc_plus.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #8b5cf6, #a855f7);">100%</div>
                     </div>
@@ -2245,24 +1858,24 @@
                 </div>
 
                 <!-- 4. Dawid (Mężczyzna) -->
-                <div class="profile-card" id="card_profile_dawid" data-profile-slug="dawid" onclick="openCommunityProfile('dawid')" data-category="mezczyzna mlodzi">
+                <div class="profile-card" onclick="openProfile('Dawid','30','Poznań','Muzyka uwielbienia i architektura','avatar_sara.jpg','93%')" data-category="mezczyzna mlodzi">
                     <div class="card-photo">
-                        <img src="avatar_sara.webp" onerror="this.src='avatar_sara.jpg'" alt="Dawid" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'dawid','Dawid','avatar_sara.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <img src="avatar_sara.jpg" alt="Dawid" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #6d28d9, #0ea5e9);">93%</div>
                     </div>
                     <div class="card-body">
                         <div class="card-name">Dawid, 30</div>
-                        <div class="card-city">📍 Poznań • <span style="color:#a855f7;font-weight:700;">Profil Społeczności</span></div>
+                        <div class="card-city">📍 Poznań • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu i wierze."</div>
                     </div>
                 </div>
 
                 <!-- 5. Wioletta Rogowska / Współzałożycielka Christian Culture (Mężatka) -->
-                <div class="profile-card home-wioletta-card" id="card_profile_wiolettarogowska" data-profile-slug="wiolettarogowska" data-category="kobieta zalozyciele" onclick="openCommunityProfile('wiolettarogowska')">
+                <div class="profile-card home-wioletta-card" data-category="kobieta zalozyciele" id="my_saved_wioletta_card" onclick="window.location.href='lumina.wiolettarogowska.html'" data-category="kobieta zalozyciele">
                     <div class="card-photo">
-                        <img src="avatar_wioletta_official.webp" alt="Wioletta Rogowska" class="home-wioletta-avatar" id="homeWiolettaAvatar" onerror="this.src='avatar_wioletta_official.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'wiolettarogowska','Wioletta Rogowska','avatar_wioletta_official.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <img src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" class="home-wioletta-avatar" id="homeWiolettaAvatar" onerror="this.src='avatar_wioletta_official.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f472b6);">99%</div>
                     </div>
                     <div class="card-body">
@@ -2273,9 +1886,9 @@
                 </div>
 
                 <!-- 6. MISJA 2: Polskie Radio CC (YouTube) -->
-                <div class="profile-card mission-profile-card" id="card_profile_radiocc" data-profile-slug="radiocc" onclick="window.location.href='lumina.radiocc.html'" data-category="misja" style="cursor:pointer;">
+                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.radiocc.html'" data-category="misja">
                     <div class="card-photo">
-                        <img src="logo_radio_cc.webp" onerror="this.src='logo_radio_cc.jpg'" alt="Polskie Radio CC" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;">
+                        <img src="logo_radio_cc.jpg" alt="Polskie Radio CC" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'radiocc','Polskie Radio CC','logo_radio_cc.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">100%</div>
                     </div>
@@ -2289,23 +1902,23 @@
                 </div>
 
                 <!-- 7. Weronika (Kobieta) -->
-                <div class="profile-card" id="card_profile_weronika" data-profile-slug="weronika" onclick="openCommunityProfile('weronika')" data-category="kobieta mlodzi">
+                <div class="profile-card" onclick="openProfile('Weronika','25','Kraków','Graficzka z zamiłowaniem do fotografii i sztuki','avatar_widget_ania.jpg','97%')" data-category="kobieta mlodzi">
                     <div class="card-photo">
-                        <img src="avatar_widget_ania.webp" onerror="this.src='avatar_widget_ania.jpg'" alt="Weronika" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'weronika','Weronika','avatar_widget_ania.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <img src="avatar_widget_ania.jpg" alt="Weronika" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #a855f7, #ec4899);">97%</div>
                     </div>
                     <div class="card-body">
                         <div class="card-name">Weronika, 25</div>
-                        <div class="card-city">📍 Kraków • <span style="color:#a855f7;font-weight:700;">Profil Społeczności</span></div>
+                        <div class="card-city">📍 Kraków • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Graficzka z pasją do piękna i muzyki. Szukam szczerej relacji opartej na wierze."</div>
                     </div>
                 </div>
 
                 <!-- 8. MISJA 3: Christian Culture TV (YouTube) -->
-                <div class="profile-card mission-profile-card" id="card_profile_cctv" data-profile-slug="cctv" onclick="window.location.href='lumina.cctv.html'" data-category="misja" style="cursor:pointer;">
+                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.cctv.html'" data-category="misja">
                     <div class="card-photo">
-                        <img src="logo_cctv.webp" onerror="this.src='logo_cctv.png'" alt="Christian Culture TV" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;">
+                        <img src="logo_cctv.png" alt="Christian Culture TV" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'cctv','Christian Culture TV','logo_cctv.png')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">100%</div>
                     </div>
@@ -2319,23 +1932,23 @@
                 </div>
 
                 <!-- 9. Tomek (Mężczyzna) -->
-                <div class="profile-card" id="card_profile_tomek" data-profile-slug="tomek" onclick="openCommunityProfile('tomek')" data-category="mezczyzna mlodzi">
+                <div class="profile-card" onclick="openProfile('Tomek','27','Gdańsk','Pasjonat leśnych wędrówek i natury','avatar_widget_tomek.jpg','94%')" data-category="mezczyzna mlodzi">
                     <div class="card-photo">
-                        <img src="avatar_widget_tomek.webp" onerror="this.src='avatar_widget_tomek.jpg'" alt="Tomasz" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'tomek','Tomasz','avatar_widget_tomek.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <img src="avatar_widget_tomek.jpg" alt="Tomek" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #059669, #10b981);">94%</div>
                     </div>
                     <div class="card-body">
-                        <div class="card-name">Tomasz, 31</div>
-                        <div class="card-city">📍 Gdańsk • <span style="color:#a855f7;font-weight:700;">Profil Społeczności</span></div>
+                        <div class="card-name">Tomek, 27</div>
+                        <div class="card-city">📍 Gdańsk • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku."</div>
                     </div>
                 </div>
 
                 <!-- 10. MISJA 4: CC MEN (YouTube) -->
-                <div class="profile-card mission-profile-card" id="card_profile_ccmen" data-profile-slug="ccmen" onclick="window.location.href='lumina.ccmen.html'" data-category="misja mezczyzna" style="cursor:pointer;">
+                <div class="profile-card mission-profile-card" onclick="window.location.href='lumina.ccmen.html'" data-category="misja mezczyzna">
                     <div class="card-photo">
-                        <img src="logo_cc_men.webp" onerror="this.src='logo_cc_men.jpg'" alt="CC MEN" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="logo_cc_men.jpg" alt="CC MEN" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'ccmen','CC MEN','logo_cc_men.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">100%</div>
                     </div>
@@ -2349,9 +1962,9 @@
                 </div>
 
                 <!-- 11. MISJA 5: CC Women (YouTube) -->
-                <div class="profile-card home-ccwomen-card" id="card_profile_ccwomen" data-profile-slug="ccwomen" onclick="window.location.href='lumina.ccwomen.html'" data-category="misja kobieta" style="cursor:pointer;">
+                <div class="profile-card home-ccwomen-card" data-category="misja kobieta" id="home_ccwomen_card" onclick="window.location.href='lumina.ccwomen.html'" data-category="misja kobieta">
                     <div class="card-photo">
-                        <img src="logo_cc_women.webp" alt="CC Women" class="home-ccwomen-avatar" id="homeCcwomenAvatar" onerror="this.onerror=null; this.src='CC Women.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;background:#000;">
+                        <img src="logo_cc_women.jpg" alt="CC Women" class="home-ccwomen-avatar" id="homeCcwomenAvatar" onerror="this.src='logo_cc_women.jpg'" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;background:#000;">
                         <button class="card-heart liked" onclick="toggleLike(event,this, 'ccwomen', 'CC Women', 'logo_cc_women.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">100%</div>
                     </div>
@@ -2364,11 +1977,27 @@
                     </div>
                 </div>
 
-                <!-- Magdalena (Kobieta) -->
-                <div class="profile-card" id="card_profile_magdalena" data-profile-slug="magdalena" onclick="openCommunityProfile('magdalena')" data-category="kobieta">
+                <!-- 12. Reklama Wideo: Dobrze, że jesteś (Natywne Wideo MP4) -->
+                <div class="profile-card video-card featured original-promo-card" id="promoAdCard" data-category="all misja">
                     <div class="card-photo">
-                        <img src="avatar_magdalena.webp" onerror="this.src='avatar_magdalena.png'" alt="Magdalena" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'magdalena','Magdalena','avatar_magdalena.png')"><i class="fa-solid fa-heart"></i></button>
+                        <video id="promoVideoEl" src="czesc_dobrze_ze_jestes.mp4" autoplay loop muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:16px;"></video>
+                        <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
+                            <i class="fa-solid fa-volume-xmark"></i>
+                        </button>
+                        <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        
+                        <!-- Pulsujący Przycisk do Sklepu -->
+                        <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
+                            <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➔
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Magdalena (Kobieta) -->
+                <div class="profile-card home-magdalena-card" id="home_magdalena_card" onclick="window.location.href='lumina.magdalena.html'" data-category="all kobieta">
+                    <div class="card-photo">
+                        <img src="avatar_magdalena.png" alt="Magdalena" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">98%</div>
                     </div>
                     <div class="card-body">
@@ -2379,43 +2008,43 @@
                 </div>
 
                 <!-- 13. Anna (Kobieta) -->
-                <div class="profile-card" id="card_profile_anna" data-profile-slug="anna" onclick="openCommunityProfile('anna')" data-category="kobieta mlodzi">
+                <div class="profile-card" onclick="openProfile('Anna','28','Warszawa','Uwielbia podróże i sztukę','avatar_widget_ania.jpg','94%')">
                     <div class="card-photo">
-                        <img src="avatar_widget_ania.webp" onerror="this.src='avatar_widget_ania.jpg'" alt="Anna" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'anna','Anna','avatar_widget_ania.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <img src="avatar_widget_ania.jpg" alt="Anna" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match">94%</div>
                     </div>
                     <div class="card-body">
                         <div class="card-name">Anna, 28</div>
-                        <div class="card-city">📍 Warszawa • <span style="color:#a855f7;font-weight:700;">Profil Społeczności</span></div>
+                        <div class="card-city">📍 Warszawa • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania świata."</div>
                     </div>
                 </div>
 
                 <!-- 14. Piotr (Mężczyzna) -->
-                <div class="profile-card" id="card_profile_piotr" data-profile-slug="piotr" onclick="openCommunityProfile('piotr')" data-category="mezczyzna mlodzi">
+                <div class="profile-card" onclick="openProfile('Piotr','31','Kraków','Szuka spontanicznych przygód','lumina_piotr2.jpg','88%')">
                     <div class="card-photo">
-                        <img src="lumina_piotr2.webp" onerror="this.src='lumina_piotr2.jpg'" alt="Piotr" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'piotr','Piotr','lumina_piotr2.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <img src="lumina_piotr2.jpg" alt="Piotr" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match">88%</div>
                     </div>
                     <div class="card-body">
                         <div class="card-name">Piotr, 31</div>
-                        <div class="card-city">📍 Kraków • <span style="color:#a855f7;font-weight:700;">Profil Społeczności</span></div>
+                        <div class="card-city">📍 Kraków • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Szuka spontanicznych przygód. Entuzjasta górskich wędrówek."</div>
                     </div>
                 </div>
 
                 <!-- 15. Julia (Kobieta) -->
-                <div class="profile-card" id="card_profile_julia" data-profile-slug="julia" onclick="openCommunityProfile('julia')" data-category="kobieta mlodzi">
+                <div class="profile-card" onclick="openProfile('Julia','26','Gdańsk','Marzycielka z pasją do muzyki','lumina_julia2.jpg','91%')">
                     <div class="card-photo">
-                        <img src="lumina_julia2.webp" onerror="this.src='lumina_julia2.jpg'" alt="Julia" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'julia','Julia','lumina_julia2.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <img src="lumina_julia2.jpg" alt="Julia" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match">91%</div>
                     </div>
                     <div class="card-body">
                         <div class="card-name">Julia, 26</div>
-                        <div class="card-city">📍 Gdańsk • <span style="color:#a855f7;font-weight:700;">Profil Społeczności</span></div>
+                        <div class="card-city">📍 Gdańsk • <span style="color:#a855f7;font-weight:700;">Profil Poglądowy</span></div>
                         <div class="card-desc">"Marzycielka z pasją do muzyki. Szukam głębokich, szczerych relacji."</div>
                     </div>
                 </div>
@@ -2474,22 +2103,10 @@
                 </p>
             </div>
             <div style="display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1);">
-                <div id="tablicaOnlineAvatarsContainer" class="tablica-online-avatars-wrap">
-                    <div class="tablica-online-avatar-item" title="Zalogowany: Cezary Rogowski 🟢" style="z-index: 4;">
-                        <img src="avatar_new1.jpg" alt="Cezary" class="tablica-online-avatar-img home-cezary-avatar">
-                        <span class="tablica-online-dot"></span>
-                    </div>
-                    <div class="tablica-online-avatar-item" title="Zalogowana: Wioletta Rogowska 🟢" style="z-index: 3;">
-                        <img src="avatar_wioletta_official.jpg" alt="Wioletta" class="tablica-online-avatar-img home-wioletta-avatar">
-                        <span class="tablica-online-dot"></span>
-                    </div>
-                    <div class="tablica-online-avatar-item" title="Zalogowana: Magdalena 🟢" style="z-index: 2;">
-                        <img src="avatar_magdalena.jpg" alt="Magdalena" class="tablica-online-avatar-img">
-                        <span class="tablica-online-dot"></span>
-                    </div>
-                    <div class="tablica-online-more-btn" title="I więcej zalogowanych użytkowników w społeczności LUMINA" aria-label="Więcej zalogowanych użytkowników">
-                        <i class="fa-solid fa-plus"></i>
-                    </div>
+                <div style="display:flex; align-items:center;">
+                    <img src="avatar_new1.jpg" alt="Cezary" class="home-cezary-avatar" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid #090d1a;">
+                    <img src="avatar_wioletta_official.jpg" alt="Wioletta" class="home-wioletta-avatar" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid #090d1a;margin-left:-8px;">
+                    <img src="avatar_widget_tomek.jpg" alt="Tomek" style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid #090d1a;margin-left:-8px;">
                 </div>
                 <span style="color:#38bdf8; font-size:0.84rem; font-weight:800; display:flex; align-items:center; gap:6px;">
                     Otwórz Tablicę <i class="fa-solid fa-arrow-right"></i>
@@ -2508,7 +2125,7 @@
             <a href="index.html#contact-section">Kontakt</a>
         </div>
         <div class="footer-social">
-            <a href="https://www.facebook.com/PortalLumina" target="_blank" rel="noopener noreferrer" title="Facebook LUMINA" style="cursor: pointer;"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="javascript:void(0)" onclick="if(typeof showToast==='function') showToast('Oficjalny profil Facebook LUMINA wkrótce dostępny! 🕊️');" title="Facebook (w przygotowaniu)" style="opacity: 0.75; cursor: pointer;"><i class="fa-brands fa-facebook-f"></i></a>
             <a href="javascript:void(0)" onclick="if(typeof showToast==='function') showToast('Oficjalny profil Instagram LUMINA wkrótce dostępny! 🕊️');" title="Instagram (w przygotowaniu)" style="opacity: 0.75; cursor: pointer;"><i class="fa-brands fa-instagram"></i></a>
             <a href="javascript:void(0)" onclick="if(typeof showToast==='function') showToast('Oficjalny profil LinkedIn LUMINA wkrótce dostępny! 🕊️');" title="LinkedIn (w przygotowaniu)" style="opacity: 0.75; cursor: pointer;"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
@@ -2911,144 +2528,6 @@
 
             <div style="margin-top:20px; text-align:right;">
                 <button type="button" class="btn-modal-submit" style="width:auto; padding:8px 24px;" onclick="closeModal('termsModal')">Rozumiem i Akceptuję</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ══════════ DYNAMIC RECOMMEND / SHARE PORTAL MODAL ══════════ -->
-    <div class="modal-overlay" id="recommendModal" onclick="if(event.target===this) closeModal('recommendModal')">
-        <div class="modal-card recommend-modal-card" style="max-width: 520px; background: #0b1120; border: 1px solid rgba(244, 114, 182, 0.35); box-shadow: 0 20px 60px rgba(0,0,0,0.85), 0 0 35px rgba(236, 72, 153, 0.28); border-radius: 24px; padding: 28px 22px; text-align: center; position: relative;">
-            <button class="modal-close-btn" onclick="closeModal('recommendModal')" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-
-            <div style="width:68px; height:68px; border-radius:50%; background:linear-gradient(135deg, #ec4899, #8b5cf6); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; box-shadow:0 8px 25px rgba(236, 72, 153, 0.45), 0 0 16px rgba(139, 92, 246, 0.35);">
-                <i class="fa-solid fa-paper-plane" style="font-size:1.8rem; color:#fff;"></i>
-            </div>
-
-            <h3 style="font-family:'Outfit', sans-serif; font-size:1.4rem; font-weight:800; color:#fff; margin:0 0 6px;">Poleć portal LUMINA znajomemu 🕊️✨</h3>
-            <p style="font-size:0.88rem; color:#94a3b8; line-height:1.5; margin:0 0 20px;">Podziel się wartościową chrześcijańską społecznością, inspirującymi profilami i głębszymi relacjami w Chrystusie.</p>
-
-            <!-- Preview Message Box -->
-            <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 16px; padding: 14px 16px; text-align: left; margin-bottom: 20px;">
-                <div style="font-size: 0.74rem; font-weight: 700; color: #f472b6; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;"><i class="fa-solid fa-envelope-open-text"></i> Treść polecenia do wysłania:</div>
-                <p id="recommendShareMessage" style="font-size: 0.86rem; color: #e2e8f0; margin: 0; line-height: 1.5; font-style: italic;">"Cześć! Chcę polecić Ci chrześcijański portal społecznościowy LUMINA – piękną przestrzeń wartościowych relacji, wiary i inspiracji. Sprawdź portal tutaj:"</p>
-                <div style="margin-top: 8px; font-size: 0.82rem; font-weight: 700; color: #38bdf8; word-break: break-all;" id="recommendShareUrl">https://lumina.christianculture.pl</div>
-            </div>
-
-            <!-- Action Share Grid -->
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px;">
-                <!-- WhatsApp -->
-                <button type="button" onclick="shareViaWhatsApp()" class="share-channel-btn btn-share-wa" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:12px; border-radius:14px; background:#25D366; color:#fff; border:none; font-weight:700; font-size:0.86rem; cursor:pointer; box-shadow:0 4px 14px rgba(37,211,102,0.35); transition:transform 0.15s ease;">
-                    <i class="fa-brands fa-whatsapp" style="font-size:1.2rem;"></i> WhatsApp
-                </button>
-                <!-- Messenger / Facebook -->
-                <button type="button" onclick="shareViaFacebook()" class="share-channel-btn btn-share-fb" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:12px; border-radius:14px; background:#1877F2; color:#fff; border:none; font-weight:700; font-size:0.86rem; cursor:pointer; box-shadow:0 4px 14px rgba(24,119,242,0.35); transition:transform 0.15s ease;">
-                    <i class="fa-brands fa-facebook" style="font-size:1.2rem;"></i> Facebook
-                </button>
-                <!-- Telegram -->
-                <button type="button" onclick="shareViaTelegram()" class="share-channel-btn btn-share-tg" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:12px; border-radius:14px; background:#229ED9; color:#fff; border:none; font-weight:700; font-size:0.86rem; cursor:pointer; box-shadow:0 4px 14px rgba(34,158,217,0.35); transition:transform 0.15s ease;">
-                    <i class="fa-brands fa-telegram" style="font-size:1.2rem;"></i> Telegram
-                </button>
-                <!-- System Share / SMS -->
-                <button type="button" onclick="shareViaSystem()" class="share-channel-btn btn-share-sys" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:12px; border-radius:14px; background:linear-gradient(135deg, #ec4899, #a855f7); color:#fff; border:none; font-weight:700; font-size:0.86rem; cursor:pointer; box-shadow:0 4px 14px rgba(236,72,153,0.35); transition:transform 0.15s ease;">
-                    <i class="fa-solid fa-arrow-up-from-bracket" style="font-size:1.1rem;"></i> Wyślij SMS
-                </button>
-            </div>
-
-            <!-- Copy Link Button (3D styled) -->
-            <button type="button" id="btnCopyRecommendLink" onclick="copyRecommendPortalLink()" style="width:100%; display:flex; align-items:center; justify-content:center; gap:10px; padding:13px 20px; border-radius:16px; background:linear-gradient(180deg, #38bdf8 0%, #0284c7 100%); color:#fff; border:1px solid rgba(255,255,255,0.4); border-bottom:3px solid #0369a1; font-weight:800; font-size:0.92rem; cursor:pointer; box-shadow:0 4px 0 #075985, 0 8px 20px rgba(2,132,199,0.4); transition:all 0.15s ease;">
-                <i class="fa-solid fa-copy"></i> <span id="copyLinkBtnText">Skopiuj gotowy link z zaproszeniem</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- ══════════ DISCREET MASTER ADMIN SHIELD TRIGGER (Bottom-Left) ══════════ -->
-    <button type="button" 
-            id="adminSecretShieldBtn" 
-            class="admin-secret-shield-btn" 
-            onclick="openAdminPinModal()" 
-            title="Dostęp Administratora" 
-            aria-label="Panel Administratora">
-        <i class="fa-solid fa-shield-halved"></i>
-    </button>
-
-    <!-- ══════════ ENCRYPTED ADMIN PIN & MASTER CONTROL MODAL ══════════ -->
-    <div class="modal-overlay" id="adminPinModal" onclick="if(event.target===this) closeModal('adminPinModal')">
-        <div class="modal-card" style="max-width: 440px; background: #0b142e; border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 25px 60px rgba(0,0,0,0.85), 0 0 35px rgba(245, 158, 11, 0.18); border-radius: 24px; padding: 26px 22px; position: relative;">
-            <button class="modal-close-btn" onclick="closeModal('adminPinModal')" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-
-            <!-- STATE 1: PIN AUTHORIZATION (When locked) -->
-            <div id="adminPinLockedView">
-                <div style="width:60px; height:60px; border-radius:50%; background:linear-gradient(135deg, #f59e0b, #d97706); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; box-shadow:0 8px 25px rgba(245, 158, 11, 0.45); color:#fff; font-size:1.6rem;">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-
-                <h3 style="font-family:'Outfit', sans-serif; font-size:1.3rem; font-weight:800; color:#fff; text-align:center; margin:0 0 4px;">Panel Administratora LUMINA</h3>
-                <div style="font-size:0.75rem; color:#facc15; font-weight:700; text-align:center; margin-bottom:18px;">
-                    <i class="fa-solid fa-lock"></i> Szyfrowana Autoryzacja Kryptograficzna SHA-256
-                </div>
-
-                <form id="adminPinForm" onsubmit="handleAdminPinSubmit(event)">
-                    <div style="margin-bottom:14px;">
-                        <label for="adminPinInput" style="display:block; font-size:0.78rem; font-weight:700; color:#94a3b8; margin-bottom:6px; text-align:center;">Wprowadź poufny kod PIN Administratora</label>
-                        <input type="password" 
-                               id="adminPinInput" 
-                               maxlength="12" 
-                               placeholder="••••" 
-                               autocomplete="off"
-                               style="width:100%; padding:14px 16px; border-radius:14px; background:rgba(255,255,255,0.06); border:1.5px solid rgba(245,158,11,0.4); color:#fff; font-family:'Outfit', monospace; font-size:1.4rem; letter-spacing:8px; text-align:center; font-weight:800; outline:none; transition:border-color 0.2s;" 
-                               required>
-                    </div>
-
-                    <div id="adminPinErrorMsg" style="display:none; margin-bottom:12px; padding:10px 12px; border-radius:10px; background:rgba(239,68,68,0.18); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; font-size:0.8rem; font-weight:700; text-align:center;">
-                        <i class="fa-solid fa-triangle-exclamation"></i> Nieprawidłowy kod PIN. Odmowa dostępu.
-                    </div>
-
-                    <button type="submit" 
-                            id="btnAdminPinSubmit" 
-                            style="width:100%; padding:13px; border-radius:16px; background:linear-gradient(135deg, #f59e0b, #d97706); color:#fff; border:none; font-weight:800; font-family:inherit; font-size:0.92rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 6px 20px rgba(245, 158, 11, 0.4); transition:all 0.2s;">
-                        <i class="fa-solid fa-key"></i> Zaloguj i Odblokuj Uprawnienia
-                    </button>
-                </form>
-            </div>
-
-            <!-- STATE 2: ADMIN UNLOCKED CONTROL PANEL (When authenticated) -->
-            <div id="adminPinUnlockedView" style="display:none;">
-                <div style="width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg, #10b981, #059669); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; box-shadow:0 8px 25px rgba(16, 185, 129, 0.45); color:#fff; font-size:1.5rem;">
-                    <i class="fa-solid fa-user-shield"></i>
-                </div>
-
-                <h3 style="font-family:'Outfit', sans-serif; font-size:1.25rem; font-weight:800; color:#fff; text-align:center; margin:0 0 4px;">Główny Administrator Portalu</h3>
-                <div style="font-size:0.75rem; color:#86efac; font-weight:700; text-align:center; margin-bottom:18px;">
-                    <i class="fa-solid fa-circle-check"></i> Tryb Pełnego Dostępu Aktywny (Master Access)
-                </div>
-
-                <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
-                    <a href="lumina-tablica.html" class="btn-action-primary" style="background:linear-gradient(135deg, #0284c7, #2563eb); text-decoration:none; padding:12px 16px; border-radius:14px; display:flex; align-items:center; justify-content:space-between; font-size:0.86rem; color:#fff; font-weight:700;">
-                        <span><i class="fa-solid fa-rectangle-list" style="margin-right:8px;"></i> Tablica & Moderacja Zgłoszeń</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </a>
-                    <a href="lumina-tablica.html#kampanie" class="btn-action-primary" style="background:linear-gradient(135deg, #a855f7, #7c3aed); text-decoration:none; padding:12px 16px; border-radius:14px; display:flex; align-items:center; justify-content:space-between; font-size:0.86rem; color:#fff; font-weight:700;">
-                        <span><i class="fa-solid fa-bullhorn" style="margin-right:8px;"></i> Publikacja Treści Misyjnych & Reklam 9:16</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </a>
-                    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:10px 14px;">
-                        <div style="font-size:0.72rem; font-weight:800; color:#facc15; margin-bottom:6px; text-transform:uppercase;">Profile Specjalne do Edycji:</div>
-                        <div style="display:flex; flex-wrap:wrap; gap:6px;">
-                            <a href="lumina.osobowoscplus.html" style="font-size:0.75rem; color:#cbd5e1; background:rgba(255,255,255,0.06); padding:4px 8px; border-radius:8px; text-decoration:none; border:1px solid rgba(255,255,255,0.1);">Osobowość +</a>
-                            <a href="lumina.studiodobregoslowa.html" style="font-size:0.75rem; color:#cbd5e1; background:rgba(255,255,255,0.06); padding:4px 8px; border-radius:8px; text-decoration:none; border:1px solid rgba(255,255,255,0.1);">Studio Dobrego Słowa</a>
-                            <a href="lumina.radiocc.html" style="font-size:0.75rem; color:#cbd5e1; background:rgba(255,255,255,0.06); padding:4px 8px; border-radius:8px; text-decoration:none; border:1px solid rgba(255,255,255,0.1);">Polskie Radio CC</a>
-                            <a href="lumina.cctv.html" style="font-size:0.75rem; color:#cbd5e1; background:rgba(255,255,255,0.06); padding:4px 8px; border-radius:8px; text-decoration:none; border:1px solid rgba(255,255,255,0.1);">CCTV24</a>
-                            <a href="lumina.ccmen.html" style="font-size:0.75rem; color:#cbd5e1; background:rgba(255,255,255,0.06); padding:4px 8px; border-radius:8px; text-decoration:none; border:1px solid rgba(255,255,255,0.1);">CC Men</a>
-                            <a href="lumina.ccwomen.html" style="font-size:0.75rem; color:#cbd5e1; background:rgba(255,255,255,0.06); padding:4px 8px; border-radius:8px; text-decoration:none; border:1px solid rgba(255,255,255,0.1);">CC Women</a>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="button" 
-                        onclick="handleAdminLogout()" 
-                        style="width:100%; padding:11px; border-radius:14px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; font-weight:700; font-family:inherit; font-size:0.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
-                    <i class="fa-solid fa-lock"></i> Wyloguj z Trybu Administratora
-                </button>
             </div>
         </div>
     </div>
@@ -3507,105 +2986,13 @@
 
             showToast('Wylogowano pomyślnie z portalu LUMINA 👋');
         };
-    </script>
 
-    <script>
-        // ── Radio Player Control (Official Stream ZenoFM: https://stream.zeno.fm/umej2cuqncluv) ──
+        // ── Radio Player Delegation to Central LuminaRadio Engine ──
         window.toggleRadio = function() {
-            if (window.LuminaRadio) {
-                window.LuminaRadio.toggle(true);
-            } else {
-                const audio = document.getElementById('ccRadioAudio');
-                if (audio) {
-                    if (audio.paused) {
-                        audio.src = "https://stream.zeno.fm/umej2cuqncluv?t=" + Date.now();
-                        audio.play().then(() => {
-                            localStorage.setItem('lumina_radio_playing', 'true');
-                            showToast('Radio Christian Culture gra na żywo! 🎵');
-                        }).catch(() => showToast('Kliknij ponownie, aby odtworzyć radio'));
-                    } else {
-                        audio.pause();
-                        localStorage.setItem('lumina_radio_playing', 'false');
-                        showToast('Wstrzymano radio');
-                    }
-                }
+            if (window.LuminaRadio && typeof window.LuminaRadio.toggle === 'function') {
+                window.LuminaRadio.toggle();
             }
         };
-
-        // ── Universal Search Bar On-Demand Toggle Engine ──
-        window.toggleHeroSearch = function(e, forceState) {
-            if (e && e.stopPropagation) e.stopPropagation();
-            const header = document.getElementById('heroHeader');
-            const box = document.getElementById('universalSearchBox');
-            const input = document.getElementById('omniSearchInput');
-            if (!box) return;
-
-            const isCurrentlyVisible = box.classList.contains('is-visible') || (header && header.classList.contains('search-active'));
-            const shouldShow = (typeof forceState === 'boolean') ? forceState : !isCurrentlyVisible;
-
-            if (shouldShow) {
-                box.classList.add('is-visible');
-                if (header) header.classList.add('search-active');
-                if (input) {
-                    setTimeout(() => {
-                        input.focus();
-                        if (input.value.trim() && typeof window.handleOmniSearchInput === 'function') {
-                            window.handleOmniSearchInput(input.value);
-                        }
-                    }, 80);
-                }
-            } else {
-                if (input && input.value.trim().length > 0) {
-                    input.value = '';
-                    const dropdown = document.getElementById('omniDropdown');
-                    if (dropdown) {
-                        dropdown.classList.remove('open');
-                        dropdown.innerHTML = '';
-                    }
-                }
-                box.classList.remove('is-visible');
-                if (header) header.classList.remove('search-active');
-                const dropdown = document.getElementById('omniDropdown');
-                if (dropdown) dropdown.classList.remove('open');
-                if (input) input.blur();
-            }
-        };
-
-        window.handleHeroBackgroundClick = function(e) {
-            if (!e || !e.target) return;
-            const target = e.target;
-            if (target.closest('#universalSearchBox') || target.closest('button') || target.closest('a') || target.closest('.discovery-filters-wrap')) {
-                return;
-            }
-            window.toggleHeroSearch(e, true);
-        };
-
-        // Close search if clicked outside hero and search has no query
-        document.addEventListener('click', function(e) {
-            const box = document.getElementById('universalSearchBox');
-            const header = document.getElementById('heroHeader');
-            const input = document.getElementById('omniSearchInput');
-            if (!box || !header) return;
-
-            if (!header.contains(e.target) && !box.contains(e.target)) {
-                if (!input || !input.value.trim()) {
-                    box.classList.remove('is-visible');
-                    header.classList.remove('search-active');
-                    const dropdown = document.getElementById('omniDropdown');
-                    if (dropdown) dropdown.classList.remove('open');
-                }
-            }
-        });
-
-        // ESC key closes search
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                const box = document.getElementById('universalSearchBox');
-                if (box && box.classList.contains('is-visible')) {
-                    window.toggleHeroSearch(e, false);
-                }
-            }
-        });
 
         // ── Heart FAB Match Action ──
         window.handleFabMatch = function() {
@@ -3614,407 +3001,88 @@
             if (heartBtn) heartBtn.classList.add('liked');
         };
 
-        // ── Base Profiles Master Registry ──
-        window.LUMINA_BASE_PROFILES = {
-            'cezaryrgowski': {
-                slug: 'cezaryrgowski',
-                name: 'Cezary Rogowski',
-                age: 51,
-                city: 'Ostrowiec Świętokrzyski, Polska',
-                status: 'Żonaty',
-                avatar: 'avatar_cezary_official.jpg',
-                job: 'Założyciel Christian Culture',
-                bio: 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.',
-                matchScore: '98%',
-                isFounder: true,
-                profileUrl: 'lumina.cezaryrgowski.html'
-            },
-            'wiolettarogowska': {
-                slug: 'wiolettarogowska',
-                name: 'Wioletta Rogowska',
-                age: 50,
-                city: 'Ostrowiec Świętokrzyski, Polska',
-                status: 'Mężatka',
-                avatar: 'avatar_wioletta_official.jpg',
-                job: 'Współzałożycielka Christian Culture',
-                bio: 'Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.',
-                matchScore: '99%',
-                isFounder: true,
-                profileUrl: 'lumina.wiolettarogowska.html'
-            },
-            'noemi': {
-                slug: 'noemi',
-                name: 'Noemi',
-                age: 28,
-                city: 'Wrocław, Polska',
-                status: 'Panna • Szuka relacji z wartościami',
-                avatar: 'avatar_noemi.jpg',
-                job: 'Biolog & Edukatorka Przyrodnicza',
-                bio: 'Spokój, las i głębokie rozmowy o Bogu przy herbacie. Szukam bratniej duszy.',
-                matchScore: '96%',
-                profileUrl: 'lumina-profile.html?u=noemi'
-            },
-            'dawid': {
-                slug: 'dawid',
-                name: 'Dawid',
-                age: 30,
-                city: 'Poznań, Polska',
-                status: 'Kawaler • Wierzący w działanie Ducha',
-                avatar: 'avatar_sara.jpg',
-                job: 'Architekt Wnętrz & Muzyk Uwielbienia',
-                bio: 'Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu i wierze.',
-                matchScore: '93%',
-                profileUrl: 'lumina-profile.html?u=dawid'
-            },
-            'weronika': {
-                slug: 'weronika',
-                name: 'Weronika',
-                age: 25,
-                city: 'Kraków, Polska',
-                status: 'Panna • Pasjonatka sztuki i modlitwy',
-                avatar: 'avatar_widget_ania.jpg',
-                job: 'Graficzka & Projektantka UI',
-                bio: 'Graficzka z pasją do piękna i muzyki. Szukam szczerej relacji opartej na wierze.',
-                matchScore: '97%',
-                profileUrl: 'lumina-profile.html?u=weronika'
-            },
-            'tomek': {
-                slug: 'tomek',
-                name: 'Tomasz',
-                age: 31,
-                city: 'Gdańsk, Polska',
-                status: 'Kawaler • Miłośnik gór i ciszy',
-                avatar: 'avatar_widget_tomek.jpg',
-                job: 'Inżynier Oprogramowania & Lider Męski',
-                bio: 'Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku.',
-                matchScore: '94%',
-                profileUrl: 'lumina-profile.html?u=tomek'
-            },
-            'anna': {
-                slug: 'anna',
-                name: 'Anna',
-                age: 28,
-                city: 'Warszawa, Polska',
-                status: 'Panna • Liderka uwielbienia',
-                avatar: 'avatar_widget_ania.jpg',
-                job: 'Pedagog & Animatorka Chrześcijańska',
-                bio: 'Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania Bożego świata.',
-                matchScore: '94%',
-                profileUrl: 'lumina-profile.html?u=anna'
-            },
-            'piotr': {
-                slug: 'piotr',
-                name: 'Piotr',
-                age: 31,
-                city: 'Kraków, Polska',
-                status: 'Kawaler • Wolontariusz misyjny',
-                avatar: 'lumina_piotr2.jpg',
-                job: 'Trener Personalny & Misjonarz',
-                bio: 'Szuka spontanicznych przygód. Entuzjasta górskich wędrówek i wspólnoty wiary.',
-                matchScore: '88%',
-                profileUrl: 'lumina-profile.html?u=piotr'
-            },
-            'julia': {
-                slug: 'julia',
-                name: 'Julia',
-                age: 26,
-                city: 'Gdańsk, Polska',
-                status: 'Panna • Wokalistka gospel',
-                avatar: 'lumina_julia2.jpg',
-                job: 'Wokalistka & Nauczycielka Muzyki',
-                bio: 'Marzycielka z pasją do muzyki. Szukam głębokich, szczerych relacji opartych na Chrystusie.',
-                matchScore: '91%',
-                profileUrl: 'lumina-profile.html?u=julia'
-            },
-            'magdalena': {
-                slug: 'magdalena',
-                name: 'Magdalena',
-                age: 43,
-                city: 'Poznań, Polska',
-                status: 'Panna • Dojrzała chrześcijanka',
-                avatar: 'avatar_magdalena.png',
-                job: 'Lekarka & Działaczka Społeczna',
-                bio: 'Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu, szacunku i miłości.',
-                matchScore: '98%',
-                profileUrl: 'lumina.magdalena.html'
-            },
-            'studiodobregoslowa': {
-                slug: 'studiodobregoslowa',
-                name: 'Studio Dobrego Słowa',
-                city: 'Piła, Polska',
-                avatar: 'studiodobregoslowa_avatar.jpg',
-                job: 'Kanał YouTube @StudioDeeS • studiods.pl',
-                bio: 'Oficjalny profil Studia. Apokalipsa Live, podcasty, Słowo Boże i spotkania w Herbaciarni CC.',
-                matchScore: '100%',
-                isMissionAccount: true,
-                profileUrl: 'lumina.studiodobregoslowa.html'
-            },
-            'osobowoscplus': {
-                slug: 'osobowoscplus',
-                name: 'OSOBOWOŚĆ +',
-                city: 'Christian Culture',
-                avatar: 'logo_osobowosc_plus.jpg',
-                job: 'Formacja Chrześcijańska & Psychologia',
-                bio: 'Oficjalny kanał YouTube OSOBOWOŚĆ +. Rozwój dojrzałości, tożsamość w Bogu i mądre relacje.',
-                matchScore: '100%',
-                isMissionAccount: true,
-                profileUrl: 'lumina.osobowoscplus.html'
-            },
-            'radiocc': {
-                slug: 'radiocc',
-                name: 'Polskie Radio CC',
-                city: 'Cała Polska',
-                avatar: 'logo_radio_cc.jpg',
-                job: 'Radio Uwielbienia 24/7',
-                bio: 'Muzyka chwały, Biblia Śpiewana, audycje na żywo i codzienne rozważania przez całą dobę.',
-                matchScore: '100%',
-                isMissionAccount: true,
-                profileUrl: 'lumina.radiocc.html'
-            },
-            'cctv': {
-                slug: 'cctv',
-                name: 'Christian Culture TV',
-                city: 'Warszawa, Polska',
-                avatar: 'logo_cctv.png',
-                job: 'Telewizja CCTV24',
-                bio: 'Oficjalna telewizja chrześcijańska. Pasma wideo, debaty, świadectwa i transmisje ewangelizacyjne.',
-                matchScore: '100%',
-                isMissionAccount: true,
-                profileUrl: 'lumina.cctv.html'
-            },
-            'ccmen': {
-                slug: 'ccmen',
-                name: 'CC MEN',
-                city: 'Polska',
-                avatar: 'logo_cc_men.jpg',
-                job: 'Męska Wspólnota Wiary',
-                bio: 'Mężczyźni w Chrystusie. Męstwo, odpowiedzialność za rodzinę, wierność i braterstwo.',
-                matchScore: '100%',
-                isMissionAccount: true,
-                profileUrl: 'lumina.ccmen.html'
-            },
-            'ccwomen': {
-                slug: 'ccwomen',
-                name: 'CC Women',
-                city: 'Warszawa, Polska',
-                avatar: 'logo_cc_women.jpg',
-                job: 'Kobiety Wiary Christian Culture',
-                bio: 'Oficjalny profil i kanał YouTube CC Women. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.',
-                matchScore: '100%',
-                isMissionAccount: true,
-                profileUrl: 'lumina.ccwomen.html'
-            },
-            'andrzejthiel': {
-                slug: 'andrzejthiel',
-                name: 'Andrzej Thiel',
-                age: 70,
-                birthDate: '30 listopada 1955',
-                city: 'Sieradz, Polska',
-                gender: 'mezczyzna',
-                avatar: 'avatar_andrzej_thiel.jpg',
-                status: 'Chrześcijanin',
-                job: 'Cuda Każdego Dnia 📖✨',
-                verse: '„Trzymajcie się mnie. Trwajcie we mnie. Beze mnie nic uczynić nie możecie.” (J 15, 5)',
-                bio: 'Co dzień publikuję na swoim profilu: Cuda Każdego Dnia, które automatycznie pojawiają się na tablicy społeczności. Przeczytaj i zobacz jak Bóg przemienia twoje życie.',
-                matchScore: '99%',
-                isVerified: true,
-                profileUrl: 'lumina.andrzejthiel.html'
-            }
-        };
-
-        window._cloudProfilesMap = {};
-
-        // ── Get 100% Live Profile by Slug or UID ──
-        window.getLiveProfile = function(slug) {
-            if (!slug) slug = 'cezaryrgowski';
-            const base = window.LUMINA_BASE_PROFILES[slug] || {};
-            let live = Object.assign({}, base);
-
-            // 1. LocalStorage overrides for this specific slug
-            try {
-                const stored = localStorage.getItem('lumina_profile_' + slug);
-                if (stored) {
-                    const parsed = JSON.parse(stored);
-                    if (parsed && typeof parsed === 'object') {
-                        Object.assign(live, parsed);
-                    }
-                }
-            } catch(e) {}
-
-            // 2. Cloud Firestore cached overrides
-            if (window._cloudProfilesMap && window._cloudProfilesMap[slug]) {
-                Object.assign(live, window._cloudProfilesMap[slug]);
-            }
-
-            // 3. Logged-in user overrides
-            try {
-                let currentUser = null;
-                if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
-                    currentUser = window.LuminaDB.getCurrentUser();
-                }
-                if (!currentUser) {
-                    currentUser = JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
-                }
-                if (currentUser) {
-                    const myUid = currentUser.uid || currentUser.id;
-                    const myEmail = (currentUser.email || '').toLowerCase();
-                    const isCezary = myEmail.includes('nazirczarkes') || myEmail.includes('cezary');
-                    const isWioletta = myEmail.includes('wioletta');
-
-                    if ((slug === 'cezaryrgowski' && isCezary) ||
-                        (slug === 'wiolettarogowska' && isWioletta) ||
-                        (slug === myUid) ||
-                        (slug === 'my_profile')) {
-                        const myProfile = JSON.parse(localStorage.getItem('lumina_my_profile') || '{}');
-                        Object.assign(live, myProfile);
-                    }
-                }
-            } catch(e) {}
-
-            // Strict fallback guards for Cezary & Wioletta
-            if (slug === 'cezaryrgowski') {
-                live.name = live.name || 'Cezary Rogowski';
-                live.age = 51;
-                live.avatar = (live.avatar && !live.avatar.includes('worship') && !live.avatar.includes('tlo') && !live.avatar.includes('oddaj')) ? live.avatar : 'avatar_cezary_official.jpg';
-                live.city = live.city || 'Ostrowiec Świętokrzyski, Polska';
-                live.status = live.status || 'Żonaty';
-                live.isFounder = true;
-                live.profileUrl = 'lumina.cezaryrgowski.html';
-            } else if (slug === 'wiolettarogowska') {
-                live.name = live.name || 'Wioletta Rogowska';
-                live.age = 50;
-                live.avatar = (live.avatar && !live.avatar.includes('worship') && !live.avatar.includes('tlo') && !live.avatar.includes('oddaj')) ? live.avatar : 'avatar_wioletta_official.jpg';
-                live.city = live.city || 'Ostrowiec Świętokrzyski, Polska';
-                live.status = live.status || 'Mężatka';
-                live.isFounder = true;
-                live.profileUrl = 'lumina.wiolettarogowska.html';
-            }
-
-            return live;
-        };
-
-        // ── Sync All Profile Cards in the Carousel in 100% Realtime ──
-        window.syncAllProfilesToCarousel = function() {
-            const carousel = document.getElementById('profilesCarousel');
-            if (!carousel) return;
-
-            // Sync all existing cards with [data-profile-slug]
-            const cards = carousel.querySelectorAll('[data-profile-slug]');
-            cards.forEach(card => {
-                const slug = card.getAttribute('data-profile-slug');
-                if (!slug) return;
-                const p = window.getLiveProfile(slug);
-                if (!p) return;
-
-                // Photo
-                const img = card.querySelector('.card-photo img');
-                if (img && p.avatar) {
-                    img.src = p.avatar;
-                    img.alt = p.name || slug;
-                }
-
-                // Match score badge
-                const matchBadge = card.querySelector('.card-match');
-                if (matchBadge && (p.badge || p.matchScore)) {
-                    matchBadge.textContent = p.badge || p.matchScore;
-                }
-
-                // Name & Age
-                const nameEl = card.querySelector('.card-name');
-                if (nameEl) {
-                    if (p.isMissionAccount) {
-                        nameEl.innerHTML = `${p.name} <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>`;
-                    } else {
-                        nameEl.textContent = `${p.name}${p.age ? ', ' + p.age : ''}`;
-                    }
-                }
-
-                // City & Status
-                const cityEl = card.querySelector('.card-city');
-                if (cityEl) {
-                    const cityStr = p.city ? p.city.split(',')[0] : 'Polska';
-                    if (p.isFounder) {
-                        cityEl.innerHTML = `📍 ${cityStr} • <b>${p.status || (slug === 'cezaryrgowski' ? 'Żonaty' : 'Mężatka')}</b>`;
-                    } else if (p.isMissionAccount) {
-                        cityEl.innerHTML = `📍 ${cityStr} • <b style="color:#a855f7;">${p.job || 'Misja Christian Culture'}</b>`;
-                    } else {
-                        cityEl.innerHTML = `📍 ${cityStr} • <span style="color:#a855f7;font-weight:700;">${p.status || 'Profil Społeczności'}</span>`;
-                    }
-                }
-
-                // Description / Bio
-                const descEl = card.querySelector('.card-desc');
-                if (descEl) {
-                    const bioText = p.bio || p.quote || p.job || p.verse || '';
-                    const shortBio = bioText.length > 90 ? bioText.substring(0, 90) + '...' : bioText;
-                    descEl.textContent = `"${shortBio}"`;
-                }
-            });
-
-            // Sync Logged-In User Profile Card (if custom account)
-            try {
-                let currentUser = null;
-                if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
-                    currentUser = window.LuminaDB.getCurrentUser();
-                }
-                if (!currentUser) {
-                    currentUser = JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
-                }
-                if (currentUser) {
-                    const myUid = currentUser.uid || currentUser.id;
-                    const myEmail = (currentUser.email || '').toLowerCase();
-                    const isFounder = myEmail.includes('nazirczarkes') || myEmail.includes('cezary') || myEmail.includes('wioletta');
-
-                    if (!isFounder && myUid) {
-                        const myProfile = window.getLiveProfile(myUid);
-                        const myCardId = 'cloud_user_' + myUid;
-                        let myCard = document.getElementById(myCardId);
-                        const myAvatar = myProfile.avatar || currentUser.photoURL || 'lumina_icon.jpg';
-                        const myName = myProfile.name || currentUser.displayName || 'Mój Profil';
-
-                        if (!myCard) {
-                            myCard = document.createElement('div');
-                            myCard.className = 'profile-card my-active-user-card';
-                            myCard.id = myCardId;
-                            myCard.setAttribute('data-profile-slug', myUid);
-                            myCard.onclick = () => window.openCommunityProfile(myUid);
-                            // Insert before first community profile card
-                            const refCard = document.getElementById('card_profile_noemi') || carousel.firstChild;
-                            carousel.insertBefore(myCard, refCard);
-                        }
-
-                        myCard.innerHTML = `
-                            <div class="card-photo">
-                                <img src="${myAvatar}" alt="${myName}" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;display:block;">
-                                <button class="card-heart liked" onclick="toggleLike(event,this, '${myUid}', '${myName}', '${myAvatar}')"><i class="fa-solid fa-heart"></i></button>
-                                <div class="card-match" style="background:linear-gradient(135deg,#a855f7,#ec4899);">Twój Profil</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="card-name">${myName}${myProfile.age ? ', ' + myProfile.age : ''}</div>
-                                <div class="card-city">📍 ${myProfile.city ? myProfile.city.split(',')[0] : 'Polska'} • <b style="color:#a855f7;">Zalogowany</b></div>
-                                <div class="card-desc">"${myProfile.bio ? (myProfile.bio.length > 80 ? myProfile.bio.substring(0,80) + '...' : myProfile.bio) : 'Witaj w LUMINA! Kliknij aby przejść do swojego profilu.'}"</div>
-                            </div>
-                        `;
-                    }
-                }
-            } catch(err) {}
-        };
-
         // ── Realtime Community Profiles from Firestore ──
         function initCommunityProfilesListener() {
             if (window.LuminaDB) {
                 window.LuminaDB.subscribeToAllCommunityProfiles((profiles) => {
-                    if (!profiles || !profiles.length) return;
+                    const carousel = document.getElementById('profilesCarousel');
+                    if (!carousel || !profiles || !profiles.length) return;
 
                     profiles.forEach(p => {
                         if (!p.name) return;
                         const uid = p.uid || p.slug || p.id;
-                        if (!uid) return;
-                        window._cloudProfilesMap[uid] = p;
-                        if (p.slug) window._cloudProfilesMap[p.slug] = p;
-                    });
+                        const nameLower = (p.name || '').toLowerCase();
+                        const slugLower = (uid || '').toLowerCase();
 
-                    window.syncAllProfilesToCarousel();
+                        // Cezary Rogowski - Żelazne 51 lat i Ostrowiec Świętokrzyski
+                        if (slugLower.includes('cezary') || nameLower.includes('cezary')) {
+                            document.querySelectorAll('.home-cezary-avatar, #homeUserAvatar, img[alt="Cezary Rogowski"]').forEach(img => {
+                                img.src = 'avatar_cezary_official.jpg';
+                            });
+                            document.querySelectorAll('.home-cezary-name, #homeUserName').forEach(el => {
+                                el.textContent = `Cezary Rogowski, 51`;
+                            });
+                            document.querySelectorAll('.home-cezary-city, #homeUserCity').forEach(el => {
+                                el.innerHTML = `📍 Ostrowiec Świętokrzyski • <b>Żonaty</b>`;
+                            });
+                            return;
+                        }
+
+                        // Wioletta Rogowska - Żelazne 50 lat i Ostrowiec Świętokrzyski
+                        if (slugLower.includes('wioletta') || nameLower.includes('wioletta')) {
+                            document.querySelectorAll('.home-wioletta-avatar, #homeWiolettaAvatar, img[alt="Wioletta Rogowska"]').forEach(img => {
+                                img.src = 'avatar_wioletta_official.jpg';
+                            });
+                            document.querySelectorAll('.home-wioletta-name, #homeWiolettaName').forEach(el => {
+                                el.textContent = `Wioletta Rogowska, 50`;
+                            });
+                            document.querySelectorAll('.home-wioletta-city, #homeWiolettaCity').forEach(el => {
+                                el.innerHTML = `📍 Ostrowiec Świętokrzyski • <b>Mężatka</b>`;
+                            });
+                            return;
+                        }
+
+                        // CC Women, Magdalena & Andrzej Thiel exclusions (prevention of duplicates)
+                        if (slugLower.includes('women') || slugLower.includes('ccwomen') || nameLower.includes('women')) {
+                            return;
+                        }
+                        if (slugLower.includes('magdalena') || nameLower.includes('magdalena') || slugLower.includes('magda') || nameLower.includes('magda')) {
+                            return;
+                        }
+                        if (slugLower.includes('andrzej') || nameLower.includes('andrzej') || slugLower.includes('thiel') || nameLower.includes('thiel')) {
+                            return;
+                        }
+
+                        const cardId = 'cloud_user_' + uid;
+                        let existing = document.getElementById(cardId);
+                        const imgSrc = p.avatar || 'lumina_icon.jpg';
+
+                        if (!existing) {
+                            const card = document.createElement('div');
+                            card.className = 'profile-card';
+                            card.id = cardId;
+                            if (p.isMissionAccount || p.profileUrl || uid.startsWith('u_')) {
+                                card.onclick = () => {
+                                    window.location.href = p.profileUrl || `lumina-profile.html?u=${uid}`;
+                                };
+                            } else {
+                                card.onclick = () => window.openProfile(p.name, p.age || 25, p.city || 'Polska', p.bio || '', imgSrc, p.matchScore || '96%');
+                            }
+                            card.innerHTML = `
+                                <div class="card-photo">
+                                    <img src="${imgSrc}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;display:block;">
+                                    <button class="card-heart" onclick="toggleLike(event,this, '${uid}', '${p.name}', '${imgSrc}')"><i class="fa-solid fa-heart"></i></button>
+                                    <div class="card-match" style="background:linear-gradient(135deg,#ec4899,#8b5cf6);">${p.badge || p.matchScore || '96%'}</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-name">${p.name}${p.age ? ', ' + p.age : ''}</div>
+                                    <div class="card-city">📍 ${p.city || 'Polska'}${p.role ? ' • <b style="color:#ec4899;">' + p.role + '</b>' : ''}</div>
+                                    <div class="card-desc">"${p.bio ? (p.bio.length > 80 ? p.bio.substring(0,80) + '...' : p.bio) : (p.verse || 'Chrześcijanin szukający Bożej relacji.')}"</div>
+                                </div>
+                            `;
+                            carousel.appendChild(card);
+                        }
+                    });
                 });
             } else {
                 setTimeout(initCommunityProfilesListener, 300);
@@ -4022,57 +3090,146 @@
         }
         initCommunityProfilesListener();
 
-        // ── Open Profile Modal with 100% Live Data ──
-        window.openCommunityProfile = function(slug) {
-            const p = window.getLiveProfile(slug);
-            if (!p) return;
+        // ── Instant Sync of Saved Profiles from localStorage to Homepage ──
+        function syncUserSavedProfileToHomepage() {
+            // 1. Sync Cezary Rogowski
+            try {
+                const savedCezary = localStorage.getItem('lumina_profile_cezaryrgowski');
+                let p = savedCezary ? JSON.parse(savedCezary) : null;
+                if (!p || !p.avatar || p.avatar.includes('worship') || p.avatar.includes('tlo') || p.avatar.includes('oddaj')) {
+                    p = {
+                        name: 'Cezary Rogowski',
+                        age: 51,
+                        city: 'Ostrowiec Świętokrzyski, Polska',
+                        status: 'Żonaty',
+                        avatar: 'avatar_cezary_official.jpg',
+                        job: 'Założyciel Christian Culture',
+                        bio: 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.'
+                    };
+                }
+                // Bezwzględna migracja wieku i lokalizacji
+                if (!p.age || p.age === 32 || p.age === '32' || p.age === 30 || p.age === '30') {
+                    p.age = 51;
+                }
+                if (!p.city || p.city.includes('Warszawa') || p.city.includes('Ostrowiec Św.')) {
+                    p.city = 'Ostrowiec Świętokrzyski, Polska';
+                }
+                p.avatar = 'avatar_cezary_official.jpg';
+                localStorage.setItem('lumina_profile_cezaryrgowski', JSON.stringify(p));
 
-            window._currentModalProfileSlug = p.slug || slug;
+                document.querySelectorAll('.home-cezary-avatar, #homeUserAvatar, img[alt="Cezary Rogowski"]').forEach(img => {
+                    img.src = 'avatar_cezary_official.jpg';
+                });
+                document.querySelectorAll('.home-cezary-name, #homeUserName').forEach(el => {
+                    el.textContent = `${p.name || 'Cezary Rogowski'}, 51`;
+                });
+                document.querySelectorAll('.home-cezary-city, #homeUserCity').forEach(el => {
+                    el.innerHTML = `📍 Ostrowiec Świętokrzyski • <b>${p.status || 'Żonaty'}</b>`;
+                });
+                document.querySelectorAll('.home-cezary-desc, #homeUserDesc').forEach(el => {
+                    el.textContent = `"${p.bio ? (p.bio.length > 85 ? p.bio.substring(0, 85) + '...' : p.bio) : (p.job || 'Założyciel Christian Culture')}"`;
+                });
 
+
+            } catch(e) {
+                console.error("Sync Cezary error:", e);
+            }
+
+            // 2. Sync Wioletta Rogowska
+            try {
+                const savedWioletta = localStorage.getItem('lumina_profile_wiolettarogowska');
+                let pw = savedWioletta ? JSON.parse(savedWioletta) : null;
+                if (!pw || !pw.avatar || pw.avatar.includes('worship') || pw.avatar.includes('tlo') || pw.avatar.includes('oddaj')) {
+                    pw = {
+                        name: 'Wioletta Rogowska',
+                        age: 50,
+                        city: 'Ostrowiec Świętokrzyski, Polska',
+                        status: 'Mężatka',
+                        avatar: 'avatar_wioletta_official.jpg',
+                        job: 'Współzałożycielka Christian Culture',
+                        bio: 'Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.'
+                    };
+                }
+                // Bezwzględna migracja wieku i lokalizacji
+                if (!pw.age || pw.age === 30 || pw.age === '30' || pw.age === 28 || pw.age === '28' || pw.age === 32) {
+                    pw.age = 50;
+                }
+                if (!pw.city || pw.city.includes('Warszawa') || pw.city.includes('Ostrowiec Św.')) {
+                    pw.city = 'Ostrowiec Świętokrzyski, Polska';
+                }
+                pw.avatar = 'avatar_wioletta_official.jpg';
+                localStorage.setItem('lumina_profile_wiolettarogowska', JSON.stringify(pw));
+
+                document.querySelectorAll('.home-wioletta-avatar, #homeWiolettaAvatar, img[alt="Wioletta Rogowska"]').forEach(img => {
+                    img.src = 'avatar_wioletta_official.jpg';
+                });
+                document.querySelectorAll('.home-wioletta-name, #homeWiolettaName').forEach(el => {
+                    el.textContent = `${pw.name || 'Wioletta Rogowska'}, 50`;
+                });
+                document.querySelectorAll('.home-wioletta-city, #homeWiolettaCity').forEach(el => {
+                    el.innerHTML = `📍 Ostrowiec Świętokrzyski • <b>${pw.status || 'Mężatka'}</b>`;
+                });
+                document.querySelectorAll('.home-wioletta-desc, #homeWiolettaDesc').forEach(el => {
+                    el.textContent = `"${pw.bio ? (pw.bio.length > 85 ? pw.bio.substring(0, 85) + '...' : pw.bio) : (pw.job || 'Współzałożycielka Christian Culture')}"`;
+                });
+            } catch(e) {
+                console.error("Sync Wioletta error:", e);
+            }
+        }
+        syncUserSavedProfileToHomepage();
+        window.addEventListener('DOMContentLoaded', () => {
+            syncUserSavedProfileToHomepage();
+
+            const initCloudSync = () => {
+                if (window.LuminaDB) {
+                    window.LuminaDB.subscribeToProfile('cezaryrgowski', () => {
+                        syncUserSavedProfileToHomepage();
+                    });
+                    window.LuminaDB.subscribeToProfile('wiolettarogowska', () => {
+                        syncUserSavedProfileToHomepage();
+                    });
+                } else {
+                    setTimeout(initCloudSync, 300);
+                }
+            };
+            initCloudSync();
+        });
+        window.addEventListener('load', syncUserSavedProfileToHomepage);
+        window.addEventListener('storage', syncUserSavedProfileToHomepage);
+    </script>
+
+    <script>
+        // ── Profile modal ──
+        // ── Profile modal & Auth Guarded Full Profile Navigation ──
+        window._currentModalProfileSlug = 'cezaryrgowski';
+
+        function openProfile(name, age, city, desc, imgSrc, match) {
             const mImg = document.getElementById('mImg');
             if (mImg) {
-                mImg.innerHTML = `<img src="${p.avatar || 'lumina_icon.jpg'}" alt="${p.name}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);margin:0 auto;display:block;">`;
+                mImg.innerHTML = `<img src="${imgSrc || 'lumina_anna2.jpg'}" alt="${name}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);margin:0 auto;display:block;">`;
             }
+            const lowerName = (name || '').toLowerCase();
+            const isFounder = lowerName.includes('cezary') || lowerName.includes('wioletta');
+            
+            document.getElementById('mName').textContent = `${name}, ${age}`;
+            document.getElementById('mLoc').innerHTML = `📍 ${city}  •  Dopasowanie: ${match}${!isFounder ? '  •  <span style="color:#c084fc;font-weight:700;">Profil Społeczności</span>' : ''}`;
+            document.getElementById('mDesc').textContent = `"${desc}"`;
 
-            const mName = document.getElementById('mName');
-            if (mName) {
-                mName.textContent = `${p.name}${p.age ? ', ' + p.age : ''}`;
-            }
-
-            const mLoc = document.getElementById('mLoc');
-            if (mLoc) {
-                const badgeLabel = p.isFounder ? 'Założyciel Christian Culture' : (p.isMissionAccount ? 'Misja Christian Culture' : 'Profil Społeczności');
-                mLoc.innerHTML = `📍 ${p.city || 'Polska'}  •  Dopasowanie: ${p.matchScore || '96%'}  •  <span style="color:#c084fc;font-weight:700;">${badgeLabel}</span>`;
-            }
-
-            const mDesc = document.getElementById('mDesc');
-            if (mDesc) {
-                mDesc.textContent = `"${p.bio || p.job || 'Chrześcijanin szukający Bożej relacji.'}"`;
-            }
-
-            const profileModal = document.getElementById('profileModal');
-            if (profileModal) profileModal.classList.add('open');
-        };
-
-        // Legacy wrapper for backwards-compatibility
-        window.openProfile = function(name, age, city, desc, imgSrc, match) {
+            // Dynamic slug for full profile
             let slug = 'cezaryrgowski';
-            const lower = (name || '').toLowerCase();
-            if (lower.includes('wioletta')) slug = 'wiolettarogowska';
-            else if (lower.includes('magdalena') || lower.includes('magda')) slug = 'magdalena';
-            else if (lower.includes('noemi')) slug = 'noemi';
-            else if (lower.includes('dawid')) slug = 'dawid';
-            else if (lower.includes('weronika')) slug = 'weronika';
-            else if (lower.includes('tomek') || lower.includes('tomasz')) slug = 'tomek';
-            else if (lower.includes('anna')) slug = 'anna';
-            else if (lower.includes('piotr')) slug = 'piotr';
-            else if (lower.includes('julia')) slug = 'julia';
-            else if (lower.includes('andrzej') || lower.includes('thiel')) slug = 'andrzejthiel';
-            else if (lower.includes('cezary')) slug = 'cezaryrgowski';
-            else slug = lower.replace(/\s+/g, '');
+            if (lowerName.includes('wioletta')) slug = 'wiolettarogowska';
+            else if (lowerName.includes('magdalena') || lowerName.includes('magda')) slug = 'magdalena';
+            else if (lowerName.includes('noemi')) slug = 'noemi';
+            else if (lowerName.includes('dawid')) slug = 'dawid';
+            else if (lowerName.includes('weronika')) slug = 'weronika';
+            else if (lowerName.includes('tomek')) slug = 'tomek';
+            else if (lowerName.includes('anna')) slug = 'anna';
+            else if (lowerName.includes('cezary')) slug = 'cezaryrgowski';
+            else slug = lowerName.replace(/\s+/g, '');
 
-            window.openCommunityProfile(slug);
-        };
+            window._currentModalProfileSlug = slug;
+            document.getElementById('profileModal').classList.add('open');
+        }
 
         window.navigateToFullProfile = function(e) {
             if (e && e.preventDefault) e.preventDefault();
@@ -4104,343 +3261,13 @@
             const slug = window._currentModalProfileSlug || 'cezaryrgowski';
             if (slug === 'cezaryrgowski') window.location.href = 'lumina.cezaryrgowski.html';
             else if (slug === 'wiolettarogowska') window.location.href = 'lumina.wiolettarogowska.html';
-            else if (slug === 'andrzejthiel' || slug === 'andrzej') window.location.href = 'lumina.andrzejthiel.html';
-            else if (slug === 'magdalena') window.location.href = 'lumina.magdalena.html';
-            else if (slug === 'studiodobregoslowa') window.location.href = 'lumina.studiodobregoslowa.html';
-            else if (slug === 'osobowoscplus') window.location.href = 'lumina.osobowoscplus.html';
-            else if (slug === 'radiocc') window.location.href = 'lumina.radiocc.html';
-            else if (slug === 'cctv') window.location.href = 'lumina.cctv.html';
-            else if (slug === 'ccmen') window.location.href = 'lumina.ccmen.html';
-            else if (slug === 'ccwomen') window.location.href = 'lumina.ccwomen.html';
             else window.location.href = 'lumina-profile.html?u=' + encodeURIComponent(slug);
         };
-
-        // ══════════ ENCRYPTED MASTER ADMIN PIN & SECURITY ENGINE ══════════
-        window.openAdminPinModal = function() {
-            const modal = document.getElementById('adminPinModal');
-            if (!modal) return;
-            
-            const isMaster = (typeof window.LuminaSecurity !== 'undefined' && window.LuminaSecurity.isMasterAdmin()) ||
-                             sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
-                             localStorage.getItem('lumina_auth_master_admin') === 'true';
-            
-            const lockedView = document.getElementById('adminPinLockedView');
-            const unlockedView = document.getElementById('adminPinUnlockedView');
-            const errEl = document.getElementById('adminPinErrorMsg');
-            const pinInput = document.getElementById('adminPinInput');
-            
-            if (errEl) errEl.style.display = 'none';
-            if (pinInput) pinInput.value = '';
-            
-            if (isMaster) {
-                if (lockedView) lockedView.style.display = 'none';
-                if (unlockedView) unlockedView.style.display = 'block';
-            } else {
-                if (lockedView) lockedView.style.display = 'block';
-                if (unlockedView) unlockedView.style.display = 'none';
-                setTimeout(() => { 
-                    if (pinInput) {
-                        pinInput.focus();
-                        pinInput.select();
-                    }
-                }, 150);
-            }
-            
-            modal.classList.add('open');
-            modal.style.display = 'flex';
-        };
-
-        window.handleAdminPinSubmit = async function(e) {
-            if (e && e.preventDefault) e.preventDefault();
-            const pinInput = document.getElementById('adminPinInput');
-            const errEl = document.getElementById('adminPinErrorMsg');
-            const btn = document.getElementById('btnAdminPinSubmit');
-            const pin = (pinInput ? pinInput.value : '').trim();
-            
-            if (!pin) {
-                if (errEl) {
-                    errEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Wprowadź kod PIN!';
-                    errEl.style.display = 'block';
-                }
-                return;
-            }
-            
-            if (btn) {
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Szyfrowana weryfikacja SHA-256...';
-            }
-            if (errEl) errEl.style.display = 'none';
-            
-            let unlocked = false;
-            try {
-                if (typeof window.LuminaSecurity !== 'undefined' && typeof window.LuminaSecurity.unlockMasterAdmin === 'function') {
-                    unlocked = await window.LuminaSecurity.unlockMasterAdmin(pin);
-                } else {
-                    // Direct Web Crypto API SHA-256 fallback
-                    const msgBuffer = new TextEncoder().encode(pin);
-                    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-                    const hashArray = Array.from(new Uint8Array(hashBuffer));
-                    const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-                    if (hash === 'eec0ae2663b74fdb9fb9981e92f1b2cc2a8b42444d358776d872580c79454c91') {
-                        sessionStorage.setItem('lumina_auth_master_admin', 'true');
-                        localStorage.setItem('lumina_auth_master_admin', 'true');
-                        unlocked = true;
-                    }
-                }
-            } catch(err) {
-                console.error('Błąd weryfikacji kryptograficznej PIN:', err);
-            }
-            
-            if (btn) {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-key"></i> Zaloguj i Odblokuj Uprawnienia';
-            }
-            
-            if (unlocked) {
-                const shieldBtn = document.getElementById('adminSecretShieldBtn');
-                if (shieldBtn) shieldBtn.classList.add('admin-unlocked');
-                
-                const lockedView = document.getElementById('adminPinLockedView');
-                const unlockedView = document.getElementById('adminPinUnlockedView');
-                if (lockedView) lockedView.style.display = 'none';
-                if (unlockedView) unlockedView.style.display = 'block';
-                
-                if (typeof showToast === 'function') {
-                    showToast('✨ Zalogowano do Panelu Administratora LUMINA! Witaj, Administratorze.');
-                }
-            } else {
-                if (errEl) {
-                    errEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Nieprawidłowy kod PIN. Odmowa dostępu.';
-                    errEl.style.display = 'block';
-                }
-                if (pinInput) {
-                    pinInput.value = '';
-                    pinInput.focus();
-                }
-            }
-        };
-
-        window.handleAdminLogout = function() {
-            if (typeof window.LuminaSecurity !== 'undefined' && typeof window.LuminaSecurity.lockMasterAdmin === 'function') {
-                window.LuminaSecurity.lockMasterAdmin();
-            } else {
-                sessionStorage.removeItem('lumina_auth_master_admin');
-                localStorage.removeItem('lumina_auth_master_admin');
-            }
-            
-            const shieldBtn = document.getElementById('adminSecretShieldBtn');
-            if (shieldBtn) shieldBtn.classList.remove('admin-unlocked');
-            
-            const lockedView = document.getElementById('adminPinLockedView');
-            const unlockedView = document.getElementById('adminPinUnlockedView');
-            if (lockedView) lockedView.style.display = 'block';
-            if (unlockedView) unlockedView.style.display = 'none';
-            
-            if (typeof showToast === 'function') {
-                showToast('🔒 Wylogowano z trybu Administratora.');
-            }
-            closeModal('adminPinModal');
-        };
-
-        function checkInitialAdminShieldState() {
-            const isMaster = (typeof window.LuminaSecurity !== 'undefined' && window.LuminaSecurity.isMasterAdmin()) ||
-                             sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
-                             localStorage.getItem('lumina_auth_master_admin') === 'true';
-            const shieldBtn = document.getElementById('adminSecretShieldBtn');
-            if (shieldBtn && isMaster) {
-                shieldBtn.classList.add('admin-unlocked');
-            }
-        }
-        window.addEventListener('DOMContentLoaded', checkInitialAdminShieldState);
-        window.addEventListener('load', checkInitialAdminShieldState);
-
-        // ── Render Online Logged-In Users Avatars with Celadon / Seledynowa Ring in Tablica LUMINA Box ──
-        window.renderTablicaOnlineAvatars = function() {
-            const container = document.getElementById('tablicaOnlineAvatarsContainer');
-            if (!container) return;
-
-            let currentUser = null;
-            try {
-                if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
-                    currentUser = window.LuminaDB.getCurrentUser();
-                }
-            } catch(e) {}
-            if (!currentUser) {
-                try {
-                    currentUser = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || localStorage.getItem('lumina_current_user') || 'null');
-                } catch(e) {}
-            }
-
-            // Pool of active/online members in LUMINA community
-            const activeCommunityPool = [
-                { name: 'Cezary Rogowski', avatar: 'avatar_cezary_official.jpg', slug: 'cezaryrgowski' },
-                { name: 'Andrzej Thiel', avatar: 'avatar_andrzej_thiel.jpg', slug: 'andrzejthiel' },
-                { name: 'Wioletta Rogowska', avatar: 'avatar_wioletta_official.jpg', slug: 'wiolettarogowska' },
-                { name: 'Magdalena', avatar: 'avatar_magdalena.jpg', slug: 'magdalena' },
-                { name: 'Tomasz', avatar: 'avatar_widget_tomek.jpg', slug: 'tomek' },
-                { name: 'Noemi', avatar: 'avatar_noemi.jpg', slug: 'noemi' },
-                { name: 'Anna', avatar: 'lumina_anna2.jpg', slug: 'anna' }
-            ];
-
-            let loggedInList = [];
-
-            if (currentUser && (currentUser.name || currentUser.displayName)) {
-                const myName = currentUser.name || currentUser.displayName || 'Twój Profil';
-                const myAvatar = currentUser.avatar || currentUser.photoURL || 'lumina_icon.jpg';
-                const mySlug = currentUser.slug || currentUser.uid || 'me';
-
-                const filtered = activeCommunityPool.filter(u => 
-                    u.slug !== mySlug && 
-                    !myName.toLowerCase().includes(u.name.toLowerCase())
-                );
-                loggedInList = [{ name: myName, avatar: myAvatar, slug: mySlug, isMe: true }, ...filtered];
-            } else {
-                loggedInList = [...activeCommunityPool];
-            }
-
-            // Exactly 3 avatars displayed, and when > 3 logged in users, 4th element is '+' icon
-            const topThree = loggedInList.slice(0, 3);
-            const hasMore = loggedInList.length > 3;
-
-            let html = '';
-            topThree.forEach((user, idx) => {
-                const zIndex = 4 - idx;
-                html += `
-                    <div class="tablica-online-avatar-item" title="Zalogowany użytkownik: ${user.name} 🟢" style="z-index: ${zIndex};" onclick="event.stopPropagation(); window.openCommunityProfile('${user.slug || 'cezaryrgowski'}')">
-                        <img src="${user.avatar}" alt="${user.name}" class="tablica-online-avatar-img" onerror="this.src='lumina_icon.jpg'">
-                        <span class="tablica-online-dot"></span>
-                    </div>
-                `;
-            });
-
-            if (hasMore) {
-                html += `
-                    <div class="tablica-online-more-btn" title="I więcej zalogowanych użytkowników w społeczności LUMINA (${loggedInList.length} aktywnych)" aria-label="Więcej zalogowanych użytkowników" onclick="event.stopPropagation(); window.location.href='lumina-tablica.html';">
-                        <i class="fa-solid fa-plus"></i>
-                    </div>
-                `;
-            }
-
-            container.innerHTML = html;
-        };
-
-        // Initialize synchronization across all events
-        window.syncUserSavedProfileToHomepage = function() {
-            if (typeof window.syncAllProfilesToCarousel === 'function') window.syncAllProfilesToCarousel();
-            if (typeof window.renderTablicaOnlineAvatars === 'function') window.renderTablicaOnlineAvatars();
-        };
-
-        window.syncUserSavedProfileToHomepage();
-        window.addEventListener('DOMContentLoaded', window.syncUserSavedProfileToHomepage);
-        window.addEventListener('load', window.syncUserSavedProfileToHomepage);
-        window.addEventListener('storage', window.syncUserSavedProfileToHomepage);
-        window.addEventListener('lumina-profile-updated', window.syncUserSavedProfileToHomepage);
-        window.addEventListener('lumina-auth-state', window.syncUserSavedProfileToHomepage);
         // ── Auth modal ──
         function openAuth() {
             document.getElementById('authModal').classList.add('open');
         }
-        function closeModal(id) { 
-            const el = document.getElementById(id);
-            if (el) {
-                el.classList.remove('open');
-                el.style.display = 'none';
-            }
-        }
-
-        // ── Dynamic 3D Recommend / Share Portal Logic ──
-        window.openShareLuminaModal = function() {
-            const modal = document.getElementById('recommendModal');
-            if (modal) {
-                modal.classList.add('open');
-                modal.style.display = 'flex';
-            }
-            const currentUrl = window.location.origin + window.location.pathname;
-            const urlEl = document.getElementById('recommendShareUrl');
-            if (urlEl) urlEl.textContent = currentUrl;
-        };
-
-        window.getRecommendShareText = function() {
-            const currentUrl = window.location.origin + window.location.pathname;
-            return `Cześć! Chcę polecić Ci chrześcijański portal społecznościowy LUMINA – piękną przestrzeń wartościowych relacji, wiary i inspiracji. 🕊️✨ Sprawdź portal tutaj: ${currentUrl}`;
-        };
-
-        window.shareViaWhatsApp = function() {
-            const text = encodeURIComponent(window.getRecommendShareText());
-            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
-            if (typeof showToast === 'function') showToast('Otwieranie WhatsApp... 📲');
-        };
-
-        window.shareViaFacebook = function() {
-            const currentUrl = encodeURIComponent(window.location.origin + window.location.pathname);
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`, '_blank');
-            if (typeof showToast === 'function') showToast('Otwieranie Facebook... 🌐');
-        };
-
-        window.shareViaTelegram = function() {
-            const currentUrl = encodeURIComponent(window.location.origin + window.location.pathname);
-            const text = encodeURIComponent(window.getRecommendShareText());
-            window.open(`https://t.me/share/url?url=${currentUrl}&text=${text}`, '_blank');
-            if (typeof showToast === 'function') showToast('Otwieranie Telegram... ✈️');
-        };
-
-        window.shareViaSystem = async function() {
-            const shareData = {
-                title: 'LUMINA • Chrześcijański Portal Społecznościowy',
-                text: 'Cześć! Odkryj chrześcijański portal społecznościowy LUMINA – przestrzeń wartościowych relacji, wiary i inspiracji. 🕊️✨',
-                url: window.location.origin + window.location.pathname
-            };
-            if (navigator.share) {
-                try {
-                    await navigator.share(shareData);
-                    if (typeof showToast === 'function') showToast('Dziękujemy za polecenie portalu LUMINA! 🕊️💖');
-                } catch(e) {
-                    if (e.name !== 'AbortError') {
-                        window.copyRecommendPortalLink();
-                    }
-                }
-            } else {
-                window.copyRecommendPortalLink();
-            }
-        };
-
-        window.copyRecommendPortalLink = function() {
-            const shareText = window.getRecommendShareText();
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(shareText).then(() => {
-                    handleCopySuccess();
-                }).catch(() => {
-                    fallbackCopy(shareText);
-                });
-            } else {
-                fallbackCopy(shareText);
-            }
-            
-            function fallbackCopy(text) {
-                const ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.position = 'fixed';
-                ta.style.opacity = '0';
-                document.body.appendChild(ta);
-                ta.select();
-                try {
-                    document.execCommand('copy');
-                    handleCopySuccess();
-                } catch(e) {
-                    if (typeof showToast === 'function') showToast('Link skopiowany do schowka! 📋✨');
-                }
-                document.body.removeChild(ta);
-            }
-
-            function handleCopySuccess() {
-                const btnText = document.getElementById('copyLinkBtnText');
-                if (btnText) btnText.textContent = 'Skopiowano zaproszenie do schowka! 🎉';
-                if (typeof showToast === 'function') showToast('Link i treść zaproszenia skopiowane do schowka! 📋✨');
-                setTimeout(() => {
-                    if (btnText) btnText.textContent = 'Skopiuj gotowy link z zaproszeniem';
-                }, 3000);
-            }
-        };
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
         // ── Video Sound Toggle ──
         window.toggleVideoSound = function(e, btn) {
@@ -4573,36 +3400,8 @@
 
         
         /* ══════════════════════════════════════════════════════════════════════════
-         * ROBUST INFINITE SELF-ROTATING CAROUSEL & DISCOVERY FILTER ENGINE
+         * ROBUST JITTER-FREE CAROUSEL & DISCOVERY FILTER ENGINE
          * ══════════════════════════════════════════════════════════════════════════ */
-        let carouselAutoplayTimer = null;
-        let isCarouselInteracting = false;
-        let resumeAutoplayTimeout = null;
-
-        window.startCarouselAutoplay = function() {
-            if (carouselAutoplayTimer) clearInterval(carouselAutoplayTimer);
-            carouselAutoplayTimer = setInterval(() => {
-                if (!isCarouselInteracting) {
-                    window.scrollCarousel(1, true); // auto-advance smoothly
-                }
-            }, 3500); // Advances continuously every 3.5 seconds in an infinite loop
-        };
-
-        window.stopCarouselAutoplay = function() {
-            if (carouselAutoplayTimer) {
-                clearInterval(carouselAutoplayTimer);
-                carouselAutoplayTimer = null;
-            }
-        };
-
-        window.pauseCarouselAutoplayTemporarily = function(ms = 4000) {
-            isCarouselInteracting = true;
-            if (resumeAutoplayTimeout) clearTimeout(resumeAutoplayTimeout);
-            resumeAutoplayTimeout = setTimeout(() => {
-                isCarouselInteracting = false;
-            }, ms);
-        };
-
         window.applyDiscoveryFilter = function(filterType, btn) {
             document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
@@ -4622,9 +3421,9 @@
                 if (filterType === 'all') {
                     isMatch = true;
                 } else if (filterType === 'kobieta') {
-                    isMatch = category.includes('kobieta') || nameText.includes('wioletta') || nameText.includes('noemi') || nameText.includes('weronika') || nameText.includes('anna') || nameText.includes('women');
+                    isMatch = category.includes('kobieta') || nameText.includes('wioletta') || nameText.includes('magdalena') || nameText.includes('magda') || nameText.includes('noemi') || nameText.includes('weronika') || nameText.includes('anna') || nameText.includes('julia') || nameText.includes('women');
                 } else if (filterType === 'mezczyzna') {
-                    isMatch = category.includes('mezczyzna') || nameText.includes('cezary') || nameText.includes('tomek') || nameText.includes('dawid') || nameText.includes('men') || nameText.includes('osobowosc');
+                    isMatch = category.includes('mezczyzna') || nameText.includes('cezary') || nameText.includes('andrzej') || nameText.includes('tomek') || nameText.includes('dawid') || nameText.includes('piotr') || nameText.includes('men') || nameText.includes('osobowosc');
                 } else if (filterType === 'mlodzi') {
                     isMatch = category.includes('mlodzi') || nameText.match(/\b(1[8-9]|2[0-9]|30)\b/);
                 } else if (filterType === 'misja') {
@@ -4645,9 +3444,8 @@
 
             // Smoothly scroll back to beginning of filtered results
             carousel.scrollTo({ left: 0, behavior: 'smooth' });
-            setTimeout(window.updateCenterActiveCard, 350);
 
-            const filterName = btn ? (btn.getAttribute('title') || btn.querySelector('.filter-chip-text')?.textContent || btn.textContent).trim() : filterType;
+            const filterName = btn ? btn.textContent.trim() : filterType;
             showToast(`Filtrowanie: ${filterName} (${visibleCount} profili) ✨`);
         };
 
@@ -4682,72 +3480,46 @@
             });
         };
 
-        window.scrollCarousel = function(direction, isAuto = false) {
+        window.scrollCarousel = function(direction) {
             const carousel = document.getElementById('profilesCarousel');
             if (!carousel) return;
             const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
             if (!visibleCards.length) return;
-
-            if (!isAuto) {
-                // User manually clicked left/right button
-                window.pauseCarouselAutoplayTemporarily(5000);
-            }
 
             const maxScroll = carousel.scrollWidth - carousel.clientWidth;
             const cardWidth = visibleCards[0].offsetWidth || 300;
             const gap = 24;
             const scrollAmount = (cardWidth + gap) * direction;
 
-            // Infinite Loop rotation in both directions
-            if (direction > 0 && carousel.scrollLeft >= maxScroll - 20) {
+            // Infinite Loop in both directions
+            if (direction > 0 && carousel.scrollLeft >= maxScroll - 15) {
                 carousel.scrollTo({ left: 0, behavior: 'smooth' });
-            } else if (direction < 0 && carousel.scrollLeft <= 20) {
+            } else if (direction < 0 && carousel.scrollLeft <= 15) {
                 carousel.scrollTo({ left: maxScroll, behavior: 'smooth' });
             } else {
                 carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
             }
 
-            setTimeout(window.updateCenterActiveCard, 400);
+            setTimeout(window.updateCenterActiveCard, 350);
         };
 
-        window.centerPromoVideoOnStart = function(smooth = false) {
-            const carousel = document.getElementById('profilesCarousel');
-            const promoCard = document.getElementById('promoAdCard');
-            if (!carousel || !promoCard) return;
-
-            const cards = Array.from(carousel.querySelectorAll('.profile-card'));
-            cards.forEach(c => c.classList.remove('active-center-card', 'featured'));
-            promoCard.classList.add('active-center-card', 'featured');
-
-            const cardLeft = promoCard.offsetLeft;
-            const cardWidth = promoCard.offsetWidth;
-            const carouselWidth = carousel.clientWidth;
-            const targetScroll = Math.max(0, cardLeft - ((carouselWidth - cardWidth) / 2));
-
-            if (smooth) {
-                carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
-            } else {
-                carousel.scrollLeft = targetScroll;
+        
+            // Check for ?auth=register or ?auth=login in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const authParam = urlParams.get('auth');
+            const refParam = urlParams.get('ref');
+            if (authParam === 'register' || authParam === 'login') {
+                setTimeout(() => {
+                    if (typeof switchAuthTab === 'function') switchAuthTab(authParam);
+                    const modal = document.getElementById('authModal');
+                    if (modal) {
+                        modal.classList.add('open');
+                        modal.style.display = 'flex';
+                    }
+                }, 400);
             }
-            setTimeout(window.updateCenterActiveCard, 100);
-        };
 
-        // Check for ?auth=register or ?auth=login in URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const authParam = urlParams.get('auth');
-        const refParam = urlParams.get('ref');
-        if (authParam === 'register' || authParam === 'login') {
-            setTimeout(() => {
-                if (typeof switchAuthTab === 'function') switchAuthTab(authParam);
-                const modal = document.getElementById('authModal');
-                if (modal) {
-                    modal.classList.add('open');
-                    modal.style.display = 'flex';
-                }
-            }, 400);
-        }
-
-        // Initialize Carousel & Promo Video on DOM load
+            // Initialize Carousel smoothly on DOM load
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof syncUserSavedProfileToHomepage === 'function') {
                 syncUserSavedProfileToHomepage();
@@ -4759,95 +3531,19 @@
                     requestAnimationFrame(window.updateCenterActiveCard);
                 }, { passive: true });
 
-                // Pause on hover / touch and resume smoothly
-                carousel.addEventListener('mouseenter', () => {
-                    isCarouselInteracting = true;
-                });
-                carousel.addEventListener('mouseleave', () => {
-                    window.pauseCarouselAutoplayTemporarily(2000);
-                });
-                carousel.addEventListener('touchstart', () => {
-                    isCarouselInteracting = true;
-                }, { passive: true });
-                carousel.addEventListener('touchend', () => {
-                    window.pauseCarouselAutoplayTemporarily(3500);
-                }, { passive: true });
-
-                // Handle tab visibility
-                document.addEventListener('visibilitychange', () => {
-                    if (document.hidden) {
-                        window.stopCarouselAutoplay();
-                    } else if (window._promoVideoFinishedPlaying) {
-                        window.startCarouselAutoplay();
-                    }
-                });
-
-                // Display video ad centered immediately on start
-                window.centerPromoVideoOnStart(false);
-                setTimeout(() => window.centerPromoVideoOnStart(false), 200);
-                setTimeout(() => window.centerPromoVideoOnStart(false), 600);
-
-                // Stop any rotation until the entire promo video finishes
-                window.stopCarouselAutoplay();
-                window._promoVideoFinishedPlaying = false;
-                let rotationStarted = false;
-
-                const promoVid = document.getElementById('promoVideoEl');
-
-                const startRotationAfterVideo = function() {
-                    if (rotationStarted) return;
-                    rotationStarted = true;
-                    window._promoVideoFinishedPlaying = true;
-
-                    // Re-enable loop for future views
-                    if (promoVid) {
-                        promoVid.setAttribute('loop', '');
-                        promoVid.play().catch(() => {});
-                    }
-
-                    // Start automatic carousel rotation smoothly
+                // Focus on video promo ad initially if available
+                const promoCard = carousel.querySelector('.video-card');
+                if (promoCard) {
                     setTimeout(() => {
-                        window.startCarouselAutoplay();
-                        window.scrollCarousel(1, true);
-                    }, 400);
-                };
-
-                if (promoVid) {
-                    promoVid.muted = true;
-                    promoVid.playsInline = true;
-                    promoVid.removeAttribute('loop'); // No loop during initial play-through so ended event triggers
-
-                    promoVid.addEventListener('ended', startRotationAfterVideo, { once: true });
-
-                    // Timeupdate safety check when video is nearing the end
-                    promoVid.addEventListener('timeupdate', function() {
-                        if (!rotationStarted && promoVid.duration > 0 && promoVid.currentTime >= (promoVid.duration - 0.35)) {
-                            startRotationAfterVideo();
-                        }
-                    });
-
-                    // Start playing promo video
-                    const playPromise = promoVid.play();
-                    if (playPromise !== undefined) {
-                        playPromise.then(() => {
-                            // Video playing - fallback after duration + 2s in case event is missed
-                            const waitMs = (promoVid.duration && promoVid.duration > 0) ? (promoVid.duration * 1000 + 1500) : 11000;
-                            setTimeout(startRotationAfterVideo, waitMs);
-                        }).catch(() => {
-                            // Autoplay restricted - start rotation after 8s fallback
-                            setTimeout(startRotationAfterVideo, 8000);
-                        });
-                    } else {
-                        setTimeout(startRotationAfterVideo, 10000);
-                    }
+                        const targetOffset = promoCard.offsetLeft;
+                        const scrollPos = targetOffset - (carousel.clientWidth / 2) + (promoCard.offsetWidth / 2);
+                        carousel.scrollTo({ left: Math.max(0, scrollPos), behavior: 'smooth' });
+                        setTimeout(window.updateCenterActiveCard, 300);
+                    }, 200);
                 } else {
-                    window.startCarouselAutoplay();
+                    setTimeout(window.updateCenterActiveCard, 300);
                 }
             }
-        });
-
-        window.addEventListener('load', () => {
-            window.centerPromoVideoOnStart(false);
         });
 
 
@@ -5210,23 +3906,6 @@
         window.addEventListener('scroll', checkScrollPositionUniversal, { passive: true });
         document.addEventListener('scroll', checkScrollPositionUniversal, { passive: true });
         window.addEventListener('resize', checkScrollPositionUniversal, { passive: true });
-
-        // ── Auto-Dissolve Hero Intro Text on Main Page ──
-        (function initHeroAutoDissolve() {
-            const DISSOLVE_DELAY_MS = 3800; // Po ~3.8 sekundy
-            setTimeout(() => {
-                const intro = document.getElementById('heroIntroText');
-                const hero = document.getElementById('heroHeader') || document.querySelector('.hero-section');
-                if (intro) {
-                    intro.classList.add('dissolving');
-                    if (hero) hero.classList.add('compact-mode');
-                    setTimeout(() => {
-                        intro.classList.remove('dissolving');
-                        intro.classList.add('dissolved');
-                    }, 1400);
-                }
-            }, DISSOLVE_DELAY_MS);
-        })();
 
     </script>
     <script src="lumina-scroll-top.js" defer></script>

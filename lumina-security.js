@@ -13,19 +13,29 @@ class LuminaSecurityEngine {
         this.db = LuminaDB;
         this.adminEmails = [
             'polskieradio.cc@gmail.com',
-            'czarkr@gmail.com',
-            'nazirczarkes@gmail.com'
+            'czarkr@gmail.com'
         ];
     }
 
     /**
-     * Sprawdza czy bieżący użytkownik jest Głównym Administratorem Portalu.
-     * Domyślnie NIEzalogowany (szara tarcza), wymaga podania autoryzowanego PINu 0455.
+     * Sprawdza czy bieżący użytkownik jest Głównym Administratorem Portalu
      */
     isMasterAdmin() {
-        return sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true';
+        if (sessionStorage.getItem('lumina_auth_master_admin') === 'true') return true;
+        
+        try {
+            const curUser = this.db.getCurrentUser?.();
+            if (curUser && curUser.email && this.adminEmails.includes(curUser.email.toLowerCase())) {
+                sessionStorage.setItem('lumina_auth_master_admin', 'true');
+                return true;
+            }
+        } catch(e) {}
+        return false;
     }
 
+    /**
+     * Odblokowanie uprawnień Administratora Master PIN-em (Wyłączność Dowódcy)
+     */
     /**
      * Bezpieczne kryptograficzne hashowanie SHA-256 w przeglądarce
      */
@@ -44,11 +54,6 @@ class LuminaSecurityEngine {
         const hash = await this._hashPin(pin);
         if (hash === 'eec0ae2663b74fdb9fb9981e92f1b2cc2a8b42444d358776d872580c79454c91') {
             sessionStorage.setItem('lumina_auth_master_admin', 'true');
-            localStorage.setItem('lumina_auth_master_admin', 'true');
-            if (typeof document !== 'undefined' && document.body) {
-                document.body.classList.add('lumina-admin-mode');
-                document.body.classList.add('owner-mode-active');
-            }
             return true;
         }
         return false;
@@ -59,14 +64,6 @@ class LuminaSecurityEngine {
      */
     lockMasterAdmin() {
         sessionStorage.removeItem('lumina_auth_master_admin');
-        localStorage.removeItem('lumina_auth_master_admin');
-        localStorage.removeItem('lumina_admin');
-        sessionStorage.removeItem('lumina_auth_owner_cezaryrgowski');
-        localStorage.removeItem('lumina_auth_owner_cezaryrgowski');
-        if (typeof document !== 'undefined' && document.body) {
-            document.body.classList.remove('lumina-admin-mode');
-            document.body.classList.remove('owner-mode-active');
-        }
     }
 
     /**

@@ -154,160 +154,8 @@ export async function requestNotificationPermission(userUid) {
 // 1. AUTHENTICATION & USER MANAGEMENT (Google, Email/Password, Sessions)
 // ══════════════════════════════════════════════════════════════════════════
 
-export const CEZARY_ADMIN_USER = {
-    uid: 'cezaryrgowski',
-    id: 'cezaryrgowski',
-    slug: 'cezaryrgowski',
-    email: 'nazirczarkes@gmail.com',
-    displayName: 'Cezary Rogowski',
-    name: 'Cezary Rogowski',
-    photoURL: 'avatar_cezary_official.jpg',
-    avatar: 'avatar_cezary_official.jpg',
-    role: 'admin',
-    isAdmin: true,
-    isFounder: true
-};
-
-export const CEZARY_ADMIN_PROFILE = {
-    uid: 'cezaryrgowski',
-    id: 'cezaryrgowski',
-    slug: 'cezaryrgowski',
-    name: 'Cezary Rogowski',
-    displayName: 'Cezary Rogowski',
-    email: 'nazirczarkes@gmail.com',
-    avatar: 'avatar_cezary_official.jpg',
-    age: 51,
-    city: 'Ostrowiec Świętokrzyski, Polska',
-    status: 'Żonaty',
-    job: 'Założyciel Christian Culture',
-    church: 'Wspólnota Chrześcijańska',
-    denom: 'Rzymskokatolickie',
-    verse: '„Wszystko mogę w Tym, który mnie umacnia”',
-    verseRef: 'Flp 4, 13',
-    bio: 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.',
-    tags: ['Założyciel', 'Ewangelizacja', 'Christian Culture', 'Media', 'Administrator'],
-    photos: ['avatar_cezary_official.jpg', 'avatar_new1.jpg'],
-    visibility: 'public',
-    pin: '0455',
-    matchScore: '98%',
-    role: 'admin',
-    isAdmin: true,
-    isFounder: true,
-    posts: [
-        {
-            id: 'post_cezary_welcome',
-            author: 'Cezary Rogowski',
-            authorSlug: 'cezaryrgowski',
-            authorAvatar: 'avatar_cezary_official.jpg',
-            time: 'Przed chwilą • Założyciel 👑',
-            text: 'Szczęść Boże wszystkim! Witamy w społeczności chrześcijańskiej LUMINA. Budujmy relacje i wspierajmy się wzajemnie w Chrystusie! 🕊️✨',
-            likes: 48,
-            amen: 32,
-            image: 'avatar_cezary_official.jpg'
-        }
-    ]
-};
-
-export function setupAdminCezarySession() {
-    try {
-        localStorage.setItem('lumina_current_user', JSON.stringify(CEZARY_ADMIN_USER));
-        localStorage.setItem('lumina_current_user_profile', JSON.stringify(CEZARY_ADMIN_PROFILE));
-        localStorage.setItem('lumina_my_profile', JSON.stringify(CEZARY_ADMIN_PROFILE));
-        localStorage.setItem('lumina_profile_cezaryrgowski', JSON.stringify(CEZARY_ADMIN_PROFILE));
-        localStorage.setItem('lumina_user_session', 'active');
-        localStorage.setItem('lumina_user_email', 'nazirczarkes@gmail.com');
-        localStorage.setItem('lumina_current_user_slug', 'cezaryrgowski');
-        localStorage.setItem('lumina_admin', '1');
-        localStorage.setItem('lumina_auth_master_admin', 'true');
-        localStorage.setItem('lumina_auth_owner_cezaryrgowski', 'true');
-        sessionStorage.setItem('lumina_auth_owner_cezaryrgowski', 'true');
-        sessionStorage.setItem('lumina_auth_master_admin', 'true');
-        sessionStorage.setItem('lumina_private_access_cezaryrgowski', 'true');
-        
-        currentUserState = CEZARY_ADMIN_USER;
-        currentProfileState = CEZARY_ADMIN_PROFILE;
-
-        if (typeof document !== 'undefined' && document.body) {
-            document.body.classList.add('lumina-admin-mode');
-            document.body.classList.add('owner-mode-active');
-            const founderHub = document.getElementById('founderMissionHub');
-            if (founderHub) founderHub.classList.add('admin-active');
-        }
-
-        window.dispatchEvent(new CustomEvent('lumina-auth-state', { 
-            detail: { user: CEZARY_ADMIN_USER, profile: CEZARY_ADMIN_PROFILE } 
-        }));
-    } catch(e) {
-        console.warn('Error setting admin Cezary session:', e);
-    }
-}
-
-// Global exposure
-window.setupAdminCezarySession = setupAdminCezarySession;
-window.LuminaDB.setupAdminCezarySession = setupAdminCezarySession;
-window.LuminaDB.CEZARY_ADMIN_USER = CEZARY_ADMIN_USER;
-window.LuminaDB.CEZARY_ADMIN_PROFILE = CEZARY_ADMIN_PROFILE;
-
-// ── Andrzej Thiel Profile & Cuda Każdego Dnia ──
-export const ANDRZEJ_THIEL_PROFILE = {
-    uid: 'andrzejthiel',
-    id: 'andrzejthiel',
-    slug: 'andrzejthiel',
-    name: 'Andrzej Thiel',
-    displayName: 'Andrzej Thiel',
-    email: 'andrzej.thiel@christianculture.pl',
-    avatar: 'avatar_andrzej_thiel.jpg',
-    birthDate: '30 listopada 1955',
-    age: 70,
-    city: 'Sieradz, Polska',
-    status: 'Chrześcijanin',
-    job: 'Cuda Każdego Dnia 📖✨',
-    church: 'Wspólnota Chrześcijańska',
-    denom: 'Chrześcijanin',
-    verse: '„Trzymajcie się mnie. Trwajcie we mnie. Beze mnie nic uczynić nie możecie.”',
-    verseRef: 'J 15, 5',
-    bio: 'Co dzień publikuję na swoim profilu: Cuda Każdego Dnia, które automatycznie pojawiają się na tablicy społeczności. Przeczytaj i zobacz jak Bóg przemienia twoje życie.',
-    tags: ['Cuda Każdego Dnia', 'Wiara', 'Sieradz', 'Słowo Boże', 'Duch Święty', 'Rozważania'],
-    photos: ['avatar_andrzej_thiel.jpg', 'Andrzej Thiel.jpg'],
-    visibility: 'public',
-    pin: '7777',
-    matchScore: '99%',
-    isVerified: true,
-    profileUrl: 'lumina.andrzejthiel.html',
-    posts: [
-        {
-            id: 'post_andrzej_cuda_19_08_2026',
-            author: 'Andrzej Thiel',
-            authorSlug: 'andrzejthiel',
-            authorRole: 'Cuda Każdego Dnia 📖✨ • Sieradz',
-            authorAvatar: 'avatar_andrzej_thiel.jpg',
-            time: '19 SIERPNIA 2026 • 🕊️ Cuda Każdego Dnia',
-            title: 'CUDA KAŻDEGO DNIA! 19 SIERPNIA 2026. TO NIE DZIAŁA?',
-            text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nTO NIE DZIAŁA?\n\nNiedawno próbowałem uruchomić pewne urządzenie do sprzątania. Mimo, że wszystko z pozoru wyglądało na sprawne, niestety nie zadziałało. W końcu namierzyłem problem. Choć wtyczka tkwiła w kontakcie, urządzenie nie mogło działać, ponieważ poluzował się kabelek łączący je z zasilaniem. Dlaczego jest tak wielu rozczarowanych, zniechęconych chrześcijan? Ich argument najczęściej brzmi: „To nie działa”. Odwracają się i szukają czegoś innego… Znasz takie osoby?\n\nJezus tuż przed swoją śmiercią dał uczniom najważniejsze wskazówki. Powiedział, co mają robić, kiedy Jego już z nimi nie będzie. Wiedział, że pojawi się u nich niepewność, że stracą poczucie bezpieczeństwa, sytuacja ich przytłoczy. Że będą niezrozumiani, fałszywie oskarżani, że szybko ogarną ich wyczerpanie i słabość. Że doświadczą trudności, cierpienia, głodu, prześladowań, że mogą stracić z oczu Boga, którego plany rozminą się z ich wyobrażeniami. Dlatego stale i na nowo przypominał: „Trzymajcie się mnie. Trwajcie we mnie. Beze mnie nic uczynić nie możecie” (J.15,5).\n\nMoże też, zadajesz sobie to pytanie: „Czy to działa?”. Nie dostrzegasz Jego działania, nie widzisz odpowiedzi na swoje modlitwy? Zastanawiasz się, skąd inni, których podziwiasz, biorą siłę i radość w życiu? Jezus mówi, że tajemnicą sukcesu jest stałe połączenie z Nim. Trwanie w nieprzerwanym kontakcie. Tak jak to urządzenie – by zadziałało, musiało być podłączone do źródła mocy. Bez tego okazało się bezużyteczne. Jezus cię nie zostawi, bo wie, że bez Niego nie dasz rady. Bez Niego nic nie jest takie, jak ma być. Obiecał ci swojego Ducha, który będzie z tobą i w tobie: „Ja prosić będę Ojca i da wam innego Pocieszyciela, aby był z wami na wieki – Ducha Prawdy, którego świat przyjąć nie może, bo Go nie widzi i nie zna; wy Go znacie, bo przebywa wśród was i w was będzie” (J.14,16-17). Nie próbuj po swojemu, podłącz się dzisiaj do Niego. Niech popłynie Jego moc i wypełni energią każdą twoją komórkę.\n\n„Ojcze, wypełnij mnie na nowo obecnością Twojego Ducha. Dziękuję Ci, że On przypomina mi dzisiaj Twoje słowa o tym, że mam trwać w Tobie, że we wszystkim, co robię, potrzebuję Ciebie. Dziękuję, że dzięki Niemu możemy być w stałej łączności. Dziękuję, że niezależnie od moich uczuć, sytuacji, Ty w swojej łasce jesteś dzisiaj ze mną”. /opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
-            likes: 128,
-            amen: 114,
-            image: 'cuda_kazdego_dnia_mocy.svg'
-        }
-    ]
-};
-
-try {
-    localStorage.setItem('lumina_profile_andrzejthiel', JSON.stringify(ANDRZEJ_THIEL_PROFILE));
-    localStorage.setItem('lumina_profile_andrzej', JSON.stringify(ANDRZEJ_THIEL_PROFILE));
-} catch(e) {}
-
-window.LuminaDB.ANDRZEJ_THIEL_PROFILE = ANDRZEJ_THIEL_PROFILE;
-
-// Domyślnie użytkownik jest wylogowany (brak automatycznego logowania do sesji admina)
 let currentUserState = null;
 let currentProfileState = null;
-try {
-    const savedUser = localStorage.getItem('lumina_current_user');
-    if (savedUser) currentUserState = JSON.parse(savedUser);
-    const savedProf = localStorage.getItem('lumina_current_user_profile');
-    if (savedProf) currentProfileState = JSON.parse(savedProf);
-} catch(e) {}
-
 const authSubscribers = [];
 
 
@@ -374,65 +222,21 @@ if (auth) {
                     const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.includes('christianculture') || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
                     const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta'));
                     const cleanSlug = isCezary ? 'cezaryrgowski' : (isWioletta ? 'wiolettarogowska' : ('u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000)));
-                    const userAvatar = user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : 'avatar_new1.jpg'));
                     
                     currentProfileState = {
                         uid: user.uid,
                         slug: cleanSlug,
-                        name: user.displayName || (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')),
+                        name: user.displayName || (isCezary ? 'Cezary Rogowski' : 'Użytkownik LUMINA'),
                         email: user.email || '',
-                        avatar: userAvatar,
-                        age: isCezary ? 51 : (isWioletta ? 50 : 28),
-                        city: (isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska',
-                        status: isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler'),
-                        job: isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Członek Społeczności LUMINA ✨'),
-                        church: 'Wspólnota Chrześcijańska',
-                        denom: 'Rzymskokatolickie',
-                        verse: '„Wszystko mogę w Tym, który mnie umacnia”',
-                        verseRef: 'Flp 4, 13',
-                        bio: 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
-                        tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
-                        photos: [userAvatar],
-                        posts: [
-                            {
-                                id: 'post_' + Date.now(),
-                                author: user.displayName || (isCezary ? 'Cezary Rogowski' : 'Użytkownik LUMINA'),
-                                authorSlug: cleanSlug,
-                                authorAvatar: userAvatar,
-                                time: 'Przed chwilą • ✨ Witaj w LUMINA',
-                                text: 'Szczęść Boże wszystkim! Witam serdecznie w społeczności LUMINA. Niech Pan błogosławi nasze rozmowy i spotkania! 🕊️',
-                                likes: 2,
-                                amen: 1,
-                                image: userAvatar
-                            }
-                        ],
-                        visibility: 'public',
-                        pin: '7777',
-                        matchScore: '98%',
-                        createdAt: serverTimestamp(),
-                        updatedAt: serverTimestamp()
+                        avatar: user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : 'icon.png'),
+                        age: isCezary ? 51 : 28,
+                        city: isCezary ? 'Ostrowiec Świętokrzyski' : 'Polska',
+                        role: isCezary ? 'Założyciel Christian Culture' : 'Członek Społeczności LUMINA ✨',
+                        createdAt: new Date().toISOString()
                     };
-
-                    // Persist newly created profile to Firestore so it's guaranteed to exist
-                    if (db) {
-                        try {
-                            await setDoc(doc(db, 'lumina_profiles', user.uid), currentProfileState, { merge: true });
-                            if (cleanSlug && cleanSlug !== user.uid) {
-                                await setDoc(doc(db, 'lumina_profiles', cleanSlug), currentProfileState, { merge: true });
-                            }
-                            console.log(`Lumina: Automatycznie utworzono nowy profil Firestore dla użytkownika Google [${cleanSlug}] ☁️✨`);
-                        } catch(saveErr) {
-                            console.warn('Błąd automatycznego zapisu profilu Google w Firestore:', saveErr.message);
-                        }
-                    }
-
                     try {
                         localStorage.setItem('lumina_current_user_profile', JSON.stringify(currentProfileState));
                         localStorage.setItem('lumina_my_profile', JSON.stringify(currentProfileState));
-                        localStorage.setItem('lumina_profile_' + user.uid, JSON.stringify(currentProfileState));
-                        if (cleanSlug) localStorage.setItem('lumina_profile_' + cleanSlug, JSON.stringify(currentProfileState));
-                        sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
-                        if (cleanSlug) sessionStorage.setItem('lumina_auth_owner_' + cleanSlug, 'true');
                     } catch(e) {}
                 }
             } catch(e) {
@@ -531,39 +335,36 @@ export async function loginWithGoogle() {
         } catch(e) {}
 
         if (!existingProfile) {
-            const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.includes('christianculture') || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
-            const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta'));
-            const cleanSlug = isCezary ? 'cezaryrgowski' : (isWioletta ? 'wiolettarogowska' : ('u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000)));
-            const userAvatar = user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : 'avatar_new1.jpg'));
+            const cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000);
+            const userAvatar = user.photoURL || 'avatar_new1.jpg';
             
             existingProfile = {
                 uid: user.uid,
                 slug: cleanSlug,
-                name: user.displayName || (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')),
+                name: user.displayName || 'Użytkownik LUMINA',
                 email: user.email || '',
-                age: isCezary ? 51 : (isWioletta ? 50 : 28),
-                city: (isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska',
-                gender: isWioletta ? 'kobieta' : (isCezary ? 'mezczyzna' : 'kobieta'),
-                lookingFor: isWioletta ? 'mezczyzna' : 'kobieta',
+                age: 28,
+                city: 'Warszawa, Polska',
+                gender: 'kobieta',
+                lookingFor: 'mezczyzna',
                 denom: 'Rzymskokatolickie',
                 church: 'Wspólnota Chrześcijańska',
-                job: isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Społeczność LUMINA ✨'),
-                status: isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler'),
-                verse: isCezary ? '„Ja i mój dom służyć będziemy Panu.”' : (isWioletta ? '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.”' : '„Wszystko mogę w Tym, który mnie umacnia”'),
-                verseRef: isCezary ? '— Księga Jozuego 24, 15' : (isWioletta ? '— Przypowieści Salomona 31, 10' : 'Flp 4, 13'),
-                bio: isCezary ? 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture.' : (isWioletta ? 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej rodziny zakorzenionej w Bogu.' : 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.'),
+                job: 'Społeczność LUMINA ✨',
+                status: 'Panna/Kawaler',
+                verse: '„Wszystko mogę w Tym, który mnie umacnia”',
+                verseRef: 'Flp 4, 13',
+                bio: 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
                 avatar: userAvatar,
                 cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
                 visibility: 'public',
                 pin: '7777',
-                matchScore: '98%',
                 tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
                 photos: [userAvatar],
                 posts: [
                     {
                         id: 'post_' + Date.now(),
-                        author: user.displayName || (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')),
+                        author: user.displayName || 'Użytkownik LUMINA',
                         authorSlug: cleanSlug,
                         authorAvatar: userAvatar,
                         time: 'Przed chwilą • ✨ Witaj w LUMINA',
@@ -995,15 +796,6 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
         profileData.status = 'Mężatka';
         profileData.name = 'Wioletta Rogowska';
     }
-    if (cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) {
-        profileData.age = 70;
-        profileData.birthDate = '30 listopada 1955';
-        profileData.city = 'Sieradz, Polska';
-        profileData.avatar = 'avatar_andrzej_thiel.jpg';
-        profileData.status = 'Chrześcijanin';
-        profileData.name = 'Andrzej Thiel';
-        profileData.job = 'Cuda Każdego Dnia 📖✨';
-    }
 
     // Save to localStorage under all relevant keys
     try {
@@ -1037,76 +829,6 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
         console.warn(`Lumina: Błąd zapisu profilu [${slugOrUid}] w Firestore:`, err.message);
     }
     return profileData;
-}
-
-export async function deleteProfileFromCloud(slugOrUid) {
-    if (!slugOrUid) return false;
-    const cleanSlug = slugOrUid.toLowerCase();
-    
-    // Clear local storage
-    try {
-        localStorage.removeItem(`lumina_profile_${slugOrUid}`);
-        localStorage.removeItem(`lumina_profile_${cleanSlug}`);
-        sessionStorage.removeItem(`lumina_auth_owner_${slugOrUid}`);
-        sessionStorage.removeItem(`lumina_auth_owner_${cleanSlug}`);
-        window.dispatchEvent(new Event('storage'));
-    } catch(e) {}
-
-    // Delete from Firestore
-    if (db) {
-        try {
-            await deleteDoc(doc(db, 'lumina_profiles', slugOrUid));
-            if (cleanSlug !== slugOrUid) {
-                await deleteDoc(doc(db, 'lumina_profiles', cleanSlug));
-            }
-            console.log(`Lumina: Profil [${slugOrUid}] został usunięty z bazy danych.`);
-        } catch(err) {
-            console.warn(`Błąd usuwania profilu [${slugOrUid}] z Firestore:`, err.message);
-        }
-    }
-    return true;
-}
-
-export async function setProfileBlockStatus(slugOrUid, isBlocked, reason = 'Zablokowany przez Administratora Portalu') {
-    if (!slugOrUid) return false;
-    const cleanSlug = slugOrUid.toLowerCase();
-    
-    // Update local cache
-    try {
-        let cached = localStorage.getItem(`lumina_profile_${slugOrUid}`) || localStorage.getItem(`lumina_profile_${cleanSlug}`);
-        if (cached) {
-            const parsed = JSON.parse(cached);
-            parsed.isBlocked = !!isBlocked;
-            parsed.blockedReason = reason;
-            parsed.blockedAt = new Date().toISOString();
-            localStorage.setItem(`lumina_profile_${slugOrUid}`, JSON.stringify(parsed));
-            localStorage.setItem(`lumina_profile_${cleanSlug}`, JSON.stringify(parsed));
-        }
-        if (isBlocked) {
-            await blockUser(slugOrUid);
-        } else {
-            unblockUser(slugOrUid);
-        }
-    } catch(e) {}
-
-    // Update in Firestore
-    if (db) {
-        try {
-            const updatePayload = {
-                isBlocked: !!isBlocked,
-                blockedReason: reason,
-                blockedAt: isBlocked ? serverTimestamp() : null,
-                updatedAt: serverTimestamp()
-            };
-            await updateDoc(doc(db, 'lumina_profiles', slugOrUid), updatePayload);
-            if (cleanSlug !== slugOrUid) {
-                try { await updateDoc(doc(db, 'lumina_profiles', cleanSlug), updatePayload); } catch(e) {}
-            }
-        } catch(err) {
-            console.warn(`Błąd aktualizacji statusu blokady [${slugOrUid}]:`, err.message);
-        }
-    }
-    return true;
 }
 
 export function subscribeToAllCommunityProfiles(onUpdate) {
@@ -1169,18 +891,6 @@ export function subscribeToAllCommunityProfiles(onUpdate) {
                     }
                 }
 
-                // Żelazne wymuszenie i samonaprawa danych Andrzeja Thiela (70 lat, Sieradz)
-                if (slugLower.includes('andrzej') || nameLower.includes('andrzej')) {
-                    p.name = 'Andrzej Thiel';
-                    p.age = 70;
-                    p.birthDate = '30 listopada 1955';
-                    p.city = 'Sieradz, Polska';
-                    p.avatar = 'avatar_andrzej_thiel.jpg';
-                    p.status = 'Chrześcijanin';
-                    p.job = 'Cuda Każdego Dnia 📖✨';
-                    p.profileUrl = 'lumina.andrzejthiel.html';
-                }
-
                 profiles.push(p);
             });
             onUpdate(profiles);
@@ -1195,15 +905,60 @@ export function subscribeToAllCommunityProfiles(onUpdate) {
 // 3. FEED & POSTS REALTIME SYNC (Tablica Społeczności 1:1)
 // ══════════════════════════════════════════════════════════════════════════
 
+function mergeWithCorePosts(cloudPosts) {
+    const corePosts = (typeof window !== 'undefined' && typeof window.getAllCommunityPosts === 'function')
+        ? window.getAllCommunityPosts()
+        : [];
+    
+    if (corePosts.length === 0 && typeof window !== 'undefined' && window.PROFILES_DB) {
+        Object.values(window.PROFILES_DB).forEach(prof => {
+            if (Array.isArray(prof.posts)) {
+                prof.posts.forEach(p => {
+                    corePosts.push({
+                        ...p,
+                        author: p.author || prof.name,
+                        authorAvatar: p.authorAvatar || prof.avatar,
+                        authorSlug: p.authorSlug || prof.slug,
+                        authorRole: p.authorRole || prof.job || prof.role,
+                        likes: p.likes || 1,
+                        amen: p.amen || 0
+                    });
+                });
+            }
+        });
+    }
+
+    const merged = [...(cloudPosts || [])];
+    const seenIds = new Set(merged.map(p => p.id).filter(Boolean));
+    const seenTexts = new Set(merged.map(p => (p.text || '').slice(0, 50)).filter(Boolean));
+
+    corePosts.forEach(cp => {
+        const textKey = (cp.text || '').slice(0, 50);
+        if ((!cp.id || !seenIds.has(cp.id)) && (!textKey || !seenTexts.has(textKey))) {
+            merged.push(cp);
+            if (cp.id) seenIds.add(cp.id);
+            if (textKey) seenTexts.add(textKey);
+        }
+    });
+
+    return merged;
+}
+
 export function subscribeToFeedPosts(onUpdate) {
     try {
         const localCached = localStorage.getItem('lumina_cloud_posts_cache');
-        if (localCached) {
-            onUpdate(JSON.parse(localCached));
+        const initialList = localCached ? JSON.parse(localCached) : [];
+        const mergedInitial = mergeWithCorePosts(initialList);
+        if (mergedInitial.length > 0) {
+            onUpdate(mergedInitial);
         }
     } catch(e) {}
 
-    if (!db) return () => {};
+    if (!db) {
+        const fallbackMerged = mergeWithCorePosts([]);
+        onUpdate(fallbackMerged);
+        return () => {};
+    }
 
     try {
         const postsQuery = query(
@@ -1221,16 +976,22 @@ export function subscribeToFeedPosts(onUpdate) {
                 });
             });
 
+            const merged = mergeWithCorePosts(cloudPosts);
+
             try {
-                localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(cloudPosts));
+                localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(merged));
             } catch(e) {}
 
-            onUpdate(cloudPosts);
+            onUpdate(merged);
         }, (err) => {
-            console.warn('Lumina Realtime Feed error:', err.message);
+            console.warn('Lumina Realtime Feed notice:', err.message);
+            const fallbackMerged = mergeWithCorePosts([]);
+            onUpdate(fallbackMerged);
         });
     } catch(err) {
         console.warn('subscribeToFeedPosts error:', err);
+        const fallbackMerged = mergeWithCorePosts([]);
+        onUpdate(fallbackMerged);
         return () => {};
     }
 }
@@ -1370,6 +1131,7 @@ export function getAuthorPosts(authorSlug, authorName) {
             if (cleanSlug.includes('cezary') && (pAuthor.includes('cezary') || pSlug.includes('cezary'))) isMatch = true;
             if (cleanSlug.includes('wioletta') && (pAuthor.includes('wioletta') || pSlug.includes('wioletta'))) isMatch = true;
             if ((cleanSlug.includes('women') || cleanSlug.includes('ccwomen')) && (pAuthor.includes('women') || pSlug.includes('women'))) isMatch = true;
+            if (cleanSlug.includes('andrzej') && (pAuthor.includes('andrzej') || pSlug.includes('andrzej'))) isMatch = true;
         }
         if (cleanName && (pAuthor.includes(cleanName) || cleanName.includes(pAuthor))) {
             isMatch = true;
@@ -1390,6 +1152,7 @@ export function getAuthorPosts(authorSlug, authorName) {
         const rawProfile = localStorage.getItem(`lumina_profile_${authorSlug}`) || 
                            (cleanSlug.includes('cezary') ? localStorage.getItem('lumina_profile_cezaryrgowski') : null) ||
                            (cleanSlug.includes('wioletta') ? localStorage.getItem('lumina_profile_wiolettarogowska') : null) ||
+                           (cleanSlug.includes('andrzej') ? localStorage.getItem('lumina_profile_andrzejthiel') : null) ||
                            ((cleanSlug.includes('women') || cleanSlug.includes('ccwomen')) ? localStorage.getItem('lumina_profile_u_ccwomen_9055') : null);
         if (rawProfile) {
             const pObj = JSON.parse(rawProfile);
@@ -1418,6 +1181,12 @@ export function getAuthorPosts(authorSlug, authorName) {
     // D. From in-memory cloud feed
     if (window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts)) {
         window.cloudFeedPosts.forEach(addIfMatch);
+    }
+
+    // E. From static PROFILES_DB
+    if (window.PROFILES_DB && (window.PROFILES_DB[cleanSlug] || window.PROFILES_DB[authorSlug])) {
+        const fallbackProf = window.PROFILES_DB[cleanSlug] || window.PROFILES_DB[authorSlug];
+        if (Array.isArray(fallbackProf.posts)) fallbackProf.posts.forEach(addIfMatch);
     }
 
     // Sort newest first
@@ -1560,47 +1329,29 @@ export function subscribeToCoffeeInvites(userId, callback) {
         }
     } catch(e) {}
 
-    // 2. Realtime nasłuch z chmury Firestore (bez złożonego indeksu composite)
+    // 2. Realtime nasłuch z chmury Firestore
     if (!db) return () => {};
     try {
         const chatsQuery = query(
             collection(db, 'lumina_chats'),
             where('users', 'array-contains', userId),
-            limit(40)
+            orderBy('lastMessageTimestamp', 'desc'),
+            limit(15)
         );
         return onSnapshot(chatsQuery, (snap) => {
-            const list = [];
             snap.forEach(docSnap => {
                 const data = docSnap.data();
                 if (data.lastMessageText && data.lastMessageText.includes('☕') && data.lastSenderId !== userId) {
-                    list.push({
+                    callback({
                         id: docSnap.id,
                         senderId: data.lastSenderId,
                         senderName: data.lastSenderName || 'Użytkownik LUMINA',
                         senderAvatar: data.lastSenderAvatar || 'avatar_new1.jpg',
                         note: data.lastMessageText,
-                        status: 'pending_invitation',
-                        lastMessageTimestamp: data.lastMessageTimestamp
+                        status: 'pending_invitation'
                     });
                 }
             });
-
-            if (list.length > 0) {
-                // Posortuj najnowsze na wierzchu
-                list.sort((a, b) => {
-                    const getTs = (item) => {
-                        if (!item || !item.lastMessageTimestamp) return 0;
-                        if (typeof item.lastMessageTimestamp === 'number') return item.lastMessageTimestamp;
-                        if (item.lastMessageTimestamp.seconds) return item.lastMessageTimestamp.seconds * 1000;
-                        if (typeof item.lastMessageTimestamp.toDate === 'function') return item.lastMessageTimestamp.toDate().getTime();
-                        return 0;
-                    };
-                    return getTs(b) - getTs(a);
-                });
-                callback(list[0]);
-            }
-        }, (err) => {
-            console.warn('Lumina Coffee Invites listener notice:', err.message);
         });
     } catch(e) {
         return () => {};
@@ -1730,24 +1481,13 @@ export function subscribeToUserChats(userId, onUpdate) {
         const chatsQuery = query(
             collection(db, 'lumina_chats'),
             where('users', 'array-contains', userId),
-            limit(40)
+            orderBy('lastMessageTimestamp', 'desc'),
+            limit(30)
         );
         return onSnapshot(chatsQuery, (snap) => {
             const chats = [];
             snap.forEach(d => chats.push({ id: d.id, ...d.data() }));
-            chats.sort((a, b) => {
-                const getTs = (item) => {
-                    if (!item || !item.lastMessageTimestamp) return 0;
-                    if (typeof item.lastMessageTimestamp === 'number') return item.lastMessageTimestamp;
-                    if (item.lastMessageTimestamp.seconds) return item.lastMessageTimestamp.seconds * 1000;
-                    if (typeof item.lastMessageTimestamp.toDate === 'function') return item.lastMessageTimestamp.toDate().getTime();
-                    return 0;
-                };
-                return getTs(b) - getTs(a);
-            });
             onUpdate(chats);
-        }, (err) => {
-            console.warn('Lumina User Chats listener notice:', err.message);
         });
     } catch(e) {
         return () => {};
@@ -1844,8 +1584,6 @@ export function subscribeToUserMatches(userId, onUpdate) {
             const matches = [];
             snap.forEach(d => matches.push({ id: d.id, ...d.data() }));
             onUpdate(matches);
-        }, (err) => {
-            console.warn('Lumina Matches listener notice:', err.message);
         });
     } catch(e) {
         return () => {};
@@ -2099,8 +1837,6 @@ window.LuminaDB = {
     getCurrentProfile,
     subscribeToProfile,
     saveProfileToCloud,
-    deleteProfileFromCloud,
-    setProfileBlockStatus,
     subscribeToAllCommunityProfiles,
     subscribeToFeedPosts,
     addPostToCloud,

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
 
@@ -17,6 +17,10 @@
                     window.location.replace('lumina.cezaryrgowski.html' + (window.location.hash || ''));
                     return;
                 }
+                if (slug === 'andrzejthiel' || slug === 'andrzej' || slug === 'thiel') {
+                    window.location.replace('lumina.andrzejthiel.html' + (window.location.hash || ''));
+                    return;
+                }
                 if (slug === 'wiolettarogowska' || slug === 'wioletta') {
                     window.location.replace('lumina.wiolettarogowska.html' + (window.location.hash || ''));
                     return;
@@ -27,10 +31,6 @@
                 }
                 if (slug === 'osobowoscplus') {
                     window.location.replace('lumina.osobowoscplus.html' + (window.location.hash || ''));
-                    return;
-                }
-                if (slug.includes('andrzejthiel') || slug.includes('andrzej') || slug.includes('thiel')) {
-                    window.location.replace('lumina.andrzejthiel.html' + (window.location.hash || ''));
                     return;
                 }
             } catch(e) {}
@@ -116,13 +116,10 @@
         })();
     </script>
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786937913306"></script>
+    <script type="module" src="lumina-db.js?v=1786940468365"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
     <script type="module" src="lumina-i18n.js?v=1786850740820"></script>
-    <script src="lumina-terms-modal.js?v=1.0"></script>
-    <script src="lumina-sharing-suite.js?v=1.0"></script>
-    <script src="lumina-pwa-installer.js?v=3.2"></script>
 
     <style>
         :root {
@@ -157,22 +154,16 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 28px;
-            background: rgba(7, 14, 36, 0.88);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            padding: 12px 48px;
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
         }
 
         .nav-logo-text {
-            font-family: 'Outfit', sans-serif;
             font-size: 1.35rem;
             font-weight: 800;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, #fff 40%, var(--gold-accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            letter-spacing: 1.2px;
+            color: #1e293b;
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -182,69 +173,54 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 28px;
         }
 
         .nav-link {
             background: none;
             border: none;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+            color: #475569;
+            font-size: 0.92rem;
             font-weight: 600;
             cursor: pointer;
             font-family: inherit;
-            transition: all 0.2s;
+            transition: color 0.2s;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 12px;
-            border-radius: 20px;
         }
-        .nav-link:hover, .nav-link.active {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.06);
-        }
+        .nav-link:hover, .nav-link.active { color: #2563eb; }
 
         /* Mini Radio Pill in Navbar */
         .nav-radio-pill {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(17, 35, 80, 0.8);
-            border: 1px solid rgba(250, 204, 21, 0.35);
-            padding: 5px 12px;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border: 1px solid #fde047;
+            padding: 5px 12px 5px 8px;
             border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(250, 204, 21, 0.15);
-            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(250, 204, 21, 0.2);
+            transition: transform 0.2s;
         }
-        .nav-radio-pill:hover {
-            border-color: var(--gold-accent);
-            box-shadow: 0 0 15px rgba(250, 204, 21, 0.3);
-        }
+        .nav-radio-pill:hover { transform: scale(1.03); }
         .nav-radio-play {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--gold-accent), #eab308);
-            color: #0f172a;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.72rem;
-            cursor: pointer;
+            width: 26px; height: 26px; border-radius: 50%;
+            background: #eab308; color: #fff; border: none;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; cursor: pointer;
         }
         .nav-radio-info { display: flex; flex-direction: column; text-align: left; }
-        .nav-radio-title { font-size: 0.76rem; font-weight: 800; color: #fff; line-height: 1.1; }
-        .nav-radio-sub { font-size: 0.65rem; color: var(--gold-accent); }
+        .nav-radio-title { font-size: 0.76rem; font-weight: 800; color: #78350f; line-height: 1.1; }
+        .nav-radio-sub { font-size: 0.62rem; color: #b45309; }
 
         .btn-nav-back {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
             color: #fff;
-            padding: 8px 18px;
+            border: none;
+            padding: 9px 20px;
             border-radius: 30px;
             font-weight: 700;
             font-size: 0.85rem;
@@ -253,14 +229,11 @@
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
+            gap: 7px;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .btn-nav-back:hover {
-            background: rgba(255, 255, 255, 0.18);
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateX(-2px);
-        }
+        .btn-nav-back:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); }
 
         @media (max-width: 900px) {
             .lumina-nav { padding: 10px 16px; }
@@ -566,6 +539,8 @@
             display: none;
             align-items: center;
             justify-content: space-between;
+            align-items: center;
+            justify-content: space-between;
             background: rgba(11, 24, 56, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 16px;
@@ -606,99 +581,6 @@
             border-color: #22c55e;
             color: #86efac;
             box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
-        }
-
-        /* ── Master Admin Command HUD Bar ── */
-        .admin-master-hud {
-            display: none;
-            background: linear-gradient(135deg, rgba(17, 24, 39, 0.95), rgba(30, 27, 75, 0.95));
-            border: 1.5px solid rgba(250, 204, 21, 0.5);
-            border-radius: 18px;
-            padding: 14px 20px;
-            margin: 16px 0 20px 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(250, 204, 21, 0.15);
-            animation: fadeIn 0.3s ease;
-        }
-        .admin-master-hud.active {
-            display: block !important;
-        }
-        .admin-hud-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 12px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            flex-wrap: wrap;
-        }
-        .admin-hud-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 800;
-            font-size: 1.05rem;
-            color: #facc15;
-        }
-        .admin-hud-actions-grid {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .admin-hud-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
-            text-decoration: none;
-            color: #ffffff;
-        }
-        .admin-hud-btn:hover {
-            transform: translateY(-2px);
-        }
-        .admin-hud-btn.btn-primary-edit {
-            background: linear-gradient(135deg, #a855f7, #3b82f6);
-            box-shadow: 0 4px 14px rgba(168, 85, 247, 0.4);
-        }
-        .admin-hud-btn.btn-media {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .admin-hud-btn.btn-media:hover {
-            background: rgba(255, 255, 255, 0.18);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-        .admin-hud-btn.btn-block-prof {
-            background: rgba(245, 158, 11, 0.18);
-            border: 1px solid #f59e0b;
-            color: #fde68a;
-        }
-        .admin-hud-btn.btn-block-prof:hover {
-            background: rgba(245, 158, 11, 0.35);
-        }
-        .admin-hud-btn.btn-delete-prof {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid #ef4444;
-            color: #fca5a5;
-        }
-        .admin-hud-btn.btn-delete-prof:hover {
-            background: #ef4444;
-            color: #fff;
-            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
-        }
-        .admin-hud-btn.btn-exit-admin {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #cbd5e1;
         }
 
         /* ── Post Action Buttons (Edit & Delete) ── */
@@ -1711,21 +1593,21 @@
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786937913306">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786939633464">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
-    <link rel="stylesheet" href="css/lumina-theme.css?v=1786937908032">
-    <link rel="stylesheet" href="css/lumina-components.css?v=1786937908032">
-    <link rel="stylesheet" href="css/lumina-profile.css?v=1786937908032">
+    <link rel="stylesheet" href="css/lumina-theme.css?v=1786941394472">
+    <link rel="stylesheet" href="css/lumina-components.css?v=1786941394472">
+    <link rel="stylesheet" href="css/lumina-profile.css?v=1786951604399">
     <link rel="stylesheet" href="css/lumina-feed.css?v=1786937908032">
     <link rel="stylesheet" href="css/lumina-modals.css?v=1786937908032">
     
     <script type="module" src="js/lumina-db-profiles.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-actions.js?v=1786937908032"></script>
-    <script type="module" src="lumina-security.js?v=2.2"></script>
-    <script type="module" src="js/lumina-editor.js?v=1786937908032"></script>
-    <script type="module" src="lumina-admin-profile-suite.js?v=2.0"></script>
+    <script type="module" src="js/lumina-editor.js?v=1786938148537"></script>
     <script type="module" src="js/lumina-feed.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-search.js?v=1786937908032"></script>
+    <script src="js/lumina-radio.js?v=1786970525527"></script>
+    <script src="js/lumina-presence.js?v=1786993322235"></script>
 </head>
 <body>
 
@@ -1773,51 +1655,6 @@
     <!-- ══════════ PROFILE CONTAINER ══════════ -->
     <main class="profile-container">
         
-        <!-- Blocked Profile Notification Banner -->
-        <div id="profileBlockedBanner" style="display:none; align-items:center; gap:14px; background:linear-gradient(90deg, #7f1d1d, #991b1b); border:1.5px solid #ef4444; border-radius:16px; padding:14px 20px; margin:16px 0; color:#fee2e2; box-shadow:0 8px 24px rgba(239,68,68,0.35);">
-            <i class="fa-solid fa-triangle-exclamation" style="font-size:1.8rem; color:#fca5a5;"></i>
-            <div style="flex:1;">
-                <div style="font-weight:900; font-size:0.95rem; text-transform:uppercase; letter-spacing:0.5px; color:#fff;">Profil Zablokowany przez Administratora Portalu</div>
-                <div style="font-size:0.84rem; margin-top:2px; color:#fecaca;" id="profileBlockedReasonText">Powód: Konto zostało zablokowane ze względów bezpieczeństwa.</div>
-            </div>
-        </div>
-
-        <!-- Master Administrator Command HUD Bar (Pełna Kontrola) -->
-        <div class="admin-master-hud" id="adminMasterHud">
-            <div class="admin-hud-header">
-                <div class="admin-hud-title">
-                    <i class="fa-solid fa-crown" style="font-size: 1.3rem;"></i>
-                    <span>Panel Dowódcy • Pełne Zarządzanie Profilem: <b id="adminTargetNameEl" style="color:#fff;">...</b></span>
-                </div>
-                <div style="font-size: 0.76rem; color: #94a3b8; font-weight: 600;">
-                    <i class="fa-solid fa-shield-check" style="color:#22c55e;"></i> Master Administrator LUMINA
-                </div>
-            </div>
-            <div class="admin-hud-actions-grid">
-                <button type="button" class="admin-hud-btn btn-primary-edit" onclick="openEditProfileModal()" title="Edytuj wszystkie pola profilu">
-                    <i class="fa-solid fa-pen-to-square"></i> Edytuj Wszystkie Dane
-                </button>
-                <button type="button" class="admin-hud-btn btn-media" onclick="document.getElementById('avatarFileInput').click()" title="Wgraj nowe zdjęcie profilowe">
-                    <i class="fa-solid fa-camera" style="color:#60a5fa;"></i> Zmień Avatar
-                </button>
-                <button type="button" class="admin-hud-btn btn-media" onclick="document.getElementById('coverFileInput').click()" title="Wgraj nowe zdjęcie w tle">
-                    <i class="fa-solid fa-panorama" style="color:#c084fc;"></i> Zmień Tło
-                </button>
-                <button type="button" class="admin-hud-btn btn-media" onclick="document.getElementById('galleryFileInput').click()" title="Dodaj zdjęcia do galerii">
-                    <i class="fa-solid fa-images" style="color:#86efac;"></i> Dodaj do Galerii
-                </button>
-                <button type="button" class="admin-hud-btn btn-block-prof" id="btnAdminBlockProfile" onclick="toggleBlockCurrentProfileAdmin()" title="Zablokuj lub odblokuj ten profil">
-                    <i class="fa-solid fa-ban"></i> <span id="btnAdminBlockProfileLabel">Zablokuj Profil</span>
-                </button>
-                <button type="button" class="admin-hud-btn btn-delete-prof" onclick="deleteCurrentProfileAdmin()" title="Trwale usuń ten profil z bazy LUMINA">
-                    <i class="fa-solid fa-trash-can"></i> Usuń Profil
-                </button>
-                <button type="button" class="admin-hud-btn btn-exit-admin" onclick="toggleOwnerAuthMode()" title="Wyjdź z trybu Administratora">
-                    <i class="fa-solid fa-lock"></i> Zablokuj Tryb Admina
-                </button>
-            </div>
-        </div>
-
         <!-- Security & Owner Access Bar -->
         <div class="profile-security-bar" id="profileSecurityBar">
             <div class="security-status-left">
@@ -1826,7 +1663,7 @@
             </div>
             <div class="security-status-right">
                 <button class="btn-security-toggle" id="btnOwnerAuthToggle" onclick="toggleOwnerAuthMode()">
-                    <i class="fa-solid fa-key" id="btnOwnerAuthIcon"></i> <span id="btnOwnerAuthLabel">Autoryzacja Administratora</span>
+                    <i class="fa-solid fa-key" id="btnOwnerAuthIcon"></i> <span id="btnOwnerAuthLabel">Odblokuj Tryb Właściciela</span>
                 </button>
             </div>
         </div>
@@ -2726,14 +2563,13 @@
             'tomek': {
                 name: 'Tomasz',
                 age: '31',
-                city: 'Gdańsk, Polska',
+                city: 'Kraków, Polska',
                 avatar: 'avatar_widget_tomek.jpg',
                 cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
                 job: 'Inżynier Środowiska',
                 church: 'Wspólnota Mężczyzn św. Józefa',
                 denom: 'Chrześcijanin',
-                status: 'Kawaler',
                 pin: '7777',
                 visibility: 'public',
                 match: '94%',
@@ -2752,276 +2588,6 @@
                         image: 'lumina_default_cover.jpg'
                     }
                 ]
-            },
-            'noemi': {
-                name: 'Noemi',
-                age: '28',
-                city: 'Wrocław, Polska',
-                avatar: 'avatar_noemi.jpg',
-                cover: 'lumina_default_cover.jpg',
-                coverPosY: '50%',
-                job: 'Psycholog & Pedagog',
-                church: 'Wspólnota Uwielbienia Wrocław',
-                denom: 'Rzymskokatolickie',
-                status: 'Panna',
-                pin: '7777',
-                visibility: 'public',
-                match: '96%',
-                verse: '„Pan moim pasterzem, nie brak mi niczego.”',
-                verseRef: '— Psalm 23, 1',
-                bio: 'Spokój, las i głębokie rozmowy o Bogu przy herbacie. Szukam bratniej duszy i mężczyzny o ukształtowanym sercu do wspólnego budowania życia.',
-                tags: ['Góry', 'Psychologia', 'Muzyka Chwały', 'Herbata', 'Modlitwa'],
-                photos: ['avatar_noemi.jpg', 'lumina_default_cover.jpg'],
-                posts: [
-                    {
-                        id: 'post_noemi_1',
-                        author: 'Noemi',
-                        time: 'Wczoraj • 🌿 Spokój',
-                        text: 'Poranna modlitwa w lesie przynosi najgłębszy pokój. Dziękuję Bogu za każdy dar nowego dnia! 🌸',
-                        likes: 31,
-                        amen: 18,
-                        image: 'avatar_noemi.jpg'
-                    }
-                ]
-            },
-            'dawid': {
-                name: 'Dawid',
-                age: '30',
-                city: 'Poznań, Polska',
-                avatar: 'avatar_sara.jpg',
-                cover: 'lumina_default_cover.jpg',
-                coverPosY: '50%',
-                job: 'Architekt & Projektant',
-                church: 'Wspólnota Młodych Poznań',
-                denom: 'Chrześcijanin',
-                status: 'Kawaler',
-                pin: '7777',
-                visibility: 'public',
-                match: '93%',
-                verse: '„Jeżeli Pan domu nie zbuduje, na próżno trudzą się ci, którzy go wznoszą.”',
-                verseRef: '— Psalm 127, 1',
-                bio: 'Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu, prawdzie i żywej wierze w Chrystusa.',
-                tags: ['Architektura', 'Gitara', 'Uwielbienie', 'Sport', 'Biblia'],
-                photos: ['avatar_sara.jpg', 'lumina_default_cover.jpg'],
-                posts: [
-                    {
-                        id: 'post_dawid_1',
-                        author: 'Dawid',
-                        time: '2 dni temu • 📐 Pasja',
-                        text: 'Projektowanie z myślą o Bogu daje zupełnie nową perspektywę na przestrzeń i harmonię! ✨',
-                        likes: 19,
-                        amen: 12,
-                        image: 'avatar_sara.jpg'
-                    }
-                ]
-            },
-            'weronika': {
-                name: 'Weronika',
-                age: '25',
-                city: 'Kraków, Polska',
-                avatar: 'avatar_widget_ania.jpg',
-                cover: 'lumina_default_cover.jpg',
-                coverPosY: '50%',
-                job: 'Graficzka & Fotografka',
-                church: 'Duszpasterstwo Akademickie Kraków',
-                denom: 'Rzymskokatolickie',
-                status: 'Panna',
-                pin: '7777',
-                visibility: 'public',
-                match: '97%',
-                verse: '„Wszystko, co czynicie, z miłością czyńcie!”',
-                verseRef: '— 1 Kor 16, 14',
-                bio: 'Graficzka z zamiłowaniem do sztuki, fotografii i piękna Bożego stworzenia. Szukam szczerej relacji opartej na wierze i wzajemnym szacunku.',
-                tags: ['Fotografia', 'Design', 'Malarstwo', 'Kraków', 'Kawa'],
-                photos: ['avatar_widget_ania.jpg', 'lumina_default_cover.jpg'],
-                posts: [
-                    {
-                        id: 'post_weronika_1',
-                        author: 'Weronika',
-                        time: 'Dzisiaj • 🎨 Sztuka & Wiara',
-                        text: 'Piękno natury jest najwspanialszym odbiciem Bożej miłości. Pozdrowienia z Krakowa! 🕊️',
-                        likes: 27,
-                        amen: 15,
-                        image: 'avatar_widget_ania.jpg'
-                    }
-                ]
-            },
-            'anna': {
-                name: 'Anna',
-                age: '28',
-                city: 'Warszawa, Polska',
-                avatar: 'avatar_widget_ania.jpg',
-                cover: 'lumina_default_cover.jpg',
-                coverPosY: '50%',
-                job: 'Nauczycielka Języków Obcych',
-                church: 'Wspólnota Emmanuel Warszawa',
-                denom: 'Chrześcijanka',
-                status: 'Panna',
-                pin: '7777',
-                visibility: 'public',
-                match: '94%',
-                verse: '„Miłość cierpliwa jest, łaskawa jest...”',
-                verseRef: '— 1 Kor 13, 4',
-                bio: 'Uwielbia podróże, literaturę i sztukę. Szukam kogoś do wspólnego odkrywania świata w świetle Bożych wartości.',
-                tags: ['Języki Obce', 'Podróże', 'Książki', 'Wolontariat'],
-                photos: ['avatar_widget_ania.jpg', 'lumina_default_cover.jpg'],
-                posts: [
-                    {
-                        id: 'post_anna_1',
-                        author: 'Anna',
-                        time: 'Wczoraj • 📚 Inspiracja',
-                        text: 'Wspaniały czas rekolekcji i wyciszenia serca. Życzę wszystkim Bożego błogosławieństwa! ✨',
-                        likes: 25,
-                        amen: 14,
-                        image: 'avatar_widget_ania.jpg'
-                    }
-                ]
-            },
-            'piotr': {
-                name: 'Piotr',
-                age: '31',
-                city: 'Kraków, Polska',
-                avatar: 'lumina_piotr2.jpg',
-                cover: 'lumina_default_cover.jpg',
-                coverPosY: '50%',
-                job: 'Programista & Przewodnik Górski',
-                church: 'Męska Grupa Modlitewna',
-                denom: 'Chrześcijanin',
-                status: 'Kawaler',
-                pin: '7777',
-                visibility: 'public',
-                match: '88%',
-                verse: '„Wznoszę swe oczy ku górom: skądże nadejdzie mi pomoc? Pomoc moja od Pana!”',
-                verseRef: '— Psalm 121, 1-2',
-                bio: 'Szuka spontanicznych przygód i górskich wypraw. Entuzjasta wspinaczki i głębokich rozmów o sensie życia i wierności Bogu.',
-                tags: ['Góry', 'Tatry', 'IT', 'Wspinaczka', 'Biblia'],
-                photos: ['lumina_piotr2.jpg', 'lumina_default_cover.jpg'],
-                posts: [
-                    {
-                        id: 'post_piotr_1',
-                        author: 'Piotr',
-                        time: '3 dni temu • 🏔️ Szczyt',
-                        text: 'Na szczycie Tatr człowiek czuje potęgę Stwórcy. Wspaniały czas wyciszenia! ⛰️',
-                        likes: 34,
-                        amen: 20,
-                        image: 'lumina_piotr2.jpg'
-                    }
-                ]
-            },
-            'julia': {
-                name: 'Julia',
-                age: '26',
-                city: 'Gdańsk, Polska',
-                avatar: 'lumina_julia2.jpg',
-                cover: 'lumina_default_cover.jpg',
-                coverPosY: '50%',
-                job: 'Muzyk & Wokalistka',
-                church: 'Chór Wielbienia Gdańsk',
-                denom: 'Chrześcijanka',
-                status: 'Panna',
-                pin: '7777',
-                visibility: 'public',
-                match: '91%',
-                verse: '„Śpiewajcie Panu pieśń nową, śpiewaj Panu, cała ziemio!”',
-                verseRef: '— Psalm 96, 1',
-                bio: 'Marzycielka z pasją do muzyki i śpiewu na chwałę Bożą. Szukam głębokich, szczerych relacji opartych na zaufaniu i wzajemnym wsparciu.',
-                tags: ['Wokal', 'Pianino', 'Morze', 'Poezja', 'Uwielbienie'],
-                photos: ['lumina_julia2.jpg', 'lumina_default_cover.jpg'],
-                posts: [
-                    {
-                        id: 'post_julia_1',
-                        author: 'Julia',
-                        time: 'Wczoraj • 🎵 Śpiew',
-                        text: 'Muzyka chwały otwiera niebo i leczy zranione serca. Dobrego dnia dla całej społeczności! 🕊️',
-                        likes: 29,
-                        amen: 19,
-                        image: 'lumina_julia2.jpg'
-                    }
-                ]
-            },
-            'osobowoscplus': {
-                name: 'OSOBOWOŚĆ + • Christian Culture',
-                age: 'Kanał YT',
-                city: 'Warszawa, Polska',
-                avatar: 'logo_osobowosc_plus.jpg',
-                cover: 'lumina_default_cover.jpg',
-                coverPosY: '50%',
-                job: 'Formacja Duchowa & Dojrzałość Męska',
-                church: 'Christian Culture',
-                denom: 'Chrześcijański Kanał',
-                status: 'Oficjalny Kanał YouTube',
-                pin: '7777',
-                visibility: 'public',
-                match: '100%',
-                verse: '„Bądźcie trzeźwi, czuwajcie!”',
-                verseRef: '— 1 List św. Piotra 5, 8',
-                bio: 'Oficjalny kanał YouTube OSOBOWOŚĆ +. Rozwój dojrzałości, tożsamość w Bogu, męstwo i budowanie mądrych, trwałych relacji w Chrystusie.',
-                tags: ['Męska Formacja', 'YouTube OSOBOWOŚĆ +', 'Tożsamość', 'Psychologia Chrześcijańska'],
-                photos: ['logo_osobowosc_plus.jpg', 'lumina_default_cover.jpg'],
-                posts: []
-            },
-            'radiocc': {
-                name: 'Polskie Radio Christian Culture',
-                age: 'Radio 24/7',
-                city: 'Cała Polska',
-                avatar: 'logo_radio_cc.jpg',
-                cover: 'lumina_default_cover.jpg',
-                coverPosY: '50%',
-                job: 'Stacja Radiowa & Muzyka Uwielbienia',
-                church: 'Christian Culture',
-                denom: 'Rozgłośnia Chrześcijańska',
-                status: 'Radio Na Żywo 24/7',
-                pin: '7777',
-                visibility: 'public',
-                match: '100%',
-                verse: '„Głoście Ewangelię wszelkiemu stworzeniu!”',
-                verseRef: '— Mk 16, 15',
-                bio: 'Muzyka chwały, Biblia Śpiewana, audycje na żywo i codzienne rozważania przez całą dobę.',
-                tags: ['Radio CC', 'Biblia Śpiewana', 'Worship', 'Live 24/7'],
-                photos: ['logo_radio_cc.jpg', 'lumina_default_cover.jpg'],
-                posts: []
-            },
-            'cctv': {
-                name: 'Christian Culture TV',
-                age: 'Telewizja',
-                city: 'Warszawa, Polska',
-                avatar: 'logo_cctv.png',
-                cover: 'lumina_default_cover.jpg',
-                coverPosY: '50%',
-                job: 'Telewizja Internetowa CCTV24',
-                church: 'Christian Culture',
-                denom: 'Telewizja Chrześcijańska',
-                status: 'Kanał YouTube CCTV24',
-                pin: '7777',
-                visibility: 'public',
-                match: '100%',
-                verse: '„Wy jesteście światłością świata!”',
-                verseRef: '— Mt 5, 14',
-                bio: 'Oficjalna telewizja chrześcijańska. Pasma wideo, debaty, świadectwa i transmisje ewangelizacyjne.',
-                tags: ['Telewizja CCTV', 'Transmisje Live', 'Świadectwa', 'Ewangelizacja'],
-                photos: ['logo_cctv.png', 'lumina_default_cover.jpg'],
-                posts: []
-            },
-            'ccmen': {
-                name: 'CC MEN • Christian Culture',
-                age: 'Kanał YT',
-                city: 'Polska',
-                avatar: 'logo_cc_men.jpg',
-                cover: 'lumina_default_cover.jpg',
-                coverPosY: '50%',
-                job: 'Męska Wspólnota & Kanał YouTube',
-                church: 'Christian Culture',
-                denom: 'Chrześcijański Kanał',
-                status: 'Oficjalny Kanał YouTube',
-                pin: '7777',
-                visibility: 'public',
-                match: '100%',
-                verse: '„Bądźcie mężni i mocni!”',
-                verseRef: '— 1 Kor 16, 13',
-                bio: 'Mężczyźni w Chrystusie. Męstwo, odpowiedzialność za rodzinę, wierność i braterstwo.',
-                tags: ['Męstwo', 'CC MEN', 'Odpowiedzialność', 'Wierność'],
-                photos: ['logo_cc_men.jpg', 'lumina_default_cover.jpg'],
-                posts: []
             }
         };
 
@@ -3315,7 +2881,7 @@
             const targetUid = curProf?.uid || null;
 
             // 1. Sprawdzenie czy użytkownik to Główny Administrator lub Właściciel Profilu
-            const isMaster = (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true');
+            const isMaster = (sessionStorage.getItem('lumina_auth_master_admin') === 'true');
             let isSelf = false;
 
             try {
@@ -3337,39 +2903,28 @@
 
         function updateSecurityBarUI(isMaster, isSelf) {
             const bar = document.getElementById('profileSecurityBar');
-            const hud = document.getElementById('adminMasterHud');
             const icon = document.getElementById('secStatusIcon');
             const txt = document.getElementById('secStatusText');
             const btn = document.getElementById('btnOwnerAuthToggle');
-            const data = getProfileData();
-
-            if (document.getElementById('adminTargetNameEl') && data) {
-                document.getElementById('adminTargetNameEl').textContent = data.name + ` (@${data.slug || getRequestedUserSlug()})`;
-            }
 
             if (isMaster) {
                 document.body.classList.add('owner-mode-active');
-                if (hud) hud.classList.add('active');
-                if (bar) bar.style.display = 'none'; // W trybie admina pokazujemy pełny panel HUD
+                if (icon) icon.className = 'fa-solid fa-crown';
+                if (txt) txt.innerHTML = 'Status: <b style="color:#facc15;">Administrator Portalu LUMINA 👑 (Pełny dostęp do edycji profilu)</b>';
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-lock"></i> Zablokuj Tryb Admina';
+            } else if (isSelf) {
+                document.body.classList.add('owner-mode-active');
+                if (icon) icon.className = 'fa-solid fa-circle-check';
+                if (txt) txt.innerHTML = 'Status: <b style="color:#86efac;">Twój Własny Profil 🔓 (Możesz edytować swoje dane)</b>';
+                if (btn) btn.style.display = 'none'; // Właściciel zawsze edytuje swój profil
             } else {
-                if (hud) hud.classList.remove('active');
-                if (bar) bar.style.display = 'flex';
-                if (isSelf) {
-                    document.body.classList.add('owner-mode-active');
-                    if (icon) icon.className = 'fa-solid fa-circle-check';
-                    if (txt) txt.innerHTML = 'Status: <b style="color:#86efac;">Twój Własny Profil 🔓 (Możesz edytować swoje dane)</b>';
-                    if (btn) btn.style.display = 'none'; // Właściciel zawsze edytuje swój profil
-                } else {
-                    document.body.classList.remove('owner-mode-active');
-                    if (icon) icon.className = 'fa-solid fa-shield-halved';
-                    if (txt) txt.innerHTML = 'Status: <b style="color:#38bdf8;">Profil Publiczny 🛡️ (Tylko do odczytu)</b>';
-                    if (btn) {
-                        btn.style.display = 'inline-flex';
-                        btn.innerHTML = '<i class="fa-solid fa-key"></i> Autoryzacja Administratora';
-                    }
-                }
+                document.body.classList.remove('owner-mode-active');
+                if (icon) icon.className = 'fa-solid fa-shield-halved';
+                if (txt) txt.innerHTML = 'Status: <b style="color:#38bdf8;">Profil Publiczny 🛡️ (Tylko do odczytu)</b>';
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-key"></i> Autoryzacja Administratora';
             }
         }
+
         
         async function verifyAdminPinHash(pin) {
             const msgBuffer = new TextEncoder().encode((pin || '').trim());
@@ -3380,94 +2935,35 @@
         }
 
         function toggleOwnerAuthMode() {
-            const isMaster = (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true');
+            const isMaster = (sessionStorage.getItem('lumina_auth_master_admin') === 'true');
             if (isMaster) {
-                sessionStorage.removeItem('lumina_auth_master_admin');
-                localStorage.removeItem('lumina_auth_master_admin');
-                showToast('🔒 Zablokowano tryb Administratora (Widok Gościa)');
+                sessionStorage.removeItem('lumina_auth_master_admin'); localStorage.removeItem('lumina_auth_master_admin');
+                showToast('🔒 Zablokowano tryb Administratora');
                 checkOwnerAuthSession();
-                renderProfile();
             } else {
                 const pin = prompt('🔐 Autoryzacja Administratora Portalu LUMINA:');
                 if (pin) {
                     verifyAdminPinHash(pin).then(isValid => {
                         if (isValid) {
                             sessionStorage.setItem('lumina_auth_master_admin', 'true');
-                            localStorage.setItem('lumina_auth_master_admin', 'true');
-                            showToast('👑 Tryb Administratora Portalu Aktywowany! Witaj Dowódco.');
+                            showToast('👑 Tryb Administratora Portalu Aktywowany!');
                             checkOwnerAuthSession();
-                            renderProfile();
                         } else {
                             showToast('❌ Błędny kod autoryzacji! Odmowa dostępu.');
                         }
                     });
+                } else {
+                    openSecurityModal(null);
                 }
             }
         }
 
-        async function toggleBlockCurrentProfileAdmin() {
-            const slug = getRequestedUserSlug();
-            const cur = getProfileData();
-            const currentlyBlocked = !!cur.isBlocked;
-            
-            if (currentlyBlocked) {
-                if (!confirm(`Czy na pewno chcesz ODBLOKOWAĆ profil ${cur.name}?`)) return;
-                cur.isBlocked = false;
-                cur.blockedReason = null;
-                if (window.LuminaDB?.setProfileBlockStatus) {
-                    await window.LuminaDB.setProfileBlockStatus(slug, false);
-                }
-                try {
-                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
-                } catch(e) {}
-                showToast(`Profil ${cur.name} został odblokowany! 🕊️`);
-            } else {
-                const reason = prompt(`Podaj powód zablokowania profilu ${cur.name}:`, 'Naruszenie zasad społeczności chrześcijańskiej');
-                if (reason === null) return;
-                cur.isBlocked = true;
-                cur.blockedReason = reason || 'Zablokowany przez Administratora Portalu';
-                if (window.LuminaDB?.setProfileBlockStatus) {
-                    await window.LuminaDB.setProfileBlockStatus(slug, true, cur.blockedReason);
-                }
-                try {
-                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
-                } catch(e) {}
-                showToast(`Profil ${cur.name} został zablokowany! 🚫`);
-            }
-            renderProfile();
-        }
-
-        async function deleteCurrentProfileAdmin() {
-            const slug = getRequestedUserSlug();
-            const cur = getProfileData();
-            const confirmed = confirm(`⚠️ UWAGA - KASOWANIE PROFILU!\n\nCzy na pewno chcesz TRWALE USUNĄĆ profil:\n"${cur.name}" (slug: ${slug})?\n\nUsunięte zostaną wszystkie dane profilu, zdjęcia i posty. Tej operacji nie można cofnąć!`);
-            if (!confirmed) return;
-
-            showToast('Usuwanie profilu z portalu i chmury Firestore... ⏳');
-            
-            try {
-                if (window.LuminaDB?.deleteProfileFromCloud) {
-                    await window.LuminaDB.deleteProfileFromCloud(slug);
-                }
-                localStorage.removeItem('lumina_profile_' + slug);
-                if (cur.uid) localStorage.removeItem('lumina_profile_' + cur.uid);
-                sessionStorage.removeItem('lumina_auth_owner_' + slug);
-            } catch(err) {
-                console.error('Błąd usuwania profilu:', err);
-            }
-
-            showToast(`🗑️ Profil ${cur.name} został trwale usunięty z portalu LUMINA.`);
-            setTimeout(() => {
-                window.location.href = 'lumina.html';
-            }, 1500);
-        }
-
-        function requestOwnerAccess(callback) {
+                function requestOwnerAccess(callback) {
             let u = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
             if (!u) {
                 try { u = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
             }
-            if (u || isOwnerMode || localStorage.getItem('lumina_user_session') === 'active' || sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true') {
+            if (u || isOwnerMode || localStorage.getItem('lumina_user_session') === 'active' || sessionStorage.getItem('lumina_auth_master_admin') === 'true') {
                 isOwnerMode = true;
                 if (typeof callback === 'function') callback();
                 return true;
@@ -3581,22 +3077,6 @@
             const slug = getRequestedUserSlug();
             checkOwnerAuthSession();
             applyVisibilityState(data);
-
-            // Block status handling
-            const blockedBanner = document.getElementById('profileBlockedBanner');
-            const blockedReasonEl = document.getElementById('profileBlockedReasonText');
-            const blockBtnLabel = document.getElementById('btnAdminBlockProfileLabel');
-            const isBlocked = !!data.isBlocked;
-
-            if (blockedBanner) {
-                blockedBanner.style.display = isBlocked ? 'flex' : 'none';
-                if (blockedReasonEl) {
-                    blockedReasonEl.textContent = 'Powód: ' + (data.blockedReason || 'Naruszenie regulaminu społeczności LUMINA.');
-                }
-            }
-            if (blockBtnLabel) {
-                blockBtnLabel.textContent = isBlocked ? 'Odblokuj Profil' : 'Zablokuj Profil';
-            }
 
             const isCCWomen = (slug.includes('ccwomen') || slug.includes('women') || slug.includes('9055'));
 
@@ -4234,25 +3714,6 @@
             showToast('Wysłano zaproszenie na chrześcijańską kawę! ☕❤️');
         }
 
-        function toggleProfileHeart(btn) {
-            const slug = getRequestedUserSlug();
-            const cur = getProfileData();
-            if (!btn) return;
-            btn.classList.toggle('active');
-            const countEl = btn.querySelector('#heartCountBadge') || document.getElementById('statLikesCount');
-            const isLiked = btn.classList.contains('active');
-            
-            if (countEl) {
-                let count = parseInt(countEl.textContent, 10) || 0;
-                countEl.textContent = isLiked ? (count + 1) : Math.max(0, count - 1);
-            }
-            
-            if (window.LuminaDB) {
-                window.LuminaDB.recordProfileLike(slug, { name: cur.name, avatar: cur.avatar }, isLiked ? 'like' : 'unlike');
-            }
-            showToast(isLiked ? 'Dodano profil do Twoich ulubionych połączeń! ❤️' : 'Usunięto z ulubionych');
-        }
-
         function copyProfileLink() {
             navigator.clipboard.writeText(window.location.href);
             showToast('Link do profilu został skopiowany do schowka! 🔗');
@@ -4331,24 +3792,15 @@
             toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
+        let isRadioPlaying = false;
+        const radioStreams = [
+            "https://stream.zeno.fm/vz96pvl3pnktv",
+            "https://stream.zeno.fm/umej2cuqncluv",
+            "https://stream.zeno.fm/imo45hqnshyuv"
+        ];
         function toggleRadio() {
-            if (window.LuminaRadio) {
-                window.LuminaRadio.toggle(true);
-            } else {
-                const audio = document.getElementById('ccRadioAudio');
-                if (audio) {
-                    if (audio.paused) {
-                        audio.src = "https://stream.zeno.fm/umej2cuqncluv?t=" + Date.now();
-                        audio.play().then(() => {
-                            localStorage.setItem('lumina_radio_playing', 'true');
-                            showToast('Radio Christian Culture Gra na Żywo! 📻✨');
-                        }).catch(() => showToast('Kliknij ponownie, aby odtworzyć radio'));
-                    } else {
-                        audio.pause();
-                        localStorage.setItem('lumina_radio_playing', 'false');
-                        showToast('Radio wstrzymane');
-                    }
-                }
+            if (window.LuminaRadio && typeof window.LuminaRadio.toggle === 'function') {
+                window.LuminaRadio.toggle();
             }
         }
 
@@ -4449,7 +3901,7 @@
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786937913306" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786939633464" defer></script>
     <script src="lumina-notifications.js?v=1786851592174" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
@@ -4529,7 +3981,6 @@
         </div>
     </div>
 
-    <script src="lumina-admin-profile-suite.js"></script>
 </body>
 </html>
 

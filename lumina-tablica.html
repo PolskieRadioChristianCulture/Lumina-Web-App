@@ -69,15 +69,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786938409250"></script>
+    <!-- Lumina Community Posts Protected Repository & Firestore Engine -->
+    <script src="js/lumina-community-posts.js?v=1786956129107"></script>
+    <script type="module" src="lumina-db.js?v=1786956129107"></script>
     <script type="module" src="lumina-core.js"></script>
-    <script type="module" src="lumina-security.js?v=2.2"></script>
-    <script type="module" src="lumina-tablica.js"></script>
+    <script type="module" src="lumina-tablica.js?v=1786956129107"></script>
     <script type="module" src="lumina-i18n.js?v=1786850740820"></script>
-    <script src="lumina-terms-modal.js?v=1.0"></script>
-    <script src="lumina-sharing-suite.js?v=1.0"></script>
-    <script src="lumina-pwa-installer.js?v=3.2"></script>
 
     <!-- Firebase SDK (Rozważanie Dnia) -->
     <script type="module">
@@ -95,43 +92,15 @@
             appId: "1:519207260358:web:d875a610f438ecad2c47c7"
         };
 
-        // ══════════════════════════════════════════════════════════════════════
-        // STANDARD FORMATOWANIA ROZWAŻAŃ: DOBRZE, ŻE JESTEŚ • PORTAL LUMINA
-        // Reguła portalu: Żadne surowe adresy URL nie są widoczne w tekście. Każdy link ukryty jest pod konkretnymi słowami!
-        // ══════════════════════════════════════════════════════════════════════
         function formatContentWithActiveLinks(rawText) {
             if (!rawText) return '';
-            let text = rawText;
-
-            // 1. WhatsApp invite -> ukryj pod słowami "Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp)"
-            text = text.replace(/https?:\/\/chat\.whatsapp\.com\/[a-zA-Z0-9_-]+(?:\s*[-–—]?\s*(?:Wejdź do zespołu ludzi z pasją!?|Dołącz do grupy WhatsApp!?))?/gi, (match) => {
-                const urlMatch = match.match(/https?:\/\/chat\.whatsapp\.com\/[a-zA-Z0-9_-]+/i);
-                const url = urlMatch ? urlMatch[0] : 'https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0';
-                return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link whatsapp-link"><i class="fa-brands fa-whatsapp"></i> Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp) <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
-            });
-
-            // 2. Google Play Apps -> ukryj pod słowami "Pobierz bezpłatne aplikacje w Google Play"
-            text = text.replace(/(?:Apps:\s*)?https?:\/\/play\.google\.com\/store\/apps\/[^\s<)]+/gi, (match) => {
-                const url = match.replace(/^Apps:\s*/i, '').trim();
-                return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link apps-link"><i class="fa-brands fa-google-play"></i> Pobierz bezpłatne aplikacje w Google Play <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
-            });
-
-            // 3. Polskie Radio CC -> ukryj pod słowami "Polskie Radio Christian Culture"
-            text = text.replace(/(?:https?:\/\/)?(?:www\.)?polskieradio\.cc[^\s<)]*/gi, () => {
-                return `<a href="https://www.polskieradio.cc" target="_blank" rel="noopener noreferrer" class="reflection-smart-link radio-link"><i class="fa-solid fa-radio"></i> Polskie Radio Christian Culture <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
-            });
-
-            // 4. CC Lite -> ukryj pod słowami "Telewizja CC Lite"
-            text = text.replace(/(?:https?:\/\/)?(?:www\.)?cclite\.pl[^\s<)]*/gi, () => {
-                return `<a href="https://www.cclite.pl" target="_blank" rel="noopener noreferrer" class="reflection-smart-link tv-link"><i class="fa-solid fa-tv"></i> Telewizja CC Lite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
-            });
-
-            // 5. Markdown links [Tytuł](https://...)
-            text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, (match, label, url) => {
+            
+            // 1. Convert Markdown links: [Title](https://...)
+            let text = rawText.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, (match, label, url) => {
                 return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-link">${label} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>`;
             });
 
-            // 6. Reszta surowych URL
+            // 2. Convert Raw URLs (https:// or http://) not already inside href
             const urlRegex = /(^|[\s(>])(https?:\/\/[^\s<)]+)/gi;
             text = text.replace(urlRegex, (match, prefix, url) => {
                 let cleanUrl = url;
@@ -141,115 +110,23 @@
                     trailing = punct[0];
                     cleanUrl = cleanUrl.slice(0, -trailing.length);
                 }
-                return `${prefix}<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="reflection-link">Otwórz odnośnik <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>${trailing}`;
+                return `${prefix}<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="reflection-link">${cleanUrl} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem; margin-left:2px;"></i></a>${trailing}`;
             });
 
-            // 7. Podział na akapity i formatowanie modułów
+            // 3. Format paragraphs
             return text
                 .split(/\n\n+/)
                 .filter(p => p.trim())
-                .map(p => {
-                    const trimmed = p.trim();
-                    if (trimmed.startsWith('Jezus mówi dziś do Ciebie:') || trimmed.includes('Izajasza 43,19') || trimmed.includes('Izajasza 43, 19')) {
-                        return `<div class="reflection-scripture-box"><div class="scripture-label"><i class="fa-solid fa-cross"></i> Jezus mówi dziś do Ciebie:</div><div class="scripture-quote">${trimmed.replace(/^Jezus mówi dziś do Ciebie:\s*/i, '').replace(/\n/g, '<br>')}</div></div>`;
-                    }
-                    if (trimmed.startsWith('Zadanie Taktyczne:')) {
-                        return `<div class="reflection-task-box"><div class="task-label"><i class="fa-solid fa-shield-halved"></i> Zadanie Taktyczne:</div><p style="margin:0 0 8px; font-size:0.93rem; color:#f1f5f9; line-height:1.7;">${trimmed.replace(/^Zadanie Taktyczne:\s*/i, '').replace(/\n/g, '<br>')}</p></div>`;
-                    }
-                    if (trimmed.startsWith('Modlitwa Bojowa:')) {
-                        return `<div class="reflection-prayer-box"><div class="prayer-label"><i class="fa-solid fa-hands-praying"></i> Modlitwa Bojowa:</div><p style="margin:0; font-style:italic; font-size:0.95rem; line-height:1.75; color:#f8fafc;">${trimmed.replace(/^Modlitwa Bojowa:\s*/i, '').replace(/\n/g, '<br>')}</p></div>`;
-                    }
-                    if (trimmed.startsWith('Baza i wzrost:') || trimmed.includes('PODAJ DALEJ') || trimmed.includes('reflection-smart-link')) {
-                        return `<div class="reflection-links-container"><div style="font-size:0.82rem; font-weight:800; color:#f59e0b; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:8px;"><i class="fa-solid fa-network-wired"></i> Społeczność & Kanały LUMINA</div>${trimmed.replace(/\n/g, '<br>')}</div>`;
-                    }
-                    return `<p style="margin:0 0 14px; line-height:1.75; color:#e2e8f0;">${trimmed.replace(/\n/g, '<br>')}</p>`;
-                })
+                .map(p => `<p style="margin:0 0 14px; line-height:1.75;">${p.trim().replace(/\n/g, '<br>')}</p>`)
                 .join('');
         }
 
-        // Dzisiejsze rozważanie (19 sierpnia 2026 - Dzień 19) • Portal LUMINA
-        const LUMINA_DAY19_DEVOTIONAL_HTML = `
-            <div style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg, rgba(245,158,11,0.25), rgba(234,179,8,0.15)); border:1px solid #f59e0b; color:#fef08a; padding:6px 14px; border-radius:20px; font-size:0.82rem; font-weight:800; margin-bottom:14px;">
-                <i class="fa-solid fa-sun"></i> Cykl: „Dobrze, że jesteś” • ☀️ Lato z Jezusem — Wielkie Pytania
-            </div>
-            <h3 style="font-family:'Outfit',sans-serif; font-size:1.24rem; font-weight:800; color:#fff; line-height:1.45; margin-bottom:16px;">
-                Dzień 19 — 31 bardzo osobistych pytań Syna/Córki do Ojca: Dlaczego tak łatwo ulegam zatruciu przeszłością i żalom do dawnych lat?
-            </h3>
-            <p style="margin:0 0 14px; line-height:1.75; color:#e2e8f0;">
-                W dziewiętnastym dniu cyklu „Lato z Jezusem — Wielkie Pytania” rozbrajamy destrukcyjny nawyk zamrożenia w przeszłości oraz pielęgnowania dawnych żalów.
-            </p>
-            <p style="margin:0 0 14px; line-height:1.75; color:#e2e8f0;">
-                W psychologii klinicznej pojęcie „utknięcia w narracji urazu” (<em>trauma narrative fixation</em>) opisuje stan, w którym człowiek definiuje swoją teraźniejszość wyłącznie przez pryzmat dawnych kryzysów i zranień. Wróg bezwzględnie wykorzystuje ten mechanizm, paraliżując nasz potencjał rozwoju. Słowo Boże przez proroka Izajasza wzywa nas do radykalnej zmiany perspektywy: <em>„Nie wspomina się rzeczy dawnych... Oto Ja stwarzam nowe rzeczy”</em>. Chrześcijański lider najwyższej klasy nie pozwala, by historia dyktowała mu warunki — wyciąga wnioski, odcina toksyczny bagaż z nienaganną klasą i z pasją realizuje cel tu i teraz.
-            </p>
-            <div class="reflection-scripture-box">
-                <div class="scripture-label"><i class="fa-solid fa-cross"></i> Jezus mówi dziś do Ciebie:</div>
-                <div class="scripture-quote">„Oto Ja stwarzam nowe rzeczy; teraz one wschodzą, czyż ich nie poznajecie?...” (Izajasza 43,19)</div>
-            </div>
-            <div class="reflection-task-box">
-                <div class="task-label"><i class="fa-solid fa-shield-halved"></i> Zadanie Taktyczne:</div>
-                <p style="margin:0 0 8px; font-size:0.93rem; color:#f1f5f9; line-height:1.7;">
-                    Zmiażdż dziś więzienie przeszłości na swoim polu bitwy. Zidentyfikuj stary żal lub wspomnienie porażki, które wciąż wywołuje w Tobie emocjonalny ból. Podejmij decyzję woli: zamknij ten rozdział, oddaj go Bogu i przekieruj całą energię na budowanie dzisiejszego dnia. Wnieś do swojego domu i firmy standard świeżości, dynamizmu i niezachwianego autorytetu.
-                </p>
-                <div style="font-size:0.8rem; font-weight:700; color:#6ee7b7; display:flex; align-items:center; gap:6px;">
-                    <i class="fa-solid fa-gift"></i> W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
-                </div>
-            </div>
-            <div class="reflection-prayer-box">
-                <div class="prayer-label"><i class="fa-solid fa-hands-praying"></i> Modlitwa Bojowa:</div>
-                <p style="margin:0; font-style:italic; font-size:0.95rem; line-height:1.75; color:#f8fafc;">
-                    „Ojcze, odrzucam kłamstwa nieprzyjaciela i kurczowe trzymanie się przeszłości. Przepraszam, że pozwalałem dawnym żalom odbierać mi radość z dzisiejszego dnia. Dziękuję, że w Tobie mam nowość życia. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą kroczył naprzód, zdobywając ten świat dla Twojej chwały.”
-                </p>
-            </div>
-            <div class="reflection-links-container">
-                <div style="font-size:0.82rem; font-weight:800; color:#f59e0b; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:8px;">
-                    <i class="fa-solid fa-network-wired"></i> Baza i Wzrost:
-                </div>
-                <div style="margin-bottom:12px;">
-                    <a href="https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0" target="_blank" rel="noopener noreferrer" class="reflection-smart-link whatsapp-link">
-                        <i class="fa-brands fa-whatsapp"></i> Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp) <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
-                </div>
-                <div style="font-size:0.82rem; font-weight:800; color:#f43f5e; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">
-                    <i class="fa-solid fa-circle-radiation"></i> PODAJ DALEJ 🔴
-                </div>
-                <div style="display:flex; flex-wrap:wrap; gap:8px;">
-                    <a href="https://www.polskieradio.cc" target="_blank" rel="noopener noreferrer" class="reflection-smart-link radio-link">
-                        <i class="fa-solid fa-radio"></i> Polskie Radio Christian Culture <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
-                    <a href="https://www.cclite.pl" target="_blank" rel="noopener noreferrer" class="reflection-smart-link tv-link">
-                        <i class="fa-solid fa-tv"></i> Telewizja CC Lite <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
-                    <a href="https://play.google.com/store/apps/dev?id=5215448773598149938" target="_blank" rel="noopener noreferrer" class="reflection-smart-link apps-link">
-                        <i class="fa-brands fa-google-play"></i> Pobierz bezpłatne aplikacje w Google Play <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
-                </div>
-            </div>
-        `;
-
-        // Natychmiastowe ustawienie standardu na start
-        window._luminaDailyReflection = {
-            id: 'daily_rozwazanie_2026-08-19',
-            type: 'reflection',
-            author: 'Portal LUMINA',
-            authorRole: '☀️ Dobrze, że jesteś • Oficjalny Kanał Portalu LUMINA',
-            authorAvatar: 'lumina_logo_portal.jpg',
-            authorSlug: 'portal-lumina',
-            time: '19 SIERPNIA 2026 • ☀️ Dzień 19 • Dobrze, że jesteś',
-            title: '☀️ Lato z Jezusem — Wielkie Pytania (Dzień 19)',
-            fullTextHtml: LUMINA_DAY19_DEVOTIONAL_HTML,
-            image: 'promo_dzj.jpg',
-            likes: 184,
-            amen: 162,
-            _pinned: true,
-            _isReflection: true
-        };
-
-        // Pobierz aktualne rozważanie z kolekcji "web_inspirations"
+        // Pobierz dzisiejsze (lub najnowsze) rozważanie z kolekcji "web_inspirations"
         async function loadDailyReflection() {
             try {
                 const app = initializeApp(firebaseConfig, 'lumina-board');
                 const db = getFirestore(app);
-                const today = '2026-08-19';
+                const today = new Date().toISOString().split('T')[0];
 
                 const q = query(
                     collection(db, 'web_inspirations'),
@@ -258,6 +135,7 @@
                 );
                 const snap = await getDocs(q);
                 if (!snap.empty) {
+                    // Preferuj rozważanie z datą dzisiejszą
                     let data = snap.docs[0].data();
                     for (const doc of snap.docs) {
                         if (doc.data().date === today) {
@@ -266,31 +144,33 @@
                         }
                     }
 
-                    if (data && (data.contentWeb || data.fullText)) {
-                        const fullContent = data.contentWeb || data.fullText || data.teaser || '';
-                        const formattedContent = formatContentWithActiveLinks(fullContent);
+                    // Pełna treść – bez żadnego skracania
+                    const fullContent = data.contentWeb || data.fullText || data.teaser || '';
 
-                        window._luminaDailyReflection = {
-                            id: 'daily_rozwazanie_' + (data.date || today),
-                            type: 'reflection',
-                            author: 'Portal LUMINA',
-                            authorRole: `☀️ Dobrze, że jesteś • Oficjalny Kanał Portalu LUMINA`,
-                            authorAvatar: 'lumina_logo_portal.jpg',
-                            authorSlug: 'portal-lumina',
-                            time: `${data.date || '19 SIERPNIA 2026'} • ☀️ Cykl: Dobrze, że jesteś`,
-                            title: data.title || '☀️ Lato z Jezusem — Wielkie Pytania',
-                            fullTextHtml: formattedContent,
-                            image: data.imageUrl || 'promo_dzj.jpg',
-                            likes: data.likes || 184,
-                            amen: data.amen || 162,
-                            _pinned: true,
-                            _isReflection: true
-                        };
-                    }
+                    // Przeformatuj tekst: aktywne linki HTML i akapity
+                    const formattedContent = formatContentWithActiveLinks(fullContent);
+
+                    window._luminaDailyReflection = {
+                        id: 'daily_rozwazanie_' + (data.date || today),
+                        type: 'reflection',
+                        author: 'Dobrze, że jesteś',
+                        authorRole: `☀️ Rozważanie Dnia • ${data.date || today}`,
+                        authorAvatar: 'icon.png',
+                        authorSlug: 'cezaryrgowski',
+                        time: `${data.date || today} • 📖 Rozważanie`,
+                        title: data.title || '☀️ Rozważanie na dziś',
+                        fullTextHtml: formattedContent,
+                        image: data.imageUrl || '',
+                        likes: 48,
+                        amen: 41,
+                        _pinned: true,
+                        _isReflection: true
+                    };
+                    // Re-render jeśli feed już załadowany
                     if (typeof renderFeed === 'function') renderFeed();
                 }
             } catch(e) {
-                console.warn('Lumina Board: Informacja o rozważaniu (użyto standardu lokalnego):', e.message);
+                console.warn('Lumina Board: Nie można pobrać rozważania z Firestore:', e.message);
             }
         }
 
@@ -1752,7 +1632,7 @@
             }
         }
 
-    /* ══════════ ACTIVE REFLECTION & POST LINKS (STANDARD LUMINA) ══════════ */
+    /* ══════════ ACTIVE REFLECTION & POST LINKS ══════════ */
         .reflection-link, .post-rich-link {
             color: #facc15 !important;
             font-weight: 700 !important;
@@ -1765,125 +1645,15 @@
             color: #fef08a !important;
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
-
-        .reflection-smart-link {
-            display: inline-flex !important;
-            align-items: center !important;
-            gap: 7px !important;
-            padding: 7px 15px !important;
-            border-radius: 20px !important;
-            font-weight: 700 !important;
-            font-size: 0.84rem !important;
-            text-decoration: none !important;
-            transition: all 0.22s ease !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
-            margin: 4px 6px 4px 0 !important;
-            vertical-align: middle !important;
-        }
-        .reflection-smart-link:hover {
-            transform: translateY(-2px) !important;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4) !important;
-            filter: brightness(1.15) !important;
-        }
-        .reflection-smart-link.whatsapp-link {
-            background: rgba(34, 197, 94, 0.16) !important;
-            border: 1.5px solid #22c55e !important;
-            color: #4ade80 !important;
-        }
-        .reflection-smart-link.radio-link {
-            background: rgba(59, 130, 246, 0.16) !important;
-            border: 1.5px solid #3b82f6 !important;
-            color: #93c5fd !important;
-        }
-        .reflection-smart-link.tv-link {
-            background: rgba(236, 72, 153, 0.16) !important;
-            border: 1.5px solid #ec4899 !important;
-            color: #f472b6 !important;
-        }
-        .reflection-smart-link.apps-link {
-            background: rgba(245, 158, 11, 0.16) !important;
-            border: 1.5px solid #f59e0b !important;
-            color: #fde047 !important;
-        }
-
-        .reflection-scripture-box {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(11, 24, 56, 0.9));
-            border-left: 4px solid #f59e0b;
-            padding: 14px 18px;
-            border-radius: 0 14px 14px 0;
-            margin: 16px 0;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-        }
-        .reflection-scripture-box .scripture-label {
-            font-size: 0.8rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: #fbbf24;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .reflection-scripture-box .scripture-quote {
-            font-size: 1rem;
-            font-style: italic;
-            font-weight: 600;
-            line-height: 1.6;
-            color: #fef08a;
-        }
-
-        .reflection-task-box {
-            background: rgba(30, 41, 59, 0.75);
-            border: 1px solid rgba(56, 189, 248, 0.35);
-            border-radius: 14px;
-            padding: 16px 18px;
-            margin: 16px 0;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-        .reflection-task-box .task-label {
-            font-size: 0.82rem;
-            font-weight: 800;
-            color: #38bdf8;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .reflection-prayer-box {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(15, 23, 42, 0.92));
-            border-left: 4px solid #a855f7;
-            padding: 14px 18px;
-            border-radius: 0 14px 14px 0;
-            margin: 16px 0;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-        }
-        .reflection-prayer-box .prayer-label {
-            font-size: 0.82rem;
-            font-weight: 800;
-            color: #c084fc;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .reflection-links-container {
-            margin-top: 18px;
-            padding: 16px 18px;
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(245, 158, 11, 0.28);
-            border-radius: 14px;
-            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.4);
-            line-height: 1.9;
-        }
     
         /* ══════════ 9:16 CUSTOM ADVERTISING SYSTEM & ADMIN CONTROLS ══════════ */
+        .admin-only-btn {
+            display: none !important;
+        }
+        body.lumina-admin-mode .admin-only-btn {
+            display: flex !important;
+        }
+
         .btn-admin-add-ad-916 {
             width: 100%;
             padding: 12px 16px;
@@ -1895,14 +1665,13 @@
             font-size: 0.82rem;
             font-weight: 800;
             cursor: pointer;
-            display: flex !important;
+            display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-            margin-top: 6px;
-            margin-bottom: 12px;
+            margin-top: 4px;
         }
         .btn-admin-add-ad-916:hover {
             background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(236, 72, 153, 0.25));
@@ -2072,11 +1841,11 @@
         }
 
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786938409250">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786939633464">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
-    <link rel="stylesheet" href="css/lumina-theme.css?v=1786937908032">
-    <link rel="stylesheet" href="css/lumina-components.css?v=1786937908032">
-    <link rel="stylesheet" href="css/lumina-profile.css?v=1786937908032">
+    <link rel="stylesheet" href="css/lumina-theme.css?v=1786941394472">
+    <link rel="stylesheet" href="css/lumina-components.css?v=1786941394472">
+    <link rel="stylesheet" href="css/lumina-profile.css?v=1786951604399">
     <link rel="stylesheet" href="css/lumina-feed.css?v=1786937908032">
     <link rel="stylesheet" href="css/lumina-modals.css?v=1786937908032">
     
@@ -2085,10 +1854,14 @@
     <script type="module" src="js/lumina-editor.js?v=1786938148537"></script>
     <script type="module" src="js/lumina-feed.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-search.js?v=1786937908032"></script>
+    <script src="js/lumina-radio.js?v=1786970525527"></script>
+    <script src="js/lumina-presence.js?v=1786993322235"></script>
 </head>
 <body>
 
     <!-- Audio Player for Radio CC -->
+    <script src="js/lumina-radio.js?v=1786970525527"></script>
+    <script src="js/lumina-presence.js?v=1786993322235"></script>
 </head>
 <body>
 
@@ -2175,7 +1948,7 @@
         
             <!-- Dynamiczne Reklamy 9:16 (Lewa Strona) -->
             <div id="customAdsLeft" class="custom-ads-container"></div>
-            <button type="button" class="btn-admin-add-ad-916" id="btnAddAdLeft" onclick="openAd916Modal('left')" title="Dodaj Nową Reklamę 9:16 (Lewa strona)">
+            <button type="button" class="btn-admin-add-ad-916 admin-only-btn" id="btnAddAdLeft" onclick="openAd916Modal('left')" title="Dodaj Nową Reklamę 9:16 (Lewa strona)">
                 <i class="fa-solid fa-plus-circle" style="font-size:1.1rem; color:#facc15;"></i> Dodaj Reklamę 9:16 (Lewy Panel)
             </button>
 
@@ -2268,7 +2041,7 @@
         
             <!-- Dynamiczne Reklamy 9:16 (Prawa Strona) -->
             <div id="customAdsRight" class="custom-ads-container"></div>
-            <button type="button" class="btn-admin-add-ad-916" id="btnAddAdRight" onclick="openAd916Modal('right')" title="Dodaj Nową Reklamę 9:16 (Prawa strona)">
+            <button type="button" class="btn-admin-add-ad-916 admin-only-btn" id="btnAddAdRight" onclick="openAd916Modal('right')" title="Dodaj Nową Reklamę 9:16 (Prawa strona)">
                 <i class="fa-solid fa-plus-circle" style="font-size:1.1rem; color:#facc15;"></i> Dodaj Reklamę 9:16 (Prawy Panel)
             </button>
 
@@ -2897,6 +2670,21 @@
         // ── Wszystkie Oficjalne Reklamy i Kampanie Misyjne z polskieradio.cc ──
         const DEFAULT_CC_CAMPAIGNS = [
             {
+                id: 'camp_ckd_2026_08_18',
+                type: 'ad',
+                title: 'MASZ ZADANIE! - Cuda Kazdego Dnia, 18 Sierpnia 2026',
+                desc: 'Czytajac Biblie zwroc uwage na zwiazek miedzy zadaniem, jakie Bog dal Adamowi i Ewie w raju, a poleceniem Jezusa swoim uczniom. Sam Bog chce, bysmy mieli wplyw na to, co dzieje sie tu na ziemi. To, co robisz na co dzien, ma znaczenie!',
+                image: 'ckd_art_2026_08_18.jpg',
+                btnText: 'Przeczytaj Rozwazanie',
+                btnUrl: 'lumina.andrzejthiel.html',
+                author: 'Andrzej Thiel',
+                authorRole: 'Cuda Kazdego Dnia - Sieradz',
+                authorAvatar: 'avatar_andrzej_thiel.jpg',
+                createdAt: '18 Sierpnia 2026',
+                likes: 47,
+                amen: 38
+            },
+            {
                 id: 'camp_koncept_studio',
                 type: 'sponsor',
                 title: 'Koncept Studio – Oficjalny Patron Misji Christian Culture',
@@ -3037,59 +2825,29 @@
                 id: 'camp_instrumental_worship',
                 type: 'promo',
                 title: 'Muzyka Instrumentalna & Nocne Czuwanie Modlitewne 24/7',
-                desc: 'Głębokie, nastrojowe aranżacje fortepianowe i orkiestrowe pieśni chwały, które tworzą atmosferę modlitwy, pokoju i wyciszenia przez całą dobę.',
+                desc: 'Glebokie, nastrojowe aranzacje fortepianowe i orkiestrowe piesni chwaly, ktore tworza atmosfere modlitwy, pokoju i wyciszenia przez cala dobe.',
                 image: 'INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg',
-                btnText: 'Odsłuchaj Pasmo Nocne 🌙🕊️',
+                btnText: 'Odsluchaj Pasmo Nocne',
                 btnUrl: 'nocne-czuwanie-live.html',
                 author: 'Worship CC',
-                authorRole: 'Muzyka Uwielbienia 🎹',
+                authorRole: 'Muzyka Uwielbienia',
                 authorAvatar: 'icon.png',
                 createdAt: 'Pasmo Modlitewne',
                 likes: 142,
                 amen: 130
             },
             {
-                id: 'camp_spiewajmy_panu',
-                type: 'promo',
-                title: 'Śpiewajmy Panu – Najpiękniejsze Chrześcijańskie Pieśni Chwały',
-                desc: 'Muzyczny program telewizyjny prezentujący najpiękniejsze polskie i światowe pieśni uwielbienia z tekstem na ekranie. Śpiewaj razem z nami!',
-                image: 'spiewajmy-panu-thumb.png',
-                btnText: 'Śpiewaj z Nami na Żywo 🎶',
-                btnUrl: 'spiewajmy-panu-live.html',
-                author: 'Śpiewajmy Panu',
-                authorRole: 'Program Muzyczny 🎵',
-                authorAvatar: 'icon.png',
-                createdAt: 'Program Telewizyjny',
-                likes: 110,
-                amen: 99
-            },
-            {
-                id: 'camp_herbatki_zdrowie',
-                type: 'announcement',
-                title: 'Naturalne Herbatki Ziołowe i Zdrowie – Kolekcja Zdrowia Misji CC',
-                desc: 'Dbaj o świątynię Ducha Świętego. Autorskie mieszanki ziół, naturalne herbaty oraz poradniki zdrowotne wspierające witalność ciała i spokój umysłu.',
-                image: 'baner_herbatki.png',
-                btnText: 'Poznaj Produkty Zdrowia 🌿🍵',
-                btnUrl: 'https://polskieradio.cc',
-                author: 'Zdrowie & Natura CC',
-                authorRole: 'Zdrowy Styl Życia 🍃',
-                authorAvatar: 'lumina_icon.jpg',
-                createdAt: 'Strefa Zdrowia',
-                likes: 72,
-                amen: 51
-            },
-            {
                 id: 'camp_store_mugs',
                 type: 'promo',
-                title: 'Kubki i Akcesoria z Wersetami Biblijnymi – Misja CC Store',
-                desc: 'Zacznij każdy poranek od Bożego Słowa przy ulubionej kawie lub herbacie. Ceramiczne kubki z inspirującymi wersetami z Księgi Psalmów i Listów.',
+                title: 'Kubki i Akcesoria z Wersetami Biblijnymi - Misja CC Store',
+                desc: 'Zacznij kazdy poranek od Bozego Slowa przy ulubionej kawie lub herbacie. Ceramiczne kubki z inspirujacymi wersetami z Ksiegi Psalmow i Listow.',
                 image: 'kubek_cc_2026.jpg',
-                btnText: 'Zamów Kubek Misyjny ☕📖',
+                btnText: 'Zamow Kubek Misyjny',
                 btnUrl: 'https://my-store-1009741.creator-spring.com',
                 author: 'Christian Culture Store',
-                authorRole: 'Akcesoria Misyjne 🎁',
+                authorRole: 'Akcesoria Misyjne',
                 authorAvatar: 'lumina_icon.jpg',
-                createdAt: 'Kolekcja Kubków',
+                createdAt: 'Kolekcja Kubkow',
                 likes: 81,
                 amen: 60
             },
@@ -3166,7 +2924,7 @@
                 if (!isNaN(parsed) && (timestampOrDate.includes('-') || timestampOrDate.includes('T') || timestampOrDate.includes(':'))) {
                     date = new Date(parsed);
                 } else {
-                    return timestampOrDate; // Już sformatowany tekst
+                    return timestampOrDate;
                 }
             } else {
                 return fallbackLabel || 'Przed chwilą';
@@ -3175,226 +2933,79 @@
             const now = new Date();
             const diffMs = now - date;
             const diffSec = Math.floor(diffMs / 1000);
-            const diffMin = Math.floor(diffSec / 60);
-            const diffHours = Math.floor(diffMin / 60);
-            const diffDays = Math.floor(diffHours / 24);
+            const pad = function(n) { return (n < 10 ? '0' : '') + n; };
+            const timeStr = pad(date.getHours()) + ':' + pad(date.getMinutes());
 
-            const pad = (n) => n < 10 ? '0' + n : n;
-            const timeStr = `${pad(date.getHours())}:${pad(date.getMinutes())}`;
-
-            if (diffSec < 60) return 'Przed chwilą';
-            if (diffMin < 60) return `${diffMin} min temu`;
-            
-            const isToday = now.toDateString() === date.toDateString();
-            if (isToday) return `Dzisiaj o ${timeStr}`;
+            if (diffMin < 1) return 'Przed chwilą';
+            if (diffMin < 60) return diffMin + ' min temu';
+            if (now.toDateString() === date.toDateString()) return 'Dzisiaj o ' + timeStr;
 
             const yesterday = new Date(now);
             yesterday.setDate(now.getDate() - 1);
-            const isYesterday = yesterday.toDateString() === date.toDateString();
-            if (isYesterday) return `Wczoraj o ${timeStr}`;
+            if (yesterday.toDateString() === date.toDateString()) return 'Wczoraj o ' + timeStr;
 
-            if (diffDays < 7) {
-                const days = ['W niedzielę', 'W poniedziałek', 'We wtorek', 'W środę', 'W czwartek', 'W piątek', 'W sobotę'];
-                return `${days[date.getDay()]} o ${timeStr}`;
-            }
-
-            return `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()}, ${timeStr}`;
+            return pad(date.getDate()) + '.' + pad(date.getMonth() + 1) + '.' + date.getFullYear() + ', ' + timeStr;
         }
 
         let cloudFeedPosts = [];
 
         function getUserFeedPosts() {
             const posts = [];
+            const seenIds = new Set();
 
-            // 0. Real-time Cloud Posts from Firestore
-            if (window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts) && window.cloudFeedPosts.length > 0) {
-                window.cloudFeedPosts.forEach(cp => {
-                    posts.push({
-                        id: cp.id,
-                        type: cp.type || 'post',
-                        author: cp.author || 'Użytkownik LUMINA',
-                        authorRole: cp.authorRole || 'Społeczność LUMINA ✨',
-                        authorAvatar: cp.authorAvatar || 'icon.png',
-                        authorSlug: cp.authorSlug || '',
-                        time: formatPostTimestamp(cp.createdAtTimestamp || cp.createdAtDateStr || cp.time, 'Przed chwilą') + ' • ☁️ Chmura',
-                        title: cp.title || '',
-                        text: cp.text || '',
-                        image: cp.image || null,
-                        likes: cp.likes || 1,
-                        amen: cp.amen || 0
-                    });
-                });
+            function addPostSafe(p) {
+                if (!p || !p.id || seenIds.has(p.id)) return;
+                seenIds.add(p.id);
+                posts.push(p);
             }
 
-            // 0.1. Andrzej Thiel - Cuda Każdego Dnia (19 SIERPNIA 2026)
+            // 1. Real-time Cloud Posts from Firestore (window.cloudFeedPosts)
             try {
-                const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
-                const aProfile = aJson ? JSON.parse(aJson) : null;
-                const aAvatar = (aProfile && aProfile.avatar) ? aProfile.avatar : 'avatar_andrzej_thiel.jpg';
-                const aName = (aProfile && aProfile.name) ? aProfile.name : 'Andrzej Thiel';
-                const aCudaImg = localStorage.getItem('lumina_cuda_image') || 'cuda_kazdego_dnia_mocy.svg';
+                if (window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts) && window.cloudFeedPosts.length > 0) {
+                    window.cloudFeedPosts.forEach(cp => {
+                        if (cp && cp.id) {
+                            addPostSafe({
+                                id: cp.id,
+                                type: cp.type || 'post',
+                                author: cp.author || 'Użytkownik LUMINA',
+                                authorRole: cp.authorRole || 'Społeczność LUMINA ✨',
+                                authorAvatar: cp.authorAvatar || 'icon.png',
+                                authorSlug: cp.authorSlug || '',
+                                time: formatPostTimestamp(cp.createdAtTimestamp || cp.createdAtDateStr || cp.time, 'Przed chwilą') + ' • ☁️ Chmura',
+                                title: cp.title || '',
+                                text: cp.text || '',
+                                image: cp.image || null,
+                                likes: cp.likes || 1,
+                                amen: cp.amen || 0
+                            });
+                        }
+                    });
+                }
+            } catch(e) {
+                console.warn('Lumina: cloud posts fetch error', e);
+            }
 
-                posts.push({
-                    id: 'post_andrzej_cuda_19_08_2026',
-                    type: 'post',
-                    author: aName,
-                    authorRole: 'Cuda Każdego Dnia 📖✨ • Sieradz',
-                    authorAvatar: aAvatar,
-                    authorSlug: 'andrzejthiel',
-                    time: '19 SIERPNIA 2026 • 🕊️ Cuda Każdego Dnia',
-                    title: 'CUDA KAŻDEGO DNIA! 19 SIERPNIA 2026. TO NIE DZIAŁA?',
-                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nTO NIE DZIAŁA?\n\nNiedawno próbowałem uruchomić pewne urządzenie do sprzątania. Mimo, że wszystko z pozoru wyglądało na sprawne, niestety nie zadziałało. W końcu namierzyłem problem. Choć wtyczka tkwiła w kontakcie, urządzenie nie mogło działać, ponieważ poluzował się kabelek łączący je z zasilaniem. Dlaczego jest tak wielu rozczarowanych, zniechęconych chrześcijan? Ich argument najczęściej brzmi: „To nie działa”. Odwracają się i szukają czegoś innego… Znasz takie osoby?\n\nJezus tuż przed swoją śmiercią dał uczniom najważniejsze wskazówki. Powiedział, co mają robić, kiedy Jego już z nimi nie będzie. Wiedział, że pojawi się u nich niepewność, że stracą poczucie bezpieczeństwa, sytuacja ich przytłoczy. Że będą niezrozumiani, fałszywie oskarżani, że szybko ogarną ich wyczerpanie i słabość. Że doświadczą trudności, cierpienia, głodu, prześladowań, że mogą stracić z oczu Boga, którego plany rozminą się z ich wyobrażeniami. Dlatego stale i na nowo przypominał: „Trzymajcie się mnie. Trwajcie we mnie. Beze mnie nic uczynić nie możecie” (J.15,5).\n\nMoże też, zadajesz sobie to pytanie: „Czy to działa?”. Nie dostrzegasz Jego działania, nie widzisz odpowiedzi na swoje modlitwy? Zastanawiasz się, skąd inni, których podziwiasz, biorą siłę i radość w życiu? Jezus mówi, że tajemnicą sukcesu jest stałe połączenie z Nim. Trwanie w nieprzerwanym kontakcie. Tak jak to urządzenie – by zadziałało, musiało być podłączone do źródła mocy. Bez tego okazało się bezużyteczne. Jezus cię nie zostawi, bo wie, że bez Niego nie dasz rady. Bez Niego nic nie jest takie, jak ma być. Obiecał ci swojego Ducha, który będzie z tobą i w tobie: „Ja prosić będę Ojca i da wam innego Pocieszyciela, aby był z wami na wieki – Ducha Prawdy, którego świat przyjąć nie może, bo Go nie widzi i nie zna; wy Go znacie, bo przebywa wśród was i w was będzie” (J.14,16-17). Nie próbuj po swojemu, podłącz się dzisiaj do Niego. Niech popłynie Jego moc i wypełni energią każdą twoją komórkę.\n\n„Ojcze, wypełnij mnie na nowo obecnością Twojego Ducha. Dziękuję Ci, że On przypomina mi dzisiaj Twoje słowa o tym, że mam trwać w Tobie, że we wszystkim, co robię, potrzebuję Ciebie. Dziękuję, że dzięki Niemu możemy być w stałej łączności. Dziękuję, że niezależnie od moich uczuć, sytuacji, Ty w swojej łasce jesteś dzisiaj ze mną”. /opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
-                    image: aCudaImg,
-                    likes: 128,
-                    amen: 114
-                });
-            } catch(e) {}
-
-            // 1. Cezary Rogowski Posts (Dynamiczne daty)
+            // 2. Verified Permanent Community & Founder Posts (Central Source from js/lumina-community-posts.js?v=1786956129107)
             try {
-                const cJson = localStorage.getItem('lumina_profile_cezaryrgowski');
-                const cProfile = cJson ? JSON.parse(cJson) : null;
-                const cAvatar = (cProfile && cProfile.avatar && !cProfile.avatar.includes('avatar_new1')) ? cProfile.avatar : 'avatar_cezary_official.jpg';
-                const cName = (cProfile && cProfile.name) ? cProfile.name : 'Cezary Rogowski';
-                
-                const timeC1 = formatPostTimestamp(new Date(Date.now() - 22 * 3600 * 1000)) + ' • 🌍 Publiczny';
-                const timeC2 = formatPostTimestamp(new Date(Date.now() - 46 * 3600 * 1000)) + ' • 📖 Rozważanie';
+                if (typeof window.getSafeCommunityPosts === 'function') {
+                    const safePosts = window.getSafeCommunityPosts();
+                    if (Array.isArray(safePosts) && safePosts.length > 0) {
+                        safePosts.forEach(addPostSafe);
+                    }
+                }
+            } catch(e) {
+                console.warn('Lumina: getSafeCommunityPosts error', e);
+            }
 
-                posts.push({
-                    id: 'post_c1',
-                    type: 'post',
-                    author: cName,
-                    authorRole: 'Założyciel Christian Culture ✨',
-                    authorAvatar: cAvatar,
-                    authorSlug: 'cezaryrgowski',
-                    time: timeC1,
-                    title: 'Fundament Bożej Relacji',
-                    text: 'Witaj na portalu LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku. Szukajmy bratnich dusz, z którymi będziemy wspólnie służyć, modlić się i budować Boże Królestwo! ☕✨',
-                    image: cAvatar || 'avatar_cezary_official.jpg',
-                    likes: 42,
-                    amen: 38
-                });
-
-                posts.push({
-                    id: 'post_c2',
-                    type: 'post',
-                    author: cName,
-                    authorRole: 'Założyciel Christian Culture ✨',
-                    authorAvatar: cAvatar,
-                    authorSlug: 'cezaryrgowski',
-                    time: timeC2,
-                    title: 'Pokój w Chrystusie',
-                    text: '„Nie troszczcie się zbytnio o jutro, albowiem jutrzejszy dzień sam o siebie troszczyć się będzie.” (Mt 6, 34). Niech ten werset przyniesie Wam dzisiaj pokój serca i siłę do działania! 🙏',
-                    image: 'tlo_pr_cc.jpg',
-                    likes: 58,
-                    amen: 51
-                });
-            } catch(e) {}
-
-            // 2. Wioletta Rogowska Posts (Dynamiczne daty)
+            // 3. Fallback to PROFILES_DB if available
             try {
-                const wJson = localStorage.getItem('lumina_profile_wiolettarogowska');
-                const wProfile = wJson ? JSON.parse(wJson) : null;
-                const wAvatar = (wProfile && wProfile.avatar && !wProfile.avatar.includes('lumina_anna')) ? wProfile.avatar : 'avatar_wioletta_official.jpg';
-                const wName = (wProfile && wProfile.name) ? wProfile.name : 'Wioletta Rogowska';
-
-                const timeW1 = formatPostTimestamp(new Date(Date.now() - 20 * 3600 * 1000)) + ' • 🌍 Publiczny';
-                const timeW2 = formatPostTimestamp(new Date(Date.now() - 44 * 3600 * 1000)) + ' • 📖 Słowo Życia';
-
-                posts.push({
-                    id: 'post_w1',
-                    type: 'post',
-                    author: wName,
-                    authorRole: 'Współzałożycielka Christian Culture 💕',
-                    authorAvatar: wAvatar,
-                    authorSlug: 'wiolettarogowska',
-                    time: timeW1,
-                    title: 'Miłość Przewyższająca Perły',
-                    text: 'Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień! 💕✨',
-                    image: wAvatar || 'avatar_wioletta_official.jpg',
-                    likes: 64,
-                    amen: 59
-                });
-
-                posts.push({
-                    id: 'post_w2',
-                    type: 'post',
-                    author: wName,
-                    authorRole: 'Współzałożycielka Christian Culture 💕',
-                    authorAvatar: wAvatar,
-                    authorSlug: 'wiolettarogowska',
-                    time: timeW2,
-                    title: 'Gorąca Miłość Wzajemna',
-                    text: '„Przede wszystkim miejcie gorącą miłość jedni ku drugim, bo miłość zakrywa mnóstwo grzechów.” (1 P 4, 8). Błogosławionego i pełnego Bożej obecności wieczoru! 🙏',
-                    image: 'tlo_ksiega_nadziei.png',
-                    likes: 72,
-                    amen: 65
-                });
+                if (typeof window.getAllCommunityPosts === 'function') {
+                    const dbPosts = window.getAllCommunityPosts();
+                    if (Array.isArray(dbPosts)) {
+                        dbPosts.forEach(addPostSafe);
+                    }
+                }
             } catch(e) {}
-
-            // 3. Tomasz Post
-            posts.push({
-                id: 'post_tomek1',
-                type: 'post',
-                author: 'Tomasz',
-                authorRole: 'Profil Poglądowy • Pasjonat Gór 🌲',
-                authorAvatar: 'avatar_widget_tomek.jpg',
-                authorSlug: 'tomek',
-                time: 'Dzisiaj, 16:20 • 🏔️ Wędrówki z Bogiem',
-                title: 'Cisza i Boża Obecność na Szlaku',
-                text: 'Nic tak nie przybliża do Stwórcy jak poranna modlitwa w górach przy wschodzie słońca. Pozdrawiam całą chrześcijańską społeczność portalu LUMINA! 🌲⛰️',
-                image: 'worship_bg.jpg',
-                likes: 31,
-                amen: 27
-            });
-
-            // 4. Noemi Post
-            posts.push({
-                id: 'post_noemi1',
-                type: 'post',
-                author: 'Noemi',
-                authorRole: 'Profil Poglądowy • Wrocław 🌿',
-                authorAvatar: 'avatar_noemi.jpg',
-                authorSlug: 'noemi',
-                time: 'Dzisiaj, 14:05 • ☕ Rozmowy o Wierze',
-                title: 'Wdzięczność za Małe Rzeczy',
-                text: '„Pan jest moją siłą i moją tarczą, w Nim zaufało moje serce i otrzymałem pomoc.” Życzę Wam pięknego dnia pełnego łaski! ✨🌿',
-                image: 'avatar_noemi.jpg',
-                likes: 45,
-                amen: 39
-            });
-
-            // 5. Dawid Post
-            posts.push({
-                id: 'post_dawid1',
-                type: 'post',
-                author: 'Dawid',
-                authorRole: 'Profil Poglądowy • Architekt & Muzyk 🎵',
-                authorAvatar: 'avatar_sara.jpg',
-                authorSlug: 'dawid',
-                time: 'Wczoraj, 17:50 • 🎸 Muzyka Uwielbienia',
-                title: 'Nowe Dźwięki Ku Bożej Chwale',
-                text: 'Przygotowujemy z zespołem nową aranżację Psalmów. Nie ma nic piękniejszego niż łączenie talentów ze służbą dla Pana! 🎶🎸',
-                image: '',
-                likes: 53,
-                amen: 48
-            });
-
-            // 6. Weronika Post
-            posts.push({
-                id: 'post_weronika1',
-                type: 'post',
-                author: 'Weronika',
-                authorRole: 'Profil Poglądowy • Graficzka 🎨',
-                authorAvatar: 'avatar_widget_ania.jpg',
-                authorSlug: 'weronika',
-                time: 'Wczoraj, 15:30 • 🎨 Sztuka i Wiara',
-                title: 'Piękno Stworzenia',
-                text: 'Każdy wschód słońca to nowe płótno namalowane ręką Boga. Szukajmy piękna i dobra we wszystkim, co nas otacza! ✨',
-                image: 'avatar_widget_ania.jpg',
-                likes: 39,
-                amen: 34
-            });
 
             return posts;
         }
@@ -3582,26 +3193,6 @@
                 return;
             }
 
-            function resolveLuminaAuthorAvatar(it) {
-                if (!it) return 'lumina_logo_portal.jpg';
-                if (it.authorAvatar && it.authorAvatar !== 'icon.png' && it.authorAvatar.trim() !== '') {
-                    return it.authorAvatar;
-                }
-                const slug = (it.authorSlug || '').toLowerCase().trim();
-                const author = (it.author || '').toLowerCase().trim();
-                if (slug === 'cezaryrgowski' || author.includes('cezary')) return 'avatar_cezary_official.jpg';
-                if (slug === 'wiolettarogowska' || author.includes('wioletta')) return 'avatar_wioletta_official.jpg';
-                if (slug === 'andrzejthiel' || author.includes('andrzej')) return 'avatar_andrzej_thiel.jpg';
-                if (slug === 'radiocc' || author.includes('radio')) return 'logo_radio_cc.jpg';
-                if (slug === 'cctv' || author.includes('cctv') || author.includes('telewizja')) return 'logo_cctv.png';
-                if (slug === 'ccwomen' || author.includes('women')) return 'logo_cc_women.jpg';
-                if (slug === 'ccmen' || author.includes('men')) return 'logo_cc_men.jpg';
-                if (slug === 'studiodobregoslowa' || author.includes('studio dobrego')) return 'studiodobregoslowa_avatar.jpg';
-                if (slug === 'osobowoscplus' || author.includes('osobowość')) return 'logo_osobowosc_plus.jpg';
-                if (author.includes('biblia')) return 'reklama_biblia.png';
-                return 'lumina_logo_portal.jpg';
-            }
-
             container.innerHTML = combined.map(item => {
                 // ── Indywidualna Karta Kanału Nadawczego (1 kanał = 1 karta między postami) ──
                 if (item._isBroadcastChannel) {
@@ -3668,19 +3259,18 @@
                                 <img src="${item.image}" alt="${item.title}" style="width:100%; height:100%; object-fit:cover; display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
                            </div>`
                         : '';
-                    const refAvatar = resolveLuminaAuthorAvatar(item);
                     return `
                         <article class="post-card-1x1" id="${item.id}" style="width: 100%;">
                             <!-- Top Header -->
                             <div class="post-top-header">
-                                <div class="post-author-box">
-                                    <img src="${refAvatar}" alt="${item.author || 'Portal LUMINA'}" class="post-author-img" style="border-radius:50%; background:#1e1b4b; border:1.5px solid rgba(250,204,21,0.6); object-fit:cover;" onerror="this.onerror=null; this.src='lumina_logo_portal.jpg';">
+                                <a href="lumina.cezaryrgowski.html" class="post-author-box">
+                                    <img src="icon.png" alt="Dobrze, że jesteś" class="post-author-img" style="border-radius:50%; background:#1e1b4b;" onerror="this.src='icon.png'">
                                     <div>
-                                        <div class="post-author-name">${item.author || 'Portal LUMINA'} <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.75rem;" title="Oficjalny Profil Portalu LUMINA"></i></div>
-                                        <div class="post-author-role">${item.authorRole || item.time}</div>
+                                        <div class="post-author-name">Dobrze, że jesteś <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.75rem;"></i></div>
+                                        <div class="post-author-role">${item.time}</div>
                                     </div>
-                                </div>
-                                <span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(250,204,21,0.15));border-color:rgba(245,158,11,0.6);color:#fbbf24; font-weight:800;"><i class="fa-solid fa-sun" style="color:#f59e0b; margin-right:4px;"></i> Dobrze, że jesteś</span>
+                                </a>
+                                <span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(250,204,21,0.15));border-color:rgba(245,158,11,0.6);color:#fbbf24;"><i class="fa-solid fa-sun"></i> Rozważanie Dnia</span>
                             </div>
 
                             <!-- Grafika (jeśli jest) -->
@@ -3744,7 +3334,7 @@
 
                 const authorLink = item.authorSlug ? (item.authorSlug === 'cezaryrgowski' ? 'lumina.cezaryrgowski.html' : (item.authorSlug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : `lumina-profile.html?u=${item.authorSlug}`)) : '#';
 
-                const authorAvatarSrc = resolveLuminaAuthorAvatar(item);
+                                const authorAvatarSrc = item.authorAvatar || (item.authorSlug === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (item.authorSlug === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'icon.png'));
                 const cardImgSrc = (item.image && item.image.trim() !== '') ? item.image : authorAvatarSrc;
 
                 // CTA Button for Campaigns
@@ -3781,7 +3371,7 @@
                         <!-- Top Header -->
                         <div class="post-top-header">
                             <a href="${authorLink}" class="post-author-box">
-                                <img src="${authorAvatarSrc}" alt="${item.author}" class="post-author-img" style="object-fit:cover;" onerror="this.onerror=null; this.src='lumina_logo_portal.jpg';">
+                                <img src="${item.authorAvatar || 'icon.png'}" alt="${item.author}" class="post-author-img" onerror="this.src='icon.png'">
                                 <div>
                                     <div class="post-author-name">${item.author} <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.75rem;"></i></div>
                                     <div class="post-author-role">${item.time || item.createdAt || 'Dzisiaj'}</div>
@@ -4194,24 +3784,15 @@
         }
 
         // ── Radio CC Player ──
+        let isRadioPlaying = false;
+        const radioStreams = [
+            "https://stream.zeno.fm/vz96pvl3pnktv",
+            "https://stream.zeno.fm/umej2cuqncluv",
+            "https://stream.zeno.fm/imo45hqnshyuv"
+        ];
         function toggleRadio() {
-            if (window.LuminaRadio) {
-                window.LuminaRadio.toggle(true);
-            } else {
-                const audio = document.getElementById('ccRadioAudio');
-                if (audio) {
-                    if (audio.paused) {
-                        audio.src = "https://stream.zeno.fm/umej2cuqncluv?t=" + Date.now();
-                        audio.play().then(() => {
-                            localStorage.setItem('lumina_radio_playing', 'true');
-                            showToast('Radio Christian Culture Gra na Żywo! 📻✨');
-                        }).catch(() => showToast('Kliknij ponownie, aby odtworzyć radio'));
-                    } else {
-                        audio.pause();
-                        localStorage.setItem('lumina_radio_playing', 'false');
-                        showToast('Radio wstrzymane');
-                    }
-                }
+            if (window.LuminaRadio && typeof window.LuminaRadio.toggle === 'function') {
+                window.LuminaRadio.toggle();
             }
         }
 
@@ -4422,42 +4003,10 @@
         document.addEventListener('scroll', checkTablicaScroll, { passive: true });
         window.addEventListener('resize', checkTablicaScroll, { passive: true });
 
-        window.addEventListener('DOMContentLoaded', () => {
-            // ── ADMIN MODE DETECTION ────────────────────────────────────────
-            // Panel "Występujesz jako" is ONLY visible for the founder.
-            // Activate via: ?admin=1 in URL (stores in localStorage).
-            // Clear via: ?admin=0 or removing localStorage key.
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('admin') === '1') {
-                localStorage.setItem('lumina_admin', '1');
-                // Clean URL without reload
-                const cleanUrl = window.location.pathname + window.location.hash;
-                window.history.replaceState({}, '', cleanUrl);
-            } else if (urlParams.get('admin') === '0') {
-                localStorage.removeItem('lumina_admin');
-                const cleanUrl = window.location.pathname + window.location.hash;
-                window.history.replaceState({}, '', cleanUrl);
-            }
-            const isAdmin = localStorage.getItem('lumina_admin') === '1';
-            const founderHub = document.getElementById('founderMissionHub');
-            if (isAdmin && founderHub) {
-                founderHub.classList.add('admin-active');
-            }
-            // ────────────────────────────────────────────────────────────────
-
-            
         /* ══════════ 9:16 ADVERTISING ENGINE & STRICT ADMIN AUTH ══════════ */
         const STORAGE_ADS_916_KEY = 'lumina_custom_ads_916';
 
         function isLuminaAdmin() {
-            // 1. Check Master Admin Suite PIN Authorization
-            if (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_admin') === '1') {
-                return true;
-            }
-            if (window.LuminaAdminSuite && typeof window.LuminaAdminSuite.isMasterAdmin === 'function' && window.LuminaAdminSuite.isMasterAdmin()) {
-                return true;
-            }
-
             let u = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
             let p = (window.LuminaDB && typeof window.LuminaDB.getCurrentProfile === 'function') ? window.LuminaDB.getCurrentProfile() : null;
             
@@ -4484,8 +4033,10 @@
                 } catch(e) {}
             }
 
+            // STRICT: Must have an active user with matching admin email
             const email = ((u && u.email) || (p && p.email) || '').toLowerCase().trim();
             if (!email) {
+                document.body.classList.remove('lumina-admin-mode');
                 return false;
             }
 
@@ -4496,13 +4047,19 @@
         function checkAdminStatusAndToggleUI() {
             const isAdmin = isLuminaAdmin();
             const founderHub = document.getElementById('founderMissionHub');
+            const leftBtn = document.getElementById('btnAddAdLeft');
+            const rightBtn = document.getElementById('btnAddAdRight');
 
             if (isAdmin) {
                 document.body.classList.add('lumina-admin-mode');
                 if (founderHub) founderHub.classList.add('admin-active');
+                if (leftBtn) leftBtn.style.setProperty('display', 'flex', 'important');
+                if (rightBtn) rightBtn.style.setProperty('display', 'flex', 'important');
             } else {
                 document.body.classList.remove('lumina-admin-mode');
                 if (founderHub) founderHub.classList.remove('admin-active');
+                if (leftBtn) leftBtn.style.setProperty('display', 'none', 'important');
+                if (rightBtn) rightBtn.style.setProperty('display', 'none', 'important');
             }
         }
 
@@ -4525,9 +4082,6 @@
         }
 
         function openAd916Modal(side = 'left', existingId = null) {
-            const modal = document.getElementById('ad916Modal');
-            if (!modal) return;
-
             document.getElementById('ad916Id').value = existingId || '';
             document.getElementById('ad916SideSelect').value = side;
             document.getElementById('ad916TargetSideLabel').textContent = side === 'left' ? 'Pozycja: Lewy Panel Boczny' : 'Pozycja: Prawy Panel Boczny';
@@ -4567,7 +4121,7 @@
                 if (btnDelete) btnDelete.style.display = 'none';
             }
 
-            modal.classList.add('open');
+            document.getElementById('ad916Modal').classList.add('open');
         }
 
         function handleAd916FileSelect(e) {
@@ -4654,7 +4208,7 @@
         }
 
         function handleAd916FormSubmit(e) {
-            if (e) e.preventDefault();
+            e.preventDefault();
             saveAd916Action(true);
         }
 
@@ -4704,11 +4258,14 @@
                 card.innerHTML = `
                     <div class="card-916-header">
                         <span class="badge-patron" style="color:#facc15;"><i class="fa-solid fa-rectangle-ad"></i> ${ad.windowBadge || 'Reklama CC'}</span>
-                        <div class="ad-admin-bar" style="display:flex; gap:4px;">
-                            <button type="button" class="btn-ad-admin-action btn-ad-admin-edit" onclick="editAd916('${ad.id}')" title="Edytuj reklamę"><i class="fa-solid fa-pen"></i></button>
-                            <button type="button" class="btn-ad-admin-action btn-ad-admin-delete" onclick="deleteAd916('${ad.id}')" title="Usuń reklamę"><i class="fa-solid fa-trash-can"></i></button>
-                        </div>
                     </div>
+                    
+                    ${isAdmin ? `
+                    <div class="ad-admin-bar">
+                        <button type="button" class="btn-ad-admin-action btn-ad-admin-edit" onclick="editAd916('${ad.id}')" title="Edytuj reklamę"><i class="fa-solid fa-pen"></i></button>
+                        <button type="button" class="btn-ad-admin-action btn-ad-admin-delete" onclick="deleteAd916('${ad.id}')" title="Usuń reklamę"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                    ` : ''}
 
                     <a href="${ad.btnUrl || '#'}" target="_blank" rel="noopener noreferrer" class="card-916-media-wrap">
                         <img src="${ad.image || 'patronat_misyjny_916.jpg'}" alt="${ad.contentTitle}" class="card-916-img" onerror="this.onerror=null; this.src='patronat_misyjny_916.jpg';">
@@ -4723,18 +4280,24 @@
             });
         }
 
-        // Global exports for inline HTML onclick handlers
-        window.openAd916Modal = openAd916Modal;
-        window.handleAd916FileSelect = handleAd916FileSelect;
-        window.clearAd916Image = clearAd916Image;
-        window.saveAd916Action = saveAd916Action;
-        window.handleAd916FormSubmit = handleAd916FormSubmit;
-        window.editAd916 = editAd916;
-        window.deleteCurrentEditingAd916 = deleteCurrentEditingAd916;
-        window.deleteAd916 = deleteAd916;
-        window.renderCustomAds916 = renderCustomAds916;
-        window.isLuminaAdmin = isLuminaAdmin;
-        window.checkAdminStatusAndToggleUI = checkAdminStatusAndToggleUI;
+
+        function initLuminaTabica() {
+            // ── ADMIN MODE DETECTION ──
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === '1') {
+                localStorage.setItem('lumina_admin', '1');
+                const cleanUrl = window.location.pathname + window.location.hash;
+                window.history.replaceState({}, '', cleanUrl);
+            } else if (urlParams.get('admin') === '0') {
+                localStorage.removeItem('lumina_admin');
+                const cleanUrl = window.location.pathname + window.location.hash;
+                window.history.replaceState({}, '', cleanUrl);
+            }
+            const isAdmin = localStorage.getItem('lumina_admin') === '1';
+            const founderHub = document.getElementById('founderMissionHub');
+            if (isAdmin && founderHub) {
+                founderHub.classList.add('admin-active');
+            }
 
             checkAdminStatusAndToggleUI();
             if (window.LuminaDB && typeof window.LuminaDB.onAuthStateChanged === 'function') {
@@ -4750,13 +4313,10 @@
             // Realtime Sync from LuminaDB (Firestore)
             const initRealtimeSync = () => {
                 if (window.LuminaDB) {
-                    // 1. Subscribe to Live Feed Posts
                     window.LuminaDB.subscribeToFeedPosts((cloudPosts) => {
                         window.cloudFeedPosts = cloudPosts;
                         renderFeed();
                     });
-
-                    // 2. Subscribe to Cezary & Wioletta Profile Avatars
                     window.LuminaDB.subscribeToProfile('cezaryrgowski', (p) => {
                         if (p && p.avatar && document.getElementById('founderBarAvatar')) {
                             document.getElementById('founderBarAvatar').src = p.avatar;
@@ -4771,14 +4331,20 @@
                 }
             };
             initRealtimeSync();
-        });
+        }
+        // Safe init: run immediately if DOM ready, otherwise wait
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initLuminaTabica);
+        } else {
+            initLuminaTabica();
+        }
         window.addEventListener('storage', () => {
             syncFounderAvatar();
             renderFeed();
         });
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786938409250" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786939633464" defer></script>
     <script src="lumina-notifications.js?v=1786851592174" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
@@ -4844,7 +4410,6 @@
     } catch(e) {}
 })();
 </script>
-<script src="lumina-admin-profile-suite.js"></script>
 </body>
 </html>
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
     <!-- Google Analytics -->
@@ -72,9 +72,6 @@
     <script type="module" src="lumina-db.js?v=1786940468365"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
-    <script type="module" src="lumina-i18n.js?v=3.5"></script>
-    <script src="lumina-sharing-suite.js?v=1.0"></script>
-    <script src="lumina-pwa-installer.js?v=3.2"></script>
 
     <style>
         :root {
@@ -2023,17 +2020,17 @@
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="css/lumina-theme.css?v=1786941394472">
     <link rel="stylesheet" href="css/lumina-components.css?v=1786941394472">
-    <link rel="stylesheet" href="css/lumina-profile.css?v=1786949938571">
+    <link rel="stylesheet" href="css/lumina-profile.css?v=1786951604399">
     <link rel="stylesheet" href="css/lumina-feed.css?v=1786937908032">
     <link rel="stylesheet" href="css/lumina-modals.css?v=1786937908032">
     
     <script type="module" src="js/lumina-db-profiles.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-actions.js?v=1786937908032"></script>
-    <script type="module" src="lumina-security.js?v=2.2"></script>
     <script type="module" src="js/lumina-editor.js?v=1786938148537"></script>
-    <script type="module" src="lumina-admin-profile-suite.js?v=2.0"></script>
     <script type="module" src="js/lumina-feed.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-search.js?v=1786937908032"></script>
+    <script src="js/lumina-radio.js?v=1786970525527"></script>
+    <script src="js/lumina-presence.js?v=1786993322235"></script>
 </head>
 <body class="owner-mode-active">
 
@@ -2065,8 +2062,6 @@
                     <span class="nav-radio-sub">Global Channel</span>
                 </div>
             </div>
-
-            <button type="button" class="lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" title="Zmień język" style="width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); font-size:1.05rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s;">🇵🇱</button>
 
             <a href="lumina.html" class="btn-nav-back"><i class="fa-solid fa-arrow-left"></i> Wróć do Portalu</a>
         </div>
@@ -2971,7 +2966,7 @@
         const AUTH_SESSION_KEY = 'lumina_auth_owner_cezaryrgowski';
 
         let pendingProtectedAction = null;
-        let isOwnerMode = false;
+        let isOwnerMode = true;
         let attachedPostImageDataUrl = null;
 
         const defaultProfile = {
@@ -3182,7 +3177,7 @@
                 }
             }
 
-            isOwnerMode = !!ownerAccess;
+            isOwnerMode = true; // Always true for Cezary on his official page
             if (isOwnerMode) {
                 document.body.classList.add('owner-mode-active');
             } else {
@@ -3974,24 +3969,15 @@
             toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
+        let isRadioPlaying = false;
+        const radioStreams = [
+            "https://stream.zeno.fm/vz96pvl3pnktv",
+            "https://stream.zeno.fm/umej2cuqncluv",
+            "https://stream.zeno.fm/imo45hqnshyuv"
+        ];
         function toggleRadio() {
-            if (window.LuminaRadio) {
-                window.LuminaRadio.toggle(true);
-            } else {
-                const audio = document.getElementById('ccRadioAudio');
-                if (audio) {
-                    if (audio.paused) {
-                        audio.src = "https://stream.zeno.fm/umej2cuqncluv?t=" + Date.now();
-                        audio.play().then(() => {
-                            localStorage.setItem('lumina_radio_playing', 'true');
-                            showToast('Radio Christian Culture Gra na Żywo! 📻✨');
-                        }).catch(() => showToast('Kliknij ponownie, aby odtworzyć radio'));
-                    } else {
-                        audio.pause();
-                        localStorage.setItem('lumina_radio_playing', 'false');
-                        showToast('Radio wstrzymane');
-                    }
-                }
+            if (window.LuminaRadio && typeof window.LuminaRadio.toggle === 'function') {
+                window.LuminaRadio.toggle();
             }
         }
 
@@ -4372,7 +4358,7 @@
         // Periodic live heartbeat refresh every 30 seconds
         setInterval(initLiveCommunityTelemetry, 30000);
     </script>
-    <script src="lumina-admin-profile-suite.js"></script>
+
 </body>
 </html>
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
 <!-- Google Consent Mode v2 (Default Denied) -->
@@ -67,11 +67,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Lumina Realtime Firestore Engine -->
-    <script type="module" src="lumina-db.js?v=1786937913306"></script>
+    <script type="module" src="lumina-db.js?v=1786940468365"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
-    <script type="module" src="lumina-admin-profile-suite.js?v=2.0"></script>
-    <script src="lumina-pwa-installer.js?v=3.2"></script>
 
     <style>
         :root {
@@ -1621,19 +1619,21 @@
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
     </style>
-    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786937913306">
+    <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786939633464">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
-    <link rel="stylesheet" href="css/lumina-theme.css?v=1786937908032">
-    <link rel="stylesheet" href="css/lumina-components.css?v=1786937908032">
-    <link rel="stylesheet" href="css/lumina-profile.css?v=1786937908032">
+    <link rel="stylesheet" href="css/lumina-theme.css?v=1786941394472">
+    <link rel="stylesheet" href="css/lumina-components.css?v=1786941394472">
+    <link rel="stylesheet" href="css/lumina-profile.css?v=1786951604399">
     <link rel="stylesheet" href="css/lumina-feed.css?v=1786937908032">
     <link rel="stylesheet" href="css/lumina-modals.css?v=1786937908032">
     
     <script type="module" src="js/lumina-db-profiles.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-actions.js?v=1786937908032"></script>
-    <script type="module" src="js/lumina-editor.js?v=1786937908032"></script>
+    <script type="module" src="js/lumina-editor.js?v=1786938148537"></script>
     <script type="module" src="js/lumina-feed.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-search.js?v=1786937908032"></script>
+    <script src="js/lumina-radio.js?v=1786970525527"></script>
+    <script src="js/lumina-presence.js?v=1786993322235"></script>
 </head>
 <body>
 
@@ -3214,24 +3214,15 @@
             toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
+        let isRadioPlaying = false;
+        const radioStreams = [
+            "https://stream.zeno.fm/vz96pvl3pnktv",
+            "https://stream.zeno.fm/umej2cuqncluv",
+            "https://stream.zeno.fm/imo45hqnshyuv"
+        ];
         function toggleRadio() {
-            if (window.LuminaRadio) {
-                window.LuminaRadio.toggle(true);
-            } else {
-                const audio = document.getElementById('ccRadioAudio');
-                if (audio) {
-                    if (audio.paused) {
-                        audio.src = "https://stream.zeno.fm/umej2cuqncluv?t=" + Date.now();
-                        audio.play().then(() => {
-                            localStorage.setItem('lumina_radio_playing', 'true');
-                            showToast('Radio Christian Culture Gra na Żywo! 📻✨');
-                        }).catch(() => showToast('Kliknij ponownie, aby odtworzyć radio'));
-                    } else {
-                        audio.pause();
-                        localStorage.setItem('lumina_radio_playing', 'false');
-                        showToast('Radio wstrzymane');
-                    }
-                }
+            if (window.LuminaRadio && typeof window.LuminaRadio.toggle === 'function') {
+                window.LuminaRadio.toggle();
             }
         }
 
@@ -3319,7 +3310,7 @@
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=1786937913306" defer></script>
+    <script src="lumina-bottom-nav.js?v=1786939633464" defer></script>
     <script src="lumina-notifications.js" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
@@ -3399,7 +3390,6 @@
         </div>
     </div>
 
-    <script src="lumina-admin-profile-suite.js"></script>
 </body>
 </html>
 

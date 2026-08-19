@@ -6,6 +6,61 @@
  */
 
 export const PROFILES_DB = {
+    'andrzejthiel': {
+        uid: 'andrzejthiel',
+        slug: 'andrzejthiel',
+        name: 'Andrzej Thiel',
+        age: '70',
+        birthDate: '1955-11-30',
+        city: 'Sieradz, Polska',
+        avatar: 'avatar_andrzej_thiel.jpg',
+        cover: 'cover_andrzej_thiel.jpg',
+        coverPosY: '50%',
+        job: 'Opracowuje Rozważania „Cuda Każdego Dnia” ✨',
+        role: 'Opracowuje Rozważania „Cuda Każdego Dnia” (na podst. wiad. B.K. / autor: Cuda Każdego Dnia)',
+        church: 'Wspólnota Chrześcijańska w Sieradzu',
+        denom: 'Chrześcijanin',
+        status: 'Wdowiec',
+        facebookUrl: 'https://www.facebook.com/andrzej.thiel.9',
+        ckdFacebookUrl: 'https://www.facebook.com/cudakazdegodnia',
+        pin: '7777',
+        visibility: 'public',
+        match: '98%',
+        matchScore: '98%',
+        stats: { friends: '380', posts: '1', likes: '540' },
+        verse: '„Twój Bóg jest Bogiem cudów i to On będzie walczył za ciebie.”',
+        verseRef: '— Księga Jozuego 2, 9 / Lb 13, 33',
+        bio: 'Opracowuję codzienne rozważania biblijne „Cuda Każdego Dnia” (facebook.com/cudakazdegodnia) na podstawie materiałów B.K. (autor: Cuda Każdego Dnia). Pragnę dzielić się Bożą miłością, prawdą Pisma Świętego i zachęcać każdego do patrzenia na wyzwania przez Boży teleskop wiary.',
+        tags: ['Cuda Każdego Dnia', 'Pismo Święte', 'Rozważania', 'Ewangelizacja', 'Wiara i Nadzieja', 'Sieradz'],
+        photos: ['avatar_andrzej_thiel.jpg', 'ckd_art_2026_08_17.jpg', 'cover_andrzej_thiel.jpg'],
+        posts: [
+            {
+                id: 'post_ckd_2026_08_17',
+                author: 'Andrzej Thiel',
+                authorSlug: 'andrzejthiel',
+                authorAvatar: 'avatar_andrzej_thiel.jpg',
+                authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
+                time: 'Dzisiaj, 17 Sierpnia 2026 • 📖 Cuda Każdego Dnia',
+                title: 'JAK KONIKI POLNE!',
+                text: `CUDA KAŻDEGO DNIA! 
+17 SIERPNIA 2026.
+Przeczytaj i zobacz jak Bóg przemienia twoje życie.
+
+JAK KONIKI POLNE!
+
+Czujesz się czasem, kimś tak słabym, niewidocznym, bezsilnym – w porównaniu z górą problemów, wielką troską, zmartwieniem – jak jakiś mały robaczek? Ciąży to nad tobą jak groźny cień jastrzębia, szukającego swojej ofiary? Szpiedzy, którzy wrócili z misji wywiadowczej w Kanaanie, tak się właśnie czuli. Malutcy wobec olbrzymów. Oto co mówili: „Widzieliśmy tam olbrzymów, synów Anaka, z rodu olbrzymów, i wydawaliśmy się sobie w porównaniu z nimi jak szarańcza, i takimi też byliśmy w ich oczach” (Lb. 13,33).  Szarańcza! Czy jak czytamy w innym tłumaczeniu: koniki polne. Zwątpili. Strach ma wielkie oczy, mówi przysłowie. Kiedy zaczynasz się bać, zagrożenie rośnie, aż jego wielki cień odbiera ci nadzieję. A przecież szpiedzy nie mieli pojęcia, co tak naprawdę mogli myśleć ich wrogowie. Wiemy z późniejszej relacji, że Bóg wzbudził strach w sercach mieszkańców Kanaanu na wieść, że Izraelici zbliżają się pod mury Jerycha. Mieszkanka Jerycha, Rachab, tak powiedziała: „Wiem, że Pan dał wam tę ziemię, gdyż padł na nas strach przed wami i wszyscy mieszkańcy tej ziemi drżą przed wami” (Joz. 2,9). Widzisz to? Jeśli idziesz z Bogiem, nie ma takich olbrzymów, których On by nie mógł pokonać. Potrafi sprawić, że uciekną ze strachu.  Przed czym drżysz? Czego się boisz dzisiaj? Nazwij to, a potem przynieś Bogu, który wszystko może. Oddaj Mu to i zaufaj Mu. Nie warto ulegać strachowi, którym świetnie posługuje się szatan, by cię zniechęcić. Niestety jako ludzie niczego się nie uczymy na błędach innych, choć ten przykład jest tak wymowny.  Spełnienie obietnicy było na wyciągnięcie ręki. Nie musiało kosztować 40 lat tułaczki. Dlaczego nie skorzystali z cudu, który Bóg był gotowy dla nich uczynić? Masz wielkiego Boga, niezależnie jak słaby, mały i nic nie znaczący się sobie wydajesz! Idź z wiarą pomimo przeszkód i olbrzymów na drodze. Twój Bóg jest Bogiem cudów i to On będzie walczył za ciebie. Nie wycofuj się, nie stchórz. To, co widzisz i co cię przeraża, przepuść przez Boży teleskop, a doświadczysz cudu! 
+
+„Boże, Ty jesteś wielki i łaskawy. Masz wspaniały plan, według którego chcesz mnie prowadzić. Pomóż mi ufać, dodaj odwagi, chcę widzieć Ciebie takiego, jakim jesteś”.
+/opr. na podst. wiad. B.K./.
+
+Dziękuję, że jesteś! ❤️`,
+                likes: 54,
+                amen: 49,
+                image: 'ckd_art_2026_08_17.jpg'
+            }
+        ]
+    },
+
     'cezaryrgowski': {
         uid: 'cezaryrgowski',
         slug: 'cezaryrgowski',
@@ -349,7 +404,31 @@ export function getLuminaProfile(slug) {
     };
 }
 
+/**
+ * Pobiera wszystkie wpisy ze wszystkich zweryfikowanych profili społeczności LUMINA
+ */
+export function getAllCommunityPosts() {
+    const all = [];
+    Object.values(PROFILES_DB).forEach(prof => {
+        if (Array.isArray(prof.posts)) {
+            prof.posts.forEach(p => {
+                all.push({
+                    ...p,
+                    author: p.author || prof.name,
+                    authorAvatar: p.authorAvatar || prof.avatar,
+                    authorSlug: p.authorSlug || prof.slug,
+                    authorRole: p.authorRole || prof.job || prof.role,
+                    likes: p.likes || 1,
+                    amen: p.amen || 0
+                });
+            });
+        }
+    });
+    return all;
+}
+
 if (typeof window !== 'undefined') {
     window.PROFILES_DB = PROFILES_DB;
     window.getLuminaProfile = getLuminaProfile;
+    window.getAllCommunityPosts = getAllCommunityPosts;
 }
