@@ -3388,15 +3388,62 @@ function getWeatherPreset(city) {
         });
     </script>
 
-    <audio id="stream-audio" autoplay></audio>
+    <!-- UNMUTE BANNER -->
+    <div id="masterUnmuteBanner" style="position: fixed; top: 25px; left: 50%; transform: translateX(-50%); z-index: 10001; background: rgba(12, 12, 16, 0.92); border: 1.5px solid var(--gold-primary); color: #fff; padding: 14px 30px; border-radius: 50px; font-weight: 800; font-size: 0.95rem; letter-spacing: 1px; cursor: pointer; box-shadow: 0 8px 32px rgba(0,0,0,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; align-items: center; gap: 12px; transition: opacity 0.5s ease;">
+        <i class="fa-solid fa-volume-high" style="color: var(--gold-primary); font-size: 1.3rem;"></i>
+        <span>KLIKNIJ W DOWOLNYM MIEJSCU, ABY WŁĄCZYĆ DŹWIĘK BIBLII ŚPIEWANEJ</span>
+    </div>
+
+    <audio id="stream-audio" autoplay playsinline preload="auto"></audio>
     <script>
-        // Automatic playlist rotation across all Instrumental Worship tracks
-        (function initWorshipPlaylist() {
+        (function initBibliaSpiewanaAudio() {
             var audio = document.getElementById("stream-audio");
             if (!audio) return;
 
-            var worshipPlaylist = [];
-            var totalWorshipDuration = 0;
+            var DEFAULT_PLAYLIST = [
+                { id: "biblia_spiewana_1", title: "Śpiewane Przypowieści Salomona - Rozdział 1", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3" },
+                { id: "biblia_spiewana_2", title: "Śpiewane Przypowieści Salomona - Rozdział 2", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%202.mp3" },
+                { id: "biblia_spiewana_3", title: "Śpiewane Przypowieści Salomona - Rozdział 3", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%203.mp3" },
+                { id: "biblia_spiewana_4", title: "Śpiewane Przypowieści Salomona - Rozdział 4", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%204.mp3" },
+                { id: "biblia_spiewana_5", title: "Śpiewane Przypowieści Salomona - Rozdział 5", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%205.mp3" },
+                { id: "biblia_spiewana_6", title: "Śpiewane Przypowieści Salomona - Rozdział 6", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%206.mp3" },
+                { id: "biblia_spiewana_7", title: "Śpiewane Przypowieści Salomona - Rozdział 7", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%207.mp3" },
+                { id: "biblia_spiewana_8", title: "Śpiewane Przypowieści Salomona - Rozdział 8", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%208.mp3" },
+                { id: "biblia_spiewana_9", title: "Śpiewane Przypowieści Salomona - Rozdział 9", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%209.mp3" },
+                { id: "biblia_spiewana_10", title: "Śpiewane Przypowieści Salomona - Rozdział 10", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2010.mp3" },
+                { id: "biblia_spiewana_11", title: "Śpiewane Przypowieści Salomona - Rozdział 11", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2011.mp3" },
+                { id: "biblia_spiewana_12", title: "Śpiewane Przypowieści Salomona - Rozdział 12", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2012.mp3" },
+                { id: "biblia_spiewana_13", title: "Śpiewane Przypowieści Salomona - Rozdział 13", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2013.mp3" },
+                { id: "biblia_spiewana_14", title: "Śpiewane Przypowieści Salomona - Rozdział 14", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2014.mp3" },
+                { id: "biblia_spiewana_15", title: "Śpiewane Przypowieści Salomona - Rozdział 15", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2015.mp3" },
+                { id: "biblia_spiewana_16", title: "Śpiewane Przypowieści Salomona - Rozdział 16", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2016.mp3" },
+                { id: "biblia_spiewana_17", title: "Śpiewane Przypowieści Salomona - Rozdział 17", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2017.mp3" },
+                { id: "biblia_spiewana_18", title: "Śpiewane Przypowieści Salomona - Rozdział 18", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2018.mp3" },
+                { id: "biblia_spiewana_19", title: "Śpiewane Przypowieści Salomona - Rozdział 19", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2019.mp3" },
+                { id: "biblia_spiewana_20", title: "Śpiewane Przypowieści Salomona - Rozdział 20", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2020.mp3" },
+                { id: "biblia_spiewana_21", title: "Śpiewane Przypowieści Salomona - Rozdział 21", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2021.mp3" },
+                { id: "biblia_spiewana_22", title: "Śpiewane Przypowieści Salomona - Rozdział 22", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2022.mp3" },
+                { id: "biblia_spiewana_23", title: "Śpiewane Przypowieści Salomona - Rozdział 23", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2023.mp3" },
+                { id: "biblia_spiewana_24", title: "Śpiewane Przypowieści Salomona - Rozdział 24", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2024.mp3" },
+                { id: "biblia_spiewana_25", title: "Śpiewane Przypowieści Salomona - Rozdział 25", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2025.mp3" },
+                { id: "biblia_spiewana_26", title: "Śpiewane Przypowieści Salomona - Rozdział 26", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2026.mp3" },
+                { id: "biblia_spiewana_27", title: "Śpiewane Przypowieści Salomona - Rozdział 27", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2027.mp3" },
+                { id: "biblia_spiewana_28", title: "Śpiewane Przypowieści Salomona - Rozdział 28", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2028.mp3" },
+                { id: "biblia_spiewana_29", title: "Śpiewane Przypowieści Salomona - Rozdział 29", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2029.mp3" },
+                { id: "biblia_spiewana_30", title: "Śpiewane Przypowieści Salomona - Rozdział 30", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2030.mp3" },
+                { id: "biblia_spiewana_31", title: "Śpiewane Przypowieści Salomona - Rozdział 31", artist: "Christian Culture Music", duration: 240, url: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2031.mp3" }
+            ];
+
+            var worshipPlaylist = DEFAULT_PLAYLIST;
+            var totalWorshipDuration = worshipPlaylist.reduce(function(acc, t) { return acc + (t.duration || 240); }, 0);
+
+            function hideUnmuteBanner() {
+                var banner = document.getElementById('masterUnmuteBanner');
+                if (banner) {
+                    banner.style.opacity = '0';
+                    setTimeout(function() { banner.style.display = 'none'; }, 500);
+                }
+            }
 
             function updateMediaSession(track) {
                 if ('mediaSession' in navigator && track) {
@@ -3431,11 +3478,16 @@ function getWeatherPreset(city) {
                     if (!audio.src || !audio.src.includes(newUrl.slice(-30)) || audio.ended || audio.paused) {
                         audio.src = newUrl;
                         audio.currentTime = 0;
-                        audio.play().catch(function(e) {
-                            console.warn("Audio play blokada:", e.message);
-                        });
-                        updateMediaSession(currentTrack);
                     }
+                    var p = audio.play();
+                    if (p !== undefined) {
+                        p.then(function() {
+                            hideUnmuteBanner();
+                        }).catch(function(e) {
+                            console.warn("Audio play blocked (waiting for interaction):", e.message);
+                        });
+                    }
+                    updateMediaSession(currentTrack);
                 }
             }
 
@@ -3476,56 +3528,52 @@ function getWeatherPreset(city) {
                 }
             });
 
-            // Expose globally so initStream() can trigger playback after user gesture
+            // Expose globally
             window.worshipSyncAndPlay = syncAndPlay;
+            window.hideUnmuteBanner = hideUnmuteBanner;
 
+            // Start playback attempt immediately
+            syncAndPlay();
+
+            // Dynamic refresh in background if playlist file has newer updates
             fetch("./biblia_spiewana_playlist.json?t=" + new Date().getTime())
                 .then(function(res) { return res.json(); })
                 .then(function(playlist) {
-                    if (!playlist || !playlist.length) return;
-                    worshipPlaylist = playlist;
-                    totalWorshipDuration = worshipPlaylist.reduce(function(acc, t) {
-                        return acc + (t.duration || 240);
-                    }, 0);
-                    syncAndPlay();
-                    // Jeśli użytkownik już kliknął play zanim playlista się załadowała
-                    var audio2 = document.getElementById('stream-audio');
-                    if (window._worshipUserInteracted && audio2 && audio2.paused) {
-                        setTimeout(function() { audio2.play().catch(function(){}); }, 300);
+                    if (playlist && playlist.length > 0) {
+                        worshipPlaylist = playlist;
+                        totalWorshipDuration = worshipPlaylist.reduce(function(acc, t) {
+                            return acc + (t.duration || 240);
+                        }, 0);
                     }
                 })
                 .catch(function(err) {
-                    console.error("Error loading biblia_spiewana_playlist.json:", err);
+                    console.warn("Could not fetch remote biblia_spiewana_playlist.json, using static inline playlist:", err);
                 });
 
-            // Unlock audio on click/touch if blocked by Autoplay policy
+            // Unlock audio on click/touch
             function handleUserGestureAudio() {
                 window._worshipUserInteracted = true;
+                hideUnmuteBanner();
                 var audioEl = document.getElementById('stream-audio');
                 if (audioEl) {
                     audioEl.muted = false;
                     if (audioEl.paused || !audioEl.src || audioEl.ended) {
-                        if (typeof window.worshipSyncAndPlay === 'function') {
-                            window.worshipSyncAndPlay();
-                        } else {
-                            audioEl.play().catch(function(){});
-                        }
+                        syncAndPlay();
                     }
                 }
             }
+
+            var bannerEl = document.getElementById('masterUnmuteBanner');
+            if (bannerEl) bannerEl.addEventListener("click", handleUserGestureAudio);
             document.addEventListener("click", handleUserGestureAudio);
             document.addEventListener("touchstart", handleUserGestureAudio);
             window.addEventListener("click", handleUserGestureAudio);
             window.addEventListener("touchstart", handleUserGestureAudio);
 
-            // Watchdog: auto-restart if audio paused unexpectedly
+            // Watchdog: auto-restart if audio paused unexpectedly after interaction
             setInterval(function() {
                 if (audio && audio.paused && !audio.muted && window._worshipUserInteracted) {
-                    if (typeof window.worshipSyncAndPlay === 'function') {
-                        window.worshipSyncAndPlay();
-                    } else {
-                        audio.play().catch(function(){});
-                    }
+                    syncAndPlay();
                 }
             }, 5000);
         })();
