@@ -957,7 +957,14 @@ function playRadio() {
         if (!audio.src || !audio.src.includes(targetUrl.slice(-30))) {
             audio.src = targetUrl;
             if (seekOffset > 0) {
-                audio.currentTime = seekOffset;
+                const onMeta = () => {
+                    try {
+                        if (audio.duration && !isNaN(audio.duration) && audio.duration > seekOffset) {
+                            audio.currentTime = seekOffset;
+                        }
+                    } catch(e) {}
+                };
+                audio.addEventListener('loadedmetadata', onMeta, { once: true });
             }
         }
     }
