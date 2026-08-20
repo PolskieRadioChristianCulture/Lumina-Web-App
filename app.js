@@ -422,7 +422,7 @@ function selectStation(stationId, noPlay = false) {
         document.documentElement.style.setProperty('--player-accent', station.accentColors[0]);
     }
     
-    // Connect to Zeno.fm live metadata EventSource
+    // Connect to Zeno.fm live metadata EventSource or playlist info
     connectStationMetadata(stationId);
     
     // Only start playback if explicitly requested (not on initial page load)
@@ -430,11 +430,7 @@ function selectStation(stationId, noPlay = false) {
     
     // Smoothly fade out, switch source, and start playback automatically
     fadeAudioOut(() => {
-        if (stationId === "global_biblia" || stationId === "instrumental_worship") {
-            audio.src = "";
-        } else {
-            setAudioSource(station.streamUrl);
-        }
+        audio.src = "";
         playRadio();
     });
 }
@@ -451,56 +447,33 @@ async function playRadio() {
     updatePlayerUI(true);
     playerStatusText.textContent = "Łączenie...";
     
-    if (activeStation.id === "global_biblia") {
-        await loadGlobalPlaylist();
-        if (globalPlaylist.length > 0) {
-            const epochSeconds = Math.floor(Date.now() / 1000);
-            let remaining = epochSeconds % totalDuration;
-            let targetIndex = 0;
-            let seekSeconds = 0;
-            for (let i = 0; i < globalPlaylist.length; i++) {
-                if (remaining < globalPlaylist[i].duration) {
-                    targetIndex = i;
-                    seekSeconds = remaining;
-                    break;
-                }
-                remaining -= globalPlaylist[i].duration;
-            }
-            const currentTrack = globalPlaylist[targetIndex];
-            if (!audio.src.includes(currentTrack.name)) {
-                audio.src = currentTrack.url;
-                audio.load();
-            }
-            audio.currentTime = seekSeconds;
-            playerTrackTitle.textContent = `${currentTrack.bookName} - Chapter ${currentTrack.chapter}`;
-        }
-    } else if (activeStation.id === "instrumental_worship") {
+    if (activeStation.id === "instrumental_worship") {
         await loadWorshipPlaylist();
         if (worshipPlaylist.length > 0) {
-            if (!audio.src || !audio.src.includes(".mp3") || audio.ended) {
-                if (worshipTrackIndex < 0 || worshipTrackIndex >= worshipPlaylist.length) {
-                    worshipTrackIndex = Math.floor(Math.random() * worshipPlaylist.length);
-                }
-                const currentTrack = worshipPlaylist[worshipTrackIndex];
-                audio.src = currentTrack.url;
-                playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist || 'Christian Culture'}`;
+            if (worshipTrackIndex < 0 || worshipTrackIndex >= worshipPlaylist.length) {
+                worshipTrackIndex = Math.floor(Math.random() * worshipPlaylist.length);
             }
+            const currentTrack = worshipPlaylist[worshipTrackIndex];
+            if (!audio.src || !audio.src.includes(currentTrack.url.slice(-30)) || audio.ended) {
+                audio.src = currentTrack.url;
+            }
+            playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist || 'Christian Culture'}`;
         }
     } else if (activeStation.id === "biblia_spiewana") {
         await loadBibliaSpiewanaPlaylist();
         if (bibliaSpiewanaPlaylist.length > 0) {
-            if (!audio.src || !audio.src.includes(".mp3") || audio.ended) {
-                if (bibliaSpiewanaTrackIndex < 0 || bibliaSpiewanaTrackIndex >= bibliaSpiewanaPlaylist.length) {
-                    bibliaSpiewanaTrackIndex = 0;
-                }
-                const currentTrack = bibliaSpiewanaPlaylist[bibliaSpiewanaTrackIndex];
-                audio.src = currentTrack.url;
-                playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist || 'Christian Culture'}`;
+            if (bibliaSpiewanaTrackIndex < 0 || bibliaSpiewanaTrackIndex >= bibliaSpiewanaPlaylist.length) {
+                bibliaSpiewanaTrackIndex = 0;
             }
+            const currentTrack = bibliaSpiewanaPlaylist[bibliaSpiewanaTrackIndex];
+            if (!audio.src || !audio.src.includes(currentTrack.url.slice(-30)) || audio.ended) {
+                audio.src = currentTrack.url;
+            }
+            playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist || 'Christian Culture'}`;
         }
     } else {
-        // If audio element was reset, reload the active stream url
-        if (!audio.src || audio.src === window.location.href || audio.src.includes(".mp3")) {
+        // Live radio streams (Radio PL, Radio Global, Radio Biblia, Globalna Biblia)
+        if (!audio.src || audio.src === window.location.href || audio.src !== activeStation.streamUrl) {
             audio.src = activeStation.streamUrl;
         }
     }
@@ -705,21 +678,36 @@ function connectStationMetadata(stationId) {
         metadataEventSource = null;
     }
     
-    if (stationId === "global_biblia") {
-        playerTrackTitle.textContent = "Wczytywanie informacji o utworze...";
-        updateGlobalBibleRadioState();
-        globalBibleTimer = setInterval(updateGlobalBibleRadioState, 5000);
+    if (stationId === "instrumental_worship") {
+        if (worshipPlaylist.length > 0) {
+            const tr = worshipPlaylist[worshipTrackIndex] || worshipPlaylist[0];
+            playerTrackTitle.textContent = `${tr.title} — ${tr.artist || 'Christian Culture'}`;
+        } else {
+            playerTrackTitle.textContent = "Instrumental Worship Music — Christian Culture";
+        }
+        return;
+    }
+    
+    if (stationId === "biblia_spiewana") {
+        if (bibliaSpiewanaPlaylist.length > 0) {
+            const tr = bibliaSpiewanaPlaylist[bibliaSpiewanaTrackIndex] || bibliaSpiewanaPlaylist[0];
+            playerTrackTitle.textContent = `${tr.title} — ${tr.artist || 'Christian Culture'}`;
+        } else {
+            playerTrackTitle.textContent = "Biblia Śpiewana — Śpiewane Przypowieści Salomona";
+        }
         return;
     }
     
     const station = STATIONS[stationId];
-    if (!station) return;
+    if (!station || !station.streamUrl) return;
     
     // Set placeholder tracker text initially
     playerTrackTitle.textContent = "Wczytywanie informacji o utworze...";
     
     // Get mount ID from streamUrl (last segment of the URL)
     const mountId = station.streamUrl.split('/').pop();
+    if (!mountId || mountId.endsWith('.mp3')) return;
+    
     const sseUrl = `https://api.zeno.fm/mounts/metadata/subscribe/${mountId}`;
     
     try {
