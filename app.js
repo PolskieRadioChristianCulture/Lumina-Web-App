@@ -106,6 +106,7 @@ let metadataEventSource = null;
 let globalPlaylist = [];
 let totalDuration = 0;
 let globalBibleTimer = null;
+let currentAudioUrl = "";
 
 let worshipPlaylist = [
   {
@@ -954,8 +955,9 @@ function playRadio() {
     }
     
     if (targetUrl) {
-        if (!audio.src || !audio.src.includes(targetUrl.slice(-30))) {
+        if (currentAudioUrl !== targetUrl || !audio.src) {
             audio.src = targetUrl;
+            currentAudioUrl = targetUrl;
             if (seekOffset > 0) {
                 const onMeta = () => {
                     try {
@@ -977,9 +979,17 @@ function playRadio() {
             updatePlayerUI(true);
         }).catch(error => {
             console.error("Audio playback error:", error);
+            if (error && error.name === "AbortError") {
+                // Playback was superseded by another load, ignore
+                return;
+            }
             isPlaying = false;
             updatePlayerUI(false);
-            playerStatusText.textContent = "Błąd połączenia";
+            if (error && error.name === "NotAllowedError") {
+                playerStatusText.textContent = "Kliknij Play, aby włączyć";
+            } else {
+                playerStatusText.textContent = "Błąd połączenia";
+            }
         });
     }
 }
@@ -1004,6 +1014,7 @@ function pauseRadio() {
     // Clear audio source on pause only for live streams so they don't buffer outdated content
     if (activeStation && activeStation.id !== "instrumental_worship" && activeStation.id !== "biblia_spiewana" && activeStation.id !== "biblia_audio") {
         audio.src = "";
+        currentAudioUrl = "";
     }
 }
 
