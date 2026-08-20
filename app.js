@@ -108,46 +108,25 @@ let totalDuration = 0;
 let globalBibleTimer = null;
 
 let worshipPlaylist = [];
-let totalWorshipDuration = 0;
-let worshipTrackIndex = 0; // Aktualny indeks utworu w pętli
+let worshipTrackIndex = 0;
 
 let bibliaSpiewanaPlaylist = [];
-let totalBibliaSpiewanaDuration = 0;
 let bibliaSpiewanaTrackIndex = 0;
 
-async function loadWorshipPlaylist() {
-    if (worshipPlaylist.length > 0) return;
-    try {
-        const res = await fetch('./worship_playlist.json');
-        if (res.ok) {
-            worshipPlaylist = await res.json();
-            worshipPlaylist.forEach(tr => {
-                if (!tr.duration) tr.duration = 240;
-            });
-            totalWorshipDuration = worshipPlaylist.reduce((acc, t) => acc + t.duration, 0);
-            console.log(`🎶 Załadowano playlistę Instrumental Worship: ${worshipPlaylist.length} utworów`);
-        }
-    } catch(e) {
-        console.error("❌ Błąd ładowania worship_playlist.json:", e);
-    }
-}
+function loadPlaylistsImmediate() {
+    fetch('./worship_playlist.json?t=' + Date.now())
+        .then(r => r.json())
+        .then(data => {
+            if (data && data.length > 0) worshipPlaylist = data;
+        }).catch(e => console.error("Worship playlist fetch:", e));
 
-async function loadBibliaSpiewanaPlaylist() {
-    if (bibliaSpiewanaPlaylist.length > 0) return;
-    try {
-        const res = await fetch('./biblia_spiewana_playlist.json');
-        if (res.ok) {
-            bibliaSpiewanaPlaylist = await res.json();
-            bibliaSpiewanaPlaylist.forEach(tr => {
-                if (!tr.duration) tr.duration = 240;
-            });
-            totalBibliaSpiewanaDuration = bibliaSpiewanaPlaylist.reduce((acc, t) => acc + t.duration, 0);
-            console.log(`🎶 Załadowano playlistę Biblia Śpiewana: ${bibliaSpiewanaPlaylist.length} utworów`);
-        }
-    } catch(e) {
-        console.error("❌ Błąd ładowania biblia_spiewana_playlist.json:", e);
-    }
+    fetch('./biblia_spiewana_playlist.json?t=' + Date.now())
+        .then(r => r.json())
+        .then(data => {
+            if (data && data.length > 0) bibliaSpiewanaPlaylist = data;
+        }).catch(e => console.error("Biblia Spiewana playlist fetch:", e));
 }
+loadPlaylistsImmediate();
 
 // DOM Elements
 const audio = new Audio();
@@ -159,8 +138,6 @@ audio.addEventListener('ended', () => {
         playNextWorshipTrack();
     } else if (activeStation && activeStation.id === 'biblia_spiewana') {
         playNextBibliaSpiewanaTrack();
-    } else if (activeStation && activeStation.id === 'global_biblia' && globalPlaylist.length > 0) {
-        playRadio();
     }
 });
 
@@ -258,10 +235,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     // Dynamically render station dropdown menu items
     renderStationDropdown();
-
-    // Preload local playlists to ensure immediate user-gesture playback
-    loadWorshipPlaylist();
-    loadBibliaSpiewanaPlaylist();
     
     // Setup initial station details WITHOUT auto-starting audio
     selectStation("poland", true);
@@ -412,70 +385,58 @@ function selectStation(stationId, noPlay = false) {
     const station = STATIONS[stationId];
     if (!station) return;
     
-    // Set active station state
     activeStation = station;
     activeStationNameText.textContent = station.name;
     playerStationLogo.src = station.logo;
     
-    // Change player CSS accent color dynamically
     if (station.accentColors && station.accentColors[0]) {
         document.documentElement.style.setProperty('--player-accent', station.accentColors[0]);
     }
     
-    // Connect to Zeno.fm live metadata EventSource or playlist info
     connectStationMetadata(stationId);
     
-    // Only start playback if explicitly requested (not on initial page load)
     if (noPlay) return;
     
-    // Smoothly fade out, switch source, and start playback automatically
-    fadeAudioOut(() => {
-        audio.src = "";
-        playRadio();
-    });
+    playRadio();
 }
 
 function setAudioSource(url) {
-    // Reset source to clear buffer for live streams
     audio.src = url;
     audio.load();
 }
 
-async function playRadio() {
-    stopFade();
+function playRadio() {
     isPlaying = true;
     updatePlayerUI(true);
     playerStatusText.textContent = "Łączenie...";
     
     if (activeStation.id === "instrumental_worship") {
-        await loadWorshipPlaylist();
-        if (worshipPlaylist.length > 0) {
+        if (worshipPlaylist && worshipPlaylist.length > 0) {
             if (worshipTrackIndex < 0 || worshipTrackIndex >= worshipPlaylist.length) {
-                worshipTrackIndex = Math.floor(Math.random() * worshipPlaylist.length);
+                worshipTrackIndex = 0;
             }
             const currentTrack = worshipPlaylist[worshipTrackIndex];
-            if (!audio.src || !audio.src.includes(currentTrack.url.slice(-30)) || audio.ended) {
-                audio.src = currentTrack.url;
-            }
+            audio.src = currentTrack.url;
             playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist || 'Christian Culture'}`;
+        } else {
+            audio.src = "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(1).mp3";
+            playerTrackTitle.textContent = "Instrumental Worship — Christian Culture";
         }
     } else if (activeStation.id === "biblia_spiewana") {
-        await loadBibliaSpiewanaPlaylist();
-        if (bibliaSpiewanaPlaylist.length > 0) {
+        if (bibliaSpiewanaPlaylist && bibliaSpiewanaPlaylist.length > 0) {
             if (bibliaSpiewanaTrackIndex < 0 || bibliaSpiewanaTrackIndex >= bibliaSpiewanaPlaylist.length) {
                 bibliaSpiewanaTrackIndex = 0;
             }
             const currentTrack = bibliaSpiewanaPlaylist[bibliaSpiewanaTrackIndex];
-            if (!audio.src || !audio.src.includes(currentTrack.url.slice(-30)) || audio.ended) {
-                audio.src = currentTrack.url;
-            }
+            audio.src = currentTrack.url;
             playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist || 'Christian Culture'}`;
+        } else {
+            audio.src = "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3";
+            playerTrackTitle.textContent = "Biblia Śpiewana — Śpiewane Przypowieści Salomona";
         }
     } else {
         // Live radio streams (Radio PL, Radio Global, Radio Biblia, Globalna Biblia)
-        if (!audio.src || audio.src === window.location.href || audio.src !== activeStation.streamUrl) {
-            audio.src = activeStation.streamUrl;
-        }
+        audio.src = activeStation.streamUrl;
     }
     
     const playPromise = audio.play();
@@ -483,8 +444,7 @@ async function playRadio() {
     if (playPromise !== undefined) {
         playPromise.then(() => {
             playerStatusText.textContent = "Odtwarza";
-            // Smoothly fade in volume to set value
-            fadeAudioIn(previousVolume);
+            updatePlayerUI(true);
         }).catch(error => {
             console.error("Audio playback error:", error);
             isPlaying = false;
