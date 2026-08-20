@@ -3616,18 +3616,34 @@ function getWeatherPreset(city) {
                     console.error("Error loading worship_playlist.json:", err);
                 });
 
-            // Unlock audio on click if blocked by Autoplay policy
-            document.addEventListener("click", function() {
+            // Unlock audio on click/touch if blocked by Autoplay policy
+            function handleUserGestureAudio() {
                 window._worshipUserInteracted = true;
-                if (audio.paused) {
-                    audio.play().catch(function(){});
+                var audioEl = document.getElementById('stream-audio');
+                if (audioEl) {
+                    audioEl.muted = false;
+                    if (audioEl.paused || !audioEl.src || audioEl.ended) {
+                        if (typeof window.worshipSyncAndPlay === 'function') {
+                            window.worshipSyncAndPlay();
+                        } else {
+                            audioEl.play().catch(function(){});
+                        }
+                    }
                 }
-            }, { once: true });
+            }
+            document.addEventListener("click", handleUserGestureAudio);
+            document.addEventListener("touchstart", handleUserGestureAudio);
+            window.addEventListener("click", handleUserGestureAudio);
+            window.addEventListener("touchstart", handleUserGestureAudio);
 
             // Watchdog: auto-restart if audio paused unexpectedly
             setInterval(function() {
                 if (audio && audio.paused && !audio.muted && window._worshipUserInteracted) {
-                    audio.play().catch(function(){});
+                    if (typeof window.worshipSyncAndPlay === 'function') {
+                        window.worshipSyncAndPlay();
+                    } else {
+                        audio.play().catch(function(){});
+                    }
                 }
             }, 5000);
         })();

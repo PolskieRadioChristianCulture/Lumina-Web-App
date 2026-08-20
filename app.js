@@ -84,7 +84,7 @@ let STATIONS = {
     biblia_spiewana: {
         id: "biblia_spiewana",
         name: "BIBLIA ŚPIEWANA",
-        streamUrl: "./audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3",
+        streamUrl: "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3",
         playlistUrl: "./biblia_spiewana_playlist.json",
         isDrivePlaylist: true,
         accentColors: ["#D4AF37", "#E6A817"],
