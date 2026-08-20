@@ -3413,15 +3413,13 @@ function getWeatherPreset(city) {
                 if (!worshipPlaylist || !worshipPlaylist.length) return;
 
                 var epochSeconds = Math.floor(Date.now() / 1000);
-                var remaining = epochSeconds % (totalWorshipDuration || 770);
+                var remaining = epochSeconds % (totalWorshipDuration || 7440);
                 var targetIndex = 0;
-                var seekSeconds = 0;
 
                 for (var i = 0; i < worshipPlaylist.length; i++) {
                     var dur = worshipPlaylist[i].duration || 240;
                     if (remaining < dur) {
                         targetIndex = i;
-                        seekSeconds = remaining;
                         break;
                     }
                     remaining -= dur;
@@ -3430,18 +3428,34 @@ function getWeatherPreset(city) {
                 var currentTrack = worshipPlaylist[targetIndex];
                 if (currentTrack && currentTrack.url) {
                     var newUrl = currentTrack.url;
-                    // Załaduj tylko jeśli to inny utwór
-                    if (!audio.src || !audio.src.includes(newUrl.slice(-30))) {
+                    if (!audio.src || !audio.src.includes(newUrl.slice(-30)) || audio.ended || audio.paused) {
                         audio.src = newUrl;
-                        // NIE seek – WAV z Drive nie obsługuje range requests dobrze
-                        // Graj od początku, watchdog pilnuje ciągłości
+                        audio.currentTime = 0;
+                        audio.play().catch(function(e) {
+                            console.warn("Audio play blokada:", e.message);
+                        });
+                        updateMediaSession(currentTrack);
                     }
-                    audio.play().catch(function(e) {
-                        console.warn("Audio play blokada:", e.message);
-                    });
-                    updateMediaSession(currentTrack);
                 }
             }
+
+            // Przy zakończeniu utworu – przejdź płynnie do następnego utworu
+            audio.addEventListener('ended', function() {
+                if (worshipPlaylist && worshipPlaylist.length > 0) {
+                    var currentSrc = audio.src;
+                    var currentIdx = worshipPlaylist.findIndex(function(t) {
+                        return currentSrc && currentSrc.includes(t.url.slice(-30));
+                    });
+                    var nextIdx = (currentIdx !== -1) ? (currentIdx + 1) % worshipPlaylist.length : 0;
+                    var nextTrack = worshipPlaylist[nextIdx];
+                    if (nextTrack && nextTrack.url) {
+                        audio.src = nextTrack.url;
+                        audio.currentTime = 0;
+                        audio.play().catch(function(e) { console.warn("Play error on ended:", e); });
+                        updateMediaSession(nextTrack);
+                    }
+                }
+            });
 
             // Przy błędzie ładowania – przejdź do następnego utworu
             audio.addEventListener('error', function() {
@@ -3449,12 +3463,13 @@ function getWeatherPreset(city) {
                 if (worshipPlaylist && worshipPlaylist.length > 0) {
                     var currentSrc = audio.src;
                     var currentIdx = worshipPlaylist.findIndex(function(t) {
-                        return currentSrc.includes(t.url.slice(-30));
+                        return currentSrc && currentSrc.includes(t.url.slice(-30));
                     });
                     var nextIdx = (currentIdx + 1) % worshipPlaylist.length;
                     var next = worshipPlaylist[nextIdx];
                     if (next && next.url) {
                         audio.src = next.url;
+                        audio.currentTime = 0;
                         audio.play().catch(function(){});
                         updateMediaSession(next);
                     }
@@ -3463,8 +3478,6 @@ function getWeatherPreset(city) {
 
             // Expose globally so initStream() can trigger playback after user gesture
             window.worshipSyncAndPlay = syncAndPlay;
-
-            audio.addEventListener('ended', syncAndPlay);
 
             fetch("./biblia_spiewana_playlist.json?t=" + new Date().getTime())
                 .then(function(res) { return res.json(); })
@@ -3482,15 +3495,23 @@ function getWeatherPreset(city) {
                     }
                 })
                 .catch(function(err) {
-                    console.error("Error loading worship_playlist.json:", err);
+                    console.error("Error loading biblia_spiewana_playlist.json:", err);
                 });
 
             // Unlock audio on click if blocked by Autoplay policy
             document.addEventListener("click", function() {
+                window._worshipUserInteracted = true;
                 if (audio.paused) {
                     audio.play().catch(function(){});
                 }
             }, { once: true });
+
+            // Watchdog: auto-restart if audio paused unexpectedly
+            setInterval(function() {
+                if (audio && audio.paused && !audio.muted && window._worshipUserInteracted) {
+                    audio.play().catch(function(){});
+                }
+            }, 5000);
         })();
     </script>
     <script src="live-window-manager.js"></script>
