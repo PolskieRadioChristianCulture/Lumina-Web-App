@@ -896,13 +896,28 @@ function playRadio() {
     playerStatusText.textContent = "Łączenie...";
     
     let targetUrl = "";
+    let seekOffset = 0;
+    
     if (activeStation.id === "instrumental_worship") {
         if (worshipPlaylist && worshipPlaylist.length > 0) {
-            if (worshipTrackIndex < 0 || worshipTrackIndex >= worshipPlaylist.length) {
-                worshipTrackIndex = 0;
+            const totalDur = worshipPlaylist.reduce((acc, t) => acc + (t.duration || 240), 0);
+            const epochSeconds = Math.floor(Date.now() / 1000);
+            let remaining = epochSeconds % (totalDur || 5000);
+            let targetIndex = 0;
+            let seekSeconds = 0;
+            for (let i = 0; i < worshipPlaylist.length; i++) {
+                const dur = worshipPlaylist[i].duration || 240;
+                if (remaining < dur) {
+                    targetIndex = i;
+                    seekSeconds = remaining;
+                    break;
+                }
+                remaining -= dur;
             }
-            const currentTrack = worshipPlaylist[worshipTrackIndex];
+            worshipTrackIndex = targetIndex;
+            const currentTrack = worshipPlaylist[targetIndex];
             targetUrl = currentTrack.url;
+            seekOffset = seekSeconds;
             playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist || 'Christian Culture'}`;
         } else {
             targetUrl = "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(1).mp3";
@@ -910,11 +925,24 @@ function playRadio() {
         }
     } else if (activeStation.id === 'biblia_spiewana' || activeStation.id === 'biblia_audio') {
         if (bibliaSpiewanaPlaylist && bibliaSpiewanaPlaylist.length > 0) {
-            if (bibliaSpiewanaTrackIndex < 0 || bibliaSpiewanaTrackIndex >= bibliaSpiewanaPlaylist.length) {
-                bibliaSpiewanaTrackIndex = 0;
+            const totalDur = bibliaSpiewanaPlaylist.reduce((acc, t) => acc + (t.duration || 240), 0);
+            const epochSeconds = Math.floor(Date.now() / 1000);
+            let remaining = epochSeconds % (totalDur || 7440);
+            let targetIndex = 0;
+            let seekSeconds = 0;
+            for (let i = 0; i < bibliaSpiewanaPlaylist.length; i++) {
+                const dur = bibliaSpiewanaPlaylist[i].duration || 240;
+                if (remaining < dur) {
+                    targetIndex = i;
+                    seekSeconds = remaining;
+                    break;
+                }
+                remaining -= dur;
             }
-            const currentTrack = bibliaSpiewanaPlaylist[bibliaSpiewanaTrackIndex];
+            bibliaSpiewanaTrackIndex = targetIndex;
+            const currentTrack = bibliaSpiewanaPlaylist[targetIndex];
             targetUrl = currentTrack.url;
+            seekOffset = seekSeconds;
             playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist || 'Christian Culture'}`;
         } else {
             targetUrl = "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3";
@@ -926,8 +954,11 @@ function playRadio() {
     }
     
     if (targetUrl) {
-        if (audio.src !== targetUrl) {
+        if (!audio.src || !audio.src.includes(targetUrl.slice(-30))) {
             audio.src = targetUrl;
+            if (seekOffset > 0) {
+                audio.currentTime = seekOffset;
+            }
         }
     }
     
