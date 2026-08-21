@@ -416,6 +416,32 @@
             border: none;
             cursor: pointer;
         }
+        .btn-nav-support {
+            background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+            border: none !important;
+            color: #000 !important;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4) !important;
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-shrink: 0 !important;
+            height: 38px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            z-index: 20;
+        }
+        .btn-nav-support i {
+            color: #000 !important;
+            font-size: 1rem !important;
+        }
+        .btn-nav-support:hover {
+            transform: scale(1.04);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6) !important;
+        }
 
         /* ──────────────────── MAIN FEED CONTAINER (ELEGANT SINGLE-COLUMN FEED) ──────────────────── */
         .board-container {
@@ -1375,7 +1401,16 @@
             }
         }
         @media (max-width: 640px) {
-            .lumina-nav { padding: 10px 14px; }
+            .lumina-nav { padding: 8px 10px; gap: 6px; }
+            .btn-nav-support {
+                padding: 6px 12px !important;
+                height: 34px !important;
+                gap: 6px !important;
+                display: inline-flex !important;
+            }
+            .btn-nav-support .btn-nav-cta-text {
+                font-size: 0.78rem !important;
+            }
             .nav-links { display: none; }
             .board-title { font-size: 1.45rem; line-height: 1.25; }
             .board-subtitle { font-size: 0.86rem; margin-bottom: 12px; }
@@ -2155,7 +2190,7 @@
                 <i class="fa-solid fa-play" id="radioPlayIcon" style="margin-left:2px;"></i>
             </button>
             <!-- WSPARCIE DZIEŁA (DONORBOX CTA) -->
-            <button class="btn-nav-cta" style="background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #000; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); padding: 8px 16px; border-radius: 40px; cursor: pointer; display: flex; align-items: center; gap: 8px;" onclick="openSupportModal()" title="Wspieraj Dzieło LUMINA">
+            <button class="btn-nav-support" onclick="openSupportModal()" title="Wspieraj Dzieło LUMINA">
                 <i class="fa-solid fa-hand-holding-heart"></i>
                 <span class="btn-nav-cta-text" style="color: #000; font-weight: 800; font-size: 0.88rem; font-family: 'Outfit', sans-serif;">Wspieraj</span>
             </button>
