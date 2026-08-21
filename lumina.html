@@ -2031,32 +2031,74 @@
         .user-nav-profile {
             display: none;
             align-items: center;
-            gap: 10px;
-            background: #f1f5f9;
-            padding: 4px 14px 4px 6px;
+            gap: 8px;
+            background: rgba(30, 41, 59, 0.85);
+            padding: 4px 10px 4px 5px;
             border-radius: 30px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
         }
         .user-nav-avatar {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             object-fit: cover;
+            border: 1.5px solid rgba(168, 85, 247, 0.6);
+            cursor: pointer;
+            margin-right: 2px;
+            transition: transform 0.2s;
+        }
+        .user-nav-avatar:hover {
+            transform: scale(1.08);
         }
         .user-nav-name {
             font-size: 0.82rem;
             font-weight: 700;
-            color: #0f172a;
+            color: #f1f5f9;
         }
         .btn-nav-logout {
-            background: none;
-            border: none;
-            color: #64748b;
+            background: rgba(239, 68, 68, 0.14);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
             cursor: pointer;
-            font-size: 0.8rem;
-            margin-left: 4px;
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            margin-left: 3px;
+            transition: all 0.2s;
         }
-        .btn-nav-logout:hover { color: #ef4444; }
+        .btn-nav-logout:hover {
+            background: rgba(239, 68, 68, 0.25);
+            color: #ef4444;
+            transform: scale(1.05);
+        }
+        .btn-nav-more {
+            background: rgba(168, 85, 247, 0.16);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            color: #d8b4fe;
+            cursor: pointer;
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            margin-left: 4px;
+            transition: all 0.2s;
+        }
+        .btn-nav-more:hover {
+            background: rgba(168, 85, 247, 0.3);
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+            transform: scale(1.05);
+        }
 
         @media (max-width: 800px) {
             .scripture-strip { flex-direction: column; }
@@ -3090,7 +3132,7 @@
                 aria-label="Panel Administratora">
             <i class="fa-solid fa-shield-halved"></i>
         </button>
-        <span class="admin-version-tag">v3.5.1</span>
+        <span class="admin-version-tag">v3.6.0</span>
     </div>
 
     <!-- ══════════ ENCRYPTED ADMIN PIN & MASTER CONTROL MODAL ══════════ -->
@@ -3199,7 +3241,7 @@
                             <i class="fa-solid fa-arrows-rotate" style="color: #c084fc; font-size: 1.1rem;"></i>
                             <span style="font-weight: 800; font-size: 0.92rem; color: #fff;">Wymuś Aktualizację Aplikacji</span>
                         </div>
-                        <span style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v3.5.2</span>
+                        <span style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v3.6.0</span>
                     </div>
                     <p style="font-size: 0.76rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
                         Wyczyść pamięć podręczną (cache), zaktualizuj pliki Service Worker i pobierz najnowszą wersję portalu LUMINA na urządzenie.
