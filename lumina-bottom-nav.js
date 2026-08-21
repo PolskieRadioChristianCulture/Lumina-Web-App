@@ -92,53 +92,97 @@
         }
     }
 
-        /* ── LUMINA BOTTOM NAVIGATION BAR (PWA / Mobile Only) ── */
+        /* ── LUMINA BOTTOM NAVIGATION BAR (Desktop Floating Dock & Mobile Bar) ── */
         .lumina-bottom-nav {
-            display: none !important;
+            position: fixed !important;
+            bottom: 20px !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            width: auto !important;
+            min-width: 460px !important;
+            max-width: 620px !important;
+            height: 64px !important;
+            background: rgba(9, 14, 30, 0.90) !important;
+            backdrop-filter: blur(24px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+            border-radius: 36px !important;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(250, 204, 21, 0.12) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-around !important;
+            padding: 0 16px !important;
+            z-index: 10000 !important;
+            transition: transform 0.3s ease, opacity 0.3s ease !important;
+        }
+
+        .lumina-nav-tab {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-decoration: none !important;
+            color: #94a3b8 !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            position: relative !important;
+            font-size: 0.72rem !important;
+            font-weight: 600 !important;
+            gap: 4px !important;
+            background: none !important;
+            border: none !important;
+            height: 100% !important;
+            padding: 6px 14px !important;
+            border-radius: 20px !important;
+            cursor: pointer !important;
+            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        .lumina-nav-tab:hover {
+            color: #facc15 !important;
+            transform: translateY(-2px) !important;
+            background: rgba(255, 255, 255, 0.06) !important;
+        }
+        .lumina-nav-tab:hover i {
+            color: #facc15 !important;
+            transform: scale(1.15) !important;
+        }
+        .lumina-nav-tab i {
+            font-size: 1.25rem !important;
+            transition: transform 0.2s ease, color 0.2s ease !important;
+        }
+        .lumina-nav-tab.active {
+            color: #facc15 !important;
+        }
+        .lumina-nav-tab.active i {
+            color: #facc15 !important;
+            transform: scale(1.12) !important;
+            text-shadow: 0 0 12px rgba(250, 204, 21, 0.6) !important;
+        }
+
+        body {
+            padding-bottom: 85px !important;
         }
 
         @media (max-width: 900px) {
             .lumina-bottom-nav {
-                position: fixed !important;
                 bottom: 0 !important;
                 left: 0 !important;
                 right: 0 !important;
+                transform: none !important;
                 width: 100% !important;
+                min-width: unset !important;
+                max-width: unset !important;
                 height: 68px !important;
-                background: rgba(9, 14, 30, 0.94) !important;
-                backdrop-filter: blur(24px) saturate(180%) !important;
-                -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-                border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-                box-shadow: 0 -8px 26px rgba(0, 0, 0, 0.7), 0 0 15px rgba(250, 204, 21, 0.1) !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: space-around !important;
+                border-radius: 0 !important;
+                border-left: none !important;
+                border-right: none !important;
+                border-bottom: none !important;
                 padding: 0 4px !important;
                 padding-bottom: env(safe-area-inset-bottom, 6px) !important;
-                z-index: 10000 !important;
-                transition: transform 0.3s ease !important;
             }
             .lumina-nav-tab {
-                flex: 1 !important;
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                justify-content: center !important;
-                text-decoration: none !important;
-                color: #94a3b8 !important;
-                font-family: 'Plus Jakarta Sans', sans-serif !important;
-                position: relative !important;
                 font-size: 0.65rem !important;
-                gap: 3px !important;
-                background: none !important;
-                border: none !important;
-                height: 100% !important;
-            }
-            .lumina-nav-tab i {
-                font-size: 1.25rem !important;
-            }
-            .lumina-nav-tab.active {
-                color: #facc15 !important;
+                padding: 4px 6px !important;
             }
             body {
                 padding-bottom: 78px !important;
