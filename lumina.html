@@ -4768,6 +4768,104 @@
             }, delayMs);
         };
 
+        let originalCardsHtml = null;
+        let isInfiniteLoopResetting = false;
+
+        window.initInfiniteCarousel = function() {
+            const carousel = document.getElementById('profilesCarousel');
+            if (!carousel) return;
+            
+            // Store master template of original cards once
+            if (!originalCardsHtml) {
+                const initialCards = Array.from(carousel.children);
+                originalCardsHtml = initialCards.map(c => c.outerHTML).join('');
+            }
+            
+            // Render 3 consecutive sets: [Clone Set 1] [Original Set 2] [Clone Set 3]
+            // This guarantees endless infinite scrolling in both directions without any boundary walls
+            carousel.innerHTML = originalCardsHtml + originalCardsHtml + originalCardsHtml;
+            
+            // Preload and initialize videos in all sets
+            carousel.querySelectorAll('video').forEach(v => {
+                v.muted = true;
+                v.playsInline = true;
+                v.load();
+                v.play().catch(() => {});
+            });
+
+            // Position initial view on the middle set promo video
+            setTimeout(() => {
+                window.centerMiddleSetPromo(false);
+            }, 80);
+        };
+
+        window.centerMiddleSetPromo = function(smooth = false) {
+            const carousel = document.getElementById('profilesCarousel');
+            if (!carousel) return;
+            
+            const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
+            if (!visibleCards.length) return;
+            
+            const singleSetCount = Math.max(1, Math.floor(visibleCards.length / 3));
+            
+            // Find promo card in the middle set (Set 2), or the 2nd card of Set 2
+            let targetCard = visibleCards[singleSetCount + 1] || visibleCards[singleSetCount];
+            for (let i = singleSetCount; i < singleSetCount * 2; i++) {
+                if (visibleCards[i] && (visibleCards[i].classList.contains('video-card') || visibleCards[i].id.includes('promoAdCard'))) {
+                    targetCard = visibleCards[i];
+                    break;
+                }
+            }
+            if (!targetCard) targetCard = visibleCards[0];
+            
+            const cardLeft = targetCard.offsetLeft;
+            const cardWidth = targetCard.offsetWidth;
+            const carouselWidth = carousel.clientWidth;
+            const targetScroll = Math.max(0, cardLeft - ((carouselWidth - cardWidth) / 2));
+            
+            if (smooth) {
+                carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
+            } else {
+                carousel.scrollLeft = targetScroll;
+            }
+            setTimeout(window.updateCenterActiveCard, 100);
+        };
+
+        window.handleInfiniteScrollBoundary = function() {
+            if (isInfiniteLoopResetting) return;
+            const carousel = document.getElementById('profilesCarousel');
+            if (!carousel) return;
+            
+            const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
+            if (!visibleCards.length) return;
+            
+            const singleSetCount = Math.floor(visibleCards.length / 3);
+            if (singleSetCount < 1) return;
+            
+            const cardWidth = visibleCards[0].offsetWidth || 300;
+            const gap = 24;
+            const singleSetWidth = (cardWidth + gap) * singleSetCount;
+            
+            // If user scrolled too far right into Set 3, silently shift back into Set 2
+            if (carousel.scrollLeft >= singleSetWidth * 1.85) {
+                isInfiniteLoopResetting = true;
+                const prevBehavior = carousel.style.scrollBehavior;
+                carousel.style.scrollBehavior = 'auto';
+                carousel.scrollLeft -= singleSetWidth;
+                carousel.style.scrollBehavior = prevBehavior;
+                setTimeout(() => { isInfiniteLoopResetting = false; }, 60);
+            } 
+            // If user scrolled too far left into Set 1, silently shift forward into Set 2
+            else if (carousel.scrollLeft <= singleSetWidth * 0.35) {
+                isInfiniteLoopResetting = true;
+                const prevBehavior = carousel.style.scrollBehavior;
+                carousel.style.scrollBehavior = 'auto';
+                carousel.scrollLeft += singleSetWidth;
+                carousel.style.scrollBehavior = prevBehavior;
+                setTimeout(() => { isInfiniteLoopResetting = false; }, 60);
+            }
+        };
+
         window.startCarouselAutoplay = function() {
             const carousel = document.getElementById('profilesCarousel');
             const activeCard = carousel ? carousel.querySelector('.profile-card.active-center-card') : null;
@@ -4834,12 +4932,11 @@
                 }
             });
 
-            // Smoothly scroll back to beginning of filtered results
-            carousel.scrollTo({ left: 0, behavior: 'smooth' });
-            setTimeout(window.updateCenterActiveCard, 350);
+            // Smoothly center the middle set of visible cards
+            window.centerMiddleSetPromo(true);
 
             const filterName = btn ? (btn.getAttribute('title') || btn.querySelector('.filter-chip-text')?.textContent || btn.textContent).trim() : filterType;
-            showToast(`Filtrowanie: ${filterName} (${visibleCount} profili) ✨`);
+            showToast(`Filtrowanie: ${filterName} (${Math.round(visibleCount / 3)} profili) ✨`);
         };
 
         window.updateCenterActiveCard = function() {
@@ -4866,8 +4963,9 @@
 
             if (!closestCard) return;
 
-            const isNewCardCentered = (closestCard.id !== lastCenteredCardId);
-            lastCenteredCardId = closestCard.id;
+            const cardIdentifier = closestCard.getAttribute('data-profile-slug') || closestCard.id || closestCard.querySelector('.card-name')?.textContent;
+            const isNewCardCentered = (cardIdentifier !== lastCenteredCardId);
+            lastCenteredCardId = cardIdentifier;
 
             cards.forEach(card => {
                 const vid = card.querySelector('video');
@@ -4891,10 +4989,12 @@
                 }
             });
 
+            // Check infinite boundary during continuous swipe
+            window.handleInfiniteScrollBoundary();
+
             // Re-schedule autoplay with exact timing depending on active card type
             if (isNewCardCentered && !isCarouselInteracting && window._promoVideoFinishedPlaying) {
                 const isVideoCard = closestCard.classList.contains('video-card') || !!closestCard.querySelector('video');
-                // Video ads: full 10.5 seconds of viewing time; standard cards: 3.5 seconds
                 const nextInterval = isVideoCard ? 10500 : 3500;
                 window.scheduleNextCarouselAdvance(nextInterval);
             }
@@ -4911,43 +5011,20 @@
                 window.pauseCarouselAutoplayTemporarily(5000);
             }
 
-            const maxScroll = carousel.scrollWidth - carousel.clientWidth;
             const cardWidth = visibleCards[0].offsetWidth || 300;
             const gap = 24;
             const scrollAmount = (cardWidth + gap) * direction;
 
-            // Infinite Loop rotation in both directions
-            if (direction > 0 && carousel.scrollLeft >= maxScroll - 20) {
-                carousel.scrollTo({ left: 0, behavior: 'smooth' });
-            } else if (direction < 0 && carousel.scrollLeft <= 20) {
-                carousel.scrollTo({ left: maxScroll, behavior: 'smooth' });
-            } else {
-                carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            }
+            carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
 
-            setTimeout(window.updateCenterActiveCard, 450);
+            setTimeout(() => {
+                window.handleInfiniteScrollBoundary();
+                window.updateCenterActiveCard();
+            }, 380);
         };
 
         window.centerPromoVideoOnStart = function(smooth = false) {
-            const carousel = document.getElementById('profilesCarousel');
-            const promoCard = document.getElementById('promoAdCard');
-            if (!carousel || !promoCard) return;
-
-            const cards = Array.from(carousel.querySelectorAll('.profile-card'));
-            cards.forEach(c => c.classList.remove('active-center-card', 'featured'));
-            promoCard.classList.add('active-center-card', 'featured');
-
-            const cardLeft = promoCard.offsetLeft;
-            const cardWidth = promoCard.offsetWidth;
-            const carouselWidth = carousel.clientWidth;
-            const targetScroll = Math.max(0, cardLeft - ((carouselWidth - cardWidth) / 2));
-
-            if (smooth) {
-                carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
-            } else {
-                carousel.scrollLeft = targetScroll;
-            }
-            setTimeout(window.updateCenterActiveCard, 100);
+            window.centerMiddleSetPromo(smooth);
         };
 
         // Check for ?auth=register or ?auth=login in URL
@@ -4965,11 +5042,13 @@
             }, 400);
         }
 
-        // Initialize Carousel & Promo Video on DOM load
+        // Initialize Infinite Carousel & Promo Video on DOM load
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof syncUserSavedProfileToHomepage === 'function') {
                 syncUserSavedProfileToHomepage();
             }
+
+            window.initInfiniteCarousel();
 
             const carousel = document.getElementById('profilesCarousel');
             if (carousel) {
@@ -5001,24 +5080,21 @@
                 });
 
                 // Display video ad centered immediately on start
-                window.centerPromoVideoOnStart(false);
-                setTimeout(() => window.centerPromoVideoOnStart(false), 200);
-                setTimeout(() => window.centerPromoVideoOnStart(false), 600);
+                window.centerMiddleSetPromo(false);
+                setTimeout(() => window.centerMiddleSetPromo(false), 250);
+                setTimeout(() => window.centerMiddleSetPromo(false), 700);
 
                 // Stop any rotation until the entire promo video finishes
                 window.stopCarouselAutoplay();
                 window._promoVideoFinishedPlaying = false;
                 let rotationStarted = false;
 
-                // Preload and start playback for ALL promo videos to eliminate black screen delays
-                ['promoVideoEl', 'promoVideoEl2', 'promoVideoEl3'].forEach(id => {
-                    const vid = document.getElementById(id);
-                    if (vid) {
-                        vid.muted = true;
-                        vid.playsInline = true;
-                        vid.load();
-                        vid.play().catch(() => {});
-                    }
+                // Preload and start playback for ALL promo videos
+                document.querySelectorAll('#profilesCarousel video').forEach(vid => {
+                    vid.muted = true;
+                    vid.playsInline = true;
+                    vid.load();
+                    vid.play().catch(() => {});
                 });
 
                 const promoVid = document.getElementById('promoVideoEl');
@@ -5028,7 +5104,6 @@
                     rotationStarted = true;
                     window._promoVideoFinishedPlaying = true;
 
-                    // Re-enable loop for future views
                     if (promoVid) {
                         promoVid.setAttribute('loop', '');
                         promoVid.play().catch(() => {});
@@ -5044,26 +5119,22 @@
                 if (promoVid) {
                     promoVid.muted = true;
                     promoVid.playsInline = true;
-                    promoVid.removeAttribute('loop'); // No loop during initial play-through so ended event triggers
+                    promoVid.removeAttribute('loop');
 
                     promoVid.addEventListener('ended', startRotationAfterVideo, { once: true });
 
-                    // Timeupdate safety check when video is nearing the end
                     promoVid.addEventListener('timeupdate', function() {
                         if (!rotationStarted && promoVid.duration > 0 && promoVid.currentTime >= (promoVid.duration - 0.35)) {
                             startRotationAfterVideo();
                         }
                     });
 
-                    // Start playing promo video
                     const playPromise = promoVid.play();
                     if (playPromise !== undefined) {
                         playPromise.then(() => {
-                            // Video playing - fallback after duration + 2s in case event is missed
                             const waitMs = (promoVid.duration && promoVid.duration > 0) ? (promoVid.duration * 1000 + 1500) : 11000;
                             setTimeout(startRotationAfterVideo, waitMs);
                         }).catch(() => {
-                            // Autoplay restricted - start rotation after 8s fallback
                             setTimeout(startRotationAfterVideo, 8000);
                         });
                     } else {
@@ -5076,7 +5147,7 @@
         });
 
         window.addEventListener('load', () => {
-            window.centerPromoVideoOnStart(false);
+            window.centerMiddleSetPromo(false);
         });
 
 
