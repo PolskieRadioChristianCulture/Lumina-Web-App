@@ -645,6 +645,7 @@ function playNextBibliaSpiewanaTrack() {
     bibliaSpiewanaTrackIndex = (bibliaSpiewanaTrackIndex + 1) % bibliaSpiewanaPlaylist.length;
     const nextTrack = bibliaSpiewanaPlaylist[bibliaSpiewanaTrackIndex];
     audio.src = nextTrack.url;
+    currentAudioUrl = nextTrack.url;
     playerTrackTitle.textContent = `${nextTrack.title} — ${nextTrack.artist || 'Christian Culture'}`;
     
     const playPromise = audio.play();
@@ -675,6 +676,7 @@ function playNextWorshipTrack() {
     worshipTrackIndex = nextIndex;
     const nextTrack = worshipPlaylist[worshipTrackIndex];
     audio.src = nextTrack.url;
+    currentAudioUrl = nextTrack.url;
     playerTrackTitle.textContent = `${nextTrack.title} — ${nextTrack.artist || 'Christian Culture'}`;
     
     const playPromise = audio.play();
@@ -888,6 +890,7 @@ function selectStation(stationId, noPlay = false) {
 
 function setAudioSource(url) {
     audio.src = url;
+    currentAudioUrl = url;
     audio.load();
 }
 
