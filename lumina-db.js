@@ -1788,6 +1788,71 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     }
 }
 
+// ── Public Community Live Chatroom 🌐🕊️ ──
+export function subscribeToPublicChat(onUpdate) {
+    // 1. Check local cached messages
+    try {
+        const cached = localStorage.getItem('lumina_public_chat_cache');
+        if (cached) onUpdate(JSON.parse(cached));
+    } catch(e) {}
+
+    if (!db) return () => {};
+    try {
+        const publicQuery = query(
+            collection(db, 'lumina_public_chat_messages'),
+            orderBy('timestamp', 'asc'),
+            limit(120)
+        );
+
+        return onSnapshot(publicQuery, (snap) => {
+            const msgs = [];
+            snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
+            try {
+                localStorage.setItem('lumina_public_chat_cache', JSON.stringify(msgs));
+            } catch(e) {}
+            onUpdate(msgs);
+        }, (err) => console.warn('Lumina Public Chat sync notice:', err));
+    } catch(e) {
+        return () => {};
+    }
+}
+
+export async function sendPublicChatMessage(messageObj) {
+    const user = currentUserState;
+    const fromId = normalizeChatUserId(messageObj.senderId || (user ? (user.slug || user.uid) : (localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest')));
+    const senderName = messageObj.senderName || currentProfileState?.name || user?.displayName || (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
+    const senderAvatar = messageObj.senderAvatar || currentProfileState?.avatar || user?.photoURL || (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));
+    const senderBadge = messageObj.senderBadge || (fromId === 'cezaryrgowski' ? '👑 Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Społeczność'));
+
+    const fullMsg = {
+        senderId: fromId,
+        senderName: senderName,
+        senderAvatar: senderAvatar,
+        senderBadge: senderBadge,
+        text: messageObj.text || '',
+        type: messageObj.type || 'text',
+        timestamp: serverTimestamp(),
+        dateStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    // Save locally immediately
+    try {
+        const cached = JSON.parse(localStorage.getItem('lumina_public_chat_cache') || '[]');
+        cached.push({ ...fullMsg, id: 'local_' + Date.now(), timestamp: { seconds: Date.now() / 1000 } });
+        localStorage.setItem('lumina_public_chat_cache', JSON.stringify(cached));
+    } catch(e) {}
+
+    if (!db) return 'local_' + Date.now();
+
+    try {
+        const msgRef = await addDoc(collection(db, 'lumina_public_chat_messages'), fullMsg);
+        return msgRef.id;
+    } catch(e) {
+        console.warn('Lumina send public message error:', e.message);
+        return null;
+    }
+}
+
 export function subscribeToUserChats(userId, onUpdate) {
     if (!db || !userId) return () => {};
     try {
@@ -2174,8 +2239,11 @@ window.LuminaDB = {
     subscribeToCampaigns,
     addCampaignToCloud,
     getChatId,
+    normalizeChatUserId,
     subscribeToDirectMessages,
     sendDirectMessageToCloud,
+    subscribeToPublicChat,
+    sendPublicChatMessage,
     subscribeToUserChats,
     recordProfileLike,
     subscribeToUserMatches,
