@@ -1658,96 +1658,79 @@
             }
         }
 
-        /* ── Discrete Admin Shield & Version Tag (Bottom-Left) ── */
+        /* ── Discrete Admin Shield & Version Tag (At Bottom of Page in Footer) ── */
         .admin-shield-container {
-            position: fixed;
-            bottom: 14px;
-            left: 14px;
-            z-index: 99999;
-            display: flex;
+            position: relative;
+            display: inline-flex;
             align-items: center;
-            gap: 6px;
-            pointer-events: auto;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 14px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             user-select: none;
+            transition: all 0.3s ease;
+        }
+        .admin-shield-container:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(245, 158, 11, 0.35);
         }
 
         .admin-secret-shield-btn {
             position: relative;
-            z-index: auto;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background: rgba(15, 23, 42, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #64748b;
-            opacity: 0.22;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #94a3b8;
+            opacity: 0.7;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             cursor: pointer;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s ease;
             outline: none;
             padding: 0;
         }
 
         .admin-secret-shield-btn:hover,
         .admin-secret-shield-btn:focus-visible {
-            opacity: 0.95;
+            opacity: 1;
             color: #f59e0b;
-            border-color: rgba(245, 158, 11, 0.5);
-            background: rgba(15, 23, 42, 0.9);
-            box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
-            transform: scale(1.12);
+            border-color: rgba(245, 158, 11, 0.6);
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+            transform: scale(1.1);
         }
 
         .admin-secret-shield-btn.admin-unlocked {
-            opacity: 0.55;
+            opacity: 0.8;
             color: #10b981;
-            border-color: rgba(16, 185, 129, 0.4);
+            border-color: rgba(16, 185, 129, 0.5);
         }
 
         .admin-secret-shield-btn.admin-unlocked:hover {
             opacity: 1;
             color: #34d399;
-            box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 0 14px rgba(16, 185, 129, 0.5);
         }
 
         .admin-version-tag {
-            font-size: 0.68rem;
+            font-size: 0.72rem;
             color: rgba(255, 255, 255, 0.65);
             font-family: 'Plus Jakarta Sans', monospace, sans-serif;
             font-weight: 700;
             letter-spacing: 0.5px;
             pointer-events: none;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-            transition: opacity 0.2s, color 0.2s;
+            transition: color 0.2s;
         }
 
         .admin-shield-container:hover .admin-version-tag {
             color: rgba(255, 255, 255, 0.95);
-        }
-
-        @media (max-width: 900px) {
-            .admin-shield-container {
-                bottom: 74px; /* Above bottom mobile nav */
-                left: 12px;
-            }
-            .admin-secret-shield-btn {
-                width: 28px;
-                height: 28px;
-                font-size: 0.85rem;
-                opacity: 0.35;
-            }
-            .admin-version-tag {
-                font-size: 0.68rem;
-                color: rgba(255, 255, 255, 0.75);
-                opacity: 1;
-                font-weight: 700;
-                text-shadow: 0 1px 4px rgba(0,0,0,0.9);
-            }
         }
 
         /* ──────────────────── MODALS ──────────────────── */
@@ -2683,6 +2666,21 @@
             <a href="javascript:void(0)" onclick="if(typeof showToast==='function') showToast('Oficjalny profil Instagram LUMINA wkrótce dostępny! 🕊️');" title="Instagram (w przygotowaniu)" style="opacity: 0.75; cursor: pointer;"><i class="fa-brands fa-instagram"></i></a>
             <a href="javascript:void(0)" onclick="if(typeof showToast==='function') showToast('Oficjalny profil LinkedIn LUMINA wkrótce dostępny! 🕊️');" title="LinkedIn (w przygotowaniu)" style="opacity: 0.75; cursor: pointer;"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
+
+        <!-- DISCREET MASTER ADMIN SHIELD TRIGGER & VERSION (Positioned under page content inside footer) -->
+        <div>
+            <div class="admin-shield-container">
+                <button type="button" 
+                        id="adminSecretShieldBtn" 
+                        class="admin-secret-shield-btn" 
+                        onclick="openAdminPinModal()" 
+                        title="Dostęp Administratora" 
+                        aria-label="Panel Administratora">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </button>
+                <span class="admin-version-tag">v3.6.0</span>
+            </div>
+        </div>
     </footer>
 
 
@@ -3122,18 +3120,6 @@
         </div>
     </div>
 
-    <!-- ══════════ DISCREET MASTER ADMIN SHIELD TRIGGER & VERSION (Bottom-Left) ══════════ -->
-    <div class="admin-shield-container">
-        <button type="button" 
-                id="adminSecretShieldBtn" 
-                class="admin-secret-shield-btn" 
-                onclick="openAdminPinModal()" 
-                title="Dostęp Administratora" 
-                aria-label="Panel Administratora">
-            <i class="fa-solid fa-shield-halved"></i>
-        </button>
-        <span class="admin-version-tag">v3.6.0</span>
-    </div>
 
     <!-- ══════════ ENCRYPTED ADMIN PIN & MASTER CONTROL MODAL ══════════ -->
     <div class="modal-overlay" id="adminPinModal" onclick="if(event.target===this) closeModal('adminPinModal')">
