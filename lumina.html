@@ -2118,6 +2118,7 @@
                 <img src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar" onclick="handleMyProfileNavigation(event)" title="Mój Profil">
                 <span class="user-nav-name" id="userNavName"></span>
                 <button class="btn-nav-logout" onclick="handleLogout()" title="Wyloguj"><i class="fa-solid fa-right-from-bracket"></i></button>
+                <button class="btn-nav-more" onclick="openPersonalSettingsModal()" title="Więcej ustawień osobistych i wymuszenie aktualizacji" style="background:none; border:none; color:#cbd5e1; cursor:pointer; font-size:1.05rem; padding:4px 6px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; transition:color 0.2s;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
             </div>
 
             <!-- 4. Login / Register CTA (when logged out) -->
@@ -3113,6 +3114,81 @@
                         onclick="handleAdminLogout()" 
                         style="width:100%; padding:11px; border-radius:14px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); color:#fca5a5; font-weight:700; font-family:inherit; font-size:0.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
                     <i class="fa-solid fa-lock"></i> Wyloguj z Trybu Administratora
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ PERSONAL SETTINGS & FORCE UPDATE MODAL ══════════ -->
+    <div class="modal-overlay" id="personalSettingsModal">
+        <div class="modal-card" style="max-width: 480px; width: 94%; border-radius: 24px; background: #0b1120; border: 1.5px solid rgba(168,85,247,0.35); box-shadow: 0 20px 60px rgba(0,0,0,0.85); padding: 22px; position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #ec4899); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(168,85,247,0.4);">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;">Ustawienia Osobiste</h3>
+                        <div style="font-size: 0.72rem; color: #94a3b8;">Zarządzanie aplikacją, powiadomieniami i aktualizacjami</div>
+                    </div>
+                </div>
+                <button class="modal-close-btn" onclick="closeModal('personalSettingsModal')" style="position: static;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+                <!-- 1. WYMUŚ AKTUALIZACJĘ APLIKACJI -->
+                <div style="padding: 14px; border-radius: 16px; background: linear-gradient(135deg, rgba(168,85,247,0.12), rgba(6,182,212,0.12)); border: 1px solid rgba(168,85,247,0.35);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-arrows-rotate" style="color: #c084fc; font-size: 1.1rem;"></i>
+                            <span style="font-weight: 800; font-size: 0.92rem; color: #fff;">Wymuś Aktualizację Aplikacji</span>
+                        </div>
+                        <span style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v3.5.2</span>
+                    </div>
+                    <p style="font-size: 0.76rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
+                        Wyczyść pamięć podręczną (cache), zaktualizuj pliki Service Worker i pobierz najnowszą wersję portalu LUMINA na urządzenie.
+                    </p>
+                    <button type="button" onclick="forceAppUpdate()" id="btnForceAppUpdate" style="width: 100%; padding: 11px 14px; border-radius: 12px; background: linear-gradient(135deg, #a855f7, #06b6d4); border: none; color: #fff; font-weight: 800; font-family: inherit; font-size: 0.84rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(168,85,247,0.35); transition: all 0.2s;">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Sprawdź i Wymuś Nową Wersję
+                    </button>
+                </div>
+
+                <!-- 2. POWIADOMIENIA PUSH & DŹWIĘK -->
+                <div style="padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-bell" style="color: #ec4899; font-size: 1rem;"></i>
+                            <span style="font-weight: 700; font-size: 0.88rem; color: #fff;">Powiadomienia z Czatów</span>
+                        </div>
+                        <button type="button" onclick="testNotificationAndSound()" style="padding: 4px 10px; border-radius: 10px; background: rgba(236,72,153,0.15); border: 1px solid rgba(236,72,153,0.3); color: #f472b6; font-size: 0.72rem; font-weight: 700; cursor: pointer;">
+                            <i class="fa-solid fa-volume-high"></i> Testuj Dźwięk
+                        </button>
+                    </div>
+                    <div style="font-size: 0.74rem; color: #94a3b8; line-height: 1.35;">
+                        Powiadomienia push o nowych wiadomościach od braci i sióstr oraz kryształowy dźwięk dzwonka.
+                    </div>
+                </div>
+
+                <!-- 3. BEZPIECZEŃSTWO & SESJA -->
+                <div style="padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-shield-halved" style="color: #10b981; font-size: 1rem;"></i>
+                            <div>
+                                <div style="font-weight: 700; font-size: 0.86rem; color: #fff;">Status Połączenia Chmury</div>
+                                <div style="font-size: 0.72rem; color: #10b981;">● Połączono z Christian Culture Live Cloud 🕊️</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <button type="button" onclick="closeModal('personalSettingsModal')" style="flex: 1; padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; font-weight: 700; font-family: inherit; font-size: 0.82rem; cursor: pointer;">
+                    Zamknij
+                </button>
+                <button type="button" onclick="closeModal('personalSettingsModal'); handleLogout();" style="padding: 10px 14px; border-radius: 12px; background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.35); color: #fca5a5; font-weight: 700; font-family: inherit; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Wyloguj
                 </button>
             </div>
         </div>
@@ -5225,6 +5301,65 @@
                     senderBadge: (fromId === 'cezaryrgowski' ? '👑 Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Społeczność')),
                     text: text
                 });
+            }
+        }
+
+        // ── Personal Settings & Force App Update ──
+        function openPersonalSettingsModal() {
+            const m = document.getElementById('personalSettingsModal');
+            if (m) m.classList.add('open');
+        }
+
+        async function forceAppUpdate() {
+            const btn = document.getElementById('btnForceAppUpdate');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Trwa aktualizacja...';
+            }
+            if (typeof showToast === 'function') {
+                showToast('Trwa czyszczenie pamięci podręcznej i pobieranie najnowszej wersji LUMINA... 🚀');
+            }
+
+            try {
+                if ('caches' in window) {
+                    const keys = await caches.keys();
+                    await Promise.all(keys.map(k => caches.delete(k)));
+                }
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (let reg of registrations) {
+                        await reg.update();
+                    }
+                }
+                localStorage.removeItem('lumina_feed_cache');
+                localStorage.removeItem('lumina_public_chat_cache');
+            } catch(e) {
+                console.warn('Update error:', e);
+            }
+
+            setTimeout(() => {
+                const url = new URL(window.location.href);
+                url.searchParams.set('v_sync', Date.now());
+                window.location.href = url.toString();
+            }, 1000);
+        }
+
+        function testNotificationAndSound() {
+            if (window.LuminaDB && typeof window.LuminaDB.playNotificationChime === 'function') {
+                window.LuminaDB.playNotificationChime();
+            }
+            if (window.LuminaDB && typeof window.LuminaDB.showInAppChatBanner === 'function') {
+                window.LuminaDB.showInAppChatBanner({
+                    title: 'Test powiadomienia',
+                    body: 'Wszystkie powiadomienia i dźwięki działają doskonale! 🕊️✨',
+                    avatar: 'lumina_icon.jpg',
+                    senderName: 'LUMINA • System',
+                    senderId: 'system',
+                    type: 'public'
+                });
+            }
+            if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
+                window.LuminaDB.requestNotificationPermission().catch(() => {});
             }
         }
 
