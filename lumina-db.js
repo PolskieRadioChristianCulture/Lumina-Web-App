@@ -21,6 +21,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { 
     getFirestore, 
+    initializeFirestore,
     collection, 
     doc, 
     setDoc, 
@@ -66,7 +67,13 @@ googleProvider.setCustomParameters({
 
 try {
     app = !getApps().length ? initializeApp(LUMINA_FIREBASE_CONFIG) : getApp();
-    db = getFirestore(app);
+    try {
+        db = initializeFirestore(app, {
+            experimentalAutoDetectLongPolling: true
+        });
+    } catch (e) {
+        db = getFirestore(app);
+    }
     auth = getAuth(app);
     isAnalyticsSupported().then(supported => {
         if (supported && app) analytics = getAnalytics(app);
