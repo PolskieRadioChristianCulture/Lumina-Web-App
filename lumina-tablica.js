@@ -122,8 +122,23 @@ class LuminaTablicaEngine {
                 amen: 34
             };
 
-        // Render pinned founder post first
-        posts = [softLaunchWelcome, ...posts.filter(p => p.id !== 'post_founder_soft_launch')];
+            // Dzisiejsze Rozważanie: Andrzej Thiel (Dobrze, że jesteś / Cuda Każdego Dnia)
+            const todayDevotionPost = {
+                id: 'post_devotion_day21_20260821',
+                isDevotion: true,
+                author: 'Andrzej Thiel',
+                authorSlug: 'andrzejthiel',
+                authorAvatar: 'avatar_andrzej_thiel.jpg',
+                authorRole: 'Cuda Każdego Dnia • Dobrze, że jesteś 📖',
+                time: 'Dzisiejsze Rozważanie • 21 sierpnia 2026 ✨',
+                text: '☀️ Lato z Jezusem — Wielkie Pytania (Dzień 21)\n\n❓ Dlaczego tak łatwo ulegam lękowi przed utratą moich wpływów i pozycji?\n\nW dwudziestym pierwszym dniu cyklu „Lato z Jezusem — Wielkie Pytania” rozbrajamy mechanizm terytorialnej zazdrości oraz lęk przed tym, że ktoś inny zdobędzie większe uznanie lub pozycję.\n\nW psychologii przywództwa zjawisko „syndromu strażnika bramy” (gatekeeper syndrome) opisuje lidera, który ze strachu przed utratą kontroli blokuje rozwój utalentowanych podwładnych. Wróg bezwzględnie żeruje na tym lęku, przekształcając nas w zaborczych rywali. Słowo Ewangelii uderza w ten egoizm poprzez postawę Jana Chrzciciela: „On musi rosnąć, ja zaś muszę maleć”. Chrześcijański lider najwyższej klasy nie boi się silnych ludzi wokół siebie — potrafi z nienaganną klasą i hojnością otwierać drzwi innym, wiedząc, że prawdziwa wielkość polega na służbie.\n\n📖 Jezus mówi dziś do Ciebie:\n„On musi rosnąć, ja zaś muszę maleć.” (Jana 3,30)\n\n🎯 Zadanie Taktyczne:\nZmiażdż dziś lęk przed konkurencją na swoim polu bitwy. Zidentyfikuj relację zawodową lub środowiskową, w której czułeś ukryty opór przed sukcesem innej osoby. Zmień nastawienie: zaoferuj jej wsparcie, pochwal jej osiągnięcie i ciesz się jej wzrostem. Wnieś do swojej firmy i domu standard wspaniałomyślności, bezpieczeństwa i dojrzałego autorytetu.\n\n🙏 Modlitwa Bojowa:\n„Ojcze, odrzucam kłamstwa nieprzyjaciela i zaborczą zazdrość o wpływy. Przepraszam, że lękałem się cudzego sukcesu. Dziękuję, że moje miejsce u Twojego boku jest niewzruszone. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą hojnie wspierał wzrost innych, zdobywając ten świat dla Twojej chwały.”',
+                image: 'Andrzej Thiel.jpg',
+                likes: 38,
+                amen: 27
+            };
+
+        // Render pinned founder post & today's devotion first
+        posts = [softLaunchWelcome, todayDevotionPost, ...posts.filter(p => p.id !== 'post_founder_soft_launch' && p.id !== 'post_devotion_day21_20260821')];
         let bannerIdx = 0;
 
         posts.forEach((post, index) => {
