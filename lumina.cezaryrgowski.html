@@ -816,16 +816,17 @@
         }
 
         .avatar-status-badge {
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: #22c55e;
-            border: 3px solid var(--navy-surface);
-            box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
-            z-index: 5;
+            position: absolute !important;
+            bottom: 4px !important;
+            right: 4px !important;
+            width: 22px !important;
+            height: 22px !important;
+            border-radius: 50% !important;
+            background: #22c55e !important;
+            border: 3.5px solid #0b142e !important;
+            box-shadow: 0 0 12px rgba(34, 197, 94, 0.9), 0 2px 6px rgba(0, 0, 0, 0.7) !important;
+            z-index: 30 !important;
+            pointer-events: none !important;
         }
 
         .head-user-details {
@@ -2284,11 +2285,11 @@
             <section class="profile-head-card">
                 <div class="profile-head-top">
                     <div class="profile-head-main">
-                    <div class="avatar-wrap has-premium-video" style="position:relative; width:130px; height:130px; border-radius:50%; overflow:hidden; border:3px solid #facc15; box-shadow:0 0 25px rgba(245,158,11,0.5);">
+                    <div class="avatar-wrap has-premium-video" style="position:relative; width:130px; height:130px; border-radius:50%; overflow:visible; border:3px solid #facc15; box-shadow:0 0 25px rgba(245,158,11,0.5);">
                         <video id="profileAvatarVideoEl" src="wideo_profilowe_cezary_rogowski.mp4" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="avatar_cezary_official.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:4; display:block; background:#000;"></video>
                         <img src="avatar_cezary_official.jpg" alt="Cezary Rogowski" class="avatar-img" id="avatarImgEl" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:1;">
                         <button class="avatar-edit-overlay" onclick="triggerAvatarUpload()" title="Wgraj nowe zdjęcie profilowe z dysku" style="z-index:10;"><i class="fa-solid fa-camera"></i></button>
-                        <div class="avatar-status-badge" title="Użytkownik Online" style="z-index:11;"></div>
+                        <div class="avatar-status-badge" title="Użytkownik Online"></div>
                     </div>
 
                     <div class="head-user-details">
