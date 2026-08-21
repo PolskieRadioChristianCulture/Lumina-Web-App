@@ -34,7 +34,17 @@
     // 3. Register and Monitor Service Worker
     function registerLuminaServiceWorker() {
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
+            window.addEventListener('load', async () => {
+                try {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (const reg of registrations) {
+                        if (reg.active && !reg.active.scriptURL.includes('v20260821_v410')) {
+                            console.log('[LUMINA PWA] Wyrejestrowywanie starego Service Workera:', reg.active.scriptURL);
+                            await reg.unregister();
+                        }
+                    }
+                } catch (e) {}
+
                 navigator.serviceWorker.register('sw-lumina.js?v=20260821_v410', { scope: './' })
                     .then((reg) => {
                         swRegistration = reg;
