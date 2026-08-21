@@ -4698,6 +4698,50 @@
 
         window.testNotificationAndSound = function() {
             try {
+                // 1. Play official voice notification audio "Masz Wiadomość - PORTAL LUMINA"
+                const audio = new Audio('masz-wiadomosc.mp3');
+                audio.volume = 1.0;
+                const p = audio.play();
+                if (p !== undefined) {
+                    p.catch(err => {
+                        console.warn('Audio play error, fallback to synth:', err);
+                        playSynthChimeFallback();
+                    });
+                }
+            } catch(e) {
+                playSynthChimeFallback();
+            }
+
+            // 2. Mobile Vibration
+            if ('vibrate' in navigator) {
+                try { navigator.vibrate([180, 90, 180]); } catch(e) {}
+            }
+
+            // 3. Floating In-App Banner
+            if (window.LuminaDB && typeof window.LuminaDB.showInAppChatBanner === 'function') {
+                window.LuminaDB.showInAppChatBanner({
+                    title: 'Masz wiadomość 💌',
+                    body: 'Dźwięk powiadomienia "Masz Wiadomość - PORTAL LUMINA" działa idealnie! 🕊️✨',
+                    avatar: 'lumina_logo_portal.jpg',
+                    senderName: 'LUMINA • Dźwięk',
+                    senderId: 'system',
+                    type: 'public'
+                });
+            }
+
+            // 4. Visual confirmation toast
+            if (typeof showToast === 'function') {
+                showToast('🔊 Odtworzono: "Masz Wiadomość - PORTAL LUMINA"! ✨');
+            }
+
+            // 5. Request permissions if needed
+            if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
+                window.LuminaDB.requestNotificationPermission().catch(() => {});
+            }
+        };
+
+        function playSynthChimeFallback() {
+            try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
                 if (AudioCtx) {
                     const ctx = new AudioCtx();
@@ -4730,33 +4774,8 @@
                     osc2.start(now + 0.08);
                     osc2.stop(now + 0.7);
                 }
-            } catch(e) {
-                console.warn('Direct audio test warning:', e);
-            }
-
-            if ('vibrate' in navigator) {
-                try { navigator.vibrate([180, 90, 180]); } catch(e) {}
-            }
-
-            if (window.LuminaDB && typeof window.LuminaDB.showInAppChatBanner === 'function') {
-                window.LuminaDB.showInAppChatBanner({
-                    title: 'Masz wiadomość 💌',
-                    body: 'Wszystkie powiadomienia i dźwięki czatów działają idealnie! 🕊️✨',
-                    avatar: 'lumina_logo_portal.jpg',
-                    senderName: 'LUMINA • Społeczność',
-                    senderId: 'system',
-                    type: 'public'
-                });
-            }
-
-            if (typeof showToast === 'function') {
-                showToast('🔔 Odtworzono dźwięk i test powiadomienia! ✨');
-            }
-
-            if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
-                window.LuminaDB.requestNotificationPermission().catch(() => {});
-            }
-        };
+            } catch(e) {}
+        }
 
         function openDirectMessagesModal() {
             const m = document.getElementById('directMessagesModal');
