@@ -35,9 +35,10 @@
     function registerLuminaServiceWorker() {
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw-lumina.js', { scope: './' })
+                navigator.serviceWorker.register('sw-lumina.js?v=20260821_v410', { scope: './' })
                     .then((reg) => {
                         swRegistration = reg;
+                        reg.update().catch(() => {});
                         console.log('[LUMINA PWA] Service Worker zarejestrowany pomyślnie. Scope:', reg.scope);
 
                         if (reg.waiting) {
