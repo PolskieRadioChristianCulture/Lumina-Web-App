@@ -648,13 +648,17 @@ function loadPlaylistsImmediate() {
     fetch('./worship_playlist.json?t=' + Date.now())
         .then(r => r.json())
         .then(data => {
-            if (data && data.length > 0) worshipPlaylist = data;
+            if (Array.isArray(data) && data.length > 0 && data[0].url && data[0].url.includes('cdn.jsdelivr.net')) {
+                worshipPlaylist = data;
+            }
         }).catch(e => console.warn("Worship playlist refresh:", e));
 
     fetch('./biblia_spiewana_playlist.json?t=' + Date.now())
         .then(r => r.json())
         .then(data => {
-            if (data && data.length > 0) bibliaSpiewanaPlaylist = data;
+            if (Array.isArray(data) && data.length > 0 && data[0].url && data[0].url.includes('cdn.jsdelivr.net')) {
+                bibliaSpiewanaPlaylist = data;
+            }
         }).catch(e => console.warn("Biblia Spiewana playlist refresh:", e));
 }
 loadPlaylistsImmediate();
@@ -1109,7 +1113,12 @@ audio.addEventListener("stalled", () => {
 });
 
 audio.addEventListener("error", (e) => {
-    console.error("Audio player error event:", e);
+    const err = audio.error;
+    if (err && err.code === 1) {
+        // MEDIA_ERR_ABORTED: Previous request aborted during track change, ignore safely
+        return;
+    }
+    console.error("Audio player error event:", err);
     if (isPlaying) {
         isPlaying = false;
         updatePlayerUI(false);
