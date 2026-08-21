@@ -110,251 +110,283 @@ let currentAudioUrl = "";
 
 let worshipPlaylist = [
   {
-    "id": "worship_new_1",
+    "id": "worship_1",
     "title": "Przy Jego Tronie",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 179,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(1).mp3"
   },
   {
-    "id": "worship_new_2",
+    "id": "worship_2",
     "title": "Duch Świętości",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 204,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(2).mp3"
   },
   {
-    "id": "worship_new_3",
+    "id": "worship_3",
     "title": "Cisza Serca",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 135,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(3).mp3"
   },
   {
-    "id": "worship_new_4",
+    "id": "worship_4",
     "title": "W Jego Obecności",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 130,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(4).mp3"
   },
   {
-    "id": "worship_new_5",
+    "id": "worship_5",
     "title": "Modlitwa Poranna",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 83,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(5).mp3"
   },
   {
-    "id": "worship_new_6",
+    "id": "worship_6",
     "title": "Blask Wieczności",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 149,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(6).mp3"
   },
   {
-    "id": "worship_new_7",
+    "id": "worship_7",
     "title": "Uwielbienie",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 155,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(7).mp3"
   },
   {
-    "id": "worship_new_8",
+    "id": "worship_8",
     "title": "Ku Bożej Chwale",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 195,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM.mp3"
   },
   {
-    "id": "worship_new_9",
+    "id": "worship_9",
     "title": "Głęboki Las II",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 194,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/DEEP%20FOREST%202.mp3"
   },
   {
-    "id": "worship_new_10",
+    "id": "worship_10",
     "title": "Głęboki Las III",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 208,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/DEEP%20FOREST%203.mp3"
   },
   {
-    "id": "worship_new_11",
+    "id": "worship_11",
     "title": "Głęboki Las IV",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 203,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/DEEP%20FOREST%204.mp3"
   },
   {
-    "id": "worship_new_12",
+    "id": "worship_12",
     "title": "Głęboki Las",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 209,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/DEEP%20FOREST.mp3"
   },
   {
-    "id": "worship_new_13",
+    "id": "worship_13",
+    "title": "Deep Forest – Oaza Pokoju",
+    "artist": "Christian Culture Music",
+    "album": "Instrumental Worship 24/7",
+    "duration": 200,
+    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/deep_forest_1.mp3"
+  },
+  {
+    "id": "worship_14",
+    "title": "Deep Forest – Strumienie Wody Żywej",
+    "artist": "Christian Culture Music",
+    "album": "Instrumental Worship 24/7",
+    "duration": 200,
+    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/deep_forest_2.mp3"
+  },
+  {
+    "id": "worship_15",
+    "title": "Deep Forest – Święta Obecność",
+    "artist": "Christian Culture Music",
+    "album": "Instrumental Worship 24/7",
+    "duration": 200,
+    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/deep_forest_3.mp3"
+  },
+  {
+    "id": "worship_16",
+    "title": "Deep Forest – Cisza Przymierza",
+    "artist": "Christian Culture Music",
+    "album": "Instrumental Worship 24/7",
+    "duration": 200,
+    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/deep_forest_4.mp3"
+  },
+  {
+    "id": "worship_17",
     "title": "Dom z Pasją – Preludium",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 172,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(1).mp3"
   },
   {
-    "id": "worship_new_14",
-    "title": "Dom z Pasją – Natchnienie",
-    "artist": "Christian Culture Music",
-    "album": "Instrumental Worship 24/7",
-    "duration": 177,
-    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(10).mp3"
-  },
-  {
-    "id": "worship_new_15",
-    "title": "Dom z Pasją – Chwała",
-    "artist": "Christian Culture Music",
-    "album": "Instrumental Worship 24/7",
-    "duration": 199,
-    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(11).mp3"
-  },
-  {
-    "id": "worship_new_16",
-    "title": "Dom z Pasją – Spokój",
-    "artist": "Christian Culture Music",
-    "album": "Instrumental Worship 24/7",
-    "duration": 144,
-    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(12).mp3"
-  },
-  {
-    "id": "worship_new_17",
-    "title": "Dom z Pasją – Modlitwa",
-    "artist": "Christian Culture Music",
-    "album": "Instrumental Worship 24/7",
-    "duration": 170,
-    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(13).mp3"
-  },
-  {
-    "id": "worship_new_18",
-    "title": "Dom z Pasją – Wieczność",
-    "artist": "Christian Culture Music",
-    "album": "Instrumental Worship 24/7",
-    "duration": 159,
-    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(14).mp3"
-  },
-  {
-    "id": "worship_new_19",
-    "title": "Dom z Pasją – Finał",
-    "artist": "Christian Culture Music",
-    "album": "Instrumental Worship 24/7",
-    "duration": 143,
-    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(15).mp3"
-  },
-  {
-    "id": "worship_new_20",
-    "title": "Dom z Pasją – Tęsknota",
-    "artist": "Christian Culture Music",
-    "album": "Instrumental Worship 24/7",
-    "duration": 192,
-    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(2).mp3"
-  },
-  {
-    "id": "worship_new_21",
-    "title": "Dom z Pasją – Nadzieja",
-    "artist": "Christian Culture Music",
-    "album": "Instrumental Worship 24/7",
-    "duration": 157,
-    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(3).mp3"
-  },
-  {
-    "id": "worship_new_22",
-    "title": "Dom z Pasją – Wołanie",
-    "artist": "Christian Culture Music",
-    "album": "Instrumental Worship 24/7",
-    "duration": 170,
-    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(4).mp3"
-  },
-  {
-    "id": "worship_new_23",
+    "id": "worship_18",
     "title": "Dom z Pasją – Łaska",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 170,
+    "duration": 200,
+    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(10).mp3"
+  },
+  {
+    "id": "worship_19",
+    "title": "Dom z Pasją – Chwała",
+    "artist": "Christian Culture Music",
+    "album": "Instrumental Worship 24/7",
+    "duration": 200,
+    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(11).mp3"
+  },
+  {
+    "id": "worship_20",
+    "title": "Dom z Pasją – Spoczynek",
+    "artist": "Christian Culture Music",
+    "album": "Instrumental Worship 24/7",
+    "duration": 200,
+    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(12).mp3"
+  },
+  {
+    "id": "worship_21",
+    "title": "Dom z Pasją – Modlitwa",
+    "artist": "Christian Culture Music",
+    "album": "Instrumental Worship 24/7",
+    "duration": 200,
+    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(13).mp3"
+  },
+  {
+    "id": "worship_22",
+    "title": "Dom z Pasją – Wieczność",
+    "artist": "Christian Culture Music",
+    "album": "Instrumental Worship 24/7",
+    "duration": 200,
+    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(14).mp3"
+  },
+  {
+    "id": "worship_23",
+    "title": "Dom z Pasją – Finał",
+    "artist": "Christian Culture Music",
+    "album": "Instrumental Worship 24/7",
+    "duration": 200,
+    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(15).mp3"
+  },
+  {
+    "id": "worship_24",
+    "title": "Dom z Pasją – Natchnienie",
+    "artist": "Christian Culture Music",
+    "album": "Instrumental Worship 24/7",
+    "duration": 200,
+    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(2).mp3"
+  },
+  {
+    "id": "worship_25",
+    "title": "Dom z Pasją – Pokój",
+    "artist": "Christian Culture Music",
+    "album": "Instrumental Worship 24/7",
+    "duration": 200,
+    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(3).mp3"
+  },
+  {
+    "id": "worship_26",
+    "title": "Dom z Pasją – Przymierze",
+    "artist": "Christian Culture Music",
+    "album": "Instrumental Worship 24/7",
+    "duration": 200,
+    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(4).mp3"
+  },
+  {
+    "id": "worship_27",
+    "title": "Dom z Pasją – Wyciszenie",
+    "artist": "Christian Culture Music",
+    "album": "Instrumental Worship 24/7",
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(5).mp3"
   },
   {
-    "id": "worship_new_24",
-    "title": "Dom z Pasją – Miłosierdzie",
+    "id": "worship_28",
+    "title": "Dom z Pasją – Błogosławieństwo",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 133,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(6).mp3"
   },
   {
-    "id": "worship_new_25",
+    "id": "worship_29",
     "title": "Dom z Pasją – Światłość",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 178,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(7).mp3"
   },
   {
-    "id": "worship_new_26",
-    "title": "Dom z Pasją – Odnowienie",
+    "id": "worship_30",
+    "title": "Dom z Pasją – Wdzięczność",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 123,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(8).mp3"
   },
   {
-    "id": "worship_new_27",
-    "title": "Dom z Pasją – Przebudzenie",
+    "id": "worship_31",
+    "title": "Dom z Pasją – Kontemplacja",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 179,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(9).mp3"
   },
   {
-    "id": "worship_new_28",
-    "title": "Dom z Pasją – Uwielbienie",
+    "id": "worship_32",
+    "title": "Dom z Pasją – Świątynia",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 183,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad.mp3"
   },
   {
-    "id": "worship_new_29",
-    "title": "17 Maja – Spotkanie z Bogiem",
+    "id": "worship_33",
+    "title": "Majowy Świt",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 169,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Maj%2017.mp3"
   },
   {
-    "id": "worship_new_30",
-    "title": "Sardes – Przebudzenie",
+    "id": "worship_34",
+    "title": "Sardes – Pieśń Odnowy",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
     "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Sardes%20(1).mp3"
   },
   {
-    "id": "worship_new_31",
-    "title": "Sardes – Powrót do Pierwszej Miłości",
+    "id": "worship_35",
+    "title": "Sardes – Pieśń Zwycięstwa",
     "artist": "Christian Culture Music",
     "album": "Instrumental Worship 24/7",
-    "duration": 208,
+    "duration": 200,
     "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Sardes.mp3"
   }
 ];
