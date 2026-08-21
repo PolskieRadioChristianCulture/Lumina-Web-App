@@ -1,28 +1,21 @@
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA PRODUCTION PWA SERVICE WORKER (v3.5)
+// LUMINA PRODUCTION PWA SERVICE WORKER (v3.5.1)
 // High-performance caching, offline navigation & push notification sync
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v3.5.0';
+const CACHE_NAME = 'lumina-pwa-cache-v3.5.1';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
     './lumina-tablica.html',
-    './lumina.andrzejthiel.html',
-    './lumina.cctv.html',
     './manifest-lumina.json',
-    './lumina-responsive-reset.css',
-    './lumina-core.js',
-    './lumina-db.js',
-    './lumina-pwa-installer.js',
     './lumina-icon-192.png',
     './lumina-icon-512.png',
-    './avatar_andrzej_thiel.jpg',
-    './logo_cctv.png',
-    './version.json'
+    './icon.png'
 ];
 
 self.addEventListener('install', (event) => {
+    self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             return cache.addAll(APP_SHELL_ASSETS).catch((err) => {
@@ -55,19 +48,29 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
     const request = event.request;
-    const url = new URL(request.url);
+    if (request.method !== 'GET') return;
 
-    // Don't cache version checking or live streams
-    if (url.pathname.includes('version.json') || url.pathname.startsWith('/api/') || request.url.includes('stream') || request.url.includes('live')) {
+    let url;
+    try {
+        url = new URL(request.url);
+    } catch (e) {
         return;
     }
 
-    if (request.method !== 'GET') return;
+    // Bypass all external APIs, Firebase, Google Fonts, CDNs, Donorbox
+    if (url.origin !== self.location.origin) {
+        return;
+    }
+
+    // Bypass dynamic streams, audio files, version checks, and API calls
+    if (url.pathname.includes('version.json') || url.pathname.includes('.mp3') || url.pathname.includes('.m3u8') || url.pathname.includes('stream') || url.pathname.includes('live') || url.pathname.startsWith('/api/')) {
+        return;
+    }
 
     event.respondWith(
         fetch(request)
             .then((networkResponse) => {
-                if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+                if (networkResponse && networkResponse.status === 200) {
                     const responseToCache = networkResponse.clone();
                     caches.open(CACHE_NAME).then((cache) => {
                         cache.put(request, responseToCache);

@@ -63,14 +63,6 @@
                     .catch((err) => {
                         console.warn('[LUMINA PWA] Rejestracja Service Worker (informacja):', err);
                     });
-
-                let refreshing = false;
-                navigator.serviceWorker.addEventListener('controllerchange', () => {
-                    if (refreshing) return;
-                    refreshing = true;
-                    console.log('[LUMINA PWA] Przeładowanie strony do nowej wersji...');
-                    window.location.reload();
-                });
             });
         }
     }
