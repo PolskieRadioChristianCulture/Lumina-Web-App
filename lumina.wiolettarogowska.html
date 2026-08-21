@@ -1762,10 +1762,11 @@
             <section class="profile-head-card">
                 <div class="profile-head-top">
                     <div class="profile-head-main">
-                    <div class="avatar-wrap">
-                        <img src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" class="avatar-img" id="avatarImgEl">
-                        <button class="avatar-edit-overlay" onclick="triggerAvatarUpload()" title="Wgraj nowe zdjęcie profilowe z dysku"><i class="fa-solid fa-camera"></i></button>
-                        <div class="avatar-status-badge" title="Użytkownik Online"></div>
+                    <div class="avatar-wrap has-premium-video" style="position:relative; width:130px; height:130px; border-radius:50%; overflow:hidden; border:3px solid #ec4899; box-shadow:0 0 25px rgba(236,72,153,0.5);">
+                        <video id="profileAvatarVideoEl" src="wioletta_profile_video.mp4" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="avatar_wioletta_official.jpg" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:4; display:block; background:#000;"></video>
+                        <img src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" class="avatar-img" id="avatarImgEl" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; z-index:1;">
+                        <button class="avatar-edit-overlay" onclick="triggerAvatarUpload()" title="Wgraj nowe zdjęcie profilowe z dysku" style="z-index:10;"><i class="fa-solid fa-camera"></i></button>
+                        <div class="avatar-status-badge" title="Użytkownik Online" style="z-index:11;"></div>
                     </div>
 
                     <div class="head-user-details">
