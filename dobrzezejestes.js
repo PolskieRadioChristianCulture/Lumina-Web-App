@@ -150,24 +150,24 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (e) {
             console.error("Błąd pobierania rozważania z Firestore:", e);
             const defaultTitle = "☀️ Lato z Jezusem — Wielkie Pytania";
-            const defaultDate = "19 sierpnia 2026";
+            const defaultDate = "21 sierpnia 2026";
             const rawContent = `☀️ Lato z Jezusem — Wielkie Pytania
-Dzień 19 — 31 bardzo osobistych pytań Syna/Córki do Ojca: Dlaczego tak łatwo ulegam zatruciu przeszłością i żalom do dawnych lat?
+Dzień 21 — 31 bardzo osobistych pytań Syna/Córki do Ojca: Dlaczego tak łatwo ulegam lękowi przed utratą moich wpływów i pozycji?
 
-W dziewiętnastym dniu cyklu „Lato z Jezusem — Wielkie Pytania” rozbrajamy destrukcyjny nawyk zamrożenia w przeszłości oraz pielęgnowania dawnych żalów.
+W dwudziestym pierwszym dniu cyklu „Lato z Jezusem — Wielkie Pytania” rozbrajamy mechanizm terytorialnej zazdrości oraz lęk przed tym, że ktoś inny zdobędzie większe uznanie lub pozycję.
 
-W psychologii klinicznej pojęcie „utknięcia w narracji urazu” (trauma narrative fixation) opisuje stan, w którym człowiek definiuje swoją teraźniejszość wyłącznie przez pryzmat dawnych kryzysów i zranień. Wróg bezwzględnie wykorzystuje ten mechanizm, paraliżując nasz potencjał rozwoju. Słowo Boże przez proroka Izajasza wzywa nas do radykalnej zmiany perspektywy: „Nie wspomina się rzeczy dawnych... Oto Ja stwarzam nowe rzeczy”. Chrześcijański lider najwyższej klasy nie pozwala, by historia dyktowała mu warunki — wyciąga wnioski, odcina toksyczny bagaż z nienaganną klasą i z pasją realizuje cel tu i teraz.
+W psychologii przywództwa zjawisko „syndromu strażnika bramy” (gatekeeper syndrome) opisuje lidera, który ze strachu przed utratą kontroli blokuje rozwój utalentowanych podwładnych. Wróg bezwzględnie żeruje na tym lęku, przekształcając nas w zaborczych rywali. Słowo Ewangelii uderza w ten egoizm poprzez postawę Jana Chrzciciela: „On musi rosnąć, ja zaś muszę maleć”. Chrześcijański lider najwyższej klasy nie boi się silnych ludzi wokół siebie — potrafi z nienaganną klasą i hojnością otwierać drzwi innym, wiedząc, że prawdziwa wielkość polega na służbie.
 
 Jezus mówi dziś do Ciebie:
-„Oto Ja stwarzam nowe rzeczy; teraz one wschodzą, czyż ich nie poznajecie?..." (Izajasza 43,19)
+„On musi rosnąć, ja zaś muszę maleć.” (Jana 3,30)
 
 Zadanie Taktyczne:
-Zmiażdż dziś więzienie przeszłości na swoim polu bitwy. Zidentyfikuj stary żal lub wspomnienie porażki, które wciąż wywołuje w Tobie emocjonalny ból. Podejmij decyzję woli: zamknij ten rozdział, oddaj go Bogu i przekieruj całą energię na budowanie dzisiejszego dnia. Wnieś do swojego domu i firmy standard świeżości, dynamizmu i niezachwianego autorytetu.
+Zmiażdż dziś lęk przed konkurencją na swoim polu bitwy. Zidentyfikuj relację zawodową lub środowiskową, w której czułeś ukryty opór przed sukcesem innej osoby. Zmień nastawienie: zaoferuj jej wsparcie, pochwal jej osiągnięcie i ciesz się jej wzrostem. Wnieś do swojej firmy i domu standard wspaniałomyślności, bezpieczeństwa i dojrzałego autorytetu.
 
 W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
 
 Modlitwa Bojowa:
-„Ojcze, odrzucam kłamstwa nieprzyjaciela i kurczowe trzymanie się przeszłości. Przepraszam, że pozwalałem dawnym żalom odbierać mi radość z dzisiejszego dnia. Dziękuję, że w Tobie mam nowość życia. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą kroczył naprzód, zdobywając ten świat dla Twojej chwały.”
+„Ojcze, odrzucam kłamstwa nieprzyjaciela i zaborczą zazdrość o wpływy. Przepraszam, że lękałem się cudzego sukcesu. Dziękuję, że moje miejsce u Twojego boku jest niewzruszone. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą hojnie wspierał wzrost innych, zdobywając ten świat dla Twojej chwały.”
 
 Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
 
