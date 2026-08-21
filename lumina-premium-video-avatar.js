@@ -17,19 +17,26 @@
             badge: 'Oficjalne CC',
             url: 'wioletta_rogowska_video_avatar.mp4',
             desc: 'Oficjalne wideo profilowe Wioletty Rogowskiej'
-        },
+    const PRESET_VIDEOS = [
         {
             id: 'preset_cezary_official',
-            title: 'Cezary Rgowski • Christian Culture (Wgrane Wideo)',
-            badge: 'Oficjalne CC',
-            url: 'cezary_rgowski_video_avatar.mp4',
+            title: 'Cezary Rogowski • Oficjalne Wideo',
+            badge: 'Założyciel CC',
+            url: 'wideo_profilowe_cezary_rogowski.mp4',
             desc: 'Oficjalne wideo profilowe z charakterystycznym uśmiechem i logo Christian Culture'
+        },
+        {
+            id: 'preset_wioletta_official',
+            title: 'Wioletta Rogowska • Oficjalne Wideo',
+            badge: 'Współzałożycielka CC',
+            url: 'wioletta_profile_video.mp4',
+            desc: 'Oficjalne wideo profilowe Współzałożycielki Christian Culture'
         },
         {
             id: 'preset_cc_store',
             title: 'Christian Culture • Oficjalne Wideo CC',
             badge: 'Polecane CC',
-            url: 'reklama_sklep_cc_karuzela_profili.mp4',
+            url: 'Reklama Sklep CC Karuzela Profili.mp4',
             desc: 'Dynamiczna pętla misyjna Christian Culture'
         },
         {
@@ -51,14 +58,14 @@
     // Domyślne przypisania wideo dla profili specjalnych (jeśli użytkownik jeszcze nie wgrał własnego)
     const SPECIAL_PROFILES_DEFAULT_VIDEOS = {
         'andrzejthiel': 'czesc_dobrze_ze_jestes.mp4',
-        'cezaryrgowski': 'cezary_rgowski_video_avatar.mp4',
+        'cezaryrgowski': 'wideo_profilowe_cezary_rogowski.mp4',
         'studiodobregoslowa': 'czesc_dobrze_ze_jestes.mp4',
         'cctv': 'Reklama 2 Sklep CC.mp4',
-        'radiocc': 'reklama_sklep_cc_karuzela_profili.mp4',
+        'radiocc': 'Reklama Sklep CC Karuzela Profili.mp4',
         'ccwomen': 'czesc_dobrze_ze_jestes.mp4',
-        'ccmen': 'reklama_sklep_cc_karuzela_profili.mp4',
+        'ccmen': 'Reklama Sklep CC Karuzela Profili.mp4',
         'osobowoscplus': 'czesc_dobrze_ze_jestes.mp4',
-        'wiolettarogowska': 'wioletta_rogowska_video_avatar.mp4'
+        'wiolettarogowska': 'wioletta_profile_video.mp4'
     };
 
     class LuminaPremiumVideoAvatarEngine {
