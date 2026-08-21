@@ -5759,21 +5759,34 @@
             const myProfile = window.LuminaDB?.getCurrentProfile();
             const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || (localStorage.getItem('lumina_guest_id') || 'guest');
             const fromId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
-            const toId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(slug || name) : (slug || name.toLowerCase().replace(/\s+/g, ''));
+            let toId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(slug || name) : (slug || name.toLowerCase().replace(/\s+/g, ''));
+
+            if (fromId === toId) {
+                if (fromId === 'cezaryrgowski') {
+                    toId = 'wiolettarogowska';
+                    if (nameEl) nameEl.textContent = 'Wioletta Rogowska';
+                    if (avatarEl) avatarEl.src = 'avatar_wioletta_official.jpg';
+                } else if (fromId === 'wiolettarogowska') {
+                    toId = 'cezaryrgowski';
+                    if (nameEl) nameEl.textContent = 'Cezary Rogowski';
+                    if (avatarEl) avatarEl.src = 'avatar_cezary_official.jpg';
+                }
+            }
+
             const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : [fromId, toId].sort().join('_');
 
             activeChatSession = {
                 chatId: chatId,
                 targetId: toId,
-                targetName: name,
-                targetAvatar: avatar
+                targetName: nameEl?.textContent || name,
+                targetAvatar: avatarEl?.src || avatar
             };
 
             const box = document.getElementById('activeChatMessagesBox');
             if (box) {
                 box.innerHTML = `
                     <div style="text-align:center;margin:10px 0;">
-                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${name} w Chrystusie 🕊️</span>
+                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${activeChatSession.targetName} w Chrystusie 🕊️</span>
                     </div>
                 `;
             }
@@ -5826,7 +5839,7 @@
         }
 
         async function handleSendActiveChatMessage(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             const input = document.getElementById('activeChatInput');
             const text = input.value.trim();
             if (!text || !activeChatSession) return;

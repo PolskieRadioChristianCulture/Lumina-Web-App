@@ -1707,35 +1707,79 @@ export function getChatId(userA, userB) {
     return [a, b].sort().join('_');
 }
 
+const activeDirectChatListeners = new Map();
+
 export function subscribeToDirectMessages(chatId, onUpdate) {
     const parts = (chatId || '').split('_');
     const normalizedChatId = parts.length >= 2 ? getChatId(parts[0], parts[1]) : chatId;
 
-    // 1. Check local cached messages
+    // 1. Check and emit local cached messages immediately
     try {
-        const cached = localStorage.getItem(`lumina_chat_${normalizedChatId}`);
+        const localKey = `lumina_chat_${normalizedChatId}`;
+        const cached = localStorage.getItem(localKey);
         if (cached) onUpdate(JSON.parse(cached));
     } catch(e) {}
 
     if (!db || !normalizedChatId) return () => {};
-    try {
-        const msgsQuery = query(
-            collection(db, `lumina_chats/${normalizedChatId}/messages`),
-            orderBy('timestamp', 'asc'),
-            limit(120)
-        );
 
-        return onSnapshot(msgsQuery, (snap) => {
+    // Register active listener callback for optimistic instant rendering
+    activeDirectChatListeners.set(normalizedChatId, onUpdate);
+
+    let unsub1 = () => {};
+    let unsub2 = () => {};
+
+    // Listener A: Top-level collection (100% reliable)
+    try {
+        const directQ = query(
+            collection(db, 'lumina_direct_messages'),
+            where('chatId', '==', normalizedChatId),
+            limit(150)
+        );
+        unsub1 = onSnapshot(directQ, (snap) => {
             const msgs = [];
             snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
-            try {
-                localStorage.setItem(`lumina_chat_${normalizedChatId}`, JSON.stringify(msgs));
-            } catch(e) {}
-            onUpdate(msgs);
-        }, (err) => console.warn('Lumina Direct Messages sync notice:', err));
-    } catch(e) {
-        return () => {};
-    }
+            if (msgs.length > 0) {
+                msgs.sort((a, b) => {
+                    const timeA = (a.timestamp?.seconds ? a.timestamp.seconds * 1000 : 0) || a.createdAt || 0;
+                    const timeB = (b.timestamp?.seconds ? b.timestamp.seconds * 1000 : 0) || b.createdAt || 0;
+                    return timeA - timeB;
+                });
+                try {
+                    localStorage.setItem(`lumina_chat_${normalizedChatId}`, JSON.stringify(msgs));
+                } catch(e) {}
+                onUpdate(msgs);
+            }
+        }, (err) => console.warn('Lumina Direct Messages top-level notice:', err));
+    } catch(e) {}
+
+    // Listener B: Nested subcollection (backup)
+    try {
+        const nestedQ = query(
+            collection(db, `lumina_chats/${normalizedChatId}/messages`),
+            limit(150)
+        );
+        unsub2 = onSnapshot(nestedQ, (snap) => {
+            if (!snap.empty) {
+                const msgs = [];
+                snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
+                msgs.sort((a, b) => {
+                    const timeA = (a.timestamp?.seconds ? a.timestamp.seconds * 1000 : 0) || a.createdAt || 0;
+                    const timeB = (b.timestamp?.seconds ? b.timestamp.seconds * 1000 : 0) || b.createdAt || 0;
+                    return timeA - timeB;
+                });
+                try {
+                    localStorage.setItem(`lumina_chat_${normalizedChatId}`, JSON.stringify(msgs));
+                } catch(e) {}
+                onUpdate(msgs);
+            }
+        }, () => {});
+    } catch(e) {}
+
+    return () => {
+        try { unsub1(); } catch(e) {}
+        try { unsub2(); } catch(e) {}
+        activeDirectChatListeners.delete(normalizedChatId);
+    };
 }
 
 export async function sendDirectMessageToCloud(chatId, messageObj) {
@@ -1748,31 +1792,40 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     const normalizedChatId = parts.length >= 2 ? getChatId(parts[0], parts[1]) : chatId;
 
     const fullMsg = {
+        chatId: normalizedChatId,
         senderId: fromId,
         senderName: senderName,
         senderAvatar: senderAvatar,
         receiverId: normalizeChatUserId(messageObj.receiverId || (parts.length >= 2 ? (parts[0] === fromId ? parts[1] : parts[0]) : '')),
         text: messageObj.text || '',
         type: messageObj.type || 'text',
+        createdAt: Date.now(),
         timestamp: serverTimestamp(),
         dateStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
-    // Save locally immediately
+    // 1. Save locally and trigger active UI listener immediately
+    const localKey = `lumina_chat_${normalizedChatId}`;
     try {
-        const localKey = `lumina_chat_${normalizedChatId}`;
         const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
         cached.push({ ...fullMsg, id: 'local_' + Date.now(), timestamp: { seconds: Date.now() / 1000 } });
         localStorage.setItem(localKey, JSON.stringify(cached));
+        
+        const listener = activeDirectChatListeners.get(normalizedChatId);
+        if (listener) listener(cached);
     } catch(e) {}
 
     if (!db || !normalizedChatId) return 'local_' + Date.now();
 
     try {
-        const msgRef = await addDoc(collection(db, `lumina_chats/${normalizedChatId}/messages`), fullMsg);
+        // Write to top-level collection (Primary)
+        const msgRef = await addDoc(collection(db, 'lumina_direct_messages'), fullMsg);
+
+        // Also write to subcollection (Backup)
+        addDoc(collection(db, `lumina_chats/${normalizedChatId}/messages`), fullMsg).catch(() => {});
 
         // Update chat room metadata
-        await setDoc(doc(db, 'lumina_chats', normalizedChatId), {
+        setDoc(doc(db, 'lumina_chats', normalizedChatId), {
             chatId: normalizedChatId,
             lastMessageText: fullMsg.text,
             lastMessageTimestamp: serverTimestamp(),
@@ -1782,12 +1835,12 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
             lastSenderBadge: fullMsg.senderBadge || '',
             lastMessageType: fullMsg.type || 'text',
             users: normalizedChatId.split('_')
-        }, { merge: true });
+        }, { merge: true }).catch(() => {});
 
         return msgRef.id;
     } catch(e) {
-        console.warn('Lumina send message error:', e.message);
-        return null;
+        console.warn('Lumina send direct message notice:', e.message);
+        return 'local_' + Date.now();
     }
 }
 

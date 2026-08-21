@@ -3925,8 +3925,7 @@
                     const ctx = new AudioCtx();
                     if (ctx.state === 'suspended') {
                         ctx.resume();
-                    }
-                    const now = ctx.currentTime;
+                const now = ctx.currentTime;
                     
                     const osc1 = ctx.createOscillator();
                     const gain1 = ctx.createGain();
@@ -4002,22 +4001,38 @@
             if (nameEl) nameEl.textContent = name;
             if (avatarEl) avatarEl.src = avatar || 'lumina_icon.jpg';
 
-            const fromId = 'wiolettarogowska';
-            const toId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(slug || name) : (slug || 'cezaryrgowski');
+            const myUser = window.LuminaDB?.getCurrentUser();
+            const myProfile = window.LuminaDB?.getCurrentProfile();
+            const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || (localStorage.getItem('lumina_guest_id') || 'guest');
+            const fromId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
+            let toId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(slug || name) : (slug || name.toLowerCase().replace(/\s+/g, ''));
+
+            if (fromId === toId) {
+                if (fromId === 'wiolettarogowska') {
+                    toId = 'cezaryrgowski';
+                    if (nameEl) nameEl.textContent = 'Cezary Rogowski';
+                    if (avatarEl) avatarEl.src = 'avatar_cezary_official.jpg';
+                } else if (fromId === 'cezaryrgowski') {
+                    toId = 'wiolettarogowska';
+                    if (nameEl) nameEl.textContent = 'Wioletta Rogowska';
+                    if (avatarEl) avatarEl.src = 'avatar_wioletta_official.jpg';
+                }
+            }
+
             const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : [fromId, toId].sort().join('_');
 
             activeChatSession = {
                 chatId: chatId,
                 targetId: toId,
-                targetName: name,
-                targetAvatar: avatar
+                targetName: nameEl?.textContent || name,
+                targetAvatar: avatarEl?.src || avatar
             };
 
             const box = document.getElementById('activeChatMessagesBox');
             if (box) {
                 box.innerHTML = `
                     <div style="text-align:center;margin:10px 0;">
-                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${name} w Chrystusie 🕊️</span>
+                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${activeChatSession.targetName} w Chrystusie 🕊️</span>
                     </div>
                 `;
             }
@@ -4047,7 +4062,7 @@
 
             (messages || []).forEach(msg => {
                 const normSender = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(msg.senderId) : msg.senderId;
-                const isMe = (normSender === 'wiolettarogowska');
+                const isMe = (normSender === myId);
                 const align = isMe ? 'flex-end' : 'flex-start';
                 const bg = isMe ? 'linear-gradient(135deg, #a855f7, #06b6d4)' : 'rgba(255,255,255,0.08)';
                 const color = '#fff';
