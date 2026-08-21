@@ -150,24 +150,24 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (e) {
             console.error("Błąd pobierania rozważania z Firestore:", e);
             const defaultTitle = "☀️ Lato z Jezusem — Wielkie Pytania";
-            const defaultDate = "21 sierpnia 2026";
+            const defaultDate = "22 sierpnia 2026";
             const rawContent = `☀️ Lato z Jezusem — Wielkie Pytania
-Dzień 21 — 31 bardzo osobistych pytań Syna/Córki do Ojca: Dlaczego tak łatwo ulegam lękowi przed utratą moich wpływów i pozycji?
+Dzień 22 — 31 bardzo osobistych pytań Syna/Córki do Ojca: Dlaczego tak łatwo ulegam lękowi przed odrzuceniem moich granic?
 
-W dwudziestym pierwszym dniu cyklu „Lato z Jezusem — Wielkie Pytania” rozbrajamy mechanizm terytorialnej zazdrości oraz lęk przed tym, że ktoś inny zdobędzie większe uznanie lub pozycję.
+W dwudziestym drugim dniu cyklu „Lato z Jezusem — Wielkie Pytania” rozbrajamy pułapkę toksycznej uległości oraz nieumiejętności wyznaczania zdrowych, dojrzałych granic.
 
-W psychologii przywództwa zjawisko „syndromu strażnika bramy” (gatekeeper syndrome) opisuje lidera, który ze strachu przed utratą kontroli blokuje rozwój utalentowanych podwładnych. Wróg bezwzględnie żeruje na tym lęku, przekształcając nas w zaborczych rywali. Słowo Ewangelii uderza w ten egoizm poprzez postawę Jana Chrzciciela: „On musi rosnąć, ja zaś muszę maleć”. Chrześcijański lider najwyższej klasy nie boi się silnych ludzi wokół siebie — potrafi z nienaganną klasą i hojnością otwierać drzwi innym, wiedząc, że prawdziwa wielkość polega na służbie.
+W psychologii relacyjnej zjawisko „syndromu zadowalacza ludzi” (people-pleasing syndrome) opisuje wzorzec zachowania, w którym jednostka rezygnuje z własnych granic i potrzeb ze strachu przed odrzuceniem lub konfliktem. Wróg bezwzględnie wykorzystuje tę słabość, prowadząc nas do chronicznego wypalenia. Słowo Ewangelii pokazuje nam postawę Jezusa, który potrafił usunąć się na miejsce pustynne wbrew oczekiwaniom tłumów. Chrześcijański lider najwyższej klasy dba o swoje zasoby i stawia jasne granice z nienaganną, królewską klasą, wiedząc, że nieprzemyślana uległość niszczy potencjał oddania.
 
 Jezus mówi dziś do Ciebie:
-„On musi rosnąć, ja zaś muszę maleć.” (Jana 3,30)
+„On jednak usunie się na miejsca pustynne i modlił się.” (Łukasza 5,16)
 
 Zadanie Taktyczne:
-Zmiażdż dziś lęk przed konkurencją na swoim polu bitwy. Zidentyfikuj relację zawodową lub środowiskową, w której czułeś ukryty opór przed sukcesem innej osoby. Zmień nastawienie: zaoferuj jej wsparcie, pochwal jej osiągnięcie i ciesz się jej wzrostem. Wnieś do swojej firmy i domu standard wspaniałomyślności, bezpieczeństwa i dojrzałego autorytetu.
+Zmiażdż dziś lęk przed postawieniem granicy na swoim polu bitwy. Zidentyfikuj relację lub obszar, w którym z powodu uległości pozwaliasz nadwyrężać swój czas i energię. Wyznacz zdrową, jasną granicę z pełnym spokojem i szacunkiem. Wnieś do swojego domu i środowiska standard dojrzałości, ochrony zasobów i niezachwianego autorytetu.
 
 W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
 
 Modlitwa Bojowa:
-„Ojcze, odrzucam kłamstwa nieprzyjaciela i zaborczą zazdrość o wpływy. Przepraszam, że lękałem się cudzego sukcesu. Dziękuję, że moje miejsce u Twojego boku jest niewzruszone. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą hojnie wspierał wzrost innych, zdobywając ten świat dla Twojej chwały.”
+„Ojcze, odrzucam kłamstwa nieprzyjaciela i lęk przed odrzuceniem z powodu stawiania granic. Przepraszam, że zaniedbywałem swoje zasoby przez źle pojętą uległość. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą i mądrością zarządzał moim czasem i energią, zdobywając ten świat dla Twojej chwały.”
 
 Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
 
