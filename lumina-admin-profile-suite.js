@@ -263,51 +263,69 @@
                 box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
             }
 
-            /* ══════════ DYSKRETNA SZARA TARCZA ADMINA (LEWY DOLNY RÓG) ══════════ */
-            .lumina-admin-floating-shield {
+            /* ══════════ JEDYNA DYSKRETNA TARCZA ADMINA Z WERSJĄ (LEWY DOLNY RÓG) ══════════ */
+            .lumina-admin-shield-container {
                 position: fixed;
-                bottom: 16px;
-                left: 16px;
+                bottom: 18px;
+                left: 20px;
                 z-index: 99999;
-                width: 32px;
-                height: 32px;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: rgba(15, 23, 42, 0.45);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(148, 163, 184, 0.2);
+                padding: 4px 10px 4px 6px;
+                border-radius: 20px;
+                transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+                user-select: none;
+            }
+            .lumina-admin-shield-container:hover {
+                background: rgba(15, 23, 42, 0.85);
+                border-color: rgba(245, 158, 11, 0.4);
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            }
+            .lumina-admin-floating-shield {
+                width: 24px;
+                height: 24px;
                 border-radius: 50%;
-                background: rgba(15, 23, 42, 0.4);
-                border: 1px solid rgba(148, 163, 184, 0.18);
-                color: #64748b; /* DOMYŚLNIE SZARA / NIEZALOGOWANY */
-                opacity: 0.20;
+                background: transparent;
+                border: none;
+                color: #64748b;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 0.90rem;
+                font-size: 0.88rem;
                 cursor: pointer;
-                backdrop-filter: blur(4px);
-                transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+                padding: 0;
+                transition: all 0.25s ease;
             }
-
-            .lumina-admin-floating-shield:hover {
-                opacity: 0.85;
-                color: #94a3b8;
-                border-color: rgba(148, 163, 184, 0.4);
-                background: rgba(15, 23, 42, 0.85);
-                box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+            .lumina-admin-shield-container:hover .lumina-admin-floating-shield {
+                color: #facc15;
                 transform: scale(1.1);
             }
-
+            .lumina-admin-version-tag {
+                font-size: 0.72rem;
+                font-weight: 700;
+                color: rgba(148, 163, 184, 0.75);
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                letter-spacing: 0.2px;
+                transition: color 0.25s ease;
+            }
+            .lumina-admin-shield-container:hover .lumina-admin-version-tag {
+                color: #e2e8f0;
+            }
             /* Odblokowana / Zalogowany Master Admin */
-            .lumina-admin-floating-shield.unlocked {
-                opacity: 0.7;
-                color: #10b981;
+            .lumina-admin-shield-container.unlocked {
                 border-color: rgba(16, 185, 129, 0.5);
                 background: rgba(15, 23, 42, 0.8);
             }
-
-            .lumina-admin-floating-shield.unlocked:hover {
-                opacity: 1;
+            .lumina-admin-shield-container.unlocked .lumina-admin-floating-shield {
+                color: #10b981;
+            }
+            .lumina-admin-shield-container.unlocked .lumina-admin-version-tag {
                 color: #34d399;
-                border-color: rgba(16, 185, 129, 0.8);
-                box-shadow: 0 0 16px rgba(16, 185, 129, 0.5);
-                transform: scale(1.15);
             }
 
             /* Banner blokady użytkownika */
@@ -333,12 +351,9 @@
                 .lumina-admin-hud-actions {
                     justify-content: flex-start;
                 }
-                .lumina-admin-floating-shield {
-                    bottom: 74px;
-                    left: 10px;
-                    width: 28px;
-                    height: 28px;
-                    font-size: 0.82rem;
+                .lumina-admin-shield-container {
+                    bottom: 85px;
+                    left: 14px;
                 }
             }
         `;
@@ -398,15 +413,18 @@
                 </div>
             </div>
 
-            <!-- Dyskretna Tarcza Administratora (Domyślnie Szara) -->
-            <button type="button" 
-                    id="luminaFloatingAdminShield" 
-                    class="lumina-admin-floating-shield" 
-                    onclick="window.LuminaAdminSuite.openPinPrompt()" 
-                    title="Panel Administratora Portalu" 
-                    aria-label="Panel Administratora">
-                <i class="fa-solid fa-shield-halved"></i>
-            </button>
+            <!-- Dyskretna Tarcza Administratora z Numerem Wersji (Tylko jedna, lewy dolny róg) -->
+            <div id="luminaFloatingAdminShieldContainer" class="lumina-admin-shield-container">
+                <button type="button" 
+                        id="luminaFloatingAdminShield" 
+                        class="lumina-admin-floating-shield" 
+                        onclick="window.LuminaAdminSuite.openPinPrompt()" 
+                        title="Panel Administratora Portalu" 
+                        aria-label="Panel Administratora">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </button>
+                <span class="lumina-admin-version-tag">v3.6.0</span>
+            </div>
 
             <!-- Ukryte kontrolki uploadu plików -->
             <input type="file" id="adminAvatarFileInput" accept="image/*" style="display:none;" onchange="window.LuminaAdminSuite.handleAvatarSelect(event)">
@@ -792,17 +810,20 @@
             const isAdmin = isUserMasterAdmin();
             const hud = document.getElementById('luminaAdminHudBar');
             const shield = document.getElementById('luminaFloatingAdminShield');
+            const shieldContainer = document.getElementById('luminaFloatingAdminShieldContainer');
 
             if (isAdmin) {
                 document.body.classList.add('lumina-admin-mode');
                 document.body.classList.add('owner-mode-active');
                 if (hud) hud.classList.add('active');
                 if (shield) shield.classList.add('unlocked');
+                if (shieldContainer) shieldContainer.classList.add('unlocked');
             } else {
                 document.body.classList.remove('lumina-admin-mode');
                 document.body.classList.remove('owner-mode-active');
                 if (hud) hud.classList.remove('active');
                 if (shield) shield.classList.remove('unlocked');
+                if (shieldContainer) shieldContainer.classList.remove('unlocked');
             }
 
             this.updateHudBlockBtnState();

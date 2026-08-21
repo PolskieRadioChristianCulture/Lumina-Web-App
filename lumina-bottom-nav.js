@@ -622,12 +622,7 @@
         });
     }, 1000);
 
-    document.body.insertAdjacentHTML('beforeend', navHtml + `
-
-    <!-- ══════════ TAJNY SUBTELNY PUNKT ADMINISTRATORA (LEWA STRONA, BEZ EFEKTÓW HOVER) ══════════ -->
-    <div id="luminaSecretAdminBtn" onclick="window.triggerSecretAdminPrompt(event)" style="position:fixed; bottom:10px; left:8px; width:24px; height:24px; border-radius:50%; background:transparent; border:none; color:transparent; cursor:default; z-index:999999; user-select:none; -webkit-tap-highlight-color:transparent; outline:none;">
-    </div>
-`);
+    document.body.insertAdjacentHTML('beforeend', navHtml);
     // ══════════════════════════════════════════════════════════════════════════
     // GLOBALNY MOBILNY PASEK LOGOWANIA / REJESTRACJI (ZAŁÓŻ KONTO | LOGOWANIE)
     // ══════════════════════════════════════════════════════════════════════════

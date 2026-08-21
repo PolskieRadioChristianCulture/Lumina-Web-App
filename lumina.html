@@ -2721,21 +2721,6 @@
             <a href="javascript:void(0)" onclick="if(typeof showToast==='function') showToast('Oficjalny profil Instagram LUMINA wkrótce dostępny! 🕊️');" title="Instagram (w przygotowaniu)" style="opacity: 0.75; cursor: pointer;"><i class="fa-brands fa-instagram"></i></a>
             <a href="javascript:void(0)" onclick="if(typeof showToast==='function') showToast('Oficjalny profil LinkedIn LUMINA wkrótce dostępny! 🕊️');" title="LinkedIn (w przygotowaniu)" style="opacity: 0.75; cursor: pointer;"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
-
-        <!-- DISCREET MASTER ADMIN SHIELD TRIGGER & VERSION (Positioned under page content inside footer) -->
-        <div>
-            <div class="admin-shield-container">
-                <button type="button" 
-                        id="adminSecretShieldBtn" 
-                        class="admin-secret-shield-btn" 
-                        onclick="openAdminPinModal()" 
-                        title="Dostęp Administratora" 
-                        aria-label="Panel Administratora">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </button>
-                <span class="admin-version-tag">v3.6.0</span>
-            </div>
-        </div>
     </footer>
 
 
@@ -4526,8 +4511,10 @@
             }
             
             if (unlocked) {
-                const shieldBtn = document.getElementById('adminSecretShieldBtn');
-                if (shieldBtn) shieldBtn.classList.add('admin-unlocked');
+                const shieldBtn = document.getElementById('adminSecretShieldBtn') || document.getElementById('luminaFloatingAdminShield');
+                const shieldContainer = document.getElementById('luminaFloatingAdminShieldContainer');
+                if (shieldBtn) shieldBtn.classList.add('admin-unlocked', 'unlocked');
+                if (shieldContainer) shieldContainer.classList.add('unlocked');
                 
                 const lockedView = document.getElementById('adminPinLockedView');
                 const unlockedView = document.getElementById('adminPinUnlockedView');
@@ -4557,8 +4544,10 @@
                 localStorage.removeItem('lumina_auth_master_admin');
             }
             
-            const shieldBtn = document.getElementById('adminSecretShieldBtn');
-            if (shieldBtn) shieldBtn.classList.remove('admin-unlocked');
+            const shieldBtn = document.getElementById('adminSecretShieldBtn') || document.getElementById('luminaFloatingAdminShield');
+            const shieldContainer = document.getElementById('luminaFloatingAdminShieldContainer');
+            if (shieldBtn) shieldBtn.classList.remove('admin-unlocked', 'unlocked');
+            if (shieldContainer) shieldContainer.classList.remove('unlocked');
             
             const lockedView = document.getElementById('adminPinLockedView');
             const unlockedView = document.getElementById('adminPinUnlockedView');
@@ -4575,9 +4564,11 @@
             const isMaster = (typeof window.LuminaSecurity !== 'undefined' && window.LuminaSecurity.isMasterAdmin()) ||
                              sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
                              localStorage.getItem('lumina_auth_master_admin') === 'true';
-            const shieldBtn = document.getElementById('adminSecretShieldBtn');
-            if (shieldBtn && isMaster) {
-                shieldBtn.classList.add('admin-unlocked');
+            const shieldBtn = document.getElementById('adminSecretShieldBtn') || document.getElementById('luminaFloatingAdminShield');
+            const shieldContainer = document.getElementById('luminaFloatingAdminShieldContainer');
+            if (isMaster) {
+                if (shieldBtn) shieldBtn.classList.add('admin-unlocked', 'unlocked');
+                if (shieldContainer) shieldContainer.classList.add('unlocked');
             }
         }
         window.addEventListener('DOMContentLoaded', checkInitialAdminShieldState);
