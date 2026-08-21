@@ -319,9 +319,22 @@
         /* ──────────────────── HERO INTRO ──────────────────── */
         .hero-intro-wrapper {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
             position: relative;
             z-index: 10;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), max-height 1.2s cubic-bezier(0.4, 0, 0.2, 1), margin 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 480px;
+            overflow: visible;
+        }
+
+        .hero-intro-wrapper.fade-out,
+        .hero-section.intro-hidden .hero-intro-wrapper {
+            opacity: 0 !important;
+            transform: translateY(-24px) scale(0.96) !important;
+            pointer-events: none !important;
+            max-height: 0 !important;
+            margin-bottom: 0 !important;
+            overflow: hidden !important;
         }
 
         .hero-section {
@@ -336,6 +349,11 @@
             background-color: #0b1838;
             padding: 55px 20px 40px;
             transition: min-height 1.2s cubic-bezier(0.4, 0, 0.2, 1), padding 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hero-section.intro-hidden {
+            min-height: 280px;
+            padding: 40px 20px 25px;
         }
 
         .hero-section.compact-mode {
@@ -3835,14 +3853,54 @@
             }
         };
 
+        // ── Auto fade-out hero intro logo & description after few seconds ──
+        let heroFadeTimer = null;
+
+        function startHeroFadeTimer() {
+            if (heroFadeTimer) clearTimeout(heroFadeTimer);
+            heroFadeTimer = setTimeout(() => {
+                const input = document.getElementById('omniSearchInput');
+                if (input && input.value.trim().length > 0) return; // don't hide if user is searching
+                const intro = document.getElementById('heroIntroText');
+                const header = document.getElementById('heroHeader');
+                if (intro) intro.classList.add('fade-out');
+                if (header) header.classList.add('intro-hidden');
+            }, 4200);
+        }
+
+        function restoreHeroIntro() {
+            const intro = document.getElementById('heroIntroText');
+            const header = document.getElementById('heroHeader');
+            if (intro) intro.classList.remove('fade-out');
+            if (header) header.classList.remove('intro-hidden');
+            startHeroFadeTimer();
+        }
+
         window.handleHeroBackgroundClick = function(e) {
             if (!e || !e.target) return;
             const target = e.target;
             if (target.closest('#universalSearchBox') || target.closest('button') || target.closest('a') || target.closest('.discovery-filters-wrap')) {
                 return;
             }
+            restoreHeroIntro();
             window.toggleHeroSearch(e, true);
         };
+
+        // Initialize hero fade timer and interaction listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            startHeroFadeTimer();
+            const heroHeader = document.getElementById('heroHeader');
+            if (heroHeader) {
+                heroHeader.addEventListener('mouseenter', restoreHeroIntro);
+                heroHeader.addEventListener('touchstart', restoreHeroIntro, { passive: true });
+                heroHeader.addEventListener('mousemove', () => {
+                    const intro = document.getElementById('heroIntroText');
+                    if (intro && intro.classList.contains('fade-out')) {
+                        restoreHeroIntro();
+                    }
+                });
+            }
+        });
 
         // Close search if clicked outside hero and search has no query
         document.addEventListener('click', function(e) {
