@@ -14,6 +14,9 @@
         "audio/**",
         "downloads/**"
       ],
+      "redirects": [
+        { "source": "/snadaniowa-live-worship.html", "destination": "/cctv24-worship.html", "type": 301 }
+      ],
       "rewrites": [
         { "source": "/lumina", "destination": "/lumina.html" },
         { "source": "/tablica", "destination": "/lumina-tablica.html" },
@@ -33,6 +36,9 @@
         "**/*.zip",
         "audio/**",
         "downloads/**"
+      ],
+      "redirects": [
+        { "source": "/snadaniowa-live-worship.html", "destination": "/cctv24-worship.html", "type": 301 }
       ],
       "rewrites": [
         { "source": "/lumina", "destination": "/lumina.html" },
