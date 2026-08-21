@@ -20,14 +20,22 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
     console.log('[firebase-messaging-sw.js] Background Push Message received:', payload);
-    const notificationTitle = payload.notification?.title || 'LUMINA • Nowa Wiadomość 💌';
+    const senderName = payload.data?.senderName || payload.notification?.title || 'Użytkownik LUMINA';
+    const senderAvatar = payload.data?.senderAvatar || payload.data?.avatar || 'lumina_icon.jpg';
+    const text = payload.data?.text || payload.notification?.body || 'Masz nową wiadomość w portalu LUMINA 🕊️';
+    const type = payload.data?.type || 'chat';
+
+    const notificationTitle = `Masz wiadomość • ${senderName}`;
     const notificationOptions = {
-        body: payload.notification?.body || 'Masz nową aktywność w społeczności LUMINA.',
-        icon: 'lumina-icon-192.png',
+        body: text,
+        icon: senderAvatar,
         badge: 'lumina_icon.jpg',
-        data: payload.data || { url: '/lumina-tablica.html' },
+        tag: 'lumina_chat_' + (payload.data?.senderId || 'all'),
+        renotify: true,
+        vibrate: [200, 100, 200],
+        data: payload.data || { url: '/lumina.html', type: type, senderName: senderName, senderAvatar: senderAvatar },
         actions: [
-            { action: 'open_chat', title: 'Otwórz Wiadomość 💌' }
+            { action: 'open_chat', title: 'Otwórz Wiadomość 💬' }
         ]
     };
 
@@ -41,6 +49,10 @@ self.addEventListener('notificationclick', (event) => {
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
             for (const client of clientList) {
                 if (client.url && 'focus' in client) {
+                    client.postMessage({
+                        type: 'OPEN_LUMINA_CHAT',
+                        chatData: event.notification.data
+                    });
                     return client.focus();
                 }
             }

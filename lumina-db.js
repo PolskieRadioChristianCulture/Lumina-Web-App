@@ -1778,6 +1778,9 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
             lastMessageTimestamp: serverTimestamp(),
             lastSenderId: fromId,
             lastSenderName: senderName,
+            lastSenderAvatar: senderAvatar,
+            lastSenderBadge: fullMsg.senderBadge || '',
+            lastMessageType: fullMsg.type || 'text',
             users: normalizedChatId.split('_')
         }, { merge: true });
 
@@ -1882,6 +1885,303 @@ export function subscribeToUserChats(userId, onUpdate) {
         return () => {};
     }
 }
+
+// ══════════════════════════════════════════════════════════════════════════
+// ── PERSONALIZED PUSH & IN-APP NOTIFICATION ENGINE 🔔🕊️ ──
+// ══════════════════════════════════════════════════════════════════════════
+
+export function playNotificationChime() {
+    try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        if (ctx.state === 'suspended') {
+            ctx.resume();
+        }
+        const now = ctx.currentTime;
+        
+        // Gentle crystal chime
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(587.33, now); // D5
+        osc1.frequency.exponentialRampToValueAtTime(880, now + 0.12); // A5
+        gain1.gain.setValueAtTime(0.18, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.45);
+
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(880, now + 0.08);
+        osc2.frequency.exponentialRampToValueAtTime(1174.66, now + 0.22); // D6
+        gain2.gain.setValueAtTime(0.14, now + 0.08);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.start(now + 0.08);
+        osc2.stop(now + 0.6);
+    } catch(e) {}
+}
+
+export function showInAppChatBanner({ title, body, avatar, senderName, senderId, type }) {
+    if (typeof document === 'undefined') return;
+    let banner = document.getElementById('lumina-chat-notification-banner');
+    if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'lumina-chat-notification-banner';
+        banner.style.cssText = `
+            position: fixed;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-140%);
+            width: 92%;
+            max-width: 440px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 27, 75, 0.96));
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1.5px solid rgba(236, 72, 153, 0.5);
+            border-radius: 20px;
+            padding: 12px 16px;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(236, 72, 153, 0.3);
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            opacity: 0;
+            color: #fff;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            box-sizing: border-box;
+        `;
+        document.body.appendChild(banner);
+    }
+
+    const iconSrc = avatar || 'lumina_icon.jpg';
+    const tagText = type === 'public' ? '🌐 Czat Ogólny' : '🔒 Prywatna 1:1';
+    const dispName = senderName || (senderId === 'cezaryrgowski' ? 'Cezary Rogowski' : (senderId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
+
+    banner.innerHTML = `
+        <div style="position: relative; flex-shrink: 0;">
+            <img src="${iconSrc}" alt="${dispName}" style="width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 2px solid #ec4899; box-shadow: 0 0 12px rgba(236,72,153,0.6); display: block;">
+            <span style="position: absolute; bottom: -2px; right: -2px; width: 13px; height: 13px; background: #10b981; border-radius: 50%; border: 2px solid #0f172a;"></span>
+        </div>
+        <div style="flex: 1; min-width: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; gap: 6px;">
+                <span style="font-weight: 800; font-size: 0.92rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${dispName}</span>
+                <span style="font-size: 0.65rem; color: #f472b6; font-weight: 700; background: rgba(236,72,153,0.18); border: 1px solid rgba(236,72,153,0.35); padding: 2px 7px; border-radius: 8px; flex-shrink: 0;">${tagText}</span>
+            </div>
+            <div style="font-size: 0.78rem; color: #fdf4ff; font-weight: 600; margin-bottom: 2px;">
+                💬 Masz wiadomość
+            </div>
+            <div style="font-size: 0.8rem; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3;">
+                ${body || 'Kliknij, aby odczytać wiadomość...'}
+            </div>
+        </div>
+        <div style="flex-shrink: 0; color: #ec4899; font-size: 1.1rem; padding-left: 2px;">
+            <i class="fa-solid fa-chevron-right"></i>
+        </div>
+    `;
+
+    banner.onclick = () => {
+        banner.style.transform = 'translateX(-50%) translateY(-140%)';
+        banner.style.opacity = '0';
+        if (type === 'public') {
+            if (typeof window.openDirectMessagesModal === 'function') window.openDirectMessagesModal();
+            if (typeof window.switchMessengerMainTab === 'function') window.switchMessengerMainTab('public');
+        } else {
+            if (typeof window.openChatWith === 'function') {
+                window.openChatWith(dispName, avatar, senderId);
+            } else if (typeof window.openDirectMessagesModal === 'function') {
+                window.openDirectMessagesModal();
+            }
+        }
+    };
+
+    // Smooth entry
+    requestAnimationFrame(() => {
+        banner.style.transform = 'translateX(-50%) translateY(0)';
+        banner.style.opacity = '1';
+    });
+
+    if (window._luminaBannerTimeout) clearTimeout(window._luminaBannerTimeout);
+    window._luminaBannerTimeout = setTimeout(() => {
+        banner.style.transform = 'translateX(-50%) translateY(-140%)';
+        banner.style.opacity = '0';
+    }, 7000);
+}
+
+export function triggerLuminaPushNotification({ title, body, avatar, senderName, senderId, type }) {
+    // 1. Play crystal audio chime + vibration
+    playNotificationChime();
+    if ('vibrate' in navigator) {
+        try { navigator.vibrate([160, 80, 160]); } catch(e) {}
+    }
+
+    // 2. In-app floating banner
+    showInAppChatBanner({ title, body, avatar, senderName, senderId, type });
+
+    // 3. Browser Web Push Notification (System Notification)
+    if ('Notification' in window && Notification.permission === 'granted') {
+        const notifTitle = `Masz wiadomość • ${senderName || 'LUMINA'}`;
+        const notifBody = type === 'public' ? `[Czat Ogólny] ${senderName}: ${body}` : `${senderName}: ${body}`;
+        const notifIcon = avatar || 'lumina_icon.jpg';
+
+        try {
+            if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+                navigator.serviceWorker.ready.then(reg => {
+                    reg.showNotification(notifTitle, {
+                        body: notifBody,
+                        icon: notifIcon,
+                        badge: 'lumina_icon.jpg',
+                        tag: 'lumina_chat_' + (senderId || 'all'),
+                        renotify: true,
+                        vibrate: [200, 100, 200],
+                        data: { type, senderId, senderName, avatar }
+                    });
+                }).catch(() => {
+                    new Notification(notifTitle, { body: notifBody, icon: notifIcon });
+                });
+            } else {
+                new Notification(notifTitle, { body: notifBody, icon: notifIcon });
+            }
+        } catch(e) {}
+    }
+}
+
+let hasStartedRealtimeNotifs = false;
+export function startRealtimeChatNotificationsListener() {
+    if (hasStartedRealtimeNotifs || !db) return;
+    hasStartedRealtimeNotifs = true;
+
+    const sessionStartTime = Date.now() - 4000;
+    const handledMessageIds = new Set();
+
+    function getMyUserId() {
+        const user = currentUserState;
+        const prof = currentProfileState;
+        const raw = prof?.slug || prof?.uid || user?.slug || user?.uid || localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest';
+        return normalizeChatUserId(raw);
+    }
+
+    // 1. Listen to Public Chat Realtime Notifications
+    try {
+        const publicQuery = query(
+            collection(db, 'lumina_public_chat_messages'),
+            orderBy('timestamp', 'desc'),
+            limit(10)
+        );
+
+        onSnapshot(publicQuery, (snap) => {
+            const myId = getMyUserId();
+            snap.docChanges().forEach((change) => {
+                if (change.type === 'added') {
+                    const data = change.doc.data();
+                    const docId = change.doc.id;
+                    if (handledMessageIds.has(docId)) return;
+                    handledMessageIds.add(docId);
+
+                    const senderId = normalizeChatUserId(data.senderId);
+                    if (senderId === myId) return;
+
+                    const ts = data.timestamp?.seconds ? (data.timestamp.seconds * 1000) : Date.now();
+                    if (ts >= sessionStartTime) {
+                        triggerLuminaPushNotification({
+                            title: 'Masz wiadomość',
+                            body: data.text || '',
+                            avatar: data.senderAvatar || 'lumina_icon.jpg',
+                            senderName: data.senderName || 'Użytkownik LUMINA',
+                            senderId: senderId,
+                            type: 'public'
+                        });
+                    }
+                }
+            });
+        }, (err) => console.warn('Public Chat notif listener notice:', err));
+    } catch(e) {}
+
+    // 2. Listen to User's Private Direct Chats Realtime Notifications
+    try {
+        const myId = getMyUserId();
+        if (myId && myId !== 'guest') {
+            const chatsQuery = query(
+                collection(db, 'lumina_chats'),
+                where('users', 'array-contains', myId),
+                limit(20)
+            );
+
+            onSnapshot(chatsQuery, (snap) => {
+                const currentMyId = getMyUserId();
+                snap.docChanges().forEach((change) => {
+                    if (change.type === 'modified' || change.type === 'added') {
+                        const data = change.doc.data();
+                        const senderId = normalizeChatUserId(data.lastSenderId);
+                        if (!senderId || senderId === currentMyId) return;
+
+                        const lastMsgKey = `dm_${change.doc.id}_${data.lastMessageText}_${data.lastMessageTimestamp?.seconds || ''}`;
+                        if (handledMessageIds.has(lastMsgKey)) return;
+                        handledMessageIds.add(lastMsgKey);
+
+                        const ts = data.lastMessageTimestamp?.seconds ? (data.lastMessageTimestamp.seconds * 1000) : Date.now();
+                        if (ts >= sessionStartTime) {
+                            triggerLuminaPushNotification({
+                                title: `Masz wiadomość od ${data.lastSenderName || 'Użytkownika'}`,
+                                body: data.lastMessageText || '',
+                                avatar: data.lastSenderAvatar || 'lumina_icon.jpg',
+                                senderName: data.lastSenderName || 'Rozmówca',
+                                senderId: senderId,
+                                type: 'private'
+                            });
+                        }
+                    }
+                });
+            }, (err) => console.warn('Private Chat notif listener notice:', err));
+        }
+    } catch(e) {}
+}
+
+// Auto-start listener on load
+try {
+    if (typeof window !== 'undefined') {
+        setTimeout(() => {
+            startRealtimeChatNotificationsListener();
+        }, 1200);
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.addEventListener('message', (event) => {
+                if (event.data && event.data.type === 'OPEN_LUMINA_CHAT') {
+                    const d = event.data.chatData;
+                    if (d && d.type === 'public') {
+                        if (typeof window.openDirectMessagesModal === 'function') window.openDirectMessagesModal();
+                        if (typeof window.switchMessengerMainTab === 'function') window.switchMessengerMainTab('public');
+                    } else if (d) {
+                        const sName = d.senderName || (d.senderId === 'cezaryrgowski' ? 'Cezary Rogowski' : (d.senderId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Rozmówca'));
+                        if (typeof window.openChatWith === 'function') {
+                            window.openChatWith(sName, d.senderAvatar || 'lumina_icon.jpg', d.senderId);
+                        } else if (typeof window.openDirectMessagesModal === 'function') {
+                            window.openDirectMessagesModal();
+                        }
+                    }
+                }
+            });
+        }
+
+        // Auto request permission on first user click anywhere
+        const enableNotifsOnUserGesture = () => {
+            if ('Notification' in window && Notification.permission === 'default') {
+                requestNotificationPermission().catch(() => {});
+            }
+            window.removeEventListener('click', enableNotifsOnUserGesture);
+            window.removeEventListener('touchstart', enableNotifsOnUserGesture);
+        };
+        window.addEventListener('click', enableNotifsOnUserGesture, { once: true });
+        window.addEventListener('touchstart', enableNotifsOnUserGesture, { once: true });
+    }
+} catch(e) {}
 
 // ══════════════════════════════════════════════════════════════════════════
 // 5. MATCH & DISCOVERY ENGINE (Polubienia, Modlitwy, Wzajemne Dopasowania)
@@ -2253,6 +2553,10 @@ window.LuminaDB = {
     blockUser,
     unblockUser,
     requestNotificationPermission,
+    playNotificationChime,
+    showInAppChatBanner,
+    triggerLuminaPushNotification,
+    startRealtimeChatNotificationsListener,
     getMissionAccounts,
     getActiveMissionPersona,
     setActiveMissionPersona,
