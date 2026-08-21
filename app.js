@@ -961,16 +961,6 @@ function playRadio() {
         if (currentAudioUrl !== targetUrl || !audio.src) {
             audio.src = targetUrl;
             currentAudioUrl = targetUrl;
-            if (seekOffset > 0) {
-                const onMeta = () => {
-                    try {
-                        if (audio.duration && !isNaN(audio.duration) && audio.duration > seekOffset) {
-                            audio.currentTime = seekOffset;
-                        }
-                    } catch(e) {}
-                };
-                audio.addEventListener('loadedmetadata', onMeta, { once: true });
-            }
         }
     }
     
