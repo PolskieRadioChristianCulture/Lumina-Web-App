@@ -3,7 +3,7 @@
 // High-performance caching, offline navigation & push notification sync
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.1.0-stable';
+const CACHE_NAME = 'lumina-pwa-cache-v4.2.0-stable';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
@@ -67,8 +67,10 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Bypass dynamic streams, audio files, version checks, and API calls
+    // Bypass dynamic streams, audio files, scripts, version checks, playlists and API calls
     if (url.pathname.includes('version.json') || 
+        url.pathname.endsWith('.json') ||
+        url.pathname.endsWith('app.js') ||
         url.pathname.endsWith('.mp3') || 
         url.pathname.endsWith('.m3u8') || 
         url.pathname.includes('stream') || 
