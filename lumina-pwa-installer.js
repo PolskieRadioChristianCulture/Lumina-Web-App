@@ -1,12 +1,19 @@
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA UNIVERSAL MOBILE PWA INSTALLER & DEVICE OPTIMIZER
+// LUMINA UNIVERSAL MOBILE PWA INSTALLER & AUTO-UPDATE ENGINE (v3.5.0)
+// High-reliability Service Worker manager, Version Monitor & Update Banner
 // ══════════════════════════════════════════════════════════════════════════
 
 (function() {
     'use strict';
 
+    const CURRENT_CLIENT_VERSION = '3.5.0';
+    const DISMISS_INSTALL_KEY = 'lumina_pwa_install_dismissed';
+    const DISMISS_UPDATE_KEY = 'lumina_pwa_update_dismissed_version';
+    const LAST_SEEN_VERSION_KEY = 'lumina_app_version_seen';
+
     let deferredInstallPrompt = null;
-    const DISMISS_STORAGE_KEY = 'lumina_pwa_install_dismissed';
+    let swRegistration = null;
+    let updatePromptActive = false;
 
     // 1. Standalone / Installed Detection
     function isRunningStandalone() {
@@ -24,21 +31,30 @@
         return /iphone|ipad|ipod/.test(ua) && !window.MSStream;
     }
 
-    // 3. Register Service Worker
+    // 3. Register and Monitor Service Worker
     function registerLuminaServiceWorker() {
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw-lumina.js', { scope: './' })
                     .then((reg) => {
+                        swRegistration = reg;
                         console.log('[LUMINA PWA] Service Worker zarejestrowany pomyślnie. Scope:', reg.scope);
-                        
-                        // Check for SW updates
+
+                        if (reg.waiting) {
+                            showUpdateNotification({
+                                version: CURRENT_CLIENT_VERSION,
+                                releaseName: 'Nowa wersja portalu LUMINA',
+                                changes: ['Dostępna jest nowa wersja z najnowszymi funkcjami i rozważaniami.']
+                            }, reg.waiting);
+                        }
+
                         reg.addEventListener('updatefound', () => {
                             const newWorker = reg.installing;
                             if (newWorker) {
                                 newWorker.addEventListener('statechange', () => {
                                     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                        console.log('[LUMINA PWA] Dostępna nowa wersja aplikacji.');
+                                        console.log('[LUMINA PWA] Wykryto nową wersję w Service Worker.');
+                                        checkForUpdatesFromServer(true, newWorker);
                                     }
                                 });
                             }
@@ -47,17 +63,69 @@
                     .catch((err) => {
                         console.warn('[LUMINA PWA] Rejestracja Service Worker (informacja):', err);
                     });
+
+                let refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (refreshing) return;
+                    refreshing = true;
+                    console.log('[LUMINA PWA] Przeładowanie strony do nowej wersji...');
+                    window.location.reload();
+                });
             });
         }
     }
 
-    // 4. Inject PWA UI Styles
+    // 4. Remote Version Checker
+    async function checkForUpdatesFromServer(forcePrompt = false, waitingWorker = null) {
+        try {
+            const timestamp = Date.now();
+            const res = await fetch(`version.json?_t=${timestamp}`, {
+                cache: 'no-store',
+                headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' }
+            });
+
+            if (!res.ok) return;
+            const remote = await res.json();
+            const remoteVersion = remote.version || '3.5.0';
+
+            const localVersion = localStorage.getItem(LAST_SEEN_VERSION_KEY) || CURRENT_CLIENT_VERSION;
+            const dismissedVersion = sessionStorage.getItem(DISMISS_UPDATE_KEY);
+
+            const hasNewerVersion = isVersionNewer(remoteVersion, localVersion);
+
+            if (hasNewerVersion || forcePrompt) {
+                if (dismissedVersion === remoteVersion && !forcePrompt) {
+                    return;
+                }
+                showUpdateNotification(remote, waitingWorker || (swRegistration && swRegistration.waiting));
+            } else {
+                localStorage.setItem(LAST_SEEN_VERSION_KEY, remoteVersion);
+            }
+        } catch (e) {
+            console.log('[LUMINA PWA] Pomijam sprawdzenie wersji (offline/sieć):', e.message);
+        }
+    }
+
+    function isVersionNewer(remote, local) {
+        if (!remote || !local) return false;
+        if (remote === local) return false;
+        const rParts = remote.split('.').map(n => parseInt(n, 10) || 0);
+        const lParts = local.split('.').map(n => parseInt(n, 10) || 0);
+        for (let i = 0; i < Math.max(rParts.length, lParts.length); i++) {
+            const r = rParts[i] || 0;
+            const l = lParts[i] || 0;
+            if (r > l) return true;
+            if (r < l) return false;
+        }
+        return false;
+    }
+
+    // 5. Inject Styles
     function injectPWAStyles() {
         if (document.getElementById('lumina-pwa-styles')) return;
         const style = document.createElement('style');
         style.id = 'lumina-pwa-styles';
         style.textContent = `
-            /* ── Safe Area Inset Optimization for Notch & Dynamic Island ── */
             :root {
                 --sat: env(safe-area-inset-top, 0px);
                 --sab: env(safe-area-inset-bottom, 0px);
@@ -73,7 +141,131 @@
                 -webkit-tap-highlight-color: transparent;
             }
 
-            /* ── Floating Mobile Install Banner ── */
+            .lumina-update-banner {
+                position: fixed;
+                top: calc(16px + var(--sat));
+                left: 50%;
+                transform: translateX(-50%) translateY(-150%);
+                width: calc(100% - 28px);
+                max-width: 520px;
+                background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 27, 75, 0.98));
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1.5px solid rgba(245, 158, 11, 0.5);
+                border-radius: 20px;
+                padding: 16px 18px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(245, 158, 11, 0.3);
+                z-index: 1000000;
+                transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+                color: #fff;
+                font-family: inherit;
+            }
+            .lumina-update-banner.visible {
+                transform: translateX(-50%) translateY(0);
+            }
+            .lumina-update-header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            .lumina-update-icon-wrap {
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                background: linear-gradient(135deg, #f59e0b, #d97706);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #000;
+                font-size: 1.25rem;
+                flex-shrink: 0;
+                box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+            }
+            .lumina-update-title-box {
+                flex: 1;
+                min-width: 0;
+            }
+            .lumina-update-title {
+                font-size: 0.96rem;
+                font-weight: 800;
+                color: #fef08a;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                margin-bottom: 2px;
+            }
+            .lumina-update-version-tag {
+                font-size: 0.7rem;
+                background: rgba(245, 158, 11, 0.25);
+                color: #facc15;
+                padding: 2px 7px;
+                border-radius: 6px;
+                font-weight: 800;
+                border: 1px solid rgba(245, 158, 11, 0.4);
+            }
+            .lumina-update-desc {
+                font-size: 0.8rem;
+                color: #cbd5e1;
+                line-height: 1.35;
+            }
+            .lumina-update-changelog {
+                background: rgba(0, 0, 0, 0.35);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 12px;
+                padding: 8px 12px;
+                font-size: 0.76rem;
+                color: #e2e8f0;
+                max-height: 110px;
+                overflow-y: auto;
+                line-height: 1.4;
+            }
+            .lumina-update-changelog ul {
+                margin: 0;
+                padding-left: 16px;
+            }
+            .lumina-update-changelog li {
+                margin-bottom: 4px;
+            }
+            .lumina-update-actions {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 8px;
+            }
+            .lumina-update-btn-refresh {
+                background: linear-gradient(135deg, #f59e0b, #d97706);
+                color: #000;
+                border: none;
+                padding: 9px 18px;
+                border-radius: 12px;
+                font-size: 0.84rem;
+                font-weight: 800;
+                cursor: pointer;
+                box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+                transition: transform 0.2s, box-shadow 0.2s;
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .lumina-update-btn-refresh:active {
+                transform: scale(0.96);
+            }
+            .lumina-update-btn-dismiss {
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                color: #94a3b8;
+                padding: 9px 14px;
+                border-radius: 12px;
+                font-size: 0.8rem;
+                font-weight: 700;
+                cursor: pointer;
+                transition: color 0.2s, background 0.2s;
+            }
+
             .lumina-pwa-banner {
                 position: fixed;
                 bottom: 20px;
@@ -148,9 +340,6 @@
                 align-items: center;
                 gap: 6px;
             }
-            .lumina-pwa-btn-install:active {
-                transform: scale(0.96);
-            }
             .lumina-pwa-btn-close {
                 background: rgba(255,255,255,0.1);
                 border: 1px solid rgba(255,255,255,0.15);
@@ -165,12 +354,7 @@
                 font-size: 0.85rem;
                 transition: color 0.2s, background 0.2s;
             }
-            .lumina-pwa-btn-close:hover {
-                color: #fff;
-                background: rgba(255,255,255,0.2);
-            }
 
-            /* ── iOS Installation Guide Modal ── */
             .lumina-ios-modal-overlay {
                 position: fixed;
                 top: 0;
@@ -244,7 +428,88 @@
         document.head.appendChild(style);
     }
 
-    // 5. Create Install Banner in DOM
+    // 6. Show Update Notification Banner
+    function showUpdateNotification(versionInfo, waitingWorker) {
+        if (updatePromptActive) return;
+        updatePromptActive = true;
+
+        let banner = document.getElementById('luminaUpdateBanner');
+        if (!banner) {
+            banner = document.createElement('div');
+            banner.id = 'luminaUpdateBanner';
+            banner.className = 'lumina-update-banner';
+            document.body.appendChild(banner);
+        }
+
+        const changesHtml = Array.isArray(versionInfo.changes) && versionInfo.changes.length > 0
+            ? `<div class="lumina-update-changelog">
+                 <div style="font-weight:700;margin-bottom:4px;color:#facc15;">Co nowego w tej wersji:</div>
+                 <ul>${versionInfo.changes.map(c => `<li>${c}</li>`).join('')}</ul>
+               </div>`
+            : '';
+
+        banner.innerHTML = `
+            <div class="lumina-update-header">
+                <div class="lumina-update-icon-wrap">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </div>
+                <div class="lumina-update-title-box">
+                    <div class="lumina-update-title">
+                        <span>Dostępna nowa wersja LUMINA</span>
+                        <span class="lumina-update-version-tag">v${versionInfo.version || CURRENT_CLIENT_VERSION}</span>
+                    </div>
+                    <div class="lumina-update-desc">${versionInfo.releaseName || 'Wprowadziliśmy ważne ulepszenia i nowe funkcje!'}</div>
+                </div>
+                <button type="button" class="lumina-pwa-btn-close" id="btnUpdateDismissClose" title="Pomiń teraz">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            ${changesHtml}
+            <div class="lumina-update-actions">
+                <button type="button" class="lumina-update-btn-dismiss" id="btnUpdateDismissLater">
+                    Później
+                </button>
+                <button type="button" class="lumina-update-btn-refresh" id="btnUpdateApplyNow">
+                    <i class="fa-solid fa-bolt"></i> Zaktualizuj teraz ✨
+                </button>
+            </div>
+        `;
+
+        setTimeout(() => {
+            banner.classList.add('visible');
+        }, 300);
+
+        const applyUpdate = () => {
+            localStorage.setItem(LAST_SEEN_VERSION_KEY, versionInfo.version || CURRENT_CLIENT_VERSION);
+            if (waitingWorker) {
+                waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+            } else if (swRegistration && swRegistration.waiting) {
+                swRegistration.waiting.postMessage({ type: 'SKIP_WAITING' });
+            } else {
+                if ('caches' in window) {
+                    caches.keys().then(names => {
+                        return Promise.all(names.map(name => caches.delete(name)));
+                    }).then(() => {
+                        window.location.reload(true);
+                    });
+                } else {
+                    window.location.reload(true);
+                }
+            }
+        };
+
+        const dismissUpdate = () => {
+            banner.classList.remove('visible');
+            sessionStorage.setItem(DISMISS_UPDATE_KEY, versionInfo.version || CURRENT_CLIENT_VERSION);
+            updatePromptActive = false;
+        };
+
+        document.getElementById('btnUpdateApplyNow').addEventListener('click', applyUpdate);
+        document.getElementById('btnUpdateDismissLater').addEventListener('click', dismissUpdate);
+        document.getElementById('btnUpdateDismissClose').addEventListener('click', dismissUpdate);
+    }
+
+    // 7. Create Install Banner
     function createInstallBanner() {
         if (document.getElementById('luminaPwaBanner')) return;
 
@@ -275,7 +540,7 @@
         document.getElementById('btnPwaInstallClose').addEventListener('click', dismissInstallBanner);
     }
 
-    // 6. Create iOS Install Modal
+    // 8. Create iOS Install Modal
     function createIOSModal() {
         if (document.getElementById('luminaIosModal')) return;
 
@@ -330,7 +595,7 @@
         });
     }
 
-    // 7. Trigger Install Flow
+    // 9. Trigger Install Flow
     function triggerInstallFlow() {
         if (deferredInstallPrompt) {
             deferredInstallPrompt.prompt();
@@ -347,7 +612,6 @@
             if (modal) modal.classList.add('open');
             dismissInstallBanner();
         } else {
-            // Fallback instruction for desktop/other
             if (typeof window.showToast === 'function') {
                 window.showToast('Aby zainstalować aplikację, wybierz ikonę instalacji na pasku adresu przeglądarki 📲');
             }
@@ -356,7 +620,7 @@
 
     function showInstallBanner() {
         if (isRunningStandalone()) return;
-        if (sessionStorage.getItem(DISMISS_STORAGE_KEY) === 'true') return;
+        if (sessionStorage.getItem(DISMISS_INSTALL_KEY) === 'true') return;
 
         createInstallBanner();
         setTimeout(() => {
@@ -369,23 +633,41 @@
         const banner = document.getElementById('luminaPwaBanner');
         if (banner) {
             banner.classList.remove('visible');
-            sessionStorage.setItem(DISMISS_STORAGE_KEY, 'true');
+            sessionStorage.setItem(DISMISS_INSTALL_KEY, 'true');
         }
     }
 
-    // 8. Event Listeners Initialization
+    // 10. Initialization
     function init() {
         registerLuminaServiceWorker();
         injectPWAStyles();
 
-        // Android / Chromium Install Event
+        setTimeout(() => {
+            checkForUpdatesFromServer();
+        }, 2000);
+
+        setInterval(() => {
+            checkForUpdatesFromServer();
+            if (swRegistration) {
+                swRegistration.update().catch(() => {});
+            }
+        }, 15 * 60 * 1000);
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                checkForUpdatesFromServer();
+                if (swRegistration) {
+                    swRegistration.update().catch(() => {});
+                }
+            }
+        });
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredInstallPrompt = e;
             showInstallBanner();
         });
 
-        // App Installed Event
         window.addEventListener('appinstalled', () => {
             console.log('[LUMINA PWA] Aplikacja zainstalowana pomyślnie!');
             dismissInstallBanner();
@@ -394,7 +676,6 @@
             }
         });
 
-        // iOS initial trigger check
         if (isIOSDevice() && !isRunningStandalone()) {
             setTimeout(showInstallBanner, 2500);
         }
@@ -406,16 +687,17 @@
         init();
     }
 
-    // Export Global API
     window.LuminaPWA = {
         promptInstall: triggerInstallFlow,
+        checkForUpdates: () => checkForUpdatesFromServer(true),
         showIOSGuide: () => {
             createIOSModal();
             const modal = document.getElementById('luminaIosModal');
             if (modal) modal.classList.add('open');
         },
         isStandalone: isRunningStandalone,
-        isIOS: isIOSDevice
+        isIOS: isIOSDevice,
+        currentVersion: CURRENT_CLIENT_VERSION
     };
 
 })();
