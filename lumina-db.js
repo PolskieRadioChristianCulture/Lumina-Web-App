@@ -2030,8 +2030,78 @@ export function showInAppChatBanner({ title, body, avatar, senderName, senderId,
     }, 7000);
 }
 
-export function triggerLuminaPushNotification({ title, body, avatar, senderName, senderId, type }) {
-    // 1. Play crystal audio chime + vibration
+export async function showSystemDrawerNotification({ title, body, avatar, senderName, senderId, type, image }) {
+    if (typeof window === 'undefined') return;
+
+    if ('Notification' in window && Notification.permission === 'default') {
+        try {
+            await Notification.requestPermission();
+        } catch(e) {}
+    }
+
+    if (!('Notification' in window) || Notification.permission !== 'granted') {
+        console.warn('[LUMINA Push] Notification permission not granted:', Notification?.permission);
+        return;
+    }
+
+    const dispName = senderName || (senderId === 'cezaryrgowski' ? 'Cezary Rogowski' : (senderId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Społeczność LUMINA'));
+    const notifTitle = title || `Masz wiadomość 💌 • ${dispName}`;
+    const notifBody = body || (type === 'public' ? `[Czat Ogólny] ${dispName}: Pokój Wam! 🕊️` : `${dispName}: Kliknij, aby odczytać wiadomość...`);
+
+    // Absolute URLs for Android Drawer (like FB/YT)
+    const origin = window.location.origin;
+    const pathPrefix = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+    const baseUrl = origin + pathPrefix;
+
+    const rawIcon = avatar || 'avatar_cezary_official.jpg';
+    const iconUrl = rawIcon.startsWith('http') ? rawIcon : (baseUrl + rawIcon.replace(/^\.\//, ''));
+    const badgeUrl = baseUrl + 'lumina-icon-192.png';
+    const imageUrl = image ? (image.startsWith('http') ? image : baseUrl + image.replace(/^\.\//, '')) : undefined;
+
+    const notifOptions = {
+        body: notifBody,
+        icon: iconUrl,
+        badge: badgeUrl,
+        tag: 'lumina_chat_' + (senderId || Date.now()),
+        renotify: true,
+        requireInteraction: true,
+        silent: false,
+        vibrate: [200, 100, 200, 100, 200],
+        data: {
+            url: window.location.href,
+            type: type || 'chat',
+            senderId: senderId,
+            senderName: dispName,
+            avatar: iconUrl
+        },
+        actions: [
+            { action: 'open_chat', title: '💬 Odpowiedz' }
+        ]
+    };
+
+    if (imageUrl) {
+        notifOptions.image = imageUrl;
+    }
+
+    try {
+        if ('serviceWorker' in navigator) {
+            const reg = await navigator.serviceWorker.ready;
+            if (reg && reg.showNotification) {
+                await reg.showNotification(notifTitle, notifOptions);
+                return;
+            }
+        }
+        new Notification(notifTitle, notifOptions);
+    } catch(err) {
+        console.warn('showNotification error fallback:', err);
+        try {
+            new Notification(notifTitle, notifOptions);
+        } catch(e) {}
+    }
+}
+
+export function triggerLuminaPushNotification({ title, body, avatar, senderName, senderId, type, image }) {
+    // 1. Play official voice notification audio + vibration
     playNotificationChime();
     if ('vibrate' in navigator) {
         try { navigator.vibrate([160, 80, 160]); } catch(e) {}
@@ -2040,32 +2110,8 @@ export function triggerLuminaPushNotification({ title, body, avatar, senderName,
     // 2. In-app floating banner
     showInAppChatBanner({ title, body, avatar, senderName, senderId, type });
 
-    // 3. Browser Web Push Notification (System Notification)
-    if ('Notification' in window && Notification.permission === 'granted') {
-        const notifTitle = `Masz wiadomość • ${senderName || 'LUMINA'}`;
-        const notifBody = type === 'public' ? `[Czat Ogólny] ${senderName}: ${body}` : `${senderName}: ${body}`;
-        const notifIcon = avatar || 'lumina_icon.jpg';
-
-        try {
-            if (navigator.serviceWorker && navigator.serviceWorker.ready) {
-                navigator.serviceWorker.ready.then(reg => {
-                    reg.showNotification(notifTitle, {
-                        body: notifBody,
-                        icon: notifIcon,
-                        badge: 'lumina_icon.jpg',
-                        tag: 'lumina_chat_' + (senderId || 'all'),
-                        renotify: true,
-                        vibrate: [200, 100, 200],
-                        data: { type, senderId, senderName, avatar }
-                    });
-                }).catch(() => {
-                    new Notification(notifTitle, { body: notifBody, icon: notifIcon });
-                });
-            } else {
-                new Notification(notifTitle, { body: notifBody, icon: notifIcon });
-            }
-        } catch(e) {}
-    }
+    // 3. Android / OS System Drawer Notification (Belka Powiadomień jak FB / YT)
+    showSystemDrawerNotification({ title, body, avatar, senderName, senderId, type, image });
 }
 
 let hasStartedRealtimeNotifs = false;
@@ -2571,6 +2617,7 @@ window.LuminaDB = {
     playNotificationChime,
     showInAppChatBanner,
     triggerLuminaPushNotification,
+    showSystemDrawerNotification,
     startRealtimeChatNotificationsListener,
     getMissionAccounts,
     getActiveMissionPersona,

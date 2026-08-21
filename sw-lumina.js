@@ -100,3 +100,73 @@ self.addEventListener('fetch', (event) => {
             })
     );
 });
+
+// ══════════════════════════════════════════════════════════════════════════
+// ANDROID / PWA SYSTEM DRAWER NOTIFICATIONS (Belka Powiadomień jak FB / YT)
+// ══════════════════════════════════════════════════════════════════════════
+
+self.addEventListener('push', (event) => {
+    let data = {};
+    if (event.data) {
+        try {
+            data = event.data.json();
+        } catch(e) {
+            data = { body: event.data.text() };
+        }
+    }
+    const senderName = data.senderName || data.title || 'Społeczność LUMINA';
+    const senderAvatar = data.senderAvatar || data.avatar || './avatar_cezary_official.jpg';
+    const text = data.text || data.body || 'Masz nową wiadomość w portalu LUMINA 🕊️';
+    const type = data.type || 'chat';
+
+    const notificationTitle = `LUMINA • Masz wiadomość od ${senderName}`;
+    const notificationOptions = {
+        body: text,
+        icon: senderAvatar,
+        badge: './lumina-icon-192.png',
+        tag: 'lumina_chat_' + (data.senderId || 'all'),
+        renotify: true,
+        requireInteraction: true,
+        silent: false,
+        vibrate: [200, 100, 200, 100, 200],
+        data: data || { url: './lumina.html', type: type, senderName: senderName, senderAvatar: senderAvatar },
+        actions: [
+            { action: 'open_chat', title: '💬 Odpowiedz' },
+            { action: 'dismiss', title: '✕ Zamknij' }
+        ]
+    };
+
+    if (data.image) {
+        notificationOptions.image = data.image;
+    }
+
+    event.waitUntil(self.registration.showNotification(notificationTitle, notificationOptions));
+});
+
+self.addEventListener('notificationclick', (event) => {
+    event.notification.close();
+    
+    if (event.action === 'dismiss') {
+        return;
+    }
+
+    const chatData = event.notification.data || {};
+    const targetUrl = chatData.url || './lumina.html';
+
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+            for (const client of clientList) {
+                if (client.url && 'focus' in client) {
+                    client.postMessage({
+                        type: 'OPEN_LUMINA_CHAT',
+                        chatData: chatData
+                    });
+                    return client.focus();
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow(targetUrl);
+            }
+        })
+    );
+});

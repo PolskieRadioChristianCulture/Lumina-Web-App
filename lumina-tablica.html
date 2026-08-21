@@ -4696,7 +4696,7 @@
             }, 1000);
         }
 
-        window.testNotificationAndSound = function() {
+        window.testNotificationAndSound = async function() {
             try {
                 // 1. Play official voice notification audio "Masz Wiadomość - PORTAL LUMINA"
                 const audio = new Audio('masz-wiadomosc.mp3');
@@ -4721,22 +4721,53 @@
             if (window.LuminaDB && typeof window.LuminaDB.showInAppChatBanner === 'function') {
                 window.LuminaDB.showInAppChatBanner({
                     title: 'Masz wiadomość 💌',
-                    body: 'Dźwięk powiadomienia "Masz Wiadomość - PORTAL LUMINA" działa idealnie! 🕊️✨',
-                    avatar: 'lumina_logo_portal.jpg',
-                    senderName: 'LUMINA • Dźwięk',
-                    senderId: 'system',
-                    type: 'public'
+                    body: 'Wioletta Rogowska: Szczęść Boże! Nowy wpis czeka na Ciebie 🌸✨',
+                    avatar: 'avatar_wioletta_official.jpg',
+                    senderName: 'Wioletta Rogowska',
+                    senderId: 'wiolettarogowska',
+                    type: 'chat'
                 });
             }
 
-            // 4. Visual confirmation toast
-            if (typeof showToast === 'function') {
-                showToast('🔊 Odtworzono: "Masz Wiadomość - PORTAL LUMINA"! ✨');
+            // 4. Android / OS System Drawer Notification (Belka Powiadomień jak FB / YT)
+            if (window.LuminaDB && typeof window.LuminaDB.showSystemDrawerNotification === 'function') {
+                await window.LuminaDB.showSystemDrawerNotification({
+                    title: 'Masz wiadomość 💌 • Wioletta Rogowska',
+                    body: 'Wioletta Rogowska: Szczęść Boże! Pozdrawiam ciepło w Panu 🌸🕊️',
+                    avatar: 'avatar_wioletta_official.jpg',
+                    senderName: 'Wioletta Rogowska',
+                    senderId: 'wiolettarogowska',
+                    type: 'chat'
+                });
+            } else if ('Notification' in window) {
+                if (Notification.permission === 'default') {
+                    try { await Notification.requestPermission(); } catch(e) {}
+                }
+                if (Notification.permission === 'granted') {
+                    try {
+                        const reg = await navigator.serviceWorker?.ready;
+                        const notifOpts = {
+                            body: 'Wioletta Rogowska: Szczęść Boże! Pozdrawiam ciepło w Panu 🌸🕊️',
+                            icon: new URL('avatar_wioletta_official.jpg', window.location.href).href,
+                            badge: new URL('lumina-icon-192.png', window.location.href).href,
+                            tag: 'lumina_test_drawer',
+                            renotify: true,
+                            requireInteraction: true,
+                            vibrate: [200, 100, 200, 100, 200],
+                            actions: [{ action: 'open_chat', title: '💬 Odpowiedz' }]
+                        };
+                        if (reg && reg.showNotification) {
+                            await reg.showNotification('Masz wiadomość 💌 • Wioletta Rogowska', notifOpts);
+                        } else {
+                            new Notification('Masz wiadomość 💌 • Wioletta Rogowska', notifOpts);
+                        }
+                    } catch(e) {}
+                }
             }
 
-            // 5. Request permissions if needed
-            if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
-                window.LuminaDB.requestNotificationPermission().catch(() => {});
+            // 5. Visual confirmation toast
+            if (typeof showToast === 'function') {
+                showToast('🔔 Wysłano powiadomienie na belkę telefonu i odtworzono dźwięk! ✨');
             }
         };
 
