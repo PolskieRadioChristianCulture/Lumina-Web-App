@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA PRODUCTION PWA SERVICE WORKER (v3.2)
+// LUMINA PRODUCTION PWA SERVICE WORKER (v4.0)
 // High-performance caching, offline navigation & push notification sync
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v3.2';
+const CACHE_NAME = 'lumina-pwa-cache-v4.0';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
