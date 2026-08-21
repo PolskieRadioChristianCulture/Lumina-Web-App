@@ -145,6 +145,72 @@
             }
         }
 
+        /* ── FLOATING CHAT BUBBLE BUTTON (DYMEK CZATU NAD SCROLL-TOP) ── */
+        .lumina-floating-chat-btn {
+            position: fixed !important;
+            bottom: 88px !important;
+            right: 24px !important;
+            width: 50px !important;
+            height: 50px !important;
+            border-radius: 50% !important;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
+            border: 2px solid rgba(250, 204, 21, 0.75) !important;
+            color: #ffffff !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5), 0 0 16px rgba(250, 204, 21, 0.35) !important;
+            cursor: pointer !important;
+            z-index: 99998 !important;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease !important;
+            -webkit-tap-highlight-color: transparent !important;
+            outline: none !important;
+            text-decoration: none !important;
+        }
+        .lumina-floating-chat-btn:hover {
+            transform: translateY(-4px) scale(1.08) !important;
+            box-shadow: 0 12px 32px rgba(236, 72, 153, 0.7), 0 0 24px rgba(250, 204, 21, 0.55) !important;
+            background: linear-gradient(135deg, #f43f5e, #a855f7) !important;
+        }
+        .lumina-floating-chat-btn:active {
+            transform: translateY(1px) scale(0.95) !important;
+        }
+        .lumina-floating-chat-btn i {
+            font-size: 1.35rem !important;
+            color: #ffffff !important;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)) !important;
+        }
+        .lumina-floating-chat-badge {
+            position: absolute !important;
+            top: -3px !important;
+            right: -3px !important;
+            background: #ef4444 !important;
+            color: #ffffff !important;
+            font-size: 0.68rem !important;
+            font-weight: 800 !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            width: 20px !important;
+            height: 20px !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border: 2px solid #090d1a !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
+        }
+
+        @media (max-width: 768px) {
+            .lumina-floating-chat-btn {
+                bottom: 144px !important; /* Positioned directly above scroll-top (bottom: 88px) */
+                right: 18px !important;
+                width: 48px !important;
+                height: 48px !important;
+            }
+            .lumina-floating-chat-btn i {
+                font-size: 1.25rem !important;
+            }
+        }
+
         /* Modale CC Network, Wiadomości & Sklep */
         .cc-nav-modal {
             display: none;
@@ -196,6 +262,17 @@
 
     // 3. Wstrzyknięcie Struktury HTML
     const navHtml = `
+        <!-- ══════════ PŁYWAJĄCY DYMEK CZATU (NAD PRZYCISKIEM SCROLL-TOP) ══════════ -->
+        <button type="button" 
+                id="luminaFloatingChatBtn" 
+                class="lumina-floating-chat-btn" 
+                onclick="window.openLuminaChatModal()" 
+                title="Otwórz Czat & Wiadomości LUMINA" 
+                aria-label="Czat i Wiadomości LUMINA">
+            <i class="fa-solid fa-comment-dots"></i>
+            <span id="floatingChatBadge" class="lumina-floating-chat-badge" style="${initialUnread > 0 ? 'display:flex;' : 'display:none;'}">${initialUnread > 9 ? '9+' : initialUnread}</span>
+        </button>
+
         <nav class="lumina-bottom-nav" id="luminaBottomNav" role="navigation" aria-label="Nawigacja dolna LUMINA">
             <!-- 1. Odkrywaj -->
             <a href="lumina.html" class="lumina-nav-tab ${isDiscover ? 'active' : ''}" id="navTabDiscover" title="Odkrywaj Chrześcijańskie Profile">
@@ -214,20 +291,12 @@
                 </div>
             </button>
 
-            <!-- 4. Wiadomości (Koperta z Live Badge) -->
-            <button type="button" class="lumina-nav-tab" id="navTabMessages" onclick="window.openCcMessagesModal()" title="Wiadomości, Czaty & Kawa ☕">
-                <div style="position:relative; display:inline-flex; align-items:center; justify-content:center;">
-                    <i class="fa-solid fa-envelope"></i>
-                    <span id="bottomNavMsgBadge" class="lumina-nav-badge" style="${initialUnread > 0 ? 'display:flex;' : 'display:none;'}">${initialUnread > 9 ? '9+' : initialUnread}</span>
-                </div>
-            </button>
-
-            <!-- 5. Kanały CC (Christian Culture NETWORK) -->
+            <!-- 4. Kanały CC (Christian Culture NETWORK) -->
             <button type="button" class="lumina-nav-tab" id="navTabNetwork" onclick="window.openCcNetworkModal()" title="Kanały Nadawcze & YouTube Christian Culture NETWORK">
                 <i class="fa-solid fa-tv"></i>
             </button>
 
-            <!-- 6. Mój Profil -->
+            <!-- 5. Mój Profil -->
             <a href="${myProfileHref}" class="lumina-nav-tab ${isProfile ? 'active' : ''}" id="navTabProfile" title="Mój Profil / Panel Właściciela">
                 <i class="fa-solid fa-user-gear"></i>
             </a>
@@ -368,25 +437,46 @@
         </div>
     `;
 
-    // 4. Globalne funkcje i Real-Time Live Badge dla Wiadomości
+    // 4. Globalne funkcje i Real-Time Live Badge dla Wiadomości i Pływającego Dymka
     window.updateLuminaMessagesBadge = function(count) {
-        const badge = document.getElementById('bottomNavMsgBadge');
-        if (!badge) return;
+        const badge = document.getElementById('floatingChatBadge');
+        const bottomBadge = document.getElementById('bottomNavMsgBadge');
         const num = typeof count === 'number' ? count : parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10);
-        if (num > 0) {
-            badge.style.display = 'flex';
-            badge.textContent = num > 9 ? '9+' : num;
-            localStorage.setItem('lumina_messages_unread_count', String(num));
+        
+        [badge, bottomBadge].forEach(b => {
+            if (!b) return;
+            if (num > 0) {
+                b.style.display = 'flex';
+                b.textContent = num > 9 ? '9+' : num;
+            } else {
+                b.style.display = 'none';
+            }
+        });
+        localStorage.setItem('lumina_messages_unread_count', String(num));
+    };
+
+    window.openLuminaChatModal = function() {
+        if (typeof window.openDirectMessagesModal === 'function') {
+            window.openDirectMessagesModal();
+        } else if (document.getElementById('directMessagesModal')) {
+            const m = document.getElementById('directMessagesModal');
+            m.classList.add('open');
+            if (typeof window.switchMessengerMainTab === 'function') {
+                window.switchMessengerMainTab('public');
+            }
         } else {
-            badge.style.display = 'none';
-            localStorage.setItem('lumina_messages_unread_count', '0');
+            window.openCcMessagesModal();
         }
+        window.updateLuminaMessagesBadge(0);
     };
 
     window.openCcMessagesModal = function() {
+        if (typeof window.openDirectMessagesModal === 'function' || document.getElementById('directMessagesModal')) {
+            window.openLuminaChatModal();
+            return;
+        }
         const m = document.getElementById('modalCcMessages');
         if (m) m.classList.add('open');
-        // Natychmiastowe oznaczenie wiadomości jako przeczytane w czasie rzeczywistym
         window.updateLuminaMessagesBadge(0);
     };
 
