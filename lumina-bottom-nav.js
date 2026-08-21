@@ -92,112 +92,56 @@
         }
     }
 
-        /* ── LUMINA BOTTOM NAVIGATION BAR (PWA / Mobile) ── */
+        /* ── LUMINA BOTTOM NAVIGATION BAR (PWA / Mobile Only) ── */
         .lumina-bottom-nav {
-            position: fixed !important;
-            bottom: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            width: 100% !important;
-            height: 68px !important;
-            background: rgba(9, 14, 30, 0.94) !important;
-            backdrop-filter: blur(24px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-            box-shadow: 0 -8px 26px rgba(0, 0, 0, 0.7), 0 0 15px rgba(250, 204, 21, 0.1) !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-around !important;
-            padding: 0 4px !important;
-            padding-bottom: env(safe-area-inset-bottom, 6px) !important;
-            z-index: 10000 !important;
-            transition: transform 0.3s ease !important;
+            display: none !important;
         }
 
-        .lumina-nav-tab {
-            flex: 1 !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-decoration: none !important;
-            color: #94a3b8 !important;
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
-            position: relative !important;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            -webkit-tap-highlight-color: transparent !important;
-            cursor: pointer !important;
-            background: none !important;
-            border: none !important;
-            height: 100% !important;
-        }
-
-        .lumina-nav-tab i {
-            font-size: 1.45rem !important;
-            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease !important;
-        }
-
-        .lumina-nav-tab.active {
-            color: #06b6d4 !important;
-        }
-
-        .lumina-nav-tab.active i {
-            background: linear-gradient(135deg, #a855f7, #06b6d4) !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            transform: translateY(-2px) scale(1.2) !important;
-            filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4)) !important;
-        }
-
-        .lumina-nav-tab:hover {
-            color: #f8fafc !important;
-        }
-
-        .lumina-nav-tab:active {
-            transform: scale(0.92) !important;
-        }
-
-        .lumina-nav-badge {
-            position: absolute !important;
-            top: -6px !important;
-            right: -10px !important;
-            min-width: 17px !important;
-            height: 17px !important;
-            border-radius: 9px !important;
-            background: #ef4444 !important;
-            color: #ffffff !important;
-            font-size: 9.5px !important;
-            font-weight: 800 !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            padding: 0 4px !important;
-            border: 2px solid #0b1838 !important;
-            box-shadow: 0 0 10px rgba(239, 68, 68, 0.85) !important;
-            animation: pulseNavBadge 2s infinite !important;
-            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s !important;
-        }
-
-        @keyframes pulseNavBadge {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(239, 68, 68, 0.85); }
-            50% { transform: scale(1.18); box-shadow: 0 0 16px rgba(239, 68, 68, 1); }
-        }
-
-        /* Odstęp u dołu strony */
-        body {
-            padding-bottom: 78px !important;
-        }
-
-        /* Responsywny Desktop */
-        @media (min-width: 1024px) {
+        @media (max-width: 900px) {
             .lumina-bottom-nav {
-                max-width: 580px !important;
-                left: 50% !important;
-                right: auto !important;
-                transform: translateX(-50%) !important;
-                border-radius: 24px 24px 0 0 !important;
-                border: 1.5px solid rgba(250, 204, 21, 0.3) !important;
-                border-bottom: none !important;
+                position: fixed !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100% !important;
+                height: 68px !important;
+                background: rgba(9, 14, 30, 0.94) !important;
+                backdrop-filter: blur(24px) saturate(180%) !important;
+                -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+                border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+                box-shadow: 0 -8px 26px rgba(0, 0, 0, 0.7), 0 0 15px rgba(250, 204, 21, 0.1) !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-around !important;
+                padding: 0 4px !important;
+                padding-bottom: env(safe-area-inset-bottom, 6px) !important;
+                z-index: 10000 !important;
+                transition: transform 0.3s ease !important;
+            }
+            .lumina-nav-tab {
+                flex: 1 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-decoration: none !important;
+                color: #94a3b8 !important;
+                font-family: 'Plus Jakarta Sans', sans-serif !important;
+                position: relative !important;
+                font-size: 0.65rem !important;
+                gap: 3px !important;
+                background: none !important;
+                border: none !important;
+                height: 100% !important;
+            }
+            .lumina-nav-tab i {
+                font-size: 1.25rem !important;
+            }
+            .lumina-nav-tab.active {
+                color: #facc15 !important;
+            }
+            body {
+                padding-bottom: 78px !important;
             }
         }
 

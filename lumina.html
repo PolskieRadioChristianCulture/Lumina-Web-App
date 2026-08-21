@@ -260,64 +260,12 @@
         @keyframes statusPulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { transform: scale(1.2); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
         @keyframes floatWidget { 0% { transform: translateY(0); } 50% { transform: translateY(-12px); } 100% { transform: translateY(0); } }
 
-        /* ──────────────────── HERO INTRO DISSOLVE EFFECT ──────────────────── */
+        /* ──────────────────── HERO INTRO ──────────────────── */
         .hero-intro-wrapper {
-            max-height: 500px;
             opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0px);
-            transition: max-height 1.2s cubic-bezier(0.4, 0, 0.2, 1),
-                        opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
-                        transform 0.9s cubic-bezier(0.4, 0, 0.2, 1),
-                        filter 0.9s cubic-bezier(0.4, 0, 0.2, 1),
-                        margin 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
+            transform: translateY(0);
             position: relative;
-        }
-
-        .hero-intro-wrapper.dissolving {
-            animation: celestialDissolve 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-
-        .hero-intro-wrapper.dissolved {
-            max-height: 0 !important;
-            opacity: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            pointer-events: none !important;
-            visibility: hidden;
-            transform: translateY(-20px) scale(0.95);
-            filter: blur(12px);
-        }
-
-        @keyframes celestialDissolve {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-                filter: blur(0px) brightness(1);
-                text-shadow: 0 0 0px rgba(250, 204, 21, 0);
-            }
-            30% {
-                opacity: 0.95;
-                transform: translateY(-4px) scale(1.01);
-                filter: blur(0.5px) brightness(1.3);
-                text-shadow: 0 0 24px rgba(250, 204, 21, 0.8), 0 0 40px rgba(168, 85, 247, 0.6);
-            }
-            70% {
-                opacity: 0.4;
-                transform: translateY(-14px) scale(0.97);
-                filter: blur(6px) brightness(1.6);
-                text-shadow: 0 0 35px rgba(250, 204, 21, 0.9), 0 0 60px rgba(168, 85, 247, 0.8);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-24px) scale(0.93);
-                filter: blur(14px) brightness(2);
-                max-height: 0;
-                margin: 0;
-                padding: 0;
-                visibility: hidden;
-            }
+            z-index: 10;
         }
 
         .hero-section {
@@ -5338,23 +5286,6 @@
         document.addEventListener('scroll', checkScrollPositionUniversal, { passive: true });
         window.addEventListener('resize', checkScrollPositionUniversal, { passive: true });
 
-        // ── Auto-Dissolve Hero Intro Text on Main Page ──
-        (function initHeroAutoDissolve() {
-            const DISSOLVE_DELAY_MS = 3800; // Po ~3.8 sekundy
-            setTimeout(() => {
-                const intro = document.getElementById('heroIntroText');
-                const hero = document.getElementById('heroHeader') || document.querySelector('.hero-section');
-                if (intro) {
-                    intro.classList.add('dissolving');
-                    if (hero) hero.classList.add('compact-mode');
-                    setTimeout(() => {
-                        intro.classList.remove('dissolving');
-                        intro.classList.add('dissolved');
-                    }, 1400);
-                }
-            }, DISSOLVE_DELAY_MS);
-        })();
-
     </script>
     <script src="lumina-scroll-top.js" defer></script>
     <script src="lumina-bottom-nav.js?v=1786937913306" defer></script>
@@ -5460,7 +5391,6 @@
     </script>
 
     <script src="lumina-admin-profile-suite.js"></script>
-    <script src="lumina-premium-video-avatar.js"></script>
 </body>
 </html>
 
