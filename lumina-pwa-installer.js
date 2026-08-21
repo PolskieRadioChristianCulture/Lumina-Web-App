@@ -6,7 +6,7 @@
 (function() {
     'use strict';
 
-    const CURRENT_CLIENT_VERSION = '3.5.1';
+    const CURRENT_CLIENT_VERSION = '3.6.0';
     const DISMISS_INSTALL_KEY = 'lumina_pwa_install_dismissed';
     const DISMISS_UPDATE_KEY = 'lumina_pwa_update_dismissed_version';
     const LAST_SEEN_VERSION_KEY = 'lumina_app_version_seen';
@@ -48,16 +48,7 @@
                 navigator.serviceWorker.register('sw-lumina.js?v=20260821_v420', { scope: './' })
                     .then((reg) => {
                         swRegistration = reg;
-                        reg.update().catch(() => {});
                         console.log('[LUMINA PWA] Service Worker zarejestrowany pomyślnie. Scope:', reg.scope);
-
-                        if (reg.waiting) {
-                            showUpdateNotification({
-                                version: CURRENT_CLIENT_VERSION,
-                                releaseName: 'Nowa wersja portalu LUMINA',
-                                changes: ['Dostępna jest nowa wersja z najnowszymi funkcjami i rozważaniami.']
-                            }, reg.waiting);
-                        }
 
                         reg.addEventListener('updatefound', () => {
                             const newWorker = reg.installing;
@@ -65,7 +56,7 @@
                                 newWorker.addEventListener('statechange', () => {
                                     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                                         console.log('[LUMINA PWA] Wykryto nową wersję w Service Worker.');
-                                        checkForUpdatesFromServer(true, newWorker);
+                                        checkForUpdatesFromServer(false, newWorker);
                                     }
                                 });
                             }
@@ -89,14 +80,14 @@
 
             if (!res.ok) return;
             const remote = await res.json();
-            const remoteVersion = remote.version || '3.5.0';
+            const remoteVersion = remote.version || CURRENT_CLIENT_VERSION;
 
-            const localVersion = localStorage.getItem(LAST_SEEN_VERSION_KEY) || CURRENT_CLIENT_VERSION;
+            const localVersion = CURRENT_CLIENT_VERSION;
             const dismissedVersion = sessionStorage.getItem(DISMISS_UPDATE_KEY);
 
             const hasNewerVersion = isVersionNewer(remoteVersion, localVersion);
 
-            if (hasNewerVersion || forcePrompt) {
+            if (hasNewerVersion) {
                 if (dismissedVersion === remoteVersion && !forcePrompt) {
                     return;
                 }

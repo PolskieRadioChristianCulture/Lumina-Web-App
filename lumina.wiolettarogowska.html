@@ -3960,9 +3960,6 @@
                 m.classList.add('open');
                 switchMessengerMainTab('public');
             }
-            if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
-                window.LuminaDB.requestNotificationPermission().catch(() => {});
-            }
         }
 
         function returnToConversationsList() {
