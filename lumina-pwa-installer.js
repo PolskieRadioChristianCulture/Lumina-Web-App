@@ -1,12 +1,12 @@
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA UNIVERSAL MOBILE PWA INSTALLER & AUTO-UPDATE ENGINE (v3.5.0)
+// LUMINA UNIVERSAL MOBILE PWA INSTALLER & AUTO-UPDATE ENGINE (v3.5.1)
 // High-reliability Service Worker manager, Version Monitor & Update Banner
 // ══════════════════════════════════════════════════════════════════════════
 
 (function() {
     'use strict';
 
-    const CURRENT_CLIENT_VERSION = '3.5.0';
+    const CURRENT_CLIENT_VERSION = '3.5.1';
     const DISMISS_INSTALL_KEY = 'lumina_pwa_install_dismissed';
     const DISMISS_UPDATE_KEY = 'lumina_pwa_update_dismissed_version';
     const LAST_SEEN_VERSION_KEY = 'lumina_app_version_seen';
@@ -482,23 +482,40 @@
             banner.classList.add('visible');
         }, 300);
 
-        const applyUpdate = () => {
-            localStorage.setItem(LAST_SEEN_VERSION_KEY, versionInfo.version || CURRENT_CLIENT_VERSION);
-            if (waitingWorker) {
-                waitingWorker.postMessage({ type: 'SKIP_WAITING' });
-            } else if (swRegistration && swRegistration.waiting) {
-                swRegistration.waiting.postMessage({ type: 'SKIP_WAITING' });
-            } else {
-                if ('caches' in window) {
-                    caches.keys().then(names => {
-                        return Promise.all(names.map(name => caches.delete(name)));
-                    }).then(() => {
-                        window.location.reload(true);
-                    });
-                } else {
-                    window.location.reload(true);
-                }
+        const applyUpdate = async () => {
+            const btn = document.getElementById('btnUpdateApplyNow');
+            if (btn) {
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Aktualizowanie...';
+                btn.disabled = true;
+                btn.style.opacity = '0.8';
             }
+
+            localStorage.setItem(LAST_SEEN_VERSION_KEY, versionInfo.version || CURRENT_CLIENT_VERSION);
+
+            // 1. Post SKIP_WAITING to all service worker instances
+            try {
+                if (waitingWorker) waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+                if (swRegistration) {
+                    if (swRegistration.waiting) swRegistration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                    if (swRegistration.installing) swRegistration.installing.postMessage({ type: 'SKIP_WAITING' });
+                    if (swRegistration.active) swRegistration.active.postMessage({ type: 'SKIP_WAITING' });
+                }
+            } catch (e) {}
+
+            // 2. Clear all browser cache storage
+            try {
+                if ('caches' in window) {
+                    const keys = await caches.keys();
+                    await Promise.all(keys.map(k => caches.delete(k)));
+                }
+            } catch (e) {}
+
+            // 3. Force reload with cache buster query
+            setTimeout(() => {
+                const url = new URL(window.location.href);
+                url.searchParams.set('_v', Date.now());
+                window.location.href = url.toString();
+            }, 350);
         };
 
         const dismissUpdate = () => {
