@@ -123,31 +123,30 @@
             text-decoration: none !important;
             color: #94a3b8 !important;
             font-family: 'Plus Jakarta Sans', sans-serif !important;
-            font-size: 0.65rem !important;
-            font-weight: 700 !important;
-            gap: 3px !important;
-            padding: 6px 1px !important;
             position: relative !important;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
             -webkit-tap-highlight-color: transparent !important;
             cursor: pointer !important;
             background: none !important;
             border: none !important;
+            height: 100% !important;
         }
 
         .lumina-nav-tab i {
-            font-size: 1.2rem !important;
+            font-size: 1.45rem !important;
             transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease !important;
         }
 
         .lumina-nav-tab.active {
-            color: #facc15 !important;
+            color: #06b6d4 !important;
         }
 
         .lumina-nav-tab.active i {
-            color: #facc15 !important;
-            transform: translateY(-2px) scale(1.15) !important;
-            filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.5)) !important;
+            background: linear-gradient(135deg, #a855f7, #06b6d4) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            transform: translateY(-2px) scale(1.2) !important;
+            filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4)) !important;
         }
 
         .lumina-nav-tab:hover {
@@ -160,8 +159,8 @@
 
         .lumina-nav-badge {
             position: absolute !important;
-            top: -4px !important;
-            right: -8px !important;
+            top: -6px !important;
+            right: -10px !important;
             min-width: 17px !important;
             height: 17px !important;
             border-radius: 9px !important;
@@ -257,48 +256,44 @@
             <!-- 1. Odkrywaj -->
             <a href="lumina.html" class="lumina-nav-tab ${isDiscover ? 'active' : ''}" id="navTabDiscover" title="Odkrywaj Chrześcijańskie Profile">
                 <i class="fa-solid fa-heart-circle-bolt"></i>
-                <span>Odkrywaj</span>
             </a>
 
             <!-- 2. Tablica Społeczności -->
             <a href="lumina-tablica.html" class="lumina-nav-tab ${isTablica ? 'active' : ''}" id="navTabFeed" title="Główna Tablica Społeczności">
                 <i class="fa-solid fa-users-viewfinder"></i>
-                <span>Tablica</span>
             </a>
 
-            <!-- 3. Wiadomości (Koperta z Live Badge) -->
+            <!-- 3. Radio CC (Mobile Live Player) -->
+            <button type="button" class="lumina-nav-tab btn-radio-toggle" id="navTabRadioMobile" onclick="window.toggleRadio()" title="Włącz / Wyłącz Radio Christian Culture 24/7">
+                <div style="position:relative; display:inline-flex; align-items:center; justify-content:center;">
+                    <i class="fa-solid fa-radio" id="mobileRadioNavIcon"></i>
+                </div>
+            </button>
+
+            <!-- 4. Wiadomości (Koperta z Live Badge) -->
             <button type="button" class="lumina-nav-tab" id="navTabMessages" onclick="window.openCcMessagesModal()" title="Wiadomości, Czaty & Kawa ☕">
                 <div style="position:relative; display:inline-flex; align-items:center; justify-content:center;">
-                    <i class="fa-solid fa-envelope" style="color: #ec4899;"></i>
+                    <i class="fa-solid fa-envelope"></i>
                     <span id="bottomNavMsgBadge" class="lumina-nav-badge" style="${initialUnread > 0 ? 'display:flex;' : 'display:none;'}">${initialUnread > 9 ? '9+' : initialUnread}</span>
                 </div>
-                <span>Wiadomości</span>
             </button>
 
-            <!-- 4. Kanały CC (Christian Culture NETWORK) -->
+            <!-- 5. Kanały CC (Christian Culture NETWORK) -->
             <button type="button" class="lumina-nav-tab" id="navTabNetwork" onclick="window.openCcNetworkModal()" title="Kanały Nadawcze & YouTube Christian Culture NETWORK">
-                <i class="fa-solid fa-tv" style="color: #facc15;"></i>
-                <span>Kanały CC</span>
+                <i class="fa-solid fa-tv"></i>
             </button>
-
-            <!-- 5. Market CC (Sklep Christian Culture) -->
-            <a href="https://my-store-1009741.creator-spring.com/" target="_blank" rel="noopener noreferrer" class="lumina-nav-tab" id="navTabStore" title="Oficjalny Sklep Christian Culture (Market Creator Spring)">
-                <i class="fa-solid fa-bag-shopping" style="color: #38bdf8;"></i>
-                <span>Market CC</span>
-            </a>
 
             <!-- 6. Mój Profil -->
             <a href="${myProfileHref}" class="lumina-nav-tab ${isProfile ? 'active' : ''}" id="navTabProfile" title="Mój Profil / Panel Właściciela">
                 <i class="fa-solid fa-user-gear"></i>
-                <span>Mój Profil</span>
             </a>
         </nav>
 
         <!-- ══════════ MODAL WIADOMOŚCI & CZATÓW ══════════ -->
         <div class="cc-nav-modal" id="modalCcMessages" onclick="if(event.target===this) this.classList.remove('open')">
             <div style="background:#0b1838; border:1.5px solid rgba(236,72,153,0.4); border-radius:24px; padding:24px 20px; max-width:480px; width:94%; max-height:85vh; overflow-y:auto; box-shadow:0 24px 60px rgba(0,0,0,0.85); color:#fff; position:relative;">
-                <button type="button" onclick="document.getElementById('modalCcMessages').classList.remove('open')" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center;">&times;</button>
-                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                <button type="button" onclick="document.getElementById('modalCcMessages').classList.remove('open')" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center; -webkit-tap-highlight-color:transparent; z-index:10;">&times;</button>
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; padding-right:32px;">
                     <div style="width:44px; height:44px; border-radius:14px; background:linear-gradient(135deg, #ec4899, #f59e0b); display:flex; align-items:center; justify-content:center; font-size:1.3rem; color:#fff; box-shadow:0 0 16px rgba(236,72,153,0.4);">
                         <i class="fa-solid fa-envelope-open-text"></i>
                     </div>
@@ -321,7 +316,7 @@
                     </div>
 
                     <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href='lumina.ccwomen.html'">
-                        <img src="logo_cc_women.jpg" alt="CC Women" style="width:46px; height:46px; border-radius:50%; object-fit:cover; border:1.5px solid #ec4899;">
+                        <img src="logo_cc_women.jpg?v=20260820" alt="CC Women" style="width:46px; height:46px; border-radius:50%; object-fit:cover; border:1.5px solid #ec4899;">
                         <div style="flex:1;">
                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <span style="font-weight:800; font-size:0.92rem; color:#fff;">Wspólnota CC Women</span>

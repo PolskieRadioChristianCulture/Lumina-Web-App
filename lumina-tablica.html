@@ -68,8 +68,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-        <!-- Lumina Realtime Firestore Engine -->
+    <!-- Lumina Auto-Repair & Error Guardian Engine -->
+    <script src="lumina-auto-repair.js"></script>
+    <!-- Lumina Realtime Firestore Engine -->
     <script type="module" src="lumina-db.js?v=1786938409250"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js?v=2.2"></script>
@@ -335,7 +336,7 @@
         .lumina-nav {
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 10001 !important;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -361,29 +362,27 @@
             gap: 16px;
         }
         .nav-link {
-            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #94a3b8;
             font-size: 0.88rem;
-            font-weight: 600;
+            font-weight: 700;
             text-decoration: none;
-            padding: 8px 14px;
-            border-radius: 20px;
-            transition: all 0.2s;
+            padding: 8px 16px;
+            border-radius: 40px;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: transparent;
-            border: none;
             cursor: pointer;
             font-family: inherit;
         }
         .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, #a855f7, #06b6d4);
+            border-color: transparent;
             color: #fff;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .nav-link.active {
-            background: linear-gradient(90deg, rgba(236,72,153,0.25), rgba(168,85,247,0.25));
-            border: 1px solid rgba(236,72,153,0.4);
-            color: #f472b6;
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5), 0 0 16px rgba(6, 182, 212, 0.35);
+            transform: translateY(-1px);
         }
 
         .nav-radio-pill {
@@ -432,6 +431,26 @@
             border: 1px solid var(--border-glass);
             backdrop-filter: blur(16px);
             box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+            transition: padding 0.3s ease, margin 0.3s ease;
+        }
+        .board-header.collapsed {
+            padding: 16px 20px;
+            margin-bottom: 16px;
+        }
+        .board-header-content {
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            max-height: 250px;
+            opacity: 1;
+            overflow: hidden;
+        }
+        .board-header.collapsed .board-header-content {
+            max-height: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .board-header.collapsed #boardHeaderChevron {
+            opacity: 0.6 !important;
+            transform: rotate(-90deg);
         }
         .board-tagline {
             display: inline-flex;
@@ -456,6 +475,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 6px;
+            transition: opacity 0.2s, margin 0.3s ease;
+        }
+        .board-title:hover {
+            opacity: 0.85;
+        }
+        .board-header.collapsed .board-title {
+            margin-bottom: 0;
         }
         .board-subtitle {
             font-size: 0.9rem;
@@ -524,6 +550,10 @@
             object-fit: cover;
             border: 2px solid #f59e0b;
             box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+        }
+        .founder-persona-label::before {
+            content: "Występujesz jako:";
+            font-size: 0.72rem;
         }
         .founder-buttons-group {
             display: flex;
@@ -1246,7 +1276,7 @@
             gap: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             border: 1px solid rgba(255,255,255,0.15);
-            z-index: 2000;
+            z-index: 999999999 !important;
             opacity: 0;
             transition: all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
         }
@@ -1378,6 +1408,10 @@
                 justify-content: center;
                 padding: 9px 8px;
                 font-size: 0.75rem;
+            }
+            .founder-persona-label::before {
+                content: "Jako:";
+                font-size: 0.72rem;
             }
             .feed-stream {
                 grid-template-columns: 1fr;
@@ -1895,7 +1929,7 @@
             font-size: 0.82rem;
             font-weight: 800;
             cursor: pointer;
-            display: flex !important;
+            display: none !important;
             align-items: center;
             justify-content: center;
             gap: 8px;
@@ -1903,6 +1937,9 @@
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
             margin-top: 6px;
             margin-bottom: 12px;
+        }
+        .lumina-admin-mode .btn-admin-add-ad-916 {
+            display: flex !important;
         }
         .btn-admin-add-ad-916:hover {
             background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(236, 72, 153, 0.25));
@@ -2114,10 +2151,13 @@
             <button type="button" class="nav-circle-btn nav-radio-btn" id="radioWidget" onclick="toggleRadio()" title="Włącz / Wyłącz Radio CC">
                 <i class="fa-solid fa-play" id="radioPlayIcon" style="margin-left:2px;"></i>
             </button>
-
-            <!-- 2. Language Switcher (Single Round Button) -->
-            <button type="button" class="nav-circle-btn lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" title="Zmień język">🇵🇱</button>
+            <!-- WSPARCIE DZIEŁA (DONORBOX CTA) -->
+            <button class="btn-nav-cta" style="background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #000; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); padding: 8px 16px; border-radius: 40px; cursor: pointer; display: flex; align-items: center; gap: 8px;" onclick="openSupportModal()" title="Wspieraj Dzieło LUMINA">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+                <span class="btn-nav-cta-text" style="color: #000; font-weight: 800; font-size: 0.88rem; font-family: 'Outfit', sans-serif;">Wspieraj</span>
+            </button>
             
+                        
             <!-- 3. Back Arrow (Single Round Button) -->
             <a href="lumina.html" class="nav-circle-btn nav-back-icon-btn" title="Powrót do portalu">
                 <i class="fa-solid fa-arrow-left"></i>
@@ -2185,19 +2225,25 @@
         <section class="feed-center-column">
             
             <!-- Header Banner -->
-            <header class="board-header">
-                <h1 class="board-title">Tablica Portalu LUMINA</h1>
-                <p class="board-subtitle">
-                    Posty i aktywność społeczności LUMINA – poznaj nowych ludzi, dziel się chwilami i buduj relacje zakorzenione w wierze.
-                </p>
+            <header class="board-header" id="boardHeader">
+                <h1 class="board-title" onclick="toggleBoardHeader()" title="Rozwiń / Zwiń" style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+                    Tablica Portalu LUMINA 
+                    <i class="fa-solid fa-chevron-down" id="boardHeaderChevron" style="font-size:0.8rem; opacity:0; transition:all 0.3s;"></i>
+                </h1>
+                
+                <div class="board-header-content" id="boardHeaderContent">
+                    <p class="board-subtitle">
+                        Posty i aktywność społeczności LUMINA – poznaj nowych ludzi, dziel się chwilami i buduj relacje zakorzenione w wierze.
+                    </p>
 
-                <!-- Filter Categories Row -->
-                <div class="filter-chips-row">
-                    <button class="chip-btn active" onclick="filterFeed('all', this)"><i class="fa-solid fa-grid-2"></i> Wszystkie Wpisy</button>
-                    <button class="chip-btn" onclick="filterFeed('post', this)"><i class="fa-solid fa-users"></i> Wpisy Użytkowników</button>
-                    <button class="chip-btn" onclick="filterFeed('ad', this)"><i class="fa-solid fa-bullhorn"></i> Dzieła Misji CC</button>
-                    <button class="chip-btn" onclick="filterFeed('promo', this)"><i class="fa-solid fa-gift"></i> Cegiełki Misyjne</button>
-                    <button class="chip-btn" onclick="filterFeed('event', this)"><i class="fa-solid fa-calendar-star"></i> Wydarzenia Wiary</button>
+                    <!-- Filter Categories Row -->
+                    <div class="filter-chips-row">
+                        <button class="chip-btn active" onclick="filterFeed('all', this)" title="Wszystkie Wpisy"><i class="fa-solid fa-grid-2"></i> <span class="chip-text">Wszystkie Wpisy</span></button>
+                        <button class="chip-btn" onclick="filterFeed('post', this)" title="Wpisy Użytkowników"><i class="fa-solid fa-users"></i> <span class="chip-text">Wpisy Użytkowników</span></button>
+                        <button class="chip-btn" onclick="filterFeed('ad', this)" title="Dzieła Misji CC"><i class="fa-solid fa-bullhorn"></i> <span class="chip-text">Dzieła Misji CC</span></button>
+                        <button class="chip-btn" onclick="filterFeed('promo', this)" title="Cegiełki Misyjne"><i class="fa-solid fa-gift"></i> <span class="chip-text">Cegiełki Misyjne</span></button>
+                        <button class="chip-btn" onclick="filterFeed('event', this)" title="Wydarzenia Wiary"><i class="fa-solid fa-calendar-star"></i> <span class="chip-text">Wydarzenia Wiary</span></button>
+                    </div>
                 </div>
             </header>
 
@@ -2206,22 +2252,22 @@
                 <div class="founder-info-side">
                     <img src="avatar_cezary_official.jpg" alt="Persona" class="founder-badge-avatar" id="activePersonaAvatar">
                     <div>
-                        <div style="font-size:0.72rem; color:#facc15; font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">Występujesz jako:</div>
-                        <select id="personaSelector" onchange="handlePersonaSelectChange(this.value)" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; font-weight:800; font-size:0.85rem; padding:4px 10px; border-radius:8px; font-family:inherit; cursor:pointer;">
-                            <option value="cezary_rogowski" style="background:#0f172a;">👑 Cezary Rogowski (Założyciel CC)</option>
-                            <option value="wioletta_rogowska" style="background:#0f172a;">🌸 Wioletta Rogowska (Współzałożycielka CC)</option>
-                            <option value="cc_women" style="background:#0f172a;">🌸 CC Women (Kanał YouTube)</option>
-                            <option value="radio_cc" style="background:#0f172a;">📻 Polskie Radio Christian Culture</option>
-                            <option value="lumina_official" style="background:#0f172a;">🕊️ LUMINA • Oficjalna Redakcja</option>
-                            <option value="noemi_misja" style="background:#0f172a;">🌿 Noemi (Konto Misyjne)</option>
-                            <option value="dawid_misja" style="background:#0f172a;">🎵 Dawid (Konto Misyjne)</option>
+                        <div class="founder-persona-label" style="color:#facc15; font-weight:800; text-transform:uppercase; letter-spacing:0.5px;"></div>
+                        <select id="personaSelector" onchange="handlePersonaSelectChange(this.value)" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; font-weight:800; font-size:0.85rem; padding:4px 10px; border-radius:8px; font-family:inherit; cursor:pointer; max-width: 175px;">
+                            <option value="cezary_rogowski" style="background:#0f172a;">👑 Admin</option>
+                            <option value="wioletta_rogowska" style="background:#0f172a;">🌸 Wioletta R.</option>
+                            <option value="cc_women" style="background:#0f172a;">🌸 CC Women</option>
+                            <option value="radio_cc" style="background:#0f172a;">📻 Radio CC</option>
+                            <option value="lumina_official" style="background:#0f172a;">🕊️ LUMINA</option>
+                            <option value="noemi_misja" style="background:#0f172a;">🌿 Noemi</option>
+                            <option value="dawid_misja" style="background:#0f172a;">🎵 Dawid</option>
                         </select>
                     </div>
                 </div>
                 <div class="founder-buttons-group">
-                    <button type="button" class="btn-camp-quick btn-camp-ad" onclick="openCampaignModal('ad')"><i class="fa-solid fa-plus-circle"></i> Opublikuj Wpis Misyjny</button>
-                    <button type="button" class="btn-camp-quick btn-camp-promo" onclick="openCampaignModal('promo')"><i class="fa-solid fa-heart"></i> Patronat / Apel</button>
-                    <button type="button" class="btn-camp-quick" onclick="openAdminReportsModal()" style="background:rgba(239,68,68,0.22); border-color:#ef4444; color:#fca5a5;"><i class="fa-solid fa-shield-halved"></i> Moderacja <span id="adminReportsBadge" style="background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; padding:1px 6px; border-radius:10px; margin-left:4px;">0</span></button>
+                    <button type="button" class="btn-camp-quick btn-camp-ad" onclick="openCampaignModal('ad')" title="Opublikuj Wpis Misyjny"><i class="fa-solid fa-plus-circle"></i> <span class="btn-text">Opublikuj Wpis Misyjny</span></button>
+                    <button type="button" class="btn-camp-quick btn-camp-promo" onclick="openCampaignModal('promo')" title="Patronat / Apel"><i class="fa-solid fa-heart"></i> <span class="btn-text">Patronat / Apel</span></button>
+                    <button type="button" class="btn-camp-quick" onclick="openAdminReportsModal()" title="Moderacja Zgłoszeń" style="background:rgba(239,68,68,0.22); border-color:#ef4444; color:#fca5a5;"><i class="fa-solid fa-shield-halved"></i> <span class="btn-text">Moderacja </span><span id="adminReportsBadge" style="background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; padding:1px 6px; border-radius:10px; margin-left:4px;">0</span></button>
                 </div>
             </div>
 
@@ -2474,28 +2520,6 @@
         </div>
     </div>
 
-    <!-- ══════════ MOBILE BOTTOM NAVIGATION BAR ══════════ -->
-    <nav class="lumina-mobile-nav" aria-label="Nawigacja mobilna">
-        <a href="lumina.html" class="m-nav-item">
-            <i class="fa-solid fa-compass"></i>
-            <span>Odkrywaj</span>
-        </a>
-        <a href="lumina-tablica.html" class="m-nav-item active">
-            <i class="fa-solid fa-rectangle-list"></i>
-            <span>Tablica</span>
-        </a>
-        <a href="javascript:void(0)" onclick="openDirectMessagesModal()" class="m-nav-item" id="mNavMsgItem">
-            <div class="m-nav-msg-icon">
-                <i class="fa-solid fa-comment-dots"></i>
-                <span class="m-nav-badge">2</span>
-            </div>
-            <span>Wiadomości</span>
-        </a>
-        <a href="javascript:void(0)" onclick="handleMyProfileNavigation(event)" class="m-nav-item" id="mNavProfileItem">
-            <i class="fa-solid fa-user"></i>
-            <span>Mój Profil</span>
-        </a>
-    </nav>
 
     <!-- ══════════ REALTIME DIRECT MESSENGER MODAL (Etap 3) ══════════ -->
     <div class="modal-overlay" id="directMessagesModal">
@@ -2655,10 +2679,23 @@
     <!-- ══════════ TOAST NOTIFICATION ══════════ -->
     <div class="toast" id="toast"><i class="fa-solid fa-check-circle"></i> <span id="toastMsg">Sukces!</span></div>
 
+    
+    
     <!-- ══════════ JAVASCRIPT & ENGINE ══════════ -->
     <script>
         // ── 15 Oficjalnych Kanałów Nadawczych (z nadawaj.html) do Rotacji na Tablicy ──
         const LUMINA_BROADCAST_CHANNELS = [
+            {
+                id: 'cctv24_worship',
+                title: 'CCTV24 Instrumental Worship (16:9)',
+                tag: 'NOWOŚĆ • Muzyka Uwielbienia 24/7',
+                badgeColor: '#D4AF37',
+                textColor: '#000',
+                desc: 'Całodobowy kanał instrumentalny ku Bożej chwale. Filmowe pejzaże, wersety biblijne i głęboki pokój w Chrystusie.',
+                image: 'INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg',
+                url: 'cctv24-worship.html',
+                category: 'Muzyka Uwielbienia'
+            },
             {
                 id: 'cctv24_pl',
                 title: 'Christian Culture TV 24/7 (16:9)',
@@ -2897,19 +2934,19 @@
         // ── Wszystkie Oficjalne Reklamy i Kampanie Misyjne z polskieradio.cc ──
         const DEFAULT_CC_CAMPAIGNS = [
             {
-                id: 'camp_koncept_studio',
-                type: 'sponsor',
-                title: 'Koncept Studio – Oficjalny Patron Misji Christian Culture',
-                desc: 'Profesjonalne studio graficzne, reklama, kreacja wizualna i nowoczesne rozwiązania brandingowe. Dziękujemy za nieocenione wsparcie dzieła ewangelizacyjnego CC!',
-                image: 'oficjalny_sponsor.jpg',
-                btnText: 'Odwiedź koncept-studio.pl ➔',
-                btnUrl: 'https://koncept-studio.pl/',
-                author: 'Koncept Studio',
-                authorRole: 'Oficjalny Patron Dzieła CC 🌟',
-                authorAvatar: 'oficjalny_sponsor.jpg',
-                createdAt: 'Oficjalny Patron',
+                id: 'camp_cctv24_worship',
+                type: 'promo',
+                title: 'NOWOŚĆ: CCTV24 Instrumental Worship – Całodobowa Muzyka Uwielbienia',
+                desc: 'Zanurz się w Bożej obecności i pokoju serca. Oglądaj i słuchaj najpiękniejszych utworów uwielbienia w jakości HD bez przerw 24/7.',
+                image: 'INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg',
+                btnText: 'Oglądaj & Słuchaj na Żywo 🕊️▶️',
+                btnUrl: 'cctv24-worship.html',
+                author: 'Christian Culture TV',
+                authorRole: 'Nowy Kanał TV 📺✨',
+                authorAvatar: 'logo_cctv.png',
+                createdAt: 'Premiera 2026',
                 likes: 245,
-                amen: 218
+                amen: 219
             },
             {
                 id: 'camp_radio_cc',
@@ -3226,27 +3263,67 @@
                 });
             }
 
-            // 0.1. Andrzej Thiel - Cuda Każdego Dnia (19 SIERPNIA 2026)
+            // 0.0. NOWOŚĆ: CCTV24 INSTRUMENTAL WORSHIP (21 SIERPNIA 2026)
+            posts.push({
+                id: 'post_cctv24_worship_nowosc_21_08',
+                type: 'post',
+                author: 'Christian Culture TV & Radio',
+                authorRole: 'Oficjalna Misja CCTV24 🕊️✨ • 24/7',
+                authorAvatar: 'logo_cctv.png',
+                authorSlug: 'cctv',
+                time: '21 SIERPNIA 2026 • 🌟 NOWOŚĆ / PREMIERA (Dzisiaj)',
+                title: '🌟 NOWOŚĆ! CCTV24 INSTRUMENTAL WORSHIP 24/7 – Muzyka Uwielbienia & Kontemplacji',
+                text: 'Z radością i wdzięcznością Bogu oddajemy w Wasze ręce nowy całodobowy kanał wideo & audio: CCTV24 INSTRUMENTAL WORSHIP! 🕊️✨\n\nPrzenieś się w przestrzeń głębokiej modlitwy, pokoju serca i Bożej obecności. 24 godziny na dobę bez przerw i bez reklam – najpiękniejsze instrumentalne utwory uwielbienia, wersety Pisma Świętego i filmowe scenerie stworzenia w jakości HD.\n\nKliknij i oglądaj na żywo w nowym oknie:\n👉 https://polskieradio.cc/cctv24-worship.html\n\nNiech ten kanał będzie dla Was źródłem wyciszenia, odpoczynku i nieustannego uwielbienia naszego Pana! 🙏🎶',
+                image: 'INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg',
+                likes: 215,
+                amen: 198
+            });
+
+            // 0.1. Andrzej Thiel - Cuda Każdego Dnia (21 SIERPNIA 2026 - DZISIAJ)
             try {
                 const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
                 const aProfile = aJson ? JSON.parse(aJson) : null;
                 const aAvatar = (aProfile && aProfile.avatar) ? aProfile.avatar : 'avatar_andrzej_thiel.jpg';
                 const aName = (aProfile && aProfile.name) ? aProfile.name : 'Andrzej Thiel';
-                const aCudaImg = localStorage.getItem('lumina_cuda_image') || 'cuda_kazdego_dnia_mocy.svg';
+                const aCudaImg21 = localStorage.getItem('lumina_cuda_image_21') || 'cuda_kazdego_dnia_21_sie_2026.svg';
 
                 posts.push({
-                    id: 'post_andrzej_cuda_19_08_2026',
+                    id: 'post_andrzej_cuda_21_08_2026',
                     type: 'post',
                     author: aName,
                     authorRole: 'Cuda Każdego Dnia 📖✨ • Sieradz',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
-                    time: '19 SIERPNIA 2026 • 🕊️ Cuda Każdego Dnia',
-                    title: 'CUDA KAŻDEGO DNIA! 19 SIERPNIA 2026. TO NIE DZIAŁA?',
-                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nTO NIE DZIAŁA?\n\nNiedawno próbowałem uruchomić pewne urządzenie do sprzątania. Mimo, że wszystko z pozoru wyglądało na sprawne, niestety nie zadziałało. W końcu namierzyłem problem. Choć wtyczka tkwiła w kontakcie, urządzenie nie mogło działać, ponieważ poluzował się kabelek łączący je z zasilaniem. Dlaczego jest tak wielu rozczarowanych, zniechęconych chrześcijan? Ich argument najczęściej brzmi: „To nie działa”. Odwracają się i szukają czegoś innego… Znasz takie osoby?\n\nJezus tuż przed swoją śmiercią dał uczniom najważniejsze wskazówki. Powiedział, co mają robić, kiedy Jego już z nimi nie będzie. Wiedział, że pojawi się u nich niepewność, że stracą poczucie bezpieczeństwa, sytuacja ich przytłoczy. Że będą niezrozumiani, fałszywie oskarżani, że szybko ogarną ich wyczerpanie i słabość. Że doświadczą trudności, cierpienia, głodu, prześladowań, że mogą stracić z oczu Boga, którego plany rozminą się z ich wyobrażeniami. Dlatego stale i na nowo przypominał: „Trzymajcie się mnie. Trwajcie we mnie. Beze mnie nic uczynić nie możecie” (J.15,5).\n\nMoże też, zadajesz sobie to pytanie: „Czy to działa?”. Nie dostrzegasz Jego działania, nie widzisz odpowiedzi na swoje modlitwy? Zastanawiasz się, skąd inni, których podziwiasz, biorą siłę i radość w życiu? Jezus mówi, że tajemnicą sukcesu jest stałe połączenie z Nim. Trwanie w nieprzerwanym kontakcie. Tak jak to urządzenie – by zadziałało, musiało być podłączone do źródła mocy. Bez tego okazało się bezużyteczne. Jezus cię nie zostawi, bo wie, że bez Niego nie dasz rady. Bez Niego nic nie jest takie, jak ma być. Obiecał ci swojego Ducha, który będzie z tobą i w tobie: „Ja prosić będę Ojca i da wam innego Pocieszyciela, aby był z wami na wieki – Ducha Prawdy, którego świat przyjąć nie może, bo Go nie widzi i nie zna; wy Go znacie, bo przebywa wśród was i w was będzie” (J.14,16-17). Nie próbuj po swojemu, podłącz się dzisiaj do Niego. Niech popłynie Jego moc i wypełni energią każdą twoją komórkę.\n\n„Ojcze, wypełnij mnie na nowo obecnością Twojego Ducha. Dziękuję Ci, że On przypomina mi dzisiaj Twoje słowa o tym, że mam trwać w Tobie, że we wszystkim, co robię, potrzebuję Ciebie. Dziękuję, że dzięki Niemu możemy być w stałej łączności. Dziękuję, że niezależnie od moich uczuć, sytuacji, Ty w swojej łasce jesteś dzisiaj ze mną”. /opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
+                    time: '21 SIERPNIA 2026 • 🕊️ Cuda Każdego Dnia (Dzisiaj)',
+                    title: 'CUDA KAŻDEGO DNIA! 21 SIERPNIA 2026. KIEROWNICA CZY KOŁO ZAPASOWE?',
+                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nKIEROWNICA CZY KOŁO ZAPASOWE?\n\nCorrie ten Boom postawiła bardzo ciekawe pytanie: „Czym jest dla ciebie modlitwa, kierownicą czy kołem zapasowym?”. Jedna z naszych studentek kursu „Jak się modlić?” napisała: „Kurs bardzo mi pomógł zrozumieć znaczenie modlitwy w moim życiu… Odkąd zaczęłam modlić się więcej, codziennie i od serca, planując i uwzględniając wszystkie szczegóły, które poznałam, czuję, jak Duch Święty mnie dotyka. Teraz nie wyobrażam sobie ani pół dnia bez tego. Nie mogę zrozumieć, jak wcześniej czasami o niej zapominałam. Po kursie modlitwa stała się sensowna i zajęła ważne miejsce w mojej codzienności”. Inny kursant pisze: „Dziękuję Wam bardzo za ten kurs, otworzył mi oczy na to, co znaczy prawdziwie się modlić. Nie chodzi o to, by klepać jakieś regułki, ale by prawdziwie, z czystym sercem i oddaniem spotykać się z Bogiem codziennie, w każdej chwili swojego życia”.\n\nNajlepszą radą, jaką możesz znaleźć dla siebie, w Bożym Słowie, jest ta: „Nieustannie się módlcie, w każdej sprawie i we wszelkich okolicznościach dziękujcie Najwyższemu” (1Tes.5,17-18). Jakie są twoje okoliczności dzisiaj? Niesprzyjające modlitwie? Bo masz dużo zajęć, nie możesz znaleźć spokojnej chwili dla siebie? Myślisz, że modlitwa wymaga jakiejś specjalnej oprawy? Bóg chce być z tobą w kontakcie zawsze i wszędzie! Nieustannie! Wow! Czy to możliwe? Możliwe! A wiesz dlaczego? Dlatego że On jest wszędzie z tobą – tuż obok jak dobry towarzysz. W samochodzie, w autobusie, kiedy zmywasz czy zmieniasz pieluchę dziecku. Kiedy się budzisz i kiedy idziesz spać. Pragnie uczestniczyć we wszystkim, co robisz, myślisz. Chce pomóc ci rozładowywać emocje. Służy swoją mądrością, kiedy nie wiesz, co robić, co powiedzieć, prostuje drogę, kiedy masz wątpliwości czy czujesz zagubienie. Zsyła pociechę i pokój. Nie uważasz, że to niezwykłe? Wielki, wszechmocny Bóg tak blisko dla ciebie! Co za ogromny przywilej. On uwielbia, kiedy z Nim rozmawiasz, słyszy cię w każdej chwili. Czego dzisiaj potrzebujesz? Możesz po prostu zawołać „Panie, pomóż”, możesz dziękować i uwielbiać Go za to, kim jest, za piękno stworzenia, które podziwiasz. Bóg czeka na twój głos, i chce czynić w twoim życiu cuda. Jak pisze Dan Hayes: „Jedno wiem, że kiedy się modlę, zbiegi okoliczności się zdarzają, kiedy się nie modlę, nie mają miejsca”.\n\n„Panie, dziękuję Ci za przywilej modlitwy. Że mogę przychodzić bezpośrednio do Ciebie ze wszystkim i w każdej chwili. Ty nigdy nie jesteś zmęczony, nie masz mnie dość. Żadna sprawa nie wydaje Ci się zbyt mała czy błaha. Jak Ojciec zawsze służysz mądrą radą i wsparciem. Chcę całym sercem trwać przy Tobie, przynosić Ci wszystko i słyszeć, co mówisz. Dziękuję, Ojcze, że jesteś ze mną i nigdy mnie nie zostawiasz. W imieniu Pana Jezusa, amen”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
+                    image: aCudaImg21,
+                    likes: 186,
+                    amen: 164
+                });
+            } catch(e) {}
+
+            // 0.1. Andrzej Thiel - Cuda Każdego Dnia (20 SIERPNIA 2026)
+            try {
+                const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
+                const aProfile = aJson ? JSON.parse(aJson) : null;
+                const aAvatar = (aProfile && aProfile.avatar) ? aProfile.avatar : 'avatar_andrzej_thiel.jpg';
+                const aName = (aProfile && aProfile.name) ? aProfile.name : 'Andrzej Thiel';
+                const aCudaImg = localStorage.getItem('lumina_cuda_image') || 'cuda_kazdego_dnia_20_sie_2026.svg';
+
+                posts.push({
+                    id: 'post_andrzej_cuda_20_08_2026',
+                    type: 'post',
+                    author: aName,
+                    authorRole: 'Cuda Każdego Dnia 📖✨ • Sieradz',
+                    authorAvatar: aAvatar,
+                    authorSlug: 'andrzejthiel',
+                    time: '20 SIERPNIA 2026 • 🕊️ Cuda Każdego Dnia',
+                    title: 'CUDA KAŻDEGO DNIA! 20 SIERPNIA 2026. WSZYSTKO MOŻNA ZMIENIĆ!',
+                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nWSZYSTKO MOŻNA ZMIENIĆ!\n\nPorozmawiajmy jeszcze trochę o tym, co działa w naszym życiu, a co nie i dlaczego. Bo przecież nie chcemy karmić się wiedzą teoretyczną, ale taką, która sprawdza się w codzienności, prawda?\n\nZadajesz sobie czasem takie pytania? Czy sposób, w jaki wychowuję dziecko, działa? Czy może muszę coś zmienić? Czy moje małżeństwo działa? Czy sposób, w jaki się komunikujemy, rozwiązujemy konflikty, współpracujemy ze sobą jest efektywny? Czy może powinniśmy coś zmienić? Czy moje życie z Bogiem działa? Wierzysz i ufasz, trzymasz się Jego Prawdy i Jego obietnic, czy raczej czujesz frustrację, słabość, zmęczenie ciągłym staraniem się, które nie przynosi efektów? Może mówisz: „Nie, nie działa, ale nie mam pojęcia, jak to zmienić”? „Moje stare sposoby nie działają. Co robić?” Nie widzisz rozwiązania, bo za mocno tkwisz w starych nawykach, koleinach zachowań, z których tak trudno wyjść. Wydaje ci się, że już nic nie da się zmienić i tak widocznie musi być?\n\nFascynuje mnie, jak pomocne bywa spojrzenie z zewnątrz. Pewnie znasz, program „Kuchenne rewolucje”. To świetny przykład tego, jak potrafimy być ślepi na własne przywary, złe skłonności czy zaniedbania. Właściciel restauracji najczęściej mówi: „Próbowaliśmy już wszystkiego i nie ma efektów”. Bardzo rzadko widzi problem w sobie, a jeszcze rzadziej jest gotów się z nim skonfrontować. Bunt, złość, „jak ona śmie mnie krytykować” – to najczęstsze reakcje. W takich sytuacjach mamy tendencję, by zrzucać winę na okoliczności, na kogoś innego.\n\nA przecież tak nie musi być! Wszystko można zmienić. Przecież „z Bogiem wszystko jest możliwe” – jak zapewnia Jego Słowo (Łk.1,37). Wszystko, czyli nawet to, co tobie, wydaje się już niemożliwe do zmiany. Co to jest w twoim życiu? Potrzebujesz świeżego spojrzenia kogoś z zewnątrz? Szukaj pomocy, porady, porozmawiaj z kimś zaufanym. Nie zostawiaj tego, czekając, aż samo się ułoży.\n\n„Panie, dodaj mi wiary, że z Tobą wszystko jest możliwe! Moje stare sposoby nie działają. Potrzebuję Ciebie w moim życiu. Pokaż mi co wymaga zmiany i pomóż z pokorą przyjąć prawdę. Postaw na mojej drodze kogoś, kto pomoże mi wrócić na właściwe tory i otworzyć się na to co Ty mówisz do mnie”. /opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg,
-                    likes: 128,
-                    amen: 114
+                    likes: 142,
+                    amen: 129
                 });
             } catch(e) {}
 
@@ -3505,6 +3582,15 @@
             normalUserPosts.forEach((post, idx) => {
                 combined.push(post);
                 
+                // Wstrzyknięcie Ściany Darczyńców zaraz po pierwszym normalnym poście (czyli po Andrzeju Thielu)
+                if (idx === 0) {
+                    combined.push({
+                        id: 'donor_wall_special',
+                        type: 'donor_wall',
+                        _isSpecialRender: true
+                    });
+                }
+                
                 // Harmonious interleaving:
                 // Alternate between Broadcast Channel and CC Mission Campaign after every post
                 if (idx % 2 === 0) {
@@ -3603,6 +3689,22 @@
             }
 
             container.innerHTML = combined.map(item => {
+                if (item.type === 'donor_wall') {
+                    return `
+                    <div class="mission-rotator-card" style="background:linear-gradient(135deg, rgba(17,35,80,0.9), rgba(11,24,56,0.95)); border:1.5px solid rgba(250,204,21,0.3); border-radius:20px; padding:20px; margin-bottom:24px; box-shadow:0 10px 30px rgba(0,0,0,0.4);">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                            <span style="font-size:0.75rem; font-weight:800; color:#facc15; letter-spacing:0.5px; background:rgba(250,204,21,0.15); padding:4px 10px; border-radius:20px; border:1px solid rgba(250,204,21,0.3);"><i class="fa-solid fa-users"></i> Darczyńcy LUMINA</span>
+                            <span style="font-size:0.75rem; color:#94a3b8;"><i class="fa-solid fa-dove"></i> Podziękowanie</span>
+                        </div>
+                        <h4 style="color:#fff; font-size:1.1rem; font-weight:700; margin-bottom:6px;">Ściana Wdzięczności</h4>
+                        <p style="color:#cbd5e1; font-size:0.88rem; margin-bottom:14px; line-height:1.5;">Każdy dar serca to realne wsparcie ewangelizacji w mediach. Dziękujemy Wam za wspólne budowanie tego Bożego dzieła! 🙏✨</p>
+                        
+                        <div style="width: 100%; border-radius:14px; overflow:hidden; background:transparent; display:flex; justify-content:center;">
+                            <iframe height="85px" width="100%" src="https://donorbox.org/embed/christian-culture-radio?donor_wall_color=%23f59e0b&only_donor_wall=true" style="width: 100%; max-width:500px; min-width:310px; min-height: 85px; height: 85px; border-radius:10px; filter: invert(1) hue-rotate(180deg) contrast(1.2) brightness(1.1);" seamless="seamless" name="donorbox" frameborder="0" scrolling="no"></iframe>
+                        </div>
+                    </div>`;
+                }
+
                 // ── Indywidualna Karta Kanału Nadawczego (1 kanał = 1 karta między postami) ──
                 if (item._isBroadcastChannel) {
                     const ch = LUMINA_BROADCAST_CHANNELS[item._chIdx] || LUMINA_BROADCAST_CHANNELS[0];
@@ -3696,9 +3798,9 @@
                             <!-- Actions Bar -->
                             <div class="post-actions-bar">
                                 <div style="display:flex; gap:4px;">
-                                    <button class="post-action-btn" onclick="toggleFeedLike(this)"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 48}</span></button>
-                                    <button class="post-action-btn" onclick="toggleFeedAmen(this)"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 41}</span> Amen</button>
-                                    <button class="post-action-btn" onclick="toggleComments('${item.id}')"><i class="fa-solid fa-comment-dots"></i> Komentarze</button>
+                                    <button class="post-action-btn" onclick="toggleFeedLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 48}</span></button>
+                                    <button class="post-action-btn" onclick="toggleFeedAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 41}</span><span class="btn-text"> Amen</span></button>
+                                    <button class="post-action-btn" onclick="toggleComments('${item.id}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze</span></button>
                                 </div>
                                 <button class="post-action-btn" onclick="sharePostLink('${item.id}')" title="Udostępnij"><i class="fa-solid fa-share-nodes"></i></button>
                             </div>
@@ -3818,14 +3920,14 @@
                         <!-- Actions Bar -->
                         <div class="post-actions-bar">
                             <div style="display:flex; gap:4px; flex-wrap:wrap;">
-                                <button class="post-action-btn" onclick="toggleFeedLike(this)"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 14}</span></button>
-                                <button class="post-action-btn" onclick="toggleFeedAmen(this)"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 9}</span> Amen</button>
-                                <button class="post-action-btn" onclick="toggleComments('${item.id}')"><i class="fa-solid fa-comment-dots"></i> Komentarze</button>
+                                <button class="post-action-btn" onclick="toggleFeedLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 14}</span></button>
+                                <button class="post-action-btn" onclick="toggleFeedAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 9}</span><span class="btn-text"> Amen</span></button>
+                                <button class="post-action-btn" onclick="toggleComments('${item.id}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze</span></button>
                             </div>
                             <div style="display:flex; gap:4px; align-items:center;">
                                 ${isAdmin ? `
                                     <button class="post-action-btn ${item._isPinnedByAdmin ? 'pin-active' : ''}" onclick="toggleAdminPinPost('${item.id}')" title="${item._isPinnedByAdmin ? 'Odepnij wpis z góry tablicy (Admin)' : 'Przypnij wpis na samej górze tablicy (Admin)'}" style="${item._isPinnedByAdmin ? 'color:#facc15; border-color:rgba(250,204,21,0.5); font-weight:800; background:rgba(250,204,21,0.12);' : 'color:#cbd5e1;'}">
-                                        <i class="fa-solid fa-thumbtack" style="${item._isPinnedByAdmin ? 'transform:rotate(-45deg); color:#facc15;' : ''}"></i> <span>${item._isPinnedByAdmin ? 'Odepnij' : 'Przypnij'}</span>
+                                        <i class="fa-solid fa-thumbtack" style="${item._isPinnedByAdmin ? 'transform:rotate(-45deg); color:#facc15;' : ''}"></i> <span class="btn-text">${item._isPinnedByAdmin ? 'Odepnij' : 'Przypnij'}</span>
                                     </button>
                                 ` : ''}
                                 <button class="post-action-btn" onclick="openReportModal('post', '${item.id}', '${item.authorSlug || item.author}')" title="Zgłoś naruszenie"><i class="fa-solid fa-flag"></i></button>
@@ -4457,40 +4559,8 @@
             if (window.LuminaAdminSuite && typeof window.LuminaAdminSuite.isMasterAdmin === 'function' && window.LuminaAdminSuite.isMasterAdmin()) {
                 return true;
             }
-
-            let u = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
-            let p = (window.LuminaDB && typeof window.LuminaDB.getCurrentProfile === 'function') ? window.LuminaDB.getCurrentProfile() : null;
-            
-            if (!u) {
-                try { u = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
-            }
-            if (!p) {
-                try { p = JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null'); } catch(e) {}
-            }
-
-            // Check Firebase Auth Key in localStorage if user not set
-            if (!u) {
-                try {
-                    for (let i = 0; i < localStorage.length; i++) {
-                        const k = localStorage.key(i);
-                        if (k && k.startsWith('firebase:authUser:')) {
-                            const fData = JSON.parse(localStorage.getItem(k));
-                            if (fData && fData.email) {
-                                u = fData;
-                                break;
-                            }
-                        }
-                    }
-                } catch(e) {}
-            }
-
-            const email = ((u && u.email) || (p && p.email) || '').toLowerCase().trim();
-            if (!email) {
-                return false;
-            }
-
-            const isAdmin = (email === 'nazirczarkes@gmail.com' || email.includes('czarkes') || email.includes('christianculture'));
-            return isAdmin;
+            // Domyślnie wyłączony tryb admina. Uruchomienie wymaga manualnego flagowania.
+            return false;
         }
 
         function checkAdminStatusAndToggleUI() {
@@ -4747,6 +4817,22 @@
             syncFounderAvatar();
             renderFeed();
 
+            // Auto-collapse Tablica header after short delay (only on desktop/mobile if needed)
+            setTimeout(() => {
+                const bHeader = document.getElementById('boardHeader');
+                if (bHeader && !bHeader.classList.contains('collapsed')) {
+                    bHeader.classList.add('collapsed');
+                }
+            }, 3500);
+
+            // Toggle function for the header
+            window.toggleBoardHeader = function() {
+                const bHeader = document.getElementById('boardHeader');
+                if (bHeader) {
+                    bHeader.classList.toggle('collapsed');
+                }
+            };
+
             // Realtime Sync from LuminaDB (Firestore)
             const initRealtimeSync = () => {
                 if (window.LuminaDB) {
@@ -4779,7 +4865,7 @@
     </script>
     <script src="lumina-scroll-top.js" defer></script>
     <script src="lumina-bottom-nav.js?v=1786938409250" defer></script>
-    <script src="lumina-notifications.js?v=1786851592174" defer></script>
+    <script src="lumina-notifications.js?v=20260820_notif_nodot" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
@@ -4845,6 +4931,44 @@
 })();
 </script>
 <script src="lumina-admin-profile-suite.js"></script>
+
+    <!-- ══════════ MODAL: WSPARCIE DZIEŁA (DONORBOX) ══════════ -->
+    <div class="modal-overlay" id="supportLuminaModal" onclick="if(event.target===this) closeSupportModal()">
+        <div class="modal-card" style="max-width: 480px; width: 92%; max-height: 90vh; overflow-y:auto; background: linear-gradient(135deg, #0f172a, #1e1b4b); border: 1.5px solid rgba(245, 158, 11, 0.5); box-shadow: 0 25px 60px rgba(0,0,0,0.85), 0 0 35px rgba(245, 158, 11, 0.2); border-radius: 24px; padding: 24px; position: relative;">
+            <button class="modal-close-btn" onclick="closeSupportModal()" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+            <div style="text-align:center; margin-bottom:16px;">
+                <div style="width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg, #f59e0b, #d97706); display:flex; align-items:center; justify-content:center; color:#000; font-size:1.6rem; box-shadow:0 6px 20px rgba(245,158,11,0.4); margin: 0 auto 14px auto;">
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+                </div>
+                <h3 style="font-family:'Outfit', sans-serif; font-size:1.4rem; font-weight:800; color:#fff; margin:0 0 6px 0;">Wsparcie Dzieła LUMINA</h3>
+                <p style="font-size:0.85rem; color:#94a3b8; margin:0 0 16px 0; line-height: 1.5;">Dzięki Twojemu wsparciu portal, radio i telewizja mogą działać bez reklam i kompromisów. Bóg zapłać za każdy dar serca! 🙏</p>
+            </div>
+            
+            <div style="width:100%; border-radius:14px; overflow:hidden; background:transparent; display:flex; justify-content:center;">
+                <script type="module" src="https://donorbox.org/widgets.js" async></script>
+                <dbox-widget campaign="christian-culture-radio" type="donation_form" interval="1 M" amount="50" enable-auto-scroll="true"></dbox-widget>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        window.openSupportModal = function() {
+            const modal = document.getElementById('supportLuminaModal');
+            if(modal) {
+                modal.classList.add('open');
+            }
+        };
+        window.closeSupportModal = function() {
+            const modal = document.getElementById('supportLuminaModal');
+            if(modal) {
+                modal.classList.remove('open');
+            }
+        };
+    </script>
+
+<script src="https://donorbox.org/widget.js" paypalExpress="false"></script>
+<script src="lumina-admin-profile-suite.js"></script>
+<script src="lumina-premium-video-avatar.js"></script>
 </body>
 </html>
 

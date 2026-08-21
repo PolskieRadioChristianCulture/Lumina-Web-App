@@ -127,6 +127,41 @@ class LuminaTablicaEngine {
         let bannerIdx = 0;
 
         posts.forEach((post, index) => {
+            // Osadzenie widgetu Donorbox po 2 poście (po wpisie założyciela i pierwszym wpisie feedu)
+            if (index === 2) {
+                html += `                    <div class="mission-rotator-card" style="background:linear-gradient(135deg, rgba(17,35,80,0.9), rgba(11,24,56,0.95)); border:1.5px solid rgba(250,204,21,0.3); border-radius:20px; padding:20px; margin-bottom:24px; box-shadow:0 10px 30px rgba(0,0,0,0.4);">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                            <span style="font-size:0.75rem; font-weight:800; color:#facc15; letter-spacing:0.5px; background:rgba(250,204,21,0.15); padding:4px 10px; border-radius:20px; border:1px solid rgba(250,204,21,0.3);"><i class="fa-solid fa-users"></i> Darczyńcy LUMINA</span>
+                            <span style="font-size:0.75rem; color:#94a3b8;"><i class="fa-solid fa-dove"></i> Podziękowanie</span>
+                        </div>
+                        <h4 style="color:#fff; font-size:1.1rem; font-weight:700; margin-bottom:6px;">Ściana Wdzięczności</h4>
+                        <p style="color:#cbd5e1; font-size:0.88rem; margin-bottom:14px; line-height:1.5;">Każdy dar serca to realne wsparcie ewangelizacji w mediach. Dziękujemy Wam za wspólne budowanie tego Bożego dzieła! 🙏✨</p>
+                        
+                        <!-- Donorbox Wall Widget -->
+                        <div style="width: 100%; border-radius:14px; overflow:hidden; background:transparent; display:flex; justify-content:center;">
+                            <iframe height="93px" width="100%" src="https://donorbox.org/embed/christian-culture-radio?donor_wall_color=%23f59e0b&only_donor_wall=true" style="width: 100%; max-width:500px; min-width:310px; min-height: 345px; border-radius:10px;" seamless="seamless" name="donorbox" frameborder="0" scrolling="no"></iframe>
+                        </div>
+                    </div>
+`;
+            }
+            if (index === 1) {
+                html += `                    <div class="mission-rotator-card" style="background:linear-gradient(135deg, rgba(17,35,80,0.9), rgba(11,24,56,0.95)); border:1.5px solid rgba(250,204,21,0.3); border-radius:20px; padding:20px; margin-bottom:24px; box-shadow:0 10px 30px rgba(0,0,0,0.4);">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                            <span style="font-size:0.75rem; font-weight:800; color:#facc15; letter-spacing:0.5px; background:rgba(250,204,21,0.15); padding:4px 10px; border-radius:20px; border:1px solid rgba(250,204,21,0.3);"><i class="fa-solid fa-hand-holding-heart"></i> Wsparcie Dzieła</span>
+                            <span style="font-size:0.75rem; color:#94a3b8;"><i class="fa-solid fa-dove"></i> Misja Christian Culture</span>
+                        </div>
+                        <h4 style="color:#fff; font-size:1.1rem; font-weight:700; margin-bottom:6px;">Zostań Współtwórcą Portalu LUMINA</h4>
+                        <p style="color:#cbd5e1; font-size:0.88rem; margin-bottom:14px; line-height:1.5;">Twoje wsparcie pozwala nam rozwijać portal, radio oraz telewizję CCTV bez reklam i kompromisów. Każda donacja buduje to Boże dzieło.</p>
+                        
+                        <!-- Donorbox Widget -->
+                        <div style="width: 100%; border-radius:14px; overflow:hidden; background:transparent;">
+                            <script type="module" src="https://donorbox.org/widgets.js" async></script>
+                            <dbox-widget campaign="christian-culture-radio" type="donation_form" interval="1 M" amount="50" enable-auto-scroll="true"></dbox-widget>
+                        </div>
+                    </div>
+`;
+            }
+
             // Wstrzyknięcie banera misyjnego co 3 wpisy
             if (index > 0 && index % 3 === 0 && bannerIdx < missionBanners.length) {
                 const b = missionBanners[bannerIdx % missionBanners.length];
@@ -151,7 +186,16 @@ class LuminaTablicaEngine {
 
             // Renderowanie pojedynczego posta
             const rich = this.db.formatRichTextAndMedia ? this.db.formatRichTextAndMedia(post.text || '') : { html: post.text || '', embedHtml: '' };
-            const postAvatar = post.authorAvatar || 'avatar_new1.jpg';
+            let postAvatar = post.authorAvatar;
+            if (!postAvatar || postAvatar === 'avatar_new1.jpg' || postAvatar === 'null' || postAvatar === 'undefined') {
+                const slug = (post.authorSlug || '').toLowerCase();
+                if (slug.includes('cezary')) postAvatar = 'avatar_cezary_official.jpg';
+                else if (slug.includes('wioletta')) postAvatar = 'avatar_wioletta_official.jpg';
+                else if (slug.includes('andrzej')) postAvatar = 'avatar_andrzej_thiel.jpg';
+                else if (slug.includes('ccwomen') || slug.includes('women')) postAvatar = 'logo_cc_women.jpg';
+                else if (slug.includes('magdalena')) postAvatar = 'avatar_magdalena.png';
+                else postAvatar = 'lumina_icon.jpg';
+            }
             const likesCount = post.likes || 1;
             const amenCount = post.amen || 0;
 
@@ -159,7 +203,7 @@ class LuminaTablicaEngine {
                 <article class="post-card" id="${post.id}" style="background:var(--navy-card, #112350); border:1px solid rgba(255,255,255,0.08); border-radius:20px; padding:22px; margin-bottom:22px; box-shadow:0 8px 24px rgba(0,0,0,0.35);">
                     <div class="post-header" style="display:flex; align-items:center; gap:14px; margin-bottom:14px;">
                         <a href="lumina-profile.html?u=${post.authorSlug || 'user'}" style="text-decoration:none;">
-                            <img src="${postAvatar}" alt="${post.author}" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:1.5px solid #facc15;">
+                            <img src="${postAvatar}" alt="${post.author}" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:1.5px solid #facc15;" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                         </a>
                         <div style="flex:1;">
                             <div style="display:flex; align-items:center; gap:8px;">

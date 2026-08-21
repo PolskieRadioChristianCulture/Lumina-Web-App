@@ -57,27 +57,34 @@ body {
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%) translateY(100px);
-    background: rgba(15, 23, 42, 0.96);
+    background: linear-gradient(135deg, rgba(30, 27, 75, 0.95), rgba(15, 23, 42, 0.95));
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     color: #fff;
-    padding: 12px 24px;
-    border-radius: var(--radius-full);
-    font-weight: 700;
+    padding: 14px 28px;
+    border-radius: 40px;
+    font-weight: 800;
     font-size: 0.90rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(168, 85, 247, 0.35);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 24px rgba(245, 158, 11, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.15);
+    border: 1.5px solid rgba(245, 158, 11, 0.5);
+    border-bottom: 3px solid rgba(180, 83, 9, 0.8);
     display: flex;
     align-items: center;
-    gap: 10px;
-    z-index: 999999;
+    gap: 12px;
+    z-index: 999999999 !important;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     pointer-events: none;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.toast i {
+    color: #facc15;
+    font-size: 1.1rem;
+    filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.6));
 }
 .toast.show {
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(0) scale(1.02);
     opacity: 1;
     visibility: visible;
 }

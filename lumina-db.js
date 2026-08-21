@@ -176,6 +176,7 @@ export const CEZARY_ADMIN_PROFILE = {
     displayName: 'Cezary Rogowski',
     email: 'nazirczarkes@gmail.com',
     avatar: 'avatar_cezary_official.jpg',
+    avatarVideo: 'cezary_rgowski_video_avatar.mp4',
     age: 51,
     city: 'Ostrowiec Świętokrzyski, Polska',
     status: 'Żonaty',
@@ -186,7 +187,7 @@ export const CEZARY_ADMIN_PROFILE = {
     verseRef: 'Flp 4, 13',
     bio: 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.',
     tags: ['Założyciel', 'Ewangelizacja', 'Christian Culture', 'Media', 'Administrator'],
-    photos: ['avatar_cezary_official.jpg', 'avatar_new1.jpg'],
+    photos: ['avatar_cezary_official.jpg', 'lumina_default_cover.jpg'],
     visibility: 'public',
     pin: '0455',
     matchScore: '98%',
@@ -264,8 +265,8 @@ export const ANDRZEJ_THIEL_PROFILE = {
     job: 'Cuda Każdego Dnia 📖✨',
     church: 'Wspólnota Chrześcijańska',
     denom: 'Chrześcijanin',
-    verse: '„Trzymajcie się mnie. Trwajcie we mnie. Beze mnie nic uczynić nie możecie.”',
-    verseRef: 'J 15, 5',
+    verse: '„Dla tego, kto wierzy, wszystko jest możliwe”',
+    verseRef: 'Łk 1, 37 / Mk 9, 23',
     bio: 'Co dzień publikuję na swoim profilu: Cuda Każdego Dnia, które automatycznie pojawiają się na tablicy społeczności. Przeczytaj i zobacz jak Bóg przemienia twoje życie.',
     tags: ['Cuda Każdego Dnia', 'Wiara', 'Sieradz', 'Słowo Boże', 'Duch Święty', 'Rozważania'],
     photos: ['avatar_andrzej_thiel.jpg', 'Andrzej Thiel.jpg'],
@@ -276,17 +277,30 @@ export const ANDRZEJ_THIEL_PROFILE = {
     profileUrl: 'lumina.andrzejthiel.html',
     posts: [
         {
-            id: 'post_andrzej_cuda_19_08_2026',
+            id: 'post_andrzej_cuda_21_08_2026',
             author: 'Andrzej Thiel',
             authorSlug: 'andrzejthiel',
             authorRole: 'Cuda Każdego Dnia 📖✨ • Sieradz',
             authorAvatar: 'avatar_andrzej_thiel.jpg',
-            time: '19 SIERPNIA 2026 • 🕊️ Cuda Każdego Dnia',
-            title: 'CUDA KAŻDEGO DNIA! 19 SIERPNIA 2026. TO NIE DZIAŁA?',
-            text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nTO NIE DZIAŁA?\n\nNiedawno próbowałem uruchomić pewne urządzenie do sprzątania. Mimo, że wszystko z pozoru wyglądało na sprawne, niestety nie zadziałało. W końcu namierzyłem problem. Choć wtyczka tkwiła w kontakcie, urządzenie nie mogło działać, ponieważ poluzował się kabelek łączący je z zasilaniem. Dlaczego jest tak wielu rozczarowanych, zniechęconych chrześcijan? Ich argument najczęściej brzmi: „To nie działa”. Odwracają się i szukają czegoś innego… Znasz takie osoby?\n\nJezus tuż przed swoją śmiercią dał uczniom najważniejsze wskazówki. Powiedział, co mają robić, kiedy Jego już z nimi nie będzie. Wiedział, że pojawi się u nich niepewność, że stracą poczucie bezpieczeństwa, sytuacja ich przytłoczy. Że będą niezrozumiani, fałszywie oskarżani, że szybko ogarną ich wyczerpanie i słabość. Że doświadczą trudności, cierpienia, głodu, prześladowań, że mogą stracić z oczu Boga, którego plany rozminą się z ich wyobrażeniami. Dlatego stale i na nowo przypominał: „Trzymajcie się mnie. Trwajcie we mnie. Beze mnie nic uczynić nie możecie” (J.15,5).\n\nMoże też, zadajesz sobie to pytanie: „Czy to działa?”. Nie dostrzegasz Jego działania, nie widzisz odpowiedzi na swoje modlitwy? Zastanawiasz się, skąd inni, których podziwiasz, biorą siłę i radość w życiu? Jezus mówi, że tajemnicą sukcesu jest stałe połączenie z Nim. Trwanie w nieprzerwanym kontakcie. Tak jak to urządzenie – by zadziałało, musiało być podłączone do źródła mocy. Bez tego okazało się bezużyteczne. Jezus cię nie zostawi, bo wie, że bez Niego nie dasz rady. Bez Niego nic nie jest takie, jak ma być. Obiecał ci swojego Ducha, który będzie z tobą i w tobie: „Ja prosić będę Ojca i da wam innego Pocieszyciela, aby był z wami na wieki – Ducha Prawdy, którego świat przyjąć nie może, bo Go nie widzi i nie zna; wy Go znacie, bo przebywa wśród was i w was będzie” (J.14,16-17). Nie próbuj po swojemu, podłącz się dzisiaj do Niego. Niech popłynie Jego moc i wypełni energią każdą twoją komórkę.\n\n„Ojcze, wypełnij mnie na nowo obecnością Twojego Ducha. Dziękuję Ci, że On przypomina mi dzisiaj Twoje słowa o tym, że mam trwać w Tobie, że we wszystkim, co robię, potrzebuję Ciebie. Dziękuję, że dzięki Niemu możemy być w stałej łączności. Dziękuję, że niezależnie od moich uczuć, sytuacji, Ty w swojej łasce jesteś dzisiaj ze mną”. /opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
-            likes: 128,
-            amen: 114,
-            image: 'cuda_kazdego_dnia_mocy.svg'
+            time: '21 SIERPNIA 2026 • 🕊️ Cuda Każdego Dnia (Dzisiaj)',
+            title: 'CUDA KAŻDEGO DNIA! 21 SIERPNIA 2026. KIEROWNICA CZY KOŁO ZAPASOWE?',
+            text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nKIEROWNICA CZY KOŁO ZAPASOWE?\n\nCorrie ten Boom postawiła bardzo ciekawe pytanie: „Czym jest dla ciebie modlitwa, kierownicą czy kołem zapasowym?”. Jedna z naszych studentek kursu „Jak się modlić?” napisała: „Kurs bardzo mi pomógł zrozumieć znaczenie modlitwy w moim życiu… Odkąd zaczęłam modlić się więcej, codziennie i od serca, planując i uwzględniając wszystkie szczegóły, które poznałam, czuję, jak Duch Święty mnie dotyka. Teraz nie wyobrażam sobie ani pół dnia bez tego. Nie mogę zrozumieć, jak wcześniej czasami o niej zapominałam. Po kursie modlitwa stała się sensowna i zajęła ważne miejsce w mojej codzienności”. Inny kursant pisze: „Dziękuję Wam bardzo za ten kurs, otworzył mi oczy na to, co znaczy prawdziwie się modlić. Nie chodzi o to, by klepać jakieś regułki, ale by prawdziwie, z czystym sercem i oddaniem spotykać się z Bogiem codziennie, w każdej chwili swojego życia”.\n\nNajlepszą radą, jaką możesz znaleźć dla siebie, w Bożym Słowie, jest ta: „Nieustannie się módlcie, w każdej sprawie i we wszelkich okolicznościach dziękujcie Najwyższemu” (1Tes.5,17-18). Jakie są twoje okoliczności dzisiaj? Niesprzyjające modlitwie? Bo masz dużo zajęć, nie możesz znaleźć spokojnej chwili dla siebie? Myślisz, że modlitwa wymaga jakiejś specjalnej oprawy? Bóg chce być z tobą w kontakcie zawsze i wszędzie! Nieustannie! Wow! Czy to możliwe? Możliwe! A wiesz dlaczego? Dlatego że On jest wszędzie z tobą – tuż obok jak dobry towarzysz. W samochodzie, w autobusie, kiedy zmywasz czy zmieniasz pieluchę dziecku. Kiedy się budzisz i kiedy idziesz spać. Pragnie uczestniczyć we wszystkim, co robisz, myślisz. Chce pomóc ci rozładowywać emocje. Służy swoją mądrością, kiedy nie wiesz, co robić, co powiedzieć, prostuje drogę, kiedy masz wątpliwości czy czujesz zagubienie. Zsyła pociechę i pokój. Nie uważasz, że to niezwykłe? Wielki, wszechmocny Bóg tak blisko dla ciebie! Co za ogromny przywilej. On uwielbia, kiedy z Nim rozmawiasz, słyszy cię w każdej chwili. Czego dzisiaj potrzebujesz? Możesz po prostu zawołać „Panie, pomóż”, możesz dziękować i uwielbiać Go za to, kim jest, za piękno stworzenia, które podziwiasz. Bóg czeka na twój głos, i chce czynić w twoim życiu cuda. Jak pisze Dan Hayes: „Jedno wiem, że kiedy się modlę, zbiegi okoliczności się zdarzają, kiedy się nie modlę, nie mają miejsca”.\n\n„Panie, dziękuję Ci za przywilej modlitwy. Że mogę przychodzić bezpośrednio do Ciebie ze wszystkim i w każdej chwili. Ty nigdy nie jesteś zmęczony, nie masz mnie dość. Żadna sprawa nie wydaje Ci się zbyt mała czy błaha. Jak Ojciec zawsze służysz mądrą radą i wsparciem. Chcę całym sercem trwać przy Tobie, przynosić Ci wszystko i słyszeć, co mówisz. Dziękuję, Ojcze, że jesteś ze mną i nigdy mnie nie zostawiasz. W imieniu Pana Jezusa, amen”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
+            likes: 186,
+            amen: 164,
+            image: 'cuda_kazdego_dnia_21_sie_2026.svg'
+        },
+        {
+            id: 'post_andrzej_cuda_20_08_2026',
+            author: 'Andrzej Thiel',
+            authorSlug: 'andrzejthiel',
+            authorRole: 'Cuda Każdego Dnia 📖✨ • Sieradz',
+            authorAvatar: 'avatar_andrzej_thiel.jpg',
+            time: '20 SIERPNIA 2026 • 🕊️ Cuda Każdego Dnia',
+            title: 'CUDA KAŻDEGO DNIA! 20 SIERPNIA 2026. WSZYSTKO MOŻNA ZMIENIĆ!',
+            text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nWSZYSTKO MOŻNA ZMIENIĆ!\n\nPorozmawiajmy jeszcze trochę o tym, co działa w naszym życiu, a co nie i dlaczego. Bo przecież nie chcemy karmić się wiedzą teoretyczną, ale taką, która sprawdza się w codzienności, prawda?\n\nZadajesz sobie czasem takie pytania? Czy sposób, w jaki wychowuję dziecko, działa? Czy może muszę coś zmienić? Czy moje małżeństwo działa? Czy sposób, w jaki się komunikujemy, rozwiązujemy konflikty, współpracujemy ze sobą jest efektywny? Czy może powinniśmy coś zmienić? Czy moje życie z Bogiem działa? Wierzysz i ufasz, trzymasz się Jego Prawdy i Jego obietnic, czy raczej czujesz frustrację, słabość, zmęczenie ciągłym staraniem się, które nie przynosi efektów? Może mówisz: „Nie, nie działa, ale nie mam pojęcia, jak to zmienić”? „Moje stare sposoby nie działają. Co robić?” Nie widzisz rozwiązania, bo za mocno tkwisz w starych nawykach, koleinach zachowań, z których tak trudno wyjść. Wydaje ci się, że już nic nie da się zmienić i tak widocznie musi być?\n\nFascynuje mnie, jak pomocne bywa spojrzenie z zewnątrz. Pewnie znasz, program „Kuchenne rewolucje”. To świetny przykład tego, jak potrafimy być ślepi na własne przywary, złe skłonności czy zaniedbania. Właściciel restauracji najczęściej mówi: „Próbowaliśmy już wszystkiego i nie ma efektów”. Bardzo rzadko widzi problem w sobie, a jeszcze rzadziej jest gotów się z nim skonfrontować. Bunt, złość, „jak ona śmie mnie krytykować” – to najczęstsze reakcje. W takich sytuacjach mamy tendencję, by zrzucać winę na okoliczności, na kogoś innego.\n\nA przecież tak nie musi być! Wszystko można zmienić. Przecież „z Bogiem wszystko jest możliwe” – jak zapewnia Jego Słowo (Łk.1,37). Wszystko, czyli nawet to, co tobie, wydaje się już niemożliwe do zmiany. Co to jest w twoim życiu? Potrzebujesz świeżego spojrzenia kogoś z zewnątrz? Szukaj pomocy, porady, porozmawiaj z kimś zaufanym. Nie zostawiaj tego, czekając, aż samo się ułoży.\n\n„Panie, dodaj mi wiary, że z Tobą wszystko jest możliwe! Moje stare sposoby nie działają. Potrzebuję Ciebie w moim życiu. Pokaż mi co wymaga zmiany i pomóż z pokorą przyjąć prawdę. Postaw na mojej drodze kogoś, kto pomoże mi wrócić na właściwe tory i otworzyć się na to co Ty mówisz do mnie”. /opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
+            likes: 142,
+            amen: 129,
+            image: 'cuda_kazdego_dnia_20_sie_2026.svg'
         }
     ]
 };
@@ -374,7 +388,7 @@ if (auth) {
                     const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.includes('christianculture') || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
                     const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta'));
                     const cleanSlug = isCezary ? 'cezaryrgowski' : (isWioletta ? 'wiolettarogowska' : ('u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000)));
-                    const userAvatar = user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : 'avatar_new1.jpg'));
+                    const userAvatar = user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));
                     
                     currentProfileState = {
                         uid: user.uid,
@@ -534,7 +548,7 @@ export async function loginWithGoogle() {
             const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.includes('christianculture') || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
             const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta'));
             const cleanSlug = isCezary ? 'cezaryrgowski' : (isWioletta ? 'wiolettarogowska' : ('u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000)));
-            const userAvatar = user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : 'avatar_new1.jpg'));
+            const userAvatar = user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));
             
             existingProfile = {
                 uid: user.uid,
@@ -642,14 +656,14 @@ export async function registerWithEmail(email, password, basicData) {
             verseRef: basicData.verseRef || 'Flp 4, 13',
             bio: basicData.bio || '',
             status: basicData.status || 'Panna/Kawaler',
-            avatar: basicData.avatar || 'avatar_new1.jpg',
+            avatar: basicData.avatar || 'lumina_icon.jpg',
             cover: basicData.cover || 'lumina_default_cover.jpg',
             tags: basicData.tags || ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
             visibility: basicData.visibility || 'public',
             pin: basicData.pin || '7777',
             matchScore: basicData.matchScore || '98%',
             isVerified: true,
-            photos: basicData.photos || [basicData.avatar || 'avatar_new1.jpg'],
+            photos: basicData.photos || [basicData.avatar || 'lumina_icon.jpg'],
             posts: basicData.posts || [],
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp()
@@ -714,6 +728,8 @@ export async function logoutUser() {
     localStorage.removeItem('lumina_user_email');
     localStorage.removeItem('lumina_admin');
     localStorage.removeItem('lumina_auth_master_admin');
+    localStorage.removeItem('lumina_user_session');
+    localStorage.removeItem('lumina_auth_token');
     
     for (let i = sessionStorage.length - 1; i >= 0; i--) {
         const k = sessionStorage.key(i);
@@ -980,29 +996,30 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
     const cleanSlug = (slugOrUid || '').toLowerCase();
     const cleanName = (profileData.name || '').toLowerCase();
 
-    // Żelazne zabezpieczenie poprawnych danych osobowych Cezarego i Wioletty
-    if (cleanSlug.includes('cezary') || cleanName.includes('cezary')) {
-        profileData.age = 51;
-        profileData.city = 'Ostrowiec Świętokrzyski, Polska';
-        profileData.avatar = 'avatar_cezary_official.jpg';
-        profileData.status = 'Żonaty';
-        profileData.name = 'Cezary Rogowski';
+    // Domyślne dane osobowe wyłącznie gdy brak danych
+    if (!profileData.name || profileData.name.trim() === '') {
+        if (cleanSlug.includes('cezary') || cleanName.includes('cezary')) profileData.name = 'Cezary Rogowski';
+        else if (cleanSlug.includes('wioletta') || cleanName.includes('wioletta')) profileData.name = 'Wioletta Rogowska';
+        else if (cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) profileData.name = 'Andrzej Thiel';
     }
-    if (cleanSlug.includes('wioletta') || cleanName.includes('wioletta')) {
-        profileData.age = 50;
-        profileData.city = 'Ostrowiec Świętokrzyski, Polska';
-        profileData.avatar = 'avatar_wioletta_official.jpg';
-        profileData.status = 'Mężatka';
-        profileData.name = 'Wioletta Rogowska';
+    if (!profileData.age) {
+        if (cleanSlug.includes('cezary') || cleanName.includes('cezary')) profileData.age = 51;
+        else if (cleanSlug.includes('wioletta') || cleanName.includes('wioletta')) profileData.age = 50;
+        else if (cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) profileData.age = 70;
     }
-    if (cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) {
-        profileData.age = 70;
-        profileData.birthDate = '30 listopada 1955';
-        profileData.city = 'Sieradz, Polska';
-        profileData.avatar = 'avatar_andrzej_thiel.jpg';
-        profileData.status = 'Chrześcijanin';
-        profileData.name = 'Andrzej Thiel';
-        profileData.job = 'Cuda Każdego Dnia 📖✨';
+    if (!profileData.city || profileData.city.trim() === '') {
+        if (cleanSlug.includes('cezary') || cleanSlug.includes('wioletta')) profileData.city = 'Ostrowiec Świętokrzyski, Polska';
+        else if (cleanSlug.includes('andrzej')) profileData.city = 'Sieradz, Polska';
+    }
+
+    if (!profileData.avatar || profileData.avatar === 'null' || profileData.avatar === 'undefined' || profileData.avatar.trim() === '') {
+        if (cleanSlug.includes('cezary')) profileData.avatar = 'avatar_cezary_official.jpg';
+        else if (cleanSlug.includes('wioletta')) profileData.avatar = 'avatar_wioletta_official.jpg';
+        else if (cleanSlug.includes('andrzej')) profileData.avatar = 'avatar_andrzej_thiel.jpg';
+        else profileData.avatar = 'lumina_icon.jpg';
+    }
+    if (!profileData.cover || profileData.cover === 'null' || profileData.cover === 'undefined' || profileData.cover.trim() === '') {
+        profileData.cover = 'lumina_default_cover.jpg';
     }
 
     // Save to localStorage under all relevant keys
@@ -1010,7 +1027,22 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
         localStorage.setItem(`lumina_profile_${slugOrUid}`, JSON.stringify(profileData));
         if (profileData.slug) localStorage.setItem(`lumina_profile_${profileData.slug}`, JSON.stringify(profileData));
         if (profileData.uid) localStorage.setItem(`lumina_profile_${profileData.uid}`, JSON.stringify(profileData));
-        localStorage.setItem('lumina_current_user_profile', JSON.stringify(profileData));
+        
+        const curUserRaw = localStorage.getItem('lumina_current_user_profile');
+        let isCurrent = false;
+        if (curUserRaw) {
+            try {
+                const curU = JSON.parse(curUserRaw);
+                if (curU && (curU.slug === slugOrUid || curU.uid === slugOrUid || curU.slug === profileData.slug)) {
+                    isCurrent = true;
+                }
+            } catch(e) {}
+        } else {
+            isCurrent = true;
+        }
+        if (isCurrent) {
+            localStorage.setItem('lumina_current_user_profile', JSON.stringify(profileData));
+        }
         sessionStorage.setItem(`lumina_auth_owner_${slugOrUid}`, 'true');
         if (profileData.slug) sessionStorage.setItem(`lumina_auth_owner_${profileData.slug}`, 'true');
         if (profileData.uid) sessionStorage.setItem(`lumina_auth_owner_${profileData.uid}`, 'true');
@@ -1153,14 +1185,16 @@ export function subscribeToAllCommunityProfiles(onUpdate) {
                     p.age = 50;
                     p.city = 'Ostrowiec Świętokrzyski, Polska';
                     p.avatar = 'avatar_wioletta_official.jpg';
+                    p.avatarVideo = 'wioletta_rogowska_video_avatar.mp4';
                     p.status = 'Mężatka';
-                    if (data.age !== 50 || !data.city?.includes('Ostrowiec')) {
+                    if (data.age !== 50 || !data.city?.includes('Ostrowiec') || !data.avatarVideo) {
                         try {
                             setDoc(doc(db, 'lumina_profiles', d.id), {
                                 name: 'Wioletta Rogowska',
                                 age: 50,
                                 city: 'Ostrowiec Świętokrzyski, Polska',
                                 avatar: 'avatar_wioletta_official.jpg',
+                                avatarVideo: 'wioletta_rogowska_video_avatar.mp4',
                                 status: 'Mężatka',
                                 job: 'Współzałożycielka Christian Culture',
                                 updatedAt: serverTimestamp()
@@ -1448,6 +1482,7 @@ export const MISSION_ACCOUNTS = {
         name: 'Wioletta Rogowska',
         role: '🌸 Współzałożycielka Christian Culture',
         avatar: 'avatar_wioletta_official.jpg',
+        avatarVideo: 'wioletta_rogowska_video_avatar.mp4',
         slug: 'wiolettarogowska',
         profileUrl: 'lumina.wiolettarogowska.html',
         badge: '🌸 Współzałożycielka CC',
@@ -1577,7 +1612,7 @@ export function subscribeToCoffeeInvites(userId, callback) {
                         id: docSnap.id,
                         senderId: data.lastSenderId,
                         senderName: data.lastSenderName || 'Użytkownik LUMINA',
-                        senderAvatar: data.lastSenderAvatar || 'avatar_new1.jpg',
+                        senderAvatar: data.lastSenderAvatar || 'lumina_icon.jpg',
                         note: data.lastMessageText,
                         status: 'pending_invitation',
                         lastMessageTimestamp: data.lastMessageTimestamp

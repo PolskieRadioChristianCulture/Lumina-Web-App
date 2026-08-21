@@ -63,6 +63,8 @@
     
     <!-- Lumina Realtime Engine -->
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=2.5">
+    <!-- Lumina Auto-Repair & Error Guardian Engine -->
+    <script src="lumina-auto-repair.js"></script>
     <script type="module" src="lumina-db.js?v=1786937913306"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
@@ -763,7 +765,7 @@
         </div>
 
         <div style="display:flex; align-items:center; gap:8px;">
-            <button type="button" class="lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" title="Zmień język" style="width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); font-size:1.05rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s;">🇵🇱</button>
+            
             <a href="lumina.html" class="btn-nav-back">
                 <i class="fa-solid fa-arrow-left"></i> Wróć do LUMINA
             </a>
@@ -800,6 +802,8 @@
                     <a href="lumina-tablica.html" class="btn-action-secondary">
                         <i class="fa-solid fa-earth-americas"></i> Zobacz na Tablicy
                     </a>
+                    <button class="btn-action-secondary btn-action-gear" onclick="if(window.LuminaAdminSuite){window.LuminaAdminSuite.openPinPrompt()}else{window.location.href='lumina.html'}" title="Ustawienia / Panel Administracyjny" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear" style="font-size:1.15rem;"></i></button>
+                    <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer; transition:all 0.2s ease;"><i class="fa-solid fa-right-from-bracket" style="font-size:1.1rem;"></i></button>
                 </div>
             </div>
 
@@ -898,8 +902,8 @@
             <!-- Main Feed Stream -->
             <main class="main-feed-col">
 
-                <!-- 🌟 THE FEATURED POST: 19 SIERPNIA 2026 🌟 -->
-                <article class="feed-post-card" id="post_cuda_19_sie_2026">
+                <!-- 🌟 THE FEATURED POST: 21 SIERPNIA 2026 (DZISIAJ) 🌟 -->
+                <article class="feed-post-card" id="post_cuda_21_sie_2026">
                     <div class="post-top-header">
                         <div class="post-author-box">
                             <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
@@ -908,7 +912,7 @@
                                     Andrzej Thiel
                                     <span class="post-badge-daily">Cuda Każdego Dnia</span>
                                 </div>
-                                <div class="post-time">19 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny</div>
+                                <div class="post-time">21 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny (Dzisiaj)</div>
                             </div>
                         </div>
                         <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
@@ -918,12 +922,12 @@
 
                     <div class="post-body">
                         <div class="post-series-tag">
-                            <i class="fa-solid fa-sun"></i> CUDA KAŻDEGO DNIA! • 19 SIERPNIA 2026
+                            <i class="fa-solid fa-sun"></i> CUDA KAŻDEGO DNIA! • 21 SIERPNIA 2026
                         </div>
 
                         <!-- Featured Devotional Artwork (Cuda Każdego Dnia) -->
                         <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
-                            <img id="cudaDevotionFeaturedImg" src="cuda_kazdego_dnia_mocy.svg" alt="Cuda Każdego Dnia - Podłącz się do źródła mocy!" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block; transition:transform 0.3s ease;" onerror="this.src='cuda_kazdego_dnia.svg'">
+                            <img id="cudaDevotionFeaturedImg" src="cuda_kazdego_dnia_21_sie_2026.svg" alt="Cuda Każdego Dnia - Dzień bez modlitwy to dzień bez błogosławieństwa" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block; transition:transform 0.3s ease;" onerror="this.src='cuda_kazdego_dnia_current.svg'">
                             <div class="admin-cuda-change-btn-wrap" style="position:absolute; bottom:12px; right:12px;">
                                 <button type="button" class="admin-inline-edit-btn" onclick="document.getElementById('adminCudaGraphicInput').click()" style="width:auto; height:auto; padding:8px 14px; border-radius:20px; background:rgba(15,23,42,0.88); border:1px solid #f59e0b; color:#facc15; font-size:0.78rem; font-weight:800; cursor:pointer; backdrop-filter:blur(6px); display:none; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(0,0,0,0.5);" title="Zmień grafikę tego rozważania">
                                     <i class="fa-solid fa-camera"></i> Zmień grafikę rozważania
@@ -935,19 +939,93 @@
                             Przeczytaj i zobacz jak Bóg przemienia twoje życie.
                         </p>
 
-                        <h2 class="post-title">TO NIE DZIAŁA?</h2>
+                        <h2 class="post-title">KIEROWNICA CZY KOŁO ZAPASOWE?</h2>
 
                         <div class="post-text-content">
-Niedawno próbowałem uruchomić pewne urządzenie do sprzątania. Mimo, że wszystko z pozoru wyglądało na sprawne, niestety nie zadziałało. W końcu namierzyłem problem. Choć wtyczka tkwiła w kontakcie, urządzenie nie mogło działać, ponieważ poluzował się kabelek łączący je z zasilaniem. Dlaczego jest tak wielu rozczarowanych, zniechęconych chrześcijan? Ich argument najczęściej brzmi: „To nie działa”. Odwracają się i szukają czegoś innego… Znasz takie osoby?
+                            <p style="margin-bottom:14px;">Corrie ten Boom postawiła bardzo ciekawe pytanie: „Czym jest dla ciebie modlitwa, kierownicą czy kołem zapasowym?”. Jedna z naszych studentek kursu „Jak się modlić?” napisała: „Kurs bardzo mi pomógł zrozumieć znaczenie modlitwy w moim życiu… Odkąd zaczęłam modlić się więcej, codziennie i od serca, planując i uwzględniając wszystkie szczegóły, które poznałam, czuję, jak Duch Święty mnie dotyka. Teraz nie wyobrażam sobie ani pół dnia bez tego. Nie mogę zrozumieć, jak wcześniej czasami o niej zapominałam. Po kursie modlitwa stała się sensowna i zajęła ważne miejsce w mojej codzienności”. Inny kursant pisze: „Dziękuję Wam bardzo za ten kurs, otworzył mi oczy na to, co znaczy prawdziwie się modlić. Nie chodzi o to, by klepać jakieś regułki, ale by prawdziwie, z czystym sercem i oddaniem spotykać się z Bogiem codziennie, w każdej chwili swojego życia”.</p>
 
-Jezus tuż przed swoją śmiercią dał uczniom najważniejsze wskazówki. Powiedział, co mają robić, kiedy Jego już z nimi nie będzie. Wiedział, że pojawi się u nich niepewność, że stracą poczucie bezpieczeństwa, sytuacja ich przytłoczy. Że będą niezrozumiani, fałszywie oskarżani, że szybko ogarną ich wyczerpanie i słabość. Że doświadczą trudności, cierpienia, głodu, prześladowań, że mogą stracić z oczu Boga, którego plany rozminą się z ich wyobrażeniami. Dlatego stale i na nowo przypominał: „Trzymajcie się mnie. Trwajcie we mnie. Beze mnie nic uczynić nie możecie” (J.15,5).
-
-Może też, zadajesz sobie to pytanie: „Czy to działa?”. Nie dostrzegasz Jego działania, nie widzisz odpowiedzi na swoje modlitwy? Zastanawiasz się, skąd inni, których podziwiasz, biorą siłę i radość w życiu? Jezus mówi, że tajemnicą sukcesu jest stałe połączenie z Nim. Trwanie w nieprzerwanym kontakcie. Tak jak to urządzenie – by zadziałało, musiało być podłączone do źródła mocy. Bez tego okazało się bezużyteczne. Jezus cię nie zostawi, bo wie, że bez Niego nie dasz rady. Bez Niego nic nie jest takie, jak ma być. Obiecał ci swojego Ducha, który będzie z tobą i w tobie: „Ja prosić będę Ojca i da wam innego Pocieszyciela, aby był z wami na wieki – Ducha Prawdy, którego świat przyjąć nie może, bo Go nie widzi i nie zna; wy Go znacie, bo przebywa wśród was i w was będzie” (J.14,16-17). Nie próbuj po swojemu, podłącz się dzisiaj do Niego. Niech popłynie Jego moc i wypełni energią każdą twoją komórkę.
+                            <p style="margin-bottom:14px;">Najlepszą radą, jaką możesz znaleźć dla siebie, w Bożym Słowie, jest ta: „Nieustannie się módlcie, w każdej sprawie i we wszelkich okolicznościach dziękujcie Najwyższemu” (1Tes.5,17-18). Jakie są twoje okoliczności dzisiaj? Niesprzyjające modlitwie? Bo masz dużo zajęć, nie możesz znaleźć spokojnej chwili dla siebie? Myślisz, że modlitwa wymaga jakiejś specjalnej oprawy? Bóg chce być z tobą w kontakcie zawsze i wszędzie! Nieustannie! Wow! Czy to możliwe? Możliwe! A wiesz dlaczego? Dlatego że On jest wszędzie z tobą – tuż obok jak dobry towarzysz. W samochodzie, w autobusie, kiedy zmywasz czy zmieniasz pieluchę dziecku. Kiedy się budzisz i kiedy idziesz spać. Pragnie uczestniczyć we wszystkim, co robisz, myślisz. Chce pomóc ci rozładowywać emocje. Służy swoją mądrością, kiedy nie wiesz, co robić, co powiedzieć, prostuje drogę, kiedy masz wątpliwości czy czujesz zagubienie. Zsyła pociechę i pokój. Nie uważasz, że to niezwykłe? Wielki, wszechmocny Bóg tak blisko dla ciebie! Co za ogromny przywilej. On uwielbia, kiedy z Nim rozmawiasz, słyszy cię w każdej chwili. Czego dzisiaj potrzebujesz? Możesz po prostu zawołać „Panie, pomóż”, możesz dziękować i uwielbiać Go za to, kim jest, za piękno stworzenia, które podziwiasz. Bóg czeka na twój głos, i chce czynić w twoim życiu cuda. Jak pisze Dan Hayes: „Jedno wiem, że kiedy się modlę, zbiegi okoliczności się zdarzają, kiedy się nie modlę, nie mają miejsca”.</p>
                         </div>
 
                         <!-- Prayer highlight block -->
                         <div class="post-prayer-highlight">
-                            „Ojcze, wypełnij mnie na nowo obecnością Twojego Ducha. Dziękuję Ci, że On przypomina mi dzisiaj Twoje słowa o tym, że mam trwać w Tobie, że we wszystkim, co robię, potrzebuję Ciebie. Dziękuję, że dzięki Niemu możemy być w stałej łączności. Dziękuję, że niezależnie od moich uczuć, sytuacji, Ty w swojej łasce jesteś dzisiaj ze mną”.
+                            „Panie, dziękuję Ci za przywilej modlitwy. Że mogę przychodzić bezpośrednio do Ciebie ze wszystkim i w każdej chwili. Ty nigdy nie jesteś zmęczony, nie masz mnie dość. Żadna sprawa nie wydaje Ci się zbyt mała czy błaha. Jak Ojciec zawsze służysz mądrą radą i wsparciem. Chcę całym sercem trwać przy Tobie, przynosić Ci wszystko i słyszeć, co mówisz. Dziękuję, Ojcze, że jesteś ze mną i nigdy mnie nie zostawiasz. W imieniu Pana Jezusa, amen”.
+                            <div style="margin-top:8px;font-size:0.8rem;color:#facc15;font-weight:700;text-align:right;">
+                                /opr. na podst. wiad. B.K./.
+                            </div>
+                        </div>
+
+                        <p style="margin-top:18px;font-weight:800;font-size:1.05rem;color:#fef08a;">
+                            Dziękuję, że jesteś! ❤️
+                        </p>
+                    </div>
+
+                    <!-- Post Actions Bar -->
+                    <div class="post-actions-bar">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <button class="post-action-btn active-heart" id="btnPostLike" onclick="togglePostLike(this)">
+                                <i class="fa-solid fa-heart"></i> <span id="likeCount">186</span>
+                            </button>
+                            <button class="post-action-btn active-amen" id="btnPostAmen" onclick="togglePostAmen(this)">
+                                <i class="fa-solid fa-hands-praying"></i> Amen (<span id="amenCount">164</span>)
+                            </button>
+                        </div>
+
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <button class="post-action-btn" onclick="openShareAndrzejModal()">
+                                <i class="fa-solid fa-share-nodes"></i> Poleć Rozważanie
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 🌟 ARCHIVE POST: 20 SIERPNIA 2026 🌟 -->
+                <article class="feed-post-card" id="post_cuda_20_sie_2026" style="opacity:0.95;">
+                    <div class="post-top-header">
+                        <div class="post-author-box">
+                            <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
+                            <div>
+                                <div class="post-author-name">
+                                    Andrzej Thiel
+                                    <span class="post-badge-daily">Cuda Każdego Dnia</span>
+                                </div>
+                                <div class="post-time">20 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny</div>
+                            </div>
+                        </div>
+                        <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
+                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                        </button>
+                    </div>
+
+                    <div class="post-body">
+                        <div class="post-series-tag">
+                            <i class="fa-solid fa-sun"></i> CUDA KAŻDEGO DNIA! • 20 SIERPNIA 2026
+                        </div>
+
+                        <!-- Devotional Artwork (20 sierpnia) -->
+                        <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,0.15); box-shadow:0 8px 25px rgba(0,0,0,0.5); background:#0b1428;">
+                            <img src="cuda_kazdego_dnia_20_sie_2026.svg" alt="Cuda Każdego Dnia - Wszystko można zmienić" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;">
+                        </div>
+
+                        <p style="font-weight:700;color:#fef08a;margin-bottom:12px;font-size:1.05rem;">
+                            Przeczytaj i zobacz jak Bóg przemienia twoje życie.
+                        </p>
+
+                        <h2 class="post-title">WSZYSTKO MOŻNA ZMIENIĆ!</h2>
+
+                        <div class="post-text-content">
+Porozmawiajmy jeszcze trochę o tym, co działa w naszym życiu, a co nie i dlaczego. Bo przecież nie chcemy karmić się wiedzą teoretyczną, ale taką, która sprawdza się w codzienności, prawda?
+
+Zadajesz sobie czasem takie pytania? Czy sposób, w jaki wychowuję dziecko, działa? Czy może muszę coś zmienić? Czy moje małżeństwo działa? Czy sposób, w jaki się komunikujemy, rozwiązujemy konflikty, współpracujemy ze sobą jest efektywny? Czy może powinniśmy coś zmienić? Czy moje życie z Bogiem działa? Wierzysz i ufasz, trzymasz się Jego Prawdy i Jego obietnic, czy raczej czujesz frustrację, słabość, zmęczenie ciągłym staraniem się, które nie przynosi efektów? Może mówisz: „Nie, nie działa, ale nie mam pojęcia, jak to zmienić”? „Moje stare sposoby nie działają. Co robić?” Nie widzisz rozwiązania, bo za mocno tkwisz w starych nawykach, koleinach zachowań, z których tak trudno wyjść. Wydaje ci się, że już nic nie da się zmienić i tak widocznie musi być?
+
+Fascynuje mnie, jak pomocne bywa spojrzenie z zewnątrz. Pewnie znasz, program „Kuchenne rewolucje”. To świetny przykład tego, jak potrafimy być ślepi na własne przywary, złe skłonności czy zaniedbania. Właściciel restauracji najczęściej mówi: „Próbowaliśmy już wszystkiego i nie ma efektów”. Bardzo rzadko widzi problem w sobie, a jeszcze rzadziej jest gotów się z nim skonfrontować. Bunt, złość, „jak ona śmie mnie krytykować” – to najczęstsze reakcje. W takich sytuacjach mamy tendencję, by zrzucać winę na okoliczności, na kogoś innego.
+
+A przecież tak nie musi być! Wszystko można zmienić. Przecież „z Bogiem wszystko jest możliwe” – jak zapewnia Jego Słowo (Łk.1,37). Wszystko, czyli nawet to, co tobie, wydaje się już niemożliwe do zmiany. Co to jest w twoim życiu? Potrzebujesz świeżego spojrzenia kogoś z zewnątrz? Szukaj pomocy, porady, porozmawiaj z kimś zaufanym. Nie zostawiaj tego, czekając, aż samo się ułoży.
+                        </div>
+
+                        <!-- Prayer highlight block -->
+                        <div class="post-prayer-highlight">
+                            „Panie, dodaj mi wiary, że z Tobą wszystko jest możliwe! Moje stare sposoby nie działają. Potrzebuję Ciebie w moim życiu. Pokaż mi co wymaga zmiany i pomóż z pokorą przyjąć prawdę. Postaw na mojej drodze kogoś, kto pomoże mi wrócić na właściwe tory i otworzyć się na to co Ty mówisz do mnie”.
                             <div style="margin-top:8px;font-size:0.8rem;color:#facc15;font-weight:700;text-align:right;">
                                 /opr. na podst. wiad. B.K./
                             </div>
@@ -961,17 +1039,11 @@ Może też, zadajesz sobie to pytanie: „Czy to działa?”. Nie dostrzegasz Je
                     <!-- Post Actions Bar -->
                     <div class="post-actions-bar">
                         <div style="display:flex;align-items:center;gap:8px;">
-                            <button class="post-action-btn active-heart" id="btnPostLike" onclick="togglePostLike(this)">
-                                <i class="fa-solid fa-heart"></i> <span id="likeCount">128</span>
+                            <button class="post-action-btn active-heart" onclick="togglePostLike(this)">
+                                <i class="fa-solid fa-heart"></i> <span>142</span>
                             </button>
-                            <button class="post-action-btn active-amen" id="btnPostAmen" onclick="togglePostAmen(this)">
-                                <i class="fa-solid fa-hands-praying"></i> Amen (<span id="amenCount">114</span>)
-                            </button>
-                        </div>
-
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <button class="post-action-btn" onclick="openShareAndrzejModal()">
-                                <i class="fa-solid fa-share-nodes"></i> Poleć Rozważanie
+                            <button class="post-action-btn active-amen" onclick="togglePostAmen(this)">
+                                <i class="fa-solid fa-hands-praying"></i> Amen (<span>129</span>)
                             </button>
                         </div>
                     </div>
@@ -1131,5 +1203,6 @@ Może też, zadajesz sobie to pytanie: „Czy to działa?”. Nie dostrzegasz Je
     </script>
     <input type="file" id="adminCudaGraphicInput" accept="image/*" style="display:none;" onchange="handleCudaGraphicUpload(event)">
     <script src="lumina-admin-profile-suite.js"></script>
+    <script src="lumina-premium-video-avatar.js"></script>
 </body>
 </html>

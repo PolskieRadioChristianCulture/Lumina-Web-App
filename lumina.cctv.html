@@ -61,6 +61,8 @@
     
     <!-- Lumina Realtime Engine -->
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=2.5">
+    <!-- Lumina Auto-Repair & Error Guardian Engine -->
+    <script src="lumina-auto-repair.js"></script>
     <script type="module" src="lumina-db.js?v=1786937913306"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
@@ -758,6 +760,8 @@
                     <a href="lumina-tablica.html" class="btn-action-secondary">
                         <i class="fa-solid fa-earth-americas"></i> Zobacz na Tablicy
                     </a>
+                    <button class="btn-action-secondary btn-action-gear" onclick="if(window.LuminaAdminSuite){window.LuminaAdminSuite.openPinPrompt()}else{window.location.href='lumina.html'}" title="Ustawienia / Panel Administracyjny" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear" style="font-size:1.15rem;"></i></button>
+                    <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer; transition:all 0.2s ease;"><i class="fa-solid fa-right-from-bracket" style="font-size:1.1rem;"></i></button>
                 </div>
             </div>
 
@@ -832,6 +836,77 @@
 
             <!-- Main Feed Stream -->
             <main class="main-feed-col">
+
+                <!-- 🌟 POST: NOWOŚĆ CCTV24 INSTRUMENTAL WORSHIP 🌟 -->
+                <article class="feed-post-card" id="post_cctv_worship">
+                    <div class="post-top-header">
+                        <div class="post-author-box">
+                            <img src="logo_cctv.png" onerror="this.src='lumina_icon.jpg'" alt="Christian Culture TV" class="post-author-img">
+                            <div>
+                                <div class="post-author-name">
+                                    Christian Culture TV
+                                    <span class="post-badge-daily" style="background:#f59e0b; color:#000;">NOWOŚĆ 24/7</span>
+                                </div>
+                                <div class="post-time">21 SIERPNIA 2026 • 📍 Warszawa • 🌍 Publiczny (Dzisiaj)</div>
+                            </div>
+                        </div>
+                        <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareModal()">
+                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                        </button>
+                    </div>
+
+                    <div class="post-body">
+                        <div class="post-series-tag" style="background:rgba(212, 175, 55, 0.15); border-color:#d4af37; color:#facc15;">
+                            <i class="fa-solid fa-music"></i> PREMIERA KANAŁU • INSTRUMENTAL WORSHIP 24/7
+                        </div>
+
+                        <!-- Featured Image -->
+                        <div style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,0.15); box-shadow:0 8px 25px rgba(0,0,0,0.5); background:#0b1428;">
+                            <img src="INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg" alt="CCTV24 Instrumental Worship" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;">
+                            <a href="cctv24-worship.html" target="_blank" style="position:absolute; inset:0; background:rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; text-decoration:none; transition:background 0.3s ease;">
+                                <div style="width:68px; height:68px; border-radius:50%; background:linear-gradient(135deg,#f59e0b,#d97706); display:flex; align-items:center; justify-content:center; color:#000; font-size:1.6rem; box-shadow:0 0 30px rgba(245,158,11,0.6); padding-left:4px;">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                            </a>
+                        </div>
+
+                        <h2 class="post-title">🌟 NOWOŚĆ! CCTV24 INSTRUMENTAL WORSHIP – CAŁODOBOWY KANAŁ UWIELBIENIA</h2>
+
+                        <div class="post-text-content">
+                            <p style="margin-bottom:14px;">Z radością oddajemy w Wasze ręce nowy, całodobowy kanał wideo & audio: <b>CCTV24 INSTRUMENTAL WORSHIP</b>! 🕊️✨</p>
+                            <p style="margin-bottom:14px;">Przenieś się w przestrzeń głębokiej modlitwy, pokoju serca i Bożej obecności. 24 godziny na dobę bez przerw i bez reklam – najpiękniejsze instrumentalne utwory uwielbienia, wersety Pisma Świętego i filmowe scenerie stworzenia w jakości HD.</p>
+                            <div style="margin:16px 0; padding:14px 18px; border-radius:14px; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3);">
+                                <div style="font-weight:800; color:#facc15; margin-bottom:6px; font-size:0.95rem;"><i class="fa-solid fa-link"></i> Bezpośredni odnośnik do transmisji:</div>
+                                <a href="https://polskieradio.cc/cctv24-worship.html" target="_blank" style="color:#60a5fa; font-weight:700; text-decoration:underline; word-break:break-all; font-size:0.92rem;">https://polskieradio.cc/cctv24-worship.html</a>
+                            </div>
+                        </div>
+
+                        <p style="margin-top:18px;font-weight:800;font-size:1.05rem;color:#dbeafe;">
+                            Niech ten kanał napełnia Wasze domy Bożym pokojem! 🙏🎶
+                        </p>
+                    </div>
+
+                    <!-- Post Actions Bar -->
+                    <div class="post-actions-bar">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <button class="post-action-btn active-heart" onclick="togglePostLike(this, 'likeCountWorship')">
+                                <i class="fa-solid fa-heart"></i> <span id="likeCountWorship">215</span>
+                            </button>
+                            <button class="post-action-btn active-amen" onclick="togglePostAmen(this, 'amenCountWorship')">
+                                <i class="fa-solid fa-hands-praying"></i> Amen (<span id="amenCountWorship">198</span>)
+                            </button>
+                        </div>
+
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <a href="cctv24-worship.html" target="_blank" class="post-action-btn" style="text-decoration:none; background:linear-gradient(90deg,#f59e0b,#d97706); color:#000; font-weight:800;">
+                                <i class="fa-solid fa-play"></i> Uruchom Transmisję
+                            </a>
+                            <button class="post-action-btn" onclick="openShareModal()">
+                                <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                            </button>
+                        </div>
+                    </div>
+                </article>
 
                 <!-- 🌟 POST 1 🌟 -->
                 <article class="feed-post-card" id="post_cctv_1">
@@ -1006,5 +1081,7 @@ Zapraszamy do oglądania najnowszych wydań programów CCTV24. W tym tygodniu ro
             }
         }
     </script>
+    <script src="lumina-admin-profile-suite.js"></script>
+    <script src="lumina-premium-video-avatar.js"></script>
 </body>
 </html>

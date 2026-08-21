@@ -63,6 +63,8 @@
     
     <!-- Lumina Realtime Firestore Engine -->
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=2.5">
+    <!-- Lumina Auto-Repair & Error Guardian Engine -->
+    <script src="lumina-auto-repair.js"></script>
     <script type="module" src="lumina-db.js?v=1786937913306"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
@@ -501,7 +503,7 @@
 
         .card-edit-btn {
             background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(250, 204, 21, 0.35);
+            border: 1px solid rgba(250, 204, 21, 1);
             color: var(--gold-accent);
             width: 32px;
             height: 32px;
@@ -1016,16 +1018,15 @@
         </div>
 
         <div style="display:flex;align-items:center;gap:12px;">
-            <!-- Mini Radio Player -->
-            <div class="nav-radio-pill" id="radioWidget" onclick="toggleRadio()" title="Włącz Radio Christian Culture">
-                <button class="nav-radio-play" id="radioPlayBtn">
-                    <i class="fa-solid fa-play" id="radioPlayIcon"></i>
-                </button>
-                <div class="nav-radio-info">
-                    <span class="nav-radio-title">Radio CC Live</span>
-                    <span class="nav-radio-sub">Global Channel</span>
-                </div>
-            </div>
+            <!-- 1. Mini Radio Player (Single Round 38px Button) -->
+            <button type="button" class="nav-circle-btn nav-radio-btn" id="radioWidget" onclick="toggleRadio()" title="Włącz / Wyłącz Radio Christian Culture">
+                <i class="fa-solid fa-play" id="radioPlayIcon" style="margin-left:2px;"></i>
+            </button>
+            <!-- WSPARCIE DZIEŁA (DONORBOX CTA) -->
+            <button class="btn-nav-cta" style="background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #000; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); padding: 8px 16px; border-radius: 40px; cursor: pointer; display: flex; align-items: center; gap: 8px;" onclick="openSupportModal()" title="Wspieraj Dzieło LUMINA">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+                <span class="btn-nav-cta-text" style="color: #000; font-weight: 800; font-size: 0.88rem; font-family: 'Outfit', sans-serif;">Wspieraj</span>
+            </button>
 
             <a href="lumina.html" class="btn-nav-back"><i class="fa-solid fa-arrow-left"></i> Wróć do Portalu</a>
         </div>
@@ -1114,6 +1115,7 @@
                             <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Wiadomość</button>
                             <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> Kawa ☕</button>
                             <button class="btn-action-secondary" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%;"><i class="fa-solid fa-gear"></i></button>
+                            <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer; transition:all 0.2s ease;"><i class="fa-solid fa-right-from-bracket" style="font-size:1.1rem;"></i></button>
                         </div>
 
                         <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
@@ -1433,6 +1435,13 @@
 
         function saveProfileData(data) {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            try {
+                localStorage.setItem('lumina_profile_magdalena', JSON.stringify(data));
+                localStorage.setItem('lumina_profile_magda', JSON.stringify(data));
+            } catch(e) {}
+            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                window.LuminaDB.saveProfileToCloud('magdalena', data);
+            }
             renderProfile();
         }
 
@@ -1455,11 +1464,21 @@
             // Render mini photos
             const miniGrid = document.getElementById('miniPhotoGrid');
             if (miniGrid) {
-                miniGrid.innerHTML = (data.photos || []).map(src => `<img src="${src}" class="photo-thumb" alt="Zdjęcie">`).join('');
+                miniGrid.innerHTML = (data.photos || []).map((src, idx) => `
+                    <div style="position:relative; border-radius:10px; overflow:hidden; height:90px; background:#1e293b;">
+                        <img src="${src}" class="photo-thumb" style="width:100%;height:100%;object-fit:cover;" alt="Zdjęcie">
+                        <button type="button" class="photo-delete-badge" style="position:absolute; top:4px; right:4px; width:26px; height:26px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:${isOwnerMode ? 'flex' : 'none'}; align-items:center; justify-content:center; font-size:0.75rem; z-index:10;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                `).join('');
             }
             const fullGrid = document.getElementById('fullPhotoGrid');
             if (fullGrid) {
-                fullGrid.innerHTML = (data.photos || []).map(src => `<img src="${src}" class="photo-thumb" style="height:140px;" alt="Zdjęcie">`).join('');
+                fullGrid.innerHTML = (data.photos || []).map((src, idx) => `
+                    <div style="position:relative; border-radius:12px; overflow:hidden; height:160px; background:#1e293b;">
+                        <img src="${src}" class="photo-thumb" style="width:100%;height:100%;object-fit:cover;" alt="Zdjęcie">
+                        <button type="button" class="photo-delete-badge" style="position:absolute; top:8px; right:8px; width:32px; height:32px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:${isOwnerMode ? 'flex' : 'none'}; align-items:center; justify-content:center; font-size:0.85rem; z-index:10;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                `).join('');
             }
 
             renderFeed(data.posts);
@@ -1682,6 +1701,19 @@
             }
         }
 
+        function deletePhoto(event, index) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            const data = getProfileData();
+            data.photos = data.photos || [];
+            if (index < 0 || index >= data.photos.length) return;
+            data.photos.splice(index, 1);
+            saveProfileData(data);
+            showToast('Zdjęcie zostało pomyślnie usunięte z galerii 🗑️✨');
+        }
+
         function publishFeedPost() {
             if (!isOwnerMode) { openModal('securityPinModal'); return; }
             const input = document.getElementById('composerInput');
@@ -1717,7 +1749,7 @@
                 }).catch(() => showToast('Błąd odtwarzania radia'));
             } else {
                 audio.pause();
-                audio.src = '';
+                audio.removeAttribute('src');
                 radioPlaying = false;
                 if (icon) icon.className = 'fa-solid fa-play';
                 showToast('Zatrzymano radio');
@@ -1735,5 +1767,7 @@
             renderProfile();
         });
     </script>
+    <script src="lumina-admin-profile-suite.js"></script>
+    <script src="lumina-premium-video-avatar.js"></script>
 </body>
 </html>

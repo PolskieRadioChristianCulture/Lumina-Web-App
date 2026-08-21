@@ -67,6 +67,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Lumina Auto-Repair & Error Guardian Engine -->
+    <script src="lumina-auto-repair.js"></script>
     <!-- Lumina Realtime Firestore Engine -->
     <script type="module" src="lumina-db.js?v=1786937913306"></script>
     <script type="module" src="lumina-core.js?v=2.2"></script>
@@ -101,13 +103,16 @@
         .lumina-nav {
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 10001 !important;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 12px 32px;
-            background: #ffffff;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            background: rgba(15, 23, 42, 0.94);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
             gap: 16px;
         }
 
@@ -119,7 +124,7 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             flex-shrink: 0;
             font-family: 'Outfit', sans-serif;
         }
@@ -140,20 +145,28 @@
         }
 
         .nav-link {
-            background: none;
-            border: none;
-            color: #475569;
-            font-size: 0.92rem;
-            font-weight: 600;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #94a3b8;
+            font-size: 0.88rem;
+            font-weight: 700;
             cursor: pointer;
             font-family: inherit;
-            transition: color 0.2s;
+            transition: all 0.2s ease;
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 40px;
         }
-        .nav-link:hover { color: #0f172a; }
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, #a855f7, #06b6d4);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5), 0 0 16px rgba(6, 182, 212, 0.35);
+            transform: translateY(-1px);
+        }
         .nav-badge {
             color: #ef4444;
             font-size: 0.9rem;
@@ -330,17 +343,23 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            background: url('lumina_default_cover.jpg') center center / cover no-repeat;
-            background-color: #0b1838;
+            background: #0b1838 url('lumina_hero_bg.jpg?v=20260821_2') center center / cover no-repeat;
             z-index: 0;
             border-radius: 0;
             overflow: hidden;
+        }
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            display: block;
         }
         .hero-bg::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, transparent 75%, rgba(11, 24, 56, 0.5) 90%, #0b1838 100%);
+            background: linear-gradient(to bottom, rgba(11, 24, 56, 0.15) 0%, rgba(11, 24, 56, 0.5) 75%, #0b1838 100%);
             pointer-events: none;
             z-index: 1;
         }
@@ -659,25 +678,29 @@
 
         .profile-card {
             flex: 0 0 calc(33.333% - 16px);
+            height: 410px;
             scroll-snap-align: center;
-            background: #fff;
-            border-radius: 16px;
+            background: #0f172a;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.32), 0 0 0 1px rgba(255,255,255,0.1);
             cursor: pointer;
             transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.45s ease, opacity 0.45s ease;
             position: relative;
             transform-style: preserve-3d;
-            opacity: 0.82;
-            transform: scale(0.92);
+            opacity: 0.86;
+            transform: scale(0.93);
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
         }
 
         .profile-card.active-center-card,
         .profile-card.featured {
             transform: translateY(-16px) scale(1.06) !important;
-            box-shadow: 0 20px 45px rgba(0,0,0,0.45), 0 0 25px rgba(168,85,247,0.25);
-            border: 2px solid rgba(255,255,255,0.4);
+            box-shadow: 0 22px 50px rgba(0,0,0,0.5), 0 0 28px rgba(168,85,247,0.35);
+            border: 2px solid rgba(255,255,255,0.45);
             opacity: 1;
             z-index: 10;
         }
@@ -685,7 +708,7 @@
         @media (max-width: 992px) {
             .carousel-container { margin-top: 24px; padding: 0 10px; overflow: visible; }
             .profiles-grid { gap: 18px; padding: 42px 10px 45px; }
-            .profile-card { flex: 0 0 270px; opacity: 0.95; transform: scale(0.96); }
+            .profile-card { flex: 0 0 280px; height: 390px; opacity: 0.95; transform: scale(0.96); }
             .profile-card.featured { transform: translateY(-10px) scale(1.03) !important; }
         }
 
@@ -753,8 +776,9 @@
                 scroll-padding: 0 16px;
             }
             .profile-card {
-                flex: 0 0 84vw;
-                max-width: 320px;
+                flex: 0 0 82vw;
+                max-width: 310px;
+                height: 390px;
                 border-radius: 20px;
                 opacity: 0.95;
                 transform: scale(0.97);
@@ -764,11 +788,11 @@
                 opacity: 1 !important;
             }
             .card-photo {
-                height: 255px;
-                border-radius: 20px 20px 0 0;
+                height: 100% !important;
+                border-radius: 20px;
             }
             .profile-card.video-card {
-                min-height: 425px;
+                min-height: 390px;
                 border-radius: 20px;
             }
             .profile-card.video-card .card-photo {
@@ -1027,15 +1051,23 @@
         }
 
         .card-photo {
-            position: relative;
-            height: 240px;
-            background: #e2e8f0;
-            border-radius: 16px 16px 0 0;
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: #0f172a;
+            border-radius: 20px;
+            overflow: hidden;
+            z-index: 1;
         }
         .card-photo img {
             width: 100%; height: 100%; object-fit: cover; display: block;
-            border-radius: 16px 16px 0 0;
+            border-radius: 20px;
             object-position: center top;
+            transition: transform 0.45s ease;
+        }
+        .profile-card:hover .card-photo img {
+            transform: scale(1.04);
         }
 
         /* ── Full-Bleed Video Card ── */
@@ -1051,7 +1083,7 @@
             position: absolute;
             inset: 0;
             height: 100% !important;
-            border-radius: 16px;
+            border-radius: 20px;
             background: #000;
             overflow: hidden;
         }
@@ -1062,7 +1094,7 @@
             height: 100%;
             object-fit: cover;
             object-position: center 5%;
-            border-radius: 16px;
+            border-radius: 20px;
             display: block;
         }
 
@@ -1145,10 +1177,10 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 1);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
             cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            color: #f43f5e; font-size: 1.1rem;
+            color: #f43f5e; font-size: 1.05rem;
             transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 5;
         }
@@ -1172,36 +1204,48 @@
             100% { transform: scale(1); }
         }
 
-        /* Match % badge – bottom right */
+        /* Match % badge – Top left minimal badge */
         .card-match {
             position: absolute;
-            bottom: -22px; right: 20px;
-            width: 44px; height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #a855f7, #ec4899);
+            top: 12px; left: 12px;
+            bottom: auto; right: auto;
+            width: auto; height: auto;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             color: #fff;
+            font-weight: 800; font-size: 0.76rem;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 5;
             display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 0.85rem;
-            border: 3px solid #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            animation: pulseGlow 2.5s infinite;
         }
 
-        /* Card body */
+        /* Card body – 100% odsłonięte zdjęcie, dolny gradient wyłącznie z imieniem i wiekiem / nazwą */
         .card-body {
-            padding: 24px 16px 18px; 
-            border-radius: 0 0 16px 16px;
+            position: absolute;
+            inset: auto 0 0 0;
+            z-index: 4;
+            padding: 48px 16px 16px 16px;
+            background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.42) 60%, transparent 100%);
+            border-radius: 0 0 20px 20px;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
         }
         .card-name {
-            font-size: 1rem; font-weight: 800; color: #0f172a;
-            margin-bottom: 2px;
+            font-size: 1.15rem; font-weight: 800; color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.85);
+            display: flex; align-items: center; gap: 6px;
+            letter-spacing: 0.2px; line-height: 1.25;
+            margin: 0;
         }
-        .card-city {
-            font-size: 0.8rem; color: #64748b; font-weight: 500;
-            margin-bottom: 5px;
-        }
+        .card-city,
         .card-desc {
-            font-size: 0.78rem; color: #475569; line-height: 1.4;
+            display: none !important;
         }
 
         /* ──────────────────── BOTTOM LAYOUT ──────────────────── */
@@ -1615,7 +1659,7 @@
             position: fixed;
             bottom: 14px;
             left: 14px;
-            z-index: 9999;
+            z-index: -1;
             width: 32px;
             height: 32px;
             border-radius: 50%;
@@ -1747,7 +1791,7 @@
             border-radius: 30px; font-weight: 700; font-size: 0.87rem;
             display: flex; align-items: center; gap: 10px;
             box-shadow: 0 8px 28px rgba(168,85,247,0.5);
-            z-index: 99999;
+            z-index: 999999999 !important;
             transform: translateY(100px); opacity: 0;
             transition: transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275), opacity 0.3s;
         }
@@ -2056,18 +2100,22 @@
 
     <!-- ══════════ NAVBAR ══════════ -->
     <nav class="lumina-nav">
-        <a href="index.html" class="nav-logo-text" style="display: flex; align-items: center; gap: 9px;">
-            <img src="lumina_icon.jpg" alt="LUMINA Logo" onerror="this.src='icon.png'" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(192,132,252,0.6); box-shadow: 0 0 10px rgba(168,85,247,0.4);">
-            <span>LUMINA</span>
+        <a href="index.html" class="nav-logo-text" style="display: flex; align-items: center; gap: 10px;">
+            <img src="lumina_logo_portal.jpg" alt="LUMINA Logo" onerror="this.onerror=null; this.src='Logo Portal LUMINA.jpg';" style="width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(192,132,252,0.8); box-shadow: 0 0 12px rgba(168,85,247,0.5);">
+            <span style="font-weight: 800; letter-spacing: 1.5px;">LUMINA</span>
         </a>
 
         <div class="nav-links">
             <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Główna</a>
-            <a href="lumina-tablica.html" class="nav-link" style="color: #ec4899; font-weight: 700;"><i class="fa-solid fa-rectangle-list"></i> Tablica</a>
-            <button class="nav-link" onclick="scrollToSection('odkrywaj')"><i class="fa-solid fa-compass"></i> Odkrywaj</button>
+            <a href="lumina-tablica.html" class="nav-link"><i class="fa-solid fa-rectangle-list"></i> Tablica</a>
+            <button class="nav-link active" onclick="scrollToSection('odkrywaj')"><i class="fa-solid fa-compass"></i> Odkrywaj</button>
             <button class="nav-link" onclick="showToast('Skrzynka wiadomości – zaloguj się, aby rozmawiać 💬')"><i class="fa-solid fa-comments"></i> Wiadomości</button>
-            <button type="button" class="nav-link" onclick="openShareLuminaModal()" style="color: #f472b6; font-weight: 800; background: none; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" title="Poleć portal LUMINA znajomym ✨"><i class="fa-solid fa-share-nodes"></i> Polecaj</button>
-            <a href="javascript:void(0)" onclick="handleMyProfileNavigation(event)" class="nav-link" id="navMyProfileLink" style="color: #2563eb; font-weight: 700;"><i class="fa-solid fa-user"></i> Mój Profil</a>
+            <button type="button" class="nav-link" onclick="openShareLuminaModal()" title="Poleć portal LUMINA znajomym ✨"><i class="fa-solid fa-share-nodes"></i> Polecaj</button>
+            <a href="javascript:void(0)" onclick="handleMyProfileNavigation(event)" class="nav-link" id="navMyProfileLink"><i class="fa-solid fa-user"></i> Mój Profil</a>
+            <button class="btn-nav-cta" id="authCtaBtn" onclick="openAuth()" title="Zaloguj / Rejestracja" style="margin-left: 8px;">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                <span class="btn-nav-cta-text">Zaloguj / Rejestracja</span>
+            </button>
         </div>
 
         <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
@@ -2075,31 +2123,38 @@
             <button type="button" class="nav-circle-btn nav-radio-btn" id="radioWidget" onclick="toggleRadio()" title="Włącz / Wyłącz Radio Christian Culture">
                 <i class="fa-solid fa-play" id="radioPlayIcon" style="margin-left:2px;"></i>
             </button>
+            <!-- 5. WSPARCIE DZIEŁA (DONORBOX CTA) -->
+            <button class="btn-nav-cta" style="background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #000; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); padding: 8px 16px; border-radius: 40px; cursor: pointer; display: flex; align-items: center; gap: 8px;" onclick="openSupportModal()" title="Wspieraj Dzieło LUMINA">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+                <span class="btn-nav-cta-text" style="color: #000; font-weight: 800; font-size: 0.88rem; font-family: 'Outfit', sans-serif;">Wspieraj</span>
+            </button>
 
-            <!-- 2. Language Switcher (Single Round 38px Button) -->
-            <button type="button" class="nav-circle-btn lang-switcher-btn" onclick="window.LuminaI18n?.toggle()" title="Zmień język">🇵🇱</button>
+            
 
             <!-- 3. User Avatar Profile (when logged in) -->
             <div class="user-nav-profile" id="userNavProfile">
                 <img src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar" onclick="handleMyProfileNavigation(event)" title="Mój Profil">
-                <span class="user-nav-name" id="userNavName">Użytkownik</span>
+                <span class="user-nav-name" id="userNavName"></span>
                 <button class="btn-nav-logout" onclick="handleLogout()" title="Wyloguj"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
 
             <!-- 4. Login / Register CTA (when logged out) -->
-            <button class="btn-nav-cta" id="authCtaBtn" onclick="openAuth()" title="Zaloguj / Rejestracja">
-                <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                <span class="btn-nav-cta-text">Zaloguj / Rejestracja</span>
-            </button>
+                        <!-- 5. WSPARCIE DZIEŁA (DONORBOX CTA) -->
+                        
         </div>
     </nav>
 
     <!-- ══════════ HERO SECTION ══════════ -->
     <header class="hero-section" id="heroHeader" onclick="handleHeroBackgroundClick(event)">
-        <div class="hero-bg" id="heroBg" onclick="toggleHeroSearch(event, true)"></div>
+        <div class="hero-bg" id="heroBg" onclick="toggleHeroSearch(event, true)">
+            <img src="lumina_hero_bg.jpg?v=20260821_2" alt="LUMINA Tło" fetchpriority="high" loading="eager" decoding="async" onerror="this.onerror=null; this.src='tło profilowe LUMINA  (1300 x 500 px) (2).jpg';">
+        </div>
         <div class="hero-overlay" id="heroOverlay" onclick="toggleHeroSearch(event, true)"></div>
         <div class="hero-content" id="heroContent">
             <div class="hero-intro-wrapper" id="heroIntroText">
+                <div style="margin-bottom: 14px;">
+                    <img src="lumina_logo_portal.jpg" onerror="this.onerror=null; this.src='Logo Portal LUMINA.jpg';" alt="Logo LUMINA" style="width: 76px; height: 76px; border-radius: 50%; object-fit: cover; border: 2.5px solid rgba(250, 204, 21, 0.85); box-shadow: 0 0 24px rgba(168, 85, 247, 0.6), 0 0 12px rgba(250, 204, 21, 0.4); display: inline-block;">
+                </div>
                 <div class="hero-pill-badge">
                     <i class="fa-solid fa-sparkles" style="color:#facc15;"></i> Społeczność Ludzi Wiary & Wartości
                 </div>
@@ -2130,47 +2185,30 @@
 
     <!-- ══════════ CARDS ══════════ -->
     <section class="cards-section" id="odkrywaj">
-        <!-- Discovery Match Filters (Wszyscy, Kobiety, Mężczyźni, 18-30 lat) - pod zdjęciem tła, nad karuzelą -->
-        <div class="discovery-filters-wrap">
-            <button class="filter-chip active" id="chip_all" onclick="applyDiscoveryFilter('all', this)" title="Wszyscy" aria-label="Wszyscy"><i class="fa-solid fa-users"></i> <span class="filter-chip-text">Wszyscy</span></button>
-            <button class="filter-chip" id="chip_kobiety" onclick="applyDiscoveryFilter('kobieta', this)" title="Kobiety" aria-label="Kobiety"><i class="fa-solid fa-venus"></i> <span class="filter-chip-text">Kobiety</span></button>
-            <button class="filter-chip" id="chip_mezczyzni" onclick="applyDiscoveryFilter('mezczyzna', this)" title="Mężczyźni" aria-label="Mężczyźni"><i class="fa-solid fa-mars"></i> <span class="filter-chip-text">Mężczyźni</span></button>
-            <button class="filter-chip" id="chip_mlodzi" onclick="applyDiscoveryFilter('mlodzi', this)" title="18–30 lat" aria-label="18–30 lat"><i class="fa-solid fa-bolt"></i> <span class="filter-chip-text">18–30 lat</span></button>
-
-            <!-- 🌟 DYNAMICZNY PRZYCISK 3D "POLECAJ" (POLEĆ ZNAJOMEMU) 🌟 -->
-            <button type="button" class="btn-3d-recommend" id="btnRecommendLumina" onclick="openShareLuminaModal()" title="Poleć portal LUMINA znajomemu ✨" aria-label="Poleć portal znajomym">
-                <i class="fa-solid fa-paper-plane"></i>
-                <span class="btn-3d-text">Polecaj</span>
-                <span class="btn-3d-sparkle">✨</span>
-            </button>
-        </div>
-
         <div class="carousel-container">
             <button class="carousel-btn left" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="profiles-grid" id="profilesCarousel">
 
-                <!-- 🎙️ STUDIO DOBREGO SŁOWA (YouTube @StudioDeeS, studiods.pl & Herbaciarnia) -->
-                <div class="profile-card mission-profile-card" id="card_profile_studiodobregoslowa" data-profile-slug="studiodobregoslowa" onclick="window.location.href='lumina.studiodobregoslowa.html'" data-category="misja media" style="cursor:pointer;">
+                <!-- 1. Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
+                <div class="profile-card home-cezary-card" id="card_profile_cezaryrgowski" data-profile-slug="cezaryrgowski" data-category="mezczyzna zalozyciele" onclick="openCommunityProfile('cezaryrgowski')">
                     <div class="card-photo">
-                        <img src="studiodobregoslowa_avatar.webp" onerror="this.src='studiodobregoslowa_avatar.jpg'" alt="Studio Dobrego Słowa" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'studiodobregoslowa','Studio Dobrego Słowa','studiodobregoslowa_avatar.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #ef4444, #dc2626);">100%</div>
+                        <img src="avatar_cezary_official.webp" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_cezary_official.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'cezaryrgowski','Cezary Rogowski','avatar_cezary_official.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
                     </div>
                     <div class="card-body">
-                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
-                            Studio Dobrego Słowa <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
-                        </div>
-                        <div class="card-city">📍 Piła, Polska • <b style="color:#ef4444;">🎙️ @StudioDeeS • studiods.pl</b></div>
-                        <div class="card-desc">"Oficjalny profil Studia. Apokalipsa Live, podcasty, Słowo Boże i spotkania w Herbaciarni CC."</div>
+                        <div class="card-name home-cezary-name" id="homeUserName">Cezary Rogowski, 51</div>
+                        <div class="card-city home-cezary-city" id="homeUserCity">📍 Ostrowiec Świętokrzyski • <b>Żonaty</b></div>
+                        <div class="card-desc home-cezary-desc" id="homeUserDesc">"Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu."</div>
                     </div>
                 </div>
 
-                <!-- 🌟 REKLAMA WIDEO: Dobrze, że jesteś (CENTRUM NA START) -->
+                <!-- 🌟 REKLAMA WIDEO 1: Dobrze, że jesteś (Sklep CC - CENTRUM NA START) -->
                 <div class="profile-card video-card featured original-promo-card active-center-card" id="promoAdCard" data-category="all misja">
                     <div class="card-photo">
-                        <video id="promoVideoEl" src="czesc_dobrze_ze_jestes.mp4" autoplay muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:16px;">
+                        <video id="promoVideoEl" src="Reklama Sklep CC Karuzela Profili.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
+                            <source src="Reklama Sklep CC Karuzela Profili.mp4" type="video/mp4">
                             <source src="czesc_dobrze_ze_jestes.mp4" type="video/mp4">
-                            <source src="Cześć_dobrze_że_jesteś_Taki.mp4" type="video/mp4">
                         </video>
                         <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
                             <i class="fa-solid fa-volume-xmark"></i>
@@ -2184,40 +2222,10 @@
                     </div>
                 </div>
 
-                <!-- 1. Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
-                <div class="profile-card home-cezary-card" id="card_profile_cezaryrgowski" data-profile-slug="cezaryrgowski" data-category="mezczyzna zalozyciele" onclick="openCommunityProfile('cezaryrgowski')">
-                    <div class="card-photo">
-                        <img src="avatar_cezary_official.webp" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_cezary_official.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'cezaryrgowski','Cezary Rogowski','avatar_cezary_official.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name home-cezary-name" id="homeUserName">Cezary Rogowski, 51</div>
-                        <div class="card-city home-cezary-city" id="homeUserCity">📍 Ostrowiec Świętokrzyski • <b>Żonaty</b></div>
-                        <div class="card-desc home-cezary-desc" id="homeUserDesc">"Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu."</div>
-                    </div>
-                </div>
-
-                <!-- 🌟 Andrzej Thiel (Cuda Każdego Dnia • Sieradz) -->
-                <div class="profile-card" id="card_profile_andrzejthiel" data-profile-slug="andrzejthiel" onclick="openCommunityProfile('andrzejthiel')" data-category="mezczyzna misja" style="cursor:pointer;">
-                    <div class="card-photo">
-                        <img src="avatar_andrzej_thiel.webp" alt="Andrzej Thiel" onerror="this.src='Andrzej Thiel.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'andrzejthiel','Andrzej Thiel','avatar_andrzej_thiel.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #eab308);">99%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
-                            Andrzej Thiel, 70 <span style="font-size:0.72rem; background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff; padding:2px 7px; border-radius:10px; font-weight:700;">✨ Cuda Każdego Dnia</span>
-                        </div>
-                        <div class="card-city">📍 Sieradz, Polska • <b style="color:#f59e0b;">📖 30 listopada 1955</b></div>
-                        <div class="card-desc">"Co dzień publikuję: Cuda Każdego Dnia. Trzymajmy się Jezusa – On jest jedynym i prawdziwym źródłem mocy."</div>
-                    </div>
-                </div>
-
                 <!-- 2. Noemi (Kobieta) -->
                 <div class="profile-card" id="card_profile_noemi" data-profile-slug="noemi" onclick="openCommunityProfile('noemi')" data-category="kobieta mlodzi">
                     <div class="card-photo">
-                        <img src="avatar_noemi.webp" onerror="this.src='avatar_noemi.jpg'" alt="Noemi" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="avatar_noemi.webp" onerror="this.src='avatar_noemi.jpg'" alt="Noemi" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this,'noemi','Noemi','avatar_noemi.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #0369a1, #06b6d4);">96%</div>
                     </div>
@@ -2231,7 +2239,7 @@
                 <!-- 3. MISJA 1: OSOBOWOŚĆ + (YouTube) -->
                 <div class="profile-card mission-profile-card" id="card_profile_osobowoscplus" data-profile-slug="osobowoscplus" onclick="window.location.href='lumina.osobowoscplus.html'" data-category="misja mezczyzna" style="cursor:pointer;">
                     <div class="card-photo">
-                        <img src="logo_osobowosc_plus.webp" onerror="this.src='logo_osobowosc_plus.jpg'" alt="OSOBOWOŚĆ +" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="logo_osobowosc_plus.webp" onerror="this.src='logo_osobowosc_plus.jpg'" alt="OSOBOWOŚĆ +" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'osobowoscplus','OSOBOWOŚĆ +','logo_osobowosc_plus.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #8b5cf6, #a855f7);">100%</div>
                     </div>
@@ -2244,38 +2252,26 @@
                     </div>
                 </div>
 
-                <!-- 4. Dawid (Mężczyzna) -->
-                <div class="profile-card" id="card_profile_dawid" data-profile-slug="dawid" onclick="openCommunityProfile('dawid')" data-category="mezczyzna mlodzi">
+                <!-- 4. Andrzej Thiel (Cuda Każdego Dnia • Sieradz) -->
+                <div class="profile-card" id="card_profile_andrzejthiel" data-profile-slug="andrzejthiel" onclick="openCommunityProfile('andrzejthiel')" data-category="mezczyzna misja" style="cursor:pointer;">
                     <div class="card-photo">
-                        <img src="avatar_sara.webp" onerror="this.src='avatar_sara.jpg'" alt="Dawid" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'dawid','Dawid','avatar_sara.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #6d28d9, #0ea5e9);">93%</div>
+                        <img src="avatar_andrzej_thiel.webp" alt="Andrzej Thiel" onerror="this.src='Andrzej Thiel.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'andrzejthiel','Andrzej Thiel','avatar_andrzej_thiel.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #eab308);">99%</div>
                     </div>
                     <div class="card-body">
-                        <div class="card-name">Dawid, 30</div>
-                        <div class="card-city">📍 Poznań • <span style="color:#a855f7;font-weight:700;">Profil Społeczności</span></div>
-                        <div class="card-desc">"Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu i wierze."</div>
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Andrzej Thiel, 70 <span style="font-size:0.72rem; background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff; padding:2px 7px; border-radius:10px; font-weight:700;">✨ Cuda Każdego Dnia</span>
+                        </div>
+                        <div class="card-city">📍 Sieradz, Polska • <b style="color:#f59e0b;">📖 30 listopada 1955</b></div>
+                        <div class="card-desc">"Co dzień publikuję: Cuda Każdego Dnia. Trzymajmy się Jezusa – On jest jedynym i prawdziwym źródłem mocy."</div>
                     </div>
                 </div>
 
-                <!-- 5. Wioletta Rogowska / Współzałożycielka Christian Culture (Mężatka) -->
-                <div class="profile-card home-wioletta-card" id="card_profile_wiolettarogowska" data-profile-slug="wiolettarogowska" data-category="kobieta zalozyciele" onclick="openCommunityProfile('wiolettarogowska')">
-                    <div class="card-photo">
-                        <img src="avatar_wioletta_official.webp" alt="Wioletta Rogowska" class="home-wioletta-avatar" id="homeWiolettaAvatar" onerror="this.src='avatar_wioletta_official.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this,'wiolettarogowska','Wioletta Rogowska','avatar_wioletta_official.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f472b6);">99%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name home-wioletta-name" id="homeWiolettaName">Wioletta Rogowska, 50</div>
-                        <div class="card-city home-wioletta-city" id="homeWiolettaCity">📍 Ostrowiec Świętokrzyski • <b>Mężatka</b></div>
-                        <div class="card-desc home-wioletta-desc" id="homeWiolettaDesc">"Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
-                    </div>
-                </div>
-
-                <!-- 6. MISJA 2: Polskie Radio CC (YouTube) -->
+                <!-- 5. MISJA 2: Polskie Radio CC (YouTube) -->
                 <div class="profile-card mission-profile-card" id="card_profile_radiocc" data-profile-slug="radiocc" onclick="window.location.href='lumina.radiocc.html'" data-category="misja" style="cursor:pointer;">
                     <div class="card-photo">
-                        <img src="logo_radio_cc.webp" onerror="this.src='logo_radio_cc.jpg'" alt="Polskie Radio CC" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;">
+                        <img src="logo_radio_cc.webp" onerror="this.src='logo_radio_cc.jpg'" alt="Polskie Radio CC" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'radiocc','Polskie Radio CC','logo_radio_cc.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">100%</div>
                     </div>
@@ -2288,10 +2284,72 @@
                     </div>
                 </div>
 
-                <!-- 7. Weronika (Kobieta) -->
+                <!-- 6. Wioletta Rogowska / Współzałożycielka Christian Culture (Mężatka) -->
+                <div class="profile-card home-wioletta-card" id="card_profile_wiolettarogowska" data-profile-slug="wiolettarogowska" data-category="kobieta zalozyciele" onclick="openCommunityProfile('wiolettarogowska')">
+                    <div class="card-photo">
+                        <img src="avatar_wioletta_official.webp" alt="Wioletta Rogowska" class="home-wioletta-avatar" id="homeWiolettaAvatar" onerror="this.src='avatar_wioletta_official.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'wiolettarogowska','Wioletta Rogowska','avatar_wioletta_official.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f472b6);">99%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name home-wioletta-name" id="homeWiolettaName">Wioletta Rogowska, 50</div>
+                        <div class="card-city home-wioletta-city" id="homeWiolettaCity">📍 Ostrowiec Świętokrzyski • <b>Mężatka</b></div>
+                        <div class="card-desc home-wioletta-desc" id="homeWiolettaDesc">"Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
+                    </div>
+                </div>
+
+                <!-- 🌟 REKLAMA WIDEO 2: Sklep Christian Culture (Filipian 4:13 - Wszystko Mogę w Tym, który mnie umacnia) -->
+                <div class="profile-card video-card featured original-promo-card" id="promoAdCard2" data-category="all misja kobieta">
+                    <div class="card-photo">
+                        <video id="promoVideoEl2" src="Reklama 2 Sklep CC.mp4" autoplay muted loop playsinline preload="auto" poster="reklama_2_sklep_cc_poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('reklama_2_sklep_cc_poster.jpg') center top/cover no-repeat;">
+                            <source src="Reklama 2 Sklep CC.mp4" type="video/mp4">
+                        </video>
+                        <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
+                            <i class="fa-solid fa-volume-xmark"></i>
+                        </button>
+                        <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        
+                        <!-- Pulsujący Przycisk do Sklepu -->
+                        <a href="https://my-store-1009741.creator-spring.com/listing/mog-wszystko?product=377&variation=100057" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
+                            <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➔
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 7. Dawid (Mężczyzna) -->
+                <div class="profile-card" id="card_profile_dawid" data-profile-slug="dawid" onclick="openCommunityProfile('dawid')" data-category="mezczyzna mlodzi">
+                    <div class="card-photo">
+                        <img src="avatar_sara.webp" onerror="this.src='avatar_sara.jpg'" alt="Dawid" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this,'dawid','Dawid','avatar_sara.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #6d28d9, #0ea5e9);">93%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Dawid, 30</div>
+                        <div class="card-city">📍 Poznań • <span style="color:#a855f7;font-weight:700;">Profil Społeczności</span></div>
+                        <div class="card-desc">"Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu i wierze."</div>
+                    </div>
+                </div>
+
+                <!-- 8. MISJA 3: STUDIO DOBREGO SŁOWA (YouTube @StudioDeeS, studiods.pl & Herbaciarnia) -->
+                <div class="profile-card mission-profile-card" id="card_profile_studiodobregoslowa" data-profile-slug="studiodobregoslowa" onclick="window.location.href='lumina.studiodobregoslowa.html'" data-category="misja media" style="cursor:pointer;">
+                    <div class="card-photo">
+                        <img src="studiodobregoslowa_avatar.webp" onerror="this.src='studiodobregoslowa_avatar.jpg'" alt="Studio Dobrego Słowa" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'studiodobregoslowa','Studio Dobrego Słowa','studiodobregoslowa_avatar.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ef4444, #dc2626);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Studio Dobrego Słowa <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Piła, Polska • <b style="color:#ef4444;">🎙️ @StudioDeeS • studiods.pl</b></div>
+                        <div class="card-desc">"Oficjalny profil Studia. Apokalipsa Live, podcasty, Słowo Boże i spotkania w Herbaciarni CC."</div>
+                    </div>
+                </div>
+
+                <!-- 9. Weronika (Kobieta) -->
                 <div class="profile-card" id="card_profile_weronika" data-profile-slug="weronika" onclick="openCommunityProfile('weronika')" data-category="kobieta mlodzi">
                     <div class="card-photo">
-                        <img src="avatar_widget_ania.webp" onerror="this.src='avatar_widget_ania.jpg'" alt="Weronika" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="avatar_widget_ania.webp" onerror="this.src='avatar_widget_ania.jpg'" alt="Weronika" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this,'weronika','Weronika','avatar_widget_ania.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #a855f7, #ec4899);">97%</div>
                     </div>
@@ -2302,10 +2360,10 @@
                     </div>
                 </div>
 
-                <!-- 8. MISJA 3: Christian Culture TV (YouTube) -->
+                <!-- 10. MISJA 4: Christian Culture TV (YouTube) -->
                 <div class="profile-card mission-profile-card" id="card_profile_cctv" data-profile-slug="cctv" onclick="window.location.href='lumina.cctv.html'" data-category="misja" style="cursor:pointer;">
                     <div class="card-photo">
-                        <img src="logo_cctv.webp" onerror="this.src='logo_cctv.png'" alt="Christian Culture TV" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;">
+                        <img src="logo_cctv.webp" onerror="this.src='logo_cctv.png'" alt="Christian Culture TV" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'cctv','Christian Culture TV','logo_cctv.png')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">100%</div>
                     </div>
@@ -2318,10 +2376,10 @@
                     </div>
                 </div>
 
-                <!-- 9. Tomek (Mężczyzna) -->
+                <!-- 11. Tomasz (Mężczyzna) -->
                 <div class="profile-card" id="card_profile_tomek" data-profile-slug="tomek" onclick="openCommunityProfile('tomek')" data-category="mezczyzna mlodzi">
                     <div class="card-photo">
-                        <img src="avatar_widget_tomek.webp" onerror="this.src='avatar_widget_tomek.jpg'" alt="Tomasz" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="avatar_widget_tomek.webp" onerror="this.src='avatar_widget_tomek.jpg'" alt="Tomasz" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this,'tomek','Tomasz','avatar_widget_tomek.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #059669, #10b981);">94%</div>
                     </div>
@@ -2332,10 +2390,42 @@
                     </div>
                 </div>
 
-                <!-- 10. MISJA 4: CC MEN (YouTube) -->
+                <!-- 🌟 REKLAMA WIDEO 3: Dobrze, że jesteś - LIVE TV24 (Christian Culture TV Na Żywo) -->
+                <div class="profile-card video-card featured original-promo-card" id="promoAdCard3" data-category="all misja">
+                    <div class="card-photo">
+                        <video id="promoVideoEl3" src="Reklama 3 Dobrze, że jesteś.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
+                            <source src="Reklama 3 Dobrze, że jesteś.mp4" type="video/mp4">
+                        </video>
+                        <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
+                            <i class="fa-solid fa-volume-xmark"></i>
+                        </button>
+                        <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        
+                        <!-- Pulsujący Przycisk do LIVE TV24 -->
+                        <a href="https://polskieradio.cc/master-live.html" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse" style="background: linear-gradient(135deg, #ef4444, #b91c1c); box-shadow: 0 4px 20px rgba(239, 68, 68, 0.6);">
+                            <i class="fa-solid fa-tv"></i> OGLĄDAJ LIVE TV24 ➔
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 12. Magdalena (Kobieta) -->
+                <div class="profile-card" id="card_profile_magdalena" data-profile-slug="magdalena" onclick="openCommunityProfile('magdalena')" data-category="kobieta">
+                    <div class="card-photo">
+                        <img src="avatar_magdalena.webp" onerror="this.src='avatar_magdalena.png'" alt="Magdalena" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this,'magdalena','Magdalena','avatar_magdalena.png')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">98%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Magdalena, 43</div>
+                        <div class="card-city">📍 Poznań • <span style="color:#a855f7;font-weight:700;">Profil Społeczności</span></div>
+                        <div class="card-desc">"Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu i miłości."</div>
+                    </div>
+                </div>
+
+                <!-- 13. MISJA 5: CC MEN (YouTube) -->
                 <div class="profile-card mission-profile-card" id="card_profile_ccmen" data-profile-slug="ccmen" onclick="window.location.href='lumina.ccmen.html'" data-category="misja mezczyzna" style="cursor:pointer;">
                     <div class="card-photo">
-                        <img src="logo_cc_men.webp" onerror="this.src='logo_cc_men.jpg'" alt="CC MEN" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="logo_cc_men.webp" onerror="this.src='logo_cc_men.jpg'" alt="CC MEN" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'ccmen','CC MEN','logo_cc_men.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">100%</div>
                     </div>
@@ -2348,11 +2438,25 @@
                     </div>
                 </div>
 
-                <!-- 11. MISJA 5: CC Women (YouTube) -->
-                <div class="profile-card home-ccwomen-card" id="card_profile_ccwomen" data-profile-slug="ccwomen" onclick="window.location.href='lumina.ccwomen.html'" data-category="misja kobieta" style="cursor:pointer;">
+                <!-- 14. Anna (Kobieta) -->
+                <div class="profile-card" id="card_profile_anna" data-profile-slug="anna" onclick="openCommunityProfile('anna')" data-category="kobieta mlodzi">
                     <div class="card-photo">
-                        <img src="logo_cc_women.webp" alt="CC Women" class="home-ccwomen-avatar" id="homeCcwomenAvatar" onerror="this.onerror=null; this.src='CC Women.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:16px 16px 0 0;display:block;background:#000;">
-                        <button class="card-heart liked" onclick="toggleLike(event,this, 'ccwomen', 'CC Women', 'logo_cc_women.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <img src="avatar_widget_ania.webp" onerror="this.src='avatar_widget_ania.jpg'" alt="Anna" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this,'anna','Anna','avatar_widget_ania.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match">94%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Anna, 28</div>
+                        <div class="card-city">📍 Warszawa • <span style="color:#a855f7;font-weight:700;">Profil Społeczności</span></div>
+                        <div class="card-desc">"Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania świata."</div>
+                    </div>
+                </div>
+
+                <!-- 15. MISJA 6: CC Women (YouTube) -->
+                <div class="profile-card home-ccwomen-card" id="card_profile_ccwomen" data-profile-slug="ccwomen" onclick="window.location.href='lumina.ccwomen.html'" data-category="misja kobieta" style="cursor:pointer;">
+                    <div class="card-photo" style="background:#000;">
+                        <img src="logo_cc_women.jpg?v=20260820" alt="CC Women" class="home-ccwomen-avatar" id="homeCcwomenAvatar" onerror="this.onerror=null; this.src='CC Women.jpg?v=20260820'" loading="eager" decoding="async" style="width:100%;height:100%;object-fit:contain;object-position:center;display:block;background:#000;padding:12px;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this, 'ccwomen', 'CC Women', 'logo_cc_women.jpg?v=20260820')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">100%</div>
                     </div>
                     <div class="card-body">
@@ -2364,38 +2468,10 @@
                     </div>
                 </div>
 
-                <!-- Magdalena (Kobieta) -->
-                <div class="profile-card" id="card_profile_magdalena" data-profile-slug="magdalena" onclick="openCommunityProfile('magdalena')" data-category="kobieta">
-                    <div class="card-photo">
-                        <img src="avatar_magdalena.webp" onerror="this.src='avatar_magdalena.png'" alt="Magdalena" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'magdalena','Magdalena','avatar_magdalena.png')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">98%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name">Magdalena, 43</div>
-                        <div class="card-city">📍 Poznań • <span style="color:#a855f7;font-weight:700;">Profil Społeczności</span></div>
-                        <div class="card-desc">"Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu i miłości."</div>
-                    </div>
-                </div>
-
-                <!-- 13. Anna (Kobieta) -->
-                <div class="profile-card" id="card_profile_anna" data-profile-slug="anna" onclick="openCommunityProfile('anna')" data-category="kobieta mlodzi">
-                    <div class="card-photo">
-                        <img src="avatar_widget_ania.webp" onerror="this.src='avatar_widget_ania.jpg'" alt="Anna" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
-                        <button class="card-heart" onclick="toggleLike(event,this,'anna','Anna','avatar_widget_ania.jpg')"><i class="fa-solid fa-heart"></i></button>
-                        <div class="card-match">94%</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-name">Anna, 28</div>
-                        <div class="card-city">📍 Warszawa • <span style="color:#a855f7;font-weight:700;">Profil Społeczności</span></div>
-                        <div class="card-desc">"Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania świata."</div>
-                    </div>
-                </div>
-
-                <!-- 14. Piotr (Mężczyzna) -->
+                <!-- 16. Piotr (Mężczyzna) -->
                 <div class="profile-card" id="card_profile_piotr" data-profile-slug="piotr" onclick="openCommunityProfile('piotr')" data-category="mezczyzna mlodzi">
                     <div class="card-photo">
-                        <img src="lumina_piotr2.webp" onerror="this.src='lumina_piotr2.jpg'" alt="Piotr" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="lumina_piotr2.webp" onerror="this.src='lumina_piotr2.jpg'" alt="Piotr" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this,'piotr','Piotr','lumina_piotr2.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match">88%</div>
                     </div>
@@ -2406,10 +2482,10 @@
                     </div>
                 </div>
 
-                <!-- 15. Julia (Kobieta) -->
+                <!-- 17. Julia (Kobieta) -->
                 <div class="profile-card" id="card_profile_julia" data-profile-slug="julia" onclick="openCommunityProfile('julia')" data-category="kobieta mlodzi">
                     <div class="card-photo">
-                        <img src="lumina_julia2.webp" onerror="this.src='lumina_julia2.jpg'" alt="Julia" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:16px 16px 0 0;display:block;">
+                        <img src="lumina_julia2.webp" onerror="this.src='lumina_julia2.jpg'" alt="Julia" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this,'julia','Julia','lumina_julia2.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match">91%</div>
                     </div>
@@ -2422,6 +2498,20 @@
 
             </div>
             <button class="carousel-btn right" onclick="scrollCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+        <!-- Discovery Match Filters (Wszyscy, Kobiety, Mężczyźni, 18-30 lat, Polecaj) - pod karuzelą -->
+        <div class="discovery-filters-wrap" style="margin-top: 16px;">
+            <button class="filter-chip" id="chip_all" onclick="applyDiscoveryFilter('all', this)" title="Wszyscy" aria-label="Wszyscy"><i class="fa-solid fa-users"></i> <span class="filter-chip-text">Wszyscy</span></button>
+            <button class="filter-chip" id="chip_kobiety" onclick="applyDiscoveryFilter('kobieta', this)" title="Kobiety" aria-label="Kobiety"><i class="fa-solid fa-venus"></i> <span class="filter-chip-text">Kobiety</span></button>
+            <button class="filter-chip" id="chip_mezczyzni" onclick="applyDiscoveryFilter('mezczyzna', this)" title="Mężczyźni" aria-label="Mężczyźni"><i class="fa-solid fa-mars"></i> <span class="filter-chip-text">Mężczyźni</span></button>
+            <button class="filter-chip" id="chip_mlodzi" onclick="applyDiscoveryFilter('mlodzi', this)" title="18–30 lat" aria-label="18–30 lat"><i class="fa-solid fa-bolt"></i> <span class="filter-chip-text">18–30 lat</span></button>
+
+            <!-- 🌟 PRZYCISK "POLECAJ" (POLEĆ ZNAJOMEMU) W STYLU POZOSTAŁYCH PRZYCISKÓW 🌟 -->
+            <button type="button" class="filter-chip" id="btnRecommendLumina" onclick="openShareLuminaModal()" title="Poleć portal LUMINA znajomemu ✨" aria-label="Poleć portal znajomym">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span class="filter-chip-text">Polecaj</span>
+            </button>
         </div>
     </section>
 
@@ -2476,15 +2566,15 @@
             <div style="display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1);">
                 <div id="tablicaOnlineAvatarsContainer" class="tablica-online-avatars-wrap">
                     <div class="tablica-online-avatar-item" title="Zalogowany: Cezary Rogowski 🟢" style="z-index: 4;">
-                        <img src="avatar_new1.jpg" alt="Cezary" class="tablica-online-avatar-img home-cezary-avatar">
+                        <img src="avatar_cezary_official.jpg" alt="Cezary" class="tablica-online-avatar-img home-cezary-avatar" onerror="this.onerror=null; this.src='avatar_cezary_official.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
                     <div class="tablica-online-avatar-item" title="Zalogowana: Wioletta Rogowska 🟢" style="z-index: 3;">
-                        <img src="avatar_wioletta_official.jpg" alt="Wioletta" class="tablica-online-avatar-img home-wioletta-avatar">
+                        <img src="avatar_wioletta_official.jpg" alt="Wioletta" class="tablica-online-avatar-img home-wioletta-avatar" onerror="this.onerror=null; this.src='avatar_wioletta_official.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
                     <div class="tablica-online-avatar-item" title="Zalogowana: Magdalena 🟢" style="z-index: 2;">
-                        <img src="avatar_magdalena.jpg" alt="Magdalena" class="tablica-online-avatar-img">
+                        <img src="avatar_magdalena.png" alt="Magdalena" class="tablica-online-avatar-img" onerror="this.onerror=null; this.src='avatar_magdalena.png';">
                         <span class="tablica-online-dot"></span>
                     </div>
                     <div class="tablica-online-more-btn" title="I więcej zalogowanych użytkowników w społeczności LUMINA" aria-label="Więcej zalogowanych użytkowników">
@@ -2514,28 +2604,6 @@
         </div>
     </footer>
 
-    <!-- ══════════ MOBILE BOTTOM NAVIGATION BAR ══════════ -->
-    <nav class="lumina-mobile-nav" aria-label="Nawigacja mobilna">
-        <a href="lumina.html" class="m-nav-item active">
-            <i class="fa-solid fa-compass"></i>
-            <span>Odkrywaj</span>
-        </a>
-        <a href="lumina-tablica.html" class="m-nav-item">
-            <i class="fa-solid fa-rectangle-list"></i>
-            <span>Tablica</span>
-        </a>
-        <a href="javascript:void(0)" onclick="openDirectMessagesModal()" class="m-nav-item" id="mNavMsgItem">
-            <div class="m-nav-msg-icon">
-                <i class="fa-solid fa-comment-dots"></i>
-                <span class="m-nav-badge">2</span>
-            </div>
-            <span>Wiadomości</span>
-        </a>
-        <a href="javascript:void(0)" onclick="handleMyProfileNavigation(event)" class="m-nav-item" id="mNavProfileItem">
-            <i class="fa-solid fa-user"></i>
-            <span>Mój Profil</span>
-        </a>
-    </nav>
 
     <!-- ══════════ REALTIME DIRECT MESSENGER MODAL (Etap 3) ══════════ -->
     <div class="modal-overlay" id="directMessagesModal">
@@ -2737,28 +2805,6 @@
                     <div id="authStatusMsg" style="display:none; margin-top:12px; padding:10px 14px; border-radius:12px; font-size:0.83rem; text-align:center; font-weight:700; line-height:1.4;"></div>
                 </form>
 
-                <div class="auth-divider" style="margin-top:16px;"><span>LUB PRZEZ NUMER TELEFONU</span></div>
-                
-                <button type="button" onclick="togglePhoneAuthBox()" style="width:100%; padding:11px; border-radius:24px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-weight:700; font-size:0.84rem; cursor:pointer; font-family:inherit; display:flex; align-items:center; justify-content:center; gap:8px;">
-                    <i class="fa-solid fa-mobile-screen-button" style="color:#38bdf8;"></i> Zaloguj kodem SMS (Telefon)
-                </button>
-
-                <!-- Phone Auth Box (SMS) -->
-                <div id="phoneAuthBox" style="display:none; margin-top:12px; padding:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(56,189,248,0.25); border-radius:14px;">
-                    <div style="font-size:0.78rem; color:#94a3b8; margin-bottom:8px;">Podaj numer telefonu z numerem kierunkowym (np. +48...):</div>
-                    <div style="display:flex; gap:8px; margin-bottom:10px;">
-                        <input type="tel" id="phoneAuthInput" placeholder="+48 600 000 000" style="flex:1; padding:9px 12px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#fff; font-family:inherit;">
-                        <button type="button" id="btnSendPhoneCode" onclick="handleSendPhoneCode()" style="padding:9px 14px; border-radius:8px; background:#0284c7; border:none; color:#fff; font-weight:700; font-size:0.78rem; cursor:pointer; font-family:inherit; white-space:nowrap;">Wyślij SMS</button>
-                    </div>
-                    <div id="phoneCodeVerifyRow" style="display:none;">
-                        <div style="font-size:0.78rem; color:#94a3b8; margin-bottom:6px;">Wpisz 6-cyfrowy kod z SMS:</div>
-                        <div style="display:flex; gap:8px;">
-                            <input type="text" id="phoneVerifyCodeInput" placeholder="123456" maxlength="6" style="flex:1; padding:9px 12px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#fff; font-family:inherit; letter-spacing:2px; font-weight:700; text-align:center;">
-                            <button type="button" id="btnConfirmPhoneCode" onclick="handleVerifyPhoneCode()" style="padding:9px 14px; border-radius:8px; background:#10b981; border:none; color:#fff; font-weight:700; font-size:0.78rem; cursor:pointer; font-family:inherit; white-space:nowrap;">Potwierdź ➔</button>
-                        </div>
-                    </div>
-                    <div id="recaptcha-container"></div>
-                </div>
             </div>
 
             <!-- ── PANEL 2: 3-KROKOWY KREATOR PROFILU ONBOARDING ── -->
@@ -3465,7 +3511,7 @@
                         if (user) {
                             if (profilePill) profilePill.style.display = 'flex';
                             if (authBtn) authBtn.style.display = 'none';
-                            if (navName) navName.textContent = profile?.name || user.displayName || user.email.split('@')[0];
+                            if (navName) navName.textContent = profile?.name || user.displayName || (user.email ? user.email.split('@')[0] : 'Profil');
                             if (navAvatar && (profile?.avatar || user.photoURL)) {
                                 navAvatar.src = profile?.avatar || user.photoURL;
                             }
@@ -3985,7 +4031,7 @@
 
                         myCard.innerHTML = `
                             <div class="card-photo">
-                                <img src="${myAvatar}" alt="${myName}" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;display:block;">
+                                <img src="${myAvatar}" alt="${myName}" style="width:100%;height:100%;object-fit:cover;display:block;">
                                 <button class="card-heart liked" onclick="toggleLike(event,this, '${myUid}', '${myName}', '${myAvatar}')"><i class="fa-solid fa-heart"></i></button>
                                 <div class="card-match" style="background:linear-gradient(135deg,#a855f7,#ec4899);">Twój Profil</div>
                             </div>
@@ -4271,6 +4317,17 @@
                 } catch(e) {}
             }
 
+            const isSessionActive = localStorage.getItem('lumina_user_session') === 'active' || !!currentUser;
+
+            if (!isSessionActive) {
+                container.innerHTML = `
+                    <div style="font-size:0.78rem; color:#94a3b8; font-weight:700; display:flex; align-items:center; gap:6px; padding:4px 0;">
+                        <i class="fa-solid fa-user-slash" style="color:#fca5a5;"></i> Wylogowany (0 aktywnych)
+                    </div>
+                `;
+                return;
+            }
+
             // Pool of active/online members in LUMINA community
             const activeCommunityPool = [
                 { name: 'Cezary Rogowski', avatar: 'avatar_cezary_official.jpg', slug: 'cezaryrgowski' },
@@ -4457,6 +4514,18 @@
             const icon = button ? button.querySelector('i') : null;
 
             if (!video.muted) {
+                // Mute other video cards so sounds don't overlap
+                document.querySelectorAll('.video-card video').forEach(v => {
+                    if (v !== video) {
+                        v.muted = true;
+                        const otherBtn = v.closest('.video-card')?.querySelector('.card-sound-btn');
+                        if (otherBtn) {
+                            otherBtn.classList.remove('sound-on');
+                            const otherIcon = otherBtn.querySelector('i');
+                            if (otherIcon) otherIcon.className = 'fa-solid fa-volume-xmark';
+                        }
+                    }
+                });
                 video.volume = 1.0;
                 video.play().catch(() => {});
                 if (button) button.classList.add('sound-on');
@@ -4578,18 +4647,36 @@
         let carouselAutoplayTimer = null;
         let isCarouselInteracting = false;
         let resumeAutoplayTimeout = null;
+        let lastCenteredCardId = null;
+
+        window.scheduleNextCarouselAdvance = function(delayMs) {
+            if (carouselAutoplayTimer) {
+                clearTimeout(carouselAutoplayTimer);
+                clearInterval(carouselAutoplayTimer);
+                carouselAutoplayTimer = null;
+            }
+
+            carouselAutoplayTimer = setTimeout(() => {
+                if (!isCarouselInteracting && !document.hidden) {
+                    window.scrollCarousel(1, true); // auto-advance to next card
+                } else {
+                    // Re-schedule check if currently interacting
+                    window.scheduleNextCarouselAdvance(1500);
+                }
+            }, delayMs);
+        };
 
         window.startCarouselAutoplay = function() {
-            if (carouselAutoplayTimer) clearInterval(carouselAutoplayTimer);
-            carouselAutoplayTimer = setInterval(() => {
-                if (!isCarouselInteracting) {
-                    window.scrollCarousel(1, true); // auto-advance smoothly
-                }
-            }, 3500); // Advances continuously every 3.5 seconds in an infinite loop
+            const carousel = document.getElementById('profilesCarousel');
+            const activeCard = carousel ? carousel.querySelector('.profile-card.active-center-card') : null;
+            const isVideoCard = activeCard ? (activeCard.classList.contains('video-card') || !!activeCard.querySelector('video')) : false;
+            const delay = isVideoCard ? 10500 : 3500;
+            window.scheduleNextCarouselAdvance(delay);
         };
 
         window.stopCarouselAutoplay = function() {
             if (carouselAutoplayTimer) {
+                clearTimeout(carouselAutoplayTimer);
                 clearInterval(carouselAutoplayTimer);
                 carouselAutoplayTimer = null;
             }
@@ -4597,9 +4684,11 @@
 
         window.pauseCarouselAutoplayTemporarily = function(ms = 4000) {
             isCarouselInteracting = true;
+            window.stopCarouselAutoplay();
             if (resumeAutoplayTimeout) clearTimeout(resumeAutoplayTimeout);
             resumeAutoplayTimeout = setTimeout(() => {
                 isCarouselInteracting = false;
+                window.startCarouselAutoplay();
             }, ms);
         };
 
@@ -4673,13 +4762,40 @@
                 }
             });
 
+            if (!closestCard) return;
+
+            const isNewCardCentered = (closestCard.id !== lastCenteredCardId);
+            lastCenteredCardId = closestCard.id;
+
             cards.forEach(card => {
+                const vid = card.querySelector('video');
                 if (card === closestCard) {
                     card.classList.add('active-center-card', 'featured');
+                    if (vid) {
+                        if (isNewCardCentered) {
+                            try {
+                                vid.currentTime = 0;
+                                vid.play().catch(() => {});
+                            } catch(e) {}
+                        }
+                    }
                 } else {
                     card.classList.remove('active-center-card', 'featured');
+                    if (vid) {
+                        try {
+                            vid.pause();
+                        } catch(e) {}
+                    }
                 }
             });
+
+            // Re-schedule autoplay with exact timing depending on active card type
+            if (isNewCardCentered && !isCarouselInteracting && window._promoVideoFinishedPlaying) {
+                const isVideoCard = closestCard.classList.contains('video-card') || !!closestCard.querySelector('video');
+                // Video ads: full 10.5 seconds of viewing time; standard cards: 3.5 seconds
+                const nextInterval = isVideoCard ? 10500 : 3500;
+                window.scheduleNextCarouselAdvance(nextInterval);
+            }
         };
 
         window.scrollCarousel = function(direction, isAuto = false) {
@@ -4707,7 +4823,7 @@
                 carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
             }
 
-            setTimeout(window.updateCenterActiveCard, 400);
+            setTimeout(window.updateCenterActiveCard, 450);
         };
 
         window.centerPromoVideoOnStart = function(smooth = false) {
@@ -4791,6 +4907,17 @@
                 window.stopCarouselAutoplay();
                 window._promoVideoFinishedPlaying = false;
                 let rotationStarted = false;
+
+                // Preload and start playback for ALL promo videos to eliminate black screen delays
+                ['promoVideoEl', 'promoVideoEl2', 'promoVideoEl3'].forEach(id => {
+                    const vid = document.getElementById(id);
+                    if (vid) {
+                        vid.muted = true;
+                        vid.playsInline = true;
+                        vid.load();
+                        vid.play().catch(() => {});
+                    }
+                });
 
                 const promoVid = document.getElementById('promoVideoEl');
 
@@ -5231,7 +5358,7 @@
     </script>
     <script src="lumina-scroll-top.js" defer></script>
     <script src="lumina-bottom-nav.js?v=1786937913306" defer></script>
-    <script src="lumina-notifications.js?v=1786851592174" defer></script>
+    <script src="lumina-notifications.js?v=20260820_notif_nodot" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
@@ -5296,6 +5423,44 @@
     } catch(e) {}
 })();
 </script>
+
+    
+    <!-- ══════════ MODAL: WSPARCIE DZIEŁA (DONORBOX) ══════════ -->
+    <div class="modal-overlay" id="supportLuminaModal" onclick="if(event.target===this) closeSupportModal()">
+        <div class="modal-card" style="max-width: 480px; width: 92%; max-height: 90vh; overflow-y:auto; background: linear-gradient(135deg, #0f172a, #1e1b4b); border: 1.5px solid rgba(245, 158, 11, 0.5); box-shadow: 0 25px 60px rgba(0,0,0,0.85), 0 0 35px rgba(245, 158, 11, 0.2); border-radius: 24px; padding: 24px; position: relative;">
+            <button class="modal-close-btn" onclick="closeSupportModal()" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+            <div style="text-align:center; margin-bottom:16px;">
+                <div style="width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg, #f59e0b, #d97706); display:flex; align-items:center; justify-content:center; color:#000; font-size:1.6rem; box-shadow:0 6px 20px rgba(245,158,11,0.4); margin: 0 auto 14px auto;">
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+                </div>
+                <h3 style="font-family:'Outfit', sans-serif; font-size:1.4rem; font-weight:800; color:#fff; margin:0 0 6px 0;">Wsparcie Dzieła LUMINA</h3>
+                <p style="font-size:0.85rem; color:#94a3b8; margin:0 0 16px 0; line-height: 1.5;">Dzięki Twojemu wsparciu portal, radio i telewizja mogą działać bez reklam i kompromisów. Bóg zapłać za każdy dar serca! 🙏</p>
+            </div>
+            
+            <div style="width:100%; border-radius:14px; overflow:hidden; background:transparent; display:flex; justify-content:center;">
+                <script type="module" src="https://donorbox.org/widgets.js" async></script>
+                <dbox-widget campaign="christian-culture-radio" type="donation_form" interval="1 M" amount="50" enable-auto-scroll="true"></dbox-widget>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        window.openSupportModal = function() {
+            const modal = document.getElementById('supportLuminaModal');
+            if(modal) {
+                modal.classList.add('open');
+            }
+        };
+        window.closeSupportModal = function() {
+            const modal = document.getElementById('supportLuminaModal');
+            if(modal) {
+                modal.classList.remove('open');
+            }
+        };
+    </script>
+
+    <script src="lumina-admin-profile-suite.js"></script>
+    <script src="lumina-premium-video-avatar.js"></script>
 </body>
 </html>
 

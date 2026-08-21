@@ -64,7 +64,7 @@
             <div id="lumina-notification-center" class="notif-wrapper">
                 <button type="button" id="lumina-notif-btn" class="notif-bell-btn" title="Centrum powiadomień LUMINA" onclick="window.LuminaNotifications.toggleDropdown(event)">
                     <i class="fa-solid fa-bell"></i>
-                    <span id="notif-badge" class="notif-badge" style="display:none;">0</span>
+                    <span id="notif-badge" class="notif-badge" style="display:none;"></span>
                 </button>
                 
                 <div id="notif-dropdown" class="notif-dropdown" onclick="event.stopPropagation()">
@@ -73,15 +73,13 @@
                             <i class="fa-solid fa-bell" style="color:#f59e0b; font-size:0.95rem;"></i>
                             <h4 style="margin:0; font-size:14px; font-weight:800; color:#fff; font-family:'Outfit',sans-serif;">Powiadomienia</h4>
                         </div>
-                        <div style="display:flex; align-items:center; gap:10px;">
+                        <div id="notif-header-actions" style="display:none; align-items:center; gap:10px;">
                             <button type="button" onclick="window.LuminaNotifications.markAllAsRead()" class="notif-action-btn" title="Oznacz wszystko jako przeczytane">Odczytaj</button>
                             <button type="button" onclick="window.LuminaNotifications.clearAll()" class="notif-action-btn notif-clear-btn" title="Wyczyść listę powiadomień">Wyczyść</button>
                         </div>
                     </div>
                     <div id="notif-push-bar" class="notif-push-bar"></div>
-                    <div id="notif-list" class="notif-list">
-                        <div class="notif-empty">Brak nowych powiadomień ✨</div>
-                    </div>
+                    <div id="notif-list" class="notif-list"></div>
                 </div>
             </div>
 
@@ -140,12 +138,16 @@
                     height: 18px !important;
                     border-radius: 9px !important;
                     padding: 0 4px !important;
-                    display: flex !important;
+                    display: none;
                     align-items: center !important;
                     justify-content: center !important;
                     border: 2px solid #0b1838 !important;
                     animation: notifPulseBadge 2s infinite !important;
                     box-shadow: 0 0 10px rgba(239,68,68,0.8) !important;
+                }
+                .notif-badge:empty,
+                .notif-badge[data-count="0"] {
+                    display: none !important;
                 }
                 .notif-dropdown {
                     position: absolute !important;
@@ -164,6 +166,18 @@
                     -webkit-backdrop-filter: blur(20px) !important;
                     overflow: hidden !important;
                 }
+                
+                @media (max-width: 500px) {
+                    .notif-dropdown {
+                        position: fixed !important;
+                        top: 70px !important;
+                        left: 10px !important;
+                        right: 10px !important;
+                        width: auto !important;
+                        transform: none !important;
+                    }
+                }
+
                 .notif-dropdown.active { 
                     display: flex !important; 
                     animation: notifSlideDown 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important; 
@@ -272,10 +286,7 @@
                     margin-top: 4px !important; 
                 }
                 .notif-empty { 
-                    padding: 36px 16px !important; 
-                    text-align: center !important; 
-                    color: #94a3b8 !important; 
-                    font-size: 13px !important; 
+                    display: none !important;
                 }
                 @keyframes notifSlideDown { 
                     from { opacity:0; transform: translateY(-8px) scale(0.96); } 
@@ -285,6 +296,28 @@
                     0%, 100% { opacity: 1; transform: scale(1); } 
                     50% { opacity: 0.7; transform: scale(1.1); } 
                 }
+            
+                /* ═════════ SMART SWAP (MOBILE) ═════════ */
+                @media (max-width: 640px) {
+                    /* If there are NO unread notifications */
+                    body[data-unread-count="0"] #lumina-notification-center {
+                        display: none !important;
+                    }
+                    body[data-unread-count="0"] #radioWidget,
+                    body[data-unread-count="0"] .nav-radio-btn {
+                        display: inline-flex !important;
+                    }
+
+                    /* If there ARE unread notifications */
+                    body:not([data-unread-count="0"]):not([data-unread-count=""]) #lumina-notification-center {
+                        display: inline-flex !important;
+                    }
+                    body:not([data-unread-count="0"]):not([data-unread-count=""]) #radioWidget,
+                    body:not([data-unread-count="0"]):not([data-unread-count=""]) .nav-radio-btn {
+                        display: none !important;
+                    }
+                }
+
             </style>`;
 
             // Wstrzyknięcie dzwonka w navbarze obok Radia CC
@@ -353,26 +386,18 @@
                 if (saved) {
                     this.notifications = JSON.parse(saved);
                     this.unreadCount = this.notifications.filter(n => n.unread).length;
-                    this.updateBadge();
-                    this.renderList();
                 } else {
-                    // Seed initial welcome notifications
-                    this.push(
-                        '✨ Witaj w portalu LUMINA!',
-                        'Dołącz do społeczności ludzi wiary, dziel się świadectwami i buduj relacje.',
-                        'avatar_cezary_official.jpg',
-                        'lumina.html',
-                        false
-                    );
-                    this.push(
-                        '☕ Zaproś na Chrześcijańską Kawę',
-                        'Odkrywaj nowe profile i wysyłaj serdeczne zaproszenia na rozmowę o Bogu.',
-                        'avatar_wioletta_official.jpg',
-                        'lumina.html#odkrywaj',
-                        false
-                    );
+                    this.notifications = [];
+                    this.unreadCount = 0;
                 }
-            } catch(e) {}
+                this.updateBadge();
+                this.renderList();
+            } catch(e) {
+                this.notifications = [];
+                this.unreadCount = 0;
+                this.updateBadge();
+                this.renderList();
+            }
         }
 
         saveToStorage() {
@@ -418,32 +443,43 @@
         }
 
         updateBadge() {
+            const count = this.unreadCount || 0;
+            document.body.setAttribute('data-unread-count', String(count));
             const badge = document.getElementById('notif-badge');
-            if (!badge) return;
-            if (this.unreadCount > 0) {
-                badge.style.display = 'flex';
-                badge.textContent = this.unreadCount > 9 ? '9+' : this.unreadCount;
-            } else {
-                badge.style.display = 'none';
+            if (badge) {
+                badge.setAttribute('data-count', String(count));
+                if (count > 0) {
+                    badge.style.setProperty('display', 'flex', 'important');
+                    badge.textContent = count > 9 ? '9+' : String(count);
+                } else {
+                    badge.style.setProperty('display', 'none', 'important');
+                    badge.textContent = '';
+                }
             }
 
             // Sync with mobile badge if present
             const mBadge = document.querySelector('.m-nav-notif-badge');
             if (mBadge) {
-                if (this.unreadCount > 0) {
-                    mBadge.style.display = 'flex';
-                    mBadge.textContent = this.unreadCount;
+                mBadge.setAttribute('data-count', String(count));
+                if (count > 0) {
+                    mBadge.style.setProperty('display', 'flex', 'important');
+                    mBadge.textContent = count > 9 ? '9+' : String(count);
                 } else {
-                    mBadge.style.display = 'none';
+                    mBadge.style.setProperty('display', 'none', 'important');
+                    mBadge.textContent = '';
                 }
             }
         }
 
         renderList() {
             const list = document.getElementById('notif-list');
+            const headerActions = document.getElementById('notif-header-actions');
+            if (headerActions) {
+                headerActions.style.display = this.notifications.length > 0 ? 'flex' : 'none';
+            }
             if (!list) return;
             if (this.notifications.length === 0) {
-                list.innerHTML = '<div class="notif-empty">Brak nowych powiadomień ✨</div>';
+                list.innerHTML = '';
                 return;
             }
 
@@ -582,11 +618,45 @@
         }
     };
 
+    function checkAndScheduleDailyBlessing() {
+        try {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const todayStr = `${year}-${month}-${day}`;
+
+            // Wysyłaj codziennie od godziny 22:00 wzwyż (jeśli nie wysłano dzisiaj)
+            if (currentHour >= 22) {
+                const lastSentDate = localStorage.getItem('lumina_last_daily_blessing_date');
+                if (lastSentDate !== todayStr) {
+                    localStorage.setItem('lumina_last_daily_blessing_date', todayStr);
+                    if (typeof window.luminaNotify === 'function') {
+                        window.luminaNotify(
+                            'Błogosławieństwo na Dobranoc 🌙🙏',
+                            '„Niech Pan cię błogosławi i strzeże. Niech Pan rozpromieni oblicze swe nad tobą, niech cię obdarzy swą łaską i pokojem.” Spokojnej nocy! ✨🕊️',
+                            'lumina_icon.jpg',
+                            '#'
+                        );
+                    }
+                }
+            }
+        } catch (e) {
+            console.error('Błąd harmonogramu błogosławieństwa:', e);
+        }
+    }
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => { 
             window.LuminaNotifications = new LuminaNotificationEngine(); 
+            // Sprawdź przy załadowaniu i powtarzaj co 30 sekund
+            setTimeout(checkAndScheduleDailyBlessing, 2500);
+            setInterval(checkAndScheduleDailyBlessing, 30000);
         });
     } else {
         window.LuminaNotifications = new LuminaNotificationEngine();
+        setTimeout(checkAndScheduleDailyBlessing, 2500);
+        setInterval(checkAndScheduleDailyBlessing, 30000);
     }
 })();

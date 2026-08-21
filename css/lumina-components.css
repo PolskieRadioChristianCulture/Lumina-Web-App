@@ -6,7 +6,7 @@
 .lumina-nav {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 10001 !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -71,6 +71,12 @@
     background: rgba(255, 255, 255, 0.18);
     color: #fff;
     transform: translateY(-1px);
+}
+.nav-circle-btn.active {
+    background: linear-gradient(135deg, #a855f7, #06b6d4) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5), 0 0 16px rgba(6, 182, 212, 0.35) !important;
 }
 
 /* ── Mobile Bottom Navigation Bar ── */
@@ -330,3 +336,12 @@
     .lumina-mobile-nav { display: flex !important; }
     body { padding-bottom: 85px !important; }
 }
+
+/* Modale Wsparcie CSS override */
+#supportLuminaModal .modal-card {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-out;
+}
+
+/* Modale Wsparcie CSS override */
+
+

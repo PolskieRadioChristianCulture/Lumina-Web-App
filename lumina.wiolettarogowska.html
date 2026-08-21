@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
 <!-- Google Consent Mode v2 (Default Denied) -->
@@ -66,6 +66,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Lumina Auto-Repair & Error Guardian Engine -->
+    <script src="lumina-auto-repair.js"></script>
     <!-- Lumina Realtime Firestore Engine -->
     <script type="module" src="lumina-db.js?v=1786937913306"></script>
     <script type="module" src="lumina-core.js"></script>
@@ -506,7 +508,7 @@
 
         .card-edit-btn {
             background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(250, 204, 21, 0.35);
+            border: 1px solid rgba(250, 204, 21, 1);
             color: var(--gold-accent);
             width: 32px;
             height: 32px;
@@ -1655,16 +1657,15 @@
         </div>
 
         <div style="display:flex;align-items:center;gap:12px;">
-            <!-- Mini Radio Player -->
-            <div class="nav-radio-pill" id="radioWidget" onclick="toggleRadio()" title="Włącz Radio Christian Culture">
-                <button class="nav-radio-play" id="radioPlayBtn">
-                    <i class="fa-solid fa-play" id="radioPlayIcon"></i>
-                </button>
-                <div class="nav-radio-info">
-                    <span class="nav-radio-title">Radio CC Live</span>
-                    <span class="nav-radio-sub">Global Channel</span>
-                </div>
-            </div>
+            <!-- 1. Mini Radio Player (Single Round 38px Button) -->
+            <button type="button" class="nav-circle-btn nav-radio-btn" id="radioWidget" onclick="toggleRadio()" title="Włącz / Wyłącz Radio Christian Culture">
+                <i class="fa-solid fa-play" id="radioPlayIcon" style="margin-left:2px;"></i>
+            </button>
+            <!-- WSPARCIE DZIEŁA (DONORBOX CTA) -->
+            <button class="btn-nav-cta" style="background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #000; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); padding: 8px 16px; border-radius: 40px; cursor: pointer; display: flex; align-items: center; gap: 8px;" onclick="openSupportModal()" title="Wspieraj Dzieło LUMINA">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+                <span class="btn-nav-cta-text" style="color: #000; font-weight: 800; font-size: 0.88rem; font-family: 'Outfit', sans-serif;">Wspieraj</span>
+            </button>
 
             <a href="lumina.html" class="btn-nav-back"><i class="fa-solid fa-arrow-left"></i> Wróć do Portalu</a>
         </div>
@@ -1784,40 +1785,40 @@
                     </div>
                     </div><!-- end profile-head-main -->
 
-                <div class="head-actions" style="display:flex; flex-direction:column; gap:10px; align-items:flex-start;">
-                    <!-- Rząd 1: Główne akcje profilu -->
-                    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
-                        <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Wiadomość</button>
-                        <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> Kawa ☕</button>
-                        <button class="btn-action-secondary btn-action-gear" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear" style="font-size:1.15rem;"></i></button>
-                    </div>
-
-                    <!-- Rząd 2: Obserwowanie, Polubienia i Udostępnianie -->
-                    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                <div class="head-actions" style="display:flex; flex-direction:column; gap:8px; align-items:flex-start; width:100%;">
+                    <!-- Rząd 1: Obserwowanie i Polubienia -->
+                    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; width:100%;">
                         <button type="button" class="btn-action-follow" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(37,99,235,0.35); transition:all 0.25s ease;">
                             <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
                             <span id="followBtnText">Obserwuj</span>
-                            <span style="opacity:0.5; font-weight:400;">|</span>
+                            <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
                             <span id="followCountBadge">465</span>
                         </button>
 
                         <button type="button" class="btn-action-heart" id="btnProfileHeart" onclick="toggleProfileHeart(this)" title="Polub Profil" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#db2777,#be185d); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(219,39,119,0.35); transition:all 0.25s ease;">
                             <i class="fa-solid fa-heart" id="heartBtnIcon"></i>
                             <span id="heartBtnText">Polub</span>
-                            <span style="opacity:0.5; font-weight:400;">|</span>
+                            <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
                             <span id="heartCountBadge">189</span>
                         </button>
+                    </div>
 
-                        <button class="btn-action-secondary" onclick="copyProfileLink()" title="Udostępnij Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-share-nodes"></i></button>
+                    <!-- Grupa: Wszystkie przyciski akcji (Wiadomość, Kawa, Narzędzia) w jednym rzędzie -->
+                    <div class="utility-actions-group" style="display:flex; gap:6px; align-items:center; width:100%;">
+                        <button class="btn-action-primary" onclick="openMessageModal()" style="flex:1.2; height:40px; padding:0 8px; font-size:0.75rem;"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span></button>
+                        <button class="btn-action-secondary" onclick="openCoffeeModal()" style="flex:1; height:40px; padding:0 8px; font-size:0.75rem;"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa</span></button>
+                        <button class="btn-action-secondary btn-action-gear" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:38px; height:40px; min-width:38px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:12px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear"></i></button>
+                        <button class="btn-action-secondary btn-action-share" onclick="copyProfileLink()" title="Udostępnij Profil" style="width:38px; height:40px; min-width:38px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:12px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-share-nodes"></i></button>
+                        <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:38px; height:40px; min-width:38px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:12px; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer;"><i class="fa-solid fa-right-from-bracket"></i></button>
                     </div>
                 </div>
 </div>
             <!-- Profile Nav Tabs -->
             <div class="profile-nav-tabs">
-                <button class="tab-btn active" onclick="switchTab('tab-feed', this)"><i class="fa-solid fa-rss"></i> Tablica & Wpisy</button>
-                <button class="tab-btn" onclick="switchTab('tab-about', this)"><i class="fa-solid fa-user"></i> Świadectwo & O Mnie</button>
-                <button class="tab-btn" onclick="switchTab('tab-photos', this)"><i class="fa-solid fa-images"></i> Galeria Zdjęć</button>
-                <button class="tab-btn" onclick="switchTab('tab-faith', this)"><i class="fa-solid fa-book-bible"></i> Wartości & Wiara</button>
+                <button class="tab-btn active" onclick="switchTab('tab-feed', this)" title="Tablica & Wpisy"><i class="fa-solid fa-rss"></i> <span class="tab-text">Tablica & Wpisy</span></button>
+                <button class="tab-btn" onclick="switchTab('tab-about', this)" title="Świadectwo & O Mnie"><i class="fa-solid fa-user"></i> <span class="tab-text">Świadectwo & O Mnie</span></button>
+                <button class="tab-btn" onclick="switchTab('tab-photos', this)" title="Galeria Zdjęć"><i class="fa-solid fa-images"></i> <span class="tab-text">Galeria Zdjęć</span></button>
+                <button class="tab-btn" onclick="switchTab('tab-faith', this)" title="Wartości & Wiara"><i class="fa-solid fa-book-bible"></i> <span class="tab-text">Wartości & Wiara</span></button>
             </div>
         </section>
 
@@ -1914,7 +1915,7 @@
                     <div class="feed-composer">
                         <div class="composer-top">
                             <img src="avatar_wioletta_official.jpg" alt="Wioletta" class="composer-avatar" id="myComposerAvatar">
-                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onfocus="if(!isOwnerMode) requestOwnerAccess(()=>document.getElementById('composerInput').focus())">
+                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
                         </div>
 
                         <!-- Post Image Attachment Preview -->
@@ -2100,6 +2101,17 @@
                     <input type="text" id="editPin" maxlength="6" placeholder="7777" style="width:100%; padding:8px 14px; border-radius:8px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; font-family:inherit; font-size:15px; font-weight:700;">
                 </div>
 
+                <!-- Danger Zone: Delete Account -->
+                <div style="margin-bottom: 20px; padding: 14px; border-radius: 12px; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3);">
+                    <div style="font-size: 0.8rem; font-weight: 800; color: #fca5a5; margin-bottom: 6px;"><i class="fa-solid fa-triangle-exclamation"></i> Strefa Niebezpieczna: Usuwanie Konta</div>
+                    <div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 10px; line-height: 1.4;">
+                        Usunięcie konta trwale wyczyści dane profilowe, wpisy z tablicy oraz zresetuje ustawienia profilu w tej przeglądarce i chmurze.
+                    </div>
+                    <button type="button" onclick="confirmDeleteAccount()" style="padding: 10px 16px; border-radius: 20px; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #f87171; font-size: 0.8rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;">
+                        <i class="fa-solid fa-trash-can"></i> Usuń Konto i Dane Profilu
+                    </button>
+                </div>
+
                 <div style="display:flex; gap:10px;">
                     <button type="button" onclick="closeModal('editProfileModal')" style="flex:1; padding:12px; border-radius:30px; background:rgba(255,255,255,0.08); border:none; color:#fff; font-weight:700; font-family:inherit; cursor:pointer;">Anuluj</button>
                     <button type="submit" style="flex:1.6; padding:12px; border-radius:30px; background:linear-gradient(90deg,#ec4899,#f472b6); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 18px rgba(236,72,153,0.4);"><i class="fa-solid fa-floppy-disk"></i> Zapisz Zmiany Profilu ✨</button>
@@ -2211,28 +2223,6 @@
         </div>
     </div>
 
-    <!-- ══════════ MOBILE BOTTOM NAVIGATION BAR ══════════ -->
-    <nav class="lumina-mobile-nav" aria-label="Nawigacja mobilna">
-        <a href="lumina.html" class="m-nav-item">
-            <i class="fa-solid fa-compass"></i>
-            <span>Odkrywaj</span>
-        </a>
-        <a href="lumina-tablica.html" class="m-nav-item">
-            <i class="fa-solid fa-rectangle-list"></i>
-            <span>Tablica</span>
-        </a>
-        <a href="javascript:void(0)" onclick="openDirectMessagesModal()" class="m-nav-item" id="mNavMsgItem">
-            <div class="m-nav-msg-icon">
-                <i class="fa-solid fa-comment-dots"></i>
-                <span class="m-nav-badge">2</span>
-            </div>
-            <span>Wiadomości</span>
-        </a>
-        <a href="lumina.wiolettarogowska.html" class="m-nav-item active" id="mNavProfileItem">
-            <i class="fa-solid fa-user"></i>
-            <span>Mój Profil</span>
-        </a>
-    </nav>
 
     <!-- ══════════ DIRECT MESSAGES MODAL ══════════ -->
     <div class="modal-overlay" id="directMessagesModal">
@@ -2251,9 +2241,9 @@
 
             <!-- List of conversations -->
             <div style="overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
-                <div onclick="openChatWith('Cezary Rogowski', 'avatar_new1.jpg', 'cezaryrgowski')" style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; cursor:pointer; transition:all 0.2s;">
+                <div onclick="openChatWith('Cezary Rogowski', 'avatar_cezary_official.jpg', 'cezaryrgowski')" style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; cursor:pointer; transition:all 0.2s;">
                     <div style="position:relative;">
-                        <img src="avatar_new1.jpg" alt="Cezary" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block;">
+                        <img src="avatar_cezary_official.jpg" alt="Cezary" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block;">
                         <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
                     </div>
                     <div style="flex:1; min-width:0;">
@@ -2359,8 +2349,12 @@
                 if (saved) {
                     const parsed = JSON.parse(saved);
                     let avatar = parsed.avatar;
-                    if (!avatar || avatar.includes('worship') || avatar.includes('tlo') || avatar.includes('oddaj') || avatar.includes('anna')) {
+                    if (!avatar || avatar === 'null' || avatar === 'undefined' || avatar.trim() === '' || avatar.includes('worship') || avatar.includes('tlo') || avatar.includes('oddaj') || avatar.includes('anna')) {
                         avatar = 'avatar_wioletta_official.jpg';
+                    }
+                    let cover = parsed.cover;
+                    if (!cover || cover === 'null' || cover === 'undefined' || cover.trim() === '') {
+                        cover = 'lumina_default_cover.jpg';
                     }
                     let age = parsed.age;
                     if (!age || age === '30' || age === 30 || age === '28' || age === 28 || age === '32' || age === 32) {
@@ -2370,10 +2364,11 @@
                         ...defaultProfile,
                         ...parsed,
                         avatar: avatar,
+                        cover: cover,
                         age: age,
-                        city: 'Ostrowiec Świętokrzyski, Polska',
+                        city: parsed.city || 'Ostrowiec Świętokrzyski, Polska',
                         visibility: parsed.visibility || 'public',
-                        photos: Array.isArray(parsed.photos) ? parsed.photos : [...defaultProfile.photos],
+                        photos: Array.isArray(parsed.photos) && parsed.photos.length ? parsed.photos : [...defaultProfile.photos],
                         posts: Array.isArray(parsed.posts) ? parsed.posts : [...defaultProfile.posts]
                     };
                 }
@@ -2668,14 +2663,24 @@
             document.getElementById('userBioFull').textContent = data.bio;
             document.getElementById('msgModalRecipientName').textContent = data.name.split(' ')[0] || data.name;
 
-            if (data.avatar) {
-                document.getElementById('avatarImgEl').src = data.avatar;
-                if (document.getElementById('myComposerAvatar')) document.getElementById('myComposerAvatar').src = data.avatar;
+            const avatarEl = document.getElementById('avatarImgEl');
+            if (avatarEl) {
+                const targetAv = data.avatar || 'avatar_wioletta_official.jpg';
+                avatarEl.onerror = () => { avatarEl.onerror = null; avatarEl.src = 'avatar_wioletta_official.jpg'; };
+                avatarEl.src = targetAv;
+                if (document.getElementById('myComposerAvatar')) {
+                    const compAv = document.getElementById('myComposerAvatar');
+                    compAv.onerror = () => { compAv.onerror = null; compAv.src = 'avatar_wioletta_official.jpg'; };
+                    compAv.src = targetAv;
+                }
             }
-            if (data.cover) {
-                document.getElementById('coverPhotoEl').src = data.cover;
+            const coverEl = document.getElementById('coverPhotoEl');
+            if (coverEl) {
+                const targetCov = data.cover || 'lumina_default_cover.jpg';
+                coverEl.onerror = () => { coverEl.onerror = null; coverEl.src = 'lumina_default_cover.jpg'; };
+                coverEl.src = targetCov;
+                coverEl.style.objectPosition = 'center ' + (data.coverPosY || '50%');
             }
-            document.getElementById('coverPhotoEl').style.objectPosition = 'center ' + (data.coverPosY || '50%');
 
             const tagsContainer = document.getElementById('userTagsEl');
             if (tagsContainer && data.tags) {
@@ -2720,21 +2725,50 @@
             }
         }
 
-                async function deletePhoto(event, index) {
+        let currentLightboxPhotoSrc = null;
+        let currentLightboxPhotoIndex = -1;
+
+        function openPhotoLightbox(src, caption = '') {
+            const modal = document.getElementById('photoLightboxModal');
+            const img = document.getElementById('lightboxImg');
+            const cap = document.getElementById('lightboxCaption');
+            if (!modal || !img) return;
+
+            currentLightboxPhotoSrc = src;
+            const data = getProfileData();
+            const photos = Array.isArray(data.photos) ? data.photos : [];
+            currentLightboxPhotoIndex = photos.findIndex(p => p === src);
+
+            img.src = src;
+            if (cap) cap.textContent = caption || 'Fotografia z galerii LUMINA ✨';
+            modal.classList.add('open');
+            document.body.classList.add('lightbox-open');
+        }
+
+        function closePhotoLightbox() {
+            const modal = document.getElementById('photoLightboxModal');
+            if (modal) modal.classList.remove('open');
+            document.body.classList.remove('lightbox-open');
+            currentLightboxPhotoSrc = null;
+            currentLightboxPhotoIndex = -1;
+        }
+
+        async function deletePhoto(event, index) {
             if (event) {
                 event.stopPropagation();
                 event.preventDefault();
             }
-            if (!isOwnerMode) {
-                if (!requestOwnerAccess(() => deletePhoto(null, index))) return;
-            }
-            if (!confirm('Czy na pewno chcesz usunąć to zdjęcie z galerii?')) return;
             
             const cur = getProfileData();
             if (!cur.photos || !Array.isArray(cur.photos)) {
                 cur.photos = ['avatar_wioletta_official.jpg', 'avatar_new1.jpg', 'lumina_default_cover.jpg'];
             }
+            
+            if (index < 0 || index >= cur.photos.length) return;
+
+            const removedSrc = cur.photos[index];
             cur.photos.splice(index, 1);
+            
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
                 localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
@@ -2750,8 +2784,24 @@
                 }
             }
 
+            if (currentLightboxPhotoSrc === removedSrc) {
+                closePhotoLightbox();
+            }
+
             renderPhotos();
             showToast('Zdjęcie zostało pomyślnie usunięte z Twojego profilu! 🗑️✨');
+        }
+
+        async function deleteCurrentLightboxPhoto() {
+            if (currentLightboxPhotoIndex >= 0) {
+                await deletePhoto(null, currentLightboxPhotoIndex);
+            } else if (currentLightboxPhotoSrc) {
+                const cur = getProfileData();
+                const idx = (cur.photos || []).indexOf(currentLightboxPhotoSrc);
+                if (idx >= 0) {
+                    await deletePhoto(null, idx);
+                }
+            }
         }
 
         // ── Posts Stream, Editing & Deletion ──
@@ -2808,18 +2858,42 @@
                     <div class="post-content">${formatPostTextWithLinks(p.text || '')}</div>
                     ${`<img src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'avatar_wioletta_official.jpg')}" alt="Post Image" class="post-image" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" onerror="this.onerror=null; this.src='${data.avatar || 'avatar_wioletta_official.jpg'}'">`}
                     <div class="post-footer">
-                        <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span> Polubień</button>
-                        <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i> Amen!</button>
-                        <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i> Napisz</button>
+                        <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span><span class="btn-text"> Polubień</span></button>
+                        <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen!</span></button>
+                        <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Napisz</span></button>
                     </div>
                 </article>
             `).join('');
         }
 
         function openEditPostModal(postId) {
-            if (!requestOwnerAccess(() => openEditPostModal(postId))) return;
             const cur = getProfileData();
-            const post = (cur.posts || []).find(p => p.id === postId);
+            let post = (cur.posts || []).find(p => p.id === postId || p.id == postId);
+            if (!post && window.LuminaDB?.getAuthorPosts) {
+                const authorPosts = window.LuminaDB.getAuthorPosts('wiolettarogowska', cur.name);
+                post = (authorPosts || []).find(p => p.id === postId || p.id == postId);
+            }
+            if (!post) {
+                try {
+                    const rawCloud = localStorage.getItem('lumina_cloud_posts_cache');
+                    if (rawCloud) {
+                        const list = JSON.parse(rawCloud);
+                        post = list.find(p => p.id === postId || p.id == postId);
+                    }
+                } catch(e) {}
+            }
+            if (!post) {
+                const cardEl = document.getElementById(postId);
+                if (cardEl) {
+                    const contentEl = cardEl.querySelector('.post-content');
+                    const imgEl = cardEl.querySelector('.post-image');
+                    post = {
+                        id: postId,
+                        text: contentEl ? contentEl.innerText.trim() : '',
+                        image: imgEl ? imgEl.src : null
+                    };
+                }
+            }
             if (!post) {
                 showToast('Nie znaleziono wpisu do edycji.');
                 return;
@@ -2828,20 +2902,26 @@
             currentEditingPostId = postId;
             editingPostImageDataUrl = post.image || null;
 
-            document.getElementById('editPostTextarea').value = post.text || '';
+            const textarea = document.getElementById('editPostTextarea');
+            if (textarea) textarea.value = post.text || '';
             
             const previewBox = document.getElementById('editPostImgPreviewBox');
             const attachedImg = document.getElementById('editPostAttachedImg');
-            if (editingPostImageDataUrl) {
-                attachedImg.src = editingPostImageDataUrl;
-                previewBox.style.display = 'block';
-            } else {
-                attachedImg.src = '';
-                previewBox.style.display = 'none';
+            if (previewBox && attachedImg) {
+                if (editingPostImageDataUrl) {
+                    attachedImg.src = editingPostImageDataUrl;
+                    previewBox.style.display = 'block';
+                } else {
+                    attachedImg.src = '';
+                    previewBox.style.display = 'none';
+                }
             }
 
-            document.getElementById('editPostModal').classList.add('open');
-            setTimeout(() => document.getElementById('editPostTextarea').focus(), 150);
+            const modal = document.getElementById('editPostModal');
+            if (modal) modal.classList.add('open');
+            setTimeout(() => {
+                if (textarea) textarea.focus();
+            }, 150);
         }
 
         function handleEditPostImageSelect(e) {
@@ -2864,11 +2944,12 @@
             document.getElementById('editPostImageFileInput').value = '';
         }
 
-        function saveEditedPostSubmit(e) {
+        async function saveEditedPostSubmit(e) {
             if (e) e.preventDefault();
             if (!currentEditingPostId) return;
 
-            const newText = document.getElementById('editPostTextarea').value.trim();
+            const textarea = document.getElementById('editPostTextarea');
+            const newText = textarea ? textarea.value.trim() : '';
             if (!newText && !editingPostImageDataUrl) {
                 showToast('Wpis nie może być pusty!');
                 return;
@@ -2876,35 +2957,89 @@
 
             const cur = getProfileData();
             cur.posts = cur.posts || [];
-            const idx = cur.posts.findIndex(p => p.id === currentEditingPostId);
+            let idx = cur.posts.findIndex(p => p.id === currentEditingPostId || p.id == currentEditingPostId);
+            
             if (idx !== -1) {
                 cur.posts[idx].text = newText;
                 cur.posts[idx].image = editingPostImageDataUrl || null;
-                if (!cur.posts[idx].time.includes('(edytowano)')) {
-                    cur.posts[idx].time += ' • (edytowano)';
+                if (!cur.posts[idx].time || !cur.posts[idx].time.includes('(edytowano)')) {
+                    cur.posts[idx].time = (cur.posts[idx].time || 'Przed chwilą') + ' • (edytowano)';
                 }
-                try {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
-                } catch(err) {}
-                renderPosts();
-                closeModal('editPostModal');
-                showToast('Wpis został pomyślnie zaktualizowany! ✏️✨');
+            } else {
+                const updatedPost = {
+                    id: currentEditingPostId,
+                    author: cur.name || 'Wioletta Rogowska',
+                    authorSlug: 'wiolettarogowska',
+                    authorAvatar: cur.avatar || 'avatar_wioletta_official.jpg',
+                    authorRole: cur.job ? `${cur.job} ✨` : '🌸 Współzałożycielka Christian Culture',
+                    time: 'Przed chwilą • (edytowano)',
+                    text: newText,
+                    likes: 1,
+                    amen: 0,
+                    image: editingPostImageDataUrl || null,
+                    createdAtTimestamp: Date.now()
+                };
+                cur.posts.unshift(updatedPost);
             }
+
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+            } catch(err) {}
+
+            try {
+                const rawCloud = localStorage.getItem('lumina_cloud_posts_cache');
+                if (rawCloud) {
+                    const list = JSON.parse(rawCloud);
+                    const cIdx = list.findIndex(p => p.id === currentEditingPostId || p.id == currentEditingPostId);
+                    if (cIdx !== -1) {
+                        list[cIdx].text = newText;
+                        list[cIdx].image = editingPostImageDataUrl || null;
+                        if (!list[cIdx].time?.includes('(edytowano)')) {
+                            list[cIdx].time = (list[cIdx].time || 'Przed chwilą') + ' • (edytowano)';
+                        }
+                        localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(list));
+                    }
+                }
+            } catch(e) {}
+
+            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                try {
+                    await window.LuminaDB.saveProfileToCloud('wiolettarogowska', cur);
+                } catch(err) {}
+            }
+
+            renderPosts();
+            closeModal('editPostModal');
+            showToast('Wpis został pomyślnie zaktualizowany! ✏️✨');
         }
 
-        function deleteFeedPost(event, postId) {
+        async function deleteFeedPost(event, postId) {
             if (event) {
                 event.stopPropagation();
                 event.preventDefault();
             }
-            if (!requestOwnerAccess(() => deleteFeedPost(null, postId))) return;
             if (!confirm('Czy na pewno chcesz usunąć ten wpis z tablicy?')) return;
 
             const cur = getProfileData();
-            cur.posts = (cur.posts || []).filter(p => p.id !== postId);
+            cur.posts = (cur.posts || []).filter(p => p.id !== postId && p.id != postId);
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
             } catch(e) {}
+
+            try {
+                const rawCloud = localStorage.getItem('lumina_cloud_posts_cache');
+                if (rawCloud) {
+                    const list = JSON.parse(rawCloud).filter(p => p.id !== postId && p.id != postId);
+                    localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(list));
+                }
+            } catch(e) {}
+
+            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                try {
+                    await window.LuminaDB.saveProfileToCloud('wiolettarogowska', cur);
+                } catch(err) {}
+            }
+
             renderPosts();
             showToast('Wpis został pomyślnie usunięty z Twojej tablicy! 🗑️');
         }
@@ -2930,10 +3065,9 @@
             document.getElementById('postImageFileInput').value = '';
         }
 
-        function publishFeedPost() {
-            if (!requestOwnerAccess(publishFeedPost)) return;
+        async function publishFeedPost() {
             const input = document.getElementById('composerInput');
-            const val = input.value.trim();
+            const val = input ? input.value.trim() : '';
             if (!val && !attachedPostImageDataUrl) {
                 showToast('Wpisz treść lub dołącz grafikę przed publikacją!');
                 return;
@@ -2941,28 +3075,42 @@
             const cur = getProfileData();
             const newPost = {
                 id: 'post_w_' + Date.now(),
-                author: cur.name,
+                author: cur.name || 'Wioletta Rogowska',
                 authorSlug: 'wiolettarogowska',
                 authorAvatar: cur.avatar || 'avatar_wioletta_official.jpg',
-                authorRole: '🌸 Współzałożycielka Christian Culture',
+                authorRole: cur.job ? `${cur.job} ✨` : '🌸 Współzałożycielka Christian Culture',
                 time: 'Przed chwilą • 🌍 Nowy Wpis',
                 text: val || '',
                 likes: 1,
                 amen: 0,
-                image: attachedPostImageDataUrl || null
+                image: attachedPostImageDataUrl || null,
+                createdAtTimestamp: Date.now()
             };
 
+            // 1. Zapis lokalny
+            cur.posts = cur.posts || [];
+            cur.posts.unshift(newPost);
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+            } catch(e) {}
+
+            // 2. Publikacja w LuminaDB
             if (window.LuminaDB?.publishUniversalPost) {
-                window.LuminaDB.publishUniversalPost(newPost);
-            } else {
-                cur.posts = cur.posts || [];
-                cur.posts.unshift(newPost);
                 try {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
-                } catch(e) {}
+                    await window.LuminaDB.publishUniversalPost(newPost);
+                } catch(err) {
+                    console.warn('LuminaDB publish error:', err);
+                }
             }
 
-            input.value = '';
+            // 3. Zapis do chmury
+            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                try {
+                    await window.LuminaDB.saveProfileToCloud('wiolettarogowska', cur);
+                } catch(err) {}
+            }
+
+            if (input) input.value = '';
             removeAttachedPostImage();
             renderPosts();
             showToast('Twój wpis został pomyślnie opublikowany na profilu i tablicy! ✨🕊️');
@@ -3073,8 +3221,19 @@
                         try {
                             localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
                         } catch(err) {}
-                        renderPhotos();
-                        showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! 🖼️✨`);
+                        
+                        if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                            window.LuminaDB.saveProfileToCloud('wiolettarogowska', cur).then(() => {
+                                renderPhotos();
+                                showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! 🖼️✨`);
+                            }).catch(() => {
+                                renderPhotos();
+                                showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! 🖼️✨`);
+                            });
+                        } else {
+                            renderPhotos();
+                            showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! 🖼️✨`);
+                        }
                     }
                 });
             });
@@ -3180,6 +3339,10 @@
             showToast('Wysłano zaproszenie na chrześcijańską kawę! ☕❤️');
         }
 
+         else {
+                showToast('Usunięto z ulubionych');
+            }
+        }
 
         function copyProfileLink() {
             navigator.clipboard.writeText(window.location.href);
@@ -3240,6 +3403,25 @@
         function openDirectMessagesModal() {
             const m = document.getElementById('directMessagesModal');
             if (m) m.classList.add('open');
+        }
+
+        function confirmDeleteAccount() {
+            if (confirm('Czy na pewno chcesz trwale usunąć ten profil oraz powiązane dane? Tej operacji nie można cofnąć.')) {
+                if (confirm('Ostatnie ostrzeżenie: Konto i wszystkie wpisy zostaną bezpowrotnie usunięte. Kontynuować?')) {
+                    try {
+                        localStorage.removeItem('lumina_profile_wiolettarogowska');
+                        localStorage.removeItem('lumina_owner_auth_wiolettarogowska');
+                        localStorage.removeItem('lumina_cloud_posts_cache');
+                        if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                            window.LuminaDB.saveProfileToCloud('wiolettarogowska', null);
+                        }
+                    } catch(e) {}
+                    showToast('Konto zostało pomyślnie usunięte. Trwa przekierowanie...');
+                    setTimeout(() => {
+                        window.location.href = 'lumina.html';
+                    }, 1500);
+                }
+            }
         }
 
         function openChatWith(name, avatar, slug) {
@@ -3321,7 +3503,7 @@
     </script>
     <script src="lumina-scroll-top.js" defer></script>
     <script src="lumina-bottom-nav.js?v=1786937913306" defer></script>
-    <script src="lumina-notifications.js" defer></script>
+    <script src="lumina-notifications.js?v=20260820_notif_nodot" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
@@ -3396,11 +3578,17 @@
             <div style="position: relative; overflow: hidden; border-radius: 16px; box-shadow: 0 25px 70px rgba(0,0,0,0.95); border: 1px solid rgba(255,255,255,0.15); background: #000; display: flex; align-items: center; justify-content: center;">
                 <img id="lightboxImg" src="" alt="Pełny Podgląd Zdjęcia" style="max-width: 90vw; max-height: 80vh; width: auto; height: auto; object-fit: contain; display: block; border-radius: 16px;">
             </div>
-            <div id="lightboxCaption" style="margin-top: 14px; color: #f8fafc; font-size: 0.92rem; font-weight: 700; background: rgba(15, 23, 42, 0.85); padding: 8px 22px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 4px 16px rgba(0,0,0,0.5); text-align: center;"></div>
+            <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top: 14px; flex-wrap:wrap;">
+                <div id="lightboxCaption" style="color: #f8fafc; font-size: 0.92rem; font-weight: 700; background: rgba(15, 23, 42, 0.85); padding: 8px 22px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 4px 16px rgba(0,0,0,0.5); text-align: center;"></div>
+                <button type="button" class="btn-delete-lightbox-photo" onclick="deleteCurrentLightboxPhoto()" style="background: rgba(225, 29, 72, 0.9); color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 8px 18px; border-radius: 30px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 16px rgba(225,29,72,0.4); transition: transform 0.2s, background 0.2s;">
+                    <i class="fa-solid fa-trash-can"></i> Usuń z galerii
+                </button>
+            </div>
         </div>
     </div>
 
     <script src="lumina-admin-profile-suite.js"></script>
+    <script src="lumina-premium-video-avatar.js"></script>
 </body>
 </html>
 

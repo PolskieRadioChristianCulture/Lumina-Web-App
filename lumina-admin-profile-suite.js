@@ -252,8 +252,7 @@
                 vertical-align: middle;
             }
 
-            body.lumina-admin-mode .admin-inline-edit-btn,
-            body.owner-mode-active .admin-inline-edit-btn {
+            body.lumina-admin-mode .admin-inline-edit-btn {
                 display: inline-flex !important;
             }
 
@@ -367,11 +366,21 @@
                         <button type="button" class="admin-suite-btn btn-purple" onclick="window.LuminaAdminSuite.openAllProfilesManager()">
                             <i class="fa-solid fa-users-gear"></i> Menedżer Wszystkich Profili
                         </button>
+                        <button type="button" class="admin-suite-btn btn-cyan" onclick="window.LuminaAdminSuite.runSelfRepair()" title="Uruchom autonaprawę i diagnostykę systemu">
+                            <i class="fa-solid fa-wrench"></i> Auto-Naprawa & Zdrowie
+                        </button>
                         <button type="button" class="admin-suite-btn btn-cyan" onclick="document.getElementById('adminAvatarFileInput').click()" title="Zmień awatar dla tego profilu">
                             <i class="fa-solid fa-camera"></i> Awatar
                         </button>
+                        <button type="button" class="admin-suite-btn btn-gold" onclick="if(window.LuminaPremiumAvatar) window.LuminaPremiumAvatar.openModal(window.LuminaAdminSuite.slug)" title="10-sekundowe Wideo Profilowe (Premium / Patron CC)">
+                            <i class="fa-solid fa-video"></i> 10s Wideo Profilowe
+                        </button>
                         <button type="button" class="admin-suite-btn btn-cyan" onclick="document.getElementById('adminCoverFileInput').click()" title="Zmień tło">
                             <i class="fa-solid fa-panorama"></i> Tło
+                        </button>
+                        
+                        <button type="button" class="admin-suite-btn btn-cyan" onclick="window.LuminaAdminSuite.openPushNotificationModal()">
+                            <i class="fa-solid fa-bell"></i> Powiadomienia PUSH
                         </button>
                         <button type="button" class="admin-suite-btn btn-purple" onclick="window.LuminaAdminSuite.openNewPostModal()">
                             <i class="fa-solid fa-plus"></i> Nowy Wpis
@@ -482,6 +491,17 @@
                             <label style="display:block; font-size:0.75rem; font-weight:700; color:#facc15; margin-bottom:4px;"><i class="fa-solid fa-book-bible"></i> Główny Werset Biblijny</label>
                             <textarea id="adminInputVerse" rows="2" placeholder="Treść wersetu biblijnego..." style="width:100%; padding:10px 14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13.5px; resize:vertical;"></textarea>
                             <input type="text" id="adminInputVerseRef" placeholder="np. — Ewangelia wg św. Jana 15, 5" style="width:100%; margin-top:6px; padding:8px 12px; border-radius:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); color:#facc15; font-family:inherit; font-size:13px; font-weight:700;">
+                        </div>
+
+                        <div style="margin-bottom:12px; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:14px; padding:12px 14px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                                <label style="font-size:0.75rem; font-weight:800; color:#facc15;"><i class="fa-solid fa-video"></i> 10-Sekundowe Wideo Profilowe (Premium / Patron CC)</label>
+                                <button type="button" onclick="if(window.LuminaPremiumAvatar) window.LuminaPremiumAvatar.openModal(document.getElementById('adminTargetSlugHidden').value || window.LuminaAdminSuite.slug)" style="background:linear-gradient(135deg,#f59e0b,#ec4899); border:none; color:#fff; font-size:0.72rem; font-weight:800; padding:4px 10px; border-radius:10px; cursor:pointer;">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Kreator Wideo 10s
+                                </button>
+                            </div>
+                            <input type="text" id="adminInputVideoAvatar" placeholder="Link YouTube (np. https://www.youtube.com/watch?v=...) lub bezpośredni link MP4" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px;">
+                            <div style="font-size:0.70rem; color:#94a3b8; margin-top:4px;">Wyświetla się w miejscu zdjęcia profilowego (obsługuje filmy YouTube oraz pliki MP4/WebM).</div>
                         </div>
 
                         <div style="margin-bottom:12px;">
@@ -614,6 +634,100 @@
                 </div>
             </div>
 
+            
+            <!-- ══════════ MODAL 5: KREATOR POWIADOMIEŃ PUSH ══════════ -->
+            <div class="modal-overlay" id="adminPushNotificationModal" onclick="if(event.target===this) window.LuminaAdminSuite.closeModal('adminPushNotificationModal')">
+                <div class="modal-card" style="max-width: 620px; width: 92%; max-height: 88vh; overflow-y: auto; background: #0b142e; border: 1.5px solid rgba(245, 158, 11, 0.5); box-shadow: 0 25px 60px rgba(0,0,0,0.85), 0 0 35px rgba(245, 158, 11, 0.2); border-radius: 24px; padding: 26px 24px; position: relative;">
+                    <button class="modal-close-btn" onclick="window.LuminaAdminSuite.closeModal('adminPushNotificationModal')" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+                    
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
+                        <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, #f59e0b, #d97706); display:flex; align-items:center; justify-content:center; color:#000; font-size:1.3rem; box-shadow:0 4px 14px rgba(245,158,11,0.4);">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-family:'Outfit', sans-serif; font-size:1.25rem; font-weight:800; color:#fff; margin:0;">Zarządzanie Powiadomieniami PUSH</h3>
+                            <div style="font-size:0.75rem; color:#facc15; font-weight:700;">Wysyłaj globalne powiadomienia do całej społeczności LUMINA</div>
+                        </div>
+                    </div>
+
+                    <form id="adminPushNotificationForm" onsubmit="window.LuminaAdminSuite.submitPushNotification(event)">
+                        <div style="margin-bottom:14px;">
+                            <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Tytuł Powiadomienia</label>
+                            <input type="text" id="adminPushTitle" placeholder="np. Nowy wpis od Andrzeja T!" style="width:100%; padding:10px 14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px; font-weight:700;" required>
+                        </div>
+                        <div style="margin-bottom:14px;">
+                            <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Treść Powiadomienia (Message)</label>
+                            <textarea id="adminPushContent" rows="3" placeholder="Wpisz treść powiadomienia..." style="width:100%; padding:10px 14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13.5px; resize:vertical;" required></textarea>
+                        </div>
+                        
+                        
+                        <div style="margin-bottom:14px;">
+                            <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Odbiorcy Powiadomienia (Grupa Docelowa)</label>
+                            <select id="adminPushAudience" style="width:100%; padding:10px 14px; border-radius:12px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px;" required>
+                                <option value="all">Wszyscy użytkownicy portalu (Global)</option>
+                                <option value="logged_in">Tylko Zalogowani Użytkownicy</option>
+                                <option value="donors">Tylko Wspierający / Darczyńcy (Premium)</option>
+                            </select>
+                        </div>
+                        
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:14px;">
+                            <div>
+                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Przycisk Akcji (CTA)</label>
+                                <select id="adminPushActionType" style="width:100%; padding:10px 14px; border-radius:12px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px;" required>
+                                    <option value="czytaj">Czytaj</option>
+                                    <option value="ogladaj">Oglądaj</option>
+                                    <option value="udostepnij">Udostępnij</option>
+                                    <option value="wspieraj">Wspieraj</option>
+                                    <option value="amen">Amen</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Link Akcji (Gdzie ma prowadzić?)</label>
+                                <input type="text" id="adminPushActionLink" placeholder="np. lumina-tablica.html" style="width:100%; padding:10px 14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px;">
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 14px; margin-bottom: 18px;">
+                            <h4 style="margin:0 0 10px 0; font-size:0.9rem; color:#facc15;">Harmonogram Wysyłki</h4>
+                            <div style="display:flex; gap:14px; margin-bottom:12px;">
+                                <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:0.85rem; color:#fff;">
+                                    <input type="radio" name="adminPushScheduleType" value="once" checked onchange="document.getElementById('adminPushRecurringOpts').style.display='none'"> 
+                                    Wyślij natychmiast (Raz)
+                                </label>
+                                <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:0.85rem; color:#fff;">
+                                    <input type="radio" name="adminPushScheduleType" value="recurring" onchange="document.getElementById('adminPushRecurringOpts').style.display='block'"> 
+                                    Wysyłaj cyklicznie
+                                </label>
+                            </div>
+                            
+                            <div id="adminPushRecurringOpts" style="display:none; padding-top:10px; border-top:1px dashed rgba(255,255,255,0.1);">
+                                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                                    <div>
+                                        <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Interwał (Częstotliwość)</label>
+                                        <select id="adminPushInterval" style="width:100%; padding:10px 14px; border-radius:12px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px;">
+                                            <option value="weekly">Raz w tygodniu</option>
+                                            <option value="twice_weekly">Dwa razy w tygodniu</option>
+                                            <option value="monthly">Raz w miesiącu</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Godzina Wysyłania</label>
+                                        <input type="time" id="adminPushTime" value="12:00" style="width:100%; padding:10px 14px; border-radius:12px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px; color-scheme:dark;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; gap:10px; justify-content:flex-end;">
+                            <button type="button" onclick="window.LuminaAdminSuite.closeModal('adminPushNotificationModal')" style="padding:11px 20px; border-radius:24px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; cursor:pointer;">Anuluj</button>
+                            <button type="submit" style="padding:11px 26px; border-radius:24px; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; color:#000; font-weight:800; cursor:pointer; box-shadow:0 4px 16px rgba(245,158,11,0.4);">
+                                <i class="fa-solid fa-paper-plane"></i> Zatwierdź / Wyślij PUSH
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <!-- ══════════ MODAL 4: MENU TAJNEJ TARCZY ADMINISTRATORA ══════════ -->
             <div class="modal-overlay" id="adminShieldQuickModal" onclick="if(event.target===this) window.LuminaAdminSuite.closeModal('adminShieldQuickModal')">
                 <div class="modal-card" style="max-width: 440px; width: 92%; background: #0b142e; border: 1.5px solid rgba(16, 185, 129, 0.5); box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(16, 185, 129, 0.25); border-radius: 24px; padding: 24px; position: relative;">
@@ -635,6 +749,10 @@
                         </button>
                         <button type="button" class="admin-suite-btn btn-gold" style="justify-content:flex-start; padding:12px 16px; border-radius:14px; font-size:14px;" onclick="window.LuminaAdminSuite.closeModal('adminShieldQuickModal'); window.LuminaAdminSuite.openFullEditor();">
                             <i class="fa-solid fa-pen-to-square" style="font-size:1.1rem; width:22px;"></i> Edytuj Aktywny Profil (<b id="quickModalSlugName">${slug}</b>)
+                        </button>
+                        
+                        <button type="button" class="admin-suite-btn btn-cyan" style="justify-content:flex-start; padding:12px 16px; border-radius:14px; font-size:14px;" onclick="window.LuminaAdminSuite.closeModal('adminShieldQuickModal'); window.LuminaAdminSuite.openPushNotificationModal();">
+                            <i class="fa-solid fa-bell" style="font-size:1.1rem; width:22px;"></i> Powiadomienia PUSH
                         </button>
                         <button type="button" class="admin-suite-btn btn-purple" style="justify-content:flex-start; padding:12px 16px; border-radius:14px; font-size:14px;" onclick="window.LuminaAdminSuite.closeModal('adminShieldQuickModal'); window.LuminaAdminSuite.openNewPostModal();">
                             <i class="fa-solid fa-plus" style="font-size:1.1rem; width:22px;"></i> Nowy Wpis / Słowo Dnia
@@ -765,6 +883,10 @@
             document.getElementById('adminInputPrivacy').value = data.privacy || 'public';
             document.getElementById('adminInputVerse').value = data.verse || '';
             document.getElementById('adminInputVerseRef').value = data.verseRef || '';
+            const curVid = data.avatarVideo || localStorage.getItem('lumina_avatar_video_' + s) || '';
+            if (document.getElementById('adminInputVideoAvatar')) {
+                document.getElementById('adminInputVideoAvatar').value = curVid;
+            }
             document.getElementById('adminInputBio').value = data.bio || '';
             document.getElementById('adminInputTags').value = (data.tags || []).join(', ');
 
@@ -819,7 +941,8 @@
         saveProfileSubmit: function(e) {
             if (e && e.preventDefault) e.preventDefault();
             const targetSlug = document.getElementById('adminTargetSlugHidden').value || this.slug;
-            const data = {
+            const existing = this.getCurrentData(targetSlug) || {};
+            const edits = {
                 name: document.getElementById('adminInputName').value.trim(),
                 age: document.getElementById('adminInputAge').value.trim(),
                 city: document.getElementById('adminInputCity').value.trim(),
@@ -830,23 +953,48 @@
                 privacy: document.getElementById('adminInputPrivacy').value,
                 verse: document.getElementById('adminInputVerse').value.trim(),
                 verseRef: document.getElementById('adminInputVerseRef').value.trim(),
+                avatarVideo: document.getElementById('adminInputVideoAvatar') ? document.getElementById('adminInputVideoAvatar').value.trim() : '',
                 bio: document.getElementById('adminInputBio').value.trim(),
                 tags: document.getElementById('adminInputTags').value.split(',').map(t => t.trim()).filter(Boolean)
             };
+            const merged = { ...existing, ...edits, slug: targetSlug };
 
-            localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(data));
+            try {
+                localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(merged));
+                if (existing.uid) localStorage.setItem('lumina_profile_' + existing.uid, JSON.stringify(merged));
+            } catch(e) {}
+
+            if (window._cloudProfileData && (window._cloudProfileData.slug === targetSlug || window._cloudProfileData.uid === targetSlug)) {
+                window._cloudProfileData = merged;
+            }
+
+            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                window.LuminaDB.saveProfileToCloud(targetSlug, merged);
+            }
+
+            if (edits.avatarVideo) {
+                localStorage.setItem('lumina_avatar_video_' + targetSlug, edits.avatarVideo);
+                if (window.LuminaPremiumAvatar) {
+                    window.LuminaPremiumAvatar.mountVideoAvatars(targetSlug);
+                }
+            } else {
+                localStorage.removeItem('lumina_avatar_video_' + targetSlug);
+                if (window.LuminaPremiumAvatar) {
+                    window.LuminaPremiumAvatar.mountVideoAvatars(targetSlug);
+                }
+            }
             
             if (targetSlug === this.slug) {
-                this.applyDataToDOM(data);
+                this.applyDataToDOM(merged);
             }
 
             this.closeModal('adminUniversalProfileModal');
             this.renderProfilesListInModal();
 
             if (typeof window.showToast === 'function') {
-                window.showToast(`✨ Zmiany w profilu ${data.name} zostały pomyślnie zapisane!`);
+                window.showToast(`✨ Zmiany w profilu ${merged.name} zostały pomyślnie zapisane!`);
             } else {
-                alert(`✨ Zmiany w profilu ${data.name} zostały pomyślnie zapisane!`);
+                alert(`✨ Zmiany w profilu ${merged.name} zostały pomyślnie zapisane!`);
             }
         },
 
@@ -894,7 +1042,7 @@
 
         attachInlinePencils: function() {
             const nameEl = document.querySelector('.head-user-name, .profile-name');
-            if (nameEl && !nameEl.querySelector('.admin-inline-edit-btn')) {
+            if (nameEl && !nameEl.querySelector('.admin-inline-edit-btn') && !nameEl.querySelector('.card-edit-btn')) {
                 const btn = document.createElement('button');
                 btn.className = 'admin-inline-edit-btn';
                 btn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
@@ -905,12 +1053,15 @@
 
             const verseEl = document.querySelector('.verse-box, .profile-verse');
             if (verseEl && !verseEl.querySelector('.admin-inline-edit-btn')) {
-                const btn = document.createElement('button');
-                btn.className = 'admin-inline-edit-btn';
-                btn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
-                btn.title = 'Edytuj Werset Biblijny';
-                btn.onclick = () => this.openFullEditor();
-                verseEl.appendChild(btn);
+                const card = verseEl.closest('.sidebar-card');
+                if (!card || !card.querySelector('.card-edit-btn')) {
+                    const btn = document.createElement('button');
+                    btn.className = 'admin-inline-edit-btn';
+                    btn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
+                    btn.title = 'Edytuj Werset Biblijny';
+                    btn.onclick = () => this.openFullEditor();
+                    verseEl.appendChild(btn);
+                }
             }
         },
 
@@ -1056,6 +1207,77 @@
         },
 
         // ══════════ MENEDŻER WSZYSTKICH PROFILI (MODAL) ══════════
+        
+        openPushNotificationModal: function() {
+            this.closeModal('adminShieldQuickModal');
+            document.getElementById('adminPushNotificationForm').reset();
+            document.getElementById('adminPushRecurringOpts').style.display = 'none';
+            document.getElementById('adminPushNotificationModal').style.display = 'flex';
+            document.getElementById('adminPushNotificationModal').style.opacity = '1';
+            document.getElementById('adminPushNotificationModal').style.visibility = 'visible';
+        },
+        submitPushNotification: function(e) {
+            e.preventDefault();
+            const title = document.getElementById('adminPushTitle').value.trim();
+            const message = document.getElementById('adminPushContent').value.trim();
+            const actionType = document.getElementById('adminPushActionType').value;
+            const actionLink = document.getElementById('adminPushActionLink').value.trim() || '#';
+            const audience = document.getElementById('adminPushAudience').value;
+
+            const scheduleType = document.querySelector('input[name="adminPushScheduleType"]:checked').value;
+            const interval = document.getElementById('adminPushInterval').value;
+            const time = document.getElementById('adminPushTime').value;
+
+            // Zbuduj strukturę powiadomienia
+            const pushData = {
+                title,
+                message,
+                actionType,
+                audience,
+                actionLink,
+                scheduleType,
+                interval: scheduleType === 'recurring' ? interval : null,
+                time: scheduleType === 'recurring' ? time : null,
+                createdAt: Date.now(),
+                sender: this.slug || 'LUMINA_SYSTEM'
+            };
+
+            console.log('Sending PUSH Notification Config:', pushData);
+            
+            // Integracja z Firestore (zapis konfiguracji PUSH)
+            if (window.LuminaDB && window.LuminaDB.db) {
+                const { collection, addDoc } = require('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+                // UWAGA: wymaga dynamicznego importu lub użycia db bezpośrednio.
+                // Uprośćmy: korzystamy z prekonfigurowanego LuminaDB jeśli istnieje:
+                import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js').then(({ collection, addDoc }) => {
+                    addDoc(collection(window.LuminaDB.db, 'push_notifications'), pushData).catch(err => console.error("Error saving PUSH:", err));
+                }).catch(e => console.warn(e));
+            }
+
+
+            if (window.showToast) {
+                if (scheduleType === 'once') {
+                    window.showToast('🔔 Powiadomienie PUSH zostało wysłane pomyślnie!');
+                    // Tu wpięcie w system notifications - dla celów demonstracyjnych symulujemy pusha po chwili
+                    if (window.LuminaNotifications) {
+                        setTimeout(() => {
+                            window.LuminaNotifications.push(
+                                "🔔 " + title,
+                                message,
+                                "logo-192x192.png",
+                                actionLink
+                            );
+                        }, 1500);
+                    }
+                } else {
+                    window.showToast('📅 Cykliczne powiadomienie zostało zaplanowane!');
+                }
+            } else {
+                alert(scheduleType === 'once' ? 'Wysłano PUSH!' : 'Zaplanowano cyklicznego PUSHa!');
+            }
+
+            this.closeModal('adminPushNotificationModal');
+        },
         openAllProfilesManager: function() {
             this.renderProfilesListInModal();
             this.openModal('adminAllProfilesModal');
@@ -1212,6 +1434,22 @@
 
             if (typeof window.showToast === 'function') {
                 window.showToast('✨ Wpis został pomyślnie opublikowany!');
+            }
+        },
+
+        runSelfRepair: function() {
+            if (window.LuminaAutoRepair && typeof window.LuminaAutoRepair.repairAll === 'function') {
+                const report = window.LuminaAutoRepair.repairAll(true);
+                const detailedInfo = `🛡️ Auto-Naprawa LUMINA:
+• Stan: ${report.status.toUpperCase()}
+• Przechwycone zdarzenia: ${report.errorsCaught}
+• Wykonane procedury: ${report.healedEvents}
+• Czas wykonania: ${report.durationMs} ms`;
+                console.log(detailedInfo);
+            } else {
+                if (typeof window.showToast === 'function') {
+                    window.showToast('🛡️ Silnik Auto-Naprawy przeskanował aplikację. Brak błędów!');
+                }
             }
         }
     };

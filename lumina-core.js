@@ -89,7 +89,7 @@ class LuminaCoreEngine {
         const sender = this.currentProfile || this.currentUser || {
             uid: localStorage.getItem('lumina_guest_id') || 'guest_' + Date.now(),
             name: 'Użytkownik LUMINA',
-            avatar: 'avatar_new1.jpg'
+            avatar: 'lumina_icon.jpg'
         };
 
         const sanitizedNote = this.moderateText(customNote);
@@ -98,7 +98,7 @@ class LuminaCoreEngine {
             id: 'coffee_' + Date.now(),
             senderId: sender.uid || sender.slug,
             senderName: sender.name || 'Użytkownik LUMINA',
-            senderAvatar: sender.avatar || 'avatar_new1.jpg',
+            senderAvatar: sender.avatar || 'lumina_icon.jpg',
             receiverId: receiverIdOrSlug,
             status: 'pending_invitation',
             note: sanitizedNote || 'Szczęść Boże! Z radością zapraszam Cię na chrześcijańską kawę ☕🕊️',
@@ -138,7 +138,7 @@ class LuminaCoreEngine {
                         id: lastChat.id,
                         senderId: lastChat.lastSenderId,
                         senderName: lastChat.lastSenderName || 'Użytkownik LUMINA',
-                        senderAvatar: lastChat.lastSenderAvatar || 'avatar_new1.jpg',
+                        senderAvatar: lastChat.lastSenderAvatar || 'lumina_icon.jpg',
                         note: lastChat.lastMessageText
                     });
                 }
@@ -158,7 +158,7 @@ class LuminaCoreEngine {
 
         if (nameEl) nameEl.textContent = invite.senderName;
         if (noteEl) noteEl.textContent = invite.note;
-        if (avatarEl) avatarEl.src = invite.senderAvatar || 'avatar_new1.jpg';
+        if (avatarEl) avatarEl.src = invite.senderAvatar || 'lumina_icon.jpg';
 
         if (btnAccept) btnAccept.onclick = () => this.respondCoffeeInvite(invite, 'accepted');
         if (btnDecline) btnDecline.onclick = () => this.respondCoffeeInvite(invite, 'declined');
@@ -219,7 +219,7 @@ class LuminaCoreEngine {
                     <i class="fa-solid fa-mug-hot" style="font-size:1.8rem; color:#facc15;"></i>
                 </div>
                 <h3 style="color:#ffffff; font-size:1.3rem; font-weight:800; font-family:'Outfit',sans-serif; margin-bottom:8px;">Zaproszenie na Chrześcijańską Kawę</h3>
-                <img id="coffee-modal-avatar" src="avatar_new1.jpg" style="width:64px; height:64px; border-radius:50%; object-fit:cover; margin:10px auto; border:2px solid #f59e0b;" alt="Avatar">
+                <img id="coffee-modal-avatar" src="lumina_icon.jpg" style="width:64px; height:64px; border-radius:50%; object-fit:cover; margin:10px auto; border:2px solid #f59e0b;" alt="Avatar" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                 <h4 id="coffee-modal-sender-name" style="color:#f8fafc; font-size:1.05rem; font-weight:700; margin-bottom:6px;">Użytkownik LUMINA</h4>
                 <p id="coffee-modal-note" style="color:#cbd5e1; font-size:0.88rem; font-style:italic; margin-bottom:22px; line-height:1.5; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:12px;"></p>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
@@ -255,7 +255,7 @@ class LuminaCoreEngine {
         return await this.db.sendDirectMessageToCloud(chatId, {
             senderId: myId,
             senderName: this.currentProfile?.name || this.currentUser?.displayName || 'Użytkownik LUMINA',
-            senderAvatar: this.currentProfile?.avatar || this.currentUser?.photoURL || 'avatar_new1.jpg',
+            senderAvatar: this.currentProfile?.avatar || this.currentUser?.photoURL || 'lumina_icon.jpg',
             receiverId: chatPartnerId,
             text: text
         });
@@ -266,6 +266,43 @@ class LuminaCoreEngine {
         return await this.db.saveProfileToCloud(uid, userData);
     }
 }
+
+// Global Universal Logout Handler for Profiles & Nav
+window.handleLogout = async function(redirectUrl = 'lumina.html') {
+    try {
+        if (window.LuminaDB && typeof window.LuminaDB.logoutUser === 'function') {
+            await window.LuminaDB.logoutUser();
+        }
+    } catch(e) {
+        console.warn('Lumina Logout notice:', e);
+    }
+
+    try {
+        for (let i = sessionStorage.length - 1; i >= 0; i--) {
+            const k = sessionStorage.key(i);
+            if (k && (k.startsWith('lumina_auth_owner_') || k.startsWith('lumina_auth_master_'))) {
+                sessionStorage.removeItem(k);
+            }
+        }
+    } catch(e) {}
+
+    localStorage.removeItem('lumina_current_user_profile');
+    localStorage.removeItem('lumina_auth_token');
+    
+    if (typeof window.showToast === 'function') {
+        window.showToast('Wylogowano pomyślnie z aplikacji LUMINA 👋');
+    } else {
+        alert('Wylogowano pomyślnie z aplikacji LUMINA 👋');
+    }
+
+    setTimeout(() => {
+        if (redirectUrl) {
+            window.location.href = redirectUrl;
+        } else {
+            window.location.reload();
+        }
+    }, 600);
+};
 
 window.LuminaCore = new LuminaCoreEngine();
 export default window.LuminaCore;

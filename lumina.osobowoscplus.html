@@ -61,6 +61,8 @@
     
     <!-- Lumina Realtime Engine -->
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=2.5">
+    <!-- Lumina Auto-Repair & Error Guardian Engine -->
+    <script src="lumina-auto-repair.js"></script>
     <script type="module" src="lumina-db.js?v=1786937913306"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
@@ -790,6 +792,8 @@
                     <a href="lumina-tablica.html" class="btn-action-secondary">
                         <i class="fa-solid fa-earth-americas"></i> Zobacz na Tablicy
                     </a>
+                    <button class="btn-action-secondary btn-action-gear" onclick="if(window.LuminaAdminSuite){window.LuminaAdminSuite.openPinPrompt()}else{window.location.href='lumina.html'}" title="Ustawienia / Panel Administracyjny" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear" style="font-size:1.15rem;"></i></button>
+                    <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer; transition:all 0.2s ease;"><i class="fa-solid fa-right-from-bracket" style="font-size:1.1rem;"></i></button>
                 </div>
             </div>
 
@@ -1126,5 +1130,7 @@ Zdrowe granice nie są budowaniem murów, lecz drzwiami z zamkiem — to Ty decy
             }
         }
     </script>
+    <script src="lumina-admin-profile-suite.js"></script>
+    <script src="lumina-premium-video-avatar.js"></script>
 </body>
 </html>

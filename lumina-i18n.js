@@ -107,7 +107,15 @@
     ];
 
     // Read stored language or default to Polish
-    let currentLuminaLang = localStorage.getItem('lumina_lang') || sessionStorage.getItem('lumina_lang') || 'pl';
+    let currentLuminaLang = localStorage.getItem('lumina_lang') || sessionStorage.getItem('lumina_lang');
+    
+    // Auto-detect based on device if not set manually
+    if (!currentLuminaLang) {
+        const browserLang = navigator.language || navigator.userLanguage || 'pl';
+        currentLuminaLang = browserLang.toLowerCase().startsWith('pl') ? 'pl' : 'en';
+        localStorage.setItem('lumina_lang', currentLuminaLang);
+    }
+
     if (document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen')) {
         currentLuminaLang = 'en';
     }
@@ -179,10 +187,7 @@
         }
 
         // 5. Update Language Switcher Buttons
-        document.querySelectorAll('.lang-switcher-btn').forEach((btn) => {
-            btn.textContent = targetLang === 'en' ? '🇬🇧' : '🇵🇱';
-            btn.title = targetLang === 'en' ? 'Przełącz na język polski 🇵🇱' : 'Switch to English 🇬🇧';
-        });
+        
 
         const langToggleText = document.getElementById('langToggleText');
         if (langToggleText) {

@@ -42,10 +42,14 @@
     }
 
     function handleAudioError(e) {
+        const audio = getAudioElement();
+        const currentSrc = audio.getAttribute('src') || audio.src || '';
+        if (!currentSrc || currentSrc === window.location.href || audio.paused) {
+            return;
+        }
         console.warn('LuminaRadio stream fallback attempt...', e);
         if (localStorage.getItem('lumina_radio_playing') === 'true') {
             currentStreamIndex = (currentStreamIndex + 1) % RADIO_STREAMS.length;
-            const audio = getAudioElement();
             audio.src = RADIO_STREAMS[currentStreamIndex] + '?t=' + Date.now();
             audio.load();
             audio.play().catch(err => {
@@ -79,15 +83,31 @@
             }
         });
 
+        const mobileNavIcon = document.getElementById('mobileRadioNavIcon');
+        if (mobileNavIcon) {
+            if (playing) {
+                mobileNavIcon.className = 'fa-solid fa-volume-high';
+                mobileNavIcon.style.animation = 'pulse 1.2s infinite';
+            } else {
+                mobileNavIcon.className = 'fa-solid fa-radio';
+                mobileNavIcon.style.animation = 'none';
+            }
+        }
+
         // Pływający Miniodtwarzacz (Persistent Floating Player)
         const mini = document.getElementById('luminaFloatingRadioBar');
         if (mini) {
             if (playing) {
-                mini.classList.add('visible');
+                // Pokazuj tylko jeśli użytkownik wcześniej go celowo nie zminimalizował
+                if (!mini.classList.contains('minimized-by-user')) {
+                    mini.classList.add('visible');
+                }
                 const miniIcon = mini.querySelector('.mini-radio-play-btn i');
                 if (miniIcon) miniIcon.className = 'fa-solid fa-pause';
             } else {
                 mini.classList.remove('visible');
+                // Kasujemy znacznik, gdy radio zostaje wstrzymane (kolejne odtworzenie znów wywoła pasek)
+                mini.classList.remove('minimized-by-user');
                 const miniIcon = mini.querySelector('.mini-radio-play-btn i');
                 if (miniIcon) miniIcon.className = 'fa-solid fa-play';
             }
@@ -124,24 +144,20 @@
     const LuminaRadio = {
         play: function(isUserClick = false) {
             const audio = getAudioElement();
-            currentStreamIndex = 0;
-            audio.src = RADIO_STREAMS[0] + '?t=' + Date.now();
-            audio.load();
+            const currentSrc = audio.getAttribute('src') || audio.src || '';
+            if (!currentSrc || currentSrc === window.location.href) {
+                currentStreamIndex = 0;
+                audio.src = RADIO_STREAMS[0] + '?t=' + Date.now();
+                audio.load();
+            }
             
             return audio.play().then(() => {
                 localStorage.setItem('lumina_radio_playing', 'true');
                 localStorage.setItem('lumina_radio_last_active', Date.now());
                 updateAllRadioUI(true);
-                if (isUserClick) {
-                    const toast = window.showToast || window.luminaToast;
-                    if (typeof toast === 'function') toast('Radio Christian Culture gra na żywo! 📻🎵');
-                }
             }).catch(err => {
                 console.warn('Autoplay blocked or delayed:', err);
-                if (isUserClick) {
-                    const toast = window.showToast || window.luminaToast;
-                    if (typeof toast === 'function') toast('Kliknij ponownie, aby odtworzyć Radio CC');
-                } else {
+                if (!isUserClick) {
                     attachResumeOnInteraction();
                 }
             });
@@ -150,13 +166,9 @@
         pause: function(isUserClick = false) {
             const audio = getAudioElement();
             audio.pause();
-            audio.src = '';
+            audio.removeAttribute('src');
             localStorage.setItem('lumina_radio_playing', 'false');
             updateAllRadioUI(false);
-            if (isUserClick) {
-                const toast = window.showToast || window.luminaToast;
-                if (typeof toast === 'function') toast('Radio Christian Culture wstrzymane ⏸️');
-            }
         },
 
         toggle: function(isUserClick = true) {
@@ -198,40 +210,46 @@
         style.textContent = `
             #luminaFloatingRadioBar {
                 position: fixed;
-                bottom: 80px;
-                left: 20px;
+                bottom: 84px;
+                left: 50%;
+                transform: translateX(-50%) translateY(120px);
                 z-index: 999990;
-                background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 27, 75, 0.95));
-                border: 1.5px solid rgba(245, 158, 11, 0.55);
+                background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 27, 75, 0.96));
+                border: 1.5px solid rgba(245, 158, 11, 0.6);
                 border-radius: 40px;
-                padding: 6px 14px 6px 8px;
+                padding: 8px 24px 8px 10px;
                 display: flex;
                 align-items: center;
-                gap: 10px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 158, 11, 0.25);
-                backdrop-filter: blur(14px);
-                -webkit-backdrop-filter: blur(14px);
-                transform: translateY(120px);
+                gap: 12px;
+                box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 24px rgba(245, 158, 11, 0.3);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
                 opacity: 0;
                 pointer-events: none;
                 transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
                 font-family: 'Plus Jakarta Sans', sans-serif;
                 color: #ffffff;
-                max-width: 90vw;
+                width: auto;
+                max-width: 92vw;
             }
             #luminaFloatingRadioBar.visible {
-                transform: translateY(0);
+                transform: translateX(-50%) translateY(0);
                 opacity: 1;
                 pointer-events: auto;
             }
             @media (max-width: 768px) {
                 #luminaFloatingRadioBar {
-                    bottom: 74px;
-                    left: 12px;
-                    right: 12px;
+                    bottom: 76px;
+                    left: 50%;
+                    width: 92%;
+                    max-width: 380px;
+                    transform: translateX(-50%) translateY(120px);
                     justify-content: space-between;
-                    border-radius: 18px;
-                    padding: 8px 14px;
+                    border-radius: 20px;
+                    padding: 8px 20px 8px 16px;
+                }
+                #luminaFloatingRadioBar.visible {
+                    transform: translateX(-50%) translateY(0);
                 }
             }
             .mini-radio-play-btn {
@@ -291,7 +309,7 @@
                 color: #94a3b8;
                 white-space: nowrap;
             }
-            .mini-radio-close {
+            .mini-radio-popup, .mini-radio-close {
                 background: transparent;
                 border: none;
                 color: #64748b;
@@ -303,7 +321,10 @@
                 justify-content: center;
                 transition: color 0.2s;
             }
-            .mini-radio-close:hover {
+            .mini-radio-close {
+                margin-right: 6px;
+            }
+            .mini-radio-popup:hover, .mini-radio-close:hover {
                 color: #cbd5e1;
             }
         `;
@@ -317,12 +338,12 @@
                 <div class="mini-radio-waves">
                     <span></span><span></span><span></span><span></span>
                 </div>
-                <div class="mini-radio-info">
+                <div class="mini-radio-info" style="cursor: pointer;" onclick="document.getElementById('luminaFloatingRadioBar').classList.add('minimized-by-user'); document.getElementById('luminaFloatingRadioBar').classList.remove('visible');">
                     <span class="mini-radio-title">Radio Christian Culture 🎵</span>
                     <span class="mini-radio-sub">24/7 Na Żywo • Uwielbienie & Słowo</span>
                 </div>
-                <button type="button" class="mini-radio-close" onclick="window.LuminaRadio.pause(true)" title="Wyłącz radio">
-                    <i class="fa-solid fa-xmark"></i>
+                <div style="display:flex; gap: 4px;"><button type="button" class="mini-radio-popup" onclick="window.LuminaRadio.pause(); window.open('radio-popup.html', 'LuminaRadioPopup', 'width=350,height=450,resizable=no');" title="Odtwarzaj w osobnym oknie (Popup)"><i class="fa-solid fa-arrow-up-right-from-square"></i></button><button type="button" class="mini-radio-close" onclick="document.getElementById('luminaFloatingRadioBar').classList.add('minimized-by-user'); document.getElementById('luminaFloatingRadioBar').classList.remove('visible');" title="Zminimalizuj odtwarzacz">
+                    <i class="fa-solid fa-chevron-down"></i>
                 </button>
             </div>
         `;
