@@ -2884,11 +2884,11 @@ function getWeatherPreset(city) {
             let cityIdx = 0;
 
             function updateWeatherDisplay() {
-                const cityName = weatherCitiesList[cityIdx];
+                const cityName = weatherCitiesList[cityIdx] || "Warszawa";
                 const weatherBox = document.getElementById("weatherBox");
                 const weatherIcon = document.querySelector(".weather-icon");
                 if (weatherBox) {
-                    const desc = getDynamicWeatherForCity(cityName);
+                    const desc = getDynamicWeatherForCity(cityName) || "Słonecznie ☀️ 21°C";
                     weatherBox.innerHTML = `
                         <span class="weather-city">${cityName}</span>
                         <span class="weather-temp-desc">${desc}</span>
@@ -3704,16 +3704,300 @@ function getWeatherPreset(city) {
 
     <audio id="stream-audio" autoplay></audio>
     <script>
-        // Automatic playlist rotation across all Instrumental Worship tracks
+                // Automatic playlist rotation across all Instrumental Worship tracks
         (function initWorshipPlaylist() {
             var audio = document.getElementById("stream-audio");
             if (!audio) return;
 
-            var worshipPlaylist = [];
-            var totalWorshipDuration = 0;
+            var DEFAULT_PLAYLIST = [
+          {
+                    "id": "worship_1",
+                    "title": "Przy Jego Tronie",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(1).mp3"
+          },
+          {
+                    "id": "worship_2",
+                    "title": "Duch Świętości",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(2).mp3"
+          },
+          {
+                    "id": "worship_3",
+                    "title": "Cisza Serca",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(3).mp3"
+          },
+          {
+                    "id": "worship_4",
+                    "title": "W Jego Obecności",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(4).mp3"
+          },
+          {
+                    "id": "worship_5",
+                    "title": "Modlitwa Poranna",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(5).mp3"
+          },
+          {
+                    "id": "worship_6",
+                    "title": "Blask Wieczności",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(6).mp3"
+          },
+          {
+                    "id": "worship_7",
+                    "title": "Uwielbienie",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(7).mp3"
+          },
+          {
+                    "id": "worship_8",
+                    "title": "Ku Bożej Chwale",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM.mp3"
+          },
+          {
+                    "id": "worship_9",
+                    "title": "Głęboki Las II",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/DEEP%20FOREST%202.mp3"
+          },
+          {
+                    "id": "worship_10",
+                    "title": "Głęboki Las III",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/DEEP%20FOREST%203.mp3"
+          },
+          {
+                    "id": "worship_11",
+                    "title": "Głęboki Las IV",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/DEEP%20FOREST%204.mp3"
+          },
+          {
+                    "id": "worship_12",
+                    "title": "Głęboki Las",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/DEEP%20FOREST.mp3"
+          },
+          {
+                    "id": "worship_13",
+                    "title": "Deep Forest – Oaza Pokoju",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/deep_forest_1.mp3"
+          },
+          {
+                    "id": "worship_14",
+                    "title": "Deep Forest – Strumienie Wody Żywej",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/deep_forest_2.mp3"
+          },
+          {
+                    "id": "worship_15",
+                    "title": "Deep Forest – Święta Obecność",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/deep_forest_3.mp3"
+          },
+          {
+                    "id": "worship_16",
+                    "title": "Deep Forest – Cisza Przymierza",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/deep_forest_4.mp3"
+          },
+          {
+                    "id": "worship_17",
+                    "title": "Dom z Pasją – Preludium",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(1).mp3"
+          },
+          {
+                    "id": "worship_18",
+                    "title": "Dom z Pasją – Łaska",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(10).mp3"
+          },
+          {
+                    "id": "worship_19",
+                    "title": "Dom z Pasją – Chwała",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(11).mp3"
+          },
+          {
+                    "id": "worship_20",
+                    "title": "Dom z Pasją – Spoczynek",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(12).mp3"
+          },
+          {
+                    "id": "worship_21",
+                    "title": "Dom z Pasją – Modlitwa",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(13).mp3"
+          },
+          {
+                    "id": "worship_22",
+                    "title": "Dom z Pasją – Wieczność",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(14).mp3"
+          },
+          {
+                    "id": "worship_23",
+                    "title": "Dom z Pasją – Finał",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(15).mp3"
+          },
+          {
+                    "id": "worship_24",
+                    "title": "Dom z Pasją – Natchnienie",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(2).mp3"
+          },
+          {
+                    "id": "worship_25",
+                    "title": "Dom z Pasją – Pokój",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(3).mp3"
+          },
+          {
+                    "id": "worship_26",
+                    "title": "Dom z Pasją – Przymierze",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(4).mp3"
+          },
+          {
+                    "id": "worship_27",
+                    "title": "Dom z Pasją – Wyciszenie",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(5).mp3"
+          },
+          {
+                    "id": "worship_28",
+                    "title": "Dom z Pasją – Błogosławieństwo",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(6).mp3"
+          },
+          {
+                    "id": "worship_29",
+                    "title": "Dom z Pasją – Światłość",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(7).mp3"
+          },
+          {
+                    "id": "worship_30",
+                    "title": "Dom z Pasją – Wdzięczność",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(8).mp3"
+          },
+          {
+                    "id": "worship_31",
+                    "title": "Dom z Pasją – Kontemplacja",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(9).mp3"
+          },
+          {
+                    "id": "worship_32",
+                    "title": "Dom z Pasją – Świątynia",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad.mp3"
+          },
+          {
+                    "id": "worship_33",
+                    "title": "Majowy Świt",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Maj%2017.mp3"
+          },
+          {
+                    "id": "worship_34",
+                    "title": "Sardes – Pieśń Odnowy",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Sardes%20(1).mp3"
+          },
+          {
+                    "id": "worship_35",
+                    "title": "Sardes – Pieśń Zwycięstwa",
+                    "artist": "Christian Culture Music",
+                    "album": "Instrumental Worship 24/7",
+                    "duration": 200,
+                    "url": "https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Sardes.mp3"
+          }
+];
+
+            var worshipPlaylist = DEFAULT_PLAYLIST;
+            var totalWorshipDuration = worshipPlaylist.reduce(function(acc, t) {
+                return acc + (t.duration || 240);
+            }, 0);
 
             function updateMediaSession(track) {
-                // === RDS Live Track Display ===
                 if (track && track.title) {
                     var rdsEl = document.getElementById('rds-track-name');
                     if (rdsEl) {
@@ -3741,15 +4025,13 @@ function getWeatherPreset(city) {
                 if (!worshipPlaylist || !worshipPlaylist.length) return;
 
                 var epochSeconds = Math.floor(Date.now() / 1000);
-                var remaining = epochSeconds % (totalWorshipDuration || 770);
+                var remaining = epochSeconds % (totalWorshipDuration || 7000);
                 var targetIndex = 0;
-                var seekSeconds = 0;
 
                 for (var i = 0; i < worshipPlaylist.length; i++) {
                     var dur = worshipPlaylist[i].duration || 240;
                     if (remaining < dur) {
                         targetIndex = i;
-                        seekSeconds = remaining;
                         break;
                     }
                     remaining -= dur;
@@ -3758,22 +4040,30 @@ function getWeatherPreset(city) {
                 var currentTrack = worshipPlaylist[targetIndex];
                 if (currentTrack && currentTrack.url) {
                     var newUrl = currentTrack.url;
-                    // Załaduj tylko jeśli to inny utwór
-                    if (!audio.src || !audio.src.includes(newUrl.slice(-30))) {
+                    if (!audio.src || !audio.src.includes(newUrl.slice(-30)) || audio.ended || audio.paused) {
                         audio.src = newUrl;
-                        // NIE seek – WAV z Drive nie obsługuje range requests dobrze
-                        // Graj od początku, watchdog pilnuje ciągłości
                     }
-                    audio.play().catch(function(e) {
-                        console.warn("Audio play blokada:", e.message);
-                    });
+                    var p = audio.play();
+                    if (p !== undefined) {
+                        p.catch(function(e) {
+                            if (e && e.name !== "AbortError") {
+                                console.warn("Audio autoplay blocked by browser policy, waiting for user interaction:", e.message);
+                            }
+                        });
+                    }
                     updateMediaSession(currentTrack);
                 }
             }
 
-            // Przy błędzie ładowania – przejdź do następnego utworu
+            var isErrorSwitching = false;
             audio.addEventListener('error', function() {
-                console.warn("Audio error – przechodzę do następnego utworu");
+                var err = audio.error;
+                if (err && err.code === 1) return; // MEDIA_ERR_ABORTED
+                if (isErrorSwitching) return;
+                isErrorSwitching = true;
+                setTimeout(function() { isErrorSwitching = false; }, 3000);
+
+                console.warn("Audio error – skipping to next track safely");
                 if (worshipPlaylist && worshipPlaylist.length > 0) {
                     var currentSrc = audio.src;
                     var currentIdx = worshipPlaylist.findIndex(function(t) {
@@ -3789,36 +4079,37 @@ function getWeatherPreset(city) {
                 }
             });
 
-            // Expose globally so initStream() can trigger playback after user gesture
             window.worshipSyncAndPlay = syncAndPlay;
-
             audio.addEventListener('ended', syncAndPlay);
 
+            // Initial start
+            syncAndPlay();
+
+            // Background dynamic refresh of playlist
             fetch("./worship_playlist.json?t=" + new Date().getTime())
                 .then(function(res) { return res.json(); })
                 .then(function(playlist) {
-                    if (!playlist || !playlist.length) return;
-                    worshipPlaylist = playlist;
-                    totalWorshipDuration = worshipPlaylist.reduce(function(acc, t) {
-                        return acc + (t.duration || 240);
-                    }, 0);
-                    syncAndPlay();
-                    // Jeśli użytkownik już kliknął play zanim playlista się załadowała
-                    var audio2 = document.getElementById('stream-audio');
-                    if (window._worshipUserInteracted && audio2 && audio2.paused) {
-                        setTimeout(function() { audio2.play().catch(function(){}); }, 300);
+                    if (Array.isArray(playlist) && playlist.length > 0 && playlist[0].url && playlist[0].url.includes('cdn.jsdelivr.net')) {
+                        worshipPlaylist = playlist;
+                        totalWorshipDuration = worshipPlaylist.reduce(function(acc, t) {
+                            return acc + (t.duration || 240);
+                        }, 0);
                     }
                 })
                 .catch(function(err) {
-                    console.error("Error loading worship_playlist.json:", err);
+                    console.warn("Using inlined worship playlist fallback:", err.message);
                 });
 
-            // Unlock audio on click if blocked by Autoplay policy
-            document.addEventListener("click", function() {
+            // Unlock audio on any user interaction (click, touch, keydown)
+            function unlockAudio() {
                 if (audio.paused) {
-                    audio.play().catch(function(){});
+                    syncAndPlay();
                 }
-            }, { once: true });
+            }
+            ['click', 'touchstart', 'keydown'].forEach(function(evt) {
+                document.addEventListener(evt, unlockAudio, { passive: true });
+                window.addEventListener(evt, unlockAudio, { passive: true });
+            });
         })();
     </script>
     <script src="live-window-manager.js"></script>
