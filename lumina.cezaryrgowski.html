@@ -2904,68 +2904,99 @@
 
     <!-- ══════════ DIRECT MESSAGES MODAL ══════════ -->
     <div class="modal-overlay" id="directMessagesModal">
-        <div class="modal-card" style="max-width: 460px; padding: 20px 16px; max-height: 88vh; display: flex; flex-direction: column;">
-            <button class="modal-close-btn" onclick="closeModal('directMessagesModal')"><i class="fa-solid fa-xmark"></i></button>
-            
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
-                <div style="width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,#ec4899,#8b5cf6); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.05rem; box-shadow:0 4px 12px rgba(236,72,153,0.4);">
-                    <i class="fa-solid fa-comment-dots"></i>
+        <div class="modal-card" style="max-width: 480px; width: 92vw; padding: 0; max-height: 88vh; height: 580px; display: flex; flex-direction: column; overflow: hidden; border-radius: 20px; background: #0b1120; border: 1.5px solid rgba(168,85,247,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.8);">
+            <!-- VIEW 1: CONVERSATIONS LIST -->
+            <div id="dmListView" style="display: flex; flex-direction: column; height: 100%; padding: 18px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#ec4899,#8b5cf6); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1rem; box-shadow:0 4px 12px rgba(236,72,153,0.4);">
+                            <i class="fa-solid fa-comment-dots"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 1.15rem; font-family:'Outfit',sans-serif; margin:0; color:#fff; font-weight:800;">Skrzynka Wiadomości</h3>
+                            <div style="font-size: 0.72rem; color: #94a3b8;">Bezpieczne rozmowy w społeczności LUMINA</div>
+                        </div>
+                    </div>
+                    <button class="modal-close-btn" onclick="closeModal('directMessagesModal')" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-                <div>
-                    <h3 style="font-size: 1.15rem; font-family:'Outfit',sans-serif; margin:0; color:#fff; font-weight:800;">Skrzynka Wiadomości</h3>
-                    <div style="font-size: 0.72rem; color: #94a3b8;">Twoje rozmowy w społeczności LUMINA</div>
+
+                <!-- Active Conversations list -->
+                <div id="dmConversationsList" style="overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:8px; margin-bottom:12px; padding-right:4px;">
+                    <!-- Spouse: Wioletta Rogowska -->
+                    <div onclick="openChatWith('Wioletta Rogowska', 'avatar_wioletta_official.jpg', 'wiolettarogowska')" style="display:flex; align-items:center; gap:10px; padding:12px; background:linear-gradient(135deg, rgba(236,72,153,0.15), rgba(139,92,246,0.15)); border:1.5px solid rgba(236,72,153,0.4); border-radius:14px; cursor:pointer; transition:all 0.2s;">
+                        <div style="position:relative;">
+                            <img src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" style="width:44px; height:44px; border-radius:50%; object-fit:cover; display:block; border:2px solid #ec4899;">
+                            <span style="position:absolute; bottom:0; right:0; width:11px; height:11px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
+                        </div>
+                        <div style="flex:1; min-width:0;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                                <span style="font-weight:800; font-size:0.92rem; color:#fff;">Wioletta Rogowska 💕</span>
+                                <span style="font-size:0.68rem; color:#facc15; font-weight:700;">Na żywo</span>
+                            </div>
+                            <div style="font-size:0.78rem; color:#f472b6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Kliknij, aby otworzyć bezpieczny czat na żywo 🕊️</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right" style="color:#ec4899; font-size:0.85rem;"></i>
+                    </div>
+
+                    <div onclick="openChatWith('Anna', 'lumina_anna2.jpg', 'anna')" style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; cursor:pointer; transition:all 0.2s;">
+                        <div style="position:relative;">
+                            <img src="lumina_anna2.jpg" alt="Anna" style="width:40px; height:40px; border-radius:50%; object-fit:cover; display:block;">
+                            <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
+                        </div>
+                        <div style="flex:1; min-width:0;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                                <span style="font-weight:700; font-size:0.86rem; color:#fff;">Anna</span>
+                                <span style="font-size:0.68rem; color:#94a3b8;">Aktywny</span>
+                            </div>
+                            <div style="font-size:0.75rem; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Szczęść Boże! Dziękuję za wsparcie misji CC ✨</div>
+                        </div>
+                    </div>
                 </div>
+
+                <button type="button" onclick="closeModal('directMessagesModal'); window.location.href='lumina.html#odkrywaj';" style="width:100%; padding:11px; border-radius:24px; background:linear-gradient(90deg,#ec4899,#8b5cf6); border:none; color:#fff; font-weight:800; font-family:inherit; font-size:0.84rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(236,72,153,0.35);">
+                    <i class="fa-solid fa-compass"></i> Odkrywaj Nowe Profile
+                </button>
             </div>
 
-            <!-- List of conversations -->
-            <div style="overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
-                <div onclick="openChatWith('Anna', 'lumina_anna2.jpg', 'anna')" style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; cursor:pointer; transition:all 0.2s;">
-                    <div style="position:relative;">
-                        <img src="lumina_anna2.jpg" alt="Anna" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block;">
-                        <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
-                    </div>
-                    <div style="flex:1; min-width:0;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                            <span style="font-weight:700; font-size:0.86rem; color:#fff;">Anna</span>
-                            <span style="font-size:0.68rem; color:#facc15; font-weight:600;">10 min temu</span>
+            <!-- VIEW 2: ACTIVE 1:1 REALTIME CHAT ROOM -->
+            <div id="dmChatRoomView" style="display: none; flex-direction: column; height: 100%;">
+                <!-- Chat Room Header -->
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button type="button" onclick="returnToConversationsList()" style="background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer; padding: 4px 8px;"><i class="fa-solid fa-arrow-left"></i></button>
+                        <img id="activeChatAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+                        <div>
+                            <div id="activeChatName" style="font-weight: 800; font-size: 0.95rem; color: #fff;">Rozmowa</div>
+                            <div style="font-size: 0.7rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
+                                <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Aktywny w Chrystusie 🕊️
+                            </div>
                         </div>
-                        <div style="font-size:0.75rem; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Cześć! Piękny werset dodałeś dzisiaj... ✨</div>
                     </div>
-                    <span style="background:#ec4899; color:#fff; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:10px;">1</span>
+                    <button class="modal-close-btn" onclick="closeModal('directMessagesModal')" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
                 </div>
 
-                <div onclick="openChatWith('Tomek', 'avatar_widget_tomek.jpg', 'tomek')" style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; cursor:pointer; transition:all 0.2s;">
-                    <div style="position:relative;">
-                        <img src="avatar_widget_tomek.jpg" alt="Tomek" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block;">
-                        <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
+                <!-- Chat Messages Scroll Container -->
+                <div id="activeChatMessagesBox" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.2);">
+                    <div style="text-align: center; margin: 10px 0;">
+                        <span style="font-size: 0.72rem; color: #64748b; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">Rozpoczęto bezpieczną rozmowę w portalu LUMINA 🕊️</span>
                     </div>
-                    <div style="flex:1; min-width:0;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                            <span style="font-weight:700; font-size:0.86rem; color:#fff;">Tomek</span>
-                            <span style="font-size:0.68rem; color:#94a3b8;">1 godz. temu</span>
-                        </div>
-                        <div style="font-size:0.75rem; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Dzięki za zaproszenie na kawę! Z chęcią porozmawiam ☕</div>
-                    </div>
-                    <span style="background:#3b82f6; color:#fff; font-size:0.65rem; font-weight:800; padding:2px 6px; border-radius:10px;">1</span>
                 </div>
 
-                <div onclick="openChatWith('Weronika', 'avatar_widget_ania.jpg', 'weronika')" style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px; cursor:pointer; transition:all 0.2s;">
-                    <div style="position:relative;">
-                        <img src="avatar_widget_ania.jpg" alt="Weronika" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block;">
-                    </div>
-                    <div style="flex:1; min-width:0;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                            <span style="font-weight:700; font-size:0.86rem; color:#fff;">Weronika</span>
-                            <span style="font-size:0.68rem; color:#64748b;">Wczoraj</span>
-                        </div>
-                        <div style="font-size:0.75rem; color:#94a3b8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Niech Bóg Ci błogosławi na ten tydzień! 🕊️</div>
-                    </div>
+                <!-- Quick Christian Emoji Bar -->
+                <div style="display: flex; gap: 6px; padding: 6px 14px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); overflow-x:auto;">
+                    <button type="button" onclick="insertChatQuickText('Niech Bóg Ci błogosławi! 🕊️')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">🕊️ Błogosławieństwo</button>
+                    <button type="button" onclick="insertChatQuickText('Chętnie pomodlę się w Twojej intencji! 🙏')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">🙏 Modlitwa</button>
+                    <button type="button" onclick="insertChatQuickText('Masz ochotę na chrześcijańską kawę? ☕')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">☕ Kawa</button>
                 </div>
+
+                <!-- Chat Input Form -->
+                <form id="activeChatForm" onsubmit="handleSendActiveChatMessage(event)" style="display: flex; gap: 8px; padding: 10px 14px; background: rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.1);">
+                    <input type="text" id="activeChatInput" placeholder="Napisz wiadomość..." style="flex: 1; padding: 10px 14px; border-radius: 20px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-family: inherit; font-size: 0.85rem;" required>
+                    <button type="submit" style="padding: 10px 18px; border-radius: 20px; background: linear-gradient(90deg, #ec4899, #8b5cf6); border: none; color: #fff; font-weight: 800; cursor: pointer; font-family: inherit; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
+                        <span>Wyślij</span> <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
             </div>
-
-            <button type="button" onclick="closeModal('directMessagesModal'); window.location.href='lumina.html#odkrywaj';" style="width:100%; padding:11px; border-radius:24px; background:linear-gradient(90deg,#ec4899,#8b5cf6); border:none; color:#fff; font-weight:800; font-family:inherit; font-size:0.84rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(236,72,153,0.35);">
-                <i class="fa-solid fa-plus"></i> Rozpocznij Nową Rozmowę
-            </button>
         </div>
     </div>
 
@@ -4358,20 +4389,136 @@ www.polskieradio.cc | www.cclite.pl`,
             showToast('Kampania została pomyślnie opublikowana na Głównej Tablicy! 📢✨');
         }
 
-        // Direct Messages Modal Handlers
+        // ── Direct Messages & Realtime Messenger Engine ──
+        let activeChatSession = null;
+        let activeChatUnsubscribe = null;
+
         function openDirectMessagesModal() {
             const m = document.getElementById('directMessagesModal');
-            if (m) m.classList.add('open');
+            if (m) {
+                returnToConversationsList();
+                m.classList.add('open');
+            }
+        }
+
+        function returnToConversationsList() {
+            if (activeChatUnsubscribe) {
+                activeChatUnsubscribe();
+                activeChatUnsubscribe = null;
+            }
+            activeChatSession = null;
+            const listView = document.getElementById('dmListView');
+            const chatView = document.getElementById('dmChatRoomView');
+            if (listView) listView.style.display = 'flex';
+            if (chatView) chatView.style.display = 'none';
+        }
+
+        function insertChatQuickText(txt) {
+            const input = document.getElementById('activeChatInput');
+            if (input) {
+                input.value = (input.value ? input.value + ' ' : '') + txt;
+                input.focus();
+            }
         }
 
         function openChatWith(name, avatar, slug) {
-            closeModal('directMessagesModal');
-            if (slug === 'cezaryrgowski') {
-                window.location.href = 'lumina.cezaryrgowski.html';
-            } else if (slug === 'wiolettarogowska') {
-                window.location.href = 'lumina.wiolettarogowska.html';
-            } else {
-                window.location.href = `lumina-profile.html?u=${slug}`;
+            const m = document.getElementById('directMessagesModal');
+            if (m) m.classList.add('open');
+
+            const listView = document.getElementById('dmListView');
+            const chatView = document.getElementById('dmChatRoomView');
+            if (listView) listView.style.display = 'none';
+            if (chatView) chatView.style.display = 'flex';
+
+            const nameEl = document.getElementById('activeChatName');
+            const avatarEl = document.getElementById('activeChatAvatar');
+            if (nameEl) nameEl.textContent = name;
+            if (avatarEl) avatarEl.src = avatar || 'lumina_icon.jpg';
+
+            const fromId = 'cezaryrgowski';
+            const toId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(slug || name) : (slug || 'wiolettarogowska');
+            const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : [fromId, toId].sort().join('_');
+
+            activeChatSession = {
+                chatId: chatId,
+                targetId: toId,
+                targetName: name,
+                targetAvatar: avatar
+            };
+
+            const box = document.getElementById('activeChatMessagesBox');
+            if (box) {
+                box.innerHTML = `
+                    <div style="text-align:center;margin:10px 0;">
+                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${name} w Chrystusie 🕊️</span>
+                    </div>
+                `;
+            }
+
+            if (activeChatUnsubscribe) activeChatUnsubscribe();
+
+            if (window.LuminaDB) {
+                activeChatUnsubscribe = window.LuminaDB.subscribeToDirectMessages(chatId, (messages) => {
+                    renderDirectChatMessages(messages, fromId);
+                });
+            }
+            setTimeout(() => {
+                const input = document.getElementById('activeChatInput');
+                if (input) input.focus();
+            }, 150);
+        }
+
+        function renderDirectChatMessages(messages, myId) {
+            const box = document.getElementById('activeChatMessagesBox');
+            if (!box) return;
+
+            let html = `
+                <div style="text-align:center;margin:8px 0;">
+                    <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Początek rozmowy 🕊️</span>
+                </div>
+            `;
+
+            (messages || []).forEach(msg => {
+                const normSender = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(msg.senderId) : msg.senderId;
+                const isMe = (normSender === 'cezaryrgowski');
+                const align = isMe ? 'flex-end' : 'flex-start';
+                const bg = isMe ? 'linear-gradient(135deg, #a855f7, #06b6d4)' : 'rgba(255,255,255,0.08)';
+                const color = '#fff';
+                const radius = isMe ? '16px 16px 4px 16px' : '16px 16px 16px 4px';
+                const time = msg.dateStr || (msg.timestamp?.seconds ? new Date(msg.timestamp.seconds * 1000).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : 'Teraz');
+
+                html += `
+                    <div style="display:flex; justify-content:${align}; margin-bottom:6px;">
+                        <div style="max-width:78%; padding:10px 14px; border-radius:${radius}; background:${bg}; color:${color}; font-size:0.86rem; line-height:1.45; box-shadow:0 2px 8px rgba(0,0,0,0.25);">
+                            <div style="font-weight:700; font-size:0.72rem; color:rgba(255,255,255,0.7); margin-bottom:2px;">${msg.senderName || (isMe ? 'Cezary Rogowski' : 'Wioletta Rogowska')}</div>
+                            <div>${msg.text}</div>
+                            <div style="font-size:0.65rem; color:rgba(255,255,255,0.6); text-align:right; margin-top:4px;">${time}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            box.innerHTML = html;
+            box.scrollTop = box.scrollHeight;
+        }
+
+        async function handleSendActiveChatMessage(e) {
+            if (e) e.preventDefault();
+            const input = document.getElementById('activeChatInput');
+            if (!input) return;
+            const text = input.value.trim();
+            if (!text || !activeChatSession) return;
+
+            input.value = '';
+
+            if (window.LuminaDB) {
+                await window.LuminaDB.sendDirectMessageToCloud(activeChatSession.chatId, {
+                    senderId: 'cezaryrgowski',
+                    senderName: 'Cezary Rogowski',
+                    senderAvatar: 'avatar_cezary_official.jpg',
+                    receiverId: activeChatSession.targetId,
+                    text: text
+                });
             }
         }
 

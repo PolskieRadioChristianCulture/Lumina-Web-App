@@ -1686,21 +1686,41 @@ export async function addCampaignToCloud(campData) {
     }
 }
 
+export function normalizeChatUserId(idOrSlug) {
+    if (!idOrSlug) return 'guest';
+    const str = String(idOrSlug).trim().toLowerCase();
+    if (str === 'cezaryrgowski' || str === 'cezary' || str.includes('nazirczarkes') || str === 'u5seqt54fcnocfcxjirckowjhqc2') {
+        return 'cezaryrgowski';
+    }
+    if (str === 'wiolettarogowska' || str === 'wioletta' || str.includes('wioletta') || str === 'j4aqs5wspawssjtj04jlqchpieg1') {
+        return 'wiolettarogowska';
+    }
+    if (str === 'andrzejthiel' || str === 'andrzej') {
+        return 'andrzejthiel';
+    }
+    return str;
+}
+
 export function getChatId(userA, userB) {
-    return [userA, userB].sort().join('_');
+    const a = normalizeChatUserId(userA);
+    const b = normalizeChatUserId(userB);
+    return [a, b].sort().join('_');
 }
 
 export function subscribeToDirectMessages(chatId, onUpdate) {
+    const parts = (chatId || '').split('_');
+    const normalizedChatId = parts.length >= 2 ? getChatId(parts[0], parts[1]) : chatId;
+
     // 1. Check local cached messages
     try {
-        const cached = localStorage.getItem(`lumina_chat_${chatId}`);
+        const cached = localStorage.getItem(`lumina_chat_${normalizedChatId}`);
         if (cached) onUpdate(JSON.parse(cached));
     } catch(e) {}
 
-    if (!db || !chatId) return () => {};
+    if (!db || !normalizedChatId) return () => {};
     try {
         const msgsQuery = query(
-            collection(db, `lumina_chats/${chatId}/messages`),
+            collection(db, `lumina_chats/${normalizedChatId}/messages`),
             orderBy('timestamp', 'asc'),
             limit(120)
         );
@@ -1709,7 +1729,7 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
             const msgs = [];
             snap.forEach(d => msgs.push({ id: d.id, ...d.data() }));
             try {
-                localStorage.setItem(`lumina_chat_${chatId}`, JSON.stringify(msgs));
+                localStorage.setItem(`lumina_chat_${normalizedChatId}`, JSON.stringify(msgs));
             } catch(e) {}
             onUpdate(msgs);
         }, (err) => console.warn('Lumina Direct Messages sync notice:', err));
@@ -1720,15 +1740,18 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
 
 export async function sendDirectMessageToCloud(chatId, messageObj) {
     const user = currentUserState;
-    const fromId = messageObj.senderId || (user ? user.uid : (localStorage.getItem('lumina_guest_id') || 'guest'));
-    const senderName = messageObj.senderName || currentProfileState?.name || user?.displayName || 'Użytkownik LUMINA';
-    const senderAvatar = messageObj.senderAvatar || currentProfileState?.avatar || user?.photoURL || 'lumina_icon.jpg';
+    const fromId = normalizeChatUserId(messageObj.senderId || (user ? (user.slug || user.uid) : (localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest')));
+    const senderName = messageObj.senderName || currentProfileState?.name || user?.displayName || (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
+    const senderAvatar = messageObj.senderAvatar || currentProfileState?.avatar || user?.photoURL || (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));
+
+    const parts = (chatId || '').split('_');
+    const normalizedChatId = parts.length >= 2 ? getChatId(parts[0], parts[1]) : chatId;
 
     const fullMsg = {
         senderId: fromId,
         senderName: senderName,
         senderAvatar: senderAvatar,
-        receiverId: messageObj.receiverId || '',
+        receiverId: normalizeChatUserId(messageObj.receiverId || (parts.length >= 2 ? (parts[0] === fromId ? parts[1] : parts[0]) : '')),
         text: messageObj.text || '',
         type: messageObj.type || 'text',
         timestamp: serverTimestamp(),
@@ -1737,25 +1760,25 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
 
     // Save locally immediately
     try {
-        const localKey = `lumina_chat_${chatId}`;
+        const localKey = `lumina_chat_${normalizedChatId}`;
         const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
         cached.push({ ...fullMsg, id: 'local_' + Date.now(), timestamp: { seconds: Date.now() / 1000 } });
         localStorage.setItem(localKey, JSON.stringify(cached));
     } catch(e) {}
 
-    if (!db || !chatId) return 'local_' + Date.now();
+    if (!db || !normalizedChatId) return 'local_' + Date.now();
 
     try {
-        const msgRef = await addDoc(collection(db, `lumina_chats/${chatId}/messages`), fullMsg);
+        const msgRef = await addDoc(collection(db, `lumina_chats/${normalizedChatId}/messages`), fullMsg);
 
         // Update chat room metadata
-        await setDoc(doc(db, 'lumina_chats', chatId), {
-            chatId: chatId,
+        await setDoc(doc(db, 'lumina_chats', normalizedChatId), {
+            chatId: normalizedChatId,
             lastMessageText: fullMsg.text,
             lastMessageTimestamp: serverTimestamp(),
             lastSenderId: fromId,
             lastSenderName: senderName,
-            users: chatId.split('_')
+            users: normalizedChatId.split('_')
         }, { merge: true });
 
         return msgRef.id;

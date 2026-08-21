@@ -5093,8 +5093,10 @@
             document.getElementById('activeChatAvatar').src = avatar || 'lumina_icon.jpg';
 
             const myUser = window.LuminaDB?.getCurrentUser();
-            const fromId = myUser ? myUser.uid : (localStorage.getItem('lumina_guest_id') || 'guest');
-            const toId = slug || name.toLowerCase().replace(/\s+/g, '');
+            const myProfile = window.LuminaDB?.getCurrentProfile();
+            const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || (localStorage.getItem('lumina_guest_id') || 'guest');
+            const fromId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
+            const toId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(slug || name) : (slug || name.toLowerCase().replace(/\s+/g, ''));
             const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : [fromId, toId].sort().join('_');
 
             activeChatSession = {
@@ -5132,7 +5134,8 @@
             `;
 
             (messages || []).forEach(msg => {
-                const isMe = (msg.senderId === myId);
+                const normSender = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(msg.senderId) : msg.senderId;
+                const isMe = (normSender === myId);
                 const align = isMe ? 'flex-end' : 'flex-start';
                 const bg = isMe ? 'linear-gradient(135deg, #a855f7, #06b6d4)' : 'rgba(255,255,255,0.08)';
                 const color = '#fff';
@@ -5142,6 +5145,7 @@
                 html += `
                     <div style="display:flex; justify-content:${align}; margin-bottom:4px;">
                         <div style="max-width:78%; padding:10px 14px; border-radius:${radius}; background:${bg}; color:${color}; font-size:0.86rem; line-height:1.45; box-shadow:0 2px 8px rgba(0,0,0,0.25);">
+                            <div style="font-weight:700; font-size:0.72rem; color:rgba(255,255,255,0.7); margin-bottom:2px;">${msg.senderName || (isMe ? 'Ty' : 'Rozmówca')}</div>
                             <div>${msg.text}</div>
                             <div style="font-size:0.65rem; color:rgba(255,255,255,0.6); text-align:right; margin-top:4px;">${time}</div>
                         </div>
