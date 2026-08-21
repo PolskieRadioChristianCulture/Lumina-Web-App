@@ -90,6 +90,11 @@
         _installGlobalErrorTraps() {
             // Przechwytywanie synchronicznych i asynchronicznych błędów JS
             window.addEventListener('error', (event) => {
+                // Ignoruj standardowe błędy ładowania mediów/zasobów (obsługiwane natywnie przez onerror fallback)
+                if (event.target && (event.target instanceof HTMLMediaElement || event.target instanceof HTMLImageElement || event.target instanceof HTMLScriptElement || event.target instanceof HTMLLinkElement)) {
+                    return;
+                }
+
                 this.errorCount++;
 
                 const errorMsg = event.message || '';
@@ -103,8 +108,10 @@
                     errorMsg.includes('no supported source') ||
                     errorMsg.includes('has no supported sources') ||
                     errorMsg.includes('Audio player error') ||
+                    errorMsg.includes('message channel closed') ||
                     filename.includes('chrome-extension://') ||
-                    filename.includes('moz-extension://')
+                    filename.includes('moz-extension://') ||
+                    filename.includes('fingerprint')
                 ) {
                     return;
                 }
