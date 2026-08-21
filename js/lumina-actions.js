@@ -47,6 +47,15 @@ export function toggleProfileHeart(btn, profileSlug) {
     
     showToast(isLiked ? 'Dodano profil do Twoich ulubionych połączeń! ❤️' : 'Usunięto z ulubionych');
     
+    if (isLiked && typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('lumina:profile_like', {
+            detail: {
+                senderName: 'Użytkownik LUMINA',
+                profileSlug: profileSlug || ''
+            }
+        }));
+    }
+    
     // Save to local storage
     try {
         const likedProfiles = JSON.parse(localStorage.getItem('lumina_liked_profiles') || '[]');
@@ -78,6 +87,15 @@ export function toggleProfileFollow(btn, profileSlug) {
     }
     
     showToast(isFollowing ? 'Obserwujesz ten profil! Będziesz otrzymywać powiadomienia o nowych wpisach 🔔' : 'Przestałeś obserwować profil');
+
+    if (isFollowing && typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('lumina:profile_follow', {
+            detail: {
+                senderName: 'Nowy obserwujący',
+                profileSlug: profileSlug || ''
+            }
+        }));
+    }
 }
 
 // Copy Profile Link
@@ -90,21 +108,18 @@ export function copyProfileLink() {
 }
 
 // Radio Player Toggle
-let isRadioPlaying = false;
-const radioStreams = [
-    "https://stream.zeno.fm/f97y7f6w30hvv",
-    "https://stream.zeno.fm/f97y7f6w30hvv.aac"
-];
-
 export function toggleRadio() {
+    if (typeof window !== 'undefined' && window.LuminaRadio) {
+        window.LuminaRadio.toggle(true);
+        return;
+    }
     const audio = document.getElementById('ccRadioAudio');
     const playIcon = document.getElementById('radioPlayIcon');
     if (!audio) return;
     
-    if (!isRadioPlaying) {
-        audio.src = radioStreams[0] + "?t=" + Date.now();
+    if (audio.paused) {
+        audio.src = "https://stream.zeno.fm/umej2cuqncluv?t=" + Date.now();
         audio.play().then(() => {
-            isRadioPlaying = true;
             if (playIcon) playIcon.className = "fa-solid fa-pause";
             showToast('Radio Christian Culture Gra na Żywo! 📻✨');
         }).catch(e => {
@@ -112,7 +127,6 @@ export function toggleRadio() {
         });
     } else {
         audio.pause();
-        isRadioPlaying = false;
         if (playIcon) playIcon.className = "fa-solid fa-play";
         showToast('Radio wstrzymane');
     }

@@ -1,60 +1,482 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * LUMINA UNIVERSAL SEARCH & SHORTCUTS ENGINE
+ * LUMINA UNIVERSAL PROFILE & SYSTEM SEARCH ENGINE (DEEP MULTI-FIELD SEARCH)
  * ══════════════════════════════════════════════════════════════════════════
  */
 
-export const OMNI_DIRECTORY = [
-    { query: '@ccwomen @women @cc_women cc women ccwomen', name: 'CC Women • YouTube', handle: '@ccwomen', role: 'Oficjalny Kanał YouTube CC Women 🌸', avatar: 'logo_cc_women.jpg', url: 'lumina.ccwomen.html', type: 'channel' },
-    { query: '@cezary @cezaryrgowski @cezaryrogowski cezary rogowski', name: 'Cezary Rogowski', handle: '@cezary', role: 'Założyciel Christian Culture 👑', avatar: 'avatar_cezary_official.jpg', url: 'lumina.cezaryrgowski.html', type: 'founder' },
-    { query: '@wioletta @wiolettarogowska wioletta rogowska', name: 'Wioletta Rogowska', handle: '@wioletta', role: 'Współzałożycielka Christian Culture 🌸', avatar: 'avatar_wioletta_official.jpg', url: 'lumina.wiolettarogowska.html', type: 'founder' },
-    { query: '@magda @magdalena magdalena poznan', name: 'Magdalena (43)', handle: '@magdalena', role: 'Społeczność LUMINA • Poznań 🕊️', avatar: 'avatar_magdalena.png', url: 'lumina.magdalena.html', type: 'user' },
-    { query: '@sds @studiods @studiodobregoslowa studio dobrego słowa', name: 'Studio Dobrego Słowa', handle: '@sds', role: 'Oficjalny Kanał YouTube & Podcast 🎙️', avatar: 'studiodobregoslowa_avatar.jpg', url: 'lumina.studiodobregoslowa.html', type: 'channel' },
-    { query: '@radiocc @radio radio christian culture radio na zywo', name: 'Radio Christian Culture', handle: '@radiocc', role: 'Stacja Radiowa & Transmisja Na Żywo 📻', avatar: 'lumina_icon.jpg', url: 'index.html', type: 'media' },
-    { query: '@lumina @tablica tablica spolecznosci posty', name: 'Tablica Społeczności', handle: '@lumina', role: 'Główny Strumień Wpisów i Świadectw 🕊️', avatar: 'lumina_icon.jpg', url: 'lumina-tablica.html', type: 'feed' },
-    { query: '@noemi noemi wroclaw', name: 'Noemi (28)', handle: '@noemi', role: 'Głęboka wiara i pasja do natury 🌿', avatar: 'avatar_noemi.jpg', url: 'lumina-profile.html?u=noemi', type: 'user' },
-    { query: '@tomasz @tomek tomasz gory', name: 'Tomasz (31)', handle: '@tomek', role: 'Wędrówki górskie i uwielbienie 🌲', avatar: 'avatar_widget_tomek.jpg', url: 'lumina-profile.html?u=tomek', type: 'user' }
+// Helper to remove Polish diacritics and normalize search tokens
+export function normalizeSearchString(str) {
+    if (!str) return '';
+    return str
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/ł/g, 'l')
+        .replace(/Ł/g, 'l')
+        .trim();
+}
+
+export const OMNI_BASE_PROFILES = [
+    {
+        id: 'cezaryrgowski',
+        slug: 'cezaryrgowski',
+        name: 'Cezary Rogowski',
+        handle: '@cezary',
+        aliases: ['cezary', 'rogowski', 'cezary rogowski', 'czarek', 'nazir', 'czarkes'],
+        age: 51,
+        city: 'Ostrowiec Świętokrzyski, Polska',
+        status: 'Żonaty',
+        job: 'Założyciel Christian Culture 👑',
+        bio: 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.',
+        verse: '„Ja i mój dom służyć będziemy Panu.” (Joz 24, 15)',
+        church: 'Christian Culture',
+        denom: 'Rzymskokatolickie / Wspólnota',
+        tags: ['Założyciel', 'Ewangelizacja', 'Radio CC', 'Worship', 'Rodzina', 'Wiara'],
+        avatar: 'avatar_cezary_official.jpg',
+        url: 'lumina.cezaryrgowski.html',
+        type: 'founder',
+        badge: 'Założyciel CC'
+    },
+    {
+        id: 'wiolettarogowska',
+        slug: 'wiolettarogowska',
+        name: 'Wioletta Rogowska',
+        handle: '@wioletta',
+        aliases: ['wioletta', 'rogowska', 'wioletta rogowska', 'wiola'],
+        age: 50,
+        city: 'Ostrowiec Świętokrzyski, Polska',
+        status: 'Mężatka',
+        job: 'Współzałożycielka Christian Culture 🌸',
+        bio: 'Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.',
+        verse: '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.” (Prz 31, 10)',
+        church: 'Christian Culture',
+        denom: 'Rzymskokatolickie',
+        tags: ['Współzałożycielka', 'Kobiety Wiary', 'CC Women', 'Rodzina', 'Modlitwa'],
+        avatar: 'avatar_wioletta_official.jpg',
+        url: 'lumina.wiolettarogowska.html',
+        type: 'founder',
+        badge: 'Współzałożycielka CC'
+    },
+    {
+        id: 'magdalena',
+        slug: 'magdalena',
+        name: 'Magdalena',
+        handle: '@magdalena',
+        aliases: ['magda', 'magdalena', 'magdalena poznan', 'lekarka'],
+        age: 43,
+        city: 'Poznań, Polska',
+        status: 'Panna • Dojrzała chrześcijanka',
+        job: 'Lekarka & Działaczka Społeczna 🩺',
+        bio: 'Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu, szacunku i miłości.',
+        verse: '„Wszystko mogę w Tym, który mnie umacnia.” (Flp 4, 13)',
+        church: 'Poznań',
+        denom: 'Chrześcijanka',
+        tags: ['Medycyna', 'Lekarka', 'Poznań', 'Służba', 'Dojrzałość'],
+        avatar: 'avatar_magdalena.png',
+        url: 'lumina.magdalena.html',
+        type: 'user',
+        badge: 'Społeczność LUMINA'
+    },
+    {
+        id: 'noemi',
+        slug: 'noemi',
+        name: 'Noemi',
+        handle: '@noemi',
+        aliases: ['noemi', 'noemi wroclaw', 'biolog', 'psycholog'],
+        age: 28,
+        city: 'Wrocław, Polska',
+        status: 'Panna • Szuka relacji z wartościami',
+        job: 'Biolog & Edukatorka Przyrodnicza 🌿',
+        bio: 'Spokój, las i głębokie rozmowy o Bogu przy herbacie. Szukam bratniej duszy.',
+        verse: '„Pan moim pasterzem, nie brak mi niczego.” (Ps 23, 1)',
+        church: 'Wspólnota Uwielbienia Wrocław',
+        denom: 'Rzymskokatolickie',
+        tags: ['Góry', 'Psychologia', 'Muzyka Chwały', 'Herbata', 'Modlitwa', 'Wrocław'],
+        avatar: 'avatar_noemi.jpg',
+        url: 'lumina-profile.html?u=noemi',
+        type: 'user',
+        badge: 'Społeczność LUMINA'
+    },
+    {
+        id: 'dawid',
+        slug: 'dawid',
+        name: 'Dawid',
+        handle: '@dawid',
+        aliases: ['dawid', 'dawid poznan', 'architekt'],
+        age: 30,
+        city: 'Poznań, Polska',
+        status: 'Kawaler • Wierzący w działanie Ducha',
+        job: 'Architekt Wnętrz & Muzyk Uwielbienia 🏛️',
+        bio: 'Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu i wierze.',
+        verse: '„Szukajcie wpierw Królestwa Bożego.” (Mt 6, 33)',
+        church: 'Kościół Poznań',
+        denom: 'Chrześcijanin',
+        tags: ['Architektura', 'Design', 'Muzyka', 'Worship', 'Poznań', 'Gitara'],
+        avatar: 'avatar_sara.jpg',
+        url: 'lumina-profile.html?u=dawid',
+        type: 'user',
+        badge: 'Społeczność LUMINA'
+    },
+    {
+        id: 'weronika',
+        slug: 'weronika',
+        name: 'Weronika',
+        handle: '@weronika',
+        aliases: ['weronika', 'weronika krakow', 'graficzka', 'artystka'],
+        age: 25,
+        city: 'Kraków, Polska',
+        status: 'Panna • Pasjonatka sztuki i modlitwy',
+        job: 'Graficzka & Projektantka UI 🎨',
+        bio: 'Graficzka z pasją do piękna i muzyki. Szukam szczerej relacji opartej na wierze.',
+        verse: '„Wszystko niech się dzieje w miłości.” (1 Kor 16, 14)',
+        church: 'Kraków',
+        denom: 'Chrześcijanka',
+        tags: ['Fotografia', 'Design', 'Malarstwo', 'Kraków', 'Kawa', 'Sztuka'],
+        avatar: 'avatar_widget_ania.jpg',
+        url: 'lumina-profile.html?u=weronika',
+        type: 'user',
+        badge: 'Społeczność LUMINA'
+    },
+    {
+        id: 'tomek',
+        slug: 'tomek',
+        name: 'Tomasz',
+        handle: '@tomek',
+        aliases: ['tomasz', 'tomek', 'tomasz gdansk', 'inzynier', 'gory', 'survival'],
+        age: 31,
+        city: 'Gdańsk, Polska',
+        status: 'Kawaler • Miłośnik gór i ciszy',
+        job: 'Inżynier Oprogramowania & Lider Męski 🌲',
+        bio: 'Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku.',
+        verse: '„Bądź mężny i mocny, nie lękaj się!” (Joz 1, 9)',
+        church: 'Wspólnota Mężczyzn św. Józefa',
+        denom: 'Chrześcijanin',
+        tags: ['Survival', 'Leśnictwo', 'Gotowanie', 'Kajaki', 'Góry', 'Gdańsk'],
+        avatar: 'avatar_widget_tomek.jpg',
+        url: 'lumina-profile.html?u=tomek',
+        type: 'user',
+        badge: 'Społeczność LUMINA'
+    },
+    {
+        id: 'anna',
+        slug: 'anna',
+        name: 'Anna',
+        handle: '@anna',
+        aliases: ['anna', 'ania', 'anna warszawa', 'pedagog', 'animatorka'],
+        age: 28,
+        city: 'Warszawa, Polska',
+        status: 'Panna • Liderka uwielbienia',
+        job: 'Pedagog & Animatorka Chrześcijańska 📚',
+        bio: 'Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania Bożego świata.',
+        verse: '„Miłość cierpliwa jest, łaskawa jest...” (1 Kor 13, 4)',
+        church: 'Wspólnota Emmanuel Warszawa',
+        denom: 'Chrześcijanka',
+        tags: ['Języki Obce', 'Podróże', 'Książki', 'Wolontariat', 'Warszawa'],
+        avatar: 'avatar_widget_ania.jpg',
+        url: 'lumina-profile.html?u=anna',
+        type: 'user',
+        badge: 'Społeczność LUMINA'
+    },
+    {
+        id: 'piotr',
+        slug: 'piotr',
+        name: 'Piotr',
+        handle: '@piotr',
+        aliases: ['piotr', 'piotrek', 'piotr krakow', 'trener', 'misjonarz'],
+        age: 31,
+        city: 'Kraków, Polska',
+        status: 'Kawaler • Wolontariusz misyjny',
+        job: 'Trener Personalny & Misjonarz 🏔️',
+        bio: 'Szuka spontanicznych przygód. Entuzjasta górskich wędrówek i wspólnoty wiary.',
+        verse: '„W biegu nie ustawać.” (Hbr 12, 1)',
+        church: 'Kraków Męska Grupa',
+        denom: 'Chrześcijanin',
+        tags: ['Sport', 'Góry', 'Misje', 'Kraków', 'Trening'],
+        avatar: 'lumina_piotr2.jpg',
+        url: 'lumina-profile.html?u=piotr',
+        type: 'user',
+        badge: 'Społeczność LUMINA'
+    },
+    {
+        id: 'julia',
+        slug: 'julia',
+        name: 'Julia',
+        handle: '@julia',
+        aliases: ['julia', 'julka', 'julia gdansk', 'wokalistka', 'gospel'],
+        age: 26,
+        city: 'Gdańsk, Polska',
+        status: 'Panna • Wokalistka gospel',
+        job: 'Wokalistka & Nauczycielka Muzyki 🎶',
+        bio: 'Marzycielka z pasją do muzyki. Szukam głębokich, szczerych relacji opartych na Chrystusie.',
+        verse: '„Śpiewajcie Panu pieśń nową!” (Ps 96, 1)',
+        church: 'Gdańsk Chór',
+        denom: 'Chrześcijanka',
+        tags: ['Wokal', 'Gospel', 'Muzyka', 'Pianino', 'Gdańsk'],
+        avatar: 'lumina_julia2.jpg',
+        url: 'lumina-profile.html?u=julia',
+        type: 'user',
+        badge: 'Społeczność LUMINA'
+    },
+    {
+        id: 'studiodobregoslowa',
+        slug: 'studiodobregoslowa',
+        name: 'Studio Dobrego Słowa',
+        handle: '@sds',
+        aliases: ['studio dobrego slowa', 'studiods', 'studiods.pl', 'studiodees', 'apokalipsa live', 'herbaciarnia cc', 'pila', 'podcast'],
+        city: 'Piła, Polska',
+        job: 'Kanał YouTube @StudioDeeS • studiods.pl 🎙️',
+        bio: 'Oficjalny profil Studia. Apokalipsa Live, podcasty, Słowo Boże i spotkania w Herbaciarni CC.',
+        avatar: 'studiodobregoslowa_avatar.jpg',
+        url: 'lumina.studiodobregoslowa.html',
+        type: 'channel',
+        badge: 'Kanał YouTube CC'
+    },
+    {
+        id: 'osobowoscplus',
+        slug: 'osobowoscplus',
+        name: 'OSOBOWOŚĆ +',
+        handle: '@osobowoscplus',
+        aliases: ['osobowosc plus', 'osobowosc', 'psychologia', 'formacja', 'meskosc', 'dojrzalosc', 'relacje'],
+        city: 'Christian Culture',
+        job: 'Formacja Chrześcijańska & Psychologia 🧠',
+        bio: 'Oficjalny kanał YouTube OSOBOWOŚĆ +. Rozwój dojrzałości, tożsamość w Bogu i mądre relacje.',
+        avatar: 'logo_osobowosc_plus.jpg',
+        url: 'lumina.osobowoscplus.html',
+        type: 'channel',
+        badge: 'Kanał YouTube CC'
+    },
+    {
+        id: 'radiocc',
+        slug: 'radiocc',
+        name: 'Polskie Radio CC',
+        handle: '@radiocc',
+        aliases: ['radio', 'radio cc', 'polskie radio christian culture', 'radio uwielbienia', 'biblia spiewana', 'live 24/7'],
+        city: 'Cała Polska',
+        job: 'Radio Uwielbienia 24/7 📻',
+        bio: 'Muzyka chwały, Biblia Śpiewana, audycje na żywo i codzienne rozważania przez całą dobę.',
+        avatar: 'logo_radio_cc.jpg',
+        url: 'lumina.radiocc.html',
+        type: 'media',
+        badge: 'Rozgłośnia 24/7'
+    },
+    {
+        id: 'cctv',
+        slug: 'cctv',
+        name: 'Christian Culture TV',
+        handle: '@cctv',
+        aliases: ['cctv', 'cctv24', 'telewizja cc', 'telewizja chrzescijanska', 'wideo', 'transmisje live'],
+        city: 'Warszawa, Polska',
+        job: 'Telewizja CCTV24 📺',
+        bio: 'Oficjalna telewizja chrześcijańska. Pasma wideo, debaty, świadectwa i transmisje ewangelizacyjne.',
+        avatar: 'logo_cctv.png',
+        url: 'lumina.cctv.html',
+        type: 'channel',
+        badge: 'Telewizja CC'
+    },
+    {
+        id: 'ccmen',
+        slug: 'ccmen',
+        name: 'CC MEN',
+        handle: '@ccmen',
+        aliases: ['cc men', 'ccmen', 'mezczyzni', 'meska wspolnota', 'braterstwo', 'odpowiedzialnosc'],
+        city: 'Polska',
+        job: 'Męska Wspólnota Wiary 🛡️',
+        bio: 'Mężczyźni w Chrystusie. Męstwo, odpowiedzialność za rodzinę, wierność i braterstwo.',
+        avatar: 'logo_cc_men.jpg',
+        url: 'lumina.ccmen.html',
+        type: 'channel',
+        badge: 'Wspólnota Męska'
+    },
+    {
+        id: 'ccwomen',
+        slug: 'ccwomen',
+        name: 'CC Women',
+        handle: '@ccwomen',
+        aliases: ['cc women', 'ccwomen', 'kobiety', 'niewiasta dzielna', 'kobiety wiary'],
+        city: 'Warszawa, Polska',
+        job: 'Kobiety Wiary Christian Culture 🌸',
+        bio: 'Oficjalny profil i kanał YouTube CC Women. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.',
+        avatar: 'logo_cc_women.jpg',
+        url: 'lumina.ccwomen.html',
+        type: 'channel',
+        badge: 'Kanał YouTube CC'
+    }
 ];
 
+export function getAllSearchableProfiles() {
+    const profileMap = new Map();
+
+    // 1. Master Base Profiles
+    OMNI_BASE_PROFILES.forEach(p => profileMap.set(p.slug || p.id, Object.assign({}, p)));
+
+    // 2. Global registered base profiles from window
+    if (typeof window !== 'undefined' && window.LUMINA_BASE_PROFILES) {
+        Object.keys(window.LUMINA_BASE_PROFILES).forEach(slug => {
+            const raw = window.LUMINA_BASE_PROFILES[slug];
+            if (raw && raw.name) {
+                const existing = profileMap.get(slug) || {};
+                profileMap.set(slug, Object.assign({}, existing, raw));
+            }
+        });
+    }
+
+    // 3. LocalStorage Saved Profiles
+    if (typeof localStorage !== 'undefined') {
+        try {
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.startsWith('lumina_profile_') || key === 'lumina_my_profile' || key === 'lumina_current_user_profile')) {
+                    try {
+                        const parsed = JSON.parse(localStorage.getItem(key) || '{}');
+                        if (parsed && parsed.name) {
+                            const slug = parsed.slug || parsed.uid || key.replace('lumina_profile_', '');
+                            const existing = profileMap.get(slug) || {};
+                            profileMap.set(slug, Object.assign({}, existing, parsed, {
+                                url: parsed.profileUrl || existing.url || `lumina-profile.html?u=${encodeURIComponent(slug)}`
+                            }));
+                        }
+                    } catch(e) {}
+                }
+            }
+        } catch(e) {}
+    }
+
+    // 4. Cloud Firestore Profiles cache
+    if (typeof window !== 'undefined' && window._cloudProfilesMap) {
+        Object.keys(window._cloudProfilesMap).forEach(key => {
+            const raw = window._cloudProfilesMap[key];
+            if (raw && raw.name) {
+                const slug = raw.slug || raw.uid || key;
+                const existing = profileMap.get(slug) || {};
+                profileMap.set(slug, Object.assign({}, existing, raw, {
+                    url: raw.profileUrl || existing.url || `lumina-profile.html?u=${encodeURIComponent(slug)}`
+                }));
+            }
+        });
+    }
+
+    return Array.from(profileMap.values());
+}
+
+/**
+ * Handle real-time multi-field searching
+ */
 export function handleOmniSearchInput(val) {
     const dropdown = document.getElementById('omniDropdown');
     if (!dropdown) return;
-    const term = (val || '').trim().toLowerCase();
-    if (!term) {
+
+    const queryRaw = (val || '').trim();
+    if (!queryRaw) {
         dropdown.classList.remove('open');
         dropdown.innerHTML = '';
         return;
     }
 
-    const matches = OMNI_DIRECTORY.filter(item => 
-        item.name.toLowerCase().includes(term) || 
-        item.handle.toLowerCase().includes(term) || 
-        item.query.toLowerCase().includes(term)
-    );
+    const normQuery = normalizeSearchString(queryRaw);
+    const tokens = normQuery.split(/\s+/).filter(t => t.length > 0);
+    const allProfiles = getAllSearchableProfiles();
+
+    // Score and filter each profile
+    const scoredMatches = [];
+
+    allProfiles.forEach(item => {
+        const normName = normalizeSearchString(item.name || '');
+        const normHandle = normalizeSearchString(item.handle || '');
+        const normCity = normalizeSearchString(item.city || '');
+        const normJob = normalizeSearchString(item.job || '');
+        const normBio = normalizeSearchString(item.bio || '');
+        const normStatus = normalizeSearchString(item.status || '');
+        const normChurch = normalizeSearchString(item.church || '');
+        const normDenom = normalizeSearchString(item.denom || '');
+        const normTags = (item.tags || []).map(t => normalizeSearchString(t)).join(' ');
+        const normAliases = (item.aliases || []).map(a => normalizeSearchString(a)).join(' ');
+
+        const combinedSearchText = `${normName} ${normHandle} ${normCity} ${normJob} ${normBio} ${normStatus} ${normChurch} ${normDenom} ${normTags} ${normAliases}`;
+
+        // Check if all search tokens match somewhere in the profile text
+        const matchesAllTokens = tokens.every(token => combinedSearchText.includes(token));
+
+        if (matchesAllTokens) {
+            let score = 0;
+            // Higher priority if matches name directly
+            if (normName.includes(normQuery)) score += 100;
+            if (normName.startsWith(normQuery)) score += 50;
+            if (normHandle.includes(normQuery)) score += 80;
+            if (normCity.includes(normQuery)) score += 40;
+            if (normJob.includes(normQuery)) score += 30;
+            if (item.isFounder) score += 20;
+
+            scoredMatches.push({ item, score });
+        }
+    });
+
+    // Sort by relevance score descending
+    scoredMatches.sort((a, b) => b.score - a.score);
+    const matches = scoredMatches.map(m => m.item);
+
+    dropdown.classList.add('open');
 
     if (matches.length === 0) {
-        dropdown.classList.add('open');
         dropdown.innerHTML = `
-            <div style="padding:12px 16px; font-size:0.84rem; color:#94a3b8; display:flex; justify-content:space-between; align-items:center;">
-                <span>Szukaj "<b>${val}</b>" na Tablicy:</span>
-                <a href="lumina-tablica.html?q=${encodeURIComponent(val)}" class="shortcut-chip" style="margin:0; text-decoration:none; color:#facc15; font-weight:700;"><i class="fa-solid fa-magnifying-glass"></i> Otwórz Tablicę</a>
+            <div style="padding:14px 16px; font-size:0.86rem; color:#cbd5e1; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <span>Brak profilu o frazie "<b>${escapeHtml(queryRaw)}</b>"</span>
+                <a href="lumina-tablica.html?q=${encodeURIComponent(queryRaw)}" class="btn-omni-shortcut" style="text-decoration:none; color:#facc15; font-weight:700; background:rgba(250,204,21,0.15); border:1px solid rgba(250,204,21,0.35); padding:6px 14px; border-radius:20px; font-size:0.8rem; display:inline-flex; align-items:center; gap:6px;">
+                    <i class="fa-solid fa-rectangle-list"></i> Szukaj wpisów na Tablicy ➔
+                </a>
             </div>
         `;
     } else {
-        dropdown.classList.add('open');
-        dropdown.innerHTML = matches.map(item => `
-            <div class="omni-item" onclick="window.location.href='${item.url}'" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; cursor:pointer; transition:all 0.2s; background:rgba(255,255,255,0.03); margin-bottom:4px;">
-                <img src="${item.avatar}" alt="${item.name}" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1px solid rgba(168,85,247,0.5);">
-                <div style="flex:1; min-width:0;">
-                    <div style="font-weight:700; font-size:0.86rem; color:#fff; display:flex; align-items:center; gap:6px;">
-                        <span>${item.name}</span>
-                        <span style="font-size:0.72rem; color:#c084fc; font-weight:600;">${item.handle}</span>
+        const renderedItems = matches.slice(0, 8).map(item => {
+            const avatar = item.avatar || 'lumina_icon.jpg';
+            const name = item.name || 'Profil Społeczności';
+            const ageStr = item.age ? `, ${item.age}` : '';
+            const cityStr = item.city ? item.city.split(',')[0] : 'Polska';
+            const jobOrBio = item.job || item.bio || item.status || 'Profil społeczności';
+            const shortJob = jobOrBio.length > 70 ? jobOrBio.substring(0, 70) + '...' : jobOrBio;
+            const badgeLabel = item.badge || (item.isFounder ? 'Założyciel' : (item.isMissionAccount ? 'Media CC' : 'Społeczność'));
+
+            // Click destination: modal or direct page
+            const targetUrl = item.url || (item.slug ? `lumina-profile.html?u=${encodeURIComponent(item.slug)}` : 'lumina.html');
+            const isDirectPage = targetUrl.startsWith('lumina.') && targetUrl.endsWith('.html');
+
+            let clickAction = '';
+            if (isDirectPage) {
+                clickAction = `window.location.href='${targetUrl}'`;
+            } else if (typeof window.openCommunityProfile === 'function' && item.slug) {
+                clickAction = `window.openCommunityProfile('${item.slug}')`;
+            } else {
+                clickAction = `window.location.href='${targetUrl}'`;
+            }
+
+            return `
+                <div class="omni-item" onclick="${clickAction}" style="display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:14px; cursor:pointer; transition:all 0.2s cubic-bezier(0.16,1,0.3,1); background:rgba(255,255,255,0.04); margin-bottom:4px; border:1px solid rgba(255,255,255,0.06);">
+                    <img src="${avatar}" alt="${escapeHtml(name)}" onerror="this.src='lumina_icon.jpg'" style="width:42px; height:42px; border-radius:50%; object-fit:cover; border:2px solid rgba(168,85,247,0.6); box-shadow:0 2px 10px rgba(0,0,0,0.3); flex-shrink:0;">
+                    <div style="flex:1; min-width:0;">
+                        <div style="font-weight:800; font-size:0.90rem; color:#fff; display:flex; align-items:center; gap:8px; flex-wrap:nowrap;">
+                            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(name)}${ageStr}</span>
+                            <span style="font-size:0.70rem; color:#c084fc; background:rgba(168,85,247,0.18); border:1px solid rgba(168,85,247,0.35); padding:2px 7px; border-radius:10px; font-weight:700; white-space:nowrap;">${badgeLabel}</span>
+                        </div>
+                        <div style="font-size:0.77rem; color:#94a3b8; margin-top:2px; display:flex; align-items:center; gap:6px;">
+                            <span>📍 ${escapeHtml(cityStr)}</span>
+                            <span>•</span>
+                            <span style="color:#cbd5e1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(shortJob)}</span>
+                        </div>
                     </div>
-                    <div style="font-size:0.75rem; color:#94a3b8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.role}</div>
+                    <i class="fa-solid fa-chevron-right" style="color:#a855f7; font-size:0.85rem; margin-left:4px; opacity:0.8;"></i>
                 </div>
-                <i class="fa-solid fa-arrow-right" style="color:#64748b; font-size:0.80rem;"></i>
+            `;
+        }).join('');
+
+        const tablicaQuickLink = `
+            <div style="padding:10px 14px; margin-top:4px; border-top:1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center; font-size:0.80rem;">
+                <span style="color:#94a3b8;">Szukasz wpisów lub świadectw?</span>
+                <a href="lumina-tablica.html?q=${encodeURIComponent(queryRaw)}" style="color:#facc15; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+                    <i class="fa-solid fa-magnifying-glass"></i> Otwórz Tablicę (${matches.length} trafień) ➔
+                </a>
             </div>
-        `).join('');
+        `;
+
+        dropdown.innerHTML = renderedItems + tablicaQuickLink;
     }
 }
 
@@ -67,16 +489,43 @@ export function executeOmniSearch() {
         }
         return;
     }
-    const clean = val.toLowerCase();
-    const match = OMNI_DIRECTORY.find(item => item.handle.toLowerCase() === clean || item.query.includes(clean));
-    if (match) {
-        window.location.href = match.url;
+
+    const norm = normalizeSearchString(val);
+    const all = getAllSearchableProfiles();
+    const exact = all.find(p => 
+        normalizeSearchString(p.name) === norm ||
+        normalizeSearchString(p.handle) === norm ||
+        (p.aliases && p.aliases.some(a => normalizeSearchString(a) === norm))
+    );
+
+    if (exact) {
+        const isDirectPage = exact.url && exact.url.startsWith('lumina.') && exact.url.endsWith('.html');
+        if (isDirectPage) {
+            window.location.href = exact.url;
+        } else if (typeof window.openCommunityProfile === 'function' && exact.slug) {
+            window.openCommunityProfile(exact.slug);
+        } else {
+            window.location.href = exact.url || `lumina-profile.html?u=${encodeURIComponent(exact.slug || exact.id)}`;
+        }
     } else {
         window.location.href = 'lumina-tablica.html?q=' + encodeURIComponent(val);
     }
 }
 
+function escapeHtml(text) {
+    if (!text) return '';
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+// Expose globally
 if (typeof window !== 'undefined') {
     window.handleOmniSearchInput = handleOmniSearchInput;
     window.executeOmniSearch = executeOmniSearch;
+    window.getAllSearchableProfiles = getAllSearchableProfiles;
+    window.normalizeSearchString = normalizeSearchString;
 }
