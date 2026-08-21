@@ -1153,8 +1153,7 @@ export function subscribeToAllCommunityProfiles(onUpdate) {
     try {
         const q = query(
             collection(db, 'lumina_profiles'),
-            orderBy('updatedAt', 'desc'),
-            limit(40)
+            limit(60)
         );
         return onSnapshot(q, (snap) => {
             const profiles = [];

@@ -3978,53 +3978,60 @@
                 }
             });
 
-            // Sync Logged-In User Profile Card (if custom account)
+            // Dynamically render all registered community members from Firestore
             try {
-                let currentUser = null;
-                if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
-                    currentUser = window.LuminaDB.getCurrentUser();
-                }
-                if (!currentUser) {
-                    currentUser = JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
-                }
-                if (currentUser) {
-                    const myUid = currentUser.uid || currentUser.id;
-                    const myEmail = (currentUser.email || '').toLowerCase();
-                    const isFounder = myEmail.includes('nazirczarkes') || myEmail.includes('cezary') || myEmail.includes('wioletta');
+                Object.values(window._cloudProfilesMap || {}).forEach(p => {
+                    if (!p || !p.name) return;
+                    const pKey = p.slug || p.uid || p.id;
+                    if (!pKey) return;
 
-                    if (!isFounder && myUid) {
-                        const myProfile = window.getLiveProfile(myUid);
-                        const myCardId = 'cloud_user_' + myUid;
-                        let myCard = document.getElementById(myCardId);
-                        const myAvatar = myProfile.avatar || currentUser.photoURL || 'lumina_icon.jpg';
-                        const myName = myProfile.name || currentUser.displayName || 'Mój Profil';
-
-                        if (!myCard) {
-                            myCard = document.createElement('div');
-                            myCard.className = 'profile-card my-active-user-card';
-                            myCard.id = myCardId;
-                            myCard.setAttribute('data-profile-slug', myUid);
-                            myCard.onclick = () => window.openCommunityProfile(myUid);
-                            // Insert before first community profile card
-                            const refCard = document.getElementById('card_profile_noemi') || carousel.firstChild;
-                            carousel.insertBefore(myCard, refCard);
-                        }
-
-                        myCard.innerHTML = `
-                            <div class="card-photo">
-                                <img src="${myAvatar}" alt="${myName}" style="width:100%;height:100%;object-fit:cover;display:block;">
-                                <button class="card-heart liked" onclick="toggleLike(event,this, '${myUid}', '${myName}', '${myAvatar}')"><i class="fa-solid fa-heart"></i></button>
-                                <div class="card-match" style="background:linear-gradient(135deg,#a855f7,#ec4899);">Twój Profil</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="card-name">${myName}${myProfile.age ? ', ' + myProfile.age : ''}</div>
-                                <div class="card-city">📍 ${myProfile.city ? myProfile.city.split(',')[0] : 'Polska'} • <b style="color:#a855f7;">Zalogowany</b></div>
-                                <div class="card-desc">"${myProfile.bio ? (myProfile.bio.length > 80 ? myProfile.bio.substring(0,80) + '...' : myProfile.bio) : 'Witaj w LUMINA! Kliknij aby przejść do swojego profilu.'}"</div>
-                            </div>
-                        `;
+                    const pKeyLower = pKey.toLowerCase();
+                    if (pKeyLower.includes('cezary') || pKeyLower.includes('wioletta') || pKeyLower.includes('andrzej') || pKeyLower.includes('radiocc') || pKeyLower.includes('cctv') || pKeyLower.includes('ccmen') || pKeyLower.includes('ccwomen') || pKeyLower.includes('studiodobregoslowa')) {
+                        // Special profiles already rendered or handled statically
+                        return;
                     }
-                }
-            } catch(err) {}
+
+                    const isStaticCard = document.getElementById('card_profile_' + pKey);
+                    if (isStaticCard) return;
+
+                    const cardId = 'cloud_profile_card_' + pKey.replace(/[^a-zA-Z0-9_-]/g, '_');
+                    let userCard = document.getElementById(cardId);
+                    const userAvatar = p.avatar || 'lumina_icon.jpg';
+                    const userName = p.name;
+                    const userAge = p.age ? ', ' + p.age : '';
+                    const userCity = p.city ? p.city.split(',')[0] : 'Polska';
+                    const userBio = p.bio ? (p.bio.length > 85 ? p.bio.substring(0, 85) + '...' : p.bio) : 'Szukam wartościowej relacji opartej na fundamencie Chrystusa ✨';
+                    const userMatch = p.matchScore || '96%';
+
+                    if (!userCard) {
+                        userCard = document.createElement('div');
+                        userCard.className = 'profile-card cloud-registered-user-card';
+                        userCard.id = cardId;
+                        userCard.setAttribute('data-profile-slug', pKey);
+                        userCard.setAttribute('data-category', (p.gender || 'spolecznosc') + ' spolecznosc');
+                        userCard.onclick = () => window.openCommunityProfile(pKey);
+                        
+                        // Insert after first cards
+                        const refCard = document.getElementById('card_profile_dawid') || carousel.lastChild;
+                        carousel.insertBefore(userCard, refCard);
+                    }
+
+                    userCard.innerHTML = `
+                        <div class="card-photo">
+                            <img src="${userAvatar}" alt="${userName}" onerror="this.onerror=null; this.src='lumina_icon.jpg'" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
+                            <button class="card-heart" onclick="toggleLike(event,this, '${pKey}', '${userName}', '${userAvatar}')"><i class="fa-solid fa-heart"></i></button>
+                            <div class="card-match">${userMatch}</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-name">${userName}${userAge}</div>
+                            <div class="card-city">📍 ${userCity} • <span style="color:#a855f7;font-weight:700;">${p.status || 'Nowy Profil'}</span></div>
+                            <div class="card-desc">"${userBio}"</div>
+                        </div>
+                    `;
+                });
+            } catch(err) {
+                console.warn('Error syncing all cloud profiles to carousel:', err);
+            }
         };
 
         // ── Realtime Community Profiles from Firestore ──
