@@ -6,7 +6,7 @@
 (function() {
     'use strict';
 
-    const CURRENT_CLIENT_VERSION = '3.6.1';
+    const CURRENT_CLIENT_VERSION = '3.6.3';
     const DISMISS_INSTALL_KEY = 'lumina_pwa_install_dismissed';
     const DISMISS_UPDATE_KEY = 'lumina_pwa_update_dismissed_version';
     const LAST_SEEN_VERSION_KEY = 'lumina_app_version_seen';
@@ -38,14 +38,14 @@
                 try {
                     const registrations = await navigator.serviceWorker.getRegistrations();
                     for (const reg of registrations) {
-                        if (reg.active && !reg.active.scriptURL.includes('v20260821_v420')) {
+                        if (reg.active && !reg.active.scriptURL.includes('v20260822_v363')) {
                             console.log('[LUMINA PWA] Wyrejestrowywanie starego Service Workera:', reg.active.scriptURL);
                             await reg.unregister();
                         }
                     }
                 } catch (e) {}
 
-                navigator.serviceWorker.register('sw-lumina.js?v=20260821_v420', { scope: './' })
+                navigator.serviceWorker.register('sw-lumina.js?v=20260822_v363', { scope: './' })
                     .then((reg) => {
                         swRegistration = reg;
                         console.log('[LUMINA PWA] Service Worker zarejestrowany pomyślnie. Scope:', reg.scope);
