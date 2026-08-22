@@ -5266,44 +5266,14 @@ www.polskieradio.cc | www.cclite.pl`,
     </div>
 
 
-    <!-- ══════════ REALTIME COMMUNITY TELEMETRY ENGINE ══════════ -->
+    <!-- ══════════ REALTIME COMMUNITY TELEMETRY ENGINE (naprawione: prawdziwe dane + poprawnie domknięty tag script) ══════════ -->
     <script type="module">
-        import { PROFILES_DB } from './js/lumina-db-profiles.js';
+        import { collection, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
-        function updateTelemetryDisplay(cloudProfiles) {
+        const DAY_BAR_IDS = ['barMon', 'barTue', 'barWed', 'barThu', 'barFri', 'barSat', 'barSun']; // Pn → Nd
+
+        function renderTelemetry(data) {
             try {
-                const uniqueMap = new Map();
-                Object.values(PROFILES_DB || {}).forEach(p => { if (p && (p.slug || p.id)) uniqueMap.set(p.slug || p.id, p); });
-                
-                if (Array.isArray(cloudProfiles)) {
-                    cloudProfiles.forEach(p => { if (p && (p.slug || p.id || p.uid)) uniqueMap.set(p.slug || p.id || p.uid, p); });
-                }
-
-                try {
-                    const customUsers = JSON.parse(localStorage.getItem('lumina_custom_users_list') || '[]');
-                    if (Array.isArray(customUsers)) {
-                        customUsers.forEach(p => { if (p && (p.slug || p.id)) uniqueMap.set(p.slug || p.id, p); });
-                    }
-                } catch(e) {}
-
-                const allProfiles = Array.from(uniqueMap.values());
-                const totalCount = Math.max(1, allProfiles.length);
-
-                let females = allProfiles.filter(p => {
-                    const g = (p.gender || '').toLowerCase();
-                    const d = (p.denom || '').toLowerCase();
-                    const n = (p.name || '').toLowerCase();
-                    const s = (p.status || '').toLowerCase();
-                    return g === 'female' || g === 'kobieta' || d.includes('kobieta') || d.includes('chrześcijanka') || s.includes('mężatka') || n.includes('wioletta') || n.includes('urszula') || n.includes('dorota') || n.includes('noemi') || n.includes('anna') || n.includes('julia') || n.includes('magdalena') || n.includes('weronika');
-                }).length;
-
-                let males = Math.max(1, totalCount - females);
-                const femalePercent = Math.max(5, Math.min(95, Math.round((females / totalCount) * 100)));
-                const malePercent = 100 - femalePercent;
-
-                // Live dynamic presence calculation
-                const onlineCount = Math.max(1, Math.min(totalCount, Math.round(totalCount * 0.5) + (Math.floor(Date.now() / 60000) % 2)));
-
                 const elTotal = document.getElementById('hudTotalMembers');
                 const elOnline = document.getElementById('hudOnlineRealtime');
                 const elFemaleCount = document.getElementById('hudFemaleCount');
@@ -5312,62 +5282,80 @@ www.polskieradio.cc | www.cclite.pl`,
                 const elMaleBar = document.getElementById('hudMaleBar');
                 const elTodayGrowth = document.getElementById('hudTodayCount');
 
-                if (elTotal) elTotal.textContent = totalCount.toLocaleString('pl-PL');
-                if (elOnline) elOnline.textContent = onlineCount.toLocaleString('pl-PL');
-                if (elFemaleCount) elFemaleCount.textContent = females + ' (' + femalePercent + '%)';
-                if (elMaleCount) elMaleCount.textContent = males + ' (' + malePercent + '%)';
+                if (elTotal) elTotal.textContent = data.totalMembers.toLocaleString('pl-PL');
+                if (elOnline) elOnline.textContent = data.onlineTotal.toLocaleString('pl-PL');
+                if (elFemaleCount) elFemaleCount.textContent = data.femaleCount + ' (' + data.femalePercent + '%)';
+                if (elMaleCount) elMaleCount.textContent = data.maleCount + ' (' + data.malePercent + '%)';
                 if (elFemaleBar) {
-                    elFemaleBar.style.width = femalePercent + '%';
-                    elFemaleBar.title = 'Kobiety: ' + femalePercent + '% (' + females + ')';
+                    elFemaleBar.style.width = data.femalePercent + '%';
+                    elFemaleBar.title = 'Kobiety: ' + data.femalePercent + '% (' + data.femaleCount + ')';
                 }
                 if (elMaleBar) {
-                    elMaleBar.style.width = malePercent + '%';
-                    elMaleBar.title = 'Mężczyźni: ' + malePercent + '% (' + males + ')';
+                    elMaleBar.style.width = data.malePercent + '%';
+                    elMaleBar.title = 'Mężczyźni: ' + data.malePercent + '% (' + data.maleCount + ')';
                 }
 
-                // Dynamic Weekly Activity Bars
-                const days = ['barMon', 'barTue', 'barWed', 'barThu', 'barFri', 'barSat', 'barSun'];
-                const heights = [45, 60, 52, 78, 70, 92, 65];
-                const dayIndex = (new Date().getDay() + 6) % 7; // 0=Mon, 6=Sun
-                
-                days.forEach((dayId, idx) => {
+                // Realny wykres 7 dni — z data.dayCounts (klucze 0=Nd..6=So wg JS Date.getDay())
+                const orderedCounts = [1, 2, 3, 4, 5, 6, 0].map(d => data.dayCounts[d] || 0); // Pn → Nd
+                const maxCount = Math.max(1, ...orderedCounts);
+                const todayIndex = (new Date().getDay() + 6) % 7; // 0=Pn .. 6=Nd
+
+                DAY_BAR_IDS.forEach((dayId, idx) => {
                     const bar = document.getElementById(dayId);
-                    if (bar) {
-                        bar.style.height = heights[idx] + '%';
-                        if (idx === dayIndex) {
-                            bar.classList.add('today');
-                        } else {
-                            bar.classList.remove('today');
-                        }
-                    }
+                    if (!bar) return;
+                    const heightPct = Math.max(6, Math.round((orderedCounts[idx] / maxCount) * 100));
+                    bar.style.height = heightPct + '%';
+                    bar.title = orderedCounts[idx] + ' nowych profili';
+                    bar.classList.toggle('today', idx === todayIndex);
                 });
 
                 if (elTodayGrowth) {
-                    elTodayGrowth.innerHTML = '<i class="fa-solid fa-arrow-trend-up"></i> +' + Math.max(1, Math.round(totalCount * 0.15)) + ' Dzisiaj';
+                    elTodayGrowth.innerHTML = '<i class="fa-solid fa-arrow-trend-up"></i> +' + data.todayCount + ' Dzisiaj';
                 }
-            } catch(err) {
-                console.error('[Telemetry] Update error:', err);
+            } catch (err) {
+                console.error('[Telemetry] Render error:', err);
             }
         }
 
-        async function initLiveCommunityTelemetry() {
-            updateTelemetryDisplay([]);
-            if (window.LuminaDB && typeof window.LuminaDB.subscribeToAllCommunityProfiles === 'function') {
-                window.LuminaDB.subscribeToAllCommunityProfiles((cloudList) => {
-                    updateTelemetryDisplay(cloudList);
-                });
+        function waitForLuminaDBAndStart(retriesLeft = 40) {
+            if (window.LuminaDB && typeof window.LuminaDB.listenToFounderTelemetry === 'function') {
+                window.LuminaDB.listenToFounderTelemetry(renderTelemetry);
+            } else if (retriesLeft > 0) {
+                setTimeout(() => waitForLuminaDBAndStart(retriesLeft - 1), 250);
+            } else {
+                console.error('[Telemetry] window.LuminaDB.listenToFounderTelemetry niedostępne — sprawdź kolejność ładowania lumina-db.js');
             }
         }
 
-        // Initialize on page load and refresh periodically
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initLiveCommunityTelemetry);
+            document.addEventListener('DOMContentLoaded', () => waitForLuminaDBAndStart());
         } else {
-            initLiveCommunityTelemetry();
+            waitForLuminaDBAndStart();
         }
 
-        // Periodic live heartbeat refresh every 30 seconds
-        setInterval(initLiveCommunityTelemetry, 30000);
+        // ── Realna lista "kto jest online" dla modala (zasila window._cachedLiveProfiles) ──
+        function startOnlineUsersListFeed() {
+            if (!window.luminaDb) { setTimeout(startOnlineUsersListFeed, 250); return; }
+            onSnapshot(collection(window.luminaDb, 'lumina_presence'), (snap) => {
+                const ninetySecAgo = Date.now() - 90000;
+                const list = [];
+                snap.forEach(d => {
+                    const p = d.data();
+                    const millis = p.lastActiveMillis || (p.lastActive?.toDate ? p.lastActive.toDate().getTime() : 0);
+                    if (millis < ninetySecAgo) return;
+                    list.push({
+                        name: p.displayName || 'Gość LUMINA',
+                        slug: p.uid || d.id,
+                        avatar: 'lumina_icon.jpg',
+                        job: p.isLoggedIn ? ('Na stronie: ' + (p.page || 'lumina.html')) : 'Gość (niezalogowany)',
+                        city: ''
+                    });
+                });
+                window._cachedLiveProfiles = list;
+            }, (err) => console.error('[Telemetry] lumina_presence:', err));
+        }
+        startOnlineUsersListFeed();
+    </script>
     <!-- ══════════ MODAL: WSZYSCY UŻYTKOWNICY ONLINE ══════════ -->
     <div class="modal-overlay" id="modalAllOnlineUsers" onclick="if(event.target===this) closeModal('modalAllOnlineUsers')" style="z-index: 100003;">
         <div class="modal-card" style="max-width: 520px; width: 94%; max-height: 85vh; display:flex; flex-direction:column; background:#0b1329; border: 1.5px solid rgba(52,211,153,0.4); box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(52,211,153,0.25); border-radius: 24px; padding: 22px; position: relative;">
