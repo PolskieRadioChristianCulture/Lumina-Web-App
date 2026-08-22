@@ -2632,13 +2632,13 @@
                             </div>
                         </div>
 
-                        <div class="hud-stat-box" title="Zalogowani w tej chwili na portalu">
+                        <div class="hud-stat-box" onclick="openAllOnlineUsersModal()" title="Zalogowani w tej chwili na portalu (Kliknij, aby zobaczyć listę użytkowników)" style="cursor:pointer; transition:all 0.2s ease;">
                             <div class="hud-stat-icon-3d icon-green">
                                 <i class="fa-solid fa-wifi"></i>
                             </div>
                             <div class="hud-stat-info">
                                 <span class="hud-stat-num" id="hudOnlineRealtime" style="color:#4ade80;">142</span>
-                                <span class="hud-stat-label">Zalogowani Online</span>
+                                <span class="hud-stat-label">Zalogowani Online 🟢</span>
                             </div>
                         </div>
                     </div>
@@ -5350,6 +5350,114 @@ www.polskieradio.cc | www.cclite.pl`,
 
         // Periodic live heartbeat refresh every 30 seconds
         setInterval(initLiveCommunityTelemetry, 30000);
+    <!-- ══════════ MODAL: WSZYSCY UŻYTKOWNICY ONLINE ══════════ -->
+    <div class="modal-overlay" id="modalAllOnlineUsers" onclick="if(event.target===this) closeModal('modalAllOnlineUsers')" style="z-index: 100003;">
+        <div class="modal-card" style="max-width: 520px; width: 94%; max-height: 85vh; display:flex; flex-direction:column; background:#0b1329; border: 1.5px solid rgba(52,211,153,0.4); box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(52,211,153,0.25); border-radius: 24px; padding: 22px; position: relative;">
+            <button class="modal-close-btn" onclick="closeModal('modalAllOnlineUsers')" aria-label="Zamknij"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
+                <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, #10b981, #059669); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.2rem; box-shadow:0 4px 14px rgba(16,185,129,0.4);">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                    <h3 style="color:#fff; font-size:1.15rem; margin:0; display:flex; align-items:center; gap:8px;">
+                        Użytkownicy Dostępni Online <span class="badge-online-pulse" style="font-size:0.72rem; padding:2px 8px; border-radius:12px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#34d399;">LIVE</span>
+                    </h3>
+                    <div style="font-size:0.78rem; color:#94a3b8;">Aktywni członkowie społeczności LUMINA w czasie rzeczywistym</div>
+                </div>
+            </div>
+
+            <!-- Search bar inside modal -->
+            <div style="position:relative; margin-bottom:14px;">
+                <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:#94a3b8; font-size:0.85rem;"></i>
+                <input type="text" id="onlineUsersSearchInput" placeholder="Szukaj użytkownika po imieniu, mieście lub roli..." oninput="filterOnlineUsersModal(this.value)" style="width:100%; padding:10px 14px 10px 38px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:0.86rem; outline:none; box-sizing:border-box;">
+            </div>
+
+            <!-- List of online users -->
+            <div id="allOnlineUsersListContainer" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:10px; padding-right:4px;">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var defaultCommunityOnlineList = [
+            { name: 'Cezary Rogowski', slug: 'cezaryrgowski', avatar: 'avatar_cezary_official.jpg', job: 'Założyciel Christian Culture 👑', city: 'Ostrowiec Świętokrzyski' },
+            { name: 'Wioletta Rogowska', slug: 'wiolettarogowska', avatar: 'avatar_wioletta_official.jpg', job: 'Współzałożycielka & Moderator 🛡️🌸', city: 'Ostrowiec Świętokrzyski' },
+            { name: 'Magdalena', slug: 'magdalena', avatar: 'avatar_magdalena.png', job: 'Społeczność LUMINA 🕊️', city: 'Poznań' },
+            { name: 'Tomasz', slug: 'tomek', avatar: 'avatar_widget_tomek.jpg', job: 'Inżynier Środowiska 🌲', city: 'Kraków' },
+            { name: 'Noemi', slug: 'noemi', avatar: 'avatar_noemi.jpg', job: 'Architekt Krajobrazu 🌿', city: 'Wrocław' },
+            { name: 'Studio Dobrego Słowa', slug: 'studiodobregoslowa', avatar: 'studiodobregoslowa_avatar.jpg', job: 'Kanał YouTube @StudioDeeS 🎙️', city: 'Polska' },
+            { name: 'CC Women Official', slug: 'ccwomen', avatar: 'logo_cc_women.jpg', job: 'Oficjalny Kanał YouTube CC Women 🌸', city: 'Polska' }
+        ];
+
+        window.openAllOnlineUsersModal = function() {
+            var modal = document.getElementById('modalAllOnlineUsers');
+            var search = document.getElementById('onlineUsersSearchInput');
+            if (search) search.value = '';
+            
+            var list = defaultCommunityOnlineList;
+            try {
+                if (window._cachedLiveProfiles && window._cachedLiveProfiles.length) {
+                    list = window._cachedLiveProfiles;
+                }
+            } catch(e) {}
+            
+            renderOnlineUsersList(list);
+            if (modal) {
+                modal.classList.add('open');
+            }
+        };
+
+        window.filterOnlineUsersModal = function(term) {
+            term = (term || '').toLowerCase().trim();
+            var all = (window._cachedLiveProfiles && window._cachedLiveProfiles.length) ? window._cachedLiveProfiles : defaultCommunityOnlineList;
+            if (!term) {
+                renderOnlineUsersList(all);
+                return;
+            }
+            var filtered = all.filter(function(p) {
+                var n = (p.name || '').toLowerCase();
+                var c = (p.city || p.location || '').toLowerCase();
+                var d = (p.denom || '').toLowerCase();
+                var j = (p.job || p.role || '').toLowerCase();
+                return n.includes(term) || c.includes(term) || d.includes(term) || j.includes(term);
+            });
+            renderOnlineUsersList(filtered);
+        };
+
+        function renderOnlineUsersList(profiles) {
+            var container = document.getElementById('allOnlineUsersListContainer');
+            if (!container) return;
+            if (!profiles || profiles.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:24px; color:#94a3b8; font-size:0.88rem;">Brak użytkowników pasujących do wyszukiwania.</div>';
+                return;
+            }
+            container.innerHTML = profiles.map(function(p) {
+                var profileUrl = p.slug === 'cezaryrgowski' ? 'lumina.cezaryrgowski.html' : 
+                                   (p.slug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : ('lumina-profile.html?u=' + (p.slug || p.id)));
+                var avatar = p.avatar || 'lumina_icon.jpg';
+                var name = p.name || 'Użytkownik LUMINA';
+                var info = p.job || p.denom || p.city || 'Społeczność Chrześcijańska';
+                return '<div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; transition:all 0.2s ease;">' +
+                        '<div style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href=\'' + profileUrl + '\'">' +
+                            '<div style="position:relative; width:44px; height:44px; flex-shrink:0;">' +
+                                '<img src="' + avatar + '" alt="' + name + '" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border:1.5px solid #10b981;" onerror="this.onerror=null; this.src=\'lumina_icon.jpg\';">' +
+                                '<span style="position:absolute; bottom:0; right:0; width:12px; height:12px; border-radius:50%; background:#10b981; border:2px solid #0b1329; box-shadow:0 0 8px #10b981;"></span>' +
+                            '</div>' +
+                            '<div>' +
+                                '<div style="font-weight:700; color:#fff; font-size:0.92rem;">' + name + '</div>' +
+                                '<div style="font-size:0.75rem; color:#94a3b8;">' + info + '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div style="display:flex; gap:8px;">' +
+                            '<button type="button" class="admin-suite-btn btn-primary" onclick="window.location.href=\'' + profileUrl + '\'" style="padding:6px 12px; border-radius:12px; font-size:0.78rem; font-weight:700;">' +
+                                'Zobacz Profil' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>';
+            }).join('');
+        }
     </script>
     <script src="lumina-admin-profile-suite.js"></script>
     <script src="lumina-premium-video-avatar.js"></script>
