@@ -5840,7 +5840,406 @@
         </div>
     </div>
     
+    <!-- ══════════ MODAL: DODATKOWE OPCJE PROFILU (PRZYTRZYMANIE ZDJĘCIA / LONG-PRESS) ══════════ -->
+    <div id="luminaProfileQuickActionsModal" class="lumina-quick-actions-modal" onclick="if(event.target===this) window.closeProfileQuickActions()">
+        <div class="quick-actions-sheet" onclick="event.stopPropagation()">
+            <div class="sheet-drag-handle"></div>
+            <div class="quick-actions-header">
+                <div class="quick-actions-avatar-wrap">
+                    <img id="qaAvatar" src="lumina_icon.jpg" alt="Avatar" class="qa-avatar" onerror="this.src='lumina_icon.jpg'">
+                    <div class="qa-online-badge" title="Online"></div>
+                </div>
+                <div class="quick-actions-user-info">
+                    <div class="qa-name-row">
+                        <h3 id="qaName" class="qa-name">Użytkownik LUMINA</h3>
+                        <i class="fa-solid fa-circle-check verified-badge" style="color:#38bdf8; font-size:0.95rem;" title="Zweryfikowany profil chrześcijański"></i>
+                    </div>
+                    <div id="qaTagline" class="qa-tagline">Społeczność LUMINA</div>
+                </div>
+                <button type="button" class="qa-close-btn" onclick="window.closeProfileQuickActions()" title="Zamknij">✕</button>
+            </div>
+
+            <div class="quick-actions-grid">
+                <!-- 1. ZACZEP / POMACHAJ -->
+                <button type="button" class="qa-action-btn" onclick="window.handleQuickActionPoke()">
+                    <div class="qa-icon-box qa-icon-poke"><i class="fa-solid fa-hand"></i></div>
+                    <div class="qa-btn-content">
+                        <div class="qa-btn-title">Zaczep / Pomachaj 👋</div>
+                        <div class="qa-btn-desc">Wyślij przyjazne chrześcijańskie powitanie</div>
+                    </div>
+                </button>
+
+                <!-- 2. NAPISZ WIADOMOŚĆ -->
+                <button type="button" class="qa-action-btn" onclick="window.handleQuickActionMessage()">
+                    <div class="qa-icon-box qa-icon-msg"><i class="fa-solid fa-paper-plane"></i></div>
+                    <div class="qa-btn-content">
+                        <div class="qa-btn-title">Napisz Wiadomość 💬</div>
+                        <div class="qa-btn-desc">Otwórz bezpośredni czat prywatny 1:1</div>
+                    </div>
+                </button>
+
+                <!-- 3. OBSERWUJ & POLUB -->
+                <button type="button" class="qa-action-btn" onclick="window.handleQuickActionFollow()">
+                    <div class="qa-icon-box qa-icon-follow"><i class="fa-solid fa-heart"></i></div>
+                    <div class="qa-btn-content">
+                        <div class="qa-btn-title" id="qaFollowTitle">Obserwuj / Polub ❤️</div>
+                        <div class="qa-btn-desc">Bądź na bieżąco ze świadectwami i wpisami</div>
+                    </div>
+                </button>
+
+                <!-- 4. ZAPROŚ NA KAWĘ -->
+                <button type="button" class="qa-action-btn" onclick="window.handleQuickActionCoffee()">
+                    <div class="qa-icon-box qa-icon-coffee"><i class="fa-solid fa-mug-hot"></i></div>
+                    <div class="qa-btn-content">
+                        <div class="qa-btn-title">Zaproś na Kawę ☕</div>
+                        <div class="qa-btn-desc">Chrześcijańska rozmowa i budowanie relacji</div>
+                    </div>
+                </button>
+
+                <!-- 5. OTWÓRZ PEŁNY PROFIL -->
+                <button type="button" class="qa-action-btn" onclick="window.handleQuickActionOpenProfile()">
+                    <div class="qa-icon-box qa-icon-profile"><i class="fa-solid fa-user"></i></div>
+                    <div class="qa-btn-content">
+                        <div class="qa-btn-title">Zobacz Pełny Profil 👤</div>
+                        <div class="qa-btn-desc">Galeria zdjęć, świadectwo i wszystkie informacje</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* ══════════ LUMINA PROFILE QUICK ACTIONS (LONG-PRESS) ══════════ */
+        .lumina-quick-actions-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(7, 14, 36, 0.78);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            z-index: 100010;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+        .lumina-quick-actions-modal.open {
+            display: flex;
+            opacity: 1;
+        }
+        .quick-actions-sheet {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.98));
+            border: 1.5px solid rgba(168, 85, 247, 0.4);
+            border-radius: 28px;
+            width: 100%;
+            max-width: 440px;
+            padding: 22px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(168, 85, 247, 0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            animation: qaPopIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: center bottom;
+        }
+        @media (max-width: 600px) {
+            .lumina-quick-actions-modal {
+                align-items: flex-end;
+                padding: 0;
+            }
+            .quick-actions-sheet {
+                max-width: 100vw;
+                border-radius: 28px 28px 0 0;
+                padding: 16px 20px 28px;
+                animation: qaSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
+        }
+        @keyframes qaPopIn {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes qaSlideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .sheet-drag-handle {
+            width: 44px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 3px;
+            margin: 0 auto 4px;
+        }
+        .quick-actions-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .quick-actions-avatar-wrap {
+            position: relative;
+            width: 58px;
+            height: 58px;
+            flex-shrink: 0;
+        }
+        .qa-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2.5px solid #a855f7;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+        }
+        .qa-online-badge {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #10b981;
+            border: 2px solid #0f172a;
+            box-shadow: 0 0 8px #10b981;
+        }
+        .quick-actions-user-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .qa-name-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .qa-name {
+            margin: 0;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-family: 'Outfit', sans-serif;
+        }
+        .qa-tagline {
+            font-size: 0.78rem;
+            color: #94a3b8;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .qa-close-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        .qa-close-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+        .quick-actions-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+        .qa-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 14px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .qa-action-btn:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(168, 85, 247, 0.4);
+            transform: translateX(4px);
+        }
+        .qa-action-btn:active {
+            transform: scale(0.98);
+        }
+        .qa-icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+        .qa-icon-poke { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35); }
+        .qa-icon-msg { background: linear-gradient(135deg, #a855f7, #7c3aed); color: #fff; box-shadow: 0 4px 14px rgba(168, 85, 247, 0.35); }
+        .qa-icon-follow { background: linear-gradient(135deg, #ec4899, #db2777); color: #fff; box-shadow: 0 4px 14px rgba(236, 72, 153, 0.35); }
+        .qa-icon-coffee { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35); }
+        .qa-icon-profile { background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35); }
+
+        .qa-btn-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .qa-btn-title {
+            font-weight: 800;
+            font-size: 0.92rem;
+            color: #fff;
+        }
+        .qa-btn-desc {
+            font-size: 0.73rem;
+            color: #94a3b8;
+            margin-top: 1px;
+        }
+    </style>
+
     <script>
+        let _activeQuickActionSlug = null;
+        let _activeQuickActionProfile = null;
+
+        window.openProfileQuickActions = function(slug, cardEl) {
+            if (!slug) return;
+            _activeQuickActionSlug = slug;
+            
+            let p = null;
+            if (window.LuminaDB && typeof window.LuminaDB.getCachedProfile === 'function') {
+                p = window.LuminaDB.getCachedProfile(slug);
+            }
+            if (!p) {
+                if (slug === 'cezaryrgowski') p = { name: 'Cezary Rogowski', avatar: 'avatar_cezary_official.jpg', tagline: 'Ostrowiec Świętokrzyski • Założyciel' };
+                else if (slug === 'wiolettarogowska') p = { name: 'Wioletta Rogowska', avatar: 'avatar_wioletta_official.jpg', tagline: 'Ostrowiec Świętokrzyski • Współzałożycielka' };
+                else p = { name: cardEl?.querySelector('.author-name, .card-name')?.textContent || slug, avatar: cardEl?.querySelector('img')?.src || 'lumina_icon.jpg', tagline: 'Społeczność LUMINA' };
+            }
+            _activeQuickActionProfile = p;
+
+            const modal = document.getElementById('luminaProfileQuickActionsModal');
+            if (!modal) return;
+
+            const avatarEl = document.getElementById('qaAvatar');
+            const nameEl = document.getElementById('qaName');
+            const taglineEl = document.getElementById('qaTagline');
+
+            if (avatarEl) avatarEl.src = p.avatar || 'lumina_icon.jpg';
+            if (nameEl) nameEl.textContent = p.name || 'Użytkownik LUMINA';
+            if (taglineEl) taglineEl.textContent = p.tagline || (p.city ? `${p.city} • ${p.denom || 'Chrześcijanin'}` : 'Społeczność LUMINA');
+
+            modal.classList.add('open');
+        };
+
+        window.closeProfileQuickActions = function() {
+            const modal = document.getElementById('luminaProfileQuickActionsModal');
+            if (modal) modal.classList.remove('open');
+        };
+
+        window.handleQuickActionPoke = function() {
+            const slug = _activeQuickActionSlug;
+            const p = _activeQuickActionProfile || {};
+            const name = p.name || slug;
+
+            const myUser = window.LuminaDB?.getCurrentUser();
+            const myProfile = window.LuminaDB?.getCurrentProfile();
+            const fromId = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest';
+            const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, slug) : [fromId, slug].sort().join('_');
+
+            if (window.LuminaDB && typeof window.LuminaDB.sendDirectMessageToCloud === 'function') {
+                window.LuminaDB.sendDirectMessageToCloud(chatId, {
+                    senderId: fromId,
+                    senderName: myProfile?.name || myUser?.displayName || 'Użytkownik LUMINA',
+                    text: `👋 Pomachałem/am do Ciebie! Cześć ${name}, błogosławionego i pięknego dnia w Panu! 🕊️✨`,
+                    type: 'poke',
+                    receiverId: slug
+                });
+                window.LuminaDB.recordProfileLike(slug, { name: name, avatar: p.avatar }, 'poke');
+            }
+
+            window.closeProfileQuickActions();
+            if (typeof showToast === 'function') {
+                showToast(`👋 Zaczepiono ${name}! Wysłano miłe chrześcijańskie powitanie ✨`);
+            }
+        };
+
+        window.handleQuickActionMessage = function() {
+            const slug = _activeQuickActionSlug;
+            const p = _activeQuickActionProfile || {};
+            const name = p.name || slug;
+            const avatar = p.avatar || 'lumina_icon.jpg';
+
+            window.closeProfileQuickActions();
+
+            if (typeof window.openChatWith === 'function') {
+                window.openChatWith(name, avatar, slug);
+            } else if (typeof window.openDirectMessagesModal === 'function') {
+                window.openDirectMessagesModal();
+            }
+        };
+
+        window.handleQuickActionFollow = function() {
+            const slug = _activeQuickActionSlug;
+            const p = _activeQuickActionProfile || {};
+            const name = p.name || slug;
+
+            if (window.LuminaDB && typeof window.LuminaDB.recordProfileLike === 'function') {
+                window.LuminaDB.recordProfileLike(slug, { name: name, avatar: p.avatar }, 'follow');
+            }
+
+            window.closeProfileQuickActions();
+            if (typeof showToast === 'function') {
+                showToast(`💖 Obserwujesz profil ${name}! Będziesz otrzymywać aktualności ✨`);
+            }
+        };
+
+        window.handleQuickActionCoffee = function() {
+            const slug = _activeQuickActionSlug;
+            const p = _activeQuickActionProfile || {};
+            const name = p.name || slug;
+
+            const myUser = window.LuminaDB?.getCurrentUser();
+            const myProfile = window.LuminaDB?.getCurrentProfile();
+            const fromId = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest';
+            const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, slug) : [fromId, slug].sort().join('_');
+
+            if (window.LuminaDB && typeof window.LuminaDB.sendDirectMessageToCloud === 'function') {
+                window.LuminaDB.sendDirectMessageToCloud(chatId, {
+                    senderId: fromId,
+                    senderName: myProfile?.name || myUser?.displayName || 'Użytkownik LUMINA',
+                    text: `☕ Cześć ${name}! Chciałbym/chciałabym zaprosić Cię na wirtualną Chrześcijańską Kawę i budującą rozmowę o Bogu i życiu! ✨❤️`,
+                    type: 'coffee_invite',
+                    receiverId: slug
+                });
+                window.LuminaDB.recordProfileLike(slug, { name: name, avatar: p.avatar }, 'coffee');
+            }
+
+            window.closeProfileQuickActions();
+            if (typeof showToast === 'function') {
+                showToast(`☕ Wysłano zaproszenie na Chrześcijańską Kawę do ${name}! ✨`);
+            }
+        };
+
+        window.handleQuickActionOpenProfile = function() {
+            const slug = _activeQuickActionSlug;
+            window.closeProfileQuickActions();
+            if (slug) {
+                if (slug === 'cezaryrgowski') window.location.href = 'lumina.cezaryrgowski.html';
+                else if (slug === 'wiolettarogowska') window.location.href = 'lumina.wiolettarogowska.html';
+                else window.location.href = 'lumina-profile.html?u=' + slug;
+            }
+        };
+
         window.openSupportModal = function() {
             const modal = document.getElementById('supportLuminaModal');
             if(modal) {
