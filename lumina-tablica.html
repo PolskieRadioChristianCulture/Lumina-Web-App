@@ -2663,37 +2663,27 @@
             <div id="messengerPrivateView" style="display: none; flex-direction: column; flex: 1; min-height: 0;">
                 <!-- VIEW 2A: CONVERSATIONS LIST -->
                 <div id="dmListView" style="display: flex; flex-direction: column; height: 100%; padding: 14px 18px;">
-                    <!-- Active Conversations list -->
+                    <!-- Active Conversations list – dynamicznie ładowane z Firestore -->
                     <div id="dmConversationsList" style="overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:8px; margin-bottom:12px; padding-right:4px;">
-                        <div onclick="openChatWith('Cezary Rogowski', 'avatar_cezary_official.jpg', 'cezaryrgowski')" style="display:flex; align-items:center; gap:10px; padding:12px; background:linear-gradient(135deg, rgba(236,72,153,0.15), rgba(139,92,246,0.15)); border:1.5px solid rgba(236,72,153,0.4); border-radius:14px; cursor:pointer; transition:all 0.2s;">
-                            <div style="position:relative;">
-                                <img src="avatar_cezary_official.jpg" alt="Cezary Rogowski" style="width:44px; height:44px; border-radius:50%; object-fit:cover; display:block; border:2px solid #ec4899;">
-                                <span style="position:absolute; bottom:0; right:0; width:11px; height:11px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
-                            </div>
-                            <div style="flex:1; min-width:0;">
-                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                                    <span style="font-weight:800; font-size:0.92rem; color:#fff;">Cezary Rogowski</span>
-                                    <span style="font-size:0.68rem; color:#facc15; font-weight:700;">Założyciel 👑</span>
+                        <!-- Skeleton loader shown while Firestore loads -->
+                        <div id="dmConversationsLoader" style="display:flex; flex-direction:column; gap:8px;">
+                            <div style="display:flex; align-items:center; gap:10px; padding:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:14px; animation: pulse 1.5s ease-in-out infinite;">
+                                <div style="width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.07); flex-shrink:0;"></div>
+                                <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
+                                    <div style="height:12px; background:rgba(255,255,255,0.07); border-radius:6px; width:60%;"></div>
+                                    <div style="height:10px; background:rgba(255,255,255,0.05); border-radius:6px; width:80%;"></div>
                                 </div>
-                                <div style="font-size:0.78rem; color:#f472b6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Kliknij, aby otworzyć bezpieczny czat prywatny 1:1 🕊️</div>
                             </div>
-                            <i class="fa-solid fa-chevron-right" style="color:#ec4899; font-size:0.85rem;"></i>
-                        </div>
-
-                        <div onclick="openChatWith('Wioletta Rogowska', 'avatar_wioletta_official.jpg', 'wiolettarogowska')" style="display:flex; align-items:center; gap:10px; padding:12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; cursor:pointer; transition:all 0.2s;">
-                            <div style="position:relative;">
-                                <img src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" style="width:44px; height:44px; border-radius:50%; object-fit:cover; display:block; border:2px solid #c084fc;">
-                                <span style="position:absolute; bottom:0; right:0; width:11px; height:11px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
-                            </div>
-                            <div style="flex:1; min-width:0;">
-                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                                    <span style="font-weight:800; font-size:0.92rem; color:#fff;">Wioletta Rogowska</span>
-                                    <span style="font-size:0.68rem; color:#10b981; font-weight:700;">Liderka 🌸</span>
+                            <div style="display:flex; align-items:center; gap:10px; padding:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:14px; animation: pulse 1.5s ease-in-out infinite 0.3s;">
+                                <div style="width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.07); flex-shrink:0;"></div>
+                                <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
+                                    <div style="height:12px; background:rgba(255,255,255,0.07); border-radius:6px; width:50%;"></div>
+                                    <div style="height:10px; background:rgba(255,255,255,0.05); border-radius:6px; width:70%;"></div>
                                 </div>
-                                <div style="font-size:0.78rem; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Kliknij, aby otworzyć bezpieczny czat prywatny 1:1 🕊️</div>
                             </div>
-                            <i class="fa-solid fa-chevron-right" style="color:#c084fc; font-size:0.85rem;"></i>
                         </div>
+                        <!-- Dynamic DM entries rendered here by renderDMConversationsList() -->
+                        <div id="dmConversationsDynamic" style="display:none; flex-direction:column; gap:8px;"></div>
                     </div>
 
                     <button type="button" onclick="closeModal('directMessagesModal'); window.location.href='lumina.html#odkrywaj';" style="width:100%; padding:11px; border-radius:24px; background:linear-gradient(90deg,#ec4899,#8b5cf6); border:none; color:#fff; font-weight:800; font-family:inherit; font-size:0.84rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(236,72,153,0.35);">
@@ -5400,10 +5390,155 @@
         window.checkAdminStatusAndToggleUI = checkAdminStatusAndToggleUI;
 
             checkAdminStatusAndToggleUI();
+
+            // ── 💬 DYNAMICZNA LISTA ROZMÓW PRYWATNYCH ──────────────────────
+            // Render DM conversations list from Firestore subscribeToUserChats
+            let _dmChatsUnsubscribe = null;
+
+            function renderDMConversationsList(chats) {
+                const loader = document.getElementById('dmConversationsLoader');
+                const dynamic = document.getElementById('dmConversationsDynamic');
+                if (!dynamic) return;
+
+                const myUser = window.LuminaDB?.getCurrentUser();
+                const myProfile = window.LuminaDB?.getCurrentProfile();
+                const rawMyId = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid
+                    || localStorage.getItem('lumina_current_user_slug') || 'guest';
+                const myId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(rawMyId) : rawMyId;
+
+                // ── PINNED (hardcoded) system accounts always on top ──
+                const SYSTEM_ACCOUNTS = [
+                    { slug: 'cezaryrgowski',    name: 'Cezary Rogowski',    avatar: 'avatar_cezary_official.jpg',    badge: '👑 Założyciel',  badgeColor: '#facc15', borderColor: '#ec4899', gradient: true },
+                    { slug: 'wiolettarogowska', name: 'Wioletta Rogowska',  avatar: 'avatar_wioletta_official.jpg',  badge: '🌸 Liderka CC',  badgeColor: '#10b981', borderColor: '#c084fc', gradient: false }
+                ];
+
+                // ── Format last message time ──
+                function fmtTs(ts) {
+                    if (!ts) return '';
+                    let ms = 0;
+                    if (typeof ts === 'object' && ts.seconds) ms = ts.seconds * 1000;
+                    else if (typeof ts === 'number') ms = ts;
+                    if (!ms) return '';
+                    const d = new Date(ms);
+                    const now = new Date();
+                    const diffH = (now - d) / 3600000;
+                    if (diffH < 24 && now.toDateString() === d.toDateString()) {
+                        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    }
+                    const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
+                    if (yesterday.toDateString() === d.toDateString()) return 'Wczoraj';
+                    return d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'short' });
+                }
+
+                // ── Build HTML for one DM entry ──
+                function buildDMEntry(slug, name, avatar, badge, badgeColor, borderColor, isGradient, lastMsg, lastTs, unread) {
+                    const border = isGradient
+                        ? 'background:linear-gradient(135deg,rgba(236,72,153,0.15),rgba(139,92,246,0.15)); border:1.5px solid rgba(236,72,153,0.4);'
+                        : 'background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);';
+                    const preview = lastMsg
+                        ? `<span style="color:${unread ? '#f472b6' : '#94a3b8'}; font-weight:${unread ? '700' : '400'}">${lastMsg.length > 42 ? lastMsg.slice(0,42)+'…' : lastMsg}</span>`
+                        : `<span style="color:#64748b; font-style:italic;">Kliknij, aby otworzyć bezpieczny czat 1:1 🕊️</span>`;
+                    const unreadBadge = unread ? `<span style="min-width:18px; height:18px; border-radius:9px; background:#ec4899; color:#fff; font-size:0.65rem; font-weight:800; display:inline-flex; align-items:center; justify-content:center; padding:0 4px; margin-left:4px;">${unread > 99 ? '99+' : unread}</span>` : '';
+                    const timeStr = fmtTs(lastTs);
+                    return `
+                        <div onclick="openChatWith('${name}', '${avatar}', '${slug}')" style="display:flex; align-items:center; gap:10px; padding:12px; ${border} border-radius:14px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                            <div style="position:relative; flex-shrink:0;">
+                                <img src="${avatar}" alt="${name}" style="width:44px; height:44px; border-radius:50%; object-fit:cover; display:block; border:2px solid ${borderColor};" onerror="this.src='lumina_icon.jpg'">
+                                <span style="position:absolute; bottom:0; right:0; width:11px; height:11px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
+                            </div>
+                            <div style="flex:1; min-width:0;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px; gap:6px;">
+                                    <div style="display:flex; align-items:center; gap:4px; min-width:0;">
+                                        <span style="font-weight:800; font-size:0.92rem; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${name}</span>
+                                        ${unreadBadge}
+                                    </div>
+                                    <div style="display:flex; align-items:center; gap:5px; flex-shrink:0;">
+                                        ${timeStr ? `<span style="font-size:0.65rem; color:#64748b;">${timeStr}</span>` : ''}
+                                        <span style="font-size:0.65rem; color:${badgeColor}; font-weight:700; white-space:nowrap;">${badge}</span>
+                                    </div>
+                                </div>
+                                <div style="font-size:0.76rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${preview}</div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right" style="color:${borderColor}; font-size:0.82rem; flex-shrink:0; margin-left:2px;"></i>
+                        </div>`;
+                }
+
+                // ── Build the full list ──
+                let html = '';
+
+                // 1. Always-visible system pinned accounts (top)
+                SYSTEM_ACCOUNTS.forEach(sa => {
+                    if (sa.slug === myId) return; // Hide self-chat
+                    // Find Firestore chat entry if it exists for this pair
+                    const chatEntry = (chats || []).find(c =>
+                        c.users && c.users.includes(myId) && c.users.includes(sa.slug)
+                    );
+                    const lastMsg = chatEntry?.lastMessage || null;
+                    const lastTs  = chatEntry?.lastMessageTimestamp || null;
+                    const unread  = chatEntry?.unreadCount?.[myId] || 0;
+                    html += buildDMEntry(sa.slug, sa.name, sa.avatar, sa.badge, sa.badgeColor, sa.borderColor, sa.gradient, lastMsg, lastTs, unread);
+                });
+
+                // 2. Real Firestore DM history – other users (not system accounts, not self)
+                const systemSlugs = SYSTEM_ACCOUNTS.map(s => s.slug);
+                (chats || []).forEach(chat => {
+                    if (!chat.users) return;
+                    const otherSlug = chat.users.find(u => u !== myId && !systemSlugs.includes(u));
+                    if (!otherSlug) return;
+                    const name   = chat.otherName   || chat[`name_${otherSlug}`]  || otherSlug;
+                    const avatar = chat.otherAvatar  || chat[`avatar_${otherSlug}`] || 'lumina_icon.jpg';
+                    const badge  = '🕊️ Społeczność';
+                    const lastMsg = chat.lastMessage || null;
+                    const lastTs  = chat.lastMessageTimestamp || null;
+                    const unread  = chat.unreadCount?.[myId] || 0;
+                    html += buildDMEntry(otherSlug, name, avatar, badge, '#94a3b8', '#c084fc', false, lastMsg, lastTs, unread);
+                });
+
+                // ── Guest / no conversations fallback ──
+                if (!html) {
+                    html = `<div style="text-align:center; padding:24px 14px; color:#64748b; font-size:0.84rem;">
+                        <i class="fa-solid fa-comment-dots" style="font-size:2rem; color:#334155; margin-bottom:10px; display:block;"></i>
+                        Jeszcze nie masz żadnych rozmów.<br>
+                        <span style="color:#a855f7; font-size:0.78rem;">Kliknij awatar kogoś na tablicy, aby zacząć czat 🕊️</span>
+                    </div>`;
+                }
+
+                dynamic.innerHTML = html;
+
+                // Show dynamic content, hide loader
+                if (loader) loader.style.display = 'none';
+                dynamic.style.display = 'flex';
+            }
+
+            function initDMConversationsListener() {
+                if (_dmChatsUnsubscribe) { _dmChatsUnsubscribe(); _dmChatsUnsubscribe = null; }
+                const myUser = window.LuminaDB?.getCurrentUser();
+                const myProfile = window.LuminaDB?.getCurrentProfile();
+                const rawMyId = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid
+                    || localStorage.getItem('lumina_current_user_slug') || null;
+                if (!rawMyId || !window.LuminaDB?.subscribeToUserChats) {
+                    // Guest fallback: just show defaults immediately
+                    renderDMConversationsList([]);
+                    return;
+                }
+                const myId = window.LuminaDB.normalizeChatUserId(rawMyId);
+                _dmChatsUnsubscribe = window.LuminaDB.subscribeToUserChats(myId, (chats) => {
+                    renderDMConversationsList(chats);
+                });
+            }
+            window.initDMConversationsListener = initDMConversationsListener;
+            window.renderDMConversationsList = renderDMConversationsList;
+
+            // Init immediately (covers guest + cached user)
+            setTimeout(initDMConversationsListener, 500);
+            // ────────────────────────────────────────────────────────────────
+
             if (window.LuminaDB && typeof window.LuminaDB.onAuthStateChanged === 'function') {
                 window.LuminaDB.onAuthStateChanged((user) => {
                     checkAdminStatusAndToggleUI();
                     renderCustomAds916();
+                    // Re-init DM conversations list on login/logout
+                    initDMConversationsListener();
                 });
             }
             renderCustomAds916();
