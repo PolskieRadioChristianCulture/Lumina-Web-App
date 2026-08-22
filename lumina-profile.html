@@ -5708,14 +5708,75 @@
             bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); })
         );
 
+        // Fast direct REST profile fetching on load
+        async function fetchProfileDirectFast() {
+            const slug = getRequestedUserSlug();
+            if (!slug) return;
+            try {
+                const restUrl = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_profiles?key=AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M&pageSize=100';
+                const res = await fetch(restUrl);
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.documents) {
+                        const target = slug.toLowerCase();
+                        const found = json.documents.find(d => {
+                            const docId = d.name.split('/').pop().toLowerCase();
+                            const f = d.fields || {};
+                            const s = (f.slug?.stringValue || '').toLowerCase();
+                            const u = (f.uid?.stringValue || '').toLowerCase();
+                            return docId === target || s === target || u === target;
+                        });
+                        if (found) {
+                            const f = found.fields || {};
+                            const parsed = {
+                                uid: f.uid?.stringValue || found.name.split('/').pop(),
+                                slug: f.slug?.stringValue || slug,
+                                name: f.name?.stringValue || 'Użytkownik LUMINA',
+                                age: f.age ? (f.age.integerValue || f.age.stringValue) : '',
+                                city: f.city?.stringValue || 'Polska',
+                                gender: f.gender?.stringValue || 'kobieta',
+                                lookingFor: f.lookingFor?.stringValue || 'mezczyzna',
+                                denom: f.denom?.stringValue || 'Chrześcijanin',
+                                church: f.church?.stringValue || '',
+                                job: f.job?.stringValue || 'Społeczność LUMINA ✨',
+                                verse: f.verse?.stringValue || '„Wszystko mogę w Tym, który mnie umacnia.”',
+                                verseRef: f.verseRef?.stringValue || 'Flp 4, 13',
+                                bio: f.bio?.stringValue || '',
+                                status: f.status?.stringValue || 'Panna/Kawaler',
+                                avatar: f.avatar?.stringValue || 'lumina_icon.jpg',
+                                cover: f.cover?.stringValue || 'lumina_default_cover.jpg',
+                                visibility: f.visibility?.stringValue || 'public',
+                                matchScore: f.matchScore?.stringValue || '98%',
+                                isVerified: true,
+                                photos: f.photos?.arrayValue?.values ? f.photos.arrayValue.values.map(v => v.stringValue).filter(Boolean) : [f.avatar?.stringValue || 'lumina_icon.jpg'],
+                                posts: []
+                            };
+                            window._cloudProfileData = parsed;
+                            try {
+                                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(parsed));
+                                if (parsed.slug) localStorage.setItem('lumina_profile_' + parsed.slug.toLowerCase(), JSON.stringify(parsed));
+                                if (parsed.uid) localStorage.setItem('lumina_profile_' + parsed.uid, JSON.stringify(parsed));
+                            } catch(e) {}
+                            checkOwnerAuthSession();
+                            renderProfile();
+                        }
+                    }
+                }
+            } catch(e) {
+                console.warn('fetchProfileDirectFast notice:', e);
+            }
+        }
+
         // Initialize immediately and on DOM load
         try {
+            fetchProfileDirectFast();
             renderProfile();
         } catch(e) {
             console.error("Immediate renderProfile error:", e);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            fetchProfileDirectFast();
             renderProfile();
 
             window.addEventListener('lumina_post_published', () => renderPosts());
@@ -5729,6 +5790,8 @@
                             window._cloudProfileData = cloudData;
                             try {
                                 localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cloudData));
+                                if (cloudData.slug) localStorage.setItem('lumina_profile_' + cloudData.slug.toLowerCase(), JSON.stringify(cloudData));
+                                if (cloudData.uid) localStorage.setItem('lumina_profile_' + cloudData.uid, JSON.stringify(cloudData));
                             } catch(e) {}
                             checkOwnerAuthSession();
                             renderProfile();

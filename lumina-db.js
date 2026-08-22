@@ -904,16 +904,17 @@ export async function confirmPhoneVerificationCode(confirmationResult, verificat
 
 export function subscribeToProfile(slugOrUid, onUpdate) {
     if (!slugOrUid) return () => {};
-    const localKey = `lumina_profile_${slugOrUid}`;
+    const normalized = slugOrUid.trim().toLowerCase();
+    const localKey = `lumina_profile_${normalized}`;
     
     // 1. Immediate local cache emission
     try {
-        let cached = localStorage.getItem(localKey);
+        let cached = localStorage.getItem(localKey) || localStorage.getItem(`lumina_profile_${slugOrUid}`);
         if (!cached) {
             const cur = localStorage.getItem('lumina_current_user_profile');
             if (cur) {
                 const p = JSON.parse(cur);
-                if (p && (p.slug === slugOrUid || p.uid === slugOrUid)) cached = cur;
+                if (p && ((p.slug && p.slug.toLowerCase() === normalized) || (p.uid && p.uid.toLowerCase() === normalized))) cached = cur;
             }
         }
         if (cached) {
@@ -921,13 +922,62 @@ export function subscribeToProfile(slugOrUid, onUpdate) {
         }
     } catch(e) {}
 
+    // 2. Immediate fast REST fetch
+    try {
+        const restUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_CONFIG.projectId}/databases/(default)/documents/lumina_profiles?key=${FIREBASE_CONFIG.apiKey}&pageSize=100`;
+        fetch(restUrl).then(r => r.json()).then(json => {
+            if (json && json.documents) {
+                const found = json.documents.find(d => {
+                    const docId = d.name.split('/').pop().toLowerCase();
+                    const f = d.fields || {};
+                    const s = (f.slug?.stringValue || '').toLowerCase();
+                    const u = (f.uid?.stringValue || '').toLowerCase();
+                    return docId === normalized || s === normalized || u === normalized;
+                });
+                if (found) {
+                    const f = found.fields || {};
+                    const profileData = {
+                        uid: f.uid?.stringValue || found.name.split('/').pop(),
+                        slug: f.slug?.stringValue || slugOrUid,
+                        name: f.name?.stringValue || 'Użytkownik LUMINA',
+                        age: f.age ? (f.age.integerValue || f.age.stringValue) : '',
+                        city: f.city?.stringValue || 'Polska',
+                        gender: f.gender?.stringValue || 'kobieta',
+                        lookingFor: f.lookingFor?.stringValue || 'mezczyzna',
+                        denom: f.denom?.stringValue || 'Chrześcijanin',
+                        church: f.church?.stringValue || '',
+                        job: f.job?.stringValue || 'Społeczność LUMINA ✨',
+                        verse: f.verse?.stringValue || '„Wszystko mogę w Tym, który mnie umacnia.”',
+                        verseRef: f.verseRef?.stringValue || 'Flp 4, 13',
+                        bio: f.bio?.stringValue || '',
+                        status: f.status?.stringValue || 'Panna/Kawaler',
+                        avatar: f.avatar?.stringValue || 'lumina_icon.jpg',
+                        cover: f.cover?.stringValue || 'lumina_default_cover.jpg',
+                        visibility: f.visibility?.stringValue || 'public',
+                        matchScore: f.matchScore?.stringValue || '98%',
+                        isVerified: true,
+                        photos: f.photos?.arrayValue?.values ? f.photos.arrayValue.values.map(v => v.stringValue).filter(Boolean) : [f.avatar?.stringValue || 'lumina_icon.jpg'],
+                        posts: []
+                    };
+                    try {
+                        localStorage.setItem(localKey, JSON.stringify(profileData));
+                        if (profileData.slug) localStorage.setItem(`lumina_profile_${profileData.slug.toLowerCase()}`, JSON.stringify(profileData));
+                        if (profileData.uid) localStorage.setItem(`lumina_profile_${profileData.uid}`, JSON.stringify(profileData));
+                    } catch(e) {}
+                    onUpdate(profileData);
+                }
+            }
+        }).catch(() => {});
+    } catch(e) {}
+
     if (!db) return () => {};
 
     try {
-        const profileDocRef = doc(db, 'lumina_profiles', slugOrUid);
-        return onSnapshot(profileDocRef, async (snap) => {
-            if (snap.exists()) {
-                const cloudData = snap.data();
+        // Query by slug OR by UID
+        const qSlug = query(collection(db, 'lumina_profiles'), where('slug', '==', slugOrUid), limit(1));
+        const unsub = onSnapshot(qSlug, async (snap) => {
+            if (!snap.empty) {
+                const cloudData = snap.docs[0].data();
                 try {
                     localStorage.setItem(localKey, JSON.stringify(cloudData));
                     if (cloudData.slug) localStorage.setItem(`lumina_profile_${cloudData.slug}`, JSON.stringify(cloudData));
@@ -936,20 +986,22 @@ export function subscribeToProfile(slugOrUid, onUpdate) {
                 onUpdate(cloudData);
             } else {
                 try {
-                    const q = query(collection(db, 'lumina_profiles'), where('slug', '==', slugOrUid), limit(1));
-                    const querySnap = await getDocs(q);
-                    if (!querySnap.empty) {
-                        const cloudData = querySnap.docs[0].data();
+                    const docSnap = await getDoc(doc(db, 'lumina_profiles', slugOrUid));
+                    if (docSnap.exists()) {
+                        const cloudData = docSnap.data();
                         try {
                             localStorage.setItem(localKey, JSON.stringify(cloudData));
+                            if (cloudData.slug) localStorage.setItem(`lumina_profile_${cloudData.slug}`, JSON.stringify(cloudData));
+                            if (cloudData.uid) localStorage.setItem(`lumina_profile_${cloudData.uid}`, JSON.stringify(cloudData));
                         } catch(e) {}
                         onUpdate(cloudData);
                     }
-                } catch(qErr) {}
+                } catch(errDoc) {}
             }
         }, (err) => {
             console.warn(`Lumina Realtime Profile [${slugOrUid}] sync error:`, err.message);
         });
+        return unsub;
     } catch(err) {
         console.warn('subscribeToProfile error:', err);
         return () => {};
@@ -960,14 +1012,27 @@ export function subscribeToProfile(slugOrUid, onUpdate) {
 // ── Pobieranie profilu użytkownika z chmury (Firestore / LocalStorage) ──
 export async function getProfileFromCloud(slugOrUid) {
     if (!slugOrUid) return null;
+    const normalized = slugOrUid.trim().toLowerCase();
     try {
-        const localKey = `lumina_profile_${slugOrUid}`;
+        const localKey = `lumina_profile_${normalized}`;
         let localData = localStorage.getItem(localKey);
-        if (!localData && currentUserState && slugOrUid === currentUserState.uid) {
+        if (!localData && currentUserState && (normalized === currentUserState.uid?.toLowerCase() || normalized === currentUserState.slug?.toLowerCase())) {
             localData = localStorage.getItem('lumina_current_user_profile');
         }
 
         if (db) {
+            // First check by slug field query
+            const q = query(collection(db, 'lumina_profiles'), where('slug', '==', slugOrUid), limit(1));
+            const querySnap = await getDocs(q);
+            if (!querySnap.empty) {
+                const cloudProfile = querySnap.docs[0].data();
+                try {
+                    localStorage.setItem(localKey, JSON.stringify(cloudProfile));
+                } catch(e) {}
+                return cloudProfile;
+            }
+
+            // Second check by doc ID
             const docSnap = await getDoc(doc(db, 'lumina_profiles', slugOrUid));
             if (docSnap.exists()) {
                 const cloudProfile = docSnap.data();
@@ -975,19 +1040,8 @@ export async function getProfileFromCloud(slugOrUid) {
                     localStorage.setItem(localKey, JSON.stringify(cloudProfile));
                 } catch(e) {}
                 return cloudProfile;
-            } else {
-                const q = query(collection(db, 'lumina_profiles'), where('slug', '==', slugOrUid), limit(1));
-                const querySnap = await getDocs(q);
-                if (!querySnap.empty) {
-                    const cloudProfile = querySnap.docs[0].data();
-                    try {
-                        localStorage.setItem(localKey, JSON.stringify(cloudProfile));
-                    } catch(e) {}
-                    return cloudProfile;
-                }
             }
         }
-
         return localData ? JSON.parse(localData) : null;
     } catch(err) {
         console.warn(`Lumina getProfileFromCloud [${slugOrUid}] error:`, err.message);
