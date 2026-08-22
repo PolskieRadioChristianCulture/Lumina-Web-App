@@ -688,7 +688,7 @@
             gap: 24px;
             overflow-x: auto;
             scroll-behavior: smooth;
-            scroll-snap-type: x mandatory;
+            scroll-snap-type: none;
             padding: 48px 15px 55px; /* Bezpieczna przestrzeń u góry i na dole */
             scrollbar-width: none;
             -ms-overflow-style: none;
@@ -4309,8 +4309,11 @@
             const baseSet = (window._baseStaticCardsHtml || '') + cloudCardsHtml;
             if (!baseSet) return;
 
-            // Render 3 infinite sets
-            carousel.innerHTML = baseSet + baseSet + baseSet;
+            if (window._lastGeneratedBaseSet !== baseSet) {
+                window._lastGeneratedBaseSet = baseSet;
+                // Render 3 infinite sets
+                carousel.innerHTML = baseSet + baseSet + baseSet;
+            }
 
             // Sync live details on static cards
             const cards = carousel.querySelectorAll('[data-profile-slug]');
@@ -5897,7 +5900,7 @@
                 });
             }, { threshold: 0.1 });
 
-            document.querySelectorAll('.profile-card, .why-item, .widget-panel').forEach((el, i) => {
+            document.querySelectorAll('.why-item, .widget-panel').forEach((el, i) => {
                 if (el.classList.contains('widget-panel')) {
                     el.style.opacity = '0';
                     el.style.transition = `opacity 1s ease ${i * 0.1}s`;
