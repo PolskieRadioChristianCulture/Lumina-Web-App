@@ -310,10 +310,22 @@
         }
 
         .head-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            scrollbar-width: none !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 10px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        .head-actions::-webkit-scrollbar { display: none !important; }
+        .head-actions > * {
+            flex-shrink: 0 !important;
+            white-space: nowrap !important;
         }
 
         .btn-action-primary {

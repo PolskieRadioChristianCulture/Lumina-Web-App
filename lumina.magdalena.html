@@ -1110,31 +1110,27 @@
                         </div>
                     </div>
 
-                    <div style="display:flex; flex-direction:column; gap:10px; align-items:flex-start;">
-                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
-                            <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Wiadomość</button>
-                            <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> Kawa</button>
-                            <button class="btn-action-secondary" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%;"><i class="fa-solid fa-gear"></i></button>
-                            <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer; transition:all 0.2s ease;"><i class="fa-solid fa-right-from-bracket" style="font-size:1.1rem;"></i></button>
-                        </div>
+                    <div class="head-actions" style="display:flex; flex-direction:row; flex-wrap:nowrap; overflow-x:auto; gap:10px; align-items:center; width:100%; margin-top:14px;">
+                        <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Wiadomość</button>
+                        <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> Kawa</button>
+                        
+                        <button type="button" class="btn-action-secondary" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px;">
+                            <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
+                            <span id="followBtnText">Obserwuj</span>
+                            <span style="opacity:0.5;">|</span>
+                            <span id="followCountBadge">320</span>
+                        </button>
 
-                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
-                            <button type="button" class="btn-action-secondary" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-weight:800;">
-                                <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
-                                <span id="followBtnText">Obserwuj</span>
-                                <span style="opacity:0.5;">|</span>
-                                <span id="followCountBadge">320</span>
-                            </button>
+                        <button type="button" class="btn-action-secondary" id="btnProfileHeart" onclick="toggleProfileHeart(this)" style="background:linear-gradient(135deg,#db2777,#be185d); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px;">
+                            <i class="fa-solid fa-heart" id="heartBtnIcon"></i>
+                            <span id="heartBtnText">Polub</span>
+                            <span style="opacity:0.5;">|</span>
+                            <span id="heartCountBadge">142</span>
+                        </button>
 
-                            <button type="button" class="btn-action-secondary" id="btnProfileHeart" onclick="toggleProfileHeart(this)" style="background:linear-gradient(135deg,#db2777,#be185d); border:none; color:#fff; font-weight:800;">
-                                <i class="fa-solid fa-heart" id="heartBtnIcon"></i>
-                                <span id="heartBtnText">Polub</span>
-                                <span style="opacity:0.5;">|</span>
-                                <span id="heartCountBadge">142</span>
-                            </button>
-
-                            <button class="btn-action-secondary" onclick="copyProfileLink()" title="Udostępnij Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%;"><i class="fa-solid fa-share-nodes"></i></button>
-                        </div>
+                        <button class="btn-action-secondary" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%;"><i class="fa-solid fa-gear"></i></button>
+                        <button class="btn-action-secondary" onclick="copyProfileLink()" title="Udostępnij Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%;"><i class="fa-solid fa-share-nodes"></i></button>
+                        <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer; transition:all 0.2s ease;"><i class="fa-solid fa-right-from-bracket" style="font-size:1.1rem;"></i></button>
                     </div>
                 </div>
 
