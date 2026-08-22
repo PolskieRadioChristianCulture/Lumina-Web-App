@@ -5826,7 +5826,12 @@
 
         // ── Close modals on backdrop click ──
         document.querySelectorAll('.modal-overlay').forEach(bg =>
-            bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); })
+            bg.addEventListener('click', e => { 
+                if (e.target === bg) {
+                    bg.classList.remove('open');
+                    bg.style.display = 'none';
+                }
+            })
         );
 
         // ── 3D Reveal & Interactions ──
