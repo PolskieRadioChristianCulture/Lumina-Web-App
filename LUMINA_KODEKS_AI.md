@@ -59,3 +59,20 @@ Niniejszy kodeks definiuje nadrzędne zasady, standardy technologiczne, etyczne 
 4. **Praktyczny Wymiar Misyjny dla Wszystkich Agentów @ICC:**
    - Wszystkie systemy (Portal LUMINA, Radio Christian Culture, CCTV24, Codzienne Rozważania, Tablica Społeczności, Mission Control) stanowią spójną całość logiczną, która ma służyć ludziom, budować relacje oparte na wierze i działać w sposób niezawodny 24/7.
 
+---
+
+## FILAR VII: ZAUTOMATYZOWANA CODZIENNA RUTYNA CUDA KAŻDEGO DNIA (@CKD)
+
+1. **Źródło Treści:** `https://szukajacboga.pl/channel/cuda-kazdego-dnia` (Codzienne rozważania autorstwa Andrzeja Thiela).
+2. **Kanały Zautomatyzowanej Publikacji w Ekosystemie Christian Culture:**
+   - **`cclite.pl` (`https://cclite.pl`)**
+   - **`https://christian-culture.web.app/`** (oficjalny fundament webowy CC)
+   - **Aplikacja Android „Dobrze, że jesteś”** (projekt `cuda-398c0` -> kolekcja `reflections`)
+   - **Portal LUMINA:** Profil Andrzeja Thiela (`lumina.andrzejthiel.html`) oraz Główna Tablica Społeczności (`lumina-tablica.html`)
+   - **Baza Centralna:** `Wektor1_VideoFactory/rozwazania_baza.md` oraz Firestore `morning_inspirations` i `web_inspirations`.
+3. **Zasada Niezmienności Historii (Append-Only):**
+   - Każde codzienne rozważanie jest zawsze **dopisywane na górę listy** (`append-only`) z zachowaniem pełnej historii poprzednich dni.
+4. **Oprawa Wizualna:**
+   - Każde rozważanie otrzymuje dedykowaną, oficjalną grafikę (`cuda_kazdego_dnia_DD_sie_YYYY.jpg`).
+
+
