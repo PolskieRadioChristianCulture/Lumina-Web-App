@@ -2865,7 +2865,69 @@ export function listenToFounderTelemetry(callback) {
     };
 }
 
+// ══════════════════════════════════════════════════════════════════════════
+// 🎯 NOTY DLA AGENTA (DZIENNIK UWAG I ROZKAZÓW DOWÓDCY • @N)
+// ══════════════════════════════════════════════════════════════════════════
+
+export async function saveAgentNoteToCloud(noteData) {
+    if (!noteData) return null;
+    const noteId = noteData.id || ('note_' + Date.now());
+    const payload = {
+        ...noteData,
+        id: noteId,
+        createdAtTimestamp: serverTimestamp(),
+        updatedAt: serverTimestamp()
+    };
+    try {
+        await setDoc(doc(db, 'lumina_agent_notes', noteId), payload, { merge: true });
+        console.log(`LuminaDB: Nota dla Agenta [${noteId}] zapisana w chmurze Firestore! 🎯`);
+    } catch(err) {
+        console.warn('LuminaDB: Błąd zapisu noty w Firestore (zapisano lokalnie):', err.message);
+    }
+    // Backup w localStorage
+    try {
+        const local = JSON.parse(localStorage.getItem('lumina_agent_notes') || '[]');
+        const filtered = local.filter(n => n.id !== noteId);
+        filtered.unshift({ ...noteData, id: noteId });
+        localStorage.setItem('lumina_agent_notes', JSON.stringify(filtered));
+    } catch(e) {}
+    return payload;
+}
+
+export async function getAgentNotesFromCloud() {
+    try {
+        const q = query(collection(db, 'lumina_agent_notes'), orderBy('createdAtTimestamp', 'desc'), limit(50));
+        const snap = await getDocs(q);
+        const notes = [];
+        snap.forEach(d => notes.push({ id: d.id, ...d.data() }));
+        return notes;
+    } catch(err) {
+        console.warn('LuminaDB getAgentNotes error:', err);
+        return JSON.parse(localStorage.getItem('lumina_agent_notes') || '[]');
+    }
+}
+
+export async function updateAgentNoteStatusInCloud(noteId, status = 'done') {
+    if (!noteId) return;
+    try {
+        await updateDoc(doc(db, 'lumina_agent_notes', noteId), {
+            status: status,
+            resolvedAt: serverTimestamp()
+        });
+    } catch(err) {
+        console.warn('LuminaDB updateAgentNoteStatus error:', err);
+    }
+    try {
+        const local = JSON.parse(localStorage.getItem('lumina_agent_notes') || '[]');
+        const updated = local.map(n => n.id === noteId ? { ...n, status, resolvedAt: new Date().toISOString() } : n);
+        localStorage.setItem('lumina_agent_notes', JSON.stringify(updated));
+    } catch(e) {}
+}
+
 // Expose on window.LuminaDB
 window.LuminaDB = window.LuminaDB || {};
 window.LuminaDB.startPresenceHeartbeat = startPresenceHeartbeat;
 window.LuminaDB.listenToFounderTelemetry = listenToFounderTelemetry;
+window.LuminaDB.saveAgentNoteToCloud = saveAgentNoteToCloud;
+window.LuminaDB.getAgentNotesFromCloud = getAgentNotesFromCloud;
+window.LuminaDB.updateAgentNoteStatusInCloud = updateAgentNoteStatusInCloud;

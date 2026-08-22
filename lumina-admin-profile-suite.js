@@ -403,6 +403,86 @@
                 font-size: 0.90rem;
             }
 
+            /* ══════════ AGENT INSPECTOR & NOTA DLA AGENTA ══════════ */
+            body.lumina-agent-inspector-active * {
+                cursor: crosshair !important;
+            }
+
+            .lumina-agent-hover-target {
+                outline: 2.5px dashed #10b981 !important;
+                outline-offset: 3px !important;
+                background: rgba(16, 185, 129, 0.12) !important;
+                box-shadow: 0 0 16px rgba(16, 185, 129, 0.45) !important;
+                transition: outline 0.1s ease !important;
+            }
+
+            .lumina-inspector-banner {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 100005;
+                background: linear-gradient(90deg, #065f46, #047857);
+                border-bottom: 2px solid #34d399;
+                color: #fff;
+                padding: 10px 20px;
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+                animation: slideDown 0.3s ease;
+                font-family: 'Plus Jakarta Sans', sans-serif;
+            }
+
+            .lumina-inspector-banner-inner {
+                max-width: 1300px;
+                margin: 0 auto;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 14px;
+                flex-wrap: wrap;
+            }
+
+            .lumina-inspector-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: rgba(0, 0, 0, 0.35);
+                border: 1px solid rgba(52, 211, 153, 0.6);
+                padding: 5px 12px;
+                border-radius: 20px;
+                font-size: 0.82rem;
+                font-weight: 800;
+                color: #a7f3d0;
+                letter-spacing: 0.3px;
+            }
+
+            .lumina-inspector-hint {
+                font-size: 0.86rem;
+                font-weight: 600;
+                color: #ecfdf5;
+                flex: 1;
+            }
+
+            .lumina-inspector-exit-btn {
+                background: rgba(0, 0, 0, 0.35);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                color: #fff;
+                font-weight: 700;
+                font-size: 0.80rem;
+                padding: 6px 14px;
+                border-radius: 20px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .lumina-inspector-exit-btn:hover {
+                background: #ef4444;
+                border-color: #ef4444;
+                transform: scale(1.05);
+            }
+
             @media (max-width: 768px) {
                 .lumina-admin-hud-inner {
                     flex-direction: column;
@@ -456,6 +536,9 @@
                     <div class="lumina-admin-hud-actions" id="luminaAdminHudActions">
                         <button type="button" class="admin-suite-btn btn-gold" onclick="window.LuminaAdminSuite.openFullEditor()">
                             <i class="fa-solid fa-pen-to-square"></i> Edytuj Profil
+                        </button>
+                        <button type="button" class="admin-suite-btn" style="background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; box-shadow:0 2px 10px rgba(16, 185, 129, 0.45);" onclick="window.LuminaAdminSuite.toggleAgentInspector()" title="Włącz tryb celownika: wskaż element i dodaj notę dla Agenta">
+                            <i class="fa-solid fa-crosshairs"></i> 🎯 Nota dla Agenta
                         </button>
                         <button type="button" class="admin-suite-btn btn-purple" onclick="window.LuminaAdminSuite.openAllProfilesManager()">
                             <i class="fa-solid fa-users-gear"></i> Menedżer Wszystkich Profili
@@ -841,6 +924,9 @@
                     </div>
 
                     <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+                        <button type="button" class="admin-suite-btn" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:800; justify-content:flex-start; padding:12px 16px; border-radius:14px; font-size:14px; box-shadow:0 4px 14px rgba(16,185,129,0.4);" onclick="window.LuminaAdminSuite.closeModal('adminShieldQuickModal'); window.LuminaAdminSuite.activateAgentInspector();">
+                            <i class="fa-solid fa-crosshairs" style="font-size:1.1rem; width:22px;"></i> 🎯 Nota dla Agenta (Wskaż element)
+                        </button>
                         <button type="button" class="admin-suite-btn btn-purple" style="justify-content:flex-start; padding:12px 16px; border-radius:14px; font-size:14px;" onclick="window.LuminaAdminSuite.closeModal('adminShieldQuickModal'); window.LuminaAdminSuite.openAllProfilesManager();">
                             <i class="fa-solid fa-users-gear" style="font-size:1.1rem; width:22px;"></i> Menedżer Wszystkich Profili
                         </button>
@@ -864,6 +950,90 @@
                             Po wylogowaniu tarcza powróci do szarego koloru i zablokuje uprawnienia.
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- ══════════ BANER TRYBU CELOWNIKA (NOTA DLA AGENTA) ══════════ -->
+            <div id="luminaAgentInspectorBanner" class="lumina-inspector-banner" style="display:none;">
+                <div class="lumina-inspector-banner-inner">
+                    <div class="lumina-inspector-badge">
+                        <i class="fa-solid fa-crosshairs fa-spin" style="--fa-animation-duration: 4s;"></i> TRYB NOTATEK DLA AGENTA AKTYWNY
+                    </div>
+                    <div class="lumina-inspector-hint">
+                        Najedź myszką i <b>kliknij na dowolny element</b>, aby dodać do niego zadanie lub uwagę dla Agenta (@N).
+                    </div>
+                    <button type="button" class="lumina-inspector-exit-btn" onclick="window.LuminaAdminSuite.deactivateAgentInspector()">
+                        <i class="fa-solid fa-xmark"></i> Wyjdź z trybu celownika (ESC)
+                    </button>
+                </div>
+            </div>
+
+            <!-- ══════════ MODAL 5: NOWA NOTA DLA AGENTA ══════════ -->
+            <div class="modal-overlay" id="adminAgentNoteModal" onclick="if(event.target===this) window.LuminaAdminSuite.closeModal('adminAgentNoteModal')">
+                <div class="modal-card" style="max-width: 580px; background: #0b142e; border: 1.5px solid rgba(16, 185, 129, 0.5); box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(16, 185, 129, 0.25); border-radius: 24px; padding: 26px 24px; position: relative;">
+                    <button class="modal-close-btn" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
+                        <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, #10b981, #059669); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.3rem; box-shadow:0 4px 14px rgba(16,185,129,0.4);">
+                            <i class="fa-solid fa-crosshairs"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-family:'Outfit', sans-serif; font-size:1.25rem; font-weight:800; color:#fff; margin:0;">Nowa Nota / Rozkaz dla Agenta</h3>
+                            <div style="font-size:0.75rem; color:#34d399; font-weight:700;">Współrzędne elementu zostały automatycznie przechwycone</div>
+                        </div>
+                    </div>
+
+                    <form onsubmit="window.LuminaAdminSuite.saveAgentNoteSubmit(event)">
+                        <!-- Przechwycone dane techniczne elementu -->
+                        <div style="background:rgba(15, 23, 42, 0.8); border:1px solid rgba(148, 163, 184, 0.2); border-radius:14px; padding:12px 14px; margin-bottom:14px; font-size:0.76rem; color:#94a3b8;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:6px;">
+                                <span>📍 Plik: <b id="notePageUrl" style="color:#38bdf8;">-</b></span>
+                                <span>Tag: <b id="noteElementTag" style="color:#facc15;">-</b></span>
+                            </div>
+                            <div style="margin-bottom:4px; word-break:break-all;">
+                                🎯 Selektor: <code id="noteElementSelector" style="color:#86efac; background:rgba(0,0,0,0.35); padding:2px 6px; border-radius:4px; font-size:0.74rem;">-</code>
+                            </div>
+                            <div id="noteElementSnippetBox" style="color:#cbd5e1; font-style:italic; border-top:1px solid rgba(255,255,255,0.06); padding-top:6px; margin-top:6px; max-height:45px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:0.72rem;">
+                                -
+                            </div>
+                        </div>
+
+                        <!-- Pola notatki -->
+                        <div style="margin-bottom:12px;">
+                            <label style="display:block; font-size:0.78rem; font-weight:800; color:#e2e8f0; margin-bottom:6px;">
+                                📝 Treść Uwag / Rozkaz dla Agenta (co trzeba zmienić, poprawić, dodać):
+                            </label>
+                            <textarea id="agentNoteText" rows="4" placeholder="Np. Zmień kolor tła na ciemniejszy granat, popraw wyrównanie tekstu, podmień grafikę na nową wersję..." style="width:100%; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px; outline:none; resize:vertical;" required></textarea>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
+                            <div>
+                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#38bdf8; margin-bottom:4px;">Kategoria Zmiany</label>
+                                <select id="agentNoteCategory" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px; font-weight:700;">
+                                    <option value="Wygląd / CSS">🎨 Wygląd / CSS / Layout</option>
+                                    <option value="Treść / Tekst">✏️ Treść / Tekst / Werset</option>
+                                    <option value="Zdjęcie / Grafika">🖼️ Zdjęcie / Grafika / Media</option>
+                                    <option value="Błąd / Poprawka">🐞 Błąd / Poprawka działania</option>
+                                    <option value="Nowa Funkcja">✨ Nowa Funkcjonalność</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#facc15; margin-bottom:4px;">Priorytet</label>
+                                <select id="agentNotePriority" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px; font-weight:700;">
+                                    <option value="normal">Normalny</option>
+                                    <option value="urgent">⚡ Pilny</option>
+                                    <option value="critical">🔴 Krytyczny (Rozkaz Dowódcy)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+                            <button type="button" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" style="padding:11px 20px; border-radius:24px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; cursor:pointer;">Anuluj</button>
+                            <button type="submit" style="padding:11px 26px; border-radius:24px; background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; cursor:pointer; box-shadow:0 4px 16px rgba(16,185,129,0.4); display:inline-flex; align-items:center; gap:8px;">
+                                <i class="fa-solid fa-paper-plane"></i> Zapisz Notę dla Agenta ✨
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         `;
@@ -994,7 +1164,199 @@
             }
         },
 
-        // ══════════ ZARZĄDZANIE PROFILAMI I BLOKADAMI ══════════
+        // ══════════ 🎯 AGENT INSPECTOR & NOTA DLA AGENTA (@N) ══════════
+        isInspectorActive: false,
+        inspectedTargetEl: null,
+        _boundMouseMove: null,
+        _boundClick: null,
+        _boundKeyDown: null,
+
+        toggleAgentInspector: function() {
+            if (this.isInspectorActive) {
+                this.deactivateAgentInspector();
+            } else {
+                this.activateAgentInspector();
+            }
+        },
+
+        activateAgentInspector: function() {
+            if (!isUserMasterAdmin()) {
+                this.openPinPrompt();
+                return;
+            }
+
+            this.isInspectorActive = true;
+            document.body.classList.add('lumina-agent-inspector-active');
+            const banner = document.getElementById('luminaAgentInspectorBanner');
+            if (banner) banner.style.display = 'block';
+
+            // Podpięcie nasłuchiwaczy zdarzeń
+            this._boundMouseMove = (e) => this.handleInspectorMouseMove(e);
+            this._boundClick = (e) => this.handleInspectorClick(e);
+            this._boundKeyDown = (e) => {
+                if (e.key === 'Escape') this.deactivateAgentInspector();
+            };
+
+            document.addEventListener('mousemove', this._boundMouseMove, true);
+            document.addEventListener('click', this._boundClick, true);
+            document.addEventListener('keydown', this._boundKeyDown, true);
+
+            if (typeof window.showToast === 'function') {
+                window.showToast('🎯 Tryb celownika aktywny! Najedź myszką i kliknij na dowolny element.');
+            }
+        },
+
+        deactivateAgentInspector: function() {
+            this.isInspectorActive = false;
+            document.body.classList.remove('lumina-agent-inspector-active');
+            const banner = document.getElementById('luminaAgentInspectorBanner');
+            if (banner) banner.style.display = 'none';
+
+            document.querySelectorAll('.lumina-agent-hover-target').forEach(el => el.classList.remove('lumina-agent-hover-target'));
+
+            if (this._boundMouseMove) document.removeEventListener('mousemove', this._boundMouseMove, true);
+            if (this._boundClick) document.removeEventListener('click', this._boundClick, true);
+            if (this._boundKeyDown) document.removeEventListener('keydown', this._boundKeyDown, true);
+        },
+
+        handleInspectorMouseMove: function(e) {
+            if (!this.isInspectorActive) return;
+            const target = e.target;
+            if (!target) return;
+
+            // Ignorujemy elementy panelu administracyjnego i modali
+            if (target.closest('#luminaAdminSuiteContainer') || 
+                target.closest('#luminaAgentInspectorBanner') || 
+                target.closest('.modal-overlay') || 
+                target.tagName === 'HTML' || 
+                target.tagName === 'BODY') {
+                return;
+            }
+
+            document.querySelectorAll('.lumina-agent-hover-target').forEach(el => {
+                if (el !== target) el.classList.remove('lumina-agent-hover-target');
+            });
+            target.classList.add('lumina-agent-hover-target');
+        },
+
+        handleInspectorClick: function(e) {
+            if (!this.isInspectorActive) return;
+            const target = e.target;
+            if (!target) return;
+
+            // Ignorujemy kliknięcie w banner lub wewnątrz modala
+            if (target.closest('#luminaAgentInspectorBanner') || target.closest('#adminAgentNoteModal')) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            document.querySelectorAll('.lumina-agent-hover-target').forEach(el => el.classList.remove('lumina-agent-hover-target'));
+            this.openAgentNoteModalForElement(target);
+        },
+
+        buildElementSelector: function(el) {
+            if (!el || el === document.body) return 'body';
+            if (el.id) return '#' + el.id;
+
+            const path = [];
+            let curr = el;
+            while (curr && curr !== document.body && curr !== document.documentElement && path.length < 4) {
+                let part = curr.tagName.toLowerCase();
+                if (curr.id) {
+                    part += '#' + curr.id;
+                    path.unshift(part);
+                    break;
+                } else if (curr.className && typeof curr.className === 'string') {
+                    const classes = curr.className.split(/\s+/).filter(c => c && !c.startsWith('lumina-agent-') && !c.startsWith('owner-') && c !== 'active');
+                    if (classes.length > 0) {
+                        part += '.' + classes.slice(0, 2).join('.');
+                    }
+                }
+                path.unshift(part);
+                curr = curr.parentElement;
+            }
+            return path.join(' > ');
+        },
+
+        openAgentNoteModalForElement: function(el) {
+            this.inspectedTargetEl = el;
+            const pageName = window.location.pathname.split('/').pop() || 'lumina.html';
+            const selector = this.buildElementSelector(el);
+            const tag = el.tagName ? el.tagName.toLowerCase() : 'div';
+            const snippet = (el.innerText || el.textContent || el.alt || el.src || '').trim().replace(/\s+/g, ' ').substring(0, 140);
+
+            const pageUrlEl = document.getElementById('notePageUrl');
+            const tagEl = document.getElementById('noteElementTag');
+            const selEl = document.getElementById('noteElementSelector');
+            const snipEl = document.getElementById('noteElementSnippetBox');
+            const textEl = document.getElementById('agentNoteText');
+
+            if (pageUrlEl) pageUrlEl.textContent = pageName + (window.location.search || '');
+            if (tagEl) tagEl.textContent = `<${tag}>`;
+            if (selEl) selEl.textContent = selector;
+            if (snipEl) snipEl.textContent = snippet ? `„${snippet}”` : '(brak bezpośredniego tekstu / kontener)';
+            if (textEl) {
+                textEl.value = '';
+                setTimeout(() => textEl.focus(), 150);
+            }
+
+            this.openModal('adminAgentNoteModal');
+        },
+
+        saveAgentNoteSubmit: async function(e) {
+            if (e) e.preventDefault();
+            const text = document.getElementById('agentNoteText')?.value?.trim();
+            if (!text) {
+                alert('Proszę wpisać treść notatki / rozkazu dla Agenta.');
+                return;
+            }
+
+            const category = document.getElementById('agentNoteCategory')?.value || 'Wygląd / CSS';
+            const priority = document.getElementById('agentNotePriority')?.value || 'normal';
+            const pageName = document.getElementById('notePageUrl')?.textContent || (window.location.pathname.split('/').pop() || 'lumina.html');
+            const selector = document.getElementById('noteElementSelector')?.textContent || '';
+            const tag = document.getElementById('noteElementTag')?.textContent || '';
+            const snippet = document.getElementById('noteElementSnippetBox')?.textContent || '';
+
+            const noteId = 'note_' + Date.now();
+            const noteObj = {
+                id: noteId,
+                page: pageName,
+                fullUrl: window.location.href,
+                selector: selector,
+                tag: tag,
+                snippet: snippet,
+                note: text,
+                category: category,
+                priority: priority,
+                status: 'pending',
+                author: 'Dowódca (Master Admin)',
+                createdAt: new Date().toISOString(),
+                timestamp: Date.now()
+            };
+
+            // Zapis do Firestore / localStorage
+            if (window.LuminaDB?.saveAgentNoteToCloud) {
+                await window.LuminaDB.saveAgentNoteToCloud(noteObj);
+            } else {
+                try {
+                    const local = JSON.parse(localStorage.getItem('lumina_agent_notes') || '[]');
+                    local.unshift(noteObj);
+                    localStorage.setItem('lumina_agent_notes', JSON.stringify(local));
+                } catch(err) {}
+            }
+
+            this.closeModal('adminAgentNoteModal');
+            this.deactivateAgentInspector();
+
+            if (typeof window.showToast === 'function') {
+                window.showToast('🎯 Nota dla Agenta zarejestrowana! Wpisz @N w czacie, a natychmiast ją wykonam. 🚀');
+            } else {
+                alert('🎯 Nota dla Agenta zarejestrowana! Wpisz @N w czacie, a Agent przystąpi do pracy.');
+            }
+        },
         openFullEditor: function(targetSlug = null) {
             const s = targetSlug || this.slug;
             document.getElementById('adminTargetSlugHidden').value = s;
