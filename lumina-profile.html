@@ -681,9 +681,21 @@
             margin: 16px 0 20px 0;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(250, 204, 21, 0.15);
             animation: fadeIn 0.3s ease;
+            transition: all 0.3s ease;
         }
         .admin-master-hud.active {
             display: block !important;
+        }
+        .admin-master-hud.minimized {
+            padding: 8px 18px;
+        }
+        .admin-master-hud.minimized .admin-hud-actions-grid {
+            display: none !important;
+        }
+        .admin-master-hud.minimized .admin-hud-header {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
         }
         .admin-hud-header {
             display: flex;
@@ -694,6 +706,37 @@
             padding-bottom: 10px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             flex-wrap: wrap;
+        }
+        .admin-hud-control-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #cbd5e1;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0;
+        }
+        .admin-hud-control-btn:hover {
+            background: rgba(255, 255, 255, 0.22);
+            color: #fff;
+            transform: scale(1.1);
+        }
+        .admin-hud-control-btn.btn-close-admin {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #fca5a5;
+        }
+        .admin-hud-control-btn.btn-close-admin:hover {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: #fff;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
         }
         .admin-hud-title {
             display: flex;
@@ -1884,12 +1927,29 @@
         <!-- Master Administrator Command HUD Bar (Pełna Kontrola) -->
         <div class="admin-master-hud" id="adminMasterHud">
             <div class="admin-hud-header">
-                <div class="admin-hud-title">
+                <div class="admin-hud-title" onclick="toggleLocalAdminHudMinimize()" style="cursor:pointer;" title="Kliknij, aby zwinąć / rozwinąć pasek">
                     <i class="fa-solid fa-crown" style="font-size: 1.3rem;"></i>
                     <span>Panel Dowódcy • Pełne Zarządzanie Profilem: <b id="adminTargetNameEl" style="color:#fff;">...</b></span>
                 </div>
-                <div style="font-size: 0.76rem; color: #94a3b8; font-weight: 600;">
-                    <i class="fa-solid fa-shield-check" style="color:#22c55e;"></i> Master Administrator LUMINA
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="font-size: 0.76rem; color: #94a3b8; font-weight: 600; margin-right:6px;">
+                        <i class="fa-solid fa-shield-check" style="color:#22c55e;"></i> Master Admin
+                    </div>
+                    <button type="button" 
+                            id="localHudMinimizeBtn" 
+                            class="admin-hud-control-btn" 
+                            onclick="toggleLocalAdminHudMinimize()" 
+                            title="Minimalizuj / Rozwiń pasek Administratora"
+                            aria-label="Minimalizuj">
+                        <i class="fa-solid fa-minus" id="localHudMinimizeIcon"></i>
+                    </button>
+                    <button type="button" 
+                            class="admin-hud-control-btn btn-close-admin" 
+                            onclick="toggleOwnerAuthMode()" 
+                            title="Zamknij i wyjdź z panelu Administratora (Wyloguj)"
+                            aria-label="Wyjdź z trybu Administratora">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
             </div>
             <div class="admin-hud-actions-grid">
@@ -3615,7 +3675,19 @@
 
             if (isMaster) {
                 document.body.classList.add('owner-mode-active');
-                if (hud) hud.classList.add('active');
+                if (hud) {
+                    hud.classList.add('active');
+                    const isMin = sessionStorage.getItem('lumina_local_hud_minimized') === 'true';
+                    if (isMin) {
+                        hud.classList.add('minimized');
+                        const icon = document.getElementById('localHudMinimizeIcon');
+                        if (icon) icon.className = 'fa-solid fa-plus';
+                    } else {
+                        hud.classList.remove('minimized');
+                        const icon = document.getElementById('localHudMinimizeIcon');
+                        if (icon) icon.className = 'fa-solid fa-minus';
+                    }
+                }
                 if (bar) bar.style.display = 'none'; // W trybie admina pokazujemy pełny panel HUD
             } else {
                 if (hud) hud.classList.remove('active');
@@ -3634,6 +3706,22 @@
                         btn.innerHTML = '<i class="fa-solid fa-key"></i> Autoryzacja Administratora';
                     }
                 }
+            }
+        }
+
+        function toggleLocalAdminHudMinimize() {
+            const hud = document.getElementById('adminMasterHud');
+            const icon = document.getElementById('localHudMinimizeIcon');
+            if (!hud) return;
+            const isMin = hud.classList.toggle('minimized');
+            if (icon) {
+                icon.className = isMin ? 'fa-solid fa-plus' : 'fa-solid fa-minus';
+            }
+            try {
+                sessionStorage.setItem('lumina_local_hud_minimized', isMin ? 'true' : 'false');
+            } catch(e) {}
+            if (typeof window.showToast === 'function') {
+                window.showToast(isMin ? 'Panel Dowódcy zminimalizowany 🔽' : 'Panel Dowódcy rozwinięty 🔼');
             }
         }
         

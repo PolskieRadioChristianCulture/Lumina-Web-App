@@ -131,10 +131,16 @@
                 max-width: 1300px;
                 margin: 0 auto;
                 display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .lumina-admin-hud-header-row {
+                display: flex;
                 align-items: center;
                 justify-content: space-between;
-                flex-wrap: wrap;
-                gap: 10px;
+                width: 100%;
+                gap: 12px;
             }
 
             .lumina-admin-hud-title {
@@ -150,6 +156,60 @@
                 font-size: 1.25rem;
                 color: #f59e0b;
                 filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.7));
+            }
+
+            .lumina-admin-hud-controls {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .admin-hud-control-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: #cbd5e1;
+                font-size: 0.85rem;
+                cursor: pointer;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                padding: 0;
+            }
+
+            .admin-hud-control-btn:hover {
+                background: rgba(255, 255, 255, 0.22);
+                color: #fff;
+                transform: scale(1.1);
+            }
+
+            .admin-hud-control-btn.btn-close-admin {
+                background: rgba(239, 68, 68, 0.2);
+                border-color: rgba(239, 68, 68, 0.5);
+                color: #fca5a5;
+            }
+
+            .admin-hud-control-btn.btn-close-admin:hover {
+                background: #ef4444;
+                border-color: #ef4444;
+                color: #fff;
+                box-shadow: 0 0 14px rgba(239, 68, 68, 0.6);
+            }
+
+            /* Minimized HUD State */
+            .lumina-admin-hud-bar.minimized {
+                padding: 6px 16px;
+                background: rgba(15, 23, 42, 0.95);
+                border-bottom: 1.5px solid rgba(245, 158, 11, 0.4);
+            }
+            .lumina-admin-hud-bar.minimized .lumina-admin-hud-actions {
+                display: none !important;
+            }
+            .lumina-admin-hud-bar.minimized .lumina-admin-hud-inner {
+                gap: 0;
             }
 
             .lumina-admin-hud-actions {
@@ -370,11 +430,30 @@
             <!-- Top Master Admin HUD Bar -->
             <div class="lumina-admin-hud-bar" id="luminaAdminHudBar">
                 <div class="lumina-admin-hud-inner">
-                    <div class="lumina-admin-hud-title">
-                        <i class="fa-solid fa-crown crown-icon"></i>
-                        <span>MASTER ADMIN • Aktywny Profil: <b id="hudTargetName">${slug}</b></span>
+                    <div class="lumina-admin-hud-header-row">
+                        <div class="lumina-admin-hud-title" onclick="window.LuminaAdminSuite.toggleMinimizeHud()" style="cursor:pointer;" title="Kliknij, aby zwinąć / rozwinąć pasek opcji">
+                            <i class="fa-solid fa-crown crown-icon"></i>
+                            <span>MASTER ADMIN • Aktywny Profil: <b id="hudTargetName">${slug}</b></span>
+                        </div>
+                        <div class="lumina-admin-hud-controls">
+                            <button type="button" 
+                                    id="hudBtnMinimize" 
+                                    class="admin-hud-control-btn" 
+                                    onclick="window.LuminaAdminSuite.toggleMinimizeHud()" 
+                                    title="Minimalizuj / Rozwiń pasek Administratora"
+                                    aria-label="Minimalizuj pasek">
+                                <i class="fa-solid fa-minus" id="hudMinimizeIcon"></i>
+                            </button>
+                            <button type="button" 
+                                    class="admin-hud-control-btn btn-close-admin" 
+                                    onclick="window.LuminaAdminSuite.lockAdminMode()" 
+                                    title="Zamknij i wyjdź z panelu Administratora (Wyloguj)"
+                                    aria-label="Wyjdź z trybu Administratora">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="lumina-admin-hud-actions">
+                    <div class="lumina-admin-hud-actions" id="luminaAdminHudActions">
                         <button type="button" class="admin-suite-btn btn-gold" onclick="window.LuminaAdminSuite.openFullEditor()">
                             <i class="fa-solid fa-pen-to-square"></i> Edytuj Profil
                         </button>
@@ -815,7 +894,19 @@
             if (isAdmin) {
                 document.body.classList.add('lumina-admin-mode');
                 document.body.classList.add('owner-mode-active');
-                if (hud) hud.classList.add('active');
+                if (hud) {
+                    hud.classList.add('active');
+                    const isMin = sessionStorage.getItem('lumina_admin_hud_minimized') === 'true';
+                    if (isMin) {
+                        hud.classList.add('minimized');
+                        const icon = document.getElementById('hudMinimizeIcon');
+                        if (icon) icon.className = 'fa-solid fa-plus';
+                    } else {
+                        hud.classList.remove('minimized');
+                        const icon = document.getElementById('hudMinimizeIcon');
+                        if (icon) icon.className = 'fa-solid fa-minus';
+                    }
+                }
                 if (shield) shield.classList.add('unlocked');
                 if (shieldContainer) shieldContainer.classList.add('unlocked');
             } else {
@@ -827,6 +918,22 @@
             }
 
             this.updateHudBlockBtnState();
+        },
+
+        toggleMinimizeHud: function() {
+            const hud = document.getElementById('luminaAdminHudBar');
+            const icon = document.getElementById('hudMinimizeIcon');
+            if (!hud) return;
+            const isMin = hud.classList.toggle('minimized');
+            if (icon) {
+                icon.className = isMin ? 'fa-solid fa-plus' : 'fa-solid fa-minus';
+            }
+            try {
+                sessionStorage.setItem('lumina_admin_hud_minimized', isMin ? 'true' : 'false');
+            } catch(e) {}
+            if (typeof window.showToast === 'function') {
+                window.showToast(isMin ? 'Pasek opcji Administratora został zminimalizowany 🔽' : 'Pasek Administratora rozwinięty 🔼');
+            }
         },
 
         openPinPrompt: async function() {
