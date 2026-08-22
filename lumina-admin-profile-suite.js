@@ -448,69 +448,92 @@
 
             .lumina-inspector-banner {
                 position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
+                bottom: 85px;
+                left: 50%;
+                transform: translateX(-50%);
                 z-index: 100005;
-                background: linear-gradient(90deg, #065f46, #047857);
-                border-bottom: 2px solid #34d399;
+                background: linear-gradient(135deg, rgba(6, 78, 59, 0.96), rgba(4, 120, 87, 0.96));
+                border: 1.5px solid #34d399;
                 color: #fff;
-                padding: 10px 20px;
-                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-                animation: slideDown 0.3s ease;
+                padding: 8px 18px;
+                border-radius: 40px;
+                box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75), 0 0 25px rgba(52, 211, 153, 0.4);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+                animation: slideUp 0.3s ease;
                 font-family: 'Plus Jakarta Sans', sans-serif;
+                max-width: 94vw;
+                width: auto;
+                transition: all 0.25s ease;
+            }
+
+            .lumina-inspector-banner.minimized {
+                padding: 6px 14px;
+                border-radius: 30px;
+            }
+            .lumina-inspector-banner.minimized .lumina-inspector-hint {
+                display: none !important;
             }
 
             .lumina-inspector-banner-inner {
-                max-width: 1300px;
-                margin: 0 auto;
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
-                gap: 14px;
-                flex-wrap: wrap;
+                gap: 12px;
+                justify-content: center;
             }
 
             .lumina-inspector-badge {
                 display: inline-flex;
                 align-items: center;
-                gap: 8px;
+                gap: 6px;
                 background: rgba(0, 0, 0, 0.35);
                 border: 1px solid rgba(52, 211, 153, 0.6);
-                padding: 5px 12px;
+                padding: 4px 10px;
                 border-radius: 20px;
-                font-size: 0.82rem;
+                font-size: 0.80rem;
                 font-weight: 800;
                 color: #a7f3d0;
                 letter-spacing: 0.3px;
+                white-space: nowrap;
             }
 
             .lumina-inspector-hint {
-                font-size: 0.86rem;
+                font-size: 0.82rem;
                 font-weight: 600;
                 color: #ecfdf5;
-                flex: 1;
+                white-space: nowrap;
             }
 
-            .lumina-inspector-exit-btn {
-                background: rgba(0, 0, 0, 0.35);
-                border: 1px solid rgba(255, 255, 255, 0.25);
-                color: #fff;
-                font-weight: 700;
-                font-size: 0.80rem;
-                padding: 6px 14px;
-                border-radius: 20px;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                display: inline-flex;
+            .lumina-inspector-controls {
+                display: flex;
                 align-items: center;
                 gap: 6px;
             }
 
-            .lumina-inspector-exit-btn:hover {
+            .lumina-inspector-control-btn {
+                background: rgba(0, 0, 0, 0.35);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                color: #fff;
+                font-weight: 700;
+                font-size: 0.78rem;
+                padding: 4px 10px;
+                border-radius: 16px;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                transition: all 0.2s ease;
+                white-space: nowrap;
+            }
+
+            .lumina-inspector-control-btn:hover {
+                background: rgba(255, 255, 255, 0.2);
+                border-color: #fff;
+            }
+
+            .lumina-inspector-control-btn.btn-exit-insp:hover {
                 background: #ef4444;
                 border-color: #ef4444;
-                transform: scale(1.05);
             }
 
             @media (max-width: 768px) {
@@ -983,18 +1006,23 @@
                 </div>
             </div>
 
-            <!-- ══════════ BANER TRYBU CELOWNIKA (NOTA DLA AGENTA) ══════════ -->
+            <!-- ══════════ PŁYWAJĄCY PASEK TRYBU CELOWNIKA (NOTA DLA AGENTA) ══════════ -->
             <div id="luminaAgentInspectorBanner" class="lumina-inspector-banner" style="display:none;">
                 <div class="lumina-inspector-banner-inner">
                     <div class="lumina-inspector-badge">
-                        <i class="fa-solid fa-crosshairs fa-spin" style="--fa-animation-duration: 4s;"></i> TRYB NOTATEK DLA AGENTA AKTYWNY
+                        <i class="fa-solid fa-crosshairs fa-spin" style="--fa-animation-duration: 4s;"></i> CELOWNIK (@N)
                     </div>
                     <div class="lumina-inspector-hint">
-                        Najedź myszką i <b>kliknij na dowolny element</b>, aby dodać do niego zadanie lub uwagę dla Agenta (@N).
+                        Kliknij <b>dowolny element</b>, aby dodać notę dla Agenta.
                     </div>
-                    <button type="button" class="lumina-inspector-exit-btn" onclick="window.LuminaAdminSuite.deactivateAgentInspector()">
-                        <i class="fa-solid fa-xmark"></i> Wyjdź z trybu celownika (ESC)
-                    </button>
+                    <div class="lumina-inspector-controls">
+                        <button type="button" class="lumina-inspector-control-btn" onclick="window.LuminaAdminSuite.toggleMinimizeInspectorBanner()" title="Zwiń / Rozwiń pasek">
+                            <i class="fa-solid fa-minus" id="inspectorMinimizeIcon"></i>
+                        </button>
+                        <button type="button" class="lumina-inspector-control-btn btn-exit-insp" onclick="window.LuminaAdminSuite.deactivateAgentInspector()" title="Wyjdź z trybu celownika (ESC)">
+                            <i class="fa-solid fa-xmark"></i> Wyjdź
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -1271,6 +1299,14 @@
             if (typeof window.showToast === 'function') {
                 window.showToast('🎯 Tryb celownika aktywny! Najedź myszką i kliknij na dowolny element.');
             }
+        },
+
+        toggleMinimizeInspectorBanner: function() {
+            const b = document.getElementById('luminaAgentInspectorBanner');
+            const icon = document.getElementById('inspectorMinimizeIcon');
+            if (!b) return;
+            const isMin = b.classList.toggle('minimized');
+            if (icon) icon.className = isMin ? 'fa-solid fa-plus' : 'fa-solid fa-minus';
         },
 
         deactivateAgentInspector: function() {
