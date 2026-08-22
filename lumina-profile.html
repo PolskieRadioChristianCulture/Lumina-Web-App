@@ -3394,12 +3394,6 @@
         function getProfileData() {
             const slug = getRequestedUserSlug();
             if (slug.includes('magdalena') || slug === 'magda') { window.location.replace('lumina.magdalena.html'); return; }
-
-            if (slug.includes('magdalena') || slug === 'magda') {
-                const magda = PROFILES_DB['magdalena'];
-                if (magda) return magda;
-            }
-    
             
             // Twarde zabezpieczenie kanału CC Women
             if (slug.includes('ccwomen') || slug.includes('women') || slug === 'u_ccwomen_9055') {
@@ -3412,155 +3406,57 @@
                 };
             }
 
-            // 1. Direct check in localStorage
-            let saved = localStorage.getItem('lumina_profile_' + slug);
-
-            // 2. Check current user profile
-            if (!saved) {
-                const curRaw = localStorage.getItem('lumina_current_user_profile');
-                if (curRaw) {
-                    try {
-                        const cur = JSON.parse(curRaw);
-                        if (cur && (cur.slug === slug || cur.uid === slug || ('u_' + slug) === cur.slug)) {
-                            saved = curRaw;
-                        }
-                    } catch(e) {}
+            // 1. Priorytet: Pobrany obiekt z chmury Firestore
+            if (window._cloudProfileData) {
+                const cSlug = (window._cloudProfileData.slug || '').toLowerCase();
+                const cUid = (window._cloudProfileData.uid || '').toLowerCase();
+                const target = slug.toLowerCase();
+                if (cSlug === target || cUid === target || target.includes(cSlug) || cSlug.includes(target)) {
+                    return window._cloudProfileData;
                 }
             }
 
-            // 3. Scan all localStorage keys for matching slug/uid
-            if (!saved) {
-                for (let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    if (key && key.startsWith('lumina_profile_')) {
-                        try {
-                            const candidate = JSON.parse(localStorage.getItem(key) || '{}');
-                            if (candidate && (candidate.slug === slug || candidate.uid === slug || (candidate.slug && candidate.slug.toLowerCase() === slug.toLowerCase()))) {
-                                saved = localStorage.getItem(key);
-                                break;
-                            }
-                        } catch(e) {}
+            // 2. Dedykowany profil z localStorage dla tego konkretnego sluga
+            const directKey = localStorage.getItem('lumina_profile_' + slug.toLowerCase()) || localStorage.getItem('lumina_profile_' + slug);
+            if (directKey) {
+                try {
+                    const p = JSON.parse(directKey);
+                    if (p && p.name && !p.name.includes('Kanał Społeczności')) {
+                        return p;
                     }
-                }
+                } catch(e) {}
             }
 
-            // 4. In-memory cloud profile merged with saved edits if available
-            if (window._cloudProfileData && (window._cloudProfileData.slug === slug || window._cloudProfileData.uid === slug)) {
-                if (saved) {
-                    try {
-                        const parsedSaved = JSON.parse(saved);
-                        return { ...window._cloudProfileData, ...parsedSaved };
-                    } catch(e) {}
-                }
-                return window._cloudProfileData;
+            // 3. Statyczna baza znanych profili
+            if (PROFILES_DB[slug]) {
+                return PROFILES_DB[slug];
             }
 
-            // Generate rich persona name and attributes from slug (e.g. u_osobowo_2376 -> Osobowość i Relacje)
-            let formattedName = 'Kanał Społeczności LUMINA';
-            let formattedJob = 'Kanał YouTube & Misja CC 🎬';
-            let formattedVerse = '„Albowiem Bóg nie dał nam ducha bojaźni, lecz mocy i miłości, i trzeźwego myślenia.”';
-            let formattedRef = '2 Tm 1, 7';
-            let formattedBio = 'Oficjalny profil kanału chrześcijańskiego w społeczności LUMINA. Zapraszamy do wspólnego budowania, modlitwy i odkrywania Bożej prawdy w relacjach i codziennym życiu!';
-            let formattedAvatar = 'lumina_icon.jpg';
-            if (slug.includes('cezary')) formattedAvatar = 'avatar_cezary_official.jpg';
-            else if (slug.includes('wioletta')) formattedAvatar = 'avatar_wioletta_official.jpg';
-            else if (slug.includes('andrzej')) formattedAvatar = 'avatar_andrzej_thiel.jpg';
-            else if (slug.includes('magdalena')) formattedAvatar = 'avatar_magdalena.png';
-
-            if (slug.includes('osobowo')) {
-                formattedName = 'Osobowość i Relacje • CC';
-                formattedJob = 'Kanał YouTube & Wzrost Osobowy 🌟';
-                formattedVerse = '„Więcej niż wszystkiego innego strzeż swego serca, bo z niego tryskają źródła życia.”';
-                formattedRef = 'Prz 4, 23';
-                formattedBio = 'Kanał poświęcony psychologii chrześcijańskiej, zdrowym relacjom, dojrzałości emocjonalnej i budowaniu trwałego małżeństwa z Bogiem w centrum.';
-                formattedAvatar = 'avatar_widget_tomek.jpg';
-            } else if (slug.includes('biblia') || slug.includes('slowo')) {
-                formattedName = 'Biblia i Życie • CC';
-                formattedJob = 'Kanał Biblijny & Nauczanie 📖';
-                formattedVerse = '„Twoje słowo jest lampą dla moich stóp i światłem na mojej ścieżce.”';
-                formattedRef = 'Ps 119, 105';
-                formattedBio = 'Odkrywaj głębię Pisma Świętego. Codzienne wersety, komentarze biblijne i nauczanie budujące żywą wiarę.';
-                formattedAvatar = 'icon.png';
-            } else if (slug.includes('modlitwa') || slug.includes('wstawien')) {
-                formattedName = 'Modlitwa i Wstawiennictwo • CC';
-                formattedJob = 'Służba Modlitewna 🕊️';
-                formattedVerse = '„O nic się zbytnio nie troskajcie, ale we wszystkim w modlitwie i błaganiu powierzajcie wasze prośby Bogu.”';
-                formattedRef = 'Flp 4, 6';
-                formattedBio = 'Wspólne trwanie w modlitwie za rodziny, małżeństwa, Polskę i każdego, kto potrzebuje Bożego dotknięcia i pokoju serca.';
-                formattedAvatar = 'avatar_cezary_official.jpg';
-            }
-
-            const fallback = PROFILES_DB[slug] || {
+            // 4. Czysty stan ładowania danych z Firestore
+            return {
                 uid: slug,
                 slug: slug,
-                name: formattedName,
-                role: formattedJob,
-                job: formattedJob,
-                age: 28,
-                city: 'Warszawa, Polska',
-                denom: 'Rzymskokatolickie',
-                church: 'Wspólnota Chrześcijańska',
-                status: 'Służba Misyjna',
-                verse: formattedVerse,
-                verseRef: formattedRef,
-                bio: formattedBio,
-                avatar: formattedAvatar,
+                name: 'Użytkownik LUMINA',
+                role: 'Społeczność LUMINA ✨',
+                job: 'Społeczność LUMINA ✨',
+                age: '',
+                city: 'Polska',
+                denom: 'Chrześcijanin',
+                church: '',
+                status: 'Społeczność LUMINA',
+                verse: '„Wszystko mogę w Tym, który mnie umacnia.”',
+                verseRef: 'Flp 4, 13',
+                bio: 'Profil chrześcijański w społeczności LUMINA.',
+                avatar: 'lumina_icon.jpg',
                 cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
                 visibility: 'public',
                 pin: '7777',
                 matchScore: '98%',
-                tags: ['Ewangelizacja', 'Pismo Święte', 'Wartości', 'Świadectwo'],
-                stats: { friends: '128', posts: '3', likes: '96' },
-                photos: [formattedAvatar, 'avatar_new1.jpg', 'lumina_default_cover.jpg'],
-                posts: [
-                    {
-                        id: 'post_init_' + slug,
-                        author: formattedName,
-                        authorSlug: slug,
-                        authorAvatar: formattedAvatar,
-                        authorRole: formattedJob,
-                        time: 'Przed chwilą • ✨ Nowy Profil',
-                        text: `Szczęść Boże wszystkim! Witamy serdecznie w społeczności LUMINA. ${formattedVerse} — ${formattedRef}`,
-                        likes: 14,
-                        amen: 8,
-                        image: formattedAvatar
-                    },
-                    {
-                        id: 'post_faith_' + slug,
-                        author: formattedName,
-                        authorSlug: slug,
-                        authorAvatar: formattedAvatar,
-                        authorRole: formattedJob,
-                        time: 'Wczoraj • 🕊️ Świadectwo Wiary',
-                        text: 'Prawdziwa miłość i głębokie relacje rodzą się z zaufania Bogu i otwartego serca na drugiego człowieka. Niech ten dzień przyniesie Wam Boży pokój i radość!',
-                        likes: 21,
-                        amen: 15,
-                        image: 'lumina_default_cover.jpg'
-                    }
-                ]
+                tags: ['Wierność', 'Wartości', 'Chrześcijaństwo', 'Modlitwa'],
+                photos: ['lumina_icon.jpg'],
+                posts: []
             };
-
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    if (slug !== 'cezaryrgowski' && parsed.name && parsed.name.toLowerCase().includes('cezary')) {
-                        return JSON.parse(JSON.stringify(fallback));
-                    }
-                    const cleanAvatar = (parsed.avatar && parsed.avatar !== 'null' && parsed.avatar !== 'undefined' && parsed.avatar.trim() !== '') ? parsed.avatar : fallback.avatar;
-                    const cleanCover = (parsed.cover && parsed.cover !== 'null' && parsed.cover !== 'undefined' && parsed.cover.trim() !== '') ? parsed.cover : fallback.cover;
-                    return {
-                        ...fallback,
-                        ...parsed,
-                        avatar: cleanAvatar,
-                        cover: cleanCover,
-                        visibility: parsed.visibility || 'public',
-                        photos: Array.isArray(parsed.photos) && parsed.photos.length ? parsed.photos : [cleanAvatar, ...fallback.photos],
-                        posts: Array.isArray(parsed.posts) ? parsed.posts : [...fallback.posts]
-                    };
-                } catch (e) {}
-            }
-            return JSON.parse(JSON.stringify(fallback));
         }
 
         // ── Profile Visibility & Private Access Engine ──
@@ -4023,22 +3919,26 @@
             document.getElementById('pageTitle').textContent = `${data.name} – Profil LUMINA | Christian Culture`;
             document.getElementById('userNameEl').textContent = data.name;
             
-            if (isCCWomen || data.isMissionAccount || !data.age || isNaN(data.age)) {
+            if (isCCWomen) {
                 document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} • <b style="color:#ec4899;">🌸 Kanał YouTube CC Women</b>`;
-            } else {
+            } else if (data.isMissionAccount) {
+                document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} • <b style="color:#a855f7;">✨ Misja Christian Culture</b>`;
+            } else if (data.age && !isNaN(parseInt(data.age, 10))) {
                 let demoBadgeHtml = data.isDemo ? `<span class="badge-demo-chip" onclick="event.stopPropagation(); window.showDemoProfileModal();" style="cursor:pointer; background:rgba(99,102,241,0.18); border:1px solid rgba(99,102,241,0.4); color:#a5b4fc; padding:2px 8px; border-radius:12px; font-weight:700; font-size:0.75rem; display:inline-flex; align-items:center; gap:4px; margin-left:6px;" title="Kliknij, aby dowiedzieć się więcej"><i class="fa-solid fa-eye"></i> Profil Poglądowy</span>` : '';
                 document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} (${data.age} lat)${demoBadgeHtml}`;
+            } else {
+                document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city || 'Polska'}`;
             }
             
             if (document.getElementById('userDenomEl')) document.getElementById('userDenomEl').innerHTML = `<i class="fa-solid fa-cross"></i> ${data.denom || 'Chrześcijanin'}`;
-            if (document.getElementById('userJobEl')) document.getElementById('userJobEl').textContent = data.job || data.role || 'Kanał / Profil LUMINA ✨';
+            if (document.getElementById('userJobEl')) document.getElementById('userJobEl').textContent = data.job || data.role || 'Społeczność LUMINA ✨';
             if (document.getElementById('userChurchEl')) document.getElementById('userChurchEl').textContent = data.church || 'Wspólnota Chrześcijańska';
             if (document.getElementById('userStatusEl')) document.getElementById('userStatusEl').textContent = data.status || 'Panna / Kawaler';
             if (document.getElementById('userGoalEl')) document.getElementById('userGoalEl').textContent = data.goal || (isCCWomen ? 'Ewangelizacja i wzrost duchowy kobiet 🌸' : 'Budowanie trwałej relacji opartej na Chrystusie');
             if (document.getElementById('userVerseText')) document.getElementById('userVerseText').textContent = data.verse || '„Wszystko mogę w Tym, który mnie umacnia”';
             if (document.getElementById('userVerseRef')) document.getElementById('userVerseRef').textContent = data.verseRef || '— Flp 4, 13';
             if (document.getElementById('userMatchEl')) {
-                document.getElementById('userMatchEl').innerHTML = `<i class="fa-solid fa-heart-pulse"></i> ${data.match || 'Dopasowanie: 98%'}`;
+                document.getElementById('userMatchEl').innerHTML = `<i class="fa-solid fa-heart-pulse"></i> ${data.match || data.matchScore || 'Dopasowanie: 98%'}`;
             }
             document.getElementById('userBioFull').textContent = data.bio || 'Witaj na profilu w społeczności LUMINA!';
             document.getElementById('modalMsgRecipient').textContent = data.name.split(' ')[0] || data.name;
