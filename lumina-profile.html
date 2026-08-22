@@ -1772,11 +1772,12 @@
     /* ══════════ PERFECT PILL & INTERACTIVE BUTTONS ══════════ */
         .head-actions {
             display: flex !important;
-            flex-direction: column !important;
-            gap: 12px !important;
-            align-items: flex-start !important;
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            gap: 10px !important;
+            align-items: center !important;
             margin-top: 14px !important;
-            width: 100% !important;
+            width: auto !important;
         }
         .head-actions-row {
             display: flex !important;
@@ -4516,14 +4517,6 @@
         }
 
         // ── Direct Upload Triggers ──
-        function triggerCoverUpload() {
-            closeCoverActions();
-            document.getElementById('coverFileInput').click();
-        }
-
-        function triggerAvatarUpload() {
-            if (!requestOwnerAccess(triggerAvatarUpload)) return;
-            document.getElementById('avatarFileInput').click();
         // ── Direct Upload Triggers & Click Handlers ──
         function handleAvatarClick() {
             const avatarImg = document.getElementById('avatarImgEl');
@@ -4552,12 +4545,15 @@
         async function resetAvatarToDefault() {
             if (!confirm('Czy na pewno chcesz usunąć zdjęcie profilowe i przywrócić domyślne?')) return;
             const slug = getRequestedUserSlug();
+            const clean = slug.replace(/^u_/, '');
             const cur = getProfileData();
             cur.avatar = 'lumina_icon.jpg';
             window._cloudProfileData = cur;
             try {
                 localStorage.setItem('lumina_avatar_' + slug, 'lumina_icon.jpg');
+                localStorage.setItem('lumina_avatar_' + clean, 'lumina_icon.jpg');
                 localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                localStorage.setItem('lumina_profile_' + clean, JSON.stringify(cur));
                 localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
             } catch(e) {}
             if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
@@ -4570,12 +4566,15 @@
         async function resetCoverToDefault() {
             if (!confirm('Czy na pewno chcesz przywrócić domyślne zdjęcie w tle?')) return;
             const slug = getRequestedUserSlug();
+            const clean = slug.replace(/^u_/, '');
             const cur = getProfileData();
             cur.cover = 'lumina_default_cover.jpg';
             window._cloudProfileData = cur;
             try {
                 localStorage.setItem('lumina_cover_' + slug, 'lumina_default_cover.jpg');
+                localStorage.setItem('lumina_cover_' + clean, 'lumina_default_cover.jpg');
                 localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                localStorage.setItem('lumina_profile_' + clean, JSON.stringify(cur));
                 localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
             } catch(e) {}
             if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
@@ -4592,88 +4591,95 @@
         }
 
         function triggerAvatarUpload() {
-            if (!isUserAuthorizedForAction()) {
-                if (!requestOwnerAccess(triggerAvatarUpload)) return;
-            }
             const el = document.getElementById('avatarFileInput');
             if (el) el.click();
         }
 
         function triggerGalleryUpload() {
-            if (!isUserAuthorizedForAction()) {
-                if (!requestOwnerAccess(triggerGalleryUpload)) return;
-            }
             const el = document.getElementById('galleryFileInput');
             if (el) el.click();
         }
 
         function triggerPostImageUpload() {
-            if (!isUserAuthorizedForAction()) {
-                if (!requestOwnerAccess(triggerPostImageUpload)) return;
-            }
             const el = document.getElementById('postImageFileInput');
             if (el) el.click();
         }
 
         // File Upload Handlers
         function handleAvatarFileSelect(e) {
-            if (!requestOwnerAccess(triggerAvatarUpload)) return;
-            const file = e.target.files[0];
+            const file = e.target.files && e.target.files[0];
             if (!file) return;
             showToast('Przetwarzanie zdjęcia profilowego... ⏳');
             compressAndReadImage(file, 800, 800, 0.85, function(dataUrl) {
                 const slug = getRequestedUserSlug();
+                const clean = slug.replace(/^u_/, '');
                 const cur = getProfileData();
                 cur.avatar = dataUrl;
                 window._cloudProfileData = cur;
                 try {
                     localStorage.setItem('lumina_avatar_' + slug, dataUrl);
+                    localStorage.setItem('lumina_avatar_' + clean, dataUrl);
+                    localStorage.setItem('lumina_avatar_u_' + clean, dataUrl);
                     localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                    localStorage.setItem('lumina_profile_' + clean, JSON.stringify(cur));
+                    localStorage.setItem('lumina_profile_u_' + clean, JSON.stringify(cur));
                     localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
                     localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
                     localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
                 } catch(err) {}
+                
+                const avEl = document.getElementById('avatarImgEl');
+                if (avEl) avEl.src = dataUrl;
+
                 if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
                     window.LuminaDB.saveProfileToCloud(slug, cur);
                 }
                 renderProfile();
-                showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane w chmurze! 📷✨');
+                showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane! 📷✨');
             });
             e.target.value = '';
         }
 
         function handleCoverFileSelect(e) {
-            const file = e.target.files[0];
+            const file = e.target.files && e.target.files[0];
             if (!file) return;
             showToast('Przetwarzanie zdjęcia w tle... ⏳');
             compressAndReadImage(file, 1400, 700, 0.82, function(dataUrl) {
                 const slug = getRequestedUserSlug();
+                const clean = slug.replace(/^u_/, '');
                 const cur = getProfileData();
                 cur.cover = dataUrl;
                 window._cloudProfileData = cur;
                 try {
                     localStorage.setItem('lumina_cover_' + slug, dataUrl);
+                    localStorage.setItem('lumina_cover_' + clean, dataUrl);
+                    localStorage.setItem('lumina_cover_u_' + clean, dataUrl);
                     localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                    localStorage.setItem('lumina_profile_' + clean, JSON.stringify(cur));
                     localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
                     localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
                     localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
                 } catch(err) {}
+
+                const covEl = document.getElementById('coverPhotoEl');
+                if (covEl) covEl.src = dataUrl;
+
                 if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
                     window.LuminaDB.saveProfileToCloud(slug, cur);
                 }
                 renderProfile();
-                showToast('Zdjęcie w tle zostało zaktualizowane i zapisane w chmurze! 🖼️✨');
+                showToast('Zdjęcie w tle zostało zaktualizowane i zapisane! 🖼️✨');
             });
             e.target.value = '';
         }
 
         function handleGalleryFileSelect(e) {
-            if (!requestOwnerAccess(() => document.getElementById('galleryFileInput').click())) return;
-            const files = Array.from(e.target.files);
+            const files = Array.from(e.target.files || []);
             if (!files.length) return;
             showToast('Dodawanie zdjęć do galerii... ⏳');
             
             const slug = getRequestedUserSlug();
+            const clean = slug.replace(/^u_/, '');
             const cur = getProfileData();
             cur.photos = cur.photos || [];
 

@@ -6150,91 +6150,94 @@
         </div>
     </div>
 
-    <script type="module">
-        import { PROFILES_DB } from './js/lumina-db-profiles.js';
-
-        let cachedOnlineProfiles = [];
-
-        function getAllCommunityProfiles() {
-            const map = new Map();
-            Object.values(PROFILES_DB || {}).forEach(p => { if (p && (p.slug || p.id)) map.set(p.slug || p.id, p); });
-            try {
-                const custom = JSON.parse(localStorage.getItem('lumina_custom_users_list') || '[]');
-                if (Array.isArray(custom)) custom.forEach(p => { if (p && (p.slug || p.id)) map.set(p.slug || p.id, p); });
-            } catch(e) {}
-            return Array.from(map.values());
-        }
+    <script>
+        // Synchronous global functions for Online Users Modal
+        var defaultCommunityOnlineList = [
+            { name: 'Cezary Rogowski', slug: 'cezaryrgowski', avatar: 'avatar_cezary_official.jpg', job: 'Założyciel Christian Culture 👑', city: 'Ostrowiec Świętokrzyski' },
+            { name: 'Wioletta Rogowska', slug: 'wiolettarogowska', avatar: 'avatar_wioletta_official.jpg', job: 'Współzałożycielka & Moderator 🛡️🌸', city: 'Ostrowiec Świętokrzyski' },
+            { name: 'Magdalena', slug: 'magdalena', avatar: 'avatar_magdalena.png', job: 'Społeczność LUMINA 🕊️', city: 'Poznań' },
+            { name: 'Tomasz', slug: 'tomek', avatar: 'avatar_widget_tomek.jpg', job: 'Inżynier Środowiska 🌲', city: 'Kraków' },
+            { name: 'Noemi', slug: 'noemi', avatar: 'avatar_noemi.jpg', job: 'Architekt Krajobrazu 🌿', city: 'Wrocław' },
+            { name: 'Studio Dobrego Słowa', slug: 'studiodobregoslowa', avatar: 'studiodobregoslowa_avatar.jpg', job: 'Kanał YouTube @StudioDeeS 🎙️', city: 'Polska' },
+            { name: 'CC Women Official', slug: 'ccwomen', avatar: 'logo_cc_women.jpg', job: 'Oficjalny Kanał YouTube CC Women 🌸', city: 'Polska' }
+        ];
 
         window.openAllOnlineUsersModal = function() {
-            const modal = document.getElementById('modalAllOnlineUsers');
-            const search = document.getElementById('onlineUsersSearchInput');
+            var modal = document.getElementById('modalAllOnlineUsers');
+            var search = document.getElementById('onlineUsersSearchInput');
             if (search) search.value = '';
-            renderOnlineUsersList(cachedOnlineProfiles.length ? cachedOnlineProfiles : getAllCommunityProfiles());
-            if (modal) modal.classList.add('open');
+            
+            var list = defaultCommunityOnlineList;
+            try {
+                if (window._cachedLiveProfiles && window._cachedLiveProfiles.length) {
+                    list = window._cachedLiveProfiles;
+                }
+            } catch(e) {}
+            
+            renderOnlineUsersList(list);
+            if (modal) {
+                modal.classList.add('open');
+            }
         };
 
         window.filterOnlineUsersModal = function(term) {
             term = (term || '').toLowerCase().trim();
-            const all = cachedOnlineProfiles.length ? cachedOnlineProfiles : getAllCommunityProfiles();
+            var all = (window._cachedLiveProfiles && window._cachedLiveProfiles.length) ? window._cachedLiveProfiles : defaultCommunityOnlineList;
             if (!term) {
                 renderOnlineUsersList(all);
                 return;
             }
-            const filtered = all.filter(p => {
-                const n = (p.name || '').toLowerCase();
-                const c = (p.city || p.location || '').toLowerCase();
-                const d = (p.denom || '').toLowerCase();
-                const j = (p.job || p.role || '').toLowerCase();
+            var filtered = all.filter(function(p) {
+                var n = (p.name || '').toLowerCase();
+                var c = (p.city || p.location || '').toLowerCase();
+                var d = (p.denom || '').toLowerCase();
+                var j = (p.job || p.role || '').toLowerCase();
                 return n.includes(term) || c.includes(term) || d.includes(term) || j.includes(term);
             });
             renderOnlineUsersList(filtered);
         };
 
         function renderOnlineUsersList(profiles) {
-            const container = document.getElementById('allOnlineUsersListContainer');
+            var container = document.getElementById('allOnlineUsersListContainer');
             if (!container) return;
             if (!profiles || profiles.length === 0) {
                 container.innerHTML = '<div style="text-align:center; padding:24px; color:#94a3b8; font-size:0.88rem;">Brak użytkowników pasujących do wyszukiwania.</div>';
                 return;
             }
-            container.innerHTML = profiles.map(p => {
-                const profileUrl = p.slug === 'cezaryrgowski' ? 'lumina.cezaryrgowski.html' : 
-                                   (p.slug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : `lumina-profile.html?u=${p.slug || p.id}`);
-                const avatar = p.avatar || 'avatar_default.jpg';
-                const name = p.name || 'Użytkownik LUMINA';
-                const info = p.job || p.denom || p.city || 'Społeczność Chrześcijańska';
-                return `
-                    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; transition:all 0.2s ease;">
-                        <div style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href='${profileUrl}'">
-                            <div style="position:relative; width:44px; height:44px; flex-shrink:0;">
-                                <img src="${avatar}" alt="${name}" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border:1.5px solid #10b981;" onerror="this.onerror=null; this.src='avatar_cezary_official.jpg';">
-                                <span style="position:absolute; bottom:0; right:0; width:12px; height:12px; border-radius:50%; background:#10b981; border:2px solid #0b1329; box-shadow:0 0 8px #10b981;"></span>
-                            </div>
-                            <div>
-                                <div style="font-weight:700; color:#fff; font-size:0.92rem;">${name}</div>
-                                <div style="font-size:0.75rem; color:#94a3b8;">${info}</div>
-                            </div>
-                        </div>
-                        <div style="display:flex; gap:8px;">
-                            <button type="button" class="admin-suite-btn btn-primary" onclick="window.location.href='${profileUrl}'" style="padding:6px 12px; border-radius:12px; font-size:0.78rem; font-weight:700;">
-                                Profil
-                            </button>
-                        </div>
-                    </div>
-                `;
+            container.innerHTML = profiles.map(function(p) {
+                var profileUrl = p.slug === 'cezaryrgowski' ? 'lumina.cezaryrgowski.html' : 
+                                   (p.slug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : ('lumina-profile.html?u=' + (p.slug || p.id)));
+                var avatar = p.avatar || 'lumina_icon.jpg';
+                var name = p.name || 'Użytkownik LUMINA';
+                var info = p.job || p.denom || p.city || 'Społeczność Chrześcijańska';
+                return '<div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; transition:all 0.2s ease;">' +
+                        '<div style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href=\'' + profileUrl + '\'">' +
+                            '<div style="position:relative; width:44px; height:44px; flex-shrink:0;">' +
+                                '<img src="' + avatar + '" alt="' + name + '" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border:1.5px solid #10b981;" onerror="this.onerror=null; this.src=\'lumina_icon.jpg\';">' +
+                                '<span style="position:absolute; bottom:0; right:0; width:12px; height:12px; border-radius:50%; background:#10b981; border:2px solid #0b1329; box-shadow:0 0 8px #10b981;"></span>' +
+                            '</div>' +
+                            '<div>' +
+                                '<div style="font-weight:700; color:#fff; font-size:0.92rem;">' + name + '</div>' +
+                                '<div style="font-size:0.75rem; color:#94a3b8;">' + info + '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div style="display:flex; gap:8px;">' +
+                            '<button type="button" class="admin-suite-btn btn-primary" onclick="window.location.href=\'' + profileUrl + '\'" style="padding:6px 12px; border-radius:12px; font-size:0.78rem; font-weight:700;">' +
+                                'Profil' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>';
             }).join('');
         }
 
         // Live Community Subscribe
         if (window.LuminaDB && typeof window.LuminaDB.subscribeToAllCommunityProfiles === 'function') {
-            window.LuminaDB.subscribeToAllCommunityProfiles((cloudList) => {
-                const map = new Map();
-                getAllCommunityProfiles().forEach(p => map.set(p.slug || p.id, p));
-                if (Array.isArray(cloudList)) cloudList.forEach(p => map.set(p.slug || p.id, p));
-                cachedOnlineProfiles = Array.from(map.values());
+            window.LuminaDB.subscribeToAllCommunityProfiles(function(cloudList) {
+                var map = new Map();
+                defaultCommunityOnlineList.forEach(function(p) { map.set(p.slug || p.id, p); });
+                if (Array.isArray(cloudList)) cloudList.forEach(function(p) { map.set(p.slug || p.id, p); });
+                window._cachedLiveProfiles = Array.from(map.values());
             });
-        } else {
-            cachedOnlineProfiles = getAllCommunityProfiles();
         }
     </script>
 
