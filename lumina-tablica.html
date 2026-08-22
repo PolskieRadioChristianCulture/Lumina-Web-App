@@ -23,7 +23,7 @@
   gtag('config', 'G-M24C85RG49');
 </script>
     <meta charset="UTF-8">
-<!-- â•â•â•â•â•â•â•â•â•â• OPEN GRAPH & SOCIAL PREVIEWS (WhatsApp / FB / Twitter) â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══════════ OPEN GRAPH & SOCIAL PREVIEWS (WhatsApp / FB / Twitter) ══════════ -->
     <title>Tablica Społeczności – LUMINA | Christian Culture</title>
     <meta name="description" content="Aktualności, świadectwa, intencje modlitewne i rozważania biblijne społeczności LUMINA.">
     <meta property="og:type" content="website">
@@ -85,7 +85,7 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
         import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
-        // â”€â”€ Projekt Mission Control (web_inspirations = treści dla WWW) â”€â”€
+        // ── Projekt Mission Control (web_inspirations = treści dla WWW) ──
         // TODO: Przepiąć na cuda-398c0 / reflections gdy znany będzie web apiKey
         const firebaseConfig = {
             apiKey: "AIzaSyDou1gYyuJnuF2WocXEqglfRPqqwMm0Ge4",
@@ -96,10 +96,10 @@
             appId: "1:519207260358:web:d875a610f438ecad2c47c7"
         };
 
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-        // STANDARD FORMATOWANIA ROZWAĹ»AĹ: DOBRZE, Ĺ»E JESTEŚ â€˘ PORTAL LUMINA
+        // ══════════════════════════════════════════════════════════════════════
+        // STANDARD FORMATOWANIA ROZWAĹ»AĹ: DOBRZE, Ĺ»E JESTEŚ • PORTAL LUMINA
         // Reguła portalu: Ĺ»adne surowe adresy URL nie są widoczne w tekście. Każdy link ukryty jest pod konkretnymi słowami!
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // ══════════════════════════════════════════════════════════════════════
         function formatContentWithActiveLinks(rawText) {
             if (!rawText) return '';
             let text = rawText;
@@ -168,10 +168,10 @@
                 .join('');
         }
 
-        // Dzisiejsze rozważanie (22 sierpnia 2026 - Dzień 22) â€˘ Portal LUMINA
+        // Dzisiejsze rozważanie (22 sierpnia 2026 - Dzień 22) • Portal LUMINA
         const LUMINA_DAY22_DEVOTIONAL_HTML = `
             <div style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg, rgba(245,158,11,0.25), rgba(234,179,8,0.15)); border:1px solid #f59e0b; color:#fef08a; padding:6px 14px; border-radius:20px; font-size:0.82rem; font-weight:800; margin-bottom:14px;">
-                <i class="fa-solid fa-sun"></i> Cykl: „Dobrze, że jesteś” â€˘ â€ď¸Ź Lato z Jezusem — Wielkie Pytania
+                <i class="fa-solid fa-sun"></i> Cykl: „Dobrze, że jesteś” • ☀️ Lato z Jezusem — Wielkie Pytania
             </div>
             <h3 style="font-family:'Outfit',sans-serif; font-size:1.24rem; font-weight:800; color:#fff; line-height:1.45; margin-bottom:16px;">
                 Dzień 22 — 31 bardzo osobistych pytań Syna/Córki do Ojca: Dlaczego tak łatwo ulegam lękowi przed odrzuceniem moich granic?
@@ -211,7 +211,7 @@
                     </a>
                 </div>
                 <div style="font-size:0.82rem; font-weight:800; color:#f43f5e; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px;">
-                    <i class="fa-solid fa-circle-radiation"></i> PODAJ DALEJ ✨”´
+                    <i class="fa-solid fa-circle-radiation"></i> PODAJ DALEJ ✨´
                 </div>
                 <div style="display:flex; flex-wrap:wrap; gap:8px;">
                     <a href="https://www.polskieradio.cc" target="_blank" rel="noopener noreferrer" class="reflection-smart-link radio-link">
@@ -232,11 +232,11 @@
             id: 'daily_rozwazanie_2026-08-22',
             type: 'reflection',
             author: 'Cezary Rogowski',
-            authorRole: 'â€ď¸Ź Dobrze, że jesteś â€˘ Założyciel Christian Culture âś¨',
+            authorRole: '☀️ Dobrze, że jesteś • Założyciel Christian Culture ✨',
             authorAvatar: 'avatar_cezary_official.jpg',
             authorSlug: 'cezaryrgowski',
-            time: '22 SIERPNIA 2026 â€˘ â€ď¸Ź Dzień 22 â€˘ Dobrze, że jesteś',
-            title: 'â€ď¸Ź Lato z Jezusem — Wielkie Pytania (Dzień 22)',
+            time: '22 SIERPNIA 2026 • ☀️ Dzień 22 • Dobrze, że jesteś',
+            title: '☀️ Lato z Jezusem — Wielkie Pytania (Dzień 22)',
             fullTextHtml: LUMINA_DAY22_DEVOTIONAL_HTML,
             image: 'promo_dzj.jpg',
             likes: 215,
@@ -278,11 +278,11 @@
                             id: 'daily_rozwazanie_' + (data.date || today),
                             type: 'reflection',
                             author: 'Cezary Rogowski',
-                            authorRole: `â€ď¸Ź Dobrze, że jesteś â€˘ Założyciel Christian Culture âś¨`,
+                            authorRole: `☀️ Dobrze, że jesteś • Założyciel Christian Culture ✨`,
                             authorAvatar: 'avatar_cezary_official.jpg',
                             authorSlug: 'cezaryrgowski',
-                            time: `${data.date || '21 SIERPNIA 2026'} â€˘ â€ď¸Ź Cykl: Dobrze, że jesteś`,
-                            title: data.title || 'â€ď¸Ź Lato z Jezusem — Wielkie Pytania',
+                            time: `${data.date || '21 SIERPNIA 2026'} • ☀️ Cykl: Dobrze, że jesteś`,
+                            title: data.title || '☀️ Lato z Jezusem — Wielkie Pytania',
                             fullTextHtml: formattedContent,
                             image: data.imageUrl || 'promo_dzj.jpg',
                             likes: data.likes || 198,
@@ -335,7 +335,7 @@
             background-attachment: fixed;
         }
 
-        /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ NAVBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ──────────────────── NAVBAR ──────────────────── */
         .lumina-nav {
             position: sticky;
             top: 0;
@@ -443,14 +443,14 @@
             box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6) !important;
         }
 
-        /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ MAIN FEED CONTAINER (ELEGANT SINGLE-COLUMN FEED) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ──────────────────── MAIN FEED CONTAINER (ELEGANT SINGLE-COLUMN FEED) ──────────────────── */
         .board-container {
             max-width: 740px;
             margin: 0 auto;
             padding: 24px 16px 80px;
         }
 
-        /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ HERO HEADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ──────────────────── HERO HEADER ──────────────────── */
         .board-header {
             text-align: center;
             margin-bottom: 24px;
@@ -520,7 +520,7 @@
             line-height: 1.5;
         }
 
-        /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FILTER CHIPS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ──────────────────── FILTER CHIPS ──────────────────── */
         .filter-chips-row {
             display: flex;
             align-items: center;
@@ -550,7 +550,7 @@
             box-shadow: 0 4px 16px rgba(236, 72, 153, 0.35);
         }
 
-        /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FOUNDER MISSION CREATOR BAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ──────────────────── FOUNDER MISSION CREATOR BAR ──────────────────── */
         .founder-mission-bar {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
             border: 1px solid rgba(245, 158, 11, 0.45);
@@ -610,7 +610,7 @@
         .btn-camp-ann { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
         .btn-camp-event { background: linear-gradient(135deg, #10b981, #047857); }
 
-        /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ SINGLE-COLUMN 1:1 VERTICAL FEED STREAM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ──────────────────── SINGLE-COLUMN 1:1 VERTICAL FEED STREAM ──────────────────── */
         .feed-stream {
             display: flex;
             flex-direction: column;
@@ -688,7 +688,7 @@
         .badge-type-ann { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.45); }
         .badge-type-event { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45); }
 
-                        /* â”€â”€ CC MISSION CAMPAIGN FULL UNTOUCHED GRAPHIC CONTAINER (NO CROPPING) â”€â”€ */
+                        /* ── CC MISSION CAMPAIGN FULL UNTOUCHED GRAPHIC CONTAINER (NO CROPPING) ── */
         .campaign-media-container {
             width: 100%;
             position: relative;
@@ -718,7 +718,7 @@
             transform: scale(1.015);
         }
 
-        /* â”€â”€ GLOBAL STRICT IMAGE & MEDIA FULL DISPLAY (NO CROPPING) â”€â”€ */
+        /* ── GLOBAL STRICT IMAGE & MEDIA FULL DISPLAY (NO CROPPING) ── */
         .media-container-1x1 {
             width: 100%;
             min-height: 220px;
@@ -808,7 +808,7 @@
             word-break: break-word;
         }
 
-        /* â”€â”€ RICH CLICKABLE LINKS & SOCIAL PREVIEWS â”€â”€ */
+        /* ── RICH CLICKABLE LINKS & SOCIAL PREVIEWS ── */
         .post-rich-link {
             color: #38bdf8;
             text-decoration: none;
@@ -989,7 +989,7 @@
         .btn-campaign-cta.event { background: linear-gradient(90deg, #10b981, #059669); box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35); }
         .btn-campaign-cta:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
-        /* â”€â”€ Rotating Broadcast Card (nadawaj.html integration) â”€â”€ */
+        /* ── Rotating Broadcast Card (nadawaj.html integration) ── */
         .broadcast-rotating-card {
             border: 1px solid rgba(245, 158, 11, 0.4) !important;
             background: linear-gradient(180deg, rgba(30, 27, 75, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
@@ -1251,7 +1251,7 @@
             font-size: 0.75rem;
         }
 
-        /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ MODALS & TOAST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ──────────────────── MODALS & TOAST ──────────────────── */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -1275,7 +1275,7 @@
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
         }
 
-        /* â”€â”€ Fullscreen Mobile Chat Messenger Modal â”€â”€ */
+        /* ── Fullscreen Mobile Chat Messenger Modal ── */
         @media (max-width: 768px) {
             #directMessagesModal.modal-overlay {
                 padding: 0 !important;
@@ -1348,7 +1348,7 @@
         }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ MOBILE BOTTOM NAVIGATION BAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ──────────────────── MOBILE BOTTOM NAVIGATION BAR ──────────────────── */
         .lumina-mobile-nav {
             display: none;
             position: fixed;
@@ -1517,7 +1517,7 @@
             }
         }
 
-        /* â”€â”€ LUMINA FLOATING SCROLL TO TOP BUTTON â”€â”€ */
+        /* ── LUMINA FLOATING SCROLL TO TOP BUTTON ── */
         .lumina-scroll-top-btn {
             position: fixed !important;
             bottom: 30px !important;
@@ -1571,9 +1571,9 @@
         }
 
     
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ══════════════════════════════════════════════════════════════════════════
          * 3-COLUMN DESKTOP LAYOUT WITH 9:16 VERTICAL SPONSOR & PATRONAGE SIDEBARS
-         * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+         * ══════════════════════════════════════════════════════════════════════════ */
         .board-container {
             max-width: 1420px !important;
             margin: 0 auto !important;
@@ -1848,7 +1848,7 @@
             margin: 0 auto 10px auto;
         }
 
-        /* â”€â”€ RESPONSIVE COLLAPSE (Tablet & Mobile) â”€â”€ */
+        /* ── RESPONSIVE COLLAPSE (Tablet & Mobile) ── */
         @media (max-width: 1239px) {
             .board-container {
                 grid-template-columns: minmax(0, 1fr) !important;
@@ -1861,7 +1861,7 @@
             }
         }
 
-    /* â•â•â•â•â•â•â•â•â•â• ACTIVE REFLECTION & POST LINKS (STANDARD LUMINA) â•â•â•â•â•â•â•â•â•â• */
+    /* ══════════ ACTIVE REFLECTION & POST LINKS (STANDARD LUMINA) ══════════ */
         .reflection-link, .post-rich-link {
             color: #facc15 !important;
             font-weight: 700 !important;
@@ -1992,7 +1992,7 @@
             line-height: 1.9;
         }
     
-        /* â•â•â•â•â•â•â•â•â•â• 9:16 CUSTOM ADVERTISING SYSTEM & ADMIN CONTROLS â•â•â•â•â•â•â•â•â•â• */
+        /* ══════════ 9:16 CUSTOM ADVERTISING SYSTEM & ADMIN CONTROLS ══════════ */
         .btn-admin-add-ad-916 {
             width: 100%;
             padding: 12px 16px;
@@ -2185,7 +2185,7 @@
 
     </style>
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786938409250">
-<!-- â•â•â•â•â•â•â•â•â•â• LUMINA MODULAR ARCHITECTURE SUITE â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="css/lumina-theme.css?v=1786937908032">
     <link rel="stylesheet" href="css/lumina-components.css?v=20260822_fix_btns">
     <link rel="stylesheet" href="css/lumina-profile.css?v=1786937908032">
@@ -2207,7 +2207,7 @@
     <!-- Audio Player for Radio CC -->
     <audio id="ccRadioAudio" preload="none"></audio>
 
-    <!-- â•â•â•â•â•â•â•â•â•â• NAVBAR â•â•â•â•â•â•â•â•â•â• -->
+    <!-- ══════════ NAVBAR ══════════ -->
     <nav class="lumina-nav">
         <a href="lumina.html" class="nav-logo-text">
             <img src="lumina_icon.jpg" alt="LUMINA Logo" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
@@ -2244,12 +2244,12 @@
         </div>
     </nav>
 
-    <!-- â•â•â•â•â•â•â•â•â•â• MAIN CONTENT CONTAINER â•â•â•â•â•â•â•â•â•â• -->
-    <!-- â•â•â•â•â•â•â•â•â•â• MAIN 3-COLUMN CONTENT CONTAINER â•â•â•â•â•â•â•â•â•â• -->
-    <!-- â•â•â•â•â•â•â•â•â•â• MAIN 3-COLUMN CONTENT CONTAINER â•â•â•â•â•â•â•â•â•â• -->
+    <!-- ══════════ MAIN CONTENT CONTAINER ══════════ -->
+    <!-- ══════════ MAIN 3-COLUMN CONTENT CONTAINER ══════════ -->
+    <!-- ══════════ MAIN 3-COLUMN CONTENT CONTAINER ══════════ -->
     <main class="board-container">
         
-        <!-- â•â•â•â•â•â•â•â•â•â• LEWY SIDEBAR 9:16 (PATRONAT MISYJNY & EWANGELIZACJA) â•â•â•â•â•â•â•â•â•â• -->
+        <!-- ══════════ LEWY SIDEBAR 9:16 (PATRONAT MISYJNY & EWANGELIZACJA) ══════════ -->
         <aside class="sidebar-916 sidebar-left-916">
             <!-- 1. Karta Główna: Patronat Misyjny CC & Zrzutka.pl (Format 9:16) -->
             <div class="card-916 patron-card-916">
@@ -2300,7 +2300,7 @@
 
         </aside>
 
-        <!-- â•â•â•â•â•â•â•â•â•â• CENTRUM: GĹĂ“WNY STRUMIEĹ TABLICY â•â•â•â•â•â•â•â•â•â• -->
+        <!-- ══════════ CENTRUM: GĹĂ“WNY STRUMIEĹ TABLICY ══════════ -->
         <section class="feed-center-column">
             
             <!-- Header Banner -->
@@ -2326,7 +2326,7 @@
                 </div>
             </header>
 
-            <!-- â•â•â•â•â•â•â•â•â•â• FOUNDER & MISSION PERSONA PUBLISHER HUB â•â•â•â•â•â•â•â•â•â• -->
+            <!-- ══════════ FOUNDER & MISSION PERSONA PUBLISHER HUB ══════════ -->
             <div class="founder-mission-bar" id="founderMissionHub">
                 <div class="founder-info-side">
                     <img src="avatar_cezary_official.jpg" alt="Persona" class="founder-badge-avatar" id="activePersonaAvatar">
@@ -2337,7 +2337,7 @@
                             <option value="wioletta_rogowska" style="background:#0f172a;">🌸 Wioletta R.</option>
                             <option value="cc_women" style="background:#0f172a;">🌸 CC Women</option>
                             <option value="radio_cc" style="background:#0f172a;">✨“» Radio CC</option>
-                            <option value="lumina_official" style="background:#0f172a;">✨•Šď¸Ź LUMINA</option>
+                            <option value="lumina_official" style="background:#0f172a;">✨•Š LUMINA</option>
                             <option value="noemi_misja" style="background:#0f172a;">✨Śż Noemi</option>
                             <option value="dawid_misja" style="background:#0f172a;">✨Žµ Dawid</option>
                         </select>
@@ -2353,13 +2353,13 @@
             <!-- Query Filter Banner -->
             <div id="queryFilterBanner" style="display:none; align-items:center; justify-content:space-between; padding:12px 18px; border-radius:14px; background:rgba(168,85,247,0.16); border:1px solid rgba(168,85,247,0.4); margin-bottom:16px; font-size:0.88rem; color:#e2e8f0;"></div>
 
-            <!-- â•â•â•â•â•â•â•â•â•â• FEED STREAM â•â•â•â•â•â•â•â•â•â• -->
+            <!-- ══════════ FEED STREAM ══════════ -->
             <div class="feed-stream" id="feedStream1x1">
                 <!-- Dynamic stream content injected via JS -->
             </div>
         </section>
 
-        <!-- â•â•â•â•â•â•â•â•â•â• PRAWY SIDEBAR 9:16 (SKLEP WSPARCIA MISJI & JEDNOŚĆ MODLITWY) â•â•â•â•â•â•â•â•â•â• -->
+        <!-- ══════════ PRAWY SIDEBAR 9:16 (SKLEP WSPARCIA MISJI & JEDNOŚĆ MODLITWY) ══════════ -->
         <aside class="sidebar-916 sidebar-right-916">
             <!-- 1. Karta Sklepu Wsparcia Misji (Creator Spring) -->
             <div class="card-916 store-card-916">
@@ -2400,7 +2400,7 @@
         </aside>
     </main>
 
-        <!-- â•â•â•â•â•â•â•â•â•â• ADMIN MODERATION & REPORTS MODAL â•â•â•â•â•â•â•â•â•â• -->
+        <!-- ══════════ ADMIN MODERATION & REPORTS MODAL ══════════ -->
     <div class="modal-overlay" id="adminReportsModal">
         <div class="modal-card" style="max-width: 680px; max-height: 85vh; overflow-y: auto;">
             <button class="modal-close-btn" onclick="closeModal('adminReportsModal')"><i class="fa-solid fa-xmark"></i></button>
@@ -2422,7 +2422,7 @@
     </div>
 
 
-    <!-- â•â•â•â•â•â•â•â•â•â• MODAL PUBLIKACJI I EDYCJI REKLAMY 9:16 (ADMIN EXCLUSIVE) â•â•â•â•â•â•â•â•â•â• -->
+    <!-- ══════════ MODAL PUBLIKACJI I EDYCJI REKLAMY 9:16 (ADMIN EXCLUSIVE) ══════════ -->
     <div class="modal-overlay" id="ad916Modal">
         <div class="modal-card" style="max-width: 580px; max-height: 90vh; overflow-y: auto; padding: 22px 20px;">
             <button class="modal-close-btn" onclick="closeModal('ad916Modal')"><i class="fa-solid fa-xmark"></i></button>
@@ -2444,8 +2444,8 @@
                     <div>
                         <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">Lokalizacja Reklamy</label>
                         <select id="ad916SideSelect" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-weight:700; font-family:inherit; font-size:13px; cursor:pointer;">
-                            <option value="left" style="background:#0f172a;">â¬…ď¸Ź Lewy Panel Boczny</option>
-                            <option value="right" style="background:#0f172a;">âžˇď¸Ź Prawy Panel Boczny</option>
+                            <option value="left" style="background:#0f172a;">⬅ Lewy Panel Boczny</option>
+                            <option value="right" style="background:#0f172a;">➢ Prawy Panel Boczny</option>
                         </select>
                     </div>
                     <div>
@@ -2509,7 +2509,7 @@
                             <i class="fa-solid fa-floppy-disk"></i> Zapisz
                         </button>
                         <button type="button" onclick="saveAd916Action(true)" style="padding:10px 20px; border-radius:20px; background:linear-gradient(135deg,#f59e0b,#ec4899); border:none; color:#fff; font-weight:800; font-family:inherit; font-size:0.84rem; cursor:pointer; box-shadow:0 4px 16px rgba(245,158,11,0.4);">
-                            <i class="fa-solid fa-bullhorn"></i> Opublikuj âś¨
+                            <i class="fa-solid fa-bullhorn"></i> Opublikuj ✨
                         </button>
                     </div>
                 </div>
@@ -2517,7 +2517,7 @@
         </div>
     </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â• CC MISSION CAMPAIGN PUBLISHER MODAL â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══════════ CC MISSION CAMPAIGN PUBLISHER MODAL ══════════ -->
     <div class="modal-overlay" id="campaignModal">
         <div class="modal-card" style="max-height: 90vh; overflow-y: auto;">
             <button class="modal-close-btn" onclick="closeModal('campaignModal')"><i class="fa-solid fa-xmark"></i></button>
@@ -2593,14 +2593,14 @@
 
                 <div style="display:flex; gap:8px;">
                     <button type="button" onclick="closeModal('campaignModal')" style="flex:1; padding:10px; border-radius:24px; background:rgba(255,255,255,0.08); border:none; color:#fff; font-weight:700; font-family:inherit; cursor:pointer;">Anuluj</button>
-                    <button type="submit" style="flex:1.7; padding:10px; border-radius:24px; background:linear-gradient(90deg,#f59e0b,#ec4899); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 16px rgba(245,158,11,0.4);"><i class="fa-solid fa-bullhorn"></i> Opublikuj na Tablicy âś¨</button>
+                    <button type="submit" style="flex:1.7; padding:10px; border-radius:24px; background:linear-gradient(90deg,#f59e0b,#ec4899); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 16px rgba(245,158,11,0.4);"><i class="fa-solid fa-bullhorn"></i> Opublikuj na Tablicy ✨</button>
                 </div>
             </form>
         </div>
     </div>
 
 
-    <!-- â•â•â•â•â•â•â•â•â•â• REALTIME COMMUNITY & DIRECT MESSENGER MODAL (Etap 3) â•â•â•â•â•â•â•â•â•â• -->
+    <!-- ══════════ REALTIME COMMUNITY & DIRECT MESSENGER MODAL (Etap 3) ══════════ -->
     <div class="modal-overlay" id="directMessagesModal">
         <div class="modal-card" style="max-width: 500px; width: 94%; padding: 0; max-height: 90vh; height: 600px; display: flex; flex-direction: column; overflow: hidden; border-radius: 24px; background: #0b1120; border: 1.5px solid rgba(168,85,247,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.85);">
             
@@ -2614,14 +2614,14 @@
                         <div>
                             <h3 style="font-size: 1.12rem; font-family:'Outfit',sans-serif; margin:0; color:#fff; font-weight:800;">Centrum Rozmów LUMINA</h3>
                             <div style="font-size: 0.72rem; color: #10b981; display:flex; align-items:center; gap:4px;">
-                                <span style="width:6px; height:6px; border-radius:50%; background:#10b981; display:inline-block;"></span> Na żywo w Chrystusie ✨•Šď¸Ź
+                                <span style="width:6px; height:6px; border-radius:50%; background:#10b981; display:inline-block;"></span> Na żywo w Chrystusie ✨•Š
                             </div>
                         </div>
                     </div>
                     <button class="modal-close-btn" onclick="closeModal('directMessagesModal')" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
                 </div>
 
-                <!-- Navigation Tabs: [ ✨Ś Czat Ogólny (Publiczny) ] [ ✨”’ Prywatne (1:1) ] -->
+                <!-- Navigation Tabs: [ ✨Ś Czat Ogólny (Publiczny) ] [ ✨’ Prywatne (1:1) ] -->
                 <div style="display:flex; background:rgba(255,255,255,0.05); padding:4px; border-radius:14px; gap:6px;">
                     <button type="button" id="tabBtnPublicChat" onclick="switchMessengerMainTab('public')" style="flex:1; padding:8px 10px; border-radius:10px; border:none; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-weight:800; font-family:inherit; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(236,72,153,0.3); transition:all 0.2s;">
                         <i class="fa-solid fa-earth-europe"></i> Czat Ogólny (Publiczny)
@@ -2638,14 +2638,14 @@
                 <div id="publicChatMessagesBox" style="flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.2);">
                     <div style="text-align: center; margin: 6px 0;">
                         <span style="font-size: 0.72rem; color: #94a3b8; background: rgba(255,255,255,0.05); padding: 5px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-                            ✨•Šď¸Ź Witaj w Ogólnym Czacie Społeczności LUMINA! Przywitaj się z braćmi i siostrami w Chrystusie âś¨
+                            ✨•Š Witaj w Ogólnym Czacie Społeczności LUMINA! Przywitaj się z braćmi i siostrami w Chrystusie ✨
                         </span>
                     </div>
                 </div>
 
                 <!-- Quick Christian Emoji Bar -->
                 <div style="display: flex; gap: 6px; padding: 6px 14px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); overflow-x:auto;">
-                    <button type="button" onclick="insertPublicChatQuickText('Pokój Wam! Niech Bóg błogosławi dzisiejszy dzień ✨•Šď¸Ź')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨•Šď¸Ź Błogosławieństwo</button>
+                    <button type="button" onclick="insertPublicChatQuickText('Pokój Wam! Niech Bóg błogosławi dzisiejszy dzień ✨•Š')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨•Š Błogosławieństwo</button>
                     <button type="button" onclick="insertPublicChatQuickText('Proszę o modlitwę w mojej intencji ✨™Ź')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨™Ź Prośba o modlitwę</button>
                     <button type="button" onclick="insertPublicChatQuickText('Dziękuję Bogu za cudowny czas! Chwała Panu! ✨™Ś')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨™Ś Świadectwo</button>
                 </div>
@@ -2701,7 +2701,7 @@
                             <div>
                                 <div id="activeChatName" style="font-weight: 800; font-size: 0.95rem; color: #fff;">Rozmowa Prywatna</div>
                                 <div style="font-size: 0.7rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
-                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Bezpieczna Rozmowa 1:1 ✨”’
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Bezpieczna Rozmowa 1:1 ✨’
                                 </div>
                             </div>
                         </div>
@@ -2711,15 +2711,15 @@
                     <!-- Chat Messages Scroll Container -->
                     <div id="activeChatMessagesBox" style="flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.2);">
                         <div style="text-align: center; margin: 10px 0;">
-                            <span style="font-size: 0.72rem; color: #64748b; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">Rozpoczęto bezpieczną rozmowę prywatną w portalu LUMINA ✨•Šď¸Ź</span>
+                            <span style="font-size: 0.72rem; color: #64748b; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">Rozpoczęto bezpieczną rozmowę prywatną w portalu LUMINA ✨•Š</span>
                         </div>
                     </div>
 
                     <!-- Quick Christian Emoji Bar -->
                     <div style="display: flex; gap: 6px; padding: 6px 14px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); overflow-x:auto;">
-                        <button type="button" onclick="insertChatQuickText('Niech Bóg Ci błogosławi! ✨•Šď¸Ź')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨•Šď¸Ź Błogosławieństwo</button>
+                        <button type="button" onclick="insertChatQuickText('Niech Bóg Ci błogosławi! ✨•Š')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨•Š Błogosławieństwo</button>
                         <button type="button" onclick="insertChatQuickText('Chętnie pomodlę się w Twojej intencji! ✨™Ź')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨™Ź Modlitwa</button>
-                        <button type="button" onclick="insertChatQuickText('Masz ochotę na chrześcijańską kawę? â•')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">â• Kawa</button>
+                        <button type="button" onclick="insertChatQuickText('Masz ochotę na chrześcijańską kawę? ☕')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">☕ Kawa</button>
                     </div>
 
                     <!-- Chat Input Form -->
@@ -2735,7 +2735,7 @@
         </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â• PERSONAL SETTINGS & FORCE UPDATE MODAL â•â•â•â•â•â•â•â•â•â• -->
+    <!-- ══════════ PERSONAL SETTINGS & FORCE UPDATE MODAL ══════════ -->
     <div class="modal-overlay" id="personalSettingsModal">
         <div class="modal-card" style="max-width: 480px; width: 94%; border-radius: 24px; background: #0b1120; border: 1.5px solid rgba(168,85,247,0.35); box-shadow: 0 20px 60px rgba(0,0,0,0.85); padding: 22px; position: relative;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08);">
@@ -2759,7 +2759,7 @@
                             <i class="fa-solid fa-bell" style="color: #ec4899; font-size: 1.1rem;"></i>
                             <span style="font-weight: 800; font-size: 0.92rem; color: #fff;">Dźwięk i Powiadomienia z Czatów</span>
                         </div>
-                        <span style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(236,72,153,0.25); color: #fce7f3; font-weight: 700;">Aktywne ✨””</span>
+                        <span style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(236,72,153,0.25); color: #fce7f3; font-weight: 700;">Aktywne ✨</span>
                     </div>
                     <p style="font-size: 0.76rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
                         Kryształowy dźwięk dzwonka oraz powiadomienia o nowych wiadomościach od braci i sióstr.
@@ -2793,7 +2793,7 @@
                             <i class="fa-solid fa-shield-halved" style="color: #10b981; font-size: 1rem;"></i>
                             <div>
                                 <div style="font-weight: 700; font-size: 0.86rem; color: #fff;">Status Połączenia Chmury</div>
-                                <div style="font-size: 0.72rem; color: #10b981;">â—Ź Połączono z Christian Culture Live Cloud ✨•Šď¸Ź</div>
+                                <div style="font-size: 0.72rem; color: #10b981;">▫ Połączono z Christian Culture Live Cloud ✨•Š</div>
                             </div>
                         </div>
                     </div>
@@ -2811,7 +2811,7 @@
         </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â• REPORT & SAFETY MODAL (Etap 4) â•â•â•â•â•â•â•â•â•â• -->
+    <!-- ══════════ REPORT & SAFETY MODAL (Etap 4) ══════════ -->
     <div class="modal-overlay" id="reportModal" style="z-index: 10005;">
         <div class="modal-card" style="max-width: 460px; padding: 24px;">
             <button class="modal-close-btn" onclick="closeModal('reportModal')"><i class="fa-solid fa-xmark"></i></button>
@@ -2854,19 +2854,19 @@
         </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â• TOAST NOTIFICATION â•â•â•â•â•â•â•â•â•â• -->
+    <!-- ══════════ TOAST NOTIFICATION ══════════ -->
     <div class="toast" id="toast"><i class="fa-solid fa-check-circle"></i> <span id="toastMsg">Sukces!</span></div>
 
     
     
-    <!-- â•â•â•â•â•â•â•â•â•â• JAVASCRIPT & ENGINE â•â•â•â•â•â•â•â•â•â• -->
+    <!-- ══════════ JAVASCRIPT & ENGINE ══════════ -->
     <script>
-        // â”€â”€ 15 Oficjalnych Kanałów Nadawczych (z nadawaj.html) do Rotacji na Tablicy â”€â”€
+        // ── 15 Oficjalnych Kanałów Nadawczych (z nadawaj.html) do Rotacji na Tablicy ──
         const LUMINA_BROADCAST_CHANNELS = [
             {
                 id: 'cctv24_worship',
                 title: 'CCTV24 Instrumental Worship (16:9)',
-                tag: 'NOWOŚĆ â€˘ Muzyka Uwielbienia 24/7',
+                tag: 'NOWOŚĆ • Muzyka Uwielbienia 24/7',
                 badgeColor: '#D4AF37',
                 textColor: '#000',
                 desc: 'Całodobowy kanał instrumentalny ku Bożej chwale. Filmowe pejzaże, wersety biblijne i głęboki pokój w Chrystusie.',
@@ -2899,7 +2899,7 @@
             {
                 id: 'apokalipsa_live',
                 title: 'Apokalipsa: Księga Nadziei (16:9)',
-                tag: 'Kurs Biblijny â€˘ 10:00 & 22:00',
+                tag: 'Kurs Biblijny • 10:00 & 22:00',
                 badgeColor: '#ffc107',
                 textColor: '#000',
                 desc: '24-lekcyjny kompletny kurs biblijny o proroctwach Księgi Objawienia. Zegar cyklu i obsługa wygaszania.',
@@ -2910,7 +2910,7 @@
             {
                 id: 'studium_live',
                 title: 'Studium Telewizyjne Pisma Świętego',
-                tag: 'Studium Biblijne â€˘ 08:00 & 20:00',
+                tag: 'Studium Biblijne • 08:00 & 20:00',
                 badgeColor: '#ff5e7e',
                 textColor: '#fff',
                 desc: '572-odcinkowy cykl wykładów werset po wersecie. Systematyczny rozwój wiedzy biblijnej bez opóźnień.',
@@ -2921,7 +2921,7 @@
             {
                 id: 'kino_live',
                 title: 'Chrześcijański Blok Filmowy (16:9)',
-                tag: 'Kino & Dokumenty â€˘ Weekendy 18:00',
+                tag: 'Kino & Dokumenty • Weekendy 18:00',
                 badgeColor: '#f3e5ab',
                 textColor: '#000',
                 desc: 'Seanse filmowe i dokumentalne z przesłaniem. Emisja w weekendy od 18:00 oraz stały dostęp na życzenie.',
@@ -2932,7 +2932,7 @@
             {
                 id: 'spiewajmy_panu',
                 title: 'Śpiewajmy Panu (16:9)',
-                tag: 'Blok Muzyczny â€˘ 16:00',
+                tag: 'Blok Muzyczny • 16:00',
                 badgeColor: '#d4af37',
                 textColor: '#000',
                 desc: 'Codzienny 60-minutowy blok muzyczny. Utwory uwielbienia, pieśni chwały i nowości muzyczne Christian Culture Music.',
@@ -2943,7 +2943,7 @@
             {
                 id: 'swiadectwa_live',
                 title: 'Świadectwa — Historie Wiary (16:9)',
-                tag: 'Niedziela â€˘ 18:00 - 20:00',
+                tag: 'Niedziela • 18:00 - 20:00',
                 badgeColor: '#ff5e7e',
                 textColor: '#fff',
                 desc: 'Poruszające historie nawróceń, uzdrowień i uwolnień. 11 wyselekcjonowanych filmów w rotacji na niedzielne wieczory.',
@@ -2954,7 +2954,7 @@
             {
                 id: 'nocne_czuwanie',
                 title: 'Muzyka Instrumentalna & Nocne Czuwanie',
-                tag: '23 Filmy w Rotacji â€˘ 00:00 - 06:00',
+                tag: '23 Filmy w Rotacji • 00:00 - 06:00',
                 badgeColor: '#d19eff',
                 textColor: '#000',
                 desc: 'Głębokie wyciszenie, 1 unikalny film relaksacyjny z cyklu 23 pozycji na dobę. Przestrzeń modlitwy, kontemplacji i snu.',
@@ -3103,13 +3103,13 @@
                 tagEl.style.background = ch.badgeColor;
                 tagEl.style.color = ch.textColor;
             }
-            if (catEl) catEl.textContent = `${ch.category} â€˘ Rotacja Scen 24/7 ✨”„`;
+            if (catEl) catEl.textContent = `${ch.category} • Rotacja Scen 24/7 ✨„`;
             if (openBtn) openBtn.href = ch.url;
             if (playOverlay) playOverlay.href = ch.url;
-            if (statusEl) statusEl.innerHTML = `Rotacja automatyczna â€˘ Kanał <b style="color:#fef08a;">${currentBroadcastIndex + 1}</b> z 15`;
+            if (statusEl) statusEl.innerHTML = `Rotacja automatyczna • Kanał <b style="color:#fef08a;">${currentBroadcastIndex + 1}</b> z 15`;
         }
 
-        // â”€â”€ Wszystkie Oficjalne Reklamy i Kampanie Misyjne z polskieradio.cc â”€â”€
+        // ── Wszystkie Oficjalne Reklamy i Kampanie Misyjne z polskieradio.cc ──
         const DEFAULT_CC_CAMPAIGNS = [
             {
                 id: 'camp_cctv24_worship',
@@ -3117,10 +3117,10 @@
                 title: 'NOWOŚĆ: CCTV24 Instrumental Worship – Całodobowa Muzyka Uwielbienia',
                 desc: 'Zanurz się w Bożej obecności i pokoju serca. Oglądaj i słuchaj najpiękniejszych utworów uwielbienia w jakości HD bez przerw 24/7.',
                 image: 'INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg',
-                btnText: 'Oglądaj & Słuchaj na Ĺ»ywo ✨•Šď¸Źâ–¶ď¸Ź',
+                btnText: 'Oglądaj & Słuchaj na Ĺ»ywo ✨•Š▶',
                 btnUrl: 'cctv24-worship.html',
                 author: 'Christian Culture TV',
-                authorRole: 'Nowy Kanał TV ✨“şâś¨',
+                authorRole: 'Nowy Kanał TV ✨“ş✨',
                 authorAvatar: 'logo_cctv.png',
                 createdAt: 'Premiera 2026',
                 likes: 245,
@@ -3132,10 +3132,10 @@
                 title: 'Radio Christian Culture – Słuchaj na Ĺ»ywo 24/7',
                 desc: 'Dołącz do tysięcy słuchaczy w Polsce i na świecie! Najpiękniejsza muzyka uwielbienia, Biblia Śpiewana oraz codzienne rozważania ku Bożej chwale bez reklam komercyjnych.',
                 image: 'tlo_tv_radiocc.jpg',
-                btnText: 'Słuchaj Radia CC na Ĺ»ywo ✨“»âś¨',
+                btnText: 'Słuchaj Radia CC na Ĺ»ywo ✨“»✨',
                 btnUrl: 'https://polskieradio.cc',
                 author: 'Radio Christian Culture',
-                authorRole: 'Oficjalna Misja Radiowa ✨•Šď¸Ź',
+                authorRole: 'Oficjalna Misja Radiowa ✨•Š',
                 authorAvatar: 'icon.png',
                 createdAt: 'Misja Radiowa 24/7',
                 likes: 134,
@@ -3150,7 +3150,7 @@
                 btnText: 'Zobacz Kolekcję w Sklepie ✨›’',
                 btnUrl: 'https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536',
                 author: 'Christian Culture Store',
-                authorRole: 'Wsparcie Dzieła CC ✨›Ťď¸Ź',
+                authorRole: 'Wsparcie Dzieła CC ✨›Ť',
                 authorAvatar: 'lumina_icon.jpg',
                 createdAt: 'Kolekcja Sezonowa',
                 likes: 88,
@@ -3182,7 +3182,7 @@
                 eventDate: 'Każdy Pierwszy Czwartek Miesiąca, 20:00',
                 eventLoc: 'Transmisja Live CCTV24 & Cała Polska',
                 author: 'Cezary Rogowski',
-                authorRole: 'Założyciel Christian Culture âś¨',
+                authorRole: 'Założyciel Christian Culture ✨',
                 authorAvatar: 'avatar_cezary_official.jpg',
                 createdAt: 'Wydarzenie Narodowe',
                 likes: 178,
@@ -3209,7 +3209,7 @@
                 title: 'CC Women – Oficjalny Kanał YouTube dla Kobiet Wiary',
                 desc: 'Miejsce budowania, modlitwy i inspiracji dla kobiet szukających Bożej mądrości w codziennym życiu, małżeństwie i macierzyństwie. Dołącz do społeczności CC Women!',
                 image: 'logo_cc_women.jpg',
-                btnText: 'Subskrybuj Kanał YouTube 🌸â–¶ď¸Ź',
+                btnText: 'Subskrybuj Kanał YouTube 🌸▶',
                 btnUrl: 'https://www.youtube.com/@CCWomen7',
                 author: 'CC Women',
                 authorRole: 'Kanał Misyjny YouTube 🌸',
@@ -3254,7 +3254,7 @@
                 title: 'Muzyka Instrumentalna & Nocne Czuwanie Modlitewne 24/7',
                 desc: 'Głębokie, nastrojowe aranżacje fortepianowe i orkiestrowe pieśni chwały, które tworzą atmosferę modlitwy, pokoju i wyciszenia przez całą dobę.',
                 image: 'INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg',
-                btnText: 'Odsłuchaj Pasmo Nocne ✨Ś™✨•Šď¸Ź',
+                btnText: 'Odsłuchaj Pasmo Nocne ✨Ś™✨•Š',
                 btnUrl: 'nocne-czuwanie-live.html',
                 author: 'Worship CC',
                 authorRole: 'Muzyka Uwielbienia ✨Žą',
@@ -3299,7 +3299,7 @@
                 title: 'Kubki i Akcesoria z Wersetami Biblijnymi – Misja CC Store',
                 desc: 'Zacznij każdy poranek od Bożego Słowa przy ulubionej kawie lub herbacie. Ceramiczne kubki z inspirującymi wersetami z Księgi Psalmów i Listów.',
                 image: 'kubek_cc_2026.jpg',
-                btnText: 'Zamów Kubek Misyjny â•✨“–',
+                btnText: 'Zamów Kubek Misyjny ☕✨–',
                 btnUrl: 'https://my-store-1009741.creator-spring.com',
                 author: 'Christian Culture Store',
                 authorRole: 'Akcesoria Misyjne ✨Ž',
@@ -3418,9 +3418,9 @@
 
         let cloudFeedPosts = [];
 
-        // â”€â”€ Intelligent Timestamp Extractor for chronological sorting â”€â”€
+        // ── Intelligent Timestamp Extractor for chronological sorting ──
         // Returns a numeric Unix-ms timestamp from any post field combination.
-        // Precedence: Firestore Timestamp â†’ numeric ms â†’ ISO string â†’ static date label parse â†’ 0 (unknown/no date).
+        // Precedence: Firestore Timestamp → numeric ms → ISO string → static date label parse → 0 (unknown/no date).
         function extractSortTs(post) {
             // Firestore Timestamp object {seconds, nanoseconds}
             const raw = post.createdAtTimestamp || post.createdAtDateStr || post._sortTs || null;
@@ -3433,7 +3433,7 @@
                 }
             }
             // Parse static time labels embedded in post.time field
-            // e.g. "22 SIERPNIA 2026 â€˘ ✨•Šď¸Ź...", "Dzisiaj, 16:20 â€˘ ...", "Wczoraj, 17:50 â€˘ ..."
+            // e.g. "22 SIERPNIA 2026 • ✨•Š...", "Dzisiaj, 16:20 • ...", "Wczoraj, 17:50 • ..."
             if (post.time && typeof post.time === 'string') {
                 const t = post.time;
                 const now = new Date();
@@ -3469,7 +3469,7 @@
                 // Fallback: if contains "Przed chwilą" treat as now
                 if (/Przed chwil/i.test(t)) return Date.now();
             }
-            return 0; // unknown â†’ sink to bottom
+            return 0; // unknown → sink to bottom
         }
 
         function getUserFeedPosts() {
@@ -3487,10 +3487,10 @@
                         id: cp.id,
                         type: cp.type || 'post',
                         author: cp.author || 'Użytkownik LUMINA',
-                        authorRole: cp.authorRole || 'Społeczność LUMINA âś¨',
+                        authorRole: cp.authorRole || 'Społeczność LUMINA ✨',
                         authorAvatar: cp.authorAvatar || 'icon.png',
                         authorSlug: cp.authorSlug || '',
-                        time: formatPostTimestamp(cp.createdAtTimestamp || cp.createdAtDateStr || cp.time, 'Przed chwilą') + ' â€˘ âď¸Ź Chmura',
+                        time: formatPostTimestamp(cp.createdAtTimestamp || cp.createdAtDateStr || cp.time, 'Przed chwilą') + ' • ☁️ Chmura',
                         title: cp.title || '',
                         text: cp.text || '',
                         image: cp.image || null,
@@ -3506,12 +3506,12 @@
                 id: 'post_cctv24_worship_nowosc_21_08',
                 type: 'post',
                 author: 'Christian Culture TV & Radio',
-                authorRole: 'Oficjalna Misja CCTV24 ✨•Šď¸Źâś¨ â€˘ 24/7',
+                authorRole: 'Oficjalna Misja CCTV24 ✨•Š✨ • 24/7',
                 authorAvatar: 'logo_cctv.png',
                 authorSlug: 'cctv',
-                time: '21 SIERPNIA 2026 â€˘ ✨Śź NOWOŚĆ / PREMIERA (Dzisiaj)',
+                time: '21 SIERPNIA 2026 • ✨Śź NOWOŚĆ / PREMIERA (Dzisiaj)',
                 title: '✨Śź NOWOŚĆ! CCTV24 INSTRUMENTAL WORSHIP 24/7 – Muzyka Uwielbienia & Kontemplacji',
-                text: 'Z radością i wdzięcznością Bogu oddajemy w Wasze ręce nowy całodobowy kanał wideo & audio: CCTV24 INSTRUMENTAL WORSHIP! ✨•Šď¸Źâś¨\n\nPrzenieś się w przestrzeń głębokiej modlitwy, pokoju serca i Bożej obecności. 24 godziny na dobę bez przerw i bez reklam – najpiękniejsze instrumentalne utwory uwielbienia, wersety Pisma Świętego i filmowe scenerie stworzenia w jakości HD.\n\nKliknij i oglądaj na żywo w nowym oknie:\n✨‘‰ https://polskieradio.cc/cctv24-worship.html\n\nNiech ten kanał będzie dla Was źródłem wyciszenia, odpoczynku i nieustannego uwielbienia naszego Pana! ✨™Ź✨Ž¶',
+                text: 'Z radością i wdzięcznością Bogu oddajemy w Wasze ręce nowy całodobowy kanał wideo & audio: CCTV24 INSTRUMENTAL WORSHIP! ✨•Š✨\n\nPrzenieś się w przestrzeń głębokiej modlitwy, pokoju serca i Bożej obecności. 24 godziny na dobę bez przerw i bez reklam – najpiękniejsze instrumentalne utwory uwielbienia, wersety Pisma Świętego i filmowe scenerie stworzenia w jakości HD.\n\nKliknij i oglądaj na żywo w nowym oknie:\n✨‘‰ https://polskieradio.cc/cctv24-worship.html\n\nNiech ten kanał będzie dla Was źródłem wyciszenia, odpoczynku i nieustannego uwielbienia naszego Pana! ✨™Ź✨Ž¶',
                 image: 'INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg',
                 likes: 215,
                 amen: 198
@@ -3529,12 +3529,12 @@
                     id: 'post_andrzej_cuda_22_08_2026',
                     type: 'post',
                     author: aName,
-                    authorRole: 'Cuda Każdego Dnia ✨“–âś¨ â€˘ Sieradz',
+                    authorRole: 'Cuda Każdego Dnia ✨“–✨ • Sieradz',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
-                    time: '22 SIERPNIA 2026 â€˘ ✨•Šď¸Ź Cuda Każdego Dnia (Dzisiaj)',
+                    time: '22 SIERPNIA 2026 • ✨•Š Cuda Każdego Dnia (Dzisiaj)',
                     title: 'CUDA KAĹ»DEGO DNIA! 22 SIERPNIA 2026. ZAMIEĹ TROSKÄ W MODLITWÄ!',
-                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nZAMIEĹ TROSKÄ W MODLITWÄ!\n\nBardzo spodobało mi się, co pisze autorka Carrie Mars: „Lubię patrzeć, jak szybko jestem w stanie zamienić myśl w modlitwę. Zauważam myśl, która mogłaby wskoczyć do pociągu niepokoju, ale zamiast tego kieruję ją ku Bogu”. Apostoł Paweł pisał: „Niczym się już nie zamartwiajcie, lecz w każdej modlitwie i błaganiu z dziękczynieniem przedstawiajcie Bogu wasze prośby. A pokój Boży, który przewyższa wszelki rozum, będzie strzegł waszych serc i myśli w Chrystusie Jezusie” (Flp.4,6). Coś cię martwi w tej chwili? Co to jest? Nazwij to i szybko zamień tę troskę w modlitwę. Czy wiesz, co tworzy najwięcej niepokoju w naszym życiu? To wyciąganie przedwczesnych wniosków co do okoliczności życiowych. Przypuśćmy, że członek rodziny spóźnia się do domu. Ty zaczynasz wyobrażać sobie różne rzeczy, panikujesz. Zamiast tego raczej pomódl się: „Boże, miej Go w swojej opiece”. Doświadczyłam tego i wiem, że Boży pokój potrafi pokonać największy strach.\n\nKtoś ma mieć operację? Módl się: „Panie, daj mądrość lekarzom, by właściwie przeprowadzili zabieg. Pomóż mu wrócić do pełnego zdrowia”. Bardzo lubię ten moment, kiedy mam przed sobą trudną sprawę, rozmowę i mogę ją delegować Bogu. Mówię wtedy: „Panie, zajmij się tym. Daj mi mądrość, światło, rozeznanie, cierpliwość, których potrzebuję. Pokieruj moimi myślami”. Czujesz, że brakuje ci energii, dopadło cię wyczerpanie, zniechęcenie? Mów: „Panie, dodaj mi siły i wytrwałości, pomóż się wyciszyć i odpocząć”. Jaką modlitwę chcesz przynieś dzisiaj Bogu? Niech to będzie twoim nowym nawykiem – błyskawiczne przekształcanie zmartwienia w modlitwę.\n\n„Panie, ucz mnie, jak przychodzić od razu do Ciebie, kiedy pojawiają się troski czy zmartwienia – i jak oddawać je Tobie. Wiem, że Ty się najlepiej zajmiesz wszystkimi problemami. Bądź ze mną dzisiaj i kieruj moimi myślami. Amen”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\nâť¤ď¸Ź',
+                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nZAMIEĹ TROSKÄ W MODLITWÄ!\n\nBardzo spodobało mi się, co pisze autorka Carrie Mars: „Lubię patrzeć, jak szybko jestem w stanie zamienić myśl w modlitwę. Zauważam myśl, która mogłaby wskoczyć do pociągu niepokoju, ale zamiast tego kieruję ją ku Bogu”. Apostoł Paweł pisał: „Niczym się już nie zamartwiajcie, lecz w każdej modlitwie i błaganiu z dziękczynieniem przedstawiajcie Bogu wasze prośby. A pokój Boży, który przewyższa wszelki rozum, będzie strzegł waszych serc i myśli w Chrystusie Jezusie” (Flp.4,6). Coś cię martwi w tej chwili? Co to jest? Nazwij to i szybko zamień tę troskę w modlitwę. Czy wiesz, co tworzy najwięcej niepokoju w naszym życiu? To wyciąganie przedwczesnych wniosków co do okoliczności życiowych. Przypuśćmy, że członek rodziny spóźnia się do domu. Ty zaczynasz wyobrażać sobie różne rzeczy, panikujesz. Zamiast tego raczej pomódl się: „Boże, miej Go w swojej opiece”. Doświadczyłam tego i wiem, że Boży pokój potrafi pokonać największy strach.\n\nKtoś ma mieć operację? Módl się: „Panie, daj mądrość lekarzom, by właściwie przeprowadzili zabieg. Pomóż mu wrócić do pełnego zdrowia”. Bardzo lubię ten moment, kiedy mam przed sobą trudną sprawę, rozmowę i mogę ją delegować Bogu. Mówię wtedy: „Panie, zajmij się tym. Daj mi mądrość, światło, rozeznanie, cierpliwość, których potrzebuję. Pokieruj moimi myślami”. Czujesz, że brakuje ci energii, dopadło cię wyczerpanie, zniechęcenie? Mów: „Panie, dodaj mi siły i wytrwałości, pomóż się wyciszyć i odpocząć”. Jaką modlitwę chcesz przynieś dzisiaj Bogu? Niech to będzie twoim nowym nawykiem – błyskawiczne przekształcanie zmartwienia w modlitwę.\n\n„Panie, ucz mnie, jak przychodzić od razu do Ciebie, kiedy pojawiają się troski czy zmartwienia – i jak oddawać je Tobie. Wiem, że Ty się najlepiej zajmiesz wszystkimi problemami. Bądź ze mną dzisiaj i kieruj moimi myślami. Amen”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg22,
                     likes: 194,
                     amen: 172
@@ -3553,12 +3553,12 @@
                     id: 'post_andrzej_cuda_21_08_2026',
                     type: 'post',
                     author: aName,
-                    authorRole: 'Cuda Każdego Dnia ✨“–âś¨ â€˘ Sieradz',
+                    authorRole: 'Cuda Każdego Dnia ✨“–✨ • Sieradz',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
-                    time: '21 SIERPNIA 2026 â€˘ ✨•Šď¸Ź Cuda Każdego Dnia',
+                    time: '21 SIERPNIA 2026 • ✨•Š Cuda Każdego Dnia',
                     title: 'CUDA KAĹ»DEGO DNIA! 21 SIERPNIA 2026. KIEROWNICA CZY KOĹO ZAPASOWE?',
-                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nKIEROWNICA CZY KOĹO ZAPASOWE?\n\nCorrie ten Boom postawiła bardzo ciekawe pytanie: „Czym jest dla ciebie modlitwa, kierownicą czy kołem zapasowym?”. Jedna z naszych studentek kursu „Jak się modlić?” napisała: „Kurs bardzo mi pomógł zrozumieć znaczenie modlitwy w moim życiuâ€¦ Odkąd zaczęłam modlić się więcej, codziennie i od serca, planując i uwzględniając wszystkie szczegóły, które poznałam, czuję, jak Duch Święty mnie dotyka. Teraz nie wyobrażam sobie ani pół dnia bez tego. Nie mogę zrozumieć, jak wcześniej czasami o niej zapominałam. Po kursie modlitwa stała się sensowna i zajęła ważne miejsce w mojej codzienności”. Inny kursant pisze: „Dziękuję Wam bardzo za ten kurs, otworzył mi oczy na to, co znaczy prawdziwie się modlić. Nie chodzi o to, by klepać jakieś regułki, ale by prawdziwie, z czystym sercem i oddaniem spotykać się z Bogiem codziennie, w każdej chwili swojego życia”.\n\nNajlepszą radą, jaką możesz znaleźć dla siebie, w Bożym Słowie, jest ta: „Nieustannie się módlcie, w każdej sprawie i we wszelkich okolicznościach dziękujcie Najwyższemu” (1Tes.5,17-18). Jakie są twoje okoliczności dzisiaj? Niesprzyjające modlitwie? Bo masz dużo zajęć, nie możesz znaleźć spokojnej chwili dla siebie? Myślisz, że modlitwa wymaga jakiejś specjalnej oprawy? Bóg chce być z tobą w kontakcie zawsze i wszędzie! Nieustannie! Wow! Czy to możliwe? Możliwe! A wiesz dlaczego? Dlatego że On jest wszędzie z tobą – tuż obok jak dobry towarzysz. W samochodzie, w autobusie, kiedy zmywasz czy zmieniasz pieluchę dziecku. Kiedy się budzisz i kiedy idziesz spać. Pragnie uczestniczyć we wszystkim, co robisz, myślisz. Chce pomóc ci rozładowywać emocje. Służy swoją mądrością, kiedy nie wiesz, co robić, co powiedzieć, prostuje drogę, kiedy masz wątpliwości czy czujesz zagubienie. Zsyła pociechę i pokój. Nie uważasz, że to niezwykłe? Wielki, wszechmocny Bóg tak blisko dla ciebie! Co za ogromny przywilej. On uwielbia, kiedy z Nim rozmawiasz, słyszy cię w każdej chwili. Czego dzisiaj potrzebujesz? Możesz po prostu zawołać „Panie, pomóż”, możesz dziękować i uwielbiać Go za to, kim jest, za piękno stworzenia, które podziwiasz. Bóg czeka na twój głos, i chce czynić w twoim życiu cuda. Jak pisze Dan Hayes: „Jedno wiem, że kiedy się modlę, zbiegi okoliczności się zdarzają, kiedy się nie modlę, nie mają miejsca”.\n\n„Panie, dziękuję Ci za przywilej modlitwy. Ĺ»e mogę przychodzić bezpośrednio do Ciebie ze wszystkim i w każdej chwili. Ty nigdy nie jesteś zmęczony, nie masz mnie dość. Ĺ»adna sprawa nie wydaje Ci się zbyt mała czy błaha. Jak Ojciec zawsze służysz mądrą radą i wsparciem. Chcę całym sercem trwać przy Tobie, przynosić Ci wszystko i słyszeć, co mówisz. Dziękuję, Ojcze, że jesteś ze mną i nigdy mnie nie zostawiasz. W imieniu Pana Jezusa, amen”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\nâť¤ď¸Ź',
+                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nKIEROWNICA CZY KOĹO ZAPASOWE?\n\nCorrie ten Boom postawiła bardzo ciekawe pytanie: „Czym jest dla ciebie modlitwa, kierownicą czy kołem zapasowym?”. Jedna z naszych studentek kursu „Jak się modlić?” napisała: „Kurs bardzo mi pomógł zrozumieć znaczenie modlitwy w moim życiu… Odkąd zaczęłam modlić się więcej, codziennie i od serca, planując i uwzględniając wszystkie szczegóły, które poznałam, czuję, jak Duch Święty mnie dotyka. Teraz nie wyobrażam sobie ani pół dnia bez tego. Nie mogę zrozumieć, jak wcześniej czasami o niej zapominałam. Po kursie modlitwa stała się sensowna i zajęła ważne miejsce w mojej codzienności”. Inny kursant pisze: „Dziękuję Wam bardzo za ten kurs, otworzył mi oczy na to, co znaczy prawdziwie się modlić. Nie chodzi o to, by klepać jakieś regułki, ale by prawdziwie, z czystym sercem i oddaniem spotykać się z Bogiem codziennie, w każdej chwili swojego życia”.\n\nNajlepszą radą, jaką możesz znaleźć dla siebie, w Bożym Słowie, jest ta: „Nieustannie się módlcie, w każdej sprawie i we wszelkich okolicznościach dziękujcie Najwyższemu” (1Tes.5,17-18). Jakie są twoje okoliczności dzisiaj? Niesprzyjające modlitwie? Bo masz dużo zajęć, nie możesz znaleźć spokojnej chwili dla siebie? Myślisz, że modlitwa wymaga jakiejś specjalnej oprawy? Bóg chce być z tobą w kontakcie zawsze i wszędzie! Nieustannie! Wow! Czy to możliwe? Możliwe! A wiesz dlaczego? Dlatego że On jest wszędzie z tobą – tuż obok jak dobry towarzysz. W samochodzie, w autobusie, kiedy zmywasz czy zmieniasz pieluchę dziecku. Kiedy się budzisz i kiedy idziesz spać. Pragnie uczestniczyć we wszystkim, co robisz, myślisz. Chce pomóc ci rozładowywać emocje. Służy swoją mądrością, kiedy nie wiesz, co robić, co powiedzieć, prostuje drogę, kiedy masz wątpliwości czy czujesz zagubienie. Zsyła pociechę i pokój. Nie uważasz, że to niezwykłe? Wielki, wszechmocny Bóg tak blisko dla ciebie! Co za ogromny przywilej. On uwielbia, kiedy z Nim rozmawiasz, słyszy cię w każdej chwili. Czego dzisiaj potrzebujesz? Możesz po prostu zawołać „Panie, pomóż”, możesz dziękować i uwielbiać Go za to, kim jest, za piękno stworzenia, które podziwiasz. Bóg czeka na twój głos, i chce czynić w twoim życiu cuda. Jak pisze Dan Hayes: „Jedno wiem, że kiedy się modlę, zbiegi okoliczności się zdarzają, kiedy się nie modlę, nie mają miejsca”.\n\n„Panie, dziękuję Ci za przywilej modlitwy. Ĺ»e mogę przychodzić bezpośrednio do Ciebie ze wszystkim i w każdej chwili. Ty nigdy nie jesteś zmęczony, nie masz mnie dość. Ĺ»adna sprawa nie wydaje Ci się zbyt mała czy błaha. Jak Ojciec zawsze służysz mądrą radą i wsparciem. Chcę całym sercem trwać przy Tobie, przynosić Ci wszystko i słyszeć, co mówisz. Dziękuję, Ojcze, że jesteś ze mną i nigdy mnie nie zostawiasz. W imieniu Pana Jezusa, amen”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg21,
                     likes: 186,
                     amen: 164
@@ -3577,12 +3577,12 @@
                     id: 'post_andrzej_cuda_20_08_2026',
                     type: 'post',
                     author: aName,
-                    authorRole: 'Cuda Każdego Dnia ✨“–âś¨ â€˘ Sieradz',
+                    authorRole: 'Cuda Każdego Dnia ✨“–✨ • Sieradz',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
-                    time: '20 SIERPNIA 2026 â€˘ ✨•Šď¸Ź Cuda Każdego Dnia',
+                    time: '20 SIERPNIA 2026 • ✨•Š Cuda Każdego Dnia',
                     title: 'CUDA KAĹ»DEGO DNIA! 20 SIERPNIA 2026. WSZYSTKO MOĹ»NA ZMIENIĆ!',
-                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nWSZYSTKO MOĹ»NA ZMIENIĆ!\n\nPorozmawiajmy jeszcze trochę o tym, co działa w naszym życiu, a co nie i dlaczego. Bo przecież nie chcemy karmić się wiedzą teoretyczną, ale taką, która sprawdza się w codzienności, prawda?\n\nZadajesz sobie czasem takie pytania? Czy sposób, w jaki wychowuję dziecko, działa? Czy może muszę coś zmienić? Czy moje małżeństwo działa? Czy sposób, w jaki się komunikujemy, rozwiązujemy konflikty, współpracujemy ze sobą jest efektywny? Czy może powinniśmy coś zmienić? Czy moje życie z Bogiem działa? Wierzysz i ufasz, trzymasz się Jego Prawdy i Jego obietnic, czy raczej czujesz frustrację, słabość, zmęczenie ciągłym staraniem się, które nie przynosi efektów? Może mówisz: „Nie, nie działa, ale nie mam pojęcia, jak to zmienić”? „Moje stare sposoby nie działają. Co robić?” Nie widzisz rozwiązania, bo za mocno tkwisz w starych nawykach, koleinach zachowań, z których tak trudno wyjść. Wydaje ci się, że już nic nie da się zmienić i tak widocznie musi być?\n\nFascynuje mnie, jak pomocne bywa spojrzenie z zewnątrz. Pewnie znasz, program „Kuchenne rewolucje”. To świetny przykład tego, jak potrafimy być ślepi na własne przywary, złe skłonności czy zaniedbania. Właściciel restauracji najczęściej mówi: „Próbowaliśmy już wszystkiego i nie ma efektów”. Bardzo rzadko widzi problem w sobie, a jeszcze rzadziej jest gotów się z nim skonfrontować. Bunt, złość, „jak ona śmie mnie krytykować” – to najczęstsze reakcje. W takich sytuacjach mamy tendencję, by zrzucać winę na okoliczności, na kogoś innego.\n\nA przecież tak nie musi być! Wszystko można zmienić. Przecież „z Bogiem wszystko jest możliwe” – jak zapewnia Jego Słowo (Ĺk.1,37). Wszystko, czyli nawet to, co tobie, wydaje się już niemożliwe do zmiany. Co to jest w twoim życiu? Potrzebujesz świeżego spojrzenia kogoś z zewnątrz? Szukaj pomocy, porady, porozmawiaj z kimś zaufanym. Nie zostawiaj tego, czekając, aż samo się ułoży.\n\n„Panie, dodaj mi wiary, że z Tobą wszystko jest możliwe! Moje stare sposoby nie działają. Potrzebuję Ciebie w moim życiu. Pokaż mi co wymaga zmiany i pomóż z pokorą przyjąć prawdę. Postaw na mojej drodze kogoś, kto pomoże mi wrócić na właściwe tory i otworzyć się na to co Ty mówisz do mnie”. /opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\nâť¤ď¸Ź',
+                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nWSZYSTKO MOĹ»NA ZMIENIĆ!\n\nPorozmawiajmy jeszcze trochę o tym, co działa w naszym życiu, a co nie i dlaczego. Bo przecież nie chcemy karmić się wiedzą teoretyczną, ale taką, która sprawdza się w codzienności, prawda?\n\nZadajesz sobie czasem takie pytania? Czy sposób, w jaki wychowuję dziecko, działa? Czy może muszę coś zmienić? Czy moje małżeństwo działa? Czy sposób, w jaki się komunikujemy, rozwiązujemy konflikty, współpracujemy ze sobą jest efektywny? Czy może powinniśmy coś zmienić? Czy moje życie z Bogiem działa? Wierzysz i ufasz, trzymasz się Jego Prawdy i Jego obietnic, czy raczej czujesz frustrację, słabość, zmęczenie ciągłym staraniem się, które nie przynosi efektów? Może mówisz: „Nie, nie działa, ale nie mam pojęcia, jak to zmienić”? „Moje stare sposoby nie działają. Co robić?” Nie widzisz rozwiązania, bo za mocno tkwisz w starych nawykach, koleinach zachowań, z których tak trudno wyjść. Wydaje ci się, że już nic nie da się zmienić i tak widocznie musi być?\n\nFascynuje mnie, jak pomocne bywa spojrzenie z zewnątrz. Pewnie znasz, program „Kuchenne rewolucje”. To świetny przykład tego, jak potrafimy być ślepi na własne przywary, złe skłonności czy zaniedbania. Właściciel restauracji najczęściej mówi: „Próbowaliśmy już wszystkiego i nie ma efektów”. Bardzo rzadko widzi problem w sobie, a jeszcze rzadziej jest gotów się z nim skonfrontować. Bunt, złość, „jak ona śmie mnie krytykować” – to najczęstsze reakcje. W takich sytuacjach mamy tendencję, by zrzucać winę na okoliczności, na kogoś innego.\n\nA przecież tak nie musi być! Wszystko można zmienić. Przecież „z Bogiem wszystko jest możliwe” – jak zapewnia Jego Słowo (Ĺk.1,37). Wszystko, czyli nawet to, co tobie, wydaje się już niemożliwe do zmiany. Co to jest w twoim życiu? Potrzebujesz świeżego spojrzenia kogoś z zewnątrz? Szukaj pomocy, porady, porozmawiaj z kimś zaufanym. Nie zostawiaj tego, czekając, aż samo się ułoży.\n\n„Panie, dodaj mi wiary, że z Tobą wszystko jest możliwe! Moje stare sposoby nie działają. Potrzebuję Ciebie w moim życiu. Pokaż mi co wymaga zmiany i pomóż z pokorą przyjąć prawdę. Postaw na mojej drodze kogoś, kto pomoże mi wrócić na właściwe tory i otworzyć się na to co Ty mówisz do mnie”. /opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg,
                     likes: 142,
                     amen: 129
@@ -3596,19 +3596,19 @@
                 const cAvatar = (cProfile && cProfile.avatar && !cProfile.avatar.includes('avatar_new1')) ? cProfile.avatar : 'avatar_cezary_official.jpg';
                 const cName = (cProfile && cProfile.name) ? cProfile.name : 'Cezary Rogowski';
                 
-                const timeC1 = formatPostTimestamp(new Date(Date.now() - 22 * 3600 * 1000)) + ' â€˘ ✨ŚŤ Publiczny';
-                const timeC2 = formatPostTimestamp(new Date(Date.now() - 46 * 3600 * 1000)) + ' â€˘ ✨“– Rozważanie';
+                const timeC1 = formatPostTimestamp(new Date(Date.now() - 22 * 3600 * 1000)) + ' • ✨ŚŤ Publiczny';
+                const timeC2 = formatPostTimestamp(new Date(Date.now() - 46 * 3600 * 1000)) + ' • ✨“– Rozważanie';
 
                 posts.push({
                     id: 'post_c1',
                     type: 'post',
                     author: cName,
-                    authorRole: 'Założyciel Christian Culture âś¨',
+                    authorRole: 'Założyciel Christian Culture ✨',
                     authorAvatar: cAvatar,
                     authorSlug: 'cezaryrgowski',
                     time: timeC1,
                     title: 'Fundament Bożej Relacji',
-                    text: 'Witaj na portalu LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku. Szukajmy bratnich dusz, z którymi będziemy wspólnie służyć, modlić się i budować Boże Królestwo! â•âś¨',
+                    text: 'Witaj na portalu LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku. Szukajmy bratnich dusz, z którymi będziemy wspólnie służyć, modlić się i budować Boże Królestwo! ☕✨',
                     image: cAvatar || 'avatar_cezary_official.jpg',
                     likes: 42,
                     amen: 38
@@ -3618,7 +3618,7 @@
                     id: 'post_c2',
                     type: 'post',
                     author: cName,
-                    authorRole: 'Założyciel Christian Culture âś¨',
+                    authorRole: 'Założyciel Christian Culture ✨',
                     authorAvatar: cAvatar,
                     authorSlug: 'cezaryrgowski',
                     time: timeC2,
@@ -3637,8 +3637,8 @@
                 const wAvatar = (wProfile && wProfile.avatar && !wProfile.avatar.includes('lumina_anna')) ? wProfile.avatar : 'avatar_wioletta_official.jpg';
                 const wName = (wProfile && wProfile.name) ? wProfile.name : 'Wioletta Rogowska';
 
-                const timeW1 = formatPostTimestamp(new Date(Date.now() - 20 * 3600 * 1000)) + ' â€˘ ✨ŚŤ Publiczny';
-                const timeW2 = formatPostTimestamp(new Date(Date.now() - 44 * 3600 * 1000)) + ' â€˘ ✨“– Słowo Ĺ»ycia';
+                const timeW1 = formatPostTimestamp(new Date(Date.now() - 20 * 3600 * 1000)) + ' • ✨ŚŤ Publiczny';
+                const timeW2 = formatPostTimestamp(new Date(Date.now() - 44 * 3600 * 1000)) + ' • ✨“– Słowo Ĺ»ycia';
 
                 posts.push({
                     id: 'post_w1',
@@ -3649,7 +3649,7 @@
                     authorSlug: 'wiolettarogowska',
                     time: timeW1,
                     title: 'Miłość Przewyższająca Perły',
-                    text: 'Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień! ✨’•âś¨',
+                    text: 'Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień! ✨’•✨',
                     image: wAvatar || 'avatar_wioletta_official.jpg',
                     likes: 64,
                     amen: 59
@@ -3676,12 +3676,12 @@
                 id: 'post_tomek1',
                 type: 'post',
                 author: 'Tomasz',
-                authorRole: 'Profil Poglądowy â€˘ Pasjonat Gór ✨Ś˛',
+                authorRole: 'Profil Poglądowy • Pasjonat Gór ✨Ś˛',
                 authorAvatar: 'avatar_widget_tomek.jpg',
                 authorSlug: 'tomek',
-                time: 'Dzisiaj, 16:20 â€˘ ✨Ź”ď¸Ź Wędrówki z Bogiem',
+                time: 'Dzisiaj, 16:20 • ✨Ź” Wędrówki z Bogiem',
                 title: 'Cisza i Boża Obecność na Szlaku',
-                text: 'Nic tak nie przybliża do Stwórcy jak poranna modlitwa w górach przy wschodzie słońca. Pozdrawiam całą chrześcijańską społeczność portalu LUMINA! ✨Ś˛â›°ď¸Ź',
+                text: 'Nic tak nie przybliża do Stwórcy jak poranna modlitwa w górach przy wschodzie słońca. Pozdrawiam całą chrześcijańską społeczność portalu LUMINA! ✨Ś˛⛪',
                 image: 'worship_bg.jpg',
                 likes: 31,
                 amen: 27
@@ -3692,12 +3692,12 @@
                 id: 'post_noemi1',
                 type: 'post',
                 author: 'Noemi',
-                authorRole: 'Profil Poglądowy â€˘ Wrocław ✨Śż',
+                authorRole: 'Profil Poglądowy • Wrocław ✨Śż',
                 authorAvatar: 'avatar_noemi.jpg',
                 authorSlug: 'noemi',
-                time: 'Dzisiaj, 14:05 â€˘ â• Rozmowy o Wierze',
+                time: 'Dzisiaj, 14:05 • ☕ Rozmowy o Wierze',
                 title: 'Wdzięczność za Małe Rzeczy',
-                text: '„Pan jest moją siłą i moją tarczą, w Nim zaufało moje serce i otrzymałem pomoc.” Ĺ»yczę Wam pięknego dnia pełnego łaski! âś¨✨Śż',
+                text: '„Pan jest moją siłą i moją tarczą, w Nim zaufało moje serce i otrzymałem pomoc.” Ĺ»yczę Wam pięknego dnia pełnego łaski! ✨✨Śż',
                 image: 'avatar_noemi.jpg',
                 likes: 45,
                 amen: 39
@@ -3708,10 +3708,10 @@
                 id: 'post_dawid1',
                 type: 'post',
                 author: 'Dawid',
-                authorRole: 'Profil Poglądowy â€˘ Architekt & Muzyk ✨Žµ',
+                authorRole: 'Profil Poglądowy • Architekt & Muzyk ✨Žµ',
                 authorAvatar: 'avatar_sara.jpg',
                 authorSlug: 'dawid',
-                time: 'Wczoraj, 17:50 â€˘ ✨Ž¸ Muzyka Uwielbienia',
+                time: 'Wczoraj, 17:50 • ✨Ž¸ Muzyka Uwielbienia',
                 title: 'Nowe Dźwięki Ku Bożej Chwale',
                 text: 'Przygotowujemy z zespołem nową aranżację Psalmów. Nie ma nic piękniejszego niż łączenie talentów ze służbą dla Pana! ✨Ž¶✨Ž¸',
                 image: '',
@@ -3724,12 +3724,12 @@
                 id: 'post_weronika1',
                 type: 'post',
                 author: 'Weronika',
-                authorRole: 'Profil Poglądowy â€˘ Graficzka ✨Ž¨',
+                authorRole: 'Profil Poglądowy • Graficzka ✨Ž¨',
                 authorAvatar: 'avatar_widget_ania.jpg',
                 authorSlug: 'weronika',
-                time: 'Wczoraj, 15:30 â€˘ ✨Ž¨ Sztuka i Wiara',
+                time: 'Wczoraj, 15:30 • ✨Ž¨ Sztuka i Wiara',
                 title: 'Piękno Stworzenia',
-                text: 'Każdy wschód słońca to nowe płótno namalowane ręką Boga. Szukajmy piękna i dobra we wszystkim, co nas otacza! âś¨',
+                text: 'Każdy wschód słońca to nowe płótno namalowane ręką Boga. Szukajmy piękna i dobra we wszystkim, co nas otacza! ✨',
                 image: 'avatar_widget_ania.jpg',
                 likes: 39,
                 amen: 34
@@ -3738,7 +3738,7 @@
             return posts;
         }
 
-        // â”€â”€ Admin Pinning Management â”€â”€
+        // ── Admin Pinning Management ──
         function getPinnedPostIds() {
             try {
                 return JSON.parse(localStorage.getItem('lumina_pinned_post_ids') || '[]');
@@ -3756,13 +3756,13 @@
                 showToast('Wpis został odpięty z góry tablicy ✨“Ś');
             } else {
                 pinned.unshift(postId);
-                showToast('Wpis został przypięty na samej górze tablicy! ✨“Śâ­');
+                showToast('Wpis został przypięty na samej górze tablicy! ✨“Ś⭐');
             }
             localStorage.setItem('lumina_pinned_post_ids', JSON.stringify(pinned));
             renderFeed();
         }
 
-        // â”€â”€ Render 1:1 Feed with Interleaved CC Mission Ads & Admin Pinning â”€â”€
+        // ── Render 1:1 Feed with Interleaved CC Mission Ads & Admin Pinning ──
         function renderFeed() {
             const container = document.getElementById('feedStream1x1');
             if (!container) return;
@@ -3772,7 +3772,7 @@
             const pinnedPostIds = getPinnedPostIds();
             const isAdmin = localStorage.getItem('lumina_admin') === '1';
 
-            // â”€â”€ Each broadcast channel appears as a separate card between posts â”€â”€
+            // ── Each broadcast channel appears as a separate card between posts ──
             // Fisher-Yates shuffle to build a random cycle of all 15 channels
             if (!window._broadcastCycleOrder || window._broadcastCycleOrder.length === 0) {
                 const arr = LUMINA_BROADCAST_CHANNELS.map((_, i) => i);
@@ -3841,7 +3841,7 @@
 
             let cIndex = 0;
 
-            // â”€â”€ ✨§  INTELIGENTNE SORTOWANIE: najnowsze posty na górze â”€â”€
+            // ── ✨§  INTELIGENTNE SORTOWANIE: najnowsze posty na górze ──
             // Używamy extractSortTs() który rozumie: Firestore Timestamp, Unix ms, ISO string,
             // polskie etykiety daty "22 SIERPNIA 2026", "Dzisiaj, 16:20", "Wczoraj, 17:50" itp.
             normalUserPosts.sort((a, b) => extractSortTs(b) - extractSortTs(a));
@@ -3927,7 +3927,7 @@
             if (combined.length === 0) {
                 container.innerHTML = `
                     <div style="text-align:center; padding:50px 20px; background:var(--bg-card); border-radius:20px; border:1px solid var(--border-glass);">
-                        <div style="font-size:2.4rem; margin-bottom:10px;">✨•Šď¸Ź</div>
+                        <div style="font-size:2.4rem; margin-bottom:10px;">✨•Š</div>
                         <h3 style="font-size:1.2rem; font-family:'Outfit',sans-serif; margin-bottom:6px;">Brak wpisów w wybranej kategorii</h3>
                         <p style="font-size:0.85rem; color:var(--text-secondary);">Wybierz inną zakładkę lub dodaj nową publikację.</p>
                     </div>
@@ -3964,7 +3964,7 @@
                             <span style="font-size:0.75rem; color:#94a3b8;"><i class="fa-solid fa-dove"></i> Podziękowanie</span>
                         </div>
                         <h4 style="color:#fff; font-size:1.1rem; font-weight:700; margin-bottom:6px;">Ściana Wdzięczności</h4>
-                        <p style="color:#cbd5e1; font-size:0.88rem; margin-bottom:14px; line-height:1.5;">Każdy dar serca to realne wsparcie ewangelizacji w mediach. Dziękujemy Wam za wspólne budowanie tego Bożego dzieła! ✨™Źâś¨</p>
+                        <p style="color:#cbd5e1; font-size:0.88rem; margin-bottom:14px; line-height:1.5;">Każdy dar serca to realne wsparcie ewangelizacji w mediach. Dziękujemy Wam za wspólne budowanie tego Bożego dzieła! ✨™Ź✨</p>
                         
                         <div style="width: 100%; border-radius:14px; overflow:hidden; background:transparent; display:flex; justify-content:center;">
                             <iframe height="85px" width="100%" src="https://donorbox.org/embed/christian-culture-radio?donor_wall_color=%23f59e0b&only_donor_wall=true" style="width: 100%; max-width:500px; min-width:310px; min-height: 85px; height: 85px; border-radius:10px; filter: invert(1) hue-rotate(180deg) contrast(1.2) brightness(1.1);" seamless="seamless" name="donorbox" frameborder="0" scrolling="no"></iframe>
@@ -3972,7 +3972,7 @@
                     </div>`;
                 }
 
-                // â”€â”€ Indywidualna Karta Kanału Nadawczego (1 kanał = 1 karta między postami) â”€â”€
+                // ── Indywidualna Karta Kanału Nadawczego (1 kanał = 1 karta między postami) ──
                 if (item._isBroadcastChannel) {
                     const ch = LUMINA_BROADCAST_CHANNELS[item._chIdx] || LUMINA_BROADCAST_CHANNELS[0];
                     const cardNum = item._chIdx + 1;
@@ -4022,7 +4022,7 @@
                             <div class="post-actions-bar">
                                 <div style="display:flex; gap:6px; align-items:center; font-size:0.75rem; color:#94a3b8;">
                                     <i class="fa-solid fa-tv" style="color:#f59e0b;"></i>
-                                    <span>Kanał <b style="color:#fef08a;">${cardNum}</b> z 15 â€˘ Scena OBS</span>
+                                    <span>Kanał <b style="color:#fef08a;">${cardNum}</b> z 15 • Scena OBS</span>
                                 </div>
                                 <a href="nadawaj.html" class="post-action-btn" style="text-decoration:none;" title="Panel Nadawania OBS"><i class="fa-solid fa-tv"></i> Panel OBS</a>
                             </div>
@@ -4030,7 +4030,7 @@
                     `;
                 }
 
-                // â”€â”€ Specjalna karta rozważania "Dobrze, że jesteś" â”€â”€
+                // ── Specjalna karta rozważania "Dobrze, że jesteś" ──
                 if (item._isReflection) {
                     const imgHtml = item.image
                         ? `<div style="width:100%; aspect-ratio:16/9; border-radius:14px; overflow:hidden; margin-bottom:18px;">
@@ -4073,7 +4073,7 @@
                             </div>
                         </article>
 
-                        <!-- â•â•â•â•â•â•â•â•â•â• OFICJALNY PATRON: KONCEPT STUDIO (POD ROZWAĹ»ANIEM) â•â•â•â•â•â•â•â•â•â• -->
+                        <!-- ══════════ OFICJALNY PATRON: KONCEPT STUDIO (POD ROZWAĹ»ANIEM) ══════════ -->
                         <aside class="official-sponsor-banner-card" style="margin: 24px 0 28px; background: linear-gradient(135deg, rgba(15,23,42,0.92), rgba(30,41,59,0.92)); border: 1.5px solid rgba(250,204,21,0.45); border-radius: 20px; overflow: hidden; box-shadow: 0 12px 36px rgba(0,0,0,0.65);">
                             <div style="padding: 10px 18px; background: rgba(250,204,21,0.12); border-bottom: 1px solid rgba(250,204,21,0.25); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
                                 <div style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 800; color: #facc15; text-transform: uppercase; letter-spacing: 0.8px;">
@@ -4088,11 +4088,11 @@
                             </a>
                             <div style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
                                 <div style="flex: 1; min-width: 240px;">
-                                    <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; color: #fff; margin: 0 0 4px 0;">Koncept Studio â€˘ Kreacja Wizualna, Druk & Branding</h3>
+                                    <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; color: #fff; margin: 0 0 4px 0;">Koncept Studio • Kreacja Wizualna, Druk & Branding</h3>
                                     <p style="font-size: 0.82rem; color: #94a3b8; margin: 0; line-height: 1.4;">Dziękujemy naszemu oficjalnemu patronowi za nieocenione wsparcie rozwoju chrześcijańskich mediów i dzieła ewangelizacyjnego CC.</p>
                                 </div>
                                 <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="padding: 9px 18px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(245,158,11,0.35); flex-shrink: 0;">
-                                    Odwiedź Koncept Studio âž”
+                                    Odwiedź Koncept Studio ➜
                                 </a>
                             </div>
                         </aside>
@@ -4209,7 +4209,7 @@
                                 <div class="comment-item">
                                     <img src="avatar_widget_tomek.jpg" alt="Tomek" class="comment-avatar">
                                     <div class="comment-bubble">
-                                        <b style="color:#38bdf8;">Tomasz:</b> Błogosławieństwa Bożego! Piękne świadectwo i wspaniała inicjatywa! ✨™Źâś¨
+                                        <b style="color:#38bdf8;">Tomasz:</b> Błogosławieństwa Bożego! Piękne świadectwo i wspaniała inicjatywa! ✨™Ź✨
                                     </div>
                                 </div>
                             </div>
@@ -4254,7 +4254,7 @@
                 let cnt = parseInt(countEl.textContent, 10) || 0;
                 countEl.textContent = btn.classList.contains('amen-active') ? cnt + 1 : cnt - 1;
             }
-            showToast('Twoje AMEN zostało dodane! ✨™Źâś¨');
+            showToast('Twoje AMEN zostało dodane! ✨™Ź✨');
         }
 
         function toggleComments(postId) {
@@ -4279,19 +4279,19 @@
             `;
             list.appendChild(newComment);
             input.value = '';
-            showToast('Komentarz został pomyślnie dodany! ✨’¬âś¨');
+            showToast('Komentarz został pomyślnie dodany! ✨✨');
         }
 
         function sharePostLink(postId) {
             const url = window.location.origin + window.location.pathname + '#' + postId;
             navigator.clipboard.writeText(url).then(() => {
-                showToast('Link do wpisu skopiowany do schowka! ✨”—âś¨');
+                showToast('Link do wpisu skopiowany do schowka! ✨✨');
             }).catch(() => {
                 prompt('Skopiuj link do wpisu:', url);
             });
         }
 
-        // â”€â”€ Campaign Publisher Modal Logic â”€â”€
+        // ── Campaign Publisher Modal Logic ──
         function openCampaignModal(type) {
             selectCampaignType(type || 'ad');
             document.getElementById('campaignModal').classList.add('open');
@@ -4332,7 +4332,7 @@
             } else if (type === 'announcement') {
                 iconEl.textContent = '✨“ś';
                 titleEl.textContent = 'Dodaj Ogłoszenie';
-                btnTextEl.placeholder = 'np. Przeczytaj Szczegóły ✨•Šď¸Ź';
+                btnTextEl.placeholder = 'np. Przeczytaj Szczegóły ✨•Š';
                 eventFields.style.display = 'none';
             } else if (type === 'event') {
                 iconEl.textContent = '✨“…';
@@ -4345,12 +4345,12 @@
         function handleCampaignImgSelect(e) {
             const file = e.target.files[0];
             if (!file) return;
-            showToast('Przetwarzanie grafiki... âŹł');
+            showToast('Przetwarzanie grafiki... 🕊️');
             compressAndReadImage(file, 900, 900, 0.85, function(dataUrl) {
                 attachedCampaignImgDataUrl = dataUrl;
                 document.getElementById('campImgPreviewEl').src = dataUrl;
                 document.getElementById('campImgPreviewContainer').style.display = 'block';
-                showToast('Grafika została dołączona do kampanii! ✨–Ľď¸Źâś¨');
+                showToast('Grafika została dołączona do kampanii! ✨–Ľ✨');
             });
             e.target.value = '';
         }
@@ -4397,7 +4397,7 @@
                 const persona = window.LuminaDB.setActiveMissionPersona(personaId);
                 const avatarEl = document.getElementById('activePersonaAvatar');
                 if (avatarEl && persona) avatarEl.src = persona.avatar;
-                if (persona) showToast(`Aktywna tożsamość: ${persona.name} (${persona.role}) âś¨`);
+                if (persona) showToast(`Aktywna tożsamość: ${persona.name} (${persona.role}) ✨`);
             }
         };
 
@@ -4435,7 +4435,7 @@
                 authorAvatar: persona.avatar,
                 authorSlug: persona.slug,
                 authorBadge: persona.badge,
-                createdAt: 'Przed chwilą â€˘ ✨Śź Misja CC',
+                createdAt: 'Przed chwilą • ✨Śź Misja CC',
                 likes: 12,
                 amen: 8
             };
@@ -4473,11 +4473,11 @@
             removeCampaignImg();
 
             renderFeed();
-            showToast(`Opublikowano na tablicy i w profilu: ${persona.name}! ✨“˘âś¨`);
+            showToast(`Opublikowano na tablicy i w profilu: ${persona.name}! ✨“˘✨`);
         }
 
         
-        /// â”€â”€ Smart Multi-Source Navigation for "Mój Profil" â”€â”€
+        /// ── Smart Multi-Source Navigation for "Mój Profil" ──
         window.handleMyProfileNavigation = function(event) {
             if (event && event.preventDefault) event.preventDefault();
 
@@ -4552,7 +4552,7 @@
             }
         };
 
-// â”€â”€ Toast System â”€â”€
+// ── Toast System ──
         let toastTimer = null;
         function showToast(msg) {
             const toast = document.getElementById('toast');
@@ -4562,7 +4562,7 @@
             toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
-        // â”€â”€ Radio CC Player â”€â”€
+        // ── Radio CC Player ──
         function toggleRadio() {
             if (window.LuminaRadio) {
                 window.LuminaRadio.toggle(true);
@@ -4573,7 +4573,7 @@
                         audio.src = "https://stream.zeno.fm/umej2cuqncluv?t=" + Date.now();
                         audio.play().then(() => {
                             localStorage.setItem('lumina_radio_playing', 'true');
-                            showToast('Radio Christian Culture Gra na Ĺ»ywo! ✨“»âś¨');
+                            showToast('Radio Christian Culture Gra na Ĺ»ywo! ✨“»✨');
                         }).catch(() => showToast('Kliknij ponownie, aby odtworzyć radio'));
                     } else {
                         audio.pause();
@@ -4597,7 +4597,7 @@
             } catch(e) {}
         }
 
-        // â”€â”€ Realtime Messenger Dual Engine (Public Live Chat + Private 1:1) â”€â”€
+        // ── Realtime Messenger Dual Engine (Public Live Chat + Private 1:1) ──
         let currentMessengerMainTab = 'public';
         let publicChatUnsubscribe = null;
         let activeChatSession = null;
@@ -4658,7 +4658,7 @@
             }
         }
 
-        // â•â•â•â•â•â•â•â•â•â• BEZPIECZEĹSTWO CZATU: escapowanie danych użytkownika (anty-XSS) â•â•â•â•â•â•â•â•â•â•
+        // ══════════ BEZPIECZEĹSTWO CZATU: escapowanie danych użytkownika (anty-XSS) ══════════
         function escapeHtml(str) {
             return String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
@@ -4684,7 +4684,7 @@
             let html = `
                 <div style="text-align: center; margin: 6px 0;">
                     <span style="font-size: 0.72rem; color: #94a3b8; background: rgba(255,255,255,0.05); padding: 5px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-                        ✨•Šď¸Ź Witaj w Ogólnym Czacie Społeczności LUMINA! Przywitaj się z braćmi i siostrami w Chrystusie âś¨
+                        ✨•Š Witaj w Ogólnym Czacie Społeczności LUMINA! Przywitaj się z braćmi i siostrami w Chrystusie ✨
                     </span>
                 </div>
             `;
@@ -4736,7 +4736,7 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // â•â•â•â•â•â•â•â•â•â• REAKCJE EMOTIKONAMI NA WIADOMOŚCI CZATU â•â•â•â•â•â•â•â•â•â•
+        // ══════════ REAKCJE EMOTIKONAMI NA WIADOMOŚCI CZATU ══════════
         window.handleChatReaction = async function(type, chatId, msgId, emoji) {
             if (!window.LuminaDB) return;
             const myUser = window.LuminaDB.getCurrentUser();
@@ -4761,7 +4761,7 @@
             picker.className = 'lumina-reaction-picker';
             picker.style.cssText = 'position:absolute; bottom:calc(100% + 4px); right:0; background:rgba(15,23,42,0.97); border:1px solid rgba(255,255,255,0.22); border-radius:22px; padding:5px 9px; display:flex; gap:6px; align-items:center; z-index:10000; box-shadow:0 10px 30px rgba(0,0,0,0.7); backdrop-filter:blur(14px); user-select:none; max-width:85vw; overflow-x:auto; scrollbar-width:none;';
 
-            const emojis = ['✨‘Ť', 'âť¤ď¸Ź', '✨Š', '✨™Ź', '✨”Ą', '✨•Šď¸Ź', 'âśťď¸Ź', '✨‚', '✨®', '✨˘', '✨‘Ź', '✨Śą'];
+            const emojis = ['✨‘Ť', '❤️', '✨Š', '✨™Ź', '✨Ą', '✨•Š', '❌', '✨‚', '✨®', '✨˘', '✨‘Ź', '✨Śą'];
             emojis.forEach(em => {
                 const sp = document.createElement('span');
                 sp.textContent = em;
@@ -4824,7 +4824,7 @@
             `;
         }
 
-                // â•â•â•â•â•â•â•â•â•â• ZGĹASZANIE WIADOMOŚCI CZATU DO MODERATORĂ“W LUMINA â•â•â•â•â•â•â•â•â•â•
+                // ══════════ ZGĹASZANIE WIADOMOŚCI CZATU DO MODERATORĂ“W LUMINA ══════════
         window.reportChatMessage = async function(messageId, authorId) {
             if (!window.LuminaDB || typeof window.LuminaDB.reportContent !== 'function') return;
             const reason = window.prompt('Dlaczego zgłaszasz tę wiadomość? (opcjonalnie opisz powód)', '');
@@ -4837,7 +4837,7 @@
                     reason: reason || 'Niewłaściwa treść na czacie',
                 });
                 if (typeof showToast === 'function') {
-                    showToast(result?.message || 'Zgłoszenie zostało wysłane do moderatorów. ✨›ˇď¸Ź');
+                    showToast(result?.message || 'Zgłoszenie zostało wysłane do moderatorów. ✨›ˇ');
                 } else {
                     alert(result?.message || 'Zgłoszenie zostało wysłane do moderatorów.');
                 }
@@ -4865,13 +4865,13 @@
                     senderId: fromId,
                     senderName: myProfile?.name || myUser?.displayName || (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')),
                     senderAvatar: myProfile?.avatar || myUser?.photoURL || (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')),
-                    senderBadge: (fromId === 'cezaryrgowski' ? '✨‘‘ Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '✨•Šď¸Ź Społeczność')),
+                    senderBadge: (fromId === 'cezaryrgowski' ? '✨‘‘ Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '✨•Š Społeczność')),
                     text: text
                 });
             }
         }
 
-        // â”€â”€ Personal Settings & Force App Update â”€â”€
+        // ── Personal Settings & Force App Update ──
         function openPersonalSettingsModal() {
             const m = document.getElementById('personalSettingsModal');
             if (m) m.classList.add('open');
@@ -4936,7 +4936,7 @@
             if (window.LuminaDB && typeof window.LuminaDB.showInAppChatBanner === 'function') {
                 window.LuminaDB.showInAppChatBanner({
                     title: 'Masz wiadomość ✨’Ś',
-                    body: 'Wioletta Rogowska: Szczęść Boże! Nowy wpis czeka na Ciebie 🌸âś¨',
+                    body: 'Wioletta Rogowska: Szczęść Boże! Nowy wpis czeka na Ciebie 🌸✨',
                     avatar: 'avatar_wioletta_official.jpg',
                     senderName: 'Wioletta Rogowska',
                     senderId: 'wiolettarogowska',
@@ -4947,8 +4947,8 @@
             // 4. Android / OS System Drawer Notification (Belka Powiadomień jak FB / YT)
             if (window.LuminaDB && typeof window.LuminaDB.showSystemDrawerNotification === 'function') {
                 await window.LuminaDB.showSystemDrawerNotification({
-                    title: 'Masz wiadomość ✨’Ś â€˘ Wioletta Rogowska',
-                    body: 'Wioletta Rogowska: Szczęść Boże! Pozdrawiam ciepło w Panu 🌸✨•Šď¸Ź',
+                    title: 'Masz wiadomość ✨’Ś • Wioletta Rogowska',
+                    body: 'Wioletta Rogowska: Szczęść Boże! Pozdrawiam ciepło w Panu 🌸✨•Š',
                     avatar: 'avatar_wioletta_official.jpg',
                     senderName: 'Wioletta Rogowska',
                     senderId: 'wiolettarogowska',
@@ -4962,19 +4962,19 @@
                     try {
                         const reg = await navigator.serviceWorker?.ready;
                         const notifOpts = {
-                            body: 'Wioletta Rogowska: Szczęść Boże! Pozdrawiam ciepło w Panu 🌸✨•Šď¸Ź',
+                            body: 'Wioletta Rogowska: Szczęść Boże! Pozdrawiam ciepło w Panu 🌸✨•Š',
                             icon: new URL('avatar_wioletta_official.jpg', window.location.href).href,
                             badge: new URL('lumina-icon-192.png', window.location.href).href,
                             tag: 'lumina_test_drawer',
                             renotify: true,
                             requireInteraction: true,
                             vibrate: [200, 100, 200, 100, 200],
-                            actions: [{ action: 'open_chat', title: '✨’¬ Odpowiedz' }]
+                            actions: [{ action: 'open_chat', title: '✨ Odpowiedz' }]
                         };
                         if (reg && reg.showNotification) {
-                            await reg.showNotification('Masz wiadomość ✨’Ś â€˘ Wioletta Rogowska', notifOpts);
+                            await reg.showNotification('Masz wiadomość ✨’Ś • Wioletta Rogowska', notifOpts);
                         } else {
-                            new Notification('Masz wiadomość ✨’Ś â€˘ Wioletta Rogowska', notifOpts);
+                            new Notification('Masz wiadomość ✨’Ś • Wioletta Rogowska', notifOpts);
                         }
                     } catch(e) {}
                 }
@@ -4982,7 +4982,7 @@
 
             // 5. Visual confirmation toast
             if (typeof showToast === 'function') {
-                showToast('✨”” Wysłano powiadomienie na belkę telefonu i odtworzono dźwięk! âś¨');
+                showToast('✨ Wysłano powiadomienie na belkę telefonu i odtworzono dźwięk! ✨');
             }
         };
 
@@ -5098,7 +5098,7 @@
             if (box) {
                 box.innerHTML = `
                     <div style="text-align:center;margin:10px 0;">
-                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${escapeHtml(activeChatSession.targetName)} w Chrystusie ✨•Šď¸Ź</span>
+                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${escapeHtml(activeChatSession.targetName)} w Chrystusie ✨•Š</span>
                     </div>
                 `;
             }
@@ -5125,7 +5125,7 @@
 
             let html = `
                 <div style="text-align:center;margin:8px 0;">
-                    <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Początek rozmowy ✨•Šď¸Ź</span>
+                    <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Początek rozmowy ✨•Š</span>
                 </div>
             `;
 
@@ -5143,7 +5143,7 @@
                     if (msg.isRead || msg.status === 'read') {
                         const readTime = msg.readAt ? new Date(msg.readAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
                         const whoRead = msg.readByName ? ` przez: ${escapeHtml(msg.readByName)}` : '';
-                        readStatusHtml = `<span style="color:#38bdf8; font-weight:800; display:inline-flex; align-items:center; gap:3px; font-size:0.65rem;" title="Przeczytano${whoRead} (${readTime || 'przed chwilą'})"><i class="fa-solid fa-check-double" style="font-size:0.70rem; color:#38bdf8;"></i> Przeczytana${readTime ? ' â€˘ ' + readTime : ''}</span>`;
+                        readStatusHtml = `<span style="color:#38bdf8; font-weight:800; display:inline-flex; align-items:center; gap:3px; font-size:0.65rem;" title="Przeczytano${whoRead} (${readTime || 'przed chwilą'})"><i class="fa-solid fa-check-double" style="font-size:0.70rem; color:#38bdf8;"></i> Przeczytana${readTime ? ' • ' + readTime : ''}</span>`;
                     } else if (msg.delivered || msg.status === 'delivered') {
                         readStatusHtml = `<span style="color:#94a3b8; display:inline-flex; align-items:center; gap:3px; font-size:0.65rem;" title="Dostarczono na serwer"><i class="fa-solid fa-check-double" style="font-size:0.70rem; color:#94a3b8;"></i> Dostarczona</span>`;
                     } else {
@@ -5192,7 +5192,7 @@
             }
         }
 
-        // â”€â”€ Community Safety & Moderation Handlers (Etap 4) â”€â”€
+        // ── Community Safety & Moderation Handlers (Etap 4) ──
         function openReportModal(targetType, targetId, targetAuthor) {
             document.getElementById('reportTargetType').value = targetType || 'post';
             document.getElementById('reportTargetId').value = targetId || '';
@@ -5221,7 +5221,7 @@
                 });
                 showToast(res.message);
             } else {
-                showToast('Zgłoszenie zostało przesłane do moderatorów LUMINA! ✨›ˇď¸Ź✨•Šď¸Ź');
+                showToast('Zgłoszenie zostało przesłane do moderatorów LUMINA! ✨›ˇ✨•Š');
             }
         }
 
@@ -5243,7 +5243,7 @@
         );
 
         
-        // â”€â”€ Smooth Scroll to Top Logic â”€â”€
+        // ── Smooth Scroll to Top Logic ──
         window.scrollToTopFeed = function() {
             try {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -5270,7 +5270,7 @@
         window.addEventListener('resize', checkTablicaScroll, { passive: true });
 
         window.addEventListener('DOMContentLoaded', () => {
-            // â”€â”€ ADMIN MODE DETECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ── ADMIN MODE DETECTION ────────────────────────────────────────
             // Panel "Występujesz jako" is ONLY visible for the founder.
             // Activate via: ?admin=1 in URL (stores in localStorage).
             // Clear via: ?admin=0 or removing localStorage key.
@@ -5290,10 +5290,10 @@
             if (isAdmin && founderHub) {
                 founderHub.classList.add('admin-active');
             }
-            // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ────────────────────────────────────────────────────────────────
 
             
-        /* â•â•â•â•â•â•â•â•â•â• 9:16 ADVERTISING ENGINE & STRICT ADMIN AUTH â•â•â•â•â•â•â•â•â•â• */
+        /* ══════════ 9:16 ADVERTISING ENGINE & STRICT ADMIN AUTH ══════════ */
         const STORAGE_ADS_916_KEY = 'lumina_custom_ads_916';
 
         function isLuminaAdmin() {
@@ -5412,7 +5412,7 @@
                     document.getElementById('ad916ImageDataUrl').value = compressed;
                     document.getElementById('ad916PreviewImg').src = compressed;
                     document.getElementById('ad916PreviewWrapper').style.display = 'block';
-                    showToast('Grafika 9:16 została wgrana i dopasowana! ✨–Ľď¸Źâś¨');
+                    showToast('Grafika 9:16 została wgrana i dopasowana! ✨–Ľ✨');
                 };
                 img.src = event.target.result;
             };
@@ -5431,7 +5431,7 @@
             const windowBadge = document.getElementById('ad916WindowBadge').value.trim() || 'Oficjalna Reklama';
             const contentTitle = document.getElementById('ad916ContentTitle').value.trim();
             const contentDesc = document.getElementById('ad916ContentDesc').value.trim();
-            const btnText = document.getElementById('ad916BtnText').value.trim() || 'Odwiedź Stronę ✨”—';
+            const btnText = document.getElementById('ad916BtnText').value.trim() || 'Odwiedź Stronę ✨';
             const btnUrl = document.getElementById('ad916BtnUrl').value.trim() || 'https://polskieradio.cc';
             const image = document.getElementById('ad916ImageDataUrl').value.trim() || 'patronat_misyjny_916.jpg';
 
@@ -5465,7 +5465,7 @@
             saveCustomAds916ToStorage(ads);
             closeModal('ad916Modal');
             renderCustomAds916();
-            showToast(isPublish ? 'Reklama 9:16 została opublikowana w panelu bocznym! ✨“˘âś¨' : 'Zapisano wersję roboczą reklamy ✨’ľ');
+            showToast(isPublish ? 'Reklama 9:16 została opublikowana w panelu bocznym! ✨“˘✨' : 'Zapisano wersję roboczą reklamy ✨’ľ');
         }
 
         function handleAd916FormSubmit(e) {
@@ -5495,7 +5495,7 @@
             ads = ads.filter(a => a.id !== id);
             saveCustomAds916ToStorage(ads);
             renderCustomAds916();
-            showToast('Reklama została pomyślnie usunięta! ✨—‘ď¸Ź');
+            showToast('Reklama została pomyślnie usunięta! ✨—‘');
         }
 
         function renderCustomAds916() {
@@ -5530,7 +5530,7 @@
                         <div class="card-916-overlay">
                             <div class="card-916-title">${ad.contentTitle}</div>
                             <div class="card-916-sub">${ad.contentDesc}</div>
-                            <span class="btn-916-action">${ad.btnText || 'Sprawdź Szczegóły ✨”—'}</span>
+                            <span class="btn-916-action">${ad.btnText || 'Sprawdź Szczegóły ✨'}</span>
                         </div>
                     </a>
                 `;
@@ -5553,7 +5553,7 @@
 
             checkAdminStatusAndToggleUI();
 
-            // â”€â”€ ✨’¬ DYNAMICZNA LISTA ROZMĂ“W PRYWATNYCH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ── ✨ DYNAMICZNA LISTA ROZMĂ“W PRYWATNYCH ──────────────────────
             // Render DM conversations list from Firestore subscribeToUserChats
             let _dmChatsUnsubscribe = null;
 
@@ -5568,13 +5568,13 @@
                     || localStorage.getItem('lumina_current_user_slug') || 'guest';
                 const myId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(rawMyId) : rawMyId;
 
-                // â”€â”€ PINNED (hardcoded) system accounts always on top â”€â”€
+                // ── PINNED (hardcoded) system accounts always on top ──
                 const SYSTEM_ACCOUNTS = [
                     { slug: 'cezaryrgowski',    name: 'Cezary Rogowski',    avatar: 'avatar_cezary_official.jpg',    badge: '✨‘‘ Założyciel',  badgeColor: '#facc15', borderColor: '#ec4899', gradient: true },
                     { slug: 'wiolettarogowska', name: 'Wioletta Rogowska',  avatar: 'avatar_wioletta_official.jpg',  badge: '🌸 Liderka CC',  badgeColor: '#10b981', borderColor: '#c084fc', gradient: false }
                 ];
 
-                // â”€â”€ Format last message time â”€â”€
+                // ── Format last message time ──
                 function fmtTs(ts) {
                     if (!ts) return '';
                     let ms = 0;
@@ -5592,14 +5592,14 @@
                     return d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'short' });
                 }
 
-                // â”€â”€ Build HTML for one DM entry â”€â”€
+                // ── Build HTML for one DM entry ──
                 function buildDMEntry(slug, name, avatar, badge, badgeColor, borderColor, isGradient, lastMsg, lastTs, unread) {
                     const border = isGradient
                         ? 'background:linear-gradient(135deg,rgba(236,72,153,0.15),rgba(139,92,246,0.15)); border:1.5px solid rgba(236,72,153,0.4);'
                         : 'background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);';
                     const preview = lastMsg
-                        ? `<span style="color:${unread ? '#f472b6' : '#94a3b8'}; font-weight:${unread ? '700' : '400'}">${lastMsg.length > 42 ? lastMsg.slice(0,42)+'â€¦' : lastMsg}</span>`
-                        : `<span style="color:#64748b; font-style:italic;">Kliknij, aby otworzyć bezpieczny czat 1:1 ✨•Šď¸Ź</span>`;
+                        ? `<span style="color:${unread ? '#f472b6' : '#94a3b8'}; font-weight:${unread ? '700' : '400'}">${lastMsg.length > 42 ? lastMsg.slice(0,42)+'…' : lastMsg}</span>`
+                        : `<span style="color:#64748b; font-style:italic;">Kliknij, aby otworzyć bezpieczny czat 1:1 ✨•Š</span>`;
                     const unreadBadge = unread ? `<span style="min-width:18px; height:18px; border-radius:9px; background:#ec4899; color:#fff; font-size:0.65rem; font-weight:800; display:inline-flex; align-items:center; justify-content:center; padding:0 4px; margin-left:4px;">${unread > 99 ? '99+' : unread}</span>` : '';
                     const timeStr = fmtTs(lastTs);
                     return `
@@ -5625,7 +5625,7 @@
                         </div>`;
                 }
 
-                // â”€â”€ Build the full list â”€â”€
+                // ── Build the full list ──
                 let html = '';
 
                 // 1. Always-visible system pinned accounts (top)
@@ -5649,19 +5649,19 @@
                     if (!otherSlug) return;
                     const name   = chat.otherName   || chat[`name_${otherSlug}`]  || otherSlug;
                     const avatar = chat.otherAvatar  || chat[`avatar_${otherSlug}`] || 'lumina_icon.jpg';
-                    const badge  = '✨•Šď¸Ź Społeczność';
+                    const badge  = '✨•Š Społeczność';
                     const lastMsg = chat.lastMessage || null;
                     const lastTs  = chat.lastMessageTimestamp || null;
                     const unread  = chat.unreadCount?.[myId] || 0;
                     html += buildDMEntry(otherSlug, name, avatar, badge, '#94a3b8', '#c084fc', false, lastMsg, lastTs, unread);
                 });
 
-                // â”€â”€ Guest / no conversations fallback â”€â”€
+                // ── Guest / no conversations fallback ──
                 if (!html) {
                     html = `<div style="text-align:center; padding:24px 14px; color:#64748b; font-size:0.84rem;">
                         <i class="fa-solid fa-comment-dots" style="font-size:2rem; color:#334155; margin-bottom:10px; display:block;"></i>
                         Jeszcze nie masz żadnych rozmów.<br>
-                        <span style="color:#a855f7; font-size:0.78rem;">Kliknij awatar kogoś na tablicy, aby zacząć czat ✨•Šď¸Ź</span>
+                        <span style="color:#a855f7; font-size:0.78rem;">Kliknij awatar kogoś na tablicy, aby zacząć czat ✨•Š</span>
                     </div>`;
                 }
 
@@ -5693,7 +5693,7 @@
 
             // Init immediately (covers guest + cached user)
             setTimeout(initDMConversationsListener, 500);
-            // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            // ────────────────────────────────────────────────────────────────
 
             if (window.LuminaDB && typeof window.LuminaDB.onAuthStateChanged === 'function') {
                 window.LuminaDB.onAuthStateChanged((user) => {
@@ -5756,13 +5756,13 @@
     <script src="lumina-scroll-top.js" defer></script>
     <script src="lumina-bottom-nav.js?v=20260822_v363" defer></script>
     <script src="lumina-notifications.js?v=20260820_notif_nodot" defer></script>
-<!-- â•â•â•â•â•â•â•â•â•â• DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
         <div style="line-height: 1.45; color: #e2e8f0;">
-            ✨•Šď¸Ź Portal <strong>LUMINA</strong> używa plików cookies w celach analitycznych oraz prawidłowego działania społeczności.
+            ✨•Š Portal <strong>LUMINA</strong> używa plików cookies w celach analitycznych oraz prawidłowego działania społeczności.
         </div>
-        <button type="button" onclick="acceptCookies()" style="background: transparent; border: none; color: #94a3b8; font-size: 16px; cursor: pointer; padding: 2px 6px; line-height: 1;" title="Zamknij">âś•</button>
+        <button type="button" onclick="acceptCookies()" style="background: transparent; border: none; color: #94a3b8; font-size: 16px; cursor: pointer; padding: 2px 6px; line-height: 1;" title="Zamknij">✝️</button>
     </div>
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 2px;">
         <a href="lumina.html" style="color: #f59e0b; text-decoration: underline; font-size: 11.5px;">Polityka Prywatności</a>
@@ -5821,7 +5821,7 @@
 })();
 </script>
 
-    <!-- â•â•â•â•â•â•â•â•â•â• MODAL: WSPARCIE DZIEĹA (DONORBOX) â•â•â•â•â•â•â•â•â•â• -->
+    <!-- ══════════ MODAL: WSPARCIE DZIEĹA (DONORBOX) ══════════ -->
     <div class="modal-overlay" id="supportLuminaModal" onclick="if(event.target===this) closeSupportModal()">
         <div class="modal-card" style="max-width: 480px; width: 92%; max-height: 90vh; overflow-y:auto; background: linear-gradient(135deg, #0f172a, #1e1b4b); border: 1.5px solid rgba(245, 158, 11, 0.5); box-shadow: 0 25px 60px rgba(0,0,0,0.85), 0 0 35px rgba(245, 158, 11, 0.2); border-radius: 24px; padding: 24px; position: relative;">
             <button class="modal-close-btn" onclick="closeSupportModal()" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -5840,7 +5840,7 @@
         </div>
     </div>
     
-    <!-- â•â•â•â•â•â•â•â•â•â• MODAL: DODATKOWE OPCJE PROFILU (PRZYTRZYMANIE ZDJÄCIA / LONG-PRESS) â•â•â•â•â•â•â•â•â•â• -->
+    <!-- ══════════ MODAL: DODATKOWE OPCJE PROFILU (PRZYTRZYMANIE ZDJÄCIA / LONG-PRESS) ══════════ -->
     <div id="luminaProfileQuickActionsModal" class="lumina-quick-actions-modal" onclick="if(event.target===this) window.closeProfileQuickActions()">
         <div class="quick-actions-sheet" onclick="event.stopPropagation()">
             <div class="sheet-drag-handle"></div>
@@ -5856,7 +5856,7 @@
                     </div>
                     <div id="qaTagline" class="qa-tagline">Społeczność LUMINA</div>
                 </div>
-                <button type="button" class="qa-close-btn" onclick="window.closeProfileQuickActions()" title="Zamknij">âś•</button>
+                <button type="button" class="qa-close-btn" onclick="window.closeProfileQuickActions()" title="Zamknij">✝️</button>
             </div>
 
             <div class="quick-actions-grid">
@@ -5873,7 +5873,7 @@
                 <button type="button" class="qa-action-btn" onclick="window.handleQuickActionMessage()">
                     <div class="qa-icon-box qa-icon-msg"><i class="fa-solid fa-paper-plane"></i></div>
                     <div class="qa-btn-content">
-                        <div class="qa-btn-title">Napisz Wiadomość ✨’¬</div>
+                        <div class="qa-btn-title">Napisz Wiadomość ✨</div>
                         <div class="qa-btn-desc">Otwórz bezpośredni czat prywatny 1:1</div>
                     </div>
                 </button>
@@ -5882,7 +5882,7 @@
                 <button type="button" class="qa-action-btn" onclick="window.handleQuickActionFollow()">
                     <div class="qa-icon-box qa-icon-follow"><i class="fa-solid fa-heart"></i></div>
                     <div class="qa-btn-content">
-                        <div class="qa-btn-title" id="qaFollowTitle">Obserwuj / Polub âť¤ď¸Ź</div>
+                        <div class="qa-btn-title" id="qaFollowTitle">Obserwuj / Polub ❤️</div>
                         <div class="qa-btn-desc">Bądź na bieżąco ze świadectwami i wpisami</div>
                     </div>
                 </button>
@@ -5891,7 +5891,7 @@
                 <button type="button" class="qa-action-btn" onclick="window.handleQuickActionCoffee()">
                     <div class="qa-icon-box qa-icon-coffee"><i class="fa-solid fa-mug-hot"></i></div>
                     <div class="qa-btn-content">
-                        <div class="qa-btn-title">Zaproś na Kawę â•</div>
+                        <div class="qa-btn-title">Zaproś na Kawę ☕</div>
                         <div class="qa-btn-desc">Chrześcijańska rozmowa i budowanie relacji</div>
                     </div>
                 </button>
@@ -5909,7 +5909,7 @@
     </div>
 
     <style>
-        /* â•â•â•â•â•â•â•â•â•â• LUMINA PROFILE QUICK ACTIONS (LONG-PRESS) â•â•â•â•â•â•â•â•â•â• */
+        /* ══════════ LUMINA PROFILE QUICK ACTIONS (LONG-PRESS) ══════════ */
         .lumina-quick-actions-modal {
             position: fixed;
             inset: 0;
@@ -6121,8 +6121,8 @@
                 p = window.LuminaDB.getCachedProfile(slug);
             }
             if (!p) {
-                if (slug === 'cezaryrgowski') p = { name: 'Cezary Rogowski', avatar: 'avatar_cezary_official.jpg', tagline: 'Ostrowiec Świętokrzyski â€˘ Założyciel' };
-                else if (slug === 'wiolettarogowska') p = { name: 'Wioletta Rogowska', avatar: 'avatar_wioletta_official.jpg', tagline: 'Ostrowiec Świętokrzyski â€˘ Współzałożycielka' };
+                if (slug === 'cezaryrgowski') p = { name: 'Cezary Rogowski', avatar: 'avatar_cezary_official.jpg', tagline: 'Ostrowiec Świętokrzyski • Założyciel' };
+                else if (slug === 'wiolettarogowska') p = { name: 'Wioletta Rogowska', avatar: 'avatar_wioletta_official.jpg', tagline: 'Ostrowiec Świętokrzyski • Współzałożycielka' };
                 else p = { name: cardEl?.querySelector('.author-name, .card-name')?.textContent || slug, avatar: cardEl?.querySelector('img')?.src || 'lumina_icon.jpg', tagline: 'Społeczność LUMINA' };
             }
             _activeQuickActionProfile = p;
@@ -6136,7 +6136,7 @@
 
             if (avatarEl) avatarEl.src = p.avatar || 'lumina_icon.jpg';
             if (nameEl) nameEl.textContent = p.name || 'Użytkownik LUMINA';
-            if (taglineEl) taglineEl.textContent = p.tagline || (p.city ? `${p.city} â€˘ ${p.denom || 'Chrześcijanin'}` : 'Społeczność LUMINA');
+            if (taglineEl) taglineEl.textContent = p.tagline || (p.city ? `${p.city} • ${p.denom || 'Chrześcijanin'}` : 'Społeczność LUMINA');
 
             modal.classList.add('open');
         };
@@ -6160,7 +6160,7 @@
                 window.LuminaDB.sendDirectMessageToCloud(chatId, {
                     senderId: fromId,
                     senderName: myProfile?.name || myUser?.displayName || 'Użytkownik LUMINA',
-                    text: `✨‘‹ Pomachałem/am do Ciebie! Cześć ${name}, błogosławionego i pięknego dnia w Panu! ✨•Šď¸Źâś¨`,
+                    text: `✨‘‹ Pomachałem/am do Ciebie! Cześć ${name}, błogosławionego i pięknego dnia w Panu! ✨•Š✨`,
                     type: 'poke',
                     receiverId: slug
                 });
@@ -6169,7 +6169,7 @@
 
             window.closeProfileQuickActions();
             if (typeof showToast === 'function') {
-                showToast(`✨‘‹ Zaczepiono ${name}! Wysłano miłe chrześcijańskie powitanie âś¨`);
+                showToast(`✨‘‹ Zaczepiono ${name}! Wysłano miłe chrześcijańskie powitanie ✨`);
             }
         };
 
@@ -6199,7 +6199,7 @@
 
             window.closeProfileQuickActions();
             if (typeof showToast === 'function') {
-                showToast(`✨’– Obserwujesz profil ${name}! Będziesz otrzymywać aktualności âś¨`);
+                showToast(`✨’– Obserwujesz profil ${name}! Będziesz otrzymywać aktualności ✨`);
             }
         };
 
@@ -6217,7 +6217,7 @@
                 window.LuminaDB.sendDirectMessageToCloud(chatId, {
                     senderId: fromId,
                     senderName: myProfile?.name || myUser?.displayName || 'Użytkownik LUMINA',
-                    text: `â• Cześć ${name}! Chciałbym/chciałabym zaprosić Cię na wirtualną Chrześcijańską Kawę i budującą rozmowę o Bogu i życiu! âś¨âť¤ď¸Ź`,
+                    text: `☕ Cześć ${name}! Chciałbym/chciałabym zaprosić Cię na wirtualną Chrześcijańską Kawę i budującą rozmowę o Bogu i życiu! ✨❤️`,
                     type: 'coffee_invite',
                     receiverId: slug
                 });
@@ -6226,7 +6226,7 @@
 
             window.closeProfileQuickActions();
             if (typeof showToast === 'function') {
-                showToast(`â• Wysłano zaproszenie na Chrześcijańską Kawę do ${name}! âś¨`);
+                showToast(`☕ Wysłano zaproszenie na Chrześcijańską Kawę do ${name}! ✨`);
             }
         };
 
