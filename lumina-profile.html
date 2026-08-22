@@ -2066,9 +2066,9 @@
             <section class="profile-head-card">
                 <div class="profile-head-top">
                     <div class="profile-head-main">
-                    <div class="avatar-wrap">
+                    <div class="avatar-wrap" onclick="handleAvatarClick()" style="cursor:pointer;" title="Kliknij, aby otworzyć opcje zdjęcia profilowego">
                         <img src="lumina_icon.jpg" alt="Avatar" class="avatar-img" id="avatarImgEl">
-                        <button class="avatar-edit-overlay" onclick="triggerAvatarUpload()" title="Wgraj nowe zdjęcie profilowe z dysku"><i class="fa-solid fa-camera"></i></button>
+                        <button class="avatar-edit-overlay" onclick="event.stopPropagation(); handleAvatarClick();" title="Opcje zdjęcia profilowego"><i class="fa-solid fa-camera"></i></button>
                         <div class="avatar-status-badge" title="Użytkownik Online"></div>
                     </div>
 
@@ -2083,43 +2083,34 @@
                             <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijanin</span>
                             <span id="userMatchEl" style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: 98%</span>
                             <span id="visibilityBadge" class="badge-visibility-pub"><i class="fa-solid fa-globe"></i> Profil Publiczny</span> 
-<span class="stat-tag-chip" id="statLikesChip" style="background:rgba(236,72,153,0.14); border:1px solid rgba(236,72,153,0.35); color:#f472b6; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-heart"></i> <span id="statLikesCount">120</span> Polubień</span>
+                            <span class="stat-tag-chip" id="statLikesChip" style="background:rgba(236,72,153,0.14); border:1px solid rgba(236,72,153,0.35); color:#f472b6; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-heart"></i> <span id="statLikesCount">120</span> Polubień</span>
                             <span class="stat-tag-chip" id="statFollowersChip" style="background:rgba(59,130,246,0.14); border:1px solid rgba(59,130,246,0.35); color:#93c5fd; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-users"></i> <span id="statFollowersCount">310</span> Obserwujących</span>
                         </div>
                     </div>
                     </div><!-- end profile-head-main -->
 
-                <div class="head-actions" style="display:flex; flex-direction:column; gap:8px; align-items:flex-start; width:100%;">
-                    <!-- Rząd 1: Wiadomość & Kawa -->
-                    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; width:100%;">
-                        <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span></button>
-                        <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa</span></button>
-                    </div>
+                <div class="head-actions" style="display:flex; flex-direction:row; flex-wrap:wrap; gap:10px; align-items:center; width:auto;">
+                    <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span></button>
+                    <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa</span></button>
+                    
+                    <button type="button" class="btn-action-follow" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(37,99,235,0.35); transition:all 0.25s ease;">
+                        <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
+                        <span id="followBtnText">Obserwuj</span>
+                        <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
+                        <span id="followCountBadge">310</span>
+                    </button>
 
-                    <!-- Rząd 2: Obserwowanie i Polubienia -->
-                    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; width:100%;">
-                        <button type="button" class="btn-action-follow" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(37,99,235,0.35); transition:all 0.25s ease;">
-                            <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
-                            <span id="followBtnText">Obserwuj</span>
-                            <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
-                            <span id="followCountBadge">310</span>
-                        </button>
+                    <button type="button" class="btn-action-heart" id="btnProfileHeart" onclick="toggleProfileHeart(this)" title="Polub Profil" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#db2777,#be185d); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(219,39,119,0.35); transition:all 0.25s ease;">
+                        <i class="fa-solid fa-heart" id="heartBtnIcon"></i>
+                        <span id="heartBtnText">Polub</span>
+                        <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
+                        <span id="heartCountBadge">120</span>
+                    </button>
 
-                        <button type="button" class="btn-action-heart" id="btnProfileHeart" onclick="toggleProfileHeart(this)" title="Polub Profil" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#db2777,#be185d); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(219,39,119,0.35); transition:all 0.25s ease;">
-                            <i class="fa-solid fa-heart" id="heartBtnIcon"></i>
-                            <span id="heartBtnText">Polub</span>
-                            <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
-                            <span id="heartCountBadge">120</span>
-                        </button>
-                    </div>
-
-                    <!-- Rząd 3: Narzędzia (Ustawienia, Udostępnij, Wyloguj, Więcej) -->
-                    <div style="display:flex; gap:8px; align-items:center;">
-                        <button class="btn-action-secondary btn-action-gear" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear" style="font-size:1.15rem;"></i></button>
-                        <button class="btn-action-secondary btn-action-share" onclick="copyProfileLink()" title="Udostępnij Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-share-nodes" style="font-size:1.1rem;"></i></button>
-                        <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer; transition:all 0.2s ease;"><i class="fa-solid fa-right-from-bracket" style="font-size:1.1rem;"></i></button>
-                        <button class="btn-action-secondary btn-action-more" onclick="openPersonalSettingsModal()" title="Więcej ustawień osobistych i wymuszenie aktualizacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(168,85,247,0.22); border:1.5px solid rgba(168,85,247,0.5); color:#d8b4fe; cursor:pointer; transition:all 0.2s ease; margin-left:6px; box-shadow:0 0 10px rgba(168,85,247,0.3);"><i class="fa-solid fa-ellipsis-vertical" style="font-size:1.15rem;"></i></button>
-                    </div>
+                    <button class="btn-action-secondary btn-action-gear" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear" style="font-size:1.15rem;"></i></button>
+                    <button class="btn-action-secondary btn-action-share" onclick="copyProfileLink()" title="Udostępnij Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-share-nodes" style="font-size:1.1rem;"></i></button>
+                    <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer; transition:all 0.2s ease;"><i class="fa-solid fa-right-from-bracket" style="font-size:1.1rem;"></i></button>
+                    <button class="btn-action-secondary btn-action-more" onclick="openPersonalSettingsModal()" title="Więcej ustawień osobistych i wymuszenie aktualizacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(168,85,247,0.22); border:1.5px solid rgba(168,85,247,0.5); color:#d8b4fe; cursor:pointer; transition:all 0.2s ease; box-shadow:0 0 10px rgba(168,85,247,0.3);"><i class="fa-solid fa-ellipsis-vertical" style="font-size:1.15rem;"></i></button>
                 </div>
             </div><!-- end profile-head-top -->
             <!-- Profile Nav Tabs -->
@@ -4516,16 +4507,95 @@
         function triggerAvatarUpload() {
             if (!requestOwnerAccess(triggerAvatarUpload)) return;
             document.getElementById('avatarFileInput').click();
+        // ── Direct Upload Triggers & Click Handlers ──
+        function handleAvatarClick() {
+            const avatarImg = document.getElementById('avatarImgEl');
+            const src = avatarImg ? avatarImg.src : 'lumina_icon.jpg';
+            if (isUserAuthorizedForAction()) {
+                const modal = document.getElementById('modalAvatarOptions');
+                if (modal) modal.classList.add('open');
+                else openPhotoLightbox(src, 'Zdjęcie Profilowe ✨');
+            } else {
+                openPhotoLightbox(src, 'Zdjęcie Profilowe ✨');
+            }
+        }
+
+        function handleCoverClick() {
+            const coverImg = document.getElementById('coverPhotoEl');
+            const src = coverImg ? coverImg.src : 'lumina_default_cover.jpg';
+            if (isUserAuthorizedForAction()) {
+                const modal = document.getElementById('modalCoverOptions');
+                if (modal) modal.classList.add('open');
+                else openPhotoLightbox(src, 'Zdjęcie w Tle ✨');
+            } else {
+                openPhotoLightbox(src, 'Zdjęcie w Tle ✨');
+            }
+        }
+
+        async function resetAvatarToDefault() {
+            if (!confirm('Czy na pewno chcesz usunąć zdjęcie profilowe i przywrócić domyślne?')) return;
+            const slug = getRequestedUserSlug();
+            const cur = getProfileData();
+            cur.avatar = 'lumina_icon.jpg';
+            window._cloudProfileData = cur;
+            try {
+                localStorage.setItem('lumina_avatar_' + slug, 'lumina_icon.jpg');
+                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+            } catch(e) {}
+            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                await window.LuminaDB.saveProfileToCloud(slug, cur);
+            }
+            renderProfile();
+            showToast('Zdjęcie profilowe zostało zresetowane do domyślnego 🗑️✨');
+        }
+
+        async function resetCoverToDefault() {
+            if (!confirm('Czy na pewno chcesz przywrócić domyślne zdjęcie w tle?')) return;
+            const slug = getRequestedUserSlug();
+            const cur = getProfileData();
+            cur.cover = 'lumina_default_cover.jpg';
+            window._cloudProfileData = cur;
+            try {
+                localStorage.setItem('lumina_cover_' + slug, 'lumina_default_cover.jpg');
+                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+            } catch(e) {}
+            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                await window.LuminaDB.saveProfileToCloud(slug, cur);
+            }
+            renderProfile();
+            showToast('Tło zostało zresetowane do domyślnego 🗑️✨');
+        }
+
+        function triggerCoverUpload() {
+            closeCoverActions();
+            const el = document.getElementById('coverFileInput');
+            if (el) el.click();
+        }
+
+        function triggerAvatarUpload() {
+            if (!isUserAuthorizedForAction()) {
+                if (!requestOwnerAccess(triggerAvatarUpload)) return;
+            }
+            const el = document.getElementById('avatarFileInput');
+            if (el) el.click();
         }
 
         function triggerGalleryUpload() {
-            if (!requestOwnerAccess(triggerGalleryUpload)) return;
-            document.getElementById('galleryFileInput').click();
+            if (!isUserAuthorizedForAction()) {
+                if (!requestOwnerAccess(triggerGalleryUpload)) return;
+            }
+            const el = document.getElementById('galleryFileInput');
+            if (el) el.click();
         }
 
         function triggerPostImageUpload() {
-            if (!requestOwnerAccess(triggerPostImageUpload)) return;
-            document.getElementById('postImageFileInput').click();
+            if (!isUserAuthorizedForAction()) {
+                if (!requestOwnerAccess(triggerPostImageUpload)) return;
+            }
+            const el = document.getElementById('postImageFileInput');
+            if (el) el.click();
         }
 
         // File Upload Handlers
@@ -5536,6 +5606,61 @@
     } catch(e) {}
 })();
 </script>
+
+    <!-- ══════════ MODAL: OPCJE ZDJĘCIA PROFILOWEGO (AWATARA) ══════════ -->
+    <div class="modal-overlay" id="modalAvatarOptions" onclick="if(event.target===this) closeModal('modalAvatarOptions')" style="z-index: 100002;">
+        <div class="modal-card" style="max-width:440px; text-align:center; background:#0b1329; border:1.5px solid rgba(168,85,247,0.4); border-radius:24px; padding:26px 22px;">
+            <button class="modal-close-btn" onclick="closeModal('modalAvatarOptions')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="width:58px; height:58px; border-radius:50%; background:linear-gradient(135deg, #a855f7, #ec4899); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:1.4rem; color:#fff; box-shadow:0 4px 18px rgba(168,85,247,0.4);">
+                <i class="fa-solid fa-user-gear"></i>
+            </div>
+            <h3 style="margin-bottom:6px; color:#fff; font-size:1.2rem;">Zdjęcie Profilowe</h3>
+            <p style="font-size:0.84rem; color:#94a3b8; margin-bottom:20px; line-height:1.4;">Zarządzaj swoim zdjęciem profilowym w społeczności LUMINA:</p>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <button type="button" class="admin-suite-btn btn-primary" onclick="closeModal('modalAvatarOptions'); openPhotoLightbox(document.getElementById('avatarImgEl').src, 'Zdjęcie profilowe ✨');" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:700; font-size:0.88rem;">
+                    <i class="fa-solid fa-expand"></i> Wyświetl w pełnym wymiarze
+                </button>
+                <button type="button" class="admin-suite-btn btn-success" onclick="closeModal('modalAvatarOptions'); document.getElementById('avatarFileInput').click();" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:700; font-size:0.88rem;">
+                    <i class="fa-solid fa-camera"></i> Wgraj nowe zdjęcie z dysku
+                </button>
+                <button type="button" class="admin-suite-btn btn-danger" onclick="closeModal('modalAvatarOptions'); resetAvatarToDefault();" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:700; font-size:0.88rem;">
+                    <i class="fa-solid fa-trash-can"></i> Usuń zdjęcie profilowe
+                </button>
+                <button type="button" class="admin-suite-btn btn-secondary" onclick="closeModal('modalAvatarOptions')" style="justify-content:center; padding:10px 18px; border-radius:14px; margin-top:4px; font-size:0.84rem;">
+                    Anuluj
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ MODAL: OPCJE ZDJĘCIA W TLE (COVER) ══════════ -->
+    <div class="modal-overlay" id="modalCoverOptions" onclick="if(event.target===this) closeModal('modalCoverOptions')" style="z-index: 100002;">
+        <div class="modal-card" style="max-width:440px; text-align:center; background:#0b1329; border:1.5px solid rgba(14,165,233,0.4); border-radius:24px; padding:26px 22px;">
+            <button class="modal-close-btn" onclick="closeModal('modalCoverOptions')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="width:58px; height:58px; border-radius:50%; background:linear-gradient(135deg, #0ea5e9, #6366f1); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:1.4rem; color:#fff; box-shadow:0 4px 18px rgba(14,165,233,0.4);">
+                <i class="fa-solid fa-panorama"></i>
+            </div>
+            <h3 style="margin-bottom:6px; color:#fff; font-size:1.2rem;">Zdjęcie w Tle</h3>
+            <p style="font-size:0.84rem; color:#94a3b8; margin-bottom:20px; line-height:1.4;">Zarządzaj grafiką nagłówka Twojego profilu:</p>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <button type="button" class="admin-suite-btn btn-primary" onclick="closeModal('modalCoverOptions'); openPhotoLightbox(document.getElementById('coverPhotoEl').src, 'Zdjęcie w tle ✨');" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:700; font-size:0.88rem;">
+                    <i class="fa-solid fa-expand"></i> Wyświetl w pełnym wymiarze
+                </button>
+                <button type="button" class="admin-suite-btn btn-success" onclick="closeModal('modalCoverOptions'); triggerCoverUpload();" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:700; font-size:0.88rem;">
+                    <i class="fa-solid fa-image"></i> Wgraj nowe tło z dysku
+                </button>
+                <button type="button" class="admin-suite-btn btn-cyan" onclick="closeModal('modalCoverOptions'); toggleCoverRepositionToolbar();" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:700; font-size:0.88rem;">
+                    <i class="fa-solid fa-arrows-up-down"></i> Dopasuj kadr / wysokość tła
+                </button>
+                <button type="button" class="admin-suite-btn btn-danger" onclick="closeModal('modalCoverOptions'); resetCoverToDefault();" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:700; font-size:0.88rem;">
+                    <i class="fa-solid fa-trash-can"></i> Przywróć domyślne tło
+                </button>
+                <button type="button" class="admin-suite-btn btn-secondary" onclick="closeModal('modalCoverOptions')" style="justify-content:center; padding:10px 18px; border-radius:14px; margin-top:4px; font-size:0.84rem;">
+                    Anuluj
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- ══════════ FULLSCREEN PHOTO LIGHTBOX MODAL ══════════ -->
     <div class="modal-overlay" id="photoLightboxModal" onclick="closePhotoLightbox()" style="z-index: 999999; background: rgba(3, 7, 18, 0.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">

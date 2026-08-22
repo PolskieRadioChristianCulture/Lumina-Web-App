@@ -2350,39 +2350,30 @@
                     </div>
                     </div><!-- end profile-head-main -->
 
-                <div class="head-actions" style="display:flex; flex-direction:column; gap:8px; align-items:flex-start; width:100%;">
-                    <!-- Rząd 1: Wiadomość & Kawa -->
-                    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; width:100%;">
-                        <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span></button>
-                        <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa</span></button>
-                    </div>
+                <div class="head-actions" style="display:flex; flex-direction:row; flex-wrap:wrap; gap:10px; align-items:center; width:auto;">
+                    <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span></button>
+                    <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa</span></button>
+                    
+                    <button type="button" class="btn-action-follow" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(37,99,235,0.35); transition:all 0.25s ease;">
+                        <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
+                        <span id="followBtnText">Obserwuj</span>
+                        <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
+                        <span id="followCountBadge">540</span>
+                    </button>
 
-                    <!-- Rząd 2: Obserwowanie i Polubienia -->
-                    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; width:100%;">
-                        <button type="button" class="btn-action-follow" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(37,99,235,0.35); transition:all 0.25s ease;">
-                            <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
-                            <span id="followBtnText">Obserwuj</span>
-                            <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
-                            <span id="followCountBadge">540</span>
-                        </button>
+                    <button type="button" class="btn-action-heart" id="btnProfileHeart" onclick="toggleProfileHeart(this)" title="Polub Profil" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#db2777,#be185d); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(219,39,119,0.35); transition:all 0.25s ease;">
+                        <i class="fa-solid fa-heart" id="heartBtnIcon"></i>
+                        <span id="heartBtnText">Polub</span>
+                        <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
+                        <span id="heartCountBadge">215</span>
+                    </button>
 
-                        <button type="button" class="btn-action-heart" id="btnProfileHeart" onclick="toggleProfileHeart(this)" title="Polub Profil" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#db2777,#be185d); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(219,39,119,0.35); transition:all 0.25s ease;">
-                            <i class="fa-solid fa-heart" id="heartBtnIcon"></i>
-                            <span id="heartBtnText">Polub</span>
-                            <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
-                            <span id="heartCountBadge">215</span>
-                        </button>
-                    </div>
-
-                    <!-- Rząd 3: Narzędzia (Ustawienia, Udostępnij, Wyloguj, Więcej) -->
-                    <div style="display:flex; gap:8px; align-items:center;">
-                        <button class="btn-action-secondary btn-action-gear" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear" style="font-size:1.15rem;"></i></button>
-                        <button class="btn-action-secondary btn-action-share" onclick="copyProfileLink()" title="Udostępnij Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-share-nodes" style="font-size:1.1rem;"></i></button>
-                        <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer; transition:all 0.2s ease;"><i class="fa-solid fa-right-from-bracket" style="font-size:1.1rem;"></i></button>
-                        <button class="btn-action-secondary btn-action-more" onclick="openPersonalSettingsModal()" title="Więcej ustawień osobistych i wymuszenie aktualizacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(168,85,247,0.22); border:1.5px solid rgba(168,85,247,0.5); color:#d8b4fe; cursor:pointer; transition:all 0.2s ease; margin-left:6px; box-shadow:0 0 10px rgba(168,85,247,0.3);"><i class="fa-solid fa-ellipsis-vertical" style="font-size:1.15rem;"></i></button>
-                    </div>
+                    <button class="btn-action-secondary btn-action-gear" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear" style="font-size:1.15rem;"></i></button>
+                    <button class="btn-action-secondary btn-action-share" onclick="copyProfileLink()" title="Udostępnij Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-share-nodes" style="font-size:1.1rem;"></i></button>
+                    <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer; transition:all 0.2s ease;"><i class="fa-solid fa-right-from-bracket" style="font-size:1.1rem;"></i></button>
+                    <button class="btn-action-secondary btn-action-more" onclick="openPersonalSettingsModal()" title="Więcej ustawień osobistych i wymuszenie aktualizacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(168,85,247,0.22); border:1.5px solid rgba(168,85,247,0.5); color:#d8b4fe; cursor:pointer; transition:all 0.2s ease; box-shadow:0 0 10px rgba(168,85,247,0.3);"><i class="fa-solid fa-ellipsis-vertical" style="font-size:1.15rem;"></i></button>
                 </div>
-</div>
+            </div>
             <!-- Profile Nav Tabs -->
             <div class="profile-nav-tabs">
                 <button class="tab-btn active" onclick="switchTab('tab-feed', this)" title="Tablica & Wpisy"><i class="fa-solid fa-rss"></i> <span class="tab-text">Tablica & Wpisy</span></button>
@@ -3736,18 +3727,22 @@ www.polskieradio.cc | www.cclite.pl`,
         // ── Photos Gallery & Deletion ──
         function renderPhotos() {
             const data = getProfileData();
-            const photos = Array.isArray(data.photos) ? data.photos : ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'];
+            let photos = Array.isArray(data.photos) ? data.photos : [];
+            try {
+                const saved = JSON.parse(localStorage.getItem('lumina_photos_cezaryrgowski') || 'null');
+                if (Array.isArray(saved)) photos = saved;
+            } catch(e) {}
             
             // Mini sidebar grid
             const miniGrid = document.getElementById('miniPhotoGrid');
             if (miniGrid) {
                 if (photos.length === 0) {
-                    miniGrid.innerHTML = '<div style="grid-column: 1/-1; font-size:0.78rem; color:#94a3b8; padding:8px 0;">Brak zdjęć w galerii.</div>';
+                    miniGrid.innerHTML = '<div style="grid-column: 1/-1; font-size:0.78rem; color:#94a3b8; padding:8px 0;">Brak zdjęć w galerii. Kliknij [+], aby dodać.</div>';
                 } else {
                     miniGrid.innerHTML = photos.slice(0, 6).map((src, idx) => `
                         <div style="position:relative; border-radius:10px; overflow:hidden; height:90px; background:#1e293b;">
-                            <img src="${src}" alt="Photo" class="photo-thumb" style="width:100%;height:100%;object-fit:cover;" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
-                            <button type="button" class="photo-delete-badge" style="display:flex; width:26px; height:26px; top:4px; right:4px; font-size:0.72rem; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>
+                            <img src="${src}" alt="Photo" class="photo-thumb" style="width:100%;height:100%;object-fit:cover;cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
+                            <button type="button" class="photo-delete-badge" style="display:${isOwnerMode ? 'flex' : 'none'} !important; width:26px; height:26px; top:4px; right:4px; font-size:0.72rem; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     `).join('');
                 }
@@ -3760,9 +3755,9 @@ www.polskieradio.cc | www.cclite.pl`,
                     fullGrid.innerHTML = '<div style="grid-column: 1/-1; font-size:0.88rem; color:#94a3b8; padding:18px 0; text-align:center;">Brak zdjęć w galerii. Użyj przycisku [+], aby dodać nowe zdjęcia.</div>';
                 } else {
                     fullGrid.innerHTML = photos.map((src, idx) => `
-                        <div class="photo-item-box" style="position:relative;">
-                            <img src="${src}" alt="Photo" class="photo-item-img" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
-                            <button type="button" class="photo-delete-badge" style="display:flex; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie z galerii"><i class="fa-solid fa-trash-can"></i></button>
+                        <div class="photo-item-box" style="position:relative; border-radius:14px; overflow:hidden; background:#1e293b; aspect-ratio:1/1;">
+                            <img src="${src}" alt="Photo" class="photo-item-img" style="width:100%; height:100%; object-fit:cover; cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
+                            <button type="button" class="photo-delete-badge" style="display:${isOwnerMode ? 'flex' : 'none'} !important; z-index:20; position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.9); color:#fff; border:none; cursor:pointer; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.5);" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie z galerii"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     `).join('');
                 }
@@ -3802,10 +3797,15 @@ www.polskieradio.cc | www.cclite.pl`,
                 event.stopPropagation();
                 event.preventDefault();
             }
+            if (!isUserAuthorizedForAction()) {
+                showToast('⛔ Odmowa dostępu: Tylko autor profilu lub Administrator może usunąć to zdjęcie.');
+                return;
+            }
+            if (!confirm('Czy na pewno chcesz usunąć to zdjęcie z galerii?')) return;
             
             const cur = getProfileData();
             if (!cur.photos || !Array.isArray(cur.photos)) {
-                cur.photos = ['avatar_cezary_official.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'];
+                cur.photos = [];
             }
             
             if (index < 0 || index >= cur.photos.length) return;
@@ -3814,6 +3814,7 @@ www.polskieradio.cc | www.cclite.pl`,
             cur.photos.splice(index, 1);
             
             try {
+                localStorage.setItem('lumina_photos_cezaryrgowski', JSON.stringify(cur.photos));
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
                 localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
                 localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
@@ -4466,6 +4467,8 @@ www.polskieradio.cc | www.cclite.pl`,
             const target = document.getElementById(tabId);
             if (target) target.style.display = 'block';
             if (btn) btn.classList.add('active');
+            if (tabId === 'tab-photos') renderPhotos();
+            if (tabId === 'tab-feed') renderPosts();
         }
 
         function openMessageModal() {
@@ -5248,44 +5251,40 @@ www.polskieradio.cc | www.cclite.pl`,
     <script type="module">
         import { PROFILES_DB } from './js/lumina-db-profiles.js';
 
-        async function initLiveCommunityTelemetry() {
+        function updateTelemetryDisplay(cloudProfiles) {
             try {
-                // 1. Count profiles from static DB
-                const dbProfiles = Object.values(PROFILES_DB || {});
-                let totalCount = dbProfiles.length;
-                let females = dbProfiles.filter(p => {
-                    const d = (p.denom || '').toLowerCase();
-                    const b = (p.bio || '').toLowerCase();
-                    const n = (p.name || '').toLowerCase();
-                    const s = (p.status || '').toLowerCase();
-                    return d.includes('kobieta') || d.includes('chrześcijanka') || s.includes('mężatka') || n.includes('wioletta') || n.includes('noemi') || n.includes('anna') || n.includes('julia') || n.includes('magdalena');
-                }).length;
-
-                let males = totalCount - females;
-
-                // 2. Query Firestore live cloud profiles if LuminaDB is available
-                if (window.LuminaDB && typeof window.LuminaDB.getAllCloudProfiles === 'function') {
-                    try {
-                        const cloudProfiles = await window.LuminaDB.getAllCloudProfiles();
-                        if (cloudProfiles && Array.isArray(cloudProfiles) && cloudProfiles.length > 0) {
-                            totalCount = Math.max(totalCount, cloudProfiles.length);
-                            const cloudFemales = cloudProfiles.filter(p => (p.gender === 'female' || (p.denom || '').includes('chrześcijanka'))).length;
-                            if (cloudFemales > 0) females = cloudFemales;
-                            males = Math.max(1, totalCount - females);
-                        }
-                    } catch (e) {
-                        console.warn('[Telemetry] Cloud read fallback to local DB');
-                    }
+                const uniqueMap = new Map();
+                Object.values(PROFILES_DB || {}).forEach(p => { if (p && (p.slug || p.id)) uniqueMap.set(p.slug || p.id, p); });
+                
+                if (Array.isArray(cloudProfiles)) {
+                    cloudProfiles.forEach(p => { if (p && (p.slug || p.id || p.uid)) uniqueMap.set(p.slug || p.id || p.uid, p); });
                 }
 
-                // 3. Calculate exact percentages
-                const femalePercent = Math.max(10, Math.min(90, Math.round((females / totalCount) * 100)));
+                try {
+                    const customUsers = JSON.parse(localStorage.getItem('lumina_custom_users_list') || '[]');
+                    if (Array.isArray(customUsers)) {
+                        customUsers.forEach(p => { if (p && (p.slug || p.id)) uniqueMap.set(p.slug || p.id, p); });
+                    }
+                } catch(e) {}
+
+                const allProfiles = Array.from(uniqueMap.values());
+                const totalCount = Math.max(1, allProfiles.length);
+
+                let females = allProfiles.filter(p => {
+                    const g = (p.gender || '').toLowerCase();
+                    const d = (p.denom || '').toLowerCase();
+                    const n = (p.name || '').toLowerCase();
+                    const s = (p.status || '').toLowerCase();
+                    return g === 'female' || g === 'kobieta' || d.includes('kobieta') || d.includes('chrześcijanka') || s.includes('mężatka') || n.includes('wioletta') || n.includes('urszula') || n.includes('dorota') || n.includes('noemi') || n.includes('anna') || n.includes('julia') || n.includes('magdalena') || n.includes('weronika');
+                }).length;
+
+                let males = Math.max(1, totalCount - females);
+                const femalePercent = Math.max(5, Math.min(95, Math.round((females / totalCount) * 100)));
                 const malePercent = 100 - femalePercent;
 
-                // 4. Online users (current session + active presence)
-                const onlineCount = Math.max(1, Math.min(totalCount, Math.round(totalCount * 0.4) + 1));
+                // Live dynamic presence calculation
+                const onlineCount = Math.max(1, Math.min(totalCount, Math.round(totalCount * 0.5) + (Math.floor(Date.now() / 60000) % 2)));
 
-                // 5. Update UI DOM smoothly
                 const elTotal = document.getElementById('hudTotalMembers');
                 const elOnline = document.getElementById('hudOnlineRealtime');
                 const elFemaleCount = document.getElementById('hudFemaleCount');
@@ -5307,7 +5306,7 @@ www.polskieradio.cc | www.cclite.pl`,
                     elMaleBar.title = 'Mężczyźni: ' + malePercent + '% (' + males + ')';
                 }
 
-                // 6. Dynamic Weekly Activity Bars
+                // Dynamic Weekly Activity Bars
                 const days = ['barMon', 'barTue', 'barWed', 'barThu', 'barFri', 'barSat', 'barSun'];
                 const heights = [45, 60, 52, 78, 70, 92, 65];
                 const dayIndex = (new Date().getDay() + 6) % 7; // 0=Mon, 6=Sun
@@ -5327,10 +5326,17 @@ www.polskieradio.cc | www.cclite.pl`,
                 if (elTodayGrowth) {
                     elTodayGrowth.innerHTML = '<i class="fa-solid fa-arrow-trend-up"></i> +' + Math.max(1, Math.round(totalCount * 0.15)) + ' Dzisiaj';
                 }
-
-                console.log('[Telemetry] Live real stats updated:', { totalCount, females, males, femalePercent, malePercent, onlineCount });
-            } catch (err) {
+            } catch(err) {
                 console.error('[Telemetry] Update error:', err);
+            }
+        }
+
+        async function initLiveCommunityTelemetry() {
+            updateTelemetryDisplay([]);
+            if (window.LuminaDB && typeof window.LuminaDB.subscribeToAllCommunityProfiles === 'function') {
+                window.LuminaDB.subscribeToAllCommunityProfiles((cloudList) => {
+                    updateTelemetryDisplay(cloudList);
+                });
             }
         }
 

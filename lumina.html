@@ -2683,19 +2683,19 @@
             </div>
             <div style="display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1);">
                 <div id="tablicaOnlineAvatarsContainer" class="tablica-online-avatars-wrap">
-                    <div class="tablica-online-avatar-item" title="Zalogowany: Cezary Rogowski 🟢" style="z-index: 4;">
+                    <div class="tablica-online-avatar-item" title="Zalogowany: Cezary Rogowski 🟢" style="z-index: 4;" onclick="event.stopPropagation(); window.location.href='lumina.cezaryrgowski.html';">
                         <img src="avatar_cezary_official.jpg" alt="Cezary" class="tablica-online-avatar-img home-cezary-avatar" onerror="this.onerror=null; this.src='avatar_cezary_official.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
-                    <div class="tablica-online-avatar-item" title="Zalogowana: Wioletta Rogowska 🟢" style="z-index: 3;">
+                    <div class="tablica-online-avatar-item" title="Zalogowana: Wioletta Rogowska 🟢" style="z-index: 3;" onclick="event.stopPropagation(); window.location.href='lumina.wiolettarogowska.html';">
                         <img src="avatar_wioletta_official.jpg" alt="Wioletta" class="tablica-online-avatar-img home-wioletta-avatar" onerror="this.onerror=null; this.src='avatar_wioletta_official.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
-                    <div class="tablica-online-avatar-item" title="Zalogowana: Magdalena 🟢" style="z-index: 2;">
+                    <div class="tablica-online-avatar-item" title="Zalogowana: Magdalena 🟢" style="z-index: 2;" onclick="event.stopPropagation(); window.location.href='lumina-profile.html?u=u_magdalena_9102';">
                         <img src="avatar_magdalena.png" alt="Magdalena" class="tablica-online-avatar-img" onerror="this.onerror=null; this.src='avatar_magdalena.png';">
                         <span class="tablica-online-dot"></span>
                     </div>
-                    <div class="tablica-online-more-btn" title="I więcej zalogowanych użytkowników w społeczności LUMINA" aria-label="Więcej zalogowanych użytkowników">
+                    <div class="tablica-online-more-btn" onclick="event.stopPropagation(); openAllOnlineUsersModal();" title="Zobacz wszystkich użytkowników dostępnych online 🟢" aria-label="Więcej zalogowanych użytkowników">
                         <i class="fa-solid fa-plus"></i>
                     </div>
                 </div>
@@ -6120,6 +6120,124 @@
         </div>
     </div>
     
+    <!-- ══════════ MODAL: WSZYSCY UŻYTKOWNICY ONLINE ══════════ -->
+    <div class="modal-overlay" id="modalAllOnlineUsers" onclick="if(event.target===this) closeModal('modalAllOnlineUsers')" style="z-index: 100003;">
+        <div class="modal-card" style="max-width: 520px; width: 94%; max-height: 85vh; display:flex; flex-direction:column; background:#0b1329; border: 1.5px solid rgba(52,211,153,0.4); box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(52,211,153,0.25); border-radius: 24px; padding: 22px; position: relative;">
+            <button class="modal-close-btn" onclick="closeModal('modalAllOnlineUsers')" aria-label="Zamknij"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
+                <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, #10b981, #059669); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.2rem; box-shadow:0 4px 14px rgba(16,185,129,0.4);">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                    <h3 style="color:#fff; font-size:1.15rem; margin:0; display:flex; align-items:center; gap:8px;">
+                        Użytkownicy Dostępni Online <span class="badge-online-pulse" style="font-size:0.72rem; padding:2px 8px; border-radius:12px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#34d399;">LIVE</span>
+                    </h3>
+                    <div style="font-size:0.78rem; color:#94a3b8;">Aktywni członkowie społeczności LUMINA w czasie rzeczywistym</div>
+                </div>
+            </div>
+
+            <!-- Search bar inside modal -->
+            <div style="position:relative; margin-bottom:14px;">
+                <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:#94a3b8; font-size:0.85rem;"></i>
+                <input type="text" id="onlineUsersSearchInput" placeholder="Szukaj użytkownika po imieniu, mieście lub roli..." oninput="filterOnlineUsersModal(this.value)" style="width:100%; padding:10px 14px 10px 38px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:0.86rem; outline:none; box-sizing:border-box;">
+            </div>
+
+            <!-- List of online users -->
+            <div id="allOnlineUsersListContainer" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:10px; padding-right:4px;">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { PROFILES_DB } from './js/lumina-db-profiles.js';
+
+        let cachedOnlineProfiles = [];
+
+        function getAllCommunityProfiles() {
+            const map = new Map();
+            Object.values(PROFILES_DB || {}).forEach(p => { if (p && (p.slug || p.id)) map.set(p.slug || p.id, p); });
+            try {
+                const custom = JSON.parse(localStorage.getItem('lumina_custom_users_list') || '[]');
+                if (Array.isArray(custom)) custom.forEach(p => { if (p && (p.slug || p.id)) map.set(p.slug || p.id, p); });
+            } catch(e) {}
+            return Array.from(map.values());
+        }
+
+        window.openAllOnlineUsersModal = function() {
+            const modal = document.getElementById('modalAllOnlineUsers');
+            const search = document.getElementById('onlineUsersSearchInput');
+            if (search) search.value = '';
+            renderOnlineUsersList(cachedOnlineProfiles.length ? cachedOnlineProfiles : getAllCommunityProfiles());
+            if (modal) modal.classList.add('open');
+        };
+
+        window.filterOnlineUsersModal = function(term) {
+            term = (term || '').toLowerCase().trim();
+            const all = cachedOnlineProfiles.length ? cachedOnlineProfiles : getAllCommunityProfiles();
+            if (!term) {
+                renderOnlineUsersList(all);
+                return;
+            }
+            const filtered = all.filter(p => {
+                const n = (p.name || '').toLowerCase();
+                const c = (p.city || p.location || '').toLowerCase();
+                const d = (p.denom || '').toLowerCase();
+                const j = (p.job || p.role || '').toLowerCase();
+                return n.includes(term) || c.includes(term) || d.includes(term) || j.includes(term);
+            });
+            renderOnlineUsersList(filtered);
+        };
+
+        function renderOnlineUsersList(profiles) {
+            const container = document.getElementById('allOnlineUsersListContainer');
+            if (!container) return;
+            if (!profiles || profiles.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:24px; color:#94a3b8; font-size:0.88rem;">Brak użytkowników pasujących do wyszukiwania.</div>';
+                return;
+            }
+            container.innerHTML = profiles.map(p => {
+                const profileUrl = p.slug === 'cezaryrgowski' ? 'lumina.cezaryrgowski.html' : 
+                                   (p.slug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : `lumina-profile.html?u=${p.slug || p.id}`);
+                const avatar = p.avatar || 'avatar_default.jpg';
+                const name = p.name || 'Użytkownik LUMINA';
+                const info = p.job || p.denom || p.city || 'Społeczność Chrześcijańska';
+                return `
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; transition:all 0.2s ease;">
+                        <div style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href='${profileUrl}'">
+                            <div style="position:relative; width:44px; height:44px; flex-shrink:0;">
+                                <img src="${avatar}" alt="${name}" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border:1.5px solid #10b981;" onerror="this.onerror=null; this.src='avatar_cezary_official.jpg';">
+                                <span style="position:absolute; bottom:0; right:0; width:12px; height:12px; border-radius:50%; background:#10b981; border:2px solid #0b1329; box-shadow:0 0 8px #10b981;"></span>
+                            </div>
+                            <div>
+                                <div style="font-weight:700; color:#fff; font-size:0.92rem;">${name}</div>
+                                <div style="font-size:0.75rem; color:#94a3b8;">${info}</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button type="button" class="admin-suite-btn btn-primary" onclick="window.location.href='${profileUrl}'" style="padding:6px 12px; border-radius:12px; font-size:0.78rem; font-weight:700;">
+                                Profil
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Live Community Subscribe
+        if (window.LuminaDB && typeof window.LuminaDB.subscribeToAllCommunityProfiles === 'function') {
+            window.LuminaDB.subscribeToAllCommunityProfiles((cloudList) => {
+                const map = new Map();
+                getAllCommunityProfiles().forEach(p => map.set(p.slug || p.id, p));
+                if (Array.isArray(cloudList)) cloudList.forEach(p => map.set(p.slug || p.id, p));
+                cachedOnlineProfiles = Array.from(map.values());
+            });
+        } else {
+            cachedOnlineProfiles = getAllCommunityProfiles();
+        }
+    </script>
+
     <script>
         window.openSupportModal = function() {
             const modal = document.getElementById('supportLuminaModal');
