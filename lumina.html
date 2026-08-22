@@ -4729,16 +4729,29 @@
         window.addEventListener('lumina-profile-updated', window.syncUserSavedProfileToHomepage);
         window.addEventListener('lumina-auth-state', window.syncUserSavedProfileToHomepage);
         // ── Auth modal ──
-        function openAuth() {
-            document.getElementById('authModal').classList.add('open');
-        }
-        function closeModal(id) { 
+        window.openAuth = function(tab = 'login') {
+            const m = document.getElementById('authModal');
+            if (m) {
+                m.style.display = 'flex';
+                m.classList.add('open');
+                if (typeof switchAuthTab === 'function') {
+                    switchAuthTab(tab);
+                }
+            }
+        };
+        window.openLogin = function() {
+            window.openAuth('login');
+        };
+        window.openRegister = function() {
+            window.openAuth('register');
+        };
+        window.closeModal = function(id) { 
             const el = document.getElementById(id);
             if (el) {
                 el.classList.remove('open');
                 el.style.display = 'none';
             }
-        }
+        };
 
         // ── Dynamic 3D Recommend / Share Portal Logic ──
         window.openShareLuminaModal = function() {
