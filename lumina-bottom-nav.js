@@ -366,7 +366,7 @@
                         <div style="flex:1;">
                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <span style="font-weight:800; font-size:0.92rem; color:#fff;">Cezary Rogowski</span>
-                                <span style="font-size:0.72rem; color:#facc15; font-weight:700;">☕ Kawa</span>
+                                <span style="font-size:0.72rem; color:#facc15; font-weight:700;">Kawa</span>
                             </div>
                             <div style="font-size:0.78rem; color:#cbd5e1; margin-top:2px;">Witaj w portalu LUMINA! Szczęść Boże 🕊️</div>
                         </div>
@@ -386,7 +386,7 @@
 
                 <div style="margin-top:16px; text-align:center;">
                     <a href="lumina.html" style="display:inline-block; font-size:0.82rem; color:#facc15; text-decoration:none; font-weight:700;">
-                        Odkryj nowe profile i zaproś kogoś na Kawę ☕
+                        Odkryj nowe profile i zaproś kogoś na Kawę
                     </a>
                 </div>
             </div>

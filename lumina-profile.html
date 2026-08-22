@@ -2093,7 +2093,7 @@
                     <!-- Rząd 1: Wiadomość & Kawa -->
                     <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; width:100%;">
                         <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span></button>
-                        <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa ☕</span></button>
+                        <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa</span></button>
                     </div>
 
                     <!-- Rząd 2: Obserwowanie i Polubienia -->
@@ -4517,22 +4517,23 @@
             const file = e.target.files[0];
             if (!file) return;
             showToast('Przetwarzanie zdjęcia profilowego... ⏳');
-            compressAndReadImage(file, 500, 500, 0.85, function(dataUrl) {
+            compressAndReadImage(file, 800, 800, 0.85, function(dataUrl) {
                 const slug = getRequestedUserSlug();
                 const cur = getProfileData();
                 cur.avatar = dataUrl;
                 window._cloudProfileData = cur;
                 try {
+                    localStorage.setItem('lumina_avatar_' + slug, dataUrl);
                     localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
                     localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
                     localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
                     localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
                 } catch(err) {}
-                if (window.LuminaDB) {
+                if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
                     window.LuminaDB.saveProfileToCloud(slug, cur);
                 }
                 renderProfile();
-                showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane! 📷✨');
+                showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane w chmurze! 📷✨');
             });
             e.target.value = '';
         }
@@ -4541,22 +4542,23 @@
             const file = e.target.files[0];
             if (!file) return;
             showToast('Przetwarzanie zdjęcia w tle... ⏳');
-            compressAndReadImage(file, 1200, 600, 0.80, function(dataUrl) {
+            compressAndReadImage(file, 1400, 700, 0.82, function(dataUrl) {
                 const slug = getRequestedUserSlug();
                 const cur = getProfileData();
                 cur.cover = dataUrl;
                 window._cloudProfileData = cur;
                 try {
+                    localStorage.setItem('lumina_cover_' + slug, dataUrl);
                     localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
                     localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
                     localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
                     localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
                 } catch(err) {}
-                if (window.LuminaDB) {
+                if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
                     window.LuminaDB.saveProfileToCloud(slug, cur);
                 }
                 renderProfile();
-                showToast('Zdjęcie w tle zostało zaktualizowane i zapisane! 🖼️✨');
+                showToast('Zdjęcie w tle zostało zaktualizowane i zapisane w chmurze! 🖼️✨');
             });
             e.target.value = '';
         }
