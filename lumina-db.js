@@ -1806,15 +1806,23 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
 
     const parts = (chatId || '').split('_');
     const normalizedChatId = parts.length >= 2 ? getChatId(parts[0], parts[1]) : chatId;
+    const receiverId = normalizeChatUserId(messageObj.receiverId || (parts.length >= 2 ? (parts[0] === fromId ? parts[1] : parts[0]) : ''));
 
     const fullMsg = {
         chatId: normalizedChatId,
         senderId: fromId,
         senderName: senderName,
         senderAvatar: senderAvatar,
-        receiverId: normalizeChatUserId(messageObj.receiverId || (parts.length >= 2 ? (parts[0] === fromId ? parts[1] : parts[0]) : '')),
+        receiverId: receiverId,
         text: messageObj.text || '',
         type: messageObj.type || 'text',
+        status: 'sent',
+        isRead: false,
+        readAt: null,
+        readBy: [],
+        readByName: null,
+        delivered: true,
+        deliveredAt: Date.now(),
         createdAt: Date.now(),
         timestamp: serverTimestamp(),
         dateStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -1857,6 +1865,67 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
     } catch(e) {
         console.warn('Lumina send direct message notice:', e.message);
         return 'local_' + Date.now();
+    }
+}
+
+// ── Oznaczanie wiadomości prywatnych jako Przeczytane (Real-time Read Receipts ✓✓) ──
+export async function markDirectMessagesAsRead(chatId, currentUserId, currentUserName) {
+    if (!chatId || !currentUserId) return;
+    const parts = (chatId || '').split('_');
+    const normalizedChatId = parts.length >= 2 ? getChatId(parts[0], parts[1]) : chatId;
+    const normMyId = normalizeChatUserId(currentUserId);
+    const myName = currentUserName || (normMyId === 'cezaryrgowski' ? 'Cezary Rogowski' : (normMyId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
+
+    // 1. Zaktualizuj natychmiast lokalny cache
+    const localKey = `lumina_chat_${normalizedChatId}`;
+    try {
+        const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
+        let changed = false;
+        cached.forEach(m => {
+            if (m.receiverId === normMyId && (!m.isRead || m.status !== 'read')) {
+                m.isRead = true;
+                m.status = 'read';
+                m.readAt = Date.now();
+                m.readByName = myName;
+                if (!m.readBy) m.readBy = [];
+                if (!m.readBy.includes(normMyId)) m.readBy.push(normMyId);
+                changed = true;
+            }
+        });
+        if (changed) {
+            localStorage.setItem(localKey, JSON.stringify(cached));
+            const listener = activeDirectChatListeners.get(normalizedChatId);
+            if (listener) listener(cached);
+        }
+    } catch(e) {}
+
+    if (!db) return;
+
+    try {
+        // Aktualizacja w chmurze Firestore
+        const qFallback = query(
+            collection(db, 'lumina_direct_messages'),
+            where('chatId', '==', normalizedChatId),
+            limit(50)
+        );
+        const snap = await getDocs(qFallback);
+        const promises = [];
+        snap.forEach(d => {
+            const data = d.data();
+            if (data.receiverId === normMyId && (!data.isRead || data.status !== 'read')) {
+                const ref = doc(db, 'lumina_direct_messages', d.id);
+                promises.push(updateDoc(ref, {
+                    isRead: true,
+                    status: 'read',
+                    readAt: Date.now(),
+                    readByName: myName,
+                    readBy: [normMyId]
+                }));
+            }
+        });
+        if (promises.length) await Promise.all(promises);
+    } catch(err) {
+        console.warn('Lumina mark direct messages as read notice:', err);
     }
 }
 
@@ -1903,6 +1972,11 @@ export async function sendPublicChatMessage(messageObj) {
         senderBadge: senderBadge,
         text: messageObj.text || '',
         type: messageObj.type || 'text',
+        seenBy: [{
+            id: fromId,
+            name: senderName,
+            time: Date.now()
+        }],
         timestamp: serverTimestamp(),
         dateStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
@@ -1923,6 +1997,37 @@ export async function sendPublicChatMessage(messageObj) {
         console.warn('Lumina send public message error:', e.message);
         return null;
     }
+}
+
+// ── Oznaczanie wiadomości czatu ogólnego jako Wyświetlone (Seen / Read) ──
+export async function markPublicMessagesSeen(messages, currentUser) {
+    if (!db || !messages || !messages.length) return;
+    const uid = currentUser?.slug || currentUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest';
+    const normId = normalizeChatUserId(uid);
+    const userName = currentUser?.name || currentUser?.displayName || (normId === 'cezaryrgowski' ? 'Cezary Rogowski' : (normId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
+
+    const unread = messages.filter(m => {
+        if (!m.id || String(m.id).startsWith('local_')) return false;
+        if (m.senderId === normId) return false;
+        const seenList = m.seenBy || [];
+        return !seenList.some(u => (typeof u === 'string' ? u === normId : u.id === normId));
+    }).slice(-10);
+
+    if (!unread.length) return;
+
+    try {
+        const promises = unread.map(m => {
+            const ref = doc(db, 'lumina_public_chat_messages', m.id);
+            const currentSeen = m.seenBy || [];
+            const newSeen = currentSeen.concat({
+                id: normId,
+                name: userName,
+                time: Date.now()
+            });
+            return updateDoc(ref, { seenBy: newSeen }).catch(() => {});
+        });
+        await Promise.all(promises);
+    } catch(e) {}
 }
 
 export function subscribeToUserChats(userId, onUpdate) {
@@ -2672,8 +2777,10 @@ window.LuminaDB = {
     normalizeChatUserId,
     subscribeToDirectMessages,
     sendDirectMessageToCloud,
+    markDirectMessagesAsRead,
     subscribeToPublicChat,
     sendPublicChatMessage,
+    markPublicMessagesSeen,
     subscribeToUserChats,
     recordProfileLike,
     subscribeToUserMatches,

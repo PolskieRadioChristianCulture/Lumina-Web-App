@@ -3764,7 +3764,6 @@
             return String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
         function escapeForInlineJs(str) {
-            // Bezpieczne wstawienie do onclick="...('...')" — najpierw ucieczka JS-string, potem HTML-atrybut
             return String(str ?? '')
                 .replace(/\\/g, '\\\\')
                 .replace(/'/g, "\\'")
@@ -3797,13 +3796,19 @@
                 const time = msg.dateStr || (msg.timestamp?.seconds ? new Date(msg.timestamp.seconds * 1000).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : 'Teraz');
                 const badge = msg.senderBadge ? `<span style="font-size:0.65rem; padding:1px 6px; border-radius:8px; background:rgba(255,255,255,0.15); margin-left:4px; font-weight:700;">${escapeHtml(msg.senderBadge)}</span>` : '';
 
+                const seenCount = (msg.seenBy || []).length;
+                const seenTooltip = (msg.seenBy || []).map(u => (typeof u === 'string' ? u : u.name || u.id)).filter(Boolean).join(', ');
+                const seenBadge = seenCount > 0 
+                    ? `<span style="font-size:0.60rem; color:#38bdf8; display:inline-flex; align-items:center; gap:3px; background:rgba(56,189,248,0.12); padding:1px 6px; border-radius:8px; margin-left:6px;" title="Wyświetlone przez: ${escapeHtml(seenTooltip)}"><i class="fa-solid fa-eye" style="font-size:0.58rem;"></i> ${seenCount}</span>` 
+                    : '';
+
                 html += `
                     <div style="display:flex; justify-content:${align}; gap:8px; margin-bottom:6px; align-items:flex-end;">
                         ${!isMe ? `<img src="${escapeHtml(msg.senderAvatar || 'lumina_icon.jpg')}" alt="${escapeHtml(msg.senderName)}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border:1px solid #a855f7; cursor:pointer;" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(msg.senderAvatar)}', '${escapeForInlineJs(normSender)}')" title="Kliknij, aby otworzyć czat prywatny 1:1">` : ''}
                         <div style="max-width:78%; padding:9px 13px; border-radius:${radius}; background:${bg}; color:${color}; font-size:0.85rem; line-height:1.42; box-shadow:0 2px 8px rgba(0,0,0,0.25);">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px; gap:8px;">
                                 <span style="font-weight:800; font-size:0.75rem; color:${isMe ? '#fdf4ff' : '#f472b6'}; cursor:pointer;" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(msg.senderAvatar)}', '${escapeForInlineJs(normSender)}')">${escapeHtml(msg.senderName || 'Użytkownik LUMINA')} ${badge}</span>
-                                <span style="font-size:0.62rem; color:rgba(255,255,255,0.6);">${time}</span>
+                                <span style="font-size:0.62rem; color:rgba(255,255,255,0.6); display:flex; align-items:center;">${time} ${seenBadge}</span>
                             </div>
                             <div style="word-break:break-word;">${escapeHtml(msg.text)}</div>
                             ${!isMe ? `
@@ -3823,9 +3828,12 @@
 
             box.innerHTML = html;
             box.scrollTop = box.scrollHeight;
+
+            if (window.LuminaDB && typeof window.LuminaDB.markPublicMessagesSeen === 'function') {
+                window.LuminaDB.markPublicMessagesSeen(messages, { slug: 'wiolettarogowska', name: 'Wioletta Rogowska' });
+            }
         }
 
-                // ══════════ ZGŁASZANIE WIADOMOŚCI CZATU DO MODERATORÓW LUMINA ══════════
         window.reportChatMessage = async function(messageId, authorId) {
             if (!window.LuminaDB || typeof window.LuminaDB.reportContent !== 'function') return;
             const reason = window.prompt('Dlaczego zgłaszasz tę wiadomość? (opcjonalnie opisz powód)', '');
@@ -4149,12 +4157,28 @@
                 const radius = isMe ? '16px 16px 4px 16px' : '16px 16px 16px 4px';
                 const time = msg.dateStr || (msg.timestamp?.seconds ? new Date(msg.timestamp.seconds * 1000).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : 'Teraz');
 
+                let readStatusHtml = '';
+                if (isMe) {
+                    if (msg.isRead || msg.status === 'read') {
+                        const readTime = msg.readAt ? new Date(msg.readAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
+                        const whoRead = msg.readByName ? ` przez: ${escapeHtml(msg.readByName)}` : '';
+                        readStatusHtml = `<span style="color:#38bdf8; font-weight:800; display:inline-flex; align-items:center; gap:3px; font-size:0.65rem;" title="Przeczytano${whoRead} (${readTime || 'przed chwilą'})"><i class="fa-solid fa-check-double" style="font-size:0.70rem; color:#38bdf8;"></i> Przeczytana${readTime ? ' • ' + readTime : ''}</span>`;
+                    } else if (msg.delivered || msg.status === 'delivered') {
+                        readStatusHtml = `<span style="color:#94a3b8; display:inline-flex; align-items:center; gap:3px; font-size:0.65rem;" title="Dostarczono na serwer"><i class="fa-solid fa-check-double" style="font-size:0.70rem; color:#94a3b8;"></i> Dostarczona</span>`;
+                    } else {
+                        readStatusHtml = `<span style="color:#94a3b8; display:inline-flex; align-items:center; gap:3px; font-size:0.65rem;" title="Wysłana"><i class="fa-solid fa-check" style="font-size:0.70rem; color:#94a3b8;"></i> Wysłana</span>`;
+                    }
+                }
+
                 html += `
                     <div style="display:flex; justify-content:${align}; margin-bottom:6px;">
                         <div style="max-width:78%; padding:10px 14px; border-radius:${radius}; background:${bg}; color:${color}; font-size:0.86rem; line-height:1.45; box-shadow:0 2px 8px rgba(0,0,0,0.25);">
                             <div style="font-weight:700; font-size:0.72rem; color:rgba(255,255,255,0.7); margin-bottom:2px;">${msg.senderName || (isMe ? 'Wioletta Rogowska' : 'Cezary Rogowski')}</div>
                             <div>${escapeHtml(msg.text)}</div>
-                            <div style="font-size:0.65rem; color:rgba(255,255,255,0.6); text-align:right; margin-top:4px;">${time}</div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.65rem; color:rgba(255,255,255,0.6); margin-top:4px; gap:8px;">
+                                <span>${time}</span>
+                                ${readStatusHtml ? `<span>${readStatusHtml}</span>` : ''}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -4162,6 +4186,10 @@
 
             box.innerHTML = html;
             box.scrollTop = box.scrollHeight;
+
+            if (window.LuminaDB && typeof window.LuminaDB.markDirectMessagesAsRead === 'function' && activeChatSession?.chatId) {
+                window.LuminaDB.markDirectMessagesAsRead(activeChatSession.chatId, 'wiolettarogowska', 'Wioletta Rogowska');
+            }
         }
 
         async function handleSendActiveChatMessage(e) {
