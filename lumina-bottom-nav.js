@@ -868,6 +868,27 @@
     window.triggerSecretAdminPrompt = async function(e) {
         if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
 
+        // ══ PRIORYTET 1: Deleguj do LuminaAdminSuite gdy panel jest gotowy ══
+        if (window.LuminaAdminSuite && typeof window.LuminaAdminSuite.openPinPrompt === 'function') {
+            const isCurrentlyAdmin = (
+                sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
+                localStorage.getItem('lumina_auth_master_admin') === 'true'
+            );
+            if (isCurrentlyAdmin) {
+                // Już zalogowany — otwieramy panel quickModal z Tarczą
+                if (typeof window.LuminaAdminSuite.openAllProfilesManager === 'function') {
+                    window.LuminaAdminSuite.openAllProfilesManager();
+                } else {
+                    window.LuminaAdminSuite.openPinPrompt();
+                }
+            } else {
+                // Niezalogowany — uruchamiamy uwierzytelnienie via LuminaAdminSuite
+                window.LuminaAdminSuite.openPinPrompt();
+            }
+            return;
+        }
+
+        // ══ FALLBACK: LuminaAdminSuite jeszcze niedostępne — własna weryfikacja PIN ══
         const isCurrentlyAdmin = (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_master_admin') === 'true');
         if (isCurrentlyAdmin) {
             const confirmLock = confirm('👑 Jesteś obecnie zalogowany jako Główny Administrator Portalu LUMINA.\n\nCzy chcesz ZABLOKOWAĆ tryb Administratora i przejść do widoku zwykłego gościa?');
@@ -897,9 +918,19 @@
                 localStorage.setItem('lumina_auth_master_admin', 'true');
                 document.body.classList.add('owner-mode-active');
                 if (typeof window.checkOwnerAuthSession === 'function') window.checkOwnerAuthSession();
-                const toastFn = window.showToast || window.luminaToast || alert;
-                toastFn('👑 Witaj Dowódco! Panel Administratora Portalu Aktywowany.');
-                setTimeout(() => window.location.reload(), 500);
+                // Spróbuj otworzyć panel bezpośrednio jeśli suite załadowało się w tym czasie
+                if (window.LuminaAdminSuite && typeof window.LuminaAdminSuite.checkAndApplyAdminState === 'function') {
+                    window.LuminaAdminSuite.checkAndApplyAdminState();
+                    if (typeof window.LuminaAdminSuite.openAllProfilesManager === 'function') {
+                        window.LuminaAdminSuite.openAllProfilesManager();
+                    }
+                    const toastFn = window.showToast || window.luminaToast || alert;
+                    toastFn('👑 Witaj Dowódco! Panel Master Admin aktywowany.');
+                } else {
+                    const toastFn = window.showToast || window.luminaToast || alert;
+                    toastFn('👑 Witaj Dowódco! Panel Administratora Portalu Aktywowany.');
+                    setTimeout(() => window.location.reload(), 500);
+                }
             } else {
                 const toastFn = window.showToast || window.luminaToast || alert;
                 toastFn('❌ Błędny kod autoryzacji! Odmowa dostępu.');
