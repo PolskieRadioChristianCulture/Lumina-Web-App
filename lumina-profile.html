@@ -674,12 +674,20 @@
         /* ── Master Admin Command HUD Bar ── */
         .admin-master-hud {
             display: none;
-            background: linear-gradient(135deg, rgba(17, 24, 39, 0.95), rgba(30, 27, 75, 0.95));
-            border: 1.5px solid rgba(250, 204, 21, 0.5);
-            border-radius: 18px;
-            padding: 14px 20px;
-            margin: 16px 0 20px 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(250, 204, 21, 0.15);
+            position: sticky;
+            top: 56px;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 27, 75, 0.98));
+            border-top: 1px solid rgba(250, 204, 21, 0.3);
+            border-bottom: 2px solid rgba(250, 204, 21, 0.6);
+            border-left: none;
+            border-right: none;
+            border-radius: 0;
+            padding: 10px 24px;
+            margin: 0;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(250, 204, 21, 0.2);
             animation: fadeIn 0.3s ease;
             transition: all 0.3s ease;
         }
@@ -1905,6 +1913,59 @@
         </div>
     </nav>
 
+    <!-- Master Administrator Command HUD Bar (Pełna Kontrola - Tuż pod górną belką) -->
+    <div class="admin-master-hud" id="adminMasterHud">
+        <div class="admin-hud-header">
+            <div class="admin-hud-title" onclick="toggleLocalAdminHudMinimize()" style="cursor:pointer;" title="Kliknij, aby zwinąć / rozwinąć pasek">
+                <i class="fa-solid fa-crown" style="font-size: 1.3rem;"></i>
+                <span>Panel Dowódcy • Pełne Zarządzanie Profilem: <b id="adminTargetNameEl" style="color:#fff;">...</b></span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <div style="font-size: 0.76rem; color: #94a3b8; font-weight: 600; margin-right:6px;">
+                    <i class="fa-solid fa-shield-check" style="color:#22c55e;"></i> Master Admin
+                </div>
+                <button type="button" 
+                        id="localHudMinimizeBtn" 
+                        class="admin-hud-control-btn" 
+                        onclick="toggleLocalAdminHudMinimize()" 
+                        title="Minimalizuj / Rozwiń pasek Administratora"
+                        aria-label="Minimalizuj">
+                    <i class="fa-solid fa-minus" id="localHudMinimizeIcon"></i>
+                </button>
+                <button type="button" 
+                        class="admin-hud-control-btn btn-close-admin" 
+                        onclick="toggleOwnerAuthMode()" 
+                        title="Zamknij i wyjdź z panelu Administratora (Wyloguj)"
+                        aria-label="Wyjdź z trybu Administratora">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+        <div class="admin-hud-actions-grid">
+            <button type="button" class="admin-hud-btn btn-primary-edit" onclick="openEditProfileModal()" title="Edytuj wszystkie pola profilu">
+                <i class="fa-solid fa-pen-to-square"></i> Edytuj Wszystkie Dane
+            </button>
+            <button type="button" class="admin-hud-btn btn-media" onclick="document.getElementById('avatarFileInput').click()" title="Wgraj nowe zdjęcie profilowe">
+                <i class="fa-solid fa-camera" style="color:#60a5fa;"></i> Zmień Avatar
+            </button>
+            <button type="button" class="admin-hud-btn btn-media" onclick="document.getElementById('coverFileInput').click()" title="Wgraj nowe zdjęcie w tle">
+                <i class="fa-solid fa-panorama" style="color:#c084fc;"></i> Zmień Tło
+            </button>
+            <button type="button" class="admin-hud-btn btn-media" onclick="document.getElementById('galleryFileInput').click()" title="Dodaj zdjęcia do galerii">
+                <i class="fa-solid fa-images" style="color:#86efac;"></i> Dodaj do Galerii
+            </button>
+            <button type="button" class="admin-hud-btn btn-block-prof" id="btnAdminBlockProfile" onclick="toggleBlockCurrentProfileAdmin()" title="Zablokuj lub odblokuj ten profil">
+                <i class="fa-solid fa-ban"></i> <span id="btnAdminBlockProfileLabel">Zablokuj Profil</span>
+            </button>
+            <button type="button" class="admin-hud-btn btn-delete-prof" onclick="deleteCurrentProfileAdmin()" title="Trwale usuń ten profil z bazy LUMINA">
+                <i class="fa-solid fa-trash-can"></i> Usuń Profil
+            </button>
+            <button type="button" class="admin-hud-btn btn-exit-admin" onclick="toggleOwnerAuthMode()" title="Wyjdź z trybu Administratora">
+                <i class="fa-solid fa-lock"></i> Zablokuj Tryb Admina
+            </button>
+        </div>
+    </div>
+
     <!-- Hidden File Inputs for Direct Photo Uploads -->
     <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
     <input type="file" id="coverFileInput" accept="image/*" style="display:none;" onchange="handleCoverFileSelect(event)">
@@ -1921,59 +1982,6 @@
             <div style="flex:1;">
                 <div style="font-weight:900; font-size:0.95rem; text-transform:uppercase; letter-spacing:0.5px; color:#fff;">Profil Zablokowany przez Administratora Portalu</div>
                 <div style="font-size:0.84rem; margin-top:2px; color:#fecaca;" id="profileBlockedReasonText">Powód: Konto zostało zablokowane ze względów bezpieczeństwa.</div>
-            </div>
-        </div>
-
-        <!-- Master Administrator Command HUD Bar (Pełna Kontrola) -->
-        <div class="admin-master-hud" id="adminMasterHud">
-            <div class="admin-hud-header">
-                <div class="admin-hud-title" onclick="toggleLocalAdminHudMinimize()" style="cursor:pointer;" title="Kliknij, aby zwinąć / rozwinąć pasek">
-                    <i class="fa-solid fa-crown" style="font-size: 1.3rem;"></i>
-                    <span>Panel Dowódcy • Pełne Zarządzanie Profilem: <b id="adminTargetNameEl" style="color:#fff;">...</b></span>
-                </div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <div style="font-size: 0.76rem; color: #94a3b8; font-weight: 600; margin-right:6px;">
-                        <i class="fa-solid fa-shield-check" style="color:#22c55e;"></i> Master Admin
-                    </div>
-                    <button type="button" 
-                            id="localHudMinimizeBtn" 
-                            class="admin-hud-control-btn" 
-                            onclick="toggleLocalAdminHudMinimize()" 
-                            title="Minimalizuj / Rozwiń pasek Administratora"
-                            aria-label="Minimalizuj">
-                        <i class="fa-solid fa-minus" id="localHudMinimizeIcon"></i>
-                    </button>
-                    <button type="button" 
-                            class="admin-hud-control-btn btn-close-admin" 
-                            onclick="toggleOwnerAuthMode()" 
-                            title="Zamknij i wyjdź z panelu Administratora (Wyloguj)"
-                            aria-label="Wyjdź z trybu Administratora">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="admin-hud-actions-grid">
-                <button type="button" class="admin-hud-btn btn-primary-edit" onclick="openEditProfileModal()" title="Edytuj wszystkie pola profilu">
-                    <i class="fa-solid fa-pen-to-square"></i> Edytuj Wszystkie Dane
-                </button>
-                <button type="button" class="admin-hud-btn btn-media" onclick="document.getElementById('avatarFileInput').click()" title="Wgraj nowe zdjęcie profilowe">
-                    <i class="fa-solid fa-camera" style="color:#60a5fa;"></i> Zmień Avatar
-                </button>
-                <button type="button" class="admin-hud-btn btn-media" onclick="document.getElementById('coverFileInput').click()" title="Wgraj nowe zdjęcie w tle">
-                    <i class="fa-solid fa-panorama" style="color:#c084fc;"></i> Zmień Tło
-                </button>
-                <button type="button" class="admin-hud-btn btn-media" onclick="document.getElementById('galleryFileInput').click()" title="Dodaj zdjęcia do galerii">
-                    <i class="fa-solid fa-images" style="color:#86efac;"></i> Dodaj do Galerii
-                </button>
-                <button type="button" class="admin-hud-btn btn-block-prof" id="btnAdminBlockProfile" onclick="toggleBlockCurrentProfileAdmin()" title="Zablokuj lub odblokuj ten profil">
-                    <i class="fa-solid fa-ban"></i> <span id="btnAdminBlockProfileLabel">Zablokuj Profil</span>
-                </button>
-                <button type="button" class="admin-hud-btn btn-delete-prof" onclick="deleteCurrentProfileAdmin()" title="Trwale usuń ten profil z bazy LUMINA">
-                    <i class="fa-solid fa-trash-can"></i> Usuń Profil
-                </button>
-                <button type="button" class="admin-hud-btn btn-exit-admin" onclick="toggleOwnerAuthMode()" title="Wyjdź z trybu Administratora">
-                    <i class="fa-solid fa-lock"></i> Zablokuj Tryb Admina
-                </button>
             </div>
         </div>
 

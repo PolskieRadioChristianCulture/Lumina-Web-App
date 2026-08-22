@@ -107,10 +107,10 @@
             /* ══════════ MASTER ADMIN HUD BAR ══════════ */
             .lumina-admin-hud-bar {
                 position: sticky;
-                top: 0;
+                top: 56px;
                 left: 0;
                 right: 0;
-                z-index: 99990;
+                z-index: 10000;
                 background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 27, 75, 0.98));
                 border-bottom: 2px solid rgba(245, 158, 11, 0.6);
                 box-shadow: 0 4px 25px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.25);
@@ -1045,7 +1045,12 @@
             </div>
         `;
 
-        document.body.appendChild(container);
+        const nav = document.querySelector('nav.lumina-nav, nav, header');
+        if (nav && nav.parentNode) {
+            nav.parentNode.insertBefore(container, nav.nextSibling);
+        } else {
+            document.body.prepend(container);
+        }
     }
 
     // Główny obiekt API Master Admin Suite
