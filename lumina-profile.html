@@ -4355,10 +4355,22 @@
             showToast('Wpis został pomyślnie zaktualizowany! ✏️✨');
         }
 
+        function isUserAuthorizedForPostAction() {
+            const isMaster = (localStorage.getItem('lumina_auth_master_admin') === 'true') || 
+                             (sessionStorage.getItem('lumina_auth_master_admin') === 'true');
+            if (isMaster) return true;
+            if (typeof isOwnerMode !== 'undefined' && isOwnerMode) return true;
+            return false;
+        }
+
         async function deleteFeedPost(event, postId) {
             if (event) {
                 event.stopPropagation();
                 event.preventDefault();
+            }
+            if (!isUserAuthorizedForPostAction()) {
+                showToast('⛔ Odmowa dostępu: Tylko autor wpisu lub Administrator może usunąć ten post.');
+                return;
             }
             if (!confirm('Czy na pewno chcesz usunąć ten wpis z tablicy?')) return;
 

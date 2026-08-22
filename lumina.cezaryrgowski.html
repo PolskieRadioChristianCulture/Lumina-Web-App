@@ -4059,10 +4059,22 @@ www.polskieradio.cc | www.cclite.pl`,
             showToast('Wpis został pomyślnie zaktualizowany! ✏️✨');
         }
 
+        function isUserAuthorizedForAction() {
+            const isMaster = (localStorage.getItem('lumina_auth_master_admin') === 'true') || 
+                             (sessionStorage.getItem('lumina_auth_master_admin') === 'true');
+            if (isMaster) return true;
+            if (typeof isOwnerMode !== 'undefined' && isOwnerMode) return true;
+            return false;
+        }
+
         async function deleteFeedPost(event, postId) {
             if (event) {
                 event.stopPropagation();
                 event.preventDefault();
+            }
+            if (!isUserAuthorizedForAction()) {
+                showToast('⛔ Odmowa dostępu: Tylko autor wpisu lub Administrator może usunąć ten post.');
+                return;
             }
             if (!confirm('Czy na pewno chcesz usunąć ten wpis z tablicy?')) return;
 
@@ -4348,6 +4360,10 @@ www.polskieradio.cc | www.cclite.pl`,
 
         
         async function deletePostPrompt(postId) {
+            if (!isUserAuthorizedForAction()) {
+                showToast('⛔ Odmowa dostępu: Tylko autor wpisu lub Administrator może usunąć ten post.');
+                return;
+            }
             if (!confirm('Czy na pewno chcesz usunąć ten wpis z tablicy?')) return;
             const cur = getProfileData();
             if (!cur.posts || !Array.isArray(cur.posts)) return;
@@ -4366,6 +4382,10 @@ www.polskieradio.cc | www.cclite.pl`,
         }
     
         function openEditProfileModal(section) {
+            if (!isUserAuthorizedForAction()) {
+                showToast('⛔ Aby edytować ten profil, zaloguj się lub podaj kod PIN.');
+                return;
+            }
             const data = getProfileData();
             document.getElementById('editName').value = data.name;
             document.getElementById('editAge').value = data.age;
