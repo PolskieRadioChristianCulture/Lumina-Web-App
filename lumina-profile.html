@@ -5214,12 +5214,7 @@
             `;
         }
 
-            if (window.LuminaDB && typeof window.LuminaDB.markPublicMessagesSeen === 'function') {
-                window.LuminaDB.markPublicMessagesSeen(messages, myProfile || myUser);
-            }
-        }
-
-                // ══════════ ZGŁASZANIE WIADOMOŚCI CZATU DO MODERATORÓW LUMINA ══════════
+        // ══════════ ZGŁASZANIE WIADOMOŚCI CZATU DO MODERATORÓW LUMINA ══════════
         window.reportChatMessage = async function(messageId, authorId) {
             if (!window.LuminaDB || typeof window.LuminaDB.reportContent !== 'function') return;
             const reason = window.prompt('Dlaczego zgłaszasz tę wiadomość? (opcjonalnie opisz powód)', '');
@@ -5271,6 +5266,7 @@
                     senderBadge: senderBadge,
                     text: text
                 });
+            }
         }
 
         // ── Personal Settings & Force App Update ──
