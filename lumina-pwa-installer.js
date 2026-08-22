@@ -1,12 +1,12 @@
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA UNIVERSAL MOBILE PWA INSTALLER & AUTO-UPDATE ENGINE (v3.5.1)
+// LUMINA UNIVERSAL MOBILE PWA INSTALLER & AUTO-UPDATE ENGINE (v3.6.1)
 // High-reliability Service Worker manager, Version Monitor & Update Banner
 // ══════════════════════════════════════════════════════════════════════════
 
 (function() {
     'use strict';
 
-    const CURRENT_CLIENT_VERSION = '3.6.0';
+    const CURRENT_CLIENT_VERSION = '3.6.1';
     const DISMISS_INSTALL_KEY = 'lumina_pwa_install_dismissed';
     const DISMISS_UPDATE_KEY = 'lumina_pwa_update_dismissed_version';
     const LAST_SEEN_VERSION_KEY = 'lumina_app_version_seen';
