@@ -1066,6 +1066,20 @@
                             <textarea id="agentNoteText" rows="4" placeholder="Np. Zmień kolor tła na ciemniejszy granat, popraw wyrównanie tekstu, podmień grafikę na nową wersję..." style="width:100%; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px; outline:none; resize:vertical;" required></textarea>
                         </div>
 
+                        <!-- 👑 SEKCJA: UWAGI SPECJALNE & SZCZEGÓLNE WYTYCZNE DOWÓDCY -->
+                        <div style="background:linear-gradient(135deg, rgba(245,158,11,0.12), rgba(168,85,247,0.10)); border:1.5px solid rgba(245,158,11,0.45); border-radius:16px; padding:12px 14px; margin-bottom:14px; box-shadow:0 4px 18px rgba(0,0,0,0.35);">
+                            <label style="display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; margin-bottom:8px;">
+                                <input type="checkbox" id="agentNoteSpecialCheck" style="width:20px; height:20px; accent-color:#f59e0b; cursor:pointer; flex-shrink:0;" onchange="const p=document.getElementById('agentNotePriority'); if(this.checked&&p) p.value='critical';">
+                                <span style="font-size:0.84rem; font-weight:800; color:#facc15; display:flex; align-items:center; gap:6px;">
+                                    <i class="fa-solid fa-crown" style="color:#f59e0b;"></i> Uwagi specjalne / Szczególne wytyczne Dowódcy (Rygor Klasy Światowej & Zero Regresji)
+                                </span>
+                            </label>
+                            <textarea id="agentNoteSpecialGuidelines" rows="2" placeholder="Wpisz szczególne wytyczne i żelazne zasady (np. bezwzględny zakaz dotykania innych plików, ochrona układu poziomego, weryfikacja przyczynowo-skutkowa)..." style="width:100%; padding:10px 12px; border-radius:12px; background:rgba(15,23,42,0.85); border:1px solid rgba(245,158,11,0.3); color:#fef08a; font-family:inherit; font-size:13px; outline:none; resize:vertical;"></textarea>
+                            <div style="font-size:0.72rem; color:#cbd5e1; margin-top:4px; font-style:italic;">
+                                ⚡ Zaznaczenie ptaszkiem gwarantuje najwyższy priorytet wykonania oraz rygorystyczny audyt jakości Strażnika Kodu.
+                            </div>
+                        </div>
+
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
                             <div>
                                 <label style="display:block; font-size:0.75rem; font-weight:700; color:#38bdf8; margin-bottom:4px;">Kategoria Zmiany</label>
@@ -1420,6 +1434,13 @@
                 setTimeout(() => textEl.focus(), 150);
             }
 
+            const specialCheck = document.getElementById('agentNoteSpecialCheck');
+            if (specialCheck) specialCheck.checked = false;
+            const specialGuid = document.getElementById('agentNoteSpecialGuidelines');
+            if (specialGuid) specialGuid.value = '';
+            const prioSelect = document.getElementById('agentNotePriority');
+            if (prioSelect) prioSelect.value = 'normal';
+
             this.openModal('adminAgentNoteModal');
         },
 
@@ -1433,12 +1454,19 @@
 
             const category = document.getElementById('agentNoteCategory')?.value || 'Wygląd / CSS';
             const priorityInput = document.getElementById('agentNotePriority')?.value || 'normal';
+            const specialChecked = !!document.getElementById('agentNoteSpecialCheck')?.checked;
+            const specialGuidelines = document.getElementById('agentNoteSpecialGuidelines')?.value?.trim() || '';
             const isImmediate = (mode === 'execute_now');
-            const finalPriority = isImmediate ? 'critical' : priorityInput;
+            const finalPriority = (specialChecked || isImmediate || specialGuidelines) ? 'critical' : priorityInput;
             const pageName = document.getElementById('notePageUrl')?.textContent || (window.location.pathname.split('/').pop() || 'lumina.html');
             const selector = document.getElementById('noteElementSelector')?.textContent || '';
             const tag = document.getElementById('noteElementTag')?.textContent || '';
             const snippet = document.getElementById('noteElementSnippetBox')?.textContent || '';
+
+            let fullFormattedNote = text;
+            if (specialChecked || specialGuidelines) {
+                fullFormattedNote = `👑 [UWAGI SPECJALNE DOWÓDCY - RYGOR KLASY ŚWIATOWEJ]:\n${specialGuidelines ? '• WYTYCZNE: ' + specialGuidelines + '\n\n' : ''}• TREŚĆ ZADANIA:\n${text}`;
+            }
 
             const noteId = 'note_' + Date.now();
             const noteObj = {
@@ -1448,7 +1476,11 @@
                 selector: selector,
                 tag: tag,
                 snippet: snippet,
-                note: text,
+                note: fullFormattedNote,
+                rawNote: text,
+                specialGuidelines: specialGuidelines,
+                isSpecialPriority: (specialChecked || !!specialGuidelines),
+                masterclassRigor: true,
                 category: category,
                 priority: finalPriority,
                 autoExecute: isImmediate,
