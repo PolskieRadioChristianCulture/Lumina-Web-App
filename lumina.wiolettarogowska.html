@@ -2813,7 +2813,12 @@
             if (!u) {
                 try { u = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
             }
-            if (u || isOwnerMode || localStorage.getItem('lumina_user_session') === 'active' || sessionStorage.getItem('lumina_auth_master_admin') === 'true') {
+            const isMaster = (window.LuminaSecurity && typeof window.LuminaSecurity.isMasterAdmin === 'function' && window.LuminaSecurity.isMasterAdmin()) ||
+                             sessionStorage.getItem('lumina_auth_master_admin') === 'true' || 
+                             localStorage.getItem('lumina_auth_master_admin') === 'true' ||
+                             localStorage.getItem('lumina_admin_unlocked') === 'true';
+
+            if (u || isOwnerMode || isMaster || localStorage.getItem('lumina_user_session') === 'active') {
                 isOwnerMode = true;
                 if (typeof callback === 'function') callback();
                 return true;

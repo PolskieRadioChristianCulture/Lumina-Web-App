@@ -4707,7 +4707,7 @@
 
             if (hasMore) {
                 html += `
-                    <div class="tablica-online-more-btn" title="I więcej zalogowanych użytkowników w społeczności LUMINA (${loggedInList.length} aktywnych)" aria-label="Więcej zalogowanych użytkowników" onclick="event.stopPropagation(); window.location.href='lumina-tablica.html';">
+                    <div class="tablica-online-more-btn" title="Zobacz wszystkich zalogowanych użytkowników online (${loggedInList.length} aktywnych)" aria-label="Więcej zalogowanych użytkowników" onclick="event.stopPropagation(); if(typeof window.openAllOnlineUsersModal==='function'){ window.openAllOnlineUsersModal(); } else { window.location.href='lumina-tablica.html'; }">
                         <i class="fa-solid fa-plus"></i>
                     </div>
                 `;
@@ -6121,15 +6121,27 @@
             var search = document.getElementById('onlineUsersSearchInput');
             if (search) search.value = '';
             
-            var list = defaultCommunityOnlineList;
-            try {
-                if (window._cachedLiveProfiles && window._cachedLiveProfiles.length) {
-                    list = window._cachedLiveProfiles;
-                }
-            } catch(e) {}
+            var list = [];
+            if (window.LUMINA_BASE_PROFILES && Object.keys(window.LUMINA_BASE_PROFILES).length) {
+                list = Object.values(window.LUMINA_BASE_PROFILES);
+            } else if (window._cachedLiveProfiles && window._cachedLiveProfiles.length) {
+                list = window._cachedLiveProfiles;
+            } else {
+                list = defaultCommunityOnlineList;
+            }
+
+            // Include any registered users from cloud
+            if (window._cloudProfilesMap) {
+                Object.values(window._cloudProfilesMap).forEach(function(cp) {
+                    if (cp && cp.name && !list.some(function(item) { return (item.slug && item.slug === cp.slug) || (item.uid && item.uid === cp.uid); })) {
+                        list.push(cp);
+                    }
+                });
+            }
             
             renderOnlineUsersList(list);
             if (modal) {
+                modal.style.display = 'flex';
                 modal.classList.add('open');
             }
         };
