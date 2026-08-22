@@ -76,7 +76,7 @@
     <script type="module" src="lumina-i18n.js?v=1786850740820.2"></script>
     <script src="lumina-terms-modal.js?v=1.0"></script>
     <script src="lumina-sharing-suite.js?v=1.0"></script>
-    <script src="lumina-pwa-installer.js?v=3.6.1"></script>
+    <script src="lumina-pwa-installer.js?v=3.6.2"></script>
 
     <style>
         :root {
@@ -4231,14 +4231,13 @@
                         const lKey = (localProf.slug || localProf.uid).toLowerCase();
                         if (!addedSlugs.has(lKey)) {
                             addedSlugs.add(lKey);
-                            const userAvatar = localProf.avatar || 'lumina_icon.jpg';
+                            let userAvatar = localProf.avatar || 'lumina_icon.jpg';
                             const userName = localProf.name;
                             const userAge = localProf.age ? ', ' + localProf.age : '';
                             const userCity = localProf.city ? localProf.city.split(',')[0] : 'Polska';
                             const userBio = localProf.bio ? (localProf.bio.length > 85 ? localProf.bio.substring(0, 85) + '...' : localProf.bio) : 'Szukam wartościowej relacji opartej na fundamencie Chrystusa ✨';
                             const userMatch = localProf.matchScore || '98%';
 
-                            let userAvatar = localProf.avatar || 'lumina_icon.jpg';
                             if (lKey.toLowerCase().includes('dominika') || localProf.needsRealPhoto || userAvatar.includes('placeholder')) {
                                 userAvatar = 'lumina_icon.jpg';
                             }

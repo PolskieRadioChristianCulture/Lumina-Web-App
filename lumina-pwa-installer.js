@@ -1,5 +1,5 @@
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA UNIVERSAL MOBILE PWA INSTALLER & AUTO-UPDATE ENGINE (v3.6.1)
+// LUMINA UNIVERSAL MOBILE PWA INSTALLER & AUTO-UPDATE ENGINE (v3.6.2)
 // High-reliability Service Worker manager, Version Monitor & Update Banner
 // ══════════════════════════════════════════════════════════════════════════
 
