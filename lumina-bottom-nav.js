@@ -99,15 +99,15 @@
             left: 50% !important;
             transform: translateX(-50%) !important;
             width: auto !important;
-            min-width: 460px !important;
-            max-width: 620px !important;
-            height: 64px !important;
-            background: rgba(9, 14, 30, 0.90) !important;
+            min-width: 290px !important;
+            max-width: 390px !important;
+            height: 62px !important;
+            background: rgba(9, 14, 30, 0.92) !important;
             backdrop-filter: blur(24px) saturate(180%) !important;
             -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-            border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.35) !important;
             border-radius: 36px !important;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(250, 204, 21, 0.12) !important;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8), 0 0 22px rgba(250, 204, 21, 0.18) !important;
             display: flex !important;
             align-items: center !important;
             justify-content: space-around !important;
@@ -186,6 +186,168 @@
             }
             body {
                 padding-bottom: 78px !important;
+            }
+        }
+
+        /* ── POPUP MENU III TRZECH LINII (Centrum Mediów, TV & Profilu) ── */
+        .lumina-bottom-menu-popup {
+            position: fixed !important;
+            bottom: 94px !important;
+            left: 50% !important;
+            transform: translateX(-50%) translateY(12px) scale(0.95) !important;
+            width: 360px !important;
+            max-width: 94vw !important;
+            z-index: 10001 !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            display: none;
+            flex-direction: column !important;
+        }
+
+        .lumina-bottom-menu-popup.open {
+            display: flex !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transform: translateX(-50%) translateY(0) scale(1) !important;
+        }
+
+        .lumina-bottom-menu-card {
+            background: rgba(11, 19, 41, 0.96) !important;
+            backdrop-filter: blur(28px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.45) !important;
+            border-radius: 26px !important;
+            padding: 16px 14px !important;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 25px rgba(250, 204, 21, 0.25) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 8px !important;
+        }
+
+        .lumina-bottom-menu-header {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding: 2px 8px 8px 8px !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            font-size: 0.82rem !important;
+            font-weight: 800 !important;
+            color: #facc15 !important;
+            font-family: 'Outfit', sans-serif !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+        }
+
+        .lumina-bottom-menu-close {
+            background: rgba(255, 255, 255, 0.08) !important;
+            border: none !important;
+            color: #cbd5e1 !important;
+            width: 26px !important;
+            height: 26px !important;
+            border-radius: 50% !important;
+            cursor: pointer !important;
+            font-size: 1.1rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.2s ease !important;
+        }
+        .lumina-bottom-menu-close:hover {
+            background: rgba(239, 68, 68, 0.2) !important;
+            color: #f87171 !important;
+        }
+
+        .lumina-bottom-menu-grid {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 7px !important;
+            margin-top: 4px !important;
+        }
+
+        .lumina-menu-btn {
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            padding: 10px 12px !important;
+            background: rgba(255, 255, 255, 0.04) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 16px !important;
+            color: #ffffff !important;
+            text-align: left !important;
+            cursor: pointer !important;
+            width: 100% !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            text-decoration: none !important;
+            box-sizing: border-box !important;
+        }
+
+        .lumina-menu-btn:hover {
+            background: rgba(250, 204, 21, 0.12) !important;
+            border-color: rgba(250, 204, 21, 0.4) !important;
+            transform: translateX(3px) !important;
+        }
+
+        .lumina-menu-btn-icon {
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 12px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 1.15rem !important;
+            flex-shrink: 0 !important;
+        }
+
+        .radio-icon-bg {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(236, 72, 153, 0.25)) !important;
+            border: 1px solid rgba(245, 158, 11, 0.5) !important;
+            color: #facc15 !important;
+        }
+
+        .tv-icon-bg {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(245, 158, 11, 0.25)) !important;
+            border: 1px solid rgba(239, 68, 68, 0.5) !important;
+            color: #f87171 !important;
+        }
+
+        .profile-icon-bg {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(56, 189, 248, 0.25)) !important;
+            border: 1px solid rgba(168, 85, 247, 0.5) !important;
+            color: #c084fc !important;
+        }
+
+        .admin-icon-bg {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(250, 204, 21, 0.25)) !important;
+            border: 1px solid rgba(16, 185, 129, 0.5) !important;
+            color: #34d399 !important;
+        }
+
+        .lumina-menu-btn-content {
+            flex: 1 !important;
+            min-width: 0 !important;
+        }
+
+        .lumina-menu-btn-title {
+            font-size: 0.88rem !important;
+            font-weight: 800 !important;
+            color: #ffffff !important;
+            margin-bottom: 2px !important;
+        }
+
+        .lumina-menu-btn-sub {
+            font-size: 0.72rem !important;
+            color: #94a3b8 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        @media (max-width: 900px) {
+            .lumina-bottom-menu-popup {
+                bottom: 80px !important;
+                width: 94vw !important;
             }
         }
 
@@ -329,6 +491,61 @@
             <span id="floatingChatBadge" class="lumina-floating-chat-badge" style="${initialUnread > 0 ? 'display:flex;' : 'display:none;'}">${initialUnread > 9 ? '9+' : initialUnread}</span>
         </button>
 
+        <!-- ══════════ POPUP ROZWIJANY Z IKONY III TRZECH LINII (Menu Mediów, TV & Profilu) ══════════ -->
+        <div id="luminaBottomMenuPopup" class="lumina-bottom-menu-popup">
+            <div class="lumina-bottom-menu-card">
+                <div class="lumina-bottom-menu-header">
+                    <span>Centrum Mediów & Opcji</span>
+                    <button type="button" onclick="window.toggleCcBottomNavMenu(event)" class="lumina-bottom-menu-close" title="Zamknij">&times;</button>
+                </div>
+                <div class="lumina-bottom-menu-grid">
+                    <!-- 1. Radio CC 24/7 -->
+                    <button type="button" class="lumina-menu-btn" onclick="window.toggleRadio(); window.toggleCcBottomNavMenu(event);" title="Włącz / Wyłącz Radio Christian Culture 24/7">
+                        <div class="lumina-menu-btn-icon radio-icon-bg">
+                            <i class="fa-solid fa-radio" id="menuRadioNavIcon"></i>
+                        </div>
+                        <div class="lumina-menu-btn-content">
+                            <div class="lumina-menu-btn-title">Radio CC 24/7</div>
+                            <div class="lumina-menu-btn-sub" id="menuRadioStatusText">Muzyka Uwielbienia & Słowo</div>
+                        </div>
+                    </button>
+
+                    <!-- 2. TV & Kanały CC -->
+                    <button type="button" class="lumina-menu-btn" onclick="window.openCcNetworkModal(); window.toggleCcBottomNavMenu(event);" title="Kanały Nadawcze & YouTube Christian Culture NETWORK">
+                        <div class="lumina-menu-btn-icon tv-icon-bg">
+                            <i class="fa-solid fa-tv"></i>
+                        </div>
+                        <div class="lumina-menu-btn-content">
+                            <div class="lumina-menu-btn-title">Telewizja & Sieć TV</div>
+                            <div class="lumina-menu-btn-sub">CCTV24, Pasma & YouTube</div>
+                        </div>
+                    </button>
+
+                    <!-- 3. Mój Profil / Ustawienia -->
+                    <button type="button" class="lumina-menu-btn" onclick="window.handleBottomNavProfileClick(event); window.toggleCcBottomNavMenu(event);" title="Mój Profil / Panel Właściciela">
+                        <div class="lumina-menu-btn-icon profile-icon-bg">
+                            <i class="fa-solid fa-user-gear"></i>
+                        </div>
+                        <div class="lumina-menu-btn-content">
+                            <div class="lumina-menu-btn-title">Mój Profil & Ustawienia</div>
+                            <div class="lumina-menu-btn-sub">Edycja, Wiara & Konto</div>
+                        </div>
+                    </button>
+
+                    <!-- 4. Master Admin (dla Dowódcy / Master Admin) -->
+                    <button type="button" class="lumina-menu-btn admin-menu-btn" onclick="window.triggerSecretAdminPrompt(event); window.toggleCcBottomNavMenu(event);" title="Panel Master Admin">
+                        <div class="lumina-menu-btn-icon admin-icon-bg">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div class="lumina-menu-btn-content">
+                            <div class="lumina-menu-btn-title">Master Admin 👑</div>
+                            <div class="lumina-menu-btn-sub">Narzędzia & Telemetria</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <nav class="lumina-bottom-nav" id="luminaBottomNav" role="navigation" aria-label="Nawigacja dolna LUMINA">
             <!-- 1. Odkrywaj -->
             <a href="lumina.html" class="lumina-nav-tab ${isDiscover ? 'active' : ''}" id="navTabDiscover" title="Odkrywaj Chrześcijańskie Profile">
@@ -340,22 +557,10 @@
                 <i class="fa-solid fa-users-viewfinder"></i>
             </a>
 
-            <!-- 3. Radio CC (Mobile Live Player) -->
-            <button type="button" class="lumina-nav-tab btn-radio-toggle" id="navTabRadioMobile" onclick="window.toggleRadio()" title="Włącz / Wyłącz Radio Christian Culture 24/7">
-                <div style="position:relative; display:inline-flex; align-items:center; justify-content:center;">
-                    <i class="fa-solid fa-radio" id="mobileRadioNavIcon"></i>
-                </div>
+            <!-- 3. Menu Więcej (Trzy linie w pozycji poziomej: Radio, TV, Profil/Ustawienia, Master Admin) -->
+            <button type="button" class="lumina-nav-tab" id="navTabMoreMenu" onclick="window.toggleCcBottomNavMenu(event)" title="Więcej opcji (Radio, TV, Profil, Master Admin)">
+                <i class="fa-solid fa-bars" id="bottomNavBarsIcon"></i>
             </button>
-
-            <!-- 4. Kanały CC (Christian Culture NETWORK) -->
-            <button type="button" class="lumina-nav-tab" id="navTabNetwork" onclick="window.openCcNetworkModal()" title="Kanały Nadawcze & YouTube Christian Culture NETWORK">
-                <i class="fa-solid fa-tv"></i>
-            </button>
-
-            <!-- 5. Mój Profil -->
-            <a href="javascript:void(0)" onclick="window.handleBottomNavProfileClick(event)" class="lumina-nav-tab ${isProfile ? 'active' : ''}" id="navTabProfile" title="Mój Profil / Panel Właściciela">
-                <i class="fa-solid fa-user-gear"></i>
-            </a>
         </nav>
 
         <!-- ══════════ MODAL DLA NIEZALOGOWANEGO GOŚCIA ══════════ -->
@@ -567,6 +772,33 @@
         const m = document.getElementById('modalCcStore');
         if (m) m.classList.add('open');
     };
+
+    window.toggleCcBottomNavMenu = function(e) {
+        if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+        const popup = document.getElementById('luminaBottomMenuPopup');
+        const menuBtn = document.getElementById('navTabMoreMenu');
+        if (!popup) return;
+
+        const isCurrentlyOpen = popup.classList.contains('open');
+        if (isCurrentlyOpen) {
+            popup.classList.remove('open');
+            if (menuBtn) menuBtn.classList.remove('active');
+        } else {
+            popup.classList.add('open');
+            if (menuBtn) menuBtn.classList.add('active');
+        }
+    };
+
+    document.addEventListener('click', (e) => {
+        const popup = document.getElementById('luminaBottomMenuPopup');
+        const menuBtn = document.getElementById('navTabMoreMenu');
+        if (popup && popup.classList.contains('open')) {
+            if (!popup.contains(e.target) && (!menuBtn || !menuBtn.contains(e.target))) {
+                popup.classList.remove('open');
+                if (menuBtn) menuBtn.classList.remove('active');
+            }
+        }
+    });
 
     window.handleBottomNavProfileClick = function(event) {
         if (event) event.preventDefault();
