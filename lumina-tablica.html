@@ -3428,12 +3428,71 @@
 
         let cloudFeedPosts = [];
 
+        // ── Intelligent Timestamp Extractor for chronological sorting ──
+        // Returns a numeric Unix-ms timestamp from any post field combination.
+        // Precedence: Firestore Timestamp → numeric ms → ISO string → static date label parse → 0 (unknown/no date).
+        function extractSortTs(post) {
+            // Firestore Timestamp object {seconds, nanoseconds}
+            const raw = post.createdAtTimestamp || post.createdAtDateStr || post._sortTs || null;
+            if (raw) {
+                if (typeof raw === 'object' && raw.seconds) return raw.seconds * 1000;
+                if (typeof raw === 'number') return raw;
+                if (typeof raw === 'string') {
+                    const p = Date.parse(raw);
+                    if (!isNaN(p)) return p;
+                }
+            }
+            // Parse static time labels embedded in post.time field
+            // e.g. "22 SIERPNIA 2026 • 🕊️...", "Dzisiaj, 16:20 • ...", "Wczoraj, 17:50 • ..."
+            if (post.time && typeof post.time === 'string') {
+                const t = post.time;
+                const now = new Date();
+                // Try: "DD MIESIĄCA YYYY" Polish format
+                const MONTHS_PL = { STYCZNIA:0, LUTEGO:1, MARCA:2, KWIETNIA:3, MAJA:4, CZERWCA:5,
+                                    LIPCA:6, SIERPNIA:7, WRZEŚNIA:8, PAŹDZIERNIKA:9, LISTOPADA:10, GRUDNIA:11 };
+                const mDateLong = t.match(/(\d{1,2})\s+([A-ZĄĆĘŁŃÓŚŹŻ]+)\s+(\d{4})/i);
+                if (mDateLong) {
+                    const mo = MONTHS_PL[(mDateLong[2] || '').toUpperCase()];
+                    if (mo !== undefined) {
+                        // Extract optional HH:MM time from same label
+                        const mTime = t.match(/(\d{2}):(\d{2})/);
+                        const d = new Date(parseInt(mDateLong[3]), mo, parseInt(mDateLong[1]),
+                                          mTime ? parseInt(mTime[1]) : 6,
+                                          mTime ? parseInt(mTime[2]) : 0);
+                        if (!isNaN(d)) return d.getTime();
+                    }
+                }
+                // "Dzisiaj, HH:MM" / "Wczoraj, HH:MM"
+                const mToday = t.match(/^Dzisiaj[,\s]+(\d{2}):(\d{2})/i);
+                if (mToday) {
+                    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(mToday[1]), parseInt(mToday[2]));
+                    return d.getTime();
+                }
+                const mYesterday = t.match(/^Wczoraj[,\s]+(\d{2}):(\d{2})/i);
+                if (mYesterday) {
+                    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, parseInt(mYesterday[1]), parseInt(mYesterday[2]));
+                    return d.getTime();
+                }
+                // ISO date inside string
+                const mISO = t.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/);
+                if (mISO) { const p = Date.parse(mISO[0]); if (!isNaN(p)) return p; }
+                // Fallback: if contains "Przed chwilą" treat as now
+                if (/Przed chwil/i.test(t)) return Date.now();
+            }
+            return 0; // unknown → sink to bottom
+        }
+
         function getUserFeedPosts() {
             const posts = [];
 
             // 0. Real-time Cloud Posts from Firestore
             if (window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts) && window.cloudFeedPosts.length > 0) {
                 window.cloudFeedPosts.forEach(cp => {
+                    const tsRaw = cp.createdAtTimestamp || cp.createdAtDateStr || cp.time;
+                    let sortTs = 0;
+                    if (tsRaw && typeof tsRaw === 'object' && tsRaw.seconds) sortTs = tsRaw.seconds * 1000;
+                    else if (typeof tsRaw === 'number') sortTs = tsRaw;
+                    else if (typeof tsRaw === 'string') { const p = Date.parse(tsRaw); if (!isNaN(p)) sortTs = p; }
                     posts.push({
                         id: cp.id,
                         type: cp.type || 'post',
@@ -3446,7 +3505,8 @@
                         text: cp.text || '',
                         image: cp.image || null,
                         likes: cp.likes || 1,
-                        amen: cp.amen || 0
+                        amen: cp.amen || 0,
+                        _sortTs: sortTs
                     });
                 });
             }
@@ -3790,6 +3850,11 @@
             combined.push(nextBroadcastSlot());
 
             let cIndex = 0;
+
+            // ── 🧠 INTELIGENTNE SORTOWANIE: najnowsze posty na górze ──
+            // Używamy extractSortTs() który rozumie: Firestore Timestamp, Unix ms, ISO string,
+            // polskie etykiety daty "22 SIERPNIA 2026", "Dzisiaj, 16:20", "Wczoraj, 17:50" itp.
+            normalUserPosts.sort((a, b) => extractSortTs(b) - extractSortTs(a));
 
             normalUserPosts.forEach((post, idx) => {
                 combined.push(post);
