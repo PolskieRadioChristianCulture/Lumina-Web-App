@@ -104,19 +104,31 @@
         const style = document.createElement('style');
         style.id = 'luminaAdminSuiteStyles';
         style.textContent = `
-            /* ══════════ MASTER ADMIN HUD BAR (ALWAYS FIXED & VISIBLE) ══════════ */
-            .lumina-admin-hud-bar {
+            /* ══════════ TOP NAVBAR & MASTER ADMIN HUD BAR STACKING ══════════ */
+            nav.lumina-nav,
+            nav.portal-nav,
+            nav.profile-navbar,
+            .lumina-nav {
                 position: fixed !important;
                 top: 0 !important;
                 left: 0 !important;
                 right: 0 !important;
-                z-index: 99999999 !important;
+                z-index: 100000 !important;
+                height: 56px !important;
+            }
+
+            .lumina-admin-hud-bar {
+                position: fixed !important;
+                top: 56px !important;
+                left: 0 !important;
+                right: 0 !important;
+                z-index: 99999 !important;
                 background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 27, 75, 0.98)) !important;
                 border-bottom: 2px solid rgba(245, 158, 11, 0.75) !important;
                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.85), 0 0 25px rgba(245, 158, 11, 0.25) !important;
                 backdrop-filter: blur(16px) !important;
                 -webkit-backdrop-filter: blur(16px) !important;
-                padding: 10px 16px !important;
+                padding: 8px 16px !important;
                 color: #fff !important;
                 font-family: 'Plus Jakarta Sans', sans-serif !important;
                 display: none;
@@ -128,18 +140,21 @@
             }
 
             .lumina-admin-hud-bar.minimized {
-                padding: 6px 16px !important;
+                padding: 5px 16px !important;
             }
             .lumina-admin-hud-bar.minimized .lumina-admin-hud-actions,
             .lumina-admin-hud-bar.minimized .lumina-admin-hud-stats-pill {
                 display: none !important;
             }
 
+            body {
+                padding-top: 56px !important;
+            }
             body.has-admin-hud {
-                padding-top: 68px !important;
+                padding-top: 122px !important;
             }
             body.has-admin-hud.hud-minimized {
-                padding-top: 42px !important;
+                padding-top: 96px !important;
             }
 
             .lumina-admin-hud-inner {
@@ -1080,6 +1095,21 @@
             this.attachInlinePencils();
             this.loadProfileFromStorage(this.slug);
             this.checkIfCurrentProfileIsBlocked();
+            window.addEventListener('resize', () => this.repositionHudBar());
+        },
+
+        repositionHudBar: function() {
+            const hud = document.getElementById('luminaAdminHudBar');
+            if (!hud) return;
+            const topNav = document.querySelector('nav.lumina-nav, nav.portal-nav, nav.profile-navbar, .lumina-nav, nav');
+            const navH = (topNav && topNav.offsetHeight > 0) ? topNav.offsetHeight : 56;
+            hud.style.top = navH + 'px';
+            if (hud.classList.contains('active')) {
+                const hudH = hud.offsetHeight || 55;
+                document.body.style.paddingTop = (navH + hudH + 4) + 'px';
+            } else {
+                document.body.style.paddingTop = navH + 'px';
+            }
         },
 
         checkAndApplyAdminState: function() {
@@ -1115,6 +1145,7 @@
             }
 
             this.updateHudBlockBtnState();
+            this.repositionHudBar();
         },
 
         toggleMinimizeHud: function() {
@@ -1133,6 +1164,7 @@
             try {
                 sessionStorage.setItem('lumina_admin_hud_minimized', isMin ? 'true' : 'false');
             } catch(e) {}
+            this.repositionHudBar();
             if (typeof window.showToast === 'function') {
                 window.showToast(isMin ? 'Pasek opcji Administratora został zminimalizowany 🔽' : 'Pasek Administratora rozwinięty 🔼');
             }
