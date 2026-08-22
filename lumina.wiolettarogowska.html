@@ -1872,6 +1872,7 @@
                         <h1 class="head-user-name">
                             <span id="userNameEl">Wioletta Rogowska</span>
                             <i class="fa-solid fa-circle-check verified-badge" title="Zweryfikowany Profil Chrześcijański"></i>
+                            <span class="badge-mod-official" style="background: linear-gradient(135deg, #7c3aed, #9333ea); color:#fff; font-size:0.75rem; font-weight:800; padding:3px 10px; border-radius:14px; border:1px solid rgba(255,255,255,0.3); display:inline-flex; align-items:center; gap:5px; box-shadow:0 0 12px rgba(147,51,234,0.4);" title="Oficjalny Moderator Społeczności LUMINA"><i class="fa-solid fa-shield-halved"></i> MODERATOR</span>
                             <button class="card-edit-btn" onclick="openEditProfileModal('info')" title="Edytuj Imię i Wiek"><i class="fa-solid fa-pencil"></i></button>
                         </h1>
                         <div class="head-user-tagline">
@@ -1879,41 +1880,36 @@
                             <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijanka</span>
                             <span id="userMatchEl" style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-heart-pulse"></i> Małżeństwo Sakramentalne 💕</span>
                             <span id="visibilityBadge" class="badge-visibility-pub"><i class="fa-solid fa-globe"></i> Profil Publiczny</span> 
-<span class="stat-tag-chip" id="statLikesChip" style="background:rgba(236,72,153,0.14); border:1px solid rgba(236,72,153,0.35); color:#f472b6; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-heart"></i> <span id="statLikesCount">189</span> Polubień</span>
+                            <span class="stat-tag-chip" id="statLikesChip" style="background:rgba(236,72,153,0.14); border:1px solid rgba(236,72,153,0.35); color:#f472b6; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-heart"></i> <span id="statLikesCount">189</span> Polubień</span>
                             <span class="stat-tag-chip" id="statFollowersChip" style="background:rgba(59,130,246,0.14); border:1px solid rgba(59,130,246,0.35); color:#93c5fd; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-users"></i> <span id="statFollowersCount">465</span> Obserwujących</span>
                         </div>
                     </div>
                     </div><!-- end profile-head-main -->
 
-                <div class="head-actions" style="display:flex; flex-direction:column; gap:8px; align-items:flex-start; width:100%;">
-                    <!-- Rząd 1: Obserwowanie i Polubienia -->
-                    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; width:100%;">
-                        <button type="button" class="btn-action-follow" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(37,99,235,0.35); transition:all 0.25s ease;">
-                            <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
-                            <span id="followBtnText">Obserwuj</span>
-                            <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
-                            <span id="followCountBadge">465</span>
-                        </button>
+                <div class="head-actions" style="display:flex; flex-direction:row; flex-wrap:wrap; gap:10px; align-items:center; width:auto;">
+                    <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span></button>
+                    <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa</span></button>
+                    
+                    <button type="button" class="btn-action-follow" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(37,99,235,0.35); transition:all 0.25s ease;">
+                        <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
+                        <span id="followBtnText">Obserwuj</span>
+                        <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
+                        <span id="followCountBadge">465</span>
+                    </button>
 
-                        <button type="button" class="btn-action-heart" id="btnProfileHeart" onclick="toggleProfileHeart(this)" title="Polub Profil" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#db2777,#be185d); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(219,39,119,0.35); transition:all 0.25s ease;">
-                            <i class="fa-solid fa-heart" id="heartBtnIcon"></i>
-                            <span id="heartBtnText">Polub</span>
-                            <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
-                            <span id="heartCountBadge">189</span>
-                        </button>
-                    </div>
+                    <button type="button" class="btn-action-heart" id="btnProfileHeart" onclick="toggleProfileHeart(this)" title="Polub Profil" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#db2777,#be185d); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(219,39,119,0.35); transition:all 0.25s ease;">
+                        <i class="fa-solid fa-heart" id="heartBtnIcon"></i>
+                        <span id="heartBtnText">Polub</span>
+                        <span class="btn-divider" style="opacity:0.5; font-weight:400;">|</span>
+                        <span id="heartCountBadge">189</span>
+                    </button>
 
-                    <!-- Grupa: Wszystkie przyciski akcji (Wiadomość, Kawa, Narzędzia) w jednym rzędzie -->
-                    <div class="utility-actions-group" style="display:flex; gap:6px; align-items:center; width:100%;">
-                        <button class="btn-action-primary" onclick="openMessageModal()" style="flex:1.2; height:40px; padding:0 8px; font-size:0.75rem;"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span></button>
-                        <button class="btn-action-secondary" onclick="openCoffeeModal()" style="flex:1; height:40px; padding:0 8px; font-size:0.75rem;"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa</span></button>
-                        <button class="btn-action-secondary btn-action-gear" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:38px; height:40px; min-width:38px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:12px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear"></i></button>
-                        <button class="btn-action-secondary btn-action-share" onclick="copyProfileLink()" title="Udostępnij Profil" style="width:38px; height:40px; min-width:38px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:12px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-share-nodes"></i></button>
-                        <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:38px; height:40px; min-width:38px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:12px; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer;"><i class="fa-solid fa-right-from-bracket"></i></button>
-                        <button class="btn-action-secondary btn-action-more" onclick="openPersonalSettingsModal()" title="Więcej ustawień osobistych i wymuszenie aktualizacji" style="width:40px; height:40px; min-width:40px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:12px; background:rgba(168,85,247,0.22); border:1.5px solid rgba(168,85,247,0.5); color:#d8b4fe; cursor:pointer; transition:all 0.2s ease; margin-left:4px; box-shadow:0 0 10px rgba(168,85,247,0.3);"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-                    </div>
+                    <button class="btn-action-secondary btn-action-gear" onclick="openEditProfileModal()" title="Ustawienia / Edytuj Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-gear" style="font-size:1.15rem;"></i></button>
+                    <button class="btn-action-secondary btn-action-share" onclick="copyProfileLink()" title="Udostępnij Profil" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#cbd5e1; cursor:pointer;"><i class="fa-solid fa-share-nodes" style="font-size:1.1rem;"></i></button>
+                    <button class="btn-action-secondary btn-action-logout" onclick="handleLogout()" title="Wyloguj z aplikacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; cursor:pointer; transition:all 0.2s ease;"><i class="fa-solid fa-right-from-bracket" style="font-size:1.1rem;"></i></button>
+                    <button class="btn-action-secondary btn-action-more" onclick="openPersonalSettingsModal()" title="Więcej ustawień osobistych i wymuszenie aktualizacji" style="width:42px; height:42px; min-width:42px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(168,85,247,0.22); border:1.5px solid rgba(168,85,247,0.5); color:#d8b4fe; cursor:pointer; transition:all 0.2s ease; box-shadow:0 0 10px rgba(168,85,247,0.3);"><i class="fa-solid fa-ellipsis-vertical" style="font-size:1.15rem;"></i></button>
                 </div>
-</div>
+            </div><!-- end profile-head-top -->
             <!-- Profile Nav Tabs -->
             <div class="profile-nav-tabs">
                 <button class="tab-btn active" onclick="switchTab('tab-feed', this)" title="Tablica & Wpisy"><i class="fa-solid fa-rss"></i> <span class="tab-text">Tablica & Wpisy</span></button>

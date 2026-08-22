@@ -3970,7 +3970,8 @@
             if (isCCWomen || data.isMissionAccount || !data.age || isNaN(data.age)) {
                 document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} • <b style="color:#ec4899;">🌸 Kanał YouTube CC Women</b>`;
             } else {
-                document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} (${data.age} lat)`;
+                let demoBadgeHtml = data.isDemo ? `<span class="badge-demo-chip" onclick="event.stopPropagation(); window.showDemoProfileModal();" style="cursor:pointer; background:rgba(99,102,241,0.18); border:1px solid rgba(99,102,241,0.4); color:#a5b4fc; padding:2px 8px; border-radius:12px; font-weight:700; font-size:0.75rem; display:inline-flex; align-items:center; gap:4px; margin-left:6px;" title="Kliknij, aby dowiedzieć się więcej"><i class="fa-solid fa-eye"></i> Profil Poglądowy</span>` : '';
+                document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} (${data.age} lat)${demoBadgeHtml}`;
             }
             
             if (document.getElementById('userDenomEl')) document.getElementById('userDenomEl').innerHTML = `<i class="fa-solid fa-cross"></i> ${data.denom || 'Chrześcijanin'}`;
@@ -3987,8 +3988,8 @@
             document.getElementById('modalMsgRecipient').textContent = data.name.split(' ')[0] || data.name;
 
             const avatarEl = document.getElementById('avatarImgEl');
+            const targetAv = localStorage.getItem('lumina_avatar_' + slug) || data.avatar || 'lumina_icon.jpg';
             if (avatarEl) {
-                const targetAv = localStorage.getItem('lumina_avatar_' + slug) || data.avatar || 'lumina_icon.jpg';
                 avatarEl.onerror = () => { avatarEl.onerror = null; avatarEl.src = 'lumina_icon.jpg'; };
                 avatarEl.src = targetAv;
                 if (document.getElementById('myComposerAvatar')) {
@@ -4010,9 +4011,25 @@
                 tagsContainer.innerHTML = data.tags.map(t => `<span class="tag-chip"><i class="fa-solid fa-sparkle"></i> ${t}</span>`).join('');
             }
 
+            // Real photo requirement check for owner
+            if (isOwnerMode && (targetAv.includes('lumina_icon.jpg') || data.needsRealPhoto)) {
+                if (!sessionStorage.getItem('lumina_photo_prompt_dismissed')) {
+                    setTimeout(() => {
+                        const m = document.getElementById('modalRealPhotoRequired');
+                        if (m) m.classList.add('open');
+                        sessionStorage.setItem('lumina_photo_prompt_dismissed', 'true');
+                    }, 1200);
+                }
+            }
+
             renderPhotos();
             renderPosts();
         }
+
+        window.showDemoProfileModal = function() {
+            const m = document.getElementById('modalDemoProfileExplanation');
+            if (m) m.classList.add('open');
+        };
 
         // ── Photos Gallery & Deletion ──
         function renderPhotos() {
@@ -5606,6 +5623,47 @@
     } catch(e) {}
 })();
 </script>
+
+    <!-- ══════════ MODAL: WYJAŚNIENIE PROFILU POGLĄDOWEGO ══════════ -->
+    <div class="modal-overlay" id="modalDemoProfileExplanation" onclick="if(event.target===this) closeModal('modalDemoProfileExplanation')" style="z-index: 100004;">
+        <div class="modal-card" style="max-width: 480px; text-align: center; background: #0b142e; border: 1.5px solid rgba(99, 102, 241, 0.4); border-radius: 24px; padding: 26px 22px;">
+            <button class="modal-close-btn" onclick="closeModal('modalDemoProfileExplanation')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #a855f7); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 1.4rem; color: #fff; box-shadow: 0 4px 18px rgba(99, 102, 241, 0.4);">
+                <i class="fa-solid fa-eye"></i>
+            </div>
+            <h3 style="color: #fff; font-size: 1.25rem; margin-bottom: 8px;">Profil Poglądowy Społeczności</h3>
+            <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 20px;">
+                Ten profil jest <b>oficjalnym profilem demonstracyjnym</b> portalu chrześcijańskiego LUMINA. 
+                Służy jako wzorzec prezentujący możliwości platformy, interakcje społeczności, galerie oraz świadectwa wiary.
+            </p>
+            <button type="button" class="admin-suite-btn btn-primary" onclick="closeModal('modalDemoProfileExplanation')" style="justify-content: center; padding: 10px 24px; border-radius: 14px; margin: 0 auto; font-weight: 700;">
+                Rozumiem
+            </button>
+        </div>
+    </div>
+
+    <!-- ══════════ MODAL: WYMÓG PRAWDZIWEGO ZDJĘCIA TWARZY ══════════ -->
+    <div class="modal-overlay" id="modalRealPhotoRequired" onclick="if(event.target===this) closeModal('modalRealPhotoRequired')" style="z-index: 100003;">
+        <div class="modal-card" style="max-width: 480px; text-align: center; background: #0b142e; border: 1.5px solid rgba(245, 158, 11, 0.5); border-radius: 24px; padding: 26px 22px;">
+            <button class="modal-close-btn" onclick="closeModal('modalRealPhotoRequired')"><i class="fa-solid fa-xmark"></i></button>
+            <div style="width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 1.4rem; color: #000; box-shadow: 0 4px 18px rgba(245, 158, 11, 0.4);">
+                <i class="fa-solid fa-camera"></i>
+            </div>
+            <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 8px;">Wymagane Autentyczne Zdjęcie Twarzy</h3>
+            <p style="font-size: 0.86rem; color: #cbd5e1; line-height: 1.55; margin-bottom: 18px;">
+                Społeczność <b>LUMINA</b> opiera się na prawdzie, zaufaniu i wzajemnym szacunku. Wszyscy użytkownicy zobowiązani są do wgrania <b>prawdziwego zdjęcia przedstawiającego swoją twarz</b>.<br><br>
+                Do czasu wgrania własnego zdjęcia, Twój profil oznaczony jest oficjalnym logo portalu LUMINA.
+            </p>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <button type="button" class="admin-suite-btn btn-success" onclick="closeModal('modalRealPhotoRequired'); triggerAvatarUpload();" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:800;">
+                    <i class="fa-solid fa-camera"></i> Wgraj Zdjęcie Twarzy Teraz
+                </button>
+                <button type="button" class="admin-suite-btn btn-secondary" onclick="closeModal('modalRealPhotoRequired')" style="justify-content:center; padding:10px 18px; border-radius:14px;">
+                    Przypomnij później
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- ══════════ MODAL: OPCJE ZDJĘCIA PROFILOWEGO (AWATARA) ══════════ -->
     <div class="modal-overlay" id="modalAvatarOptions" onclick="if(event.target===this) closeModal('modalAvatarOptions')" style="z-index: 100002;">
