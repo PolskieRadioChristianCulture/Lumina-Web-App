@@ -1221,6 +1221,22 @@ export function subscribeToAllCommunityProfiles(onUpdate) {
                     p.profileUrl = 'lumina.andrzejthiel.html';
                 }
 
+
+                // ── Deduplikacja awatarów: Sylwia nie może mieć tego samego zdjęcia co Dorota ──
+                // Obie zarejestrowały się z domyślnym awatarem lumina_anna2.jpg (identycznym z avatar_dorota.jpg).
+                // Override dla Sylwii → avatar_new2.jpg (całkowicie inne zdjęcie).
+                const DUPLICATE_AVATARS = ['lumina_anna2.jpg', 'avatar_dorota.jpg'];
+                if (nameLower.includes('sylwia') && DUPLICATE_AVATARS.includes(p.avatar)) {
+                    p.avatar = 'avatar_new2.jpg';
+                    // Spróbuj naprawić też w Firestore (zadziała gdy zalogowana)
+                    try {
+                        setDoc(doc(db, 'lumina_profiles', d.id), {
+                            avatar: 'avatar_new2.jpg',
+                            updatedAt: serverTimestamp()
+                        }, { merge: true }).catch(() => {});
+                    } catch(err) {}
+                }
+
                 profiles.push(p);
             });
             onUpdate(profiles);

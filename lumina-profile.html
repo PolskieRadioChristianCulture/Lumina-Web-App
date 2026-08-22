@@ -3463,16 +3463,30 @@
         }
 
         function applyVisibilityState(data) {
+            const slug = (getRequestedUserSlug() || '').toLowerCase();
+            const isDemo = ['noemi', 'dawid', 'weronika', 'tomek', 'anna', 'piotr', 'julia', 'magdalena'].includes(slug);
             const isPrivate = (data.visibility === 'private');
             const canView = hasProfileAccess(data);
 
             const badge = document.getElementById('visibilityBadge');
             if (badge) {
-                if (isPrivate) {
+                if (isDemo) {
+                    badge.className = 'badge-visibility-pub';
+                    badge.style.background = 'rgba(100,116,139,0.18)';
+                    badge.style.borderColor = 'rgba(100,116,139,0.4)';
+                    badge.style.color = '#94a3b8';
+                    badge.innerHTML = '<i class="fa-solid fa-eye"></i> Profil Poglądowy';
+                } else if (isPrivate) {
                     badge.className = 'badge-visibility-priv';
+                    badge.style.background = '';
+                    badge.style.borderColor = '';
+                    badge.style.color = '';
                     badge.innerHTML = '<i class="fa-solid fa-lock"></i> Profil Prywatny';
                 } else {
                     badge.className = 'badge-visibility-pub';
+                    badge.style.background = '';
+                    badge.style.borderColor = '';
+                    badge.style.color = '';
                     badge.innerHTML = '<i class="fa-solid fa-globe"></i> Profil Publiczny';
                 }
             }
