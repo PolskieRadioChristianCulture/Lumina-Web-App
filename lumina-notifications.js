@@ -469,6 +469,19 @@
                     mBadge.textContent = '';
                 }
             }
+
+            // Sync with profile message action buttons (Wiadomość ✈️)
+            const profileBadges = document.querySelectorAll('.profile-msg-badge, #btnProfileMessageBadge, .btn-msg-badge');
+            profileBadges.forEach(b => {
+                b.setAttribute('data-count', String(count));
+                if (count > 0) {
+                    b.style.setProperty('display', 'inline-flex', 'important');
+                    b.textContent = count > 9 ? '9+' : String(count);
+                } else {
+                    b.style.setProperty('display', 'none', 'important');
+                    b.textContent = '';
+                }
+            });
         }
 
         renderList() {

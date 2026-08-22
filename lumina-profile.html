@@ -2146,7 +2146,7 @@
                     </div><!-- end profile-head-main -->
 
                 <div class="head-actions" style="display:flex; flex-direction:row; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; gap:10px; align-items:center; width:auto; max-width:100%;">
-                    <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span></button>
+                    <button class="btn-action-primary" onclick="openMessageModal()" style="position:relative; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span><span class="profile-msg-badge" id="profileMsgBadge" style="display:none; min-width:18px; height:18px; background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; border-radius:9px; padding:0 4px; border:1.5px solid #fff; box-shadow:0 0 8px rgba(239,68,68,0.8); align-items:center; justify-content:center;"></span></button>
                     <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa</span></button>
                     
                     <button type="button" class="btn-action-follow" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-size:0.84rem; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(37,99,235,0.35); transition:all 0.25s ease;">
@@ -4874,23 +4874,21 @@
         function openMessageModal() {
             const cur = getProfileData();
             const slug = getRequestedUserSlug();
-            const myUser = window.LuminaDB?.getCurrentUser();
-            const fromId = myUser ? myUser.uid : (localStorage.getItem('lumina_guest_id') || 'guest');
-            const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, slug) : [fromId, slug].sort().join('_');
-
-            document.getElementById('modalMsgRecipient').textContent = cur.name || 'Użytkownik';
-            document.getElementById('profileChatHeaderAvatar').src = cur.avatar || 'lumina_icon.jpg';
-
-            document.getElementById('messageModal').classList.add('open');
-
-            if (profileChatUnsubscribe) profileChatUnsubscribe();
-
-            if (window.LuminaDB) {
-                profileChatUnsubscribe = window.LuminaDB.subscribeToDirectMessages(chatId, (messages) => {
-                    renderProfileChatMessages(messages, fromId);
-                });
+            
+            if (typeof openChatWith === 'function') {
+                openChatWith(cur.name || 'Użytkownik', cur.avatar || 'lumina_icon.jpg', slug);
+            } else if (typeof openDirectMessagesModal === 'function') {
+                openDirectMessagesModal();
             }
-            setTimeout(() => document.getElementById('profileChatInput').focus(), 150);
+
+            // Sync i wyczyszczenie badge'a wiadomości dla bieżącego czatu
+            document.querySelectorAll('.profile-msg-badge, #btnProfileMessageBadge, .btn-msg-badge').forEach(b => {
+                b.style.setProperty('display', 'none', 'important');
+                b.textContent = '';
+            });
+            if (window.LuminaNotifications && typeof window.LuminaNotifications.markAllAsRead === 'function') {
+                // Pozwól użytkownikowi przejrzeć powiadomienia lub oznacz przeczytane
+            }
         }
 
         // ══════════ BEZPIECZEŃSTWO CZATU: escapowanie danych użytkownika (anty-XSS) ══════════

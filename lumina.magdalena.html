@@ -1145,7 +1145,7 @@
                     </div>
 
                     <div class="head-actions" style="display:flex; flex-direction:row; flex-wrap:nowrap; overflow-x:auto; gap:10px; align-items:center; width:100%; margin-top:14px;">
-                        <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Wiadomość</button>
+                        <button class="btn-action-primary" onclick="openMessageModal()" style="position:relative; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span><span class="profile-msg-badge" id="profileMsgBadge" style="display:none; min-width:18px; height:18px; background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; border-radius:9px; padding:0 4px; border:1.5px solid #fff; box-shadow:0 0 8px rgba(239,68,68,0.8); align-items:center; justify-content:center;"></span></button>
                         <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> Kawa</button>
                         
                         <button type="button" class="btn-action-secondary" id="btnProfileFollow" onclick="toggleProfileFollow(this)" style="background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; gap:7px; padding:0 16px; height:42px; border-radius:24px;">
