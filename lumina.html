@@ -4133,11 +4133,31 @@
         // ── Get 100% Live Profile by Slug or UID ──
         window.getLiveProfile = function(slug) {
             if (!slug) return null;
-            const base = window.LUMINA_BASE_PROFILES[slug];
-            if (!base) return null;
-            let live = Object.assign({}, base);
+            const base = (window.LUMINA_BASE_PROFILES && window.LUMINA_BASE_PROFILES[slug]) ? window.LUMINA_BASE_PROFILES[slug] : {};
+            let live = Object.assign({
+                slug: slug,
+                name: slug,
+                age: '',
+                city: 'Polska',
+                avatar: 'lumina_icon.jpg',
+                matchScore: '96%',
+                job: 'Społeczność LUMINA ✨',
+                bio: 'Chrześcijanin szukający Bożej relacji i wspólnoty wiary.',
+                profileUrl: 'lumina-profile.html?u=' + encodeURIComponent(slug)
+            }, base);
 
-            // 1. LocalStorage overrides for this specific slug
+            // 1. Cloud Firestore cached overrides
+            if (window._cloudProfilesMap && window._cloudProfilesMap[slug]) {
+                Object.assign(live, window._cloudProfilesMap[slug]);
+            }
+            if (Array.isArray(window._cachedLiveProfiles)) {
+                const cloudFound = window._cachedLiveProfiles.find(p => (p.slug === slug || p.id === slug || p.uid === slug));
+                if (cloudFound) {
+                    Object.assign(live, cloudFound);
+                }
+            }
+
+            // 2. LocalStorage overrides for this specific slug
             try {
                 const stored = localStorage.getItem('lumina_profile_' + slug);
                 if (stored) {
@@ -4147,11 +4167,6 @@
                     }
                 }
             } catch(e) {}
-
-            // 2. Cloud Firestore cached overrides
-            if (window._cloudProfilesMap && window._cloudProfilesMap[slug]) {
-                Object.assign(live, window._cloudProfilesMap[slug]);
-            }
 
             // 3. Logged-in user overrides
             try {
@@ -4195,6 +4210,16 @@
                 live.status = live.status || 'Mężatka';
                 live.isFounder = true;
                 live.profileUrl = 'lumina.wiolettarogowska.html';
+            } else if (slug === 'andrzejthiel' || slug === 'andrzej') {
+                live.profileUrl = 'lumina.andrzejthiel.html';
+            } else if (slug === 'magdalena') {
+                live.profileUrl = 'lumina.magdalena.html';
+            } else if (slug === 'studiodobregoslowa') {
+                live.profileUrl = 'lumina.studiodobregoslowa.html';
+            } else if (slug === 'osobowoscplus') {
+                live.profileUrl = 'lumina.osobowoscplus.html';
+            } else {
+                live.profileUrl = 'lumina-profile.html?u=' + encodeURIComponent(slug);
             }
 
             return live;
@@ -4461,30 +4486,6 @@
         window.navigateToFullProfile = function(e) {
             if (e && e.preventDefault) e.preventDefault();
 
-            let user = null;
-            if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
-                user = window.LuminaDB.getCurrentUser();
-            }
-            if (!user) {
-                try {
-                    user = JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
-                } catch(err) {}
-            }
-            let savedProfile = null;
-            try {
-                savedProfile = JSON.parse(localStorage.getItem('lumina_my_profile') || 'null');
-            } catch(err) {}
-
-            // If NOT logged in: require membership to see full profile!
-            if (!user && !savedProfile) {
-                closeModal('profileModal');
-                if (typeof switchAuthTab === 'function') switchAuthTab('register');
-                openAuth();
-                showToast('Pełne profile są dostępne wyłącznie dla członków społeczności LUMINA. Załóż darmowy profil lub zaloguj się! ✨');
-                return;
-            }
-
-            // If logged in: Navigate to requested full profile
             const slug = window._currentModalProfileSlug || 'cezaryrgowski';
             if (slug === 'cezaryrgowski') window.location.href = 'lumina.cezaryrgowski.html';
             else if (slug === 'wiolettarogowska') window.location.href = 'lumina.wiolettarogowska.html';
