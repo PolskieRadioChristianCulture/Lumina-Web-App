@@ -4971,132 +4971,51 @@
             }
         };
 
-        function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
+        function scrollToSection(id) { 
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' }); 
+        }
 
-        
-
-        
         /* ══════════════════════════════════════════════════════════════════════════
-         * ROBUST INFINITE SELF-ROTATING CAROUSEL & DISCOVERY FILTER ENGINE
+         * ULTRA-STABLE PROFILES CAROUSEL & DISCOVERY ENGINE (LUMINA v3.6.1)
          * ══════════════════════════════════════════════════════════════════════════ */
         let carouselAutoplayTimer = null;
         let isCarouselInteracting = false;
         let resumeAutoplayTimeout = null;
         let lastCenteredCardId = null;
+        let isInfiniteLoopResetting = false;
 
-        window.scheduleNextCarouselAdvance = function(delayMs) {
+        window.scheduleNextCarouselAdvance = function(delayMs = 3500) {
             if (carouselAutoplayTimer) {
                 clearTimeout(carouselAutoplayTimer);
-                clearInterval(carouselAutoplayTimer);
                 carouselAutoplayTimer = null;
             }
 
             carouselAutoplayTimer = setTimeout(() => {
                 if (!isCarouselInteracting && !document.hidden) {
-                    window.scrollCarousel(1, true); // auto-advance to next card
+                    window.scrollCarousel(1, true);
                 } else {
-                    // Re-schedule check if currently interacting
-                    window.scheduleNextCarouselAdvance(1500);
+                    window.scheduleNextCarouselAdvance(2000);
                 }
             }, delayMs);
-        };
-
-        let originalCardsHtml = null;
-        let isInfiniteLoopResetting = false;
-
-        window.initInfiniteCarousel = function() {
-            if (typeof window.syncAllProfilesToCarousel === 'function') {
-                window.syncAllProfilesToCarousel();
-            }
-            setTimeout(() => {
-                window.centerMiddleSetPromo(false);
-            }, 80);
-        };
-
-        window.centerMiddleSetPromo = function(smooth = false) {
-            const carousel = document.getElementById('profilesCarousel');
-            if (!carousel) return;
-            
-            const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
-            if (!visibleCards.length) return;
-            
-            const singleSetCount = Math.max(1, Math.floor(visibleCards.length / 3));
-            
-            // Find promo card in the middle set (Set 2), or the 2nd card of Set 2
-            let targetCard = visibleCards[singleSetCount + 1] || visibleCards[singleSetCount];
-            for (let i = singleSetCount; i < singleSetCount * 2; i++) {
-                if (visibleCards[i] && (visibleCards[i].classList.contains('video-card') || visibleCards[i].id.includes('promoAdCard'))) {
-                    targetCard = visibleCards[i];
-                    break;
-                }
-            }
-            if (!targetCard) targetCard = visibleCards[0];
-            
-            const cardLeft = targetCard.offsetLeft;
-            const cardWidth = targetCard.offsetWidth;
-            const carouselWidth = carousel.clientWidth;
-            const targetScroll = Math.max(0, cardLeft - ((carouselWidth - cardWidth) / 2));
-            
-            if (smooth) {
-                carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
-            } else {
-                carousel.scrollLeft = targetScroll;
-            }
-            setTimeout(window.updateCenterActiveCard, 100);
-        };
-
-        window.handleInfiniteScrollBoundary = function() {
-            if (isInfiniteLoopResetting) return;
-            const carousel = document.getElementById('profilesCarousel');
-            if (!carousel) return;
-            
-            const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
-            if (!visibleCards.length) return;
-            
-            const singleSetCount = Math.floor(visibleCards.length / 3);
-            if (singleSetCount < 1) return;
-            
-            const cardWidth = visibleCards[0].offsetWidth || 300;
-            const gap = 24;
-            const singleSetWidth = (cardWidth + gap) * singleSetCount;
-            
-            // If user scrolled too far right into Set 3, silently shift back into Set 2
-            if (carousel.scrollLeft >= singleSetWidth * 1.85) {
-                isInfiniteLoopResetting = true;
-                const prevBehavior = carousel.style.scrollBehavior;
-                carousel.style.scrollBehavior = 'auto';
-                carousel.scrollLeft -= singleSetWidth;
-                carousel.style.scrollBehavior = prevBehavior;
-                setTimeout(() => { isInfiniteLoopResetting = false; }, 60);
-            } 
-            // If user scrolled too far left into Set 1, silently shift forward into Set 2
-            else if (carousel.scrollLeft <= singleSetWidth * 0.35) {
-                isInfiniteLoopResetting = true;
-                const prevBehavior = carousel.style.scrollBehavior;
-                carousel.style.scrollBehavior = 'auto';
-                carousel.scrollLeft += singleSetWidth;
-                carousel.style.scrollBehavior = prevBehavior;
-                setTimeout(() => { isInfiniteLoopResetting = false; }, 60);
-            }
         };
 
         window.startCarouselAutoplay = function() {
             const carousel = document.getElementById('profilesCarousel');
             const activeCard = carousel ? carousel.querySelector('.profile-card.active-center-card') : null;
             const isVideoCard = activeCard ? (activeCard.classList.contains('video-card') || !!activeCard.querySelector('video')) : false;
-            const delay = isVideoCard ? 10500 : 3500;
+            const delay = isVideoCard ? 9000 : 3500;
             window.scheduleNextCarouselAdvance(delay);
         };
 
         window.stopCarouselAutoplay = function() {
             if (carouselAutoplayTimer) {
                 clearTimeout(carouselAutoplayTimer);
-                clearInterval(carouselAutoplayTimer);
                 carouselAutoplayTimer = null;
             }
         };
 
-        window.pauseCarouselAutoplayTemporarily = function(ms = 4000) {
+        window.pauseCarouselAutoplayTemporarily = function(ms = 5000) {
             isCarouselInteracting = true;
             window.stopCarouselAutoplay();
             if (resumeAutoplayTimeout) clearTimeout(resumeAutoplayTimeout);
@@ -5106,51 +5025,62 @@
             }, ms);
         };
 
-        window.applyDiscoveryFilter = function(filterType, btn) {
-            document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
+        window.scrollCarousel = function(direction, isAuto = false) {
+            const carousel = document.getElementById('profilesCarousel');
+            if (!carousel) return;
+            const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
+            if (!visibleCards.length) return;
 
+            if (!isAuto) {
+                window.pauseCarouselAutoplayTemporarily(6000);
+            }
+
+            const firstCard = visibleCards[0];
+            const cardWidth = firstCard ? (firstCard.getBoundingClientRect().width || 320) : 320;
+            const gap = 24;
+            const step = Math.round(cardWidth + gap);
+            const scrollAmount = step * direction;
+
+            carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+
+            setTimeout(() => {
+                window.handleInfiniteScrollBoundary();
+                window.updateCenterActiveCard();
+            }, 350);
+        };
+
+        window.handleInfiniteScrollBoundary = function() {
+            if (isInfiniteLoopResetting) return;
             const carousel = document.getElementById('profilesCarousel');
             if (!carousel) return;
 
-            const cards = carousel.querySelectorAll('.profile-card');
-            let visibleCount = 0;
+            const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
+            if (visibleCards.length < 6) return;
 
-            cards.forEach(card => {
-                const category = (card.getAttribute('data-category') || '').toLowerCase();
-                const nameText = (card.querySelector('.card-name')?.textContent || '').toLowerCase();
+            const singleSetCount = Math.floor(visibleCards.length / 3);
+            if (singleSetCount < 1) return;
 
-                let isMatch = false;
+            const firstCard = visibleCards[0];
+            const cardWidth = firstCard ? (firstCard.getBoundingClientRect().width || 320) : 320;
+            const gap = 24;
+            const singleSetWidth = Math.round((cardWidth + gap) * singleSetCount);
 
-                if (filterType === 'all') {
-                    isMatch = true;
-                } else if (filterType === 'kobieta') {
-                    isMatch = category.includes('kobieta') || nameText.includes('wioletta') || nameText.includes('noemi') || nameText.includes('weronika') || nameText.includes('anna') || nameText.includes('women');
-                } else if (filterType === 'mezczyzna') {
-                    isMatch = category.includes('mezczyzna') || nameText.includes('cezary') || nameText.includes('tomek') || nameText.includes('dawid') || nameText.includes('men') || nameText.includes('osobowosc');
-                } else if (filterType === 'mlodzi') {
-                    isMatch = category.includes('mlodzi') || nameText.match(/\b(1[8-9]|2[0-9]|30)\b/);
-                } else if (filterType === 'misja') {
-                    isMatch = category.includes('misja');
-                }
-
-                if (isMatch) {
-                    card.style.display = '';
-                    card.style.opacity = '1';
-                    card.style.transform = 'scale(1)';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                    card.style.opacity = '0';
-                    card.style.transform = 'scale(0.95)';
-                }
-            });
-
-            // Smoothly center the middle set of visible cards
-            window.centerMiddleSetPromo(true);
-
-            const filterName = btn ? (btn.getAttribute('title') || btn.querySelector('.filter-chip-text')?.textContent || btn.textContent).trim() : filterType;
-            showToast(`Filtrowanie: ${filterName} (${Math.round(visibleCount / 3)} profili) ✨`);
+            // Shift silently when crossing boundary
+            if (carousel.scrollLeft >= singleSetWidth * 1.95) {
+                isInfiniteLoopResetting = true;
+                const prev = carousel.style.scrollBehavior;
+                carousel.style.scrollBehavior = 'auto';
+                carousel.scrollLeft -= singleSetWidth;
+                carousel.style.scrollBehavior = prev;
+                setTimeout(() => { isInfiniteLoopResetting = false; }, 80);
+            } else if (carousel.scrollLeft <= singleSetWidth * 0.2) {
+                isInfiniteLoopResetting = true;
+                const prev = carousel.style.scrollBehavior;
+                carousel.style.scrollBehavior = 'auto';
+                carousel.scrollLeft += singleSetWidth;
+                carousel.style.scrollBehavior = prev;
+                setTimeout(() => { isInfiniteLoopResetting = false; }, 80);
+            }
         };
 
         window.updateCenterActiveCard = function() {
@@ -5203,38 +5133,98 @@
                 }
             });
 
-            // Check infinite boundary during continuous swipe
-            window.handleInfiniteScrollBoundary();
-
-            // Re-schedule autoplay with exact timing depending on active card type
-            if (isNewCardCentered && !isCarouselInteracting && window._promoVideoFinishedPlaying) {
+            if (isNewCardCentered && !isCarouselInteracting) {
                 const isVideoCard = closestCard.classList.contains('video-card') || !!closestCard.querySelector('video');
-                const nextInterval = isVideoCard ? 10500 : 3500;
+                const nextInterval = isVideoCard ? 9000 : 3500;
                 window.scheduleNextCarouselAdvance(nextInterval);
             }
         };
 
-        window.scrollCarousel = function(direction, isAuto = false) {
+        window.centerMiddleSetPromo = function(smooth = false) {
             const carousel = document.getElementById('profilesCarousel');
             if (!carousel) return;
+
             const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
             if (!visibleCards.length) return;
 
-            if (!isAuto) {
-                // User manually clicked left/right button
-                window.pauseCarouselAutoplayTemporarily(5000);
+            const singleSetCount = Math.max(1, Math.floor(visibleCards.length / 3));
+            let targetCard = visibleCards[singleSetCount + 1] || visibleCards[singleSetCount] || visibleCards[0];
+
+            for (let i = singleSetCount; i < singleSetCount * 2; i++) {
+                if (visibleCards[i] && (visibleCards[i].classList.contains('video-card') || (visibleCards[i].id && visibleCards[i].id.includes('promoAdCard')))) {
+                    targetCard = visibleCards[i];
+                    break;
+                }
             }
 
-            const cardWidth = visibleCards[0].offsetWidth || 300;
-            const gap = 24;
-            const scrollAmount = (cardWidth + gap) * direction;
+            const cardLeft = targetCard.offsetLeft;
+            const cardWidth = targetCard.offsetWidth;
+            const carouselWidth = carousel.clientWidth;
+            const targetScroll = Math.max(0, cardLeft - ((carouselWidth - cardWidth) / 2));
 
-            carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            if (smooth) {
+                carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
+            } else {
+                carousel.scrollLeft = targetScroll;
+            }
+            setTimeout(window.updateCenterActiveCard, 100);
+        };
 
+        window.initInfiniteCarousel = function() {
+            if (typeof window.syncAllProfilesToCarousel === 'function') {
+                window.syncAllProfilesToCarousel();
+            }
             setTimeout(() => {
-                window.handleInfiniteScrollBoundary();
-                window.updateCenterActiveCard();
-            }, 380);
+                window.centerMiddleSetPromo(false);
+            }, 60);
+            setTimeout(() => {
+                window.startCarouselAutoplay();
+            }, 3000);
+        };
+
+        window.applyDiscoveryFilter = function(filterType, btn) {
+            document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const carousel = document.getElementById('profilesCarousel');
+            if (!carousel) return;
+
+            const cards = carousel.querySelectorAll('.profile-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const category = (card.getAttribute('data-category') || '').toLowerCase();
+                const nameText = (card.querySelector('.card-name')?.textContent || '').toLowerCase();
+
+                let isMatch = false;
+
+                if (filterType === 'all') {
+                    isMatch = true;
+                } else if (filterType === 'kobieta') {
+                    isMatch = category.includes('kobieta') || nameText.includes('wioletta') || nameText.includes('noemi') || nameText.includes('weronika') || nameText.includes('anna') || nameText.includes('women');
+                } else if (filterType === 'mezczyzna') {
+                    isMatch = category.includes('mezczyzna') || nameText.includes('cezary') || nameText.includes('tomek') || nameText.includes('dawid') || nameText.includes('men') || nameText.includes('osobowosc');
+                } else if (filterType === 'mlodzi') {
+                    isMatch = category.includes('mlodzi') || nameText.match(/\b(1[8-9]|2[0-9]|30)\b/);
+                } else if (filterType === 'misja') {
+                    isMatch = category.includes('misja');
+                }
+
+                if (isMatch) {
+                    card.style.display = '';
+                    card.style.opacity = '1';
+                    card.style.transform = 'scale(1)';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.95)';
+                }
+            });
+
+            window.centerMiddleSetPromo(true);
+            const filterName = btn ? (btn.getAttribute('title') || btn.querySelector('.filter-chip-text')?.textContent || btn.textContent).trim() : filterType;
+            showToast(`Filtrowanie: ${filterName} (${Math.round(visibleCount / 3)} profili) ✨`);
         };
 
         window.centerPromoVideoOnStart = function(smooth = false) {
@@ -5256,7 +5246,7 @@
             }, 400);
         }
 
-        // Initialize Infinite Carousel & Promo Video on DOM load
+        // Initialize Infinite Carousel & Listeners on DOM load
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof syncUserSavedProfileToHomepage === 'function') {
                 syncUserSavedProfileToHomepage();
@@ -5270,12 +5260,11 @@
                     requestAnimationFrame(window.updateCenterActiveCard);
                 }, { passive: true });
 
-                // Pause on hover / touch and resume smoothly
                 carousel.addEventListener('mouseenter', () => {
                     isCarouselInteracting = true;
                 });
                 carousel.addEventListener('mouseleave', () => {
-                    window.pauseCarouselAutoplayTemporarily(2000);
+                    window.pauseCarouselAutoplayTemporarily(2500);
                 });
                 carousel.addEventListener('touchstart', () => {
                     isCarouselInteracting = true;
@@ -5284,84 +5273,21 @@
                     window.pauseCarouselAutoplayTemporarily(3500);
                 }, { passive: true });
 
-                // Handle tab visibility
                 document.addEventListener('visibilitychange', () => {
                     if (document.hidden) {
                         window.stopCarouselAutoplay();
-                    } else if (window._promoVideoFinishedPlaying) {
+                    } else {
                         window.startCarouselAutoplay();
                     }
                 });
 
-                // Display video ad centered immediately on start
-                window.centerMiddleSetPromo(false);
-                setTimeout(() => window.centerMiddleSetPromo(false), 250);
-                setTimeout(() => window.centerMiddleSetPromo(false), 700);
-
-                // Stop any rotation until the entire promo video finishes
-                window.stopCarouselAutoplay();
-                window._promoVideoFinishedPlaying = false;
-                let rotationStarted = false;
-
-                // Preload and start playback for ALL promo videos
+                // Preload all promo videos
                 document.querySelectorAll('#profilesCarousel video').forEach(vid => {
                     vid.muted = true;
                     vid.playsInline = true;
-                    vid.load();
                     vid.play().catch(() => {});
                 });
-
-                const promoVid = document.getElementById('promoVideoEl');
-
-                const startRotationAfterVideo = function() {
-                    if (rotationStarted) return;
-                    rotationStarted = true;
-                    window._promoVideoFinishedPlaying = true;
-
-                    if (promoVid) {
-                        promoVid.setAttribute('loop', '');
-                        promoVid.play().catch(() => {});
-                    }
-
-                    // Start automatic carousel rotation smoothly
-                    setTimeout(() => {
-                        window.startCarouselAutoplay();
-                        window.scrollCarousel(1, true);
-                    }, 400);
-                };
-
-                if (promoVid) {
-                    promoVid.muted = true;
-                    promoVid.playsInline = true;
-                    promoVid.removeAttribute('loop');
-
-                    promoVid.addEventListener('ended', startRotationAfterVideo, { once: true });
-
-                    promoVid.addEventListener('timeupdate', function() {
-                        if (!rotationStarted && promoVid.duration > 0 && promoVid.currentTime >= (promoVid.duration - 0.35)) {
-                            startRotationAfterVideo();
-                        }
-                    });
-
-                    const playPromise = promoVid.play();
-                    if (playPromise !== undefined) {
-                        playPromise.then(() => {
-                            const waitMs = (promoVid.duration && promoVid.duration > 0) ? (promoVid.duration * 1000 + 1500) : 11000;
-                            setTimeout(startRotationAfterVideo, waitMs);
-                        }).catch(() => {
-                            setTimeout(startRotationAfterVideo, 8000);
-                        });
-                    } else {
-                        setTimeout(startRotationAfterVideo, 10000);
-                    }
-                } else {
-                    window.startCarouselAutoplay();
-                }
             }
-        });
-
-        window.addEventListener('load', () => {
-            window.centerMiddleSetPromo(false);
         });
 
 
