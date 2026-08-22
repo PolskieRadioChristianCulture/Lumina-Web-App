@@ -3336,7 +3336,12 @@
             if (path.includes('lumina.cezaryrgowski') || path.includes('lumina.cezaryrogowski')) return 'cezaryrgowski';
             if (path.includes('lumina.wiolettarogowska')) return 'wiolettarogowska';
             const params = new URLSearchParams(window.location.search);
-            return (params.get('u') || params.get('user') || 'cezaryrgowski').toLowerCase();
+            const slug = (params.get('u') || params.get('user') || 'cezaryrgowski').toLowerCase();
+            if (slug.includes('cezary') || slug === 'u_cezaryrogowski_7138') {
+                window.location.replace('lumina.cezaryrgowski.html');
+                return 'cezaryrgowski';
+            }
+            return slug;
         }
 
         function getProfileData() {
@@ -3992,7 +3997,7 @@
 
             const avatarEl = document.getElementById('avatarImgEl');
             if (avatarEl) {
-                const targetAv = data.avatar || 'lumina_icon.jpg';
+                const targetAv = localStorage.getItem('lumina_avatar_' + slug) || data.avatar || 'lumina_icon.jpg';
                 avatarEl.onerror = () => { avatarEl.onerror = null; avatarEl.src = 'lumina_icon.jpg'; };
                 avatarEl.src = targetAv;
                 if (document.getElementById('myComposerAvatar')) {

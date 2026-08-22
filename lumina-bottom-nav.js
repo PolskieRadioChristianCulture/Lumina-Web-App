@@ -292,12 +292,24 @@
     const isTablica = pathname.includes('lumina-tablica');
     const isProfile = pathname.includes('lumina-profile') || pathname.includes('cezaryrgowski') || pathname.includes('wiolettarogowska');
 
-    // Dynamiczny link do Mojego Profilu
-    let myProfileHref = 'lumina-profile.html?u=cezaryrgowski';
+    // Dynamiczny link do Mojego Profilu (inteligentne rozpoznawanie zalogowanego użytkownika)
+    let myProfileHref = 'lumina.cezaryrgowski.html';
     try {
-        const curProf = JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null');
+        const isAdmin = localStorage.getItem('lumina_auth_master_admin') === 'true' || sessionStorage.getItem('lumina_auth_master_admin') === 'true';
+        const curProf = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null');
+        
         if (curProf && (curProf.slug || curProf.uid)) {
-            myProfileHref = `lumina-profile.html?u=${curProf.slug || curProf.uid}`;
+            const s = (curProf.slug || curProf.uid).toLowerCase();
+            if (s === 'wiolettarogowska' || s.includes('wioletta')) {
+                myProfileHref = 'lumina.wiolettarogowska.html';
+            } else if (s === 'cezaryrgowski' || s.includes('cezary') || isAdmin) {
+                myProfileHref = 'lumina.cezaryrgowski.html';
+            } else {
+                myProfileHref = `lumina-profile.html?u=${s}`;
+            }
+        } else if (!isAdmin) {
+            // Domyślny profil dla niezalogowanego gościa / nowy profil
+            myProfileHref = 'lumina-profile.html?u=moj_profil';
         }
     } catch(e) {}
 
