@@ -104,27 +104,42 @@
         const style = document.createElement('style');
         style.id = 'luminaAdminSuiteStyles';
         style.textContent = `
-            /* ══════════ MASTER ADMIN HUD BAR ══════════ */
+            /* ══════════ MASTER ADMIN HUD BAR (ALWAYS FIXED & VISIBLE) ══════════ */
             .lumina-admin-hud-bar {
-                position: sticky;
-                top: 56px;
-                left: 0;
-                right: 0;
-                z-index: 10000;
-                background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 27, 75, 0.98));
-                border-bottom: 2px solid rgba(245, 158, 11, 0.6);
-                box-shadow: 0 4px 25px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.25);
-                backdrop-filter: blur(14px);
-                -webkit-backdrop-filter: blur(14px);
-                padding: 10px 16px;
-                color: #fff;
-                font-family: 'Plus Jakarta Sans', sans-serif;
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                z-index: 99999999 !important;
+                background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 27, 75, 0.98)) !important;
+                border-bottom: 2px solid rgba(245, 158, 11, 0.75) !important;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.85), 0 0 25px rgba(245, 158, 11, 0.25) !important;
+                backdrop-filter: blur(16px) !important;
+                -webkit-backdrop-filter: blur(16px) !important;
+                padding: 10px 16px !important;
+                color: #fff !important;
+                font-family: 'Plus Jakarta Sans', sans-serif !important;
                 display: none;
-                transition: all 0.3s ease;
+                transition: all 0.25s ease !important;
             }
 
             .lumina-admin-hud-bar.active {
-                display: block;
+                display: block !important;
+            }
+
+            .lumina-admin-hud-bar.minimized {
+                padding: 6px 16px !important;
+            }
+            .lumina-admin-hud-bar.minimized .lumina-admin-hud-actions,
+            .lumina-admin-hud-bar.minimized .lumina-admin-hud-stats-pill {
+                display: none !important;
+            }
+
+            body.has-admin-hud {
+                padding-top: 68px !important;
+            }
+            body.has-admin-hud.hud-minimized {
+                padding-top: 42px !important;
             }
 
             .lumina-admin-hud-inner {
@@ -1074,17 +1089,18 @@
             const shieldContainer = document.getElementById('luminaFloatingAdminShieldContainer');
 
             if (isAdmin) {
-                document.body.classList.add('lumina-admin-mode');
-                document.body.classList.add('owner-mode-active');
+                document.body.classList.add('lumina-admin-mode', 'owner-mode-active', 'has-admin-hud');
                 if (hud) {
                     hud.classList.add('active');
                     const isMin = sessionStorage.getItem('lumina_admin_hud_minimized') === 'true';
                     if (isMin) {
                         hud.classList.add('minimized');
+                        document.body.classList.add('hud-minimized');
                         const icon = document.getElementById('hudMinimizeIcon');
                         if (icon) icon.className = 'fa-solid fa-plus';
                     } else {
                         hud.classList.remove('minimized');
+                        document.body.classList.remove('hud-minimized');
                         const icon = document.getElementById('hudMinimizeIcon');
                         if (icon) icon.className = 'fa-solid fa-minus';
                     }
@@ -1092,9 +1108,8 @@
                 if (shield) shield.classList.add('unlocked');
                 if (shieldContainer) shieldContainer.classList.add('unlocked');
             } else {
-                document.body.classList.remove('lumina-admin-mode');
-                document.body.classList.remove('owner-mode-active');
-                if (hud) hud.classList.remove('active');
+                document.body.classList.remove('lumina-admin-mode', 'owner-mode-active', 'has-admin-hud', 'hud-minimized');
+                if (hud) hud.classList.remove('active', 'minimized');
                 if (shield) shield.classList.remove('unlocked');
                 if (shieldContainer) shieldContainer.classList.remove('unlocked');
             }
@@ -1107,6 +1122,11 @@
             const icon = document.getElementById('hudMinimizeIcon');
             if (!hud) return;
             const isMin = hud.classList.toggle('minimized');
+            if (isMin) {
+                document.body.classList.add('hud-minimized');
+            } else {
+                document.body.classList.remove('hud-minimized');
+            }
             if (icon) {
                 icon.className = isMin ? 'fa-solid fa-plus' : 'fa-solid fa-minus';
             }
@@ -1152,11 +1172,14 @@
 
         lockAdminMode: function() {
             sessionStorage.removeItem('lumina_auth_master_admin');
+            localStorage.removeItem('lumina_auth_master_admin');
+            sessionStorage.removeItem('lumina_auth_owner_cezaryrgowski');
+            localStorage.removeItem('lumina_auth_owner_cezaryrgowski');
             this.checkAndApplyAdminState();
             if (typeof window.showToast === 'function') {
-                window.showToast('🔒 Zablokowano tryb Administratora (Tarcza szara).');
+                window.showToast('🔒 Wylogowano z trybu Administratora. Pasek został schowany.');
             } else {
-                alert('🔒 Zablokowano tryb Administratora.');
+                alert('🔒 Wylogowano z trybu Administratora.');
             }
         },
 
