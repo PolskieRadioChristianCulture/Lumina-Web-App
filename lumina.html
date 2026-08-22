@@ -4217,7 +4217,11 @@
             // 2. Generate cards for all self-registered community members from Firestore & Local Storage
             let cloudCardsHtml = '';
             try {
-                const addedSlugs = new Set(['cezaryrgowski', 'wiolettarogowska', 'andrzejthiel', 'radiocc', 'cctv', 'ccmen', 'ccwomen', 'studiodobregoslowa', 'osobowoscplus']);
+                const staticDemoSlugs = [
+                    'cezaryrgowski', 'wiolettarogowska', 'andrzejthiel', 'radiocc', 'cctv', 'ccmen', 'ccwomen', 
+                    'studiodobregoslowa', 'osobowoscplus', 'noemi', 'dawid', 'weronika', 'tomek', 'anna', 'piotr', 'julia', 'magdalena'
+                ];
+                const addedSlugs = new Set(staticDemoSlugs.map(s => s.toLowerCase()));
 
                 // Add local user profile if created
                 try {
@@ -4257,7 +4261,13 @@
                     const pKey = p.slug || p.uid || p.id;
                     if (!pKey) return;
                     const pKeyLower = pKey.toLowerCase();
-                    if (addedSlugs.has(pKeyLower) || pKeyLower.includes('cezary') || pKeyLower.includes('wioletta') || pKeyLower.includes('andrzej') || pKeyLower.includes('radiocc') || pKeyLower.includes('cctv') || pKeyLower.includes('ccmen') || pKeyLower.includes('ccwomen') || pKeyLower.includes('studiodobregoslowa') || pKeyLower.includes('osobowoscplus')) {
+                    if (addedSlugs.has(pKeyLower) || 
+                        pKeyLower.includes('cezary') || pKeyLower.includes('wioletta') || pKeyLower.includes('andrzej') || 
+                        pKeyLower.includes('radiocc') || pKeyLower.includes('cctv') || pKeyLower.includes('ccmen') || 
+                        pKeyLower.includes('ccwomen') || pKeyLower.includes('studiodobregoslowa') || pKeyLower.includes('osobowoscplus') ||
+                        pKeyLower.includes('magdalena') || pKeyLower.includes('weronika') || pKeyLower.includes('noemi') || 
+                        pKeyLower.includes('dawid') || pKeyLower.includes('tomek') || pKeyLower.includes('anna') || 
+                        pKeyLower.includes('piotr') || pKeyLower.includes('julia')) {
                         return;
                     }
                     addedSlugs.add(pKeyLower);

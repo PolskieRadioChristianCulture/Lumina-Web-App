@@ -3,7 +3,32 @@
  * Used by Antigravity Agent when the Commander calls '@N' or '@Noty'
  */
 
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const FIRESTORE_URL = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_agent_notes';
+const RESOLVED_FILE = path.join(__dirname, 'agent_notes_resolved.json');
+
+function getResolvedIds() {
+    try {
+        if (fs.existsSync(RESOLVED_FILE)) {
+            return JSON.parse(fs.readFileSync(RESOLVED_FILE, 'utf8'));
+        }
+    } catch (e) {}
+    return [];
+}
+
+function saveResolvedId(id) {
+    const list = getResolvedIds();
+    if (!list.includes(id)) {
+        list.push(id);
+        fs.writeFileSync(RESOLVED_FILE, JSON.stringify(list, null, 2), 'utf8');
+    }
+}
 
 function parseFirestoreDoc(doc) {
     const fields = doc.fields || {};
@@ -38,31 +63,11 @@ async function fetchNotes() {
     }
 }
 
-async function resolveNote(docId) {
-    try {
-        const docUrl = `${FIRESTORE_URL}/${docId}?updateMask.fieldPaths=status&updateMask.fieldPaths=resolvedAt`;
-        const payload = {
-            fields: {
-                status: { stringValue: 'done' },
-                resolvedAt: { stringValue: new Date().toISOString() }
-            }
-        };
-        const res = await fetch(docUrl, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        const result = await res.json();
-        console.log(`✅ Nota [${docId}] została oznaczona jako wykonana (status: done)!`);
-    } catch (err) {
-        console.error(`Błąd aktualizacji noty ${docId}:`, err.message);
-    }
-}
-
 async function main() {
     const args = process.argv.slice(2);
     if (args[0] === '--resolve' && args[1]) {
-        await resolveNote(args[1]);
+        saveResolvedId(args[1]);
+        console.log(`✅ Nota [${args[1]}] została oznaczona jako wykonana (status: done)!`);
         return;
     }
 
@@ -70,8 +75,9 @@ async function main() {
     const notes = await fetchNotes();
     if (notes.length === 0) return;
 
-    const pending = notes.filter(n => (n.status || 'pending') === 'pending');
-    const resolved = notes.filter(n => n.status === 'done');
+    const resolvedIds = getResolvedIds();
+    const pending = notes.filter(n => (n.status || 'pending') === 'pending' && !resolvedIds.includes(n._docId || n.id));
+    const resolved = notes.filter(n => n.status === 'done' || resolvedIds.includes(n._docId || n.id));
 
     console.log(`📌 Oczekujące zadania od Dowódcy (${pending.length}):\n`);
     pending.forEach((n, idx) => {
@@ -86,8 +92,8 @@ async function main() {
     });
 
     if (resolved.length > 0) {
-        console.log(`\n✔️ Wcześniej wykonane (${resolved.length}):`);
-        resolved.forEach(n => console.log(`  - [${n._docId || n.id}] ${n.page}: "${n.note}" (Wykonano)`));
+        console.log(`✔️ Wcześniej wykonane (${resolved.length}):`);
+        resolved.forEach(n => console.log(`  - [${n._docId || n.id}] ${n.page}: "${n.note}" (Wykonano ✅)`));
     }
     console.log('\n═══════════════════════════════════════════════════════════════\n');
 }

@@ -1841,6 +1841,9 @@
                             <a href="${profileUrl}" target="_blank" class="admin-suite-btn" style="padding:6px 10px; font-size:0.75rem;" title="Otwórz profil">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Zobacz
                             </a>
+                            <button type="button" class="admin-suite-btn btn-cyan" style="padding:6px 10px; font-size:0.75rem;" onclick="window.LuminaAdminSuite.promptChangeAvatarForSlug('${p.slug}')" title="Zmień zdjęcie / awatar tego profilu">
+                                <i class="fa-solid fa-camera"></i> Awatar
+                            </button>
                             <button type="button" class="admin-suite-btn btn-gold" style="padding:6px 10px; font-size:0.75rem;" onclick="window.LuminaAdminSuite.openFullEditor('${p.slug}')" title="Edytuj dane tego profilu">
                                 <i class="fa-solid fa-pencil"></i> Edytuj
                             </button>
@@ -1857,51 +1860,145 @@
         },
 
         // ══════════ MULTIMEDIA & PUBLIKACJE ══════════
+        currentEditingSlug: null,
+
+        promptChangeAvatarForSlug: function(slug) {
+            this.currentEditingSlug = slug || this.slug;
+            const input = document.getElementById('adminAvatarFileInput');
+            if (input) {
+                input.value = '';
+                input.click();
+            }
+        },
+
+        promptChangeCoverForSlug: function(slug) {
+            this.currentEditingSlug = slug || this.slug;
+            const input = document.getElementById('adminCoverFileInput');
+            if (input) {
+                input.value = '';
+                input.click();
+            }
+        },
+
+        compressAndProcessImage: function(file, maxDim, quality, callback) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > maxDim || h > maxDim) {
+                        if (w > h) {
+                            h = Math.round((h * maxDim) / w);
+                            w = maxDim;
+                        } else {
+                            w = Math.round((w * maxDim) / h);
+                            h = maxDim;
+                        }
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                    callback(compressedDataUrl);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+
         handleAvatarSelect: function(e) {
             const file = e.target.files[0];
             if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-                const dataUrl = evt.target.result;
-                const avatarImgs = document.querySelectorAll('.avatar-img, .profile-avatar-img, .author-avatar, #avatarImgEl');
-                avatarImgs.forEach(img => { img.src = dataUrl; });
-                localStorage.setItem('lumina_avatar_' + this.slug, dataUrl);
-                if (typeof window.showToast === 'function') {
-                    window.showToast('📸 Nowy avatar profilu został wgrany i zapisany! ✨');
+            const targetSlug = (this.currentEditingSlug || this.slug || 'profile_default').toLowerCase();
+
+            this.compressAndProcessImage(file, 800, 0.85, async (dataUrl) => {
+                // Update local storage
+                localStorage.setItem('lumina_avatar_' + targetSlug, dataUrl);
+                const cur = this.getCurrentData(targetSlug);
+                const updated = { ...cur, avatar: dataUrl, slug: targetSlug };
+                localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(updated));
+
+                // Save to Firestore Cloud
+                if (window.LuminaDB?.saveProfileToCloud) {
+                    await window.LuminaDB.saveProfileToCloud(targetSlug, updated);
                 }
-            };
-            reader.readAsDataURL(file);
+
+                // Update cloud profiles map on page
+                if (window._cloudProfilesMap) {
+                    window._cloudProfilesMap[targetSlug] = updated;
+                }
+
+                // Update DOM elements on page
+                const targetCards = document.querySelectorAll(`[data-profile-slug="${targetSlug}"] .card-photo img, #card_profile_${targetSlug} .card-photo img, .avatar-img, .profile-avatar-img, #avatarImgEl`);
+                targetCards.forEach(img => { img.src = dataUrl; });
+
+                if (typeof window.syncAllProfilesToCarousel === 'function') {
+                    window.syncAllProfilesToCarousel();
+                }
+
+                // Refresh modal list if open
+                if (document.getElementById('adminAllProfilesModal')?.classList.contains('open')) {
+                    this.renderProfilesListInModal();
+                }
+
+                if (typeof window.showToast === 'function') {
+                    window.showToast(`📸 Zdjęcie dla profilu [${targetSlug}] zostało wgrane i zapisane w chmurze! ✨`);
+                } else {
+                    alert(`📸 Zdjęcie dla profilu [${targetSlug}] zostało zapisane!`);
+                }
+            });
         },
 
         handleCoverSelect: function(e) {
             const file = e.target.files[0];
             if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-                const dataUrl = evt.target.result;
+            const targetSlug = (this.currentEditingSlug || this.slug || 'profile_default').toLowerCase();
+
+            this.compressAndProcessImage(file, 1400, 0.85, async (dataUrl) => {
+                localStorage.setItem('lumina_cover_' + targetSlug, dataUrl);
+                const cur = this.getCurrentData(targetSlug);
+                const updated = { ...cur, cover: dataUrl, slug: targetSlug };
+                localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(updated));
+
+                if (window.LuminaDB?.saveProfileToCloud) {
+                    await window.LuminaDB.saveProfileToCloud(targetSlug, updated);
+                }
+
                 const coverEls = document.querySelectorAll('.profile-cover, .cover-img, #coverImgEl');
                 coverEls.forEach(el => {
                     if (el.tagName === 'IMG') el.src = dataUrl;
                     else el.style.backgroundImage = `url(${dataUrl})`;
                 });
-                localStorage.setItem('lumina_cover_' + this.slug, dataUrl);
+
                 if (typeof window.showToast === 'function') {
-                    window.showToast('🖼️ Nowe tło profilu zostało wgrane i zapisany! ✨');
+                    window.showToast(`🖼️ Zdjęcie w tle dla [${targetSlug}] zostało zapisane w chmurze! ✨`);
                 }
-            };
-            reader.readAsDataURL(file);
+            });
         },
 
         handleGallerySelect: function(e) {
             const file = e.target.files[0];
             if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (evt) => {
+            const targetSlug = (this.currentEditingSlug || this.slug || 'profile_default').toLowerCase();
+
+            this.compressAndProcessImage(file, 1200, 0.85, async (dataUrl) => {
+                const cur = this.getCurrentData(targetSlug);
+                const gallery = cur.gallery || [];
+                gallery.push(dataUrl);
+                const updated = { ...cur, gallery: gallery, slug: targetSlug };
+                localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(updated));
+
+                if (window.LuminaDB?.saveProfileToCloud) {
+                    await window.LuminaDB.saveProfileToCloud(targetSlug, updated);
+                }
+
                 if (typeof window.showToast === 'function') {
                     window.showToast('🖼️ Dodano nowe zdjęcie do galerii profilu!');
                 }
-            };
-            reader.readAsDataURL(file);
+            });
         },
 
         openNewPostModal: function() {
