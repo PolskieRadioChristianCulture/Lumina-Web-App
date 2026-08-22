@@ -5303,6 +5303,68 @@
                     }
                 });
 
+                // ── Drag vs Tap detection — fix: kliknięcie w zdjęcie otwiera profil ──
+                // Zapisz pozycję na mousedown/touchstart
+                let _carouselPointerStartX = 0;
+                let _carouselPointerStartY = 0;
+                let _carouselPointerStartScrollLeft = 0;
+
+                carousel.addEventListener('mousedown', (e) => {
+                    _carouselPointerStartX = e.clientX;
+                    _carouselPointerStartY = e.clientY;
+                    _carouselPointerStartScrollLeft = carousel.scrollLeft;
+                });
+
+                carousel.addEventListener('touchstart', (e) => {
+                    if (e.touches.length > 0) {
+                        _carouselPointerStartX = e.touches[0].clientX;
+                        _carouselPointerStartY = e.touches[0].clientY;
+                        _carouselPointerStartScrollLeft = carousel.scrollLeft;
+                    }
+                }, { passive: true });
+
+                // Na click — jeśli przesunięcie < 8px (tap, nie drag) → otwórz profil
+                carousel.addEventListener('click', (e) => {
+                    const deltaX = Math.abs((e.clientX || _carouselPointerStartX) - _carouselPointerStartX);
+                    const scrollDelta = Math.abs(carousel.scrollLeft - _carouselPointerStartScrollLeft);
+                    const isDrag = deltaX > 8 || scrollDelta > 8;
+                    if (isDrag) return; // Ignoruj przeciągnięcia
+
+                    // Znajdź kartę profilu w której nastąpiło kliknięcie (img, card-body, card-name itd.)
+                    const card = e.target.closest('.profile-card');
+                    if (!card) return;
+
+                    // Nie reaguj na kliknięcia przycisku serca (like) — ma własny handler
+                    if (e.target.closest('.card-heart')) return;
+
+                    const slug = card.getAttribute('data-profile-slug');
+                    if (slug && typeof window.openCommunityProfile === 'function') {
+                        window.openCommunityProfile(slug);
+                    }
+                });
+
+                // Na touchend — analogicznie dla urządzeń dotykowych
+                carousel.addEventListener('touchend', (e) => {
+                    if (e.changedTouches.length > 0) {
+                        const touch = e.changedTouches[0];
+                        const deltaX = Math.abs(touch.clientX - _carouselPointerStartX);
+                        const scrollDelta = Math.abs(carousel.scrollLeft - _carouselPointerStartScrollLeft);
+                        const isDrag = deltaX > 8 || scrollDelta > 8;
+                        if (isDrag) return;
+
+                        const el = document.elementFromPoint(touch.clientX, touch.clientY);
+                        if (!el) return;
+                        if (el.closest('.card-heart')) return;
+                        const card = el.closest('.profile-card');
+                        if (!card) return;
+                        const slug = card.getAttribute('data-profile-slug');
+                        if (slug && typeof window.openCommunityProfile === 'function') {
+                            window.openCommunityProfile(slug);
+                        }
+                    }
+                }, { passive: true });
+                // ── Koniec drag vs tap detection ──
+
                 // Preload all promo videos
                 document.querySelectorAll('#profilesCarousel video').forEach(vid => {
                     vid.muted = true;
