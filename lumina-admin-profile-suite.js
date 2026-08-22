@@ -1027,11 +1027,18 @@
                             </div>
                         </div>
 
-                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
-                            <button type="button" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" style="padding:11px 20px; border-radius:24px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; cursor:pointer;">Anuluj</button>
-                            <button type="submit" style="padding:11px 26px; border-radius:24px; background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; cursor:pointer; box-shadow:0 4px 16px rgba(16,185,129,0.4); display:inline-flex; align-items:center; gap:8px;">
-                                <i class="fa-solid fa-paper-plane"></i> Zapisz Notę dla Agenta ✨
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+                            <button type="button" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" style="padding:11px 18px; border-radius:24px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; cursor:pointer;">
+                                Anuluj
                             </button>
+                            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                                <button type="button" onclick="window.LuminaAdminSuite.saveAgentNoteSubmit(event, 'save_only')" style="padding:11px 18px; border-radius:24px; background:rgba(56, 189, 248, 0.18); border:1px solid rgba(56, 189, 248, 0.45); color:#7dd3fc; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:7px;" title="Zapisz do Dziennika (do pobrania po wpisaniu @N)">
+                                    <i class="fa-solid fa-bookmark"></i> 💾 Zapisz w Dzienniku (@N)
+                                </button>
+                                <button type="button" onclick="window.LuminaAdminSuite.saveAgentNoteSubmit(event, 'execute_now')" style="padding:11px 22px; border-radius:24px; background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; cursor:pointer; box-shadow:0 4px 16px rgba(16,185,129,0.5); display:inline-flex; align-items:center; gap:7px;" title="Wyślij natychmiastowy rozkaz do Agenta pracującego w tle">
+                                    <i class="fa-solid fa-bolt"></i> ⚡ Wyślij Rozkaz Natychmiast! 🚀
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -1305,7 +1312,7 @@
             this.openModal('adminAgentNoteModal');
         },
 
-        saveAgentNoteSubmit: async function(e) {
+        saveAgentNoteSubmit: async function(e, mode = 'execute_now') {
             if (e) e.preventDefault();
             const text = document.getElementById('agentNoteText')?.value?.trim();
             if (!text) {
@@ -1314,7 +1321,9 @@
             }
 
             const category = document.getElementById('agentNoteCategory')?.value || 'Wygląd / CSS';
-            const priority = document.getElementById('agentNotePriority')?.value || 'normal';
+            const priorityInput = document.getElementById('agentNotePriority')?.value || 'normal';
+            const isImmediate = (mode === 'execute_now');
+            const finalPriority = isImmediate ? 'critical' : priorityInput;
             const pageName = document.getElementById('notePageUrl')?.textContent || (window.location.pathname.split('/').pop() || 'lumina.html');
             const selector = document.getElementById('noteElementSelector')?.textContent || '';
             const tag = document.getElementById('noteElementTag')?.textContent || '';
@@ -1330,7 +1339,9 @@
                 snippet: snippet,
                 note: text,
                 category: category,
-                priority: priority,
+                priority: finalPriority,
+                autoExecute: isImmediate,
+                commandType: isImmediate ? 'IMMEDIATE_ORDER' : 'DIARY_NOTE',
                 status: 'pending',
                 author: 'Dowódca (Master Admin)',
                 createdAt: new Date().toISOString(),
@@ -1351,10 +1362,18 @@
             this.closeModal('adminAgentNoteModal');
             this.deactivateAgentInspector();
 
-            if (typeof window.showToast === 'function') {
-                window.showToast('🎯 Nota dla Agenta zarejestrowana! Wpisz @N w czacie, a natychmiast ją wykonam. 🚀');
+            if (isImmediate) {
+                if (typeof window.showToast === 'function') {
+                    window.showToast('⚡ ROZKAZ DLA AGENTA WYSŁANY! Agent w tle natychmiast przystępuje do realizacji zadania. 🚀');
+                } else {
+                    alert('⚡ ROZKAZ DLA AGENTA WYSŁANY! Agent w tle natychmiast przystępuje do realizacji.');
+                }
             } else {
-                alert('🎯 Nota dla Agenta zarejestrowana! Wpisz @N w czacie, a Agent przystąpi do pracy.');
+                if (typeof window.showToast === 'function') {
+                    window.showToast('💾 Nota zapisana w Dzienniku! Wpisz @N w czacie, gdy zechcesz, aby Agent ją wykonał.');
+                } else {
+                    alert('💾 Nota zapisana w Dzienniku (@N).');
+                }
             }
         },
         openFullEditor: function(targetSlug = null) {
