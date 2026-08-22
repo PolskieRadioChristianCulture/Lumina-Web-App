@@ -2045,7 +2045,7 @@
         <div class="profile-security-bar" id="profileSecurityBar">
             <div class="security-status-left">
                 <i class="fa-solid fa-shield-halved" id="secStatusIcon" style="color: #38bdf8; font-size: 1.1rem;"></i>
-                <span id="secStatusText">Status Ochrony: <b style="color:#38bdf8;">Chroniony Kodem PIN ✨›ˇ</b></span>
+                <span id="secStatusText">Status Ochrony: <b style="color:#38bdf8;">Chroniony Kodem PIN 🛡️</b></span>
             </div>
             <div class="security-status-right">
                 <button class="btn-security-toggle" id="btnOwnerAuthToggle" onclick="toggleOwnerAuthMode()">
@@ -2339,7 +2339,7 @@
     <div class="modal-overlay" id="securityPinModal">
         <div class="modal-card" style="max-width: 440px; text-align: center;">
             <button class="modal-close-btn" onclick="closeModal('securityPinModal')"><i class="fa-solid fa-xmark"></i></button>
-            <div style="font-size: 2.6rem; margin-bottom: 8px;">✨✨›ˇ</div>
+            <div style="font-size: 2.6rem; margin-bottom: 8px;">✨🛡️</div>
             <h3 style="font-size: 1.35rem; font-family:'Outfit',sans-serif; margin-bottom: 6px;">Weryfikacja Właściciela</h3>
             <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 18px;">
                 Ten profil jest chroniony przed niepowołaną edycją. Wprowadź swój 4-cyfrowy kod PIN, aby odblokować panel edycji i usuwania.
@@ -3024,7 +3024,7 @@
                 job: 'Założyciel Christian Culture',
                 church: 'Wspólnota Uwielbieniowa',
                 denom: 'Chrześcijanin',
-                status: 'Ĺ»onaty',
+                status: 'Żonaty',
                 spouse: 'Wioletta Rogowska',
                 pin: '7777',
                 visibility: 'public',
@@ -3160,7 +3160,7 @@
                     {
                         id: 'post_dawid_1',
                         author: 'Dawid',
-                        time: '2 dni temu • ✨“ Pasja',
+                        time: '2 dni temu • ✨ Pasja',
                         text: 'Projektowanie z myślą o Bogu daje zupełnie nową perspektywę na przestrzeń i harmonię! ✨',
                         likes: 19,
                         amen: 12,
@@ -3222,7 +3222,7 @@
                     {
                         id: 'post_anna_1',
                         author: 'Anna',
-                        time: 'Wczoraj • ✨“š Inspiracja',
+                        time: 'Wczoraj • ✨š Inspiracja',
                         text: 'Wspaniały czas rekolekcji i wyciszenia serca. Ĺ»yczę wszystkim Bożego błogosławieństwa! ✨',
                         likes: 25,
                         amen: 14,
@@ -3547,7 +3547,7 @@
         function copyPrivateAccessLink() {
             const url = window.location.origin + window.location.pathname + window.location.search + (window.location.search ? '&' : '?') + 'access=granted';
             navigator.clipboard.writeText(url).then(() => {
-                showToast('Skopiowano prywatny link dostępu z tokenem! ✨“‹✨’');
+                showToast('Skopiowano prywatny link dostępu z tokenem! ✨‹✨’');
             }).catch(() => {
                 prompt('Skopiuj ten prywatny link dostępu:', url);
             });
@@ -3651,12 +3651,12 @@
                 if (isSelf) {
                     document.body.classList.add('owner-mode-active');
                     if (icon) icon.className = 'fa-solid fa-circle-check';
-                    if (txt) txt.innerHTML = 'Status: <b style="color:#86efac;">Twój Własny Profil ✨“ (Możesz edytować swoje dane)</b>';
+                    if (txt) txt.innerHTML = 'Status: <b style="color:#86efac;">Twój Własny Profil ✨ (Możesz edytować swoje dane)</b>';
                     if (btn) btn.style.display = 'none'; // Właściciel zawsze edytuje swój profil
                 } else {
                     document.body.classList.remove('owner-mode-active');
                     if (icon) icon.className = 'fa-solid fa-shield-halved';
-                    if (txt) txt.innerHTML = 'Status: <b style="color:#38bdf8;">Profil Publiczny ✨›ˇ (Tylko do odczytu)</b>';
+                    if (txt) txt.innerHTML = 'Status: <b style="color:#38bdf8;">Profil Publiczny 🛡️ (Tylko do odczytu)</b>';
                     if (btn) {
                         btn.style.display = 'inline-flex';
                         btn.innerHTML = '<i class="fa-solid fa-key"></i> Autoryzacja Administratora';
@@ -3742,7 +3742,7 @@
                 try {
                     localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
                 } catch(e) {}
-                showToast(`Profil ${cur.name} został zablokowany! ✨š«`);
+                showToast(`Profil ${cur.name} został zablokowany! 🔒`);
             }
             renderProfile();
         }
@@ -3888,7 +3888,7 @@
             }
             const tb = document.getElementById('coverRepositionToolbar');
             if (tb) tb.classList.remove('open');
-            showToast('Kadr zdjęcia w tle został pomyślnie zapisany! ✨–Ľ✨');
+            showToast('Kadr zdjęcia w tle został pomyślnie zapisany! ✨✨');
         }
 
         // ── Load & Render Profile Data ──
@@ -4262,7 +4262,7 @@
                 editingPostImageDataUrl = dataUrl;
                 document.getElementById('editPostAttachedImg').src = dataUrl;
                 document.getElementById('editPostImgPreviewBox').style.display = 'block';
-                showToast('Grafika została zaktualizowana w edytorze! ✨–Ľ✨');
+                showToast('Grafika została zaktualizowana w edytorze! ✨✨');
             });
             e.target.value = '';
         }
@@ -4404,7 +4404,7 @@
                 attachedPostImageDataUrl = dataUrl;
                 document.getElementById('composerAttachedImg').src = dataUrl;
                 document.getElementById('composerImgPreviewBox').style.display = 'block';
-                showToast('Grafika została pomyślnie dołączona do wpisu! ✨–Ľ✨');
+                showToast('Grafika została pomyślnie dołączona do wpisu! ✨✨');
             });
         }
 
@@ -4618,7 +4618,7 @@
                     window.LuminaDB.saveProfileToCloud(slug, cur);
                 }
                 renderProfile();
-                showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane! ✨“·✨');
+                showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane! ✨·✨');
             });
             e.target.value = '';
         }
@@ -4651,7 +4651,7 @@
                     window.LuminaDB.saveProfileToCloud(slug, cur);
                 }
                 renderProfile();
-                showToast('Zdjęcie w tle zostało zaktualizowane i zapisane! ✨–Ľ✨');
+                showToast('Zdjęcie w tle zostało zaktualizowane i zapisane! ✨✨');
             });
             e.target.value = '';
         }
@@ -4681,14 +4681,14 @@
                         if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
                             window.LuminaDB.saveProfileToCloud(slug, cur).then(() => {
                                 renderPhotos();
-                                showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! ✨–Ľ✨`);
+                                showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! ✨✨`);
                             }).catch(() => {
                                 renderPhotos();
-                                showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! ✨–Ľ✨`);
+                                showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! ✨✨`);
                             });
                         } else {
                             renderPhotos();
-                            showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! ✨–Ľ✨`);
+                            showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! ✨✨`);
                         }
                     }
                 });
@@ -4960,7 +4960,7 @@
                 });
                 showToast(res.message);
             } else {
-                showToast('Zgłoszenie profilu przesłane do moderatorów LUMINA! ✨›ˇ✨•Š');
+                showToast('Zgłoszenie profilu przesłane do moderatorów LUMINA! 🛡️✨•Š');
             }
         }
 
@@ -4975,7 +4975,7 @@
             if (window.LuminaDB) {
                 await window.LuminaDB.blockUser(slug);
             }
-            showToast(`Profil ${cur.name} został zablokowany. ✨š«`);
+            showToast(`Profil ${cur.name} został zablokowany. 🔒`);
             setTimeout(() => { window.location.href = 'lumina.html'; }, 1500);
         }
 
@@ -5018,7 +5018,7 @@
                         audio.src = "https://stream.zeno.fm/umej2cuqncluv?t=" + Date.now();
                         audio.play().then(() => {
                             localStorage.setItem('lumina_radio_playing', 'true');
-                            showToast('Radio Christian Culture Gra na Ĺ»ywo! ✨“»✨');
+                            showToast('Radio Christian Culture Gra na Ĺ»ywo! ✨»✨');
                         }).catch(() => showToast('Kliknij ponownie, aby odtworzyć radio'));
                     } else {
                         audio.pause();
@@ -5255,7 +5255,7 @@
                     reason: reason || 'Niewłaściwa treść na czacie',
                 });
                 if (typeof showToast === 'function') {
-                    showToast(result?.message || 'Zgłoszenie zostało wysłane do moderatorów. ✨›ˇ');
+                    showToast(result?.message || 'Zgłoszenie zostało wysłane do moderatorów. 🛡️');
                 } else {
                     alert(result?.message || 'Zgłoszenie zostało wysłane do moderatorów.');
                 }

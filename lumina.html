@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
     <!-- Google Analytics -->
@@ -685,11 +685,11 @@
 
         .profiles-grid {
             display: flex;
-            gap: 24px;
+            gap: 20px;
             overflow-x: auto;
             scroll-behavior: auto;
             scroll-snap-type: none;
-            padding: 48px 15px 55px; /* Bezpieczna przestrzeń u góry i na dole */
+            padding: 48px 0 55px; /* Bez paddingu bocznego, żeby dokładnie 3 karty mieściły się w widoku */
             scrollbar-width: none;
             -ms-overflow-style: none;
             width: 100%;
@@ -699,7 +699,11 @@
         .profiles-grid::-webkit-scrollbar { display: none; }
 
         .profile-card {
-            flex: 0 0 calc(33.333% - 16px);
+            flex: 0 0 calc((100% - 40px) / 3);
+            width: calc((100% - 40px) / 3);
+            max-width: calc((100% - 40px) / 3);
+            min-width: calc((100% - 40px) / 3);
+            box-sizing: border-box;
             height: 410px;
             scroll-snap-align: center;
             background: #0f172a;
@@ -2308,7 +2312,7 @@
             <button class="carousel-btn left" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="profiles-grid" id="profilesCarousel">
 
-                <!-- 1. Cezary Rogowski / Założyciel Christian Culture (Ĺ»onaty) -->
+                <!-- 1. Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
                 <div class="profile-card home-cezary-card" id="card_profile_cezaryrgowski" data-profile-slug="cezaryrgowski" data-category="mezczyzna zalozyciele" onclick="openCommunityProfile('cezaryrgowski')">
                     <div class="card-photo">
                         <img src="avatar_cezary_official.webp" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_cezary_official.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
@@ -2317,7 +2321,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name home-cezary-name" id="homeUserName">Cezary Rogowski, 51</div>
-                        <div class="card-city home-cezary-city" id="homeUserCity">✨“Ť Ostrowiec Świętokrzyski • <b>Ĺ»onaty</b></div>
+                        <div class="card-city home-cezary-city" id="homeUserCity">📍 Ostrowiec Świętokrzyski • <b>Żonaty</b></div>
                         <div class="card-desc home-cezary-desc" id="homeUserDesc">"Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu."</div>
                     </div>
                 </div>
@@ -2336,7 +2340,7 @@
                         
                         <!-- Pulsujący Przycisk do Sklepu -->
                         <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
-                            <i class="fa-solid fa-bag-shopping"></i> OTWĂ“RZ SKLEP ➜
+                            <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➜
                         </a>
                     </div>
                 </div>
@@ -2349,7 +2353,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Noemi, 28</div>
-                        <div class="card-city">✨“Ť Wrocław • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
+                        <div class="card-city">📍 Wrocław • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
                         <div class="card-desc">"Spokój, las i głębokie rozmowy o Bogu przy herbacie. Szukam bratniej duszy."</div>
                     </div>
                 </div>
@@ -2365,7 +2369,7 @@
                         <div class="card-name" style="display:flex;align-items:center;gap:6px;">
                             OSOBOWOŚĆ + <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
                         </div>
-                        <div class="card-city">✨“Ť Christian Culture • <b style="color:#8b5cf6;">✨§  Formacja & Wiara</b></div>
+                        <div class="card-city">📍 Christian Culture • <b style="color:#8b5cf6;">👑 Formacja & Wiara</b></div>
                         <div class="card-desc">"Oficjalny kanał YouTube OSOBOWOŚĆ +. Rozwój dojrzałości, tożsamość w Bogu i mądre relacje."</div>
                     </div>
                 </div>
@@ -2381,7 +2385,7 @@
                         <div class="card-name" style="display:flex;align-items:center;gap:6px;">
                             Andrzej Thiel, 70 <span style="font-size:0.72rem; background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff; padding:2px 7px; border-radius:10px; font-weight:700;">✨ Cuda Każdego Dnia</span>
                         </div>
-                        <div class="card-city">✨“Ť Sieradz, Polska • <b style="color:#f59e0b;">✨“– 30 listopada 1955</b></div>
+                        <div class="card-city">📍 Sieradz, Polska • <b style="color:#f59e0b;">✨– 30 listopada 1955</b></div>
                         <div class="card-desc">"Co dzień publikuję: Cuda Każdego Dnia. Trzymajmy się Jezusa – On jest jedynym i prawdziwym źródłem mocy."</div>
                     </div>
                 </div>
@@ -2397,7 +2401,7 @@
                         <div class="card-name" style="display:flex;align-items:center;gap:6px;">
                             Polskie Radio CC <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
                         </div>
-                        <div class="card-city">✨“Ť Cała Polska • <b style="color:#f59e0b;">✨“» Radio Uwielbienia 24/7</b></div>
+                        <div class="card-city">📍 Cała Polska • <b style="color:#f59e0b;">✨» Radio Uwielbienia 24/7</b></div>
                         <div class="card-desc">"Muzyka chwały, Biblia Śpiewana, audycje na żywo i codzienne rozważania przez całą dobę."</div>
                     </div>
                 </div>
@@ -2411,7 +2415,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name home-wioletta-name" id="homeWiolettaName">Wioletta Rogowska, 50</div>
-                        <div class="card-city home-wioletta-city" id="homeWiolettaCity">✨“Ť Ostrowiec Świętokrzyski • <b>Mężatka</b></div>
+                        <div class="card-city home-wioletta-city" id="homeWiolettaCity">📍 Ostrowiec Świętokrzyski • <b>Mężatka</b></div>
                         <div class="card-desc home-wioletta-desc" id="homeWiolettaDesc">"Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
                     </div>
                 </div>
@@ -2429,7 +2433,7 @@
                         
                         <!-- Pulsujący Przycisk do Sklepu -->
                         <a href="https://my-store-1009741.creator-spring.com/listing/mog-wszystko?product=377&variation=100057" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
-                            <i class="fa-solid fa-bag-shopping"></i> OTWĂ“RZ SKLEP ➜
+                            <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➜
                         </a>
                     </div>
                 </div>
@@ -2443,7 +2447,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Dawid, 30</div>
-                        <div class="card-city">✨“Ť Poznań • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
+                        <div class="card-city">📍 Poznań • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
                         <div class="card-desc">"Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu i wierze."</div>
                     </div>
                 </div>
@@ -2459,7 +2463,7 @@
                         <div class="card-name" style="display:flex;align-items:center;gap:6px;">
                             Studio Dobrego Słowa <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
                         </div>
-                        <div class="card-city">✨“Ť Piła, Polska • <b style="color:#ef4444;">✨Ž™ @StudioDeeS • studiods.pl</b></div>
+                        <div class="card-city">📍 Piła, Polska • <b style="color:#ef4444;">✨Ž™ @StudioDeeS • studiods.pl</b></div>
                         <div class="card-desc">"Oficjalny profil Studia. Apokalipsa Live, podcasty, Słowo Boże i spotkania w Herbaciarni CC."</div>
                     </div>
                 </div>
@@ -2473,7 +2477,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Weronika, 25</div>
-                        <div class="card-city">✨“Ť Kraków • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
+                        <div class="card-city">📍 Kraków • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
                         <div class="card-desc">"Graficzka z pasją do piękna i muzyki. Szukam szczerej relacji opartej na wierze."</div>
                     </div>
                 </div>
@@ -2489,7 +2493,7 @@
                         <div class="card-name" style="display:flex;align-items:center;gap:6px;">
                             Christian Culture TV <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
                         </div>
-                        <div class="card-city">✨“Ť Warszawa • <b style="color:#ef4444;">✨“ş Telewizja CCTV24</b></div>
+                        <div class="card-city">📍 Warszawa • <b style="color:#ef4444;">✨ş Telewizja CCTV24</b></div>
                         <div class="card-desc">"Oficjalna telewizja chrześcijańska. Pasma wideo, debaty, świadectwa i transmisje ewangelizacyjne."</div>
                     </div>
                 </div>
@@ -2503,7 +2507,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Tomasz, 31</div>
-                        <div class="card-city">✨“Ť Gdańsk • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
+                        <div class="card-city">📍 Gdańsk • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
                         <div class="card-desc">"Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku."</div>
                     </div>
                 </div>
@@ -2535,7 +2539,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Magdalena, 43</div>
-                        <div class="card-city">✨“Ť Poznań • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
+                        <div class="card-city">📍 Poznań • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
                         <div class="card-desc">"Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu i miłości."</div>
                     </div>
                 </div>
@@ -2551,7 +2555,7 @@
                         <div class="card-name" style="display:flex;align-items:center;gap:6px;">
                             CC MEN <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
                         </div>
-                        <div class="card-city">✨“Ť Polska • <b style="color:#0ea5e9;">✨›ˇ Męska Wspólnota Wiary</b></div>
+                        <div class="card-city">📍 Polska • <b style="color:#0ea5e9;">🛡️ Męska Wspólnota Wiary</b></div>
                         <div class="card-desc">"Mężczyźni w Chrystusie. Męstwo, odpowiedzialność za rodzinę, wierność i braterstwo."</div>
                     </div>
                 </div>
@@ -2565,7 +2569,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Anna, 28</div>
-                        <div class="card-city">✨“Ť Warszawa • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
+                        <div class="card-city">📍 Warszawa • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
                         <div class="card-desc">"Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania świata."</div>
                     </div>
                 </div>
@@ -2581,7 +2585,7 @@
                         <div class="card-name" style="display:flex;align-items:center;gap:6px;">
                             CC Women <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
                         </div>
-                        <div class="card-city">✨“Ť Warszawa • <b style="color:#ec4899;">🌸 Kobiety Wiary</b></div>
+                        <div class="card-city">📍 Warszawa • <b style="color:#ec4899;">🌸 Kobiety Wiary</b></div>
                         <div class="card-desc">"Oficjalny profil i kanał YouTube CC Women. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
                     </div>
                 </div>
@@ -2595,7 +2599,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Piotr, 31</div>
-                        <div class="card-city">✨“Ť Kraków • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
+                        <div class="card-city">📍 Kraków • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
                         <div class="card-desc">"Szuka spontanicznych przygód. Entuzjasta górskich wędrówek."</div>
                     </div>
                 </div>
@@ -2609,7 +2613,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">Julia, 26</div>
-                        <div class="card-city">✨“Ť Gdańsk • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
+                        <div class="card-city">📍 Gdańsk • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span></div>
                         <div class="card-desc">"Marzycielka z pasją do muzyki. Szukam głębokich, szczerych relacji."</div>
                     </div>
                 </div>
@@ -3087,7 +3091,7 @@
         <div class="modal-card" style="max-width: 650px; max-height: 85vh; overflow-y: auto;">
             <button class="modal-close-btn" onclick="closeModal('termsModal')"><i class="fa-solid fa-xmark"></i></button>
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
-                <span style="font-size:1.8rem;">✨“ś</span>
+                <span style="font-size:1.8rem;">✨ś</span>
                 <div>
                     <h3 style="font-size:1.25rem; font-family:'Outfit',sans-serif; margin:0; color:#fff;">Regulamin i Polityka Prywatności LUMINA</h3>
                     <div style="font-size:0.75rem; color:#c084fc; font-weight:700;">Standardy Społeczności i Ochrona Danych (RODO)</div>
@@ -3559,7 +3563,7 @@
                     const normalizedPhone = window.LuminaDB.normalizePhoneNumber ? window.LuminaDB.normalizePhoneNumber(rawPhone) : rawPhone;
                     phoneConfirmationResultGlobal = await window.LuminaDB.sendPhoneVerificationCode(normalizedPhone);
                     document.getElementById('phoneCodeVerifyRow').style.display = 'block';
-                    showToast(`Kod SMS został wysłany na numer ${normalizedPhone}! ✨“©`);
+                    showToast(`Kod SMS został wysłany na numer ${normalizedPhone}! ✨©`);
                 }
             } catch(err) {
                 console.error('Phone code send error:', err);
@@ -3927,7 +3931,7 @@
                 name: 'Cezary Rogowski',
                 age: 51,
                 city: 'Ostrowiec Świętokrzyski, Polska',
-                status: 'Ĺ»onaty',
+                status: 'Żonaty',
                 avatar: 'avatar_cezary_official.jpg',
                 job: 'Założyciel Christian Culture',
                 bio: 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.',
@@ -4119,7 +4123,7 @@
                 gender: 'mezczyzna',
                 avatar: 'avatar_andrzej_thiel.jpg',
                 status: 'Chrześcijanin',
-                job: 'Cuda Każdego Dnia ✨“–✨',
+                job: 'Cuda Każdego Dnia ✨–✨',
                 verse: '„Trzymajcie się mnie. Trwajcie we mnie. Beze mnie nic uczynić nie możecie.” (J 15, 5)',
                 bio: 'Co dzień publikuję na swoim profilu: Cuda Każdego Dnia, które automatycznie pojawiają się na tablicy społeczności. Przeczytaj i zobacz jak Bóg przemienia twoje życie.',
                 matchScore: '99%',
@@ -4199,7 +4203,7 @@
                 live.age = 51;
                 live.avatar = (live.avatar && !live.avatar.includes('worship') && !live.avatar.includes('tlo') && !live.avatar.includes('oddaj')) ? live.avatar : 'avatar_cezary_official.jpg';
                 live.city = live.city || 'Ostrowiec Świętokrzyski, Polska';
-                live.status = live.status || 'Ĺ»onaty';
+                live.status = live.status || 'Żonaty';
                 live.isFounder = true;
                 live.profileUrl = 'lumina.cezaryrgowski.html';
             } else if (slug === 'wiolettarogowska') {
@@ -4281,7 +4285,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="card-name">${userName}${userAge}</div>
-                                        <div class="card-city">✨“Ť ${userCity} • <span style="color:#10b981;font-weight:700;">Mój Profil</span></div>
+                                        <div class="card-city">📍 ${userCity} • <span style="color:#10b981;font-weight:700;">Mój Profil</span></div>
                                         <div class="card-desc">"${userBio}"</div>
                                     </div>
                                 </div>
@@ -4329,7 +4333,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="card-name">${userName}${userAge}</div>
-                                <div class="card-city">✨“Ť ${userCity} • <span style="color:#a855f7;font-weight:700;">${p.status || 'Nowy Profil'}</span></div>
+                                <div class="card-city">📍 ${userCity} • <span style="color:#a855f7;font-weight:700;">${p.status || 'Nowy Profil'}</span></div>
                                 <div class="card-desc">"${userBio}"</div>
                             </div>
                         </div>
@@ -4382,13 +4386,13 @@
                     const cityStr = p.city ? p.city.split(',')[0] : 'Polska';
                     const isDemoProfile = ['noemi', 'dawid', 'weronika', 'tomek', 'anna', 'piotr', 'julia', 'magdalena'].includes(slug.toLowerCase());
                     if (p.isFounder) {
-                        cityEl.innerHTML = `✨“Ť ${cityStr} • <b>${p.status || (slug === 'cezaryrgowski' ? 'Ĺ»onaty' : 'Mężatka')}</b>`;
+                        cityEl.innerHTML = `📍 ${cityStr} • <b>${p.status || (slug === 'cezaryrgowski' ? 'Żonaty' : 'Mężatka')}</b>`;
                     } else if (p.isMissionAccount) {
-                        cityEl.innerHTML = `✨“Ť ${cityStr} • <b style="color:#a855f7;">${p.job || 'Misja Christian Culture'}</b>`;
+                        cityEl.innerHTML = `📍 ${cityStr} • <b style="color:#a855f7;">${p.job || 'Misja Christian Culture'}</b>`;
                     } else if (isDemoProfile) {
-                        cityEl.innerHTML = `✨“Ť ${cityStr} • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span>`;
+                        cityEl.innerHTML = `📍 ${cityStr} • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨‘ Profil Poglądowy</span>`;
                     } else {
-                        cityEl.innerHTML = `✨“Ť ${cityStr} • <span style="color:#a855f7;font-weight:700;">${p.status || 'Profil Społeczności'}</span>`;
+                        cityEl.innerHTML = `📍 ${cityStr} • <span style="color:#a855f7;font-weight:700;">${p.status || 'Profil Społeczności'}</span>`;
                     }
                 }
 
@@ -4451,7 +4455,7 @@
             const mLoc = document.getElementById('mLoc');
             if (mLoc) {
                 const badgeLabel = p.isFounder ? 'Założyciel Christian Culture' : (p.isMissionAccount ? 'Misja Christian Culture' : 'Profil Społeczności');
-                mLoc.innerHTML = `✨“Ť ${p.city || 'Polska'}  •  Dopasowanie: ${p.matchScore || '96%'}  •  <span style="color:#c084fc;font-weight:700;">${badgeLabel}</span>`;
+                mLoc.innerHTML = `📍 ${p.city || 'Polska'}  •  Dopasowanie: ${p.matchScore || '96%'}  •  <span style="color:#c084fc;font-weight:700;">${badgeLabel}</span>`;
             }
 
             const mDesc = document.getElementById('mDesc');
@@ -4783,7 +4787,7 @@
         window.shareViaWhatsApp = function() {
             const text = encodeURIComponent(window.getRecommendShareText());
             window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
-            if (typeof showToast === 'function') showToast('Otwieranie WhatsApp... ✨“˛');
+            if (typeof showToast === 'function') showToast('Otwieranie WhatsApp... ✨˛');
         };
 
         window.shareViaFacebook = function() {
@@ -4842,7 +4846,7 @@
                     document.execCommand('copy');
                     handleCopySuccess();
                 } catch(e) {
-                    if (typeof showToast === 'function') showToast('Link skopiowany do schowka! ✨“‹✨');
+                    if (typeof showToast === 'function') showToast('Link skopiowany do schowka! ✨‹✨');
                 }
                 document.body.removeChild(ta);
             }
@@ -4850,7 +4854,7 @@
             function handleCopySuccess() {
                 const btnText = document.getElementById('copyLinkBtnText');
                 if (btnText) btnText.textContent = 'Skopiowano zaproszenie do schowka! ✨Ž‰';
-                if (typeof showToast === 'function') showToast('Link i treść zaproszenia skopiowane do schowka! ✨“‹✨');
+                if (typeof showToast === 'function') showToast('Link i treść zaproszenia skopiowane do schowka! ✨‹✨');
                 setTimeout(() => {
                     if (btnText) btnText.textContent = 'Skopiuj gotowy link z zaproszeniem';
                 }, 3000);
@@ -5276,6 +5280,13 @@
             }
 
             window.initInfiniteCarousel();
+
+            window.addEventListener('load', () => {
+                setTimeout(() => window.centerMiddleSetPromo(false), 80);
+            });
+            window.addEventListener('resize', () => {
+                window.centerMiddleSetPromo(false);
+            });
 
             const carousel = document.getElementById('profilesCarousel');
             if (carousel) {
@@ -5776,7 +5787,7 @@
                     reason: reason || 'Niewłaściwa treść na czacie',
                 });
                 if (typeof showToast === 'function') {
-                    showToast(result?.message || 'Zgłoszenie zostało wysłane do moderatorów. ✨›ˇ');
+                    showToast(result?.message || 'Zgłoszenie zostało wysłane do moderatorów. 🛡️');
                 } else {
                     alert(result?.message || 'Zgłoszenie zostało wysłane do moderatorów.');
                 }
@@ -6180,7 +6191,7 @@
             { query: '@ccwomen @women @cc_women cc women ccwomen', name: 'CC Women • YouTube', handle: '@ccwomen', role: 'Oficjalny Kanał YouTube CC Women 🌸', avatar: 'logo_cc_women.jpg', url: 'lumina.ccwomen.html', type: 'channel' },
             { query: '@cezary @cezaryrgowski @cezaryrogowski cezary rogowski', name: 'Cezary Rogowski', handle: '@cezary', role: 'Założyciel Christian Culture ✨‘‘', avatar: 'avatar_cezary_official.jpg', url: 'lumina.cezaryrgowski.html', type: 'founder' },
             { query: '@wioletta @wiolettarogowska wioletta rogowska', name: 'Wioletta Rogowska', handle: '@wioletta', role: 'Współzałożycielka Christian Culture 🌸', avatar: 'avatar_wioletta_official.jpg', url: 'lumina.wiolettarogowska.html', type: 'founder' },
-            { query: '@radiocc @radio radio christian culture radio na zywo', name: 'Radio Christian Culture', handle: '@radiocc', role: 'Stacja Radiowa & Transmisja Na Ĺ»ywo ✨“»', avatar: 'lumina_icon.jpg', url: 'index.html', type: 'media' },
+            { query: '@radiocc @radio radio christian culture radio na zywo', name: 'Radio Christian Culture', handle: '@radiocc', role: 'Stacja Radiowa & Transmisja Na Ĺ»ywo ✨»', avatar: 'lumina_icon.jpg', url: 'index.html', type: 'media' },
             { query: '@lumina @tablica tablica spolecznosci posty', name: 'Tablica Społeczności', handle: '@lumina', role: 'Główny Strumień Wpisów i Świadectw ✨•Š', avatar: 'lumina_icon.jpg', url: 'lumina-tablica.html', type: 'feed' },
             { query: '@noemi noemi wroclaw', name: 'Noemi (28)', handle: '@noemi', role: 'Głęboka wiara i pasja do natury ✨Śż', avatar: 'avatar_noemi.jpg', url: 'lumina-profile.html?u=noemi', type: 'user' },
             { query: '@tomasz @tomek tomasz góry', name: 'Tomasz (29)', handle: '@tomek', role: 'Wędrówki górskie i uwielbienie ✨Ź”', avatar: 'avatar_widget_tomek.jpg', url: 'lumina-profile.html?u=tomek', type: 'user' },
@@ -6416,7 +6427,7 @@
         // Synchronous global functions for Online Users Modal
         var defaultCommunityOnlineList = [
             { name: 'Cezary Rogowski', slug: 'cezaryrgowski', avatar: 'avatar_cezary_official.jpg', job: 'Założyciel Christian Culture ✨‘‘', city: 'Ostrowiec Świętokrzyski' },
-            { name: 'Wioletta Rogowska', slug: 'wiolettarogowska', avatar: 'avatar_wioletta_official.jpg', job: 'Współzałożycielka & Moderator ✨›ˇ🌸', city: 'Ostrowiec Świętokrzyski' },
+            { name: 'Wioletta Rogowska', slug: 'wiolettarogowska', avatar: 'avatar_wioletta_official.jpg', job: 'Współzałożycielka & Moderator 🛡️🌸', city: 'Ostrowiec Świętokrzyski' },
             { name: 'Magdalena', slug: 'magdalena', avatar: 'avatar_magdalena.png', job: 'Społeczność LUMINA ✨•Š', city: 'Poznań' },
             { name: 'Tomasz', slug: 'tomek', avatar: 'avatar_widget_tomek.jpg', job: 'Inżynier Środowiska ✨Ś˛', city: 'Kraków' },
             { name: 'Noemi', slug: 'noemi', avatar: 'avatar_noemi.jpg', job: 'Architekt Krajobrazu ✨Śż', city: 'Wrocław' },
@@ -6612,7 +6623,7 @@
                     </div>
                 </button>
 
-                <!-- 5. OTWĂ“RZ PEĹNY PROFIL -->
+                <!-- 5. OTWÓRZ PEĹNY PROFIL -->
                 <button type="button" class="qa-action-btn" onclick="window.handleQuickActionOpenProfile()">
                     <div class="qa-icon-box qa-icon-profile"><i class="fa-solid fa-user"></i></div>
                     <div class="qa-btn-content">

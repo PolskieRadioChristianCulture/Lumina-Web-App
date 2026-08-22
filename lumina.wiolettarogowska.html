@@ -1840,7 +1840,7 @@
         <div class="profile-security-bar" id="profileSecurityBar">
             <div class="security-status-left">
                 <i class="fa-solid fa-shield-halved" id="secStatusIcon" style="color: #f472b6; font-size: 1.1rem;"></i>
-                <span id="secStatusText">Status Ochrony: <b style="color:#f472b6;">Chroniony Kodem PIN ✨›ˇ</b></span>
+                <span id="secStatusText">Status Ochrony: <b style="color:#f472b6;">Chroniony Kodem PIN 🛡️</b></span>
             </div>
             <div class="security-status-right">
                 <button class="btn-security-toggle" id="btnOwnerAuthToggle" onclick="toggleOwnerAuthMode()">
@@ -2137,7 +2137,7 @@
     <div class="modal-overlay" id="securityPinModal">
         <div class="modal-card" style="max-width: 440px; text-align: center;">
             <button class="modal-close-btn" onclick="closeModal('securityPinModal')"><i class="fa-solid fa-xmark"></i></button>
-            <div style="font-size: 2.6rem; margin-bottom: 8px;">✨✨›ˇ</div>
+            <div style="font-size: 2.6rem; margin-bottom: 8px;">✨🛡️</div>
             <h3 style="font-size: 1.35rem; font-family:'Outfit',sans-serif; margin-bottom: 6px;">Weryfikacja Właścicielki</h3>
             <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 18px;">
                 Ten profil jest chroniony przed niepowołaną edycją. Wprowadź swój 4-cyfrowy kod PIN, aby odblokować panel edycji i usuwania.
@@ -2643,7 +2643,7 @@
                 {
                     id: 'post_w2',
                     author: 'Wioletta Rogowska',
-                    time: 'Wczoraj, 20:40 • ✨“– Słowo Ĺ»ycia',
+                    time: 'Wczoraj, 20:40 • ✨– Słowo Ĺ»ycia',
                     text: '„Przede wszystkim miejcie gorącą miłość jedni ku drugim, bo miłość zakrywa mnóstwo grzechów.” (1 P 4, 8). Błogosławionego wieczoru dla każdego z Was! ✨™Ź',
                     likes: 52,
                     image: 'lumina_default_cover.jpg'
@@ -2757,7 +2757,7 @@
         function copyPrivateAccessLink() {
             const url = window.location.origin + window.location.pathname + '?access=granted';
             navigator.clipboard.writeText(url).then(() => {
-                showToast('Skopiowano prywatny link dostępu z tokenem! ✨“‹✨’');
+                showToast('Skopiowano prywatny link dostępu z tokenem! ✨‹✨’');
             }).catch(() => {
                 prompt('Skopiuj ten prywatny link dostępu:', url);
             });
@@ -2814,7 +2814,7 @@
             if (isOwnerMode) {
                 
                 if (icon) icon.className = 'fa-solid fa-shield-check';
-                if (txt) txt.innerHTML = 'Panel Właścicielki: <b style="color:#ec4899;">Odblokowany ✨“ (Możesz edytować i usuwać)</b>';
+                if (txt) txt.innerHTML = 'Panel Właścicielki: <b style="color:#ec4899;">Odblokowany ✨ (Możesz edytować i usuwać)</b>';
                 if (btn) {
                     btn.className = 'btn-security-toggle unlocked';
                     if (btnIcon) btnIcon.className = 'fa-solid fa-lock';
@@ -2823,7 +2823,7 @@
             } else {
                 document.body.classList.remove('owner-mode-active');
                 if (icon) icon.className = 'fa-solid fa-shield-halved';
-                if (txt) txt.innerHTML = 'Status Ochrony: <b style="color:#f472b6;">Chroniony Kodem PIN ✨›ˇ</b>';
+                if (txt) txt.innerHTML = 'Status Ochrony: <b style="color:#f472b6;">Chroniony Kodem PIN 🛡️</b>';
                 if (btn) {
                     btn.className = 'btn-security-toggle';
                     if (btnIcon) btnIcon.className = 'fa-solid fa-key';
@@ -2958,7 +2958,7 @@
             } catch(e) {}
             const tb = document.getElementById('coverRepositionToolbar');
             if (tb) tb.classList.remove('open');
-            showToast('Kadr zdjęcia w tle został pomyślnie zapisany! ✨–Ľ✨');
+            showToast('Kadr zdjęcia w tle został pomyślnie zapisany! ✨✨');
         }
 
         // ── Render Views ──
@@ -3245,7 +3245,7 @@
                 editingPostImageDataUrl = dataUrl;
                 document.getElementById('editPostAttachedImg').src = dataUrl;
                 document.getElementById('editPostImgPreviewBox').style.display = 'block';
-                showToast('Grafika została zaktualizowana w edytorze! ✨–Ľ✨');
+                showToast('Grafika została zaktualizowana w edytorze! ✨✨');
             });
             e.target.value = '';
         }
@@ -3379,7 +3379,7 @@
                 attachedPostImageDataUrl = dataUrl;
                 document.getElementById('composerAttachedImg').src = dataUrl;
                 document.getElementById('composerImgPreviewBox').style.display = 'block';
-                showToast('Grafika została pomyślnie dołączona do wpisu! ✨–Ľ✨');
+                showToast('Grafika została pomyślnie dołączona do wpisu! ✨✨');
             });
         }
 
@@ -3507,7 +3507,7 @@
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
                 } catch(err) {}
                 renderProfileView();
-                showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane! ✨“·✨');
+                showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane! ✨·✨');
             });
             e.target.value = '';
         }
@@ -3523,7 +3523,7 @@
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
                 } catch(err) {}
                 renderProfileView();
-                showToast('Zdjęcie w tle zostało zaktualizowane i zapisane! ✨–Ľ✨');
+                showToast('Zdjęcie w tle zostało zaktualizowane i zapisane! ✨✨');
             });
             e.target.value = '';
         }
@@ -3550,14 +3550,14 @@
                         if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
                             window.LuminaDB.saveProfileToCloud('wiolettarogowska', cur).then(() => {
                                 renderPhotos();
-                                showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! ✨–Ľ✨`);
+                                showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! ✨✨`);
                             }).catch(() => {
                                 renderPhotos();
-                                showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! ✨–Ľ✨`);
+                                showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! ✨✨`);
                             });
                         } else {
                             renderPhotos();
-                            showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! ✨–Ľ✨`);
+                            showToast(`Dodano ${processed} nowe zdjęcie(a) do galerii! ✨✨`);
                         }
                     }
                 });
@@ -3745,7 +3745,7 @@
                         audio.src = "https://stream.zeno.fm/umej2cuqncluv?t=" + Date.now();
                         audio.play().then(() => {
                             localStorage.setItem('lumina_radio_playing', 'true');
-                            showToast('Radio Christian Culture Gra na Ĺ»ywo! ✨“»✨');
+                            showToast('Radio Christian Culture Gra na Ĺ»ywo! ✨»✨');
                         }).catch(() => showToast('Kliknij ponownie, aby odtworzyć radio'));
                     } else {
                         audio.pause();
@@ -3907,7 +3907,7 @@
                     reason: reason || 'Niewłaściwa treść na czacie',
                 });
                 if (typeof showToast === 'function') {
-                    showToast(result?.message || 'Zgłoszenie zostało wysłane do moderatorów. ✨›ˇ');
+                    showToast(result?.message || 'Zgłoszenie zostało wysłane do moderatorów. 🛡️');
                 } else {
                     alert(result?.message || 'Zgłoszenie zostało wysłane do moderatorów.');
                 }
