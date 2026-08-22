@@ -855,28 +855,32 @@ body.owner-mode-active .owner-only {
 
     .profiles-carousel-wrap,
     .carousel-container {
+        position: relative !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: visible !important;
         padding: 6px 0 20px 0 !important;
         margin-top: 14px !important;
-        width: 100% !important;
-        overflow: visible !important;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        scroll-snap-type: x mandatory !important;
+        display: flex !important;
+        align-items: center !important;
     }
 
     .profiles-grid,
     .carousel-track {
         display: flex !important;
-        gap: 14px !important;
+        gap: 16px !important;
         padding: 32px 16px 40px !important;
-        width: max-content !important;
-        overflow-y: visible !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
     }
+    .profiles-grid::-webkit-scrollbar { display: none !important; }
 
     .profile-card {
         flex: 0 0 clamp(260px, 78vw, 310px) !important;
         max-width: 85vw !important;
-        scroll-snap-align: center !important;
         border-radius: 20px !important;
     }
 

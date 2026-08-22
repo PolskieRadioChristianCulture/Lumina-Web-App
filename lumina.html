@@ -687,7 +687,7 @@
             display: flex;
             gap: 24px;
             overflow-x: auto;
-            scroll-behavior: smooth;
+            scroll-behavior: auto;
             scroll-snap-type: none;
             padding: 48px 15px 55px; /* Bezpieczna przestrzeń u góry i na dole */
             scrollbar-width: none;
@@ -4132,8 +4132,9 @@
 
         // ── Get 100% Live Profile by Slug or UID ──
         window.getLiveProfile = function(slug) {
-            if (!slug) slug = 'cezaryrgowski';
-            const base = window.LUMINA_BASE_PROFILES[slug] || {};
+            if (!slug) return null;
+            const base = window.LUMINA_BASE_PROFILES[slug];
+            if (!base) return null;
             let live = Object.assign({}, base);
 
             // 1. LocalStorage overrides for this specific slug
