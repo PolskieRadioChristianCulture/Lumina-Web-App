@@ -4223,14 +4223,20 @@
                     'studiodobregoslowa', 'osobowoscplus', 'noemi', 'dawid', 'weronika', 'tomek', 'anna', 'piotr', 'julia', 'magdalena'
                 ];
                 const addedSlugs = new Set(staticDemoSlugs.map(s => s.toLowerCase()));
+                const addedNames = new Set([
+                    'cezary', 'cezary rogowski', 'wioletta', 'wioletta rogowska', 'noemi', 'dawid', 'weronika', 
+                    'tomasz', 'tomek', 'anna', 'piotr', 'julia', 'magdalena', 'andrzej thiel', 'andrzej'
+                ]);
 
                 // Add local user profile if created
                 try {
                     const localProf = JSON.parse(localStorage.getItem('lumina_my_profile') || 'null');
                     if (localProf && localProf.name && (localProf.slug || localProf.uid)) {
                         const lKey = (localProf.slug || localProf.uid).toLowerCase();
-                        if (!addedSlugs.has(lKey)) {
+                        const lName = (localProf.name || '').toLowerCase().trim();
+                        if (lKey !== 'profile_default' && !addedSlugs.has(lKey) && !addedNames.has(lName)) {
                             addedSlugs.add(lKey);
+                            if (lName) addedNames.add(lName);
                             let userAvatar = localProf.avatar || 'lumina_icon.jpg';
                             const userName = localProf.name;
                             const userAge = localProf.age ? ', ' + localProf.age : '';
@@ -4265,7 +4271,9 @@
                     const pKey = p.slug || p.uid || p.id;
                     if (!pKey) return;
                     const pKeyLower = pKey.toLowerCase();
-                    if (addedSlugs.has(pKeyLower) || 
+                    const pNameLower = (p.name || '').toLowerCase().trim();
+
+                    if (pKeyLower === 'profile_default' || addedSlugs.has(pKeyLower) || addedNames.has(pNameLower) ||
                         pKeyLower.includes('cezary') || pKeyLower.includes('wioletta') || pKeyLower.includes('andrzej') || 
                         pKeyLower.includes('radiocc') || pKeyLower.includes('cctv') || pKeyLower.includes('ccmen') || 
                         pKeyLower.includes('ccwomen') || pKeyLower.includes('studiodobregoslowa') || pKeyLower.includes('osobowoscplus') ||
@@ -4275,6 +4283,7 @@
                         return;
                     }
                     addedSlugs.add(pKeyLower);
+                    if (pNameLower) addedNames.add(pNameLower);
 
                     let userAvatar = p.avatar || 'lumina_icon.jpg';
                     if (pKeyLower.includes('dominika') || p.needsRealPhoto || userAvatar.includes('placeholder')) {
