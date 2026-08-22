@@ -42,3 +42,20 @@ Niniejszy kodeks definiuje nadrzędne zasady, standardy technologiczne, etyczne 
 1. **Analiza Przed Zmianą:** Przed każdą modyfikacją kodu agent ma obowiązek sprawdzić powiązania między modułami CSS, skryptami JS a plikami HTML.
 2. **Unikanie Duplikatów:** Ścisła kontrola eksportów i importów w JS (`export/import`) celem unikania błędów krytycznych typu *Duplicate export*.
 3. **Wdrożenie Produkcyjne:** Każda faza poprawek musi zostać sfinalizowana czystym wdrożeniem na serwer (np. `firebase deploy --only hosting`) oraz weryfikacją poprawności działania na żywo.
+
+---
+
+## FILAR VI: INTELIGENTNE MECHANIZMY, PROCESY PRZYCZYNOWO-SKUTKOWE I PRAKTYCZNA UŻYTECZNOŚĆ (INTELLIGENT VALUE ENGINE @ICC)
+
+1. **Nadrzędna Dyrektywa „Nie Szkodzić i Budować Wartość”:**
+   - Każda zmiana kodu, architektury lub interfejsu musi być przeanalizowana w pełnym łańcuchu logicznym przyczynowo-skutkowym (jak wpływa na użytkownika, bazę danych, stan sesji, urządzenia mobilne i pozostałe moduły ekosystemu @ICC).
+2. **Logika Przyczynowo-Skutkowa w UI/UX (Zero Dead-Ends & Zero Confusions):**
+   - Każda akcja użytkownika musi wywoływać natychmiastową, logiczną i pożyteczną reakcję systemu (np. kliknięcie statystyki "Zalogowani Online" natychmiast otwiera interaktywną listę członków z opcją przejścia do profilu).
+   - Niezalogowany gość nie może mieć dostępu do modyfikacji danych ani narzędzi administracyjnych – przy próbie akcji system inteligentnie wyświetla modal logowania/rejestracji z jasnym wyjaśnieniem korzyści.
+   - Pasek akcji na profilach (`.head-actions`) zawsze zachowuje ergonomiczny, pojedynczy układ poziomy (`flex-direction: row`), nie zasłaniając treści i ułatwiając natychmiastową interakcję.
+3. **Inteligentna Automatyzacja & Odporność (Self-Healing & Anti-Teardown):**
+   - System inteligentnie egzekwuje jakość profili (np. automatyczne podstawienie logo LUMINA i powiadomienie o wymogu prawdziwego zdjęcia twarzy).
+   - Dynamiczne aktualizacje profili w czasie rzeczywistym nie niszczą drzewa DOM karuzeli, nie przerywają odtwarzania wideo/audio ani nie resetują pozycji scrollowania użytkownika.
+4. **Praktyczny Wymiar Misyjny dla Wszystkich Agentów @ICC:**
+   - Wszystkie systemy (Portal LUMINA, Radio Christian Culture, CCTV24, Codzienne Rozważania, Tablica Społeczności, Mission Control) stanowią spójną całość logiczną, która ma służyć ludziom, budować relacje oparte na wierze i działać w sposób niezawodny 24/7.
+
