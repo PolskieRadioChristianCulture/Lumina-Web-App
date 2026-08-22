@@ -15,7 +15,7 @@
     const SYSTEM_PROFILES = [
         { slug: 'andrzejthiel', name: 'Andrzej Thiel', role: 'Autor: Cuda Każdego Dnia', type: 'official', verified: true, avatar: 'avatar_andrzej_thiel.jpg' },
         { slug: 'cezaryrgowski', name: 'Cezary Rogowski', role: 'Dyrektor Projektu & Autor', type: 'official', verified: true, avatar: 'avatar_cezary_official.jpg' },
-        { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', role: 'Koordynator Społeczności', type: 'official', verified: true, avatar: 'avatar_wioletta_official.jpg' },
+        { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', role: 'Moderator Społeczności & Współzałożycielka', type: 'official', verified: true, avatar: 'avatar_wioletta_official.jpg' },
         { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', role: 'Oficjalny Kanał Audio & Wideo', type: 'channel', verified: true, avatar: 'studiodobregoslowa_avatar.jpg' },
         { slug: 'osobowoscplus', name: 'Osobowość Plus', role: 'Kanał Formacyjny', type: 'channel', verified: true, avatar: 'logo_osobowosc_plus.jpg' },
         { slug: 'radiocc', name: 'Polskie Radio CC', role: 'Główny Nadawca Radiowy', type: 'broadcast', verified: true, avatar: 'logo_radio_cc.jpg' },
