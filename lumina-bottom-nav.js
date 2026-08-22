@@ -353,10 +353,32 @@
             </button>
 
             <!-- 5. Mój Profil -->
-            <a href="${myProfileHref}" class="lumina-nav-tab ${isProfile ? 'active' : ''}" id="navTabProfile" title="Mój Profil / Panel Właściciela">
+            <a href="javascript:void(0)" onclick="window.handleBottomNavProfileClick(event)" class="lumina-nav-tab ${isProfile ? 'active' : ''}" id="navTabProfile" title="Mój Profil / Panel Właściciela">
                 <i class="fa-solid fa-user-gear"></i>
             </a>
         </nav>
+
+        <!-- ══════════ MODAL DLA NIEZALOGOWANEGO GOŚCIA ══════════ -->
+        <div class="cc-nav-modal" id="guestProfilePromptModal" onclick="if(event.target===this) this.classList.remove('open')">
+            <div style="background:#0b1838; border:1.5px solid rgba(245,158,11,0.5); border-radius:24px; padding:28px 22px; max-width:440px; width:92%; text-align:center; box-shadow:0 24px 60px rgba(0,0,0,0.85); color:#fff; position:relative;">
+                <button type="button" onclick="document.getElementById('guestProfilePromptModal').classList.remove('open')" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center;">&times;</button>
+                <div style="width:58px; height:58px; border-radius:50%; background:linear-gradient(135deg,#f59e0b,#ec4899); margin:0 auto 14px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; color:#fff; box-shadow:0 0 20px rgba(245,158,11,0.4);">
+                    <i class="fa-solid fa-user-lock"></i>
+                </div>
+                <h3 style="font-family:'Outfit',sans-serif; font-size:1.35rem; font-weight:800; margin-bottom:8px; color:#fff;">Twój Profil w LUMINA</h3>
+                <p style="font-size:0.86rem; color:#cbd5e1; line-height:1.55; margin-bottom:20px;">
+                    Aby zobaczyć swój profil, edytować dane lub publikować świadectwa, zaloguj się lub załóż bezpłatne konto chrześcijańskie w portalu.
+                </p>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <a href="lumina.html#login" onclick="document.getElementById('guestProfilePromptModal').classList.remove('open'); if(window.openAuthModal) { window.openAuthModal(); return false; }" style="padding:12px; border-radius:20px; background:linear-gradient(135deg,#10b981,#059669); color:#fff; font-weight:800; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(16,185,129,0.35);">
+                        <i class="fa-solid fa-right-to-bracket"></i> Zaloguj się do Portalu
+                    </a>
+                    <a href="lumina.html#register" onclick="document.getElementById('guestProfilePromptModal').classList.remove('open'); if(window.openQuickRegisterModal) { window.openQuickRegisterModal(); return false; }" style="padding:12px; border-radius:20px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; font-weight:700; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <i class="fa-solid fa-user-plus"></i> Załóż Bezpłatne Konto
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <!-- ══════════ MODAL WIADOMOŚCI & CZATÓW ══════════ -->
         <div class="cc-nav-modal" id="modalCcMessages" onclick="if(event.target===this) this.classList.remove('open')">
@@ -544,6 +566,46 @@
     window.openCcStoreModal = function() {
         const m = document.getElementById('modalCcStore');
         if (m) m.classList.add('open');
+    };
+
+    window.handleBottomNavProfileClick = function(event) {
+        if (event) event.preventDefault();
+        const isAdmin = localStorage.getItem('lumina_auth_master_admin') === 'true' || sessionStorage.getItem('lumina_auth_master_admin') === 'true';
+        let curProf = null;
+        try {
+            curProf = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null');
+        } catch(e) {}
+        
+        const hasSession = (localStorage.getItem('lumina_user_session') === 'active') || (curProf && (curProf.slug || curProf.uid));
+
+        if (isAdmin) {
+            window.location.href = 'lumina.cezaryrgowski.html';
+            return;
+        }
+
+        if (hasSession && curProf && (curProf.slug || curProf.uid)) {
+            const s = (curProf.slug || curProf.uid).toLowerCase();
+            if (s === 'wiolettarogowska' || s.includes('wioletta')) {
+                window.location.href = 'lumina.wiolettarogowska.html';
+            } else if (s === 'cezaryrgowski' || s.includes('cezary')) {
+                window.location.href = 'lumina.cezaryrgowski.html';
+            } else {
+                window.location.href = `lumina-profile.html?u=${s}`;
+            }
+            return;
+        }
+
+        // Niezalogowany gość -> Pokaż dedykowany modal z zaproszeniem do logowania/rejestracji!
+        const modal = document.getElementById('guestProfilePromptModal');
+        if (modal) {
+            modal.classList.add('open');
+        } else if (typeof window.openAuthModal === 'function') {
+            window.openAuthModal();
+        } else if (typeof window.openQuickRegisterModal === 'function') {
+            window.openQuickRegisterModal();
+        } else {
+            window.location.href = 'lumina.html#login';
+        }
     };
 
     // 5. Nasłuch zdarzeń w czasie rzeczywistym

@@ -1022,6 +1022,47 @@
             gap: 20px !important;
         }
 
+        /* ══════════ OWNER / ADMIN ONLY CONTROLS (100% UKRYTE DLA GOŚCI) ══════════ */
+        .cc-mission-publisher-bar,
+        .feed-composer,
+        .right-founder-wing,
+        .card-edit-btn,
+        .avatar-edit-overlay,
+        .cover-edit-btn,
+        .post-edit-btn,
+        .post-delete-btn,
+        .btn-post-owner-only,
+        .admin-hud-btn,
+        .founder-admin-only {
+            display: none !important;
+        }
+
+        body.owner-mode-active .cc-mission-publisher-bar {
+            display: block !important;
+        }
+        body.owner-mode-active .feed-composer {
+            display: block !important;
+        }
+        body.owner-mode-active .right-founder-wing {
+            display: flex !important;
+        }
+        body.owner-mode-active .card-edit-btn {
+            display: inline-flex !important;
+        }
+        body.owner-mode-active .avatar-edit-overlay {
+            display: flex !important;
+        }
+        body.owner-mode-active .cover-edit-btn {
+            display: inline-flex !important;
+        }
+        body.owner-mode-active .post-edit-btn,
+        body.owner-mode-active .post-delete-btn,
+        body.owner-mode-active .btn-post-owner-only,
+        body.owner-mode-active .admin-hud-btn,
+        body.owner-mode-active .founder-admin-only {
+            display: inline-flex !important;
+        }
+
         @media (max-width: 1150px) {
             .profile-body-grid, .profile-body-grid.founder-3col {
                 gap: 16px !important;
@@ -3484,31 +3525,10 @@ www.polskieradio.cc | www.cclite.pl`,
         }
 
         // ── Security & Authentication System ──
-                function checkOwnerAuthSession() {
-            let u = (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
-            if (!u) {
-                try { u = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
-            }
-            let p = null;
-            try { p = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null'); } catch(e) {}
-
+        function checkOwnerAuthSession() {
             let ownerAccess = (sessionStorage.getItem(AUTH_SESSION_KEY) === 'true') || 
-                              (localStorage.getItem(AUTH_SESSION_KEY) === 'true') ||
-                              (localStorage.getItem('lumina_user_session') === 'active') ||
                               (sessionStorage.getItem('lumina_auth_master_admin') === 'true') ||
                               (localStorage.getItem('lumina_auth_master_admin') === 'true');
-
-            if (u || p) {
-                const uEmail = ((u && u.email) || (p && p.email) || '').toLowerCase();
-                const uName = ((u && (u.displayName || u.name)) || (p && p.name) || '').toLowerCase();
-                const uSlug = ((p && p.slug) || (u && u.slug) || '').toLowerCase();
-
-                if (uEmail === 'nazirczarkes@gmail.com' || uEmail.includes('czarkes') || uEmail.includes('christianculture') || uName.includes('cezary') || uSlug.includes('cezary') || (u && u.uid)) {
-                    ownerAccess = true;
-                    sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
-                    localStorage.setItem(AUTH_SESSION_KEY, 'true');
-                }
-            }
 
             isOwnerMode = !!ownerAccess;
             if (isOwnerMode) {
