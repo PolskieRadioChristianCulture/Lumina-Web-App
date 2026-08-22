@@ -2030,6 +2030,130 @@ export async function markPublicMessagesSeen(messages, currentUser) {
     } catch(e) {}
 }
 
+// ── Reakcje Emotikonami na Wiadomości Prywatne (1:1) 👍❤️😊🙏🔥🕊️✝️😂😮😢👏🌹 ──
+export async function toggleDirectMessageReaction(chatId, messageId, emoji, currentUser) {
+    if (!chatId || !messageId || !emoji) return;
+    const parts = (chatId || '').split('_');
+    const normalizedChatId = parts.length >= 2 ? getChatId(parts[0], parts[1]) : chatId;
+    const uid = currentUser?.slug || currentUser?.uid || localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest';
+    const normId = normalizeChatUserId(uid);
+    const userName = currentUser?.name || currentUser?.displayName || (normId === 'cezaryrgowski' ? 'Cezary Rogowski' : (normId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
+
+    const localKey = `lumina_chat_${normalizedChatId}`;
+
+    // 1. Natychmiast zaktualizuj lokalny cache
+    try {
+        const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
+        const targetMsg = cached.find(m => m.id === messageId || (m.timestamp && m.timestamp.seconds && String(m.timestamp.seconds) === String(messageId)));
+        if (targetMsg) {
+            targetMsg.reactions = targetMsg.reactions || {};
+            const list = targetMsg.reactions[emoji] || [];
+            const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : u.id === normId));
+            if (existingIdx >= 0) {
+                list.splice(existingIdx, 1);
+            } else {
+                list.push({ id: normId, name: userName });
+            }
+            if (list.length === 0) {
+                delete targetMsg.reactions[emoji];
+            } else {
+                targetMsg.reactions[emoji] = list;
+            }
+            localStorage.setItem(localKey, JSON.stringify(cached));
+            const listener = activeDirectChatListeners.get(normalizedChatId);
+            if (listener) listener(cached);
+        }
+    } catch(e) {}
+
+    if (!db) return;
+
+    // 2. Zapisz w Firestore
+    try {
+        if (!String(messageId).startsWith('local_')) {
+            const docRef = doc(db, 'lumina_direct_messages', messageId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const currentData = docSnap.data();
+                const reactions = currentData.reactions || {};
+                const list = reactions[emoji] || [];
+                const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : u.id === normId));
+                if (existingIdx >= 0) {
+                    list.splice(existingIdx, 1);
+                } else {
+                    list.push({ id: normId, name: userName });
+                }
+                if (list.length === 0) {
+                    delete reactions[emoji];
+                } else {
+                    reactions[emoji] = list;
+                }
+                await updateDoc(docRef, { reactions });
+            }
+        }
+    } catch(e) {
+        console.warn('Lumina direct reaction error:', e);
+    }
+}
+
+// ── Reakcje Emotikonami na Wiadomości Czatu Ogólnego 👍❤️😊🙏🔥🕊️✝️😂😮😢👏🌹 ──
+export async function togglePublicChatMessageReaction(messageId, emoji, currentUser) {
+    if (!messageId || !emoji) return;
+    const uid = currentUser?.slug || currentUser?.uid || localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest';
+    const normId = normalizeChatUserId(uid);
+    const userName = currentUser?.name || currentUser?.displayName || (normId === 'cezaryrgowski' ? 'Cezary Rogowski' : (normId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
+
+    // 1. Natychmiast zaktualizuj lokalny cache
+    try {
+        const cached = JSON.parse(localStorage.getItem('lumina_public_chat_cache') || '[]');
+        const targetMsg = cached.find(m => m.id === messageId);
+        if (targetMsg) {
+            targetMsg.reactions = targetMsg.reactions || {};
+            const list = targetMsg.reactions[emoji] || [];
+            const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : u.id === normId));
+            if (existingIdx >= 0) {
+                list.splice(existingIdx, 1);
+            } else {
+                list.push({ id: normId, name: userName });
+            }
+            if (list.length === 0) {
+                delete targetMsg.reactions[emoji];
+            } else {
+                targetMsg.reactions[emoji] = list;
+            }
+            localStorage.setItem('lumina_public_chat_cache', JSON.stringify(cached));
+        }
+    } catch(e) {}
+
+    if (!db) return;
+
+    // 2. Zapisz w Firestore
+    try {
+        if (!String(messageId).startsWith('local_')) {
+            const docRef = doc(db, 'lumina_public_chat_messages', messageId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const currentData = docSnap.data();
+                const reactions = currentData.reactions || {};
+                const list = reactions[emoji] || [];
+                const existingIdx = list.findIndex(u => (typeof u === 'string' ? u === normId : u.id === normId));
+                if (existingIdx >= 0) {
+                    list.splice(existingIdx, 1);
+                } else {
+                    list.push({ id: normId, name: userName });
+                }
+                if (list.length === 0) {
+                    delete reactions[emoji];
+                } else {
+                    reactions[emoji] = list;
+                }
+                await updateDoc(docRef, { reactions });
+            }
+        }
+    } catch(e) {
+        console.warn('Lumina public reaction error:', e);
+    }
+}
+
 export function subscribeToUserChats(userId, onUpdate) {
     if (!db || !userId) return () => {};
     try {
@@ -2778,9 +2902,11 @@ window.LuminaDB = {
     subscribeToDirectMessages,
     sendDirectMessageToCloud,
     markDirectMessagesAsRead,
+    toggleDirectMessageReaction,
     subscribeToPublicChat,
     sendPublicChatMessage,
     markPublicMessagesSeen,
+    togglePublicChatMessageReaction,
     subscribeToUserChats,
     recordProfileLike,
     subscribeToUserMatches,
