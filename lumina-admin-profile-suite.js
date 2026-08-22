@@ -446,30 +446,32 @@
                 transition: outline 0.1s ease !important;
             }
 
+            /* ══════════ DOCKED INSPECTOR BANNER (DOKLEJONY DO PANELU MASTER ADMIN) ══════════ */
             .lumina-inspector-banner {
                 position: fixed;
-                bottom: 85px;
+                top: 108px;
                 left: 50%;
                 transform: translateX(-50%);
-                z-index: 100005;
-                background: linear-gradient(135deg, rgba(6, 78, 59, 0.96), rgba(4, 120, 87, 0.96));
+                z-index: 99998;
+                background: linear-gradient(135deg, rgba(6, 78, 59, 0.98), rgba(4, 120, 87, 0.98));
                 border: 1.5px solid #34d399;
+                border-top: none;
                 color: #fff;
-                padding: 8px 18px;
-                border-radius: 40px;
-                box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75), 0 0 25px rgba(52, 211, 153, 0.4);
-                backdrop-filter: blur(14px);
-                -webkit-backdrop-filter: blur(14px);
-                animation: slideUp 0.3s ease;
+                padding: 6px 18px;
+                border-radius: 0 0 20px 20px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8), 0 0 20px rgba(52, 211, 153, 0.35);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                animation: slideDown 0.25s ease;
                 font-family: 'Plus Jakarta Sans', sans-serif;
-                max-width: 94vw;
+                max-width: 92vw;
                 width: auto;
-                transition: all 0.25s ease;
+                transition: top 0.2s ease, padding 0.2s ease;
             }
 
             .lumina-inspector-banner.minimized {
-                padding: 6px 14px;
-                border-radius: 30px;
+                padding: 4px 12px;
+                border-radius: 0 0 16px 16px;
             }
             .lumina-inspector-banner.minimized .lumina-inspector-hint {
                 display: none !important;
@@ -1128,16 +1130,24 @@
 
         repositionHudBar: function() {
             const hud = document.getElementById('luminaAdminHudBar');
+            const inspBanner = document.getElementById('luminaAgentInspectorBanner');
             if (!hud) return;
             const topNav = document.querySelector('nav.lumina-nav, nav.portal-nav, nav.profile-navbar, .lumina-nav, nav');
             const navH = (topNav && topNav.offsetHeight > 0) ? topNav.offsetHeight : 56;
             hud.style.top = navH + 'px';
-            if (hud.classList.contains('active')) {
-                const hudH = hud.offsetHeight || 55;
-                document.body.style.paddingTop = (navH + hudH + 4) + 'px';
-            } else {
-                document.body.style.paddingTop = navH + 'px';
+
+            const isHudActive = hud.classList.contains('active');
+            const hudH = isHudActive ? hud.offsetHeight : 0;
+
+            if (inspBanner) {
+                inspBanner.style.top = (navH + hudH) + 'px';
             }
+
+            let totalTop = navH + hudH;
+            if (inspBanner && inspBanner.style.display !== 'none' && !inspBanner.classList.contains('minimized')) {
+                totalTop += (inspBanner.offsetHeight || 36);
+            }
+            document.body.style.paddingTop = (totalTop + 4) + 'px';
         },
 
         checkAndApplyAdminState: function() {
@@ -1296,6 +1306,8 @@
             document.addEventListener('click', this._boundClick, true);
             document.addEventListener('keydown', this._boundKeyDown, true);
 
+            this.repositionHudBar();
+
             if (typeof window.showToast === 'function') {
                 window.showToast('🎯 Tryb celownika aktywny! Najedź myszką i kliknij na dowolny element.');
             }
@@ -1307,6 +1319,7 @@
             if (!b) return;
             const isMin = b.classList.toggle('minimized');
             if (icon) icon.className = isMin ? 'fa-solid fa-plus' : 'fa-solid fa-minus';
+            this.repositionHudBar();
         },
 
         deactivateAgentInspector: function() {
@@ -1320,6 +1333,8 @@
             if (this._boundMouseMove) document.removeEventListener('mousemove', this._boundMouseMove, true);
             if (this._boundClick) document.removeEventListener('click', this._boundClick, true);
             if (this._boundKeyDown) document.removeEventListener('keydown', this._boundKeyDown, true);
+
+            this.repositionHudBar();
         },
 
         handleInspectorMouseMove: function(e) {
