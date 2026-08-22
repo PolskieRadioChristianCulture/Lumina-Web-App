@@ -836,11 +836,38 @@
         .head-user-tagline span { display: inline-flex; align-items: center; gap: 5px; }
 
         .head-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 15px;
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 10px !important;
+            margin-top: 14px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            -webkit-overflow-scrolling: touch !important;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+            padding-bottom: 4px !important;
+        }
+        .head-actions::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .head-actions > * {
+            display: inline-flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
+            width: auto !important;
+            max-width: none !important;
+            white-space: nowrap !important;
+            box-sizing: border-box !important;
         }
 
         .btn-action-primary {
@@ -1049,16 +1076,26 @@
             line-height: 1.25;
         }
             .head-actions {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-                width: 100%;
-                margin-top: 14px;
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+                scrollbar-width: none !important;
+                gap: 8px !important;
+                width: 100% !important;
+                margin-top: 14px !important;
+            }
+            .head-actions > * {
+                flex-shrink: 0 !important;
+                flex-grow: 0 !important;
+                width: auto !important;
+                white-space: nowrap !important;
             }
             .btn-action-primary, .btn-action-secondary {
-                flex: 1 1 calc(50% - 6px);
+                flex: 0 0 auto !important;
                 justify-content: center;
-                padding: 10px 14px;
+                padding: 10px 16px;
                 font-size: 0.82rem;
             }
             .profile-nav-tabs {
