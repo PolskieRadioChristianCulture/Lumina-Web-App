@@ -1955,26 +1955,62 @@
                 return;
             }
 
-            container.innerHTML = filtered.map(p => {
+            // Licz profile bez własnego zdjęcia
+            const missingPhotoProfiles = filtered.filter(p => {
+                const savedAvatar = localStorage.getItem('lumina_avatar_' + p.slug);
+                const hasOwnAvatar = savedAvatar && savedAvatar !== 'lumina_icon.jpg' && savedAvatar !== 'icon.png';
+                const hasProfileAvatar = p.avatar && p.avatar !== 'lumina_icon.jpg' && p.avatar !== 'icon.png';
+                return !hasOwnAvatar && !hasProfileAvatar;
+            });
+
+            // Monit administratora — wyświetl banner jeśli są profile bez zdjęcia
+            const adminBanner = missingPhotoProfiles.length > 0
+                ? `<div style="display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; background:rgba(234,179,8,0.12); border:1px solid rgba(234,179,8,0.4); margin-bottom:14px;">
+                    <i class="fa-solid fa-triangle-exclamation" style="color:#facc15; font-size:1.1rem;"></i>
+                    <div>
+                        <div style="font-weight:800; color:#facc15; font-size:0.9rem;">⚠️ ${missingPhotoProfiles.length} profil(e/i) bez własnego zdjęcia profilowego</div>
+                        <div style="font-size:0.75rem; color:#94a3b8; margin-top:2px;">Profile bez zdjęcia wyświetlają domyślne logo LUMINA. Administracyjnie wymagane jest uzupełnienie zdjęcia profilowego. Użyj przycisku <strong style="color:#fff;">📷 Awatar</strong> aby przypisać zdjęcie.</div>
+                    </div>
+                   </div>`
+                : '';
+
+            container.innerHTML = adminBanner + filtered.map(p => {
                 const isBlocked = blocked.includes(p.slug.toLowerCase());
                 const savedData = this.getCurrentData(p.slug);
                 const displayName = savedData.name || p.name;
                 const displayRole = savedData.job || p.role || 'Profil LUMINA';
-                const avatarSrc = localStorage.getItem('lumina_avatar_' + p.slug) || p.avatar || 'icon.png';
-                const profileUrl = (p.slug === 'andrzejthiel') ? 'lumina.andrzejthiel.html' : 
+
+                // Sprawdź czy profil ma własne zdjęcie
+                const savedAvatar = localStorage.getItem('lumina_avatar_' + p.slug);
+                const hasOwnAvatar = savedAvatar && savedAvatar !== 'lumina_icon.jpg' && savedAvatar !== 'icon.png';
+                const hasProfileAvatar = p.avatar && p.avatar !== 'lumina_icon.jpg' && p.avatar !== 'icon.png';
+                const isMissingPhoto = !hasOwnAvatar && !hasProfileAvatar;
+
+                // Fallback: oficjalne logo LUMINA (zamiast icon.png)
+                const avatarSrc = savedAvatar || p.avatar || 'lumina_icon.jpg';
+
+                const profileUrl = (p.slug === 'andrzejthiel') ? 'lumina.andrzejthiel.html' :
                                    (p.slug === 'cezaryrgowski') ? 'lumina.cezaryrgowski.html' :
                                    (p.slug === 'wiolettarogowska') ? 'lumina.wiolettarogowska.html' :
                                    `lumina-profile.html?u=${p.slug}`;
 
+                const missingPhotoBadge = isMissingPhoto
+                    ? `<span title="Ten profil nie posiada własnego zdjęcia profilowego — administracyjnie wymagane uzupełnienie" style="font-size:0.68rem; padding:2px 7px; border-radius:6px; background:rgba(234,179,8,0.2); border:1px solid rgba(234,179,8,0.5); color:#facc15; font-weight:800; white-space:nowrap;">⚠️ Brak zdjęcia</span>`
+                    : '';
+
                 return `
-                    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-radius:14px; background:rgba(255,255,255,0.04); border:1px solid ${isBlocked ? 'rgba(239,68,68,0.4)' : 'rgba(255,255,255,0.08)'}; flex-wrap:wrap; gap:10px;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-radius:14px; background:rgba(255,255,255,0.04); border:1px solid ${isBlocked ? 'rgba(239,68,68,0.4)' : isMissingPhoto ? 'rgba(234,179,8,0.3)' : 'rgba(255,255,255,0.08)'}; flex-wrap:wrap; gap:10px;">
                         <div style="display:flex; align-items:center; gap:12px; min-width:220px;">
-                            <img src="${avatarSrc}" alt="${displayName}" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:1.5px solid ${isBlocked ? '#ef4444' : 'rgba(250,204,21,0.6)'};" onerror="this.src='icon.png'">
+                            <div style="position:relative; flex-shrink:0;">
+                                <img src="${avatarSrc}" alt="${displayName}" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:1.5px solid ${isBlocked ? '#ef4444' : isMissingPhoto ? '#facc15' : 'rgba(250,204,21,0.6)'};" onerror="this.src='lumina_icon.jpg'">
+                                ${isMissingPhoto ? '<span style="position:absolute; bottom:-2px; right:-2px; width:14px; height:14px; border-radius:50%; background:#facc15; display:flex; align-items:center; justify-content:center; font-size:8px; color:#000; font-weight:900; border:1.5px solid #111;" title="Brak własnego zdjęcia">!</span>' : ''}
+                            </div>
                             <div>
-                                <div style="display:flex; align-items:center; gap:6px;">
+                                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
                                     <span style="font-weight:800; font-size:0.95rem; color:#fff;">${displayName}</span>
                                     ${savedData.verified !== false ? '<i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.80rem;" title="Zweryfikowany"></i>' : ''}
                                     ${isBlocked ? '<span style="font-size:0.70rem; padding:2px 6px; border-radius:6px; background:#ef4444; color:#fff; font-weight:800;">ZABLOKOWANY</span>' : ''}
+                                    ${missingPhotoBadge}
                                 </div>
                                 <div style="font-size:0.75rem; color:#94a3b8;">${displayRole} • slug: <code>${p.slug}</code></div>
                             </div>
@@ -1984,8 +2020,8 @@
                             <a href="${profileUrl}" target="_blank" class="admin-suite-btn" style="padding:6px 10px; font-size:0.75rem;" title="Otwórz profil">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Zobacz
                             </a>
-                            <button type="button" class="admin-suite-btn btn-cyan" style="padding:6px 10px; font-size:0.75rem;" onclick="window.LuminaAdminSuite.promptChangeAvatarForSlug('${p.slug}')" title="Zmień zdjęcie / awatar tego profilu">
-                                <i class="fa-solid fa-camera"></i> Awatar
+                            <button type="button" class="admin-suite-btn ${isMissingPhoto ? 'btn-warn' : 'btn-cyan'}" style="padding:6px 10px; font-size:0.75rem;" onclick="window.LuminaAdminSuite.promptChangeAvatarForSlug('${p.slug}')" title="${isMissingPhoto ? '⚠️ Brak zdjęcia! Kliknij aby przypisać zdjęcie profilowe' : 'Zmień zdjęcie / awatar tego profilu'}">
+                                <i class="fa-solid fa-camera"></i> ${isMissingPhoto ? '⚠️ Dodaj zdjęcie' : 'Awatar'}
                             </button>
                             <button type="button" class="admin-suite-btn btn-gold" style="padding:6px 10px; font-size:0.75rem;" onclick="window.LuminaAdminSuite.openFullEditor('${p.slug}')" title="Edytuj dane tego profilu">
                                 <i class="fa-solid fa-pencil"></i> Edytuj
@@ -2001,6 +2037,7 @@
                 `;
             }).join('');
         },
+
 
         // ══════════ MULTIMEDIA & PUBLIKACJE ══════════
         currentEditingSlug: null,
