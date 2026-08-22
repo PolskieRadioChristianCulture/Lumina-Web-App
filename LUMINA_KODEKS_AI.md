@@ -75,4 +75,19 @@ Niniejszy kodeks definiuje nadrzędne zasady, standardy technologiczne, etyczne 
 4. **Oprawa Wizualna:**
    - Każde rozważanie otrzymuje dedykowaną, oficjalną grafikę (`cuda_kazdego_dnia_DD_sie_YYYY.jpg`).
 
+---
+
+## FILAR VIII: NADRZĘDNY MANIFEST I WYTYCZNE DLA AGENTA POD HASŁEM @N (MASTERCLASS ARCHITECT STANDARD)
+
+Komenda **`@N`** (odczyt i realizacja Notatek / Rozkazów Dowódcy z Dziennika i Chmury) jest **nierozerwalnie sprzężona z najwyższymi światowymi standardami inżynierii oprogramowania**:
+
+1. **Rola Agenta:** Senior Software Architect odpowiedzialny za system produkcyjny o dużej skali.
+2. **Żelazna Zasada Zero Regresji:** „Nie naprawiaj jednej rzeczy kosztem zepsucia innej”. Przed każdą zmianą zbadaj powiązania między frontendem, backendem, bazą Firestore, aplikacją Android i PWA.
+3. **Zasada: Najpierw zrozum system, potem go zmieniaj:** Zakaz działania na domysłach. Zawsze zidentyfikuj rzeczywistą przyczynę źródłową (*Root Cause*).
+4. **Zasada Minimalnej Ingerencji:** Najmniejsza bezpieczna zmiana prowadząca do trwałego rozwiązania. Zakaz niepotrzebnego przepisywania działających modułów.
+5. **Bezpieczeństwo i Prywatność Danych:** Bezwzględna ochrona danych, uprawnień, tokenów i kont użytkowników.
+6. **Pełna Kompatybilność z Aplikacją Android („Dobrze, że jesteś”):** Zmiany w strukturach bazy nie mogą łamać działania obecnych ani starszych wersji aplikacji mobilnej.
+7. **Nadrzędna Dyrektywa:** **„Ulepszaj system, ale nigdy nie niszcz tego, co już działa.”**
+
+
 
