@@ -318,23 +318,11 @@
 
         /* ──────────────────── HERO INTRO ──────────────────── */
         .hero-intro-wrapper {
-            opacity: 1;
-            transform: translateY(0) scale(1);
+            opacity: 1 !important;
+            transform: none !important;
             position: relative;
             z-index: 10;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), max-height 1.2s cubic-bezier(0.4, 0, 0.2, 1), margin 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 480px;
             overflow: visible;
-        }
-
-        .hero-intro-wrapper.fade-out,
-        .hero-section.intro-hidden .hero-intro-wrapper {
-            opacity: 0 !important;
-            transform: translateY(-24px) scale(0.96) !important;
-            pointer-events: none !important;
-            max-height: 0 !important;
-            margin-bottom: 0 !important;
-            overflow: hidden !important;
         }
 
         .hero-section {
@@ -345,20 +333,9 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            min-height: 440px;
+            min-height: 420px;
             background-color: #0b1838;
-            padding: 55px 20px 40px;
-            transition: min-height 1.2s cubic-bezier(0.4, 0, 0.2, 1), padding 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .hero-section.intro-hidden {
-            min-height: 280px;
-            padding: 40px 20px 25px;
-        }
-
-        .hero-section.compact-mode {
-            min-height: 310px;
-            padding: 35px 20px 25px;
+            padding: 45px 20px 35px;
         }
 
         /* Pełnowymiarowa, czysta grafika tła - twarze w 100% widoczne bez zniekształceń i bez różnic kolorów */
@@ -2325,11 +2302,11 @@
     </nav>
 
     <!-- ══════════ HERO SECTION ══════════ -->
-    <header class="hero-section" id="heroHeader" onclick="handleHeroBackgroundClick(event)">
-        <div class="hero-bg" id="heroBg" onclick="toggleHeroSearch(event, true)">
+    <header class="hero-section" id="heroHeader">
+        <div class="hero-bg" id="heroBg">
             <img src="lumina_hero_bg.jpg?v=20260822" alt="LUMINA Tło" fetchpriority="high" loading="eager" decoding="async" onerror="this.onerror=null; this.src='lumina_bg_official.jpg';">
         </div>
-        <div class="hero-overlay" id="heroOverlay" onclick="toggleHeroSearch(event, true)"></div>
+        <div class="hero-overlay" id="heroOverlay"></div>
         <div class="hero-content" id="heroContent">
             <div class="hero-intro-wrapper" id="heroIntroText">
                 <div style="margin-bottom: 14px;">
@@ -3933,42 +3910,14 @@
             }
         };
 
-        // ── Auto fade-out hero intro logo & description after few seconds ──
-        let heroFadeTimer = null;
-
-        function startHeroFadeTimer() {
-            if (heroFadeTimer) clearTimeout(heroFadeTimer);
-            heroFadeTimer = setTimeout(() => {
-                const input = document.getElementById('omniSearchInput');
-                if (input && input.value.trim().length > 0) return; // don't hide if user is searching
-                const intro = document.getElementById('heroIntroText');
-                const header = document.getElementById('heroHeader');
-                if (intro) intro.classList.add('fade-out');
-                if (header) header.classList.add('intro-hidden');
-            }, 4200);
-        }
-
-        function restoreHeroIntro() {
-            const intro = document.getElementById('heroIntroText');
-            const header = document.getElementById('heroHeader');
-            if (intro) intro.classList.remove('fade-out');
-            if (header) header.classList.remove('intro-hidden');
-            startHeroFadeTimer();
-        }
-
+        // ── Stable Hero & Search Engine (Zero Jumping & Zero Layout Shifts) ──
         window.handleHeroBackgroundClick = function(e) {
-            if (!e || !e.target) return;
-            const target = e.target;
-            if (target.closest('#universalSearchBox') || target.closest('button') || target.closest('a') || target.closest('.discovery-filters-wrap')) {
-                return;
-            }
-            restoreHeroIntro();
-            window.toggleHeroSearch(e, true);
+            // Hero pozostaje w 100% stabilny bez przeskakiwania i chowania
         };
 
         // Initialize hero fade timer and interaction listeners
         document.addEventListener('DOMContentLoaded', () => {
-            startHeroFadeTimer();
+            // Hero jest stabilne bez timera
             const heroHeader = document.getElementById('heroHeader');
             if (heroHeader) {
                 heroHeader.addEventListener('mouseenter', restoreHeroIntro);
