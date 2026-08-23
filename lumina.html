@@ -5604,7 +5604,26 @@
         }
 
         // ══════════ BEZPIECZEŃSTWO CZATU: escapowanie danych użytkownika (anty-XSS) ══════════
+        function cleanMojibake(str) {
+            if (!str) return '';
+            let s = String(str);
+            if (s.includes('Ä') || s.includes('Ă') || s.includes('Ĺ') || s.includes('Å') || s.includes('â') || s.includes('Ã') || s.includes('đ') || s.includes('ď')) {
+                s = s.replace(/Ä™/g, 'ę').replace(/Ä…/g, 'ą').replace(/Ä‡/g, 'ć').replace(/Ĺ„/g, 'ń')
+                     .replace(/Ăł/g, 'ó').replace(/Ã³/g, 'ó').replace(/Ĺ›/g, 'ś').replace(/Ĺş/g, 'ź')
+                     .replace(/ĹĽ/g, 'ż').replace(/Ĺ‚/g, 'ł').replace(/Ä˜/g, 'Ę').replace(/Ä„/g, 'Ą')
+                     .replace(/Ä†/g, 'Ć').replace(/Ĺƒ/g, 'Ń').replace(/Ă"/g, 'Ó').replace(/Ã"/g, 'Ó')
+                     .replace(/Ĺš/g, 'Ś').replace(/Ĺ¹/g, 'Ź').replace(/Å»/g, 'Ż').replace(/Å¼/g, 'ż')
+                     .replace(/Åş/g, 'ź').replace(/â€˘/g, '•').replace(/â€¢/g, '•').replace(/â€ž/g, '„')
+                     .replace(/â€ť/g, '”').replace(/â€œ/g, '“').replace(/â€”/g, '—').replace(/â€“/g, '–')
+                     .replace(/â€™/g, '’').replace(/âś¨/g, '✨').replace(/âœ¨/g, '✨').replace(/â˜•/g, '☕')
+                     .replace(/âť¤ď¸Ź/g, '❤️').replace(/âť¤/g, '❤️').replace(/âś•/g, '✝️').replace(/đźŚ¸/g, '🌸')
+                     .replace(/đź/g, '✨').replace(/OTWĂ“RZ/g, 'OTWÓRZ').replace(/OTWĂ/g, 'OTWÓRZ');
+            }
+            return s;
+        }
+
         function escapeHtml(str) {
+            str = cleanMojibake(str);
             return String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
         function escapeForInlineJs(str) {
