@@ -1209,46 +1209,7 @@
 
         /* Match % badge – Top left minimal badge */
         
-        /* Top badges container to prevent any overlap */
-        .card-top-badges {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            z-index: 5;
-            pointer-events: none;
-        }
-        .card-top-badges > * {
-            position: relative !important;
-            top: auto !important;
-            left: auto !important;
-            right: auto !important;
-            bottom: auto !important;
-            margin: 0 !important;
-        }
-
-        
         /* Non-overlapping Top Left Badges */
-        .card-match {
-            position: absolute;
-            top: 12px; left: 12px;
-            bottom: auto; right: auto;
-            width: auto; height: auto;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: rgba(15, 23, 42, 0.72);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            color: #fff;
-            font-weight: 800; font-size: 0.76rem;
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 5;
-            display: flex; align-items: center; justify-content: center;
-        }
-
         .card-new-badge {
             position: absolute;
             top: 12px;
@@ -1269,7 +1230,23 @@
             height: 25px;
             box-sizing: border-box;
         }
-
+.card-match {
+            position: absolute;
+            top: 12px; left: 12px;
+            bottom: auto; right: auto;
+            width: auto; height: auto;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #fff;
+            font-weight: 800; font-size: 0.76rem;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 5;
+            display: flex; align-items: center; justify-content: center;
+        }
 
         /* Card body – 100% odsłonięte zdjęcie, dolny gradient wyłącznie z imieniem i wiekiem / nazwą */
         .card-body {
@@ -2381,7 +2358,359 @@
     </header>
 
     <!-- ══════════ CARDS ══════════ -->
-    ��< ! D O
+    <section class="cards-section" id="odkrywaj">
+        <div class="carousel-container">
+            <button class="carousel-btn left" onclick="scrollCarousel(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="profiles-grid" id="profilesCarousel">
+
+                <!-- 1. Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
+                <div class="profile-card home-cezary-card" id="card_profile_cezaryrgowski" data-profile-slug="cezaryrgowski" data-category="mezczyzna zalozyciele" onclick="openCommunityProfile('cezaryrgowski')">
+                    <div class="card-photo">
+                        <img src="avatar_cezary_official.webp" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_cezary_official.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'cezaryrgowski','Cezary Rogowski','avatar_cezary_official.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name home-cezary-name" id="homeUserName">Cezary Rogowski, 51</div>
+                        <div class="card-city home-cezary-city" id="homeUserCity">📍 Ostrowiec Świętokrzyski • <b>Żonaty</b></div>
+                        <div class="card-desc home-cezary-desc" id="homeUserDesc">"Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu."</div>
+                    </div>
+                </div>
+
+                <!-- ✨ REKLAMA WIDEO 1: Dobrze, że jesteś (Sklep CC - CENTRUM NA START) -->
+                <div class="profile-card video-card featured original-promo-card active-center-card" id="promoAdCard" data-category="all misja">
+                    <div class="card-photo">
+                        <video id="promoVideoEl" src="Reklama Sklep CC Karuzela Profili.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
+                            <source src="Reklama Sklep CC Karuzela Profili.mp4" type="video/mp4">
+                            <source src="czesc_dobrze_ze_jestes.mp4" type="video/mp4">
+                        </video>
+                        <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
+                            <i class="fa-solid fa-volume-xmark"></i>
+                        </button>
+                        <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        
+                        <!-- Pulsujący Przycisk do Sklepu -->
+                        <a href="https://my-store-1009741.creator-spring.com/listing/faith-august-2026?product=2536" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
+                            <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➜
+                        </a>
+                    </div>
+                </div>
+
+                <div class="profile-card" id="card_profile_noemi" data-profile-slug="noemi" onclick="openCommunityProfile('noemi')" data-category="kobieta mlodzi">
+                    <div class="card-photo">
+                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                            <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                        </div>
+                        <img src="avatar_noemi.webp" onerror="this.src='avatar_noemi.jpg'" alt="Noemi" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this,'noemi','Noemi','avatar_noemi.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #0369a1, #06b6d4);">96%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Noemi, 28</div>
+                        <div class="card-city">📍 Wrocław • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span></div>
+                        <div class="card-desc">"Spokój, las i głębokie rozmowy o Bogu przy herbacie. Szukam bratniej duszy."</div>
+                    </div>
+                </div>
+
+                <!-- 3. MISJA 1: OSOBOWOŚĆ + (YouTube) -->
+                <div class="profile-card mission-profile-card" id="card_profile_osobowoscplus" data-profile-slug="osobowoscplus" onclick="window.location.href='lumina.osobowoscplus.html'" data-category="misja mezczyzna" style="cursor:pointer;">
+                    <div class="card-photo">
+                        <img src="logo_osobowosc_plus.webp" onerror="this.src='logo_osobowosc_plus.jpg'" alt="OSOBOWOŚĆ +" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'osobowoscplus','OSOBOWOŚĆ +','logo_osobowosc_plus.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #8b5cf6, #a855f7);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            OSOBOWOŚĆ + <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Christian Culture • <b style="color:#8b5cf6;">👑 Formacja & Wiara</b></div>
+                        <div class="card-desc">"Oficjalny kanał YouTube OSOBOWOŚĆ +. Rozwój dojrzałości, tożsamość w Bogu i mądre relacje."</div>
+                    </div>
+                </div>
+
+                <!-- 4. Andrzej Thiel (Cuda Każdego Dnia • Sieradz) -->
+                <div class="profile-card" id="card_profile_andrzejthiel" data-profile-slug="andrzejthiel" onclick="openCommunityProfile('andrzejthiel')" data-category="mezczyzna misja" style="cursor:pointer;">
+                    <div class="card-photo">
+                        <img src="avatar_andrzej_thiel.webp" alt="Andrzej Thiel" onerror="this.src='Andrzej Thiel.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'andrzejthiel','Andrzej Thiel','avatar_andrzej_thiel.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #eab308);">99%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Andrzej Thiel, 70 <span style="font-size:0.72rem; background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff; padding:2px 7px; border-radius:10px; font-weight:700;">✨ Cuda Każdego Dnia</span>
+                        </div>
+                        <div class="card-city">📍 Sieradz, Polska • <b style="color:#f59e0b;">✨ 30 listopada 1955</b></div>
+                        <div class="card-desc">"Co dzień publikuję: Cuda Każdego Dnia. Trzymajmy się Jezusa – On jest jedynym i prawdziwym źródłem mocy."</div>
+                    </div>
+                </div>
+
+                <!-- 5. MISJA 2: Polskie Radio CC (YouTube) -->
+                <div class="profile-card mission-profile-card" id="card_profile_radiocc" data-profile-slug="radiocc" onclick="window.location.href='lumina.radiocc.html'" data-category="misja" style="cursor:pointer;">
+                    <div class="card-photo">
+                        <img src="logo_radio_cc.webp" onerror="this.src='logo_radio_cc.jpg'" alt="Polskie Radio CC" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'radiocc','Polskie Radio CC','logo_radio_cc.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Polskie Radio CC <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Cała Polska • <b style="color:#f59e0b;">✨ Radio Uwielbienia 24/7</b></div>
+                        <div class="card-desc">"Muzyka chwały, Biblia Śpiewana, audycje na żywo i codzienne rozważania przez całą dobę."</div>
+                    </div>
+                </div>
+
+                <!-- 6. Wioletta Rogowska / Współzałożycielka Christian Culture (Mężatka) -->
+                <div class="profile-card home-wioletta-card" id="card_profile_wiolettarogowska" data-profile-slug="wiolettarogowska" data-category="kobieta zalozyciele" onclick="openCommunityProfile('wiolettarogowska')">
+                    <div class="card-photo">
+                        <img src="avatar_wioletta_official.webp" alt="Wioletta Rogowska" class="home-wioletta-avatar" id="homeWiolettaAvatar" onerror="this.src='avatar_wioletta_official.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'wiolettarogowska','Wioletta Rogowska','avatar_wioletta_official.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #f472b6);">99%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name home-wioletta-name" id="homeWiolettaName">Wioletta Rogowska, 50</div>
+                        <div class="card-city home-wioletta-city" id="homeWiolettaCity">📍 Ostrowiec Świętokrzyski • <b>Mężatka</b></div>
+                        <div class="card-desc home-wioletta-desc" id="homeWiolettaDesc">"Współzałożycielka Christian Culture. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
+                    </div>
+                </div>
+
+                <!-- ✨ REKLAMA WIDEO 2: Sklep Christian Culture (Filipian 4:13 - Wszystko Mogę w Tym, który mnie umacnia) -->
+                <div class="profile-card video-card featured original-promo-card" id="promoAdCard2" data-category="all misja kobieta">
+                    <div class="card-photo">
+                        <video id="promoVideoEl2" src="Reklama 2 Sklep CC.mp4" autoplay muted loop playsinline preload="auto" poster="reklama_2_sklep_cc_poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('reklama_2_sklep_cc_poster.jpg') center top/cover no-repeat;">
+                            <source src="Reklama 2 Sklep CC.mp4" type="video/mp4">
+                        </video>
+                        <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
+                            <i class="fa-solid fa-volume-xmark"></i>
+                        </button>
+                        <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        
+                        <!-- Pulsujący Przycisk do Sklepu -->
+                        <a href="https://my-store-1009741.creator-spring.com/listing/mog-wszystko?product=377&variation=100057" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse">
+                            <i class="fa-solid fa-bag-shopping"></i> OTWÓRZ SKLEP ➜
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 7. Dawid (Mężczyzna) -->
+                <div class="profile-card" id="card_profile_dawid" data-profile-slug="dawid" onclick="openCommunityProfile('dawid')" data-category="mezczyzna mlodzi">
+                    <div class="card-photo">
+                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                            <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                        </div>
+                        <img src="avatar_sara.webp" onerror="this.src='avatar_sara.jpg'" alt="Dawid" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this,'dawid','Dawid','avatar_sara.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #6d28d9, #0ea5e9);">93%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Dawid, 30</div>
+                        <div class="card-city">📍 Poznań • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ NOWY PROFIL</span></div>
+                        <div class="card-desc">"Architekt z sercem do uwielbienia. Chcę budować relację opartą na zaufaniu i wierze."</div>
+                    </div>
+                </div>
+
+                <!-- 8. MISJA 3: STUDIO DOBREGO SŁOWA (YouTube @StudioDeeS, studiods.pl & Herbaciarnia) -->
+                <div class="profile-card mission-profile-card" id="card_profile_studiodobregoslowa" data-profile-slug="studiodobregoslowa" onclick="window.location.href='lumina.studiodobregoslowa.html'" data-category="misja media" style="cursor:pointer;">
+                    <div class="card-photo">
+                        <img src="studiodobregoslowa_avatar.webp" onerror="this.src='studiodobregoslowa_avatar.jpg'" alt="Studio Dobrego Słowa" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'studiodobregoslowa','Studio Dobrego Słowa','studiodobregoslowa_avatar.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ef4444, #dc2626);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Studio Dobrego Słowa <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Piła, Polska • <b style="color:#ef4444;">✨ @StudioDeeS • studiods.pl</b></div>
+                        <div class="card-desc">"Oficjalny profil Studia. Apokalipsa Live, podcasty, Słowo Boże i spotkania w Herbaciarni CC."</div>
+                    </div>
+                </div>
+
+                <!-- 9. Weronika (Kobieta) -->
+                <div class="profile-card" id="card_profile_weronika" data-profile-slug="weronika" onclick="openCommunityProfile('weronika')" data-category="kobieta mlodzi">
+                    <div class="card-photo">
+                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                            <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                        </div>
+                        <img src="avatar_widget_ania.webp" onerror="this.src='avatar_widget_ania.jpg'" alt="Weronika" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this,'weronika','Weronika','avatar_widget_ania.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #a855f7, #ec4899);">97%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Weronika, 25</div>
+                        <div class="card-city">📍 Kraków • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ NOWY PROFIL</span></div>
+                        <div class="card-desc">"Graficzka z pasją do piękna i muzyki. Szukam szczerej relacji opartej na wierze."</div>
+                    </div>
+                </div>
+
+                <!-- 10. MISJA 4: Christian Culture TV (YouTube) -->
+                <div class="profile-card mission-profile-card" id="card_profile_cctv" data-profile-slug="cctv" onclick="window.location.href='lumina.cctv.html'" data-category="misja" style="cursor:pointer;">
+                    <div class="card-photo">
+                        <img src="logo_cctv.webp" onerror="this.src='logo_cctv.png'" alt="Christian Culture TV" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'cctv','Christian Culture TV','logo_cctv.png')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Christian Culture TV <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Warszawa • <b style="color:#ef4444;">✨ Telewizja CCTV24</b></div>
+                        <div class="card-desc">"Oficjalna telewizja chrześcijańska. Pasma wideo, debaty, świadectwa i transmisje ewangelizacyjne."</div>
+                    </div>
+                </div>
+
+                <!-- 11. Tomasz (Mężczyzna) -->
+                <div class="profile-card" id="card_profile_tomek" data-profile-slug="tomek" onclick="openCommunityProfile('tomek')" data-category="mezczyzna mlodzi">
+                    <div class="card-photo">
+                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                            <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                        </div>
+                        <img src="avatar_widget_tomek.webp" onerror="this.src='avatar_widget_tomek.jpg'" alt="Tomasz" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this,'tomek','Tomasz','avatar_widget_tomek.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #059669, #10b981);">94%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Tomasz, 31</div>
+                        <div class="card-city">📍 Gdańsk • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ NOWY PROFIL</span></div>
+                        <div class="card-desc">"Pasjonat leśnych wędrówek, natury i spokojnych rozmów o Bogu przy ognisku."</div>
+                    </div>
+                </div>
+
+                <!-- ✨ REKLAMA WIDEO 3: Dobrze, że jesteś - LIVE TV24 (Christian Culture TV Na Żywo) -->
+                <div class="profile-card video-card featured original-promo-card" id="promoAdCard3" data-category="all misja">
+                    <div class="card-photo">
+                        <video id="promoVideoEl3" src="Reklama 3 Dobrze, że jesteś.mp4" autoplay muted loop playsinline preload="auto" poster="promo_dzj.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:20px;background:#0d1117 url('promo_dzj.jpg') center top/cover no-repeat;">
+                            <source src="Reklama 3 Dobrze, że jesteś.mp4" type="video/mp4">
+                        </video>
+                        <button type="button" class="card-sound-btn" onclick="toggleVideoSound(event,this)" title="Włącz / Wyłącz dźwięk" style="z-index: 12;">
+                            <i class="fa-solid fa-volume-xmark"></i>
+                        </button>
+                        <button type="button" class="card-heart liked" onclick="toggleLike(event,this)"><i class="fa-solid fa-heart"></i></button>
+                        
+                        <!-- Pulsujący Przycisk do LIVE TV24 -->
+                        <a href="https://polskieradio.cc/master-live.html" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-video-shop-pulse" style="background: linear-gradient(135deg, #ef4444, #b91c1c); box-shadow: 0 4px 20px rgba(239, 68, 68, 0.6);">
+                            <i class="fa-solid fa-tv"></i> OGLĄDAJ LIVE TV24 ➜
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 12. Magdalena (Kobieta) -->
+                <div class="profile-card" id="card_profile_magdalena" data-profile-slug="magdalena" onclick="openCommunityProfile('magdalena')" data-category="kobieta">
+                    <div class="card-photo" style="position:relative;">
+                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                            <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                        </div>
+                        <img src="avatar_magdalena.webp" onerror="this.src='avatar_magdalena.png'" alt="Magdalena" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this,'magdalena','Magdalena','avatar_magdalena.png')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">98%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Magdalena, 43</div>
+                        <div class="card-city">📍 Poznań • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span></div>
+                        <div class="card-desc">"Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu i miłości."</div>
+                    </div>
+                </div>
+
+                <!-- 13. MISJA 5: CC MEN (YouTube) -->
+                <div class="profile-card mission-profile-card" id="card_profile_ccmen" data-profile-slug="ccmen" onclick="window.location.href='lumina.ccmen.html'" data-category="misja mezczyzna" style="cursor:pointer;">
+                    <div class="card-photo">
+                        <img src="logo_cc_men.webp" onerror="this.src='logo_cc_men.jpg'" alt="CC MEN" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'ccmen','CC MEN','logo_cc_men.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            CC MEN <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Polska • <b style="color:#0ea5e9;">🛡️ Męska Wspólnota Wiary</b></div>
+                        <div class="card-desc">"Mężczyźni w Chrystusie. Męstwo, odpowiedzialność za rodzinę, wierność i braterstwo."</div>
+                    </div>
+                </div>
+
+                <!-- 14. Anna (Kobieta) -->
+                <div class="profile-card" id="card_profile_anna" data-profile-slug="anna" onclick="openCommunityProfile('anna')" data-category="kobieta mlodzi">
+                    <div class="card-photo">
+                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                            <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                        </div>
+                        <img src="avatar_widget_ania.webp" onerror="this.src='avatar_widget_ania.jpg'" alt="Anna" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this,'anna','Anna','avatar_widget_ania.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match">94%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Anna, 28</div>
+                        <div class="card-city">📍 Warszawa • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span></div>
+                        <div class="card-desc">"Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania świata."</div>
+                    </div>
+                </div>
+
+                <!-- 15. MISJA 6: CC Women (YouTube) -->
+                <div class="profile-card home-ccwomen-card" id="card_profile_ccwomen" data-profile-slug="ccwomen" onclick="window.location.href='lumina.ccwomen.html'" data-category="misja kobieta" style="cursor:pointer;">
+                    <div class="card-photo" style="background:#000;">
+                        <img src="logo_cc_women.jpg?v=20260820" alt="CC Women" class="home-ccwomen-avatar" id="homeCcwomenAvatar" onerror="this.onerror=null; this.src='CC Women.jpg?v=20260820'" loading="eager" decoding="async" style="width:100%;height:100%;object-fit:contain;object-position:center;display:block;background:#000;padding:12px;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this, 'ccwomen', 'CC Women', 'logo_cc_women.jpg?v=20260820')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            CC Women <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>
+                        </div>
+                        <div class="card-city">📍 Warszawa • <b style="color:#ec4899;">🌸 Kobiety Wiary</b></div>
+                        <div class="card-desc">"Oficjalny profil i kanał YouTube CC Women. Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły."</div>
+                    </div>
+                </div>
+
+                <!-- 16. Piotr (Mężczyzna) -->
+                <div class="profile-card" id="card_profile_piotr" data-profile-slug="piotr" onclick="openCommunityProfile('piotr')" data-category="mezczyzna mlodzi">
+                    <div class="card-photo" style="position:relative;">
+                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                            <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                        </div>
+                        <img src="lumina_piotr2.webp" onerror="this.src='lumina_piotr2.jpg'" alt="Piotr" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this,'piotr','Piotr','lumina_piotr2.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match">88%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Piotr, 31</div>
+                        <div class="card-city">📍 Kraków • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span></div>
+                        <div class="card-desc">"Szuka spontanicznych przygód. Entuzjasta górskich wędrówek."</div>
+                    </div>
+                </div>
+
+                <!-- 17. Julia (Kobieta) -->
+                <div class="profile-card" id="card_profile_julia" data-profile-slug="julia" onclick="openCommunityProfile('julia')" data-category="kobieta mlodzi">
+                    <div class="card-photo" style="position:relative;">
+                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                            <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                        </div>
+                        <img src="lumina_julia2.webp" onerror="this.src='lumina_julia2.jpg'" alt="Julia" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="card-heart" onclick="toggleLike(event,this,'julia','Julia','lumina_julia2.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match">91%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Julia, 26</div>
+                        <div class="card-city">📍 Gdańsk • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span></div>
+                        <div class="card-desc">"Marzycielka z pasją do muzyki. Szukam głębokich, szczerych relacji."</div>
+                    </div>
+                </div>
+
+            </div>
+            <button class="carousel-btn right" onclick="scrollCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+        <!-- Discovery Match Filters (Wszyscy, Kobiety, Mężczyźni, 18-30 lat, Polecaj) - pod karuzelą -->
+        <div class="discovery-filters-wrap" style="margin-top: 16px;">
+            <button class="filter-chip" id="chip_all" onclick="applyDiscoveryFilter('all', this)" title="Wszyscy" aria-label="Wszyscy"><i class="fa-solid fa-users"></i> <span class="filter-chip-text">Wszyscy</span></button>
+            <button class="filter-chip" id="chip_kobiety" onclick="applyDiscoveryFilter('kobieta', this)" title="Kobiety" aria-label="Kobiety"><i class="fa-solid fa-venus"></i> <span class="filter-chip-text">Kobiety</span></button>
+            <button class="filter-chip" id="chip_mezczyzni" onclick="applyDiscoveryFilter('mezczyzna', this)" title="Mężczyźni" aria-label="Mężczyźni"><i class="fa-solid fa-mars"></i> <span class="filter-chip-text">Mężczyźni</span></button>
+            <button class="filter-chip" id="chip_mlodzi" onclick="applyDiscoveryFilter('mlodzi', this)" title="18–30 lat" aria-label="18–30 lat"><i class="fa-solid fa-bolt"></i> <span class="filter-chip-text">18–30 lat</span></button>
+
+            <!-- ✨ PRZYCISK "POLECAJ" (POLEĆ ZNAJOMEMU) W STYLU POZOSTAŁYCH PRZYCISKÓW ✨ -->
+            <button type="button" class="filter-chip" id="btnRecommendLumina" onclick="openShareLuminaModal()" title="Poleć portal LUMINA znajomemu ✨" aria-label="Poleć portal znajomym">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span class="filter-chip-text">Polecaj</span>
+            </button>
+        </div>
+    </section>
 
     <!-- ══════════ SCRIPTURE INSPIRATION STRIP (Floating 3D) ══════════ -->
     <div class="scripture-strip">
@@ -4034,17 +4363,19 @@
                             cloudCardsHtml += `
                                 <div class="profile-card cloud-registered-user-card" id="card_profile_${lKey}" data-profile-slug="${lKey}" data-category="${localProf.gender || 'spolecznosc'} spolecznosc" onclick="openCommunityProfile('${lKey}')">
                                     <div class="card-photo" style="position:relative;">
+                                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                                            <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                                        </div>
                                         ${isVideoMedia ? `
                                             <video src="${mediaUrl}" autoplay muted loop playsinline poster="${userAvatar}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"></video>
+                                            <div class="card-video-badge" style="position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.65); backdrop-filter:blur(6px); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; gap:4px; z-index:3;">
+                                                <i class="fa-solid fa-play" style="color:#ec4899; font-size:0.55rem;"></i> WIDEO
+                                            </div>
                                         ` : `
                                             <img src="${mediaUrl || userAvatar}" alt="${userName}" onerror="this.onerror=null; this.src='lumina_icon.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                                         `}
                                         <button class="card-heart" onclick="toggleLike(event,this, '${lKey}', '${userName}', '${userAvatar}')"><i class="fa-solid fa-heart"></i></button>
-                                        <div class="card-top-badges">
-                                            <div class="card-match" style="background: linear-gradient(135deg, #10b981, #059669);">${userMatch}</div>
-                                            <div class="card-new-badge" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:4px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); display:flex; align-items:center; gap:4px; letter-spacing:0.5px; height:24px; box-sizing:border-box;"><i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY</div>
-                                            ${isVideoMedia ? `<div class="card-video-badge" style="background:rgba(0,0,0,0.65); backdrop-filter:blur(6px); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; gap:4px;"><i class="fa-solid fa-play" style="color:#ec4899; font-size:0.55rem;"></i> WIDEO</div>` : ''}
-                                        </div>
+                                        <div class="card-match" style="background: linear-gradient(135deg, #10b981, #059669);">${userMatch}</div>
                                     </div>
                                     <div class="card-body">
                                         <div class="card-name">${userName}${userAge}</div>
@@ -4094,15 +4425,14 @@
                             <div class="card-photo" style="position:relative;">
                                 ${isVideoMedia ? `
                                     <video src="${mediaUrl}" autoplay muted loop playsinline poster="${userAvatar}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"></video>
+                                    <div class="card-video-badge" style="position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.65); backdrop-filter:blur(6px); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; gap:4px; z-index:3;">
+                                        <i class="fa-solid fa-play" style="color:#ec4899; font-size:0.55rem;"></i> WIDEO
+                                    </div>
                                 ` : `
                                     <img src="${mediaUrl || userAvatar}" alt="${userName}" onerror="this.onerror=null; this.src='lumina_icon.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                                 `}
                                 <button class="card-heart" onclick="toggleLike(event,this, '${pKey}', '${userName}', '${userAvatar}')"><i class="fa-solid fa-heart"></i></button>
-                                <div class="card-top-badges">
-                                    <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">${userMatch}</div>
-                                    ${isProfileNew(p) ? `<div class="card-new-badge" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:4px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); display:flex; align-items:center; gap:4px; letter-spacing:0.5px; height:24px; box-sizing:border-box;"><i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY</div>` : ''}
-                                    ${isVideoMedia ? `<div class="card-video-badge" style="background:rgba(0,0,0,0.65); backdrop-filter:blur(6px); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; gap:4px;"><i class="fa-solid fa-play" style="color:#ec4899; font-size:0.55rem;"></i> WIDEO</div>` : ''}
-                                </div>
+                                <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">${userMatch}</div>
                             </div>
                             <div class="card-body">
                                 <div class="card-name">${userName}${userAge}</div>
