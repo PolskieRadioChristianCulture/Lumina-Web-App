@@ -1345,6 +1345,145 @@
             }
         },
 
+        
+        // ══════════ ⚡ COMMANDER AI INSTANT CHAT (DOWÓDCA ↔ AGENT ANTIGRAVITY) ══════════
+        commanderAiUnsub: null,
+
+        openCommanderAiChatModal: function() {
+            this.openModal('adminCommanderAiChatModal');
+            this.subscribeToCommanderAiChat();
+            setTimeout(() => {
+                const input = document.getElementById('commanderAiInputText');
+                if (input) input.focus();
+            }, 150);
+        },
+
+        subscribeToCommanderAiChat: function() {
+            if (this.commanderAiUnsub) {
+                try { this.commanderAiUnsub(); } catch(e) {}
+                this.commanderAiUnsub = null;
+            }
+
+            const box = document.getElementById('commanderAiChatMessagesBox');
+            if (!box) return;
+
+            const FIRESTORE_URL = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_commander_ai_chat';
+            
+            const fetchAndRender = async () => {
+                try {
+                    const res = await fetch(FIRESTORE_URL);
+                    if (!res.ok) return;
+                    const data = await res.json();
+                    if (!data || !data.documents) {
+                        box.innerHTML = '<div style="text-align:center; color:#64748b; font-size:0.75rem; padding:18px 0;">🕊️ Brak wcześniejszych wiadomości. Wpisz swój pierwszy rozkaz błyskawiczny dla Agenta AI!</div>';
+                        return;
+                    }
+
+                    const msgs = data.documents.map(d => {
+                        const f = d.fields || {};
+                        return {
+                            id: d.name ? d.name.split('/').pop() : 'msg',
+                            text: f.text?.stringValue || '',
+                            sender: f.sender?.stringValue || 'Dowódca',
+                            status: f.status?.stringValue || 'pending',
+                            reply: f.reply?.stringValue || '',
+                            createdAt: f.createdAt?.integerValue ? parseInt(f.createdAt.integerValue, 10) : Date.now(),
+                            replyAt: f.replyAt?.timestampValue || ''
+                        };
+                    });
+
+                    msgs.sort((a, b) => a.createdAt - b.createdAt);
+
+                    let html = '';
+                    msgs.forEach(m => {
+                        html += `
+                            <!-- Wiadomość Dowódcy -->
+                            <div style="align-self:flex-end; max-width:85%; background:linear-gradient(135deg, rgba(139,92,246,0.30), rgba(59,130,246,0.30)); border:1px solid rgba(139,92,246,0.55); border-radius:14px 14px 2px 14px; padding:10px 14px; color:#fff; box-shadow:0 4px 12px rgba(0,0,0,0.35);">
+                                <div style="font-size:0.68rem; color:#c4b5fd; font-weight:800; margin-bottom:3px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                                    <span>👑 Dowódca Nazir</span>
+                                    <span style="font-size:0.65rem; color:#94a3b8;">${new Date(m.createdAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>
+                                </div>
+                                <div style="font-size:0.86rem; line-height:1.4;">${m.text}</div>
+                                <div style="margin-top:4px; font-size:0.65rem; display:flex; align-items:center; gap:4px; color:${m.status === 'completed' ? '#34d399' : '#f59e0b'};">
+                                    <i class="fa-solid ${m.status === 'completed' ? 'fa-check-double' : 'fa-clock'}"></i>
+                                    ${m.status === 'completed' ? 'Zrealizowano' : 'Oczekuje na wykonanie w tle'}
+                                </div>
+                            </div>
+                        `;
+
+                        if (m.reply) {
+                            html += `
+                                <!-- Odpowiedź Agenta AI -->
+                                <div style="align-self:flex-start; max-width:85%; background:rgba(15,23,42,0.92); border:1px solid rgba(56,189,248,0.4); border-radius:14px 14px 14px 2px; padding:10px 14px; color:#e2e8f0; box-shadow:0 4px 14px rgba(0,0,0,0.4);">
+                                    <div style="font-size:0.68rem; color:#38bdf8; font-weight:800; margin-bottom:3px; display:flex; align-items:center; gap:6px;">
+                                        <i class="fa-solid fa-robot"></i> Agent AI Antigravity
+                                    </div>
+                                    <div style="font-size:0.84rem; line-height:1.4; color:#f1f5f9;">${m.reply}</div>
+                                </div>
+                            `;
+                        }
+                    });
+
+                    box.innerHTML = html;
+                    box.scrollTop = box.scrollHeight;
+                } catch(e) {
+                    console.warn('Lumina AI chat fetch notice:', e.message);
+                }
+            };
+
+            fetchAndRender();
+            const interval = setInterval(fetchAndRender, 3500);
+            this.commanderAiUnsub = () => clearInterval(interval);
+        },
+
+        sendCommanderAiMessage: async function(e) {
+            if (e) e.preventDefault();
+            const input = document.getElementById('commanderAiInputText');
+            if (!input) return;
+            const text = input.value.trim();
+            if (!text) return;
+
+            const msgId = 'cmd_' + Date.now();
+            const FIRESTORE_URL = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_commander_ai_chat/' + msgId;
+
+            const body = {
+                fields: {
+                    id: { stringValue: msgId },
+                    text: { stringValue: text },
+                    sender: { stringValue: 'Dowódca (Cezary Rogowski)' },
+                    status: { stringValue: 'pending' },
+                    reply: { stringValue: '' },
+                    createdAt: { integerValue: String(Date.now()) },
+                    timestamp: { timestampValue: new Date().toISOString() }
+                }
+            };
+
+            input.value = '';
+
+            try {
+                await fetch(FIRESTORE_URL, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                if (typeof window.showToast === 'function') {
+                    window.showToast('⚡ Rozkaz Błyskawiczny przesłany do Agenta AI! Zadanie w toku. 🚀');
+                }
+                this.subscribeToCommanderAiChat();
+            } catch(err) {
+                console.warn('Błąd wysyłania rozkazu:', err);
+            }
+        },
+
+        sendQuickAiCommand: function(text) {
+            const input = document.getElementById('commanderAiInputText');
+            if (input) {
+                input.value = text;
+                this.sendCommanderAiMessage();
+            }
+        },
+
         openModal: function(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
