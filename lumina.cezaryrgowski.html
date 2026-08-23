@@ -4922,6 +4922,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
         function renderPublicChatMessages(messages) {
             const box = document.getElementById('publicChatMessagesBox');
             if (!box) return;
+            const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 120 || box.scrollHeight <= box.clientHeight;
 
             const myId = 'cezaryrgowski';
 
@@ -4975,7 +4976,9 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
             });
 
             box.innerHTML = html;
-            box.scrollTop = box.scrollHeight;
+            if (typeof wasNearBottom !== 'undefined' ? wasNearBottom : true) {
+                box.scrollTop = box.scrollHeight;
+            }
 
             if (window.LuminaDB && typeof window.LuminaDB.markPublicMessagesSeen === 'function') {
                 window.LuminaDB.markPublicMessagesSeen(messages, { slug: 'cezaryrgowski', name: 'Cezary Rogowski' });
@@ -5230,6 +5233,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                     const res = await fetch(FIRESTORE_URL);
                     if (!res.ok) return;
                     const data = await res.json();
+                    const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 120 || box.scrollHeight <= box.clientHeight;
                     if (!data || !data.documents) {
                         box.innerHTML = `<div style="text-align:center; color:#94a3b8; font-size:0.75rem; padding:18px 0;">👑 Pokój Dowództwa jest pusty. Napisz pierwszą wiadomość! 🕊️</div>`;
                         return;
@@ -5288,7 +5292,9 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                     });
 
                     box.innerHTML = html;
-                    box.scrollTop = box.scrollHeight;
+            if (typeof wasNearBottom !== 'undefined' ? wasNearBottom : true) {
+                box.scrollTop = box.scrollHeight;
+            }
                 } catch(e) {
                     console.warn('Lumina Commander Chat sync notice:', e.message);
                 }
@@ -5668,7 +5674,9 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
             });
 
             box.innerHTML = html;
-            box.scrollTop = box.scrollHeight;
+            if (typeof wasNearBottom !== 'undefined' ? wasNearBottom : true) {
+                box.scrollTop = box.scrollHeight;
+            }
 
             if (window.LuminaDB && typeof window.LuminaDB.markDirectMessagesAsRead === 'function' && activeChatSession?.chatId) {
                 window.LuminaDB.markDirectMessagesAsRead(activeChatSession.chatId, 'cezaryrgowski', 'Cezary Rogowski');

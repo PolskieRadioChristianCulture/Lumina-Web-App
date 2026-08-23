@@ -5110,7 +5110,9 @@
             });
 
             box.innerHTML = html;
-            box.scrollTop = box.scrollHeight;
+            if (typeof wasNearBottom !== 'undefined' ? wasNearBottom : true) {
+                box.scrollTop = box.scrollHeight;
+            }
         }
 
         async function handleProfileChatMessageSubmit(e) {
@@ -5375,6 +5377,7 @@
         function renderPublicChatMessages(messages) {
             const box = document.getElementById('publicChatMessagesBox');
             if (!box) return;
+            const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 120 || box.scrollHeight <= box.clientHeight;
 
             const myUser = window.LuminaDB?.getCurrentUser();
             const myProfile = window.LuminaDB?.getCurrentProfile();
@@ -5432,7 +5435,9 @@
             });
 
             box.innerHTML = html;
-            box.scrollTop = box.scrollHeight;
+            if (typeof wasNearBottom !== 'undefined' ? wasNearBottom : true) {
+                box.scrollTop = box.scrollHeight;
+            }
         }
 
         // ══════════ REAKCJE EMOTIKONAMI NA WIADOMOŚCI CZATU ══════════
@@ -5784,6 +5789,7 @@
                     const res = await fetch(FIRESTORE_URL);
                     if (!res.ok) return;
                     const data = await res.json();
+                    const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 120 || box.scrollHeight <= box.clientHeight;
                     if (!data || !data.documents) {
                         box.innerHTML = `<div style="text-align:center; color:#94a3b8; font-size:0.75rem; padding:18px 0;">👑 Pokój Dowództwa jest pusty. Napisz pierwszą wiadomość! 🕊️</div>`;
                         return;
@@ -5842,7 +5848,9 @@
                     });
 
                     box.innerHTML = html;
-                    box.scrollTop = box.scrollHeight;
+            if (typeof wasNearBottom !== 'undefined' ? wasNearBottom : true) {
+                box.scrollTop = box.scrollHeight;
+            }
                 } catch(e) {
                     console.warn('Lumina Commander Chat sync notice:', e.message);
                 }
@@ -6225,7 +6233,9 @@
             });
 
             box.innerHTML = html;
-            box.scrollTop = box.scrollHeight;
+            if (typeof wasNearBottom !== 'undefined' ? wasNearBottom : true) {
+                box.scrollTop = box.scrollHeight;
+            }
 
             if (window.LuminaDB && typeof window.LuminaDB.markDirectMessagesAsRead === 'function' && activeChatSession?.chatId) {
                 window.LuminaDB.markDirectMessagesAsRead(activeChatSession.chatId, myId, myProfile?.name || myUser?.displayName);
