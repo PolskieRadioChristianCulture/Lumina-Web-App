@@ -1,9 +1,58 @@
 // ══════════════════════════════════════════════════════════════════════════
+// LUMINA FIREBASE CLOUD MESSAGING (Background Web Push for Closed App)
+// ══════════════════════════════════════════════════════════════════════════
+importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js');
+
+try {
+    firebase.initializeApp({
+        apiKey: "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M",
+        authDomain: "lumina-cc.firebaseapp.com",
+        databaseURL: "https://lumina-cc-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "lumina-cc",
+        storageBucket: "lumina-cc.firebasestorage.app",
+        messagingSenderId: "413985877183",
+        appId: "1:413985877183:web:b0c99a686a4fb1b875aa0a",
+        measurementId: "G-6440T9VBQB"
+    });
+
+    const fcmMessaging = firebase.messaging();
+    fcmMessaging.onBackgroundMessage((payload) => {
+        console.log('[sw-lumina.js] FCM Background Message received:', payload);
+        const senderName = payload.data?.senderName || payload.notification?.title || 'LUMINA ✨';
+        const senderAvatar = payload.data?.senderAvatar || payload.data?.avatar || './lumina_icon.jpg';
+        const text = payload.data?.text || payload.notification?.body || 'Masz nową wiadomość w portalu LUMINA 🕊️';
+        const urlToOpen = payload.data?.url || './lumina.html';
+
+        const notificationTitle = payload.notification?.title || `Wiadomość od: ${senderName}`;
+        const notificationOptions = {
+            body: text,
+            icon: senderAvatar,
+            badge: './lumina_icon.jpg',
+            tag: 'lumina_notif_' + (payload.data?.senderId || Date.now()),
+            renotify: true,
+            vibrate: [200, 100, 200],
+            data: {
+                url: urlToOpen,
+                ...payload.data
+            },
+            actions: [
+                { action: 'open', title: 'Otwórz LUMINA 💬' }
+            ]
+        };
+
+        return self.registration.showNotification(notificationTitle, notificationOptions);
+    });
+} catch(err) {
+    console.warn('[sw-lumina.js] Firebase FCM init in SW error:', err);
+}
+
+// ══════════════════════════════════════════════════════════════════════════
 // LUMINA PRODUCTION PWA SERVICE WORKER (v3.6.3-optimized)
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v3.6.3-20260823-r29';
+const CACHE_NAME = 'lumina-pwa-cache-v3.6.3-20260823-r30';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',

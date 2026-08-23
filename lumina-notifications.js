@@ -662,7 +662,19 @@
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => { 
-            window.LuminaNotifications = new LuminaNotificationEngine(); 
+            window.LuminaNotifications = new LuminaNotificationEngine();
+
+        // Auto-synchronizacja FCM Push Token przy starcie, jeśli uprawnienie jest nadane
+        setTimeout(() => {
+            if ("Notification" in window && Notification.permission === "granted") {
+                if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
+                    const curUser = (typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
+                    const uid = curUser ? (curUser.uid || curUser.slug || curUser.id) : localStorage.getItem('lumina_current_user_slug');
+                    window.LuminaDB.requestNotificationPermission(uid).catch(() => {});
+                }
+            }
+        }, 1500);
+ 
             // Sprawdź przy załadowaniu i powtarzaj co 30 sekund
             setTimeout(checkAndScheduleDailyBlessing, 2500);
             setInterval(checkAndScheduleDailyBlessing, 30000);
