@@ -589,6 +589,9 @@
                         </div>
                     </div>
                     <div class="lumina-admin-hud-actions" id="luminaAdminHudActions">
+                        <button type="button" class="admin-suite-btn" style="background:linear-gradient(135deg, #7c3aed, #2563eb); border:1px solid rgba(139,92,246,0.6); color:#fff; font-weight:800; box-shadow:0 2px 14px rgba(124,58,237,0.45);" onclick="window.LuminaAdminSuite.openCommanderAiChatModal()" title="Otwórz bezpośredni czat błyskawiczny Dowódcy z Agentem AI Antigravity">
+                            <i class="fa-solid fa-bolt"></i> ⚡ Wiadomość Błyskawiczna do Agenta
+                        </button>
                         <button type="button" class="admin-suite-btn btn-gold" onclick="window.LuminaAdminSuite.openFullEditor()">
                             <i class="fa-solid fa-pen-to-square"></i> Edytuj Profil
                         </button>
@@ -1025,6 +1028,73 @@
                             <i class="fa-solid fa-xmark"></i> Wyjdź
                         </button>
                     </div>
+                </div>
+            </div>
+
+            
+            <!-- ══════════ MODAL: CZAT DOWODZENIA Z AGENTEM AI (WIADOMOŚĆ BŁYSKAWICZNA) ══════════ -->
+            <div class="modal-overlay" id="adminCommanderAiChatModal" onclick="if(event.target===this) window.LuminaAdminSuite.closeModal('adminCommanderAiChatModal')">
+                <div class="modal-card" style="max-width: 680px; width:94%; background: #070d1e; border: 1.5px solid rgba(139, 92, 246, 0.55); box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 45px rgba(139, 92, 246, 0.35); border-radius: 24px; padding: 24px; position: relative; display:flex; flex-direction:column; max-height:90vh;">
+                    <button class="modal-close-btn" onclick="window.LuminaAdminSuite.closeModal('adminCommanderAiChatModal')" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+
+                    <!-- Header -->
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1); flex-wrap:wrap; gap:10px;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:46px; height:46px; border-radius:50%; background:linear-gradient(135deg, #8b5cf6, #3b82f6); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.35rem; box-shadow:0 4px 16px rgba(139,92,246,0.5);">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-family:'Outfit', sans-serif; font-size:1.20rem; font-weight:800; color:#fff; margin:0; display:flex; align-items:center; gap:8px;">
+                                    Czat Dowodzenia z Agentem AI 👑
+                                </h3>
+                                <div style="font-size:0.75rem; color:#a78bfa; font-weight:700;">
+                                    Bezpośredni kanał rozkazów: Dowódca Nazir ➔ Agent Antigravity
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); padding:4px 10px; border-radius:20px; font-size:0.72rem; color:#34d399; font-weight:800;">
+                            <span style="width:8px; height:8px; border-radius:50%; background:#10b981; display:inline-block; box-shadow:0 0 8px #10b981;"></span>
+                            Agent AI: Nasłuchuje w tle 24/7
+                        </div>
+                    </div>
+
+                    <!-- Quick Command Chips -->
+                    <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:10px; -webkit-overflow-scrolling:touch;">
+                        <button type="button" onclick="window.LuminaAdminSuite.sendQuickAiCommand('🚀 Publikuj dzisiejsze rozważanie misyjne we wszystkich kanałach')" style="white-space:nowrap; background:rgba(139,92,246,0.18); border:1px solid rgba(139,92,246,0.4); color:#c4b5fd; font-size:0.73rem; font-weight:700; padding:5px 10px; border-radius:12px; cursor:pointer;">
+                            🚀 Publikuj Rozważanie
+                        </button>
+                        <button type="button" onclick="window.LuminaAdminSuite.sendQuickAiCommand('🔄 Zsynchronizuj całą bazę Firestore, wyczyść cache i odśwież widoki')" style="white-space:nowrap; background:rgba(56,189,248,0.18); border:1px solid rgba(56,189,248,0.4); color:#7dd3fc; font-size:0.73rem; font-weight:700; padding:5px 10px; border-radius:12px; cursor:pointer;">
+                            🔄 Synchronizacja Bazy
+                        </button>
+                        <button type="button" onclick="window.LuminaAdminSuite.sendQuickAiCommand('📊 Sprawdź stan systemów, serwerów i transmisji Live')" style="white-space:nowrap; background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.4); color:#fde047; font-size:0.73rem; font-weight:700; padding:5px 10px; border-radius:12px; cursor:pointer;">
+                            📊 Status Systemów Live
+                        </button>
+                        <button type="button" onclick="window.LuminaAdminSuite.sendQuickAiCommand('🛡️ Wykonaj diagnostykę i automatyczną naprawę portalu LUMINA')" style="white-space:nowrap; background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.4); color:#6ee7b7; font-size:0.73rem; font-weight:700; padding:5px 10px; border-radius:12px; cursor:pointer;">
+                            🛡️ Diagnostyka i Naprawa
+                        </button>
+                    </div>
+
+                    <!-- Live Message History Stream -->
+                    <div id="commanderAiChatMessagesBox" style="flex:1; min-height:220px; max-height:340px; overflow-y:auto; background:rgba(11,18,36,0.9); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:14px; margin-bottom:12px; display:flex; flex-direction:column; gap:10px;">
+                        <div style="text-align:center; color:#64748b; font-size:0.75rem; padding:8px 0;">
+                            ✨ Połączono z autonomicznym terminalem Agenta AI. Wszystkie rozkazy są zapisywane w chmurze i wykonywane w tle.
+                        </div>
+                    </div>
+
+                    <!-- Input Form -->
+                    <form onsubmit="window.LuminaAdminSuite.sendCommanderAiMessage(event)" style="display:flex; flex-direction:column; gap:10px;">
+                        <div style="display:flex; gap:8px;">
+                            <textarea id="commanderAiInputText" rows="2" placeholder="Wpisz rozkaz lub zadanie dla Agenta (np. Zmień układ na stronie głównej, dodaj nową sekcję, sprawdź logi)..." style="flex:1; padding:10px 14px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(139,92,246,0.35); color:#fff; font-family:inherit; font-size:13.5px; outline:none; resize:none;" required></textarea>
+                            <button type="submit" style="padding:0 18px; border-radius:14px; background:linear-gradient(135deg, #8b5cf6, #2563eb); border:none; color:#fff; font-weight:800; font-size:0.90rem; cursor:pointer; box-shadow:0 4px 18px rgba(139,92,246,0.5); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:85px;">
+                                <i class="fa-solid fa-paper-plane" style="font-size:1.1rem;"></i>
+                                <span style="font-size:0.70rem;">Wyślij</span>
+                            </button>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; color:#94a3b8;">
+                            <span>💡 Komputer może pozostać włączony — Agent autonomicznie podejmie i wykona zlecenie.</span>
+                            <span style="color:#a78bfa; font-weight:700;">Antigravity Engine 24/7</span>
+                        </div>
+                    </form>
                 </div>
             </div>
 
