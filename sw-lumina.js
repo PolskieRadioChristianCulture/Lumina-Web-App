@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA PRODUCTION PWA SERVICE WORKER (v3.6.3-stable)
-// High-performance caching, offline navigation & push notification sync
+// LUMINA PRODUCTION PWA SERVICE WORKER (v3.6.3-optimized)
+// High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v3.6.3-20260823-r16';
+const CACHE_NAME = 'lumina-pwa-cache-v3.6.3-20260823-r17';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
@@ -57,7 +57,7 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // STRICTLY allow ONLY http: and https: protocols (reject chrome-extension:, blob:, data:)
+    // STRICTLY allow ONLY http: and https: protocols
     if (!url.protocol.startsWith('http')) {
         return;
     }
@@ -79,6 +79,28 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
+    // Static Assets (Images, Fonts, CSS) -> Stale-While-Revalidate (Instant load from Cache + background update)
+    const isStaticAsset = /\.(png|jpg|jpeg|webp|svg|gif|woff2?|ttf|css)(\?.*)?$/i.test(url.pathname);
+
+    if (isStaticAsset) {
+        event.respondWith(
+            caches.open(CACHE_NAME).then((cache) => {
+                return cache.match(request).then((cachedResponse) => {
+                    const fetchPromise = fetch(request).then((networkResponse) => {
+                        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+                            cache.put(request, networkResponse.clone()).catch(() => {});
+                        }
+                        return networkResponse;
+                    }).catch(() => cachedResponse);
+
+                    return cachedResponse || fetchPromise;
+                });
+            })
+        );
+        return;
+    }
+
+    // HTML Navigation Pages -> Network First with Cache Fallback
     event.respondWith(
         fetch(request)
             .then((networkResponse) => {
@@ -102,65 +124,41 @@ self.addEventListener('fetch', (event) => {
 });
 
 // ══════════════════════════════════════════════════════════════════════════
-// ANDROID / PWA SYSTEM DRAWER NOTIFICATIONS (Belka Powiadomień jak FB / YT)
+// PUSH NOTIFICATION RECEIVER (Direct Chat & Mission Notifications)
 // ══════════════════════════════════════════════════════════════════════════
-
 self.addEventListener('push', (event) => {
     let data = {};
-    if (event.data) {
-        try {
-            data = event.data.json();
-        } catch(e) {
-            data = { body: event.data.text() };
-        }
+    try {
+        data = event.data ? event.data.json() : {};
+    } catch (e) {
+        data = { title: 'LUMINA • Nowa Wiadomość ✨', body: event.data ? event.data.text() : 'Otrzymałeś nową wiadomość w portalu LUMINA.' };
     }
-    const senderName = data.senderName || data.title || 'Społeczność LUMINA';
-    const senderAvatar = data.senderAvatar || data.avatar || './avatar_cezary_official.jpg';
-    const text = data.text || data.body || 'Masz nową wiadomość w portalu LUMINA 🕊️';
-    const type = data.type || 'chat';
 
-    const notificationTitle = `LUMINA • Masz wiadomość od ${senderName}`;
-    const notificationOptions = {
-        body: text,
-        icon: senderAvatar,
-        badge: './lumina-icon-192.png',
-        tag: 'lumina_chat_' + (data.senderId || 'all'),
-        renotify: true,
-        requireInteraction: true,
-        silent: false,
-        vibrate: [200, 100, 200, 100, 200],
-        data: data || { url: './lumina.html', type: type, senderName: senderName, senderAvatar: senderAvatar },
-        actions: [
-            { action: 'open_chat', title: '💬 Odpowiedz' },
-            { action: 'dismiss', title: '✕ Zamknij' }
-        ]
+    const title = data.title || 'LUMINA • Społeczność Chrześcijańska';
+    const options = {
+        body: data.body || 'Masz nowe powiadomienie w aplikacji LUMINA.',
+        icon: data.icon || './lumina-icon-192.png',
+        badge: './icon.png',
+        data: {
+            url: data.url || './lumina.html'
+        },
+        vibrate: [100, 50, 100],
+        requireInteraction: false
     };
 
-    if (data.image) {
-        notificationOptions.image = data.image;
-    }
-
-    event.waitUntil(self.registration.showNotification(notificationTitle, notificationOptions));
+    event.waitUntil(
+        self.registration.showNotification(title, options)
+    );
 });
 
 self.addEventListener('notificationclick', (event) => {
     event.notification.close();
-    
-    if (event.action === 'dismiss') {
-        return;
-    }
-
-    const chatData = event.notification.data || {};
-    const targetUrl = chatData.url || './lumina.html';
+    const targetUrl = event.notification.data?.url || './lumina.html';
 
     event.waitUntil(
-        clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-            for (const client of clientList) {
-                if (client.url && 'focus' in client) {
-                    client.postMessage({
-                        type: 'OPEN_LUMINA_CHAT',
-                        chatData: chatData
-                    });
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+            for (let client of windowClients) {
+                if (client.url.includes('lumina.html') && 'focus' in client) {
                     return client.focus();
                 }
             }

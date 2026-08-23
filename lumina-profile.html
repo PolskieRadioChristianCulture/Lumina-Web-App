@@ -1962,9 +1962,7 @@
     
     <script type="module" src="js/lumina-db-profiles.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-actions.js?v=1786937908032"></script>
-    <script type="module" src="lumina-security.js?v=2.2"></script>
     <script type="module" src="js/lumina-editor.js?v=1786937908032"></script>
-    <script type="module" src="lumina-admin-profile-suite.js?v=2.0"></script>
     <script type="module" src="js/lumina-feed.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-search.js?v=1786937908032"></script>
 </head>
@@ -1976,7 +1974,7 @@
     <!-- ══════════ NAVBAR ══════════ -->
     <nav class="lumina-nav">
         <a href="lumina.html" class="nav-logo-text">
-            <img src="lumina_icon.jpg" alt="LUMINA Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+            <img loading="lazy" decoding="async" src="lumina_icon.jpg" alt="LUMINA Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
             <span>LUMINA</span>
         </a>
 
@@ -2152,7 +2150,7 @@
 
             <!-- Cover Banner -->
             <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
-                <img src="lumina_default_cover.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
+                <img loading="lazy" decoding="async" src="lumina_default_cover.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
                 <div class="cover-overlay"></div>
                 
                 <div class="cover-hint-badge"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
@@ -2185,7 +2183,7 @@
                 <div class="profile-head-top">
                     <div class="profile-head-main">
                     <div class="avatar-wrap" onclick="handleAvatarClick()" style="cursor:pointer;" title="Kliknij, aby otworzyć opcje zdjęcia profilowego">
-                        <img src="lumina_icon.jpg" alt="Avatar" class="avatar-img" id="avatarImgEl">
+                        <img loading="lazy" decoding="async" src="lumina_icon.jpg" alt="Avatar" class="avatar-img" id="avatarImgEl">
                         <button class="avatar-edit-overlay" onclick="event.stopPropagation(); handleAvatarClick();" title="Opcje zdjęcia profilowego"><i class="fa-solid fa-camera"></i></button>
                         <div class="avatar-status-badge" title="Użytkownik Online"></div>
                     </div>
@@ -2329,13 +2327,13 @@
                     <!-- Composer -->
                     <div class="feed-composer">
                         <div class="composer-top">
-                            <img src="lumina_icon.jpg" alt="You" class="composer-avatar" id="myComposerAvatar" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
+                            <img loading="lazy" decoding="async" src="lumina_icon.jpg" alt="You" class="composer-avatar" id="myComposerAvatar" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                             <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
                         </div>
 
                         <!-- Post Image Attachment Preview -->
                         <div id="composerImgPreviewBox" style="display:none; position:relative; margin: 10px 0 6px; border-radius:12px; overflow:hidden; max-height:220px; background:#0f172a; border: 1px solid rgba(255,255,255,0.15);">
-                            <img id="composerAttachedImg" src="" style="width:100%; height:180px; object-fit:cover; display:block;">
+                            <img loading="lazy" decoding="async" id="composerAttachedImg" src="" style="width:100%; height:180px; object-fit:cover; display:block;">
                             <button type="button" onclick="removeAttachedPostImage()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.5);" title="Usuń dołączoną grafikę"><i class="fa-solid fa-xmark"></i></button>
                         </div>
 
@@ -2560,7 +2558,7 @@
                 
                 <!-- Edit Post Image Preview -->
                 <div id="editPostImgPreviewBox" style="display:none; position:relative; margin-bottom: 14px; border-radius:12px; overflow:hidden; max-height:220px; background:#0f172a; border: 1px solid rgba(255,255,255,0.15);">
-                    <img id="editPostAttachedImg" src="" style="width:100%; height:180px; object-fit:cover; display:block;">
+                    <img loading="lazy" decoding="async" id="editPostAttachedImg" src="" style="width:100%; height:180px; object-fit:cover; display:block;">
                     <button type="button" onclick="removeEditPostAttachedImage()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.5);" title="Usuń grafikę z wpisu"><i class="fa-solid fa-xmark"></i></button>
                 </div>
 
@@ -2584,7 +2582,7 @@
             <!-- Header -->
             <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.1);">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <img id="profileChatHeaderAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+                    <img loading="lazy" decoding="async" id="profileChatHeaderAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
                     <div>
                         <div id="modalMsgRecipient" style="font-weight: 800; font-size: 0.95rem; color: #fff;">Rozmowa</div>
                         <div style="font-size: 0.7rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
@@ -2865,7 +2863,7 @@
                     <div class="chat-header-bar" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.1);">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <button type="button" onclick="returnToConversationsList()" style="background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer; padding: 4px 8px;"><i class="fa-solid fa-arrow-left"></i></button>
-                            <img id="activeChatAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+                            <img loading="lazy" decoding="async" id="activeChatAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
                             <div>
                                 <div id="activeChatName" style="font-weight: 800; font-size: 0.95rem; color: #fff;">Rozmowa Prywatna</div>
                                 <div style="font-size: 0.7rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
@@ -4147,7 +4145,7 @@
                 } else {
                     miniGrid.innerHTML = photos.slice(0, 6).map((src, idx) => `
                         <div style="position:relative; border-radius:10px; overflow:hidden; height:90px; background:#1e293b;">
-                            <img src="${src}" alt="Photo" class="photo-thumb" style="width:100%;height:100%;object-fit:cover;" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
+                            <img src="${src}" alt="Photo" class="photo-thumb" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
                             ${isOwnerMode ? `<button type="button" class="photo-delete-badge" style="display:flex; width:26px; height:26px; top:4px; right:4px; font-size:0.72rem; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie"><i class="fa-solid fa-trash-can"></i></button>` : ''}
                         </div>
                     `).join('');
@@ -4161,7 +4159,7 @@
                 } else {
                     fullGrid.innerHTML = photos.map((src, idx) => `
                         <div class="photo-item-box" style="position:relative;">
-                            <img src="${src}" alt="Photo" class="photo-item-img" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
+                            <img src="${src}" alt="Photo" class="photo-item-img" loading="lazy" decoding="async" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
                             ${(data.carouselMediaUrl === src) ? `<div style="position:absolute; top:8px; left:8px; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:10px; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(0,0,0,0.5); z-index:10;"><i class="fa-solid fa-star" style="color:#facc15;"></i> Karuzela</div>` : (isOwnerMode ? `<button type="button" onclick="setAsCarouselFeaturedMedia('${src}', 'photo')" title="Ustaw na karuzeli głównej" style="position:absolute; top:8px; left:8px; width:28px; height:28px; border-radius:50%; background:rgba(15,23,42,0.85); border:1px solid rgba(250,204,21,0.6); color:#facc15; display:flex; align-items:center; justify-content:center; font-size:0.75rem; cursor:pointer; z-index:10;"><i class="fa-regular fa-star"></i></button>` : '')}
                             ${isOwnerMode ? `<button type="button" class="photo-delete-badge" style="display:flex; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie z galerii"><i class="fa-solid fa-trash-can"></i></button>` : ''}
                         </div>
@@ -4292,7 +4290,7 @@
                 return `
                 <article class="post-card" id="${p.id}">
                     <div class="post-header">
-                        <img src="${p.authorAvatar || data.avatar || 'lumina_icon.jpg'}" alt="${p.author}" class="post-avatar">
+                        <img loading="lazy" decoding="async" src="${p.authorAvatar || data.avatar || 'lumina_icon.jpg'}" alt="${p.author}" class="post-avatar">
                         <div>
                             <div class="post-author">${p.author}</div>
                             <div class="post-time">${p.time || 'Przed chwilą'}</div>
@@ -4306,7 +4304,7 @@
                     </div>
                     <div class="post-content">${rich.html}</div>
                     ${rich.embedHtml || ''}
-                    ${`<img src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'avatar_new1.jpg')}" alt="Post Image" class="post-image" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" onerror="this.onerror=null; this.src='${data.avatar || 'avatar_new1.jpg'}'">`}
+                    ${`<img src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'avatar_new1.jpg')}" alt="Post Image" class="post-image" loading="lazy" decoding="async" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" onerror="this.onerror=null; this.src='${data.avatar || 'avatar_new1.jpg'}'">`}
                     <div class="post-footer">
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span><span class="btn-text"> Polubień</span></button>
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen!</span></button>
@@ -4879,7 +4877,7 @@
                             <video src="${escapeHtml(item.url)}" muted loop playsinline poster="${escapeHtml(item.thumb)}" style="width:100%; height:100%; object-fit:cover; display:block;"></video>
                             <div style="position:absolute; top:4px; left:4px; background:rgba(0,0,0,0.7); color:#fff; font-size:0.6rem; font-weight:800; padding:2px 6px; border-radius:6px;"><i class="fa-solid fa-play" style="color:#ec4899;"></i> WIDEO</div>
                         ` : `
-                            <img src="${escapeHtml(item.thumb)}" alt="${escapeHtml(item.label)}" style="width:100%; height:100%; object-fit:cover; display:block;">
+                            <img src="${escapeHtml(item.thumb)}" alt="${escapeHtml(item.label)}" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
                         `}
                         <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(15,23,42,0.85); color:#fff; font-size:0.65rem; font-weight:700; padding:3px 4px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                             ${escapeHtml(item.label)}
@@ -5474,7 +5472,7 @@
 
                 html += `
                     <div style="display:flex; justify-content:${align}; gap:8px; margin-bottom:6px; align-items:flex-end;">
-                        ${!isMe ? `<img src="${escapeHtml(msg.senderAvatar || 'lumina_icon.jpg')}" alt="${escapeHtml(msg.senderName)}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border:1px solid #a855f7; cursor:pointer;" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(msg.senderAvatar)}', '${escapeForInlineJs(normSender)}')" title="Kliknij, aby otworzyć czat prywatny 1:1">` : ''}
+                        ${!isMe ? `<img loading="lazy" decoding="async" src="${escapeHtml(msg.senderAvatar || 'lumina_icon.jpg')}" alt="${escapeHtml(msg.senderName)}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border:1px solid #a855f7; cursor:pointer;" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(msg.senderAvatar)}', '${escapeForInlineJs(normSender)}')" title="Kliknij, aby otworzyć czat prywatny 1:1">` : ''}
                         <div style="max-width:78%; padding:9px 13px; border-radius:${radius}; background:${bg}; color:${color}; font-size:0.85rem; line-height:1.42; box-shadow:0 2px 8px rgba(0,0,0,0.25); position:relative;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px; gap:8px;">
                                 <span style="font-weight:800; font-size:0.75rem; color:${isMe ? '#fdf4ff' : '#f472b6'}; cursor:pointer;" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(msg.senderAvatar)}', '${escapeForInlineJs(normSender)}')">${escapeHtml(msg.senderName || 'Użytkownik LUMINA')} ${badge}</span>
@@ -5898,7 +5896,7 @@
 
                         html += `
                             <div style="display:flex; justify-content:${align}; gap:8px; margin-bottom:6px; align-items:flex-end;">
-                                ${!isMe ? `<img src="${escapeHtml(msg.senderAvatar || 'avatar_cezary_official.jpg')}" alt="${escapeHtml(msg.senderName)}" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1.5px solid #f59e0b;">` : ''}
+                                ${!isMe ? `<img loading="lazy" decoding="async" src="${escapeHtml(msg.senderAvatar || 'avatar_cezary_official.jpg')}" alt="${escapeHtml(msg.senderName)}" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1.5px solid #f59e0b;">` : ''}
                                 <div style="max-width:82%; padding:10px 14px; border-radius:${radius}; background:${bg}; border:${border}; color:#fff; font-size:0.86rem; line-height:1.45; box-shadow:0 3px 12px rgba(0,0,0,0.4); position:relative;">
                                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; gap:8px;">
                                         <span style="font-weight:800; font-size:0.75rem; color:${isCC ? '#c4b5fd' : '#fde047'};">${escapeHtml(msg.senderName)} <span style="font-size:0.65rem; background:rgba(0,0,0,0.3); padding:1px 6px; border-radius:6px; margin-left:4px;">${escapeHtml(msg.senderBadge)}</span></span>
@@ -6134,7 +6132,7 @@
                          onmouseover="this.style.transform='translateY(-1px)'; this.style.borderColor='#ec4899';"
                          onmouseout="this.style.transform='none'; this.style.borderColor='${borderColor}';">
                         <div style="position:relative; flex-shrink:0;">
-                            <img src="${escapeHtml(u.avatar || 'lumina_icon.jpg')}" alt="${escapeHtml(u.name)}" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block; border:2px solid ${avatarBorder};">
+                            <img loading="lazy" decoding="async" src="${escapeHtml(u.avatar || 'lumina_icon.jpg')}" alt="${escapeHtml(u.name)}" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block; border:2px solid ${avatarBorder};">
                             <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
                         </div>
                         <div style="flex:1; min-width:0;">
@@ -6643,7 +6641,7 @@
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <div style="position: relative; overflow: hidden; border-radius: 16px; box-shadow: 0 25px 70px rgba(0,0,0,0.95); border: 1px solid rgba(255,255,255,0.15); background: #000; display: flex; align-items: center; justify-content: center;">
-                <img id="lightboxImg" src="" alt="Pełny Podgląd Zdjęcia" style="max-width: 90vw; max-height: 80vh; width: auto; height: auto; object-fit: contain; display: block; border-radius: 16px;">
+                <img loading="lazy" decoding="async" id="lightboxImg" src="" alt="Pełny Podgląd Zdjęcia" style="max-width: 90vw; max-height: 80vh; width: auto; height: auto; object-fit: contain; display: block; border-radius: 16px;">
             </div>
             <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top: 14px; flex-wrap:wrap;">
                 <div id="lightboxCaption" style="color: #f8fafc; font-size: 0.92rem; font-weight: 700; background: rgba(15, 23, 42, 0.85); padding: 8px 22px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 4px 16px rgba(0,0,0,0.5); text-align: center;"></div>
@@ -6697,6 +6695,4 @@
 </script>
 </body>
 </html>
-
-
 

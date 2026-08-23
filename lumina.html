@@ -2233,7 +2233,7 @@
     <!-- ══════════ NAVBAR ══════════ -->
     <nav class="lumina-nav">
         <a href="index.html" class="nav-logo-text" style="display: flex; align-items: center; gap: 10px;">
-            <img src="lumina_logo_portal.jpg" alt="LUMINA Logo" onerror="this.onerror=null; this.src='Logo Portal LUMINA.jpg';" style="width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(192,132,252,0.8); box-shadow: 0 0 12px rgba(168,85,247,0.5);">
+            <img loading="lazy" decoding="async" src="lumina_logo_portal.jpg" alt="LUMINA Logo" onerror="this.onerror=null; this.src='Logo Portal LUMINA.jpg';" style="width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(192,132,252,0.8); box-shadow: 0 0 12px rgba(168,85,247,0.5);">
             <span style="font-weight: 800; letter-spacing: 1.5px;">LUMINA</span>
         </a>
 
@@ -2289,7 +2289,7 @@
 
             <!-- 3. User Avatar Profile (when logged in) -->
             <div class="user-nav-profile" id="userNavProfile">
-                <img src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar" onclick="handleMyProfileNavigation(event)" title="Mój Profil">
+                <img loading="lazy" decoding="async" src="icon.png" alt="Avatar" class="user-nav-avatar" id="userNavAvatar" onclick="handleMyProfileNavigation(event)" title="Mój Profil">
                 <span class="user-nav-name" id="userNavName"></span>
                 <button class="btn-nav-logout" onclick="handleLogout()" title="Wyloguj"><i class="fa-solid fa-right-from-bracket"></i></button>
                 <button class="btn-nav-more" onclick="openPersonalSettingsModal()" title="Więcej ustawień osobistych i wymuszenie aktualizacji" style="background:none; border:none; color:#cbd5e1; cursor:pointer; font-size:1.05rem; padding:4px 6px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; transition:color 0.2s;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
@@ -2310,7 +2310,7 @@
         <div class="hero-content" id="heroContent">
             <div class="hero-intro-wrapper" id="heroIntroText">
                 <div style="margin-bottom: 14px;">
-                    <img src="lumina_logo_portal.jpg" onerror="this.onerror=null; this.src='Logo Portal LUMINA.jpg';" alt="Logo LUMINA" style="width: 76px; height: 76px; border-radius: 50%; object-fit: cover; border: 2.5px solid rgba(250, 204, 21, 0.85); box-shadow: 0 0 24px rgba(168, 85, 247, 0.6), 0 0 12px rgba(250, 204, 21, 0.4); display: inline-block;">
+                    <img loading="lazy" decoding="async" src="lumina_logo_portal.jpg" onerror="this.onerror=null; this.src='Logo Portal LUMINA.jpg';" alt="Logo LUMINA" style="width: 76px; height: 76px; border-radius: 50%; object-fit: cover; border: 2.5px solid rgba(250, 204, 21, 0.85); box-shadow: 0 0 24px rgba(168, 85, 247, 0.6), 0 0 12px rgba(250, 204, 21, 0.4); display: inline-block;">
                 </div>
                 <div class="hero-pill-badge">
                     <i class="fa-solid fa-sparkles" style="color:#facc15;"></i> Społeczność Ludzi Wiary & Wartości
@@ -2722,15 +2722,15 @@
             <div style="display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1);">
                 <div id="tablicaOnlineAvatarsContainer" class="tablica-online-avatars-wrap">
                     <div class="tablica-online-avatar-item" title="Zalogowany: Cezary Rogowski ✨˘" style="z-index: 4;" onclick="event.stopPropagation(); window.location.href='lumina.cezaryrgowski.html';">
-                        <img src="avatar_cezary_official.jpg" alt="Cezary" class="tablica-online-avatar-img home-cezary-avatar" onerror="this.onerror=null; this.src='avatar_cezary_official.jpg';">
+                        <img src="avatar_cezary_official.jpg" alt="Cezary" class="tablica-online-avatar-img home-cezary-avatar" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='avatar_cezary_official.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
                     <div class="tablica-online-avatar-item" title="Zalogowana: Wioletta Rogowska ✨˘" style="z-index: 3;" onclick="event.stopPropagation(); window.location.href='lumina.wiolettarogowska.html';">
-                        <img src="avatar_wioletta_official.jpg" alt="Wioletta" class="tablica-online-avatar-img home-wioletta-avatar" onerror="this.onerror=null; this.src='avatar_wioletta_official.jpg';">
+                        <img src="avatar_wioletta_official.jpg" alt="Wioletta" class="tablica-online-avatar-img home-wioletta-avatar" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='avatar_wioletta_official.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
                     <div class="tablica-online-avatar-item" title="Zalogowana: Magdalena ✨˘" style="z-index: 2;" onclick="event.stopPropagation(); window.location.href='lumina-profile.html?u=u_magdalena_9102';">
-                        <img src="avatar_magdalena.png" alt="Magdalena" class="tablica-online-avatar-img" onerror="this.onerror=null; this.src='avatar_magdalena.png';">
+                        <img src="avatar_magdalena.png" alt="Magdalena" class="tablica-online-avatar-img" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='avatar_magdalena.png';">
                         <span class="tablica-online-dot"></span>
                     </div>
                     <div class="tablica-online-more-btn" onclick="event.stopPropagation(); openAllOnlineUsersModal();" title="Zobacz wszystkich użytkowników dostępnych online ✨˘" aria-label="Więcej zalogowanych użytkowników">
@@ -2906,7 +2906,7 @@
                     <div class="chat-header-bar" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.1);">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <button type="button" onclick="returnToConversationsList()" style="background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer; padding: 4px 8px;"><i class="fa-solid fa-arrow-left"></i></button>
-                            <img id="activeChatAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+                            <img loading="lazy" decoding="async" id="activeChatAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
                             <div>
                                 <div id="activeChatName" style="font-weight: 800; font-size: 0.95rem; color: #fff;">Rozmowa Prywatna</div>
                                 <div style="font-size: 0.7rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
@@ -2973,13 +2973,13 @@
             <!-- Overlapping Glowing Avatars -->
             <div style="display: flex; align-items: center; justify-content: center; position: relative; height: 110px; margin-bottom: 24px;">
                 <div style="width: 88px; height: 88px; border-radius: 50%; overflow: hidden; border: 3px solid #ec4899; box-shadow: 0 0 20px rgba(236,72,153,0.6); position: absolute; left: calc(50% - 75px); z-index: 1;">
-                    <img id="matchUserAvatar" src="lumina_icon.jpg" alt="Twój Profil" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img loading="lazy" decoding="async" id="matchUserAvatar" src="lumina_icon.jpg" alt="Twój Profil" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
                 <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #8b5cf6); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1rem; z-index: 3; box-shadow: 0 0 14px rgba(236,72,153,0.8); border: 2px solid #0b1838;">
                     <i class="fa-solid fa-heart"></i>
                 </div>
                 <div style="width: 88px; height: 88px; border-radius: 50%; overflow: hidden; border: 3px solid #06b6d4; box-shadow: 0 0 20px rgba(6,182,212,0.6); position: absolute; right: calc(50% - 75px); z-index: 2;">
-                    <img id="matchPartnerAvatar" src="avatar_noemi.jpg" alt="Dopasowany Partner" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img loading="lazy" decoding="async" id="matchPartnerAvatar" src="avatar_noemi.jpg" alt="Dopasowany Partner" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
             </div>
 
@@ -3001,7 +3001,7 @@
             <button class="modal-close-btn" onclick="closeModal('authModal')"><i class="fa-solid fa-xmark"></i></button>
             
             <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:14px;">
-                <img src="lumina_icon.jpg" alt="LUMINA" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1.5px solid #c084fc;">
+                <img loading="lazy" decoding="async" src="lumina_icon.jpg" alt="LUMINA" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1.5px solid #c084fc;">
                 <h3 style="font-size:1.35rem; font-weight:800; margin:0; background:linear-gradient(135deg,#fff,#f3e8ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">LUMINA</h3>
             </div>
 
@@ -3014,7 +3014,7 @@
             <!-- ── PANEL 1: LOGOWANIE ── -->
             <div id="authLoginPanel">
                 <button type="button" class="btn-google" id="btnGoogleAuth" onclick="handleGoogleAuthAction()">
-                    <img src="google_logo_custom.jpg" alt="Google" style="width: 22px; height: 22px; object-fit: contain; border-radius: 50%;"> Kontynuuj przez Google
+                    <img loading="lazy" decoding="async" src="google_logo_custom.jpg" alt="Google" style="width: 22px; height: 22px; object-fit: contain; border-radius: 50%;"> Kontynuuj przez Google
                 </button>
                 <div class="auth-divider"><span>LUB E-MAIL I HASŁO</span></div>
 
@@ -3124,7 +3124,7 @@
                         
                         <div style="text-align:center; margin-bottom:16px;">
                             <div style="position:relative; width:100px; height:100px; margin:0 auto 12px; border-radius:50%; overflow:hidden; border:2.5px solid #a855f7; box-shadow:0 0 16px rgba(168,85,247,0.4);">
-                                <img id="obAvatarPreview" src="lumina_icon.jpg" alt="Podgląd zdjęcia" style="width:100%; height:100%; object-fit:cover;">
+                                <img loading="lazy" decoding="async" id="obAvatarPreview" src="lumina_icon.jpg" alt="Podgląd zdjęcia" style="width:100%; height:100%; object-fit:cover;">
                             </div>
                             <input type="file" id="obAvatarInput" accept="image/*" style="display:none;" onchange="handleObAvatarChange(event)">
                             <button type="button" onclick="document.getElementById('obAvatarInput').click()" style="padding:8px 16px; border-radius:20px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#fff; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit;">
@@ -3560,7 +3560,7 @@
                     setAuthStatusMsg('❤️ Błąd logowania Google: ' + (error.message || error.code), true);
                 }
             } finally {
-                if (btn) { btn.disabled = false; btn.innerHTML = '<img src="google_logo_custom.jpg" alt="Google" style="width: 22px; height: 22px; object-fit: contain; border-radius: 50%;"> Kontynuuj przez Google'; }
+                if (btn) { btn.disabled = false; btn.innerHTML = '<img loading="lazy" decoding="async" src="google_logo_custom.jpg" alt="Google" style="width: 22px; height: 22px; object-fit: contain; border-radius: 50%;"> Kontynuuj przez Google'; }
             }
         };
 
@@ -4503,7 +4503,7 @@
 
             const mImg = document.getElementById('mImg');
             if (mImg) {
-                mImg.innerHTML = `<img src="${p.avatar || 'lumina_icon.jpg'}" alt="${p.name}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);margin:0 auto;display:block;">`;
+                mImg.innerHTML = `<img loading="lazy" decoding="async" src="${p.avatar || 'lumina_icon.jpg'}" alt="${p.name}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);margin:0 auto;display:block;">`;
             }
 
             const mName = document.getElementById('mName');
@@ -4772,7 +4772,7 @@
                 const zIndex = 4 - idx;
                 html += `
                     <div class="tablica-online-avatar-item" title="Zalogowany użytkownik: ${user.name} ✨˘" style="z-index: ${zIndex};" onclick="event.stopPropagation(); window.openCommunityProfile('${user.slug || 'cezaryrgowski'}')">
-                        <img src="${user.avatar}" alt="${user.name}" class="tablica-online-avatar-img" onerror="this.src='lumina_icon.jpg'">
+                        <img loading="lazy" decoding="async" src="${user.avatar}" alt="${user.name}" class="tablica-online-avatar-img" onerror="this.src='lumina_icon.jpg'">
                         <span class="tablica-online-dot"></span>
                     </div>
                 `;
@@ -5771,7 +5771,7 @@
 
                 html += `
                     <div style="display:flex; justify-content:${align}; gap:8px; margin-bottom:6px; align-items:flex-end;">
-                        ${!isMe ? `<img src="${escapeHtml(msg.senderAvatar || 'lumina_icon.jpg')}" alt="${escapeHtml(msg.senderName)}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border:1px solid #a855f7; cursor:pointer;" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(msg.senderAvatar)}', '${escapeForInlineJs(normSender)}')" title="Kliknij, aby otworzyć czat prywatny 1:1">` : ''}
+                        ${!isMe ? `<img loading="lazy" decoding="async" src="${escapeHtml(msg.senderAvatar || 'lumina_icon.jpg')}" alt="${escapeHtml(msg.senderName)}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border:1px solid #a855f7; cursor:pointer;" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(msg.senderAvatar)}', '${escapeForInlineJs(normSender)}')" title="Kliknij, aby otworzyć czat prywatny 1:1">` : ''}
                         <div style="max-width:78%; padding:9px 13px; border-radius:${radius}; background:${bg}; color:${color}; font-size:0.85rem; line-height:1.42; box-shadow:0 2px 8px rgba(0,0,0,0.25); position:relative;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px; gap:8px;">
                                 <span style="font-weight:800; font-size:0.75rem; color:${isMe ? '#fdf4ff' : '#f472b6'}; cursor:pointer;" onclick="openChatWith('${escapeForInlineJs(msg.senderName)}', '${escapeForInlineJs(msg.senderAvatar)}', '${escapeForInlineJs(normSender)}')">${escapeHtml(msg.senderName || 'Użytkownik LUMINA')} ${badge}</span>
@@ -6187,7 +6187,7 @@
 
                         html += `
                             <div style="display:flex; justify-content:${align}; gap:8px; margin-bottom:6px; align-items:flex-end;">
-                                ${!isMe ? `<img src="${escapeHtml(msg.senderAvatar || 'avatar_cezary_official.jpg')}" alt="${escapeHtml(msg.senderName)}" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1.5px solid #f59e0b;">` : ''}
+                                ${!isMe ? `<img loading="lazy" decoding="async" src="${escapeHtml(msg.senderAvatar || 'avatar_cezary_official.jpg')}" alt="${escapeHtml(msg.senderName)}" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1.5px solid #f59e0b;">` : ''}
                                 <div style="max-width:82%; padding:10px 14px; border-radius:${radius}; background:${bg}; border:${border}; color:#fff; font-size:0.86rem; line-height:1.45; box-shadow:0 3px 12px rgba(0,0,0,0.4); position:relative;">
                                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; gap:8px;">
                                         <span style="font-weight:800; font-size:0.75rem; color:${isCC ? '#c4b5fd' : '#fde047'};">${escapeHtml(msg.senderName)} <span style="font-size:0.65rem; background:rgba(0,0,0,0.3); padding:1px 6px; border-radius:6px; margin-left:4px;">${escapeHtml(msg.senderBadge)}</span></span>
@@ -6423,7 +6423,7 @@
                          onmouseover="this.style.transform='translateY(-1px)'; this.style.borderColor='#ec4899';"
                          onmouseout="this.style.transform='none'; this.style.borderColor='${borderColor}';">
                         <div style="position:relative; flex-shrink:0;">
-                            <img src="${escapeHtml(u.avatar || 'lumina_icon.jpg')}" alt="${escapeHtml(u.name)}" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block; border:2px solid ${avatarBorder};">
+                            <img loading="lazy" decoding="async" src="${escapeHtml(u.avatar || 'lumina_icon.jpg')}" alt="${escapeHtml(u.name)}" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block; border:2px solid ${avatarBorder};">
                             <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
                         </div>
                         <div style="flex:1; min-width:0;">
@@ -6696,7 +6696,7 @@
             } else {
                 dropdown.innerHTML = matches.map(item => `
                     <div class="omni-item" onclick="window.location.href='${item.url}'">
-                        <img src="${item.avatar}" alt="${item.name}" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1px solid rgba(168,85,247,0.5);">
+                        <img loading="lazy" decoding="async" src="${item.avatar}" alt="${item.name}" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1px solid rgba(168,85,247,0.5);">
                         <div style="flex:1; min-width:0;">
                             <div style="display:flex; align-items:center; gap:8px;">
                                 <span style="font-weight:700; font-size:0.88rem; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.name}</span>
@@ -6966,7 +6966,7 @@
                 return '<div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; transition:all 0.2s ease;">' +
                         '<div style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href=\'' + profileUrl + '\'">' +
                             '<div style="position:relative; width:44px; height:44px; flex-shrink:0;">' +
-                                '<img src="' + avatar + '" alt="' + name + '" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border:1.5px solid #10b981;" onerror="this.onerror=null; this.src=\'lumina_icon.jpg\';">' +
+                                '<img loading="lazy" decoding="async" src="' + avatar + '" alt="' + name + '" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border:1.5px solid #10b981;" onerror="this.onerror=null; this.src=\'lumina_icon.jpg\';">' +
                                 '<span style="position:absolute; bottom:0; right:0; width:12px; height:12px; border-radius:50%; background:#10b981; border:2px solid #0b1329; box-shadow:0 0 8px #10b981;"></span>' +
                             '</div>' +
                             '<div>' +
@@ -7041,7 +7041,7 @@
             <div class="sheet-drag-handle"></div>
             <div class="quick-actions-header">
                 <div class="quick-actions-avatar-wrap">
-                    <img id="qaAvatar" src="lumina_icon.jpg" alt="Avatar" class="qa-avatar" onerror="this.src='lumina_icon.jpg'">
+                    <img loading="lazy" decoding="async" id="qaAvatar" src="lumina_icon.jpg" alt="Avatar" class="qa-avatar" onerror="this.src='lumina_icon.jpg'">
                     <div class="qa-online-badge" title="Online"></div>
                 </div>
                 <div class="quick-actions-user-info">
@@ -7494,4 +7494,3 @@
 </script>
 </body>
 </html>
-

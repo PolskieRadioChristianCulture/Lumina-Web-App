@@ -12,13 +12,6 @@
     // Domyślne i polecane pętle wideo 10s dla profili specjalnych i patronów
     const PRESET_VIDEOS = [
         {
-            id: 'preset_wioletta_official',
-            title: 'Wioletta Rogowska • Christian Culture (Wgrane Wideo)',
-            badge: 'Oficjalne CC',
-            url: 'wioletta_rogowska_video_avatar.mp4',
-            desc: 'Oficjalne wideo profilowe Wioletty Rogowskiej'
-    const PRESET_VIDEOS = [
-        {
             id: 'preset_cezary_official',
             title: 'Cezary Rogowski • Oficjalne Wideo',
             badge: 'Założyciel CC',
