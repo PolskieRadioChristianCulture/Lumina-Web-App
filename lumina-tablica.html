@@ -3720,7 +3720,31 @@
                 amen: 198
             });
 
-            // 0.1. Andrzej Thiel - Cuda Każdego Dnia (22 SIERPNIA 2026 - DZISIAJ)
+            // 0.0. Andrzej Thiel - Cuda Każdego Dnia (23 SIERPNIA 2026 - DZISIAJ)
+            try {
+                const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
+                const aProfile = aJson ? JSON.parse(aJson) : null;
+                const aAvatar = (aProfile && aProfile.avatar) ? aProfile.avatar : 'avatar_andrzej_thiel.jpg';
+                const aName = (aProfile && aProfile.name) ? aProfile.name : 'Andrzej Thiel';
+                const aCudaImg23 = localStorage.getItem('lumina_cuda_image_23') || 'cuda_kazdego_dnia_23_sierpnia_2026.jpg';
+
+                posts.push({
+                    id: 'post_andrzej_cuda_23_08_2026',
+                    type: 'post',
+                    author: aName,
+                    authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
+                    authorAvatar: aAvatar,
+                    authorSlug: 'andrzejthiel',
+                    time: '23 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Dzisiaj)',
+                    title: 'CUDA KAŻDEGO DNIA! 23 SIERPNIA 2026. ON SŁYSZY TWÓJ GŁOS!',
+                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nON SŁYSZY TWÓJ GŁOS!\n\nCzy wiesz, że pingwiny cesarskie i królewskie potrafią rozpoznać głos własnych piskląt spośród tysięcy młodych, zgromadzonych w tak zwanych żłobkach? Fascynujące! Jak to możliwe? Okazuje się, że pisklęta potrafią wydawać dźwięki o dwóch różnych częstotliwościach jednocześnie, co tworzy wyjątkowy „odcisk dźwiękowy”, który przypomina cyfrowy kod. Rodzice i pisklęta, jeszcze zanim się wyklują, uczą się tych dźwięków, by później móc wyfiltrować częstotliwości swojego malucha spośród hałasu tysięcy innych ptaków.\n\nChoć jesteś jednym z tysięcy, jesteś słyszany! Psalmista pisał: „Miłuję Pana, bo usłyszał mój głos błagalny, bo nakłonił ku mnie swego ucha w dniu mego wołania” (Ps 116,1). Twój głos ma znaczenie, bo kiedy wołasz twój Ojciec w niebie odpowiada. Twój głos odróżnia się od wszystkich innych. Twoje pragnienie serca, twoja potrzeba ma dla Niego znaczenie. Bo kocha cię bardzo osobiście i czule. Chce okazywać ci łaskę przebaczenia, zaspakajać twoją potrzebę miłości, bezpieczeństwa, pokoju.\n\nKiedy będziesz wołał, On „skryje cię w dniu niedoli w szałasie swoim, schowa w ukryciu namiotu swego, postawi wysoko na skale” (Ps 27, 5). Wołaj do Niego w chwilach dobrych i złych. Kiedy jest ci dobrze i kiedy jest źle. Nie ma nic ważniejszego w co mógłbyś inwestować swoje życie tu na ziemi niż pielęgnowanie relacji ze swoim Bogiem. Bo choć wszystko przeminie, ona będzie trwała wiecznie!\n\nPamiętasz co Jezus powiedział do Marty, która w swojej chęci usłużenia Mu kompletnie się pogubiła? „Marto droga, tak wiele spraw cię zaprząta! A przecież jedno tylko się liczy w życiu naprawdę. Maria to właśnie wybrała i nie będzie tego pozbawiona” (Łk 10,41-42). Co wybrała? Budowanie relacji ze swoim Panem i Przyjacielem. Jezus tęskni by spędzać z tobą czas. On ma tyle miłości, którą chce się z tobą podzielić. Czy masz czas by się zatrzymać, spędzić go u Jego stóp i przyjąć to co On ma dla ciebie na dzisiaj?\n\n„Ojcze, dziękuję Ci, że Twoje uszy są nakierowane na mój głos, który rozpoznajesz z daleka. Że słyszysz i odpowiadasz. Że znasz mnie i moją sytuację i będziesz działał w moim imieniu. Chcę inwestować w naszą relację. Pokieruj moim sercem i pomóż mi dzisiaj wybierać to, co przybliża mnie do Ciebie, nie oddala. Dziękuję, że otaczasz mnie łaską i miłością, bo Taki jesteś”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
+                    image: aCudaImg23,
+                    likes: 215,
+                    amen: 189
+                });
+            } catch(e) {}
+
+            // 0.1. Andrzej Thiel - Cuda Każdego Dnia (22 SIERPNIA 2026)
             try {
                 const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
                 const aProfile = aJson ? JSON.parse(aJson) : null;
@@ -3732,10 +3756,10 @@
                     id: 'post_andrzej_cuda_22_08_2026',
                     type: 'post',
                     author: aName,
-                    authorRole: 'Cuda Każdego Dnia ✨✨ • Sieradz',
+                    authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
-                    time: '22 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Dzisiaj)',
+                    time: '22 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Wczoraj)',
                     title: 'CUDA KAŻDEGO DNIA! 22 SIERPNIA 2026. ZAMIEŃ TROSKĘ W MODLITWĘ!',
                     text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nZAMIEŃ TROSKĘ W MODLITWĘ!\n\nBardzo spodobało mi się, co pisze autorka Carrie Mars: „Lubię patrzeć, jak szybko jestem w stanie zamienić myśl w modlitwę. Zauważam myśl, która mogłaby wskoczyć do pociągu niepokoju, ale zamiast tego kieruję ją ku Bogu”. Apostoł Paweł pisał: „Niczym się już nie zamartwiajcie, lecz w każdej modlitwie i błaganiu z dziękczynieniem przedstawiajcie Bogu wasze prośby. A pokój Boży, który przewyższa wszelki rozum, będzie strzegł waszych serc i myśli w Chrystusie Jezusie” (Flp.4,6). Coś cię martwi w tej chwili? Co to jest? Nazwij to i szybko zamień tę troskę w modlitwę. Czy wiesz, co tworzy najwięcej niepokoju w naszym życiu? To wyciąganie przedwczesnych wniosków co do okoliczności życiowych. Przypuśćmy, że członek rodziny spóźnia się do domu. Ty zaczynasz wyobrażać sobie różne rzeczy, panikujesz. Zamiast tego raczej pomódl się: „Boże, miej Go w swojej opiece”. Doświadczyłam tego i wiem, że Boży pokój potrafi pokonać największy strach.\n\nKtoś ma mieć operację? Módl się: „Panie, daj mądrość lekarzom, by właściwie przeprowadzili zabieg. Pomóż mu wrócić do pełnego zdrowia”. Bardzo lubię ten moment, kiedy mam przed sobą trudną sprawę, rozmowę i mogę ją delegować Bogu. Mówię wtedy: „Panie, zajmij się tym. Daj mi mądrość, światło, rozeznanie, cierpliwość, których potrzebuję. Pokieruj moimi myślami”. Czujesz, że brakuje ci energii, dopadło cię wyczerpanie, zniechęcenie? Mów: „Panie, dodaj mi siły i wytrwałości, pomóż się wyciszyć i odpocząć”. Jaką modlitwę chcesz przynieś dzisiaj Bogu? Niech to będzie twoim nowym nawykiem – błyskawiczne przekształcanie zmartwienia w modlitwę.\n\n„Panie, ucz mnie, jak przychodzić od razu do Ciebie, kiedy pojawiają się troski czy zmartwienia – i jak oddawać je Tobie. Wiem, że Ty się najlepiej zajmiesz wszystkimi problemami. Bądź ze mną dzisiaj i kieruj moimi myślami. Amen”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg22,

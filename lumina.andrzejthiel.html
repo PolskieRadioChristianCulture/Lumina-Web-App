@@ -914,15 +914,142 @@
             <!-- Main Feed Stream -->
             <main class="main-feed-col">
 
-                <!-- ══════════ DYNAMICZNA TABLICA ANDRZEJA (Firestore, na żywo) ══════════ -->
-                <!-- Zastępuje wcześniejsze ręcznie wpisywane karty HTML. Posty "Cuda Każdego
-                     Dnia" trafiają tu automatycznie ze skryptu sync_cuda_kazdego_dnia.js,
-                     który publikuje je do lumina_posts z authorSlug: 'andrzejthiel' — dokładnie
-                     ta sama kolekcja, którą czyta tablica społeczności LUMINA. -->
+                <!-- ══════════ DYNAMICZNA TABLICA ANDRZEJA (Firestore, na żywo + Instant Render) ══════════ -->
                 <div id="andrzejPostsContainer">
-                    <div style="text-align:center; padding:40px 20px; color:#94a3b8;">
-                        <i class="fa-solid fa-spinner fa-spin"></i> Wczytywanie rozważań…
-                    </div>
+                    <!-- 🌟 POST NA DZIŚ: 23 SIERPNIA 2026 (DZISIAJ) 🌟 -->
+                    <article class="feed-post-card" id="post_cuda_23_sie_2026">
+                        <div class="post-top-header">
+                            <div class="post-author-box">
+                                <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
+                                <div>
+                                    <div class="post-author-name">
+                                        Andrzej Thiel
+                                        <span class="post-badge-daily">Cuda Każdego Dnia</span>
+                                    </div>
+                                    <div class="post-time">23 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny (Dzisiaj)</div>
+                                </div>
+                            </div>
+                            <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
+                                <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                            </button>
+                        </div>
+
+                        <div class="post-body">
+                            <div class="post-series-tag">
+                                <i class="fa-solid fa-sun"></i> CUDA KAŻDEGO DNIA! • 23 SIERPNIA 2026
+                            </div>
+
+                            <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
+                                <img id="cudaDevotionFeaturedImg" src="cuda_kazdego_dnia_23_sierpnia_2026.jpg" alt="Cuda Każdego Dnia - ON SŁYSZY TWÓJ GŁOS!" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" onerror="this.src='cuda_kazdego_dnia_current.jpg'">
+                            </div>
+
+                            <p style="font-weight:700;color:#fef08a;margin-bottom:12px;font-size:1.05rem;">
+                                Przeczytaj i zobacz jak Bóg przemienia twoje życie.
+                            </p>
+
+                            <h2 class="post-title">ON SŁYSZY TWÓJ GŁOS!</h2>
+
+                            <div class="post-text-content">
+                                <p style="margin-bottom:14px;">Czy wiesz, że pingwiny cesarskie i królewskie potrafią rozpoznać głos własnych piskląt spośród tysięcy młodych, zgromadzonych w tak zwanych żłobkach? Fascynujące! Jak to możliwe? Okazuje się, że pisklęta potrafią wydawać dźwięki o dwóch różnych częstotliwościach jednocześnie, co tworzy wyjątkowy „odcisk dźwiękowy”, który przypomina cyfrowy kod. Rodzice i pisklęta, jeszcze zanim się wyklują, uczą się tych dźwięków, by później móc wyfiltrować częstotliwości swojego malucha spośród hałasu tysięcy innych ptaków.</p>
+                                <p style="margin-bottom:14px;">Choć jesteś jednym z tysięcy, jesteś słyszany! Psalmista pisał: „Miłuję Pana, bo usłyszał mój głos błagalny, bo nakłonił ku mnie swego ucha w dniu mego wołania” (Ps 116,1). Twój głos ma znaczenie, bo kiedy wołasz twój Ojciec w niebie odpowiada. Twój głos odróżnia się od wszystkich innych. Twoje pragnienie serca, twoja potrzeba ma dla Niego znaczenie. Bo kocha cię bardzo osobiście i czule. Chce okazywać ci łaskę przebaczenia, zaspakajać twoją potrzebę miłości, bezpieczeństwa, pokoju.</p>
+                                <p style="margin-bottom:14px;">Kiedy będziesz wołał, On „skryje cię w dniu niedoli w szałasie swoim, schowa w ukryciu namiotu swego, postawi wysoko na skale” (Ps 27, 5). Wołaj do Niego w chwilach dobrych i złych. Kiedy jest ci dobrze i kiedy jest źle. Nie ma nic ważniejszego w co mógłbyś inwestować swoje życie tu na ziemi niż pielęgnowanie relacji ze swoim Bogiem. Bo choć wszystko przeminie, ona będzie trwała wiecznie!</p>
+                                <p style="margin-bottom:14px;">Pamiętasz co Jezus powiedział do Marty, która w swojej chęci usłużenia Mu kompletnie się pogubiła? „Marto droga, tak wiele spraw cię zaprząta! A przecież jedno tylko się liczy w życiu naprawdę. Maria to właśnie wybrała i nie będzie tego pozbawiona” (Łk 10,41-42). Co wybrała? Budowanie relacji ze swoim Panem i Przyjacielem. Jezus tęskni by spędzać z tobą czas. On ma tyle miłości, którą chce się z tobą podzielić. Czy masz czas by się zatrzymać, spędzić go u Jego stóp i przyjąć to co On ma dla ciebie na dzisiaj?</p>
+                            </div>
+
+                            <div class="post-prayer-highlight">
+                                „Ojcze, dziękuję Ci, że Twoje uszy są nakierowane na mój głos, który rozpoznajesz z daleka. Że słyszysz i odpowiadasz. Że znasz mnie i moją sytuację i będziesz działał w moim imieniu. Chcę inwestować w naszą relację. Pokieruj moim sercem i pomóż mi dzisiaj wybierać to, co przybliża mnie do Ciebie, nie oddala. Dziękuję, że otaczasz mnie łaską i miłością, bo Taki jesteś”.
+                                <div style="margin-top:8px;font-size:0.8rem;color:#facc15;font-weight:700;text-align:right;">
+                                    /opr. na podst. wiad. B.K./.
+                                </div>
+                            </div>
+
+                            <p style="margin-top:18px;font-weight:800;font-size:1.05rem;color:#fef08a;">
+                                Dziękuję, że jesteś! ❤️
+                            </p>
+                        </div>
+
+                        <div class="post-actions-bar">
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <button class="post-action-btn active-heart" onclick="togglePostLike(this, 'post_cuda_23_sie_2026')">
+                                    <i class="fa-solid fa-heart"></i> <span>215</span>
+                                </button>
+                                <button class="post-action-btn active-amen" onclick="togglePostAmen(this, 'post_cuda_23_sie_2026')">
+                                    <i class="fa-solid fa-hands-praying"></i> Amen (<span>189</span>)
+                                </button>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <button class="post-action-btn" onclick="openShareAndrzejModal()">
+                                    <i class="fa-solid fa-share-nodes"></i> Poleć Rozważanie
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 🌟 POST ARCHIWALNY: 22 SIERPNIA 2026 🌟 -->
+                    <article class="feed-post-card" id="post_cuda_22_sie_2026" style="opacity:0.95;">
+                        <div class="post-top-header">
+                            <div class="post-author-box">
+                                <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
+                                <div>
+                                    <div class="post-author-name">
+                                        Andrzej Thiel
+                                        <span class="post-badge-daily">Cuda Każdego Dnia</span>
+                                    </div>
+                                    <div class="post-time">22 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny (Wczoraj)</div>
+                                </div>
+                            </div>
+                            <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
+                                <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                            </button>
+                        </div>
+
+                        <div class="post-body">
+                            <div class="post-series-tag">
+                                <i class="fa-solid fa-sun"></i> CUDA KAŻDEGO DNIA! • 22 SIERPNIA 2026
+                            </div>
+
+                            <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
+                                <img src="cuda_kazdego_dnia_22_sie_2026.jpg" alt="Cuda Każdego Dnia - ZAMIEŃ TROSKĘ W MODLITWĘ!" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" onerror="this.src='cuda_kazdego_dnia_current.jpg'">
+                            </div>
+
+                            <p style="font-weight:700;color:#fef08a;margin-bottom:12px;font-size:1.05rem;">
+                                Przeczytaj i zobacz jak Bóg przemienia twoje życie.
+                            </p>
+
+                            <h2 class="post-title">ZAMIEŃ TROSKĘ W MODLITWĘ!</h2>
+
+                            <div class="post-text-content">
+                                <p style="margin-bottom:14px;">Bardzo spodobało mi się, co pisze autorka Carrie Mars: „Lubię patrzeć, jak szybko jestem w stanie zamienić myśl w modlitwę. Zauważam myśl, która mogłaby wskoczyć do pociągu niepokoju, ale zamiast tego kieruję ją ku Bogu”. Apostoł Paweł pisał: „Niczym się już nie zamartwiajcie, lecz w każdej modlitwie i błaganiu z dziękczynieniem przedstawiajcie Bogu wasze prośby. A pokój Boży, który przewyższa wszelki rozum, będzie strzegł waszych serc i myśli w Chrystusie Jezusie” (Flp.4,6). Coś cię martwi w tej chwili? Co to jest? Nazwij to i szybko zamień tę troskę w modlitwę.</p>
+                            </div>
+
+                            <div class="post-prayer-highlight">
+                                „Panie, ucz mnie, jak przychodzić od razu do Ciebie, kiedy pojawiają się troski czy zmartwienia – i jak oddawać je Tobie. Wiem, że Ty się najlepiej zajmiesz wszystkimi problemami. Bądź ze mną dzisiaj i kieruj moimi myślami. Amen”.
+                                <div style="margin-top:8px;font-size:0.8rem;color:#facc15;font-weight:700;text-align:right;">
+                                    /opr. na podst. wiad. B.K./.
+                                </div>
+                            </div>
+
+                            <p style="margin-top:18px;font-weight:800;font-size:1.05rem;color:#fef08a;">
+                                Dziękuję, że jesteś! ❤️
+                            </p>
+                        </div>
+
+                        <div class="post-actions-bar">
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <button class="post-action-btn" onclick="togglePostLike(this, 'post_cuda_22_sie_2026')">
+                                    <i class="fa-solid fa-heart"></i> <span>194</span>
+                                </button>
+                                <button class="post-action-btn" onclick="togglePostAmen(this, 'post_cuda_22_sie_2026')">
+                                    <i class="fa-solid fa-hands-praying"></i> Amen (<span>172</span>)
+                                </button>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <button class="post-action-btn" onclick="openShareAndrzejModal()">
+                                    <i class="fa-solid fa-share-nodes"></i> Poleć Rozważanie
+                                </button>
+                            </div>
+                        </div>
+                    </article>
                 </div>
 
             </main>
@@ -1172,26 +1299,36 @@
         function startAndrzejFeed(retriesLeft = 40) {
             if (!window.luminaDb) {
                 if (retriesLeft > 0) return setTimeout(() => startAndrzejFeed(retriesLeft - 1), 250);
-                document.getElementById('andrzejPostsContainer').innerHTML = '<div style="text-align:center;padding:40px;color:#94a3b8;">Nie udało się połączyć z bazą.</div>';
                 return;
             }
-            const q = query(
-                collection(window.luminaDb, 'lumina_posts'),
-                where('authorSlug', '==', 'andrzejthiel'),
-                orderBy('createdAtTimestamp', 'desc'),
-                limit(20)
-            );
-            onSnapshot(q, (snap) => {
-                const container = document.getElementById('andrzejPostsContainer');
-                if (snap.empty) {
-                    container.innerHTML = '<div style="text-align:center;padding:40px;color:#94a3b8;">Rozważania pojawią się tutaj automatycznie każdego dnia.</div>';
-                    return;
-                }
-                container.innerHTML = snap.docs.map((d, i) => renderPost(d.id, d.data(), i === 0)).join('');
-            }, (err) => {
-                console.error('[Andrzej Feed]', err);
-                document.getElementById('andrzejPostsContainer').innerHTML = '<div style="text-align:center;padding:40px;color:#94a3b8;">Błąd wczytywania rozważań.</div>';
-            });
+            try {
+                const q = query(
+                    collection(window.luminaDb, 'lumina_posts'),
+                    where('authorSlug', '==', 'andrzejthiel')
+                );
+                onSnapshot(q, (snap) => {
+                    const container = document.getElementById('andrzejPostsContainer');
+                    if (snap.empty) {
+                        // Jeśli w chmurze nie ma jeszcze postów, zachowaj wbudowane karty
+                        return;
+                    }
+                    const posts = snap.docs.map(d => ({ id: d.id, data: d.data() }));
+                    // Sortowanie po znaczniku czasu / dacie malejąco
+                    posts.sort((a, b) => {
+                        const tsA = a.data.createdAtTimestamp || (a.data.publishedAt ? new Date(a.data.publishedAt).getTime() : 0);
+                        const tsB = b.data.createdAtTimestamp || (b.data.publishedAt ? new Date(b.data.publishedAt).getTime() : 0);
+                        return tsB - tsA;
+                    });
+                    if (posts.length > 0) {
+                        container.innerHTML = posts.map((item, i) => renderPost(item.id, item.data, i === 0)).join('');
+                    }
+                }, (err) => {
+                    console.warn('[Andrzej Feed] Firestore live sync note:', err.message);
+                    // Nie zastępujemy zawartości błędem, dzięki czemu wbudowane karty natychmiastowe działają nieprzerwanie!
+                });
+            } catch(e) {
+                console.warn('[Andrzej Feed] Initialization note:', e);
+            }
         }
 
         if (document.readyState === 'loading') {

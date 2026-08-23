@@ -85,6 +85,37 @@ www.polskieradio.cc | www.cclite.pl`,
             amen: 58
         },
         {
+            id: 'post_ckd_2026_08_23',
+            type: 'post',
+            author: 'Andrzej Thiel',
+            authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
+            authorAvatar: 'avatar_andrzej_thiel.jpg',
+            authorSlug: 'andrzejthiel',
+            time: '23 Sierpnia 2026 • 📖 Cuda Każdego Dnia (Dzisiaj)',
+            title: 'ON SŁYSZY TWÓJ GŁOS! • Cuda Każdego Dnia ✨',
+            text: `CUDA KAŻDEGO DNIA! 
+23 SIERPNIA 2026.
+Przeczytaj i zobacz jak Bóg przemienia twoje życie.
+
+ON SŁYSZY TWÓJ GŁOS!
+
+Czy wiesz, że pingwiny cesarskie i królewskie potrafią rozpoznać głos własnych piskląt spośród tysięcy młodych, zgromadzonych w tak zwanych żłobkach? Fascynujące! Jak to możliwe? Okazuje się, że pisklęta potrafią wydawać dźwięki o dwóch różnych częstotliwościach jednocześnie, co tworzy wyjątkowy „odcisk dźwiękowy”, który przypomina cyfrowy kod. Rodzice i pisklęta, jeszcze zanim się wyklują, uczą się tych dźwięków, by później móc wyfiltrować częstotliwości swojego malucha spośród hałasu tysięcy innych ptaków.
+
+Choć jesteś jednym z tysięcy, jesteś słyszany! Psalmista pisał: „Miłuję Pana, bo usłyszał mój głos błagalny, bo nakłonił ku mnie swego ucha w dniu mego wołania” (Ps 116,1). Twój głos ma znaczenie, bo kiedy wołasz twój Ojciec w niebie odpowiada. Twój głos odróżnia się od wszystkich innych. Twoje pragnienie serca, twoja potrzeba ma dla Niego znaczenie. Bo kocha cię bardzo osobiście i czule. Chce okazywać ci łaskę przebaczenia, zaspakajać twoją potrzebę miłości, bezpieczeństwa, pokoju.
+
+Kiedy będziesz wołał, On „skryje cię w dniu niedoli w szałasie swoim, schowa w ukryciu namiotu swego, postawi wysoko na skale” (Ps 27, 5). Wołaj do Niego w chwilach dobrych i złych. Kiedy jest ci dobrze i kiedy jest źle. Nie ma nic ważniejszego w co mógłbyś inwestować swoje życie tu na ziemi niż pielęgnowanie relacji ze swoim Bogiem. Bo choć wszystko przeminie, ona będzie trwała wiecznie!
+
+Pamiętasz co Jezus powiedział do Marty, która w swojej chęci usłużenia Mu kompletnie się pogubiła? „Marto droga, tak wiele spraw cię zaprząta! A przecież jedno tylko się liczy w życiu naprawdę. Maria to właśnie wybrała i nie będzie tego pozbawiona” (Łk 10,41-42). Co wybrała? Budowanie relacji ze swoim Panem i Przyjacielem. Jezus tęskni by spędzać z tobą czas. On ma tyle miłości, którą chce się z tobą podzielić. Czy masz czas by się zatrzymać, spędzić go u Jego stóp i przyjąć to co On ma dla ciebie na dzisiaj?
+
+„Ojcze, dziękuję Ci, że Twoje uszy są nakierowane na mój głos, który rozpoznajesz z daleka. Że słyszysz i odpowiadasz. Że znasz mnie i moją sytuację i będziesz działał w moim imieniu. Chcę inwestować w naszą relację. Pokieruj moim sercem i pomóż mi dzisiaj wybierać to, co przybliża mnie do Ciebie, nie oddala. Dziękuję, że otaczasz mnie łaską i miłością, bo Taki jesteś”.
+/opr. na podst. wiad. B.K./.
+
+Dziękuję, że jesteś! ❤️`,
+            image: 'cuda_kazdego_dnia_23_sierpnia_2026.jpg',
+            likes: 215,
+            amen: 189
+        },
+        {
             id: 'post_ckd_2026_08_18',
             type: 'post',
             author: 'Andrzej Thiel',
