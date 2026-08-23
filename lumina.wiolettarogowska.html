@@ -1777,6 +1777,39 @@
             color: #fef08a !important;
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
+    
+        /* ── TOP NAV COLLAPSIBLE DRAWER STYLES ── */
+        .drawer-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 9px 14px;
+            border-radius: 12px;
+            color: #e2e8f0;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        .drawer-nav-item:hover {
+            background: rgba(168, 85, 247, 0.20);
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+        .drawer-nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
     </style>
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786937913306">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
@@ -4876,6 +4909,42 @@
 
     <script src="lumina-admin-profile-suite.js?v=20260822_v363"></script>
     <script src="lumina-premium-video-avatar.js"></script>
+<script>
+
+        // ── TOP NAV COLLAPSIBLE DRAWER CONTROLLER ──
+        function toggleTopNavDrawer(e) {
+            if (e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            const drawer = document.getElementById('topNavDrawer');
+            const chevron = document.getElementById('topNavMenuChevron');
+            if (!drawer) return;
+
+            const isOpen = (drawer.style.display === 'flex');
+            if (isOpen) {
+                closeTopNavDrawer();
+            } else {
+                drawer.style.display = 'flex';
+                if (chevron) chevron.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function closeTopNavDrawer() {
+            const drawer = document.getElementById('topNavDrawer');
+            const chevron = document.getElementById('topNavMenuChevron');
+            if (drawer) drawer.style.display = 'none';
+            if (chevron) chevron.style.transform = 'rotate(0deg)';
+        }
+
+        document.addEventListener('click', function(e) {
+            const wrapper = document.querySelector('.nav-menu-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                closeTopNavDrawer();
+            }
+        });
+
+</script>
 </body>
 </html>
 

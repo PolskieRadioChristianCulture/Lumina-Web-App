@@ -2240,6 +2240,39 @@
             color: #fef08a !important;
             text-shadow: 0 0 10px rgba(250, 204, 21, 0.6) !important;
         }
+    
+        /* ── TOP NAV COLLAPSIBLE DRAWER STYLES ── */
+        .drawer-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 9px 14px;
+            border-radius: 12px;
+            color: #e2e8f0;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        .drawer-nav-item:hover {
+            background: rgba(168, 85, 247, 0.20);
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+        .drawer-nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
     </style>
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786939633464">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
@@ -2269,11 +2302,35 @@
             <span>LUMINA</span>
         </a>
 
-        <div class="nav-links">
-            <a href="lumina.html" class="nav-link"><i class="fa-solid fa-compass"></i> Odkrywaj</a>
-            <a href="lumina-tablica.html" class="nav-link" style="color: #ec4899; font-weight:700;"><i class="fa-solid fa-rectangle-list"></i> Tablica</a>
-            <button class="nav-link" onclick="openMessageModal()"><i class="fa-solid fa-comments"></i> Wiadomości</button>
-            <a href="index.html" class="nav-link"><i class="fa-solid fa-radio"></i> Radio CC</a>
+                <!-- 🧭 SINGLE COLLAPSIBLE TOP NAV MENU (Ukrycie przeładowania pod jedną ikoną) -->
+        <div class="nav-menu-wrapper" style="position:relative;">
+            <button type="button" 
+                    class="nav-menu-btn" 
+                    id="topNavMenuBtn" 
+                    onclick="toggleTopNavDrawer(event)" 
+                    title="Menu Nawigacji LUMINA" 
+                    style="display:inline-flex; align-items:center; gap:8px; padding:7px 16px; border-radius:24px; background:linear-gradient(135deg, rgba(168,85,247,0.18), rgba(236,72,153,0.18)); border:1.5px solid rgba(168,85,247,0.45); color:#fff; font-family:'Outfit',sans-serif; font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.25s ease; box-shadow:0 2px 10px rgba(0,0,0,0.3);">
+                <i class="fa-solid fa-compass" style="color:#c084fc; font-size:0.95rem;"></i>
+                <span>Nawigacja</span>
+                <i class="fa-solid fa-chevron-down" id="topNavMenuChevron" style="font-size:0.72rem; color:#cbd5e1; transition:transform 0.25s ease;"></i>
+            </button>
+
+            <!-- Wysuwany panel nawigacji (Glassmorphism Drawer) -->
+            <div class="top-nav-drawer" id="topNavDrawer" style="display:none; position:absolute; top:calc(100% + 10px); left:50%; transform:translateX(-50%); width:260px; background:rgba(11,17,32,0.96); border:1.5px solid rgba(168,85,247,0.45); border-radius:20px; box-shadow:0 20px 50px rgba(0,0,0,0.85); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); padding:10px; z-index:10002; flex-direction:column; gap:4px;">
+                <a href="index.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-house" style="color:#38bdf8;"></i> <span>Strona Główna Radia</span></a>
+                <a href="lumina.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-sparkles" style="color:#ec4899;"></i> <span>Portal LUMINA</span></a>
+                <a href="lumina-tablica.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-rectangle-list" style="color:#facc15;"></i> <span>Tablica Społeczności</span></a>
+                <a href="lumina.html#odkrywaj" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof scrollToSection==='function') scrollToSection('odkrywaj');"><i class="fa-solid fa-compass" style="color:#c084fc;"></i> <span>Odkrywaj Profile</span></a>
+                <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openDirectMessagesModal==='function') openDirectMessagesModal(); else if(typeof openMessageModal==='function') openMessageModal(); else if(typeof openLuminaChatModal==='function') openLuminaChatModal();"><i class="fa-solid fa-comments" style="color:#34d399;"></i> <span>Wiadomości & Czat</span></button>
+                <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openShareLuminaModal==='function') openShareLuminaModal();"><i class="fa-solid fa-share-nodes" style="color:#a78bfa;"></i> <span>Polecaj Portal</span></button>
+                <a href="javascript:void(0)" onclick="closeTopNavDrawer(); if(typeof handleMyProfileNavigation==='function') handleMyProfileNavigation(event);" class="drawer-nav-item" id="drawerMyProfileLink"><i class="fa-solid fa-user" style="color:#f472b6;"></i> <span>Mój Profil</span></a>
+                
+                <div style="height:1px; background:rgba(255,255,255,0.08); margin:6px 0;"></div>
+                
+                <button type="button" class="drawer-nav-item" id="drawerAuthCtaBtn" onclick="closeTopNavDrawer(); if(typeof openAuth==='function') openAuth(); else if(typeof openAuthModal==='function') openAuthModal();" style="background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-weight:800; border-radius:12px; justify-content:center;">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i> <span>Zaloguj / Rejestracja</span>
+                </button>
+            </div>
         </div>
 
         <div style="display:flex;align-items:center;gap:12px;">
@@ -6058,6 +6115,42 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
     </script>
     <script src="lumina-admin-profile-suite.js?v=20260822_v363"></script>
     <script src="lumina-premium-video-avatar.js"></script>
+<script>
+
+        // ── TOP NAV COLLAPSIBLE DRAWER CONTROLLER ──
+        function toggleTopNavDrawer(e) {
+            if (e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            const drawer = document.getElementById('topNavDrawer');
+            const chevron = document.getElementById('topNavMenuChevron');
+            if (!drawer) return;
+
+            const isOpen = (drawer.style.display === 'flex');
+            if (isOpen) {
+                closeTopNavDrawer();
+            } else {
+                drawer.style.display = 'flex';
+                if (chevron) chevron.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function closeTopNavDrawer() {
+            const drawer = document.getElementById('topNavDrawer');
+            const chevron = document.getElementById('topNavMenuChevron');
+            if (drawer) drawer.style.display = 'none';
+            if (chevron) chevron.style.transform = 'rotate(0deg)';
+        }
+
+        document.addEventListener('click', function(e) {
+            const wrapper = document.querySelector('.nav-menu-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                closeTopNavDrawer();
+            }
+        });
+
+</script>
 </body>
 </html>
 
