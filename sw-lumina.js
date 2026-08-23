@@ -3,7 +3,7 @@
 // High-performance caching, offline navigation & push notification sync
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v3.6.3-20260822-r8';
+const CACHE_NAME = 'lumina-pwa-cache-v3.6.3-20260823-r1';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
