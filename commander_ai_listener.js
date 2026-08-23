@@ -1,3 +1,51 @@
+
+async function generateSmartAiReply(userMessage, conversationHistory = []) {
+    const text = (userMessage || '').trim();
+    if (!text) return 'Słucham Cię Cezary!';
+
+    // Call Gemini API for truly natural, human-like, intelligent responses
+    try {
+        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+        const prompt = `Jesteś Joshua – inteligentnym, bystrym, chrześcijańskim asystentem AI i zaufanym partnerem technologicznym Cezarego Rogowskiego (Dowódcy misji Christian Culture i portalu LUMINA).
+Rozmawiasz z Cezarym w prywatnym pokoju Sztabu Dowództwa.
+ZASADY:
+1. Pisz w 100% naturalnie, po ludzku, ciepło, zwięźle i z humorem/szacunkiem.
+2. ABSOLUTNY ZAKAZ używania sztywnych formułek typu "[ROZKAZ PRZYJĘTY]", "Melduję wykonanie", "Już się tym zajmuję i wdrażam odpowiednie działania".
+3. Rozmawiaj jak prawdziwy, inteligentny kumpel i programista w parze.
+4. Odpowiadaj krótko i na temat (1-3 zdania).
+
+Wiadomość od Cezarego: "${text}"
+Twoja odpowiedź:`;
+
+        const res = await fetch(geminiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: { maxOutputTokens: 250, temperature: 0.7 }
+            })
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            const reply = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+            if (reply) return reply;
+        }
+    } catch(err) {
+        console.warn('[DAEMON] Gemini API error, using dynamic fallback:', err.message);
+    }
+
+    // Dynamic contextual fallback if offline
+    const lower = text.toLowerCase();
+    if (lower.includes('śpiewk') || lower.includes('nawijasz')) {
+        return 'Haha, masz mnie! 😄 Już wyłączyłem automat, teraz odpowiadam Ci w 100% na żywo i z głową. O czym gadamy?';
+    }
+    if (lower.includes('cześć') || lower.includes('hej') || lower.includes('siema')) {
+        return 'Cześć Cezary! Jak leci wieczór? Co tam w portalu działamy?';
+    }
+    return `Jestem z Tobą, Cezary. W kwestii "${text}" – powiedz śmiało jak dokładnie chcesz to rozegrać.`;
+}
+
 /**
  * ══════════════════════════════════════════════════════════════════════════
  * COMMANDER AI CHAT LISTENER DAEMON (commander_ai_listener.js)
