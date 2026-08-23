@@ -2019,9 +2019,23 @@ export async function markDirectMessagesAsRead(chatId, currentUserId, currentUse
     const parts = (chatId || '').split('_');
     const normalizedChatId = parts.length >= 2 ? getChatId(parts[0], parts[1]) : chatId;
     const normMyId = normalizeChatUserId(currentUserId);
-    const myName = currentUserName || (normMyId === 'cezaryrgowski' ? 'Cezary Rogowski' : (normMyId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
+    const myName = currentUserName || (normMyId === 'radiocc' ? 'Christian Culture' : (normMyId === 'cezaryrgowski' ? 'Cezary Rogowski' : (normMyId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')));
 
-    // 1. Zaktualizuj natychmiast lokalny cache
+    // 1. Zapisz czas odczytania tego czatu
+    localStorage.setItem(`lumina_chat_read_${normalizedChatId}`, String(Date.now()));
+
+    // 2. Natychmiast wyczyść badge nieprzeczytanych wiadomości
+    try {
+        localStorage.setItem('lumina_messages_unread_count', '0');
+        if (typeof window.updateLuminaMessagesBadge === 'function') {
+            window.updateLuminaMessagesBadge(0);
+        } else {
+            const b = document.getElementById('floatingChatBadge');
+            if (b) b.style.display = 'none';
+        }
+    } catch(e) {}
+
+    // 3. Zaktualizuj natychmiast lokalny cache
     const localKey = `lumina_chat_${normalizedChatId}`;
     try {
         const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
