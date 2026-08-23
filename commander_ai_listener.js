@@ -89,9 +89,9 @@ async function sendMissionRoomReply(replyText) {
             fields: {
                 id: { stringValue: msgId },
                 senderId: { stringValue: 'radiocc' },
-                senderName: { stringValue: 'Agent AI (Christian Culture)' },
-                senderAvatar: { stringValue: 'avatar_cezary_official.jpg' },
-                senderBadge: { stringValue: '🕊️ Agent AI' },
+                senderName: { stringValue: 'Joshua • Asystent AI CC' },
+                senderAvatar: { stringValue: 'lumina_icon.jpg' },
+                senderBadge: { stringValue: '🤖 Asystent AI' },
                 text: { stringValue: replyText },
                 createdAt: { integerValue: String(Date.now()) },
                 dateStr: { stringValue: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
