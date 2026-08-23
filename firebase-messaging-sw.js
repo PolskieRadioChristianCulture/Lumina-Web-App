@@ -52,7 +52,7 @@ try {
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v3.6.3-20260823-r32';
+const CACHE_NAME = 'lumina-pwa-cache-v3.6.3-20260823-r33';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',

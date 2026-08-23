@@ -17,6 +17,7 @@
             this.initUI();
             this.loadStoredNotifications();
             this.listenToEvents();
+            this.initFirestoreRealtimeListener();
         }
 
         // 0. Dźwięk powiadomienia (Harmoniczne Chime CC)
@@ -554,6 +555,63 @@
         }
 
         // 6. Podpięcie pod zdarzenia systemowe LUMINA
+        
+        // ── PANCERNY NASŁUCH POWIADOMIEŃ W CZASIE RZECZYWISTYM Z CLOUD FIRESTORE ──
+        initFirestoreRealtimeListener() {
+            if (!window.LuminaDB) {
+                setTimeout(() => this.initFirestoreRealtimeListener(), 500);
+                return;
+            }
+
+            const curUser = (typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
+            const curProfile = (typeof window.LuminaDB.getCurrentProfile === 'function') ? window.LuminaDB.getCurrentProfile() : null;
+            const rawMyId = curProfile?.slug || curProfile?.uid || curUser?.slug || curUser?.uid || localStorage.getItem('lumina_current_user_slug') || (window.location.href.includes('wioletta') ? 'wiolettarogowska' : (window.location.href.includes('cezary') ? 'cezaryrgowski' : ''));
+            if (!rawMyId) {
+                setTimeout(() => this.initFirestoreRealtimeListener(), 1200);
+                return;
+            }
+
+            const myId = window.LuminaDB.normalizeChatUserId(rawMyId);
+            console.log('[LUMINA Notifications] Initialized Realtime Cloud Listener for user:', myId);
+
+            // 1. Nasłuchuj pokoi czatu użytkownika (nowe wiadomości 1:1)
+            if (typeof window.LuminaDB.subscribeToUserChats === 'function') {
+                const sessionStartTime = Date.now() - 30000;
+                window.LuminaDB.subscribeToUserChats(myId, (chats) => {
+                    if (!chats || !chats.length) return;
+                    chats.forEach(chat => {
+                        const lastSender = window.LuminaDB.normalizeChatUserId(chat.lastSenderId);
+                        // Jeśli ostatnia wiadomość jest od kogoś innego (np. Cezary do Wioletty)
+                        if (lastSender && lastSender !== myId) {
+                            let msgTime = Date.now();
+                            if (typeof chat.lastMessageTimestamp === 'number') {
+                                msgTime = chat.lastMessageTimestamp;
+                            } else if (chat.lastMessageTimestamp?.seconds) {
+                                msgTime = chat.lastMessageTimestamp.seconds * 1000;
+                            } else if (typeof chat.lastMessageTimestamp?.toDate === 'function') {
+                                msgTime = chat.lastMessageTimestamp.toDate().getTime();
+                            }
+
+                            const notifKey = `lumina_notified_msg_${chat.id || chat.chatId}_${msgTime}`;
+                            if (!localStorage.getItem(notifKey) && (msgTime > sessionStartTime)) {
+                                localStorage.setItem(notifKey, '1');
+                                const senderName = chat.lastSenderName || (lastSender.includes('cezary') ? 'Cezary Rogowski (Mąż 💖)' : 'Użytkownik LUMINA');
+                                const senderAvatar = (typeof window.resolveChatAvatar === 'function') ? window.resolveChatAvatar(chat.lastSenderId, senderName, chat.lastSenderAvatar) : (chat.lastSenderAvatar || 'avatar_cezary_official.jpg');
+                                const text = chat.lastMessageText || 'Wysłał(a) Ci nową wiadomość 💬';
+
+                                this.push(
+                                    `💬 Nowa wiadomość od: ${senderName}`,
+                                    text,
+                                    senderAvatar,
+                                    'lumina.html'
+                                );
+                            }
+                        }
+                    });
+                });
+            }
+        }
+
         listenToEvents() {
             window.addEventListener('lumina:coffee_invite', (e) => {
                 const det = e.detail || {};
