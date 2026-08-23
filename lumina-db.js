@@ -3392,9 +3392,9 @@ export function isProfileNew(p) {
     }
 
     if (createdTime > 0) {
-        const FIVE_DAYS_MS = 5 * 24 * 60 * 60 * 1000;
+        const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
         const diff = Date.now() - createdTime;
-        return (diff >= 0 && diff <= FIVE_DAYS_MS);
+        return (diff >= 0 && diff <= SEVEN_DAYS_MS);
     }
 
     // Default: If slug starts with u_ (self-registered user), consider new
