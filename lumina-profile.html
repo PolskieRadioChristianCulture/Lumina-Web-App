@@ -1980,42 +1980,48 @@
             <span>LUMINA</span>
         </a>
 
-                <!-- 🧭 SINGLE COLLAPSIBLE TOP NAV MENU (Ukrycie przeładowania pod jedną ikoną) -->
-        <div class="nav-menu-wrapper" style="position:relative;">
-            <button type="button" 
-                    class="nav-menu-btn" 
-                    id="topNavMenuBtn" 
-                    onclick="toggleTopNavDrawer(event)" 
-                    title="Menu Nawigacji LUMINA" 
-                    style="display:inline-flex; align-items:center; gap:8px; padding:7px 16px; border-radius:24px; background:linear-gradient(135deg, rgba(168,85,247,0.18), rgba(236,72,153,0.18)); border:1.5px solid rgba(168,85,247,0.45); color:#fff; font-family:'Outfit',sans-serif; font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.25s ease; box-shadow:0 2px 10px rgba(0,0,0,0.3);">
-                <i class="fa-solid fa-compass" style="color:#c084fc; font-size:0.95rem;"></i>
-                <span>Nawigacja</span>
-                <i class="fa-solid fa-chevron-down" id="topNavMenuChevron" style="font-size:0.72rem; color:#cbd5e1; transition:transform 0.25s ease;"></i>
-            </button>
-
-            <!-- Wysuwany panel nawigacji (Glassmorphism Drawer) -->
-            <div class="top-nav-drawer" id="topNavDrawer" style="display:none; position:absolute; top:calc(100% + 10px); left:50%; transform:translateX(-50%); width:260px; background:rgba(11,17,32,0.96); border:1.5px solid rgba(168,85,247,0.45); border-radius:20px; box-shadow:0 20px 50px rgba(0,0,0,0.85); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); padding:10px; z-index:10002; flex-direction:column; gap:4px;">
-                <a href="index.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-house" style="color:#38bdf8;"></i> <span>Strona Główna Radia</span></a>
-                <a href="lumina.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-sparkles" style="color:#ec4899;"></i> <span>Portal LUMINA</span></a>
-                <a href="lumina-tablica.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-rectangle-list" style="color:#facc15;"></i> <span>Tablica Społeczności</span></a>
-                <a href="lumina.html#odkrywaj" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof scrollToSection==='function') scrollToSection('odkrywaj');"><i class="fa-solid fa-compass" style="color:#c084fc;"></i> <span>Odkrywaj Profile</span></a>
-                <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openDirectMessagesModal==='function') openDirectMessagesModal(); else if(typeof openMessageModal==='function') openMessageModal(); else if(typeof openLuminaChatModal==='function') openLuminaChatModal();"><i class="fa-solid fa-comments" style="color:#34d399;"></i> <span>Wiadomości & Czat</span></button>
-                <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openShareLuminaModal==='function') openShareLuminaModal();"><i class="fa-solid fa-share-nodes" style="color:#a78bfa;"></i> <span>Polecaj Portal</span></button>
-                <a href="javascript:void(0)" onclick="closeTopNavDrawer(); if(typeof handleMyProfileNavigation==='function') handleMyProfileNavigation(event);" class="drawer-nav-item" id="drawerMyProfileLink"><i class="fa-solid fa-user" style="color:#f472b6;"></i> <span>Mój Profil</span></a>
-                
-                <div style="height:1px; background:rgba(255,255,255,0.08); margin:6px 0;"></div>
-                
-                <button type="button" class="drawer-nav-item" id="drawerAuthCtaBtn" onclick="closeTopNavDrawer(); if(typeof openAuth==='function') openAuth(); else if(typeof openAuthModal==='function') openAuthModal();" style="background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-weight:800; border-radius:12px; justify-content:center;">
-                    <i class="fa-solid fa-arrow-right-to-bracket"></i> <span>Zaloguj / Rejestracja</span>
-                </button>
-            </div>
-        </div>
-
         <div style="display:flex;align-items:center;gap:12px;">
             <!-- 1. Mini Radio Player (Single Round 38px Button) -->
             <button type="button" class="nav-circle-btn nav-radio-btn" id="radioWidget" onclick="toggleRadio()" title="Włącz / Wyłącz Radio Christian Culture">
                 <i class="fa-solid fa-play" id="radioPlayIcon" style="margin-left:2px;"></i>
             </button>
+                        <!-- DZWONEK POWIADOMIEŃ / WIADOMOŚCI -->
+            <button type="button" class="nav-circle-btn" id="navNotifBellBtn" onclick="if(typeof openDirectMessagesModal==='function') openDirectMessagesModal(); else if(typeof openMessageModal==='function') openMessageModal(); else if(typeof openLuminaChatModal==='function') openLuminaChatModal();" title="Powiadomienia i Czat" style="position:relative; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#ec4899; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; transition:all 0.2s;">
+                <i class="fa-solid fa-bell" style="font-size:1rem;"></i>
+                <span class="nav-badge lumina-unread-badge" style="display:none; position:absolute; top:-3px; right:-3px; width:17px; height:17px; background:#ec4899; border-radius:50%; font-size:0.65rem; color:#fff; font-weight:800; align-items:center; justify-content:center; border:2px solid #0b1120;">0</span>
+            </button>
+
+            <!-- 🧭 SINGLE COLLAPSIBLE TOP NAV MENU (MIĘDZY DZWONKIEM A WSPARCIEM) -->
+            <div class="nav-menu-wrapper" style="position:relative;">
+                <button type="button" 
+                        class="nav-menu-btn" 
+                        id="topNavMenuBtn" 
+                        onclick="toggleTopNavDrawer(event)" 
+                        title="Menu Nawigacji LUMINA" 
+                        style="display:inline-flex; align-items:center; gap:8px; padding:7px 14px; border-radius:24px; background:linear-gradient(135deg, rgba(168,85,247,0.22), rgba(236,72,153,0.22)); border:1.5px solid rgba(168,85,247,0.5); color:#fff; font-family:'Outfit',sans-serif; font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.25s ease; box-shadow:0 2px 10px rgba(0,0,0,0.3);">
+                    <i class="fa-solid fa-compass" style="color:#c084fc; font-size:0.95rem;"></i>
+                    <span>Menu</span>
+                    <i class="fa-solid fa-chevron-down" id="topNavMenuChevron" style="font-size:0.72rem; color:#cbd5e1; transition:transform 0.25s ease;"></i>
+                </button>
+
+                <!-- Wysuwany panel nawigacji (Glassmorphism Drawer) -->
+                <div class="top-nav-drawer" id="topNavDrawer" style="display:none; position:absolute; top:calc(100% + 10px); right:0; width:260px; background:rgba(11,17,32,0.96); border:1.5px solid rgba(168,85,247,0.45); border-radius:20px; box-shadow:0 20px 50px rgba(0,0,0,0.85); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); padding:10px; z-index:10002; flex-direction:column; gap:4px;">
+                    <a href="index.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-house" style="color:#38bdf8;"></i> <span>Strona Główna Radia</span></a>
+                    <a href="lumina.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-sparkles" style="color:#ec4899;"></i> <span>Portal LUMINA</span></a>
+                    <a href="lumina-tablica.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-rectangle-list" style="color:#facc15;"></i> <span>Tablica Społeczności</span></a>
+                    <a href="lumina.html#odkrywaj" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof scrollToSection==='function') scrollToSection('odkrywaj');"><i class="fa-solid fa-compass" style="color:#c084fc;"></i> <span>Odkrywaj Profile</span></a>
+                    <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openDirectMessagesModal==='function') openDirectMessagesModal(); else if(typeof openMessageModal==='function') openMessageModal(); else if(typeof openLuminaChatModal==='function') openLuminaChatModal();"><i class="fa-solid fa-comments" style="color:#34d399;"></i> <span>Wiadomości & Czat</span></button>
+                    <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openShareLuminaModal==='function') openShareLuminaModal();"><i class="fa-solid fa-share-nodes" style="color:#a78bfa;"></i> <span>Polecaj Portal</span></button>
+                    <a href="javascript:void(0)" onclick="closeTopNavDrawer(); if(typeof handleMyProfileNavigation==='function') handleMyProfileNavigation(event);" class="drawer-nav-item" id="drawerMyProfileLink"><i class="fa-solid fa-user" style="color:#f472b6;"></i> <span>Mój Profil</span></a>
+                    
+                    <div style="height:1px; background:rgba(255,255,255,0.08); margin:6px 0;"></div>
+                    
+                    <button type="button" class="drawer-nav-item" id="drawerAuthCtaBtn" onclick="closeTopNavDrawer(); if(typeof openAuth==='function') openAuth(); else if(typeof openAuthModal==='function') openAuthModal();" style="background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-weight:800; border-radius:12px; justify-content:center;">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> <span>Zaloguj / Rejestracja</span>
+                    </button>
+                </div>
+            </div>
+
             <!-- WSPARCIE DZIEŁA (DONORBOX CTA) -->
             <button class="btn-nav-support" onclick="openSupportModal()" title="Wspieraj Dzieło LUMINA">
                 <i class="fa-solid fa-hand-holding-heart"></i>
