@@ -473,9 +473,6 @@ if (auth) {
                             console.warn('Błąd automatycznego zapisu profilu Google w Firestore:', saveErr.message);
                         }
                     }
-                            console.warn('Błąd automatycznego zapisu profilu Google w Firestore:', saveErr.message);
-                        }
-                    }
 
                     try {
                         localStorage.setItem('lumina_current_user_profile', JSON.stringify(currentProfileState));
