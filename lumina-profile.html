@@ -1965,6 +1965,55 @@
     <script type="module" src="js/lumina-editor.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-feed.js?v=1786937908032"></script>
     <script type="module" src="js/lumina-search.js?v=1786937908032"></script>
+<style>
+        /* ═════════ MOBILE-FIRST: SAME IKONY NA URZĄDZENIACH MOBILNYCH ═════════ */
+        @media (max-width: 640px) {
+            /* 1. Górna Belka (Top Nav) - same ikony */
+            .nav-menu-btn .nav-btn-text,
+            .btn-nav-support .btn-nav-cta-text,
+            .btn-nav-back span {
+                display: none !important;
+            }
+            .nav-menu-btn,
+            .btn-nav-support {
+                padding: 8px 10px !important;
+                border-radius: 50% !important;
+                width: 38px !important;
+                min-width: 38px !important;
+                height: 38px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            .nav-menu-btn i,
+            .btn-nav-support i {
+                margin: 0 !important;
+                font-size: 1.1rem !important;
+            }
+
+            /* 2. Zakładki Czatu Społeczności - same wyraziste ikony */
+            #tabBtnPublicChat .tab-label,
+            #tabBtnCommanderChat .tab-label,
+            #tabBtnPrivateChat .tab-label,
+            .messenger-tab-btn .tab-label {
+                display: none !important;
+            }
+            #tabBtnPublicChat i,
+            #tabBtnCommanderChat i,
+            #tabBtnPrivateChat i {
+                font-size: 1.25rem !important;
+                margin: 0 !important;
+            }
+            #tabBtnPublicChat,
+            #tabBtnCommanderChat,
+            #tabBtnPrivateChat {
+                padding: 10px 14px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+        }
+</style>
 </head>
 <body>
 
@@ -2736,13 +2785,13 @@
                 <!-- Navigation Tabs: [ ✨ Czat Ogólny (Publiczny) ] [ ✨ Prywatne (1:1) ] -->
                 <div style="display:flex; background:rgba(255,255,255,0.05); padding:4px; border-radius:14px; gap:6px;">
                     <button type="button" id="tabBtnPublicChat" onclick="switchMessengerMainTab('public')" style="flex:1; padding:8px 10px; border-radius:10px; border:none; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-weight:800; font-family:inherit; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(236,72,153,0.3); transition:all 0.2s;">
-                        <i class="fa-solid fa-earth-europe"></i> Czat Ogólny (Publiczny)
+                        <i class="fa-solid fa-earth-europe"></i> <span class="tab-label">Czat Ogólny (Publiczny)</span>
                     </button>
                                         <button type="button" id="tabBtnCommanderChat" onclick="switchMessengerMainTab('commander')" style="display:none; flex:1; padding:8px 10px; border-radius:10px; border:none; background:linear-gradient(135deg, #f59e0b, #d97706); color:#000; font-weight:800; font-family:inherit; font-size:0.8rem; cursor:pointer; align-items:center; justify-content:center; gap:6px; box-shadow:0 0 12px rgba(245,158,11,0.45); transition:all 0.2s;">
-                        <i class="fa-solid fa-crown"></i> 👑 Sztab Dowództwa CC
+                        <i class="fa-solid fa-crown"></i> <span class="tab-label">Sztab Dowództwa CC</span>
                     </button>
                     <button type="button" id="tabBtnPrivateChat" onclick="switchMessengerMainTab('private')" style="flex:1; padding:8px 10px; border-radius:10px; border:none; background:transparent; color:#94a3b8; font-weight:700; font-family:inherit; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:all 0.2s;">
-                        <i class="fa-solid fa-lock"></i> Rozmowy Prywatne (1:1)
+                        <i class="fa-solid fa-lock"></i> <span class="tab-label">Rozmowy Prywatne (1:1)</span>
                     </button>
                 </div>
             </div>
