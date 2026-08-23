@@ -50,6 +50,41 @@
 
     const LUMINA_CORE_POSTS_DATA = [
         {
+            id: 'post_dzj_2026_08_24',
+            type: 'post',
+            author: 'Cezary Rogowski',
+            authorRole: '☀️ Dobrze, że jesteś • Założyciel Christian Culture ✨',
+            authorAvatar: 'avatar_cezary_official.jpg',
+            authorSlug: 'cezaryrgowski',
+            time: '24 Sierpnia 2026 • ☀️ Dobrze, że jesteś',
+            title: '☀️ Lato z Jezusem — Wielkie Pytania (Dzień 24)',
+            text: `☀️ **Lato z Jezusem — Wielkie Pytania**
+**Dzień 24 — 31 bardzo osobistych pytań Syna/Córki do Ojca: Dlaczego tak często ulegam lękowi przed oceną mojej przeszłości przez innych?**
+
+W dwudziestym czwartym dniu cyklu „Lato z Jezusem — Wielkie Pytania” rozbrajamy mechanizm wstydu, lęku przed ludzką oceną oraz paraliżu związanego z dawnymi błędami.
+
+W psychologii klinicznej zjawisko „lęku przed zdemaskowaniem” (imposter syndrome) opisuje stan, w którym człowiek żyje w ciągłym napięciu, obawiając się, że jego dawna niedoskonałość wyjdzie na jaw i zniszczy jego obecną pozycję. Wróg bezwzględnie żeruje na tym lęku na duchowym froncie. Słowo Boże przez świadectwo Apostoła Pawła uderza w tę iluzję: Paweł otwarcie przyznaje się do swojej trudnej przeszłości, czyniąc z niej świadectwo przemieniającej mocy Boga. Chrześcijański lider najwyższej klasy nie buduje swojego wizerunku na fałszywej bezbłędności — jego siłą jest autentyczne świadectwo łaski, realizowane z nienaganną, królewską klasą i odwagą.
+
+**Jezus mówi dziś do Ciebie:**
+„Ale dostąpiłem miłosierdzia, aby Jezus Chrystus na mnie pierwszym pokazał całą wielkoduszność jako przykład dla tych, którzy w Niego uwierzą...” *(1 Tymoteusza 1,16)*
+
+**Zadanie Taktyczne:**
+Zmiażdż dziś lęk przed osądem otoczenia na swoim polu bitwy. Przestań ukrywać swoją historię z lęku przed krytyką. Podejmij obowiązki nowego tygodnia z chirurgiczną precyzją, zdejmując z serca wszelki wstyd. Wnieś do swojej firmy i domu standard wolności, prawdy i niezachwianego autorytetu.
+
+W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
+
+**Modlitwa Bojowa:**
+„Ojcze, odrzucam kłamstwa nieprzyjaciela i paraliżujący wstyd z powodu mojej przeszłości. Przepraszam, że lękałem się ludzkiego sądu. Dziękuję, że Twoje miłosierdzie całkowicie mnie odnowiło. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą i dumą świadczył o Twojej łasce, zdobywając ten świat dla Twojej chwały.”
+
+Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
+
+PODAJ DALEJ 🔴
+www.polskieradio.cc | www.cclite.pl`,
+            image: 'promo_dzj.jpg',
+            likes: 74,
+            amen: 68
+        },
+        {
             id: 'post_dzj_2026_08_23',
             type: 'post',
             author: 'Cezary Rogowski',
