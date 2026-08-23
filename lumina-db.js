@@ -1812,15 +1812,33 @@ export async function addCampaignToCloud(campData) {
 export function normalizeChatUserId(idOrSlug) {
     if (!idOrSlug) return 'guest';
     const str = String(idOrSlug).trim().toLowerCase();
-    if (str === 'cezaryrgowski' || str === 'cezary' || str.includes('nazirczarkes') || str === 'u5seqt54fcnocfcxjirckowjhqc2') {
+    
+    // 1. Cezary Rogowski mappings (emails, UIDs, slugs, usernames):
+    if (str === 'cezaryrgowski' || str === 'cezary' || str.includes('cezary') || 
+        str.includes('nazirczarkes') || str.includes('studiodees7') || str.includes('czarkes') ||
+        str === '1zhaexihqzgz8nzebr0dyc7wlg93' || str === 'sectuwwrsv8pnkhsrxgyivjbajn1' || 
+        str === 'u5seqt54fcnocfcxjirckowjhqc2' || str.startsWith('u_cezary')) {
         return 'cezaryrgowski';
     }
-    if (str === 'wiolettarogowska' || str === 'wioletta' || str.includes('wioletta') || str === 'j4aqs5wspawssjtj04jlqchpieg1') {
+    
+    // 2. Christian Culture / Radio CC mappings:
+    if (str === 'radiocc' || str === 'christianculture' || str.includes('radiochristianculture') || 
+        str.includes('christian culture') || str === 'lgibw6jrf0wbeln6zpqu2pfrlcx1') {
+        return 'radiocc';
+    }
+    
+    // 3. Wioletta Rogowska mappings:
+    if (str === 'wiolettarogowska' || str === 'wioletta' || str.includes('wioletta') || 
+        str === 'lr7e9ism6vaablvmcrjan5lvn0j2' || str === 'j4aqs5wspawssjtj04jlqchpieg1' || 
+        str.includes('wioletta1240')) {
         return 'wiolettarogowska';
     }
+    
+    // 4. Andrzej Thiel:
     if (str === 'andrzejthiel' || str === 'andrzej') {
         return 'andrzejthiel';
     }
+    
     return str;
 }
 
@@ -1833,8 +1851,18 @@ export function getChatId(userA, userB) {
 const activeDirectChatListeners = new Map();
 
 export function subscribeToDirectMessages(chatId, onUpdate) {
-    const parts = (chatId || '').split('_');
-    const normalizedChatId = parts.length >= 2 ? getChatId(parts[0], parts[1]) : chatId;
+    let normalizedChatId = chatId;
+    if (chatId && chatId.includes('_')) {
+        const parts = chatId.split('_');
+        if (parts.length === 2) {
+            normalizedChatId = getChatId(parts[0], parts[1]);
+        } else {
+            // Check if contains known slugs
+            const uA = parts.find(p => p.includes('radiocc') || p.includes('christian') || p.includes('cezary') || p.includes('wioletta')) || parts[0];
+            const uB = parts.find(p => p !== uA) || parts[1] || 'guest';
+            normalizedChatId = getChatId(uA, uB);
+        }
+    }
 
     // 1. Check and emit local cached messages immediately
     try {
@@ -1908,18 +1936,27 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
 export async function sendDirectMessageToCloud(chatId, messageObj) {
     const user = currentUserState;
     const fromId = normalizeChatUserId(messageObj.senderId || (user ? (user.slug || user.uid) : (localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest')));
-    const senderName = messageObj.senderName || currentProfileState?.name || user?.displayName || (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
-    const senderAvatar = messageObj.senderAvatar || currentProfileState?.avatar || user?.photoURL || (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));
+    let receiverId = normalizeChatUserId(messageObj.receiverId);
+    
+    if (!receiverId || receiverId === 'guest') {
+        if (chatId && chatId.includes('_')) {
+            const parts = chatId.split('_');
+            const other = parts.map(p => normalizeChatUserId(p)).find(u => u !== fromId);
+            if (other) receiverId = other;
+        }
+    }
 
-    const parts = (chatId || '').split('_');
-    const normalizedChatId = parts.length >= 2 ? getChatId(parts[0], parts[1]) : chatId;
-    const receiverId = normalizeChatUserId(messageObj.receiverId || (parts.length >= 2 ? (parts[0] === fromId ? parts[1] : parts[0]) : ''));
+    const normalizedChatId = getChatId(fromId, receiverId || 'guest');
+    const senderName = messageObj.senderName || currentProfileState?.name || user?.displayName || (fromId === 'radiocc' ? 'Christian Culture' : (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')));
+    const senderAvatar = messageObj.senderAvatar || currentProfileState?.avatar || user?.photoURL || (fromId === 'radiocc' ? 'avatar_cezary_official.jpg' : (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')));
+    const senderBadge = messageObj.senderBadge || (fromId === 'radiocc' ? '🕊️ Misja CC' : (fromId === 'cezaryrgowski' ? '👑 Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Społeczność')));
 
     const fullMsg = {
         chatId: normalizedChatId,
         senderId: fromId,
         senderName: senderName,
         senderAvatar: senderAvatar,
+        senderBadge: senderBadge,
         receiverId: receiverId,
         text: messageObj.text || '',
         type: messageObj.type || 'text',
@@ -1956,7 +1993,7 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
         // Also write to subcollection (Backup)
         addDoc(collection(db, `lumina_chats/${normalizedChatId}/messages`), fullMsg).catch(() => {});
 
-        // Update chat room metadata
+        // Update chat room metadata with exact normalized users array
         setDoc(doc(db, 'lumina_chats', normalizedChatId), {
             chatId: normalizedChatId,
             lastMessageText: fullMsg.text,
@@ -1964,9 +2001,9 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
             lastSenderId: fromId,
             lastSenderName: senderName,
             lastSenderAvatar: senderAvatar,
-            lastSenderBadge: fullMsg.senderBadge || '',
+            lastSenderBadge: senderBadge,
             lastMessageType: fullMsg.type || 'text',
-            users: normalizedChatId.split('_')
+            users: [fromId, receiverId]
         }, { merge: true }).catch(() => {});
 
         return msgRef.id;
@@ -2069,9 +2106,9 @@ export function subscribeToPublicChat(onUpdate) {
 export async function sendPublicChatMessage(messageObj) {
     const user = currentUserState;
     const fromId = normalizeChatUserId(messageObj.senderId || (user ? (user.slug || user.uid) : (localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest')));
-    const senderName = messageObj.senderName || currentProfileState?.name || user?.displayName || (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
-    const senderAvatar = messageObj.senderAvatar || currentProfileState?.avatar || user?.photoURL || (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));
-    const senderBadge = messageObj.senderBadge || (fromId === 'cezaryrgowski' ? '👑 Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Społeczność'));
+    const senderName = messageObj.senderName || currentProfileState?.name || user?.displayName || (fromId === 'radiocc' ? 'Christian Culture' : (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')));
+    const senderAvatar = messageObj.senderAvatar || currentProfileState?.avatar || user?.photoURL || (fromId === 'radiocc' ? 'avatar_cezary_official.jpg' : (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')));
+    const senderBadge = messageObj.senderBadge || (fromId === 'radiocc' ? '🕊️ Misja CC' : (fromId === 'cezaryrgowski' ? '👑 Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Społeczność')));
 
     const fullMsg = {
         senderId: fromId,
