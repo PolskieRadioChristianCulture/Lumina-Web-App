@@ -8,7 +8,7 @@
                 const params = new URLSearchParams(window.location.search);
                 const raw = (params.get('u') || params.get('user') || params.get('slug') || '').toLowerCase();
                 if (!raw) return;
-                const slug = decodeURIComponent(raw).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ł/g, 'l').replace(/Ĺ/g, 'l');
+                const slug = decodeURIComponent(raw).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ł/g, 'l').replace(/Ł/g, 'l');
                 if (slug.includes('studiodobregoslowa') || slug.includes('studiods') || slug.includes('studiodobre')) {
                     window.location.replace('lumina.studiodobregoslowa.html' + (window.location.hash || ''));
                     return;
@@ -1959,7 +1959,7 @@
             <button type="button" class="nav-circle-btn nav-radio-btn" id="radioWidget" onclick="toggleRadio()" title="Włącz / Wyłącz Radio Christian Culture">
                 <i class="fa-solid fa-play" id="radioPlayIcon" style="margin-left:2px;"></i>
             </button>
-            <!-- WSPARCIE DZIEĹA (DONORBOX CTA) -->
+            <!-- WSPARCIE DZIEŁA (DONORBOX CTA) -->
             <button class="btn-nav-support" onclick="openSupportModal()" title="Wspieraj Dzieło LUMINA">
                 <i class="fa-solid fa-hand-holding-heart"></i>
                 <span class="btn-nav-cta-text" style="color: #000; font-weight: 800; font-size: 0.88rem; font-family: 'Outfit', sans-serif;">Wspieraj</span>
@@ -2059,7 +2059,7 @@
             <div style="display: flex; align-items: center; gap: 10px;">
                 <i class="fa-solid fa-lock" style="color: #c084fc; font-size: 1.2rem;"></i>
                 <div>
-                    <div style="font-weight: 800; font-size: 0.86rem; color: #fff;">Tryb Prywatny Aktywny ✨’</div>
+                    <div style="font-weight: 800; font-size: 0.86rem; color: #fff;">Tryb Prywatny Aktywny ✨</div>
                     <div style="font-size: 0.74rem; color: #94a3b8;">Profil jest niewidoczny publicznie. Dostęp mają tylko osoby z bezpośrednim linkiem lub kodem PIN.</div>
                 </div>
             </div>
@@ -2071,8 +2071,7 @@
         <!-- Privacy Gate Screen (shown to unauthorized guests when private) -->
         <div class="private-gate-screen" id="privateGateScreen">
             <div style="width: 86px; height: 86px; margin: 0 auto 18px; border-radius: 50%; background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(59,130,246,0.2)); border: 2px solid rgba(168,85,247,0.5); display: flex; align-items: center; justify-content: center; font-size: 2.4rem;">
-                ✨’
-            </div>
+                ✨ </div>
             <h2 style="font-size: 1.6rem; font-family:'Outfit',sans-serif; margin-bottom: 8px;" id="gateUserName">Cezary Rogowski</h2>
             <div style="display:inline-block; margin-bottom:14px;"><span class="badge-visibility-priv"><i class="fa-solid fa-lock"></i> Profil Prywatny</span></div>
             <p style="font-size: 0.88rem; color: var(--text-secondary); max-width: 440px; margin: 0 auto 24px; line-height: 1.5;">
@@ -2225,7 +2224,7 @@
                 <!-- Scripture Verse Card -->
                 <div class="sidebar-card">
                     <div class="card-title">
-                        <span>Przewodni Werset Ĺ»yciowy</span>
+                        <span>Przewodni Werset Życiowy</span>
                         <button class="card-edit-btn" onclick="openEditProfileModal('verse')" title="Edytuj werset"><i class="fa-solid fa-pencil"></i></button>
                     </div>
                     <div class="verse-box">
@@ -2339,7 +2338,7 @@
     <div class="modal-overlay" id="securityPinModal">
         <div class="modal-card" style="max-width: 440px; text-align: center;">
             <button class="modal-close-btn" onclick="closeModal('securityPinModal')"><i class="fa-solid fa-xmark"></i></button>
-            <div style="font-size: 2.6rem; margin-bottom: 8px;">✨🛡️</div>
+            <div style="font-size: 2.6rem; margin-bottom: 8px;">✨🛡️</div>
             <h3 style="font-size: 1.35rem; font-family:'Outfit',sans-serif; margin-bottom: 6px;">Weryfikacja Właściciela</h3>
             <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 18px;">
                 Ten profil jest chroniony przed niepowołaną edycją. Wprowadź swój 4-cyfrowy kod PIN, aby odblokować panel edycji i usuwania.
@@ -2413,7 +2412,7 @@
                 </div>
 
                 <div style="margin-bottom:12px;">
-                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Przewodni Werset Ĺ»yciowy</label>
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Przewodni Werset Życiowy</label>
                     <input type="text" id="editVerse" placeholder="Treść wersetu..." style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px; margin-bottom:6px;">
                     <input type="text" id="editVerseRef" placeholder="Odnośnik, np. — Księga Jozuego 24, 15" style="width:100%; padding:8px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#facc15; font-family:inherit; font-size:14px; font-weight:700;">
                 </div>
@@ -2504,8 +2503,7 @@
                     <div>
                         <div id="modalMsgRecipient" style="font-weight: 800; font-size: 0.95rem; color: #fff;">Rozmowa</div>
                         <div style="font-size: 0.7rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
-                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Aktywny w Chrystusie ✨•Š
-                        </div>
+                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Aktywny w Chrystusie ✨ </div>
                     </div>
                 </div>
                 <button class="modal-close-btn" onclick="closeModal('messageModal')" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
@@ -2514,14 +2512,14 @@
             <!-- Messages Box -->
             <div id="profileChatMessagesBox" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.15);">
                 <div style="text-align: center; margin: 10px 0;">
-                    <span style="font-size: 0.72rem; color: #64748b; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">Rozpoczęto bezpieczną rozmowę w portalu LUMINA ✨•Š</span>
+                    <span style="font-size: 0.72rem; color: #64748b; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">Rozpoczęto bezpieczną rozmowę w portalu LUMINA ✨</span>
                 </div>
             </div>
 
             <!-- Quick Christian Shortcuts -->
             <div style="display: flex; gap: 6px; padding: 6px 14px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05);">
-                <button type="button" onclick="insertProfileChatQuickText('Niech Bóg Ci błogosławi! ✨•Š')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer;">✨•Š Błogosławieństwo</button>
-                <button type="button" onclick="insertProfileChatQuickText('Chętnie pomodlę się w Twojej intencji! ✨™Ź')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer;">✨™Ź Modlitwa</button>
+                <button type="button" onclick="insertProfileChatQuickText('Niech Bóg Ci błogosławi! ✨')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer;">✨ Błogosławieństwo</button>
+                <button type="button" onclick="insertProfileChatQuickText('Chętnie pomodlę się w Twojej intencji! ✨')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer;">✨ Modlitwa</button>
                 <button type="button" onclick="insertProfileChatQuickText('Masz ochotę na chrześcijańską kawę? ☕')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer;">☕ Kawa</button>
             </div>
 
@@ -2550,7 +2548,7 @@
     <div class="modal-overlay" id="privateRequestModal">
         <div class="modal-card" style="max-width: 480px;">
             <button class="modal-close-btn" onclick="closeModal('privateRequestModal')"><i class="fa-solid fa-xmark"></i></button>
-            <div style="font-size: 2.2rem; margin-bottom: 8px; text-align:center;">✨’Ś✨’</div>
+            <div style="font-size: 2.2rem; margin-bottom: 8px; text-align:center;">✨✨</div>
             <h3 style="font-size: 1.35rem; margin-bottom: 6px; font-family:'Outfit',sans-serif; text-align:center;">Prośba o Dostęp do Profilu</h3>
             <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px; text-align:center;">
                 Właściciel profilu otrzyma Twoją wiadomość i będzie mógł przesłać Ci prywatny link lub kod autoryzacyjny.
@@ -2570,7 +2568,7 @@
                 </div>
                 <div style="display:flex; gap:10px;">
                     <button type="button" onclick="closeModal('privateRequestModal')" style="flex:1; padding:12px; border-radius:30px; background:rgba(255,255,255,0.08); border:none; color:#fff; font-weight:700; font-family:inherit; cursor:pointer;">Anuluj</button>
-                    <button type="submit" style="flex:1.6; padding:12px; border-radius:30px; background:linear-gradient(90deg,#a855f7,#3b82f6); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 18px rgba(168,85,247,0.4);"><i class="fa-solid fa-paper-plane"></i> Wyślij Prośbę ✨•Š</button>
+                    <button type="submit" style="flex:1.6; padding:12px; border-radius:30px; background:linear-gradient(90deg,#a855f7,#3b82f6); border:none; color:#fff; font-weight:800; font-family:inherit; cursor:pointer; box-shadow:0 4px 18px rgba(168,85,247,0.4);"><i class="fa-solid fa-paper-plane"></i> Wyślij Prośbę ✨</button>
                 </div>
             </form>
         </div>
@@ -2580,7 +2578,7 @@
     <div class="modal-overlay" id="privatePinPromptModal">
         <div class="modal-card" style="max-width: 420px; text-align: center;">
             <button class="modal-close-btn" onclick="closeModal('privatePinPromptModal')"><i class="fa-solid fa-xmark"></i></button>
-            <div style="font-size: 2.6rem; margin-bottom: 8px;">✨‘✨</div>
+            <div style="font-size: 2.6rem; margin-bottom: 8px;">✨✨</div>
             <h3 style="font-size: 1.35rem; font-family:'Outfit',sans-serif; margin-bottom: 6px;">Kod Dostępu do Profilu</h3>
             <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 18px;">
                 Wprowadź kod dostępu lub PIN przekazany przez właściciela, aby wyświetlić ten profil.
@@ -2651,14 +2649,13 @@
                         <div>
                             <h3 style="font-size: 1.12rem; font-family:'Outfit',sans-serif; margin:0; color:#fff; font-weight:800;">Centrum Rozmów LUMINA</h3>
                             <div style="font-size: 0.72rem; color: #10b981; display:flex; align-items:center; gap:4px;">
-                                <span style="width:6px; height:6px; border-radius:50%; background:#10b981; display:inline-block;"></span> Na żywo w Chrystusie ✨•Š
-                            </div>
+                                <span style="width:6px; height:6px; border-radius:50%; background:#10b981; display:inline-block;"></span> Na żywo w Chrystusie ✨ </div>
                         </div>
                     </div>
                     <button class="modal-close-btn" onclick="closeModal('directMessagesModal')" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
                 </div>
 
-                <!-- Navigation Tabs: [ ✨Ś Czat Ogólny (Publiczny) ] [ ✨’ Prywatne (1:1) ] -->
+                <!-- Navigation Tabs: [ ✨ Czat Ogólny (Publiczny) ] [ ✨ Prywatne (1:1) ] -->
                 <div style="display:flex; background:rgba(255,255,255,0.05); padding:4px; border-radius:14px; gap:6px;">
                     <button type="button" id="tabBtnPublicChat" onclick="switchMessengerMainTab('public')" style="flex:1; padding:8px 10px; border-radius:10px; border:none; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-weight:800; font-family:inherit; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(236,72,153,0.3); transition:all 0.2s;">
                         <i class="fa-solid fa-earth-europe"></i> Czat Ogólny (Publiczny)
@@ -2675,16 +2672,15 @@
                 <div id="publicChatMessagesBox" style="flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.2);">
                     <div style="text-align: center; margin: 6px 0;">
                         <span style="font-size: 0.72rem; color: #94a3b8; background: rgba(255,255,255,0.05); padding: 5px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-                            ✨•Š Witaj w Ogólnym Czacie Społeczności LUMINA! Przywitaj się z braćmi i siostrami w Chrystusie ✨
-                        </span>
+                            ✨ Witaj w Ogólnym Czacie Społeczności LUMINA! Przywitaj się z braćmi i siostrami w Chrystusie ✨ </span>
                     </div>
                 </div>
 
                 <!-- Quick Christian Emoji Bar -->
                 <div style="display: flex; gap: 6px; padding: 6px 14px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); overflow-x:auto;">
-                    <button type="button" onclick="insertPublicChatQuickText('Pokój Wam! Niech Bóg błogosławi dzisiejszy dzień ✨•Š')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨•Š Błogosławieństwo</button>
-                    <button type="button" onclick="insertPublicChatQuickText('Proszę o modlitwę w mojej intencji ✨™Ź')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨™Ź Prośba o modlitwę</button>
-                    <button type="button" onclick="insertPublicChatQuickText('Dziękuję Bogu za cudowny czas! Chwała Panu! ✨™Ś')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨™Ś Świadectwo</button>
+                    <button type="button" onclick="insertPublicChatQuickText('Pokój Wam! Niech Bóg błogosławi dzisiejszy dzień ✨')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨ Błogosławieństwo</button>
+                    <button type="button" onclick="insertPublicChatQuickText('Proszę o modlitwę w mojej intencji ✨')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨ Prośba o modlitwę</button>
+                    <button type="button" onclick="insertPublicChatQuickText('Dziękuję Bogu za cudowny czas! Chwała Panu! ✨🙌')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨ Świadectwo</button>
                 </div>
 
                 <!-- Public Chat Input Form -->
@@ -2710,9 +2706,9 @@
                             <div style="flex:1; min-width:0;">
                                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
                                     <span style="font-weight:800; font-size:0.92rem; color:#fff;">Cezary Rogowski</span>
-                                    <span style="font-size:0.68rem; color:#facc15; font-weight:700;">Założyciel ✨‘‘</span>
+                                    <span style="font-size:0.68rem; color:#facc15; font-weight:700;">Założyciel ✨</span>
                                 </div>
-                                <div style="font-size:0.78rem; color:#f472b6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Kliknij, aby otworzyć bezpieczny czat prywatny 1:1 ✨•Š</div>
+                                <div style="font-size:0.78rem; color:#f472b6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Kliknij, aby otworzyć bezpieczny czat prywatny 1:1 ✨</div>
                             </div>
                             <i class="fa-solid fa-chevron-right" style="color:#ec4899; font-size:0.85rem;"></i>
                         </div>
@@ -2727,7 +2723,7 @@
                                     <span style="font-weight:800; font-size:0.92rem; color:#fff;">Wioletta Rogowska</span>
                                     <span style="font-size:0.68rem; color:#10b981; font-weight:700;">Liderka 🌸</span>
                                 </div>
-                                <div style="font-size:0.78rem; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Kliknij, aby otworzyć bezpieczny czat prywatny 1:1 ✨•Š</div>
+                                <div style="font-size:0.78rem; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Kliknij, aby otworzyć bezpieczny czat prywatny 1:1 ✨</div>
                             </div>
                             <i class="fa-solid fa-chevron-right" style="color:#c084fc; font-size:0.85rem;"></i>
                         </div>
@@ -2748,8 +2744,7 @@
                             <div>
                                 <div id="activeChatName" style="font-weight: 800; font-size: 0.95rem; color: #fff;">Rozmowa Prywatna</div>
                                 <div style="font-size: 0.7rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
-                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Bezpieczna Rozmowa 1:1 ✨’
-                                </div>
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Bezpieczna Rozmowa 1:1 ✨ </div>
                             </div>
                         </div>
                         <button class="modal-close-btn" onclick="closeModal('directMessagesModal')" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
@@ -2758,14 +2753,14 @@
                     <!-- Chat Messages Scroll Container -->
                     <div id="activeChatMessagesBox" style="flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.2);">
                         <div style="text-align: center; margin: 10px 0;">
-                            <span style="font-size: 0.72rem; color: #64748b; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">Rozpoczęto bezpieczną rozmowę prywatną w portalu LUMINA ✨•Š</span>
+                            <span style="font-size: 0.72rem; color: #64748b; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">Rozpoczęto bezpieczną rozmowę prywatną w portalu LUMINA ✨</span>
                         </div>
                     </div>
 
                     <!-- Quick Christian Emoji Bar -->
                     <div style="display: flex; gap: 6px; padding: 6px 14px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); overflow-x:auto;">
-                        <button type="button" onclick="insertChatQuickText('Niech Bóg Ci błogosławi! ✨•Š')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨•Š Błogosławieństwo</button>
-                        <button type="button" onclick="insertChatQuickText('Chętnie pomodlę się w Twojej intencji! ✨™Ź')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨™Ź Modlitwa</button>
+                        <button type="button" onclick="insertChatQuickText('Niech Bóg Ci błogosławi! ✨')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨ Błogosławieństwo</button>
+                        <button type="button" onclick="insertChatQuickText('Chętnie pomodlę się w Twojej intencji! ✨')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨ Modlitwa</button>
                         <button type="button" onclick="insertChatQuickText('Masz ochotę na chrześcijańską kawę? ☕')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">☕ Kawa</button>
                     </div>
 
@@ -2799,7 +2794,7 @@
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
-                <!-- 1. POWIADOMIENIA PUSH & DĹąWIÄK -->
+                <!-- 1. POWIADOMIENIA PUSH & DŹWIĘK -->
                 <div style="padding: 14px; border-radius: 16px; background: linear-gradient(135deg, rgba(236,72,153,0.12), rgba(168,85,247,0.12)); border: 1px solid rgba(236,72,153,0.35);">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
@@ -2816,7 +2811,7 @@
                     </button>
                 </div>
 
-                <!-- 2. WYMUŚ AKTUALIZACJÄ APLIKACJI -->
+                <!-- 2. WYMUŚ AKTUALIZACJĘ APLIKACJI -->
                 <div style="padding: 14px; border-radius: 16px; background: linear-gradient(135deg, rgba(168,85,247,0.12), rgba(6,182,212,0.12)); border: 1px solid rgba(168,85,247,0.35);">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
@@ -2833,14 +2828,14 @@
                     </button>
                 </div>
 
-                <!-- 3. BEZPIECZEĹSTWO & SESJA -->
+                <!-- 3. BEZPIECZEŃSTWO & SESJA -->
                 <div style="padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
                     <div style="display: flex; align-items: center; justify-content: space-between;">
                         <div style="display: flex; align-items: center; gap: 8px;">
                             <i class="fa-solid fa-shield-halved" style="color: #10b981; font-size: 1rem;"></i>
                             <div>
                                 <div style="font-weight: 700; font-size: 0.86rem; color: #fff;">Status Połączenia Chmury</div>
-                                <div style="font-size: 0.72rem; color: #10b981;">▫ Połączono z Christian Culture Live Cloud ✨•Š</div>
+                                <div style="font-size: 0.72rem; color: #10b981;">▫ Połączono z Christian Culture Live Cloud ✨</div>
                             </div>
                         </div>
                     </div>
@@ -2878,7 +2873,7 @@
                 avatar: 'avatar_magdalena.png',
                 cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
-                job: 'Społeczność LUMINA ✨•Š',
+                job: 'Społeczność LUMINA ✨',
                 church: 'Wspólnota Chrześcijańska w Poznaniu',
                 denom: 'Rzymskokatolickie',
                 status: 'Panna',
@@ -2897,9 +2892,9 @@
                         author: 'Magdalena',
                         authorSlug: 'magdalena',
                         authorAvatar: 'avatar_magdalena.png',
-                        authorRole: 'Poznań • Społeczność LUMINA ✨•Š',
+                        authorRole: 'Poznań • Społeczność LUMINA ✨',
                         time: 'Dzisiaj • ✨ Nowy Profil',
-                        text: 'Szczęść Boże wszystkim! Wierzę, że najpiękniejsze relacje rodzą się z zaufania Bogu i otwartego serca. Pozdrawiam serdecznie całą społeczność LUMINA z Poznania! 🌸✨•Š',
+                        text: 'Szczęść Boże wszystkim! Wierzę, że najpiękniejsze relacje rodzą się z zaufania Bogu i otwartego serca. Pozdrawiam serdecznie całą społeczność LUMINA z Poznania! 🌸✨',
                         likes: 24,
                         amen: 19,
                         image: 'avatar_magdalena.png'
@@ -2934,9 +2929,9 @@
                     author: 'Studio Dobrego Słowa',
                     authorSlug: 'studiodobregoslowa',
                     authorAvatar: 'studiodobregoslowa_avatar.jpg',
-                    authorRole: '✨Ž™ Studio Dobrego Słowa • Misja Medialna',
-                    time: 'Przed chwilą • ✨Ž¬ Nowy Podcast Wideo',
-                    text: '✨Ž¬ Najnowszy Podcast Wideo Studio Dobrego Słowa! ✨Ž™✨\n\nZapraszamy do wysłuchania i obejrzenia naszego najnowszego materiału! Dzielimy się Słowem Bożym, inspiracjami i żywą wiarą. Niech ten przekaz będzie dla Was źródłem nadziei, pokoju i duchowego wzmocnienia.\n\nOglądajcie tutaj oraz na naszym kanale YouTube: @StudioDeeS i odwiedźcie https://studiods.pl/ oraz naszą Herbaciarnię!',
+                    authorRole: '✨ Studio Dobrego Słowa • Misja Medialna',
+                    time: 'Przed chwilą • ✨ Nowy Podcast Wideo',
+                    text: '✨ Najnowszy Podcast Wideo Studio Dobrego Słowa! ✨✨\n\nZapraszamy do wysłuchania i obejrzenia naszego najnowszego materiału! Dzielimy się Słowem Bożym, inspiracjami i żywą wiarą. Niech ten przekaz będzie dla Was źródłem nadziei, pokoju i duchowego wzmocnienia.\n\nOglądajcie tutaj oraz na naszym kanale YouTube: @StudioDeeS i odwiedźcie https://studiods.pl/ oraz naszą Herbaciarnię!',
                     likes: 58,
                     amen: 24,
                     youtubeId: 'hHug_C6XDPU',
@@ -2946,8 +2941,8 @@
                     {
                         id: 'post_sds_1',
                         author: 'Studio Dobrego Słowa',
-                        time: 'Dzisiaj, 10:00 • ✨ŚŤ Publiczny',
-                        text: 'Witajcie na oficjalnym profilu Studio Dobrego Słowa w portalu LUMINA! ✨Ž™✨ Zapraszamy do oglądania transmisji „Apokalipsa: Księga Nadziei Live”, subskrybowania naszego kanału na YouTube: @StudioDeeS oraz odwiedzenia naszej strony https://studiods.pl/ i wirtualnej Herbaciarni!',
+                        time: 'Dzisiaj, 10:00 • ✨ Publiczny',
+                        text: 'Witajcie na oficjalnym profilu Studio Dobrego Słowa w portalu LUMINA! ✨✨ Zapraszamy do oglądania transmisji „Apokalipsa: Księga Nadziei Live”, subskrybowania naszego kanału na YouTube: @StudioDeeS oraz odwiedzenia naszej strony https://studiods.pl/ i wirtualnej Herbaciarni!',
                         likes: 42,
                         image: 'studiodobregoslowa_avatar.jpg'
                     }
@@ -2978,7 +2973,7 @@
                         id: 'post_ccw_1',
                         author: 'CC Women',
                         time: 'Przed chwilą • 🌸 Kanał YouTube',
-                        text: 'Szczęść Boże wszystkim Kobietom! Witajcie na oficjalnym profilu CC Women na portalu LUMINA. Dzielmy się wiarą, pięknem i budujmy relacje z Chrystusem w sercu! 🌸✨•Š',
+                        text: 'Szczęść Boże wszystkim Kobietom! Witajcie na oficjalnym profilu CC Women na portalu LUMINA. Dzielmy się wiarą, pięknem i budujmy relacje z Chrystusem w sercu! 🌸✨',
                         likes: 24,
                         image: 'logo_cc_women.jpg'
                     }
@@ -3008,7 +3003,7 @@
                         id: 'post_ccw_1',
                         author: 'CC Women',
                         time: 'Przed chwilą • 🌸 Kanał YouTube',
-                        text: 'Szczęść Boże wszystkim Kobietom! Witajcie na oficjalnym profilu CC Women na portalu LUMINA. Dzielmy się wiarą, pięknem i budujmy relacje z Chrystusem w sercu! 🌸✨•Š',
+                        text: 'Szczęść Boże wszystkim Kobietom! Witajcie na oficjalnym profilu CC Women na portalu LUMINA. Dzielmy się wiarą, pięknem i budujmy relacje z Chrystusem w sercu! 🌸✨',
                         likes: 24,
                         image: 'logo_cc_women.jpg'
                     }
@@ -3038,7 +3033,7 @@
                     {
                         id: 'post_c1',
                         author: 'Cezary Rogowski',
-                        time: 'Dzisiaj, 18:30 • ✨ŚŤ Publiczny',
+                        time: 'Dzisiaj, 18:30 • ✨ Publiczny',
                         text: 'Witaj na moim profilu w LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku.',
                         likes: 19,
                         image: null
@@ -3059,7 +3054,7 @@
                 spouse: 'Cezary Rogowski',
                 pin: '7777',
                 visibility: 'public',
-                match: 'Małżeństwo Sakramentalne ✨’•',
+                match: 'Małżeństwo Sakramentalne ✨',
                 verse: '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.”',
                 verseRef: '— Księga Przysłów 31, 10-11',
                 bio: 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej rodziny zakorzenionej w Bogu.',
@@ -3069,7 +3064,7 @@
                     {
                         id: 'post_w1',
                         author: 'Wioletta Rogowska',
-                        time: 'Dzisiaj, 19:15 • ✨ŚŤ Publiczny',
+                        time: 'Dzisiaj, 19:15 • ✨ Publiczny',
                         text: 'Witaj w LUMINA! Razem z mężem wierzymy, że Boże relacje przynoszą prawdziwy pokój i radość.',
                         likes: 38,
                         image: null
@@ -3099,8 +3094,8 @@
                     {
                         id: 'post_t1',
                         author: 'Tomasz',
-                        time: 'Wczoraj, 14:20 • ✨Ś˛ Wyprawa',
-                        text: 'Niezwykły czas wyciszenia i modlitwy w górach. Bóg przemawia w ciszy! ✨Ś„',
+                        time: 'Wczoraj, 14:20 • ✨ Wyprawa',
+                        text: 'Niezwykły czas wyciszenia i modlitwy w górach. Bóg przemawia w ciszy! ✨„',
                         likes: 22,
                         image: 'lumina_default_cover.jpg'
                     }
@@ -3129,7 +3124,7 @@
                     {
                         id: 'post_noemi_1',
                         author: 'Noemi',
-                        time: 'Wczoraj • ✨Śż Spokój',
+                        time: 'Wczoraj • ✨ Spokój',
                         text: 'Poranna modlitwa w lesie przynosi najgłębszy pokój. Dziękuję Bogu za każdy dar nowego dnia! 🌸',
                         likes: 31,
                         amen: 18,
@@ -3160,7 +3155,7 @@
                     {
                         id: 'post_dawid_1',
                         author: 'Dawid',
-                        time: '2 dni temu • ✨ Pasja',
+                        time: '2 dni temu • ✨ Pasja',
                         text: 'Projektowanie z myślą o Bogu daje zupełnie nową perspektywę na przestrzeń i harmonię! ✨',
                         likes: 19,
                         amen: 12,
@@ -3191,8 +3186,8 @@
                     {
                         id: 'post_weronika_1',
                         author: 'Weronika',
-                        time: 'Dzisiaj • ✨Ž¨ Sztuka & Wiara',
-                        text: 'Piękno natury jest najwspanialszym odbiciem Bożej miłości. Pozdrowienia z Krakowa! ✨•Š',
+                        time: 'Dzisiaj • ✨ Sztuka & Wiara',
+                        text: 'Piękno natury jest najwspanialszym odbiciem Bożej miłości. Pozdrowienia z Krakowa! ✨',
                         likes: 27,
                         amen: 15,
                         image: 'avatar_widget_ania.jpg'
@@ -3222,8 +3217,8 @@
                     {
                         id: 'post_anna_1',
                         author: 'Anna',
-                        time: 'Wczoraj • ✨š Inspiracja',
-                        text: 'Wspaniały czas rekolekcji i wyciszenia serca. Ĺ»yczę wszystkim Bożego błogosławieństwa! ✨',
+                        time: 'Wczoraj • ✨ Inspiracja',
+                        text: 'Wspaniały czas rekolekcji i wyciszenia serca. Życzę wszystkim Bożego błogosławieństwa! ✨',
                         likes: 25,
                         amen: 14,
                         image: 'avatar_widget_ania.jpg'
@@ -3253,7 +3248,7 @@
                     {
                         id: 'post_piotr_1',
                         author: 'Piotr',
-                        time: '3 dni temu • ✨Ź” Szczyt',
+                        time: '3 dni temu • ✨” Szczyt',
                         text: 'Na szczycie Tatr człowiek czuje potęgę Stwórcy. Wspaniały czas wyciszenia! ⛪',
                         likes: 34,
                         amen: 20,
@@ -3284,8 +3279,8 @@
                     {
                         id: 'post_julia_1',
                         author: 'Julia',
-                        time: 'Wczoraj • ✨Žµ Śpiew',
-                        text: 'Muzyka chwały otwiera niebo i leczy zranione serca. Dobrego dnia dla całej społeczności! ✨•Š',
+                        time: 'Wczoraj • ✨ Śpiew',
+                        text: 'Muzyka chwały otwiera niebo i leczy zranione serca. Dobrego dnia dla całej społeczności! ✨',
                         likes: 29,
                         amen: 19,
                         image: 'lumina_julia2.jpg'
@@ -3323,7 +3318,7 @@
                 job: 'Stacja Radiowa & Muzyka Uwielbienia',
                 church: 'Christian Culture',
                 denom: 'Rozgłośnia Chrześcijańska',
-                status: 'Radio Na Ĺ»ywo 24/7',
+                status: 'Radio Na Żywo 24/7',
                 pin: '7777',
                 visibility: 'public',
                 match: '100%',
@@ -3547,7 +3542,7 @@
         function copyPrivateAccessLink() {
             const url = window.location.origin + window.location.pathname + window.location.search + (window.location.search ? '&' : '?') + 'access=granted';
             navigator.clipboard.writeText(url).then(() => {
-                showToast('Skopiowano prywatny link dostępu z tokenem! ✨‹✨’');
+                showToast('Skopiowano prywatny link dostępu z tokenem! ✨✨');
             }).catch(() => {
                 prompt('Skopiuj ten prywatny link dostępu:', url);
             });
@@ -3565,7 +3560,7 @@
             const msg = document.getElementById('reqGuestMsg').value.trim();
             const data = getProfileData();
             closeModal('privateRequestModal');
-            showToast(`Dziękujemy ${name}! Twoja prośba o dostęp została przesłana do ${data.name.split(' ')[0]}. ✨•Š✨`);
+            showToast(`Dziękujemy ${name}! Twoja prośba o dostęp została przesłana do ${data.name.split(' ')[0]}. ✨✨`);
         }
 
         function promptPrivateAccessCode() {
@@ -3677,7 +3672,7 @@
                 sessionStorage.setItem('lumina_local_hud_minimized', isMin ? 'true' : 'false');
             } catch(e) {}
             if (typeof window.showToast === 'function') {
-                window.showToast(isMin ? 'Panel Dowódcy zminimalizowany ✨˝' : 'Panel Dowódcy rozwinięty ✨Ľ');
+                window.showToast(isMin ? 'Panel Dowódcy zminimalizowany ✨' : 'Panel Dowódcy rozwinięty ✨');
             }
         }
         
@@ -3694,17 +3689,17 @@
             if (isMaster) {
                 sessionStorage.removeItem('lumina_auth_master_admin');
                 localStorage.removeItem('lumina_auth_master_admin');
-                showToast('✨’ Zablokowano tryb Administratora (Widok Gościa)');
+                showToast('✨ Zablokowano tryb Administratora (Widok Gościa)');
                 checkOwnerAuthSession();
                 renderProfile();
             } else {
-                const pin = prompt('✨ Autoryzacja Administratora Portalu LUMINA:');
+                const pin = prompt('✨ Autoryzacja Administratora Portalu LUMINA:');
                 if (pin) {
                     verifyAdminPinHash(pin).then(isValid => {
                         if (isValid) {
                             sessionStorage.setItem('lumina_auth_master_admin', 'true');
                             localStorage.setItem('lumina_auth_master_admin', 'true');
-                            showToast('✨‘‘ Tryb Administratora Portalu Aktywowany! Witaj Dowódco.');
+                            showToast('✨ Tryb Administratora Portalu Aktywowany! Witaj Dowódco.');
                             checkOwnerAuthSession();
                             renderProfile();
                         } else {
@@ -3730,7 +3725,7 @@
                 try {
                     localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
                 } catch(e) {}
-                showToast(`Profil ${cur.name} został odblokowany! ✨•Š`);
+                showToast(`Profil ${cur.name} został odblokowany! ✨`);
             } else {
                 const reason = prompt(`Podaj powód zablokowania profilu ${cur.name}:`, 'Naruszenie zasad społeczności chrześcijańskiej');
                 if (reason === null) return;
@@ -3766,7 +3761,7 @@
                 console.error('Błąd usuwania profilu:', err);
             }
 
-            showToast(`✨—‘ Profil ${cur.name} został trwale usunięty z portalu LUMINA.`);
+            showToast(`✨ Profil ${cur.name} został trwale usunięty z portalu LUMINA.`);
             setTimeout(() => {
                 window.location.href = 'lumina.html';
             }, 1500);
@@ -3806,7 +3801,7 @@
                 updateSecurityBarUI();
                 renderPhotos();
                 renderPosts();
-                showToast('Autoryzacja pomyślna! Witaj w panelu zarządzania ✨Ž‰');
+                showToast('Autoryzacja pomyślna! Witaj w panelu zarządzania ✨');
                 if (typeof pendingProtectedAction === 'function') {
                     const cb = pendingProtectedAction;
                     pendingProtectedAction = null;
@@ -4111,7 +4106,7 @@
             }
 
             renderPhotos();
-            showToast('Zdjęcie zostało pomyślnie usunięte z Twojego profilu! ✨—‘✨');
+            showToast('Zdjęcie zostało pomyślnie usunięte z Twojego profilu! ✨✨');
         }
 
         function deleteCurrentLightboxPhoto() {
@@ -4391,7 +4386,7 @@
             }
 
             renderPosts();
-            showToast('Wpis został pomyślnie usunięty z Twojej tablicy! ✨—‘');
+            showToast('Wpis został pomyślnie usunięty z Twojej tablicy! ✨');
         }
 
         // Post Image Attachment
@@ -4430,7 +4425,7 @@
                 authorSlug: slug,
                 authorAvatar: cur.avatar || 'lumina_icon.jpg',
                 authorRole: cur.job ? `${cur.job} ✨` : 'Społeczność LUMINA ✨',
-                time: 'Przed chwilą • ✨ŚŤ Nowy Wpis',
+                time: 'Przed chwilą • ✨ Nowy Wpis',
                 text: val || '',
                 likes: 1,
                 amen: 0,
@@ -4464,7 +4459,7 @@
             if (input) input.value = '';
             removeAttachedPostImage();
             renderPosts();
-            showToast('Twój wpis został pomyślnie opublikowany na profilu i tablicy! ✨✨•Š');
+            showToast('Twój wpis został pomyślnie opublikowany na profilu i tablicy! ✨✨');
         }
 
         // ── Robust Image Resizer & Compressor for LocalStorage ──
@@ -4543,7 +4538,7 @@
                 await window.LuminaDB.saveProfileToCloud(slug, cur);
             }
             renderProfile();
-            showToast('Zdjęcie profilowe zostało zresetowane do domyślnego ✨—‘✨');
+            showToast('Zdjęcie profilowe zostało zresetowane do domyślnego ✨✨');
         }
 
         async function resetCoverToDefault() {
@@ -4564,7 +4559,7 @@
                 await window.LuminaDB.saveProfileToCloud(slug, cur);
             }
             renderProfile();
-            showToast('Tło zostało zresetowane do domyślnego ✨—‘✨');
+            showToast('Tło zostało zresetowane do domyślnego ✨✨');
         }
 
         function triggerCoverUpload() {
@@ -4618,7 +4613,7 @@
                     window.LuminaDB.saveProfileToCloud(slug, cur);
                 }
                 renderProfile();
-                showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane! ✨·✨');
+                showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane! ✨✨');
             });
             e.target.value = '';
         }
@@ -4819,7 +4814,7 @@
             }
         }
 
-        // ══════════ BEZPIECZEĹSTWO CZATU: escapowanie danych użytkownika (anty-XSS) ══════════
+        // ══════════ BEZPIECZEŃSTWO CZATU: escapowanie danych użytkownika (anty-XSS) ══════════
         function escapeHtml(str) {
             return String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
@@ -4839,7 +4834,7 @@
 
             let html = `
                 <div style="text-align:center;margin:8px 0;">
-                    <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Początek rozmowy ✨•Š</span>
+                    <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Początek rozmowy ✨</span>
                 </div>
             `;
 
@@ -4960,7 +4955,7 @@
                 });
                 showToast(res.message);
             } else {
-                showToast('Zgłoszenie profilu przesłane do moderatorów LUMINA! 🛡️✨•Š');
+                showToast('Zgłoszenie profilu przesłane do moderatorów LUMINA! 🛡️✨');
             }
         }
 
@@ -4990,7 +4985,7 @@
 
         function togglePostAmen(btn) {
             btn.classList.toggle('amen-active');
-            showToast('Twoje AMEN zostało dodane! ✨™Ź✨');
+            showToast('Twoje AMEN zostało dodane! ✨✨');
         }
 
         function insertVersePrompt() {
@@ -5018,7 +5013,7 @@
                         audio.src = "https://stream.zeno.fm/umej2cuqncluv?t=" + Date.now();
                         audio.play().then(() => {
                             localStorage.setItem('lumina_radio_playing', 'true');
-                            showToast('Radio Christian Culture Gra na Ĺ»ywo! ✨»✨');
+                            showToast('Radio Christian Culture Gra na Żywo! ✨✨');
                         }).catch(() => showToast('Kliknij ponownie, aby odtworzyć radio'));
                     } else {
                         audio.pause();
@@ -5102,8 +5097,7 @@
             let html = `
                 <div style="text-align: center; margin: 6px 0;">
                     <span style="font-size: 0.72rem; color: #94a3b8; background: rgba(255,255,255,0.05); padding: 5px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-                        ✨•Š Witaj w Ogólnym Czacie Społeczności LUMINA! Przywitaj się z braćmi i siostrami w Chrystusie ✨
-                    </span>
+                        ✨ Witaj w Ogólnym Czacie Społeczności LUMINA! Przywitaj się z braćmi i siostrami w Chrystusie ✨ </span>
                 </div>
             `;
 
@@ -5179,7 +5173,7 @@
             picker.className = 'lumina-reaction-picker';
             picker.style.cssText = 'position:absolute; bottom:calc(100% + 4px); right:0; background:rgba(15,23,42,0.97); border:1px solid rgba(255,255,255,0.22); border-radius:22px; padding:5px 9px; display:flex; gap:6px; align-items:center; z-index:10000; box-shadow:0 10px 30px rgba(0,0,0,0.7); backdrop-filter:blur(14px); user-select:none; max-width:85vw; overflow-x:auto; scrollbar-width:none;';
 
-            const emojis = ['✨‘Ť', '❤️', '✨Š', '✨™Ź', '✨Ą', '✨•Š', '❌', '✨‚', '✨®', '✨˘', '✨‘Ź', '✨Śą'];
+            const emojis = ['✨', '❤️', '✨Š', '✨', '✨', '✨', '❌', '✨‚', '✨®', '✨˘', '✨', '✨'];
             emojis.forEach(em => {
                 const sp = document.createElement('span');
                 sp.textContent = em;
@@ -5242,7 +5236,7 @@
             `;
         }
 
-        // ══════════ ZGĹASZANIE WIADOMOŚCI CZATU DO MODERATORĂ“W LUMINA ══════════
+        // ══════════ ZGŁASZANIE WIADOMOŚCI CZATU DO MODERATORÓW LUMINA ══════════
         window.reportChatMessage = async function(messageId, authorId) {
             if (!window.LuminaDB || typeof window.LuminaDB.reportContent !== 'function') return;
             const reason = window.prompt('Dlaczego zgłaszasz tę wiadomość? (opcjonalnie opisz powód)', '');
@@ -5282,8 +5276,8 @@
             const senderName = myProfile?.name || myUser?.name || currentProf?.name || localStorage.getItem('lumina_current_user_name') || 'Gość LUMINA';
             const senderAvatar = myProfile?.avatar || myUser?.avatar || currentProf?.avatar || 'avatar_new1.jpg';
             
-            let senderBadge = '✨•Š Społeczność';
-            if (senderId === 'cezaryrgowski') senderBadge = '✨‘‘ Założyciel';
+            let senderBadge = '✨ Społeczność';
+            if (senderId === 'cezaryrgowski') senderBadge = '✨ Założyciel';
             else if (senderId === 'wiolettarogowska') senderBadge = '🌸 Liderka CC';
 
             if (window.LuminaDB && typeof window.LuminaDB.sendPublicChatMessage === 'function') {
@@ -5310,7 +5304,7 @@
                 btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Trwa aktualizacja...';
             }
             if (typeof showToast === 'function') {
-                showToast('Trwa czyszczenie pamięci podręcznej i pobieranie najnowszej wersji LUMINA... ✨š€');
+                showToast('Trwa czyszczenie pamięci podręcznej i pobieranie najnowszej wersji LUMINA... ✨');
             }
 
             try {
@@ -5361,8 +5355,8 @@
             // 3. Floating In-App Banner
             if (window.LuminaDB && typeof window.LuminaDB.showInAppChatBanner === 'function') {
                 window.LuminaDB.showInAppChatBanner({
-                    title: 'Masz wiadomość ✨’Ś',
-                    body: 'Cezary Rogowski: Pokój Wam! Pozdrowienia ze społeczności LUMINA ✨•Š✨',
+                    title: 'Masz wiadomość ✨',
+                    body: 'Cezary Rogowski: Pokój Wam! Pozdrowienia ze społeczności LUMINA ✨✨',
                     avatar: 'avatar_cezary_official.jpg',
                     senderName: 'Cezary Rogowski',
                     senderId: 'cezaryrgowski',
@@ -5373,8 +5367,8 @@
             // 4. Android / OS System Drawer Notification (Belka Powiadomień jak FB / YT)
             if (window.LuminaDB && typeof window.LuminaDB.showSystemDrawerNotification === 'function') {
                 await window.LuminaDB.showSystemDrawerNotification({
-                    title: 'Masz wiadomość ✨’Ś • Cezary Rogowski',
-                    body: 'Cezary Rogowski: Niech Pan obficie Ci błogosławi i prowadzi w pokoju! ✨•Š',
+                    title: 'Masz wiadomość ✨ • Cezary Rogowski',
+                    body: 'Cezary Rogowski: Niech Pan obficie Ci błogosławi i prowadzi w pokoju! ✨',
                     avatar: 'avatar_cezary_official.jpg',
                     senderName: 'Cezary Rogowski',
                     senderId: 'cezaryrgowski',
@@ -5388,7 +5382,7 @@
                     try {
                         const reg = await navigator.serviceWorker?.ready;
                         const notifOpts = {
-                            body: 'Cezary Rogowski: Niech Pan obficie Ci błogosławi i prowadzi w pokoju! ✨•Š',
+                            body: 'Cezary Rogowski: Niech Pan obficie Ci błogosławi i prowadzi w pokoju! ✨',
                             icon: new URL('avatar_cezary_official.jpg', window.location.href).href,
                             badge: new URL('lumina-icon-192.png', window.location.href).href,
                             tag: 'lumina_test_drawer',
@@ -5398,9 +5392,9 @@
                             actions: [{ action: 'open_chat', title: '✨ Odpowiedz' }]
                         };
                         if (reg && reg.showNotification) {
-                            await reg.showNotification('Masz wiadomość ✨’Ś • Cezary Rogowski', notifOpts);
+                            await reg.showNotification('Masz wiadomość ✨ • Cezary Rogowski', notifOpts);
                         } else {
-                            new Notification('Masz wiadomość ✨’Ś • Cezary Rogowski', notifOpts);
+                            new Notification('Masz wiadomość ✨ • Cezary Rogowski', notifOpts);
                         }
                     } catch(e) {}
                 }
@@ -5524,7 +5518,7 @@
             if (box) {
                 box.innerHTML = `
                     <div style="text-align:center;margin:10px 0;">
-                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${name} w Chrystusie ✨•Š</span>
+                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${name} w Chrystusie ✨</span>
                     </div>
                 `;
             }
@@ -5551,7 +5545,7 @@
 
             let html = `
                 <div style="text-align:center;margin:8px 0;">
-                    <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Początek rozmowy ✨•Š</span>
+                    <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Początek rozmowy ✨</span>
                 </div>
             `;
 
@@ -5776,7 +5770,7 @@
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
         <div style="line-height: 1.45; color: #e2e8f0;">
-            ✨•Š Portal <strong>LUMINA</strong> używa plików cookies w celach analitycznych oraz prawidłowego działania społeczności.
+            ✨ Portal <strong>LUMINA</strong> używa plików cookies w celach analitycznych oraz prawidłowego działania społeczności.
         </div>
         <button type="button" onclick="acceptCookies()" style="background: transparent; border: none; color: #94a3b8; font-size: 16px; cursor: pointer; padding: 2px 6px; line-height: 1;" title="Zamknij">✝️</button>
     </div>
@@ -5855,7 +5849,7 @@
         </div>
     </div>
 
-    <!-- ══════════ MODAL: WYMĂ“G PRAWDZIWEGO ZDJÄCIA TWARZY ══════════ -->
+    <!-- ══════════ MODAL: WYMÓG PRAWDZIWEGO ZDJĘCIA TWARZY ══════════ -->
     <div class="modal-overlay" id="modalRealPhotoRequired" onclick="if(event.target===this) closeModal('modalRealPhotoRequired')" style="z-index: 100003;">
         <div class="modal-card" style="max-width: 480px; text-align: center; background: #0b142e; border: 1.5px solid rgba(245, 158, 11, 0.5); border-radius: 24px; padding: 26px 22px;">
             <button class="modal-close-btn" onclick="closeModal('modalRealPhotoRequired')"><i class="fa-solid fa-xmark"></i></button>
@@ -5878,7 +5872,7 @@
         </div>
     </div>
 
-    <!-- ══════════ MODAL: OPCJE ZDJÄCIA PROFILOWEGO (AWATARA) ══════════ -->
+    <!-- ══════════ MODAL: OPCJE ZDJĘCIA PROFILOWEGO (AWATARA) ══════════ -->
     <div class="modal-overlay" id="modalAvatarOptions" onclick="if(event.target===this) closeModal('modalAvatarOptions')" style="z-index: 100002;">
         <div class="modal-card" style="max-width:440px; text-align:center; background:#0b1329; border:1.5px solid rgba(168,85,247,0.4); border-radius:24px; padding:26px 22px;">
             <button class="modal-close-btn" onclick="closeModal('modalAvatarOptions')"><i class="fa-solid fa-xmark"></i></button>
@@ -5904,7 +5898,7 @@
         </div>
     </div>
 
-    <!-- ══════════ MODAL: OPCJE ZDJÄCIA W TLE (COVER) ══════════ -->
+    <!-- ══════════ MODAL: OPCJE ZDJĘCIA W TLE (COVER) ══════════ -->
     <div class="modal-overlay" id="modalCoverOptions" onclick="if(event.target===this) closeModal('modalCoverOptions')" style="z-index: 100002;">
         <div class="modal-card" style="max-width:440px; text-align:center; background:#0b1329; border:1.5px solid rgba(14,165,233,0.4); border-radius:24px; padding:26px 22px;">
             <button class="modal-close-btn" onclick="closeModal('modalCoverOptions')"><i class="fa-solid fa-xmark"></i></button>

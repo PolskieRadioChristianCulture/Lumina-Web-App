@@ -464,8 +464,7 @@
                     Później
                 </button>
                 <button type="button" class="lumina-update-btn-refresh" id="btnUpdateApplyNow">
-                    <i class="fa-solid fa-bolt"></i> Zaktualizuj teraz ✨
-                </button>
+                    <i class="fa-solid fa-bolt"></i> Zaktualizuj teraz ✨ </button>
             </div>
         `;
 
@@ -595,8 +594,7 @@
                 </div>
 
                 <button type="button" class="lumina-pwa-btn-install" style="width:100%; justify-content:center; padding:12px; margin-top:8px;" onclick="document.getElementById('luminaIosModal').classList.remove('open')">
-                    Rozumiem, dziękuję! ✨
-                </button>
+                    Rozumiem, dziękuję! ✨ </button>
             </div>
         `;
         document.body.appendChild(modal);
