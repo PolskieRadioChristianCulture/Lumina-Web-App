@@ -380,8 +380,28 @@ if (auth) {
             // Load user profile from Firestore
             try {
                 const userDoc = await getDoc(doc(db, 'lumina_profiles', user.uid));
+                const isRadioCC = (user.email && (user.email.toLowerCase() === 'radiochristianculture@gmail.com' || user.email.toLowerCase().startsWith('radiochristianculture'))) || (user.displayName && user.displayName.toLowerCase() === 'christian culture');
+                
                 if (userDoc.exists()) {
                     currentProfileState = { uid: user.uid, ...userDoc.data() };
+                    
+                    // Auto-fix if radiochristianculture was previously assigned cezaryrgowski slug
+                    if (isRadioCC && currentProfileState.slug === 'cezaryrgowski') {
+                        currentProfileState.slug = 'radiocc';
+                        currentProfileState.name = 'Christian Culture';
+                        currentProfileState.job = 'Misja & Radio Christian Culture';
+                        currentProfileState.isMissionAccount = true;
+                        currentProfileState.status = 'Oficjalne Konto';
+                        currentProfileState.church = 'Christian Culture';
+                        currentProfileState.verse = '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”';
+                        currentProfileState.verseRef = '— Ewangelia wg św. Marka 16, 15';
+                        currentProfileState.bio = 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.';
+                        try {
+                            await setDoc(doc(db, 'lumina_profiles', user.uid), currentProfileState, { merge: true });
+                            await setDoc(doc(db, 'lumina_profiles', 'radiocc'), currentProfileState, { merge: true });
+                        } catch(e) {}
+                    }
+                    
                     try {
                         localStorage.setItem('lumina_current_user_profile', JSON.stringify(currentProfileState));
                         localStorage.setItem('lumina_my_profile', JSON.stringify(currentProfileState));
@@ -391,33 +411,40 @@ if (auth) {
                         }
                     } catch(e) {}
                 } else {
-                    // Check if Cezary Rogowski by email/name
-                    const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.includes('christianculture') || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
-                    const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta'));
-                    const cleanSlug = isCezary ? 'cezaryrgowski' : (isWioletta ? 'wiolettarogowska' : ('u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000)));
+                    // Check if Cezary Rogowski / Christian Culture / Wioletta by email/name
+                    const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.toLowerCase() === 'studiodees7@gmail.com' || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
+                    const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta')) || (user.email && user.email.includes('wioletta1240'));
+                    
+                    let cleanSlug;
+                    if (isRadioCC) cleanSlug = 'radiocc';
+                    else if (isCezary) cleanSlug = 'cezaryrgowski';
+                    else if (isWioletta) cleanSlug = 'wiolettarogowska';
+                    else cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000);
+                    
                     const userAvatar = user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));
                     
                     currentProfileState = {
                         uid: user.uid,
                         slug: cleanSlug,
-                        name: user.displayName || (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')),
+                        name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
                         email: user.email || '',
                         avatar: userAvatar,
-                        age: isCezary ? 51 : (isWioletta ? 50 : 28),
-                        city: (isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska',
-                        status: isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler'),
-                        job: isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Członek Społeczności LUMINA ✨'),
-                        church: 'Wspólnota Chrześcijańska',
+                        age: isRadioCC ? 0 : (isCezary ? 51 : (isWioletta ? 50 : 28)),
+                        city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska'),
+                        status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler')),
+                        job: isRadioCC ? 'Misja & Radio Christian Culture' : (isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Członek Społeczności LUMINA ✨')),
+                        isMissionAccount: isRadioCC || false,
+                        church: isRadioCC ? 'Christian Culture' : 'Wspólnota Chrześcijańska',
                         denom: 'Rzymskokatolickie',
-                        verse: '„Wszystko mogę w Tym, który mnie umacnia”',
-                        verseRef: 'Flp 4, 13',
-                        bio: 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
-                        tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+                        verse: isRadioCC ? '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”' : (isCezary ? '„Ja i mój dom służyć będziemy Panu.”' : '„Wszystko mogę w Tym, który mnie umacnia”'),
+                        verseRef: isRadioCC ? '— Ewangelia wg św. Marka 16, 15' : (isCezary ? '— Księga Jozuego 24, 15' : 'Flp 4, 13'),
+                        bio: isRadioCC ? 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.' : (isCezary ? 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.' : 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.'),
+                        tags: isRadioCC ? ['Christian Culture', 'Radio CC', 'Misja', 'Ewangelizacja', 'Muzyka Chwały'] : ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
                         photos: [userAvatar],
                         posts: [
                             {
                                 id: 'post_' + Date.now(),
-                                author: user.displayName || (isCezary ? 'Cezary Rogowski' : 'Użytkownik LUMINA'),
+                                author: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : 'Użytkownik LUMINA')),
                                 authorSlug: cleanSlug,
                                 authorAvatar: userAvatar,
                                 time: 'Przed chwilą • ✨ Witaj w LUMINA',
@@ -429,7 +456,7 @@ if (auth) {
                         ],
                         visibility: 'public',
                         pin: '7777',
-                        matchScore: '98%',
+                        matchScore: '100%',
                         createdAt: serverTimestamp(),
                         updatedAt: serverTimestamp()
                     };
@@ -443,6 +470,9 @@ if (auth) {
                             }
                             console.log(`Lumina: Automatycznie utworzono nowy profil Firestore dla użytkownika Google [${cleanSlug}] ☁️✨`);
                         } catch(saveErr) {
+                            console.warn('Błąd automatycznego zapisu profilu Google w Firestore:', saveErr.message);
+                        }
+                    }
                             console.warn('Błąd automatycznego zapisu profilu Google w Firestore:', saveErr.message);
                         }
                     }
@@ -546,45 +576,71 @@ export async function loginWithGoogle() {
 
         const user = result.user;
         let existingProfile = null;
+        const isRadioCC = (user.email && (user.email.toLowerCase() === 'radiochristianculture@gmail.com' || user.email.toLowerCase().startsWith('radiochristianculture'))) || (user.displayName && user.displayName.toLowerCase() === 'christian culture');
+        
         try {
             const docSnap = await getDoc(doc(activeDb, 'lumina_profiles', user.uid));
-            if (docSnap.exists()) existingProfile = docSnap.data();
+            if (docSnap.exists()) {
+                existingProfile = docSnap.data();
+                if (isRadioCC && existingProfile.slug === 'cezaryrgowski') {
+                    existingProfile.slug = 'radiocc';
+                    existingProfile.name = 'Christian Culture';
+                    existingProfile.job = 'Misja & Radio Christian Culture';
+                    existingProfile.isMissionAccount = true;
+                    existingProfile.status = 'Oficjalne Konto';
+                    existingProfile.church = 'Christian Culture';
+                    existingProfile.verse = '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”';
+                    existingProfile.verseRef = '— Ewangelia wg św. Marka 16, 15';
+                    existingProfile.bio = 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.';
+                    try {
+                        await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
+                        await setDoc(doc(activeDb, 'lumina_profiles', 'radiocc'), existingProfile, { merge: true });
+                    } catch(e) {}
+                }
+            }
         } catch(e) {}
 
         if (!existingProfile) {
-            const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.includes('christianculture') || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
-            const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta'));
-            const cleanSlug = isCezary ? 'cezaryrgowski' : (isWioletta ? 'wiolettarogowska' : ('u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000)));
+            const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.toLowerCase() === 'studiodees7@gmail.com' || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
+            const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta')) || (user.email && user.email.includes('wioletta1240'));
+            
+            let cleanSlug;
+            if (isRadioCC) cleanSlug = 'radiocc';
+            else if (isCezary) cleanSlug = 'cezaryrgowski';
+            else if (isWioletta) cleanSlug = 'wiolettarogowska';
+            else cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000);
+            
             const userAvatar = user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));
             
             existingProfile = {
                 uid: user.uid,
                 slug: cleanSlug,
-                name: user.displayName || (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')),
+                name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
                 email: user.email || '',
-                age: isCezary ? 51 : (isWioletta ? 50 : 28),
-                city: (isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska',
+                age: isRadioCC ? 0 : (isCezary ? 51 : (isWioletta ? 50 : 28)),
+                city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska'),
                 gender: isWioletta ? 'kobieta' : (isCezary ? 'mezczyzna' : 'kobieta'),
                 lookingFor: isWioletta ? 'mezczyzna' : 'kobieta',
                 denom: 'Rzymskokatolickie',
-                church: 'Wspólnota Chrześcijańska',
-                job: isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Społeczność LUMINA ✨'),
-                status: isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler'),
-                verse: isCezary ? '„Ja i mój dom służyć będziemy Panu.”' : (isWioletta ? '„Niewiastę dzielną któż znajdzie? Jej wartość przewyższa perły.”' : '„Wszystko mogę w Tym, który mnie umacnia”'),
-                verseRef: isCezary ? '— Księga Jozuego 24, 15' : (isWioletta ? '— Przypowieści Salomona 31, 10' : 'Flp 4, 13'),
-                bio: isCezary ? 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture.' : (isWioletta ? 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej rodziny zakorzenionej w Bogu.' : 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.'),
+                church: isRadioCC ? 'Christian Culture' : 'Wspólnota Chrześcijańska',
+                job: isRadioCC ? 'Misja & Radio Christian Culture' : (isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Społeczność LUMINA ✨')),
+                status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler')),
+                isMissionAccount: isRadioCC || false,
+                verse: isRadioCC ? '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”' : (isCezary ? '„Ja i mój dom służyć będziemy Panu.”' : '„Wszystko mogę w Tym, który mnie umacnia”'),
+                verseRef: isRadioCC ? '— Ewangelia wg św. Marka 16, 15' : (isCezary ? '— Księga Jozuego 24, 15' : 'Flp 4, 13'),
+                bio: isRadioCC ? 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.' : (isCezary ? 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture.' : (isWioletta ? 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej rodziny zakorzenionej w Bogu.' : 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.')),
                 avatar: userAvatar,
                 cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
                 visibility: 'public',
                 pin: '7777',
-                matchScore: '98%',
-                tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+                matchScore: '100%',
+                tags: isRadioCC ? ['Christian Culture', 'Radio CC', 'Misja', 'Ewangelizacja', 'Muzyka Chwały'] : ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
                 photos: [userAvatar],
                 posts: [
                     {
                         id: 'post_' + Date.now(),
-                        author: user.displayName || (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')),
+                        author: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
                         authorSlug: cleanSlug,
                         authorAvatar: userAvatar,
                         time: 'Przed chwilą • ✨ Witaj w LUMINA',
