@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
     <!-- Google Analytics -->
@@ -548,6 +548,163 @@
             border-color: #ec4899;
             color: #fff;
             box-shadow: 0 4px 16px rgba(236, 72, 153, 0.35);
+        }
+
+        /* ──────────────────── SMART DAYPART LIVE BROADCAST RIBBON ──────────────────── */
+        .lumina-daypart-ribbon {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(9, 13, 26, 0.98));
+            border: 1px solid rgba(250, 204, 21, 0.28);
+            border-radius: 18px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .lumina-daypart-ribbon::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2.5px;
+            background: linear-gradient(90deg, #f59e0b, #ec4899, #38bdf8, #10b981);
+        }
+        .daypart-live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .live-pulse-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 12px #ef4444;
+            animation: livePulseAnim 1.4s infinite ease-in-out;
+            flex-shrink: 0;
+        }
+        @keyframes livePulseAnim {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.35); opacity: 0.65; }
+        }
+        .daypart-badge-tag {
+            font-size: 0.70rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: rgba(239, 68, 68, 0.18);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #fca5a5;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .daypart-info-title {
+            font-size: 0.94rem;
+            font-weight: 800;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 3px;
+        }
+        .daypart-info-sub {
+            font-size: 0.76rem;
+            color: #94a3b8;
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+        .daypart-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-daypart-radio {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            padding: 7px 14px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            text-decoration: none;
+            font-family: inherit;
+        }
+        .btn-daypart-radio:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(245, 158, 11, 0.45);
+        }
+
+        /* ──────────────────── SMART SORT BAR ──────────────────── */
+        .smart-sort-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .smart-sort-bar::-webkit-scrollbar { display: none; }
+        .sort-tabs-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .sort-tab-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: inherit;
+        }
+        .sort-tab-btn:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.09);
+        }
+        .sort-tab-btn.active {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.2), rgba(236, 72, 153, 0.2));
+            border-color: #facc15;
+            color: #facc15;
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.2);
+        }
+        .sort-smart-badge {
+            background: linear-gradient(135deg, #f59e0b, #ec4899);
+            color: #fff;
+            font-size: 0.62rem;
+            font-weight: 900;
+            padding: 1px 5px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* ──────────────────── FOUNDER MISSION CREATOR BAR ──────────────────── */
@@ -2353,6 +2510,57 @@
             <!-- Query Filter Banner -->
             <div id="queryFilterBanner" style="display:none; align-items:center; justify-content:space-between; padding:12px 18px; border-radius:14px; background:rgba(168,85,247,0.16); border:1px solid rgba(168,85,247,0.4); margin-bottom:16px; font-size:0.88rem; color:#e2e8f0;"></div>
 
+            <!-- ══════════ LUMINA LIVE BROADCAST DAYPART RIBBON ══════════ -->
+            <div class="lumina-daypart-ribbon" id="luminaLiveDaypartBar">
+                <div class="daypart-live-indicator">
+                    <div class="live-pulse-dot"></div>
+                    <div>
+                        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                            <span class="daypart-badge-tag"><i class="fa-solid fa-satellite-dish"></i> NA ŻYWO</span>
+                            <span id="daypartClock" style="font-size:0.75rem; font-weight:800; color:#cbd5e1; font-variant-numeric:tabular-nums;"></span>
+                            <span id="daypartTimeBadge" style="font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:10px; background:rgba(250,204,21,0.15); color:#facc15; border:1px solid rgba(250,204,21,0.3);"></span>
+                        </div>
+                        <div class="daypart-info-title" id="daypartTitle">
+                            <i class="fa-solid fa-sun" style="color:#f59e0b;" id="daypartIcon"></i> <span id="daypartName">Pasmo Poranne & Śniadaniowa na Żywo</span>
+                        </div>
+                        <div class="daypart-info-sub" id="daypartDesc">
+                            Trwa transmisja: Śniadaniowa na Żywo • Rozważanie Cezarego Rogowskiego „Dobrze, że jesteś”
+                        </div>
+                    </div>
+                </div>
+                <div class="daypart-actions">
+                    <button type="button" class="btn-daypart-radio" onclick="if (typeof toggleRadio === 'function') toggleRadio(); else if (typeof LuminaRadio !== 'undefined') LuminaRadio.toggle();" title="Słuchaj Radia CC na Żywo">
+                        <i class="fa-solid fa-radio"></i> <span id="daypartRadioBtnText">Radio CC Live</span>
+                    </button>
+                    <a href="cctv24-pl.html" target="_blank" rel="noopener noreferrer" class="btn-daypart-radio" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; box-shadow:none; text-decoration:none;" title="Otwórz Program Telewizyjny">
+                        <i class="fa-solid fa-tv"></i> Program TV
+                    </a>
+                </div>
+            </div>
+
+            <!-- ══════════ SMART FEED SORTING BAR ══════════ -->
+            <div class="smart-sort-bar" id="smartSortBar">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:0.75rem; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px; display:inline-flex; align-items:center; gap:4px;">
+                        <i class="fa-solid fa-arrow-down-wide-short" style="color:#facc15;"></i> Sortowanie:
+                    </span>
+                </div>
+                <div class="sort-tabs-group">
+                    <button type="button" class="sort-tab-btn active" id="sortBtnSmart" onclick="setFeedSortMode('smart_daypart', this)" title="Inteligentne dopasowanie postów do pory dnia i ramówki">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color:#facc15;"></i> Dopasowane do Ramówki <span class="sort-smart-badge">SMART</span>
+                    </button>
+                    <button type="button" class="sort-tab-btn" id="sortBtnNewest" onclick="setFeedSortMode('newest', this)" title="Najnowsze wpisy chronologicznie">
+                        <i class="fa-solid fa-clock"></i> Najnowsze
+                    </button>
+                    <button type="button" class="sort-tab-btn" id="sortBtnPopular" onclick="setFeedSortMode('popular', this)" title="Najpopularniejsze wpisy (najwięcej Amen i serc)">
+                        <i class="fa-solid fa-fire" style="color:#f43f5e;"></i> Popularne
+                    </button>
+                    <button type="button" class="sort-tab-btn" id="sortBtnDevotions" onclick="setFeedSortMode('devotions', this)" title="Rozważania i modlitwy na samej górze">
+                        <i class="fa-solid fa-book-bible" style="color:#38bdf8;"></i> Rozważania & Słowo
+                    </button>
+                </div>
+            </div>
+
             <!-- ══════════ FEED STREAM ══════════ -->
             <div class="feed-stream" id="feedStream1x1">
                 <!-- Dynamic stream content injected via JS -->
@@ -3762,42 +3970,203 @@
             renderFeed();
         }
 
+        // ══════════════════════════════════════════════════════════════════════
+        // 📻 INTELIGENTNY SILNIK SORTOWANIA FEEDU I RAMÓWKI (LUMINA SMART DAYPART)
+        // ══════════════════════════════════════════════════════════════════════
+        
+        let currentSortMode = 'smart_daypart';
+
+        const LUMINA_DAYPARTS = {
+            morning: {
+                id: 'morning',
+                name: 'Pasmo Poranne & Śniadaniowa na Żywo',
+                timeRange: '05:00 – 11:00',
+                icon: 'fa-sun',
+                iconColor: '#f59e0b',
+                currentShow: 'Śniadaniowa na Żywo • Słowo na Dzień • Kawa ☕',
+                desc: 'Trwa transmisja: Śniadaniowa na Żywo • Rozważanie Cezarego Rogowskiego „Dobrze, że jesteś”',
+                featuredChannelIds: ['dzj_916', 'cctv24_pl', 'studium_live', 'stream_scene_169', 'biblia_spiewana_169'],
+                keywords: ['poran', 'kawa', 'śniadan', 'wschód', 'start', 'dzień dobry', 'dobrze, że jesteś', 'lato z jezusem', 'werset dnia', 'budzić', 'słońce', 'motywacj']
+            },
+            midday: {
+                id: 'midday',
+                name: 'Pasmo Dnia & Cuda Każdego Dnia',
+                timeRange: '11:00 – 17:00',
+                icon: 'fa-cloud-sun',
+                iconColor: '#10b981',
+                currentShow: 'Cuda Każdego Dnia • Świadectwa Wiary • Społeczność ✨',
+                desc: 'Trwa pasmo: Cuda Każdego Dnia (Andrzej Thiel) • Kurs Apokalipsa • Świadectwa nawróceń',
+                featuredChannelIds: ['apokalipsa_live', 'swiadectwa_live', 'cctv24_pl', 'biblia_spiewana_169', 'dzj_916'],
+                keywords: ['cuda każdego dnia', 'świadectw', 'nawróc', 'przemian', 'spotkan', 'relacj', 'kobiety', 'podcast', 'pasj', 'szlak', 'gór', 'twórczość', 'sztuka', 'architekt', 'miłość']
+            },
+            evening: {
+                id: 'evening',
+                name: 'Pasmo Wieczorne & Zjednoczeni za Polskę',
+                timeRange: '17:00 – 22:00',
+                icon: 'fa-hands-praying',
+                iconColor: '#ec4899',
+                currentShow: 'Zjednoczeni za Polskę • Śpiewajmy Panu • Modlitwa 🙏',
+                desc: 'Trwa pasmo: Ogólnopolska Modlitwa Zjednoczeni za Polskę • Blok Muzyczny Śpiewajmy Panu',
+                featuredChannelIds: ['zapolske_live', 'spiewajmy_panu', 'kino_live', 'studium_live', 'apokalipsa_live'],
+                keywords: ['modlitw', 'zjednoczeni', 'polsce', 'ojczyzn', 'wieczór', 'uwielbien', 'śpiewaj', 'pieśn', 'chwał', 'film', 'intencj', 'pokój', 'wstawien', 'rodzin']
+            },
+            night: {
+                id: 'night',
+                name: 'Pasmo Nocne & Instrumental Worship',
+                timeRange: '22:00 – 05:00',
+                icon: 'fa-moon',
+                iconColor: '#a855f7',
+                currentShow: 'CCTV24 Instrumental Worship • Nocne Czuwanie 🌌',
+                desc: 'Trwa pasmo nocne: Muzyka Instrumentalna 24/7 • Nocna Biblia Audio • Głęboki Pokój i Wyciszenie',
+                featuredChannelIds: ['cctv24_worship', 'nocne_czuwanie', 'stream_scene_169', 'stream_scene_916', 'biblia_spiewana_169'],
+                keywords: ['worship', 'noc', 'czuwan', 'spokój', 'sen', 'cisz', 'odpoczynek', 'psalm', 'kojąc', 'instrumental', 'wyciszenie', 'obecność', 'bezpieczeństwo', 'nadziei']
+            }
+        };
+
+        function getCurrentDaypart() {
+            const now = new Date();
+            const hour = now.getHours();
+            if (hour >= 5 && hour < 11) return LUMINA_DAYPARTS.morning;
+            if (hour >= 11 && hour < 17) return LUMINA_DAYPARTS.midday;
+            if (hour >= 17 && hour < 22) return LUMINA_DAYPARTS.evening;
+            return LUMINA_DAYPARTS.night;
+        }
+
+        function calculatePostScore(post, daypart, mode) {
+            if (mode === 'newest') {
+                return extractSortTs(post);
+            }
+            if (mode === 'popular') {
+                return (post.amen || 0) * 1.5 + (post.likes || 0) * 1.0;
+            }
+            if (mode === 'devotions') {
+                let devScore = 0;
+                if (post.isDevotion || post.authorSlug === 'cezaryrgowski' || post.authorSlug === 'andrzejthiel') devScore += 5000;
+                return devScore + (extractSortTs(post) / 1000000);
+            }
+
+            // mode === 'smart_daypart' (domyślny inteligentny algorytm)
+            let score = 0;
+
+            // 1. Recency Base (Posty z ostatnich 24-72h mają wysoką bazę)
+            const postTs = extractSortTs(post);
+            if (postTs > 0) {
+                const ageHours = Math.max(0, (Date.now() - postTs) / (3600 * 1000));
+                if (ageHours <= 24) {
+                    score += (24 - ageHours) * 12; // do +288 pkt
+                } else if (ageHours <= 72) {
+                    score += (72 - ageHours) * 3; // do +144 pkt
+                }
+            }
+
+            // 2. Daypart Topic & Keywords Match
+            const content = ((post.title || '') + ' ' + (post.text || '') + ' ' + (post.time || '') + ' ' + (post.authorRole || '')).toLowerCase();
+            let matches = 0;
+            daypart.keywords.forEach(kw => {
+                if (content.includes(kw)) matches++;
+            });
+            score += Math.min(matches * 50, 200); // do +200 pkt za idealny kontekst pory dnia!
+
+            // 3. Specjalne dopasowanie audycji i autorów do ramówki
+            if (daypart.id === 'morning') {
+                if (post.authorSlug === 'cezaryrgowski' || content.includes('dobrze, że jesteś')) score += 220;
+                if (content.includes('kawa') || content.includes('śniadan')) score += 120;
+            } else if (daypart.id === 'midday') {
+                if (post.authorSlug === 'andrzejthiel' || content.includes('cuda każdego dnia')) score += 220;
+                if (content.includes('świadectw') || post.type === 'post') score += 100;
+            } else if (daypart.id === 'evening') {
+                if (content.includes('zjednoczeni') || content.includes('modlitw') || content.includes('ojczyzn')) score += 220;
+                if (content.includes('uwielbien') || content.includes('śpiewajmy')) score += 140;
+            } else if (daypart.id === 'night') {
+                if (content.includes('worship') || content.includes('czuwanie') || content.includes('cctv24 instrumental')) score += 220;
+                if (content.includes('pokój') || content.includes('psalm') || content.includes('sen')) score += 150;
+            }
+
+            // 4. Zaangażowanie społeczności (Amen i Polubienia)
+            const engagement = (post.amen || 0) * 0.4 + (post.likes || 0) * 0.2;
+            score += Math.min(engagement, 80);
+
+            return score;
+        }
+
+        function getSmartOrderedBroadcastChannels(daypart) {
+            const featured = daypart.featuredChannelIds || [];
+            const ordered = [];
+            
+            // 1. Kanały wyznaczone dla bieżącego pasma ramówki
+            featured.forEach(fid => {
+                const idx = LUMINA_BROADCAST_CHANNELS.findIndex(ch => ch.id === fid);
+                if (idx !== -1 && !ordered.includes(idx)) {
+                    ordered.push(idx);
+                }
+            });
+
+            // 2. Reszta kanałów w rotacji
+            LUMINA_BROADCAST_CHANNELS.forEach((_, i) => {
+                if (!ordered.includes(i)) {
+                    ordered.push(i);
+                }
+            });
+
+            return ordered;
+        }
+
+        function setFeedSortMode(mode, btn) {
+            currentSortMode = mode;
+            document.querySelectorAll('.sort-tab-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderFeed();
+            if (typeof showToast === 'function') {
+                if (mode === 'smart_daypart') showToast('🌟 Wpisy dopasowane do aktualnej pory dnia i ramówki!');
+                else if (mode === 'newest') showToast('⚡ Sortowanie: Najnowsze wpisy');
+                else if (mode === 'popular') showToast('🔥 Sortowanie: Najpopularniejsze wpisy');
+                else if (mode === 'devotions') showToast('📖 Sortowanie: Rozważania i Słowo Boże');
+            }
+        }
+
+        function updateLiveDaypartUI(daypart) {
+            const clockEl = document.getElementById('daypartClock');
+            const timeBadge = document.getElementById('daypartTimeBadge');
+            const descEl = document.getElementById('daypartDesc');
+            const iconEl = document.getElementById('daypartIcon');
+            const nameEl = document.getElementById('daypartName');
+
+            const now = new Date();
+            const pad = n => n < 10 ? '0' + n : n;
+            const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
+            if (clockEl) clockEl.textContent = timeStr;
+            if (timeBadge) timeBadge.textContent = daypart.timeRange;
+            if (iconEl) {
+                iconEl.className = `fa-solid ${daypart.icon}`;
+                iconEl.style.color = daypart.iconColor;
+            }
+            if (nameEl) nameEl.textContent = daypart.name;
+            if (descEl) descEl.textContent = daypart.desc;
+        }
+
+        window.setFeedSortMode = setFeedSortMode;
+
         // ── Render 1:1 Feed with Interleaved CC Mission Ads & Admin Pinning ──
         function renderFeed() {
             const container = document.getElementById('feedStream1x1');
             if (!container) return;
+
+            const daypart = getCurrentDaypart();
+            updateLiveDaypartUI(daypart);
 
             const userPosts = getUserFeedPosts();
             const campaigns = getStoredCampaigns();
             const pinnedPostIds = getPinnedPostIds();
             const isAdmin = localStorage.getItem('lumina_admin') === '1';
 
-            // ── Each broadcast channel appears as a separate card between posts ──
-            // Fisher-Yates shuffle to build a random cycle of all 15 channels
-            if (!window._broadcastCycleOrder || window._broadcastCycleOrder.length === 0) {
-                const arr = LUMINA_BROADCAST_CHANNELS.map((_, i) => i);
-                for (let i = arr.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [arr[i], arr[j]] = [arr[j], arr[i]];
-                }
-                window._broadcastCycleOrder = arr;
-                window._broadcastCyclePos = 0;
-            }
+            // ── Dynamic Smart Broadcast Channel Ordering per Daypart ──
+            const smartCycleOrder = getSmartOrderedBroadcastChannels(daypart);
+            let broadcastCyclePos = 0;
 
-            // Returns the next broadcast channel slot (cycles through all 15, then reshuffles)
             function nextBroadcastSlot() {
-                const pos = (window._broadcastCyclePos || 0) % window._broadcastCycleOrder.length;
-                const idx = window._broadcastCycleOrder[pos];
-                window._broadcastCyclePos = pos + 1;
-                if (window._broadcastCyclePos >= window._broadcastCycleOrder.length) {
-                    const arr = LUMINA_BROADCAST_CHANNELS.map((_, i) => i);
-                    for (let i = arr.length - 1; i > 0; i--) {
-                        const j = Math.floor(Math.random() * (i + 1));
-                        [arr[i], arr[j]] = [arr[j], arr[i]];
-                    }
-                    window._broadcastCycleOrder = arr;
-                    window._broadcastCyclePos = 0;
-                }
+                const idx = smartCycleOrder[broadcastCyclePos % smartCycleOrder.length];
+                broadcastCyclePos++;
                 return { id: 'broadcast_ch_' + idx, _isBroadcastChannel: true, _chIdx: idx, type: 'all' };
             }
 
@@ -3836,15 +4205,13 @@
             // Push all admin-pinned posts right under Daily Reflection
             pinnedItems.forEach(pi => combined.push(pi));
 
-            // First broadcast channel card below pinned items
+            // First broadcast channel card below pinned items (smart matching current daypart!)
             combined.push(nextBroadcastSlot());
 
             let cIndex = 0;
 
-            // ── 👑 INTELIGENTNE SORTOWANIE: najnowsze posty na górze ──
-            // Używamy extractSortTs() który rozumie: Firestore Timestamp, Unix ms, ISO string,
-            // polskie etykiety daty "22 SIERPNIA 2026", "Dzisiaj, 16:20", "Wczoraj, 17:50" itp.
-            normalUserPosts.sort((a, b) => extractSortTs(b) - extractSortTs(a));
+            // ── 👑 INTELIGENTNE SORTOWANIE POSTÓW WG PORY DNIA I RAMÓWKI ──
+            normalUserPosts.sort((a, b) => calculatePostScore(b, daypart, currentSortMode) - calculatePostScore(a, daypart, currentSortMode));
 
             normalUserPosts.forEach((post, idx) => {
                 combined.push(post);
@@ -5747,6 +6114,13 @@
                 }
             };
             initRealtimeSync();
+
+            // Automatyczna aktualizacja zegara i pasma na żywo co 30 sekund
+            setInterval(() => {
+                if (typeof updateLiveDaypartUI === 'function' && typeof getCurrentDaypart === 'function') {
+                    updateLiveDaypartUI(getCurrentDaypart());
+                }
+            }, 30000);
         });
         window.addEventListener('storage', () => {
             syncFounderAvatar();
