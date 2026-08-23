@@ -1211,24 +1211,25 @@
         
         /* Non-overlapping Top Left Badges */
         .card-new-badge {
-            position: absolute;
-            top: 46px; /* Posadowione pionowo poniżej procentu dopasowania (top: 12px) */
-            left: 12px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #fff;
-            font-size: 0.68rem;
-            font-weight: 800;
-            padding: 3px 9px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(16,185,129,0.45);
-            border: 1px solid rgba(255,255,255,0.35);
-            z-index: 5;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            letter-spacing: 0.5px;
-            height: 24px;
-            box-sizing: border-box;
+            position: absolute !important;
+            top: 12px !important;
+            left: 78px !important; /* Idealnie OBOK procentu dopasowania (top: 12px, left: 12px) */
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            color: #fff !important;
+            font-size: 0.68rem !important;
+            font-weight: 800 !important;
+            padding: 4px 10px !important;
+            border-radius: 20px !important;
+            box-shadow: 0 2px 8px rgba(16,185,129,0.45) !important;
+            border: 1px solid rgba(255,255,255,0.35) !important;
+            z-index: 6 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+            letter-spacing: 0.5px !important;
+            height: 25px !important;
+            box-sizing: border-box !important;
+            white-space: nowrap !important;
         }
 .card-match {
             position: absolute;
@@ -2398,7 +2399,7 @@
 
                 <div class="profile-card" id="card_profile_noemi" data-profile-slug="noemi" onclick="openCommunityProfile('noemi')" data-category="kobieta mlodzi">
                     <div class="card-photo">
-                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                        <div class="card-new-badge">
                             <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
                         </div>
                         <img src="avatar_noemi.webp" onerror="this.src='avatar_noemi.jpg'" alt="Noemi" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
@@ -2495,7 +2496,7 @@
                 <!-- 7. Dawid (Mężczyzna) -->
                 <div class="profile-card" id="card_profile_dawid" data-profile-slug="dawid" onclick="openCommunityProfile('dawid')" data-category="mezczyzna mlodzi">
                     <div class="card-photo">
-                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                        <div class="card-new-badge">
                             <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
                         </div>
                         <img src="avatar_sara.webp" onerror="this.src='avatar_sara.jpg'" alt="Dawid" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
@@ -2528,7 +2529,7 @@
                 <!-- 9. Weronika (Kobieta) -->
                 <div class="profile-card" id="card_profile_weronika" data-profile-slug="weronika" onclick="openCommunityProfile('weronika')" data-category="kobieta mlodzi">
                     <div class="card-photo">
-                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                        <div class="card-new-badge">
                             <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
                         </div>
                         <img src="avatar_widget_ania.webp" onerror="this.src='avatar_widget_ania.jpg'" alt="Weronika" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
@@ -2561,7 +2562,7 @@
                 <!-- 11. Tomasz (Mężczyzna) -->
                 <div class="profile-card" id="card_profile_tomek" data-profile-slug="tomek" onclick="openCommunityProfile('tomek')" data-category="mezczyzna mlodzi">
                     <div class="card-photo">
-                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                        <div class="card-new-badge">
                             <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
                         </div>
                         <img src="avatar_widget_tomek.webp" onerror="this.src='avatar_widget_tomek.jpg'" alt="Tomasz" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
@@ -2596,7 +2597,7 @@
                 <!-- 12. Magdalena (Kobieta) -->
                 <div class="profile-card" id="card_profile_magdalena" data-profile-slug="magdalena" onclick="openCommunityProfile('magdalena')" data-category="kobieta">
                     <div class="card-photo" style="position:relative;">
-                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                        <div class="card-new-badge">
                             <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
                         </div>
                         <img src="avatar_magdalena.webp" onerror="this.src='avatar_magdalena.png'" alt="Magdalena" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
@@ -2629,7 +2630,7 @@
                 <!-- 14. Anna (Kobieta) -->
                 <div class="profile-card" id="card_profile_anna" data-profile-slug="anna" onclick="openCommunityProfile('anna')" data-category="kobieta mlodzi">
                     <div class="card-photo">
-                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                        <div class="card-new-badge">
                             <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
                         </div>
                         <img src="avatar_widget_ania.webp" onerror="this.src='avatar_widget_ania.jpg'" alt="Anna" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
@@ -2662,7 +2663,7 @@
                 <!-- 16. Piotr (Mężczyzna) -->
                 <div class="profile-card" id="card_profile_piotr" data-profile-slug="piotr" onclick="openCommunityProfile('piotr')" data-category="mezczyzna mlodzi">
                     <div class="card-photo" style="position:relative;">
-                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                        <div class="card-new-badge">
                             <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
                         </div>
                         <img src="lumina_piotr2.webp" onerror="this.src='lumina_piotr2.jpg'" alt="Piotr" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
@@ -2679,7 +2680,7 @@
                 <!-- 17. Julia (Kobieta) -->
                 <div class="profile-card" id="card_profile_julia" data-profile-slug="julia" onclick="openCommunityProfile('julia')" data-category="kobieta mlodzi">
                     <div class="card-photo" style="position:relative;">
-                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                        <div class="card-new-badge">
                             <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
                         </div>
                         <img src="lumina_julia2.webp" onerror="this.src='lumina_julia2.jpg'" alt="Julia" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
@@ -4363,7 +4364,7 @@
                             cloudCardsHtml += `
                                 <div class="profile-card cloud-registered-user-card" id="card_profile_${lKey}" data-profile-slug="${lKey}" data-category="${localProf.gender || 'spolecznosc'} spolecznosc" onclick="openCommunityProfile('${lKey}')">
                                     <div class="card-photo" style="position:relative;">
-                                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                                        <div class="card-new-badge">
                                             <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
                                         </div>
                                         ${isVideoMedia ? `
