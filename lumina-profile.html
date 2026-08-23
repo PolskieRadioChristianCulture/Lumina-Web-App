@@ -2361,20 +2361,42 @@
             <h3 style="font-size: 1.35rem; margin-bottom: 4px; font-family:'Outfit',sans-serif;"><i class="fa-solid fa-pen-to-square" style="color:#c084fc;"></i> Edytuj Swój Profil</h3>
             <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 18px;">Wprowadzone dane i wgrane zdjęcia są natychmiast widoczne na profilu i stronie głównej LUMINA.</p>
             
-            <!-- Photo Upload Quick Controls -->
+            <!-- Photo & Video Upload Quick Controls -->
             <div style="background: rgba(255,255,255,0.04); border: 1px dashed rgba(168,85,247,0.4); border-radius: 14px; padding: 14px; margin-bottom: 18px;">
-                <div style="font-size: 0.82rem; font-weight: 700; color: #facc15; margin-bottom: 10px;"><i class="fa-solid fa-camera"></i> Wgraj Zdjęcia z Dysku / Telefonu:</div>
+                <div style="font-size: 0.82rem; font-weight: 700; color: #facc15; margin-bottom: 10px;"><i class="fa-solid fa-camera"></i> Wgraj Zdjęcia i Wideo z Dysku / Telefonu:</div>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button type="button" onclick="document.getElementById('avatarFileInput').click()" style="flex: 1; min-width: 170px; padding: 10px 14px; border-radius: 10px; background: rgba(59,130,246,0.2); border: 1px solid #3b82f6; color: #fff; font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fa-solid fa-user-circle" style="color: #60a5fa; font-size: 1.1rem;"></i> Wgraj Zdjęcie Profilowe
+                    <button type="button" onclick="document.getElementById('avatarFileInput').click()" style="flex: 1; min-width: 140px; padding: 10px 12px; border-radius: 10px; background: rgba(59,130,246,0.2); border: 1px solid #3b82f6; color: #fff; font-family: inherit; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                        <i class="fa-solid fa-user-circle" style="color: #60a5fa; font-size: 1rem;"></i> Zdjęcie Profilowe
                     </button>
-                    <button type="button" onclick="document.getElementById('coverFileInput').click()" style="flex: 1; min-width: 170px; padding: 10px 14px; border-radius: 10px; background: rgba(168,85,247,0.2); border: 1px solid #a855f7; color: #fff; font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fa-solid fa-panorama" style="color: #c084fc; font-size: 1.1rem;"></i> Wgraj Zdjęcie w Tle
+                    <button type="button" onclick="document.getElementById('coverFileInput').click()" style="flex: 1; min-width: 140px; padding: 10px 12px; border-radius: 10px; background: rgba(168,85,247,0.2); border: 1px solid #a855f7; color: #fff; font-family: inherit; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                        <i class="fa-solid fa-panorama" style="color: #c084fc; font-size: 1rem;"></i> Zdjęcie w Tle
                     </button>
-                    <button type="button" onclick="document.getElementById('galleryFileInput').click()" style="flex: 1; min-width: 170px; padding: 10px 14px; border-radius: 10px; background: rgba(34,197,94,0.2); border: 1px solid #22c55e; color: #fff; font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fa-solid fa-images" style="color: #86efac; font-size: 1.1rem;"></i> Dodaj do Galerii
+                    <button type="button" onclick="document.getElementById('galleryFileInput').click()" style="flex: 1; min-width: 140px; padding: 10px 12px; border-radius: 10px; background: rgba(34,197,94,0.2); border: 1px solid #22c55e; color: #fff; font-family: inherit; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                        <i class="fa-solid fa-images" style="color: #86efac; font-size: 1rem;"></i> Galeria Zdjęć
+                    </button>
+                    <button type="button" onclick="document.getElementById('videoFileInput').click()" style="flex: 1; min-width: 140px; padding: 10px 12px; border-radius: 10px; background: rgba(236,72,153,0.2); border: 1px solid #ec4899; color: #fff; font-family: inherit; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                        <i class="fa-solid fa-video" style="color: #f472b6; font-size: 1rem;"></i> Film Profilowy (Wideo)
                     </button>
                 </div>
+                <input type="file" id="videoFileInput" accept="video/mp4,video/webm,video/quicktime" style="display:none;" onchange="handleProfileVideoUpload(event)">
+            </div>
+
+            <!-- ══════════ WYBÓR MEDIUM NA KARUZELĘ GŁÓWNĄ (ZDJĘCIE LUB FILM) ══════════ -->
+            <div style="margin-bottom: 18px; padding: 14px; border-radius: 14px; background: linear-gradient(135deg, rgba(236,72,153,0.08), rgba(139,92,246,0.08)); border: 1.5px solid rgba(236,72,153,0.35);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <label style="display:flex; align-items:center; gap:8px; font-size:0.84rem; font-weight:800; color:#f472b6;">
+                        <i class="fa-solid fa-star" style="color:#facc15;"></i> Wizytówka na Karuzeli Głównej LUMINA
+                    </label>
+                    <span id="currentCarouselMediaLabel" style="font-size:0.72rem; color:#a855f7; font-weight:700; background:rgba(168,85,247,0.15); padding:2px 8px; border-radius:10px;">Awatar</span>
+                </div>
+                <p style="font-size:0.75rem; color:#94a3b8; margin-bottom:12px; line-height:1.4;">
+                    Wybierz, które zdjęcie z Twojej galerii lub wideo profilowe ma wyświetlać się oficjalnie na stronie głównej w karuzeli:
+                </p>
+                <div id="carouselMediaSelectionGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap:10px; margin-bottom:6px;">
+                    <!-- Dynamicznie generowane kafelki wyboru -->
+                </div>
+                <input type="hidden" id="editCarouselMediaUrl" value="">
+                <input type="hidden" id="editCarouselMediaType" value="photo">
             </div>
 
             <form id="editProfileForm" onsubmit="saveProfileEdits(event)">
@@ -4037,6 +4059,7 @@
                     fullGrid.innerHTML = photos.map((src, idx) => `
                         <div class="photo-item-box" style="position:relative;">
                             <img src="${src}" alt="Photo" class="photo-item-img" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
+                            ${(data.carouselMediaUrl === src) ? `<div style="position:absolute; top:8px; left:8px; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:10px; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(0,0,0,0.5); z-index:10;"><i class="fa-solid fa-star" style="color:#facc15;"></i> Karuzela</div>` : (isOwnerMode ? `<button type="button" onclick="setAsCarouselFeaturedMedia('${src}', 'photo')" title="Ustaw na karuzeli głównej" style="position:absolute; top:8px; left:8px; width:28px; height:28px; border-radius:50%; background:rgba(15,23,42,0.85); border:1px solid rgba(250,204,21,0.6); color:#facc15; display:flex; align-items:center; justify-content:center; font-size:0.75rem; cursor:pointer; z-index:10;"><i class="fa-regular fa-star"></i></button>` : '')}
                             ${isOwnerMode ? `<button type="button" class="photo-delete-badge" style="display:flex; z-index:20;" onclick="deletePhoto(event, ${idx})" title="Usuń zdjęcie z galerii"><i class="fa-solid fa-trash-can"></i></button>` : ''}
                         </div>
                     `).join('');
@@ -4691,6 +4714,165 @@
             e.target.value = '';
         }
 
+        
+        // ══════════════════════════════════════════════════════════════════════════
+        // LUMINA CAROUSEL FEATURED MEDIA ENGINE (Photo / Video Selection)
+        // ══════════════════════════════════════════════════════════════════════════
+        
+        function renderCarouselMediaSelectionGrid(curProfile) {
+            const grid = document.getElementById('carouselMediaSelectionGrid');
+            if (!grid) return;
+            const data = curProfile || getProfileData() || {};
+            
+            const activeUrl = document.getElementById('editCarouselMediaUrl')?.value || data.carouselMediaUrl || data.avatar || 'lumina_icon.jpg';
+            const activeType = document.getElementById('editCarouselMediaType')?.value || data.carouselMediaType || 'photo';
+
+            const items = [];
+            
+            // 1. Avatar photo
+            if (data.avatar) {
+                items.push({
+                    url: data.avatar,
+                    type: 'photo',
+                    label: 'Awatar Profilu',
+                    thumb: data.avatar
+                });
+            }
+            
+            // 2. Video if present
+            const videoUrl = data.avatarVideo || data.carouselVideo;
+            if (videoUrl) {
+                items.push({
+                    url: videoUrl,
+                    type: 'video',
+                    label: '🎬 Film (Wideo)',
+                    thumb: data.avatar || 'lumina_icon.jpg',
+                    isVideo: true
+                });
+            }
+            
+            // 3. Gallery photos
+            if (Array.isArray(data.photos)) {
+                data.photos.forEach((pUrl, idx) => {
+                    if (pUrl && pUrl !== data.avatar) {
+                        items.push({
+                            url: pUrl,
+                            type: 'photo',
+                            label: 'Zdjęcie #' + (idx + 1),
+                            thumb: pUrl
+                        });
+                    }
+                });
+            }
+
+            let html = '';
+            items.forEach((item, i) => {
+                const isSelected = (item.url === activeUrl && item.type === activeType) || (i === 0 && !data.carouselMediaUrl);
+                const borderStyle = isSelected ? 'border: 2.5px solid #ec4899; box-shadow: 0 0 14px rgba(236,72,153,0.5);' : 'border: 1px solid rgba(255,255,255,0.15); opacity: 0.75;';
+                
+                html += `
+                    <div onclick="selectCarouselMedia('${escapeForInlineJs(item.url)}', '${item.type}')" style="position:relative; cursor:pointer; border-radius:10px; overflow:hidden; height:100px; background:#0f172a; transition:all 0.2s; ${borderStyle}">
+                        ${item.isVideo ? `
+                            <video src="${escapeHtml(item.url)}" muted loop playsinline poster="${escapeHtml(item.thumb)}" style="width:100%; height:100%; object-fit:cover; display:block;"></video>
+                            <div style="position:absolute; top:4px; left:4px; background:rgba(0,0,0,0.7); color:#fff; font-size:0.6rem; font-weight:800; padding:2px 6px; border-radius:6px;"><i class="fa-solid fa-play" style="color:#ec4899;"></i> WIDEO</div>
+                        ` : `
+                            <img src="${escapeHtml(item.thumb)}" alt="${escapeHtml(item.label)}" style="width:100%; height:100%; object-fit:cover; display:block;">
+                        `}
+                        <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(15,23,42,0.85); color:#fff; font-size:0.65rem; font-weight:700; padding:3px 4px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                            ${escapeHtml(item.label)}
+                        </div>
+                        ${isSelected ? `
+                            <div style="position:absolute; top:4px; right:4px; width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; display:flex; align-items:center; justify-content:center; font-size:0.65rem; box-shadow:0 2px 6px rgba(0,0,0,0.5);">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+            
+            const labelEl = document.getElementById('currentCarouselMediaLabel');
+            if (labelEl) {
+                labelEl.textContent = activeType === 'video' ? '🎬 Film Profilowy' : '⭐ Zdjęcie Profilowe';
+            }
+        }
+
+        window.selectCarouselMedia = function(url, type) {
+            const urlInput = document.getElementById('editCarouselMediaUrl');
+            const typeInput = document.getElementById('editCarouselMediaType');
+            if (urlInput) urlInput.value = url;
+            if (typeInput) typeInput.value = type;
+            renderCarouselMediaSelectionGrid();
+        };
+
+        window.setAsCarouselFeaturedMedia = async function(mediaUrl, mediaType = 'photo') {
+            if (!mediaUrl) return;
+            const slug = getRequestedUserSlug();
+            const cur = getProfileData() || {};
+            cur.carouselMediaUrl = mediaUrl;
+            cur.carouselMediaType = mediaType;
+            if (mediaType === 'video') {
+                cur.avatarVideo = mediaUrl;
+                cur.carouselVideo = mediaUrl;
+            }
+            window._cloudProfileData = cur;
+            try {
+                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
+                localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
+            } catch(e) {}
+            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                try {
+                    await window.LuminaDB.saveProfileToCloud(slug, cur);
+                } catch(e) {}
+            }
+            renderPhotos();
+            renderProfile();
+            showToast(mediaType === 'video' ? '🎬 Film profilowy ustawiony jako główny w karuzeli!' : '⭐ Zdjęcie zostało ustawione jako wizytówka w karuzeli!');
+        };
+
+        window.handleProfileVideoUpload = function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 50 * 1024 * 1024) {
+                showToast('⛔ Film jest zbyt duży (max 50MB). Wybierz krótsze wideo.');
+                return;
+            }
+            showToast('Przetwarzanie wideo profilowego... 🎬');
+            const reader = new FileReader();
+            reader.onload = async function(evt) {
+                const videoDataUrl = evt.target.result;
+                const slug = getRequestedUserSlug();
+                const cur = getProfileData() || {};
+                cur.avatarVideo = videoDataUrl;
+                cur.carouselVideo = videoDataUrl;
+                cur.carouselMediaUrl = videoDataUrl;
+                cur.carouselMediaType = 'video';
+                window._cloudProfileData = cur;
+                try {
+                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                    localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                    localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
+                    localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
+                } catch(err) {}
+                if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                    try {
+                        await window.LuminaDB.saveProfileToCloud(slug, cur);
+                    } catch(err) {}
+                }
+                const urlInput = document.getElementById('editCarouselMediaUrl');
+                const typeInput = document.getElementById('editCarouselMediaType');
+                if (urlInput) urlInput.value = videoDataUrl;
+                if (typeInput) typeInput.value = 'video';
+                renderCarouselMediaSelectionGrid(cur);
+                renderProfile();
+                showToast('Film profilowy wgrany i ustawiony na karuzeli! 🎬✨');
+            };
+            reader.readAsDataURL(file);
+        };
+
         function openEditProfileModal(section) {
             const slug = getRequestedUserSlug();
             // Automatically unlock owner mode when user clicks edit
@@ -4714,6 +4896,14 @@
             document.getElementById('visPrivateRadio').checked = isPriv;
             document.getElementById('visPublicRadio').checked = !isPriv;
             updateVisibilityRadioUI();
+            
+            const curMediaUrl = data.carouselMediaUrl || data.avatar || '';
+            const curMediaType = data.carouselMediaType || (data.avatarVideo && data.carouselMediaType === 'video' ? 'video' : 'photo');
+            const urlInput = document.getElementById('editCarouselMediaUrl');
+            const typeInput = document.getElementById('editCarouselMediaType');
+            if (urlInput) urlInput.value = curMediaUrl;
+            if (typeInput) typeInput.value = curMediaType;
+            renderCarouselMediaSelectionGrid(data);
 
             document.getElementById('editProfileModal').classList.add('open');
 
@@ -4741,6 +4931,8 @@
             const tagsRaw = document.getElementById('editTags')?.value;
             const newPin = document.getElementById('editPin')?.value?.trim();
             const selectedVisibility = document.getElementById('visPrivateRadio')?.checked ? 'private' : 'public';
+            const selectedCarouselMediaUrl = document.getElementById('editCarouselMediaUrl')?.value || cur.carouselMediaUrl || cur.avatar || '';
+            const selectedCarouselMediaType = document.getElementById('editCarouselMediaType')?.value || cur.carouselMediaType || 'photo';
 
             const updated = {
                 ...cur,
@@ -4755,6 +4947,8 @@
                 bio: bioVal !== undefined && bioVal !== '' ? bioVal : (cur.bio || ''),
                 pin: newPin || cur.pin || '7777',
                 visibility: selectedVisibility || cur.visibility || 'public',
+                carouselMediaUrl: selectedCarouselMediaUrl,
+                carouselMediaType: selectedCarouselMediaType,
                 tags: (tagsRaw !== undefined && tagsRaw.trim() !== '') ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : (cur.tags || [])
             };
 
@@ -5957,6 +6151,9 @@
             </div>
             <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top: 14px; flex-wrap:wrap;">
                 <div id="lightboxCaption" style="color: #f8fafc; font-size: 0.92rem; font-weight: 700; background: rgba(15, 23, 42, 0.85); padding: 8px 22px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 4px 16px rgba(0,0,0,0.5); text-align: center;"></div>
+                <button type="button" id="btnLightboxSetCarousel" onclick="setAsCarouselFeaturedMedia(currentLightboxPhotoSrc, 'photo')" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 8px 18px; border-radius: 30px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 16px rgba(236,72,153,0.4); transition: transform 0.2s, background 0.2s;">
+                    <i class="fa-solid fa-star" style="color: #facc15;"></i> Ustaw na Karuzeli Strony Głównej
+                </button>
                 <button type="button" class="btn-delete-lightbox-photo" onclick="deleteCurrentLightboxPhoto()" style="background: rgba(225, 29, 72, 0.9); color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 8px 18px; border-radius: 30px; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 16px rgba(225,29,72,0.4); transition: transform 0.2s, background 0.2s;">
                     <i class="fa-solid fa-trash-can"></i> Usuń z galerii
                 </button>
