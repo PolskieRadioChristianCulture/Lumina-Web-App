@@ -4322,6 +4322,9 @@
                             cloudCardsHtml += `
                                 <div class="profile-card cloud-registered-user-card" id="card_profile_${lKey}" data-profile-slug="${lKey}" data-category="${localProf.gender || 'spolecznosc'} spolecznosc" onclick="openCommunityProfile('${lKey}')">
                                     <div class="card-photo" style="position:relative;">
+                                        <div class="card-new-badge" style="position:absolute; top:12px; left:12px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:12px; box-shadow:0 2px 8px rgba(16,185,129,0.45); border:1px solid rgba(255,255,255,0.35); z-index:3; display:flex; align-items:center; gap:4px; letter-spacing:0.5px;">
+                                            <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                                        </div>
                                         ${isVideoMedia ? `
                                             <video src="${mediaUrl}" autoplay muted loop playsinline poster="${userAvatar}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"></video>
                                             <div class="card-video-badge" style="position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.65); backdrop-filter:blur(6px); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; gap:4px; z-index:3;">

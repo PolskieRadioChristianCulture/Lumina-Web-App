@@ -3068,6 +3068,8 @@ export function formatRichTextAndMedia(rawText) {
 
 // Global window attachment for seamless cross-script integration
 window.LuminaDB = {
+    isProfileNew,
+
     onAuthChange,
     getCurrentUser,
     getCurrentProfile,
@@ -3367,3 +3369,35 @@ window.LuminaDB.listenToFounderTelemetry = listenToFounderTelemetry;
 window.LuminaDB.saveAgentNoteToCloud = saveAgentNoteToCloud;
 window.LuminaDB.getAgentNotesFromCloud = getAgentNotesFromCloud;
 window.LuminaDB.updateAgentNoteStatusInCloud = updateAgentNoteStatusInCloud;
+
+export function isProfileNew(p) {
+    if (!p) return false;
+    if (p.isNew === true) return true;
+    
+    let createdTime = 0;
+    if (p.createdAt) {
+        if (typeof p.createdAt === 'number') createdTime = p.createdAt;
+        else if (typeof p.createdAt === 'string') createdTime = new Date(p.createdAt).getTime();
+        else if (p.createdAt.seconds) createdTime = p.createdAt.seconds * 1000;
+        else if (p.createdAt.toMillis) createdTime = p.createdAt.toMillis();
+        else if (p.createdAt.toDate) createdTime = p.createdAt.toDate().getTime();
+    } else if (p.createdAtTimestamp) {
+        if (typeof p.createdAtTimestamp === 'number') createdTime = p.createdAtTimestamp;
+        else if (p.createdAtTimestamp.seconds) createdTime = p.createdAtTimestamp.seconds * 1000;
+        else if (p.createdAtTimestamp.toMillis) createdTime = p.createdAtTimestamp.toMillis();
+        else if (p.createdAtTimestamp.toDate) createdTime = p.createdAtTimestamp.toDate().getTime();
+    } else if (p.registeredAt) {
+        if (typeof p.registeredAt === 'number') createdTime = p.registeredAt;
+        else if (typeof p.registeredAt === 'string') createdTime = new Date(p.registeredAt).getTime();
+    }
+
+    if (createdTime > 0) {
+        const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+        const diff = Date.now() - createdTime;
+        return (diff >= 0 && diff <= SEVEN_DAYS_MS);
+    }
+
+    // Default: If slug starts with u_ (self-registered user), consider new
+    if (p.slug && p.slug.startsWith('u_')) return true;
+    return false;
+}
