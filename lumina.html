@@ -4,6 +4,35 @@
     <!-- Google Analytics -->
     <!-- Google Consent Mode v2 (Default Denied) -->
 <script>
+
+        // ── PANCERNY ROZWIĄZYWACZ AWATARÓW CZATU ──
+        window.resolveChatAvatar = function(senderId, senderName, rawAvatar, isMe = false) {
+            const sId = (senderId || '').toLowerCase().trim();
+            const sName = (senderName || '').toLowerCase().trim();
+
+            if (sId.includes('cezary') || sName.includes('cezary') || sName.includes('dowódca') || sName.includes('nazir') || (isMe && (typeof isUserCommanderAuthorized === 'function' && isUserCommanderAuthorized()))) {
+                return 'avatar_cezary_official.jpg';
+            }
+            if (sId.includes('wioletta') || sName.includes('wioletta')) {
+                return 'avatar_wioletta_official.jpg';
+            }
+            if (sId.includes('andrzej') || sName.includes('andrzej')) {
+                return 'avatar_andrzej_thiel.jpg';
+            }
+            if (sId === 'radiocc' || sName.includes('joshua') || sName.includes('agent ai')) {
+                return 'lumina_icon.jpg';
+            }
+            if (rawAvatar && rawAvatar.length > 5 && !rawAvatar.includes('placeholder') && !rawAvatar.includes('undefined')) {
+                return rawAvatar;
+            }
+            // Spróbuj odnaleźć w profilach bazowych
+            if (window.LUMINA_BASE_PROFILES && window.LUMINA_BASE_PROFILES[sId]?.avatar) {
+                return window.LUMINA_BASE_PROFILES[sId].avatar;
+            }
+            return isMe ? 'avatar_cezary_official.jpg' : 'lumina_icon.jpg';
+        };
+
+
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   
@@ -5932,7 +5961,7 @@
                 const color = '#fff';
                 const radius = isMe ? '16px 16px 4px 16px' : '16px 16px 16px 4px';
                 const time = msg.dateStr || (msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '');
-                const avatarSrc = isMe ? myAvatar : (msg.senderAvatar || 'lumina_icon.jpg');
+                const avatarSrc = window.resolveChatAvatar ? window.resolveChatAvatar(msg.senderId, msg.senderName, msg.senderAvatar, isMe) : (isMe ? 'avatar_cezary_official.jpg' : (msg.senderAvatar || 'lumina_icon.jpg'));
 
                 const reactionsHtml = typeof buildMessageReactionsHtml === 'function' ? buildMessageReactionsHtml(msg, 'public', 'public', myId) : '';
 
