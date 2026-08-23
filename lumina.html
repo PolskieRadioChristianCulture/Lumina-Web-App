@@ -1212,14 +1212,14 @@
         /* Non-overlapping Top Left Badges */
         .card-new-badge {
             position: absolute;
-            top: 12px;
-            left: 68px; /* Positioned cleanly beside .card-match */
+            top: 46px; /* Posadowione pionowo poniżej procentu dopasowania (top: 12px) */
+            left: 12px;
             background: linear-gradient(135deg, #10b981, #059669);
             color: #fff;
             font-size: 0.68rem;
             font-weight: 800;
-            padding: 4px 9px;
-            border-radius: 20px;
+            padding: 3px 9px;
+            border-radius: 12px;
             box-shadow: 0 2px 8px rgba(16,185,129,0.45);
             border: 1px solid rgba(255,255,255,0.35);
             z-index: 5;
@@ -1227,7 +1227,7 @@
             align-items: center;
             gap: 4px;
             letter-spacing: 0.5px;
-            height: 25px;
+            height: 24px;
             box-sizing: border-box;
         }
 .card-match {
@@ -4471,8 +4471,14 @@
                 }
 
                 const matchBadge = card.querySelector('.card-match');
-                if (matchBadge && (p.badge || p.matchScore)) {
-                    matchBadge.textContent = p.badge || p.matchScore;
+                if (matchBadge) {
+                    const liveScore = window.calculateProfileMatchScore ? window.calculateProfileMatchScore(p) : (p.badge || p.matchScore || '96%');
+                    matchBadge.textContent = liveScore;
+                    if (liveScore === '0%') {
+                        matchBadge.style.background = 'rgba(100, 116, 139, 0.55)';
+                        matchBadge.style.color = '#cbd5e1';
+                        matchBadge.style.border = '1px solid rgba(148, 163, 184, 0.4)';
+                    }
                 }
 
                 const nameEl = card.querySelector('.card-name');
