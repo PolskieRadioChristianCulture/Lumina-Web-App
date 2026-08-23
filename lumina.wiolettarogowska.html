@@ -2476,43 +2476,42 @@
 
             <!-- TAB 2: PRIVATE MESSAGES (1:1) -->
             <div id="messengerPrivateView" style="display: none; flex-direction: column; flex: 1; min-height: 0;">
-                <!-- VIEW 2A: CONVERSATIONS LIST -->
-                <div id="dmListView" style="display: flex; flex-direction: column; height: 100%; padding: 14px 18px;">
-                    <!-- Active Conversations list -->
-                    <div id="dmConversationsList" style="overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:8px; margin-bottom:12px; padding-right:4px;">
-                        <!-- Spouse: Cezary Rogowski -->
-                        <div onclick="openChatWith('Cezary Rogowski', 'avatar_cezary_official.jpg', 'cezaryrgowski')" style="display:flex; align-items:center; gap:10px; padding:12px; background:linear-gradient(135deg, rgba(236,72,153,0.15), rgba(139,92,246,0.15)); border:1.5px solid rgba(236,72,153,0.4); border-radius:14px; cursor:pointer; transition:all 0.2s;">
-                            <div style="position:relative;">
-                                <img src="avatar_cezary_official.jpg" alt="Cezary Rogowski" style="width:44px; height:44px; border-radius:50%; object-fit:cover; display:block; border:2px solid #ec4899;">
-                                <span style="position:absolute; bottom:0; right:0; width:11px; height:11px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
-                            </div>
-                            <div style="flex:1; min-width:0;">
-                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                                    <span style="font-weight:800; font-size:0.92rem; color:#fff;">Cezary Rogowski ❤️</span>
-                                    <span style="font-size:0.68rem; color:#facc15; font-weight:700;">Na żywo</span>
-                                </div>
-                                <div style="font-size:0.78rem; color:#f472b6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Kliknij, aby otworzyć bezpieczny czat prywatny 1:1 ✨</div>
-                            </div>
-                            <i class="fa-solid fa-chevron-right" style="color:#ec4899; font-size:0.85rem;"></i>
-                        </div>
+                                <!-- VIEW 2A: CONVERSATIONS LIST & COMMUNITY DIRECTORY WITH INSTANT SEARCH -->
+                <div id="dmListView" style="display: flex; flex-direction: column; height: 100%; padding: 14px 16px; min-height: 0;">
+                    
+                    <!-- Instant Search Bar -->
+                    <div style="position:relative; margin-bottom:10px;">
+                        <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:#c084fc; font-size:0.85rem;"></i>
+                        <input type="text" 
+                               id="dmUserSearchInput" 
+                               placeholder="🔍 Wyszukaj osobę (imię, miasto, rola)..." 
+                               oninput="filterCommunityUsersForDm(this.value)" 
+                               style="width:100%; padding:9px 36px 9px 38px; border-radius:20px; background:rgba(255,255,255,0.06); border:1.5px solid rgba(168,85,247,0.35); color:#fff; font-family:inherit; font-size:0.84rem; outline:none; transition:all 0.2s; box-shadow:0 2px 8px rgba(0,0,0,0.25);">
+                        <button type="button" 
+                                onclick="clearDmUserSearch()" 
+                                id="btnClearDmSearch" 
+                                style="display:none; position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:#cbd5e1; cursor:pointer; padding:2px 6px;">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
 
-                        <div onclick="openChatWith('Anna', 'lumina_anna2.jpg', 'anna')" style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; cursor:pointer; transition:all 0.2s;">
-                            <div style="position:relative;">
-                                <img src="lumina_anna2.jpg" alt="Anna" style="width:40px; height:40px; border-radius:50%; object-fit:cover; display:block;">
-                                <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
-                            </div>
-                            <div style="flex:1; min-width:0;">
-                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                                    <span style="font-weight:700; font-size:0.86rem; color:#fff;">Anna</span>
-                                    <span style="font-size:0.68rem; color:#94a3b8;">Aktywny</span>
-                                </div>
-                                <div style="font-size:0.75rem; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Pozdrawiam serdecznie, niech Bóg błogosławi! ✨</div>
-                            </div>
+                    <!-- Quick Filter Chips -->
+                    <div style="display:flex; gap:6px; margin-bottom:10px; overflow-x:auto; padding-bottom:4px; -webkit-overflow-scrolling:touch;">
+                        <button type="button" class="dm-filter-chip" id="chipDmAll" onclick="setDmFilter('all', this)" style="padding:4px 12px; border-radius:14px; border:none; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-size:0.72rem; font-weight:800; cursor:pointer; white-space:nowrap; box-shadow:0 2px 6px rgba(236,72,153,0.35);">Wszyscy</button>
+                        <button type="button" class="dm-filter-chip" id="chipDmRecent" onclick="setDmFilter('recent', this)" style="padding:4px 12px; border-radius:14px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#94a3b8; font-size:0.72rem; font-weight:700; cursor:pointer; white-space:nowrap;">Rozmowy</button>
+                        <button type="button" class="dm-filter-chip" id="chipDmMission" onclick="setDmFilter('mission', this)" style="padding:4px 12px; border-radius:14px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#94a3b8; font-size:0.72rem; font-weight:700; cursor:pointer; white-space:nowrap;">Liderzy & Misja</button>
+                        <button type="button" class="dm-filter-chip" id="chipDmCommunity" onclick="setDmFilter('community', this)" style="padding:4px 12px; border-radius:14px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#94a3b8; font-size:0.72rem; font-weight:700; cursor:pointer; white-space:nowrap;">Społeczność</button>
+                    </div>
+
+                    <!-- Dynamic Users & Conversations Stream -->
+                    <div id="dmConversationsList" style="overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:8px; margin-bottom:10px; padding-right:2px;">
+                        <div style="text-align:center; padding:20px 0; color:#94a3b8; font-size:0.80rem;">
+                            <i class="fa-solid fa-spinner fa-spin" style="color:#c084fc; margin-right:6px;"></i> Ładowanie społeczności LUMINA...
                         </div>
                     </div>
 
-                    <button type="button" onclick="closeModal('directMessagesModal'); window.location.href='lumina.html#odkrywaj';" style="width:100%; padding:11px; border-radius:24px; background:linear-gradient(90deg,#ec4899,#8b5cf6); border:none; color:#fff; font-weight:800; font-family:inherit; font-size:0.84rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(236,72,153,0.35);">
-                        <i class="fa-solid fa-compass"></i> Odkrywaj Nowe Profile
+                    <button type="button" onclick="closeModal('directMessagesModal'); window.location.href='lumina.html#odkrywaj';" style="width:100%; padding:10px; border-radius:20px; background:linear-gradient(90deg,#ec4899,#8b5cf6); border:none; color:#fff; font-weight:800; font-family:inherit; font-size:0.80rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(236,72,153,0.35);">
+                        <i class="fa-solid fa-compass"></i> Odkrywaj Nowe Profile w Społeczności
                     </button>
                 </div>
 
@@ -4391,6 +4390,168 @@
             }
         }
 
+        
+        // ── BŁYSKAWICZNA WYSZUKIWARKA & KATALOG UŻYTKOWNIKÓW DLA ROZMÓW PRYWATNYCH 🔍✨ ──
+        let dmCommunityUsersCache = [];
+        let currentDmFilter = 'all';
+        let currentDmSearchQuery = '';
+
+        const DEFAULT_COMMUNITY_PROFILES = [
+            { slug: 'cezaryrgowski', name: 'Cezary Rogowski', job: 'Założyciel Christian Culture ✨', city: 'Ostrowiec Świętokrzyski, Polska', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel', isMission: true },
+            { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', job: 'Liderka Społeczności & Współzałożycielka 🌸', city: 'Ostrowiec Świętokrzyski, Polska', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Liderka CC', isMission: true },
+            { slug: 'radiocc', name: 'Misja & Radio Christian Culture', job: 'Oficjalny Nadawca Radiowy & Ewangelizacja 📻', city: 'Polska', avatar: 'avatar_cezary_official.jpg', badge: '🕊️ Misja CC', isMission: true },
+            { slug: 'andrzejthiel', name: 'Andrzej Thiel', job: 'Autor rozważań Cuda Każdego Dnia 📖', city: 'Sieradz, Polska', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Autor CKD', isMission: true },
+            { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', job: 'Oficjalny Kanał Audio & Wideo 🎙️', city: 'Polska', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎙️ Studio CC', isMission: true },
+            { slug: 'osobowoscplus', name: 'Osobowość Plus', job: 'Formacja Chrześcijańska & Psychologia 🕊️', city: 'Polska', avatar: 'logo_osobowosc_plus.jpg', badge: '🕊️ Formacja', isMission: true },
+            { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'u_urszula_7685', name: 'Urszula', job: 'Członkini Społeczności LUMINA 🕊️', city: 'Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'u_anna_3421', name: 'Anna', job: 'Kobiety Christian Culture 🌸', city: 'Kraków, Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false }
+        ];
+
+        async function fetchCommunityUsersDirectory() {
+            if (dmCommunityUsersCache.length > 0) return dmCommunityUsersCache;
+
+            const map = new Map();
+            DEFAULT_COMMUNITY_PROFILES.forEach(p => map.set(p.slug, p));
+
+            try {
+                // 1. Fetch from Firestore REST API
+                const restUrl = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_profiles?pageSize=100';
+                const res = await fetch(restUrl);
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.documents) {
+                        json.documents.forEach(doc => {
+                            const f = doc.fields || {};
+                            const slug = f.slug?.stringValue || doc.name.split('/').pop();
+                            const name = f.name?.stringValue || slug;
+                            const job = f.job?.stringValue || 'Członek Społeczności LUMINA ✨';
+                            const city = f.city?.stringValue || 'Polska';
+                            const avatar = f.avatar?.stringValue || f.carouselMediaUrl?.stringValue || 'lumina_icon.jpg';
+                            const isMission = (slug === 'cezaryrgowski' || slug === 'wiolettarogowska' || slug === 'radiocc' || slug === 'andrzejthiel' || slug === 'studiodobregoslowa' || slug === 'osobowoscplus');
+                            const badge = isMission ? (slug === 'cezaryrgowski' ? '👑 Założyciel' : (slug === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Misja CC')) : '✨ Społeczność';
+
+                            map.set(slug, { slug, name, job, city, avatar, badge, isMission });
+                        });
+                    }
+                }
+            } catch(e) {}
+
+            dmCommunityUsersCache = Array.from(map.values());
+            return dmCommunityUsersCache;
+        }
+
+        function filterCommunityUsersForDm(query) {
+            currentDmSearchQuery = (query || '').trim().toLowerCase();
+            const btnClear = document.getElementById('btnClearDmSearch');
+            if (btnClear) btnClear.style.display = currentDmSearchQuery ? 'block' : 'none';
+            renderDmUsersAndConversations();
+        }
+
+        function clearDmUserSearch() {
+            const input = document.getElementById('dmUserSearchInput');
+            if (input) input.value = '';
+            filterCommunityUsersForDm('');
+        }
+
+        function setDmFilter(filterType, btn) {
+            currentDmFilter = filterType;
+            document.querySelectorAll('.dm-filter-chip').forEach(c => {
+                c.style.background = 'rgba(255,255,255,0.05)';
+                c.style.color = '#94a3b8';
+                c.style.border = '1px solid rgba(255,255,255,0.15)';
+                c.style.boxShadow = 'none';
+                c.style.fontWeight = '700';
+            });
+            if (btn) {
+                btn.style.background = 'linear-gradient(135deg,#ec4899,#8b5cf6)';
+                btn.style.color = '#fff';
+                btn.style.border = 'none';
+                btn.style.boxShadow = '0 2px 6px rgba(236,72,153,0.35)';
+                btn.style.fontWeight = '800';
+            }
+            renderDmUsersAndConversations();
+        }
+
+        async function renderDmUsersAndConversations() {
+            const listEl = document.getElementById('dmConversationsList');
+            if (!listEl) return;
+
+            const users = await fetchCommunityUsersDirectory();
+            const myUser = window.LuminaDB?.getCurrentUser();
+            const myProfile = window.LuminaDB?.getCurrentProfile();
+            const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest';
+            const myId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
+
+            let filtered = users.filter(u => {
+                const normSlug = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(u.slug) : u.slug;
+                if (normSlug === myId) return false; // Nie pokazuj samego siebie na liście odbiorców
+
+                // Filtr tekstowy
+                if (currentDmSearchQuery) {
+                    const matchName = (u.name || '').toLowerCase().includes(currentDmSearchQuery);
+                    const matchCity = (u.city || '').toLowerCase().includes(currentDmSearchQuery);
+                    const matchJob = (u.job || '').toLowerCase().includes(currentDmSearchQuery);
+                    const matchBadge = (u.badge || '').toLowerCase().includes(currentDmSearchQuery);
+                    if (!matchName && !matchCity && !matchJob && !matchBadge) return false;
+                }
+
+                // Filtr kategorii
+                if (currentDmFilter === 'mission') return u.isMission;
+                if (currentDmFilter === 'community') return !u.isMission;
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                listEl.innerHTML = `
+                    <div style="text-align:center; padding:25px 10px; color:#94a3b8;">
+                        <i class="fa-solid fa-user-slash" style="font-size:1.8rem; color:#64748b; margin-bottom:8px; display:block;"></i>
+                        <span style="font-size:0.85rem; font-weight:700;">Nie znaleziono użytkownika dla: "${escapeHtml(currentDmSearchQuery)}"</span>
+                        <div style="font-size:0.75rem; color:#64748b; margin-top:4px;">Spróbuj wpisać inne imię lub miasto.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(u => {
+                const isLeader = u.isMission;
+                const cardBg = isLeader 
+                    ? 'linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))' 
+                    : 'rgba(255,255,255,0.03)';
+                const borderColor = isLeader ? 'rgba(236,72,153,0.35)' : 'rgba(255,255,255,0.08)';
+                const avatarBorder = isLeader ? '#ec4899' : '#a855f7';
+
+                html += `
+                    <div onclick="openChatWith('${escapeForInlineJs(u.name)}', '${escapeForInlineJs(u.avatar)}', '${escapeForInlineJs(u.slug)}')" 
+                         style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:${cardBg}; border:1px solid ${borderColor}; border-radius:14px; cursor:pointer; transition:all 0.2s ease; position:relative;"
+                         onmouseover="this.style.transform='translateY(-1px)'; this.style.borderColor='#ec4899';"
+                         onmouseout="this.style.transform='none'; this.style.borderColor='${borderColor}';">
+                        <div style="position:relative; flex-shrink:0;">
+                            <img src="${escapeHtml(u.avatar || 'lumina_icon.jpg')}" alt="${escapeHtml(u.name)}" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block; border:2px solid ${avatarBorder};">
+                            <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
+                        </div>
+                        <div style="flex:1; min-width:0;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px; gap:6px;">
+                                <span style="font-weight:800; font-size:0.88rem; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(u.name)}</span>
+                                <span style="font-size:0.65rem; color:${isLeader ? '#facc15' : '#38bdf8'}; font-weight:700; flex-shrink:0; background:rgba(0,0,0,0.3); padding:1px 6px; border-radius:6px;">${escapeHtml(u.badge)}</span>
+                            </div>
+                            <div style="font-size:0.74rem; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(u.job || u.city || 'Społeczność LUMINA ✨')}</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:4px; color:#f472b6; font-size:0.75rem; font-weight:700; flex-shrink:0; background:rgba(236,72,153,0.12); padding:4px 8px; border-radius:10px;">
+                            <span>Czat</span> <i class="fa-solid fa-arrow-right" style="font-size:0.65rem;"></i>
+                        </div>
+                    </div>
+                `;
+            });
+
+            listEl.innerHTML = html;
+        }
+
+        function loadPrivateConversationsList() {
+            renderDmUsersAndConversations();
+        }
+
         function returnToConversationsList() {
             if (activeChatUnsubscribe) {
                 activeChatUnsubscribe();
@@ -4400,7 +4561,7 @@
             const listView = document.getElementById('dmListView');
             const chatView = document.getElementById('dmChatRoomView');
             if (listView) listView.style.display = 'flex';
-            if (chatView) chatView.style.display = 'none';
+            if (chatView) chatView.style.display = 'none'; renderDmUsersAndConversations();
         }
 
         function insertChatQuickText(txt) {
