@@ -914,224 +914,19 @@
             <!-- Main Feed Stream -->
             <main class="main-feed-col">
 
-                <!-- 🌟 THE FEATURED POST: 22 SIERPNIA 2026 (DZISIAJ) 🌟 -->
-                <article class="feed-post-card" id="post_cuda_22_sie_2026">
-                    <div class="post-top-header">
-                        <div class="post-author-box">
-                            <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
-                            <div>
-                                <div class="post-author-name">
-                                    Andrzej Thiel
-                                    <span class="post-badge-daily">Cuda Każdego Dnia</span>
-                                </div>
-                                <div class="post-time">22 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny (Dzisiaj)</div>
-                            </div>
-                        </div>
-                        <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
-                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
-                        </button>
+                <!-- ══════════ DYNAMICZNA TABLICA ANDRZEJA (Firestore, na żywo) ══════════ -->
+                <!-- Zastępuje wcześniejsze ręcznie wpisywane karty HTML. Posty "Cuda Każdego
+                     Dnia" trafiają tu automatycznie ze skryptu sync_cuda_kazdego_dnia.js,
+                     który publikuje je do lumina_posts z authorSlug: 'andrzejthiel' — dokładnie
+                     ta sama kolekcja, którą czyta tablica społeczności LUMINA. -->
+                <div id="andrzejPostsContainer">
+                    <div style="text-align:center; padding:40px 20px; color:#94a3b8;">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Wczytywanie rozważań…
                     </div>
+                </div>
 
-                    <div class="post-body">
-                        <div class="post-series-tag">
-                            <i class="fa-solid fa-sun"></i> CUDA KAŻDEGO DNIA! • 22 SIERPNIA 2026
-                        </div>
+            </main>
 
-                        <!-- Featured Devotional Artwork (Cuda Każdego Dnia - 22 sierpnia) -->
-                        <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
-                            <img id="cudaDevotionFeaturedImg" src="cuda_kazdego_dnia_22_sie_2026.jpg" alt="Cuda Każdego Dnia - ZAMIEŃ TROSKĘ W MODLITWĘ!" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block; transition:transform 0.3s ease;" onerror="this.src='cuda_kazdego_dnia_current.jpg'">
-                            <div class="admin-cuda-change-btn-wrap" style="position:absolute; bottom:12px; right:12px;">
-                                <button type="button" class="admin-inline-edit-btn" onclick="document.getElementById('adminCudaGraphicInput').click()" style="width:auto; height:auto; padding:8px 14px; border-radius:20px; background:rgba(15,23,42,0.88); border:1px solid #f59e0b; color:#facc15; font-size:0.78rem; font-weight:800; cursor:pointer; backdrop-filter:blur(6px); display:none; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(0,0,0,0.5);" title="Zmień grafikę tego rozważania">
-                                    <i class="fa-solid fa-camera"></i> Zmień grafikę rozważania
-                                </button>
-                            </div>
-                        </div>
-
-                        <p style="font-weight:700;color:#fef08a;margin-bottom:12px;font-size:1.05rem;">
-                            Przeczytaj i zobacz jak Bóg przemienia twoje życie.
-                        </p>
-
-                        <h2 class="post-title">ZAMIEŃ TROSKĘ W MODLITWĘ!</h2>
-
-                        <div class="post-text-content">
-                            <p style="margin-bottom:14px;">Bardzo spodobało mi się, co pisze autorka Carrie Mars: „Lubię patrzeć, jak szybko jestem w stanie zamienić myśl w modlitwę. Zauważam myśl, która mogłaby wskoczyć do pociągu niepokoju, ale zamiast tego kieruję ją ku Bogu”. Apostoł Paweł pisał: „Niczym się już nie zamartwiajcie, lecz w każdej modlitwie i błaganiu z dziękczynieniem przedstawiajcie Bogu wasze prośby. A pokój Boży, który przewyższa wszelki rozum, będzie strzegł waszych serc i myśli w Chrystusie Jezusie” (Flp.4,6). Coś cię martwi w tej chwili? Co to jest? Nazwij to i szybko zamień tę troskę w modlitwę. Czy wiesz, co tworzy najwięcej niepokoju w naszym życiu? To wyciąganie przedwczesnych wniosków co do okoliczności życiowych. Przypuśćmy, że członek rodziny spóźnia się do domu. Ty zaczynasz wyobrażać sobie różne rzeczy, panikujesz. Zamiast tego raczej pomódl się: „Boże, miej Go w swojej opiece”. Doświadczyłam tego i wiem, że Boży pokój potrafi pokonać największy strach.</p>
-
-                            <p style="margin-bottom:14px;">Ktoś ma mieć operację? Módl się: „Panie, daj mądrość lekarzom, by właściwie przeprowadzili zabieg. Pomóż mu wrócić do pełnego zdrowia”. Bardzo lubię ten moment, kiedy mam przed sobą trudną sprawę, rozmowę i mogę ją delegować Bogu. Mówię wtedy: „Panie, zajmij się tym. Daj mi mądrość, światło, rozeznanie, cierpliwość, których potrzebuję. Pokieruj moimi myślami”. Czujesz, że brakuje ci energii, dopadło cię wyczerpanie, zniechęcenie? Mów: „Panie, dodaj mi siły i wytrwałości, pomóż się wyciszyć i odpocząć”. Jaką modlitwę chcesz przynieś dzisiaj Bogu? Niech to będzie twoim nowym nawykiem – błyskawiczne przekształcanie zmartwienia w modlitwę.</p>
-                        </div>
-
-                        <!-- Prayer highlight block -->
-                        <div class="post-prayer-highlight">
-                            „Panie, ucz mnie, jak przychodzić od razu do Ciebie, kiedy pojawiają się troski czy zmartwienia – i jak oddawać je Tobie. Wiem, że Ty się najlepiej zajmiesz wszystkimi problemami. Bądź ze mną dzisiaj i kieruj moimi myślami. Amen”.
-                            <div style="margin-top:8px;font-size:0.8rem;color:#facc15;font-weight:700;text-align:right;">
-                                /opr. na podst. wiad. B.K./.
-                            </div>
-                        </div>
-
-                        <p style="margin-top:18px;font-weight:800;font-size:1.05rem;color:#fef08a;">
-                            Dziękuję, że jesteś! ❤️
-                        </p>
-                    </div>
-
-                    <!-- Post Actions Bar -->
-                    <div class="post-actions-bar">
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <button class="post-action-btn active-heart" id="btnPostLike" onclick="togglePostLike(this)">
-                                <i class="fa-solid fa-heart"></i> <span id="likeCount">194</span>
-                            </button>
-                            <button class="post-action-btn active-amen" id="btnPostAmen" onclick="togglePostAmen(this)">
-                                <i class="fa-solid fa-hands-praying"></i> Amen (<span id="amenCount">172</span>)
-                            </button>
-                        </div>
-
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <button class="post-action-btn" onclick="openShareAndrzejModal()">
-                                <i class="fa-solid fa-share-nodes"></i> Poleć Rozważanie
-                            </button>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- 🌟 ARCHIVE POST: 21 SIERPNIA 2026 🌟 -->
-                <article class="feed-post-card" id="post_cuda_21_sie_2026" style="opacity:0.95;">
-                    <div class="post-top-header">
-                        <div class="post-author-box">
-                            <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
-                            <div>
-                                <div class="post-author-name">
-                                    Andrzej Thiel
-                                    <span class="post-badge-daily">Cuda Każdego Dnia</span>
-                                </div>
-                                <div class="post-time">21 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny</div>
-                            </div>
-                        </div>
-                        <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
-                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
-                        </button>
-                    </div>
-
-                    <div class="post-body">
-                        <div class="post-series-tag">
-                            <i class="fa-solid fa-sun"></i> CUDA KAŻDEGO DNIA! • 21 SIERPNIA 2026
-                        </div>
-
-                        <!-- Featured Devotional Artwork (Cuda Każdego Dnia) -->
-                        <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
-                            <img src="cuda_kazdego_dnia_21_sie_2026.svg" alt="Cuda Każdego Dnia - Dzień bez modlitwy to dzień bez błogosławieństwa" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" onerror="this.src='cuda_kazdego_dnia_current.jpg'">
-                        </div>
-
-                        <p style="font-weight:700;color:#fef08a;margin-bottom:12px;font-size:1.05rem;">
-                            Przeczytaj i zobacz jak Bóg przemienia twoje życie.
-                        </p>
-
-                        <h2 class="post-title">KIEROWNICA CZY KOŁO ZAPASOWE?</h2>
-
-                        <div class="post-text-content">
-                            <p style="margin-bottom:14px;">Corrie ten Boom postawiła bardzo ciekawe pytanie: „Czym jest dla ciebie modlitwa, kierownicą czy kołem zapasowym?”. Jedna z naszych studentek kursu „Jak się modlić?” napisała: „Kurs bardzo mi pomógł zrozumieć znaczenie modlitwy w moim życiu… Odkąd zaczęłam modlić się więcej, codziennie i od serca, planując i uwzględniając wszystkie szczegóły, które poznałam, czuję, jak Duch Święty mnie dotyka. Teraz nie wyobrażam sobie ani pół dnia bez tego. Nie mogę zrozumieć, jak wcześniej czasami o niej zapominałam. Po kursie modlitwa stała się sensowna i zajęła ważne miejsce w mojej codzienności”. Inny kursant pisze: „Dziękuję Wam bardzo za ten kurs, otworzył mi oczy na to, co znaczy prawdziwie się modlić. Nie chodzi o to, by klepać jakieś regułki, ale by prawdziwie, z czystym sercem i oddaniem spotykać się z Bogiem codziennie, w każdej chwili swojego życia”.</p>
-
-                            <p style="margin-bottom:14px;">Najlepszą radą, jaką możesz znaleźć dla siebie, w Bożym Słowie, jest ta: „Nieustannie się módlcie, w każdej sprawie i we wszelkich okolicznościach dziękujcie Najwyższemu” (1Tes.5,17-18). Jakie są twoje okoliczności dzisiaj? Niesprzyjające modlitwie? Bo masz dużo zajęć, nie możesz znaleźć spokojnej chwili dla siebie? Myślisz, że modlitwa wymaga jakiejś specjalnej oprawy? Bóg chce być z tobą w kontakcie zawsze i wszędzie! Nieustannie! Wow! Czy to możliwe? Możliwe! A wiesz dlaczego? Dlatego że On jest wszędzie z tobą – tuż obok jak dobry towarzysz. W samochodzie, w autobusie, kiedy zmywasz czy zmieniasz pieluchę dziecku. Kiedy się budzisz i kiedy idziesz spać. Pragnie uczestniczyć we wszystkim, co robisz, myślisz. Chce pomóc ci rozładowywać emocje. Służy swoją mądrością, kiedy nie wiesz, co robić, co powiedzieć, prostuje drogę, kiedy masz wątpliwości czy czujesz zagubienie. Zsyła pociechę i pokój. Nie uważasz, że to niezwykłe? Wielki, wszechmocny Bóg tak blisko dla ciebie! Co za ogromny przywilej. On uwielbia, kiedy z Nim rozmawiasz, słyszy cię w każdej chwili. Czego dzisiaj potrzebujesz? Możesz po prostu zawołać „Panie, pomóż”, możesz dziękować i uwielbiać Go za to, kim jest, za piękno stworzenia, które podziwiasz. Bóg czeka na twój głos, i chce czynić w twoim życiu cuda. Jak pisze Dan Hayes: „Jedno wiem, że kiedy się modlę, zbiegi okoliczności się zdarzają, kiedy się nie modlę, nie mają miejsca”.</p>
-                        </div>
-
-                        <!-- Prayer highlight block -->
-                        <div class="post-prayer-highlight">
-                            „Panie, dziękuję Ci za przywilej modlitwy. Że mogę przychodzić bezpośrednio do Ciebie ze wszystkim i w każdej chwili. Ty nigdy nie jesteś zmęczony, nie masz mnie dość. Żadna sprawa nie wydaje Ci się zbyt mała czy błaha. Jak Ojciec zawsze służysz mądrą radą i wsparciem. Chcę całym sercem trwać przy Tobie, przynosić Ci wszystko i słyszeć, co mówisz. Dziękuję, Ojcze, że jesteś ze mną i nigdy mnie nie zostawiasz. W imieniu Pana Jezusa, amen”.
-                            <div style="margin-top:8px;font-size:0.8rem;color:#facc15;font-weight:700;text-align:right;">
-                                /opr. na podst. wiad. B.K./.
-                            </div>
-                        </div>
-
-                        <p style="margin-top:18px;font-weight:800;font-size:1.05rem;color:#fef08a;">
-                            Dziękuję, że jesteś! ❤️
-                        </p>
-                    </div>
-
-                    <!-- Post Actions Bar -->
-                    <div class="post-actions-bar">
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <button class="post-action-btn active-heart" id="btnPostLike" onclick="togglePostLike(this)">
-                                <i class="fa-solid fa-heart"></i> <span id="likeCount">186</span>
-                            </button>
-                            <button class="post-action-btn active-amen" id="btnPostAmen" onclick="togglePostAmen(this)">
-                                <i class="fa-solid fa-hands-praying"></i> Amen (<span id="amenCount">164</span>)
-                            </button>
-                        </div>
-
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <button class="post-action-btn" onclick="openShareAndrzejModal()">
-                                <i class="fa-solid fa-share-nodes"></i> Poleć Rozważanie
-                            </button>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- 🌟 ARCHIVE POST: 20 SIERPNIA 2026 🌟 -->
-                <article class="feed-post-card" id="post_cuda_20_sie_2026" style="opacity:0.95;">
-                    <div class="post-top-header">
-                        <div class="post-author-box">
-                            <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
-                            <div>
-                                <div class="post-author-name">
-                                    Andrzej Thiel
-                                    <span class="post-badge-daily">Cuda Każdego Dnia</span>
-                                </div>
-                                <div class="post-time">20 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny</div>
-                            </div>
-                        </div>
-                        <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
-                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
-                        </button>
-                    </div>
-
-                    <div class="post-body">
-                        <div class="post-series-tag">
-                            <i class="fa-solid fa-sun"></i> CUDA KAŻDEGO DNIA! • 20 SIERPNIA 2026
-                        </div>
-
-                        <!-- Devotional Artwork (20 sierpnia) -->
-                        <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,0.15); box-shadow:0 8px 25px rgba(0,0,0,0.5); background:#0b1428;">
-                            <img src="cuda_kazdego_dnia_20_sie_2026.svg" alt="Cuda Każdego Dnia - Wszystko można zmienić" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;">
-                        </div>
-
-                        <p style="font-weight:700;color:#fef08a;margin-bottom:12px;font-size:1.05rem;">
-                            Przeczytaj i zobacz jak Bóg przemienia twoje życie.
-                        </p>
-
-                        <h2 class="post-title">WSZYSTKO MOŻNA ZMIENIĆ!</h2>
-
-                        <div class="post-text-content">
-Porozmawiajmy jeszcze trochę o tym, co działa w naszym życiu, a co nie i dlaczego. Bo przecież nie chcemy karmić się wiedzą teoretyczną, ale taką, która sprawdza się w codzienności, prawda?
-
-Zadajesz sobie czasem takie pytania? Czy sposób, w jaki wychowuję dziecko, działa? Czy może muszę coś zmienić? Czy moje małżeństwo działa? Czy sposób, w jaki się komunikujemy, rozwiązujemy konflikty, współpracujemy ze sobą jest efektywny? Czy może powinniśmy coś zmienić? Czy moje życie z Bogiem działa? Wierzysz i ufasz, trzymasz się Jego Prawdy i Jego obietnic, czy raczej czujesz frustrację, słabość, zmęczenie ciągłym staraniem się, które nie przynosi efektów? Może mówisz: „Nie, nie działa, ale nie mam pojęcia, jak to zmienić”? „Moje stare sposoby nie działają. Co robić?” Nie widzisz rozwiązania, bo za mocno tkwisz w starych nawykach, koleinach zachowań, z których tak trudno wyjść. Wydaje ci się, że już nic nie da się zmienić i tak widocznie musi być?
-
-Fascynuje mnie, jak pomocne bywa spojrzenie z zewnątrz. Pewnie znasz, program „Kuchenne rewolucje”. To świetny przykład tego, jak potrafimy być ślepi na własne przywary, złe skłonności czy zaniedbania. Właściciel restauracji najczęściej mówi: „Próbowaliśmy już wszystkiego i nie ma efektów”. Bardzo rzadko widzi problem w sobie, a jeszcze rzadziej jest gotów się z nim skonfrontować. Bunt, złość, „jak ona śmie mnie krytykować” – to najczęstsze reakcje. W takich sytuacjach mamy tendencję, by zrzucać winę na okoliczności, na kogoś innego.
-
-A przecież tak nie musi być! Wszystko można zmienić. Przecież „z Bogiem wszystko jest możliwe” – jak zapewnia Jego Słowo (Łk.1,37). Wszystko, czyli nawet to, co tobie, wydaje się już niemożliwe do zmiany. Co to jest w twoim życiu? Potrzebujesz świeżego spojrzenia kogoś z zewnątrz? Szukaj pomocy, porady, porozmawiaj z kimś zaufanym. Nie zostawiaj tego, czekając, aż samo się ułoży.
-                        </div>
-
-                        <!-- Prayer highlight block -->
-                        <div class="post-prayer-highlight">
-                            „Panie, dodaj mi wiary, że z Tobą wszystko jest możliwe! Moje stare sposoby nie działają. Potrzebuję Ciebie w moim życiu. Pokaż mi co wymaga zmiany i pomóż z pokorą przyjąć prawdę. Postaw na mojej drodze kogoś, kto pomoże mi wrócić na właściwe tory i otworzyć się na to co Ty mówisz do mnie”.
-                            <div style="margin-top:8px;font-size:0.8rem;color:#facc15;font-weight:700;text-align:right;">
-                                /opr. na podst. wiad. B.K./
-                            </div>
-                        </div>
-
-                        <p style="margin-top:18px;font-weight:800;font-size:1.05rem;color:#fef08a;">
-                            Dziękuję, że jesteś! ❤️
-                        </p>
-                    </div>
-
-                    <!-- Post Actions Bar -->
-                    <div class="post-actions-bar">
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <button class="post-action-btn active-heart" onclick="togglePostLike(this)">
-                                <i class="fa-solid fa-heart"></i> <span>142</span>
-                            </button>
-                            <button class="post-action-btn active-amen" onclick="togglePostAmen(this)">
-                                <i class="fa-solid fa-hands-praying"></i> Amen (<span>129</span>)
-                            </button>
-                        </div>
-                    </div>
-                </article>
 
             </main>
 
@@ -1220,32 +1015,40 @@ A przecież tak nie musi być! Wszystko można zmienić. Przecież „z Bogiem w
             window.open('https://t.me/share/url?url=' + url + '&text=' + text, '_blank');
         }
 
-        let isLiked = true;
-        let likeCount = 128;
-        function togglePostLike(btn) {
-            isLiked = !isLiked;
-            likeCount += isLiked ? 1 : -1;
-            document.getElementById('likeCount').textContent = likeCount;
-            if (isLiked) {
-                btn.classList.add('active-heart');
-                showToast('❤️ Polubiono rozważanie Andrzeja!');
-            } else {
-                btn.classList.remove('active-heart');
-            }
+        // Reakcje są teraz prawdziwe i trwałe (Firestore), przypięte do konkretnego
+        // ID posta — zamiast jednego fałszywego, wspólnego licznika dla całej strony.
+        const localReactionState = JSON.parse(localStorage.getItem('lumina_andrzej_reactions') || '{}');
+
+        function togglePostLike(btn, postId) {
+            if (!postId) return;
+            const key = postId + '_likes';
+            const already = !!localReactionState[key];
+            localReactionState[key] = !already;
+            localStorage.setItem('lumina_andrzej_reactions', JSON.stringify(localReactionState));
+
+            const countEl = btn.querySelector('span');
+            const current = parseInt(countEl.textContent, 10) || 0;
+            countEl.textContent = current + (already ? -1 : 1);
+            btn.classList.toggle('active-heart', !already);
+
+            window.LuminaDB?.togglePostReactionInCloud?.(postId, 'likes');
+            if (!already) showToast('❤️ Polubiono rozważanie Andrzeja!');
         }
 
-        let isAmen = true;
-        let amenCount = 114;
-        function togglePostAmen(btn) {
-            isAmen = !isAmen;
-            amenCount += isAmen ? 1 : -1;
-            document.getElementById('amenCount').textContent = amenCount;
-            if (isAmen) {
-                btn.classList.add('active-amen');
-                showToast('🙏 Wypowiedziano Amen!');
-            } else {
-                btn.classList.remove('active-amen');
-            }
+        function togglePostAmen(btn, postId) {
+            if (!postId) return;
+            const key = postId + '_amen';
+            const already = !!localReactionState[key];
+            localReactionState[key] = !already;
+            localStorage.setItem('lumina_andrzej_reactions', JSON.stringify(localReactionState));
+
+            const countEl = btn.querySelector('span');
+            const current = parseInt(countEl.textContent, 10) || 0;
+            countEl.textContent = current + (already ? -1 : 1);
+            btn.classList.toggle('active-amen', !already);
+
+            window.LuminaDB?.togglePostReactionInCloud?.(postId, 'amen');
+            if (!already) showToast('🙏 Wypowiedziano Amen!');
         }
 
         let isFollowing = false;
@@ -1288,5 +1091,115 @@ A przecież tak nie musi być! Wszystko można zmienić. Przecież „z Bogiem w
     <input type="file" id="adminCudaGraphicInput" accept="image/*" style="display:none;" onchange="handleCudaGraphicUpload(event)">
     <script src="lumina-admin-profile-suite.js"></script>
     <script src="lumina-premium-video-avatar.js"></script>
+    <script type="module">
+        // ══════════ SILNIK NA ŻYWO: posty Andrzeja Thiela z Firestore ══════════
+        import { collection, query, where, orderBy, limit, onSnapshot }
+            from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+        function escapeHtml(str) {
+            return String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        // Tekst rozważania jest zapisywany jako jeden blok (fullTextFormatted) —
+        // dzielimy go na akapity + wyróżniamy modlitwę (linia zawierająca "Panie," i "amen").
+        function renderBodyParagraphs(text) {
+            const paras = String(text || '').split(/\\n{2,}/).map(p => p.trim()).filter(Boolean);
+            const introLine = paras.find(p => p.startsWith('Przeczytaj i zobacz'));
+            const thanksLine = paras.find(p => p.startsWith('Dziękuję, że jesteś'));
+            const prayerLine = paras.find(p => /Panie,/.test(p) && /amen/i.test(p));
+            const bodyParas = paras.filter(p => p !== introLine && p !== thanksLine && p !== prayerLine && !p.startsWith('/opr.'));
+
+            let html = '';
+            if (introLine) html += `<p style="font-weight:700;color:#fef08a;margin-bottom:12px;font-size:1.05rem;">${escapeHtml(introLine)}</p>`;
+            html += '<div class="post-text-content">' + bodyParas.map(p => `<p style="margin-bottom:14px;">${escapeHtml(p)}</p>`).join('') + '</div>';
+            if (prayerLine) {
+                html += `<div class="post-prayer-highlight">${escapeHtml(prayerLine)}
+                    <div style="margin-top:8px;font-size:0.8rem;color:#facc15;font-weight:700;text-align:right;">/opr. na podst. wiad. B.K./.</div>
+                </div>`;
+            }
+            if (thanksLine) html += `<p style="margin-top:18px;font-weight:800;font-size:1.05rem;color:#fef08a;">${escapeHtml(thanksLine)}</p>`;
+            return html;
+        }
+
+        function extractDisplayTitle(fullTitle) {
+            // "CUDA KAŻDEGO DNIA! 22 SIERPNIA 2026. ZAMIEŃ TROSKĘ W MODLITWĘ!" → samo "ZAMIEŃ TROSKĘ W MODLITWĘ!"
+            const parts = String(fullTitle || '').split('. ');
+            return parts.length > 1 ? parts.slice(1).join('. ') : fullTitle;
+        }
+
+        function renderPost(id, p, isFirst) {
+            const title = escapeHtml(extractDisplayTitle(p.title));
+            const seriesLabel = escapeHtml((p.time || '').split('•')[0].trim() || p.time || '');
+            return `
+                <article class="feed-post-card" id="post_${escapeHtml(id)}" ${isFirst ? '' : 'style="opacity:0.95;"'}>
+                    <div class="post-top-header">
+                        <div class="post-author-box">
+                            <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
+                            <div>
+                                <div class="post-author-name">Andrzej Thiel <span class="post-badge-daily">Cuda Każdego Dnia</span></div>
+                                <div class="post-time">${escapeHtml(p.time || '')}${isFirst ? ' (Dzisiaj)' : ''}</div>
+                            </div>
+                        </div>
+                        <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
+                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                        </button>
+                    </div>
+                    <div class="post-body">
+                        <div class="post-series-tag"><i class="fa-solid fa-sun"></i> ${seriesLabel}</div>
+                        ${p.image ? `
+                        <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
+                            <img src="${escapeHtml(p.image)}" alt="${title}" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" onerror="this.src='lumina_logo.jpg'">
+                        </div>` : ''}
+                        <h2 class="post-title">${title}</h2>
+                        ${renderBodyParagraphs(p.text)}
+                    </div>
+                    <div class="post-actions-bar">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <button class="post-action-btn" onclick="togglePostLike(this, '${escapeHtml(id)}')">
+                                <i class="fa-solid fa-heart"></i> <span>${parseInt(p.likes, 10) || 0}</span>
+                            </button>
+                            <button class="post-action-btn" onclick="togglePostAmen(this, '${escapeHtml(id)}')">
+                                <i class="fa-solid fa-hands-praying"></i> Amen (<span>${parseInt(p.amen, 10) || 0}</span>)
+                            </button>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <button class="post-action-btn" onclick="openShareAndrzejModal()"><i class="fa-solid fa-share-nodes"></i> Poleć Rozważanie</button>
+                        </div>
+                    </div>
+                </article>`;
+        }
+
+        function startAndrzejFeed(retriesLeft = 40) {
+            if (!window.luminaDb) {
+                if (retriesLeft > 0) return setTimeout(() => startAndrzejFeed(retriesLeft - 1), 250);
+                document.getElementById('andrzejPostsContainer').innerHTML = '<div style="text-align:center;padding:40px;color:#94a3b8;">Nie udało się połączyć z bazą.</div>';
+                return;
+            }
+            const q = query(
+                collection(window.luminaDb, 'lumina_posts'),
+                where('authorSlug', '==', 'andrzejthiel'),
+                orderBy('createdAtTimestamp', 'desc'),
+                limit(20)
+            );
+            onSnapshot(q, (snap) => {
+                const container = document.getElementById('andrzejPostsContainer');
+                if (snap.empty) {
+                    container.innerHTML = '<div style="text-align:center;padding:40px;color:#94a3b8;">Rozważania pojawią się tutaj automatycznie każdego dnia.</div>';
+                    return;
+                }
+                container.innerHTML = snap.docs.map((d, i) => renderPost(d.id, d.data(), i === 0)).join('');
+            }, (err) => {
+                console.error('[Andrzej Feed]', err);
+                document.getElementById('andrzejPostsContainer').innerHTML = '<div style="text-align:center;padding:40px;color:#94a3b8;">Błąd wczytywania rozważań.</div>';
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => startAndrzejFeed());
+        } else {
+            startAndrzejFeed();
+        }
+    </script>
 </body>
 </html>
+

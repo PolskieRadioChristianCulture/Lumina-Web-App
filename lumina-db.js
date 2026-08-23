@@ -1870,6 +1870,7 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
         receiverId: receiverId,
         text: messageObj.text || '',
         type: messageObj.type || 'text',
+        ...(messageObj.imageUrl ? { imageUrl: messageObj.imageUrl } : {}),
         status: 'sent',
         isRead: false,
         readAt: null,
@@ -2026,6 +2027,7 @@ export async function sendPublicChatMessage(messageObj) {
         senderBadge: senderBadge,
         text: messageObj.text || '',
         type: messageObj.type || 'text',
+        ...(messageObj.imageUrl ? { imageUrl: messageObj.imageUrl } : {}),
         seenBy: [{
             id: fromId,
             name: senderName,

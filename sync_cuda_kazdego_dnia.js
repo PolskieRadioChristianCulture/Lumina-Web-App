@@ -2,15 +2,27 @@
  * ══════════════════════════════════════════════════════════════════════════
  * LUMINA - AUTOMATYCZNA SYNCHRONIZACJA "CUDA KAŻDEGO DNIA"
  * ══════════════════════════════════════════════════════════════════════════
- * Skrypt pobiera najnowsze rozważanie i grafikę ze strony:
- * https://szukajacboga.pl/channel/cuda-kazdego-dnia
- * i publikuje je automatycznie w bazie Firestore oraz lokalnych zasobach portalu.
+ * Skrypt pobiera WSZYSTKIE dostępne rozważania (z możliwością nadrobienia
+ * zaległości) i grafiki ze strony:
+ * https://szukajacboga.pl/strona/cuda-kazdego-dnia-wszystkie-rozwazania
+ * i publikuje je automatycznie:
+ *   1. w Firestore (dokument "current" — zachowane dla wstecznej zgodności),
+ *   2. na tablicy społeczności LUMINA (kolekcja lumina_posts),
+ *   3. na profilu Andrzeja Thiela (ta sama kolekcja, filtrowana po authorSlug —
+ *      patrz dynamiczny silnik w lumina.andrzejthiel.html).
  */
 
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import sharp from 'sharp';
+
+let sharp = null;
+try {
+  const sharpModule = await import('sharp');
+  sharp = sharpModule.default || sharpModule;
+} catch (e) {
+  // sharp is optional; direct image buffer write will be used as fallback
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,6 +45,16 @@ const MONTH_NAMES_PL = [
   'LIPCA', 'SIERPNIA', 'WRZEŚNIA', 'PAŹDZIERNIKA', 'LISTOPADA', 'GRUDNIA'
 ];
 
+// Strona z pełnym archiwum — pozwala nadrobić zaległości, nie tylko pobrać "najnowsze".
+const ARCHIVE_URL = 'https://szukajacboga.pl/strona/cuda-kazdego-dnia-wszystkie-rozwazania';
+// Ile brakujących rozważań publikować maksymalnie w jednym uruchomieniu skryptu
+// (zabezpieczenie przed zalaniem tablicy setkami postów przy pierwszym uruchomieniu).
+const MAX_BACKFILL_PER_RUN = 10;
+
+function formatDatePl(dd, mm, yyyy) {
+  return `${parseInt(dd, 10)} ${MONTH_NAMES_PL[parseInt(mm, 10) - 1]} ${yyyy}`;
+}
+
 /**
  * Pobiera stronę HTML z odpowiednim nagłówkiem User-Agent
  */
@@ -52,6 +74,7 @@ async function fetchHtml(url) {
 
 /**
  * Ekstrahuje link do najnowszego artykułu z kanału "Cuda Każdego Dnia"
+ * (ZACHOWANE dla wstecznej zgodności — nowy proces korzysta z parseArchiveIndex)
  */
 function extractLatestArticleUrl(channelHtml) {
   const matches = [...channelHtml.matchAll(/href=["'](\/artykul\/[^"']+)["']/gi)];
@@ -60,6 +83,55 @@ function extractLatestArticleUrl(channelHtml) {
   }
   const firstSlug = matches[0][1];
   return firstSlug.startsWith('http') ? firstSlug : `https://szukajacboga.pl${firstSlug}`;
+}
+
+/**
+ * Parsuje stronę archiwum "Wszystkie rozważania" na listę wpisów
+ * {slug, url, title, dateDMY, dateISO}, od najnowszego do najstarszego —
+ * dokładnie w takiej kolejności, w jakiej są wyświetlone na stronie źródłowej.
+ * Każdy artykuł na stronie źródłowej pojawia się jako DWA linki (miniatura +
+ * tytuł) do tego samego adresu — funkcja deduplikuje po slug.
+ */
+function parseArchiveIndex(html) {
+  const seen = new Set();
+  const entries = [];
+  const linkRe = /<a[^>]+href=["'](\/artykul\/[^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  let m;
+  while ((m = linkRe.exec(html)) !== null) {
+    const slug = m[1].replace(/^\/artykul\//, '').replace(/[^a-zA-Z0-9_-]/g, '');
+    if (!slug || seen.has(slug)) continue;
+
+    const inner = m[2];
+    const dateMatch = inner.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+    if (!dateMatch) continue;
+
+    const [, dd, mm, yyyy] = dateMatch;
+    
+    // Wyciągnij tytuł z h4 lub atrybutu alt lub zawartości
+    const titleMatch = inner.match(/<h4[^>]*>([\s\S]*?)<\/h4>/i);
+    let title = '';
+    if (titleMatch) {
+      title = titleMatch[1].replace(/<svg[\s\S]*?<\/svg>/gi, '').replace(/<[^>]+>/g, '').trim();
+    }
+    if (!title) {
+      const altMatch = inner.match(/alt=["']([^"']+)["']/i);
+      if (altMatch) title = altMatch[1].trim();
+    }
+    if (!title) {
+      const rawTitle = inner.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      title = rawTitle.split(/Cuda każdego dnia/i)[0].trim();
+    }
+
+    seen.add(slug);
+    entries.push({
+      slug,
+      url: `https://szukajacboga.pl/artykul/${slug}`,
+      title: title || null,
+      dateDMY: `${dd}/${mm}/${yyyy}`,
+      dateISO: `${yyyy}-${mm}-${dd}`,
+    });
+  }
+  return entries;
 }
 
 /**
@@ -146,15 +218,24 @@ async function downloadAndSaveImages(imageUrl, devotion) {
     if (!res.ok) return;
 
     const imgBuffer = Buffer.from(await res.arrayBuffer());
-    const jpgBuffer = await sharp(imgBuffer).jpeg({ quality: 92 }).toBuffer();
-    const webpBuffer = await sharp(imgBuffer).webp({ quality: 88 }).toBuffer();
+    let jpgBuffer = imgBuffer;
+    let webpBuffer = null;
+
+    if (sharp) {
+      jpgBuffer = await sharp(imgBuffer).jpeg({ quality: 92 }).toBuffer();
+      webpBuffer = await sharp(imgBuffer).webp({ quality: 88 }).toBuffer();
+    }
 
     fs.writeFileSync(path.join(__dirname, 'cuda_kazdego_dnia_current.jpg'), jpgBuffer);
-    fs.writeFileSync(path.join(__dirname, 'cuda_kazdego_dnia_current.webp'), webpBuffer);
+    if (webpBuffer) {
+      fs.writeFileSync(path.join(__dirname, 'cuda_kazgo_dnia_current.webp'), webpBuffer);
+    }
 
     const dateSlug = devotion.dateText.toLowerCase().replace(/\s+/g, '_');
     fs.writeFileSync(path.join(__dirname, `cuda_kazdego_dnia_${dateSlug}.jpg`), jpgBuffer);
-    fs.writeFileSync(path.join(__dirname, `cuda_kazdego_dnia_${dateSlug}.webp`), webpBuffer);
+    if (webpBuffer) {
+      fs.writeFileSync(path.join(__dirname, `cuda_kazdego_dnia_${dateSlug}.webp`), webpBuffer);
+    }
 
     console.log(`[Sync Cuda] Zapisano grafiki lokalnie.`);
   } catch (err) {
@@ -202,39 +283,112 @@ async function saveToFirestore(devotion) {
 }
 
 /**
- * Główna funkcja wykonująca całą synchronizację
+ * Publikuje rozważanie jako prawdziwy post na tablicy społeczności LUMINA.
+ * Ten sam dokument (dzięki authorSlug: 'andrzejthiel') jest odczytywany przez
+ * dynamiczny silnik na profilu Andrzeja Thiela — jedna publikacja, dwa miejsca.
  */
+async function createFirestorePost(devotion) {
+  const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/${DATABASE_ID}/documents/lumina_posts?key=${API_KEY}`;
+  const dateLabel = devotion.dateText.toUpperCase();
+
+  const body = {
+    fields: {
+      author: { stringValue: 'Andrzej Thiel' },
+      authorSlug: { stringValue: 'andrzejthiel' },
+      authorRole: { stringValue: 'Cuda Każdego Dnia 📖✨ • Sieradz' },
+      authorAvatar: { stringValue: 'avatar_andrzej_thiel.jpg' },
+      time: { stringValue: `${dateLabel} • 🕊️ Cuda Każdego Dnia` },
+      title: { stringValue: `CUDA KAŻDEGO DNIA! ${dateLabel}. ${devotion.rawTitle.toUpperCase()}` },
+      text: { stringValue: devotion.fullTextFormatted },
+      image: { stringValue: devotion.imageUrl || '' },
+      sourceUrl: { stringValue: devotion.sourceUrl },
+      sourceSlug: { stringValue: devotion.slug || '' },
+      likes: { integerValue: '0' },
+      amen: { integerValue: '0' },
+    }
+  };
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) {
+    const errText = await res.text().catch(() => '');
+    throw new Error(`Firestore create post HTTP ${res.status}: ${errText}`);
+  }
+  const json = await res.json();
+  return json.name ? json.name.split('/').pop() : null;
+}
+
+
 export async function syncCudaDaily() {
   try {
-    const channelUrl = 'https://szukajacboga.pl/channel/cuda-kazdego-dnia';
-    const channelHtml = await fetchHtml(channelUrl);
-    const latestArticleUrl = extractLatestArticleUrl(channelHtml);
-    const articleHtml = await fetchHtml(latestArticleUrl);
-    const devotion = parseArticle(articleHtml, latestArticleUrl);
+    const archiveHtml = await fetchHtml(ARCHIVE_URL);
+    const indexEntries = parseArchiveIndex(archiveHtml); // najnowsze pierwsze
 
-    await downloadAndSaveImages(devotion.imageUrl, devotion);
-    await saveToFirestore(devotion);
+    if (!indexEntries.length) {
+      throw new Error('Nie znaleziono żadnych rozważań na stronie archiwum!');
+    }
 
-    try {
-      const cudaDbPath = path.join(__dirname, 'rozwazania_cuda_baza.json');
-      let base = { current: devotion, history: [] };
-      if (fs.existsSync(cudaDbPath)) {
+    const cudaDbPath = path.join(__dirname, 'rozwazania_cuda_baza.json');
+    let base = { current: null, history: [] };
+    if (fs.existsSync(cudaDbPath)) {
+      try { base = JSON.parse(fs.readFileSync(cudaDbPath, 'utf8')); } catch (e) {}
+    }
+    if (!Array.isArray(base.history)) base.history = [];
+    const publishedSlugs = new Set(base.history.map(r => r.slug).filter(Boolean));
+
+    const missing = indexEntries.filter(e => !publishedSlugs.has(e.slug));
+    if (!missing.length) {
+      console.log('[Sync Cuda] Brak nowych rozważań — wszystko już opublikowane.');
+      return { success: true, published: 0 };
+    }
+
+    // Publikuj od najstarszego do najnowszego wśród brakujących (chronologicznie
+    // na tablicy), ograniczając liczbę na jedno uruchomienie skryptu.
+    const toPublish = missing.slice(0, MAX_BACKFILL_PER_RUN).reverse();
+    const results = [];
+
+    for (const entry of toPublish) {
+      console.log(`[Sync Cuda] Przetwarzam: ${entry.dateDMY} — ${entry.title || entry.slug}`);
+      try {
+        const articleHtml = await fetchHtml(entry.url);
+        const devotion = parseArticle(articleHtml, entry.url);
+        devotion.slug = entry.slug;
+        const [dd, mm, yyyy] = entry.dateDMY.split('/');
+        devotion.dateText = formatDatePl(dd, mm, yyyy);
+
+        await downloadAndSaveImages(devotion.imageUrl, devotion);
+
+        let tablicaPostId = null;
         try {
-          base = JSON.parse(fs.readFileSync(cudaDbPath, 'utf8'));
-        } catch (e) {}
-      }
-      if (!Array.isArray(base.history)) base.history = [];
-      base.current = devotion;
-      const existingIdx = base.history.findIndex(r => r.id === devotion.id || r.title === devotion.title);
-      if (existingIdx >= 0) {
-        base.history[existingIdx] = devotion;
-      } else {
-        base.history.unshift(devotion);
-      }
-      fs.writeFileSync(cudaDbPath, JSON.stringify(base, null, 2), 'utf8');
-    } catch (e) {}
+          tablicaPostId = await createFirestorePost(devotion);
+          console.log(`[Sync Cuda] ✅ Opublikowano na tablicy i profilu Andrzeja: ${tablicaPostId}`);
+        } catch (e) {
+          console.error('[Sync Cuda] ❌ Błąd publikacji na tablicy:', e.message);
+        }
 
-    return { success: true, devotion };
+        await saveToFirestore(devotion);
+
+        base.current = devotion;
+        base.history.unshift({ ...devotion, tablicaPostId, publishedAt: new Date().toISOString() });
+        fs.writeFileSync(cudaDbPath, JSON.stringify(base, null, 2), 'utf8');
+        publishedSlugs.add(entry.slug);
+
+        results.push({ slug: entry.slug, dateDMY: entry.dateDMY, tablicaPostId });
+      } catch (entryErr) {
+        console.error(`[Sync Cuda] Błąd przetwarzania wpisu ${entry.slug}:`, entryErr.message);
+      }
+    }
+
+    const remaining = missing.length - toPublish.length;
+    if (remaining > 0) {
+      console.log(`[Sync Cuda] Pozostało jeszcze ${remaining} starszych wpisów do nadrobienia w kolejnym uruchomieniu.`);
+    }
+
+    return { success: true, published: results.length, remaining, results };
   } catch (err) {
     console.error(`[Sync Cuda] Błąd synchronizacji:`, err);
     return { success: false, error: err.message };
