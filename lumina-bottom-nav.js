@@ -724,9 +724,10 @@
     window.updateLuminaMessagesBadge = function(count) {
         const badge = document.getElementById('floatingChatBadge');
         const bottomBadge = document.getElementById('bottomNavMsgBadge');
+        const profileBadges = Array.from(document.querySelectorAll('.profile-msg-badge, #btnProfileMessageBadge, .btn-msg-badge, .nav-msg-badge'));
         const num = typeof count === 'number' ? count : parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10);
         
-        [badge, bottomBadge].forEach(b => {
+        [badge, bottomBadge, ...profileBadges].forEach(b => {
             if (!b) return;
             if (num > 0) {
                 b.style.display = 'flex';

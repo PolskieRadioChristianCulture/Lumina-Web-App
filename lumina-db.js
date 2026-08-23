@@ -2545,16 +2545,36 @@ export async function showSystemDrawerNotification({ title, body, avatar, sender
 }
 
 export function triggerLuminaPushNotification({ title, body, avatar, senderName, senderId, type, image }) {
-    // 1. Play official voice notification audio + vibration
+    // 1. Immediately bump Unread Badge on Floating Chat Button & Navigation
+    try {
+        const isModalOpen = document.getElementById('directMessagesModal')?.classList.contains('open') ||
+                            document.getElementById('modalCcMessages')?.classList.contains('open');
+        if (!isModalOpen) {
+            const cur = parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10);
+            const next = cur + 1;
+            if (typeof window.updateLuminaMessagesBadge === 'function') {
+                window.updateLuminaMessagesBadge(next);
+            } else {
+                localStorage.setItem('lumina_messages_unread_count', String(next));
+                const b = document.getElementById('floatingChatBadge');
+                if (b) {
+                    b.style.display = 'flex';
+                    b.textContent = next > 9 ? '9+' : next;
+                }
+            }
+        }
+    } catch(e) {}
+
+    // 2. Play official voice notification audio + vibration
     playNotificationChime();
     if ('vibrate' in navigator) {
         try { navigator.vibrate([160, 80, 160]); } catch(e) {}
     }
 
-    // 2. In-app floating banner
+    // 3. In-app floating banner
     showInAppChatBanner({ title, body, avatar, senderName, senderId, type });
 
-    // 3. Android / OS System Drawer Notification (Belka Powiadomień jak FB / YT)
+    // 4. Android / OS System Drawer Notification (Belka Powiadomień jak FB / YT)
     showSystemDrawerNotification({ title, body, avatar, senderName, senderId, type, image });
 }
 
@@ -2609,18 +2629,41 @@ export function startRealtimeChatNotificationsListener() {
         }, (err) => console.warn('Public Chat notif listener notice:', err));
     } catch(e) {}
 
-    // 2. Listen to User's Private Direct Chats Realtime Notifications
+    // 2. Listen to User's Private Direct Chats Realtime Notifications & Badge Counts
     try {
         const myId = getMyUserId();
         if (myId && myId !== 'guest') {
             const chatsQuery = query(
                 collection(db, 'lumina_chats'),
                 where('users', 'array-contains', myId),
-                limit(20)
+                limit(30)
             );
 
             onSnapshot(chatsQuery, (snap) => {
                 const currentMyId = getMyUserId();
+                let totalUnread = 0;
+
+                snap.forEach(d => {
+                    const data = d.data();
+                    const senderId = normalizeChatUserId(data.lastSenderId);
+                    if (senderId && senderId !== currentMyId) {
+                        const lastReadTime = parseInt(localStorage.getItem(`lumina_chat_read_${d.id}`) || '0', 10);
+                        const msgTime = data.lastMessageTimestamp?.seconds ? (data.lastMessageTimestamp.seconds * 1000) : (data.createdAt || 0);
+                        if (msgTime > lastReadTime) {
+                            totalUnread++;
+                        }
+                    }
+                });
+
+                // Update badge in real-time if chat is closed
+                const isModalOpen = document.getElementById('directMessagesModal')?.classList.contains('open') ||
+                                    document.getElementById('modalCcMessages')?.classList.contains('open');
+                if (!isModalOpen && totalUnread > 0) {
+                    if (typeof window.updateLuminaMessagesBadge === 'function') {
+                        window.updateLuminaMessagesBadge(totalUnread);
+                    }
+                }
+
                 snap.docChanges().forEach((change) => {
                     if (change.type === 'modified' || change.type === 'added') {
                         const data = change.doc.data();
