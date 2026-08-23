@@ -4330,100 +4330,41 @@
             // 2. Generate cards for all self-registered community members from Firestore & Local Storage
             let cloudCardsHtml = '';
             try {
-                const staticDemoSlugs = [
+                // Exact unique system slugs that already have static cards
+                const exactSystemSlugs = new Set([
                     'cezaryrgowski', 'wiolettarogowska', 'andrzejthiel', 'radiocc', 'cctv', 'ccmen', 'ccwomen', 
                     'studiodobregoslowa', 'osobowoscplus', 'noemi', 'dawid', 'weronika', 'tomek', 'anna', 'piotr', 'julia', 'magdalena'
-                ];
-                const addedSlugs = new Set(staticDemoSlugs.map(s => s.toLowerCase()));
-                const addedNames = new Set([
-                    'cezary', 'cezary rogowski', 'wioletta', 'wioletta rogowska', 'noemi', 'dawid', 'weronika', 
-                    'tomasz', 'tomek', 'anna', 'piotr', 'julia', 'magdalena', 'andrzej thiel', 'andrzej'
                 ]);
+                const renderedKeys = new Set(exactSystemSlugs);
 
-                // Add local user profile if created
-                try {
-                    const localProf = JSON.parse(localStorage.getItem('lumina_my_profile') || 'null');
-                    if (localProf && localProf.name && (localProf.slug || localProf.uid)) {
-                        const lKey = (localProf.slug || localProf.uid).toLowerCase();
-                        const lName = (localProf.name || '').toLowerCase().trim();
-                        if (lKey !== 'profile_default' && !addedSlugs.has(lKey) && !addedNames.has(lName)) {
-                            addedSlugs.add(lKey);
-                            if (lName) addedNames.add(lName);
-                            const isVideoMedia = (localProf.carouselMediaType === 'video' || (localProf.carouselMediaUrl && (localProf.carouselMediaUrl.endsWith('.mp4') || localProf.carouselMediaUrl.endsWith('.webm') || localProf.carouselMediaUrl.includes('data:video/'))) || (localProf.avatarVideo && localProf.carouselMediaType === 'video'));
-                            const mediaUrl = localProf.carouselMediaUrl || (isVideoMedia ? (localProf.avatarVideo || localProf.carouselVideo) : (localProf.avatar || 'lumina_icon.jpg'));
-                            let userAvatar = localProf.avatar || 'lumina_icon.jpg';
-                            const userName = localProf.name;
-                            const userAge = localProf.age ? ', ' + localProf.age : '';
-                            const userCity = localProf.city ? localProf.city.split(',')[0] : 'Polska';
-                            const userBio = localProf.bio ? (localProf.bio.length > 85 ? localProf.bio.substring(0, 85) + '...' : localProf.bio) : 'Szukam wartościowej relacji opartej na fundamencie Chrystusa ✨';
-                            const userMatch = localProf.matchScore || '98%';
-
-                            if (lKey.toLowerCase().includes('dominika') || localProf.needsRealPhoto || userAvatar.includes('placeholder')) {
-                                userAvatar = 'lumina_icon.jpg';
-                            }
-                            cloudCardsHtml += `
-                                <div class="profile-card cloud-registered-user-card" id="card_profile_${lKey}" data-profile-slug="${lKey}" data-category="${localProf.gender || 'spolecznosc'} spolecznosc" onclick="openCommunityProfile('${lKey}')">
-                                    <div class="card-photo" style="position:relative;">
-                                        <div class="card-new-badge">
-                                            <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
-                                        </div>
-                                        ${isVideoMedia ? `
-                                            <video src="${mediaUrl}" autoplay muted loop playsinline poster="${userAvatar}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"></video>
-                                            <div class="card-video-badge" style="position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.65); backdrop-filter:blur(6px); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; gap:4px; z-index:3;">
-                                                <i class="fa-solid fa-play" style="color:#ec4899; font-size:0.55rem;"></i> WIDEO
-                                            </div>
-                                        ` : `
-                                            <img src="${mediaUrl || userAvatar}" alt="${userName}" onerror="this.onerror=null; this.src='lumina_icon.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-                                        `}
-                                        <button class="card-heart" onclick="toggleLike(event,this, '${lKey}', '${userName}', '${userAvatar}')"><i class="fa-solid fa-heart"></i></button>
-                                        <div class="card-match" style="background: linear-gradient(135deg, #10b981, #059669);">${userMatch}</div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="card-name">${userName}${userAge}</div>
-                                        <div class="card-city">📍 ${userCity} • <span style="color:#10b981;font-weight:700;">Mój Profil</span></div>
-                                        <div class="card-desc">"${userBio}"</div>
-                                    </div>
-                                </div>
-                            `;
-                        }
-                    }
-                } catch(e) {}
-
-                // Add all Firestore community profiles
-                Object.values(window._cloudProfilesMap || {}).forEach(p => {
-                    if (!p || !p.name) return;
-                    const pKey = p.slug || p.uid || p.id;
-                    if (!pKey) return;
-                    const pKeyLower = pKey.toLowerCase();
-                    const pNameLower = (p.name || '').toLowerCase().trim();
-
-                    if (pKeyLower === 'profile_default' || addedSlugs.has(pKeyLower) || addedNames.has(pNameLower) ||
-                        pKeyLower.includes('cezary') || pKeyLower.includes('wioletta') || pKeyLower.includes('andrzej') || 
-                        pKeyLower.includes('radiocc') || pKeyLower.includes('cctv') || pKeyLower.includes('ccmen') || 
-                        pKeyLower.includes('ccwomen') || pKeyLower.includes('studiodobregoslowa') || pKeyLower.includes('osobowoscplus') ||
-                        pKeyLower.includes('magdalena') || pKeyLower.includes('weronika') || pKeyLower.includes('noemi') || 
-                        pKeyLower.includes('dawid') || pKeyLower.includes('tomek') || pKeyLower.includes('anna') || 
-                        pKeyLower.includes('piotr') || pKeyLower.includes('julia')) {
-                        return;
-                    }
-                    addedSlugs.add(pKeyLower);
-                    if (pNameLower) addedNames.add(pNameLower);
+                // Helper to build a single community card
+                function buildCommunityCard(p, isLocalUser = false) {
+                    if (!p || !p.name) return '';
+                    const pKey = (p.slug || p.uid || p.id || '').toLowerCase().trim();
+                    if (!pKey || pKey === 'profile_default' || renderedKeys.has(pKey)) return '';
+                    renderedKeys.add(pKey);
 
                     const isVideoMedia = (p.carouselMediaType === 'video' || (p.carouselMediaUrl && (p.carouselMediaUrl.endsWith('.mp4') || p.carouselMediaUrl.endsWith('.webm') || p.carouselMediaUrl.includes('data:video/'))) || (p.avatarVideo && p.carouselMediaType === 'video'));
                     const mediaUrl = p.carouselMediaUrl || (isVideoMedia ? (p.avatarVideo || p.carouselVideo) : (p.avatar || 'lumina_icon.jpg'));
                     let userAvatar = p.avatar || 'lumina_icon.jpg';
-                    if (pKeyLower.includes('dominika') || p.needsRealPhoto || userAvatar.includes('placeholder')) {
+                    if (pKey.includes('dominika') || p.needsRealPhoto || userAvatar.includes('placeholder')) {
                         userAvatar = 'lumina_icon.jpg';
                     }
                     const userName = p.name;
                     const userAge = p.age ? ', ' + p.age : '';
                     const userCity = p.city ? p.city.split(',')[0] : 'Polska';
                     const userBio = p.bio ? (p.bio.length > 85 ? p.bio.substring(0, 85) + '...' : p.bio) : 'Szukam wartościowej relacji opartej na fundamencie Chrystusa ✨';
-                    const userMatch = p.matchScore || '96%';
+                    const liveScore = window.calculateProfileMatchScore ? window.calculateProfileMatchScore(p) : (p.matchScore || '96%');
+                    const isNew = typeof isProfileNew === 'function' ? isProfileNew(p) : true;
 
-                    cloudCardsHtml += `
+                    return `
                         <div class="profile-card cloud-registered-user-card" id="card_profile_${pKey}" data-profile-slug="${pKey}" data-category="${p.gender || 'spolecznosc'} spolecznosc" onclick="openCommunityProfile('${pKey}')">
                             <div class="card-photo" style="position:relative;">
+                                ${isNew ? `
+                                    <div class="card-new-badge">
+                                        <i class="fa-solid fa-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                                    </div>
+                                ` : ''}
                                 ${isVideoMedia ? `
                                     <video src="${mediaUrl}" autoplay muted loop playsinline poster="${userAvatar}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"></video>
                                     <div class="card-video-badge" style="position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.65); backdrop-filter:blur(6px); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; gap:4px; z-index:3;">
@@ -4433,16 +4374,36 @@
                                     <img src="${mediaUrl || userAvatar}" alt="${userName}" onerror="this.onerror=null; this.src='lumina_icon.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                                 `}
                                 <button class="card-heart" onclick="toggleLike(event,this, '${pKey}', '${userName}', '${userAvatar}')"><i class="fa-solid fa-heart"></i></button>
-                                <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">${userMatch}</div>
+                                <div class="card-match" style="background: ${liveScore === '0%' ? 'rgba(100, 116, 139, 0.55)' : (isLocalUser ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #ec4899, #8b5cf6)')};">${liveScore}</div>
                             </div>
                             <div class="card-body">
                                 <div class="card-name">${userName}${userAge}</div>
-                                <div class="card-city">📍 ${userCity} • <span style="color:#10b981;font-weight:800;">${isProfileNew(p) ? '✨ NOWY PROFIL' : (p.status || 'Społeczność')}</span></div>
+                                <div class="card-city">📍 ${userCity} • <span style="color:#10b981;font-weight:800;">${isLocalUser ? 'Mój Profil' : (isNew ? '✨ NOWY PROFIL' : (p.status || 'Społeczność'))}</span></div>
                                 <div class="card-desc">"${userBio}"</div>
                             </div>
                         </div>
                     `;
+                }
+
+                // 1. Add current user local profile (if registered)
+                try {
+                    const localProf = JSON.parse(localStorage.getItem('lumina_my_profile') || 'null');
+                    if (localProf && localProf.name) {
+                        cloudCardsHtml += buildCommunityCard(localProf, true);
+                    }
+                } catch(e) {}
+
+                // 2. Add all Firestore community profiles
+                Object.values(window._cloudProfilesMap || {}).forEach(p => {
+                    cloudCardsHtml += buildCommunityCard(p, false);
                 });
+
+                // 3. Add cached profiles array if present
+                if (Array.isArray(window._cachedLiveProfiles)) {
+                    window._cachedLiveProfiles.forEach(p => {
+                        cloudCardsHtml += buildCommunityCard(p, false);
+                    });
+                }
             } catch(err) {
                 console.warn('Error generating cloud profile cards:', err);
             }
@@ -4500,7 +4461,7 @@
                     } else if (p.isMissionAccount) {
                         cityEl.innerHTML = `📍 ${cityStr} • <b style="color:#a855f7;">${p.job || 'Misja Christian Culture'}</b>`;
                     } else if (isDemoProfile) {
-                        cityEl.innerHTML = `📍 ${cityStr} • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span>`;
+                        cityEl.innerHTML = `📍 ${cityStr} • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ NOWY PROFIL</span>`;
                     } else {
                         cityEl.innerHTML = `📍 ${cityStr} • <span style="color:#a855f7;font-weight:700;">${p.status || 'Profil Społeczności'}</span>`;
                     }
@@ -4522,28 +4483,6 @@
                 v.play().catch(() => {});
             });
         };
-
-        // ── Realtime Community Profiles from Firestore ──
-        function initCommunityProfilesListener() {
-            if (window.LuminaDB) {
-                window.LuminaDB.subscribeToAllCommunityProfiles((profiles) => {
-                    if (!profiles || !profiles.length) return;
-
-                    profiles.forEach(p => {
-                        if (!p.name) return;
-                        const uid = p.uid || p.slug || p.id;
-                        if (!uid) return;
-                        window._cloudProfilesMap[uid] = p;
-                        if (p.slug) window._cloudProfilesMap[p.slug] = p;
-                    });
-
-                    window.syncAllProfilesToCarousel();
-                });
-            } else {
-                setTimeout(initCommunityProfilesListener, 300);
-            }
-        }
-        initCommunityProfilesListener();
 
         // ── Open Profile Modal with 100% Live Data ──
         window.openCommunityProfile = function(slug) {
