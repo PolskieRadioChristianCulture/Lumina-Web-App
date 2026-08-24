@@ -2338,16 +2338,16 @@
 </style>
 <style>
 
-        /* ═════════ NAVBAR PRECISION STYLING ═════════ */
+        /* ═════════ 100% UNIFIED TOP NAVBAR BUTTONS ═════════ */
         .lumina-nav {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 10px 18px;
-            background: rgba(11, 24, 56, 0.92);
+            background: rgba(11, 24, 56, 0.94);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(250, 204, 21, 0.2);
             position: sticky;
             top: 0;
             z-index: 10000;
@@ -2360,122 +2360,171 @@
             flex-shrink: 0;
         }
 
-        /* Menu Button Desktop */
+        /* 1. Mini Radio Button */
+        #radioWidget,
+        .nav-radio-btn {
+            width: 38px !important;
+            height: 38px !important;
+            min-width: 38px !important;
+            border-radius: 50% !important;
+            background: rgba(11, 24, 56, 0.90) !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.8) !important;
+            color: #facc15 !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+            transition: all 0.22s ease !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+            box-sizing: border-box !important;
+            padding: 0 !important;
+        }
+        #radioWidget:hover,
+        .nav-radio-btn:hover {
+            border-color: #fde047 !important;
+            background: rgba(26, 38, 74, 0.95) !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.5) !important;
+        }
+
+        /* 2. Menu Button (Unified) */
         .nav-menu-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 14px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, rgba(168,85,247,0.22), rgba(236,72,153,0.22));
-            border: 1.5px solid rgba(168,85,247,0.5);
-            color: #fff;
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.84rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            height: 38px;
-            box-sizing: border-box;
+            height: 38px !important;
+            min-height: 38px !important;
+            padding: 0 15px !important;
+            border-radius: 20px !important;
+            background: rgba(11, 24, 56, 0.90) !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.8) !important;
+            color: #fff !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-size: 0.84rem !important;
+            font-weight: 800 !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 7px !important;
+            transition: all 0.22s ease !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+            box-sizing: border-box !important;
+            flex-shrink: 0 !important;
+        }
+        .nav-menu-btn i.fa-compass {
+            color: #facc15 !important;
+            font-size: 1rem !important;
         }
         .nav-menu-btn:hover {
-            border-color: rgba(236,72,153,0.8);
-            transform: translateY(-1px);
+            border-color: #fde047 !important;
+            background: rgba(26, 38, 74, 0.95) !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.5) !important;
         }
 
-        /* Support Button Desktop */
+        /* 3. Support Button (Unified) */
         .btn-nav-support {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 15px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            border: 1.5px solid rgba(250,204,21,0.8);
-            color: #0b1838;
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.84rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 10px rgba(245,158,11,0.35);
-            height: 38px;
-            box-sizing: border-box;
+            height: 38px !important;
+            min-height: 38px !important;
+            padding: 0 15px !important;
+            border-radius: 20px !important;
+            background: rgba(11, 24, 56, 0.90) !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.8) !important;
+            color: #fff !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-size: 0.84rem !important;
+            font-weight: 800 !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 7px !important;
+            transition: all 0.22s ease !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+            box-sizing: border-box !important;
+            flex-shrink: 0 !important;
+        }
+        .btn-nav-support i {
+            color: #facc15 !important;
+            font-size: 1rem !important;
+        }
+        .btn-nav-support .btn-nav-cta-text {
+            color: #fff !important;
+            font-weight: 800 !important;
+            font-size: 0.84rem !important;
+            font-family: 'Outfit', sans-serif !important;
         }
         .btn-nav-support:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 14px rgba(245,158,11,0.55);
+            border-color: #fde047 !important;
+            background: rgba(26, 38, 74, 0.95) !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.5) !important;
         }
 
-        /* ═════════ MOBILE RESPONSIVENESS (<= 640px) ═════════ */
+        /* 4. User Profile Pill (Unified) */
+        .user-nav-profile {
+            height: 38px !important;
+            min-height: 38px !important;
+            padding: 0 8px 0 2px !important;
+            border-radius: 20px !important;
+            background: rgba(11, 24, 56, 0.90) !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.8) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+            box-sizing: border-box !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            flex-shrink: 0 !important;
+        }
+        .user-nav-avatar {
+            width: 32px !important;
+            height: 32px !important;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.85) !important;
+            cursor: pointer !important;
+        }
+        .btn-nav-logout i {
+            color: #facc15 !important;
+            font-size: 0.9rem !important;
+        }
+        .btn-nav-more i {
+            color: #facc15 !important;
+            font-size: 0.95rem !important;
+        }
+
+        /* ═════════ MOBILE (<= 640px) ═════════ */
         @media (max-width: 640px) {
             .lumina-nav {
-                padding: 8px 12px;
+                padding: 8px 12px !important;
             }
             .lumina-nav-actions {
-                gap: 6px;
+                gap: 6px !important;
             }
 
-            /* Menu button -> Perfect 38px Circle with Icon Only */
             .nav-menu-btn {
                 width: 38px !important;
                 min-width: 38px !important;
                 height: 38px !important;
                 padding: 0 !important;
                 border-radius: 50% !important;
-                justify-content: center !important;
-                align-items: center !important;
             }
             .nav-menu-btn .nav-btn-text,
             .nav-menu-btn .nav-btn-chevron {
                 display: none !important;
             }
-            .nav-menu-btn i {
-                margin: 0 !important;
-                font-size: 1.15rem !important;
-            }
 
-            /* Support button -> Perfect 38px Circle with Icon Only */
             .btn-nav-support {
                 width: 38px !important;
                 min-width: 38px !important;
                 height: 38px !important;
                 padding: 0 !important;
                 border-radius: 50% !important;
-                justify-content: center !important;
-                align-items: center !important;
             }
             .btn-nav-support .btn-nav-cta-text {
                 display: none !important;
             }
-            .btn-nav-support i {
-                margin: 0 !important;
-                font-size: 1.15rem !important;
-            }
-
-            /* Chat Tabs -> Icon-Only Mode */
-            #tabBtnPublicChat .tab-label,
-            #tabBtnCommanderChat .tab-label,
-            #tabBtnPrivateChat .tab-label {
-                display: none !important;
-            }
-            #tabBtnPublicChat,
-            #tabBtnCommanderChat,
-            #tabBtnPrivateChat {
-                padding: 10px 12px !important;
-                display: inline-flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-            }
-            #tabBtnPublicChat i,
-            #tabBtnCommanderChat i,
-            #tabBtnPrivateChat i {
-                font-size: 1.2rem !important;
-                margin: 0 !important;
-            }
         }
-</style>
+    </style>
 </head>
 <body class="owner-mode-active">
 
