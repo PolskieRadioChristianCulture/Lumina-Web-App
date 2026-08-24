@@ -643,7 +643,7 @@
                         aria-label="Panel Administratora">
                     <i class="fa-solid fa-shield-halved"></i>
                 </button>
-                <span class="lumina-admin-version-tag">v3.6.3</span>
+                <span class="lumina-admin-version-tag">v3.6.4</span>
             </div>
 
             <!-- Ukryte kontrolki uploadu plików -->
