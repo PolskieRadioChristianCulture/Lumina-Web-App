@@ -743,3 +743,34 @@
         setInterval(checkAndScheduleDailyBlessing, 30000);
     }
 })();
+
+
+// ── Globalna funkcja włączenia powiadomień PUSH w telefonie ──
+window.requestLuminaPushPermission = async function() {
+    try {
+        if (!('Notification' in window)) {
+            alert('Twoja przeglądarka nie obsługuje powiadomień Push.');
+            return false;
+        }
+        const perm = await Notification.requestPermission();
+        if (perm === 'granted') {
+            if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
+                const userSlug = localStorage.getItem('lumina_current_user_slug') || 'robertlukaszpio';
+                await window.LuminaDB.requestNotificationPermission(userSlug);
+            }
+            if (typeof window.showToast === 'function') {
+                window.showToast('🔔 Powiadomienia PUSH zostały aktywowane! Otrzymasz wiadomości nawet przy wyłączonej aplikacji. ✨');
+            } else {
+                alert('🔔 Powiadomienia PUSH aktywowane!');
+            }
+            return true;
+        } else {
+            alert('Uprawnienia do powiadomień zostały zablokowane w ustawieniach przeglądarki. Kliknij ikonę kłódki przy adresie strony, aby zezwolić.');
+            return false;
+        }
+    } catch(e) {
+        console.error('Error requesting push permission:', e);
+        return false;
+    }
+};
+
