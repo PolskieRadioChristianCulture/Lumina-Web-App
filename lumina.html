@@ -3,10 +3,13 @@
 <head>
 
     <script>
-    // ── Emergency Auto-Sanitizer for stale browser cache & localStorage ──
+    // ── Emergency Auto-Sanitizer v3.6.4 (Clean corrupt localStorage) ──
     (function(){
         try {
-            const staleKeys = [
+            const keysToPurge = [
+                'lumina_profile_radiocc',
+                'lumina_profile_cezaryrgowski',
+                'lumina_profile_weronika',
                 'lumina_element_overrides',
                 'lumina_avatar_radiocc',
                 'lumina_custom_avatar_radiocc',
@@ -15,15 +18,17 @@
                 'lumina_avatar_weronika',
                 'lumina_custom_avatar_weronika'
             ];
-            staleKeys.forEach(k => {
-                const val = localStorage.getItem(k);
-                if (val && (val.includes('logo_radio_cc') || val.includes('placeholder') || val.includes('avatar_widget_ania') || val.includes('data:image'))) {
-                    localStorage.removeItem(k);
-                }
-            });
+            keysToPurge.forEach(k => localStorage.removeItem(k));
+
+            // Clean my profile if corrupted with radio cc equalizer
             const myProf = JSON.parse(localStorage.getItem('lumina_my_profile') || 'null');
-            if (myProf && myProf.avatar && (myProf.avatar.includes('logo_radio_cc') || myProf.avatar.includes('placeholder'))) {
-                myProf.avatar = 'avatar_christian_culture_hq_2026.jpg';
+            if (myProf) {
+                if (myProf.name && myProf.name.includes('Christian Culture') && myProf.age == 51) {
+                    myProf.name = 'Cezary Rogowski';
+                }
+                if (myProf.avatar && (myProf.avatar.includes('logo_radio_cc') || myProf.avatar.includes('placeholder'))) {
+                    myProf.avatar = 'avatar_cezary_karuzela_2026.jpg';
+                }
                 localStorage.setItem('lumina_my_profile', JSON.stringify(myProf));
             }
         } catch(e){}
@@ -4696,21 +4701,34 @@
                 }
             } catch(e) {}
 
-            // Strict fallback guards for Cezary & Wioletta
+            // Strict fallback guards for System & Founder Profiles
             if (slug === 'cezaryrgowski') {
-                live.name = live.name || 'Cezary Rogowski';
+                live.name = 'Cezary Rogowski';
                 live.age = 51;
-                live.avatar = (live.avatar && !live.avatar.includes('worship') && !live.avatar.includes('tlo') && !live.avatar.includes('oddaj')) ? live.avatar : 'avatar_cezary_official.jpg';
-                live.city = live.city || 'Ostrowiec Świętokrzyski, Polska';
-                live.status = live.status || 'Żonaty';
+                live.avatar = 'avatar_cezary_karuzela_2026.jpg';
+                live.city = 'Ostrowiec Świętokrzyski, Polska';
+                live.status = 'Żonaty';
                 live.isFounder = true;
                 live.profileUrl = 'lumina.cezaryrgowski.html';
+            } else if (slug === 'radiocc') {
+                live.name = 'Christian Culture';
+                live.age = '';
+                live.avatar = 'avatar_christian_culture_hq_2026.jpg';
+                live.city = 'Polska';
+                live.isMissionAccount = true;
+                live.profileUrl = 'lumina.radiocc.html';
+            } else if (slug === 'weronika') {
+                live.name = 'Weronika';
+                live.age = 25;
+                live.avatar = 'avatar_weronika_hq_2026.jpg';
+                live.city = 'Kraków, Polska';
+                live.profileUrl = 'lumina-profile.html?u=weronika';
             } else if (slug === 'wiolettarogowska') {
-                live.name = live.name || 'Wioletta Rogowska';
+                live.name = 'Wioletta Rogowska';
                 live.age = 50;
-                live.avatar = (live.avatar && !live.avatar.includes('worship') && !live.avatar.includes('tlo') && !live.avatar.includes('oddaj')) ? live.avatar : 'avatar_wioletta_official.jpg';
-                live.city = live.city || 'Ostrowiec Świętokrzyski, Polska';
-                live.status = live.status || 'Mężatka';
+                live.avatar = 'avatar_wioletta_official.jpg';
+                live.city = 'Ostrowiec Świętokrzyski, Polska';
+                live.status = 'Mężatka';
                 live.isFounder = true;
                 live.profileUrl = 'lumina.wiolettarogowska.html';
             } else if (slug === 'andrzejthiel' || slug === 'andrzej') {
