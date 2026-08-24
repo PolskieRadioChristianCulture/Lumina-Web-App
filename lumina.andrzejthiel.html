@@ -915,8 +915,8 @@
 
                 <!-- ══════════ DYNAMICZNA TABLICA ANDRZEJA (Firestore, na żywo + Instant Render) ══════════ -->
                 <div id="andrzejPostsContainer">
-                    <!-- 🌟 POST NA DZIŚ: 23 SIERPNIA 2026 (DZISIAJ) 🌟 -->
-                    <article class="feed-post-card" id="post_cuda_23_sie_2026">
+                    <!-- 🌟 POST NA DZIŚ: 24 SIERPNIA 2026 (DZISIAJ) 🌟 -->
+                    <article class="feed-post-card" id="post_cuda_24_sie_2026">
                         <div class="post-top-header">
                             <div class="post-author-box">
                                 <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
@@ -925,7 +925,73 @@
                                         Andrzej Thiel
                                         <span class="post-badge-daily">Cuda Każdego Dnia</span>
                                     </div>
-                                    <div class="post-time">23 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny (Dzisiaj)</div>
+                                    <div class="post-time">24 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny (Dzisiaj)</div>
+                                </div>
+                            </div>
+                            <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
+                                <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                            </button>
+                        </div>
+
+                        <div class="post-body">
+                            <div class="post-series-tag">
+                                <i class="fa-solid fa-sun"></i> CUDA KAŻDEGO DNIA! • 24 SIERPNIA 2026
+                            </div>
+
+                            <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
+                                <img id="cudaDevotionFeaturedImg" src="cuda_kazdego_dnia_24_sierpnia_2026.jpg" alt="Cuda Każdego Dnia - KIEDY BRAKUJE SŁÓW!" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" onerror="this.src='ckd_art_2026_08_24.jpg'">
+                            </div>
+
+                            <p style="font-weight:700;color:#fef08a;margin-bottom:12px;font-size:1.05rem;">
+                                Przeczytaj i zobacz jak Bóg przemienia twoje życie.
+                            </p>
+
+                            <h2 class="post-title">KIEDY BRAKUJE SŁÓW!</h2>
+
+                            <div class="post-text-content">
+                                <p style="margin-bottom:14px;">Znaleźliście się kiedyś w sytuacji, w której zabrakło wam słów? Pewnie niejeden raz, prawda? Tak bywa w chwilach ogromnego wzruszenia, radości, gdy spełnia się marzenie, na które czekaliśmy całe życie, czy gdy próbujemy wyrazić wdzięczność za czyjeś poświecenie. Ale też w chwilach ogromnego smutku, kiedy lekarz mówi „to nowotwór”, gdy tracimy kogoś bliskiego, gdy cierpimy fizycznie. W takich chwilach nasza modlitwa też często bywa ograniczona do kilku słów: „Panie kocham Cię!”, „Dziękuję!”, „Panie pomóż!”, „Panie, zmiłuj się”. I wiesz, twój Ojciec w niebie wie o tym i wcale nie oczekuje wielu słów. Jezus powiedział: „…wasz Ojciec wie, czego potrzebujecie, zanim Go poprosicie” (Mt.6,8).</p>
+                                <p style="margin-bottom:14px;">Co więcej, kiedy nie macie siły wołać, doświadczacie bólu, wylaliście już wszystkie łzy lub po prostu czujecie się zagubieni i zdezorientowani, Bóg słyszy was nawet jeśli nie wydajecie głosu. On słyszy wasze serce, a Jego Duch jest przy was i wspiera was. Czytamy: „Podobnie i Duch wspiera nas w niemocy naszej; nie wiemy bowiem, o co się modlić, jak należy, ale sam Duch wstawia się za nami w niewysłowionych westchnieniach” (Rz.8,26).</p>
+                                <p style="margin-bottom:14px;">Masz Ojca, który cię nie zostawi nigdy. On się troszczy o ciebie. On chce cię podnieść, zabrać twoje ciężary, twoją chorobę i przynieść uleczenie ducha, duszy i ciała. On mówi do ciebie dzisiaj: „Znam cię. Wiem, kiedy siedzisz i kiedy wstajesz. I jeszcze nie ma słowa na twoim języku żebym Ja go już nie znał (Ps.139,3-4). A jednak pragnę słyszeć wasz głos. Cieszę się, kiedy mówicie do mnie, tak jak kochający rodzic cieszy się słysząc głos swojego dziecka. Co chcielibyście abym uczynił dla was dzisiaj?”</p>
+                                <p style="margin-bottom:14px;">Życzę wam, byście doświadczyli dzisiaj Jego cudownej obecności. Dotyku Jego silnych, pełnych miłości ramion, w których znajdziecie pocieszenie, podniesienie, nadzieję i siłę do kolejnego dnia.</p>
+                            </div>
+
+                            <div class="post-prayer-highlight">
+                                /opr. na podst. wiad. B.K./.
+                            </div>
+
+                            <p style="margin-top:18px;font-weight:800;font-size:1.05rem;color:#fef08a;">
+                                Dziękuję, że jesteś! ❤️
+                            </p>
+                        </div>
+
+                        <div class="post-actions-bar">
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <button class="post-action-btn active-heart" onclick="togglePostLike(this, 'post_cuda_24_sie_2026')">
+                                    <i class="fa-solid fa-heart"></i> <span>248</span>
+                                </button>
+                                <button class="post-action-btn active-amen" onclick="togglePostAmen(this, 'post_cuda_24_sie_2026')">
+                                    <i class="fa-solid fa-hands-praying"></i> Amen (<span>214</span>)
+                                </button>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <button class="post-action-btn" onclick="openShareAndrzejModal()">
+                                    <i class="fa-solid fa-share-nodes"></i> Poleć Rozważanie
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                                        <!-- 🌟 POST: 23 SIERPNIA 2026 (WCZORAJ) 🌟 -->
+                    <article class="feed-post-card" id="post_cuda_23_sie_2026" style="opacity:0.95;">
+                        <div class="post-top-header">
+                            <div class="post-author-box">
+                                <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
+                                <div>
+                                    <div class="post-author-name">
+                                        Andrzej Thiel
+                                        <span class="post-badge-daily">Cuda Każdego Dnia</span>
+                                    </div>
+                                    <div class="post-time">23 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny (Wczoraj)</div>
                                 </div>
                             </div>
                             <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
