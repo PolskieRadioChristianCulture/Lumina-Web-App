@@ -1098,93 +1098,144 @@
                 </div>
             </div>
 
-            <!-- ══════════ MODAL 5: NOWA NOTA DLA AGENTA ══════════ -->
+            <!-- ══════════ MODAL 5: TRYB CELOWNIKA - SAMODZIELNA EDYCJA & NOTA DLA AGENTA ══════════ -->
             <div class="modal-overlay" id="adminAgentNoteModal" onclick="if(event.target===this) window.LuminaAdminSuite.closeModal('adminAgentNoteModal')">
-                <div class="modal-card" style="max-width: 580px; background: #0b142e; border: 1.5px solid rgba(16, 185, 129, 0.5); box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(16, 185, 129, 0.25); border-radius: 24px; padding: 26px 24px; position: relative;">
+                <div class="modal-card" style="max-width: 620px; width:94%; background: #0b142e; border: 1.5px solid rgba(250, 204, 21, 0.6); box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 45px rgba(250, 204, 21, 0.3); border-radius: 24px; padding: 24px; position: relative; max-height:90vh; overflow-y:auto;">
                     <button class="modal-close-btn" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
 
-                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
-                        <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, #10b981, #059669); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.3rem; box-shadow:0 4px 14px rgba(16,185,129,0.4);">
+                    <!-- Header -->
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
+                        <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, #f59e0b, #eab308); display:flex; align-items:center; justify-content:center; color:#0b142e; font-size:1.3rem; box-shadow:0 4px 14px rgba(245,158,11,0.5);">
                             <i class="fa-solid fa-crosshairs"></i>
                         </div>
                         <div>
-                            <h3 style="font-family:'Outfit', sans-serif; font-size:1.25rem; font-weight:800; color:#fff; margin:0;">Nowa Nota / Rozkaz dla Agenta</h3>
-                            <div style="font-size:0.75rem; color:#34d399; font-weight:700;">Współrzędne elementu zostały automatycznie przechwycone</div>
+                            <h3 style="font-family:'Outfit', sans-serif; font-size:1.25rem; font-weight:800; color:#fff; margin:0;">
+                                Studio Celownika Master Admin 🎯
+                            </h3>
+                            <div style="font-size:0.75rem; color:#fde047; font-weight:700;">
+                                Samodzielna edycja na żywo lub zlecenie dla Agenta AI
+                            </div>
                         </div>
                     </div>
 
-                    <form onsubmit="window.LuminaAdminSuite.saveAgentNoteSubmit(event)">
-                        <!-- Przechwycone dane techniczne elementu -->
-                        <div style="background:rgba(15, 23, 42, 0.8); border:1px solid rgba(148, 163, 184, 0.2); border-radius:14px; padding:12px 14px; margin-bottom:14px; font-size:0.76rem; color:#94a3b8;">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:6px;">
-                                <span>📍 Plik: <b id="notePageUrl" style="color:#38bdf8;">-</b></span>
-                                <span>Tag: <b id="noteElementTag" style="color:#facc15;">-</b></span>
-                            </div>
-                            <div style="margin-bottom:4px; word-break:break-all;">
-                                🎯 Selektor: <code id="noteElementSelector" style="color:#86efac; background:rgba(0,0,0,0.35); padding:2px 6px; border-radius:4px; font-size:0.74rem;">-</code>
-                            </div>
-                            <div id="noteElementSnippetBox" style="color:#cbd5e1; font-style:italic; border-top:1px solid rgba(255,255,255,0.06); padding-top:6px; margin-top:6px; max-height:45px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:0.72rem;">
-                                -
-                            </div>
+                    <!-- Przechwycone dane techniczne elementu -->
+                    <div style="background:rgba(15, 23, 42, 0.8); border:1px solid rgba(148, 163, 184, 0.2); border-radius:14px; padding:10px 14px; margin-bottom:14px; font-size:0.75rem; color:#94a3b8;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:6px;">
+                            <span>📍 Plik: <b id="notePageUrl" style="color:#38bdf8;">-</b></span>
+                            <span>Tag: <b id="noteElementTag" style="color:#facc15;">-</b></span>
+                            <span id="noteTargetProfileSlugWrap" style="display:none;">Profil: <b id="noteTargetProfileSlug" style="color:#ec4899;">-</b></span>
                         </div>
-
-                        <!-- Pola notatki -->
-                        <div style="margin-bottom:12px;">
-                            <label style="display:block; font-size:0.78rem; font-weight:800; color:#e2e8f0; margin-bottom:6px;">
-                                📝 Treść Uwag / Rozkaz dla Agenta (co trzeba zmienić, poprawić, dodać):
-                            </label>
-                            <textarea id="agentNoteText" rows="4" placeholder="Np. Zmień kolor tła na ciemniejszy granat, popraw wyrównanie tekstu, podmień grafikę na nową wersję..." style="width:100%; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px; outline:none; resize:vertical;" required></textarea>
+                        <div style="margin-bottom:2px; word-break:break-all;">
+                            🎯 Selektor: <code id="noteElementSelector" style="color:#86efac; background:rgba(0,0,0,0.35); padding:2px 6px; border-radius:4px; font-size:0.73rem;">-</code>
                         </div>
+                        <div id="noteElementSnippetBox" style="color:#cbd5e1; font-style:italic; border-top:1px solid rgba(255,255,255,0.06); padding-top:4px; margin-top:4px; max-height:40px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:0.72rem;">
+                            -
+                        </div>
+                    </div>
 
-                        <!-- 👑 SEKCJA: UWAGI SPECJALNE & SZCZEGÓLNE WYTYCZNE DOWÓDCY -->
-                        <div style="background:linear-gradient(135deg, rgba(245,158,11,0.12), rgba(168,85,247,0.10)); border:1.5px solid rgba(245,158,11,0.45); border-radius:16px; padding:12px 14px; margin-bottom:14px; box-shadow:0 4px 18px rgba(0,0,0,0.35);">
-                            <label style="display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; margin-bottom:8px;">
-                                <input type="checkbox" id="agentNoteSpecialCheck" style="width:20px; height:20px; accent-color:#f59e0b; cursor:pointer; flex-shrink:0;" onchange="const p=document.getElementById('agentNotePriority'); if(this.checked&&p) p.value='critical';">
-                                <span style="font-size:0.84rem; font-weight:800; color:#facc15; display:flex; align-items:center; gap:6px;">
-                                    <i class="fa-solid fa-crown" style="color:#f59e0b;"></i> Uwagi specjalne / Szczególne wytyczne Dowódcy (Rygor Klasy Światowej & Zero Regresji)
-                                </span>
-                            </label>
-                            <textarea id="agentNoteSpecialGuidelines" rows="2" placeholder="Wpisz szczególne wytyczne i żelazne zasady (np. bezwzględny zakaz dotykania innych plików, ochrona układu poziomego, weryfikacja przyczynowo-skutkowa)..." style="width:100%; padding:10px 12px; border-radius:12px; background:rgba(15,23,42,0.85); border:1px solid rgba(245,158,11,0.3); color:#fef08a; font-family:inherit; font-size:13px; outline:none; resize:vertical;"></textarea>
-                            <div style="font-size:0.72rem; color:#cbd5e1; margin-top:4px; font-style:italic;">
-                                ⚡ Zaznaczenie ptaszkiem gwarantuje najwyższy priorytet wykonania oraz rygorystyczny audyt jakości Strażnika Kodu.
+                    <!-- Zakładki: 1. Samodzielna Edycja Na Żywo | 2. Nota dla Agenta -->
+                    <div style="display:flex; gap:8px; margin-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.12); padding-bottom:10px;">
+                        <button type="button" id="tabBtnDirectEdit" onclick="window.LuminaAdminSuite.switchInspectorTab('direct_edit')" style="flex:1; padding:10px; border-radius:12px; font-weight:800; font-size:0.84rem; cursor:pointer; background:linear-gradient(135deg,#f59e0b,#d97706); color:#0b142e; border:none; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 4px 12px rgba(245,158,11,0.3);">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> ⚡ Samodzielna Edycja
+                        </button>
+                        <button type="button" id="tabBtnAgentNote" onclick="window.LuminaAdminSuite.switchInspectorTab('agent_note')" style="flex:1; padding:10px; border-radius:12px; font-weight:800; font-size:0.84rem; cursor:pointer; background:rgba(255,255,255,0.06); color:#cbd5e1; border:1px solid rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; gap:6px;">
+                            <i class="fa-solid fa-robot"></i> 🤖 Nota dla Agenta
+                        </button>
+                    </div>
+
+                    <!-- ══════════ SEKCJA 1: SAMODZIELNA EDYCJA NA ŻYWO ══════════ -->
+                    <div id="inspectorTabDirectEdit">
+                        <!-- Edycja Zdjęcia / Grafiki (gdy zaznaczono obraz lub kartę profilu) -->
+                        <div id="inspectorPhotoEditBox" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(245,158,11,0.4); border-radius:16px; padding:14px; margin-bottom:14px;">
+                            <div style="font-size:0.84rem; font-weight:800; color:#fde047; margin-bottom:10px; display:flex; align-items:center; gap:7px;">
+                                <i class="fa-solid fa-camera"></i> Zmień Zdjęcie / Awatar Profilu Na Żywo
                             </div>
-                        </div>
 
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
+                            <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-bottom:12px;">
+                                <div style="width:72px; height:72px; border-radius:16px; overflow:hidden; border:2px solid rgba(250,204,21,0.8); background:#000; flex-shrink:0; box-shadow:0 4px 14px rgba(0,0,0,0.5);">
+                                    <img id="liveInspectorImgPreview" src="icon.png" alt="Podgląd" style="width:100%; height:100%; object-fit:cover;">
+                                </div>
+                                <div style="flex:1; min-width:180px;">
+                                    <!-- Przycisk wgrywania z dysku -->
+                                    <label style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:800; font-size:0.82rem; padding:10px 16px; border-radius:12px; cursor:pointer; box-shadow:0 4px 14px rgba(16,185,129,0.4); transition:all 0.2s;">
+                                        <i class="fa-solid fa-upload"></i> 📸 Wgraj Zdjęcie z Dysku
+                                        <input type="file" id="liveInspectorFileInput" accept="image/*" style="display:none;" onchange="window.LuminaAdminSuite.handleInspectorFileUpload(event)">
+                                    </label>
+                                    <div style="font-size:0.72rem; color:#94a3b8; margin-top:6px;">
+                                        Obsługuje JPG, PNG, WEBP. Zdjęcie zostanie natychmiast podmienione na stronie.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Opcja 2: Podanie nazwy pliku lub URL -->
                             <div>
-                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#38bdf8; margin-bottom:4px;">Kategoria Zmiany</label>
-                                <select id="agentNoteCategory" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px; font-weight:700;">
-                                    <option value="Wygląd / CSS">🎨 Wygląd / CSS / Layout</option>
-                                    <option value="Treść / Tekst">✏️ Treść / Tekst / Werset</option>
-                                    <option value="Zdjęcie / Grafika">🖼️ Zdjęcie / Grafika / Media</option>
-                                    <option value="Błąd / Poprawka">🐞 Błąd / Poprawka działania</option>
-                                    <option value="Nowa Funkcja">✨ Nowa Funkcjonalność</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#facc15; margin-bottom:4px;">Priorytet</label>
-                                <select id="agentNotePriority" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px; font-weight:700;">
-                                    <option value="normal">Normalny</option>
-                                    <option value="urgent">⚡ Pilny</option>
-                                    <option value="critical">🔴 Krytyczny (Rozkaz Dowódcy)</option>
-                                </select>
+                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">
+                                    Lub wpisz nazwę pliku z serwera / link do zdjęcia:
+                                </label>
+                                <div style="display:flex; gap:8px;">
+                                    <input type="text" id="liveInspectorImgUrlInput" placeholder="np. avatar_weronika.jpg lub https://..." style="flex:1; padding:8px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-size:13px; outline:none;">
+                                    <button type="button" onclick="window.LuminaAdminSuite.applyInspectorImageFromUrl()" style="padding:0 14px; border-radius:10px; background:rgba(250,204,21,0.2); border:1px solid rgba(250,204,21,0.5); color:#fde047; font-weight:800; font-size:0.78rem; cursor:pointer;">
+                                        Zastosuj
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
-                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
-                            <button type="button" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" style="padding:11px 18px; border-radius:24px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; cursor:pointer;">
-                                Anuluj
+                        <!-- Edycja Tekstu Elementu (nagłówek, imię, opis itp.) -->
+                        <div id="inspectorTextEditBox" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.14); border-radius:16px; padding:14px; margin-bottom:14px;">
+                            <div style="font-size:0.84rem; font-weight:800; color:#38bdf8; margin-bottom:8px; display:flex; align-items:center; gap:7px;">
+                                <i class="fa-solid fa-pen-to-square"></i> Edytuj Tekst Elementu
+                            </div>
+                            <textarea id="liveInspectorTextInput" rows="2" placeholder="Wpisz nowy tekst elementu..." style="width:100%; padding:10px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-size:13px; outline:none; resize:vertical;"></textarea>
+                            <div style="margin-top:6px; text-align:right;">
+                                <button type="button" onclick="window.LuminaAdminSuite.applyInspectorTextChange()" style="padding:6px 14px; border-radius:8px; background:rgba(56,189,248,0.2); border:1px solid rgba(56,189,248,0.5); color:#7dd3fc; font-weight:800; font-size:0.76rem; cursor:pointer;">
+                                    Zastosuj Tekst Na Żywo
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Przyciski Zapisz / Zamknij -->
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:10px;">
+                            <button type="button" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" style="padding:10px 18px; border-radius:20px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; cursor:pointer;">
+                                Zamknij
                             </button>
-                            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                                <button type="button" onclick="window.LuminaAdminSuite.saveAgentNoteSubmit(event, 'save_only')" style="padding:11px 18px; border-radius:24px; background:rgba(56, 189, 248, 0.18); border:1px solid rgba(56, 189, 248, 0.45); color:#7dd3fc; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:7px;" title="Zapisz do Dziennika (do pobrania po wpisaniu @N)">
-                                    <i class="fa-solid fa-bookmark"></i> 💾 Zapisz w Dzienniku (@N)
+                            <button type="button" onclick="window.LuminaAdminSuite.saveInspectorLiveEditsPermanent()" style="padding:11px 22px; border-radius:20px; background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; font-size:0.88rem; cursor:pointer; box-shadow:0 4px 16px rgba(16,185,129,0.45); display:inline-flex; align-items:center; gap:8px;">
+                                <i class="fa-solid fa-floppy-disk"></i> 💾 Zapisz Zmiany Na Stałe
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ══════════ SEKCJA 2: NOTA DLA AGENTA ══════════ -->
+                    <div id="inspectorTabAgentNote" style="display:none;">
+                        <form onsubmit="window.LuminaAdminSuite.saveAgentNoteSubmit(event)">
+                            <div style="margin-bottom:12px;">
+                                <label style="display:block; font-size:0.78rem; font-weight:800; color:#e2e8f0; margin-bottom:6px;">
+                                    📝 Treść Uwag / Rozkaz dla Agenta:
+                                </label>
+                                <textarea id="agentNoteText" rows="4" placeholder="Np. Zmień układ kolumn, podmień ikonę, napraw zachowanie na telefonie..." style="width:100%; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px; outline:none; resize:vertical;"></textarea>
+                            </div>
+
+                            <div style="background:linear-gradient(135deg, rgba(245,158,11,0.12), rgba(168,85,247,0.10)); border:1.5px solid rgba(245,158,11,0.45); border-radius:16px; padding:12px 14px; margin-bottom:14px;">
+                                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; margin-bottom:8px;">
+                                    <input type="checkbox" id="agentNoteSpecialCheck" style="width:20px; height:20px; accent-color:#f59e0b; cursor:pointer; flex-shrink:0;">
+                                    <span style="font-size:0.84rem; font-weight:800; color:#facc15; display:flex; align-items:center; gap:6px;">
+                                        <i class="fa-solid fa-crown" style="color:#f59e0b;"></i> Rozkaz Dowódcy (Rygor Klasy Światowej)
+                                    </span>
+                                </label>
+                                <textarea id="agentNoteSpecialGuidelines" rows="2" placeholder="Wpisz szczególne wytyczne..." style="width:100%; padding:10px 12px; border-radius:12px; background:rgba(15,23,42,0.85); border:1px solid rgba(245,158,11,0.3); color:#fef08a; font-family:inherit; font-size:13px; outline:none; resize:vertical;"></textarea>
+                            </div>
+
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+                                <button type="button" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" style="padding:10px 18px; border-radius:20px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; cursor:pointer;">
+                                    Anuluj
                                 </button>
-                                <button type="button" onclick="window.LuminaAdminSuite.saveAgentNoteSubmit(event, 'execute_now')" style="padding:11px 22px; border-radius:24px; background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; cursor:pointer; box-shadow:0 4px 16px rgba(16,185,129,0.5); display:inline-flex; align-items:center; gap:7px;" title="Wyślij natychmiastowy rozkaz do Agenta pracującego w tle">
-                                    <i class="fa-solid fa-bolt"></i> ⚡ Wyślij Rozkaz Natychmiast! 🚀
+                                <button type="submit" style="padding:11px 22px; border-radius:20px; background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; font-size:0.88rem; cursor:pointer; box-shadow:0 4px 16px rgba(16,185,129,0.45); display:inline-flex; align-items:center; gap:8px;">
+                                    <i class="fa-solid fa-bolt"></i> ⚡ Wyślij Rozkaz dla Agenta
                                 </button>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+
                 </div>
             </div>
         `;
@@ -1619,6 +1670,156 @@
                 curr = curr.parentElement;
             }
             return path.join(' > ');
+        },
+
+        
+        // ── TRYB CELOWNIKA: SAMODZIELNA EDYCJA NA ŻYWO I UPLOAD ZDJĘĆ ──
+        switchInspectorTab: function(tabName) {
+            const editTab = document.getElementById('inspectorTabDirectEdit');
+            const noteTab = document.getElementById('inspectorTabAgentNote');
+            const btnEdit = document.getElementById('tabBtnDirectEdit');
+            const btnNote = document.getElementById('tabBtnAgentNote');
+
+            if (tabName === 'direct_edit') {
+                if (editTab) editTab.style.display = 'block';
+                if (noteTab) noteTab.style.display = 'none';
+                if (btnEdit) {
+                    btnEdit.style.background = 'linear-gradient(135deg,#f59e0b,#d97706)';
+                    btnEdit.style.color = '#0b142e';
+                    btnEdit.style.border = 'none';
+                }
+                if (btnNote) {
+                    btnNote.style.background = 'rgba(255,255,255,0.06)';
+                    btnNote.style.color = '#cbd5e1';
+                    btnNote.style.border = '1px solid rgba(255,255,255,0.15)';
+                }
+            } else {
+                if (editTab) editTab.style.display = 'none';
+                if (noteTab) noteTab.style.display = 'block';
+                if (btnNote) {
+                    btnNote.style.background = 'linear-gradient(135deg,#10b981,#059669)';
+                    btnNote.style.color = '#fff';
+                    btnNote.style.border = 'none';
+                }
+                if (btnEdit) {
+                    btnEdit.style.background = 'rgba(255,255,255,0.06)';
+                    btnEdit.style.color = '#cbd5e1';
+                    btnEdit.style.border = '1px solid rgba(255,255,255,0.15)';
+                }
+            }
+        },
+
+        handleInspectorFileUpload: function(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const dataUrl = event.target.result;
+                this.applyLiveInspectorImage(dataUrl);
+            };
+            reader.readAsDataURL(file);
+        },
+
+        applyInspectorImageFromUrl: function() {
+            const url = document.getElementById('liveInspectorImgUrlInput')?.value?.trim();
+            if (!url) {
+                alert('Proszę podać nazwę pliku lub URL zdjęcia.');
+                return;
+            }
+            this.applyLiveInspectorImage(url);
+        },
+
+        applyLiveInspectorImage: function(imgSrc) {
+            const preview = document.getElementById('liveInspectorImgPreview');
+            if (preview) preview.src = imgSrc;
+
+            const el = this.inspectedTargetEl;
+            if (!el) return;
+
+            let targetImg = null;
+            if (el.tagName === 'IMG') {
+                targetImg = el;
+            } else {
+                targetImg = el.querySelector('img') || el.closest('.profile-card')?.querySelector('img') || el.closest('.card-photo')?.querySelector('img');
+            }
+
+            if (targetImg) {
+                targetImg.src = imgSrc;
+                targetImg.setAttribute('src', imgSrc);
+                targetImg.removeAttribute('srcset');
+            }
+
+            // Jeśli to karta profilu, ustal slug
+            const card = el.closest('.profile-card');
+            const slug = card?.getAttribute('data-profile-slug') || (el.getAttribute && el.getAttribute('data-profile-slug')) || '';
+
+            this._currentInspectorImgUpdate = {
+                slug: slug,
+                imgSrc: imgSrc,
+                elementSelector: this.buildElementSelector(targetImg || el)
+            };
+
+            if (typeof window.showToast === 'function') {
+                window.showToast('📸 Zdjęcie podmienione na żywo! Kliknij [Zapisz Zmiany Na Stałe], aby utrwalić.');
+            }
+        },
+
+        applyInspectorTextChange: function() {
+            const text = document.getElementById('liveInspectorTextInput')?.value;
+            const el = this.inspectedTargetEl;
+            if (!el || text === undefined) return;
+
+            el.innerText = text;
+            this._currentInspectorTextUpdate = {
+                text: text,
+                elementSelector: this.buildElementSelector(el)
+            };
+
+            if (typeof window.showToast === 'function') {
+                window.showToast('✏️ Tekst zaktualizowany na żywo! Kliknij [Zapisz Zmiany Na Stałe], aby utrwalić.');
+            }
+        },
+
+        saveInspectorLiveEditsPermanent: async function() {
+            try {
+                // 1. Zapis zdjęcia profilu jeśli dotyczyło profilu
+                if (this._currentInspectorImgUpdate) {
+                    const { slug, imgSrc } = this._currentInspectorImgUpdate;
+                    if (slug) {
+                        localStorage.setItem('lumina_avatar_' + slug, imgSrc);
+                        localStorage.setItem('lumina_custom_avatar_' + slug, imgSrc);
+                        if (window.LUMINA_COMMUNITY_PROFILES && window.LUMINA_COMMUNITY_PROFILES[slug]) {
+                            window.LUMINA_COMMUNITY_PROFILES[slug].avatar = imgSrc;
+                        }
+                        if (window.LuminaDB?.saveProfileUpdate) {
+                            await window.LuminaDB.saveProfileUpdate(slug, { avatar: imgSrc });
+                        }
+                    }
+                }
+
+                // 2. Zapis zmian w ogólnym rejestrze modyfikacji
+                const overrides = JSON.parse(localStorage.getItem('lumina_element_overrides') || '{}');
+                if (this._currentInspectorImgUpdate) {
+                    overrides[this._currentInspectorImgUpdate.elementSelector] = { type: 'img', src: this._currentInspectorImgUpdate.imgSrc };
+                }
+                if (this._currentInspectorTextUpdate) {
+                    overrides[this._currentInspectorTextUpdate.elementSelector] = { type: 'text', text: this._currentInspectorTextUpdate.text };
+                }
+                localStorage.setItem('lumina_element_overrides', JSON.stringify(overrides));
+
+                this.closeModal('adminAgentNoteModal');
+                this.deactivateAgentInspector();
+
+                if (typeof window.showToast === 'function') {
+                    window.showToast('💾✨ Wszystkie zmiany zostały trwale zapisane w portalu!');
+                } else {
+                    alert('Wszystkie zmiany zostały trwale zapisane!');
+                }
+            } catch(e) {
+                console.error('Error saving inspector live edits:', e);
+                alert('Zapisano lokalnie.');
+            }
         },
 
         openAgentNoteModalForElement: function(el) {
