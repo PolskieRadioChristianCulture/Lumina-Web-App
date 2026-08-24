@@ -113,19 +113,33 @@ function checkIdentityFallbackGuard() {
   const allFiles = [...HTML_FILES, ...JS_FILES];
   for (const f of allFiles) {
     const content = readFile(f);
-    // Szuka "return 'slug';" NIE poprzedzonego w tej samej linii warunkiem if/?/&&/||
-    // czyli bezwarunkowego podstawienia tożsamości founder-a jako fallback.
     const lines = content.split('\n');
     lines.forEach((line, idx) => {
       for (const slug of KNOWN_FOUNDER_SLUGS) {
+        // Wzorzec 1: bezwarunkowe "return 'slug';"
         const bareReturn = new RegExp(`return\\s+'${slug}'\\s*;`).test(line);
-        const isConditional = /\?|if\s*\(|&&|\|\|/.test(line);
-        if (bareReturn && !isConditional) {
+        // "if (true)" / "if (1)" to POZORNY warunek — nie liczy się jako
+        // realne zabezpieczenie (to dokładnie sposób, w jaki poprzednia
+        // wersja tego pliku "przemknęła" przez tę regułę bez realnej naprawy).
+        const lineWithoutFakeConditions = line.replace(/if\s*\(\s*(true|1)\s*\)/g, '');
+        const isConditional = /\?|if\s*\(|&&|\|\|/.test(lineWithoutFakeConditions.replace(bareReturn ? `return '${slug}';` : '', ''));
+        const precedingWindow = lines.slice(Math.max(0, idx - 6), idx).join('\n');
+        const netOpenBraces = (precedingWindow.match(/\{/g) || []).length - (precedingWindow.match(/\}/g) || []).length;
+        const hasMultilineGuard = netOpenBraces > 0 && /if\s*\(/.test(precedingWindow);
+        if (bareReturn && !isConditional && !hasMultilineGuard) {
+          report('B-IDENTITY-FALLBACK', f, `Linia ${idx + 1}: bezwarunkowe (lub pozornie warunkowe przez if(true)) "return '${slug}';".`);
+        }
+
+        // Wzorzec 2 (szerszy, złapał prawdziwy błąd, którego wzorzec 1 nie widział):
+        // wartość domyślna w wyrażeniu, np. `params.get('u') || 'slug'`,
+        // `x.slug || 'slug'`, `f.senderId?.stringValue || 'slug'`.
+        const defaultValuePattern = new RegExp(`\\|\\|\\s*'${slug}'(?!\\s*\\))`);
+        if (defaultValuePattern.test(line) && !bareReturn) {
           report(
-            'B-IDENTITY-FALLBACK',
+            'B-IDENTITY-FALLBACK-DEFAULT',
             f,
-            `Linia ${idx + 1}: bezwarunkowe "return '${slug}';" — jeśli to gałąź fallback (nie dopasowano żadnego użytkownika), ` +
-            `to dokładnie błąd, który podstawiał tożsamość/zdjęcie założyciela każdemu, kogo system nie rozpoznał.`
+            `Linia ${idx + 1}: "${line.trim().slice(0, 100)}" — wartość domyślna podstawia tożsamość "${slug}", ` +
+            `gdy prawdziwe dane są puste/błędne. Sprawdź czy to naprawdę zamierzone (np. legalne rozpoznanie URL), czy niebezpieczny fallback.`
           );
         }
       }

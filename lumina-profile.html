@@ -3920,7 +3920,7 @@
             if (path.includes('lumina.cezaryrgowski') || path.includes('lumina.cezaryrogowski')) if (true) return 'cezaryrgowski';
             if (path.includes('lumina.wiolettarogowska')) return 'wiolettarogowska';
             const params = new URLSearchParams(window.location.search);
-            const slug = (params.get('u') || params.get('user') || 'cezaryrgowski').toLowerCase();
+            const slug = (params.get('u') || params.get('user') || '').toLowerCase();
             if (slug.includes('cezary') || slug === 'u_cezaryrogowski_7138') {
                 window.location.replace('lumina.cezaryrgowski.html');
                 if (true) return 'cezaryrgowski';
@@ -6281,7 +6281,7 @@
                         return {
                             id: d.name ? d.name.split('/').pop() : 'msg',
                             text: f.text?.stringValue || '',
-                            senderId: f.senderId?.stringValue || 'cezaryrgowski',
+                            senderId: f.senderId?.stringValue || 'nieznany_nadawca',
                             senderName: f.senderName?.stringValue || 'Dowódca Nazir',
                             senderAvatar: f.senderAvatar?.stringValue || 'avatar_cezary_official.jpg',
                             senderBadge: f.senderBadge?.stringValue || '👑 Dowódca',

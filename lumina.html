@@ -5037,7 +5037,7 @@
         window.navigateToFullProfile = function(e) {
             if (e && e.preventDefault) e.preventDefault();
 
-            const slug = window._currentModalProfileSlug || 'cezaryrgowski';
+            const slug = window._currentModalProfileSlug || '';
             if (slug === 'cezaryrgowski') window.location.href = 'lumina.cezaryrgowski.html';
             else if (slug === 'wiolettarogowska') window.location.href = 'lumina.wiolettarogowska.html';
             else if (slug === 'andrzejthiel' || slug === 'andrzej') window.location.href = 'lumina.andrzejthiel.html';
@@ -5259,7 +5259,7 @@
             topThree.forEach((user, idx) => {
                 const zIndex = 4 - idx;
                 html += `
-                    <div class="tablica-online-avatar-item" title="Zalogowany użytkownik: ${user.name} ✨ ˘" style="z-index: ${zIndex};" onclick="event.stopPropagation(); window.openCommunityProfile('${user.slug || 'cezaryrgowski'}')">
+                    <div class="tablica-online-avatar-item" title="Zalogowany użytkownik: ${user.name} ✨ ˘" style="z-index: ${zIndex};" onclick="event.stopPropagation(); if ('${user.slug || ''}') window.openCommunityProfile('${user.slug || ''}')">
                         <img loading="lazy" decoding="async" src="${user.avatar}" alt="${user.name}" class="tablica-online-avatar-img" onerror="this.src='lumina_icon.jpg'">
                         <span class="tablica-online-dot"></span>
                     </div>
@@ -6636,7 +6636,7 @@
                         return {
                             id: d.name ? d.name.split('/').pop() : 'msg',
                             text: f.text?.stringValue || '',
-                            senderId: f.senderId?.stringValue || 'cezaryrgowski',
+                            senderId: f.senderId?.stringValue || 'nieznany_nadawca',
                             senderName: f.senderName?.stringValue || 'Dowódca Nazir',
                             senderAvatar: f.senderAvatar?.stringValue || 'avatar_cezary_official.jpg',
                             senderBadge: f.senderBadge?.stringValue || '👑 Dowódca',

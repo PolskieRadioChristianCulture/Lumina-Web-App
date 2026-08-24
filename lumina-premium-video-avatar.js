@@ -118,7 +118,7 @@
                 if (path.includes('ccwomen')) return 'ccwomen';
                 if (path.includes('wiolettarogowska')) return 'wiolettarogowska';
                 if (path.includes('magdalena')) return 'magdalena';
-                if (path.includes('cezaryrgowski') || path.includes('cezaryrogowski')) if (true) return 'cezaryrgowski';
+                if (path.includes('cezaryrgowski') || path.includes('cezaryrogowski')) return 'cezaryrgowski';
 
                 // 4. Globalne obiekty profilu
                 if (window._cloudProfileData && window._cloudProfileData.slug) {
@@ -129,9 +129,10 @@
                     const cur = JSON.parse(curRaw);
                     if (cur && cur.slug) return cur.slug.toLowerCase().trim();
                 }
-            } catch(e) {}
-
-            if (true) return 'cezaryrgowski';
+            } catch(e) {
+                console.warn('[LUMINA][VideoAvatar] Nie udało się wykryć profilu:', e);
+            }
+            return null;
         }
 
         init() {
