@@ -24,11 +24,15 @@
             if (rawAvatar && rawAvatar.length > 5 && !rawAvatar.includes('placeholder') && !rawAvatar.includes('undefined')) {
                 return rawAvatar;
             }
-            // Spróbuj odnaleźć w profilach bazowych
             if (window.LUMINA_BASE_PROFILES && window.LUMINA_BASE_PROFILES[sId]?.avatar) {
                 return window.LUMINA_BASE_PROFILES[sId].avatar;
             }
-            return isMe ? 'avatar_cezary_official.jpg' : 'lumina_icon.jpg';
+            if (isMe) {
+                const myProfile = (typeof window.LuminaDB?.getCurrentProfile === 'function') ? window.LuminaDB.getCurrentProfile() : null;
+                const myUser = (typeof window.LuminaDB?.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
+                return myProfile?.avatar || myUser?.avatar || myUser?.photoURL || rawAvatar || 'lumina_icon.jpg';
+            }
+            return 'lumina_icon.jpg';
         };
 
 
