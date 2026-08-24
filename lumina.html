@@ -16,7 +16,10 @@
                 'lumina_avatar_cezaryrgowski',
                 'lumina_custom_avatar_cezaryrgowski',
                 'lumina_avatar_weronika',
-                'lumina_custom_avatar_weronika'
+                'lumina_custom_avatar_weronika',
+                'lumina_profile_ccwomen',
+                'lumina_avatar_ccwomen',
+                'lumina_custom_avatar_ccwomen'
             ];
             keysToPurge.forEach(k => localStorage.removeItem(k));
 
@@ -4760,6 +4763,13 @@
                 live.city = 'Polska';
                 live.isMissionAccount = true;
                 live.profileUrl = 'lumina.radiocc.html';
+            } else if (slug === 'ccwomen') {
+                live.name = 'CC WOMEN';
+                live.age = '';
+                live.avatar = 'avatar_ccwomen_official_2026.jpg';
+                live.city = 'Polska';
+                live.isMissionAccount = true;
+                live.profileUrl = 'lumina.ccwomen.html';
             } else if (slug === 'weronika') {
                 live.name = 'Weronika';
                 live.age = 25;
