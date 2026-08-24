@@ -50,6 +50,41 @@
 
     const LUMINA_CORE_POSTS_DATA = [
         {
+            id: 'post_dzj_2026_08_25',
+            type: 'post',
+            author: 'Cezary Rogowski',
+            authorRole: '☀️ Dobrze, że jesteś • Założyciel Christian Culture ✨',
+            authorAvatar: 'avatar_cezary_official.jpg',
+            authorSlug: 'cezaryrgowski',
+            time: '25 Sierpnia 2026 • ☀️ Dobrze, że jesteś',
+            title: '☀️ Lato z Jezusem — Wielkie Pytania (Dzień 25)',
+            text: `☀️ **Lato z Jezusem — Wielkie Pytania**
+**Dzień 25 — 31 bardzo osobistych pytań Syna/Córki do Ojca: Dlaczego tak często ulegam lękowi przed utratą zdrowia i kruchością ciała?**
+
+W dwudziestym piątym dniu cyklu „Lato z Jezusem — Wielkie Pytania” rozbrajamy mechanizm lęku przed chorobą, fizyczną słabością i przemijaniem.
+
+W psychologii zdrowia zjawisko „lęku somatycznego i hipochondrii stresowej” opisuje stan, w którym obawa o utratę zdrowia paraliżuje codzienne funkcjonowanie i odbiera radość życia. Wróg bezwzględnie wykorzystuje tę wrażliwość, wpędzając nas w przewlekły stres. Słowo Boże przez świadectwo Pawła uderza w tę słabość: „Moc bowiem w słabości się doskonali”. Chrześcijański lider najwyższej klasy dba o swój organizm, ale nie panikuje wobec jego kruchości — powierza swoje życie Bogu z nienaganną, królewską klasą i wewnętrznym spokojem.
+
+**Jezus mówi dziś do Ciebie:**
+„Wystarczy ci mojej łaski; moc bowiem w słabości się doskonali.” *(2 Koryntian 12,9)*
+
+**Zadanie Taktyczne:**
+Zmiażdż dziś lęk o zdrowie i obsesyjne myśli o fizycznej kruchości na swoim polu bitwy. Zadbaj o siebie racjonalnie, ale oddaj niepokój o jutro w ręce Ojca. Wnieś do swojego domu i środowiska standard niezachwianego pokoju i ufności.
+
+W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
+
+**Modlitwa Bojowa:**
+„Ojcze, odrzucam kłamstwa nieprzyjaciela i lęk przed chorobą. Przepraszam, że traciłem pokój z powodu kruchości mojego ciała. Dziękuję, że Twoja łaska podtrzymuje mnie w każdym stanie. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą i spokojem ufał Twojej opiece, zdobywając ten świat dla Twojej chwały.”
+
+Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
+
+PODAJ DALEJ 🔴
+www.polskieradio.cc | www.cclite.pl`,
+            image: 'promo_dzj.jpg',
+            likes: 82,
+            amen: 76
+        },
+        {
             id: 'post_ckd_2026_08_24',
             type: 'post',
             author: 'Andrzej Thiel',
