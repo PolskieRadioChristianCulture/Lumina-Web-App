@@ -37,3 +37,28 @@ Przed zatwierdzeniem jakichkolwiek zmian agent oraz **Strażnik Kodu** weryfikuj
 - Działa jako niezależny recenzent kodu i architektury.
 - Ma prawo odrzucić łatkę, jeśli jest ona powierzchowna (leczy objaw zamiast przyczyny źródłowej).
 - Monitoruje i archiwizuje historię usterek, aby te same błędy nigdy więcej nie pojawiły się w repozytorium.
+
+
+---
+
+## 3. 🤖 EGZEKWOWANIE AUTOMATYCZNE (dodane 2026-08-24)
+
+Powyższa lista kontrolna była dotąd dokumentem — nikt jej mechanicznie nie
+sprawdzał, więc te same błędy (m.in. `.head-actions` w kolumnie, fallback do
+zdjęcia Cezarego, wymuszone przewijanie czatu, podwójny Service Worker)
+wracały wielokrotnie, mimo że były już wcześniej opisane właśnie w tym pliku.
+
+Od teraz `scripts/straznik-kodu-check.js` sprawdza automatycznie tyle z
+powyższej listy, ile da się zweryfikować mechanicznie:
+
+```bash
+node scripts/straznik-kodu-check.js
+```
+
+Uruchamiane automatycznie w CI (`.github/workflows/straznik-kodu.yml`) przy
+każdym push/PR do `main` — build czerwony = nie mergować, dopóki nie wyjaśnisz
+lub nie naprawisz.
+
+**Zasada:** jeśli naprawiasz błąd, który pasuje do jednej z kategorii
+(A–H w skrypcie), a nie ma dla niego jeszcze reguły — dopisz ją. Ten plik ma
+zostać żywym dokumentem, ale mechanicznie wymuszanym, nie tylko czytanym.

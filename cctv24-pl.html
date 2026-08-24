@@ -3568,19 +3568,6 @@ function getWeatherPreset(city) {
                 }
             }
         });
-                    initTickerFlipper();
-                    fetchRealWeather();
-                    setInterval(fetchRealWeather, 900000); // Refresh weather from API every 15 minutes
-                    loadNewsMarquee();
-                    setInterval(loadNewsMarquee, 600000); // Refresh news headlines every 10 minutes
-                    runQrSidecarLoop(); // Start weather/Patronite QR sidecar loop
-                })
-                .catch(err => {
-                    console.error("Error loading reflections:", err);
-                    document.querySelector(".slide-title").textContent = "Błąd Bazy Danych";
-                    document.querySelector(".slide-text").textContent = "Nie udało się wczytać pliku rozważań. Upewnij się, że plik rozwazania_baza.json istnieje.";
-                });
-        });
     </script>
     <!-- Real-time Prayer Intentions Controller -->
     <script type="module">

@@ -1814,30 +1814,30 @@ export function normalizeChatUserId(idOrSlug) {
     const str = String(idOrSlug).trim().toLowerCase();
     
     // 1. Cezary Rogowski mappings (emails, UIDs, slugs, usernames):
-    if (str === 'cezaryrgowski' || str === 'cezary' || str.includes('cezary') || 
+    const isCezary = (str === 'cezaryrgowski' || str === 'cezary' || str.includes('cezary') || 
         str.includes('nazirczarkes') || str.includes('studiodees7') || str.includes('czarkes') ||
         str === '1zhaexihqzgz8nzebr0dyc7wlg93' || str === 'sectuwwrsv8pnkhsrxgyivjbajn1' || 
-        str === 'u5seqt54fcnocfcxjirckowjhqc2' || str.startsWith('u_cezary')) {
-        return 'cezaryrgowski';
-    }
+        str === 'u5seqt54fcnocfcxjirckowjhqc2' || str.startsWith('u_cezary'));
+    if (isCezary) return 'cezaryrgowski';
     
     // 2. Christian Culture / Radio CC mappings:
-    if (str === 'radiocc' || str === 'christianculture' || str.includes('radiochristianculture') || 
-        str.includes('christian culture') || str === 'lgibw6jrf0wbeln6zpqu2pfrlcx1') {
-        return 'radiocc';
-    }
+    const isCC = (str === 'radiocc' || str === 'christianculture' || str.includes('radiochristianculture') || 
+        str.includes('christian culture') || str === 'lgibw6jrf0wbeln6zpqu2pfrlcx1');
+    if (isCC) return 'radiocc';
     
     // 3. Wioletta Rogowska mappings:
-    if (str === 'wiolettarogowska' || str === 'wioletta' || str.includes('wioletta') || 
+    const isWioletta = (str === 'wiolettarogowska' || str === 'wioletta' || str.includes('wioletta') || 
         str === 'lr7e9ism6vaablvmcrjan5lvn0j2' || str === 'j4aqs5wspawssjtj04jlqchpieg1' || 
-        str.includes('wioletta1240')) {
-        return 'wiolettarogowska';
-    }
+        str.includes('wioletta1240'));
+    if (isWioletta) return 'wiolettarogowska';
     
     // 4. Andrzej Thiel:
-    if (str === 'andrzejthiel' || str === 'andrzej') {
-        return 'andrzejthiel';
-    }
+    if (str === 'andrzejthiel' || str === 'andrzej') return 'andrzejthiel';
+
+    // 5. Brat Robert:
+    if (str === 'robert' || str === 'bratrobert' || str === 'brat_robert' || 
+        str === 'robertlukaszpio' || str.includes('robert') || str.includes('lukaszpio') || 
+        str.includes('robertlukasz') || str.startsWith('u_robert')) return 'robertlukaszpio';
     
     return str;
 }

@@ -118,7 +118,7 @@
                 if (path.includes('ccwomen')) return 'ccwomen';
                 if (path.includes('wiolettarogowska')) return 'wiolettarogowska';
                 if (path.includes('magdalena')) return 'magdalena';
-                if (path.includes('cezaryrgowski') || path.includes('cezaryrogowski')) return 'cezaryrgowski';
+                if (path.includes('cezaryrgowski') || path.includes('cezaryrogowski')) if (true) return 'cezaryrgowski';
 
                 // 4. Globalne obiekty profilu
                 if (window._cloudProfileData && window._cloudProfileData.slug) {
@@ -131,7 +131,7 @@
                 }
             } catch(e) {}
 
-            return 'cezaryrgowski';
+            if (true) return 'cezaryrgowski';
         }
 
         init() {

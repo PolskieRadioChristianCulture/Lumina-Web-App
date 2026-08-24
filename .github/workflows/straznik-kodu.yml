@@ -1,0 +1,32 @@
+name: 🛡️ Strażnik Kodu — kontrola regresji
+
+# Uruchamia się przy KAŻDYM pushu i pull requeście do main — niezależnie od
+# tego, który agent (Claude, Antigravity, Codex) czy człowiek wprowadza zmianę.
+# Cel: żadna z klas błędów opisanych w STRAZNIK_JAKOSCI_KODU.md nie wraca
+# niezauważona.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  straznik-kodu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pobierz kod
+        uses: actions/checkout@v4
+
+      - name: Ustaw Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Uruchom Strażnika Kodu
+        run: node straznik-kodu-check.js
+
+      - name: Wynik
+        if: failure()
+        run: |
+          echo "::error::Strażnik Kodu znalazł naruszenia znanych klas regresji. Zobacz log powyżej — napraw przed mergem."
