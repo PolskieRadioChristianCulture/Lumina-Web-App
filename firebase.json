@@ -23,12 +23,62 @@
         "downloads/**"
       ],
       "redirects": [
-        { "source": "/snadaniowa-live-worship.html", "destination": "/cctv24-worship.html", "type": 301 }
+        {
+          "source": "/snadaniowa-live-worship.html",
+          "destination": "/cctv24-worship.html",
+          "type": 301
+        }
       ],
       "rewrites": [
-        { "source": "/lumina", "destination": "/lumina.html" },
-        { "source": "/tablica", "destination": "/lumina-tablica.html" },
-        { "source": "/profil", "destination": "/lumina-profile.html" }
+        {
+          "source": "/lumina",
+          "destination": "/lumina.html"
+        },
+        {
+          "source": "/tablica",
+          "destination": "/lumina-tablica.html"
+        },
+        {
+          "source": "/profil",
+          "destination": "/lumina-profile.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "**/*.@(html|htm)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "source": "sw-lumina.js",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "firebase-messaging-sw.js",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, must-revalidate"
+            }
+          ]
+        }
       ]
     },
     {
@@ -54,12 +104,62 @@
         "downloads/**"
       ],
       "redirects": [
-        { "source": "/snadaniowa-live-worship.html", "destination": "/cctv24-worship.html", "type": 301 }
+        {
+          "source": "/snadaniowa-live-worship.html",
+          "destination": "/cctv24-worship.html",
+          "type": 301
+        }
       ],
       "rewrites": [
-        { "source": "/lumina", "destination": "/lumina.html" },
-        { "source": "/tablica", "destination": "/lumina-tablica.html" },
-        { "source": "/profil", "destination": "/lumina-profile.html" }
+        {
+          "source": "/lumina",
+          "destination": "/lumina.html"
+        },
+        {
+          "source": "/tablica",
+          "destination": "/lumina-tablica.html"
+        },
+        {
+          "source": "/profil",
+          "destination": "/lumina-profile.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "**/*.@(html|htm)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "source": "sw-lumina.js",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "firebase-messaging-sw.js",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, must-revalidate"
+            }
+          ]
+        }
       ]
     }
   ]

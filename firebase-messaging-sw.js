@@ -80,15 +80,13 @@ self.addEventListener('message', (event) => {
     }
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', event => {
     event.waitUntil(
-        caches.keys().then((keys) => {
+        caches.keys().then(keys => {
             return Promise.all(
-                keys.map((key) => {
-                    if (key !== CACHE_NAME) {
-                        console.log('[SW Activate] Usuwanie starego cache:', key);
-                        return caches.delete(key);
-                    }
+                keys.map(key => {
+                    console.log('[SW] Deleting cache:', key);
+                    return caches.delete(key);
                 })
             );
         }).then(() => self.clients.claim())

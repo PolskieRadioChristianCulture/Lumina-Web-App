@@ -1,6 +1,35 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+
+    <script>
+    // ── Emergency Auto-Sanitizer for stale browser cache & localStorage ──
+    (function(){
+        try {
+            const staleKeys = [
+                'lumina_element_overrides',
+                'lumina_avatar_radiocc',
+                'lumina_custom_avatar_radiocc',
+                'lumina_avatar_cezaryrgowski',
+                'lumina_custom_avatar_cezaryrgowski',
+                'lumina_avatar_weronika',
+                'lumina_custom_avatar_weronika'
+            ];
+            staleKeys.forEach(k => {
+                const val = localStorage.getItem(k);
+                if (val && (val.includes('logo_radio_cc') || val.includes('placeholder') || val.includes('avatar_widget_ania') || val.includes('data:image'))) {
+                    localStorage.removeItem(k);
+                }
+            });
+            const myProf = JSON.parse(localStorage.getItem('lumina_my_profile') || 'null');
+            if (myProf && myProf.avatar && (myProf.avatar.includes('logo_radio_cc') || myProf.avatar.includes('placeholder'))) {
+                myProf.avatar = 'avatar_christian_culture_hq_2026.jpg';
+                localStorage.setItem('lumina_my_profile', JSON.stringify(myProf));
+            }
+        } catch(e){}
+    })();
+    </script>
+
     <!-- Google Analytics -->
     <!-- Google Consent Mode v2 (Default Denied) -->
 <script>
