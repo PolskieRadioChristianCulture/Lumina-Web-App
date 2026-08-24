@@ -55,7 +55,7 @@
         'studiodobregoslowa': 'czesc_dobrze_ze_jestes.mp4',
         'cctv': 'Reklama 2 Sklep CC.mp4',
         'radiocc': 'Reklama Sklep CC Karuzela Profili.mp4',
-        'ccwomen': 'czesc_dobrze_ze_jestes.mp4',
+        
         'ccmen': 'Reklama Sklep CC Karuzela Profili.mp4',
         'osobowoscplus': 'czesc_dobrze_ze_jestes.mp4',
         'wiolettarogowska': 'wioletta_profile_video.mp4'
