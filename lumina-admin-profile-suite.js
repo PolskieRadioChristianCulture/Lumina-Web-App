@@ -1808,11 +1808,16 @@
                 }
                 localStorage.setItem('lumina_element_overrides', JSON.stringify(overrides));
 
+                // Natychmiastowe utrwalenie w DOM
+                if (typeof window.applyAllLuminaCustomAvatars === 'function') {
+                    window.applyAllLuminaCustomAvatars();
+                }
+
                 this.closeModal('adminAgentNoteModal');
                 this.deactivateAgentInspector();
 
                 if (typeof window.showToast === 'function') {
-                    window.showToast('💾✨ Wszystkie zmiany zostały trwale zapisane w portalu!');
+                    window.showToast('💾✨ Nowe zdjęcie zostało trwale zapisane i nie zniknie po odświeżeniu!');
                 } else {
                     alert('Wszystkie zmiany zostały trwale zapisane!');
                 }

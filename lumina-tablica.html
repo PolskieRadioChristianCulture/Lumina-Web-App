@@ -5,6 +5,73 @@
     <!-- Google Consent Mode v2 (Default Denied) -->
 <script>
 
+    // ── PANCERNY MENEDŻER PERSYSTENCJI WŁASNYCH ZDJĘĆ PROFILI I ELEMENTÓW ──
+    window.applyAllLuminaCustomAvatars = function() {
+        try {
+            // 1. Zastosuj zapisane zdjęcia per slug profilu
+            document.querySelectorAll('.profile-card[data-profile-slug], [data-profile-slug]').forEach(card => {
+                const slug = card.getAttribute('data-profile-slug');
+                if (!slug) return;
+                const customAvatar = localStorage.getItem('lumina_custom_avatar_' + slug) || localStorage.getItem('lumina_avatar_' + slug);
+                if (customAvatar) {
+                    const img = card.querySelector('img');
+                    if (img && img.src !== customAvatar) {
+                        img.src = customAvatar;
+                        img.setAttribute('src', customAvatar);
+                        img.removeAttribute('srcset');
+                    }
+                    if (window.LUMINA_COMMUNITY_PROFILES && window.LUMINA_COMMUNITY_PROFILES[slug]) {
+                        window.LUMINA_COMMUNITY_PROFILES[slug].avatar = customAvatar;
+                    }
+                }
+            });
+
+            // 2. Jeśli jesteśmy na podstronie profilowej (lumina-profile.html)
+            const urlParams = new URLSearchParams(window.location.search);
+            const curSlug = urlParams.get('u') || window.location.pathname.split('/').pop()?.replace('lumina.', '')?.replace('.html', '');
+            if (curSlug) {
+                const customAvatar = localStorage.getItem('lumina_custom_avatar_' + curSlug) || localStorage.getItem('lumina_avatar_' + curSlug);
+                if (customAvatar) {
+                    const mainAvatar = document.getElementById('profileMainAvatar') || document.getElementById('profileHeroAvatar') || document.querySelector('.profile-main-avatar') || document.querySelector('.profile-hero-avatar');
+                    if (mainAvatar && mainAvatar.src !== customAvatar) {
+                        mainAvatar.src = customAvatar;
+                        mainAvatar.setAttribute('src', customAvatar);
+                    }
+                }
+            }
+
+            // 3. Zastosuj ogólne nadpisania elementów
+            const overrides = JSON.parse(localStorage.getItem('lumina_element_overrides') || '{}');
+            Object.keys(overrides).forEach(sel => {
+                const item = overrides[sel];
+                if (!item) return;
+                const el = document.querySelector(sel);
+                if (el) {
+                    if (item.type === 'img' && item.src) {
+                        if (el.tagName === 'IMG') {
+                            if (el.src !== item.src) el.src = item.src;
+                            el.setAttribute('src', item.src);
+                        } else {
+                            const subImg = el.querySelector('img');
+                            if (subImg && subImg.src !== item.src) {
+                                subImg.src = item.src;
+                                subImg.setAttribute('src', item.src);
+                            }
+                        }
+                    } else if (item.type === 'text' && item.text) {
+                        if (el.innerText !== item.text) el.innerText = item.text;
+                    }
+                }
+            });
+        } catch(e) {
+            console.warn('[LUMINA] Error applying custom avatars:', e);
+        }
+    };
+
+    if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", window.applyAllLuminaCustomAvatars); } else { window.applyAllLuminaCustomAvatars(); }
+    window.addEventListener("load", window.applyAllLuminaCustomAvatars);
+
+
         // ── PANCERNY ROZWIĄZYWACZ AWATARÓW CZATU ──
         window.resolveChatAvatar = function(senderId, senderName, rawAvatar, isMe = false) {
             const sId = (senderId || '').toLowerCase().trim();
