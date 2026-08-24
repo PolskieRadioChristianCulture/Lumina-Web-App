@@ -2041,7 +2041,8 @@ export async function markDirectMessagesAsRead(chatId, currentUserId, currentUse
         const cached = JSON.parse(localStorage.getItem(localKey) || '[]');
         let changed = false;
         cached.forEach(m => {
-            if (m.receiverId === normMyId && (!m.isRead || m.status !== 'read')) {
+            const normRec = normalizeChatUserId(m.receiverId);
+            if ((normRec === normMyId || m.receiverId === normMyId) && (!m.isRead || m.status !== 'read')) {
                 m.isRead = true;
                 m.status = 'read';
                 m.readAt = Date.now();
@@ -2071,7 +2072,8 @@ export async function markDirectMessagesAsRead(chatId, currentUserId, currentUse
         const promises = [];
         snap.forEach(d => {
             const data = d.data();
-            if (data.receiverId === normMyId && (!data.isRead || data.status !== 'read')) {
+            const normReceiver = normalizeChatUserId(data.receiverId);
+            if ((normReceiver === normMyId || data.receiverId === normMyId) && (!data.isRead || data.status !== 'read')) {
                 const ref = doc(db, 'lumina_direct_messages', d.id);
                 promises.push(updateDoc(ref, {
                     isRead: true,

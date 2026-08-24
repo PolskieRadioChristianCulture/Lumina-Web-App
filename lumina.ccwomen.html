@@ -1049,5 +1049,36 @@
     </script>
     <script src="lumina-admin-profile-suite.js"></script>
     
+
+    <!-- Autoodtwarzanie wideo profilowego CC Women -->
+    <script>
+    (function(){
+        function initCcWomenVideo() {
+            var v = document.getElementById('ccwomenHeroVideo');
+            if (!v) return;
+            v.muted = true;
+            v.defaultMuted = true;
+            v.playsInline = true;
+            var playPromise = v.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(function(){
+                    function startTouch() {
+                        v.play();
+                        document.removeEventListener('touchstart', startTouch);
+                        document.removeEventListener('click', startTouch);
+                    }
+                    document.addEventListener('touchstart', startTouch, { once: true });
+                    document.addEventListener('click', startTouch, { once: true });
+                });
+            }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initCcWomenVideo);
+        } else {
+            initCcWomenVideo();
+        }
+    })();
+    </script>
+
 </body>
 </html>
