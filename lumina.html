@@ -2711,6 +2711,73 @@
             white-space: nowrap !important;
         }
 </style>
+<!-- Realtime Firestore Community Profiles Synchronizer (Carousel & Directory) -->
+    <script>
+    (function(){
+        window._cloudProfilesMap = window._cloudProfilesMap || {};
+        window._cachedLiveProfiles = window._cachedLiveProfiles || [];
+
+        async function fetchAndSyncAllCommunityProfiles() {
+            try {
+                const restUrl = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_profiles?pageSize=100';
+                const res = await fetch(restUrl);
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.documents) {
+                        const profiles = [];
+                        json.documents.forEach(doc => {
+                            const f = doc.fields || {};
+                            const id = doc.name.split('/').pop();
+                            const slug = f.slug?.stringValue || id;
+                            const name = f.name?.stringValue || f.displayName?.stringValue || slug;
+                            const age = f.age?.integerValue ? parseInt(f.age.integerValue) : (f.age?.stringValue ? parseInt(f.age.stringValue) : '');
+                            const city = f.city?.stringValue || 'Polska';
+                            const bio = f.bio?.stringValue || f.aboutMe?.stringValue || 'Szukam wartościowej relacji opartej na fundamencie Chrystusa ✨';
+                            const avatar = f.avatar?.stringValue || f.carouselMediaUrl?.stringValue || 'lumina_icon.jpg';
+                            const gender = f.gender?.stringValue || 'spolecznosc';
+                            const matchScore = f.matchScore?.stringValue || '97%';
+                            const isNew = true;
+
+                            const profObj = {
+                                id,
+                                slug,
+                                name,
+                                age,
+                                city,
+                                bio,
+                                avatar,
+                                gender,
+                                matchScore,
+                                isNew,
+                                isCommunityUser: true
+                            };
+
+                            window._cloudProfilesMap[slug] = profObj;
+                            window._cloudProfilesMap[id] = profObj;
+                            profiles.push(profObj);
+                        });
+
+                        window._cachedLiveProfiles = profiles;
+                        if (typeof window.syncAllProfilesToCarousel === 'function') {
+                            window.syncAllProfilesToCarousel();
+                        }
+                    }
+                }
+            } catch(e) {
+                console.warn('[LUMINA] Error fetching community profiles REST:', e);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', fetchAndSyncAllCommunityProfiles);
+        } else {
+            fetchAndSyncAllCommunityProfiles();
+        }
+
+        // Retry sync after 1.5s to ensure seamless rendering with static cards
+        setTimeout(fetchAndSyncAllCommunityProfiles, 1500);
+    })();
+    </script>
 </head>
 <body>
 
@@ -4839,7 +4906,10 @@
                 function buildCommunityCard(p, isLocalUser = false) {
                     if (!p || !p.name) return '';
                     const pKey = (p.slug || p.uid || p.id || '').toLowerCase().trim();
-                    if (!pKey || pKey === 'profile_default' || renderedKeys.has(pKey)) return '';
+                    if (!pKey || renderedKeys.has(pKey)) return '';
+                    // Prevent duplicate by name if already rendered
+                    const normName = (p.name || '').toLowerCase().trim();
+                    if (exactSystemSlugs.has(pKey)) return '';
                     renderedKeys.add(pKey);
 
                     const isVideoMedia = (p.carouselMediaType === 'video' || (p.carouselMediaUrl && (p.carouselMediaUrl.endsWith('.mp4') || p.carouselMediaUrl.endsWith('.webm') || p.carouselMediaUrl.includes('data:video/'))) || (p.avatarVideo && p.carouselMediaType === 'video'));
@@ -4875,7 +4945,7 @@
                                 <div class="card-match" style="background: ${liveScore === '0%' ? 'rgba(100, 116, 139, 0.55)' : (isLocalUser ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #ec4899, #8b5cf6)')};">${liveScore}</div>
                             </div>
                             <div class="card-body">
-                                ${(!isRealUser && !isMission) ? '<div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; width:fit-content;">✨ PROFIL POGLĄDOWY</div>\n                                ' : ''}<div class="card-name">${userName}${userAge}</div>
+                                <div class="card-name">${userName}${userAge}</div>
                                 <div class="card-city">📍 ${userCity} • <span style="color:#10b981;font-weight:800;">${isLocalUser ? 'Mój Profil' : (isNew ? '✨ NOWY PROFIL' : (p.status || 'Społeczność'))}</span></div>
                                 <div class="card-desc">"${userBio}"</div>
                             </div>
