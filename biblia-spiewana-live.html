@@ -3440,10 +3440,12 @@ function getWeatherPreset(city) {
             function hideUnmuteBanner() {
                 var banner = document.getElementById('masterUnmuteBanner');
                 if (banner) {
+                    banner.style.transition = 'opacity 0.6s ease';
                     banner.style.opacity = '0';
-                    setTimeout(function() { banner.style.display = 'none'; }, 500);
+                    setTimeout(function() { banner.style.display = 'none'; }, 600);
                 }
             }
+            setTimeout(hideUnmuteBanner, 15000);
 
             function updateMediaSession(track) {
                 if ('mediaSession' in navigator && track) {
