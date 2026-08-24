@@ -2472,7 +2472,37 @@
             flex-shrink: 0;
         }
 
-    </style>
+    
+
+        /* ── PANCERNA DIODA OBECNOŚCI ONLINE (Brak ucinania) ── */
+        .avatar-wrap, .head-avatar-wrapper, .profile-avatar-wrap {
+            overflow: visible !important;
+        }
+        .avatar-status-badge {
+            position: absolute !important;
+            bottom: 8px !important;
+            right: 8px !important;
+            width: 22px !important;
+            height: 22px !important;
+            border-radius: 50% !important;
+            background: #22c55e !important;
+            border: 3.5px solid #0b142e !important;
+            box-shadow: 0 0 14px rgba(34, 197, 94, 0.95), 0 2px 8px rgba(0, 0, 0, 0.8) !important;
+            z-index: 40 !important;
+            pointer-events: none !important;
+            display: block !important;
+        }
+        @media (max-width: 768px) {
+            .avatar-status-badge {
+                bottom: 5px !important;
+                right: 5px !important;
+                width: 19px !important;
+                height: 19px !important;
+                border-width: 2.5px !important;
+            }
+        }
+
+</style>
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786938409250">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="css/lumina-theme.css?v=1786937908032">
