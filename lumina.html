@@ -7,6 +7,18 @@
 
     // ── PANCERNY MENEDŻER PERSYSTENCJI WŁASNYCH ZDJĘĆ PROFILI I ELEMENTÓW ──
     window.applyAllLuminaCustomAvatars = function() {
+
+    // Automatyczne czyszczenie przestarzałych nadpisań
+    try {
+        ['radiocc', 'cezaryrgowski'].forEach(s => {
+            const val = localStorage.getItem('lumina_custom_avatar_' + s) || localStorage.getItem('lumina_avatar_' + s);
+            if (val && (val.includes('logo_radio_cc') || val.includes('placeholder'))) {
+                localStorage.removeItem('lumina_custom_avatar_' + s);
+                localStorage.removeItem('lumina_avatar_' + s);
+            }
+        });
+    } catch(e) {}
+
         try {
             // 1. Zastosuj zapisane zdjęcia per slug profilu
             document.querySelectorAll('.profile-card[data-profile-slug], [data-profile-slug]').forEach(card => {
@@ -2734,7 +2746,7 @@
                 <!-- 1. Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
                 <div class="profile-card home-cezary-card" id="card_profile_cezaryrgowski" data-profile-slug="cezaryrgowski" data-category="mezczyzna zalozyciele" onclick="openCommunityProfile('cezaryrgowski')">
                     <div class="card-photo">
-                        <img src="avatar_cezary_official.jpg?v=20260824_v2" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_cezary_official.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <img src="avatar_christian_culture_hq_2026.jpg?v=20260824_v50" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_cezary_official.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'cezaryrgowski','Cezary Rogowski','avatar_cezary_official.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
                     </div>
@@ -2816,7 +2828,7 @@
                 <!-- 5. MISJA 2: Polskie Radio CC (YouTube) -->
                 <div class="profile-card mission-profile-card" id="card_profile_radiocc" data-profile-slug="radiocc" onclick="window.location.href='lumina.radiocc.html'" data-category="misja" style="cursor:pointer;">
                     <div class="card-photo">
-                        <img src="christian_culture_carousel_photo.jpg?v=20260824" onerror="this.src='christian_culture_carousel_photo.jpg'" alt="Christian Culture" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <img src="avatar_christian_culture_hq_2026.jpg?v=20260824_v50" onerror="this.src='christian_culture_carousel_photo.jpg'" alt="Christian Culture" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'radiocc','Christian Culture','christian_culture_carousel_photo.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
                     </div>
@@ -2901,7 +2913,7 @@
                         <div class="card-new-badge">
                             <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
                         </div>
-                        <img src="avatar_weronika.jpg?v=20260824" onerror="this.src='avatar_weronika.jpg'" alt="Weronika" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <img src="avatar_weronika_hq_2026.jpg?v=20260824_v50" onerror="this.src='avatar_weronika.jpg'" alt="Weronika" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this,'weronika','Weronika','avatar_weronika.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #a855f7, #ec4899);">97%</div>
                     </div>
@@ -3139,7 +3151,7 @@
             <div style="display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1);">
                 <div id="tablicaOnlineAvatarsContainer" class="tablica-online-avatars-wrap">
                     <div class="tablica-online-avatar-item" title="Zalogowany: Cezary Rogowski ✨˘" style="z-index: 4;" onclick="event.stopPropagation(); window.location.href='lumina.cezaryrgowski.html';">
-                        <img src="avatar_cezary_official.jpg" alt="Cezary" class="tablica-online-avatar-img home-cezary-avatar" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='avatar_cezary_official.jpg';">
+                        <img src="avatar_christian_culture_hq_2026.jpg?v=20260824_v50" alt="Cezary" class="tablica-online-avatar-img home-cezary-avatar" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='avatar_cezary_official.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
                     <div class="tablica-online-avatar-item" title="Zalogowana: Wioletta Rogowska ✨˘" style="z-index: 3;" onclick="event.stopPropagation(); window.location.href='lumina.wiolettarogowska.html';">
@@ -4390,7 +4402,7 @@
                 age: 51,
                 city: 'Ostrowiec Świętokrzyski, Polska',
                 status: 'Żonaty',
-                avatar: 'avatar_cezary_official.jpg',
+                avatar: 'avatar_christian_culture_hq_2026.jpg',
                 job: 'Założyciel Christian Culture',
                 bio: 'Założyciel Christian Culture. Razem z żoną Wiolettą służymy Panu.',
                 matchScore: '98%',
@@ -4440,7 +4452,7 @@
                 age: 25,
                 city: 'Kraków, Polska',
                 status: 'Panna • Pasjonatka sztuki i modlitwy',
-                avatar: 'avatar_weronika.jpg',
+                avatar: 'avatar_weronika_hq_2026.jpg',
                 job: 'Graficzka & Projektantka UI',
                 bio: 'Graficzka z pasją do piękna i muzyki. Szukam szczerej relacji opartej na wierze.',
                 matchScore: '97%',
@@ -4532,7 +4544,7 @@
                 slug: 'radiocc',
                 name: 'Christian Culture',
                 city: 'Polska',
-                avatar: 'christian_culture_carousel_photo.jpg',
+                avatar: 'avatar_christian_culture_hq_2026.jpg',
                 job: 'Radio Uwielbienia 24/7',
                 bio: 'Muzyka chwały, Biblia Śpiewana, audycje na żywo i codzienne rozważania przez całą dobę.',
                 matchScore: '100%',
