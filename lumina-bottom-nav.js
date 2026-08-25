@@ -494,11 +494,8 @@
         <!-- ══════════ POPUP ROZWIJANY Z IKONY III TRZECH LINII (Menu Mediów, TV & Profilu) ══════════ -->
         <div id="luminaBottomMenuPopup" class="lumina-bottom-menu-popup">
             <div class="lumina-bottom-menu-card">
-                <div class="lumina-bottom-menu-header" style="display:flex; align-items:center; justify-content:space-between;">
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <span style="font-family:'Outfit',sans-serif; font-weight:800; color:#facc15; font-size:1.05rem; letter-spacing:0.5px;">CENTRUM MEDIÓW & OPCJI</span>
-                        <span style="font-size:0.72rem; font-weight:800; background:rgba(245,158,11,0.22); color:#fef08a; padding:2px 8px; border-radius:10px; border:1px solid rgba(245,158,11,0.45); font-family:'Outfit',sans-serif;">v3.6.4</span>
-                    </div>
+                <div class="lumina-bottom-menu-header">
+                    <span style="font-family:'Outfit',sans-serif; font-weight:800; color:#facc15; font-size:1.05rem; letter-spacing:0.5px;">CENTRUM MEDIÓW & OPCJI</span>
                     <button type="button" onclick="window.toggleCcBottomNavMenu(event)" class="lumina-bottom-menu-close" title="Zamknij">&times;</button>
                 </div>
                 <div class="lumina-bottom-menu-grid">
@@ -542,7 +539,7 @@
                         </div>
                         <div class="lumina-menu-btn-content">
                             <div class="lumina-menu-btn-title">Master Admin 👑</div>
-                            <div class="lumina-menu-btn-sub">Wydanie v3.6.4 • Telemetria</div>
+                            <div class="lumina-menu-btn-sub">Narzędzia & Telemetria</div>
                         </div>
                     </button>
                 </div>
