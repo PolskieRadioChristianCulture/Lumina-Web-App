@@ -57,15 +57,15 @@
     window.applyAllLuminaCustomAvatars = function() {
 
     // Automatyczne czyszczenie przestarzałych nadpisań
-    try {
-        ['radiocc', 'cezaryrgowski'].forEach(s => {
-            const val = localStorage.getItem('lumina_custom_avatar_' + s) || localStorage.getItem('lumina_avatar_' + s);
-            if (val && (val.includes('logo_radio_cc') || val.includes('placeholder'))) {
-                localStorage.removeItem('lumina_custom_avatar_' + s);
-                localStorage.removeItem('lumina_avatar_' + s);
-            }
-        });
-    } catch(e) {}
+        try {
+            ['radiocc', 'cezaryrgowski', 'u_urszula_7685', 'urszula'].forEach(s => {
+                const val = localStorage.getItem('lumina_custom_avatar_' + s) || localStorage.getItem('lumina_avatar_' + s);
+                if (val && (val.includes('logo_radio_cc') || val.includes('placeholder') || val.includes('christian_culture') || val.includes('RADIO') || val.includes('avatar_christian_culture'))) {
+                    localStorage.removeItem('lumina_custom_avatar_' + s);
+                    localStorage.removeItem('lumina_avatar_' + s);
+                }
+            });
+        } catch(e) {}
 
         try {
             // 1. Zastosuj zapisane zdjęcia per slug profilu
@@ -4932,7 +4932,12 @@
 
                     const isVideoMedia = (p.carouselMediaType === 'video' || (p.carouselMediaUrl && (p.carouselMediaUrl.endsWith('.mp4') || p.carouselMediaUrl.endsWith('.webm') || p.carouselMediaUrl.includes('data:video/'))) || (p.avatarVideo && p.carouselMediaType === 'video'));
                     const mediaUrl = p.carouselMediaUrl || (isVideoMedia ? (p.avatarVideo || p.carouselVideo) : (p.avatar || 'lumina_icon.jpg'));
-                    let userAvatar = p.avatar || 'lumina_icon.jpg';
+                    let userAvatar = p.avatar || 'avatar_urszula.jpg';
+                    if (pKey.includes('urszula') || (p.name && p.name.includes('Urszula'))) {
+                        if (!userAvatar || userAvatar.includes('christian_culture') || userAvatar.includes('radio') || userAvatar.includes('icon')) {
+                            userAvatar = 'avatar_urszula.jpg';
+                        }
+                    }
                     if (pKey.includes('dominika') || p.needsRealPhoto || userAvatar.includes('placeholder')) {
                         userAvatar = 'lumina_icon.jpg';
                     }
@@ -6899,7 +6904,7 @@
             { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', job: 'Oficjalny Kanał Audio & Wideo 🎙️', city: 'Polska', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎙️ Studio CC', isMission: true },
             { slug: 'osobowoscplus', name: 'Osobowość Plus', job: 'Formacja Chrześcijańska & Psychologia 🕊️', city: 'Polska', avatar: 'logo_osobowosc_plus.jpg', badge: '🕊️ Formacja', isMission: true },
             { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
-            { slug: 'u_urszula_7685', name: 'Urszula', job: 'Członkini Społeczności LUMINA 🕊️', city: 'Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'u_urszula_7685', name: 'Urszula', job: 'Członkini Społeczności LUMINA 🕊️', city: 'Kraków, Polska', avatar: 'avatar_urszula.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'u_anna_3421', name: 'Anna', job: 'Kobiety Christian Culture 🌸', city: 'Kraków, Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false }
         ];
 
