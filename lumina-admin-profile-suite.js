@@ -15,7 +15,7 @@
     const SYSTEM_PROFILES = [
         { slug: 'andrzejthiel', name: 'Andrzej Thiel', role: 'Autor: Cuda Każdego Dnia', type: 'official', verified: true, avatar: 'avatar_andrzej_thiel.jpg' },
         { slug: 'cezaryrgowski', name: 'Cezary Rogowski', role: 'Dyrektor Projektu & Autor', type: 'official', verified: true, avatar: 'avatar_cezary_official.jpg' },
-        { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', role: 'Koordynator Społeczności', type: 'official', verified: true, avatar: 'avatar_wioletta_official.jpg' },
+        { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', role: 'Moderator Społeczności & Współzałożycielka', type: 'official', verified: true, avatar: 'avatar_wioletta_official.jpg' },
         { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', role: 'Oficjalny Kanał Audio & Wideo', type: 'channel', verified: true, avatar: 'studiodobregoslowa_avatar.jpg' },
         { slug: 'osobowoscplus', name: 'Osobowość Plus', role: 'Kanał Formacyjny', type: 'channel', verified: true, avatar: 'logo_osobowosc_plus.jpg' },
         { slug: 'radiocc', name: 'Polskie Radio CC', role: 'Główny Nadawca Radiowy', type: 'broadcast', verified: true, avatar: 'logo_radio_cc.jpg' },
@@ -568,6 +568,9 @@
                         </div>
                     </div>
                     <div class="lumina-admin-hud-actions" id="luminaAdminHudActions">
+                        <button type="button" class="admin-suite-btn" style="background:linear-gradient(135deg, #7c3aed, #2563eb); border:1px solid rgba(139,92,246,0.6); color:#fff; font-weight:800; box-shadow:0 2px 14px rgba(124,58,237,0.45);" onclick="window.LuminaAdminSuite.openCommanderAiChatModal()" title="Otwórz bezpośredni czat błyskawiczny Dowódcy z Agentem AI Antigravity">
+                            <i class="fa-solid fa-bolt"></i> ⚡ Wiadomość Błyskawiczna do Agenta
+                        </button>
                         <button type="button" class="admin-suite-btn btn-gold" onclick="window.LuminaAdminSuite.openFullEditor()">
                             <i class="fa-solid fa-pen-to-square"></i> Edytuj Profil
                         </button>
@@ -619,7 +622,7 @@
                         aria-label="Panel Administratora">
                     <i class="fa-solid fa-shield-halved"></i>
                 </button>
-                <span class="lumina-admin-version-tag">v3.6.2</span>
+                <span class="lumina-admin-version-tag">v3.6.4</span>
             </div>
 
             <!-- Ukryte kontrolki uploadu plików -->
@@ -1007,93 +1010,211 @@
                 </div>
             </div>
 
-            <!-- ══════════ MODAL 5: NOWA NOTA DLA AGENTA ══════════ -->
-            <div class="modal-overlay" id="adminAgentNoteModal" onclick="if(event.target===this) window.LuminaAdminSuite.closeModal('adminAgentNoteModal')">
-                <div class="modal-card" style="max-width: 580px; background: #0b142e; border: 1.5px solid rgba(16, 185, 129, 0.5); box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(16, 185, 129, 0.25); border-radius: 24px; padding: 26px 24px; position: relative;">
-                    <button class="modal-close-btn" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+            
+            <!-- ══════════ MODAL: CZAT DOWODZENIA Z AGENTEM AI (WIADOMOŚĆ BŁYSKAWICZNA) ══════════ -->
+            <div class="modal-overlay" id="adminCommanderAiChatModal" onclick="if(event.target===this) window.LuminaAdminSuite.closeModal('adminCommanderAiChatModal')">
+                <div class="modal-card" style="max-width: 680px; width:94%; background: #070d1e; border: 1.5px solid rgba(139, 92, 246, 0.55); box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 45px rgba(139, 92, 246, 0.35); border-radius: 24px; padding: 24px; position: relative; display:flex; flex-direction:column; max-height:90vh;">
+                    <button class="modal-close-btn" onclick="window.LuminaAdminSuite.closeModal('adminCommanderAiChatModal')" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
 
-                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
-                        <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, #10b981, #059669); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.3rem; box-shadow:0 4px 14px rgba(16,185,129,0.4);">
-                            <i class="fa-solid fa-crosshairs"></i>
+                    <!-- Header -->
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1); flex-wrap:wrap; gap:10px;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:46px; height:46px; border-radius:50%; background:linear-gradient(135deg, #8b5cf6, #3b82f6); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.35rem; box-shadow:0 4px 16px rgba(139,92,246,0.5);">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-family:'Outfit', sans-serif; font-size:1.20rem; font-weight:800; color:#fff; margin:0; display:flex; align-items:center; gap:8px;">
+                                    Czat Dowodzenia z Agentem AI 👑
+                                </h3>
+                                <div style="font-size:0.75rem; color:#a78bfa; font-weight:700;">
+                                    Bezpośredni kanał rozkazów: Dowódca Nazir ➔ Agent Antigravity
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <h3 style="font-family:'Outfit', sans-serif; font-size:1.25rem; font-weight:800; color:#fff; margin:0;">Nowa Nota / Rozkaz dla Agenta</h3>
-                            <div style="font-size:0.75rem; color:#34d399; font-weight:700;">Współrzędne elementu zostały automatycznie przechwycone</div>
+                        <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); padding:4px 10px; border-radius:20px; font-size:0.72rem; color:#34d399; font-weight:800;">
+                            <span style="width:8px; height:8px; border-radius:50%; background:#10b981; display:inline-block; box-shadow:0 0 8px #10b981;"></span>
+                            Agent AI: Nasłuchuje w tle 24/7
                         </div>
                     </div>
 
-                    <form onsubmit="window.LuminaAdminSuite.saveAgentNoteSubmit(event)">
-                        <!-- Przechwycone dane techniczne elementu -->
-                        <div style="background:rgba(15, 23, 42, 0.8); border:1px solid rgba(148, 163, 184, 0.2); border-radius:14px; padding:12px 14px; margin-bottom:14px; font-size:0.76rem; color:#94a3b8;">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:6px;">
-                                <span>📍 Plik: <b id="notePageUrl" style="color:#38bdf8;">-</b></span>
-                                <span>Tag: <b id="noteElementTag" style="color:#facc15;">-</b></span>
-                            </div>
-                            <div style="margin-bottom:4px; word-break:break-all;">
-                                🎯 Selektor: <code id="noteElementSelector" style="color:#86efac; background:rgba(0,0,0,0.35); padding:2px 6px; border-radius:4px; font-size:0.74rem;">-</code>
-                            </div>
-                            <div id="noteElementSnippetBox" style="color:#cbd5e1; font-style:italic; border-top:1px solid rgba(255,255,255,0.06); padding-top:6px; margin-top:6px; max-height:45px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:0.72rem;">
-                                -
-                            </div>
-                        </div>
+                    <!-- Quick Command Chips -->
+                    <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:10px; -webkit-overflow-scrolling:touch;">
+                        <button type="button" onclick="window.LuminaAdminSuite.sendQuickAiCommand('🚀 Publikuj dzisiejsze rozważanie misyjne we wszystkich kanałach')" style="white-space:nowrap; background:rgba(139,92,246,0.18); border:1px solid rgba(139,92,246,0.4); color:#c4b5fd; font-size:0.73rem; font-weight:700; padding:5px 10px; border-radius:12px; cursor:pointer;">
+                            🚀 Publikuj Rozważanie
+                        </button>
+                        <button type="button" onclick="window.LuminaAdminSuite.sendQuickAiCommand('🔄 Zsynchronizuj całą bazę Firestore, wyczyść cache i odśwież widoki')" style="white-space:nowrap; background:rgba(56,189,248,0.18); border:1px solid rgba(56,189,248,0.4); color:#7dd3fc; font-size:0.73rem; font-weight:700; padding:5px 10px; border-radius:12px; cursor:pointer;">
+                            🔄 Synchronizacja Bazy
+                        </button>
+                        <button type="button" onclick="window.LuminaAdminSuite.sendQuickAiCommand('📊 Sprawdź stan systemów, serwerów i transmisji Live')" style="white-space:nowrap; background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.4); color:#fde047; font-size:0.73rem; font-weight:700; padding:5px 10px; border-radius:12px; cursor:pointer;">
+                            📊 Status Systemów Live
+                        </button>
+                        <button type="button" onclick="window.LuminaAdminSuite.sendQuickAiCommand('🛡️ Wykonaj diagnostykę i automatyczną naprawę portalu LUMINA')" style="white-space:nowrap; background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.4); color:#6ee7b7; font-size:0.73rem; font-weight:700; padding:5px 10px; border-radius:12px; cursor:pointer;">
+                            🛡️ Diagnostyka i Naprawa
+                        </button>
+                    </div>
 
-                        <!-- Pola notatki -->
-                        <div style="margin-bottom:12px;">
-                            <label style="display:block; font-size:0.78rem; font-weight:800; color:#e2e8f0; margin-bottom:6px;">
-                                📝 Treść Uwag / Rozkaz dla Agenta (co trzeba zmienić, poprawić, dodać):
-                            </label>
-                            <textarea id="agentNoteText" rows="4" placeholder="Np. Zmień kolor tła na ciemniejszy granat, popraw wyrównanie tekstu, podmień grafikę na nową wersję..." style="width:100%; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px; outline:none; resize:vertical;" required></textarea>
+                    <!-- Live Message History Stream -->
+                    <div id="commanderAiChatMessagesBox" style="flex:1; min-height:220px; max-height:340px; overflow-y:auto; background:rgba(11,18,36,0.9); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:14px; margin-bottom:12px; display:flex; flex-direction:column; gap:10px;">
+                        <div style="text-align:center; color:#64748b; font-size:0.75rem; padding:8px 0;">
+                            ✨ Połączono z autonomicznym terminalem Agenta AI. Wszystkie rozkazy są zapisywane w chmurze i wykonywane w tle.
                         </div>
+                    </div>
 
-                        <!-- 👑 SEKCJA: UWAGI SPECJALNE & SZCZEGÓLNE WYTYCZNE DOWÓDCY -->
-                        <div style="background:linear-gradient(135deg, rgba(245,158,11,0.12), rgba(168,85,247,0.10)); border:1.5px solid rgba(245,158,11,0.45); border-radius:16px; padding:12px 14px; margin-bottom:14px; box-shadow:0 4px 18px rgba(0,0,0,0.35);">
-                            <label style="display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; margin-bottom:8px;">
-                                <input type="checkbox" id="agentNoteSpecialCheck" style="width:20px; height:20px; accent-color:#f59e0b; cursor:pointer; flex-shrink:0;" onchange="const p=document.getElementById('agentNotePriority'); if(this.checked&&p) p.value='critical';">
-                                <span style="font-size:0.84rem; font-weight:800; color:#facc15; display:flex; align-items:center; gap:6px;">
-                                    <i class="fa-solid fa-crown" style="color:#f59e0b;"></i> Uwagi specjalne / Szczególne wytyczne Dowódcy (Rygor Klasy Światowej & Zero Regresji)
-                                </span>
-                            </label>
-                            <textarea id="agentNoteSpecialGuidelines" rows="2" placeholder="Wpisz szczególne wytyczne i żelazne zasady (np. bezwzględny zakaz dotykania innych plików, ochrona układu poziomego, weryfikacja przyczynowo-skutkowa)..." style="width:100%; padding:10px 12px; border-radius:12px; background:rgba(15,23,42,0.85); border:1px solid rgba(245,158,11,0.3); color:#fef08a; font-family:inherit; font-size:13px; outline:none; resize:vertical;"></textarea>
-                            <div style="font-size:0.72rem; color:#cbd5e1; margin-top:4px; font-style:italic;">
-                                ⚡ Zaznaczenie ptaszkiem gwarantuje najwyższy priorytet wykonania oraz rygorystyczny audyt jakości Strażnika Kodu.
-                            </div>
-                        </div>
-
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
-                            <div>
-                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#38bdf8; margin-bottom:4px;">Kategoria Zmiany</label>
-                                <select id="agentNoteCategory" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px; font-weight:700;">
-                                    <option value="Wygląd / CSS">🎨 Wygląd / CSS / Layout</option>
-                                    <option value="Treść / Tekst">✏️ Treść / Tekst / Werset</option>
-                                    <option value="Zdjęcie / Grafika">🖼️ Zdjęcie / Grafika / Media</option>
-                                    <option value="Błąd / Poprawka">🐞 Błąd / Poprawka działania</option>
-                                    <option value="Nowa Funkcja">✨ Nowa Funkcjonalność</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#facc15; margin-bottom:4px;">Priorytet</label>
-                                <select id="agentNotePriority" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px; font-weight:700;">
-                                    <option value="normal">Normalny</option>
-                                    <option value="urgent">⚡ Pilny</option>
-                                    <option value="critical">🔴 Krytyczny (Rozkaz Dowódcy)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
-                            <button type="button" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" style="padding:11px 18px; border-radius:24px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; cursor:pointer;">
-                                Anuluj
+                    <!-- Input Form -->
+                    <form onsubmit="window.LuminaAdminSuite.sendCommanderAiMessage(event)" style="display:flex; flex-direction:column; gap:10px;">
+                        <div style="display:flex; gap:8px;">
+                            <textarea id="commanderAiInputText" rows="2" placeholder="Wpisz rozkaz lub zadanie dla Agenta (np. Zmień układ na stronie głównej, dodaj nową sekcję, sprawdź logi)..." style="flex:1; padding:10px 14px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(139,92,246,0.35); color:#fff; font-family:inherit; font-size:13.5px; outline:none; resize:none;" required></textarea>
+                            <button type="submit" style="padding:0 18px; border-radius:14px; background:linear-gradient(135deg, #8b5cf6, #2563eb); border:none; color:#fff; font-weight:800; font-size:0.90rem; cursor:pointer; box-shadow:0 4px 18px rgba(139,92,246,0.5); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:85px;">
+                                <i class="fa-solid fa-paper-plane" style="font-size:1.1rem;"></i>
+                                <span style="font-size:0.70rem;">Wyślij</span>
                             </button>
-                            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                                <button type="button" onclick="window.LuminaAdminSuite.saveAgentNoteSubmit(event, 'save_only')" style="padding:11px 18px; border-radius:24px; background:rgba(56, 189, 248, 0.18); border:1px solid rgba(56, 189, 248, 0.45); color:#7dd3fc; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:7px;" title="Zapisz do Dziennika (do pobrania po wpisaniu @N)">
-                                    <i class="fa-solid fa-bookmark"></i> 💾 Zapisz w Dzienniku (@N)
-                                </button>
-                                <button type="button" onclick="window.LuminaAdminSuite.saveAgentNoteSubmit(event, 'execute_now')" style="padding:11px 22px; border-radius:24px; background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; cursor:pointer; box-shadow:0 4px 16px rgba(16,185,129,0.5); display:inline-flex; align-items:center; gap:7px;" title="Wyślij natychmiastowy rozkaz do Agenta pracującego w tle">
-                                    <i class="fa-solid fa-bolt"></i> ⚡ Wyślij Rozkaz Natychmiast! 🚀
-                                </button>
-                            </div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; color:#94a3b8;">
+                            <span>💡 Komputer może pozostać włączony — Agent autonomicznie podejmie i wykona zlecenie.</span>
+                            <span style="color:#a78bfa; font-weight:700;">Antigravity Engine 24/7</span>
                         </div>
                     </form>
+                </div>
+            </div>
+
+            <!-- ══════════ MODAL 5: TRYB CELOWNIKA - SAMODZIELNA EDYCJA & NOTA DLA AGENTA ══════════ -->
+            <div class="modal-overlay" id="adminAgentNoteModal" onclick="if(event.target===this) window.LuminaAdminSuite.closeModal('adminAgentNoteModal')">
+                <div class="modal-card" style="max-width: 620px; width:94%; background: #0b142e; border: 1.5px solid rgba(250, 204, 21, 0.6); box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 45px rgba(250, 204, 21, 0.3); border-radius: 24px; padding: 24px; position: relative; max-height:90vh; overflow-y:auto;">
+                    <button class="modal-close-btn" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+
+                    <!-- Header -->
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
+                        <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, #f59e0b, #eab308); display:flex; align-items:center; justify-content:center; color:#0b142e; font-size:1.3rem; box-shadow:0 4px 14px rgba(245,158,11,0.5);">
+                            <i class="fa-solid fa-crosshairs"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-family:'Outfit', sans-serif; font-size:1.25rem; font-weight:800; color:#fff; margin:0;">
+                                Studio Celownika Master Admin 🎯
+                            </h3>
+                            <div style="font-size:0.75rem; color:#fde047; font-weight:700;">
+                                Samodzielna edycja na żywo lub zlecenie dla Agenta AI
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Przechwycone dane techniczne elementu -->
+                    <div style="background:rgba(15, 23, 42, 0.8); border:1px solid rgba(148, 163, 184, 0.2); border-radius:14px; padding:10px 14px; margin-bottom:14px; font-size:0.75rem; color:#94a3b8;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:6px;">
+                            <span>📍 Plik: <b id="notePageUrl" style="color:#38bdf8;">-</b></span>
+                            <span>Tag: <b id="noteElementTag" style="color:#facc15;">-</b></span>
+                            <span id="noteTargetProfileSlugWrap" style="display:none;">Profil: <b id="noteTargetProfileSlug" style="color:#ec4899;">-</b></span>
+                        </div>
+                        <div style="margin-bottom:2px; word-break:break-all;">
+                            🎯 Selektor: <code id="noteElementSelector" style="color:#86efac; background:rgba(0,0,0,0.35); padding:2px 6px; border-radius:4px; font-size:0.73rem;">-</code>
+                        </div>
+                        <div id="noteElementSnippetBox" style="color:#cbd5e1; font-style:italic; border-top:1px solid rgba(255,255,255,0.06); padding-top:4px; margin-top:4px; max-height:40px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:0.72rem;">
+                            -
+                        </div>
+                    </div>
+
+                    <!-- Zakładki: 1. Samodzielna Edycja Na Żywo | 2. Nota dla Agenta -->
+                    <div style="display:flex; gap:8px; margin-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.12); padding-bottom:10px;">
+                        <button type="button" id="tabBtnDirectEdit" onclick="window.LuminaAdminSuite.switchInspectorTab('direct_edit')" style="flex:1; padding:10px; border-radius:12px; font-weight:800; font-size:0.84rem; cursor:pointer; background:linear-gradient(135deg,#f59e0b,#d97706); color:#0b142e; border:none; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 4px 12px rgba(245,158,11,0.3);">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> ⚡ Samodzielna Edycja
+                        </button>
+                        <button type="button" id="tabBtnAgentNote" onclick="window.LuminaAdminSuite.switchInspectorTab('agent_note')" style="flex:1; padding:10px; border-radius:12px; font-weight:800; font-size:0.84rem; cursor:pointer; background:rgba(255,255,255,0.06); color:#cbd5e1; border:1px solid rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; gap:6px;">
+                            <i class="fa-solid fa-robot"></i> 🤖 Nota dla Agenta
+                        </button>
+                    </div>
+
+                    <!-- ══════════ SEKCJA 1: SAMODZIELNA EDYCJA NA ŻYWO ══════════ -->
+                    <div id="inspectorTabDirectEdit">
+                        <!-- Edycja Zdjęcia / Grafiki (gdy zaznaczono obraz lub kartę profilu) -->
+                        <div id="inspectorPhotoEditBox" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(245,158,11,0.4); border-radius:16px; padding:14px; margin-bottom:14px;">
+                            <div style="font-size:0.84rem; font-weight:800; color:#fde047; margin-bottom:10px; display:flex; align-items:center; gap:7px;">
+                                <i class="fa-solid fa-camera"></i> Zmień Zdjęcie / Awatar Profilu Na Żywo
+                            </div>
+
+                            <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-bottom:12px;">
+                                <div style="width:72px; height:72px; border-radius:16px; overflow:hidden; border:2px solid rgba(250,204,21,0.8); background:#000; flex-shrink:0; box-shadow:0 4px 14px rgba(0,0,0,0.5);">
+                                    <img id="liveInspectorImgPreview" src="icon.png" alt="Podgląd" style="width:100%; height:100%; object-fit:cover;">
+                                </div>
+                                <div style="flex:1; min-width:180px;">
+                                    <!-- Przycisk wgrywania z dysku -->
+                                    <label style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:800; font-size:0.82rem; padding:10px 16px; border-radius:12px; cursor:pointer; box-shadow:0 4px 14px rgba(16,185,129,0.4); transition:all 0.2s;">
+                                        <i class="fa-solid fa-upload"></i> 📸 Wgraj Zdjęcie z Dysku
+                                        <input type="file" id="liveInspectorFileInput" accept="image/*" style="display:none;" onchange="window.LuminaAdminSuite.handleInspectorFileUpload(event)">
+                                    </label>
+                                    <div style="font-size:0.72rem; color:#94a3b8; margin-top:6px;">
+                                        Obsługuje JPG, PNG, WEBP. Zdjęcie zostanie natychmiast podmienione na stronie.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Opcja 2: Podanie nazwy pliku lub URL -->
+                            <div>
+                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">
+                                    Lub wpisz nazwę pliku z serwera / link do zdjęcia:
+                                </label>
+                                <div style="display:flex; gap:8px;">
+                                    <input type="text" id="liveInspectorImgUrlInput" placeholder="np. avatar_weronika.jpg lub https://..." style="flex:1; padding:8px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-size:13px; outline:none;">
+                                    <button type="button" onclick="window.LuminaAdminSuite.applyInspectorImageFromUrl()" style="padding:0 14px; border-radius:10px; background:rgba(250,204,21,0.2); border:1px solid rgba(250,204,21,0.5); color:#fde047; font-weight:800; font-size:0.78rem; cursor:pointer;">
+                                        Zastosuj
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Edycja Tekstu Elementu (nagłówek, imię, opis itp.) -->
+                        <div id="inspectorTextEditBox" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.14); border-radius:16px; padding:14px; margin-bottom:14px;">
+                            <div style="font-size:0.84rem; font-weight:800; color:#38bdf8; margin-bottom:8px; display:flex; align-items:center; gap:7px;">
+                                <i class="fa-solid fa-pen-to-square"></i> Edytuj Tekst Elementu
+                            </div>
+                            <textarea id="liveInspectorTextInput" rows="2" placeholder="Wpisz nowy tekst elementu..." style="width:100%; padding:10px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-size:13px; outline:none; resize:vertical;"></textarea>
+                            <div style="margin-top:6px; text-align:right;">
+                                <button type="button" onclick="window.LuminaAdminSuite.applyInspectorTextChange()" style="padding:6px 14px; border-radius:8px; background:rgba(56,189,248,0.2); border:1px solid rgba(56,189,248,0.5); color:#7dd3fc; font-weight:800; font-size:0.76rem; cursor:pointer;">
+                                    Zastosuj Tekst Na Żywo
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Przyciski Zapisz / Zamknij -->
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:10px;">
+                            <button type="button" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" style="padding:10px 18px; border-radius:20px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; cursor:pointer;">
+                                Zamknij
+                            </button>
+                            <button type="button" onclick="window.LuminaAdminSuite.saveInspectorLiveEditsPermanent()" style="padding:11px 22px; border-radius:20px; background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; font-size:0.88rem; cursor:pointer; box-shadow:0 4px 16px rgba(16,185,129,0.45); display:inline-flex; align-items:center; gap:8px;">
+                                <i class="fa-solid fa-floppy-disk"></i> 💾 Zapisz Zmiany Na Stałe
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ══════════ SEKCJA 2: NOTA DLA AGENTA ══════════ -->
+                    <div id="inspectorTabAgentNote" style="display:none;">
+                        <form onsubmit="window.LuminaAdminSuite.saveAgentNoteSubmit(event)">
+                            <div style="margin-bottom:12px;">
+                                <label style="display:block; font-size:0.78rem; font-weight:800; color:#e2e8f0; margin-bottom:6px;">
+                                    📝 Treść Uwag / Rozkaz dla Agenta:
+                                </label>
+                                <textarea id="agentNoteText" rows="4" placeholder="Np. Zmień układ kolumn, podmień ikonę, napraw zachowanie na telefonie..." style="width:100%; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px; outline:none; resize:vertical;"></textarea>
+                            </div>
+
+                            <div style="background:linear-gradient(135deg, rgba(245,158,11,0.12), rgba(168,85,247,0.10)); border:1.5px solid rgba(245,158,11,0.45); border-radius:16px; padding:12px 14px; margin-bottom:14px;">
+                                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; margin-bottom:8px;">
+                                    <input type="checkbox" id="agentNoteSpecialCheck" style="width:20px; height:20px; accent-color:#f59e0b; cursor:pointer; flex-shrink:0;">
+                                    <span style="font-size:0.84rem; font-weight:800; color:#facc15; display:flex; align-items:center; gap:6px;">
+                                        <i class="fa-solid fa-crown" style="color:#f59e0b;"></i> Rozkaz Dowódcy (Rygor Klasy Światowej)
+                                    </span>
+                                </label>
+                                <textarea id="agentNoteSpecialGuidelines" rows="2" placeholder="Wpisz szczególne wytyczne..." style="width:100%; padding:10px 12px; border-radius:12px; background:rgba(15,23,42,0.85); border:1px solid rgba(245,158,11,0.3); color:#fef08a; font-family:inherit; font-size:13px; outline:none; resize:vertical;"></textarea>
+                            </div>
+
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+                                <button type="button" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" style="padding:10px 18px; border-radius:20px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; cursor:pointer;">
+                                    Anuluj
+                                </button>
+                                <button type="submit" style="padding:11px 22px; border-radius:20px; background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; font-size:0.88rem; cursor:pointer; box-shadow:0 4px 16px rgba(16,185,129,0.45); display:inline-flex; align-items:center; gap:8px;">
+                                    <i class="fa-solid fa-bolt"></i> ⚡ Wyślij Rozkaz dla Agenta
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
                 </div>
             </div>
         `;
@@ -1254,6 +1375,145 @@
             }
         },
 
+        
+        // ══════════ ⚡ COMMANDER AI INSTANT CHAT (DOWÓDCA ↔ AGENT ANTIGRAVITY) ══════════
+        commanderAiUnsub: null,
+
+        openCommanderAiChatModal: function() {
+            this.openModal('adminCommanderAiChatModal');
+            this.subscribeToCommanderAiChat();
+            setTimeout(() => {
+                const input = document.getElementById('commanderAiInputText');
+                if (input) input.focus();
+            }, 150);
+        },
+
+        subscribeToCommanderAiChat: function() {
+            if (this.commanderAiUnsub) {
+                try { this.commanderAiUnsub(); } catch(e) {}
+                this.commanderAiUnsub = null;
+            }
+
+            const box = document.getElementById('commanderAiChatMessagesBox');
+            if (!box) return;
+
+            const FIRESTORE_URL = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_commander_ai_chat';
+            
+            const fetchAndRender = async () => {
+                try {
+                    const res = await fetch(FIRESTORE_URL);
+                    if (!res.ok) return;
+                    const data = await res.json();
+                    if (!data || !data.documents) {
+                        box.innerHTML = '<div style="text-align:center; color:#64748b; font-size:0.75rem; padding:18px 0;">🕊️ Brak wcześniejszych wiadomości. Wpisz swój pierwszy rozkaz błyskawiczny dla Agenta AI!</div>';
+                        return;
+                    }
+
+                    const msgs = data.documents.map(d => {
+                        const f = d.fields || {};
+                        return {
+                            id: d.name ? d.name.split('/').pop() : 'msg',
+                            text: f.text?.stringValue || '',
+                            sender: f.sender?.stringValue || 'Dowódca',
+                            status: f.status?.stringValue || 'pending',
+                            reply: f.reply?.stringValue || '',
+                            createdAt: f.createdAt?.integerValue ? parseInt(f.createdAt.integerValue, 10) : Date.now(),
+                            replyAt: f.replyAt?.timestampValue || ''
+                        };
+                    });
+
+                    msgs.sort((a, b) => a.createdAt - b.createdAt);
+
+                    let html = '';
+                    msgs.forEach(m => {
+                        html += `
+                            <!-- Wiadomość Dowódcy -->
+                            <div style="align-self:flex-end; max-width:85%; background:linear-gradient(135deg, rgba(139,92,246,0.30), rgba(59,130,246,0.30)); border:1px solid rgba(139,92,246,0.55); border-radius:14px 14px 2px 14px; padding:10px 14px; color:#fff; box-shadow:0 4px 12px rgba(0,0,0,0.35);">
+                                <div style="font-size:0.68rem; color:#c4b5fd; font-weight:800; margin-bottom:3px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                                    <span>👑 Dowódca Nazir</span>
+                                    <span style="font-size:0.65rem; color:#94a3b8;">${new Date(m.createdAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>
+                                </div>
+                                <div style="font-size:0.86rem; line-height:1.4;">${m.text}</div>
+                                <div style="margin-top:4px; font-size:0.65rem; display:flex; align-items:center; gap:4px; color:${m.status === 'completed' ? '#34d399' : '#f59e0b'};">
+                                    <i class="fa-solid ${m.status === 'completed' ? 'fa-check-double' : 'fa-clock'}"></i>
+                                    ${m.status === 'completed' ? 'Zrealizowano' : 'Oczekuje na wykonanie w tle'}
+                                </div>
+                            </div>
+                        `;
+
+                        if (m.reply) {
+                            html += `
+                                <!-- Odpowiedź Agenta AI -->
+                                <div style="align-self:flex-start; max-width:85%; background:rgba(15,23,42,0.92); border:1px solid rgba(56,189,248,0.4); border-radius:14px 14px 14px 2px; padding:10px 14px; color:#e2e8f0; box-shadow:0 4px 14px rgba(0,0,0,0.4);">
+                                    <div style="font-size:0.68rem; color:#38bdf8; font-weight:800; margin-bottom:3px; display:flex; align-items:center; gap:6px;">
+                                        <i class="fa-solid fa-robot"></i> Agent AI Antigravity
+                                    </div>
+                                    <div style="font-size:0.84rem; line-height:1.4; color:#f1f5f9;">${m.reply}</div>
+                                </div>
+                            `;
+                        }
+                    });
+
+                    box.innerHTML = html;
+                    box.scrollTop = box.scrollHeight;
+                } catch(e) {
+                    console.warn('Lumina AI chat fetch notice:', e.message);
+                }
+            };
+
+            fetchAndRender();
+            const interval = setInterval(fetchAndRender, 3500);
+            this.commanderAiUnsub = () => clearInterval(interval);
+        },
+
+        sendCommanderAiMessage: async function(e) {
+            if (e) e.preventDefault();
+            const input = document.getElementById('commanderAiInputText');
+            if (!input) return;
+            const text = input.value.trim();
+            if (!text) return;
+
+            const msgId = 'cmd_' + Date.now();
+            const FIRESTORE_URL = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_commander_ai_chat/' + msgId;
+
+            const body = {
+                fields: {
+                    id: { stringValue: msgId },
+                    text: { stringValue: text },
+                    sender: { stringValue: 'Dowódca (Cezary Rogowski)' },
+                    status: { stringValue: 'pending' },
+                    reply: { stringValue: '' },
+                    createdAt: { integerValue: String(Date.now()) },
+                    timestamp: { timestampValue: new Date().toISOString() }
+                }
+            };
+
+            input.value = '';
+
+            try {
+                await fetch(FIRESTORE_URL, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                if (typeof window.showToast === 'function') {
+                    window.showToast('⚡ Rozkaz Błyskawiczny przesłany do Agenta AI! Zadanie w toku. 🚀');
+                }
+                this.subscribeToCommanderAiChat();
+            } catch(err) {
+                console.warn('Błąd wysyłania rozkazu:', err);
+            }
+        },
+
+        sendQuickAiCommand: function(text) {
+            const input = document.getElementById('commanderAiInputText');
+            if (input) {
+                input.value = text;
+                this.sendCommanderAiMessage();
+            }
+        },
+
         openModal: function(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
@@ -1391,6 +1651,161 @@
             return path.join(' > ');
         },
 
+        
+        // ── TRYB CELOWNIKA: SAMODZIELNA EDYCJA NA ŻYWO I UPLOAD ZDJĘĆ ──
+        switchInspectorTab: function(tabName) {
+            const editTab = document.getElementById('inspectorTabDirectEdit');
+            const noteTab = document.getElementById('inspectorTabAgentNote');
+            const btnEdit = document.getElementById('tabBtnDirectEdit');
+            const btnNote = document.getElementById('tabBtnAgentNote');
+
+            if (tabName === 'direct_edit') {
+                if (editTab) editTab.style.display = 'block';
+                if (noteTab) noteTab.style.display = 'none';
+                if (btnEdit) {
+                    btnEdit.style.background = 'linear-gradient(135deg,#f59e0b,#d97706)';
+                    btnEdit.style.color = '#0b142e';
+                    btnEdit.style.border = 'none';
+                }
+                if (btnNote) {
+                    btnNote.style.background = 'rgba(255,255,255,0.06)';
+                    btnNote.style.color = '#cbd5e1';
+                    btnNote.style.border = '1px solid rgba(255,255,255,0.15)';
+                }
+            } else {
+                if (editTab) editTab.style.display = 'none';
+                if (noteTab) noteTab.style.display = 'block';
+                if (btnNote) {
+                    btnNote.style.background = 'linear-gradient(135deg,#10b981,#059669)';
+                    btnNote.style.color = '#fff';
+                    btnNote.style.border = 'none';
+                }
+                if (btnEdit) {
+                    btnEdit.style.background = 'rgba(255,255,255,0.06)';
+                    btnEdit.style.color = '#cbd5e1';
+                    btnEdit.style.border = '1px solid rgba(255,255,255,0.15)';
+                }
+            }
+        },
+
+        handleInspectorFileUpload: function(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const dataUrl = event.target.result;
+                this.applyLiveInspectorImage(dataUrl);
+            };
+            reader.readAsDataURL(file);
+        },
+
+        applyInspectorImageFromUrl: function() {
+            const url = document.getElementById('liveInspectorImgUrlInput')?.value?.trim();
+            if (!url) {
+                alert('Proszę podać nazwę pliku lub URL zdjęcia.');
+                return;
+            }
+            this.applyLiveInspectorImage(url);
+        },
+
+        applyLiveInspectorImage: function(imgSrc) {
+            const preview = document.getElementById('liveInspectorImgPreview');
+            if (preview) preview.src = imgSrc;
+
+            const el = this.inspectedTargetEl;
+            if (!el) return;
+
+            let targetImg = null;
+            if (el.tagName === 'IMG') {
+                targetImg = el;
+            } else {
+                targetImg = el.querySelector('img') || el.closest('.profile-card')?.querySelector('img') || el.closest('.card-photo')?.querySelector('img');
+            }
+
+            if (targetImg) {
+                targetImg.src = imgSrc;
+                targetImg.setAttribute('src', imgSrc);
+                targetImg.removeAttribute('srcset');
+            }
+
+            // Jeśli to karta profilu, ustal slug
+            const card = el.closest('.profile-card');
+            const slug = card?.getAttribute('data-profile-slug') || (el.getAttribute && el.getAttribute('data-profile-slug')) || '';
+
+            this._currentInspectorImgUpdate = {
+                slug: slug,
+                imgSrc: imgSrc,
+                elementSelector: this.buildElementSelector(targetImg || el)
+            };
+
+            if (typeof window.showToast === 'function') {
+                window.showToast('📸 Zdjęcie podmienione na żywo! Kliknij [Zapisz Zmiany Na Stałe], aby utrwalić.');
+            }
+        },
+
+        applyInspectorTextChange: function() {
+            const text = document.getElementById('liveInspectorTextInput')?.value;
+            const el = this.inspectedTargetEl;
+            if (!el || text === undefined) return;
+
+            el.innerText = text;
+            this._currentInspectorTextUpdate = {
+                text: text,
+                elementSelector: this.buildElementSelector(el)
+            };
+
+            if (typeof window.showToast === 'function') {
+                window.showToast('✏️ Tekst zaktualizowany na żywo! Kliknij [Zapisz Zmiany Na Stałe], aby utrwalić.');
+            }
+        },
+
+        saveInspectorLiveEditsPermanent: async function() {
+            try {
+                // 1. Zapis zdjęcia profilu jeśli dotyczyło profilu
+                if (this._currentInspectorImgUpdate) {
+                    const { slug, imgSrc } = this._currentInspectorImgUpdate;
+                    if (slug) {
+                        localStorage.setItem('lumina_avatar_' + slug, imgSrc);
+                        localStorage.setItem('lumina_custom_avatar_' + slug, imgSrc);
+                        if (window.LUMINA_COMMUNITY_PROFILES && window.LUMINA_COMMUNITY_PROFILES[slug]) {
+                            window.LUMINA_COMMUNITY_PROFILES[slug].avatar = imgSrc;
+                        }
+                        if (window.LuminaDB?.saveProfileUpdate) {
+                            await window.LuminaDB.saveProfileUpdate(slug, { avatar: imgSrc });
+                        }
+                    }
+                }
+
+                // 2. Zapis zmian w ogólnym rejestrze modyfikacji
+                const overrides = JSON.parse(localStorage.getItem('lumina_element_overrides') || '{}');
+                if (this._currentInspectorImgUpdate) {
+                    overrides[this._currentInspectorImgUpdate.elementSelector] = { type: 'img', src: this._currentInspectorImgUpdate.imgSrc };
+                }
+                if (this._currentInspectorTextUpdate) {
+                    overrides[this._currentInspectorTextUpdate.elementSelector] = { type: 'text', text: this._currentInspectorTextUpdate.text };
+                }
+                localStorage.setItem('lumina_element_overrides', JSON.stringify(overrides));
+
+                // Natychmiastowe utrwalenie w DOM
+                if (typeof window.applyAllLuminaCustomAvatars === 'function') {
+                    window.applyAllLuminaCustomAvatars();
+                }
+
+                this.closeModal('adminAgentNoteModal');
+                this.deactivateAgentInspector();
+
+                if (typeof window.showToast === 'function') {
+                    window.showToast('💾✨ Nowe zdjęcie zostało trwale zapisane i nie zniknie po odświeżeniu!');
+                } else {
+                    alert('Wszystkie zmiany zostały trwale zapisane!');
+                }
+            } catch(e) {
+                console.error('Error saving inspector live edits:', e);
+                alert('Zapisano lokalnie.');
+            }
+        },
+
         openAgentNoteModalForElement: function(el) {
             this.inspectedTargetEl = el;
             const pageName = window.location.pathname.split('/').pop() || 'lumina.html';
@@ -1470,6 +1885,7 @@
                 timestamp: Date.now()
             };
 
+            // Zapis do Firestore / localStorage
             // 1. Zawsze bezpośredni zapis do Firestore REST (gwarancja dotarcia do Agenta 24/7)
             try {
                 const restUrl = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_agent_notes/' + noteId;
@@ -1499,33 +1915,31 @@
                     })
                 });
             } catch(restErr) {
-                console.warn('LuminaAdminSuite: REST direct write failed, relying on LuminaDB:', restErr);
+                console.warn('LuminaAdminSuite: REST direct write failed:', restErr);
             }
 
-            // 2. Zapis przez moduł LuminaDB jeśli aktywny
             if (window.LuminaDB?.saveAgentNoteToCloud) {
-                try { await window.LuminaDB.saveAgentNoteToCloud(noteObj); } catch(e) {}
+                await window.LuminaDB.saveAgentNoteToCloud(noteObj);
+            } else {
+                try {
+                    const local = JSON.parse(localStorage.getItem('lumina_agent_notes') || '[]');
+                    local.unshift(noteObj);
+                    localStorage.setItem('lumina_agent_notes', JSON.stringify(local));
+                } catch(err) {}
             }
-
-            // 3. Backup w localStorage
-            try {
-                const local = JSON.parse(localStorage.getItem('lumina_agent_notes') || '[]');
-                local.unshift(noteObj);
-                localStorage.setItem('lumina_agent_notes', JSON.stringify(local));
-            } catch(err) {}
 
             this.closeModal('adminAgentNoteModal');
             this.deactivateAgentInspector();
 
             if (isImmediate) {
                 if (typeof window.showToast === 'function') {
-                    window.showToast('⚡ ROZKAZ NATYCHMIASTOWY PRZESŁANY DO AGENTA AI! Realizacja w toku. 🚀');
+                    window.showToast('⚡ ROZKAZ DLA AGENTA WYSŁANY! Agent w tle natychmiast przystępuje do realizacji zadania. 🚀');
                 } else {
-                    alert('⚡ ROZKAZ NATYCHMIASTOWY PRZESŁANY DO AGENTA AI! Realizacja w toku.');
+                    alert('⚡ ROZKAZ DLA AGENTA WYSŁANY! Agent w tle natychmiast przystępuje do realizacji.');
                 }
             } else {
                 if (typeof window.showToast === 'function') {
-                    window.showToast('💾 Nota zapisana w Dzienniku (@N)!');
+                    window.showToast('💾 Nota zapisana w Dzienniku! Wpisz @N w czacie, gdy zechcesz, aby Agent ją wykonał.');
                 } else {
                     alert('💾 Nota zapisana w Dzienniku (@N).');
                 }
@@ -1967,26 +2381,62 @@
                 return;
             }
 
-            container.innerHTML = filtered.map(p => {
+            // Licz profile bez własnego zdjęcia
+            const missingPhotoProfiles = filtered.filter(p => {
+                const savedAvatar = localStorage.getItem('lumina_avatar_' + p.slug);
+                const hasOwnAvatar = savedAvatar && savedAvatar !== 'lumina_icon.jpg' && savedAvatar !== 'icon.png';
+                const hasProfileAvatar = p.avatar && p.avatar !== 'lumina_icon.jpg' && p.avatar !== 'icon.png';
+                return !hasOwnAvatar && !hasProfileAvatar;
+            });
+
+            // Monit administratora — wyświetl banner jeśli są profile bez zdjęcia
+            const adminBanner = missingPhotoProfiles.length > 0
+                ? `<div style="display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; background:rgba(234,179,8,0.12); border:1px solid rgba(234,179,8,0.4); margin-bottom:14px;">
+                    <i class="fa-solid fa-triangle-exclamation" style="color:#facc15; font-size:1.1rem;"></i>
+                    <div>
+                        <div style="font-weight:800; color:#facc15; font-size:0.9rem;">⚠️ ${missingPhotoProfiles.length} profil(e/i) bez własnego zdjęcia profilowego</div>
+                        <div style="font-size:0.75rem; color:#94a3b8; margin-top:2px;">Profile bez zdjęcia wyświetlają domyślne logo LUMINA. Administracyjnie wymagane jest uzupełnienie zdjęcia profilowego. Użyj przycisku <strong style="color:#fff;">📷 Awatar</strong> aby przypisać zdjęcie.</div>
+                    </div>
+                   </div>`
+                : '';
+
+            container.innerHTML = adminBanner + filtered.map(p => {
                 const isBlocked = blocked.includes(p.slug.toLowerCase());
                 const savedData = this.getCurrentData(p.slug);
                 const displayName = savedData.name || p.name;
                 const displayRole = savedData.job || p.role || 'Profil LUMINA';
-                const avatarSrc = localStorage.getItem('lumina_avatar_' + p.slug) || p.avatar || 'icon.png';
-                const profileUrl = (p.slug === 'andrzejthiel') ? 'lumina.andrzejthiel.html' : 
+
+                // Sprawdź czy profil ma własne zdjęcie
+                const savedAvatar = localStorage.getItem('lumina_avatar_' + p.slug);
+                const hasOwnAvatar = savedAvatar && savedAvatar !== 'lumina_icon.jpg' && savedAvatar !== 'icon.png';
+                const hasProfileAvatar = p.avatar && p.avatar !== 'lumina_icon.jpg' && p.avatar !== 'icon.png';
+                const isMissingPhoto = !hasOwnAvatar && !hasProfileAvatar;
+
+                // Fallback: oficjalne logo LUMINA (zamiast icon.png)
+                const avatarSrc = savedAvatar || p.avatar || 'lumina_icon.jpg';
+
+                const profileUrl = (p.slug === 'andrzejthiel') ? 'lumina.andrzejthiel.html' :
                                    (p.slug === 'cezaryrgowski') ? 'lumina.cezaryrgowski.html' :
                                    (p.slug === 'wiolettarogowska') ? 'lumina.wiolettarogowska.html' :
                                    `lumina-profile.html?u=${p.slug}`;
 
+                const missingPhotoBadge = isMissingPhoto
+                    ? `<span title="Ten profil nie posiada własnego zdjęcia profilowego — administracyjnie wymagane uzupełnienie" style="font-size:0.68rem; padding:2px 7px; border-radius:6px; background:rgba(234,179,8,0.2); border:1px solid rgba(234,179,8,0.5); color:#facc15; font-weight:800; white-space:nowrap;">⚠️ Brak zdjęcia</span>`
+                    : '';
+
                 return `
-                    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-radius:14px; background:rgba(255,255,255,0.04); border:1px solid ${isBlocked ? 'rgba(239,68,68,0.4)' : 'rgba(255,255,255,0.08)'}; flex-wrap:wrap; gap:10px;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-radius:14px; background:rgba(255,255,255,0.04); border:1px solid ${isBlocked ? 'rgba(239,68,68,0.4)' : isMissingPhoto ? 'rgba(234,179,8,0.3)' : 'rgba(255,255,255,0.08)'}; flex-wrap:wrap; gap:10px;">
                         <div style="display:flex; align-items:center; gap:12px; min-width:220px;">
-                            <img src="${avatarSrc}" alt="${displayName}" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:1.5px solid ${isBlocked ? '#ef4444' : 'rgba(250,204,21,0.6)'};" onerror="this.src='icon.png'">
+                            <div style="position:relative; flex-shrink:0;">
+                                <img src="${avatarSrc}" alt="${displayName}" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:1.5px solid ${isBlocked ? '#ef4444' : isMissingPhoto ? '#facc15' : 'rgba(250,204,21,0.6)'};" onerror="this.src='lumina_icon.jpg'">
+                                ${isMissingPhoto ? '<span style="position:absolute; bottom:-2px; right:-2px; width:14px; height:14px; border-radius:50%; background:#facc15; display:flex; align-items:center; justify-content:center; font-size:8px; color:#000; font-weight:900; border:1.5px solid #111;" title="Brak własnego zdjęcia">!</span>' : ''}
+                            </div>
                             <div>
-                                <div style="display:flex; align-items:center; gap:6px;">
+                                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
                                     <span style="font-weight:800; font-size:0.95rem; color:#fff;">${displayName}</span>
                                     ${savedData.verified !== false ? '<i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.80rem;" title="Zweryfikowany"></i>' : ''}
                                     ${isBlocked ? '<span style="font-size:0.70rem; padding:2px 6px; border-radius:6px; background:#ef4444; color:#fff; font-weight:800;">ZABLOKOWANY</span>' : ''}
+                                    ${missingPhotoBadge}
                                 </div>
                                 <div style="font-size:0.75rem; color:#94a3b8;">${displayRole} • slug: <code>${p.slug}</code></div>
                             </div>
@@ -1996,8 +2446,8 @@
                             <a href="${profileUrl}" target="_blank" class="admin-suite-btn" style="padding:6px 10px; font-size:0.75rem;" title="Otwórz profil">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Zobacz
                             </a>
-                            <button type="button" class="admin-suite-btn btn-cyan" style="padding:6px 10px; font-size:0.75rem;" onclick="window.LuminaAdminSuite.promptChangeAvatarForSlug('${p.slug}')" title="Zmień zdjęcie / awatar tego profilu">
-                                <i class="fa-solid fa-camera"></i> Awatar
+                            <button type="button" class="admin-suite-btn ${isMissingPhoto ? 'btn-warn' : 'btn-cyan'}" style="padding:6px 10px; font-size:0.75rem;" onclick="window.LuminaAdminSuite.promptChangeAvatarForSlug('${p.slug}')" title="${isMissingPhoto ? '⚠️ Brak zdjęcia! Kliknij aby przypisać zdjęcie profilowe' : 'Zmień zdjęcie / awatar tego profilu'}">
+                                <i class="fa-solid fa-camera"></i> ${isMissingPhoto ? '⚠️ Dodaj zdjęcie' : 'Awatar'}
                             </button>
                             <button type="button" class="admin-suite-btn btn-gold" style="padding:6px 10px; font-size:0.75rem;" onclick="window.LuminaAdminSuite.openFullEditor('${p.slug}')" title="Edytuj dane tego profilu">
                                 <i class="fa-solid fa-pencil"></i> Edytuj
@@ -2013,6 +2463,7 @@
                 `;
             }).join('');
         },
+
 
         // ══════════ MULTIMEDIA & PUBLIKACJE ══════════
         currentEditingSlug: null,
