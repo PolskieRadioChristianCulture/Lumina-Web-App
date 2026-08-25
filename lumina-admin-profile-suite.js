@@ -1260,7 +1260,11 @@
             this.attachInlinePencils();
             this.loadProfileFromStorage(this.slug);
             this.checkIfCurrentProfileIsBlocked();
-            this.initScrollBottomShieldListener: function() {
+            this.initScrollBottomShieldListener();
+            window.addEventListener('resize', () => this.repositionHudBar());
+        },
+
+        initScrollBottomShieldListener: function() {
             const check = () => {
                 const el = document.getElementById('luminaFloatingAdminShieldContainer');
                 if (!el) return;
@@ -1275,8 +1279,8 @@
 
                 const distFromBottom = docHeight - (scrollY + windowHeight);
 
-                // Reveal shield when scrolled to the bottom section (within 350px of bottom)
-                const isBottomArea = (distFromBottom <= 350) || (scrollY + windowHeight >= docHeight - 60);
+                // Reveal shield when scrolled to the bottom area (within 400px of bottom or near end)
+                const isBottomArea = (distFromBottom <= 400) || (scrollY + windowHeight >= docHeight - 80);
 
                 if (isBottomArea && (scrollY > 100 || docHeight <= windowHeight + 100)) {
                     el.classList.add('is-at-bottom');
@@ -1293,7 +1297,7 @@
             check();
             setTimeout(check, 300);
             setTimeout(check, 800);
-            setInterval(check, 500);
+            setInterval(check, 400);
         },
 
         sendCommanderAiMessage: async function(e) {
