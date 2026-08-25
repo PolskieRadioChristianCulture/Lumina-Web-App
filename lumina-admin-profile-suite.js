@@ -1120,7 +1120,6 @@
             const check = () => {
                 const el = document.getElementById('luminaFloatingAdminShieldContainer');
                 if (!el) return;
-
                 const scrollY = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
                 const windowHeight = window.innerHeight || document.documentElement.clientHeight || 0;
                 const docHeight = Math.max(
@@ -1128,10 +1127,7 @@
                     document.body.offsetHeight || 0, document.documentElement.offsetHeight || 0,
                     document.body.clientHeight || 0, document.documentElement.clientHeight || 0
                 );
-
                 const distFromBottom = docHeight - (scrollY + windowHeight);
-
-                // Reveal shield strictly in the bottom area of the portal (within 450px of bottom OR at end of scroll)
                 const isBottomArea = (distFromBottom <= 450) || (scrollY + windowHeight >= docHeight - 80);
 
                 if (isBottomArea && (scrollY > 120 || docHeight <= windowHeight + 120)) {
@@ -1145,58 +1141,147 @@
             window.addEventListener('touchmove', check, { passive: true });
             window.addEventListener('resize', check, { passive: true });
             window.addEventListener('wheel', check, { passive: true });
-
             check();
             setTimeout(check, 250);
             setTimeout(check, 800);
             setInterval(check, 350);
         },
 
-        sendCommanderAiMessage: async function(e) {
-            if (e) e.preventDefault();
-            const input = document.getElementById('commanderAiInputText');
-            if (!input) return;
-            const text = input.value.trim();
-            if (!text) return;
+        repositionHudBar: function() {
+            const hud = document.getElementById('luminaAdminHudBar');
+            const inspBanner = document.getElementById('luminaAgentInspectorBanner');
+            if (!hud) return;
+            const topNav = document.querySelector('nav.lumina-nav, nav.portal-nav, nav.profile-navbar, .lumina-nav, nav');
+            const navH = (topNav && topNav.offsetHeight > 0) ? topNav.offsetHeight : 56;
+            hud.style.top = navH + 'px';
 
-            const msgId = 'cmd_' + Date.now();
-            const FIRESTORE_URL = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_commander_ai_chat/' + msgId;
+            const isHudActive = hud.classList.contains('active');
+            const hudH = isHudActive ? hud.offsetHeight : 0;
 
-            const body = {
-                fields: {
-                    id: { stringValue: msgId },
-                    text: { stringValue: text },
-                    sender: { stringValue: 'Dowódca (Cezary Rogowski)' },
-                    status: { stringValue: 'pending' },
-                    reply: { stringValue: '' },
-                    createdAt: { integerValue: String(Date.now()) },
-                    timestamp: { timestampValue: new Date().toISOString() }
+            if (inspBanner) {
+                inspBanner.style.top = (navH + hudH) + 'px';
+            }
+
+            let totalTop = navH + hudH;
+            if (inspBanner && inspBanner.style.display !== 'none' && !inspBanner.classList.contains('minimized')) {
+                totalTop += (inspBanner.offsetHeight || 36);
+            }
+            document.body.style.paddingTop = (totalTop + 4) + 'px';
+        },
+
+        checkAndApplyAdminState: function() {
+            const isAdmin = isUserMasterAdmin();
+            const hud = document.getElementById('luminaAdminHudBar');
+            const footerPill = document.querySelector('.lumina-footer-shield-pill');
+
+            if (isAdmin) {
+                document.body.classList.add('lumina-admin-mode', 'owner-mode-active', 'has-admin-hud');
+                if (hud) {
+                    hud.classList.add('active');
+                    const isMin = sessionStorage.getItem('lumina_admin_hud_minimized') === 'true';
+                    if (isMin) {
+                        hud.classList.add('minimized');
+                        document.body.classList.add('hud-minimized');
+                        const icon = document.getElementById('hudMinimizeIcon');
+                        if (icon) icon.className = 'fa-solid fa-plus';
+                    } else {
+                        hud.classList.remove('minimized');
+                        document.body.classList.remove('hud-minimized');
+                        const icon = document.getElementById('hudMinimizeIcon');
+                        if (icon) icon.className = 'fa-solid fa-minus';
+                    }
                 }
-            };
+                if (footerPill) {
+                    footerPill.classList.add('unlocked');
+                    footerPill.style.borderColor = 'rgba(16, 185, 129, 0.7)';
+                    footerPill.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.4)';
+                }
+            } else {
+                document.body.classList.remove('lumina-admin-mode', 'owner-mode-active', 'has-admin-hud', 'hud-minimized');
+                if (hud) hud.classList.remove('active', 'minimized');
+                if (footerPill) {
+                    footerPill.classList.remove('unlocked');
+                    footerPill.style.borderColor = 'rgba(245, 158, 11, 0.4)';
+                    footerPill.style.boxShadow = '0 6px 20px rgba(0,0,0,0.5)';
+                }
+            }
 
-            input.value = '';
+            this.updateHudBlockBtnState();
+            this.repositionHudBar();
+        },
 
+        toggleMinimizeHud: function() {
+            const hud = document.getElementById('luminaAdminHudBar');
+            const icon = document.getElementById('hudMinimizeIcon');
+            if (!hud) return;
+            const isMin = hud.classList.toggle('minimized');
+            if (isMin) {
+                document.body.classList.add('hud-minimized');
+            } else {
+                document.body.classList.remove('hud-minimized');
+            }
+            if (icon) {
+                icon.className = isMin ? 'fa-solid fa-plus' : 'fa-solid fa-minus';
+            }
             try {
-                await fetch(FIRESTORE_URL, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(body)
-                });
-
-                if (typeof window.showToast === 'function') {
-                    window.showToast('⚡ Rozkaz Błyskawiczny przesłany do Agenta AI! Zadanie w toku. 🚀');
-                }
-                this.subscribeToCommanderAiChat();
-            } catch(err) {
-                console.warn('Błąd wysyłania rozkazu:', err);
+                sessionStorage.setItem('lumina_admin_hud_minimized', isMin ? 'true' : 'false');
+            } catch(e) {}
+            this.repositionHudBar();
+            if (typeof window.showToast === 'function') {
+                window.showToast(isMin ? 'Pasek opcji Administratora został zminimalizowany 🔽' : 'Pasek Administratora rozwinięty 🔼');
             }
         },
 
-        sendQuickAiCommand: function(text) {
-            const input = document.getElementById('commanderAiInputText');
-            if (input) {
-                input.value = text;
-                this.sendCommanderAiMessage();
+        openPinPrompt: async function() {
+            const isAdmin = isUserMasterAdmin();
+            if (isAdmin) {
+                this.openAllProfilesManager();
+                return;
+            }
+
+            const pin = prompt('🔐 Autoryzacja Administratora Portalu LUMINA (Wprowadź PIN):');
+            if (!pin) return;
+
+            const msgBuffer = new TextEncoder().encode(pin.trim());
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            if (hash === ADMIN_PIN_HASH) {
+                sessionStorage.setItem('lumina_auth_master_admin', 'true');
+                this.checkAndApplyAdminState();
+                if (typeof window.showToast === 'function') {
+                    window.showToast('✨ Zalogowano do Panelu Głównego Administratora! Pełny dostęp aktywny.');
+                } else {
+                    alert('✨ Zalogowano do Panelu Głównego Administratora! Pełna kontrola aktywna.');
+                }
+            } else {
+                if (typeof window.showToast === 'function') {
+                    window.showToast('❌ Nieprawidłowy kod PIN Administratora!');
+                } else {
+                    alert('❌ Nieprawidłowy kod PIN Administratora!');
+                }
+            }
+        },
+
+        lockAdminMode: function() {
+            sessionStorage.removeItem('lumina_auth_master_admin');
+            this.checkAndApplyAdminState();
+            if (this.isInspectorActive) {
+                this.deactivateAgentInspector();
+            }
+            if (typeof window.showToast === 'function') {
+                window.showToast('🔒 Wylogowano z trybu Administratora.');
+            } else {
+                alert('🔒 Wylogowano z trybu Administratora.');
+            }
+        },
+
+closeModal: function(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('open');
+                modal.style.display = 'none';
             }
         },
 
@@ -1335,161 +1420,6 @@
                 curr = curr.parentElement;
             }
             return path.join(' > ');
-        },
-
-        
-        // ── TRYB CELOWNIKA: SAMODZIELNA EDYCJA NA ŻYWO I UPLOAD ZDJĘĆ ──
-        switchInspectorTab: function(tabName) {
-            const editTab = document.getElementById('inspectorTabDirectEdit');
-            const noteTab = document.getElementById('inspectorTabAgentNote');
-            const btnEdit = document.getElementById('tabBtnDirectEdit');
-            const btnNote = document.getElementById('tabBtnAgentNote');
-
-            if (tabName === 'direct_edit') {
-                if (editTab) editTab.style.display = 'block';
-                if (noteTab) noteTab.style.display = 'none';
-                if (btnEdit) {
-                    btnEdit.style.background = 'linear-gradient(135deg,#f59e0b,#d97706)';
-                    btnEdit.style.color = '#0b142e';
-                    btnEdit.style.border = 'none';
-                }
-                if (btnNote) {
-                    btnNote.style.background = 'rgba(255,255,255,0.06)';
-                    btnNote.style.color = '#cbd5e1';
-                    btnNote.style.border = '1px solid rgba(255,255,255,0.15)';
-                }
-            } else {
-                if (editTab) editTab.style.display = 'none';
-                if (noteTab) noteTab.style.display = 'block';
-                if (btnNote) {
-                    btnNote.style.background = 'linear-gradient(135deg,#10b981,#059669)';
-                    btnNote.style.color = '#fff';
-                    btnNote.style.border = 'none';
-                }
-                if (btnEdit) {
-                    btnEdit.style.background = 'rgba(255,255,255,0.06)';
-                    btnEdit.style.color = '#cbd5e1';
-                    btnEdit.style.border = '1px solid rgba(255,255,255,0.15)';
-                }
-            }
-        },
-
-        handleInspectorFileUpload: function(e) {
-            const file = e.target.files && e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const dataUrl = event.target.result;
-                this.applyLiveInspectorImage(dataUrl);
-            };
-            reader.readAsDataURL(file);
-        },
-
-        applyInspectorImageFromUrl: function() {
-            const url = document.getElementById('liveInspectorImgUrlInput')?.value?.trim();
-            if (!url) {
-                alert('Proszę podać nazwę pliku lub URL zdjęcia.');
-                return;
-            }
-            this.applyLiveInspectorImage(url);
-        },
-
-        applyLiveInspectorImage: function(imgSrc) {
-            const preview = document.getElementById('liveInspectorImgPreview');
-            if (preview) preview.src = imgSrc;
-
-            const el = this.inspectedTargetEl;
-            if (!el) return;
-
-            let targetImg = null;
-            if (el.tagName === 'IMG') {
-                targetImg = el;
-            } else {
-                targetImg = el.querySelector('img') || el.closest('.profile-card')?.querySelector('img') || el.closest('.card-photo')?.querySelector('img');
-            }
-
-            if (targetImg) {
-                targetImg.src = imgSrc;
-                targetImg.setAttribute('src', imgSrc);
-                targetImg.removeAttribute('srcset');
-            }
-
-            // Jeśli to karta profilu, ustal slug
-            const card = el.closest('.profile-card');
-            const slug = card?.getAttribute('data-profile-slug') || (el.getAttribute && el.getAttribute('data-profile-slug')) || '';
-
-            this._currentInspectorImgUpdate = {
-                slug: slug,
-                imgSrc: imgSrc,
-                elementSelector: this.buildElementSelector(targetImg || el)
-            };
-
-            if (typeof window.showToast === 'function') {
-                window.showToast('📸 Zdjęcie podmienione na żywo! Kliknij [Zapisz Zmiany Na Stałe], aby utrwalić.');
-            }
-        },
-
-        applyInspectorTextChange: function() {
-            const text = document.getElementById('liveInspectorTextInput')?.value;
-            const el = this.inspectedTargetEl;
-            if (!el || text === undefined) return;
-
-            el.innerText = text;
-            this._currentInspectorTextUpdate = {
-                text: text,
-                elementSelector: this.buildElementSelector(el)
-            };
-
-            if (typeof window.showToast === 'function') {
-                window.showToast('✏️ Tekst zaktualizowany na żywo! Kliknij [Zapisz Zmiany Na Stałe], aby utrwalić.');
-            }
-        },
-
-        saveInspectorLiveEditsPermanent: async function() {
-            try {
-                // 1. Zapis zdjęcia profilu jeśli dotyczyło profilu
-                if (this._currentInspectorImgUpdate) {
-                    const { slug, imgSrc } = this._currentInspectorImgUpdate;
-                    if (slug) {
-                        localStorage.setItem('lumina_avatar_' + slug, imgSrc);
-                        localStorage.setItem('lumina_custom_avatar_' + slug, imgSrc);
-                        if (window.LUMINA_COMMUNITY_PROFILES && window.LUMINA_COMMUNITY_PROFILES[slug]) {
-                            window.LUMINA_COMMUNITY_PROFILES[slug].avatar = imgSrc;
-                        }
-                        if (window.LuminaDB?.saveProfileUpdate) {
-                            await window.LuminaDB.saveProfileUpdate(slug, { avatar: imgSrc });
-                        }
-                    }
-                }
-
-                // 2. Zapis zmian w ogólnym rejestrze modyfikacji
-                const overrides = JSON.parse(localStorage.getItem('lumina_element_overrides') || '{}');
-                if (this._currentInspectorImgUpdate) {
-                    overrides[this._currentInspectorImgUpdate.elementSelector] = { type: 'img', src: this._currentInspectorImgUpdate.imgSrc };
-                }
-                if (this._currentInspectorTextUpdate) {
-                    overrides[this._currentInspectorTextUpdate.elementSelector] = { type: 'text', text: this._currentInspectorTextUpdate.text };
-                }
-                localStorage.setItem('lumina_element_overrides', JSON.stringify(overrides));
-
-                // Natychmiastowe utrwalenie w DOM
-                if (typeof window.applyAllLuminaCustomAvatars === 'function') {
-                    window.applyAllLuminaCustomAvatars();
-                }
-
-                this.closeModal('adminAgentNoteModal');
-                this.deactivateAgentInspector();
-
-                if (typeof window.showToast === 'function') {
-                    window.showToast('💾✨ Nowe zdjęcie zostało trwale zapisane i nie zniknie po odświeżeniu!');
-                } else {
-                    alert('Wszystkie zmiany zostały trwale zapisane!');
-                }
-            } catch(e) {
-                console.error('Error saving inspector live edits:', e);
-                alert('Zapisano lokalnie.');
-            }
         },
 
         openAgentNoteModalForElement: function(el) {
@@ -2035,62 +1965,26 @@
                 return;
             }
 
-            // Licz profile bez własnego zdjęcia
-            const missingPhotoProfiles = filtered.filter(p => {
-                const savedAvatar = localStorage.getItem('lumina_avatar_' + p.slug);
-                const hasOwnAvatar = savedAvatar && savedAvatar !== 'lumina_icon.jpg' && savedAvatar !== 'icon.png';
-                const hasProfileAvatar = p.avatar && p.avatar !== 'lumina_icon.jpg' && p.avatar !== 'icon.png';
-                return !hasOwnAvatar && !hasProfileAvatar;
-            });
-
-            // Monit administratora — wyświetl banner jeśli są profile bez zdjęcia
-            const adminBanner = missingPhotoProfiles.length > 0
-                ? `<div style="display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; background:rgba(234,179,8,0.12); border:1px solid rgba(234,179,8,0.4); margin-bottom:14px;">
-                    <i class="fa-solid fa-triangle-exclamation" style="color:#facc15; font-size:1.1rem;"></i>
-                    <div>
-                        <div style="font-weight:800; color:#facc15; font-size:0.9rem;">⚠️ ${missingPhotoProfiles.length} profil(e/i) bez własnego zdjęcia profilowego</div>
-                        <div style="font-size:0.75rem; color:#94a3b8; margin-top:2px;">Profile bez zdjęcia wyświetlają domyślne logo LUMINA. Administracyjnie wymagane jest uzupełnienie zdjęcia profilowego. Użyj przycisku <strong style="color:#fff;">📷 Awatar</strong> aby przypisać zdjęcie.</div>
-                    </div>
-                   </div>`
-                : '';
-
-            container.innerHTML = adminBanner + filtered.map(p => {
+            container.innerHTML = filtered.map(p => {
                 const isBlocked = blocked.includes(p.slug.toLowerCase());
                 const savedData = this.getCurrentData(p.slug);
                 const displayName = savedData.name || p.name;
                 const displayRole = savedData.job || p.role || 'Profil LUMINA';
-
-                // Sprawdź czy profil ma własne zdjęcie
-                const savedAvatar = localStorage.getItem('lumina_avatar_' + p.slug);
-                const hasOwnAvatar = savedAvatar && savedAvatar !== 'lumina_icon.jpg' && savedAvatar !== 'icon.png';
-                const hasProfileAvatar = p.avatar && p.avatar !== 'lumina_icon.jpg' && p.avatar !== 'icon.png';
-                const isMissingPhoto = !hasOwnAvatar && !hasProfileAvatar;
-
-                // Fallback: oficjalne logo LUMINA (zamiast icon.png)
-                const avatarSrc = savedAvatar || p.avatar || 'lumina_icon.jpg';
-
-                const profileUrl = (p.slug === 'andrzejthiel') ? 'lumina.andrzejthiel.html' :
+                const avatarSrc = localStorage.getItem('lumina_avatar_' + p.slug) || p.avatar || 'icon.png';
+                const profileUrl = (p.slug === 'andrzejthiel') ? 'lumina.andrzejthiel.html' : 
                                    (p.slug === 'cezaryrgowski') ? 'lumina.cezaryrgowski.html' :
                                    (p.slug === 'wiolettarogowska') ? 'lumina.wiolettarogowska.html' :
                                    `lumina-profile.html?u=${p.slug}`;
 
-                const missingPhotoBadge = isMissingPhoto
-                    ? `<span title="Ten profil nie posiada własnego zdjęcia profilowego — administracyjnie wymagane uzupełnienie" style="font-size:0.68rem; padding:2px 7px; border-radius:6px; background:rgba(234,179,8,0.2); border:1px solid rgba(234,179,8,0.5); color:#facc15; font-weight:800; white-space:nowrap;">⚠️ Brak zdjęcia</span>`
-                    : '';
-
                 return `
-                    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-radius:14px; background:rgba(255,255,255,0.04); border:1px solid ${isBlocked ? 'rgba(239,68,68,0.4)' : isMissingPhoto ? 'rgba(234,179,8,0.3)' : 'rgba(255,255,255,0.08)'}; flex-wrap:wrap; gap:10px;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-radius:14px; background:rgba(255,255,255,0.04); border:1px solid ${isBlocked ? 'rgba(239,68,68,0.4)' : 'rgba(255,255,255,0.08)'}; flex-wrap:wrap; gap:10px;">
                         <div style="display:flex; align-items:center; gap:12px; min-width:220px;">
-                            <div style="position:relative; flex-shrink:0;">
-                                <img src="${avatarSrc}" alt="${displayName}" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:1.5px solid ${isBlocked ? '#ef4444' : isMissingPhoto ? '#facc15' : 'rgba(250,204,21,0.6)'};" onerror="this.src='lumina_icon.jpg'">
-                                ${isMissingPhoto ? '<span style="position:absolute; bottom:-2px; right:-2px; width:14px; height:14px; border-radius:50%; background:#facc15; display:flex; align-items:center; justify-content:center; font-size:8px; color:#000; font-weight:900; border:1.5px solid #111;" title="Brak własnego zdjęcia">!</span>' : ''}
-                            </div>
+                            <img src="${avatarSrc}" alt="${displayName}" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:1.5px solid ${isBlocked ? '#ef4444' : 'rgba(250,204,21,0.6)'};" onerror="this.src='icon.png'">
                             <div>
-                                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                                <div style="display:flex; align-items:center; gap:6px;">
                                     <span style="font-weight:800; font-size:0.95rem; color:#fff;">${displayName}</span>
                                     ${savedData.verified !== false ? '<i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.80rem;" title="Zweryfikowany"></i>' : ''}
                                     ${isBlocked ? '<span style="font-size:0.70rem; padding:2px 6px; border-radius:6px; background:#ef4444; color:#fff; font-weight:800;">ZABLOKOWANY</span>' : ''}
-                                    ${missingPhotoBadge}
                                 </div>
                                 <div style="font-size:0.75rem; color:#94a3b8;">${displayRole} • slug: <code>${p.slug}</code></div>
                             </div>
@@ -2100,8 +1994,8 @@
                             <a href="${profileUrl}" target="_blank" class="admin-suite-btn" style="padding:6px 10px; font-size:0.75rem;" title="Otwórz profil">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Zobacz
                             </a>
-                            <button type="button" class="admin-suite-btn ${isMissingPhoto ? 'btn-warn' : 'btn-cyan'}" style="padding:6px 10px; font-size:0.75rem;" onclick="window.LuminaAdminSuite.promptChangeAvatarForSlug('${p.slug}')" title="${isMissingPhoto ? '⚠️ Brak zdjęcia! Kliknij aby przypisać zdjęcie profilowe' : 'Zmień zdjęcie / awatar tego profilu'}">
-                                <i class="fa-solid fa-camera"></i> ${isMissingPhoto ? '⚠️ Dodaj zdjęcie' : 'Awatar'}
+                            <button type="button" class="admin-suite-btn btn-cyan" style="padding:6px 10px; font-size:0.75rem;" onclick="window.LuminaAdminSuite.promptChangeAvatarForSlug('${p.slug}')" title="Zmień zdjęcie / awatar tego profilu">
+                                <i class="fa-solid fa-camera"></i> Awatar
                             </button>
                             <button type="button" class="admin-suite-btn btn-gold" style="padding:6px 10px; font-size:0.75rem;" onclick="window.LuminaAdminSuite.openFullEditor('${p.slug}')" title="Edytuj dane tego profilu">
                                 <i class="fa-solid fa-pencil"></i> Edytuj
@@ -2117,7 +2011,6 @@
                 `;
             }).join('');
         },
-
 
         // ══════════ MULTIMEDIA & PUBLIKACJE ══════════
         currentEditingSlug: null,
