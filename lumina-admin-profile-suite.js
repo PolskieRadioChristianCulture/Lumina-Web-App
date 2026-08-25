@@ -1470,29 +1470,62 @@
                 timestamp: Date.now()
             };
 
-            // Zapis do Firestore / localStorage
-            if (window.LuminaDB?.saveAgentNoteToCloud) {
-                await window.LuminaDB.saveAgentNoteToCloud(noteObj);
-            } else {
-                try {
-                    const local = JSON.parse(localStorage.getItem('lumina_agent_notes') || '[]');
-                    local.unshift(noteObj);
-                    localStorage.setItem('lumina_agent_notes', JSON.stringify(local));
-                } catch(err) {}
+            // 1. Zawsze bezpośredni zapis do Firestore REST (gwarancja dotarcia do Agenta 24/7)
+            try {
+                const restUrl = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_agent_notes/' + noteId;
+                await fetch(restUrl, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fields: {
+                            id: { stringValue: noteId },
+                            page: { stringValue: pageName },
+                            fullUrl: { stringValue: window.location.href },
+                            selector: { stringValue: selector },
+                            tag: { stringValue: tag },
+                            snippet: { stringValue: snippet },
+                            note: { stringValue: fullFormattedNote },
+                            rawNote: { stringValue: text },
+                            specialGuidelines: { stringValue: specialGuidelines },
+                            category: { stringValue: category },
+                            priority: { stringValue: finalPriority },
+                            autoExecute: { booleanValue: isImmediate },
+                            commandType: { stringValue: isImmediate ? 'IMMEDIATE_ORDER' : 'DIARY_NOTE' },
+                            status: { stringValue: 'pending' },
+                            author: { stringValue: 'Dowódca (Master Admin)' },
+                            createdAt: { stringValue: new Date().toISOString() },
+                            timestamp: { integerValue: String(Date.now()) }
+                        }
+                    })
+                });
+            } catch(restErr) {
+                console.warn('LuminaAdminSuite: REST direct write failed, relying on LuminaDB:', restErr);
             }
+
+            // 2. Zapis przez moduł LuminaDB jeśli aktywny
+            if (window.LuminaDB?.saveAgentNoteToCloud) {
+                try { await window.LuminaDB.saveAgentNoteToCloud(noteObj); } catch(e) {}
+            }
+
+            // 3. Backup w localStorage
+            try {
+                const local = JSON.parse(localStorage.getItem('lumina_agent_notes') || '[]');
+                local.unshift(noteObj);
+                localStorage.setItem('lumina_agent_notes', JSON.stringify(local));
+            } catch(err) {}
 
             this.closeModal('adminAgentNoteModal');
             this.deactivateAgentInspector();
 
             if (isImmediate) {
                 if (typeof window.showToast === 'function') {
-                    window.showToast('⚡ ROZKAZ DLA AGENTA WYSŁANY! Agent w tle natychmiast przystępuje do realizacji zadania. 🚀');
+                    window.showToast('⚡ ROZKAZ NATYCHMIASTOWY PRZESŁANY DO AGENTA AI! Realizacja w toku. 🚀');
                 } else {
-                    alert('⚡ ROZKAZ DLA AGENTA WYSŁANY! Agent w tle natychmiast przystępuje do realizacji.');
+                    alert('⚡ ROZKAZ NATYCHMIASTOWY PRZESŁANY DO AGENTA AI! Realizacja w toku.');
                 }
             } else {
                 if (typeof window.showToast === 'function') {
-                    window.showToast('💾 Nota zapisana w Dzienniku! Wpisz @N w czacie, gdy zechcesz, aby Agent ją wykonał.');
+                    window.showToast('💾 Nota zapisana w Dzienniku (@N)!');
                 } else {
                     alert('💾 Nota zapisana w Dzienniku (@N).');
                 }
