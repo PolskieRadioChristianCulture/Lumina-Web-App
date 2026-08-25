@@ -1279,13 +1279,19 @@
 
                 const distFromBottom = docHeight - (scrollY + windowHeight);
 
-                // Reveal shield when scrolled to the bottom area (within 400px of bottom or near end)
-                const isBottomArea = (distFromBottom <= 400) || (scrollY + windowHeight >= docHeight - 80);
+                // Reveal shield when user is scrolled near bottom (within 450px or at the end of the page)
+                const isBottomArea = (distFromBottom <= 450) || (scrollY + windowHeight >= docHeight - 100);
 
-                if (isBottomArea && (scrollY > 100 || docHeight <= windowHeight + 100)) {
+                if (isBottomArea && (scrollY > 80 || docHeight <= windowHeight + 80)) {
                     el.classList.add('is-at-bottom');
+                    el.style.setProperty('display', 'inline-flex', 'important');
+                    el.style.setProperty('opacity', '1', 'important');
+                    el.style.setProperty('pointer-events', 'auto', 'important');
                 } else {
                     el.classList.remove('is-at-bottom');
+                    el.style.setProperty('display', 'none', 'important');
+                    el.style.setProperty('opacity', '0', 'important');
+                    el.style.setProperty('pointer-events', 'none', 'important');
                 }
             };
 
@@ -1295,9 +1301,10 @@
             window.addEventListener('wheel', check, { passive: true });
 
             check();
-            setTimeout(check, 300);
-            setTimeout(check, 800);
-            setInterval(check, 400);
+            setTimeout(check, 200);
+            setTimeout(check, 600);
+            setTimeout(check, 1500);
+            setInterval(check, 300);
         },
 
         sendCommanderAiMessage: async function(e) {
