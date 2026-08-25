@@ -353,42 +353,66 @@
                 box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
             }
 
-            /* ══════════ JEDYNA DYSKRETNA TARCZA ADMINA Z WERSJĄ (LEWY DOLNY RÓG) ══════════ */
-            .lumina-admin-shield-container { display: none !important; }
+            /* ══════════ JEDYNA DYSKRETNA TARCZA ADMINA W LEWYM DOLNYM ROGU (WIDOCZNA TYLKO NA DOLE) ══════════ */
+            .lumina-admin-shield-container {
+                position: fixed;
+                bottom: 18px;
+                left: 20px;
+                z-index: 99999;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: rgba(15, 23, 42, 0.85);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+                border: 1px solid rgba(148, 163, 184, 0.25);
+                padding: 4px 10px 4px 6px;
+                border-radius: 20px;
+                user-select: none;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(18px);
+                transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .lumina-admin-shield-container.is-at-bottom {
+                opacity: 1;
+                pointer-events: auto;
+                transform: translateY(0);
+            }
+            .lumina-admin-shield-container:hover {
+                background: rgba(15, 23, 42, 0.95);
+                border-color: rgba(245, 158, 11, 0.5);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(245, 158, 11, 0.2);
+            }
             .lumina-admin-floating-shield {
                 width: 24px;
                 height: 24px;
                 border-radius: 50%;
                 background: transparent;
                 border: none;
-                color: #64748b;
+                color: #facc15;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 0.88rem;
+                font-size: 0.90rem;
                 cursor: pointer;
                 padding: 0;
-                transition: all 0.25s ease;
+                transition: transform 0.2s ease;
             }
             .lumina-admin-shield-container:hover .lumina-admin-floating-shield {
-                color: #facc15;
-                transform: scale(1.1);
+                transform: scale(1.12);
             }
             .lumina-admin-version-tag {
-                font-size: 0.72rem;
-                font-weight: 700;
-                color: rgba(148, 163, 184, 0.75);
-                font-family: 'Plus Jakarta Sans', sans-serif;
-                letter-spacing: 0.2px;
-                transition: color 0.25s ease;
-            }
-            .lumina-admin-shield-container:hover .lumina-admin-version-tag {
+                font-size: 0.74rem;
+                font-weight: 800;
                 color: #e2e8f0;
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                letter-spacing: 0.3px;
             }
-            /* Odblokowana / Zalogowany Master Admin */
             .lumina-admin-shield-container.unlocked {
-                border-color: rgba(16, 185, 129, 0.5);
-                background: rgba(15, 23, 42, 0.8);
+                border-color: rgba(16, 185, 129, 0.6);
+                box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
             }
             .lumina-admin-shield-container.unlocked .lumina-admin-floating-shield {
                 color: #10b981;
@@ -396,135 +420,7 @@
             .lumina-admin-shield-container.unlocked .lumina-admin-version-tag {
                 color: #34d399;
             }
-
-            /* Banner blokady użytkownika */
-            .lumina-user-blocked-banner {
-                background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(153, 27, 27, 0.35));
-                border: 1.5px solid #ef4444;
-                color: #fca5a5;
-                padding: 12px 18px;
-                border-radius: 14px;
-                margin-bottom: 18px;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                font-weight: 700;
-                font-size: 0.90rem;
-            }
-
-            /* ══════════ AGENT INSPECTOR & NOTA DLA AGENTA ══════════ */
-            body.lumina-agent-inspector-active * {
-                cursor: crosshair !important;
-            }
-
-            .lumina-agent-hover-target {
-                outline: 2.5px dashed #10b981 !important;
-                outline-offset: 3px !important;
-                background: rgba(16, 185, 129, 0.12) !important;
-                box-shadow: 0 0 16px rgba(16, 185, 129, 0.45) !important;
-                transition: outline 0.1s ease !important;
-            }
-
-            /* ══════════ DOCKED INSPECTOR BANNER (DOKLEJONY DO PANELU MASTER ADMIN) ══════════ */
-            .lumina-inspector-banner {
-                position: fixed;
-                top: 108px;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 99998;
-                background: linear-gradient(135deg, rgba(6, 78, 59, 0.98), rgba(4, 120, 87, 0.98));
-                border: 1.5px solid #34d399;
-                border-top: none;
-                color: #fff;
-                padding: 6px 18px;
-                border-radius: 0 0 20px 20px;
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8), 0 0 20px rgba(52, 211, 153, 0.35);
-                backdrop-filter: blur(16px);
-                -webkit-backdrop-filter: blur(16px);
-                animation: slideDown 0.25s ease;
-                font-family: 'Plus Jakarta Sans', sans-serif;
-                max-width: 92vw;
-                width: auto;
-                transition: top 0.2s ease, padding 0.2s ease;
-            }
-
-            .lumina-inspector-banner.minimized {
-                padding: 4px 12px;
-                border-radius: 0 0 16px 16px;
-            }
-            .lumina-inspector-banner.minimized .lumina-inspector-hint {
-                display: none !important;
-            }
-
-            .lumina-inspector-banner-inner {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                justify-content: center;
-            }
-
-            .lumina-inspector-badge {
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                background: rgba(0, 0, 0, 0.35);
-                border: 1px solid rgba(52, 211, 153, 0.6);
-                padding: 4px 10px;
-                border-radius: 20px;
-                font-size: 0.80rem;
-                font-weight: 800;
-                color: #a7f3d0;
-                letter-spacing: 0.3px;
-                white-space: nowrap;
-            }
-
-            .lumina-inspector-hint {
-                font-size: 0.82rem;
-                font-weight: 600;
-                color: #ecfdf5;
-                white-space: nowrap;
-            }
-
-            .lumina-inspector-controls {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }
-
-            .lumina-inspector-control-btn {
-                background: rgba(0, 0, 0, 0.35);
-                border: 1px solid rgba(255, 255, 255, 0.25);
-                color: #fff;
-                font-weight: 700;
-                font-size: 0.78rem;
-                padding: 4px 10px;
-                border-radius: 16px;
-                cursor: pointer;
-                display: inline-flex;
-                align-items: center;
-                gap: 5px;
-                transition: all 0.2s ease;
-                white-space: nowrap;
-            }
-
-            .lumina-inspector-control-btn:hover {
-                background: rgba(255, 255, 255, 0.2);
-                border-color: #fff;
-            }
-
-            .lumina-inspector-control-btn.btn-exit-insp:hover {
-                background: #ef4444;
-                border-color: #ef4444;
-            }
-
             @media (max-width: 768px) {
-                .lumina-admin-hud-inner {
-                    flex-direction: column;
-                    align-items: stretch;
-                }
-                .lumina-admin-hud-actions {
-                    justify-content: flex-start;
-                }
                 .lumina-admin-shield-container {
                     bottom: 85px;
                     left: 14px;
@@ -613,6 +509,19 @@
             </div>
 
             <!-- Floating fixed shield removed — version shield is strictly located in the bottom footer -->
+
+            <!-- Jedyna Dyskretna Tarcza Administratora z Numerem Wersji (Lewy dolny róg, widoczna tylko na dole) -->
+            <div id="luminaFloatingAdminShieldContainer" class="lumina-admin-shield-container">
+                <button type="button" 
+                        id="luminaFloatingAdminShield" 
+                        class="lumina-admin-floating-shield" 
+                        onclick="window.LuminaAdminSuite.openPinPrompt()" 
+                        title="Panel Administratora Portalu" 
+                        aria-label="Panel Administratora">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </button>
+                <span class="lumina-admin-version-tag">v3.6.4</span>
+            </div>
 
             <!-- Ukryte kontrolki uploadu plików -->
             <input type="file" id="adminAvatarFileInput" accept="image/*" style="display:none;" onchange="window.LuminaAdminSuite.handleAvatarSelect(event)">
@@ -1247,19 +1156,13 @@
 
                 const distFromBottom = docHeight - (scrollY + windowHeight);
 
-                // Reveal shield when user is scrolled near bottom (within 450px or at the end of the page)
-                const isBottomArea = (distFromBottom <= 450) || (scrollY + windowHeight >= docHeight - 100);
+                // Reveal shield strictly in the bottom area of the portal (within 450px of bottom OR at end of scroll)
+                const isBottomArea = (distFromBottom <= 450) || (scrollY + windowHeight >= docHeight - 80);
 
-                if (isBottomArea && (scrollY > 80 || docHeight <= windowHeight + 80)) {
+                if (isBottomArea && (scrollY > 120 || docHeight <= windowHeight + 120)) {
                     el.classList.add('is-at-bottom');
-                    el.style.setProperty('display', 'inline-flex', 'important');
-                    el.style.setProperty('opacity', '1', 'important');
-                    el.style.setProperty('pointer-events', 'auto', 'important');
                 } else {
                     el.classList.remove('is-at-bottom');
-                    el.style.setProperty('display', 'none', 'important');
-                    el.style.setProperty('opacity', '0', 'important');
-                    el.style.setProperty('pointer-events', 'none', 'important');
                 }
             };
 
@@ -1269,10 +1172,9 @@
             window.addEventListener('wheel', check, { passive: true });
 
             check();
-            setTimeout(check, 200);
-            setTimeout(check, 600);
-            setTimeout(check, 1500);
-            setInterval(check, 300);
+            setTimeout(check, 250);
+            setTimeout(check, 800);
+            setInterval(check, 350);
         },
 
         sendCommanderAiMessage: async function(e) {
