@@ -284,8 +284,8 @@ async function ensureMissionRoomSeed() {
 
 ensureMissionRoomSeed();
 
-// ─── Watchdog Porannego Powiadomienia PUSH (06:15 rano Europe/Warsaw) ─────────
-let lastPushSentDate = '';
+// ─── Watchdog Porannego Powiadomienia PUSH (06:15 oraz 07:00 Europe/Warsaw) ────
+let lastPushSentKey = '';
 function checkMorningDevotionPushSchedule() {
     try {
         const now = new Date();
@@ -295,18 +295,21 @@ function checkMorningDevotionPushSchedule() {
         const m = String(now.getMonth() + 1).padStart(2, '0');
         const d = String(now.getDate()).padStart(2, '0');
         const dateStr = `${yyyy}-${m}-${d}`;
+        const currentKey = `${dateStr}_${hh}_${mm}`;
 
-        if (hh === 6 && mm === 15 && lastPushSentDate !== dateStr) {
-            lastPushSentDate = dateStr;
-            console.log(`[WATCHDOG 06:15] Wyzwalanie automatycznego powiadomienia PUSH o rozważaniu dla dnia ${dateStr}...`);
+        const isTargetTime = (hh === 7 && mm === 0) || (hh === 6 && mm === 15);
+
+        if (isTargetTime && lastPushSentKey !== currentKey) {
+            lastPushSentKey = currentKey;
+            console.log(`[WATCHDOG ${hh}:${String(mm).padStart(2,'0')}] Wyzwalanie automatycznego powiadomienia PUSH o rozważaniu (${dateStr})...`);
             const { exec } = require('child_process');
             exec('node C:/Users/czark/Christian_Culture_Projekty/FCM_Notifier/send_notification.js', (err, stdout, stderr) => {
-                if (err) console.error('[WATCHDOG 06:15] Błąd wysyłki PUSH:', err.message);
-                else console.log('[WATCHDOG 06:15] Wynik wysyłki PUSH:\n', stdout);
+                if (err) console.error(`[WATCHDOG ${hh}:${String(mm).padStart(2,'0')}] Błąd wysyłki PUSH:`, err.message);
+                else console.log(`[WATCHDOG ${hh}:${String(mm).padStart(2,'0')}] Wynik wysyłki PUSH:\n`, stdout);
             });
         }
     } catch(e) {
-        console.warn('[WATCHDOG 06:15] Notice:', e.message);
+        console.warn('[WATCHDOG] Notice:', e.message);
     }
 }
 
