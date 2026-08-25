@@ -2688,6 +2688,30 @@
         100% { transform: scale(1); box-shadow: none; border-color: transparent !important; }
     }
     </style>
+<style id="luminaMobilePerfOverrides">
+/* 🚀 PANCERNA OPTYMALIZACJA MOBILNA: ZERO PRZEGRZEWANIA I LAGÓW */
+.profile-card {
+    contain: layout paint;
+    content-visibility: auto;
+    contain-intrinsic-size: 260px 380px;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: auto;
+}
+@media (max-width: 768px) {
+    .profile-card {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.4) !important;
+    }
+    .profile-card:hover {
+        transform: none !important;
+    }
+    /* Zmniejszenie obciążenia GPU dla rozmyć tła na telefonach */
+    .glass-panel, .nav-bottom-bar, .modal-box {
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+    }
+}
+</style>
 </head>
 <body class="owner-mode-active">
 
@@ -6721,6 +6745,24 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
         }
     })();
     </script>
+<script id="cezaryVideoPerfScript">
+(function() {
+    if (!('IntersectionObserver' in window)) return;
+    var vid = document.getElementById('profileAvatarVideoEl');
+    if (!vid) return;
+    vid.preload = 'metadata';
+    var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                if (vid.paused) vid.play().catch(function(){});
+            } else {
+                if (!vid.paused) vid.pause();
+            }
+        });
+    }, { threshold: 0.2 });
+    obs.observe(vid);
+})();
+</script>
 </body>
 </html>
 

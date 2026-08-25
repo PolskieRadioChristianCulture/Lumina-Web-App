@@ -2806,6 +2806,30 @@
         100% { transform: scale(1); box-shadow: none; border-color: transparent !important; }
     }
     </style>
+<style id="luminaMobilePerfOverrides">
+/* 🚀 PANCERNA OPTYMALIZACJA MOBILNA: ZERO PRZEGRZEWANIA I LAGÓW */
+.profile-card {
+    contain: layout paint;
+    content-visibility: auto;
+    contain-intrinsic-size: 260px 380px;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: auto;
+}
+@media (max-width: 768px) {
+    .profile-card {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.4) !important;
+    }
+    .profile-card:hover {
+        transform: none !important;
+    }
+    /* Zmniejszenie obciążenia GPU dla rozmyć tła na telefonach */
+    .glass-panel, .nav-bottom-bar, .modal-box {
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+    }
+}
+</style>
 </head>
 <body>
 <script>
@@ -5055,18 +5079,10 @@
                 
                 // Immediately activate and play all 3 promotional videos across all sets
                 setTimeout(function() {
-                    carousel.querySelectorAll('video').forEach(function(v) {
-                        v.muted = true;
-                        v.defaultMuted = true;
-                        v.playsInline = true;
-                        v.loop = true;
-                        v.autoplay = true;
-                        var p = v.play();
-                        if (p !== undefined) {
-                            p.catch(function(){});
-                        }
-                    });
-                }, 50);
+                    if (typeof window._registerVisibleVideos === 'function') {
+                        window._registerVisibleVideos();
+                    }
+                }, 100);
             }
 
             // Sync live details on static cards
@@ -8162,29 +8178,45 @@
 
 </script>
 
-    <!-- 3 Promotional Commercial Videos Autoplay Enforcer -->
+    <!-- High-Performance Mobile Video IntersectionObserver (Zero CPU Overheating) -->
     <script>
     (function(){
-        function ensureAllCarouselVideosPlay() {
-            const carousel = document.getElementById('profilesCarousel');
+        if (!('IntersectionObserver' in window)) return;
+        
+        var videoObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                var vid = entry.target;
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.45) {
+                    if (vid.paused) {
+                        vid.muted = true;
+                        vid.playsInline = true;
+                        var p = vid.play();
+                        if (p !== undefined) p.catch(function(){});
+                    }
+                } else {
+                    if (!vid.paused) {
+                        vid.pause();
+                    }
+                }
+            });
+        }, { threshold: [0.1, 0.45, 0.8] });
+
+        function registerVisibleVideos() {
+            var carousel = document.getElementById('profilesCarousel');
             if (!carousel) return;
             carousel.querySelectorAll('video').forEach(function(v) {
-                if (v.paused) {
-                    v.muted = true;
-                    v.defaultMuted = true;
-                    v.playsInline = true;
-                    v.loop = true;
-                    var p = v.play();
-                    if (p !== undefined) p.catch(function(){});
-                }
+                v.preload = 'metadata';
+                videoObserver.observe(v);
             });
         }
 
-        ['DOMContentLoaded', 'load', 'touchstart', 'click', 'scroll'].forEach(function(evt) {
-            window.addEventListener(evt, ensureAllCarouselVideosPlay, { passive: true });
-        });
-
-        setInterval(ensureAllCarouselVideosPlay, 3000);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', registerVisibleVideos);
+        } else {
+            registerVisibleVideos();
+        }
+        window.addEventListener('load', registerVisibleVideos);
+        window._registerVisibleVideos = registerVisibleVideos;
     })();
     </script>
 

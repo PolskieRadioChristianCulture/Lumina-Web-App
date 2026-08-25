@@ -1083,7 +1083,9 @@
     window.addEventListener('lumina_auth_changed', window.checkLuminaAuthState);
     window.addEventListener('storage', window.checkLuminaAuthState);
     window.addEventListener('resize', window.checkLuminaAuthState);
-    setInterval(window.checkLuminaAuthState, 1200);
+    // Event-driven auth check (saves 100% CPU on mobile idle)
+    window.addEventListener('focus', function() { if (typeof window.checkLuminaAuthState === 'function') window.checkLuminaAuthState(); });
+    setInterval(function() { if (typeof window.checkLuminaAuthState === 'function') window.checkLuminaAuthState(); }, 20000);
 
     // ══════════════════════════════════════════════════════════════════════════
     // GOOGLE CONSENT MODE V2 & RODO BANNER PORTALU LUMINA
