@@ -354,28 +354,7 @@
             }
 
             /* ══════════ JEDYNA DYSKRETNA TARCZA ADMINA Z WERSJĄ (LEWY DOLNY RÓG) ══════════ */
-            .lumina-admin-shield-container {
-                position: fixed;
-                bottom: 18px;
-                left: 20px;
-                z-index: 99999;
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                background: rgba(15, 23, 42, 0.45);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
-                border: 1px solid rgba(148, 163, 184, 0.2);
-                padding: 4px 10px 4px 6px;
-                border-radius: 20px;
-                transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-                user-select: none;
-            }
-            .lumina-admin-shield-container:hover {
-                background: rgba(15, 23, 42, 0.85);
-                border-color: rgba(245, 158, 11, 0.4);
-                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-            }
+            .lumina-admin-shield-container { display: none !important; }
             .lumina-admin-floating-shield {
                 width: 24px;
                 height: 24px;
@@ -633,18 +612,7 @@
                 </div>
             </div>
 
-            <!-- Dyskretna Tarcza Administratora z Numerem Wersji (Tylko jedna, lewy dolny róg) -->
-            <div id="luminaFloatingAdminShieldContainer" class="lumina-admin-shield-container">
-                <button type="button" 
-                        id="luminaFloatingAdminShield" 
-                        class="lumina-admin-floating-shield" 
-                        onclick="window.LuminaAdminSuite.openPinPrompt()" 
-                        title="Panel Administratora Portalu" 
-                        aria-label="Panel Administratora">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </button>
-                <span class="lumina-admin-version-tag">v3.6.4</span>
-            </div>
+            <!-- Floating fixed shield removed — version shield is strictly located in the bottom footer -->
 
             <!-- Ukryte kontrolki uploadu plików -->
             <input type="file" id="adminAvatarFileInput" accept="image/*" style="display:none;" onchange="window.LuminaAdminSuite.handleAvatarSelect(event)">
