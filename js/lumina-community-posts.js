@@ -50,6 +50,37 @@
 
     const LUMINA_CORE_POSTS_DATA = [
         {
+            id: 'post_ckd_2026_08_25',
+            type: 'post',
+            author: 'Andrzej Thiel',
+            authorRole: 'Opracowuje Rozważania „Cuda Każdego Dnia” ✨ • Sieradz',
+            authorAvatar: 'avatar_andrzej_thiel.jpg',
+            authorSlug: 'andrzejthiel',
+            time: '25 Sierpnia 2026 • 📖 Cuda Każdego Dnia (Dzisiaj)',
+            title: 'MODLITWA JEST NAJPOTĘŻNIEJSZĄ BRONIĄ! • Cuda Każdego Dnia ✨',
+            text: `CUDA KAŻDEGO DNIA! 
+25 SIERPNIA 2026.
+Przeczytaj i zobacz jak Bóg przemienia twoje życie.
+
+MODLITWA JEST NAJPOTĘŻNIEJSZĄ BRONIĄ!
+
+W mediach dużo ostatnio mówi się o broni, o skutecznych sposobach walki i obrony. Tuż obok naszych granic trwa wojna, w której obie strony nieustannie pracują nad coraz nowszymi wynalazkami, które mają przeważyć szalę zwycięstwa. Systemy ochrony powietrznej, rakiety dalekiego zasięgu, drony itp. umożliwiają ochronę przed atakami, ale też precyzyjne niszczenie celów. Czy wiesz, że trwa znacznie ważniejsza, choć niewidoczna dla naszych oczu wojna? W której chodzi nie tylko o twoje doczesne życie, ale i to wieczne?
+
+Pisze o tym Apostoł Paweł: „Nie walczymy przeciwko ludziom…, ale złym władcom niewidzialnego świata, potężnym siłom demonicznym i złym książętom ciemności rządzącymi tym światem…” (Ef.6,12). Powiesz: „To koniec ze mną”, „jestem za słaby”, „nie mam czym walczyć”. Bóg nie zostawił cię bezbronnym. Masz najbardziej skuteczną broń, która nie tylko cię ochroni, ale i dzięki której będziesz mógł skutecznie niszczyć diabelskie twierdze: „Gdyż oręż nasz, którym walczymy, nie jest cielesny, lecz ma moc burzenia warowni dla sprawy Bożej” (2 Kor. 10,4).
+
+W co w takim razie Bóg ciebie i mnie wyposażył, byśmy nie zginęli na tej wojnie, a raczej zwyciężali? Dał nam swoje Słowo, które jest mieczem (zob. Ef.6,17) i przywilej modlitwy. Modlitwa jest najpotężniejszą bronią chrześcijan. Jej moc nie pochodzi od człowieka ani nie opiera się na ludzkich siłach, ale na Bogu, który ma wszelką władzę, mądrość i miłość. On czeka byś zaczął się modlić, bo wtedy masz wpływ na to co Bóg robi w tym świecie, ale też w tobie. Bardzo prawdziwe jest to, co odkryła między innymi Matka Teresa: “Kiedyś myślałam, że modlitwa zmienia świat wokół nas. Dziś wiem, że najpierw zmienia nas samych, a potem to my zmieniamy świat”.
+
+Tak, Bóg często zaczyna swoje działanie od przemiany naszego serca, postawy i sposobu patrzenia. Kiedy zwalniamy i rozmawiamy z Bogiem, On może pokazać nam kto najbardziej potrzebuje miłości i jak możemy na tę potrzebę odpowiedzieć. Bądź otwarty dzisiaj na Jego impulsy. Módl się nieustannie, od chwili, kiedy się budzisz do momentu, kiedy idziesz spać. Módl się z wiarą i oczekuj, że Bóg będzie działał.
+
+„Ojcze, wierzę, że Ty działasz, nawet kiedy tego nie widzę. Wierze, że modląc się burzę warownie wroga, które pobudował w moim sercu, moim umyśle. Niech moc Twojego Ducha działa we mnie i w życiu moich bliskich. Z Tobą mogę żyć zwycięsko!”.
+/opr. na podst. wiad. B.K./.
+
+Dziękuję, że jesteś! ❤️`,
+            image: 'cuda_kazdego_dnia_25_sierpnia_2026.jpg',
+            likes: 265,
+            amen: 238
+        },
+        {
             id: 'post_dzj_2026_08_25',
             type: 'post',
             author: 'Cezary Rogowski',

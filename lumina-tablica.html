@@ -4278,7 +4278,31 @@
                 amen: 198
             });
 
-            // 0.0. Andrzej Thiel - Cuda Każdego Dnia (24 SIERPNIA 2026 - DZISIAJ)
+            // 0.0. Andrzej Thiel - Cuda Każdego Dnia (25 SIERPNIA 2026 - DZISIAJ)
+            try {
+                const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
+                const aProfile = aJson ? JSON.parse(aJson) : null;
+                const aAvatar = (aProfile && aProfile.avatar) ? aProfile.avatar : 'avatar_andrzej_thiel.jpg';
+                const aName = (aProfile && aProfile.name) ? aProfile.name : 'Andrzej Thiel';
+                const aCudaImg25 = localStorage.getItem('lumina_cuda_image_25') || 'cuda_kazdego_dnia_25_sierpnia_2026.jpg';
+
+                posts.push({
+                    id: 'post_andrzej_cuda_25_08_2026',
+                    type: 'post',
+                    author: aName,
+                    authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
+                    authorAvatar: aAvatar,
+                    authorSlug: 'andrzejthiel',
+                    time: '25 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Dzisiaj)',
+                    title: 'CUDA KAŻDEGO DNIA! 25 SIERPNIA 2026. MODLITWA JEST NAJPOTĘŻNIEJSZĄ BRONIĄ!',
+                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nMODLITWA JEST NAJPOTĘŻNIEJSZĄ BRONIĄ!\n\nW mediach dużo ostatnio mówi się o broni, o skutecznych sposobach walki i obrony. Tuż obok naszych granic trwa wojna, w której obie strony nieustannie pracują nad coraz nowszymi wynalazkami, które mają przeważyć szalę zwycięstwa. Systemy ochrony powietrznej, rakiety dalekiego zasięgu, drony itp. umożliwiają ochronę przed atakami, ale też precyzyjne niszczenie celów. Czy wiesz, że trwa znacznie ważniejsza, choć niewidoczna dla naszych oczu wojna? W której chodzi nie tylko o twoje doczesne życie, ale i to wieczne?\n\nPisze o tym Apostoł Paweł: „Nie walczymy przeciwko ludziom…, ale złym władcom niewidzialnego świata, potężnym siłom demonicznym i złym książętom ciemności rządzącymi tym światem…” (Ef.6,12). Powiesz: „To koniec ze mną”, „jestem za słaby”, „nie mam czym walczyć”. Bóg nie zostawił cię bezbronnym. Masz najbardziej skuteczną broń, która nie tylko cię ochroni, ale i dzięki której będziesz mógł skutecznie niszczyć diabelskie twierdze: „Gdyż oręż nasz, którym walczymy, nie jest cielesny, lecz ma moc burzenia warowni dla sprawy Bożej” (2 Kor. 10,4).\n\nW co w takim razie Bóg ciebie i mnie wyposażył, byśmy nie zginęli na tej wojnie, a raczej zwyciężali? Dał nam swoje Słowo, które jest mieczem (zob. Ef.6,17) i przywilej modlitwy. Modlitwa jest najpotężniejszą bronią chrześcijan. Jej moc nie pochodzi od człowieka ani nie opiera się na ludzkich siłach, ale na Bogu, który ma wszelką władzę, mądrość i miłość. On czeka byś zaczął się modlić, bo wtedy masz wpływ na to co Bóg robi w tym świecie, ale też w tobie. Bardzo prawdziwe jest to, co odkryła między innymi Matka Teresa: “Kiedyś myślałam, że modlitwa zmienia świat wokół nas. Dziś wiem, że najpierw zmienia nas samych, a potem to my zmieniamy świat”.\n\nTak, Bóg często zaczyna swoje działanie od przemiany naszego serca, postawy i sposobu patrzenia. Kiedy zwalniamy i rozmawiamy z Bogiem, On może pokazać nam kto najbardziej potrzebuje miłości i jak możemy na tę potrzebę odpowiedzieć. Bądź otwarty dzisiaj na Jego impulsy. Módl się nieustannie, od chwili, kiedy się budzisz do momentu, kiedy idziesz spać. Módl się z wiarą i oczekuj, że Bóg będzie działał.\n\n„Ojcze, wierzę, że Ty działasz, nawet kiedy tego nie widzę. Wierze, że modląc się burzę warownie wroga, które pobudował w moim sercu, moim umyśle. Niech moc Twojego Ducha działa we mnie i w życiu moich bliskich. Z Tobą mogę żyć zwycięsko!”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
+                    image: aCudaImg25,
+                    likes: 265,
+                    amen: 238
+                });
+            } catch(e) {}
+
+            // 0.1. Andrzej Thiel - Cuda Każdego Dnia (24 SIERPNIA 2026 - WCZORAJ)
             try {
                 const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
                 const aProfile = aJson ? JSON.parse(aJson) : null;
@@ -4293,7 +4317,7 @@
                     authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
-                    time: '24 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Dzisiaj)',
+                    time: '24 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Wczoraj)',
                     title: 'CUDA KAŻDEGO DNIA! 24 SIERPNIA 2026. KIEDY BRAKUJE SŁÓW!',
                     text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nKIEDY BRAKUJE SŁÓW!\n\nZnaleźliście się kiedyś w sytuacji, w której zabrakło wam słów? Pewnie niejeden raz, prawda? Tak bywa w chwilach ogromnego wzruszenia, radości, gdy spełnia się marzenie, na które czekaliśmy całe życie, czy gdy próbujemy wyrazić wdzięczność za czyjeś poświecenie. Ale też w chwilach ogromnego smutku, kiedy lekarz mówi „to nowotwór”, gdy tracimy kogoś bliskiego, gdy cierpimy fizycznie. W takich chwilach nasza modlitwa też często bywa ograniczona do kilku słów: „Panie kocham Cię!”, „Dziękuję!”, „Panie pomóż!”, „Panie, zmiłuj się”. I wiesz, twój Ojciec w niebie wie o tym i wcale nie oczekuje wielu słów. Jezus powiedział: „…wasz Ojciec wie, czego potrzebujecie, zanim Go poprosicie” (Mt.6,8).\n\nCo więcej, kiedy nie macie siły wołać, doświadczacie bólu, wylaliście już wszystkie łzy lub po prostu czujecie się zagubieni i zdezorientowani, Bóg słyszy was nawet jeśli nie wydajecie głosu. On słyszy wasze serce, a Jego Duch jest przy was i wspiera was. Czytamy: „Podobnie i Duch wspiera nas w niemocy naszej; nie wiemy bowiem, o co się modlić, jak należy, ale sam Duch wstawia się za nami w niewysłowionych westchnieniach” (Rz.8,26).\n\nMasz Ojca, który cię nie zostawi nigdy. On się troszczy o ciebie. On chce cię podnieść, zabrać twoje ciężary, twoją chorobę i przynieść uleczenie ducha, duszy i ciała. On mówi do ciebie dzisiaj: „Znam cię. Wiem, kiedy siedzisz i kiedy wstajesz. I jeszcze nie ma słowa na twoim języku żebym Ja go już nie znał (Ps.139,3-4). A jednak pragnę słyszeć wasz głos. Cieszę się, kiedy mówicie do mnie, tak jak kochający rodzic cieszy się słysząc głos swojego dziecka. Co chcielibyście abym uczynił dla was dzisiaj?”\n\nŻyczę wam, byście doświadczyli dzisiaj Jego cudownej obecności. Dotyku Jego silnych, pełnych miłości ramion, w których znajdziecie pocieszenie, podniesienie, nadzieję i siłę do kolejnego dnia.\n\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg24,
