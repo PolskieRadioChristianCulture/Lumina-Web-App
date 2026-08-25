@@ -284,9 +284,39 @@ async function ensureMissionRoomSeed() {
 
 ensureMissionRoomSeed();
 
+// ─── Watchdog Porannego Powiadomienia PUSH (06:15 rano Europe/Warsaw) ─────────
+let lastPushSentDate = '';
+function checkMorningDevotionPushSchedule() {
+    try {
+        const now = new Date();
+        const polandTimeStr = now.toLocaleTimeString('en-GB', { timeZone: 'Europe/Warsaw', hour12: false });
+        const [hh, mm] = polandTimeStr.split(':').map(Number);
+        const yyyy = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        const dateStr = `${yyyy}-${m}-${d}`;
+
+        if (hh === 6 && mm === 15 && lastPushSentDate !== dateStr) {
+            lastPushSentDate = dateStr;
+            console.log(`[WATCHDOG 06:15] Wyzwalanie automatycznego powiadomienia PUSH o rozważaniu dla dnia ${dateStr}...`);
+            const { exec } = require('child_process');
+            exec('node C:/Users/czark/Christian_Culture_Projekty/FCM_Notifier/send_notification.js', (err, stdout, stderr) => {
+                if (err) console.error('[WATCHDOG 06:15] Błąd wysyłki PUSH:', err.message);
+                else console.log('[WATCHDOG 06:15] Wynik wysyłki PUSH:\n', stdout);
+            });
+        }
+    } catch(e) {
+        console.warn('[WATCHDOG 06:15] Notice:', e.message);
+    }
+}
+
 if (process.argv.includes('--loop')) {
     console.log('⚡ [COMMANDER AI DAEMON] Uruchomiono ciągły nasłuch Sztabu Dowództwa w tle (co 10 sekund)...');
-    setInterval(checkAndProcessMissionChat, 10000);
+    setInterval(() => {
+        checkAndProcessMissionChat();
+        checkMorningDevotionPushSchedule();
+    }, 10000);
 } else {
     checkAndProcessMissionChat();
+    checkMorningDevotionPushSchedule();
 }
