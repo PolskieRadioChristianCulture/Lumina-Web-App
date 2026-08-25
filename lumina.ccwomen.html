@@ -769,6 +769,20 @@
     }
     </style>
     <script src="lumina-mobile-back-guard.js?v=20260825_v1"></script>
+<!-- Deep-Link Chat Message Highlight & Glow -->
+    <style>
+    .chat-message-highlight {
+        animation: luminaMsgGlow 2.8s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+        border: 2px solid #facc15 !important;
+        border-radius: 18px !important;
+    }
+    @keyframes luminaMsgGlow {
+        0% { transform: scale(1.05); box-shadow: 0 0 35px rgba(250, 204, 21, 0.9), 0 0 15px rgba(56, 189, 248, 0.8); }
+        40% { transform: scale(1.02); box-shadow: 0 0 25px rgba(250, 204, 21, 0.7), 0 0 10px rgba(56, 189, 248, 0.6); }
+        80% { transform: scale(1.01); box-shadow: 0 0 15px rgba(250, 204, 21, 0.4); }
+        100% { transform: scale(1); box-shadow: none; border-color: transparent !important; }
+    }
+    </style>
 </head>
 <body>
 
@@ -1102,5 +1116,50 @@
     })();
     </script>
 
+<!-- Auto-Deep-Link Handler for Push & URL Chat Navigation -->
+    <script>
+    (function(){
+        window._targetChatMessageId = null;
+
+        function handleUrlChatParams() {
+            const params = new URLSearchParams(window.location.search);
+            const chatUser = params.get('openChat');
+            const msgId = params.get('messageId');
+            const openPublic = params.get('openPublicChat');
+
+            if (msgId) window._targetChatMessageId = msgId;
+
+            if (chatUser) {
+                setTimeout(function() {
+                    const normUser = chatUser.trim();
+                    let name = 'Rozmówca';
+                    let avatar = 'lumina_icon.jpg';
+
+                    // Try to resolve name from community map
+                    if (window._cloudProfilesMap && window._cloudProfilesMap[normUser]) {
+                        name = window._cloudProfilesMap[normUser].name || name;
+                        avatar = window._cloudProfilesMap[normUser].avatar || avatar;
+                    }
+
+                    if (typeof window.openChatWith === 'function') {
+                        window.openChatWith(name, avatar, normUser, msgId);
+                    }
+                }, 500);
+            } else if (openPublic) {
+                setTimeout(function() {
+                    const modal = document.getElementById('publicChatModal') || document.getElementById('directMessagesModal');
+                    if (modal) modal.classList.add('open');
+                    if (typeof switchMessengerMainTab === 'function') switchMessengerMainTab('public');
+                }, 500);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', handleUrlChatParams);
+        } else {
+            handleUrlChatParams();
+        }
+    })();
+    </script>
 </body>
 </html>

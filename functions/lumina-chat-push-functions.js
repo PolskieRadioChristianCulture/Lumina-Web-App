@@ -128,7 +128,7 @@ exports.onDirectMessageCreated = onDocumentCreated(
         const result = await sendToTokens(tokens, {
             title: `💬 ${senderName || 'Nowa wiadomość'} napisał(a) do Ciebie`,
             body: imageUrl ? '📷 Wysłał(a) zdjęcie' : (text || '').slice(0, 140),
-            url: `https://polskieradio.cc/lumina.html?openChat=${senderId}`,
+            url: `https://polskieradio.cc/lumina.html?openChat=${senderId}&messageId=${event.params.messageId || ""}`,
             tag: `lumina-dm-${senderId}`,
         });
         logger.info(`[Push] DM ${senderId}→${receiverId}: wysłano ${result.sent}, błędy ${result.failed}`);
@@ -175,7 +175,7 @@ exports.onPublicChatMessageCreated = onDocumentCreated(
             const result = await sendToTokens(tokens, {
                 title: `📣 ${senderName || 'Ktoś'} wspomniał(a) o Tobie na czacie ogólnym`,
                 body: text.slice(0, 140),
-                url: 'https://polskieradio.cc/lumina.html?openPublicChat=1',
+                url: `https://polskieradio.cc/lumina.html?openPublicChat=1&messageId=${event.params.messageId || ""}`,
                 tag: 'lumina-mention',
             });
             logger.info(`[Push] Wzmianka @${mentionedSlug} od ${senderId}: wysłano ${result.sent}, błędy ${result.failed}`);
