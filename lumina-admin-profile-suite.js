@@ -1260,231 +1260,40 @@
             this.attachInlinePencils();
             this.loadProfileFromStorage(this.slug);
             this.checkIfCurrentProfileIsBlocked();
-            window.addEventListener('resize', () => this.repositionHudBar());
-        },
+            this.initScrollBottomShieldListener: function() {
+            const check = () => {
+                const el = document.getElementById('luminaFloatingAdminShieldContainer');
+                if (!el) return;
 
-        repositionHudBar: function() {
-            const hud = document.getElementById('luminaAdminHudBar');
-            const inspBanner = document.getElementById('luminaAgentInspectorBanner');
-            if (!hud) return;
-            const topNav = document.querySelector('nav.lumina-nav, nav.portal-nav, nav.profile-navbar, .lumina-nav, nav');
-            const navH = (topNav && topNav.offsetHeight > 0) ? topNav.offsetHeight : 56;
-            hud.style.top = navH + 'px';
+                const scrollY = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
+                const windowHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+                const docHeight = Math.max(
+                    document.body.scrollHeight || 0, document.documentElement.scrollHeight || 0,
+                    document.body.offsetHeight || 0, document.documentElement.offsetHeight || 0,
+                    document.body.clientHeight || 0, document.documentElement.clientHeight || 0
+                );
 
-            const isHudActive = hud.classList.contains('active');
-            const hudH = isHudActive ? hud.offsetHeight : 0;
+                const distFromBottom = docHeight - (scrollY + windowHeight);
 
-            if (inspBanner) {
-                inspBanner.style.top = (navH + hudH) + 'px';
-            }
+                // Reveal shield when scrolled to the bottom section (within 350px of bottom)
+                const isBottomArea = (distFromBottom <= 350) || (scrollY + windowHeight >= docHeight - 60);
 
-            let totalTop = navH + hudH;
-            if (inspBanner && inspBanner.style.display !== 'none' && !inspBanner.classList.contains('minimized')) {
-                totalTop += (inspBanner.offsetHeight || 36);
-            }
-            document.body.style.paddingTop = (totalTop + 4) + 'px';
-        },
-
-        checkAndApplyAdminState: function() {
-            const isAdmin = isUserMasterAdmin();
-            const hud = document.getElementById('luminaAdminHudBar');
-            const shield = document.getElementById('luminaFloatingAdminShield');
-            const shieldContainer = document.getElementById('luminaFloatingAdminShieldContainer');
-
-            if (isAdmin) {
-                document.body.classList.add('lumina-admin-mode', 'owner-mode-active', 'has-admin-hud');
-                if (hud) {
-                    hud.classList.add('active');
-                    const isMin = sessionStorage.getItem('lumina_admin_hud_minimized') === 'true';
-                    if (isMin) {
-                        hud.classList.add('minimized');
-                        document.body.classList.add('hud-minimized');
-                        const icon = document.getElementById('hudMinimizeIcon');
-                        if (icon) icon.className = 'fa-solid fa-plus';
-                    } else {
-                        hud.classList.remove('minimized');
-                        document.body.classList.remove('hud-minimized');
-                        const icon = document.getElementById('hudMinimizeIcon');
-                        if (icon) icon.className = 'fa-solid fa-minus';
-                    }
-                }
-                if (shield) shield.classList.add('unlocked');
-                if (shieldContainer) shieldContainer.classList.add('unlocked');
-            } else {
-                document.body.classList.remove('lumina-admin-mode', 'owner-mode-active', 'has-admin-hud', 'hud-minimized');
-                if (hud) hud.classList.remove('active', 'minimized');
-                if (shield) shield.classList.remove('unlocked');
-                if (shieldContainer) shieldContainer.classList.remove('unlocked');
-            }
-
-            this.updateHudBlockBtnState();
-            this.repositionHudBar();
-        },
-
-        toggleMinimizeHud: function() {
-            const hud = document.getElementById('luminaAdminHudBar');
-            const icon = document.getElementById('hudMinimizeIcon');
-            if (!hud) return;
-            const isMin = hud.classList.toggle('minimized');
-            if (isMin) {
-                document.body.classList.add('hud-minimized');
-            } else {
-                document.body.classList.remove('hud-minimized');
-            }
-            if (icon) {
-                icon.className = isMin ? 'fa-solid fa-plus' : 'fa-solid fa-minus';
-            }
-            try {
-                sessionStorage.setItem('lumina_admin_hud_minimized', isMin ? 'true' : 'false');
-            } catch(e) {}
-            this.repositionHudBar();
-            if (typeof window.showToast === 'function') {
-                window.showToast(isMin ? 'Pasek opcji Administratora został zminimalizowany 🔽' : 'Pasek Administratora rozwinięty 🔼');
-            }
-        },
-
-        openPinPrompt: async function() {
-            const isAdmin = isUserMasterAdmin();
-            if (isAdmin) {
-                this.openAllProfilesManager();
-                return;
-            }
-
-            const pin = prompt('🔐 Autoryzacja Administratora Portalu LUMINA (Wprowadź PIN):');
-            if (!pin) return;
-
-            const msgBuffer = new TextEncoder().encode(pin.trim());
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-            if (hash === ADMIN_PIN_HASH) {
-                sessionStorage.setItem('lumina_auth_master_admin', 'true');
-                this.checkAndApplyAdminState();
-                if (typeof window.showToast === 'function') {
-                    window.showToast('✨ Zalogowano do Panelu Głównego Administratora! Pełny dostęp aktywny.');
+                if (isBottomArea && (scrollY > 100 || docHeight <= windowHeight + 100)) {
+                    el.classList.add('is-at-bottom');
                 } else {
-                    alert('✨ Zalogowano do Panelu Głównego Administratora! Pełna kontrola aktywna.');
-                }
-            } else {
-                if (typeof window.showToast === 'function') {
-                    window.showToast('❌ Nieprawidłowy kod PIN Administratora!');
-                } else {
-                    alert('❌ Nieprawidłowy kod PIN!');
-                }
-            }
-        },
-
-        lockAdminMode: function() {
-            sessionStorage.removeItem('lumina_auth_master_admin');
-            localStorage.removeItem('lumina_auth_master_admin');
-            sessionStorage.removeItem('lumina_auth_owner_cezaryrgowski');
-            localStorage.removeItem('lumina_auth_owner_cezaryrgowski');
-            this.checkAndApplyAdminState();
-            if (typeof window.showToast === 'function') {
-                window.showToast('🔒 Wylogowano z trybu Administratora. Pasek został schowany.');
-            } else {
-                alert('🔒 Wylogowano z trybu Administratora.');
-            }
-        },
-
-        closeModal: function(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.remove('open');
-                modal.style.display = 'none';
-            }
-        },
-
-        
-        // ══════════ ⚡ COMMANDER AI INSTANT CHAT (DOWÓDCA ↔ AGENT ANTIGRAVITY) ══════════
-        commanderAiUnsub: null,
-
-        openCommanderAiChatModal: function() {
-            this.openModal('adminCommanderAiChatModal');
-            this.subscribeToCommanderAiChat();
-            setTimeout(() => {
-                const input = document.getElementById('commanderAiInputText');
-                if (input) input.focus();
-            }, 150);
-        },
-
-        subscribeToCommanderAiChat: function() {
-            if (this.commanderAiUnsub) {
-                try { this.commanderAiUnsub(); } catch(e) {}
-                this.commanderAiUnsub = null;
-            }
-
-            const box = document.getElementById('commanderAiChatMessagesBox');
-            if (!box) return;
-
-            const FIRESTORE_URL = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_commander_ai_chat';
-            
-            const fetchAndRender = async () => {
-                try {
-                    const res = await fetch(FIRESTORE_URL);
-                    if (!res.ok) return;
-                    const data = await res.json();
-                    if (!data || !data.documents) {
-                        box.innerHTML = '<div style="text-align:center; color:#64748b; font-size:0.75rem; padding:18px 0;">🕊️ Brak wcześniejszych wiadomości. Wpisz swój pierwszy rozkaz błyskawiczny dla Agenta AI!</div>';
-                        return;
-                    }
-
-                    const msgs = data.documents.map(d => {
-                        const f = d.fields || {};
-                        return {
-                            id: d.name ? d.name.split('/').pop() : 'msg',
-                            text: f.text?.stringValue || '',
-                            sender: f.sender?.stringValue || 'Dowódca',
-                            status: f.status?.stringValue || 'pending',
-                            reply: f.reply?.stringValue || '',
-                            createdAt: f.createdAt?.integerValue ? parseInt(f.createdAt.integerValue, 10) : Date.now(),
-                            replyAt: f.replyAt?.timestampValue || ''
-                        };
-                    });
-
-                    msgs.sort((a, b) => a.createdAt - b.createdAt);
-
-                    let html = '';
-                    msgs.forEach(m => {
-                        html += `
-                            <!-- Wiadomość Dowódcy -->
-                            <div style="align-self:flex-end; max-width:85%; background:linear-gradient(135deg, rgba(139,92,246,0.30), rgba(59,130,246,0.30)); border:1px solid rgba(139,92,246,0.55); border-radius:14px 14px 2px 14px; padding:10px 14px; color:#fff; box-shadow:0 4px 12px rgba(0,0,0,0.35);">
-                                <div style="font-size:0.68rem; color:#c4b5fd; font-weight:800; margin-bottom:3px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
-                                    <span>👑 Dowódca Nazir</span>
-                                    <span style="font-size:0.65rem; color:#94a3b8;">${new Date(m.createdAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>
-                                </div>
-                                <div style="font-size:0.86rem; line-height:1.4;">${m.text}</div>
-                                <div style="margin-top:4px; font-size:0.65rem; display:flex; align-items:center; gap:4px; color:${m.status === 'completed' ? '#34d399' : '#f59e0b'};">
-                                    <i class="fa-solid ${m.status === 'completed' ? 'fa-check-double' : 'fa-clock'}"></i>
-                                    ${m.status === 'completed' ? 'Zrealizowano' : 'Oczekuje na wykonanie w tle'}
-                                </div>
-                            </div>
-                        `;
-
-                        if (m.reply) {
-                            html += `
-                                <!-- Odpowiedź Agenta AI -->
-                                <div style="align-self:flex-start; max-width:85%; background:rgba(15,23,42,0.92); border:1px solid rgba(56,189,248,0.4); border-radius:14px 14px 14px 2px; padding:10px 14px; color:#e2e8f0; box-shadow:0 4px 14px rgba(0,0,0,0.4);">
-                                    <div style="font-size:0.68rem; color:#38bdf8; font-weight:800; margin-bottom:3px; display:flex; align-items:center; gap:6px;">
-                                        <i class="fa-solid fa-robot"></i> Agent AI Antigravity
-                                    </div>
-                                    <div style="font-size:0.84rem; line-height:1.4; color:#f1f5f9;">${m.reply}</div>
-                                </div>
-                            `;
-                        }
-                    });
-
-                    box.innerHTML = html;
-                    box.scrollTop = box.scrollHeight;
-                } catch(e) {
-                    console.warn('Lumina AI chat fetch notice:', e.message);
+                    el.classList.remove('is-at-bottom');
                 }
             };
 
-            fetchAndRender();
-            const interval = setInterval(fetchAndRender, 3500);
-            this.commanderAiUnsub = () => clearInterval(interval);
+            window.addEventListener('scroll', check, { passive: true });
+            window.addEventListener('touchmove', check, { passive: true });
+            window.addEventListener('resize', check, { passive: true });
+            window.addEventListener('wheel', check, { passive: true });
+
+            check();
+            setTimeout(check, 300);
+            setTimeout(check, 800);
+            setInterval(check, 500);
         },
 
         sendCommanderAiMessage: async function(e) {
