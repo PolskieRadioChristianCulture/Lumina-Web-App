@@ -203,29 +203,75 @@ exports.scheduledMorningDevotionPush = onSchedule(
         let teaser = 'Rozpocznij poranek ze Słowem Bożym i napełnij serce pokojem Chrystusa.';
         let imageUrl = 'https://polskieradio.cc/lumina_icon.jpg';
 
+        // NAPRAWA: `db` (domyślna instancja) jest połączona z projektem Firebase
+        // TEGO repozytorium (lumina-cc). Kolekcja `reflections` żyje jednak
+        // w ZUPEŁNIE INNYM projekcie Firebase aplikacji "Dobrze, że jesteś"
+        // (cuda-398c0), a `web_inspirations` w jeszcze innym (cc-mission-control)
+        // — zgodnie z manifestem @ICC. Odpytywanie ich przez `db` zawsze
+        // zwracało pustkę, więc funkcja zawsze wysyłała ten sam tekst zastępczy
+        // zamiast prawdziwego rozważania na dany dzień.
+        //
+        // WYMAGANY KROK KONFIGURACYJNY (jednorazowy, w Google Cloud Console):
+        // konto serwisowe funkcji Cloud Functions projektu `lumina-cc` musi
+        // dostać rolę "Cloud Datastore User" (lub "Firebase Admin SDK
+        // Administrator Service Agent") w projekcie `cuda-398c0` — inaczej
+        // poniższe zapytanie zwróci błąd uprawnień zamiast danych.
+        let dobrzeZeJestesDb;
         try {
-            // Pobierz dzisiejsze rozważanie z Firestore
-            const refSnap = await db.collection('reflections')
-                .where('date', '==', todayStr)
-                .limit(1)
-                .get();
+            const { getApp } = require('firebase-admin/app');
+            let dzjApp;
+            try {
+                dzjApp = getApp('dobrzeZeJestes');
+            } catch (e) {
+                dzjApp = initializeApp({ projectId: 'cuda-398c0' }, 'dobrzeZeJestes');
+            }
+            dobrzeZeJestesDb = getFirestore(dzjApp);
+        } catch (initErr) {
+            logger.error('[Push] Nie udało się połączyć z projektem cuda-398c0:', initErr.message);
+        }
 
-            if (!refSnap.empty) {
-                const d = refSnap.docs[0].data();
-                title = d.title || title;
-                teaser = d.teaser || d.snippet || teaser;
-                imageUrl = d.imageUrl || imageUrl;
-            } else {
-                // Fallback z web_inspirations
-                const webSnap = await db.collection('web_inspirations')
-                    .orderBy('date', 'desc')
+        try {
+            if (dobrzeZeJestesDb) {
+                // Pobierz dzisiejsze rozważanie z WŁAŚCIWEGO projektu (cuda-398c0)
+                const refSnap = await dobrzeZeJestesDb.collection('reflections')
+                    .where('date', '==', todayStr)
                     .limit(1)
                     .get();
-                if (!webSnap.empty) {
-                    const wd = webSnap.docs[0].data();
-                    title = wd.title || title;
-                    teaser = wd.teaser || teaser;
-                    imageUrl = wd.imageUrl || imageUrl;
+
+                if (!refSnap.empty) {
+                    const d = refSnap.docs[0].data();
+                    title = d.title || title;
+                    teaser = d.teaser || d.snippet || teaser;
+                    imageUrl = d.imageUrl || imageUrl;
+                } else {
+                    // Fallback z web_inspirations — ta kolekcja żyje w JESZCZE
+                    // INNYM projekcie Firebase (cc-mission-control per @ICC),
+                    // ten sam problem co reflections, ta sama poprawka.
+                    let missionControlDb;
+                    try {
+                        const { getApp } = require('firebase-admin/app');
+                        let mcApp;
+                        try {
+                            mcApp = getApp('missionControl');
+                        } catch (e) {
+                            mcApp = initializeApp({ projectId: 'cc-mission-control' }, 'missionControl');
+                        }
+                        missionControlDb = getFirestore(mcApp);
+                    } catch (e) {
+                        logger.warn('[Push] Nie udało się połączyć z cc-mission-control:', e.message);
+                    }
+                    if (missionControlDb) {
+                        const webSnap = await missionControlDb.collection('web_inspirations')
+                            .orderBy('date', 'desc')
+                            .limit(1)
+                            .get();
+                        if (!webSnap.empty) {
+                            const wd = webSnap.docs[0].data();
+                            title = wd.title || title;
+                            teaser = wd.teaser || teaser;
+                            imageUrl = wd.imageUrl || imageUrl;
+                        }
+                    }
                 }
             }
         } catch(err) {
@@ -301,7 +347,9 @@ exports.onCudaTablicaPostPublished = onDocumentCreated(
 
         const category = (post.category || post.type || '').toLowerCase();
         const title = post.title || post.authorName || 'Nowe Rozważanie';
-        const isCkd = category.includes('ckd') || category.includes('cuda') || category.includes('rozwazanie') || category.includes('dzj') || post.isDevotion === true;
+        const isCkd = category.includes('ckd') || category.includes('cuda') || category.includes('rozwazanie') || category.includes('dzj')
+            || post.isDevotion === true
+            || post.authorSlug === 'andrzejthiel'; // zabezpieczenie: łapie też posty sprzed poprawki pól category/isDevotion
 
         if (!isCkd) return;
 
