@@ -15,3 +15,6 @@ try {
 } catch(e) {
     console.warn('Photo verification module load notice:', e.message);
 }
+
+exports.scheduledMorningDevotionPush = chatPush.scheduledMorningDevotionPush;
+exports.onCudaTablicaPostPublished = chatPush.onCudaTablicaPostPublished;

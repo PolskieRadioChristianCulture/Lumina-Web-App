@@ -182,3 +182,183 @@ exports.onPublicChatMessageCreated = onDocumentCreated(
         }
     }
 );
+
+
+const { onSchedule } = require('firebase-functions/v2/scheduler');
+
+/**
+ * ═══════════════════════════════════════════════════════════════════════
+ * 3) ROZWAŻANIE „DOBRZE, ŻE JESTEŚ” — CODZIENNIE O 06:15 RANO (Europe/Warsaw)
+ * ═══════════════════════════════════════════════════════════════════════
+ * Wysyła powiadomienie push do wszystkich użytkowników z opcjami:
+ * [📖 Czytaj] oraz [🕊️ Udostępnij].
+ */
+exports.scheduledMorningDevotionPush = onSchedule(
+    { schedule: '15 6 * * *', timeZone: 'Europe/Warsaw', region: REGION },
+    async (event) => {
+        logger.info('[Push] Uruchomienie porannego pusha 06:15: Dobrze, że jesteś...');
+
+        const todayStr = new Date().toISOString().split('T')[0];
+        let title = 'Dobrze, że jesteś na nowy dzień ✨';
+        let teaser = 'Rozpocznij poranek ze Słowem Bożym i napełnij serce pokojem Chrystusa.';
+        let imageUrl = 'https://polskieradio.cc/lumina_icon.jpg';
+
+        try {
+            // Pobierz dzisiejsze rozważanie z Firestore
+            const refSnap = await db.collection('reflections')
+                .where('date', '==', todayStr)
+                .limit(1)
+                .get();
+
+            if (!refSnap.empty) {
+                const d = refSnap.docs[0].data();
+                title = d.title || title;
+                teaser = d.teaser || d.snippet || teaser;
+                imageUrl = d.imageUrl || imageUrl;
+            } else {
+                // Fallback z web_inspirations
+                const webSnap = await db.collection('web_inspirations')
+                    .orderBy('date', 'desc')
+                    .limit(1)
+                    .get();
+                if (!webSnap.empty) {
+                    const wd = webSnap.docs[0].data();
+                    title = wd.title || title;
+                    teaser = wd.teaser || teaser;
+                    imageUrl = wd.imageUrl || imageUrl;
+                }
+            }
+        } catch(err) {
+            logger.warn('[Push] Błąd pobierania rozważania:', err);
+        }
+
+        // Pobierz wszystkie aktywne tokeny urządzeń
+        const tokensSnap = await db.collection('LuminaDeviceTokens')
+            .where('enabled', '==', true)
+            .get();
+
+        const allTokens = new Set();
+        tokensSnap.forEach(d => {
+            const t = d.data().token;
+            if (t) allTokens.add(t);
+        });
+
+        if (allTokens.size === 0) {
+            logger.info('[Push] Brak zarejestrowanych urządzeń w LuminaDeviceTokens.');
+            return;
+        }
+
+        const messagePayload = {
+            notification: {
+                title: `🕊️ Dobrze, że jesteś • ${title}`,
+                body: teaser.length > 140 ? teaser.slice(0, 137) + '...' : teaser,
+            },
+            data: {
+                type: 'devotion',
+                devotionId: todayStr,
+                title: title,
+                body: teaser,
+                url: 'https://polskieradio.cc/lumina-tablica.html?openDevotion=today',
+                actions: JSON.stringify([
+                    { action: 'read', title: '📖 Czytaj' },
+                    { action: 'share', title: '🕊️ Udostępnij' }
+                ])
+            },
+            webpush: {
+                notification: {
+                    icon: 'https://polskieradio.cc/lumina_icon.jpg',
+                    badge: 'https://polskieradio.cc/lumina_icon.jpg',
+                    image: imageUrl,
+                    tag: `lumina-devotion-${todayStr}`,
+                    renotify: true,
+                    requireInteraction: true,
+                    actions: [
+                        { action: 'read', title: '📖 Czytaj' },
+                        { action: 'share', title: '🕊️ Udostępnij' }
+                    ]
+                },
+                fcmOptions: { link: 'https://polskieradio.cc/lumina-tablica.html?openDevotion=today' },
+            },
+            tokens: [...allTokens],
+        };
+
+        const result = await messaging.sendEachForMulticast(messagePayload);
+        logger.info(`[Push 06:15] Wysłano do ${result.successCount} urządzeń, błędy: ${result.failureCount}`);
+    }
+);
+
+/**
+ * ═══════════════════════════════════════════════════════════════════════
+ * 4) CUDA KAŻDEGO DNIA — NATYCHMIAST PO PUBLIKACJI NA TABLICY
+ * ═══════════════════════════════════════════════════════════════════════
+ * Wyzwalana przy każdym nowym poście na tablicy oznaczonym jako CKD / rozważanie.
+ */
+exports.onCudaTablicaPostPublished = onDocumentCreated(
+    { document: 'lumina_posts/{postId}', region: REGION },
+    async (event) => {
+        const post = event.data?.data();
+        if (!post) return;
+
+        const category = (post.category || post.type || '').toLowerCase();
+        const title = post.title || post.authorName || 'Nowe Rozważanie';
+        const isCkd = category.includes('ckd') || category.includes('cuda') || category.includes('rozwazanie') || category.includes('dzj') || post.isDevotion === true;
+
+        if (!isCkd) return;
+
+        logger.info(`[Push CKD] Wykryto nową publikację Cuda Każdego Dnia: ${title}`);
+
+        const tokensSnap = await db.collection('LuminaDeviceTokens')
+            .where('enabled', '==', true)
+            .get();
+
+        const allTokens = new Set();
+        tokensSnap.forEach(d => {
+            const t = d.data().token;
+            if (t) allTokens.add(t);
+        });
+
+        if (allTokens.size === 0) return;
+
+        const postId = event.params.postId;
+        const text = post.content || post.text || post.teaser || 'Nowe świadectwo i rozważanie Słowa Bożego na Tablicy.';
+
+        const messagePayload = {
+            notification: {
+                title: `✨ Cuda Każdego Dnia • ${title}`,
+                body: text.length > 140 ? text.slice(0, 137) + '...' : text,
+            },
+            data: {
+                type: 'ckd',
+                postId: postId,
+                devotionId: postId,
+                title: title,
+                body: text,
+                url: `https://polskieradio.cc/lumina-tablica.html?openDevotion=${postId}`,
+                actions: JSON.stringify([
+                    { action: 'read', title: '📖 Czytaj' },
+                    { action: 'share', title: '🕊️ Udostępnij' }
+                ])
+            },
+            webpush: {
+                notification: {
+                    icon: 'https://polskieradio.cc/lumina_icon.jpg',
+                    badge: 'https://polskieradio.cc/lumina_icon.jpg',
+                    image: post.imageUrl || undefined,
+                    tag: `lumina-ckd-${postId}`,
+                    renotify: true,
+                    requireInteraction: true,
+                    actions: [
+                        { action: 'read', title: '📖 Czytaj' },
+                        { action: 'share', title: '🕊️ Udostępnij' }
+                    ]
+                },
+                fcmOptions: { link: `https://polskieradio.cc/lumina-tablica.html?openDevotion=${postId}` },
+            },
+            tokens: [...allTokens],
+        };
+
+        const result = await messaging.sendEachForMulticast(messagePayload);
+        logger.info(`[Push CKD] Wysłano ${result.successCount} powiadomień po publikacji, błędy: ${result.failureCount}`);
+    }
+);
+

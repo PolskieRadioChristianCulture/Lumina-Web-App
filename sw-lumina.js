@@ -18,30 +18,44 @@ try {
 
     const fcmMessaging = firebase.messaging();
     fcmMessaging.onBackgroundMessage((payload) => {
-        console.log('[sw-lumina.js] FCM Background Message received:', payload);
-        const senderName = payload.data?.senderName || payload.notification?.title || 'LUMINA ✨';
-        const senderAvatar = payload.data?.senderAvatar || payload.data?.avatar || './lumina_icon.jpg';
-        const text = payload.data?.text || payload.notification?.body || 'Masz nową wiadomość w portalu LUMINA 🕊️';
-        const urlToOpen = payload.data?.url || './lumina.html';
+        console.log('[SW] FCM Background Message received:', payload);
+        const data = payload.data || {};
+        const isDevotion = (data.type === 'devotion' || data.type === 'ckd' || data.isDevotion === 'true');
+        
+        const title = payload.notification?.title || data.title || (isDevotion ? '🕊️ Dobrze, że jesteś • Rozważanie' : 'LUMINA ✨');
+        const body = payload.notification?.body || data.body || data.text || 'Nowe rozważanie jest już dostępne na Tablicy Społeczności.';
+        const icon = data.icon || data.avatar || payload.notification?.icon || './lumina_icon.jpg';
+        const urlToOpen = data.url || './lumina-tablica.html?openDevotion=today';
 
-        const notificationTitle = payload.notification?.title || `Wiadomość od: ${senderName}`;
+        let actions = [
+            { action: 'read', title: '📖 Czytaj' },
+            { action: 'share', title: '🕊️ Udostępnij' }
+        ];
+
+        if (!isDevotion && data.senderId) {
+            actions = [
+                { action: 'read', title: '💬 Odpowiedz' },
+                { action: 'open', title: 'Otwórz LUMINA' }
+            ];
+        }
+
         const notificationOptions = {
-            body: text,
-            icon: senderAvatar,
+            body: body,
+            icon: icon,
             badge: './lumina_icon.jpg',
-            tag: 'lumina_notif_' + (payload.data?.senderId || Date.now()),
+            image: data.image || data.imageUrl || undefined,
+            tag: isDevotion ? ('lumina_devotion_' + (data.devotionId || new Date().toISOString().split('T')[0])) : ('lumina_notif_' + (data.senderId || Date.now())),
             renotify: true,
             vibrate: [200, 100, 200],
+            requireInteraction: isDevotion,
             data: {
                 url: urlToOpen,
-                ...payload.data
+                ...data
             },
-            actions: [
-                { action: 'open', title: 'Otwórz LUMINA 💬' }
-            ]
+            actions: actions
         };
 
-        return self.registration.showNotification(notificationTitle, notificationOptions);
+        return self.registration.showNotification(title, notificationOptions);
     });
 } catch(err) {
     console.warn('[sw-lumina.js] Firebase FCM init in SW error:', err);

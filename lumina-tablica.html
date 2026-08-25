@@ -7665,6 +7665,44 @@
         });
 
 </script>
+
+    <!-- Auto-Handler for Devotion Push Actions (Czytaj & Udostępnij) -->
+    <script>
+    (function(){
+        function handlePushDevotionParams() {
+            const params = new URLSearchParams(window.location.search);
+            const openDev = params.get('openDevotion');
+            const shareDev = params.get('shareDevotion');
+
+            if (openDev || shareDev) {
+                setTimeout(function() {
+                    const devotionCard = document.querySelector('.reflection-of-the-day-card') || document.querySelector('[data-category*="rozwazanie"]') || document.querySelector('.tablica-feed-container');
+                    if (devotionCard) {
+                        devotionCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        devotionCard.style.boxShadow = '0 0 35px rgba(250, 204, 21, 0.7)';
+                    }
+                    if (shareDev) {
+                        if (navigator.share) {
+                            navigator.share({
+                                title: '🕊️ Rozważanie Słowa Bożego | Portal LUMINA',
+                                text: 'Przeczytaj dzisiejsze rozważanie i buduj swoją wiarę w Chrystusie:',
+                                url: window.location.origin + '/lumina-tablica.html'
+                            }).catch(function(){});
+                        } else if (typeof window.openShareLuminaModal === 'function') {
+                            window.openShareLuminaModal();
+                        }
+                    }
+                }, 800);
+            }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', handlePushDevotionParams);
+        } else {
+            handlePushDevotionParams();
+        }
+    })();
+    </script>
+
 </body>
 </html>
 
