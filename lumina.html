@@ -2778,6 +2778,17 @@
         setTimeout(fetchAndSyncAllCommunityProfiles, 1500);
     })();
     </script>
+<!-- Master Bottom-Only Shield CSS Override -->
+    <style>
+    #luminaFloatingAdminShieldContainer,
+    .lumina-admin-shield-container {
+        display: none !important;
+    }
+    #luminaFloatingAdminShieldContainer.is-at-bottom,
+    .lumina-admin-shield-container.is-at-bottom {
+        display: inline-flex !important;
+    }
+    </style>
 </head>
 <body>
 
@@ -8025,7 +8036,7 @@
         };
     </script>
 
-    <script src="lumina-admin-profile-suite.js?v=20260824_v364"></script>
+    <script src="lumina-admin-profile-suite.js?v=20260825_bottom_shield_v2"></script>
 <script>
 
         // ── TOP NAV COLLAPSIBLE DRAWER CONTROLLER ──
