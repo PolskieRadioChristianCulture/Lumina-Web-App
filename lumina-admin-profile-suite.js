@@ -15,7 +15,7 @@
     const SYSTEM_PROFILES = [
         { slug: 'andrzejthiel', name: 'Andrzej Thiel', role: 'Autor: Cuda Każdego Dnia', type: 'official', verified: true, avatar: 'avatar_andrzej_thiel.jpg' },
         { slug: 'cezaryrgowski', name: 'Cezary Rogowski', role: 'Dyrektor Projektu & Autor', type: 'official', verified: true, avatar: 'avatar_cezary_official.jpg' },
-        { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', role: 'Moderator Społeczności & Współzałożycielka', type: 'official', verified: true, avatar: 'avatar_wioletta_official.jpg' },
+        { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', role: 'Koordynator Społeczności', type: 'official', verified: true, avatar: 'avatar_wioletta_official.jpg' },
         { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', role: 'Oficjalny Kanał Audio & Wideo', type: 'channel', verified: true, avatar: 'studiodobregoslowa_avatar.jpg' },
         { slug: 'osobowoscplus', name: 'Osobowość Plus', role: 'Kanał Formacyjny', type: 'channel', verified: true, avatar: 'logo_osobowosc_plus.jpg' },
         { slug: 'radiocc', name: 'Polskie Radio CC', role: 'Główny Nadawca Radiowy', type: 'broadcast', verified: true, avatar: 'logo_radio_cc.jpg' },
@@ -353,41 +353,42 @@
                 box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
             }
 
-            /* ══════════ JEDYNA DYSKRETNA TARCZA ADMINA W LEWYM DOLNYM ROGU (WIDOCZNA TYLKO NA DOLE) ══════════ */
+            /* ══════════ JEDYNA DYSKRETNA TARCZA ADMINA Z WERSJĄ (LEWY DOLNY RÓG) ══════════ */
             .lumina-admin-shield-container { display: none !important; }
-            .lumina-admin-shield-container:hover {
-                background: rgba(15, 23, 42, 0.95);
-                border-color: rgba(245, 158, 11, 0.5);
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(245, 158, 11, 0.2);
-            }
             .lumina-admin-floating-shield {
                 width: 24px;
                 height: 24px;
                 border-radius: 50%;
                 background: transparent;
                 border: none;
-                color: #facc15;
+                color: #64748b;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 0.90rem;
+                font-size: 0.88rem;
                 cursor: pointer;
                 padding: 0;
-                transition: transform 0.2s ease;
+                transition: all 0.25s ease;
             }
             .lumina-admin-shield-container:hover .lumina-admin-floating-shield {
-                transform: scale(1.12);
+                color: #facc15;
+                transform: scale(1.1);
             }
             .lumina-admin-version-tag {
-                font-size: 0.74rem;
-                font-weight: 800;
-                color: #e2e8f0;
+                font-size: 0.72rem;
+                font-weight: 700;
+                color: rgba(148, 163, 184, 0.75);
                 font-family: 'Plus Jakarta Sans', sans-serif;
-                letter-spacing: 0.3px;
+                letter-spacing: 0.2px;
+                transition: color 0.25s ease;
             }
+            .lumina-admin-shield-container:hover .lumina-admin-version-tag {
+                color: #e2e8f0;
+            }
+            /* Odblokowana / Zalogowany Master Admin */
             .lumina-admin-shield-container.unlocked {
-                border-color: rgba(16, 185, 129, 0.6);
-                box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+                border-color: rgba(16, 185, 129, 0.5);
+                background: rgba(15, 23, 42, 0.8);
             }
             .lumina-admin-shield-container.unlocked .lumina-admin-floating-shield {
                 color: #10b981;
@@ -395,7 +396,135 @@
             .lumina-admin-shield-container.unlocked .lumina-admin-version-tag {
                 color: #34d399;
             }
+
+            /* Banner blokady użytkownika */
+            .lumina-user-blocked-banner {
+                background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(153, 27, 27, 0.35));
+                border: 1.5px solid #ef4444;
+                color: #fca5a5;
+                padding: 12px 18px;
+                border-radius: 14px;
+                margin-bottom: 18px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-weight: 700;
+                font-size: 0.90rem;
+            }
+
+            /* ══════════ AGENT INSPECTOR & NOTA DLA AGENTA ══════════ */
+            body.lumina-agent-inspector-active * {
+                cursor: crosshair !important;
+            }
+
+            .lumina-agent-hover-target {
+                outline: 2.5px dashed #10b981 !important;
+                outline-offset: 3px !important;
+                background: rgba(16, 185, 129, 0.12) !important;
+                box-shadow: 0 0 16px rgba(16, 185, 129, 0.45) !important;
+                transition: outline 0.1s ease !important;
+            }
+
+            /* ══════════ DOCKED INSPECTOR BANNER (DOKLEJONY DO PANELU MASTER ADMIN) ══════════ */
+            .lumina-inspector-banner {
+                position: fixed;
+                top: 108px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 99998;
+                background: linear-gradient(135deg, rgba(6, 78, 59, 0.98), rgba(4, 120, 87, 0.98));
+                border: 1.5px solid #34d399;
+                border-top: none;
+                color: #fff;
+                padding: 6px 18px;
+                border-radius: 0 0 20px 20px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8), 0 0 20px rgba(52, 211, 153, 0.35);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                animation: slideDown 0.25s ease;
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                max-width: 92vw;
+                width: auto;
+                transition: top 0.2s ease, padding 0.2s ease;
+            }
+
+            .lumina-inspector-banner.minimized {
+                padding: 4px 12px;
+                border-radius: 0 0 16px 16px;
+            }
+            .lumina-inspector-banner.minimized .lumina-inspector-hint {
+                display: none !important;
+            }
+
+            .lumina-inspector-banner-inner {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                justify-content: center;
+            }
+
+            .lumina-inspector-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: rgba(0, 0, 0, 0.35);
+                border: 1px solid rgba(52, 211, 153, 0.6);
+                padding: 4px 10px;
+                border-radius: 20px;
+                font-size: 0.80rem;
+                font-weight: 800;
+                color: #a7f3d0;
+                letter-spacing: 0.3px;
+                white-space: nowrap;
+            }
+
+            .lumina-inspector-hint {
+                font-size: 0.82rem;
+                font-weight: 600;
+                color: #ecfdf5;
+                white-space: nowrap;
+            }
+
+            .lumina-inspector-controls {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .lumina-inspector-control-btn {
+                background: rgba(0, 0, 0, 0.35);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                color: #fff;
+                font-weight: 700;
+                font-size: 0.78rem;
+                padding: 4px 10px;
+                border-radius: 16px;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                transition: all 0.2s ease;
+                white-space: nowrap;
+            }
+
+            .lumina-inspector-control-btn:hover {
+                background: rgba(255, 255, 255, 0.2);
+                border-color: #fff;
+            }
+
+            .lumina-inspector-control-btn.btn-exit-insp:hover {
+                background: #ef4444;
+                border-color: #ef4444;
+            }
+
             @media (max-width: 768px) {
+                .lumina-admin-hud-inner {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+                .lumina-admin-hud-actions {
+                    justify-content: flex-start;
+                }
                 .lumina-admin-shield-container {
                     bottom: 85px;
                     left: 14px;
@@ -439,9 +568,6 @@
                         </div>
                     </div>
                     <div class="lumina-admin-hud-actions" id="luminaAdminHudActions">
-                        <button type="button" class="admin-suite-btn" style="background:linear-gradient(135deg, #7c3aed, #2563eb); border:1px solid rgba(139,92,246,0.6); color:#fff; font-weight:800; box-shadow:0 2px 14px rgba(124,58,237,0.45);" onclick="window.LuminaAdminSuite.openCommanderAiChatModal()" title="Otwórz bezpośredni czat błyskawiczny Dowódcy z Agentem AI Antigravity">
-                            <i class="fa-solid fa-bolt"></i> ⚡ Wiadomość Błyskawiczna do Agenta
-                        </button>
                         <button type="button" class="admin-suite-btn btn-gold" onclick="window.LuminaAdminSuite.openFullEditor()">
                             <i class="fa-solid fa-pen-to-square"></i> Edytuj Profil
                         </button>
@@ -483,9 +609,7 @@
                 </div>
             </div>
 
-            <!-- Floating fixed shield removed — version shield is strictly located in the bottom footer -->
-
-            <!-- Jedyna Dyskretna Tarcza Administratora z Numerem Wersji (Lewy dolny róg, widoczna tylko na dole) -->
+            <!-- Dyskretna Tarcza Administratora z Numerem Wersji (Tylko jedna, lewy dolny róg) -->
             <div id="luminaFloatingAdminShieldContainer" class="lumina-admin-shield-container">
                 <button type="button" 
                         id="luminaFloatingAdminShield" 
@@ -495,7 +619,7 @@
                         aria-label="Panel Administratora">
                     <i class="fa-solid fa-shield-halved"></i>
                 </button>
-                <span class="lumina-admin-version-tag">v3.6.4</span>
+                <span class="lumina-admin-version-tag">v3.6.2</span>
             </div>
 
             <!-- Ukryte kontrolki uploadu plików -->
@@ -883,211 +1007,93 @@
                 </div>
             </div>
 
-            
-            <!-- ══════════ MODAL: CZAT DOWODZENIA Z AGENTEM AI (WIADOMOŚĆ BŁYSKAWICZNA) ══════════ -->
-            <div class="modal-overlay" id="adminCommanderAiChatModal" onclick="if(event.target===this) window.LuminaAdminSuite.closeModal('adminCommanderAiChatModal')">
-                <div class="modal-card" style="max-width: 680px; width:94%; background: #070d1e; border: 1.5px solid rgba(139, 92, 246, 0.55); box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 45px rgba(139, 92, 246, 0.35); border-radius: 24px; padding: 24px; position: relative; display:flex; flex-direction:column; max-height:90vh;">
-                    <button class="modal-close-btn" onclick="window.LuminaAdminSuite.closeModal('adminCommanderAiChatModal')" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-
-                    <!-- Header -->
-                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1); flex-wrap:wrap; gap:10px;">
-                        <div style="display:flex; align-items:center; gap:12px;">
-                            <div style="width:46px; height:46px; border-radius:50%; background:linear-gradient(135deg, #8b5cf6, #3b82f6); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.35rem; box-shadow:0 4px 16px rgba(139,92,246,0.5);">
-                                <i class="fa-solid fa-bolt"></i>
-                            </div>
-                            <div>
-                                <h3 style="font-family:'Outfit', sans-serif; font-size:1.20rem; font-weight:800; color:#fff; margin:0; display:flex; align-items:center; gap:8px;">
-                                    Czat Dowodzenia z Agentem AI 👑
-                                </h3>
-                                <div style="font-size:0.75rem; color:#a78bfa; font-weight:700;">
-                                    Bezpośredni kanał rozkazów: Dowódca Nazir ➔ Agent Antigravity
-                                </div>
-                            </div>
-                        </div>
-                        <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); padding:4px 10px; border-radius:20px; font-size:0.72rem; color:#34d399; font-weight:800;">
-                            <span style="width:8px; height:8px; border-radius:50%; background:#10b981; display:inline-block; box-shadow:0 0 8px #10b981;"></span>
-                            Agent AI: Nasłuchuje w tle 24/7
-                        </div>
-                    </div>
-
-                    <!-- Quick Command Chips -->
-                    <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:10px; -webkit-overflow-scrolling:touch;">
-                        <button type="button" onclick="window.LuminaAdminSuite.sendQuickAiCommand('🚀 Publikuj dzisiejsze rozważanie misyjne we wszystkich kanałach')" style="white-space:nowrap; background:rgba(139,92,246,0.18); border:1px solid rgba(139,92,246,0.4); color:#c4b5fd; font-size:0.73rem; font-weight:700; padding:5px 10px; border-radius:12px; cursor:pointer;">
-                            🚀 Publikuj Rozważanie
-                        </button>
-                        <button type="button" onclick="window.LuminaAdminSuite.sendQuickAiCommand('🔄 Zsynchronizuj całą bazę Firestore, wyczyść cache i odśwież widoki')" style="white-space:nowrap; background:rgba(56,189,248,0.18); border:1px solid rgba(56,189,248,0.4); color:#7dd3fc; font-size:0.73rem; font-weight:700; padding:5px 10px; border-radius:12px; cursor:pointer;">
-                            🔄 Synchronizacja Bazy
-                        </button>
-                        <button type="button" onclick="window.LuminaAdminSuite.sendQuickAiCommand('📊 Sprawdź stan systemów, serwerów i transmisji Live')" style="white-space:nowrap; background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.4); color:#fde047; font-size:0.73rem; font-weight:700; padding:5px 10px; border-radius:12px; cursor:pointer;">
-                            📊 Status Systemów Live
-                        </button>
-                        <button type="button" onclick="window.LuminaAdminSuite.sendQuickAiCommand('🛡️ Wykonaj diagnostykę i automatyczną naprawę portalu LUMINA')" style="white-space:nowrap; background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.4); color:#6ee7b7; font-size:0.73rem; font-weight:700; padding:5px 10px; border-radius:12px; cursor:pointer;">
-                            🛡️ Diagnostyka i Naprawa
-                        </button>
-                    </div>
-
-                    <!-- Live Message History Stream -->
-                    <div id="commanderAiChatMessagesBox" style="flex:1; min-height:220px; max-height:340px; overflow-y:auto; background:rgba(11,18,36,0.9); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:14px; margin-bottom:12px; display:flex; flex-direction:column; gap:10px;">
-                        <div style="text-align:center; color:#64748b; font-size:0.75rem; padding:8px 0;">
-                            ✨ Połączono z autonomicznym terminalem Agenta AI. Wszystkie rozkazy są zapisywane w chmurze i wykonywane w tle.
-                        </div>
-                    </div>
-
-                    <!-- Input Form -->
-                    <form onsubmit="window.LuminaAdminSuite.sendCommanderAiMessage(event)" style="display:flex; flex-direction:column; gap:10px;">
-                        <div style="display:flex; gap:8px;">
-                            <textarea id="commanderAiInputText" rows="2" placeholder="Wpisz rozkaz lub zadanie dla Agenta (np. Zmień układ na stronie głównej, dodaj nową sekcję, sprawdź logi)..." style="flex:1; padding:10px 14px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(139,92,246,0.35); color:#fff; font-family:inherit; font-size:13.5px; outline:none; resize:none;" required></textarea>
-                            <button type="submit" style="padding:0 18px; border-radius:14px; background:linear-gradient(135deg, #8b5cf6, #2563eb); border:none; color:#fff; font-weight:800; font-size:0.90rem; cursor:pointer; box-shadow:0 4px 18px rgba(139,92,246,0.5); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:85px;">
-                                <i class="fa-solid fa-paper-plane" style="font-size:1.1rem;"></i>
-                                <span style="font-size:0.70rem;">Wyślij</span>
-                            </button>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; color:#94a3b8;">
-                            <span>💡 Komputer może pozostać włączony — Agent autonomicznie podejmie i wykona zlecenie.</span>
-                            <span style="color:#a78bfa; font-weight:700;">Antigravity Engine 24/7</span>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- ══════════ MODAL 5: TRYB CELOWNIKA - SAMODZIELNA EDYCJA & NOTA DLA AGENTA ══════════ -->
+            <!-- ══════════ MODAL 5: NOWA NOTA DLA AGENTA ══════════ -->
             <div class="modal-overlay" id="adminAgentNoteModal" onclick="if(event.target===this) window.LuminaAdminSuite.closeModal('adminAgentNoteModal')">
-                <div class="modal-card" style="max-width: 620px; width:94%; background: #0b142e; border: 1.5px solid rgba(250, 204, 21, 0.6); box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 45px rgba(250, 204, 21, 0.3); border-radius: 24px; padding: 24px; position: relative; max-height:90vh; overflow-y:auto;">
+                <div class="modal-card" style="max-width: 580px; background: #0b142e; border: 1.5px solid rgba(16, 185, 129, 0.5); box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(16, 185, 129, 0.25); border-radius: 24px; padding: 26px 24px; position: relative;">
                     <button class="modal-close-btn" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" aria-label="Zamknij" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
 
-                    <!-- Header -->
-                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
-                        <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, #f59e0b, #eab308); display:flex; align-items:center; justify-content:center; color:#0b142e; font-size:1.3rem; box-shadow:0 4px 14px rgba(245,158,11,0.5);">
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
+                        <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, #10b981, #059669); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.3rem; box-shadow:0 4px 14px rgba(16,185,129,0.4);">
                             <i class="fa-solid fa-crosshairs"></i>
                         </div>
                         <div>
-                            <h3 style="font-family:'Outfit', sans-serif; font-size:1.25rem; font-weight:800; color:#fff; margin:0;">
-                                Studio Celownika Master Admin 🎯
-                            </h3>
-                            <div style="font-size:0.75rem; color:#fde047; font-weight:700;">
-                                Samodzielna edycja na żywo lub zlecenie dla Agenta AI
-                            </div>
+                            <h3 style="font-family:'Outfit', sans-serif; font-size:1.25rem; font-weight:800; color:#fff; margin:0;">Nowa Nota / Rozkaz dla Agenta</h3>
+                            <div style="font-size:0.75rem; color:#34d399; font-weight:700;">Współrzędne elementu zostały automatycznie przechwycone</div>
                         </div>
                     </div>
 
-                    <!-- Przechwycone dane techniczne elementu -->
-                    <div style="background:rgba(15, 23, 42, 0.8); border:1px solid rgba(148, 163, 184, 0.2); border-radius:14px; padding:10px 14px; margin-bottom:14px; font-size:0.75rem; color:#94a3b8;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:6px;">
-                            <span>📍 Plik: <b id="notePageUrl" style="color:#38bdf8;">-</b></span>
-                            <span>Tag: <b id="noteElementTag" style="color:#facc15;">-</b></span>
-                            <span id="noteTargetProfileSlugWrap" style="display:none;">Profil: <b id="noteTargetProfileSlug" style="color:#ec4899;">-</b></span>
-                        </div>
-                        <div style="margin-bottom:2px; word-break:break-all;">
-                            🎯 Selektor: <code id="noteElementSelector" style="color:#86efac; background:rgba(0,0,0,0.35); padding:2px 6px; border-radius:4px; font-size:0.73rem;">-</code>
-                        </div>
-                        <div id="noteElementSnippetBox" style="color:#cbd5e1; font-style:italic; border-top:1px solid rgba(255,255,255,0.06); padding-top:4px; margin-top:4px; max-height:40px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:0.72rem;">
-                            -
-                        </div>
-                    </div>
-
-                    <!-- Zakładki: 1. Samodzielna Edycja Na Żywo | 2. Nota dla Agenta -->
-                    <div style="display:flex; gap:8px; margin-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.12); padding-bottom:10px;">
-                        <button type="button" id="tabBtnDirectEdit" onclick="window.LuminaAdminSuite.switchInspectorTab('direct_edit')" style="flex:1; padding:10px; border-radius:12px; font-weight:800; font-size:0.84rem; cursor:pointer; background:linear-gradient(135deg,#f59e0b,#d97706); color:#0b142e; border:none; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 4px 12px rgba(245,158,11,0.3);">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> ⚡ Samodzielna Edycja
-                        </button>
-                        <button type="button" id="tabBtnAgentNote" onclick="window.LuminaAdminSuite.switchInspectorTab('agent_note')" style="flex:1; padding:10px; border-radius:12px; font-weight:800; font-size:0.84rem; cursor:pointer; background:rgba(255,255,255,0.06); color:#cbd5e1; border:1px solid rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; gap:6px;">
-                            <i class="fa-solid fa-robot"></i> 🤖 Nota dla Agenta
-                        </button>
-                    </div>
-
-                    <!-- ══════════ SEKCJA 1: SAMODZIELNA EDYCJA NA ŻYWO ══════════ -->
-                    <div id="inspectorTabDirectEdit">
-                        <!-- Edycja Zdjęcia / Grafiki (gdy zaznaczono obraz lub kartę profilu) -->
-                        <div id="inspectorPhotoEditBox" style="background:rgba(255,255,255,0.04); border:1.5px solid rgba(245,158,11,0.4); border-radius:16px; padding:14px; margin-bottom:14px;">
-                            <div style="font-size:0.84rem; font-weight:800; color:#fde047; margin-bottom:10px; display:flex; align-items:center; gap:7px;">
-                                <i class="fa-solid fa-camera"></i> Zmień Zdjęcie / Awatar Profilu Na Żywo
+                    <form onsubmit="window.LuminaAdminSuite.saveAgentNoteSubmit(event)">
+                        <!-- Przechwycone dane techniczne elementu -->
+                        <div style="background:rgba(15, 23, 42, 0.8); border:1px solid rgba(148, 163, 184, 0.2); border-radius:14px; padding:12px 14px; margin-bottom:14px; font-size:0.76rem; color:#94a3b8;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:6px;">
+                                <span>📍 Plik: <b id="notePageUrl" style="color:#38bdf8;">-</b></span>
+                                <span>Tag: <b id="noteElementTag" style="color:#facc15;">-</b></span>
                             </div>
-
-                            <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-bottom:12px;">
-                                <div style="width:72px; height:72px; border-radius:16px; overflow:hidden; border:2px solid rgba(250,204,21,0.8); background:#000; flex-shrink:0; box-shadow:0 4px 14px rgba(0,0,0,0.5);">
-                                    <img id="liveInspectorImgPreview" src="icon.png" alt="Podgląd" style="width:100%; height:100%; object-fit:cover;">
-                                </div>
-                                <div style="flex:1; min-width:180px;">
-                                    <!-- Przycisk wgrywania z dysku -->
-                                    <label style="display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:800; font-size:0.82rem; padding:10px 16px; border-radius:12px; cursor:pointer; box-shadow:0 4px 14px rgba(16,185,129,0.4); transition:all 0.2s;">
-                                        <i class="fa-solid fa-upload"></i> 📸 Wgraj Zdjęcie z Dysku
-                                        <input type="file" id="liveInspectorFileInput" accept="image/*" style="display:none;" onchange="window.LuminaAdminSuite.handleInspectorFileUpload(event)">
-                                    </label>
-                                    <div style="font-size:0.72rem; color:#94a3b8; margin-top:6px;">
-                                        Obsługuje JPG, PNG, WEBP. Zdjęcie zostanie natychmiast podmienione na stronie.
-                                    </div>
-                                </div>
+                            <div style="margin-bottom:4px; word-break:break-all;">
+                                🎯 Selektor: <code id="noteElementSelector" style="color:#86efac; background:rgba(0,0,0,0.35); padding:2px 6px; border-radius:4px; font-size:0.74rem;">-</code>
                             </div>
+                            <div id="noteElementSnippetBox" style="color:#cbd5e1; font-style:italic; border-top:1px solid rgba(255,255,255,0.06); padding-top:6px; margin-top:6px; max-height:45px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:0.72rem;">
+                                -
+                            </div>
+                        </div>
 
-                            <!-- Opcja 2: Podanie nazwy pliku lub URL -->
+                        <!-- Pola notatki -->
+                        <div style="margin-bottom:12px;">
+                            <label style="display:block; font-size:0.78rem; font-weight:800; color:#e2e8f0; margin-bottom:6px;">
+                                📝 Treść Uwag / Rozkaz dla Agenta (co trzeba zmienić, poprawić, dodać):
+                            </label>
+                            <textarea id="agentNoteText" rows="4" placeholder="Np. Zmień kolor tła na ciemniejszy granat, popraw wyrównanie tekstu, podmień grafikę na nową wersję..." style="width:100%; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px; outline:none; resize:vertical;" required></textarea>
+                        </div>
+
+                        <!-- 👑 SEKCJA: UWAGI SPECJALNE & SZCZEGÓLNE WYTYCZNE DOWÓDCY -->
+                        <div style="background:linear-gradient(135deg, rgba(245,158,11,0.12), rgba(168,85,247,0.10)); border:1.5px solid rgba(245,158,11,0.45); border-radius:16px; padding:12px 14px; margin-bottom:14px; box-shadow:0 4px 18px rgba(0,0,0,0.35);">
+                            <label style="display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; margin-bottom:8px;">
+                                <input type="checkbox" id="agentNoteSpecialCheck" style="width:20px; height:20px; accent-color:#f59e0b; cursor:pointer; flex-shrink:0;" onchange="const p=document.getElementById('agentNotePriority'); if(this.checked&&p) p.value='critical';">
+                                <span style="font-size:0.84rem; font-weight:800; color:#facc15; display:flex; align-items:center; gap:6px;">
+                                    <i class="fa-solid fa-crown" style="color:#f59e0b;"></i> Uwagi specjalne / Szczególne wytyczne Dowódcy (Rygor Klasy Światowej & Zero Regresji)
+                                </span>
+                            </label>
+                            <textarea id="agentNoteSpecialGuidelines" rows="2" placeholder="Wpisz szczególne wytyczne i żelazne zasady (np. bezwzględny zakaz dotykania innych plików, ochrona układu poziomego, weryfikacja przyczynowo-skutkowa)..." style="width:100%; padding:10px 12px; border-radius:12px; background:rgba(15,23,42,0.85); border:1px solid rgba(245,158,11,0.3); color:#fef08a; font-family:inherit; font-size:13px; outline:none; resize:vertical;"></textarea>
+                            <div style="font-size:0.72rem; color:#cbd5e1; margin-top:4px; font-style:italic;">
+                                ⚡ Zaznaczenie ptaszkiem gwarantuje najwyższy priorytet wykonania oraz rygorystyczny audyt jakości Strażnika Kodu.
+                            </div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
                             <div>
-                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">
-                                    Lub wpisz nazwę pliku z serwera / link do zdjęcia:
-                                </label>
-                                <div style="display:flex; gap:8px;">
-                                    <input type="text" id="liveInspectorImgUrlInput" placeholder="np. avatar_weronika.jpg lub https://..." style="flex:1; padding:8px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-size:13px; outline:none;">
-                                    <button type="button" onclick="window.LuminaAdminSuite.applyInspectorImageFromUrl()" style="padding:0 14px; border-radius:10px; background:rgba(250,204,21,0.2); border:1px solid rgba(250,204,21,0.5); color:#fde047; font-weight:800; font-size:0.78rem; cursor:pointer;">
-                                        Zastosuj
-                                    </button>
-                                </div>
+                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#38bdf8; margin-bottom:4px;">Kategoria Zmiany</label>
+                                <select id="agentNoteCategory" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px; font-weight:700;">
+                                    <option value="Wygląd / CSS">🎨 Wygląd / CSS / Layout</option>
+                                    <option value="Treść / Tekst">✏️ Treść / Tekst / Werset</option>
+                                    <option value="Zdjęcie / Grafika">🖼️ Zdjęcie / Grafika / Media</option>
+                                    <option value="Błąd / Poprawka">🐞 Błąd / Poprawka działania</option>
+                                    <option value="Nowa Funkcja">✨ Nowa Funkcjonalność</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#facc15; margin-bottom:4px;">Priorytet</label>
+                                <select id="agentNotePriority" style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:13px; font-weight:700;">
+                                    <option value="normal">Normalny</option>
+                                    <option value="urgent">⚡ Pilny</option>
+                                    <option value="critical">🔴 Krytyczny (Rozkaz Dowódcy)</option>
+                                </select>
                             </div>
                         </div>
 
-                        <!-- Edycja Tekstu Elementu (nagłówek, imię, opis itp.) -->
-                        <div id="inspectorTextEditBox" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.14); border-radius:16px; padding:14px; margin-bottom:14px;">
-                            <div style="font-size:0.84rem; font-weight:800; color:#38bdf8; margin-bottom:8px; display:flex; align-items:center; gap:7px;">
-                                <i class="fa-solid fa-pen-to-square"></i> Edytuj Tekst Elementu
-                            </div>
-                            <textarea id="liveInspectorTextInput" rows="2" placeholder="Wpisz nowy tekst elementu..." style="width:100%; padding:10px 12px; border-radius:10px; background:rgba(15,23,42,0.9); border:1px solid rgba(255,255,255,0.18); color:#fff; font-size:13px; outline:none; resize:vertical;"></textarea>
-                            <div style="margin-top:6px; text-align:right;">
-                                <button type="button" onclick="window.LuminaAdminSuite.applyInspectorTextChange()" style="padding:6px 14px; border-radius:8px; background:rgba(56,189,248,0.2); border:1px solid rgba(56,189,248,0.5); color:#7dd3fc; font-weight:800; font-size:0.76rem; cursor:pointer;">
-                                    Zastosuj Tekst Na Żywo
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Przyciski Zapisz / Zamknij -->
-                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:10px;">
-                            <button type="button" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" style="padding:10px 18px; border-radius:20px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; cursor:pointer;">
-                                Zamknij
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+                            <button type="button" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" style="padding:11px 18px; border-radius:24px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; cursor:pointer;">
+                                Anuluj
                             </button>
-                            <button type="button" onclick="window.LuminaAdminSuite.saveInspectorLiveEditsPermanent()" style="padding:11px 22px; border-radius:20px; background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; font-size:0.88rem; cursor:pointer; box-shadow:0 4px 16px rgba(16,185,129,0.45); display:inline-flex; align-items:center; gap:8px;">
-                                <i class="fa-solid fa-floppy-disk"></i> 💾 Zapisz Zmiany Na Stałe
-                            </button>
+                            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                                <button type="button" onclick="window.LuminaAdminSuite.saveAgentNoteSubmit(event, 'save_only')" style="padding:11px 18px; border-radius:24px; background:rgba(56, 189, 248, 0.18); border:1px solid rgba(56, 189, 248, 0.45); color:#7dd3fc; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:7px;" title="Zapisz do Dziennika (do pobrania po wpisaniu @N)">
+                                    <i class="fa-solid fa-bookmark"></i> 💾 Zapisz w Dzienniku (@N)
+                                </button>
+                                <button type="button" onclick="window.LuminaAdminSuite.saveAgentNoteSubmit(event, 'execute_now')" style="padding:11px 22px; border-radius:24px; background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; cursor:pointer; box-shadow:0 4px 16px rgba(16,185,129,0.5); display:inline-flex; align-items:center; gap:7px;" title="Wyślij natychmiastowy rozkaz do Agenta pracującego w tle">
+                                    <i class="fa-solid fa-bolt"></i> ⚡ Wyślij Rozkaz Natychmiast! 🚀
+                                </button>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- ══════════ SEKCJA 2: NOTA DLA AGENTA ══════════ -->
-                    <div id="inspectorTabAgentNote" style="display:none;">
-                        <form onsubmit="window.LuminaAdminSuite.saveAgentNoteSubmit(event)">
-                            <div style="margin-bottom:12px;">
-                                <label style="display:block; font-size:0.78rem; font-weight:800; color:#e2e8f0; margin-bottom:6px;">
-                                    📝 Treść Uwag / Rozkaz dla Agenta:
-                                </label>
-                                <textarea id="agentNoteText" rows="4" placeholder="Np. Zmień układ kolumn, podmień ikonę, napraw zachowanie na telefonie..." style="width:100%; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:inherit; font-size:14px; outline:none; resize:vertical;"></textarea>
-                            </div>
-
-                            <div style="background:linear-gradient(135deg, rgba(245,158,11,0.12), rgba(168,85,247,0.10)); border:1.5px solid rgba(245,158,11,0.45); border-radius:16px; padding:12px 14px; margin-bottom:14px;">
-                                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; margin-bottom:8px;">
-                                    <input type="checkbox" id="agentNoteSpecialCheck" style="width:20px; height:20px; accent-color:#f59e0b; cursor:pointer; flex-shrink:0;">
-                                    <span style="font-size:0.84rem; font-weight:800; color:#facc15; display:flex; align-items:center; gap:6px;">
-                                        <i class="fa-solid fa-crown" style="color:#f59e0b;"></i> Rozkaz Dowódcy (Rygor Klasy Światowej)
-                                    </span>
-                                </label>
-                                <textarea id="agentNoteSpecialGuidelines" rows="2" placeholder="Wpisz szczególne wytyczne..." style="width:100%; padding:10px 12px; border-radius:12px; background:rgba(15,23,42,0.85); border:1px solid rgba(245,158,11,0.3); color:#fef08a; font-family:inherit; font-size:13px; outline:none; resize:vertical;"></textarea>
-                            </div>
-
-                            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
-                                <button type="button" onclick="window.LuminaAdminSuite.closeModal('adminAgentNoteModal')" style="padding:10px 18px; border-radius:20px; background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; cursor:pointer;">
-                                    Anuluj
-                                </button>
-                                <button type="submit" style="padding:11px 22px; border-radius:20px; background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; font-size:0.88rem; cursor:pointer; box-shadow:0 4px 16px rgba(16,185,129,0.45); display:inline-flex; align-items:center; gap:8px;">
-                                    <i class="fa-solid fa-bolt"></i> ⚡ Wyślij Rozkaz dla Agenta
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-
+                    </form>
                 </div>
             </div>
         `;
@@ -1112,39 +1118,7 @@
             this.attachInlinePencils();
             this.loadProfileFromStorage(this.slug);
             this.checkIfCurrentProfileIsBlocked();
-            this.initScrollBottomShieldListener();
             window.addEventListener('resize', () => this.repositionHudBar());
-        },
-
-        initScrollBottomShieldListener: function() {
-            const check = () => {
-                const el = document.getElementById('luminaFloatingAdminShieldContainer');
-                if (!el) return;
-                const scrollY = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
-                const windowHeight = window.innerHeight || document.documentElement.clientHeight || 0;
-                const docHeight = Math.max(
-                    document.body.scrollHeight || 0, document.documentElement.scrollHeight || 0,
-                    document.body.offsetHeight || 0, document.documentElement.offsetHeight || 0,
-                    document.body.clientHeight || 0, document.documentElement.clientHeight || 0
-                );
-                const distFromBottom = docHeight - (scrollY + windowHeight);
-                const isBottomArea = (distFromBottom <= 450) || (scrollY + windowHeight >= docHeight - 80);
-
-                if (isBottomArea && (scrollY > 120 || docHeight <= windowHeight + 120)) {
-                    el.classList.add('is-at-bottom');
-                } else {
-                    el.classList.remove('is-at-bottom');
-                }
-            };
-
-            window.addEventListener('scroll', check, { passive: true });
-            window.addEventListener('touchmove', check, { passive: true });
-            window.addEventListener('resize', check, { passive: true });
-            window.addEventListener('wheel', check, { passive: true });
-            check();
-            setTimeout(check, 250);
-            setTimeout(check, 800);
-            setInterval(check, 350);
         },
 
         repositionHudBar: function() {
@@ -1172,7 +1146,8 @@
         checkAndApplyAdminState: function() {
             const isAdmin = isUserMasterAdmin();
             const hud = document.getElementById('luminaAdminHudBar');
-            const footerPill = document.querySelector('.lumina-footer-shield-pill');
+            const shield = document.getElementById('luminaFloatingAdminShield');
+            const shieldContainer = document.getElementById('luminaFloatingAdminShieldContainer');
 
             if (isAdmin) {
                 document.body.classList.add('lumina-admin-mode', 'owner-mode-active', 'has-admin-hud');
@@ -1191,19 +1166,13 @@
                         if (icon) icon.className = 'fa-solid fa-minus';
                     }
                 }
-                if (footerPill) {
-                    footerPill.classList.add('unlocked');
-                    footerPill.style.borderColor = 'rgba(16, 185, 129, 0.7)';
-                    footerPill.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.4)';
-                }
+                if (shield) shield.classList.add('unlocked');
+                if (shieldContainer) shieldContainer.classList.add('unlocked');
             } else {
                 document.body.classList.remove('lumina-admin-mode', 'owner-mode-active', 'has-admin-hud', 'hud-minimized');
                 if (hud) hud.classList.remove('active', 'minimized');
-                if (footerPill) {
-                    footerPill.classList.remove('unlocked');
-                    footerPill.style.borderColor = 'rgba(245, 158, 11, 0.4)';
-                    footerPill.style.boxShadow = '0 6px 20px rgba(0,0,0,0.5)';
-                }
+                if (shield) shield.classList.remove('unlocked');
+                if (shieldContainer) shieldContainer.classList.remove('unlocked');
             }
 
             this.updateHudBlockBtnState();
@@ -1259,25 +1228,25 @@
                 if (typeof window.showToast === 'function') {
                     window.showToast('❌ Nieprawidłowy kod PIN Administratora!');
                 } else {
-                    alert('❌ Nieprawidłowy kod PIN Administratora!');
+                    alert('❌ Nieprawidłowy kod PIN!');
                 }
             }
         },
 
         lockAdminMode: function() {
             sessionStorage.removeItem('lumina_auth_master_admin');
+            localStorage.removeItem('lumina_auth_master_admin');
+            sessionStorage.removeItem('lumina_auth_owner_cezaryrgowski');
+            localStorage.removeItem('lumina_auth_owner_cezaryrgowski');
             this.checkAndApplyAdminState();
-            if (this.isInspectorActive) {
-                this.deactivateAgentInspector();
-            }
             if (typeof window.showToast === 'function') {
-                window.showToast('🔒 Wylogowano z trybu Administratora.');
+                window.showToast('🔒 Wylogowano z trybu Administratora. Pasek został schowany.');
             } else {
                 alert('🔒 Wylogowano z trybu Administratora.');
             }
         },
 
-closeModal: function(modalId) {
+        closeModal: function(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.remove('open');
