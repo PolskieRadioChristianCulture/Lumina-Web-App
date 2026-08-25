@@ -354,32 +354,7 @@
             }
 
             /* ══════════ JEDYNA DYSKRETNA TARCZA ADMINA W LEWYM DOLNYM ROGU (WIDOCZNA TYLKO NA DOLE) ══════════ */
-            .lumina-admin-shield-container {
-                position: fixed;
-                bottom: 18px;
-                left: 20px;
-                z-index: 99999;
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                background: rgba(15, 23, 42, 0.85);
-                backdrop-filter: blur(14px);
-                -webkit-backdrop-filter: blur(14px);
-                border: 1px solid rgba(148, 163, 184, 0.25);
-                padding: 4px 10px 4px 6px;
-                border-radius: 20px;
-                user-select: none;
-                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-                opacity: 0;
-                pointer-events: none;
-                transform: translateY(18px);
-                transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-            .lumina-admin-shield-container.is-at-bottom {
-                opacity: 1;
-                pointer-events: auto;
-                transform: translateY(0);
-            }
+            .lumina-admin-shield-container { display: none !important; }
             .lumina-admin-shield-container:hover {
                 background: rgba(15, 23, 42, 0.95);
                 border-color: rgba(245, 158, 11, 0.5);
