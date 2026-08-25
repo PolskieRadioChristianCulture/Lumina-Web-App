@@ -170,11 +170,39 @@
         }
 
         startAutoMountEngine() {
-            if (this.autoMountTimer) clearInterval(this.autoMountTimer);
-            this.autoMountTimer = setInterval(() => {
-                this.mountVideoAvatars();
-                this.injectVideoTriggerButtons();
-            }, 1200);
+            if (this._observer) {
+                try { this._observer.disconnect(); } catch(e) {}
+            }
+
+            let debounceTimer = null;
+            const triggerMount = () => {
+                if (debounceTimer) clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    this.mountVideoAvatars();
+                    this.injectVideoTriggerButtons();
+                }, 120);
+            };
+
+            this._observer = new MutationObserver((mutations) => {
+                for (let i = 0; i < mutations.length; i++) {
+                    if (mutations[i].addedNodes && mutations[i].addedNodes.length > 0) {
+                        triggerMount();
+                        break;
+                    }
+                }
+            });
+
+            if (document.body) {
+                this._observer.observe(document.body, { childList: true, subtree: true });
+            } else {
+                document.addEventListener('DOMContentLoaded', () => {
+                    if (document.body) {
+                        this._observer.observe(document.body, { childList: true, subtree: true });
+                    }
+                });
+            }
+
+            triggerMount();
         }
 
         injectStyles() {

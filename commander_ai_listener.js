@@ -66,14 +66,68 @@ const FIRESTORE_BASE = 'https://firestore.googleapis.com/v1/projects/lumina-cc/d
 const MISSION_CHAT_URL = `${FIRESTORE_BASE}/lumina_commander_mission_chat`;
 const AI_CHAT_URL = `${FIRESTORE_BASE}/lumina_commander_ai_chat`;
 const STATE_FILE = path.join(__dirname, 'commander_ai_state.json');
+// Osobny plik na tożsamość demona — NIE ten sam co lista obsłużonych wiadomości,
+// żeby nie mieszać dwóch różnych rodzajów stanu w jednym pliku.
+const AUTH_STATE_FILE = path.join(__dirname, 'commander_ai_auth.json');
 
 let cachedToken = null;
 let tokenExpiresAt = 0;
 
+function loadAuthState() {
+    try {
+        if (fs.existsSync(AUTH_STATE_FILE)) {
+            return JSON.parse(fs.readFileSync(AUTH_STATE_FILE, 'utf8'));
+        }
+    } catch (e) {}
+    return null;
+}
+
+function saveAuthState(state) {
+    try {
+        fs.writeFileSync(AUTH_STATE_FILE, JSON.stringify(state, null, 2), 'utf8');
+    } catch (e) {
+        console.warn('[DAEMON] Nie udało się zapisać stanu tożsamości:', e.message);
+    }
+}
+
+/**
+ * POPRAWKA: poprzednia wersja wołała accounts:signUp (zakładanie NOWEGO konta)
+ * przy każdym wygaśnięciu tokenu (~co 50 minut) — po tygodniach działania jako
+ * demon zaśmiecało to listę kont Firebase setkami sierocych wpisów. Teraz
+ * demon zakłada konto RAZ, zapamiętuje jego refreshToken na dysku i przy
+ * każdym kolejnym odświeżeniu używa go do przedłużenia TEJ SAMEJ tożsamości.
+ */
 async function getAuthToken() {
     if (cachedToken && Date.now() < tokenExpiresAt) {
         return cachedToken;
     }
+
+    const saved = loadAuthState();
+    if (saved && saved.refreshToken) {
+        try {
+            const refreshUrl = `https://securetoken.googleapis.com/v1/token?key=${API_KEY}`;
+            const res = await fetch(refreshUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(saved.refreshToken)}`
+            });
+            const data = await res.json();
+            if (data.id_token) {
+                cachedToken = data.id_token;
+                tokenExpiresAt = Date.now() + (parseInt(data.expires_in, 10) || 3000) * 1000 - 60000;
+                if (data.refresh_token && data.refresh_token !== saved.refreshToken) {
+                    saveAuthState({ ...saved, refreshToken: data.refresh_token });
+                }
+                return cachedToken;
+            }
+            console.warn('[DAEMON] Odświeżenie tokenu nieudane, zakładam nową tożsamość jako ostateczność:', data.error?.message || 'nieznany błąd');
+        } catch (e) {
+            console.warn('[DAEMON] Błąd odświeżania tokenu:', e.message);
+        }
+    }
+
+    // Tylko przy pierwszym uruchomieniu (brak zapisanej tożsamości) albo gdy
+    // odświeżenie się nie powiodło — zakładamy konto i ZAPAMIĘTUJEMY je na stałe.
     try {
         const authUrl = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`;
         const res = await fetch(authUrl, {
@@ -84,7 +138,10 @@ async function getAuthToken() {
         const data = await res.json();
         if (data.idToken) {
             cachedToken = data.idToken;
-            tokenExpiresAt = Date.now() + 3000 * 1000;
+            tokenExpiresAt = Date.now() + (parseInt(data.expiresIn, 10) || 3000) * 1000 - 60000;
+            if (data.refreshToken) {
+                saveAuthState({ refreshToken: data.refreshToken, localId: data.localId, createdAt: new Date().toISOString() });
+            }
             return cachedToken;
         }
     } catch(e) {

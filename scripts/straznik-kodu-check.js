@@ -302,6 +302,49 @@ function checkCrossFileFunctionDrift() {
 // ══════════════════════════════════════════════════════════════════════════
 // REGUŁA H — Podstawowa walidacja składni JS w każdym inline <script>
 // ══════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════════
+// REGUŁA I — Agresywny polling DOM-u przez setInterval zamiast zdarzeń
+// (dokładnie wzorzec z lumina-premium-video-avatar.js: setInterval(...,1200)
+// skanujący cały DOM, potem powtórzony w karuzeli wideo: setInterval(...,3000).
+// Za każdym razem to ten sam błąd wydajnościowy — ciągłe odpytywanie zamiast
+// reagowania na realną zmianę przez MutationObserver/zdarzenia.)
+// ══════════════════════════════════════════════════════════════════════════
+const POLLING_INTERVAL_THRESHOLD_MS = 2000; // poniżej tego = podejrzanie agresywne
+
+function checkAggressiveDomPolling() {
+  checksRun++;
+  const allFiles = [...HTML_FILES, ...JS_FILES];
+  // Dopasowuje ZARÓWNO setInterval(nazwanaFunkcja, ms), JAK I setInterval(() => { ...wiele linii... }, ms)
+  // — ten drugi wariant jest formą, w jakiej naprawdę wystąpił oryginalny błąd
+  // (lumina-premium-video-avatar.js), więc dopasowanie samej jednej linii go nie widziało.
+  const intervalRe = /setInterval\s*\(\s*(?:async\s*)?(?:function\s*\([^)]*\)|\([^)]*\)\s*=>|\w+)\s*(?:\{[\s\S]{0,600}?\}\s*)?,\s*(\d+)\s*\)/g;
+
+  for (const f of allFiles) {
+    const content = readFile(f);
+    let m;
+    while ((m = intervalRe.exec(content)) !== null) {
+      const intervalMs = parseInt(m[1], 10);
+      if (!(intervalMs > 0 && intervalMs < POLLING_INTERVAL_THRESHOLD_MS)) continue;
+
+      const matchedText = m[0];
+      const lineNum = content.slice(0, m.index).split('\n').length;
+
+      const looksLikeMultiElementScan = /querySelectorAll|\.mount\w*\(|inject\w*(Button|Video|Avatar|Element)s?\(/i.test(matchedText);
+      const looksLikeHarmlessClock = /toLocaleTimeString|getSeconds\(\)|countdown|clock|Timer(?!Interval)/i.test(matchedText);
+
+      if (looksLikeMultiElementScan && !looksLikeHarmlessClock) {
+        report(
+          'I-AGGRESSIVE-DOM-POLLING',
+          f,
+          `Linia ${lineNum}: setInterval co ${intervalMs}ms skanujący/montujący wiele elementów DOM. ` +
+          `To dokładnie wzorzec, który już dwa razy kosztował nas wydajność (video avatar engine, karuzela wideo). ` +
+          `Rozważ MutationObserver albo nasłuch zdarzeń zamiast stałego odpytywania.`
+        );
+      }
+    }
+  }
+}
+
 function checkInlineScriptSyntax() {
   checksRun++;
   for (const f of HTML_FILES) {
@@ -335,6 +378,7 @@ checkDuplicateServiceWorkerRegistration();
 checkMojibake();
 checkUnescapedUserContent();
 checkCrossFileFunctionDrift();
+checkAggressiveDomPolling();
 checkInlineScriptSyntax();
 
 // ══════════════════════════════════════════════════════════════════════════
