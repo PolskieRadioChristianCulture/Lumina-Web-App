@@ -55,6 +55,18 @@
 
     // ── PANCERNY MENEDŻER PERSYSTENCJI WŁASNYCH ZDJĘĆ PROFILI I ELEMENTÓW ──
     window.applyAllLuminaCustomAvatars = function() {
+        try {
+            // Wymuszone usunięcie błędnych grafik z localStorage dla Urszuli
+            localStorage.removeItem('lumina_custom_avatar_u_urszula_7685');
+            localStorage.removeItem('lumina_avatar_u_urszula_7685');
+            localStorage.removeItem('lumina_custom_avatar_urszula');
+            localStorage.removeItem('lumina_avatar_urszula');
+            const ovs = JSON.parse(localStorage.getItem('lumina_element_overrides') || '{}');
+            Object.keys(ovs).forEach(k => {
+                if (k.includes('urszula') || JSON.stringify(ovs[k]).includes('christian_culture')) delete ovs[k];
+            });
+            localStorage.setItem('lumina_element_overrides', JSON.stringify(ovs));
+        } catch(e) {}
 
     // Automatyczne czyszczenie przestarzałych nadpisań
         try {
@@ -2407,7 +2419,7 @@
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=1786937913306">
 <!-- ══════════ LUMINA MODULAR ARCHITECTURE SUITE ══════════ -->
     <link rel="stylesheet" href="css/lumina-theme.css?v=1786940887015">
-    <link rel="stylesheet" href="css/lumina-components.css?v=20260822_fix_btns">
+    <link rel="stylesheet" href="css/lumina-components.css?v=20260825_urszula_real_face_v370">
     <link rel="stylesheet" href="css/lumina-profile.css?v=1786940887015">
     <link rel="stylesheet" href="css/lumina-feed.css?v=1786937908032">
     <link rel="stylesheet" href="css/lumina-modals.css?v=1786937908032">
@@ -2779,7 +2791,7 @@
     })();
     </script>
 
-    <script src="lumina-mobile-back-guard.js?v=20260825_v1"></script>
+    <script src="lumina-mobile-back-guard.js?v=20260825_urszula_real_face_v370"></script>
 <!-- Deep-Link Chat Message Highlight & Glow -->
     <style>
     .chat-message-highlight {
@@ -2907,7 +2919,7 @@
                 <!-- 1. Cezary Rogowski / Założyciel Christian Culture (Żonaty) -->
                 <div class="profile-card home-cezary-card" id="card_profile_cezaryrgowski" data-profile-slug="cezaryrgowski" data-category="mezczyzna zalozyciele" onclick="openCommunityProfile('cezaryrgowski')">
                     <div class="card-photo">
-                        <img src="avatar_cezary_karuzela_2026.jpg?v=20260824_v364" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_cezary_official.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <img src="avatar_cezary_karuzela_2026.jpg?v=20260825_urszula_real_face_v370" alt="Cezary Rogowski" class="home-cezary-avatar" id="homeUserAvatar" onerror="this.src='avatar_cezary_official.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'cezaryrgowski','Cezary Rogowski','avatar_cezary_karuzela_2026.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
                     </div>
@@ -2989,7 +3001,7 @@
                 <!-- 5. MISJA 2: Polskie Radio CC (YouTube) -->
                 <div class="profile-card mission-profile-card" id="card_profile_radiocc" data-profile-slug="radiocc" onclick="window.location.href='lumina.radiocc.html'" data-category="misja" style="cursor:pointer;">
                     <div class="card-photo">
-                        <img src="avatar_christian_culture_hq_2026.jpg?v=20260824_v364" onerror="this.src='christian_culture_carousel_photo.jpg'" alt="Christian Culture" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <img src="avatar_christian_culture_hq_2026.jpg?v=20260825_urszula_real_face_v370" onerror="this.src='christian_culture_carousel_photo.jpg'" alt="Christian Culture" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'radiocc','Christian Culture','christian_culture_carousel_photo.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #f59e0b, #d97706);">98%</div>
                     </div>
@@ -3074,7 +3086,7 @@
                         <div class="card-new-badge">
                             <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
                         </div>
-                        <img src="avatar_weronika_hq_2026.jpg?v=20260824_v364" onerror="this.src='avatar_weronika.jpg'" alt="Weronika" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <img src="avatar_weronika_hq_2026.jpg?v=20260825_urszula_real_face_v370" onerror="this.src='avatar_weronika.jpg'" alt="Weronika" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                         <button class="card-heart" onclick="toggleLike(event,this,'weronika','Weronika','avatar_weronika.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #a855f7, #ec4899);">97%</div>
                     </div>
@@ -3193,7 +3205,7 @@
                 <!-- 15. MISJA 6: CC Women (YouTube) -->
                 <div class="profile-card home-ccwomen-card mission-profile-card" id="card_profile_ccwomen" data-profile-slug="ccwomen" onclick="window.location.href='lumina.ccwomen.html'" data-category="misja kobieta" style="cursor:pointer;">
                     <div class="card-photo" style="background:#000;">
-                        <img src="avatar_ccwomen_official_2026.jpg?v=20260824_v364" alt="CC WOMEN" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;background:#000;">
+                        <img src="avatar_ccwomen_official_2026.jpg?v=20260825_urszula_real_face_v370" alt="CC WOMEN" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;background:#000;">
                         <button class="card-heart liked" onclick="toggleLike(event,this,'ccwomen','CC WOMEN','avatar_ccwomen_official_2026.jpg')"><i class="fa-solid fa-heart"></i></button>
                         <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #db2777);">100%</div>
                     </div>
@@ -3312,7 +3324,7 @@
             <div style="display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1);">
                 <div id="tablicaOnlineAvatarsContainer" class="tablica-online-avatars-wrap">
                     <div class="tablica-online-avatar-item" title="Zalogowany: Cezary Rogowski ✨ ˘" style="z-index: 4;" onclick="event.stopPropagation(); window.location.href='lumina.cezaryrgowski.html';">
-                        <img src="avatar_christian_culture_hq_2026.jpg?v=20260824_v364" alt="Cezary" class="tablica-online-avatar-img home-cezary-avatar" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='avatar_cezary_official.jpg';">
+                        <img src="avatar_christian_culture_hq_2026.jpg?v=20260825_urszula_real_face_v370" alt="Cezary" class="tablica-online-avatar-img home-cezary-avatar" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='avatar_cezary_official.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
                     <div class="tablica-online-avatar-item" title="Zalogowana: Wioletta Rogowska ✨ ˘" style="z-index: 3;" onclick="event.stopPropagation(); window.location.href='lumina.wiolettarogowska.html';">
@@ -4931,16 +4943,22 @@
                     renderedKeys.add(pKey);
 
                     const isVideoMedia = (p.carouselMediaType === 'video' || (p.carouselMediaUrl && (p.carouselMediaUrl.endsWith('.mp4') || p.carouselMediaUrl.endsWith('.webm') || p.carouselMediaUrl.includes('data:video/'))) || (p.avatarVideo && p.carouselMediaType === 'video'));
-                    const mediaUrl = p.carouselMediaUrl || (isVideoMedia ? (p.avatarVideo || p.carouselVideo) : (p.avatar || 'lumina_icon.jpg'));
-                    let userAvatar = p.avatar || 'avatar_urszula.jpg';
+                    let rawAvatar = p.avatar || 'avatar_urszula.jpg';
+                    const isMissionProfile = ['radiocc', 'cctv', 'osobowoscplus', 'studiodobregoslowa', 'ccmen', 'ccwomen'].includes(pKey);
+                    
+                    // PANCERNA BLOKADA: profile prywatne (np. Urszula) NIE MOGĄ mieć logotypu Radia CC / Google photo
+                    if (!isMissionProfile && (rawAvatar.includes('googleusercontent.com') || rawAvatar.includes('christian_culture') || rawAvatar.includes('radio') || rawAvatar.includes('placeholder'))) {
+                        rawAvatar = (pKey.includes('urszula') || (p.name && p.name.includes('Urszula'))) ? 'avatar_urszula.jpg' : 'lumina_icon.jpg';
+                    }
                     if (pKey.includes('urszula') || (p.name && p.name.includes('Urszula'))) {
-                        if (!userAvatar || userAvatar.includes('christian_culture') || userAvatar.includes('radio') || userAvatar.includes('icon')) {
-                            userAvatar = 'avatar_urszula.jpg';
-                        }
+                        rawAvatar = 'avatar_urszula.jpg';
                     }
-                    if (pKey.includes('dominika') || p.needsRealPhoto || userAvatar.includes('placeholder')) {
-                        userAvatar = 'lumina_icon.jpg';
+
+                    let mediaUrl = p.carouselMediaUrl || (isVideoMedia ? (p.avatarVideo || p.carouselVideo) : rawAvatar);
+                    if (!isMissionProfile && mediaUrl && (mediaUrl.includes('googleusercontent.com') || mediaUrl.includes('christian_culture') || mediaUrl.includes('radio'))) {
+                        mediaUrl = rawAvatar;
                     }
+                    let userAvatar = rawAvatar;
                     const userName = p.name;
                     const userAge = p.age ? ', ' + p.age : '';
                     const userCity = p.city ? p.city.split(',')[0] : 'Polska';
@@ -7391,8 +7409,8 @@
 
     </script>
     <script src="lumina-scroll-top.js" defer></script>
-    <script src="lumina-bottom-nav.js?v=20260825_v364_in_modal_final" defer></script>
-    <script src="lumina-notifications.js?v=20260820_notif_nodot" defer></script>
+    <script src="lumina-bottom-nav.js?v=20260825_urszula_real_face_v370" defer></script>
+    <script src="lumina-notifications.js?v=20260825_urszula_real_face_v370" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
 <div id="lumina-cookie-banner" style="position: fixed; bottom: 20px; right: 20px; max-width: 460px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #fff; padding: 14px 18px; z-index: 9999998; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(245,158,11,0.4); border-radius: 16px; font-family: inherit; font-size: 12.5px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); animation: fadeInCookie 0.3s ease;">
     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
@@ -8072,7 +8090,7 @@
         };
     </script>
 
-    <script src="lumina-admin-profile-suite.js?v=20260825_master_admin_complete_fix_v3"></script>
+    <script src="lumina-admin-profile-suite.js?v=20260825_urszula_real_face_v370"></script>
 <script>
 
         // ── TOP NAV COLLAPSIBLE DRAWER CONTROLLER ──
