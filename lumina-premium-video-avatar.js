@@ -50,7 +50,7 @@
 
     // Domyślne przypisania wideo dla profili specjalnych (jeśli użytkownik jeszcze nie wgrał własnego)
     const SPECIAL_PROFILES_DEFAULT_VIDEOS = {
-        'andrzejthiel': 'czesc_dobrze_ze_jestes.mp4',
+        
         'cezaryrgowski': 'wideo_profilowe_cezary_rogowski.mp4',
         'studiodobregoslowa': 'czesc_dobrze_ze_jestes.mp4',
         'cctv': 'Reklama 2 Sklep CC.mp4',
