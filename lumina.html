@@ -2808,6 +2808,24 @@
     </style>
 </head>
 <body>
+<script>
+    (function() {
+        try {
+            ['lumina_profile_u_urszula_7685', 'lumina_profile_urszula', 'lumina_custom_avatar_u_urszula_7685', 'lumina_avatar_u_urszula_7685', 'lumina_custom_avatar_urszula'].forEach(function(k) {
+                localStorage.removeItem(k);
+            });
+            var ovs = JSON.parse(localStorage.getItem('lumina_element_overrides') || '{}');
+            var changed = false;
+            Object.keys(ovs).forEach(function(k) {
+                if (k.includes('urszula') || JSON.stringify(ovs[k]).includes('christian_culture')) {
+                    delete ovs[k];
+                    changed = true;
+                }
+            });
+            if (changed) localStorage.setItem('lumina_element_overrides', JSON.stringify(ovs));
+        } catch(e) {}
+    })();
+    </script>
 
     <!-- Audio Player Element for Christian Culture Radio -->
     <audio id="ccRadioAudio" preload="none"></audio>
@@ -4855,6 +4873,15 @@
                 }
             } catch(e) {}
 
+            // Strict guard for Urszula (Private profile MUST have real face photo)
+            if (slug === 'u_urszula_7685' || slug === 'urszula' || (live.name && live.name.toLowerCase().includes('urszula'))) {
+                live.name = 'Urszula';
+                live.age = '28';
+                live.avatar = 'avatar_urszula.jpg';
+                live.city = 'Kraków, Polska';
+                live.isMissionAccount = false;
+            }
+
             // Strict fallback guards for System & Founder Profiles
             if (slug === 'cezaryrgowski') {
                 live.name = 'Cezary Rogowski';
@@ -5051,6 +5078,13 @@
                 if (!p) return;
 
                 const img = card.querySelector('.card-photo img');
+                if (slug === 'u_urszula_7685' || slug === 'urszula' || (p.name && p.name.includes('Urszula'))) {
+                    p.avatar = 'avatar_urszula.jpg';
+                    if (img) {
+                        img.src = 'avatar_urszula.jpg';
+                        img.setAttribute('src', 'avatar_urszula.jpg');
+                    }
+                }
                 if (img && p.avatar) {
                     img.src = p.avatar;
                     img.alt = p.name || slug;
