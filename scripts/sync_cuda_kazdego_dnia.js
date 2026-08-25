@@ -328,6 +328,19 @@ async function createFirestorePost(devotion) {
 }
 
 
+function triggerCudaPushNotification(postId, title) {
+  try {
+    const { exec } = require('child_process');
+    const cmd = `node C:/Users/czark/Christian_Culture_Projekty/FCM_Notifier/send_notification.js --type cuda --postId "${postId}" --title "${title || ''}"`;
+    exec(cmd, { env: { ...process.env, NODE_PATH: 'C:/Users/czark/Christian_Culture_Projekty/FCM_Notifier/node_modules' } }, (err, stdout, stderr) => {
+      if (err) console.error('[Sync Cuda PUSH] Błąd wyzwalania PUSH:', err.message);
+      else console.log('[Sync Cuda PUSH] Wynik wyzwolenia PUSH:\n', stdout);
+    });
+  } catch (e) {
+    console.warn('[Sync Cuda PUSH] Notice:', e.message);
+  }
+}
+
 export async function syncCudaDaily() {
   try {
     const archiveHtml = await fetchHtml(ARCHIVE_URL);
@@ -383,6 +396,7 @@ export async function syncCudaDaily() {
         publishedSlugs.add(entry.slug);
 
         results.push({ slug: entry.slug, dateDMY: entry.dateDMY, tablicaPostId });
+        triggerCudaPushNotification(tablicaPostId, devotion.rawTitle);
       } catch (entryErr) {
         console.error(`[Sync Cuda] Błąd przetwarzania wpisu ${entry.slug}:`, entryErr.message);
       }
