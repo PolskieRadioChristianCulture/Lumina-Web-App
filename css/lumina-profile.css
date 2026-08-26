@@ -355,10 +355,32 @@ body.owner-mode-active .photo-delete-badge {
 }
 
 @media (max-width: 900px) {
+    .profile-page-wrapper,
+    .profile-container,
+    .lumina-profile-card,
+    .lumina-mobile-viewport {
+        margin-top: 0 !important;
+        padding-top: 8px !important;
+        padding-bottom: 90px !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+    }
     .profile-body-grid { grid-template-columns: 1fr; }
-    .cover-wrapper { width: 100%; aspect-ratio: 1782 / 397; height: auto; margin-bottom: 12px; }
+    .cover-wrapper,
+    .lumina-profile-banner {
+        width: 100% !important;
+        aspect-ratio: 1782 / 397 !important;
+        height: auto !important;
+        max-height: 160px !important;
+        margin-bottom: 12px !important;
+    }
     .cover-photo { object-fit: contain; object-position: center center; }
-    .avatar-wrap { width: 90px; height: 90px; margin-top: 0; }
-    .profile-head-card { padding: 16px 16px 20px; margin-top: 0; }
+    .avatar-wrap,
+    .lumina-avatar-wrapper {
+        width: 90px !important;
+        height: 90px !important;
+        margin-top: -35px !important;
+    }
+    .profile-head-card { padding: 16px 14px 20px !important; margin-top: 0 !important; }
     .head-user-name { font-size: 1.38rem; }
 }

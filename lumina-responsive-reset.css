@@ -620,16 +620,24 @@ body.owner-mode-active .owner-only {
 @media (max-width: 900px) {
     .profile-container,
     .profile-card-layout,
-    .profile-wrapper {
+    .profile-wrapper,
+    .lumina-profile-card,
+    .lumina-mobile-viewport {
         padding-left: 10px !important;
         padding-right: 10px !important;
         width: 100% !important;
         max-width: 100vw !important;
+        margin-top: 0 !important;
+        padding-top: 8px !important;
+        padding-bottom: 90px !important;
     }
 
     .profile-cover-wrap,
-    .profile-cover {
-        height: clamp(140px, 32vw, 220px) !important;
+    .profile-cover,
+    .lumina-profile-banner {
+        height: 140px !important;
+        min-height: 120px !important;
+        max-height: 160px !important;
         border-radius: 16px 16px 0 0 !important;
     }
 
@@ -637,18 +645,20 @@ body.owner-mode-active .owner-only {
         flex-direction: column !important;
         align-items: flex-start !important;
         gap: 12px !important;
-        margin-top: -50px !important;
+        margin-top: -35px !important;
         padding: 0 12px !important;
     }
 
     .profile-avatar-wrap,
-    .head-avatar-box {
-        width: 100px !important;
-        height: 100px !important;
-        min-width: 100px !important;
+    .head-avatar-box,
+    .lumina-avatar-wrapper {
+        width: 90px !important;
+        height: 90px !important;
+        min-width: 90px !important;
         border-radius: 50% !important;
         border: 3px solid #0b1838 !important;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+        margin-top: -35px !important;
     }
 
     .profile-avatar-wrap img,
