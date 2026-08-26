@@ -1477,16 +1477,7 @@
                 font-size: 0.72rem !important;
             }
 
-            /* 4. Przyciski Akcji: Elegancka 2-kolumnowa siatka CTA + rząd ikon narzędziowych */
-            .head-actions {
-                display: flex !important;
-                flex-direction: column !important;
-                width: 100% !important;
-                gap: 8px !important;
-                margin-top: 10px !important;
-                padding-bottom: 0 !important;
-                overflow: visible !important;
-            }
+            /* 4. Przyciski Akcji: Elegancka siatka CTA w stylu mobilnym + rząd ikon narzędziowych */
             .head-actions-grid-mobile {
                 display: grid !important;
                 grid-template-columns: 1fr 1fr !important;
@@ -1590,6 +1581,50 @@
             }
             .form-input, textarea {
                 font-size: 16px !important;
+            }
+
+            /* ═══ MOBILE FINAL OVERRIDE: Eliminuje pustą przestrzeń ═══
+             * Niniejsze reguły muszą wygrać z wszystkimi zewnętrznymi deklaracjami
+             * (linie 2441-2462: .profile-head-top i .head-actions poza media query)
+             */
+            .profile-head-card .profile-head-top {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                width: 100% !important;
+                gap: 10px !important;
+                border-bottom: none !important;
+                padding-bottom: 0 !important;
+                margin-bottom: 0 !important;
+            }
+            .profile-head-card .head-actions {
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: wrap !important;
+                overflow-x: visible !important;
+                overflow-y: visible !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 8px !important;
+                margin-top: 4px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding-bottom: 0 !important;
+            }
+            .profile-head-card .head-actions > * {
+                flex-shrink: 1 !important;
+                white-space: nowrap !important;
+            }
+            .profile-head-card .head-actions .btn-action-primary,
+            .profile-head-card .head-actions .btn-action-secondary:not(.btn-action-gear):not(.btn-action-share):not(.btn-action-logout):not(.btn-action-more),
+            .profile-head-card .head-actions .btn-action-follow,
+            .profile-head-card .head-actions .btn-action-heart {
+                flex: 1 1 calc(50% - 8px) !important;
+                min-width: 120px !important;
+                max-width: 100% !important;
+                height: 40px !important;
+                justify-content: center !important;
             }
         }
 
@@ -3121,7 +3156,7 @@
                     </div>
                     </div><!-- end profile-head-main -->
 
-                <div class="head-actions" style="display:flex; flex-direction:row; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; gap:10px; align-items:center; width:auto; max-width:100%;">
+                <div class="head-actions" style="display:flex; flex-direction:row; flex-wrap:wrap; gap:8px; align-items:center; width:100%; max-width:100%;">
                     <button class="btn-action-primary" onclick="openMessageModal()" style="position:relative; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span><span class="profile-msg-badge" id="profileMsgBadge" style="display:none; min-width:18px; height:18px; background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; border-radius:9px; padding:0 4px; border:1.5px solid #fff; box-shadow:0 0 8px rgba(239,68,68,0.8); align-items:center; justify-content:center;"></span></button>
                     <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa</span></button>
                     
