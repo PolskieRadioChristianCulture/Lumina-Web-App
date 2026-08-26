@@ -2040,12 +2040,19 @@
                 // 16:00 - 18:00 (Śpiewajmy Panu — Blok Muzyczny 2h)
                 else if (timeInMinutes >= 16 * 60 && timeInMinutes < 18 * 60) {
                     current = { title: "Śpiewajmy Panu (Blok Muzyczny 24/7)", url: "spiewajmy-panu-live.html" };
-                    next = { time: "18:00", title: "Biblia Śpiewana / Chrześcijański Blok Filmowy" };
+                    const eveningTitle = (dayOfWeek === 6) ? "Chrześcijański Blok Filmowy" : (dayOfWeek === 0 ? "Świadectwa — Historie Wiary" : "Totalny Atak — Wykłady");
+                    next = { time: "18:00", title: eveningTitle };
                     third = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
                 }
-                // 18:00 - 20:00 (Biblia Śpiewana / Blok Filmowy)
+                // 18:00 - 20:00 (Totalny Atak / Blok Filmowy / Świadectwa)
                 else if (timeInMinutes >= 18 * 60 && timeInMinutes < 20 * 60) {
-                    current = { title: "Biblia Śpiewana / Blok Filmowy", url: "master-live.html" };
+                    if (dayOfWeek === 6) {
+                        current = { title: "Chrześcijański Blok Filmowy", url: "kino-live.html" };
+                    } else if (dayOfWeek === 0) {
+                        current = { title: "Świadectwa — Historie Wiary", url: "swiadectwa-live.html" };
+                    } else {
+                        current = { title: "Totalny Atak — Wykłady Biblijne", url: "totalny-atak-live.html" };
+                    }
                     next = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
                     third = { time: "21:00", title: "Apokalipsa dzień po dniu" };
                 }

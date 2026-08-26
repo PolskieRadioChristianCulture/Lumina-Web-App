@@ -277,6 +277,10 @@
                 title: "ŚWIADECTWA — HISTORIE WIARY",
                 desc: "Poruszające opowieści nawrócenia, uzdrowień i cudów na niedzielne wieczory"
             },
+            "totalny-atak-live.html": {
+                title: "TOTALNY ATAK — WYKŁADY BIBLIJNE",
+                desc: "Seria wykładów apologetycznych i profetycznych prof. Waltera Veitha (Pon-Pt 18:00)"
+            },
             "nocne-czuwanie-live.html": {
                 title: "NOCNE CZUWANIE & WORSHIP",
                 desc: "Nocny blok kontemplacji z cyklem 23 rotacyjnych filmów wyciszenia i uwielbienia"
@@ -340,7 +344,7 @@
                 const dayOfWeek = now.getDay();
                 if (dayOfWeek === 0) return isSafeMonetizationMode ? "biblia-spiewana-live.html" : "swiadectwa-live.html";
                 if (dayOfWeek === 6) return isSafeMonetizationMode ? "biblia-spiewana-live.html" : "kino-live.html";
-                return "biblia-spiewana-live.html";
+                return isSafeMonetizationMode ? "biblia-spiewana-live.html" : "totalny-atak-live.html";
             }
             return "biblia-spiewana-live.html";
         }
@@ -432,7 +436,7 @@
                 }
             }
 
-            // 5) Trigger Weekend Evening Shows (18:00 - 20:00): Sobota = Kino, Niedziela = Świadectwa
+            // 5) Trigger Evening Shows (18:00 - 20:00): Pon-Pt = Totalny Atak, Sobota = Kino, Niedziela = Świadectwa
             const dayOfWeek = now.getDay();
             if (hour >= 18 && hour < 20) {
                 if (dayOfWeek === 6) { // Sobota -> Chrześcijański Blok Filmowy
@@ -449,9 +453,16 @@
                         switchChannel(targetTestimonyChannel);
                     }
                     return;
+                } else { // Poniedziałek - Piątek -> Totalny Atak (Wykłady)
+                    isSpecialSlotActive = true;
+                    const targetAtakChannel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "totalny-atak-live.html";
+                    if (currentUrl !== targetAtakChannel) {
+                        switchChannel(targetAtakChannel);
+                    }
+                    return;
                 }
             } else {
-                if (isSpecialSlotActive && (currentUrl === "kino-live.html" || currentUrl === "swiadectwa-live.html" || currentUrl === "biblia-spiewana-live.html")) {
+                if (isSpecialSlotActive && (currentUrl === "totalny-atak-live.html" || currentUrl === "kino-live.html" || currentUrl === "swiadectwa-live.html" || currentUrl === "biblia-spiewana-live.html")) {
                     isSpecialSlotActive = false;
                 }
             }
