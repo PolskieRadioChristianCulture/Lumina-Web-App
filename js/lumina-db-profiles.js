@@ -31,7 +31,7 @@ export const PROFILES_DB = {
         verseRef: '— Księga Jozuego 24, 15',
         bio: 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture. Wierzymy, że małżeństwo oparte na Chrystusie jest źródłem niesamowitej siły, pokoju i ewangelizacyjnego świadectwa.',
         tags: ['Muzyka Uwielbienia', 'Wędrówki Górskie', 'Pismo Święte', 'Ewangelizacja', 'Nowe Technologie', 'Głębokie Rozmowy'],
-        photos: ['avatar_cezary_official.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'],
+        photos: ['avatar_cezary_official.jpg', 'avatar_wioletta_official.jpg', 'lumina_default_cover.jpg'],
         posts: [
             {
                 id: 'post_cr_1',
