@@ -347,7 +347,7 @@
         .cover-wrapper {
             position: relative;
             width: 100%;
-            aspect-ratio: 4642 / 1786;
+            aspect-ratio: 1782 / 397;
             height: auto;
             background: #000;
             border-radius: 0 0 20px 20px;
@@ -366,6 +366,17 @@
             display: block;
             z-index: 1;
             background: #000;
+        }
+
+        .cover-video-iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 1;
+            background: #000;
+            pointer-events: none;
         }
 
         .cover-photo {
@@ -1314,7 +1325,7 @@
             }
             .cover-wrapper {
                 width: 100%;
-                aspect-ratio: 4642 / 1786;
+                aspect-ratio: 1782 / 397;
                 height: auto;
             }
             .avatar-wrap { width: 100px; height: 100px; margin-top: 0; }
@@ -2858,6 +2869,7 @@
 
                 <div class="cover-actions-group" id="coverActionsGroup" onclick="event.stopPropagation()" style="z-index:30;">
                     <button type="button" class="btn-change-cover" onclick="triggerCoverUpload()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
+                    <button type="button" class="btn-change-cover" onclick="openCoverVideoModal()"><i class="fa-brands fa-youtube" style="color:#f87171;"></i> Wideo w tle (YouTube / MP4)</button>
                     <button type="button" class="btn-change-cover" onclick="toggleCoverRepositionToolbar()"><i class="fa-solid fa-arrows-up-down"></i> Ustaw Kadr / Wycentruj</button>
                     <button type="button" class="btn-change-cover" onclick="closeCoverActions()" style="padding:8px 12px; background:rgba(255,255,255,0.12);" title="Zamknij menu"><i class="fa-solid fa-xmark"></i></button>
                 </div>
@@ -3845,6 +3857,54 @@
                     <i class="fa-solid fa-right-from-bracket"></i> Wyloguj
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- ══════════ MODAL: USTAWIENIA WIDEO W TLE (PREMIUM & MISJA) ══════════ -->
+    <div class="modal-overlay" id="coverVideoUrlModal">
+        <div class="modal-card" style="max-width: 540px; padding: 26px 24px;">
+            <button class="modal-close-btn" onclick="closeModal('coverVideoUrlModal')"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
+                <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#ef4444,#dc2626); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.4rem; box-shadow:0 4px 14px rgba(239,68,68,0.4);">
+                    <i class="fa-brands fa-youtube"></i>
+                </div>
+                <div>
+                    <h3 style="font-size:1.25rem; font-family:'Outfit',sans-serif; margin:0; color:#fff; font-weight:800;">Wideo w Tle Profilu</h3>
+                    <div style="font-size:0.75rem; color:#facc15; font-weight:700;">Dedykowane dla Profili Premium ✨ oraz Profili Misyjnych 🕊️</div>
+                </div>
+            </div>
+
+            <p style="font-size:0.84rem; color:#cbd5e1; line-height:1.45; margin-bottom:16px;">
+                Wklej bezpośredni link do filmu z YouTube (np. ze zwiastunem misji, audycją lub teledyskiem uwielbienia) albo bezpośredni adres pliku wideo MP4:
+            </p>
+
+            <form onsubmit="saveCoverVideoUrlSubmit(event)">
+                <div style="margin-bottom:16px;">
+                    <label style="display:block; font-size:0.78rem; font-weight:700; color:#94a3b8; margin-bottom:6px;">Link do wideo (YouTube / MP4):</label>
+                    <input type="url" id="inputCoverVideoUrl" placeholder="https://www.youtube.com/watch?v=... lub plik .mp4" oninput="onCoverVideoUrlInput(this.value)" style="width:100%; padding:11px 14px; border-radius:12px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.22); color:#fff; font-size:0.88rem; font-family:inherit;">
+                </div>
+
+                <div id="coverVideoPreviewBox" style="display:none; margin-bottom:16px; padding:12px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1);">
+                    <div style="font-size:0.75rem; color:#38bdf8; font-weight:700; margin-bottom:6px;"><i class="fa-solid fa-eye"></i> Podgląd wideo:</div>
+                    <div id="coverVideoPreviewContainer" style="aspect-ratio:4642/1786; width:100%; border-radius:8px; overflow:hidden; background:#000; display:flex; align-items:center; justify-content:center;"></div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <button type="submit" style="width:100%; padding:12px; border-radius:12px; background:linear-gradient(135deg,#ef4444,#b91c1c); border:none; color:#fff; font-weight:800; font-size:0.88rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(239,68,68,0.4);">
+                        <i class="fa-solid fa-check"></i> Zapisz i Zastosuj Wideo w Tle
+                    </button>
+                    <button type="button" onclick="removeCoverVideoUrl()" style="width:100%; padding:10px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#cbd5e1; font-weight:700; font-size:0.82rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+                        <i class="fa-solid fa-trash-can"></i> Usuń wideo (przywróć standardowe zdjęcie)
+                    </button>
+                    <button type="button" onclick="closeModal('coverVideoUrlModal')" style="width:100%; padding:9px; border:none; background:none; color:#94a3b8; font-size:0.80rem; cursor:pointer; text-decoration:underline;">
+                        Anuluj
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ══════════ GUEST MULTI-CHANNEL FOLLOW & NOTIFICATIONS MODAL ══════════ -->
     <div class="modal-overlay" id="guestFollowModal">
         <div class="modal-card" style="max-width: 520px; padding: 24px 22px; max-height: 90vh; overflow-y: auto;">
@@ -3955,7 +4015,7 @@
             pin: '7777',
             visibility: 'public',
             avatar: 'avatar_cezary_official.jpg',
-            cover: 'lumina_default_cover.jpg',
+            cover: 'tlo_profilowe_cezary.gif',
             coverPosY: '50%',
             job: 'Założyciel Christian Culture',
             church: 'Wspólnota Uwielbieniowa',
@@ -4211,7 +4271,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                     }
                     let cover = parsed.cover;
                     if (!cover || cover === 'null' || cover === 'undefined' || cover.trim() === '') {
-                        cover = 'lumina_default_cover.jpg';
+                        cover = 'tlo_profilowe_cezary.gif';
                     }
                     let age = parsed.age;
                     if (!age || age === '32' || age === 32 || age === '30' || age === 30) {
@@ -4512,6 +4572,141 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
             showToast('Kadr zdjęcia w tle został pomyślnie zapisany! ✨✨');
         }
 
+        // ── Video Cover Engine (YouTube & MP4 for Premium & Mission Profiles) ──
+        function extractYouTubeId(url) {
+            if (!url) return null;
+            const str = url.trim();
+            const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts|live)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+            const match = str.match(regExp);
+            return (match && match[1]) ? match[1] : null;
+        }
+
+        function renderCoverMedia(data) {
+            const wrapper = document.querySelector('.cover-wrapper');
+            if (!wrapper) return;
+
+            const videoUrl = (data?.coverVideoUrl || '').trim();
+            const ytId = extractYouTubeId(videoUrl);
+
+            // Usunięcie istniejącego iframe jeśli był
+            const oldIframe = document.getElementById('profileCoverYtIframe');
+            if (oldIframe) oldIframe.remove();
+
+            const videoEl = document.getElementById('profileCoverVideoEl');
+            const imgEl = document.getElementById('coverPhotoEl');
+
+            // Sprawdź czy cover to GIF (animowany) – traktujemy go jak obraz
+            const coverSrc = (data.cover || 'lumina_default_cover.jpg');
+            const isGifCover = coverSrc.endsWith('.gif') || coverSrc.includes('.gif');
+
+            if (ytId) {
+                if (videoEl) videoEl.style.display = 'none';
+                if (imgEl) imgEl.style.display = 'none';
+
+                const iframe = document.createElement('iframe');
+                iframe.id = 'profileCoverYtIframe';
+                iframe.className = 'cover-video-iframe';
+                iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&enablejsapi=1`;
+                iframe.setAttribute('frameborder', '0');
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+                iframe.setAttribute('allowfullscreen', 'true');
+                wrapper.insertBefore(iframe, wrapper.firstChild);
+            } else if (videoUrl && (videoUrl.endsWith('.mp4') || videoUrl.includes('.mp4') || videoUrl.startsWith('data:video') || videoUrl.startsWith('blob:') || videoUrl === 'tlo_profilowe_cezary.mp4')) {
+                if (videoEl) {
+                    videoEl.style.display = 'block';
+                    if (!videoEl.src.endsWith(videoUrl)) {
+                        videoEl.src = videoUrl;
+                    }
+                    videoEl.play().catch(() => {});
+                }
+                if (imgEl) imgEl.style.display = 'none';
+            } else {
+                // Zdjęcie lub animowany GIF – oba przez element <img>
+                if (videoEl) videoEl.style.display = 'none';
+                if (imgEl) {
+                    imgEl.style.display = 'block';
+                    imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = 'lumina_default_cover.jpg'; };
+                    imgEl.src = coverSrc;
+                    if (isGifCover) {
+                        // GIF – zawiera własną animację, używamy contain by nic nie było przycięte
+                        imgEl.style.objectFit = 'contain';
+                        imgEl.style.objectPosition = 'center center';
+                        imgEl.style.background = '#000';
+                    } else {
+                        imgEl.style.objectFit = 'cover';
+                        imgEl.style.objectPosition = 'center ' + (data.coverPosY || '50%');
+                        imgEl.style.background = '';
+                    }
+                }
+            }
+        }
+
+        function openCoverVideoModal() {
+            const data = getProfileData();
+            const input = document.getElementById('inputCoverVideoUrl');
+            if (input) {
+                input.value = data.coverVideoUrl || '';
+                onCoverVideoUrlInput(input.value);
+            }
+            openModal('coverVideoUrlModal');
+        }
+
+        function onCoverVideoUrlInput(val) {
+            const previewBox = document.getElementById('coverVideoPreviewBox');
+            const previewContainer = document.getElementById('coverVideoPreviewContainer');
+            if (!previewBox || !previewContainer) return;
+
+            const trimmed = (val || '').trim();
+            const ytId = extractYouTubeId(trimmed);
+
+            if (ytId) {
+                previewBox.style.display = 'block';
+                previewContainer.innerHTML = `<iframe style="width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/${ytId}?autoplay=0&mute=1&controls=1" allowfullscreen></iframe>`;
+            } else if (trimmed && (trimmed.endsWith('.mp4') || trimmed.includes('.mp4'))) {
+                previewBox.style.display = 'block';
+                previewContainer.innerHTML = `<video style="width:100%; height:100%; object-fit:contain;" src="${trimmed}" autoplay loop muted playsinline></video>`;
+            } else {
+                previewBox.style.display = 'none';
+                previewContainer.innerHTML = '';
+            }
+        }
+
+        async function saveCoverVideoUrlSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('inputCoverVideoUrl');
+            const url = (input?.value || '').trim();
+            const cur = getProfileData();
+            cur.coverVideoUrl = url;
+
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                    await window.LuminaDB.saveProfileToCloud('cezaryrgowski', cur);
+                }
+            } catch(err) {}
+
+            closeModal('coverVideoUrlModal');
+            renderProfileView();
+            showToast('Wideo w tle profilu zostało pomyślnie zaktualizowane! ✨🎬');
+        }
+
+        async function removeCoverVideoUrl() {
+            const cur = getProfileData();
+            cur.coverVideoUrl = '';
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(cur));
+                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                    await window.LuminaDB.saveProfileToCloud('cezaryrgowski', cur);
+                }
+            } catch(err) {}
+
+            closeModal('coverVideoUrlModal');
+            renderProfileView();
+            showToast('Wideo w tle zostało usunięte. Przywrócono tło graficzne.');
+        }
+
         // ── Render Views ──
         function renderProfileView() {
             const data = getProfileData();
@@ -4538,17 +4733,8 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                     compAv.src = targetAv;
                 }
             }
-            const coverVideoEl = document.getElementById('profileCoverVideoEl');
-            if (coverVideoEl) {
-                coverVideoEl.play().catch(() => {});
-            }
-            const coverEl = document.getElementById('coverPhotoEl');
-            if (coverEl && !coverVideoEl) {
-                const targetCov = data.cover || 'lumina_default_cover.jpg';
-                coverEl.onerror = () => { coverEl.onerror = null; coverEl.src = 'lumina_default_cover.jpg'; };
-                coverEl.src = targetCov;
-                coverEl.style.objectPosition = 'center ' + (data.coverPosY || '50%');
-            }
+
+            renderCoverMedia(data);
 
             const tagsContainer = document.getElementById('userTagsEl');
             if (tagsContainer && data.tags) {

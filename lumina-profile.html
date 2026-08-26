@@ -452,13 +452,35 @@
             position: relative;
             width: 100%;
             aspect-ratio: 1300 / 500;
-            max-height: 480px;
-            min-height: 220px;
-            background: linear-gradient(135deg, #1e1b4b, #312e81, #0f172a);
+            height: auto;
+            background: #000;
             border-radius: 0 0 24px 24px;
             overflow: hidden;
             box-shadow: 0 15px 35px rgba(0,0,0,0.4);
             cursor: pointer;
+        }
+
+        .cover-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center center;
+            display: block;
+            z-index: 1;
+            background: #000;
+        }
+
+        .cover-video-iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 1;
+            background: #000;
+            pointer-events: none;
         }
 
         .cover-photo {
@@ -474,6 +496,8 @@
             position: absolute;
             inset: 0;
             background: linear-gradient(to bottom, rgba(11, 24, 56, 0.1) 40%, rgba(11, 24, 56, 0.85) 100%);
+            z-index: 2;
+            pointer-events: none;
         }
 
         .cover-actions-group {
@@ -2584,6 +2608,7 @@
 
             <!-- Cover Banner -->
             <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
+                <video id="profileCoverVideoEl" class="cover-video" src="" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="lumina_default_cover.jpg" style="display:none;"></video>
                 <img loading="lazy" decoding="async" src="lumina_default_cover.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
                 <div class="cover-overlay"></div>
                 
@@ -2591,6 +2616,7 @@
 
                 <div class="cover-actions-group" id="coverActionsGroup" onclick="event.stopPropagation()">
                     <button type="button" class="btn-change-cover" onclick="triggerCoverUpload()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
+                    <button type="button" class="btn-change-cover" onclick="openCoverVideoModal()"><i class="fa-brands fa-youtube" style="color:#f87171;"></i> Wideo w tle (YouTube / MP4)</button>
                     <button type="button" class="btn-change-cover" onclick="toggleCoverRepositionToolbar()"><i class="fa-solid fa-arrows-up-down"></i> Ustaw Kadr / Wycentruj</button>
                     <button type="button" class="btn-change-cover" onclick="closeCoverActions()" style="padding:8px 12px; background:rgba(255,255,255,0.12);" title="Zamknij menu"><i class="fa-solid fa-xmark"></i></button>
                 </div>
@@ -3110,6 +3136,49 @@
                 <div style="display:flex; gap: 10px;">
                     <button type="button" onclick="closeModal('privatePinPromptModal')" style="flex:1; padding: 12px; border-radius: 30px; background: rgba(255,255,255,0.08); border: none; color: #fff; font-weight: 700; cursor: pointer;">Anuluj</button>
                     <button type="submit" style="flex:1.5; padding: 12px; border-radius: 30px; background: linear-gradient(90deg, #a855f7, #3b82f6); border: none; color: #fff; font-weight: 800; cursor: pointer; box-shadow: 0 4px 18px rgba(168,85,247,0.4);"><i class="fa-solid fa-unlock"></i> Odblokuj Widok ✨</button>
+                </div>
+            </form>
+        </div>
+    <!-- ══════════ MODAL: USTAWIENIA WIDEO W TLE (PREMIUM & MISJA) ══════════ -->
+    <div class="modal-overlay" id="coverVideoUrlModal">
+        <div class="modal-card" style="max-width: 540px; padding: 26px 24px;">
+            <button class="modal-close-btn" onclick="closeModal('coverVideoUrlModal')"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
+                <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#ef4444,#dc2626); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.4rem; box-shadow:0 4px 14px rgba(239,68,68,0.4);">
+                    <i class="fa-brands fa-youtube"></i>
+                </div>
+                <div>
+                    <h3 style="font-size:1.25rem; font-family:'Outfit',sans-serif; margin:0; color:#fff; font-weight:800;">Wideo w Tle Profilu</h3>
+                    <div style="font-size:0.75rem; color:#facc15; font-weight:700;">Dedykowane dla Profili Premium ✨ oraz Profili Misyjnych 🕊️</div>
+                </div>
+            </div>
+
+            <p style="font-size:0.84rem; color:#cbd5e1; line-height:1.45; margin-bottom:16px;">
+                Wklej bezpośredni link do filmu z YouTube (np. ze zwiastunem misji, audycją lub teledyskiem uwielbienia) albo bezpośredni adres pliku wideo MP4:
+            </p>
+
+            <form onsubmit="saveCoverVideoUrlSubmit(event)">
+                <div style="margin-bottom:16px;">
+                    <label style="display:block; font-size:0.78rem; font-weight:700; color:#94a3b8; margin-bottom:6px;">Link do wideo (YouTube / MP4):</label>
+                    <input type="url" id="inputCoverVideoUrl" placeholder="https://www.youtube.com/watch?v=... lub plik .mp4" oninput="onCoverVideoUrlInput(this.value)" style="width:100%; padding:11px 14px; border-radius:12px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.22); color:#fff; font-size:0.88rem; font-family:inherit;">
+                </div>
+
+                <div id="coverVideoPreviewBox" style="display:none; margin-bottom:16px; padding:12px; border-radius:12px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1);">
+                    <div style="font-size:0.75rem; color:#38bdf8; font-weight:700; margin-bottom:6px;"><i class="fa-solid fa-eye"></i> Podgląd wideo:</div>
+                    <div id="coverVideoPreviewContainer" style="aspect-ratio:1300/500; width:100%; border-radius:8px; overflow:hidden; background:#000; display:flex; align-items:center; justify-content:center;"></div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <button type="submit" style="width:100%; padding:12px; border-radius:12px; background:linear-gradient(135deg,#ef4444,#b91c1c); border:none; color:#fff; font-weight:800; font-size:0.88rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(239,68,68,0.4);">
+                        <i class="fa-solid fa-check"></i> Zapisz i Zastosuj Wideo w Tle
+                    </button>
+                    <button type="button" onclick="removeCoverVideoUrl()" style="width:100%; padding:10px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#cbd5e1; font-weight:700; font-size:0.82rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+                        <i class="fa-solid fa-trash-can"></i> Usuń wideo (przywróć standardowe zdjęcie)
+                    </button>
+                    <button type="button" onclick="closeModal('coverVideoUrlModal')" style="width:100%; padding:9px; border:none; background:none; color:#94a3b8; font-size:0.80rem; cursor:pointer; text-decoration:underline;">
+                        Anuluj
+                    </button>
                 </div>
             </form>
         </div>
