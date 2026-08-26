@@ -92,6 +92,116 @@
         }
     }
 
+    /* ── LUMINA UNIVERSAL LIVE AUTH STATUS DIODE (ZIELONA = ZALOGOWANY / CZERWONA = WYLOGOWANY) ── */
+    @keyframes luminaPulseRed {
+        0% { transform: scale(1); box-shadow: 0 0 10px rgba(239, 68, 68, 0.9), 0 0 0 rgba(239, 68, 68, 0.7); }
+        50% { transform: scale(1.15); box-shadow: 0 0 18px rgba(239, 68, 68, 1), 0 0 12px rgba(239, 68, 68, 0.9); }
+        100% { transform: scale(1); box-shadow: 0 0 10px rgba(239, 68, 68, 0.9), 0 0 0 rgba(239, 68, 68, 0.7); }
+    }
+    @keyframes luminaPulseGreen {
+        0% { transform: scale(1); box-shadow: 0 0 10px rgba(34, 197, 94, 0.9); }
+        50% { transform: scale(1.08); box-shadow: 0 0 18px rgba(34, 197, 94, 1); }
+        100% { transform: scale(1); box-shadow: 0 0 10px rgba(34, 197, 94, 0.9); }
+    }
+
+    .avatar-status-badge,
+    .avatar-status-badge.online,
+    .avatar-status-badge[data-status="online"] {
+        position: absolute !important;
+        bottom: 8px !important;
+        right: 8px !important;
+        width: 22px !important;
+        height: 22px !important;
+        border-radius: 50% !important;
+        background: #22c55e !important;
+        border: 3.5px solid #070e24 !important;
+        box-shadow: 0 0 14px rgba(34, 197, 94, 0.95), 0 0 24px rgba(34, 197, 94, 0.6) !important;
+        z-index: 45 !important;
+        cursor: pointer !important;
+        pointer-events: auto !important;
+        display: block !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .avatar-status-badge.offline,
+    .avatar-status-badge[data-status="offline"],
+    body:not(.user-is-authenticated) .avatar-status-badge {
+        background: #ef4444 !important;
+        box-shadow: 0 0 14px rgba(239, 68, 68, 0.95), 0 0 24px rgba(239, 68, 68, 0.6) !important;
+        animation: luminaPulseRed 1.8s infinite ease-in-out !important;
+        cursor: pointer !important;
+        pointer-events: auto !important;
+    }
+
+    /* Composer Avatar Status Dot */
+    .composer-avatar-wrap {
+        position: relative !important;
+        overflow: visible !important;
+    }
+    .composer-status-dot {
+        position: absolute !important;
+        bottom: -2px !important;
+        right: -2px !important;
+        width: 14px !important;
+        height: 14px !important;
+        border-radius: 50% !important;
+        border: 2.5px solid #0b142e !important;
+        z-index: 20 !important;
+        cursor: pointer !important;
+        pointer-events: auto !important;
+        transition: all 0.3s ease !important;
+    }
+    .composer-status-dot.online,
+    body.user-is-authenticated .composer-status-dot {
+        background: #22c55e !important;
+        box-shadow: 0 0 8px #22c55e !important;
+    }
+    .composer-status-dot.offline,
+    body:not(.user-is-authenticated) .composer-status-dot {
+        background: #ef4444 !important;
+        box-shadow: 0 0 8px #ef4444 !important;
+        animation: luminaPulseRed 1.8s infinite ease-in-out !important;
+    }
+
+    /* Textual Status Pill in Profile Header */
+    .lumina-auth-status-pill {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding: 4px 12px !important;
+        border-radius: 20px !important;
+        font-size: 0.78rem !important;
+        font-weight: 800 !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        transition: all 0.25s ease !important;
+        cursor: pointer !important;
+        text-decoration: none !important;
+        line-height: 1.4 !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+        user-select: none !important;
+    }
+    .lumina-auth-status-pill.online,
+    body.user-is-authenticated .lumina-auth-status-pill {
+        background: rgba(34, 197, 94, 0.16) !important;
+        border: 1px solid rgba(34, 197, 94, 0.45) !important;
+        color: #4ade80 !important;
+    }
+    .lumina-auth-status-pill.online:hover {
+        background: rgba(34, 197, 94, 0.28) !important;
+        border-color: #22c55e !important;
+    }
+    .lumina-auth-status-pill.offline,
+    body:not(.user-is-authenticated) .lumina-auth-status-pill {
+        background: rgba(239, 68, 68, 0.16) !important;
+        border: 1px solid rgba(239, 68, 68, 0.45) !important;
+        color: #fca5a5 !important;
+    }
+    .lumina-auth-status-pill.offline:hover {
+        background: rgba(239, 68, 68, 0.3) !important;
+        border-color: #ef4444 !important;
+        transform: scale(1.03) !important;
+    }
+
         /* ── LUMINA BOTTOM NAVIGATION BAR (Desktop Floating Dock & Mobile Bar) ── */
         .lumina-bottom-nav {
             position: fixed !important;
@@ -999,11 +1109,13 @@
 
     window.checkLuminaAuthState = function() {
         let isAuthenticated = false;
+        let isMaster = false;
 
         // 1. Sprawdź tryb Administratora
         if (sessionStorage.getItem('lumina_auth_master_admin') === 'true' || 
             localStorage.getItem('lumina_auth_master_admin') === 'true') {
             isAuthenticated = true;
+            isMaster = true;
         }
 
         // 2. Sprawdź zalogowanego użytkownika LuminaDB / Firebase
@@ -1020,7 +1132,7 @@
         if (!isAuthenticated) {
             for (let i = 0; i < localStorage.length; i++) {
                 const k = localStorage.key(i);
-                if (k && (k.startsWith('firebase:authUser:') || k === 'lumina_user_profile' || k === 'lumina_current_user_data')) {
+                if (k && (k.startsWith('firebase:authUser:') || k === 'lumina_user_profile' || k === 'lumina_current_user_data' || k === 'lumina_current_user_profile')) {
                     const val = localStorage.getItem(k);
                     if (val && val !== 'null' && val !== '{}') {
                         isAuthenticated = true;
@@ -1030,14 +1142,118 @@
             }
         }
 
-        const bar = document.getElementById('luminaMobileAuthBar');
+        // 4. Aktualizacja klas na body
         if (isAuthenticated) {
             document.body.classList.add('user-is-authenticated');
-            if (bar) bar.style.setProperty('display', 'none', 'important');
+            document.body.classList.remove('user-is-guest');
+            if (isMaster) document.body.classList.add('owner-mode-active');
         } else {
             document.body.classList.remove('user-is-authenticated');
-            if (bar && window.innerWidth <= 900) {
+            document.body.classList.add('user-is-guest');
+            document.body.classList.remove('owner-mode-active');
+        }
+
+        // 5. Pasek mobilny
+        const bar = document.getElementById('luminaMobileAuthBar');
+        if (bar) {
+            if (isAuthenticated) {
+                bar.style.setProperty('display', 'none', 'important');
+            } else if (window.innerWidth <= 900) {
                 bar.style.display = 'flex';
+            }
+        }
+
+        // 6. 🔴/🟢 DIODA PRZY ZDJĘCIU PROFILOWYM (Czerwona = Wylogowany, Zielona = Zalogowany)
+        const avatarWraps = document.querySelectorAll('.avatar-wrap, .head-avatar-wrapper, .profile-avatar-wrap, .head-top-row .avatar-wrap');
+        avatarWraps.forEach(wrap => {
+            let badge = wrap.querySelector('.avatar-status-badge');
+            if (!badge) {
+                badge = document.createElement('div');
+                badge.className = 'avatar-status-badge';
+                wrap.appendChild(badge);
+            }
+            if (isAuthenticated) {
+                badge.className = 'avatar-status-badge online';
+                badge.setAttribute('data-status', 'online');
+                badge.setAttribute('title', isMaster ? '🟢 Zalogowany (Główny Administrator Portalu)' : '🟢 Zalogowany (Aktywny w Społeczności)');
+                badge.onclick = (e) => {
+                    e.stopPropagation();
+                    const toast = window.showToast || alert;
+                    toast(isMaster ? '👑 Status: Zalogowany (Master Admin)' : '🟢 Status: Zalogowany (Aktywny)');
+                };
+            } else {
+                badge.className = 'avatar-status-badge offline';
+                badge.setAttribute('data-status', 'offline');
+                badge.setAttribute('title', '🔴 Wylogowany • Kliknij tutaj, aby się zalogować!');
+                badge.onclick = (e) => {
+                    e.stopPropagation();
+                    if (window.triggerSecretAdminPrompt) {
+                        window.triggerSecretAdminPrompt(e);
+                    } else if (window.triggerLuminaLogin) {
+                        window.triggerLuminaLogin(e);
+                    }
+                };
+            }
+        });
+
+        // 7. 🔴/🟢 DIODA W OKIENKU PUBLIKACJI POSTÓW (Composer)
+        const composerWraps = document.querySelectorAll('.composer-avatar-wrap');
+        composerWraps.forEach(wrap => {
+            let dot = wrap.querySelector('.composer-status-dot');
+            if (!dot) {
+                dot = document.createElement('span');
+                dot.className = 'composer-status-dot';
+                wrap.appendChild(dot);
+            }
+            if (isAuthenticated) {
+                dot.className = 'composer-status-dot online';
+                dot.setAttribute('title', '🟢 Zalogowany — Możesz publikować wpisy');
+            } else {
+                dot.className = 'composer-status-dot offline';
+                dot.setAttribute('title', '🔴 Wylogowany — Kliknij, aby się zalogować');
+                dot.onclick = (e) => {
+                    e.stopPropagation();
+                    if (window.triggerSecretAdminPrompt) window.triggerSecretAdminPrompt(e);
+                    else if (window.triggerLuminaLogin) window.triggerLuminaLogin(e);
+                };
+            }
+        });
+
+        // 8. 🔴/🟢 JASNY KOMUNIKAT TEKSTOWY (Status Pill w nagłówku profilu)
+        const taglineBoxes = document.querySelectorAll('.head-user-tagline, .profile-head-top, .head-user-details');
+        if (taglineBoxes.length > 0) {
+            const targetContainer = document.querySelector('.head-user-tagline') || taglineBoxes[0];
+            if (targetContainer) {
+                let statusPill = targetContainer.querySelector('.lumina-auth-status-pill');
+                if (!statusPill) {
+                    statusPill = document.createElement('span');
+                    statusPill.className = 'lumina-auth-status-pill';
+                    targetContainer.appendChild(statusPill);
+                }
+                if (isAuthenticated) {
+                    statusPill.className = 'lumina-auth-status-pill online';
+                    statusPill.innerHTML = isMaster 
+                        ? '<i class="fa-solid fa-circle" style="color:#22c55e; font-size:0.55rem;"></i> 👑 Administrator (Zalogowany)' 
+                        : '<i class="fa-solid fa-circle" style="color:#22c55e; font-size:0.55rem;"></i> Zalogowany';
+                    statusPill.title = 'Sesja aktywna. Kliknij, aby zarządzać panelem.';
+                    statusPill.onclick = (e) => {
+                        e.stopPropagation();
+                        if (isMaster && window.LuminaAdminSuite?.openAllProfilesManager) {
+                            window.LuminaAdminSuite.openAllProfilesManager();
+                        } else if (window.showToast) {
+                            window.showToast('🟢 Twoja sesja jest aktywna!');
+                        }
+                    };
+                } else {
+                    statusPill.className = 'lumina-auth-status-pill offline';
+                    statusPill.innerHTML = '<i class="fa-solid fa-circle" style="color:#ef4444; font-size:0.55rem;"></i> 🔴 Wylogowany (Zaloguj się)';
+                    statusPill.title = 'Nie jesteś zalogowany. Kliknij tutaj, aby się zalogować!';
+                    statusPill.onclick = (e) => {
+                        e.stopPropagation();
+                        if (window.triggerSecretAdminPrompt) window.triggerSecretAdminPrompt(e);
+                        else if (window.triggerLuminaLogin) window.triggerLuminaLogin(e);
+                    };
+                }
             }
         }
     };
