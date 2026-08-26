@@ -245,21 +245,26 @@
         }
 
         .ticker-label {
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
-            color: #000;
-            font-weight: 900;
-            font-size: 1.5rem;
-            padding: 0 35px;
+            background: transparent;
+            padding: 0 20px;
             height: 100%;
             display: flex;
             align-items: center;
-            gap: 12px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            justify-content: center;
             flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+            box-shadow: 8px 0 20px rgba(0, 0, 0, 0.7);
         }
 
-        .ticker-content {
+        .ticker-label img {
+            height: 46px;
+            max-height: 46px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8));
+        }.ticker-content {
             display: flex;
             align-items: center;
             white-space: nowrap;

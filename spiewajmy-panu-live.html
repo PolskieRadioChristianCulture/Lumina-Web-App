@@ -213,7 +213,7 @@
 
         .ticker-label {
             background: transparent;
-            padding: 0 25px;
+            padding: 0 20px;
             height: 100%;
             display: flex;
             align-items: center;
@@ -221,14 +221,16 @@
             flex-shrink: 0;
             position: relative;
             z-index: 10;
-            box-shadow: 10px 0 25px rgba(0, 0, 0, 0.9);
+            box-shadow: 8px 0 20px rgba(0, 0, 0, 0.7);
         }
 
         .ticker-label img {
-            height: 52px;
+            height: 46px;
+            max-height: 46px;
             width: auto;
             object-fit: contain;
-            filter: drop-shadow(0 2px 10px rgba(0,0,0,0.7));
+            display: block;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8));
         }
 
         .ticker-track-wrapper {

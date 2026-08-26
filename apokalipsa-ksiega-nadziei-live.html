@@ -249,20 +249,26 @@
         }
 
         .ticker-label {
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
-            color: #000;
-            font-weight: 900;
-            font-size: 1.5rem;
-            padding: 0 36px;
+            background: transparent;
+            padding: 0 20px;
             height: 100%;
             display: flex;
             align-items: center;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            white-space: nowrap;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+            box-shadow: 8px 0 20px rgba(0, 0, 0, 0.7);
         }
 
-        .ticker-marquee {
+        .ticker-label img {
+            height: 46px;
+            max-height: 46px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8));
+        }.ticker-marquee {
             flex: 1;
             overflow: hidden;
             white-space: nowrap;
@@ -345,7 +351,9 @@
 
         <!-- Ticker -->
         <div class="bottom-ticker-bar">
-            <div class="ticker-label">WSPARCIE MISJI</div>
+            <div class="ticker-label">
+                <img src="tv24_cc.png" alt="tv24 CC">
+            </div>
             <div class="ticker-marquee">
                 <div class="ticker-content">
                     🌿 Wspieraj budowę cyfrowego ekosystemu Christian Culture! ▸ PATRONITE: patronite.pl/osobowoscplus ▸ REVOLUT: revolut.me/christianculture ▸ BLIK: 537 134 043 ▸ Nr konta: 48 2910 0006 0000 0000 0527 2629 z dopiskiem „Dar misyjny” ▸ Portal: www.polskieradio.cc | Aplikacja: cclite.pl
