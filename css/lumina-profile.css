@@ -356,8 +356,9 @@ body.owner-mode-active .photo-delete-badge {
 
 @media (max-width: 900px) {
     .profile-body-grid { grid-template-columns: 1fr; }
-    .cover-wrapper { width: 100%; aspect-ratio: 1782 / 397; height: auto; }
-    .avatar-wrap { width: 110px; height: 110px; margin-top: -55px; }
-    .profile-head-card { padding: 0 16px 20px; }
-    .head-user-name { font-size: 1.5rem; }
+    .cover-wrapper { width: 100%; height: 160px; min-height: 150px; aspect-ratio: auto; }
+    .cover-photo { object-fit: cover; object-position: center 30%; }
+    .avatar-wrap { width: 96px; height: 96px; margin-top: -55px; }
+    .profile-head-card { padding: 14px 16px 20px; margin-top: -30px; }
+    .head-user-name { font-size: 1.4rem; }
 }
