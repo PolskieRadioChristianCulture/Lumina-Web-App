@@ -88,6 +88,22 @@ class LuminaTablicaEngine {
 
         const missionBanners = [
             {
+                type: 'mission_robert',
+                title: 'Robert Dla Jezusa • Świadectwa i Ewangelizacja',
+                tag: '🔴 KANAŁ YOUTUBE',
+                desc: 'Dołącz do społeczności kanału Robert Dla Jezusa. Świadectwa wiary, głoszenie Ewangelii i wspólna modlitwa.',
+                image: 'robert_dla_jezusa_916.jpg',
+                link: 'https://youtube.com/@robertlukaszpio?si=aHMr3p3vs8sXwrUT'
+            },
+            {
+                type: 'mission_wikifaith',
+                title: 'Encyklopedia Wiary & Telebiblia.pl',
+                tag: '📖 SŁOWO BOŻE & ENCYKLOPEDIA',
+                desc: 'Polska edycja Encyklopedii Wiary (wikifaith.org/pl), ilustrowane teksty biblijne na Instagramie i codzienne wersety na WhatsApp od Telebiblia.pl.',
+                image: 'reklama_telebiblia_wikifaith_916.jpg',
+                link: 'https://www.wikifaith.org/pl'
+            },
+            {
                 type: 'mission_women',
                 title: 'CC Women • Kobiety Wiary i Modlitwy',
                 tag: '✨ KANAŁ OFICJALNY CC',
