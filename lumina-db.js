@@ -184,6 +184,8 @@ export const CEZARY_ADMIN_PROFILE = {
     email: 'nazirczarkes@gmail.com',
     avatar: 'avatar_cezary_official.jpg',
     avatarVideo: 'cezary_rgowski_video_avatar.mp4',
+    cover: 'tlo_profilowe_cezary.gif',
+    coverVideoUrl: '',
     age: 51,
     city: 'Ostrowiec Świętokrzyski, Polska',
     status: 'Żonaty',

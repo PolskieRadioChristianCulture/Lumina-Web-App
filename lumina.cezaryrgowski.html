@@ -9,6 +9,17 @@
             sessionStorage.setItem('lumina_lang', 'pl');
             document.cookie = "googtrans=/pl/pl; path=/;";
         } catch(e){}
+        try {
+            ['lumina_profile_cezaryrgowski', 'lumina_current_user_profile', 'lumina_my_profile'].forEach(k => {
+                const saved = localStorage.getItem(k);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    parsed.cover = 'tlo_profilowe_cezary.gif';
+                    parsed.coverVideoUrl = '';
+                    localStorage.setItem(k, JSON.stringify(parsed));
+                }
+            });
+        } catch(e){}
     })();
     </script>
     <!-- Google Analytics -->
@@ -2861,10 +2872,10 @@
         <!-- ══════════ FULL PUBLIC PROFILE VIEW ══════════ -->
         <div id="profilePublicView">
 
-            <!-- Cover Banner (Wyjątek: Wideo Tło Profilowe dla Cezarego Rogowskiego) -->
+            <!-- Cover Banner (Animowany GIF Tło Profilowe dla Cezarego Rogowskiego) -->
             <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
-                <video id="profileCoverVideoEl" class="cover-video" src="tlo_profilowe_cezary.mp4" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="lumina_default_cover.jpg"></video>
-                <img loading="lazy" decoding="async" src="lumina_default_cover.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl" style="display:none;">
+                <video id="profileCoverVideoEl" class="cover-video" src="" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="tlo_profilowe_cezary.gif" style="display:none;"></video>
+                <img loading="eager" decoding="async" src="tlo_profilowe_cezary.gif" alt="Cover" class="cover-photo" id="coverPhotoEl">
                 <div class="cover-overlay"></div>
                 
                 <div class="cover-hint-badge" style="z-index:3;"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
@@ -4277,9 +4288,16 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                     const OLD_COVERS = ['', 'null', 'undefined', 'lumina_default_cover.jpg', 'tlo_profilowe_cezary.mp4'];
                     if (!cover || OLD_COVERS.includes(cover.trim())) {
                         cover = 'tlo_profilowe_cezary.gif';
-                        // Zapisz migrację od razu do localStorage
-                        try { parsed.cover = cover; localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed)); } catch(e) {}
+                        parsed.cover = cover;
                     }
+                    // Migracja coverVideoUrl: jeśli wskazuje na stary lokalny MP4 → wyczyść, żeby GIF był widoczny
+                    const OLD_VIDEO_URLS = ['tlo_profilowe_cezary.mp4', 'tlo_profilowe_cezary.mp4', './tlo_profilowe_cezary.mp4', '/tlo_profilowe_cezary.mp4'];
+                    if (parsed.coverVideoUrl && OLD_VIDEO_URLS.some(v => parsed.coverVideoUrl.trim().endsWith(v) || parsed.coverVideoUrl.trim() === v)) {
+                        parsed.coverVideoUrl = '';
+                    }
+                    // Zapisz migrację do localStorage
+                    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed)); } catch(e) {}
+
                     let age = parsed.age;
                     if (!age || age === '32' || age === 32 || age === '30' || age === 30) {
                         age = '51';
@@ -4289,6 +4307,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                         ...parsed,
                         avatar: avatar,
                         cover: cover,
+                        coverVideoUrl: parsed.coverVideoUrl || '',
                         age: age,
                         city: parsed.city || 'Ostrowiec Świętokrzyski, Polska',
                         visibility: parsed.visibility || 'public',
@@ -4602,12 +4621,8 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
             const videoEl = document.getElementById('profileCoverVideoEl');
             const imgEl = document.getElementById('coverPhotoEl');
 
-            // Sprawdź czy cover to GIF (animowany) – traktujemy go jak obraz
-            const coverSrc = (data.cover || 'lumina_default_cover.jpg');
-            const isGifCover = coverSrc.endsWith('.gif') || coverSrc.includes('.gif');
-
             if (ytId) {
-                if (videoEl) videoEl.style.display = 'none';
+                if (videoEl) { videoEl.style.display = 'none'; videoEl.pause(); }
                 if (imgEl) imgEl.style.display = 'none';
 
                 const iframe = document.createElement('iframe');
@@ -4618,7 +4633,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                 iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
                 iframe.setAttribute('allowfullscreen', 'true');
                 wrapper.insertBefore(iframe, wrapper.firstChild);
-            } else if (videoUrl && (videoUrl.endsWith('.mp4') || videoUrl.includes('.mp4') || videoUrl.startsWith('data:video') || videoUrl.startsWith('blob:') || videoUrl === 'tlo_profilowe_cezary.mp4')) {
+            } else if (videoUrl && (videoUrl.endsWith('.mp4') || videoUrl.includes('.mp4') || videoUrl.startsWith('data:video') || videoUrl.startsWith('blob:')) && !videoUrl.includes('tlo_profilowe_cezary.mp4')) {
                 if (videoEl) {
                     videoEl.style.display = 'block';
                     if (!videoEl.src.endsWith(videoUrl)) {
@@ -4628,22 +4643,25 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                 }
                 if (imgEl) imgEl.style.display = 'none';
             } else {
-                // Zdjęcie lub animowany GIF – oba przez element <img>
-                if (videoEl) videoEl.style.display = 'none';
+                // Zdjęcie lub animowany GIF – wyłączamy element wideo, włączamy obraz
+                if (videoEl) {
+                    videoEl.style.display = 'none';
+                    videoEl.pause();
+                    videoEl.src = '';
+                }
                 if (imgEl) {
                     imgEl.style.display = 'block';
-                    imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = 'lumina_default_cover.jpg'; };
-                    imgEl.src = coverSrc;
-                    if (isGifCover) {
-                        // GIF – zawiera własną animację, używamy contain by nic nie było przycięte
-                        imgEl.style.objectFit = 'contain';
-                        imgEl.style.objectPosition = 'center center';
-                        imgEl.style.background = '#000';
-                    } else {
-                        imgEl.style.objectFit = 'cover';
-                        imgEl.style.objectPosition = 'center ' + (data.coverPosY || '50%');
-                        imgEl.style.background = '';
+                    let coverSrc = data?.cover;
+                    if (!coverSrc || coverSrc === 'lumina_default_cover.jpg' || coverSrc === 'tlo_profilowe_cezary.mp4') {
+                        coverSrc = 'tlo_profilowe_cezary.gif';
                     }
+                    imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = 'tlo_profilowe_cezary.gif'; };
+                    if (!imgEl.src.endsWith(coverSrc)) {
+                        imgEl.src = coverSrc;
+                    }
+                    imgEl.style.objectFit = 'contain';
+                    imgEl.style.objectPosition = 'center center';
+                    imgEl.style.background = '#000';
                 }
             }
         }
