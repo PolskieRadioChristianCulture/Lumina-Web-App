@@ -347,10 +347,10 @@
         .cover-wrapper {
             position: relative;
             width: 100%;
-            aspect-ratio: 1300 / 500;
+            aspect-ratio: 4642 / 1786;
             height: auto;
-            background: linear-gradient(135deg, #1e1b4b, #312e81, #0f172a);
-            border-radius: 0 0 24px 24px;
+            background: #000;
+            border-radius: 0 0 20px 20px;
             overflow: hidden;
             box-shadow: 0 15px 35px rgba(0,0,0,0.4);
             cursor: pointer;
@@ -361,7 +361,7 @@
             inset: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             object-position: center center;
             display: block;
             z-index: 1;
@@ -371,18 +371,14 @@
         .cover-photo {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             object-position: center center;
             display: block;
             transition: transform 0.4s ease;
         }
 
         .cover-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(11, 24, 56, 0.1) 30%, rgba(11, 24, 56, 0.88) 100%);
-            z-index: 2;
-            pointer-events: none;
+            display: none;
         }
 
         .cover-actions-group {
@@ -561,8 +557,8 @@
             background: var(--navy-surface);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
-            padding: 0 32px 28px;
-            margin-top: -75px;
+            padding: 24px 32px 28px;
+            margin-top: 14px;
             z-index: 10;
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
         }
@@ -579,14 +575,14 @@
 
         .avatar-wrap {
             position: relative;
-            width: 150px;
-            height: 150px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
-            border: 5px solid var(--navy-surface);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(168, 85, 247, 0.35);
+            border: 4px solid #facc15;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(250, 204, 21, 0.4);
             background: #1e293b;
             flex-shrink: 0;
-            margin-top: -75px;
+            margin-top: 0;
         }
 
         .avatar-img {
@@ -1318,11 +1314,11 @@
             }
             .cover-wrapper {
                 width: 100%;
-                aspect-ratio: 1300 / 500;
+                aspect-ratio: 4642 / 1786;
                 height: auto;
             }
-            .avatar-wrap { width: 110px; height: 110px; margin-top: -55px; }
-            .profile-head-card { padding: 0 16px 20px; }
+            .avatar-wrap { width: 100px; height: 100px; margin-top: 0; }
+            .profile-head-card { padding: 16px; margin-top: 10px; }
             .head-user-name {
             font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
             font-size: clamp(1.2rem, 2.8vw, 1.85rem);
@@ -3849,6 +3845,89 @@
                     <i class="fa-solid fa-right-from-bracket"></i> Wyloguj
                 </button>
             </div>
+    <!-- ══════════ GUEST MULTI-CHANNEL FOLLOW & NOTIFICATIONS MODAL ══════════ -->
+    <div class="modal-overlay" id="guestFollowModal">
+        <div class="modal-card" style="max-width: 520px; padding: 24px 22px; max-height: 90vh; overflow-y: auto;">
+            <button class="modal-close-btn" onclick="closeModal('guestFollowModal')"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <div style="position:relative; width:48px; height:48px; flex-shrink:0;">
+                    <img src="avatar_cezary_official.jpg" alt="Cezary Rogowski" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border:2px solid #facc15;">
+                    <span style="position:absolute; bottom:-2px; right:-2px; width:18px; height:18px; border-radius:50%; background:linear-gradient(135deg,#10b981,#059669); color:#fff; display:flex; align-items:center; justify-content:center; font-size:0.6rem; border:1.5px solid #0b1838;"><i class="fa-solid fa-bell"></i></span>
+                </div>
+                <div>
+                    <h3 style="font-size: 1.25rem; font-family:'Outfit',sans-serif; margin:0; color:#fff; font-weight:800;">Bądź na bieżąco z Cezarym</h3>
+                    <div style="font-size: 0.78rem; color: #facc15; font-weight:700;">Obserwujesz profil • Wybierz formę powiadomień</div>
+                </div>
+            </div>
+
+            <p style="font-size: 0.84rem; color: #cbd5e1; line-height: 1.45; margin-bottom: 18px;">
+                Nawet bez konta na portalu możesz otrzymywać alerty o nowych rozważaniach, wpisach i transmisjach LIVE Cezarego Rogowskiego. Wybierz dogodny kanał:
+            </p>
+
+            <div style="display:flex; flex-direction:column; gap:12px; margin-bottom: 18px;">
+                
+                <!-- Kanał 1: Natychmiastowe Push na telefon / przeglądarkę -->
+                <div style="padding:14px; border-radius:14px; background:linear-gradient(135deg, rgba(37,99,235,0.15), rgba(139,92,246,0.15)); border:1px solid rgba(59,130,246,0.35);">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-mobile-screen-button" style="color:#60a5fa; font-size:1.1rem;"></i>
+                            <span style="font-weight:800; font-size:0.90rem; color:#fff;">Powiadomienia w Telefonie (Push)</span>
+                        </div>
+                        <span style="font-size:0.68rem; font-weight:800; background:#2563eb; color:#fff; padding:2px 8px; border-radius:8px;">POLECANE</span>
+                    </div>
+                    <div style="font-size:0.77rem; color:#94a3b8; margin-bottom:10px; line-height:1.35;">
+                        Otrzymuj natychmiastowe powiadomienie push na ekranie telefonu lub komputera, gdy pojawi się nowy wpis lub transmisja na żywo.
+                    </div>
+                    <button type="button" id="btnEnableGuestPush" onclick="enableGuestPushNotifications()" style="width:100%; padding:10px 14px; border-radius:12px; background:linear-gradient(135deg, #2563eb, #1d4ed8); border:none; color:#fff; font-weight:800; font-size:0.84rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(37,99,235,0.4);">
+                        <i class="fa-solid fa-bell"></i> <span id="btnEnableGuestPushText">Włącz powiadomienia na tym urządzeniu</span>
+                    </button>
+                    <div id="guestPushSuccessMsg" style="display:none; margin-top:8px; font-size:0.75rem; color:#34d399; font-weight:700; text-align:center;">
+                        <i class="fa-solid fa-circle-check"></i> Powiadomienia Push na tym urządzeniu są aktywne!
+                    </div>
+                </div>
+
+                <!-- Kanał 2: Grupa WhatsApp -->
+                <div style="padding:14px; border-radius:14px; background:linear-gradient(135deg, rgba(37,211,102,0.12), rgba(18,140,126,0.12)); border:1px solid rgba(37,211,102,0.3);">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                        <i class="fa-brands fa-whatsapp" style="color:#25d366; font-size:1.2rem;"></i>
+                        <span style="font-weight:800; font-size:0.90rem; color:#fff;">Grupa WhatsApp</span>
+                    </div>
+                    <div style="font-size:0.77rem; color:#94a3b8; margin-bottom:10px; line-height:1.35;">
+                        Dołącz do oficjalnej grupy WhatsApp Cezarego i Misji Christian Culture, aby otrzymywać codzienne rozważania i linki do audycji.
+                    </div>
+                    <a href="https://chat.whatsapp.com/FMnvysABYXq6kh3mqBNWtS" target="_blank" rel="noopener noreferrer" style="width:100%; padding:10px 14px; border-radius:12px; background:linear-gradient(135deg, #25d366, #128c7e); border:none; color:#fff; font-weight:800; font-size:0.84rem; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(37,211,102,0.35);">
+                        <i class="fa-brands fa-whatsapp"></i> Dołącz do WhatsApp Cezarego
+                    </a>
+                </div>
+
+                <!-- Kanał 3: Subskrypcja E-mail -->
+                <div style="padding:14px; border-radius:14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12);">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                        <i class="fa-solid fa-envelope" style="color:#facc15; font-size:1.05rem;"></i>
+                        <span style="font-weight:800; font-size:0.90rem; color:#fff;">Powiadomienia E-mail</span>
+                    </div>
+                    <div style="font-size:0.77rem; color:#94a3b8; margin-bottom:10px; line-height:1.35;">
+                        Podaj swój adres e-mail, aby otrzymywać powiadomienia o nowych artykułach, audycjach i rozważaniach.
+                    </div>
+                    <form onsubmit="handleGuestEmailSubscribe(event)" style="display:flex; gap:8px;">
+                        <input type="email" id="guestEmailInput" placeholder="twoj-email@domena.pl" required style="flex:1; padding:9px 12px; border-radius:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; font-size:0.82rem; font-family:inherit;">
+                        <button type="submit" style="padding:9px 16px; border-radius:10px; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; color:#fff; font-weight:800; font-size:0.82rem; cursor:pointer; white-space:nowrap;">
+                            Zapisz mnie
+                        </button>
+                    </form>
+                    <div id="guestEmailSuccessMsg" style="display:none; margin-top:8px; font-size:0.75rem; color:#fde047; font-weight:700;">
+                        <i class="fa-solid fa-check"></i> Dziękujemy! Twój e-mail został zapisany.
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="text-align:center;">
+                <button type="button" onclick="closeModal('guestFollowModal')" style="background:none; border:none; color:#94a3b8; font-size:0.80rem; font-weight:700; cursor:pointer; text-decoration:underline;">
+                    Zamknij okno
+                </button>
+            </div>
         </div>
     </div>
 
@@ -5243,8 +5322,182 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
         function openCoffeeModal() {
             document.getElementById('coffeeModal').classList.add('open');
         }
+        function openModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('open');
+        }
+
         function closeModal(id) {
-            document.getElementById(id).classList.remove('open');
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('open');
+        }
+
+        // ══════════════════════════════════════════════════════════════════════════
+        // GUEST FOLLOW & MULTI-CHANNEL NOTIFICATIONS SYSTEM (Cezary Rogowski)
+        // ══════════════════════════════════════════════════════════════════════════
+        window.toggleProfileFollow = function(btn) {
+            const STORAGE_FOLLOW_KEY = 'lumina_following_cezaryrgowski';
+            const isCurrentlyFollowing = localStorage.getItem(STORAGE_FOLLOW_KEY) === 'true';
+            
+            const btnEl = btn || document.getElementById('btnProfileFollow');
+            const iconEl = document.getElementById('followBtnIcon');
+            const textEl = document.getElementById('followBtnText');
+            const countEl = document.getElementById('followCountBadge');
+            const chipCountEl = document.getElementById('statFollowersCount');
+
+            let currentCount = parseInt(countEl?.textContent || '540', 10);
+            if (isNaN(currentCount)) currentCount = 540;
+
+            if (isCurrentlyFollowing) {
+                // Przestań obserwować
+                localStorage.setItem(STORAGE_FOLLOW_KEY, 'false');
+                currentCount = Math.max(0, currentCount - 1);
+                if (btnEl) {
+                    btnEl.style.background = 'linear-gradient(135deg,#2563eb,#1d4ed8)';
+                    btnEl.style.boxShadow = '0 4px 14px rgba(37,99,235,0.35)';
+                }
+                if (iconEl) iconEl.className = 'fa-solid fa-user-plus';
+                if (textEl) textEl.textContent = 'Obserwuj';
+                if (countEl) countEl.textContent = currentCount;
+                if (chipCountEl) chipCountEl.textContent = currentCount;
+                showToast('Przestałeś obserwować profil Cezarego Rogowskiego.');
+            } else {
+                // Zacznij obserwować
+                localStorage.setItem(STORAGE_FOLLOW_KEY, 'true');
+                currentCount += 1;
+                if (btnEl) {
+                    btnEl.style.background = 'linear-gradient(135deg,#10b981,#059669)';
+                    btnEl.style.boxShadow = '0 4px 14px rgba(16,185,129,0.45)';
+                }
+                if (iconEl) iconEl.className = 'fa-solid fa-bell';
+                if (textEl) textEl.textContent = 'Obserwujesz';
+                if (countEl) countEl.textContent = currentCount;
+                if (chipCountEl) chipCountEl.textContent = currentCount;
+                
+                showToast('✨ Obserwujesz profil Cezarego Rogowskiego!');
+
+                // Zapisz zdarzenie w chmurze Firestore
+                try {
+                    if (window.LuminaDB && typeof window.LuminaDB.saveProfileFollower === 'function') {
+                        window.LuminaDB.saveProfileFollower('cezaryrgowski');
+                    }
+                } catch(e) {}
+
+                // Otwórz modal wyboru formy powiadomień
+                setTimeout(() => {
+                    openModal('guestFollowModal');
+                }, 350);
+            }
+        };
+
+        window.enableGuestPushNotifications = async function() {
+            const btnText = document.getElementById('btnEnableGuestPushText');
+            const successMsg = document.getElementById('guestPushSuccessMsg');
+            if (btnText) btnText.textContent = 'Aktywowanie...';
+            
+            try {
+                if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
+                    const token = await window.LuminaDB.requestNotificationPermission('guest_subscriber_cezary');
+                    if (token) {
+                        if (btnText) btnText.textContent = '✓ Powiadomienia Aktywne';
+                        if (successMsg) successMsg.style.display = 'block';
+                        showToast('🔔 Powiadomienia Push zostały aktywowane!');
+                        return;
+                    }
+                }
+                if ('Notification' in window) {
+                    const perm = await Notification.requestPermission();
+                    if (perm === 'granted') {
+                        if (btnText) btnText.textContent = '✓ Powiadomienia Aktywne';
+                        if (successMsg) successMsg.style.display = 'block';
+                        showToast('🔔 Powiadomienia w przeglądarce zostały włączone!');
+                    } else {
+                        alert('Uprawnienia do powiadomień zostały zablokowane w przeglądarce.');
+                        if (btnText) btnText.textContent = 'Włącz powiadomienia na tym urządzeniu';
+                    }
+                }
+            } catch(err) {
+                console.warn('Guest push notification error:', err);
+                if (btnText) btnText.textContent = 'Włącz powiadomienia na tym urządzeniu';
+            }
+        };
+
+        window.handleGuestEmailSubscribe = async function(e) {
+            e.preventDefault();
+            const input = document.getElementById('guestEmailInput');
+            const email = (input?.value || '').trim();
+            if (!email) return;
+
+            const successMsg = document.getElementById('guestEmailSuccessMsg');
+            try {
+                if (window.LuminaDB && typeof window.LuminaDB.subscribeEmail === 'function') {
+                    await window.LuminaDB.subscribeEmail(email, 'cezaryrgowski');
+                }
+                localStorage.setItem('lumina_guest_email_subscribed_cezary', email);
+                if (input) input.disabled = true;
+                if (successMsg) successMsg.style.display = 'block';
+                showToast('✉️ Twój adres e-mail został zapisany!');
+            } catch(err) {
+                console.warn('Guest email subscribe error:', err);
+                if (successMsg) successMsg.style.display = 'block';
+            }
+        };
+
+        window.toggleProfileHeart = function(btn) {
+            const STORAGE_HEART_KEY = 'lumina_heart_cezaryrgowski';
+            const isCurrentlyHearted = localStorage.getItem(STORAGE_HEART_KEY) === 'true';
+            
+            const btnEl = btn || document.getElementById('btnProfileHeart');
+            const countEl = document.getElementById('heartCountBadge');
+            const chipCountEl = document.getElementById('statLikesCount');
+
+            let currentCount = parseInt(countEl?.textContent || '215', 10);
+            if (isNaN(currentCount)) currentCount = 215;
+
+            if (isCurrentlyHearted) {
+                localStorage.setItem(STORAGE_HEART_KEY, 'false');
+                currentCount = Math.max(0, currentCount - 1);
+                if (btnEl) {
+                    btnEl.style.background = 'linear-gradient(135deg,#db2777,#be185d)';
+                    btnEl.style.boxShadow = '0 4px 14px rgba(219,39,119,0.35)';
+                }
+                if (countEl) countEl.textContent = currentCount;
+                if (chipCountEl) chipCountEl.textContent = currentCount;
+            } else {
+                localStorage.setItem(STORAGE_HEART_KEY, 'true');
+                currentCount += 1;
+                if (btnEl) {
+                    btnEl.style.background = 'linear-gradient(135deg,#ec4899,#db2777)';
+                    btnEl.style.boxShadow = '0 4px 18px rgba(236,72,153,0.55)';
+                }
+                if (countEl) countEl.textContent = currentCount;
+                if (chipCountEl) chipCountEl.textContent = currentCount;
+                showToast('❤️ Polubiłeś profil Cezarego Rogowskiego!');
+            }
+        };
+
+        function initGuestFollowState() {
+            const isFollowing = localStorage.getItem('lumina_following_cezaryrgowski') === 'true';
+            if (isFollowing) {
+                const btnEl = document.getElementById('btnProfileFollow');
+                const iconEl = document.getElementById('followBtnIcon');
+                const textEl = document.getElementById('followBtnText');
+                if (btnEl) {
+                    btnEl.style.background = 'linear-gradient(135deg,#10b981,#059669)';
+                    btnEl.style.boxShadow = '0 4px 14px rgba(16,185,129,0.45)';
+                }
+                if (iconEl) iconEl.className = 'fa-solid fa-bell';
+                if (textEl) textEl.textContent = 'Obserwujesz';
+            }
+
+            const isHearted = localStorage.getItem('lumina_heart_cezaryrgowski') === 'true';
+            if (isHearted) {
+                const btnEl = document.getElementById('btnProfileHeart');
+                if (btnEl) {
+                    btnEl.style.background = 'linear-gradient(135deg,#ec4899,#db2777)';
+                    btnEl.style.boxShadow = '0 4px 18px rgba(236,72,153,0.55)';
+                }
+            }
         }
 
         function sendMessageSubmit() {
@@ -6373,6 +6626,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
         window.addEventListener('DOMContentLoaded', () => {
             checkOwnerAuthSession();
             renderProfileView();
+            initGuestFollowState();
 
             window.addEventListener('lumina_post_published', () => renderPosts());
             window.addEventListener('storage', () => renderPosts());
