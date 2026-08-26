@@ -62,11 +62,12 @@ try {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA PRODUCTION PWA SERVICE WORKER (v3.6.3-optimized)
+// LUMINA PRODUCTION PWA SERVICE WORKER (v3.9.0)
 // High-performance caching, stale-while-revalidate & offline navigation
+// Cache busted: 2026-08-26 — force fresh HTML for all PWA clients
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v3.8.0-urszula-real-face';
+const CACHE_NAME = 'lumina-pwa-cache-v3.9.0';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
