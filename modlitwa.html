@@ -470,72 +470,99 @@
     <!-- Main Container under the animation -->
     <div class="main-container">
         
-        <!-- Bottom Info Banner Section -->
-        <div class="content-card" style="margin-top: 10px; margin-bottom: 30px; padding: 30px; text-align: left; overflow: hidden;">
+        <!-- ══════════ SEKCJA TRANSMISJI NA ŻYWO: ZJEDNOCZENI ZA POLSKĘ (TV24) ══════════ -->
+        <div class="content-card" style="margin-top: 10px; margin-bottom: 25px; padding: 20px; text-align: left; overflow: hidden; border: 1.5px solid var(--gold-primary); box-shadow: 0 15px 40px rgba(0,0,0,0.8);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 12px;">
+                <h2 class="card-title" style="margin: 0; padding: 0; border: none; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.25rem; letter-spacing: 0.5px; text-transform: uppercase;">
+                    <span style="display: inline-flex; align-items: center; gap: 8px;">
+                        <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 12px #ef4444; animation: pulseBadge 2s infinite;"></span>
+                        <i class="fa-solid fa-tv" style="color: #ff4d6d;"></i> Telewizja Christian Culture 24 • Na Żywo
+                    </span>
+                </h2>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="zapolske-live.html" target="_blank" rel="noopener" style="background: linear-gradient(135deg, var(--gold-primary) 0%, #aa7c11 100%); color: #000; font-weight: 800; font-size: 0.8rem; padding: 6px 14px; border-radius: 20px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; text-transform: uppercase;">
+                        <i class="fa-solid fa-expand"></i> Pełny Ekran / TV
+                    </a>
+                </div>
+            </div>
+
+            <!-- Responsive 16:9 Live Broadcast Container -->
+            <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 14px; border: 1.5px solid rgba(255,255,255,0.12); box-shadow: 0 12px 35px rgba(0,0,0,0.8); background: #000;">
+                <iframe 
+                    src="zapolske-live.html?autoplay=1" 
+                    title="Telewizja Christian Culture 24 — Zjednoczeni za Polskę"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+                    allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; clipboard-write; web-share" 
+                    allowfullscreen
+                    loading="eager">
+                </iframe>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; font-size: 0.84rem; color: #a1a1aa;">
+                <span><i class="fa-solid fa-signal" style="color: #22c55e;"></i> Sygnał telewizyjny i radiowy nadawany 24/7</span>
+                <span><i class="fa-solid fa-hands-praying" style="color: var(--gold-primary);"></i> Pasmo Modlitewne & Biblia Śpiewana</span>
+            </div>
+        </div>
+
+        <!-- ══════════ POST AKTUALNOŚCI: DOM MODLITWY O ZBAWIENIE NARODU ŻYDOWSKIEGO ══════════ -->
+        <div class="content-card" style="margin-bottom: 30px; padding: 30px; text-align: left; overflow: hidden; border-left: 4px solid var(--gold-primary);">
             <div style="margin-bottom: 25px; text-align: center;">
-                <img src="B22vP.jpg" alt="Zjednoczeni za Polskę Pilne Wezwanie" style="max-width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                <img src="dom_modlitwy.jpg" alt="Dom Modlitwy o Zbawienie Narodu Żydowskiego i Przeciw Antysemityzmowi" style="max-width: 100%; height: auto; border-radius: 14px; border: 1.5px solid rgba(212,175,55,0.3); box-shadow: 0 12px 30px rgba(0,0,0,0.7);">
             </div>
             <div style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; line-height: 1.6; color: #fff;">
-                <h2 style="color: #ff4d6d; font-weight: 800; font-size: 1.5rem; text-align: center; margin-bottom: 20px;">🇵🇱 PILNE WEZWANIE DO MODLITWY 🙏🔥</h2>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <span style="background: rgba(37, 211, 102, 0.15); border: 1px solid #25d366; color: #25d366; padding: 4px 14px; border-radius: 20px; font-weight: 800; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px;">
+                        <i class="fa-brands fa-whatsapp"></i> Grupa Modlitewna WhatsApp
+                    </span>
+                    <h2 style="color: var(--gold-primary); font-weight: 900; font-size: 1.6rem; font-family: 'Cinzel', serif; letter-spacing: 1px; line-height: 1.3;">
+                        DOM MODLITWY O ZBAWIENIE NARODU ŻYDOWSKIEGO<br>
+                        <span style="color: #fff; font-size: 1.25rem;">I PRZECIW ANTYSEMITYZMOWI</span>
+                    </h2>
+                </div>
                 
-                <p>W ostatnich godzinach wydarzenia na wschodzie Polski przypomniały nam, że jako Kościół jesteśmy powołani nie do życia w strachu, ale do czuwania i modlitwy.</p>
+                <p>Wzywamy wszystkich wierzących do żarliwego wstawiennictwa i trwania w Bożej obecności za Naród Żydowski, o pokój w Jerozolimie oraz o złamanie wszelkiego ducha nienawiści i antysemityzmu.</p>
 
-                <p>Dlatego dzisiaj o godz. 21:30 spotykamy się na dodatkowej modlitwie online w ramach Serc w Ogniu. Jest to narodowa grupa wstawiennicza, ekumeniczna, którą mam przywilej prowadzić. W porozumieniu ze Zjednoczonymi w Chrystusie zapraszam wszystkich serdecznie byśmy stanęli Zjednoczeni za Polskę ❤️🔥</p>
-
-                <div style="background: rgba(255,255,255,0.05); border-left: 4px solid var(--gold-primary); padding: 15px; margin: 20px 0; font-style: italic; color: #d4d4d8;">
-                    📖 „Na twoich murach, Jeruzalem, postawiłem strażników; przez cały dzień i przez całą noc nigdy nie umilkną.” (Iz 62,6)
+                <div style="background: rgba(212, 175, 55, 0.08); border-left: 4px solid var(--gold-primary); padding: 16px; margin: 20px 0; font-style: italic; color: #f3e5ab;">
+                    📖 „Proście o pokój dla Jeruzalem: Niech zażywają pokoju ci, którzy cię miłują! Niech pokój panuje w twoich murach, a bezpieczeństwo w twoich pałacach!” (Psalm 122, 6-7)
                 </div>
 
-                <p>Podczas modlitwy będziemy wołać przede wszystkim:</p>
-                <ul style="list-style-type: none; padding-left: 0; margin-bottom: 20px;">
-                    <li style="margin-bottom: 8px;">🛡️ o Bożą ochronę nad Polską,</li>
-                    <li style="margin-bottom: 8px;">🔥 o uszczelnienie naszej wschodniej granicy,</li>
-                    <li style="margin-bottom: 8px;">🏙️ o Lublin oraz miasta i miejscowości przygraniczne,</li>
-                    <li style="margin-bottom: 8px;">👮 o mądrość, ochronę i siłę dla wszystkich służb odpowiedzialnych za bezpieczeństwo naszego kraju,</li>
-                    <li style="margin-bottom: 8px;">🤝 o pokój oraz Boże prowadzenie dla władz podejmujących decyzje.</li>
-                </ul>
+                <p>Dołącz do grupy modlitewnej WhatsApp <strong>„Jeśli chcesz, pomodlę się o Ciebie”</strong>, gdzie wspólnie trwamy na modlitwie, powierzamy intencje i budujemy jedność w Chrystusie:</p>
 
-                <p style="font-weight: 700; color: #ffcc00;">Nie modlimy się z miejsca lęku. Modlimy się z miejsca wiary. ⚔️</p>
-
-                <p>Wierzymy, że Bóg nadal szuka ludzi, którzy staną w wyłomie i będą wiernie pełnić straż na murach. Każda modlitwa ma znaczenie. Każdy wierny strażnik ma znaczenie.</p>
-
-                <p>Jeśli czujesz, że Pan zachęca Cię, aby dołączyć do tej modlitwy, zapraszamy Cię dziś wieczorem.</p>
-
-                <p>Niech w tym czasie Kościół będzie rozpoznawany nie po panice, lecz po modlitwie. Nie po strachu, lecz po wytrwałości. Nie po bezradności, lecz po gotowości, by stanąć przed Bogiem w imieniu naszego narodu.</p>
-
-                <div style="background: rgba(255,255,255,0.05); border-left: 4px solid #ff4d6d; padding: 15px; margin: 20px 0; font-style: italic; color: #d4d4d8;">
-                    📖 „Nie dał nam Bóg ducha bojaźni, lecz mocy, miłości i trzeźwego myślenia.” (2 Tm 1,7)
+                <div style="text-align: center; margin: 25px 0;">
+                    <a href="https://chat.whatsapp.com/LGzSCB9K5Vp2jTF8dIALI6" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); color: #fff; text-decoration: none; border-radius: 50px; padding: 14px 30px; font-weight: 800; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);" onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 1.4rem;"></i> Dołącz do Grupy: „Jeśli chcesz, pomodlę się o Ciebie” ➜
+                    </a>
                 </div>
 
-                <p>Jeśli czujesz, że Pan zaprasza Cię dziś na mur modlitwy, wkrótce udostepnie tu link do spotkania na Zoomie.</p>
-
-                <p>Czuj się też zaproszony do rozpowszechnienia tej informacji i zaproszenia ludzi o gorącym sercu chcącym stanąć wspólnie i odpowiedzieć na wydarzenia w świecie, wspólnym manifestem kościoła w Duchu 🙏</p>
-
-                <p style="font-weight: 800; font-size: 1.2rem; text-align: center; margin-top: 30px;">🇵🇱 Do zobaczenia o 21:30.</p>
-                
-                <p style="text-align: center; font-size: 0.9rem; color: #999; margin-top: 20px;">
-                    #SercaWOgniu #ModlitwaZaPolskę #StrażnicyNaMurach #ZjednoczeniZaPolskę
-                </p>
+                <div style="background: rgba(255,255,255,0.04); border-radius: 12px; padding: 18px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.08);">
+                    <h4 style="color: var(--gold-primary); font-size: 1rem; margin-bottom: 8px;"><i class="fa-solid fa-hands-praying"></i> Główne cele wstawiennictwa:</h4>
+                    <ul style="list-style-type: none; padding-left: 0; margin: 0; font-size: 0.95rem; color: #d4d4d8;">
+                        <li style="margin-bottom: 6px;">🕊️ <strong>O Zbawienie Narodu Żydowskiego</strong> — poznanie Jezusa Chrystusa jako obiecanego Mesjasza.</li>
+                        <li style="margin-bottom: 6px;">🛡️ <strong>Przeciw Antysemityzmowi</strong> — modlitwa o miłość, prawdę i ochronę przed kłamstwem i nienawiścią.</li>
+                        <li style="margin-bottom: 6px;">🕯️ <strong>O Pokój w Jerozolimie i na Bliskim Wschodzie</strong> — zgodnie z nakazem Pisma Świętego.</li>
+                        <li>🤝 <strong>Osobiste Intencje</strong> — wzajemne wsparcie modlitewne członków grupy.</li>
+                    </ul>
+                </div>
 
                 <!-- Opcje Interakcji -->
                 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-                    <button onclick="shareUrgentPrayer()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 700; transition: all 0.2s; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                    <button onclick="shareDomModlitwy()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 700; transition: all 0.2s; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
                         <i class="fa-solid fa-share-nodes"></i> Udostępnij
                     </button>
                     
                     <button onclick="document.querySelector('#prayerForm').scrollIntoView({behavior: 'smooth'})" style="background: rgba(212, 175, 55, 0.15); border: 1px solid rgba(212, 175, 55, 0.5); color: #d4af37; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 700; transition: all 0.2s; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='rgba(212, 175, 55, 0.25)'" onmouseout="this.style.background='rgba(212, 175, 55, 0.15)'">
-                        <i class="fa-solid fa-pen-nib"></i> Napisz swoją modlitwę
+                        <i class="fa-solid fa-pen-nib"></i> Prześlij intencję modlitewną
                     </button>
                     
                     <button id="prayBtn" onclick="incrementPrayCounter()" style="background: linear-gradient(135deg, #ff4d6d 0%, #dc143c 100%); border: none; color: #fff; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 800; transition: all 0.2s; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                         <i class="fa-solid fa-fire"></i> Modlę się
-                        <span id="prayCounterBadge" style="background: #fff; color: #dc143c; padding: 2px 8px; border-radius: 12px; font-size: 0.85rem; margin-left: 5px;">142</span>
+                        <span id="prayCounterBadge" style="background: #fff; color: #dc143c; padding: 2px 8px; border-radius: 12px; font-size: 0.85rem; margin-left: 5px;">368</span>
                     </button>
                 </div>
                 
                 <script>
                     // Initialize counter with a baseline + local storage
-                    let baseCounter = parseInt(localStorage.getItem('urgentPrayerCount') || '342');
+                    let baseCounter = parseInt(localStorage.getItem('urgentPrayerCount') || '368');
                     const hasPrayed = localStorage.getItem('hasPrayedUrgent') === 'true';
                     
                     const badge = document.getElementById('prayCounterBadge');
@@ -558,9 +585,7 @@
                         const b = document.getElementById('prayCounterBadge');
                         const btn = document.getElementById('prayBtn');
                         
-                        if (b) {
-                            b.innerText = baseCounter;
-                        }
+                        if (b) b.innerText = baseCounter;
                         if (btn) {
                             btn.style.opacity = '0.7';
                             btn.style.pointerEvents = 'none';
@@ -568,17 +593,17 @@
                         }
                     }
                     
-                    window.shareUrgentPrayer = function() {
-                        const text = "🇵🇱 PILNE WEZWANIE DO MODLITWY 🙏🔥\n\nDzisiaj o godz. 21:30 spotykamy się na dodatkowej modlitwie online za Polskę. Stajemy w wyłomie!\n\nDołącz: https://polskieradio.cc/modlitwa.html";
+                    window.shareDomModlitwy = function() {
+                        const text = "🇮🇱 DOM MODLITWY O ZBAWIENIE NARODU ŻYDOWSKIEGO I PRZECIW ANTYSEMITYZMOWI 🙏✨\n\nDołącz do grupy modlitewnej „Jeśli chcesz, pomodlę się o Ciebie”: https://chat.whatsapp.com/LGzSCB9K5Vp2jTF8dIALI6\n\nTransmisja i strona modlitwy: https://polskieradio.cc/modlitwa.html";
                         if (navigator.share) {
                             navigator.share({
-                                title: 'Zjednoczeni za Polskę',
+                                title: 'Dom Modlitwy o Zbawienie Narodu Żydowskiego',
                                 text: text,
                                 url: 'https://polskieradio.cc/modlitwa.html'
                             }).catch(console.error);
                         } else {
                             navigator.clipboard.writeText(text);
-                            alert("Treść wezwania skopiowana do schowka! Możesz ją wkleić w dowolnym komunikatorze.");
+                            alert("Treść skopiowana do schowka! Możesz ją wkleić w dowolnym komunikatorze.");
                         }
                     }
                 </script>
@@ -717,19 +742,15 @@
 
         </div>
 
-        <!-- Embedded Live Broadcast Section -->
-        <div class="content-card" style="margin-top: 30px; padding: 15px; overflow: hidden; max-width: 100%;">
-            <h2 class="card-title" style="margin-bottom: 15px; font-family: 'Outfit', sans-serif; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;">
-                <i class="fa-solid fa-tv" style="color: #ff4d6d; margin-right: 8px;"></i> Transmisja na żywo
+        <!-- Patronite Misyjny Baner -->
+        <div class="content-card" style="margin-top: 25px; padding: 20px; text-align: center; overflow: hidden; max-width: 100%; border-left: 4px solid #e11d48;">
+            <h2 class="card-title" style="margin-bottom: 15px; font-family: 'Outfit', sans-serif; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; justify-content: center;">
+                <i class="fa-solid fa-heart" style="color: #f43f5e; margin-right: 8px;"></i> Wspieraj Dzieło Misyjne Christian Culture
             </h2>
-            <!-- Patronite Banner GIF -->
-            <div style="margin-bottom: 20px; text-align: center; overflow: hidden;">
+            <div style="margin-top: 10px; text-align: center; overflow: hidden;">
                 <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener">
                     <img src="Bibila_Audio_CC.gif" alt="Biblia Audio CC Baner" style="max-width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 25px rgba(0,0,0,0.5); transition: transform 0.2s; display: block; margin: 0 auto;" onmouseover="this.style.transform='scale(1.015)';" onmouseout="this.style.transform='scale(1)';">
                 </a>
-            </div>
-            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-                <iframe src="zapolske-live.html" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
         </div>
 
