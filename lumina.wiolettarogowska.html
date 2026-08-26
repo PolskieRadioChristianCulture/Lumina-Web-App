@@ -1345,70 +1345,148 @@
         /* ── Right Content / Timeline Wall ── */
         .feed-composer {
             background: var(--navy-surface);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: var(--radius-lg);
-            padding: 20px;
+            padding: 18px 20px;
             margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         }
 
         .composer-top {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 14px;
+            gap: 14px;
+            width: 100%;
+        }
+        .composer-avatar-wrap {
+            position: relative;
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
         }
         .composer-avatar {
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: block;
+        }
+        .composer-badge-cc {
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000;
+            font-size: 0.55rem;
+            font-weight: 900;
+            padding: 1px 4px;
+            border-radius: 6px;
+            border: 1px solid #fff;
+            letter-spacing: 0.5px;
+            line-height: 1;
+            white-space: nowrap;
+        }
+        .composer-capsule-wrap {
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: center;
         }
         .composer-input {
-            flex: 1;
+            width: 100%;
             background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: 1.5px solid rgba(255, 255, 255, 0.16);
             border-radius: 30px;
-            padding: 11px 18px;
+            padding: 12px 50px 12px 20px;
             color: #fff;
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
         }
-        .composer-input:focus { border-color: var(--pink-accent); }
+        .composer-input:focus {
+            border-color: #ec4899;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 16px rgba(236, 72, 153, 0.25);
+        }
+        .composer-input::placeholder {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        .composer-media-trigger-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #cbd5e1;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        .composer-media-trigger-btn:hover {
+            color: #f472b6;
+            transform: translateY(-50%) scale(1.15);
+        }
 
         .composer-actions {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-top: 12px;
+            margin-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
         .composer-btn-attach {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            font-size: 0.82rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: color 0.2s;
+            padding: 6px 12px;
+            border-radius: 16px;
+            transition: all 0.2s;
+            font-family: inherit;
         }
-        .composer-btn-attach:hover { color: #fff; }
+        .composer-btn-attach:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.25);
+        }
         .composer-btn-publish {
-            background: linear-gradient(90deg, #ec4899, #f472b6);
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
             color: #fff;
             border: none;
-            padding: 8px 20px;
+            padding: 8px 22px;
             border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.85rem;
+            font-weight: 800;
+            font-size: 0.88rem;
             cursor: pointer;
-            transition: transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 14px rgba(236, 72, 153, 0.35);
+            transition: all 0.2s;
+            font-family: inherit;
         }
-        .composer-btn-publish:hover { transform: scale(1.03); }
+        .composer-btn-publish:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
+        }
 
         /* Post Card on Wall */
         .post-card {
@@ -2556,11 +2634,19 @@
                 <!-- Tab: Tablica & Wpisy -->
                 <div id="tab-feed" class="tab-content-pane">
                     
-                    <!-- Composer -->
-                    <div class="feed-composer">
+                    <!-- Standard Lumina Profile Composer -->
+                    <div class="feed-composer" id="feedComposerCard">
                         <div class="composer-top">
-                            <img loading="lazy" decoding="async" src="avatar_wioletta_official.jpg" alt="Wioletta" class="composer-avatar" id="myComposerAvatar">
-                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
+                            <div class="composer-avatar-wrap">
+                                <img loading="lazy" decoding="async" src="avatar_wioletta_official.jpg" alt="Wioletta" class="composer-avatar" id="myComposerAvatar" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
+                                <span class="composer-badge-cc" title="Christian Culture">CC</span>
+                            </div>
+                            <div class="composer-capsule-wrap">
+                                <input type="text" id="composerInput" class="composer-input" placeholder="HalleluYah #DobrzeŻeJesteś" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
+                                <button type="button" class="composer-media-trigger-btn" onclick="openMediaAttachModal()" title="Dołącz grafikę z dysku lub film z linku">
+                                    <i class="fa-solid fa-image"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Post Image Attachment Preview -->
@@ -2569,10 +2655,19 @@
                             <button type="button" onclick="removeAttachedPostImage()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.5);" title="Usuń dołączoną grafikę"><i class="fa-solid fa-xmark"></i></button>
                         </div>
 
+                        <!-- Post Video Attachment Preview -->
+                        <div id="composerVideoPreviewBox" style="display:none; position:relative; margin: 10px 0 6px; border-radius:14px; overflow:hidden; background:#0f172a; border: 1px solid rgba(56,189,248,0.3);">
+                            <div id="composerVideoPreviewFrame"></div>
+                            <button type="button" onclick="removeAttachedPostVideo()" style="position:absolute; top:10px; right:10px; width:32px; height:32px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(0,0,0,0.6); z-index:10;" title="Usuń dołączone wideo"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+
                         <div class="composer-actions">
-                            <button class="composer-btn-attach" onclick="triggerPostImageUpload()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Dołącz Grafikę do Posta</button>
-                            <button class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Dodaj Werset</button>
-                            <button class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-share"></i> Opublikuj</button>
+                            <div class="composer-quick-actions">
+                                <button type="button" class="composer-btn-attach" onclick="triggerPostImageUpload()" title="Wgraj grafikę z dysku"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Grafika z dysku</button>
+                                <button type="button" class="composer-btn-attach" onclick="promptEmbedVideo()" title="Wklej link do filmu YouTube / MP4"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Film z linku</button>
+                                <button type="button" class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Werset</button>
+                            </div>
+                            <button type="button" class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-paper-plane"></i> Opublikuj</button>
                         </div>
                     </div>
 
@@ -3858,7 +3953,8 @@
                         ` : ''}
                     </div>
                     <div class="post-content">${formatPostTextWithLinks(p.text || '')}</div>
-                    ${`<img loading="lazy" decoding="async" src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'avatar_wioletta_official.jpg')}" alt="Post Image" class="post-image" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" onerror="this.onerror=null; this.src='${data.avatar || 'avatar_wioletta_official.jpg'}'">`}
+                    ${(p.video || p.videoUrl) ? renderVideoPlayerHtml(p.video || p.videoUrl) : ''}
+                    ${(p.image && p.image.trim() !== '') ? `<img loading="lazy" decoding="async" src="${p.image}" alt="Post Image" class="post-image" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" onerror="this.style.display='none'">` : ''}
                     <div class="post-footer">
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span><span class="btn-text"> Polubień</span></button>
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen!</span></button>
@@ -4079,11 +4175,71 @@
             document.getElementById('postImageFileInput').value = '';
         }
 
+        let attachedPostVideoUrl = null;
+
+        function openMediaAttachModal() {
+            const choice = confirm("Dołącz multimedia do wpisu HalleluYah #DobrzeŻeJesteś:\n\n[OK] = 📷 Wgraj grafikę z dysku\n[Anuluj] = 🎬 Dodaj film z linku (YouTube / MP4)");
+            if (choice) {
+                triggerPostImageUpload();
+            } else {
+                promptEmbedVideo();
+            }
+        }
+
+        function promptEmbedVideo() {
+            const url = prompt('Wklej link do wideo (YouTube, Shorts, Vimeo lub plik MP4):');
+            if (!url || !url.trim()) return;
+            const clean = url.trim();
+            attachedPostVideoUrl = clean;
+            
+            const previewBox = document.getElementById('composerVideoPreviewBox');
+            const previewFrame = document.getElementById('composerVideoPreviewFrame');
+            if (previewBox && previewFrame) {
+                const embedHtml = renderVideoPlayerHtml(clean);
+                previewFrame.innerHTML = embedHtml;
+                previewBox.style.display = 'block';
+            }
+            showToast('Wideo zostało dołączone do wpisu! ✨✨');
+        }
+
+        function removeAttachedPostVideo() {
+            attachedPostVideoUrl = null;
+            const previewBox = document.getElementById('composerVideoPreviewBox');
+            const previewFrame = document.getElementById('composerVideoPreviewFrame');
+            if (previewBox) previewBox.style.display = 'none';
+            if (previewFrame) previewFrame.innerHTML = '';
+        }
+
+        function getYouTubeId(url) {
+            if (!url) return null;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        function renderVideoPlayerHtml(videoUrl) {
+            if (!videoUrl) return '';
+            const ytId = getYouTubeId(videoUrl);
+            if (ytId) {
+                return `<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:16px; margin-top:12px; background:#000; box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+                    <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border-radius:16px;"></iframe>
+                </div>`;
+            }
+            if (videoUrl.endsWith('.mp4') || videoUrl.includes('firebasestorage') || videoUrl.includes('.mp4?')) {
+                return `<div style="border-radius:16px; overflow:hidden; margin-top:12px; background:#000; box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+                    <video src="${videoUrl}" controls playsinline style="width:100%; max-height:420px; display:block; border-radius:16px;"></video>
+                </div>`;
+            }
+            return `<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:16px; margin-top:12px; background:#000;">
+                <iframe src="${videoUrl}" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border-radius:16px;"></iframe>
+            </div>`;
+        }
+
         async function publishFeedPost() {
             const input = document.getElementById('composerInput');
             const val = input ? input.value.trim() : '';
-            if (!val && !attachedPostImageDataUrl) {
-                showToast('Wpisz treść lub dołącz grafikę przed publikacją!');
+            if (!val && !attachedPostImageDataUrl && !attachedPostVideoUrl) {
+                showToast('Wpisz treść, dołącz grafikę lub wklej link do wideo przed publikacją!');
                 return;
             }
             const cur = getProfileData();
@@ -4098,6 +4254,8 @@
                 likes: 1,
                 amen: 0,
                 image: attachedPostImageDataUrl || null,
+                video: attachedPostVideoUrl || null,
+                videoUrl: attachedPostVideoUrl || null,
                 createdAtTimestamp: Date.now()
             };
 
@@ -4126,6 +4284,7 @@
 
             if (input) input.value = '';
             removeAttachedPostImage();
+            removeAttachedPostVideo();
             renderPosts();
             showToast('Twój wpis został pomyślnie opublikowany na profilu i tablicy! ✨✨');
         }

@@ -1734,70 +1734,148 @@
         /* ── Right Content / Timeline Wall ── */
         .feed-composer {
             background: var(--navy-surface);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: var(--radius-lg);
-            padding: 20px;
+            padding: 18px 20px;
             margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         }
 
         .composer-top {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 14px;
+            gap: 14px;
+            width: 100%;
+        }
+        .composer-avatar-wrap {
+            position: relative;
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
         }
         .composer-avatar {
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: block;
+        }
+        .composer-badge-cc {
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000;
+            font-size: 0.55rem;
+            font-weight: 900;
+            padding: 1px 4px;
+            border-radius: 6px;
+            border: 1px solid #fff;
+            letter-spacing: 0.5px;
+            line-height: 1;
+            white-space: nowrap;
+        }
+        .composer-capsule-wrap {
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: center;
         }
         .composer-input {
-            flex: 1;
+            width: 100%;
             background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: 1.5px solid rgba(255, 255, 255, 0.16);
             border-radius: 30px;
-            padding: 11px 18px;
+            padding: 12px 50px 12px 20px;
             color: #fff;
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
         }
-        .composer-input:focus { border-color: var(--purple-glow); }
+        .composer-input:focus {
+            border-color: #a855f7;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 16px rgba(168, 85, 247, 0.25);
+        }
+        .composer-input::placeholder {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        .composer-media-trigger-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #cbd5e1;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        .composer-media-trigger-btn:hover {
+            color: #38bdf8;
+            transform: translateY(-50%) scale(1.15);
+        }
 
         .composer-actions {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-top: 12px;
+            margin-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
         .composer-btn-attach {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            font-size: 0.82rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: color 0.2s;
+            padding: 6px 12px;
+            border-radius: 16px;
+            transition: all 0.2s;
+            font-family: inherit;
         }
-        .composer-btn-attach:hover { color: #fff; }
+        .composer-btn-attach:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.25);
+        }
         .composer-btn-publish {
-            background: linear-gradient(90deg, #a855f7, #3b82f6);
+            background: linear-gradient(135deg, #a855f7, #ec4899);
             color: #fff;
             border: none;
-            padding: 8px 20px;
+            padding: 8px 22px;
             border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.85rem;
+            font-weight: 800;
+            font-size: 0.88rem;
             cursor: pointer;
-            transition: transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 14px rgba(168, 85, 247, 0.35);
+            transition: all 0.2s;
+            font-family: inherit;
         }
-        .composer-btn-publish:hover { transform: scale(1.03); }
+        .composer-btn-publish:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5);
+        }
 
         /* Post Card on Wall */
         .post-card {
@@ -3323,8 +3401,16 @@
                     <!-- Composer -->
                     <div class="feed-composer">
                         <div class="composer-top">
-                            <img loading="lazy" decoding="async" src="avatar_cezary_karuzela_2026.jpg?v=20260825_urszula_real_face_v370" alt="Cezary" class="composer-avatar" id="myComposerAvatar">
-                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
+                            <div class="composer-avatar-wrap">
+                                <img loading="lazy" decoding="async" src="avatar_cezary_official.jpg" alt="Cezary" class="composer-avatar" id="myComposerAvatar" onerror="this.src='lumina_icon.jpg'">
+                                <span class="composer-badge-cc" title="Christian Culture">CC</span>
+                            </div>
+                            <div class="composer-capsule-wrap">
+                                <input type="text" id="composerInput" class="composer-input" placeholder="HalleluYah #DobrzeŻeJesteś" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
+                                <button type="button" class="composer-media-trigger-btn" onclick="openMediaAttachModal()" title="Dołącz grafikę z dysku lub film z linku">
+                                    <i class="fa-solid fa-image"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Post Image Attachment Preview -->
@@ -3340,10 +3426,12 @@
                         </div>
 
                         <div class="composer-actions">
-                            <button type="button" class="composer-btn-attach" onclick="triggerPostImageUpload()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Dołącz Grafikę</button>
-                            <button type="button" class="composer-btn-attach" onclick="promptEmbedVideo()"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Osadź Wideo</button>
-                            <button type="button" class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Dodaj Werset</button>
-                            <button type="button" class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-share"></i> Opublikuj</button>
+                            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                                <button type="button" class="composer-btn-attach" onclick="triggerPostImageUpload()" title="Wgraj grafikę z dysku"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Grafika z dysku</button>
+                                <button type="button" class="composer-btn-attach" onclick="promptEmbedVideo()" title="Wklej link do filmu YouTube / MP4"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Film z linku</button>
+                                <button type="button" class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Werset</button>
+                            </div>
+                            <button type="button" class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-paper-plane"></i> Opublikuj</button>
                         </div>
                     </div>
 
@@ -5456,6 +5544,15 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
 
         
         let attachedPostVideoUrl = null;
+
+        function openMediaAttachModal() {
+            const choice = confirm("Dołącz multimedia do wpisu HalleluYah #DobrzeŻeJesteś:\n\n[OK] = 📷 Wgraj grafikę z dysku\n[Anuluj] = 🎬 Dodaj film z linku (YouTube / MP4)");
+            if (choice) {
+                triggerPostImageUpload();
+            } else {
+                promptEmbedVideo();
+            }
+        }
 
         function promptEmbedVideo() {
             const url = prompt('Wklej link do wideo (YouTube, Shorts, Vimeo lub plik MP4):');
