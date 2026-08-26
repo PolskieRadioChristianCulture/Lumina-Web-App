@@ -50,6 +50,41 @@
 
     const LUMINA_CORE_POSTS_DATA = [
         {
+            id: 'post_dzj_2026_08_26',
+            type: 'post',
+            author: 'Cezary Rogowski',
+            authorRole: '☀️ Dobrze, że jesteś • Założyciel Christian Culture ✨',
+            authorAvatar: 'avatar_cezary_official.jpg',
+            authorSlug: 'cezaryrgowski',
+            time: '26 Sierpnia 2026 • ☀️ Dobrze, że jesteś',
+            title: '☀️ Lato z Jezusem — Wielkie Pytania (Dzień 26)',
+            text: `☀️ **Lato z Jezusem — Wielkie Pytania**
+**Dzień 26 — 31 bardzo osobistych pytań Syna/Córki do Ojca: Dlaczego tak łatwo ulegam lękowi przed odrzuceniem mojej wizji i marzeń?**
+
+W dwudziestym szóstym dniu cyklu „Lato z Jezusem — Wielkie Pytania” rozbrajamy mechanizm lęku przed odrzuceniem naszych planów, celów i wizji przez niezrozumiejące otoczenie.
+
+W psychologii twórczości zjawisko „lęku przed krytyką społeczną” opisuje barierę, w której jednostka rezygnuje ze swoich innowacyjnych pomysłów i marzeń pod wpływem presji otoczenia oczekującego konformizmu. Wróg bezwzględnie żeruje na tym lęku na duchowym froncie. Słowo Boże przypomina nam historię Józefa, którego wizje zostały wyśmiane przez najbliższych, a mimo to stały się narzędziem wielkiego ocalenia. Chrześcijański lider najwyższej klasy nie buduje swojego napędu na ludzkich oklaskach – realizuje Bożą wizję z nienaganną klasą, odwagą i profesjonalizmem, niezależnie od opinii tłumu.
+
+**Jezus mówi dziś do Ciebie:**
+„Kiedy opowiedział to ojcu i braciom, ojciec skarcił go i rzekł mu: 'Co to za sen, który śniłeś?...'” *(Księga Rodzaju 37,10)*
+
+**Zadanie Taktyczne:**
+Zmiażdż dziś lęk przed odrzuceniem Twoich planów na swoim polu bitwy. Jeśli Twoje projekty spotykają się z oporem lub brakiem wiary ze strony innych, nie trać determinacji. Skup się na precyzyjnym wykonaniu zadań i oddaj wynik Bogu. Wnieś do swojej firmy i domu standard odwagi, stabilności i dojrzałego autorytetu.
+
+W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
+
+**Modlitwa Bojowa:**
+„Ojcze, odrzucam kłamstwa nieprzyjaciela i lęk przed odrzuceniem moich marzeń. Przepraszam, że wątpiłem z powodu ludzkiej krytyki. Dziękuję, że Twoje powołanie jest dla mnie prawem. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą budował to, co mi powierzyłeś, zdobywając ten świat dla Twojej chwały.”
+
+Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
+
+PODAJ DALEJ 🔴
+www.polskieradio.cc | www.cclite.pl`,
+            image: 'promo_dzj.jpg',
+            likes: 88,
+            amen: 82
+        },
+        {
             id: 'post_ckd_2026_08_25',
             type: 'post',
             author: 'Andrzej Thiel',
