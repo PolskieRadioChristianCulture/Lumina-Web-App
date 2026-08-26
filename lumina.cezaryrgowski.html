@@ -355,6 +355,18 @@
             cursor: pointer;
         }
 
+        .cover-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            display: block;
+            z-index: 1;
+            background: #000;
+        }
+
         .cover-photo {
             width: 100%;
             height: 100%;
@@ -367,7 +379,9 @@
         .cover-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(11, 24, 56, 0.1) 40%, rgba(11, 24, 56, 0.85) 100%);
+            background: linear-gradient(to bottom, rgba(11, 24, 56, 0.1) 30%, rgba(11, 24, 56, 0.88) 100%);
+            z-index: 2;
+            pointer-events: none;
         }
 
         .cover-actions-group {
@@ -2833,14 +2847,15 @@
         <!-- ══════════ FULL PUBLIC PROFILE VIEW ══════════ -->
         <div id="profilePublicView">
 
-            <!-- Cover Banner -->
+            <!-- Cover Banner (Wyjątek: Wideo Tło Profilowe dla Cezarego Rogowskiego) -->
             <div class="cover-wrapper" onclick="toggleCoverActions(event)" title="Kliknij w tło, aby edytować">
-                <img loading="lazy" decoding="async" src="lumina_default_cover.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl">
+                <video id="profileCoverVideoEl" class="cover-video" src="tlo_profilowe_cezary.mp4" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture poster="lumina_default_cover.jpg"></video>
+                <img loading="lazy" decoding="async" src="lumina_default_cover.jpg" alt="Cover" class="cover-photo" id="coverPhotoEl" style="display:none;">
                 <div class="cover-overlay"></div>
                 
-                <div class="cover-hint-badge"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
+                <div class="cover-hint-badge" style="z-index:3;"><i class="fa-solid fa-camera"></i> Kliknij w tło, aby edytować</div>
 
-                <div class="cover-actions-group" id="coverActionsGroup" onclick="event.stopPropagation()">
+                <div class="cover-actions-group" id="coverActionsGroup" onclick="event.stopPropagation()" style="z-index:30;">
                     <button type="button" class="btn-change-cover" onclick="triggerCoverUpload()"><i class="fa-solid fa-camera"></i> Zmień zdjęcie w tle</button>
                     <button type="button" class="btn-change-cover" onclick="toggleCoverRepositionToolbar()"><i class="fa-solid fa-arrows-up-down"></i> Ustaw Kadr / Wycentruj</button>
                     <button type="button" class="btn-change-cover" onclick="closeCoverActions()" style="padding:8px 12px; background:rgba(255,255,255,0.12);" title="Zamknij menu"><i class="fa-solid fa-xmark"></i></button>
@@ -4439,8 +4454,12 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                     compAv.src = targetAv;
                 }
             }
+            const coverVideoEl = document.getElementById('profileCoverVideoEl');
+            if (coverVideoEl) {
+                coverVideoEl.play().catch(() => {});
+            }
             const coverEl = document.getElementById('coverPhotoEl');
-            if (coverEl) {
+            if (coverEl && !coverVideoEl) {
                 const targetCov = data.cover || 'lumina_default_cover.jpg';
                 coverEl.onerror = () => { coverEl.onerror = null; coverEl.src = 'lumina_default_cover.jpg'; };
                 coverEl.src = targetCov;
