@@ -6,7 +6,7 @@
 (function() {
     'use strict';
 
-    const CURRENT_CLIENT_VERSION = '3.6.3';
+    const CURRENT_CLIENT_VERSION = '3.9.0';
     const DISMISS_INSTALL_KEY = 'lumina_pwa_install_dismissed';
     const DISMISS_UPDATE_KEY = 'lumina_pwa_update_dismissed_version';
     const LAST_SEEN_VERSION_KEY = 'lumina_app_version_seen';
@@ -38,14 +38,14 @@
                 try {
                     const registrations = await navigator.serviceWorker.getRegistrations();
                     for (const reg of registrations) {
-                        if (reg.active && !reg.active.scriptURL.includes('v=20260824_v364')) {
+                        if (reg.active && !reg.active.scriptURL.includes('v=20260826_v390')) {
                             console.log('[LUMINA PWA] Wyrejestrowywanie starego Service Workera:', reg.active.scriptURL);
                             await reg.unregister();
                         }
                     }
                 } catch (e) {}
 
-                navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260824_v364', { scope: './' })
+                navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260826_v390', { scope: './' })
                     .then((reg) => {
                         swRegistration = reg;
                         console.log('[LUMINA PWA] Service Worker zarejestrowany pomyślnie. Scope:', reg.scope);
