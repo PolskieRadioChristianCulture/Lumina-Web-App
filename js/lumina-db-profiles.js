@@ -267,6 +267,62 @@ export const PROFILES_DB = {
         ]
     },
 
+    'jolawojcik': {
+        uid: 'jolawojcik',
+        slug: 'jolawojcik',
+        name: 'Jola Wójcik',
+        age: 'Polska',
+        city: 'Polska',
+        avatar: 'avatar_jolawojcik.jpg',
+        cover: 'lumina_default_cover.jpg',
+        coverPosY: '50%',
+        job: 'Biblijny Czas Modlitwy • Polskie Radio CC',
+        role: 'Biblijny Czas Modlitwy 🕊️🌸',
+        facebookUrl: 'https://www.facebook.com/jola.wojcik.940/',
+        church: 'Wspólnota Modlitewna',
+        denom: 'Chrześcijanka',
+        status: 'Chrześcijanka',
+        pin: '7777',
+        visibility: 'public',
+        match: '97%',
+        matchScore: '97%',
+        stats: { friends: '320', posts: '3', likes: '185' },
+        verse: '„Nieustannie się módlcie. W każdym położeniu dziękujcie, taka jest bowiem wola Boża w Chrystusie Jezusie względem was.”',
+        verseRef: '— 1 List do Tesaloniczan 5, 17-18',
+        bio: 'Chrześcijanka zakorzeniona w modlitwie i Słowie Bożym. Razem z Polskim Radiem Christian Culture zapraszam do wspólnego trwania w Bożej obecności w ramach serii Biblijny Czas Modlitwy.',
+        tags: ['Biblijny Czas Modlitwy', 'Modlitwa', 'Słowo Boże', 'Radio Christian Culture', 'Wspólnota Wiary', 'Uwielbienie'],
+        photos: ['avatar_jolawojcik.jpg', 'lumina_default_cover.jpg'],
+        youtubeVideos: ['EWY-J2gSqwo', 'nFbfDqf42Q4'],
+        posts: [
+            {
+                id: 'post_jola_1',
+                author: 'Jola Wójcik',
+                authorSlug: 'jolawojcik',
+                authorAvatar: 'avatar_jolawojcik.jpg',
+                authorRole: 'Biblijny Czas Modlitwy 🕊️🌸',
+                time: 'Dzisiaj, 14:30 • 🕊️ Pasmo Modlitewne',
+                text: 'Zapraszam Was serdecznie do wspólnej modlitwy w ramach serii „Biblijny Czas Modlitwy” Polskiego Radia Christian Culture! Wierzę, że gdy stajemy razem przed Panem, On odnawia nasze serca i napełnia je pokojem. 🙏✨',
+                likes: 28,
+                amen: 34,
+                youtubeId: 'EWY-J2gSqwo',
+                image: null
+            },
+            {
+                id: 'post_jola_2',
+                author: 'Jola Wójcik',
+                authorSlug: 'jolawojcik',
+                authorAvatar: 'avatar_jolawojcik.jpg',
+                authorRole: 'Słowo Boże 📖',
+                time: 'Wczoraj, 19:15 • 📖 Medytacja',
+                text: '„Wzywaj mnie w dniu utrapienia, a wyzwolę cię, i będziesz mnie chwalił.” (Psalm 50, 15). Nie bój się powierzyć Bogu każdego ciężaru. Błogosławionego wieczoru! 🕊️',
+                likes: 19,
+                amen: 26,
+                youtubeId: 'nFbfDqf42Q4',
+                image: null
+            }
+        ]
+    },
+
     'tomek': {
         uid: 'tomek',
         slug: 'tomek',
