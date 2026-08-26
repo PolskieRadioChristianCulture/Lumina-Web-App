@@ -1339,6 +1339,7 @@
 
             if (hash === ADMIN_PIN_HASH) {
                 sessionStorage.setItem('lumina_auth_master_admin', 'true');
+                localStorage.setItem('lumina_auth_master_admin', 'true');
                 this.checkAndApplyAdminState();
                 if (typeof window.showToast === 'function') {
                     window.showToast('✨ Zalogowano do Panelu Głównego Administratora! Pełny dostęp aktywny.');
