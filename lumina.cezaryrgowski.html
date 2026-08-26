@@ -4273,8 +4273,12 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                         avatar = 'avatar_cezary_official.jpg';
                     }
                     let cover = parsed.cover;
-                    if (!cover || cover === 'null' || cover === 'undefined' || cover.trim() === '') {
+                    // Migracja: stary plik MP4 lub domyślne tło → zawsze GIF Cezarego
+                    const OLD_COVERS = ['', 'null', 'undefined', 'lumina_default_cover.jpg', 'tlo_profilowe_cezary.mp4'];
+                    if (!cover || OLD_COVERS.includes(cover.trim())) {
                         cover = 'tlo_profilowe_cezary.gif';
+                        // Zapisz migrację od razu do localStorage
+                        try { parsed.cover = cover; localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed)); } catch(e) {}
                     }
                     let age = parsed.age;
                     if (!age || age === '32' || age === 32 || age === '30' || age === 30) {
