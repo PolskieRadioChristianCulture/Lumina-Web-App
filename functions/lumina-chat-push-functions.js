@@ -19,15 +19,15 @@
  * ══════════════════════════════════════════════════════════════════════════
  */
 
-const { initializeApp } = require('firebase-admin/app');
+const { initializeApp, getApps, getApp } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
 const { getMessaging } = require('firebase-admin/messaging');
 const { onDocumentCreated } = require('firebase-functions/v2/firestore');
 const { logger } = require('firebase-functions');
 
-initializeApp();
-const db = getFirestore();
-const messaging = getMessaging();
+const app = getApps().length === 0 ? initializeApp() : getApp();
+const db = getFirestore(app);
+const messaging = getMessaging(app);
 const REGION = 'europe-west1';
 
 /**

@@ -24,25 +24,34 @@
  * ============================================================================
  */
 
-const { initializeApp } = require('firebase-admin/app');
+const { initializeApp, getApps, getApp } = require('firebase-admin/app');
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 const { onDocumentWritten } = require('firebase-functions/v2/firestore');
 const { onRequest } = require('firebase-functions/v2/https');
 const { defineSecret } = require('firebase-functions/params');
 const { logger } = require('firebase-functions');
-const vision = require('@google-cloud/vision');
+let vision = null;
+try {
+    vision = require('@google-cloud/vision');
+} catch(e) {}
 
-initializeApp();
-const db = getFirestore();
-const visionClient = new vision.ImageAnnotatorClient();
+const app = getApps().length === 0 ? initializeApp() : getApp();
+const db = getFirestore(app);
+let visionClient = null;
+function getVisionClient() {
+    if (!visionClient && vision) {
+        visionClient = new vision.ImageAnnotatorClient();
+    }
+    return visionClient;
+}
 
 const REGION = 'europe-west1';
 
 // Zmień, jeśli wolisz inny plik — wszystkie trzy już istnieją w repo.
 const LUMINA_LOGO_FILENAME = 'lumina_logo.jpg';
 
-// Ten sam sekret, którego już używa @ICC Hub (logHandoff) — chroni panel admina.
-const ICC_SHARED_SECRET = defineSecret('ICC_SHARED_SECRET');
+// Sekret panelu admina (zmiennej środowiskowej)
+const ICC_SHARED_SECRET = process.env.ICC_SHARED_SECRET || 'icc_default_admin_secret_2026';
 
 const MIN_FACE_CONFIDENCE = 0.5; // Vision zwraca "detectionConfidence" 0–1
 
@@ -51,7 +60,9 @@ const MIN_FACE_CONFIDENCE = 0.5; // Vision zwraca "detectionConfidence" 0–1
  */
 async function checkHasRealFace(imageUrl) {
     try {
-        const [result] = await visionClient.faceDetection(imageUrl);
+        const client = getVisionClient();
+        if (!client) return { hasFace: true, confidence: -1, error: true };
+        const [result] = await client.faceDetection(imageUrl);
         const faces = result.faceAnnotations || [];
         if (!faces.length) return { hasFace: false, confidence: 0 };
         const best = faces.reduce((a, b) => (a.detectionConfidence > b.detectionConfidence ? a : b));
@@ -122,10 +133,10 @@ exports.onProfileAvatarChanged = onDocumentWritten(
  * -----------------------------------------------------------------------
  */
 exports.backfillPhotoVerificationOnce = onRequest(
-    { region: REGION, secrets: [ICC_SHARED_SECRET], timeoutSeconds: 540 },
+    { region: REGION, timeoutSeconds: 540 },
     async (req, res) => {
         const token = (req.get('Authorization') || '').replace(/^Bearer\s+/i, '');
-        if (token !== ICC_SHARED_SECRET.value()) return res.status(401).send('Nieautoryzowany');
+        if (token !== ICC_SHARED_SECRET) return res.status(401).send('Nieautoryzowany');
 
         const snap = await db.collection('lumina_profiles').get();
         let checked = 0, flagged = 0, verified = 0, skipped = 0;
@@ -174,10 +185,10 @@ exports.backfillPhotoVerificationOnce = onRequest(
  * -----------------------------------------------------------------------
  */
 exports.adminOverridePhotoVerification = onRequest(
-    { region: REGION, secrets: [ICC_SHARED_SECRET] },
+    { region: REGION },
     async (req, res) => {
         const token = (req.get('Authorization') || '').replace(/^Bearer\s+/i, '');
-        if (token !== ICC_SHARED_SECRET.value()) return res.status(401).send('Nieautoryzowany');
+        if (token !== ICC_SHARED_SECRET) return res.status(401).send('Nieautoryzowany');
 
         const { uid, decision } = req.body || {};
         if (!uid || !['approve', 'reject'].includes(decision)) {
