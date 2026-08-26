@@ -4338,7 +4338,31 @@
                 amen: 198
             });
 
-            // 0.0. Andrzej Thiel - Cuda Każdego Dnia (25 SIERPNIA 2026 - DZISIAJ)
+            // 0.0. Andrzej Thiel - Cuda Każdego Dnia (26 SIERPNIA 2026 - DZISIAJ)
+            try {
+                const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
+                const aProfile = aJson ? JSON.parse(aJson) : null;
+                const aAvatar = (aProfile && aProfile.avatar) ? aProfile.avatar : 'avatar_andrzej_thiel.jpg';
+                const aName = (aProfile && aProfile.name) ? aProfile.name : 'Andrzej Thiel';
+                const aCudaImg26 = localStorage.getItem('lumina_cuda_image_26') || 'cuda_kazdego_dnia_26_sierpnia_2026.jpg';
+
+                posts.push({
+                    id: 'post_andrzej_cuda_26_08_2026',
+                    type: 'post',
+                    author: aName,
+                    authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
+                    authorAvatar: aAvatar,
+                    authorSlug: 'andrzejthiel',
+                    time: '26 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Dzisiaj)',
+                    title: 'CUDA KAŻDEGO DNIA! 26 SIERPNIA 2026. JEŚLI NIE WIESZ, JAK SIĘ MODLIĆ...!',
+                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nJEŚLI NIE WIESZ, JAK SIĘ MODLIĆ...!\n\nChciałbyś lub chciałabyś się modlić, ale nie wiesz jak? Brakuje Ci słów? A może Twoja modlitwa stała się rutyną? Spróbuj modlić się do Boga Jego własnym Słowem. Jezus powiedział: „Słowa, które Ja wam powiedziałem, są duchem i życiem” (J.6,63). Gdy wypowiadasz je w modlitwie, pozwalasz Bożej prawdzie przenikać swoje serce i patrzeć na siebie, innych oraz swoje okoliczności z Bożej perspekpytywy. Zamiast przedstawiać Bogu własne plany i prosić Go, by je pobłogosławił, uczysz się mówić: „Panie, chcę zaufać Tobie i nie polegać na własnym rozumie, bo Twoje myśli przewyższają moje myśli” ((Prz.3,5; Iz.55,9). Jeśli trudno ci ubrać w słowa swoje emocje, sięgnij po Psalmy. Znajdziesz w nich szczere wołanie, wdzięczność, ból, nadzieję i uwielbienie. Możesz je śmiało personalizować – przecież to Twoja osobista rozmowa z Ojcem.\n\nOto kilka przykładów:\n• Oddając Bogu chwałę – módl się słowami Psalmu 100: „Panie, Ty jesteś moim Bogiem. Ty mnie stworzyłeś i do Ciebie należę. Przychodzę przed Ciebie z dziękczynieniem, a na Twoje dziedzińce – z uwielbieniem. Dziękuję Ci, Panie i błogosławię Twoje imię. Jesteś dobry, a Twoje miłosierdzie trwa na wieki. Twoja prawda trwa przez wszystkie pokolenia. Amen”.\n• Gdy potrzebujesz kierunku: „Panie, naucz mnie pełnić Twoją wolę, bo Ty jesteś moim Bogiem. Niech Twój dobry Duch prowadzi mnie właściwą drogą” (Ps.143,10).\n• Gdy brakuje Ci wiary: „Wierzę, Panie. Pomóż mi przezwyciężyć moją niewiarę” (Mk. 9,24).\n• Modląc się o bliskich: „Niech Twój Duch spocznie na… (imię): Duch mądrości i rozumu, Duch rady i mocy, Duch poznania i bojaźni Pana” (Iz. 11,2).\n• Modląc się o dzieci lub wnuki: „Ojcze, spraw, aby wzrastał w mądrości, w łasce u Ciebie i u ludzi” (Łk.2,52). A gdy wychodzi z domu: „Niech Twoi aniołowie strzegą go na wszystkich jego drogach” (Ps.91,11).\n• Kiedy jest ci ciężko: „Panie, odpowiedz na wołanie moje, sprawiedliwy Boże mój! W ucisku ulżyłeś mi. Zmiłuj się nade mną i wysłuchaj modlitwę moją” (Ps.4,2).\n• Kiedy się boisz: „Panie, Ty jesteś moją światłością i moim zbawieniem – kogo miałbym się bać? Ty jesteś ochroną mojego życia, więc nie chcę ulegać lękowi. Pomóż mi zaufać Tobie bardziej niż moim obawom.” (Ps.27,1)\n• Kiedy masz złamane serce: „Kochany Ojcze, dziękuję Ci, że jesteś blisko tych, których serce jest złamane. Widzisz mój ból i nie zostawiasz mnie samego. Proszę, podnieś mnie na duchu, uzdrów moje serce i napełnij mnie swoją nadzieją.” (Ps.34,19)\n\nWierzę, że znajdziesz wiele innych Bożych Słów, które tchną w ciebie życie.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
+                    image: aCudaImg26,
+                    likes: 284,
+                    amen: 256
+                });
+            } catch(e) {}
+
+            // 0.1. Andrzej Thiel - Cuda Każdego Dnia (25 SIERPNIA 2026 - WCZORAJ)
             try {
                 const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
                 const aProfile = aJson ? JSON.parse(aJson) : null;
@@ -4353,7 +4377,7 @@
                     authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
-                    time: '25 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Dzisiaj)',
+                    time: '25 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Wczoraj)',
                     title: 'CUDA KAŻDEGO DNIA! 25 SIERPNIA 2026. MODLITWA JEST NAJPOTĘŻNIEJSZĄ BRONIĄ!',
                     text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nMODLITWA JEST NAJPOTĘŻNIEJSZĄ BRONIĄ!\n\nW mediach dużo ostatnio mówi się o broni, o skutecznych sposobach walki i obrony. Tuż obok naszych granic trwa wojna, w której obie strony nieustannie pracują nad coraz nowszymi wynalazkami, które mają przeważyć szalę zwycięstwa. Systemy ochrony powietrznej, rakiety dalekiego zasięgu, drony itp. umożliwiają ochronę przed atakami, ale też precyzyjne niszczenie celów. Czy wiesz, że trwa znacznie ważniejsza, choć niewidoczna dla naszych oczu wojna? W której chodzi nie tylko o twoje doczesne życie, ale i to wieczne?\n\nPisze o tym Apostoł Paweł: „Nie walczymy przeciwko ludziom…, ale złym władcom niewidzialnego świata, potężnym siłom demonicznym i złym książętom ciemności rządzącymi tym światem…” (Ef.6,12). Powiesz: „To koniec ze mną”, „jestem za słaby”, „nie mam czym walczyć”. Bóg nie zostawił cię bezbronnym. Masz najbardziej skuteczną broń, która nie tylko cię ochroni, ale i dzięki której będziesz mógł skutecznie niszczyć diabelskie twierdze: „Gdyż oręż nasz, którym walczymy, nie jest cielesny, lecz ma moc burzenia warowni dla sprawy Bożej” (2 Kor. 10,4).\n\nW co w takim razie Bóg ciebie i mnie wyposażył, byśmy nie zginęli na tej wojnie, a raczej zwyciężali? Dał nam swoje Słowo, które jest mieczem (zob. Ef.6,17) i przywilej modlitwy. Modlitwa jest najpotężniejszą bronią chrześcijan. Jej moc nie pochodzi od człowieka ani nie opiera się na ludzkich siłach, ale na Bogu, który ma wszelką władzę, mądrość i miłość. On czeka byś zaczął się modlić, bo wtedy masz wpływ na to co Bóg robi w tym świecie, ale też w tobie. Bardzo prawdziwe jest to, co odkryła między innymi Matka Teresa: “Kiedyś myślałam, że modlitwa zmienia świat wokół nas. Dziś wiem, że najpierw zmienia nas samych, a potem to my zmieniamy świat”.\n\nTak, Bóg często zaczyna swoje działanie od przemiany naszego serca, postawy i sposobu patrzenia. Kiedy zwalniamy i rozmawiamy z Bogiem, On może pokazać nam kto najbardziej potrzebuje miłości i jak możemy na tę potrzebę odpowiedzieć. Bądź otwarty dzisiaj na Jego impulsy. Módl się nieustannie, od chwili, kiedy się budzisz do momentu, kiedy idziesz spać. Módl się z wiarą i oczekuj, że Bóg będzie działał.\n\n„Ojcze, wierzę, że Ty działasz, nawet kiedy tego nie widzę. Wierze, że modląc się burzę warownie wroga, które pobudował w moim sercu, moim umyśle. Niech moc Twojego Ducha działa we mnie i w życiu moich bliskich. Z Tobą mogę żyć zwycięsko!”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg25,

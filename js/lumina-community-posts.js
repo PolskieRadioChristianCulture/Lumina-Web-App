@@ -50,6 +50,41 @@
 
     const LUMINA_CORE_POSTS_DATA = [
         {
+            id: 'post_ckd_2026_08_26',
+            type: 'post',
+            author: 'Andrzej Thiel',
+            authorRole: 'Opracowuje Rozważania „Cuda Każdego Dnia” ✨ • Sieradz',
+            authorAvatar: 'avatar_andrzej_thiel.jpg',
+            authorSlug: 'andrzejthiel',
+            time: '26 Sierpnia 2026 • 📖 Cuda Każdego Dnia (Dzisiaj)',
+            title: 'JEŚLI NIE WIESZ, JAK SIĘ MODLIĆ...! • Cuda Każdego Dnia ✨',
+            text: `CUDA KAŻDEGO DNIA! 
+26 SIERPNIA 2026.
+Przeczytaj i zobacz jak Bóg przemienia twoje życie.
+
+JEŚLI NIE WIESZ, JAK SIĘ MODLIĆ...!
+
+Chciałbyś lub chciałabyś się modlić, ale nie wiesz jak? Brakuje Ci słów? A może Twoja modlitwa stała się rutyną? Spróbuj modlić się do Boga Jego własnym Słowem. Jezus powiedział: „Słowa, które Ja wam powiedziałem, są duchem i życiem” (J.6,63). Gdy wypowiadasz je w modlitwie, pozwalasz Bożej prawdzie przenikać swoje serce i patrzeć na siebie, innych oraz swoje okoliczności z Bożej perspektywy. Zamiast przedstawiać Bogu własne plany i prosić Go, by je pobłogosławił, uczysz się mówić: „Panie, chcę zaufać Tobie i nie polegać na własnym rozumie, bo Twoje myśli przewyższają moje myśli” ((Prz.3,5; Iz.55,9). Jeśli trudno ci ubrać w słowa swoje emocje, sięgnij po Psalmy. Znajdziesz w nich szczere wołanie, wdzięczność, ból, nadzieję i uwielbienie. Możesz je śmiało personalizować – przecież to Twoja osobista rozmowa z Ojcem.
+
+Oto kilka przykładów:
+• Oddając Bogu chwałę – módl się słowami Psalmu 100: „Panie, Ty jesteś moim Bogiem. Ty mnie stworzyłeś i do Ciebie należę. Przychodzę przed Ciebie z dziękczynieniem, a na Twoje dziedzińce – z uwielbieniem. Dziękuję Ci, Panie i błogosławię Twoje imię. Jesteś dobry, a Twoje miłosierdzie trwa na wieki. Twoja prawda trwa przez wszystkie pokolenia. Amen”.
+• Gdy potrzebujesz kierunku: „Panie, naucz mnie pełnić Twoją wolę, bo Ty jesteś moim Bogiem. Niech Twój dobry Duch prowadzi mnie właściwą drogą” (Ps.143,10).
+• Gdy brakuje Ci wiary: „Wierzę, Panie. Pomóż mi przezwyciężyć moją niewiarę” (Mk. 9,24).
+• Modląc się o bliskich: „Niech Twój Duch spocznie na… (imię): Duch mądrości i rozumu, Duch rady i mocy, Duch poznania i bojaźni Pana” (Iz. 11,2).
+• Modląc się o dzieci lub wnuki: „Ojcze, spraw, aby wzrastał w mądrości, w łasce u Ciebie i u ludzi” (Łk.2,52). A gdy wychodzi z domu: „Niech Twoi aniołowie strzegą go na wszystkich jego drogach” (Ps.91,11).
+• Kiedy jest ci ciężko: „Panie, odpowiedz na wołanie moje, sprawiedliwy Boże mój! W ucisku ulżyłeś mi. Zmiłuj się nade mną i wysłuchaj modlitwę moją” (Ps.4,2).
+• Kiedy się boisz: „Panie, Ty jesteś moją światłością i moim zbawieniem – kogo miałbym się bać? Ty jesteś ochroną mojego życia, więc nie chcę ulegać lękowi. Pomóż mi zaufać Tobie bardziej niż moim obawom.” (Ps.27,1)
+• Kiedy masz złamane serce: „Kochany Ojcze, dziękuję Ci, że jesteś blisko tych, których serce jest złamane. Widzisz mój ból i nie zostawiasz mnie samego. Proszę, podnieś mnie na duchu, uzdrów moje serce i napełnij mnie swoją nadzieją.” (Ps.34,19)
+
+Wierzę, że znajdziesz wiele innych Bożych Słów, które tchną w ciebie życie.
+/opr. na podst. wiad. B.K./.
+
+Dziękuję, że jesteś! ❤️`,
+            image: 'cuda_kazdego_dnia_26_sierpnia_2026.jpg',
+            likes: 284,
+            amen: 256
+        },
+        {
             id: 'post_dzj_2026_08_26',
             type: 'post',
             author: 'Cezary Rogowski',

@@ -916,8 +916,8 @@
 
                 <!-- ══════════ DYNAMICZNA TABLICA ANDRZEJA (Firestore, na żywo + Instant Render) ══════════ -->
                 <div id="andrzejPostsContainer">
-                    <!-- 🌟 POST NA DZIŚ: 25 SIERPNIA 2026 (DZISIAJ) 🌟 -->
-                    <article class="feed-post-card" id="post_cuda_25_sie_2026">
+                    <!-- 🌟 POST NA DZIŚ: 26 SIERPNIA 2026 (DZISIAJ) 🌟 -->
+                    <article class="feed-post-card" id="post_cuda_26_sie_2026">
                         <div class="post-top-header">
                             <div class="post-author-box">
                                 <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
@@ -926,7 +926,86 @@
                                         Andrzej Thiel
                                         <span class="post-badge-daily">Cuda Każdego Dnia</span>
                                     </div>
-                                    <div class="post-time">25 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny (Dzisiaj)</div>
+                                    <div class="post-time">26 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny (Dzisiaj)</div>
+                                </div>
+                            </div>
+                            <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
+                                <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                            </button>
+                        </div>
+
+                        <div class="post-body">
+                            <div class="post-series-tag">
+                                <i class="fa-solid fa-sun"></i> CUDA KAŻDEGO DNIA! • 26 SIERPNIA 2026
+                            </div>
+
+                            <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
+                                <img id="cudaDevotionFeaturedImg" src="cuda_kazdego_dnia_26_sierpnia_2026.jpg" alt="Cuda Każdego Dnia - JEŚLI NIE WIESZ, JAK SIĘ MODLIĆ...!" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" onerror="this.src='ckd_art_2026_08_26.jpg'">
+                            </div>
+
+                            <p style="font-weight:700;color:#fef08a;margin-bottom:12px;font-size:1.05rem;">
+                                Przeczytaj i zobacz jak Bóg przemienia twoje życie.
+                            </p>
+
+                            <h2 class="post-title">JEŚLI NIE WIESZ, JAK SIĘ MODLIĆ...!</h2>
+
+                            <div class="post-text-content">
+                                <p style="margin-bottom:14px;">Chciałbyś lub chciałabyś się modlić, ale nie wiesz jak? Brakuje Ci słów? A może Twoja modlitwa stała się rutyną? Spróbuj modlić się do Boga Jego własnym Słowem. Jezus powiedział: „Słowa, które Ja wam powiedziałem, są duchem i życiem” (J.6,63). Gdy wypowiadasz je w modlitwie, pozwalasz Bożej prawdzie przenikać swoje serce i patrzeć na siebie, innych oraz swoje okoliczności z Bożej perspektywy. Zamiast przedstawiać Bogu własne plany i prosić Go, by je pobłogosławił, uczysz się mówić: „Panie, chcę zaufać Tobie i nie polegać na własnym rozumie, bo Twoje myśli przewyższają moje myśli” ((Prz.3,5; Iz.55,9). Jeśli trudno ci ubrać w słowa swoje emocje, sięgnij po Psalmy. Znajdziesz w nich szczere wołanie, wdzięczność, ból, nadzieję i uwielbienie. Możesz je śmiało personalizować – przecież to Twoja osobista rozmowa z Ojcem.</p>
+                                
+                                <p style="margin-bottom:10px;font-weight:700;color:#fde047;">Oto kilka przykładów:</p>
+                                <ul style="margin-left:20px;margin-bottom:16px;line-height:1.6;display:flex;flex-direction:column;gap:8px;">
+                                    <li><strong>Oddając Bogu chwałę</strong> – módl się słowami Psalmu 100: „Panie, Ty jesteś moim Bogiem. Ty mnie stworzyłeś i do Ciebie należę. Przychodzę przed Ciebie z dziękczynieniem, a na Twoje dziedzińce – z uwielbieniem. Dziękuję Ci, Panie i błogosławię Twoje imię. Jesteś dobry, a Twoje miłosierdzie trwa na wieki. Twoja prawda trwa przez wszystkie pokolenia. Amen”.</li>
+                                    <li><strong>Gdy potrzebujesz kierunku:</strong> „Panie, naucz mnie pełnić Twoją wolę, bo Ty jesteś moim Bogiem. Niech Twój dobry Duch prowadzi mnie właściwą drogą” (Ps.143,10).</li>
+                                    <li><strong>Gdy brakuje Ci wiary:</strong> „Wierzę, Panie. Pomóż mi przezwyciężyć moją niewiarę” (Mk. 9,24).</li>
+                                    <li><strong>Modląc się o bliskich:</strong> „Niech Twój Duch spocznie na… (imię): Duch mądrości i rozumu, Duch rady i mocy, Duch poznania i bojaźni Pana” (Iz. 11,2).</li>
+                                    <li><strong>Modląc się o dzieci lub wnuki:</strong> „Ojcze, spraw, aby wzrastał w mądrości, w łasce u Ciebie i u ludzi” (Łk.2,52). A gdy wychodzi z domu: „Niech Twoi aniołowie strzegą go na wszystkich jego drogach” (Ps.91,11).</li>
+                                    <li><strong>Kiedy jest ci ciężko:</strong> „Panie, odpowiedz na wołanie moje, sprawiedliwy Boże mój! W ucisku ulżyłeś mi. Zmiłuj się nade mną i wysłuchaj modlitwę moją” (Ps.4,2).</li>
+                                    <li><strong>Kiedy się boisz:</strong> „Panie, Ty jesteś moją światłością i moim zbawieniem – kogo miałbym się bać? Ty jesteś ochroną mojego życia, więc nie chcę ulegać lękowi. Pomóż mi zaufać Tobie bardziej niż moim obawom.” (Ps.27,1)</li>
+                                    <li><strong>Kiedy masz złamane serce:</strong> „Kochany Ojcze, dziękuję Ci, że jesteś blisko tych, których serce jest złamane. Widzisz mój ból i nie zostawiasz mnie samego. Proszę, podnieś mnie na duchu, uzdrów moje serce i napełnij mnie swoją nadzieją.” (Ps.34,19)</li>
+                                </ul>
+
+                                <p style="margin-bottom:14px;">Wierzę, że znajdziesz wiele innych Bożych Słów, które tchną w ciebie życie.</p>
+                            </div>
+
+                            <div class="post-prayer-highlight" style="margin-top:12px;">
+                                <div style="font-size:0.85rem;color:#facc15;font-weight:700;text-align:right;">
+                                    /opr. na podst. wiad. B.K./.
+                                </div>
+                            </div>
+
+                            <p style="margin-top:18px;font-weight:800;font-size:1.05rem;color:#fef08a;">
+                                Dziękuję, że jesteś! ❤️
+                            </p>
+                        </div>
+
+                        <div class="post-actions-bar">
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <button class="post-action-btn active-heart" onclick="togglePostLike(this, 'post_cuda_26_sie_2026')">
+                                    <i class="fa-solid fa-heart"></i> <span>284</span>
+                                </button>
+                                <button class="post-action-btn active-amen" onclick="togglePostAmen(this, 'post_cuda_26_sie_2026')">
+                                    <i class="fa-solid fa-hands-praying"></i> Amen (<span>256</span>)
+                                </button>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <button class="post-action-btn" onclick="openShareAndrzejModal()">
+                                    <i class="fa-solid fa-share-nodes"></i> Poleć Rozważanie
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                                        <!-- 🌟 POST: 25 SIERPNIA 2026 (WCZORAJ) 🌟 -->
+                    <article class="feed-post-card" id="post_cuda_25_sie_2026" style="opacity:0.95;">
+                        <div class="post-top-header">
+                            <div class="post-author-box">
+                                <img src="avatar_andrzej_thiel.jpg" onerror="this.src='Andrzej Thiel.jpg'" alt="Andrzej Thiel" class="post-author-img">
+                                <div>
+                                    <div class="post-author-name">
+                                        Andrzej Thiel
+                                        <span class="post-badge-daily">Cuda Każdego Dnia</span>
+                                    </div>
+                                    <div class="post-time">25 SIERPNIA 2026 • 📍 Sieradz • 🌍 Publiczny (Wczoraj)</div>
                                 </div>
                             </div>
                             <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareAndrzejModal()">
