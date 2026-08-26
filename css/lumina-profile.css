@@ -12,8 +12,9 @@
 .cover-wrapper {
     position: relative;
     width: 100%;
-    height: 380px;
-    background: linear-gradient(135deg, #1e1b4b, #312e81, #0f172a);
+    aspect-ratio: 1782 / 397;
+    height: auto;
+    background: #000;
     border-radius: 0 0 24px 24px;
     overflow: hidden;
     box-shadow: 0 15px 35px rgba(0,0,0,0.4);
@@ -22,13 +23,13 @@
 .cover-photo {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center 50%;
+    object-fit: contain;
+    object-position: center center;
     display: block;
     transition: transform 0.4s ease;
 }
 .cover-wrapper:hover .cover-photo {
-    transform: scale(1.02);
+    transform: scale(1.01);
 }
 
 .cover-hint-badge {
@@ -355,7 +356,7 @@ body.owner-mode-active .photo-delete-badge {
 
 @media (max-width: 900px) {
     .profile-body-grid { grid-template-columns: 1fr; }
-    .cover-wrapper { height: 220px; }
+    .cover-wrapper { width: 100%; aspect-ratio: 1782 / 397; height: auto; }
     .avatar-wrap { width: 110px; height: 110px; margin-top: -55px; }
     .profile-head-card { padding: 0 16px 20px; }
     .head-user-name { font-size: 1.5rem; }
