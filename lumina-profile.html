@@ -5663,39 +5663,98 @@
             const slug = getRequestedUserSlug();
             const clean = slug.replace(/^u_/, '');
             const cur = getProfileData() || {};
-            cur.carouselMediaUrl = mediaUrl;
+
+            const isBase64 = mediaUrl.startsWith('data:');
+
+            // Jeśli to base64 — spróbuj najpierw wgrać do Firebase Storage i zastąp URL
+            let finalUrl = mediaUrl;
+            if (isBase64) {
+                if (window.LuminaDB && typeof window.LuminaDB.uploadPhoto === 'function') {
+                    try {
+                        showToast('⏳ Wgrywanie zdjęcia do chmury...');
+                        finalUrl = await window.LuminaDB.uploadPhoto(mediaUrl, slug + '_carousel');
+                    } catch(uploadErr) {
+                        console.warn('[Carousel] Nie udało się wgrać zdjęcia do Storage:', uploadErr);
+                        // Zostajemy przy base64 — zapisujemy tylko lokalnie, nie do Firestore
+                        finalUrl = mediaUrl;
+                    }
+                }
+            }
+
+            cur.carouselMediaUrl = finalUrl;
             cur.carouselMediaType = mediaType;
             if (mediaType === 'video') {
-                cur.avatarVideo = mediaUrl;
-                cur.carouselVideo = mediaUrl;
+                cur.avatarVideo = finalUrl;
+                cur.carouselVideo = finalUrl;
             }
             window._cloudProfileData = cur;
-            // Dedykowany klucz karuzeli — szybko odczytywany przez renderPhotos
+
+            // 1. Zapisz lokalnie
             try {
-                localStorage.setItem('lumina_carousel_' + slug, mediaUrl);
-                localStorage.setItem('lumina_carousel_' + clean, mediaUrl);
+                localStorage.setItem('lumina_carousel_' + slug, finalUrl);
+                localStorage.setItem('lumina_carousel_' + clean, finalUrl);
             } catch(e) {}
             try {
                 const safeCur = { ...cur };
-                if (mediaUrl.length > 500000) safeCur.carouselMediaUrl = 'indexeddb:lumina_carousel_' + slug;
+                if (finalUrl.startsWith('data:') && finalUrl.length > 500000) safeCur.carouselMediaUrl = 'indexeddb:lumina_carousel_' + slug;
                 localStorage.setItem('lumina_profile_' + slug, JSON.stringify(safeCur));
                 localStorage.setItem('lumina_profile_' + clean, JSON.stringify(safeCur));
                 localStorage.setItem(MAIN_USER_KEY, JSON.stringify(safeCur));
                 localStorage.setItem('lumina_current_user_profile', JSON.stringify(safeCur));
                 localStorage.setItem('lumina_my_profile', JSON.stringify(safeCur));
             } catch(e) {}
-            if (window.LuminaMediaStore && mediaUrl.length > 500000) {
-                await window.LuminaMediaStore.setItem('lumina_carousel_' + slug, mediaUrl);
-            }
-            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+
+            // 2. ZAWSZE zapisz carouselMediaUrl bezpośrednio do Firestore (merge)
+            //    — o ile URL nie jest base64 (base64 nie trafia do Firestore, zbyt duży)
+            const firestoreDb = window.luminaDb || window.firebaseDb || (window.LuminaDB && window.LuminaDB.db);
+            if (!finalUrl.startsWith('data:') && firestoreDb) {
                 try {
-                    if (mediaUrl.length < 800000) await window.LuminaDB.saveProfileToCloud(slug, cur);
+                    const { doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+                    const carouselPatch = {
+                        carouselMediaUrl: finalUrl,
+                        carouselMediaType: mediaType,
+                        updatedAt: serverTimestamp()
+                    };
+                    // Zapisz pod slug i uid (jeśli różne)
+                    await setDoc(doc(firestoreDb, 'lumina_profiles', slug), carouselPatch, { merge: true });
+                    if (clean && clean !== slug) {
+                        await setDoc(doc(firestoreDb, 'lumina_profiles', clean), carouselPatch, { merge: true });
+                    }
+                    if (cur.uid && cur.uid !== slug && cur.uid !== clean) {
+                        await setDoc(doc(firestoreDb, 'lumina_profiles', cur.uid), carouselPatch, { merge: true });
+                    }
+                } catch(fsErr) {
+                    console.warn('[Carousel] Błąd zapisu do Firestore, fallback do saveProfileToCloud:', fsErr);
+                    // Fallback — pełny save profilu
+                    if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                        try {
+                            const safeCur2 = { ...cur };
+                            delete safeCur2.cover; // bez dużych base64 okładek
+                            if (safeCur2.avatar && safeCur2.avatar.startsWith('data:')) delete safeCur2.avatar;
+                            await window.LuminaDB.saveProfileToCloud(slug, safeCur2);
+                        } catch(e2) {}
+                    }
+                }
+            } else if (!finalUrl.startsWith('data:') && window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                // Firestore db nie dostępny przez import — użyj saveProfileToCloud (ale tylko pola karuzeli)
+                try {
+                    const minPatch = { ...cur };
+                    if (minPatch.avatar && minPatch.avatar.startsWith('data:')) delete minPatch.avatar;
+                    if (minPatch.cover && minPatch.cover.startsWith('data:')) delete minPatch.cover;
+                    await window.LuminaDB.saveProfileToCloud(slug, minPatch);
                 } catch(e) {}
             }
+
+
+            if (window.LuminaMediaStore && finalUrl.length > 500000) {
+                await window.LuminaMediaStore.setItem('lumina_carousel_' + slug, finalUrl);
+            }
+
             renderPhotos();
             renderProfile();
-            showToast(mediaType === 'video' ? '🎬 Film profilowy ustawiony jako główny w karuzeli!' : '⭐ Zdjęcie zostało ustawione jako Twoja wizytówka na Karuzeli LUMINA!');
+            showToast(mediaType === 'video' ? '🎬 Film profilowy ustawiony jako główny w karuzeli!' : '⭐ Zdjęcie zostało ustawione jako Twoja wizytówka na Karuzeli LUMINA! Karuzela zaktualizowana ✅');
         };
+
 
         window.handleProfileVideoUpload = function(e) {
             const file = e.target.files[0];
