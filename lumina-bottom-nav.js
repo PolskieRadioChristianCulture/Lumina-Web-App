@@ -1246,7 +1246,7 @@
                     };
                 } else {
                     statusPill.className = 'lumina-auth-status-pill offline';
-                    statusPill.innerHTML = '<i class="fa-solid fa-circle" style="color:#ef4444; font-size:0.55rem;"></i> 🔴 Wylogowany (Zaloguj się)';
+                    statusPill.innerHTML = '<i class="fa-solid fa-circle" style="color:#ef4444; font-size:0.55rem;"></i> Wylogowany (Zaloguj się)';
                     statusPill.title = 'Nie jesteś zalogowany. Kliknij tutaj, aby się zalogować!';
                     statusPill.onclick = (e) => {
                         e.stopPropagation();
