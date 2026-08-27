@@ -5146,7 +5146,9 @@
 
                 const matchBadge = card.querySelector('.card-match');
                 if (matchBadge) {
-                    const liveScore = window.calculateProfileMatchScore ? window.calculateProfileMatchScore(p) : (p.badge || p.matchScore || '96%');
+                    const liveScore = (typeof window.calculateProfileMatchScore === 'function') 
+                        ? window.calculateProfileMatchScore(p) 
+                        : (window.LuminaDB?.calculateProfileMatchScore ? window.LuminaDB.calculateProfileMatchScore(p) : (p.matchScore || '96%'));
                     matchBadge.textContent = liveScore;
                     if (liveScore === '0%') {
                         matchBadge.style.background = 'rgba(100, 116, 139, 0.55)';
@@ -5216,7 +5218,10 @@
             const mLoc = document.getElementById('mLoc');
             if (mLoc) {
                 const badgeLabel = p.isFounder ? 'Założyciel Christian Culture' : (p.isMissionAccount ? 'Misja Christian Culture' : 'Profil Społeczności');
-                mLoc.innerHTML = `📍 ${p.city || 'Polska'}  •  Dopasowanie: ${p.matchScore || '96%'}  •  <span style="color:#c084fc;font-weight:700;">${badgeLabel}</span>`;
+                const scoreLabel = (typeof window.calculateProfileMatchScore === 'function') 
+                    ? window.calculateProfileMatchScore(p) 
+                    : (window.LuminaDB?.calculateProfileMatchScore ? window.LuminaDB.calculateProfileMatchScore(p) : '✨ Społeczność');
+                mLoc.innerHTML = `📍 ${p.city || 'Polska'}  •  Dopasowanie: ${scoreLabel}  •  <span style="color:#c084fc;font-weight:700;">${badgeLabel}</span>`;
             }
 
             const mDesc = document.getElementById('mDesc');

@@ -3141,6 +3141,86 @@ export function formatRichTextAndMedia(rawText) {
     };
 }
 
+// ══════════════════════════════════════════════════════════════════════════
+// ── GENUINE PROFILE MATCH SCORE ALGORITHM (Wyznanie, Wartości, Miasto, Wiek) ──
+// ══════════════════════════════════════════════════════════════════════════
+export function calculateProfileMatchScore(targetProfile, currentProfile) {
+    if (!targetProfile) return null;
+    
+    // Profile misyjne / kanały redakcyjne nie mają sztucznego procentu matrymonialnego
+    if (targetProfile.isMissionAccount || targetProfile.isMission || 
+        targetProfile.slug === 'radiocc' || targetProfile.slug === 'studiodobregoslowa' || 
+        targetProfile.slug === 'osobowoscplus' || targetProfile.slug === 'ccwomen' ||
+        targetProfile.slug === 'jolawojcik' || targetProfile.slug === 'andrzejthiel') {
+        return '✨ Misja CC';
+    }
+
+    const myProfile = currentProfile || (typeof window.LuminaDB?.getCurrentProfile === 'function' ? window.LuminaDB.getCurrentProfile() : null);
+    if (!myProfile || !myProfile.name || myProfile.slug === 'guest') {
+        return 'Wymaga profilu';
+    }
+
+    // Jeśli przeglądamy własny profil
+    if (myProfile.slug === targetProfile.slug || (myProfile.uid && myProfile.uid === targetProfile.uid)) {
+        return 'Twój profil';
+    }
+
+    let score = 50; // Baza wyjściowa
+
+    // 1. Zgodność wyznaniowa (Chrześcijaństwo / Denominacja) - max +20%
+    if (myProfile.denom && targetProfile.denom) {
+        if (myProfile.denom.toLowerCase() === targetProfile.denom.toLowerCase()) {
+            score += 20;
+        } else {
+            score += 10;
+        }
+    }
+
+    // 2. Zgodność tagów / wartości duchowych / pasji - max +15%
+    const myTags = Array.isArray(myProfile.tags) ? myProfile.tags : [];
+    const targetTags = Array.isArray(targetProfile.tags) ? targetProfile.tags : [];
+    if (myTags.length && targetTags.length) {
+        const commonTags = myTags.filter(t => targetTags.some(ot => ot.toLowerCase() === t.toLowerCase()));
+        score += Math.min(15, commonTags.length * 5);
+    }
+
+    // 3. Lokalizacja / Miasto - max +10%
+    if (myProfile.city && targetProfile.city) {
+        const myCity = myProfile.city.toLowerCase();
+        const targetCity = targetProfile.city.toLowerCase();
+        if (myCity === targetCity || myCity.includes(targetCity) || targetCity.includes(myCity)) {
+            score += 10;
+        }
+    }
+
+    // 4. Zgodność wiekowa - max +5%
+    const myAge = parseInt(myProfile.age, 10);
+    const targetAge = parseInt(targetProfile.age, 10);
+    if (!isNaN(myAge) && !isNaN(targetAge)) {
+        const diff = Math.abs(myAge - targetAge);
+        if (diff <= 3) score += 5;
+        else if (diff <= 7) score += 3;
+        else if (diff > 15) score -= 10;
+    }
+
+    // 5. Preferencje płci (LookingFor / Gender)
+    if (myProfile.lookingFor && targetProfile.gender) {
+        const looking = myProfile.lookingFor.toLowerCase();
+        const targetG = targetProfile.gender.toLowerCase();
+        if ((looking.includes('kobiet') && !targetG.includes('kobiet')) ||
+            (looking.includes('mężczyzn') && !targetG.includes('mężczyzn')) ||
+            (looking.includes('mezczyzn') && !targetG.includes('mezczyzn'))) {
+            score -= 25;
+        }
+    }
+
+    // Clamp score 15% - 99%
+    score = Math.max(15, Math.min(99, Math.round(score)));
+    return score + '%';
+}
+
+window.calculateProfileMatchScore = calculateProfileMatchScore;
+
 // Global window attachment for seamless cross-script integration
 window.LuminaDB = {
     isProfileNew,
@@ -3209,7 +3289,8 @@ window.LuminaDB = {
     formatRichTextAndMedia,
     LUMINA_HANDLES,
     resolveMentionHandle,
-    normalizePhoneNumber
+    normalizePhoneNumber,
+    calculateProfileMatchScore
 };
 
 

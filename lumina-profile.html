@@ -4566,12 +4566,14 @@
             if (document.getElementById('userVerseText')) document.getElementById('userVerseText').textContent = data.verse || '„Wszystko mogę w Tym, który mnie umacnia”';
             if (document.getElementById('userVerseRef')) document.getElementById('userVerseRef').textContent = data.verseRef || '— Flp 4, 13';
             if (document.getElementById('userMatchEl')) {
-                const computedMatch = window.calculateProfileMatchScore ? window.calculateProfileMatchScore(data) : (data.match || data.matchScore || '98%');
-        document.getElementById('userMatchEl').innerHTML = `<i class="fa-solid fa-heart-pulse"></i> Dopasowanie: ${computedMatch}`;
-        if (computedMatch === '0%') {
-            document.getElementById('userMatchEl').style.background = 'rgba(100, 116, 139, 0.35)';
-            document.getElementById('userMatchEl').style.color = '#94a3b8';
-        }
+                const computedMatch = (typeof window.calculateProfileMatchScore === 'function') 
+                    ? window.calculateProfileMatchScore(data) 
+                    : (window.LuminaDB?.calculateProfileMatchScore ? window.LuminaDB.calculateProfileMatchScore(data) : '✨ Społeczność');
+                document.getElementById('userMatchEl').innerHTML = `<i class="fa-solid fa-heart-pulse"></i> Dopasowanie: ${computedMatch}`;
+                if (computedMatch === '0%' || computedMatch === 'Wymaga profilu') {
+                    document.getElementById('userMatchEl').style.background = 'rgba(100, 116, 139, 0.35)';
+                    document.getElementById('userMatchEl').style.color = '#94a3b8';
+                }
             }
             document.getElementById('userBioFull').textContent = data.bio || 'Witaj na profilu w społeczności LUMINA!';
             document.getElementById('modalMsgRecipient').textContent = data.name.split(' ')[0] || data.name;
