@@ -371,12 +371,23 @@
             </div>
             <div class="ticker-track-wrapper">
                 <div class="ticker-content">
-                    <span>⚡ OGLĄDASZ PROGRAM „TOTALNY ATAK” W CHRISTIAN CULTURE TV • SERIA WYKŁADÓW BIBLIJNYCH I PROFETYCZNYCH PROF. WALTERA VEITHA • EMISJA: PONIEDZIAŁEK – PIĄTEK 18:00 – 20:00 • ODKRYJ PRAWDĘ PISMA ŚWIĘTEGO • WWW.POLSKIERADIO.CC • &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <span>⚡ OGLĄDASZ PROGRAM „TOTALNY ATAK” W CHRISTIAN CULTURE TV • SERIA WYKŁADÓW BIBLIJNYCH I PROFETYCZNYCH PROF. WALTERA VEITHA • EMISJA: PONIEDZIAŁEK – PIĄTEK 18:00 – 20:00 • ODKRYJ PRAWDĘ PISMA ŚWIĘTEGO • WWW.POLSKIERADIO.CC • &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span>⚡ OGLĄDASZ PROGRAM „TOTALNY ATAK" W CHRISTIAN CULTURE TV • SERIA WYKŁADÓW BIBLIJNYCH I PROFETYCZNYCH PROF. WALTERA VEITHA • EMISJA: PONIEDZIAŁEK – PIĄTEK 18:00 – 20:00 • ODKRYJ PRAWDĘ PISMA ŚWIĘTEGO • WWW.POLSKIERADIO.CC • &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span>⚡ OGLĄDASZ PROGRAM „TOTALNY ATAK" W CHRISTIAN CULTURE TV • SERIA WYKŁADÓW BIBLIJNYCH I PROFETYCZNYCH PROF. WALTERA VEITHA • EMISJA: PONIEDZIAŁEK – PIĄTEK 18:00 – 20:00 • ODKRYJ PRAWDĘ PISMA ŚWIĘTEGO • WWW.POLSKIERADIO.CC • &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </div>
             </div>
         </div>
 
+    </div>
+
+    <!-- PLAYLIST SWITCHER BUTTON -->
+    <div id="playlist-switcher" style="position: absolute; top: 80px; right: 28px; z-index: 97; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
+        <div style="font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;">Seria wykładów:</div>
+        <button id="btn-pl1" onclick="switchPlaylist(1)" style="background: var(--gold-primary); color: #000; font-weight: 900; font-size: 0.78rem; padding: 8px 16px; border-radius: 50px; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(212,175,55,0.5); font-family: inherit; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; gap: 7px; transition: all 0.2s;">
+            <i class="fa-solid fa-bolt"></i> Totalny Atak — Veith
+        </button>
+        <button id="btn-pl2" onclick="switchPlaylist(2)" style="background: rgba(10,14,23,0.85); color: rgba(255,255,255,0.7); font-weight: 800; font-size: 0.78rem; padding: 8px 16px; border-radius: 50px; border: 1.5px solid rgba(255,255,255,0.2); cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.4); font-family: inherit; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; gap: 7px; transition: all 0.2s;">
+            <i class="fa-solid fa-play-circle"></i> Seria 2 — Wykłady
+        </button>
     </div>
 
     <!-- CHROMECAST MODAL -->
@@ -405,15 +416,46 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // ── 2. YouTube Series Setup (Playlist ID: PLxrP7xbQu3RCgzgYLu9kpq3D0FR4nMX0v) ──
-        const PLAYLIST_ID = "PLxrP7xbQu3RCgzgYLu9kpq3D0FR4nMX0v";
+        // ── 2. Dual Playlist Setup ──
+        const PLAYLISTS = {
+            1: { id: "PLxrP7xbQu3RCgzgYLu9kpq3D0FR4nMX0v", label: "Totalny Atak — Prof. Walter Veith", subtitle: "Proroctwa biblijne, historia świata i walka dobra ze złem" },
+            2: { id: "PLKOxPWmme0G0",                      label: "Seria 2 — Wykłady Biblijne",         subtitle: "Dodatkowe wykłady i nauki biblijne" }
+        };
+        let currentPlaylist = 1;
+
         const isPreloadMuted = window.location.search.includes('muted=1');
         const muteParam = isPreloadMuted ? '&mute=1' : '';
 
-        const playerIframe = document.getElementById("yt-player");
-        if (playerIframe) {
-            playerIframe.src = `https://www.youtube.com/embed/videoseries?list=${PLAYLIST_ID}&autoplay=1&enablejsapi=1&controls=1&rel=0&modestbranding=1${muteParam}`;
+        function loadPlaylist(num, autoplay = true) {
+            const pl = PLAYLISTS[num];
+            const playerIframe = document.getElementById("yt-player");
+            const autoplayParam = autoplay ? '1' : '0';
+            if (playerIframe) {
+                playerIframe.src = `https://www.youtube.com/embed/videoseries?list=${pl.id}&autoplay=${autoplayParam}&enablejsapi=1&controls=1&rel=0&modestbranding=1${muteParam}`;
+            }
+            // Update series label in header
+            const titleLabel = document.getElementById('series-title-label');
+            if (titleLabel) titleLabel.textContent = pl.label.toUpperCase();
+
+            // Update switcher buttons style
+            document.getElementById('btn-pl1').style.background = num === 1 ? 'var(--gold-primary)' : 'rgba(10,14,23,0.85)';
+            document.getElementById('btn-pl1').style.color = num === 1 ? '#000' : 'rgba(255,255,255,0.7)';
+            document.getElementById('btn-pl1').style.border = num === 1 ? 'none' : '1.5px solid rgba(255,255,255,0.2)';
+
+            document.getElementById('btn-pl2').style.background = num === 2 ? 'var(--gold-primary)' : 'rgba(10,14,23,0.85)';
+            document.getElementById('btn-pl2').style.color = num === 2 ? '#000' : 'rgba(255,255,255,0.7)';
+            document.getElementById('btn-pl2').style.border = num === 2 ? 'none' : '1.5px solid rgba(255,255,255,0.2)';
+
+            currentPlaylist = num;
         }
+
+        function switchPlaylist(num) {
+            if (num === currentPlaylist) return;
+            loadPlaylist(num, true);
+        }
+
+        // Initial load
+        loadPlaylist(1, true);
 
         window.addEventListener('message', (e) => {
             if (e.data && (e.data.type === 'UNMUTE_AUDIO' || e.data === 'UNMUTE_AUDIO')) {
@@ -479,10 +521,13 @@
         let fadeTimeout;
         function resetFadeTimer() {
             const overlays = document.getElementById('ui-overlays');
+            const switcher = document.getElementById('playlist-switcher');
             if (overlays) overlays.classList.remove('hidden');
+            if (switcher) switcher.style.opacity = '1';
             clearTimeout(fadeTimeout);
             fadeTimeout = setTimeout(() => {
                 if (overlays) overlays.classList.add('hidden');
+                if (switcher) switcher.style.opacity = '0';
             }, 30000);
         }
 
