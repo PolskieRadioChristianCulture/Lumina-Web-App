@@ -311,8 +311,8 @@
         .head-actions {
             display: flex !important;
             flex-direction: row !important;
-            flex-wrap: nowrap !important;
-            overflow-x: auto !important;
+            flex-wrap: wrap !important;
+            overflow-x: visible !important;
             -webkit-overflow-scrolling: touch !important;
             scrollbar-width: none !important;
             align-items: center !important;
@@ -866,39 +866,6 @@
             <!-- Main Feed Stream -->
             <main class="main-feed-col">
 
-                <!-- Standard Lumina Profile Composer -->
-                <div class="feed-post-card" id="feedComposerCard" style="padding:18px 20px; margin-bottom:20px;">
-                    <div style="display:flex; align-items:center; gap:14px; width:100%;">
-                        <div style="position:relative; flex-shrink:0; width:44px; height:44px;">
-                            <img src="logo_radio_cc.jpg" alt="Radio CC" style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,0.2); display:block;" onerror="this.src='lumina_icon.jpg'">
-                            <span style="position:absolute; bottom:-2px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,#f59e0b,#d97706); color:#000; font-size:0.55rem; font-weight:900; padding:1px 4px; border-radius:6px; border:1px solid #fff; letter-spacing:0.5px; line-height:1; white-space:nowrap;">CC</span>
-                        </div>
-                        <div style="position:relative; flex:1; display:flex; align-items:center;">
-                            <input type="text" id="composerInput" placeholder="HalleluYah #DobrzeŻeJesteś" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishRadioPost();}" style="width:100%; background:rgba(255,255,255,0.06); border:1.5px solid rgba(255,255,255,0.16); border-radius:30px; padding:12px 50px 12px 20px; color:#fff; font-family:inherit; font-size:0.95rem; outline:none; transition:all 0.2s;" onfocus="this.style.borderColor='#06b6d4'; this.style.boxShadow='0 0 16px rgba(6,182,212,0.25)';" onblur="this.style.borderColor='rgba(255,255,255,0.16)'; this.style.boxShadow='';">
-                            <button type="button" onclick="openRadioMediaModal()" title="Dołącz grafikę lub film" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:transparent; border:none; color:#cbd5e1; font-size:1.3rem; cursor:pointer; padding:6px; border-radius:50%;">
-                                <i class="fa-solid fa-image"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div id="radioImgPreviewBox" style="display:none; position:relative; margin:10px 0 6px; border-radius:12px; overflow:hidden; max-height:220px; background:#0f172a; border:1px solid rgba(255,255,255,0.15);">
-                        <img id="radioAttachedImg" src="" style="width:100%; height:180px; object-fit:cover; display:block;">
-                        <button type="button" onclick="removeRadioPostImage()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
-                    </div>
-                    <div id="radioVideoPreviewBox" style="display:none; position:relative; margin:10px 0 6px; border-radius:14px; overflow:hidden; background:#0f172a; border:1px solid rgba(56,189,248,0.3);">
-                        <div id="radioVideoPreviewFrame"></div>
-                        <button type="button" onclick="removeRadioPostVideo()" style="position:absolute; top:10px; right:10px; width:32px; height:32px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:10;"><i class="fa-solid fa-xmark"></i></button>
-                    </div>
-                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding-top:12px; margin-top:10px; border-top:1px solid rgba(255,255,255,0.08);">
-                        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                            <button type="button" onclick="document.getElementById('radioPostImageFileInput').click()" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#cbd5e1; font-size:0.82rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:16px; font-family:inherit;"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Grafika z dysku</button>
-                            <button type="button" onclick="promptRadioEmbedVideo()" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#cbd5e1; font-size:0.82rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:16px; font-family:inherit;"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Film z linku</button>
-                        </div>
-                        <button type="button" onclick="publishRadioPost()" style="background:linear-gradient(135deg,#06b6d4,#0891b2); color:#fff; border:none; padding:8px 22px; border-radius:20px; font-weight:800; font-size:0.88rem; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(6,182,212,0.35); font-family:inherit;"><i class="fa-solid fa-paper-plane"></i> Opublikuj</button>
-                    </div>
-                </div>
-                <input type="file" id="radioPostImageFileInput" accept="image/*" style="display:none;" onchange="handleRadioPostImageSelect(event)">
-                <div id="radioFeedStream"></div>
-
                 <!-- 🌟 POST 1: Pasmo Dobrego Słowa 🌟 -->
                 <article class="feed-post-card" id="post_radio_1">
                     <div class="post-top-header">
@@ -1078,104 +1045,6 @@ Włącz Polskie Radio CC i pozwól, aby pieśni uwielbienia towarzyszyły Ci w c
                 btn.innerHTML = '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
                 btn.style.background = 'linear-gradient(135deg, var(--gold-accent), #d97706)';
             }
-        }
-
-        // ── Standard Lumina Composer for Polskie Radio CC ──
-        let radioAttachedImageDataUrl = null;
-        let radioAttachedVideoUrl = null;
-
-        function openRadioMediaModal() {
-            const choice = confirm("Dołącz multimedia do wpisu HalleluYah #DobrzeŻeJesteś:\n\n[OK] = 📷 Wgraj grafikę z dysku\n[Anuluj] = 🎬 Dodaj film z linku (YouTube / MP4)");
-            if (choice) { document.getElementById('radioPostImageFileInput').click(); }
-            else { promptRadioEmbedVideo(); }
-        }
-
-        function handleRadioPostImageSelect(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            showToast('Dołączanie grafiki... 🕊️');
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                radioAttachedImageDataUrl = ev.target.result;
-                document.getElementById('radioAttachedImg').src = ev.target.result;
-                document.getElementById('radioImgPreviewBox').style.display = 'block';
-                showToast('Grafika dołączona! ✨');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function removeRadioPostImage() {
-            radioAttachedImageDataUrl = null;
-            document.getElementById('radioImgPreviewBox').style.display = 'none';
-            document.getElementById('radioAttachedImg').src = '';
-            document.getElementById('radioPostImageFileInput').value = '';
-        }
-
-        function promptRadioEmbedVideo() {
-            const url = prompt('Wklej link do wideo (YouTube, Shorts lub plik MP4):');
-            if (!url || !url.trim()) return;
-            radioAttachedVideoUrl = url.trim();
-            document.getElementById('radioVideoPreviewFrame').innerHTML = radioRenderVideo(radioAttachedVideoUrl);
-            document.getElementById('radioVideoPreviewBox').style.display = 'block';
-            showToast('Wideo dołączone! ✨');
-        }
-
-        function removeRadioPostVideo() {
-            radioAttachedVideoUrl = null;
-            document.getElementById('radioVideoPreviewBox').style.display = 'none';
-            document.getElementById('radioVideoPreviewFrame').innerHTML = '';
-        }
-
-        function radioGetYTId(url) {
-            if (!url) return null;
-            const m = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/);
-            return (m && m[2].length === 11) ? m[2] : null;
-        }
-
-        function radioRenderVideo(url) {
-            const ytId = radioGetYTId(url);
-            if (ytId) return `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:14px;margin-top:10px;background:#000;"><iframe src="https://www.youtube-nocookie.com/embed/${ytId}?rel=0" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:14px;"></iframe></div>`;
-            if (url.endsWith('.mp4') || url.includes('.mp4?')) return `<div style="border-radius:14px;overflow:hidden;margin-top:10px;background:#000;"><video src="${url}" controls playsinline style="width:100%;max-height:360px;display:block;border-radius:14px;"></video></div>`;
-            return `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:14px;margin-top:10px;background:#000;"><iframe src="${url}" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:14px;"></iframe></div>`;
-        }
-
-        function publishRadioPost() {
-            const input = document.getElementById('composerInput');
-            const val = input ? input.value.trim() : '';
-            if (!val && !radioAttachedImageDataUrl && !radioAttachedVideoUrl) {
-                showToast('Wpisz treść, dołącz grafikę lub wklej link do wideo!');
-                return;
-            }
-            const now = new Date();
-            const timeStr = `Dzisiaj, ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} • ✨ Nowy Wpis`;
-            const article = document.createElement('article');
-            article.className = 'feed-post-card';
-            article.style.marginBottom = '20px';
-            article.innerHTML = `
-                <div class="post-top-header">
-                    <div class="post-author-box">
-                        <img src="logo_radio_cc.jpg" alt="Polskie Radio CC" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
-                        <div>
-                            <div class="post-author-name">Polskie Radio CC <span class="post-badge-daily">HalleluYah</span></div>
-                            <div class="post-time">${timeStr}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="post-body">${val ? `<p>${val}</p>` : ''}
-                    ${radioAttachedVideoUrl ? radioRenderVideo(radioAttachedVideoUrl) : ''}
-                    ${radioAttachedImageDataUrl ? `<img src="${radioAttachedImageDataUrl}" alt="Zdjęcie" style="width:100%; border-radius:12px; margin-top:10px;">` : ''}
-                </div>
-                <div class="post-actions-bar">
-                    <button class="post-action-btn" onclick="togglePostLike(this, '')"><i class="fa-solid fa-heart"></i> <span>1</span> Polubień</button>
-                    <button class="post-action-btn" onclick="togglePostAmen(this, '')"><i class="fa-solid fa-hands-praying"></i> Amen</button>
-                    <button class="post-action-btn" onclick="openShareModal()"><i class="fa-solid fa-share-nodes"></i> Udostępnij</button>
-                </div>`;
-            const stream = document.getElementById('radioFeedStream');
-            stream.insertBefore(article, stream.firstChild);
-            if (input) input.value = '';
-            removeRadioPostImage();
-            removeRadioPostVideo();
-            showToast('Wpis opublikowany! ✨✨');
         }
     </script>
     <script src="lumina-admin-profile-suite.js"></script>

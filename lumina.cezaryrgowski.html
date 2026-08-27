@@ -998,7 +998,7 @@
         .head-actions {
             display: flex !important;
             flex-direction: row !important;
-            flex-wrap: nowrap !important;
+            flex-wrap: wrap !important;
             align-items: center !important;
             justify-content: flex-start !important;
             gap: 10px !important;
@@ -1734,148 +1734,70 @@
         /* ── Right Content / Timeline Wall ── */
         .feed-composer {
             background: var(--navy-surface);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: var(--radius-lg);
-            padding: 18px 20px;
+            padding: 20px;
             margin-bottom: 24px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         }
 
         .composer-top {
             display: flex;
             align-items: center;
-            gap: 14px;
-            width: 100%;
-        }
-        .composer-avatar-wrap {
-            position: relative;
-            flex-shrink: 0;
-            width: 44px;
-            height: 44px;
+            gap: 12px;
+            margin-bottom: 14px;
         }
         .composer-avatar {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            display: block;
-        }
-        .composer-badge-cc {
-            position: absolute;
-            bottom: -2px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #000;
-            font-size: 0.55rem;
-            font-weight: 900;
-            padding: 1px 4px;
-            border-radius: 6px;
-            border: 1px solid #fff;
-            letter-spacing: 0.5px;
-            line-height: 1;
-            white-space: nowrap;
-        }
-        .composer-capsule-wrap {
-            position: relative;
-            flex: 1;
-            display: flex;
-            align-items: center;
         }
         .composer-input {
-            width: 100%;
+            flex: 1;
             background: rgba(255, 255, 255, 0.06);
-            border: 1.5px solid rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 30px;
-            padding: 12px 50px 12px 20px;
+            padding: 11px 18px;
             color: #fff;
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             outline: none;
-            transition: all 0.2s;
+            transition: border-color 0.2s;
         }
-        .composer-input:focus {
-            border-color: #a855f7;
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 16px rgba(168, 85, 247, 0.25);
-        }
-        .composer-input::placeholder {
-            color: #94a3b8;
-            font-weight: 500;
-        }
-        .composer-media-trigger-btn {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: transparent;
-            border: none;
-            color: #cbd5e1;
-            font-size: 1.3rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 6px;
-            border-radius: 50%;
-            transition: all 0.2s;
-        }
-        .composer-media-trigger-btn:hover {
-            color: #38bdf8;
-            transform: translateY(-50%) scale(1.15);
-        }
+        .composer-input:focus { border-color: var(--purple-glow); }
 
         .composer-actions {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding-top: 12px;
-            margin-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
         }
         .composer-btn-attach {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #cbd5e1;
-            font-size: 0.82rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 12px;
-            border-radius: 16px;
-            transition: all 0.2s;
-            font-family: inherit;
+            transition: color 0.2s;
         }
-        .composer-btn-attach:hover {
-            background: rgba(255, 255, 255, 0.12);
-            color: #fff;
-            border-color: rgba(255, 255, 255, 0.25);
-        }
+        .composer-btn-attach:hover { color: #fff; }
         .composer-btn-publish {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
+            background: linear-gradient(90deg, #a855f7, #3b82f6);
             color: #fff;
             border: none;
-            padding: 8px 22px;
+            padding: 8px 20px;
             border-radius: 20px;
-            font-weight: 800;
-            font-size: 0.88rem;
+            font-weight: 700;
+            font-size: 0.85rem;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 4px 14px rgba(168, 85, 247, 0.35);
-            transition: all 0.2s;
-            font-family: inherit;
+            transition: transform 0.2s;
         }
-        .composer-btn-publish:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5);
-        }
+        .composer-btn-publish:hover { transform: scale(1.03); }
 
         /* Post Card on Wall */
         .post-card {
@@ -2567,16 +2489,22 @@
             width: 100% !important;
             gap: 14px !important;
         }
+        /* NAPRAWA: ta reguła (bez @media, więc obowiązująca ZAWSZE) wymuszała
+           flex-wrap: nowrap + przewijanie w poziomie — sprzeczne z poprawką
+           mobilną "MOBILE FINAL OVERRIDE" (flex-wrap: wrap) zdefiniowaną
+           wcześniej w tym samym pliku. To dokładnie ten sam mechanizm błędu,
+           który wcześniej wymagał 4 prób naprawy przycisków profilu w innym
+           pliku (css/lumina-components.css) — tam były dwa PLIKI w konflikcie,
+           tutaj dwa BLOKI w JEDNYM pliku. Ujednolicone na "wrap", żeby obie
+           reguły się zgadzały niezależnie od tego, która wygrywa specyficznością. */
         .head-actions {
             display: flex !important;
             flex-direction: row !important;
-            flex-wrap: nowrap !important;
-            overflow-x: auto !important;
-            -webkit-overflow-scrolling: touch !important;
-            scrollbar-width: none !important;
+            flex-wrap: wrap !important;
+            overflow-x: visible !important;
             gap: 10px !important;
             align-items: center !important;
-            justify-content: flex-start !important;
+            justify-content: center !important;
             margin-top: 14px !important;
             width: 100% !important;
             max-width: 100% !important;
@@ -3345,8 +3273,8 @@
                         <button class="card-edit-btn" onclick="triggerGalleryUpload()" title="Wgraj nowe zdjęcie z dysku"><i class="fa-solid fa-plus"></i></button>
                     </div>
                     <div class="photo-grid-mini" id="miniPhotoGrid">
-                        <img loading="lazy" decoding="async" src="avatar_cezary_official.jpg" alt="Photo" class="photo-thumb" id="miniPhoto1" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
-                        <img loading="lazy" decoding="async" src="avatar_wioletta_official.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
+                        <img loading="lazy" decoding="async" src="avatar_cezary_karuzela_2026.jpg?v=20260825_urszula_real_face_v370" alt="Photo" class="photo-thumb" id="miniPhoto1" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
+                        <img loading="lazy" decoding="async" src="avatar_widget_tomek.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
                         <img loading="lazy" decoding="async" src="lumina_default_cover.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
                     </div>
                 </div>
@@ -3401,16 +3329,8 @@
                     <!-- Composer -->
                     <div class="feed-composer">
                         <div class="composer-top">
-                            <div class="composer-avatar-wrap">
-                                <img loading="lazy" decoding="async" src="avatar_cezary_official.jpg" alt="Cezary" class="composer-avatar" id="myComposerAvatar" onerror="this.src='lumina_icon.jpg'">
-                                <span class="composer-badge-cc" title="Christian Culture">CC</span>
-                            </div>
-                            <div class="composer-capsule-wrap">
-                                <input type="text" id="composerInput" class="composer-input" placeholder="HalleluYah #DobrzeŻeJesteś" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
-                                <button type="button" class="composer-media-trigger-btn" onclick="openMediaAttachModal()" title="Dołącz grafikę z dysku lub film z linku">
-                                    <i class="fa-solid fa-image"></i>
-                                </button>
-                            </div>
+                            <img loading="lazy" decoding="async" src="avatar_cezary_karuzela_2026.jpg?v=20260825_urszula_real_face_v370" alt="Cezary" class="composer-avatar" id="myComposerAvatar">
+                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
                         </div>
 
                         <!-- Post Image Attachment Preview -->
@@ -3426,12 +3346,10 @@
                         </div>
 
                         <div class="composer-actions">
-                            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                                <button type="button" class="composer-btn-attach" onclick="triggerPostImageUpload()" title="Wgraj grafikę z dysku"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Grafika z dysku</button>
-                                <button type="button" class="composer-btn-attach" onclick="promptEmbedVideo()" title="Wklej link do filmu YouTube / MP4"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Film z linku</button>
-                                <button type="button" class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Werset</button>
-                            </div>
-                            <button type="button" class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-paper-plane"></i> Opublikuj</button>
+                            <button type="button" class="composer-btn-attach" onclick="triggerPostImageUpload()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Dołącz Grafikę</button>
+                            <button type="button" class="composer-btn-attach" onclick="promptEmbedVideo()"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Osadź Wideo</button>
+                            <button type="button" class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Dodaj Werset</button>
+                            <button type="button" class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-share"></i> Opublikuj</button>
                         </div>
                     </div>
 
@@ -4372,40 +4290,8 @@
             avatarVideo: 'wideo_profilowe_cezary_rogowski.mp4',
             bio: 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture. Wierzymy, że małżeństwo oparte na Chrystusie jest źródłem niesamowitej siły, pokoju i ewangelizacyjnego świadectwa.',
             tags: ['Muzyka Uwielbienia', 'Wędrówki Górskie', 'Pismo Święte', 'Ewangelizacja', 'Nowe Technologie', 'Głębokie Rozmowy'],
-            photos: ['avatar_cezary_official.jpg', 'avatar_wioletta_official.jpg', 'lumina_default_cover.jpg'],
+            photos: ['avatar_cezary_official.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'],
             posts: [
-                {
-                    id: 'post_dzj_2026_08_27',
-                    author: 'Cezary Rogowski',
-                    time: 'Czwartek, 27 Sierpnia 2026 • ☀️ Dobrze, że jesteś',
-                    title: '☀️ Lato z Jezusem — Wielkie Pytania (Dzień 27)',
-                    text: `☀️ **Lato z Jezusem — Wielkie Pytania**
-**Dzień 27 — 31 bardzo osobistych pytań Syna/Córki do Ojca: Dlaczego tak często ulegam lękowi przed publiczną porażką i ośmieszeniem?**
-
-W dwudziestym siódmym dniu cyklu „Lato z Jezusem — Wielkie Pytania” rozbrajamy mechanizm paraliżującego perfekcjonizmu i lęku przed publicznym niepowodzeniem.
-
-W psychologii poznawczej zjawisko „lęku przed negatywną oceną” (fear of negative evaluation) opisuje stan, w którym obawa przed ośmieszeniem blokuje wszelkie innowacyjne i odważne inicjatywy jednostki. Wróg bezwzględnie żeruje na tym lęku na duchowym froncie. Słowo Boże przez historię Piotra idącego po wodzie pokazuje, że nawet chwile słabości i kryzysu w oczach świata stają się miejscem manifestacji Bożej mocy, gdy zwracamy się do Jezusa. Chrześcijański lider najwyższej klasy nie boi się ryzyka porażki — działa z nienaganną klasą, profesjonalizmem i całkowitym zaufaniem do Opatrzności.
-
-**Jezus mówi dziś do Ciebie:**
-„A Jezus natychmiast wyciągnął rękę, chwycił go i rzekł do niego: 'Czemu zwątpiłeś, małej wiary?'” *(Mateusza 14,31)*
-
-**Zadanie Taktyczne:**
-Zmiażdż dziś lęk przed porażką na swoim polu bitwy. Podejmij ryzyko w sprawie, którą odkładałeś ze strachu przed tym, co powiedzą inni. Wykonaj swoje obowiązki z chirurgiczną precyzją i odwagą. Wnieś do swojej firmy i domu standard wolności od lęku i dojrzałego autorytetu.
-
-W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
-
-**Modlitwa Bojowa:**
-„Ojcze, odrzucam kłamstwa nieprzyjaciela i paraliżujący lęk przed ośmieszeniem. Przepraszam, że rezygnowałem z działania z obawy przed opinią ludzką. Dziękuję, że Twoja ręka podtrzymuje mnie w każdym kryzysie. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą odważnie realizował Twoje cele, zdobywając ten świat dla Twojej chwały.”
-
-Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
-
-PODAJ DALEJ 🔴
-www.polskieradio.cc | www.cclite.pl
-Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`,
-                    likes: 96,
-                    amen: 89,
-                    image: 'promo_dzj.jpg'
-                },
                 {
                     id: 'post_dzj_2026_08_26',
                     author: 'Cezary Rogowski',
@@ -4661,9 +4547,6 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                     if (parsed.coverVideoUrl && OLD_VIDEO_URLS.some(v => parsed.coverVideoUrl.trim().endsWith(v) || parsed.coverVideoUrl.trim() === v)) {
                         parsed.coverVideoUrl = '';
                     }
-                    let cleanedPhotos = Array.isArray(parsed.photos) && parsed.photos.length ? parsed.photos.map(p => (p && p.includes('avatar_widget_tomek')) ? 'avatar_wioletta_official.jpg' : p) : [...defaultProfile.photos];
-                    parsed.photos = cleanedPhotos;
-
                     // Zapisz migrację do localStorage
                     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed)); } catch(e) {}
 
@@ -4680,7 +4563,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                         age: age,
                         city: parsed.city || 'Ostrowiec Świętokrzyski, Polska',
                         visibility: parsed.visibility || 'public',
-                        photos: cleanedPhotos,
+                        photos: Array.isArray(parsed.photos) && parsed.photos.length ? parsed.photos : [...defaultProfile.photos],
                         posts: Array.isArray(parsed.posts) ? parsed.posts : [...defaultProfile.posts]
                     };
                 }
@@ -5544,15 +5427,6 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
 
         
         let attachedPostVideoUrl = null;
-
-        function openMediaAttachModal() {
-            const choice = confirm("Dołącz multimedia do wpisu HalleluYah #DobrzeŻeJesteś:\n\n[OK] = 📷 Wgraj grafikę z dysku\n[Anuluj] = 🎬 Dodaj film z linku (YouTube / MP4)");
-            if (choice) {
-                triggerPostImageUpload();
-            } else {
-                promptEmbedVideo();
-            }
-        }
 
         function promptEmbedVideo() {
             const url = prompt('Wklej link do wideo (YouTube, Shorts, Vimeo lub plik MP4):');
@@ -6880,7 +6754,6 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
             { slug: 'wiolettarogowska', name: 'Wioletta Rogowska', job: 'Liderka Społeczności & Współzałożycielka 🌸', city: 'Ostrowiec Świętokrzyski, Polska', avatar: 'avatar_wioletta_official.jpg', badge: '🌸 Liderka CC', isMission: true },
             { slug: 'radiocc', name: 'Misja & Radio Christian Culture', job: 'Oficjalny Nadawca Radiowy & Ewangelizacja 📻', city: 'Polska', avatar: 'avatar_cezary_official.jpg', badge: '🕊️ Misja CC', isMission: true },
             { slug: 'andrzejthiel', name: 'Andrzej Thiel', job: 'Autor rozważań Cuda Każdego Dnia 📖', city: 'Sieradz, Polska', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Autor CKD', isMission: true },
-            { slug: 'jolawojcik', name: 'Jola Wójcik', job: 'Biblijny Czas Modlitwy • Polskie Radio CC 🕊️🌸', city: 'Polska', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Pasmo Modlitwy', isMission: true },
             { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', job: 'Oficjalny Kanał Audio & Wideo 🎙️', city: 'Polska', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎙️ Studio CC', isMission: true },
             { slug: 'osobowoscplus', name: 'Osobowość Plus', job: 'Formacja Chrześcijańska & Psychologia 🕊️', city: 'Polska', avatar: 'logo_osobowosc_plus.jpg', badge: '🕊️ Formacja', isMission: true },
             { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
