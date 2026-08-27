@@ -4077,11 +4077,12 @@
                 };
             }
 
-            // Twarde zabezpieczenie profilu Biblia Audio Christian Culture (GIF / Wideo / Awatar)
+            // Twarde zabezpieczenie profilu Biblia Audio Christian Culture (GIF / Wideo / Awatar / Tło)
             if (slug.includes('bibliaaudio') || slug === 'u_bibliaaudiochristianculture_3248') {
                 const bba = PROFILES_DB['u_bibliaaudiochristianculture_3248'] || PROFILES_DB['bibliaaudio'] || {};
                 const localAv = localStorage.getItem('lumina_avatar_' + slug) || localStorage.getItem('lumina_avatar_u_bibliaaudiochristianculture_3248');
                 const localVid = localStorage.getItem('lumina_avatar_video_' + slug) || localStorage.getItem('lumina_avatar_video_u_bibliaaudiochristianculture_3248');
+                const localCover = localStorage.getItem('lumina_cover_' + slug) || localStorage.getItem('lumina_cover_u_bibliaaudiochristianculture_3248');
                 const cloud = (window._cloudProfileData && (window._cloudProfileData.slug === slug || window._cloudProfileData.uid === slug)) ? window._cloudProfileData : {};
                 
                 let effectiveAvatar = 'avatar_biblia_audio.gif';
@@ -4097,7 +4098,7 @@
                     name: 'Biblia Audio Christian Culture',
                     avatar: effectiveAvatar,
                     avatarVideo: localVid || cloud.avatarVideo || '',
-                    cover: cloud.cover || 'lumina_default_cover.jpg',
+                    cover: localCover || cloud.cover || 'lumina_default_cover.jpg',
                     isMissionAccount: true,
                     verified: true
                 };
@@ -4713,9 +4714,25 @@
             }
             const coverEl = document.getElementById('coverPhotoEl');
             if (coverEl) {
-                const targetCov = data.cover || 'lumina_default_cover.jpg';
+                const targetCov = localStorage.getItem('lumina_cover_' + slug) || data.cover || 'lumina_default_cover.jpg';
                 coverEl.onerror = () => { coverEl.onerror = null; coverEl.src = 'lumina_default_cover.jpg'; };
-                coverEl.src = targetCov;
+                if (targetCov && targetCov.startsWith('indexeddb:')) {
+                    const idbKey = targetCov.replace('indexeddb:', '');
+                    if (window.LuminaMediaStore) {
+                        window.LuminaMediaStore.getItem(idbKey).then(dataUrl => {
+                            if (dataUrl && coverEl) coverEl.src = dataUrl;
+                        });
+                    }
+                } else {
+                    coverEl.src = targetCov;
+                }
+                if (window.LuminaMediaStore) {
+                    window.LuminaMediaStore.getItem('lumina_cover_' + slug).then(idb => {
+                        if (idb && coverEl && coverEl.src !== idb) {
+                            coverEl.src = idb;
+                        }
+                    });
+                }
                 coverEl.style.objectPosition = 'center ' + (data.coverPosY || '50%');
             }
 
@@ -5410,37 +5427,85 @@
             e.target.value = '';
         }
 
-        function handleCoverFileSelect(e) {
+        async function handleCoverFileSelect(e) {
             const file = e.target.files && e.target.files[0];
             if (!file) return;
-            showToast('Przetwarzanie zdjęcia w tle... 🕊️');
-            compressAndReadImage(file, 1400, 700, 0.82, function(dataUrl) {
+            showToast('Przetwarzanie i zapisywanie zdjęcia w tle... 🕊️');
+            compressAndReadImage(file, 1400, 700, 0.82, async function(dataUrl) {
                 const slug = getRequestedUserSlug();
                 const clean = slug.replace(/^u_/, '');
                 const cur = getProfileData();
                 cur.cover = dataUrl;
                 window._cloudProfileData = cur;
+
+                // 1. Zapis do IndexedDB (bez limitu 5MB)
+                if (window.LuminaMediaStore) {
+                    await window.LuminaMediaStore.setItem('lumina_cover_' + slug, dataUrl);
+                    await window.LuminaMediaStore.setItem('lumina_cover_' + clean, dataUrl);
+                }
+
+                // 2. Bezpieczny zapis do LocalStorage
                 try {
                     localStorage.setItem('lumina_cover_' + slug, dataUrl);
                     localStorage.setItem('lumina_cover_' + clean, dataUrl);
                     localStorage.setItem('lumina_cover_u_' + clean, dataUrl);
-                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
-                    localStorage.setItem('lumina_profile_' + clean, JSON.stringify(cur));
-                    localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
-                    localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
-                    localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
+                } catch(err) {}
+
+                try {
+                    const safeCur = { ...cur };
+                    if (dataUrl.length > 500000) {
+                        safeCur.cover = 'indexeddb:lumina_cover_' + slug;
+                    }
+                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(safeCur));
+                    localStorage.setItem('lumina_profile_' + clean, JSON.stringify(safeCur));
+                    localStorage.setItem('lumina_profile_u_' + clean, JSON.stringify(safeCur));
+                    localStorage.setItem(MAIN_USER_KEY, JSON.stringify(safeCur));
+                    localStorage.setItem('lumina_current_user_profile', JSON.stringify(safeCur));
+                    localStorage.setItem('lumina_my_profile', JSON.stringify(safeCur));
                 } catch(err) {}
 
                 const covEl = document.getElementById('coverPhotoEl');
                 if (covEl) covEl.src = dataUrl;
 
-                if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
-                    window.LuminaDB.saveProfileToCloud(slug, cur);
+                // 3. Zapis do chmury Firestore (jeśli < 800KB)
+                if (dataUrl.length < 800000) {
+                    if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                        window.LuminaDB.saveProfileToCloud(slug, cur);
+                    }
                 }
                 renderProfile();
                 showToast('Zdjęcie w tle zostało zaktualizowane i zapisane! ✨✨');
             });
             e.target.value = '';
+        }
+
+        function promptCoverUrl() {
+            const url = prompt('Wklej bezpośredni link (URL) do zdjęcia w tle:');
+            if (!url || !url.trim()) return;
+            const cleanUrl = url.trim();
+            const slug = getRequestedUserSlug();
+            const clean = slug.replace(/^u_/, '');
+            const cur = getProfileData();
+            cur.cover = cleanUrl;
+            window._cloudProfileData = cur;
+            try {
+                localStorage.setItem('lumina_cover_' + slug, cleanUrl);
+                localStorage.setItem('lumina_cover_' + clean, cleanUrl);
+                localStorage.setItem('lumina_cover_u_' + clean, cleanUrl);
+                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                localStorage.setItem('lumina_profile_' + clean, JSON.stringify(cur));
+                localStorage.setItem('lumina_profile_u_' + clean, JSON.stringify(cur));
+                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
+                localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
+            } catch(err) {}
+            const covEl = document.getElementById('coverPhotoEl');
+            if (covEl) covEl.src = cleanUrl;
+            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                window.LuminaDB.saveProfileToCloud(slug, cur);
+            }
+            renderProfile();
+            showToast('Zapisano nowe tło (URL)! ✨✨');
         }
 
         function handleGalleryFileSelect(e) {
@@ -7403,6 +7468,9 @@
                 </button>
                 <button type="button" class="admin-suite-btn btn-success" onclick="closeModal('modalCoverOptions'); triggerCoverUpload();" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:700; font-size:0.88rem;">
                     <i class="fa-solid fa-image"></i> Wgraj nowe tło z dysku
+                </button>
+                <button type="button" class="admin-suite-btn btn-primary" onclick="closeModal('modalCoverOptions'); promptCoverUrl();" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:700; font-size:0.88rem; background:rgba(56,189,248,0.18); border:1px solid rgba(56,189,248,0.45); color:#38bdf8;">
+                    <i class="fa-solid fa-link"></i> Wklej link do zdjęcia w tle
                 </button>
                 <button type="button" class="admin-suite-btn btn-cyan" onclick="closeModal('modalCoverOptions'); toggleCoverRepositionToolbar();" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:700; font-size:0.88rem;">
                     <i class="fa-solid fa-arrows-up-down"></i> Dopasuj kadr / wysokość tła

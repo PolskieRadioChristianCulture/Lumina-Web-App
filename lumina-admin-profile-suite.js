@@ -2576,23 +2576,33 @@
             const targetSlug = (this.currentEditingSlug || this.slug || 'profile_default').toLowerCase();
 
             this.compressAndProcessImage(file, 1400, 0.85, async (dataUrl) => {
-                localStorage.setItem('lumina_cover_' + targetSlug, dataUrl);
+                if (window.LuminaMediaStore) {
+                    await window.LuminaMediaStore.setItem('lumina_cover_' + targetSlug, dataUrl);
+                }
+                try {
+                    localStorage.setItem('lumina_cover_' + targetSlug, dataUrl);
+                } catch(err) {}
+
                 const cur = this.getCurrentData(targetSlug);
                 const updated = { ...cur, cover: dataUrl, slug: targetSlug };
-                localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(updated));
+                try {
+                    const safeUpdated = { ...updated };
+                    if (dataUrl.length > 500000) safeUpdated.cover = 'indexeddb:lumina_cover_' + targetSlug;
+                    localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(safeUpdated));
+                } catch(err) {}
 
-                if (window.LuminaDB?.saveProfileToCloud) {
+                if (dataUrl.length < 800000 && window.LuminaDB?.saveProfileToCloud) {
                     await window.LuminaDB.saveProfileToCloud(targetSlug, updated);
                 }
 
-                const coverEls = document.querySelectorAll('.profile-cover, .cover-img, #coverImgEl');
+                const coverEls = document.querySelectorAll('.profile-cover, .cover-img, #coverImgEl, #coverPhotoEl');
                 coverEls.forEach(el => {
                     if (el.tagName === 'IMG') el.src = dataUrl;
                     else el.style.backgroundImage = `url(${dataUrl})`;
                 });
 
                 if (typeof window.showToast === 'function') {
-                    window.showToast(`🖼️ Zdjęcie w tle dla [${targetSlug}] zostało zapisane w chmurze! ✨`);
+                    window.showToast(`🖼️ Zdjęcie w tle dla [${targetSlug}] zostało pomyślnie zaktualizowane i zapisane! ✨`);
                 }
             });
         },
