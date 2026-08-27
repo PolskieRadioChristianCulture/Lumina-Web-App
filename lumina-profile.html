@@ -693,6 +693,14 @@
             padding-bottom: 24px;
         }
 
+        .profile-head-main {
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+            flex: 1;
+            min-width: 0;
+        }
+
         .avatar-wrap {
             position: relative;
             width: 150px;
@@ -1476,23 +1484,42 @@
             .profile-body-grid {
                 grid-template-columns: 1fr;
             }
-            .cover-wrapper { aspect-ratio: 1300 / 500; height: auto; min-height: 160px; max-height: 340px; }
-            .avatar-wrap { width: 110px; height: 110px; margin-top: -55px; }
+            .cover-wrapper { aspect-ratio: 16 / 7; height: auto; min-height: 130px; max-height: 240px; }
+            .avatar-wrap { width: 104px; height: 104px; margin-top: -52px; }
             .profile-head-card { padding: 0 16px 20px; }
+            .profile-head-top {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px !important;
+                padding-bottom: 16px !important;
+            }
+            .profile-head-main {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: flex-end !important;
+                gap: 14px !important;
+                width: 100% !important;
+            }
+            .head-user-details {
+                margin-top: 0 !important;
+                flex: 1 !important;
+                min-width: 0 !important;
+            }
             .head-user-name {
-            font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-            font-size: clamp(1.2rem, 2.8vw, 1.85rem);
-            font-weight: 800;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            white-space: normal;
-            overflow: visible;
-            text-overflow: clip;
-            line-height: 1.25;
-        }
+                font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+                font-size: clamp(1.15rem, 2.6vw, 1.6rem);
+                font-weight: 800;
+                color: #fff;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex-wrap: wrap;
+                white-space: normal;
+                overflow: visible;
+                text-overflow: clip;
+                line-height: 1.25;
+            }
             .head-actions {
                 display: flex !important;
                 flex-direction: row !important;
@@ -1502,7 +1529,7 @@
                 scrollbar-width: none !important;
                 gap: 8px !important;
                 width: 100% !important;
-                margin-top: 14px !important;
+                margin-top: 8px !important;
             }
             .head-actions > * {
                 flex-shrink: 0 !important;
@@ -1513,7 +1540,7 @@
             .btn-action-primary, .btn-action-secondary {
                 flex: 0 0 auto !important;
                 justify-content: center;
-                padding: 10px 16px;
+                padding: 9px 15px;
                 font-size: 0.82rem;
             }
             .profile-nav-tabs {
@@ -1961,7 +1988,19 @@
             flex-direction: column !important;
             align-items: flex-start !important;
             width: 100% !important;
-            gap: 14px !important;
+            gap: 12px !important;
+        }
+        .profile-head-main {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: flex-end !important;
+            gap: 18px !important;
+            width: 100% !important;
+        }
+        .head-user-details {
+            margin-top: 0 !important;
+            flex: 1 !important;
+            min-width: 0 !important;
         }
         .head-actions {
             display: flex !important;
@@ -1973,7 +2012,7 @@
             gap: 10px !important;
             align-items: center !important;
             justify-content: flex-start !important;
-            margin-top: 14px !important;
+            margin-top: 8px !important;
             width: 100% !important;
             max-width: 100% !important;
             padding-bottom: 4px !important;
@@ -2667,7 +2706,7 @@
                     </div>
                     </div><!-- end profile-head-main -->
 
-                <div class="head-actions" style="display:flex; flex-direction:row; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; gap:10px; align-items:center; width:auto; max-width:100%;">
+                <div class="head-actions">
                     <button class="btn-action-primary" onclick="openMessageModal()" style="position:relative; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-paper-plane"></i> <span class="btn-text">Wiadomość</span><span class="profile-msg-badge" id="profileMsgBadge" style="display:none; min-width:18px; height:18px; background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; border-radius:9px; padding:0 4px; border:1.5px solid #fff; box-shadow:0 0 8px rgba(239,68,68,0.8); align-items:center; justify-content:center;"></span></button>
                     <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> <span class="btn-text">Kawa</span></button>
                     <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="btn-action-secondary btn-action-patronite" style="background:linear-gradient(135deg, #f97316, #ea580c); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:0 18px; height:42px; border-radius:24px; text-decoration:none; box-shadow:0 4px 14px rgba(249,115,22,0.35); transition:all 0.25s ease; white-space:nowrap; flex-shrink:0;"><i class="fa-solid fa-heart-circle-plus" style="color:#fef08a; font-size:0.95rem;"></i> <span class="btn-text">Zostań Patronem</span></a>
