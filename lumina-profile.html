@@ -5927,11 +5927,16 @@
             window._cloudProfileData = updated;
 
             try {
+                if (selectedCarouselMediaUrl) {
+                    localStorage.setItem('lumina_carousel_' + slug, selectedCarouselMediaUrl);
+                    localStorage.setItem('lumina_carousel_' + slug.replace(/^u_/, ''), selectedCarouselMediaUrl);
+                }
                 localStorage.setItem('lumina_profile_' + slug, JSON.stringify(updated));
                 localStorage.setItem(MAIN_USER_KEY, JSON.stringify(updated));
                 localStorage.setItem('lumina_current_user_profile', JSON.stringify(updated));
                 localStorage.setItem('lumina_my_profile', JSON.stringify(updated));
             } catch (err) {}
+
 
             if (window.LuminaDB) {
                 window.LuminaDB.saveProfileToCloud(slug, updated);

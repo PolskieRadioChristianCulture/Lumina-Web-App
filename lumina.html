@@ -2677,14 +2677,15 @@
 
         /* ═════════ 100% UNIFIED CARD BADGES (MATCH & NEW) ═════════ */
         .card-match {
-            position: absolute !important;
-            top: 12px !important;
-            left: 12px !important;
-            bottom: auto !important;
-            right: auto !important;
-            height: 28px !important;
-            padding: 0 11px !important;
-            border-radius: 14px !important;
+        .card-match {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            bottom: auto;
+            right: auto;
+            height: 28px;
+            padding: 0 11px;
+            border-radius: 14px;
             background: linear-gradient(135deg, #ec4899, #8b5cf6);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -2692,41 +2693,41 @@
             font-size: 0.76rem !important;
             font-weight: 800 !important;
             font-family: 'Outfit', sans-serif !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.35) !important;
-            border: 1px solid rgba(255,255,255,0.25) !important;
-            z-index: 5 !important;
-            box-sizing: border-box !important;
-            line-height: 1 !important;
-            white-space: nowrap !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.25);
+            z-index: 5;
+            box-sizing: border-box;
+            line-height: 1;
+            white-space: nowrap;
         }
 
         .card-new-badge {
-            position: absolute !important;
-            top: 12px !important;
-            left: 76px !important; /* Idealnie OBOK procentu dopasowania */
-            bottom: auto !important;
-            right: auto !important;
-            height: 28px !important; /* DOKŁADNIE TA SAMA WYSOKOŚĆ 28px */
-            padding: 0 11px !important; /* DOKŁADNIE TEN SAM PADDING */
-            border-radius: 14px !important; /* DOKŁADNIE TEN SAM RADIUS */
-            background: linear-gradient(135deg, #10b981, #059669) !important;
+            position: absolute;
+            top: 12px;
+            left: auto;
+            right: 48px; /* Obok serduszka, aby nie kolidować z dopasowaniem */
+            bottom: auto;
+            height: 28px;
+            padding: 0 10px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: #fff !important;
-            font-size: 0.76rem !important; /* DOKŁADNIE TEN SAM ROZMIAR CZCIONKI */
+            font-size: 0.72rem !important;
             font-weight: 800 !important;
             font-family: 'Outfit', sans-serif !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 5px !important;
-            box-shadow: 0 2px 8px rgba(16,185,129,0.45) !important;
-            border: 1px solid rgba(255,255,255,0.35) !important;
-            z-index: 6 !important;
-            box-sizing: border-box !important;
-            line-height: 1 !important;
-            white-space: nowrap !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(16,185,129,0.45);
+            border: 1px solid rgba(255,255,255,0.35);
+            z-index: 6;
+            box-sizing: border-box;
+            line-height: 1;
+            white-space: nowrap;
         }
 </style>
 <!-- Realtime Firestore Community Profiles Synchronizer (Carousel & Directory) -->
@@ -5051,6 +5052,7 @@
                 function buildCommunityCard(p, isLocalUser = false) {
                     if (!p || !p.name) return '';
                     const pKey = (p.slug || p.uid || p.id || '').toLowerCase().trim();
+                    const cleanPKey = pKey.replace(/^u_/, '');
                     const normName = (p.name || '').toLowerCase().trim().replace(/\s+/g, ' ');
                     const cleanNameKey = normName.replace(/[^a-z0-9]/g, '');
 
@@ -5065,51 +5067,58 @@
                     if (normName) renderedNames.add(normName);
                     if (cleanNameKey) renderedNames.add(cleanNameKey);
 
-                    const isVideoMedia = (p.carouselMediaType === 'video' || (p.carouselMediaUrl && (p.carouselMediaUrl.endsWith('.mp4') || p.carouselMediaUrl.endsWith('.webm') || p.carouselMediaUrl.includes('data:video/'))) || (p.avatarVideo && p.carouselMediaType === 'video'));
-                    const isMissionProfile = ['radiocc', 'cctv', 'osobowoscplus', 'studiodobregoslowa', 'ccmen', 'ccwomen', 'u_bibliaaudiochristianculture_3248', 'bibliaaudio'].includes(pKey) || pKey.includes('bibliaaudio');
-                    let rawAvatar = p.avatar || (isMissionProfile && pKey.includes('bibliaaudio') ? 'avatar_biblia_audio.gif' : 'avatar_urszula.jpg');
-                    
-                    // PANCERNA BLOKADA: profile prywatne (np. Urszula) NIE MOGĄ mieć logotypu Radia CC / Google photo
-                    if (!isMissionProfile && (rawAvatar.includes('googleusercontent.com') || rawAvatar.includes('christian_culture') || rawAvatar.includes('radio') || rawAvatar.includes('placeholder'))) {
-                        rawAvatar = (pKey.includes('urszula') || (p.name && p.name.includes('Urszula'))) ? 'avatar_urszula.jpg' : 'lumina_icon.jpg';
+                    // 1. Sprawdź dedykowany zapis karuzeli w localStorage (lumina_carousel_...) lub profile data
+                    let customCarouselUrl = p.carouselMediaUrl || '';
+                    if (!customCarouselUrl) {
+                        try {
+                            customCarouselUrl = localStorage.getItem('lumina_carousel_' + pKey) || 
+                                                localStorage.getItem('lumina_carousel_' + cleanPKey) || '';
+                            if (!customCarouselUrl && isLocalUser) {
+                                const storedProf = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || '{}');
+                                customCarouselUrl = storedProf.carouselMediaUrl || '';
+                            }
+                        } catch(e) {}
                     }
+
+                    const isVideoMedia = (p.carouselMediaType === 'video' || (customCarouselUrl && (customCarouselUrl.endsWith('.mp4') || customCarouselUrl.endsWith('.webm') || customCarouselUrl.includes('data:video/'))) || (p.avatarVideo && p.carouselMediaType === 'video'));
+                    const isMissionProfile = ['radiocc', 'cctv', 'osobowoscplus', 'studiodobregoslowa', 'ccmen', 'ccwomen'].includes(pKey);
+                    
+                    let rawAvatar = p.avatar || (pKey.includes('bibliaaudio') ? 'avatar_biblia_audio.gif' : 'lumina_icon.jpg');
                     if (pKey.includes('urszula') || (p.name && p.name.includes('Urszula'))) {
                         rawAvatar = 'avatar_urszula.jpg';
                     }
-                    if (isMissionProfile && pKey.includes('bibliaaudio') && (!p.avatar || p.avatar.includes('googleusercontent.com'))) {
-                        rawAvatar = 'avatar_biblia_audio.gif';
-                    }
 
-                    let mediaUrl = p.carouselMediaUrl || (isVideoMedia ? (p.avatarVideo || p.carouselVideo) : rawAvatar);
-                    if (!isMissionProfile && mediaUrl && (mediaUrl.includes('googleusercontent.com') || mediaUrl.includes('christian_culture') || mediaUrl.includes('radio'))) {
-                        mediaUrl = rawAvatar;
-                    }
+                    // Kluczowe: jeśli użytkownik wybrał zdjęcie/wideo na karuzelę (customCarouselUrl), to ma ono BEZWZGLĘDNY priorytet!
+                    let mediaUrl = customCarouselUrl || (isVideoMedia ? (p.avatarVideo || p.carouselVideo) : (p.avatar || rawAvatar));
+
                     let userAvatar = rawAvatar;
                     const userName = p.name;
                     const userAge = p.age ? ', ' + p.age : '';
                     const userCity = p.city ? p.city.split(',')[0] : 'Polska';
                     const userBio = p.bio ? (p.bio.length > 85 ? p.bio.substring(0, 85) + '...' : p.bio) : 'Szukam wartościowej relacji opartej na fundamencie Chrystusa ✨';
-                    const liveScore = window.calculateProfileMatchScore ? window.calculateProfileMatchScore(p) : (p.matchScore || '96%');
+                    const liveScore = isLocalUser ? 'Twój profil' : (window.calculateProfileMatchScore ? window.calculateProfileMatchScore(p) : (p.matchScore || '96%'));
                     const isNew = typeof isProfileNew === 'function' ? isProfileNew(p) : true;
 
                     return `
                         <div class="profile-card cloud-registered-user-card" id="card_profile_${pKey}" data-profile-slug="${pKey}" data-category="${p.gender || 'spolecznosc'} spolecznosc" onclick="openCommunityProfile('${pKey}')">
                             <div class="card-photo" style="position:relative;">
-                                ${isNew ? `
-                                    <div class="card-new-badge">
-                                        <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
-                                    </div>
-                                ` : ''}
+                                <div style="position:absolute; top:12px; left:12px; display:flex; align-items:center; gap:6px; z-index:5; pointer-events:none;">
+                                    <div class="card-match" style="position:static !important; background: ${liveScore === '0%' ? 'rgba(100, 116, 139, 0.55)' : (isLocalUser || liveScore === 'Twój profil' ? 'linear-gradient(135deg, #ec4899, #8b5cf6)' : 'linear-gradient(135deg, #ec4899, #8b5cf6)')};">${liveScore}</div>
+                                    ${(isNew && !isLocalUser && liveScore !== 'Twój profil') ? `
+                                        <div class="card-new-badge" style="position:static !important;">
+                                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                                        </div>
+                                    ` : ''}
+                                </div>
                                 ${isVideoMedia ? `
                                     <video src="${mediaUrl}" autoplay muted loop playsinline poster="${userAvatar}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"></video>
-                                    <div class="card-video-badge" style="position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.65); backdrop-filter:blur(6px); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; gap:4px; z-index:3;">
+                                    <div class="card-video-badge" style="position:absolute; top:12px; right:48px; background:rgba(0,0,0,0.65); backdrop-filter:blur(6px); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; gap:4px; z-index:3;">
                                         <i class="fa-solid fa-play" style="color:#ec4899; font-size:0.55rem;"></i> WIDEO
                                     </div>
                                 ` : `
                                     <img src="${mediaUrl || userAvatar}" alt="${userName}" onerror="this.onerror=null; this.src='lumina_icon.jpg'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
                                 `}
                                 <button class="card-heart" onclick="toggleLike(event,this, '${pKey}', '${userName}', '${userAvatar}')"><i class="fa-solid fa-heart"></i></button>
-                                <div class="card-match" style="background: ${liveScore === '0%' ? 'rgba(100, 116, 139, 0.55)' : (isLocalUser ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #ec4899, #8b5cf6)')};">${liveScore}</div>
                             </div>
                             <div class="card-body">
                                 <div class="card-name">${userName}${userAge}</div>
@@ -5119,6 +5128,7 @@
                         </div>
                     `;
                 }
+
 
                 // 1. Add current user local profile (if registered)
                 try {
