@@ -1256,7 +1256,50 @@
                 }
             }
         }
+
+        // 9. 🧡 UNIWERSALNY PRZYCISK: ZOSTAŃ PATRONEM (Patronite)
+        // Gwarantuje obecność przycisku na KAŻDYM obecnym i przyszłym profilu
+        if (typeof window.injectUniversalPatroniteButton === 'function') {
+            window.injectUniversalPatroniteButton();
+        }
     };
+
+    window.injectUniversalPatroniteButton = function() {
+        const headActionsContainers = document.querySelectorAll('.head-actions, .head-actions-row');
+        if (!headActionsContainers.length) return;
+
+        headActionsContainers.forEach(container => {
+            if (container.querySelector('.btn-action-patronite') || container.querySelector('a[href*="patronite.pl/osobowoscplus"]')) return;
+
+            const patronBtn = document.createElement('a');
+            patronBtn.href = 'https://patronite.pl/osobowoscplus';
+            patronBtn.target = '_blank';
+            patronBtn.rel = 'noopener noreferrer';
+            patronBtn.className = 'btn-action-secondary btn-action-patronite';
+            patronBtn.style.cssText = 'background:linear-gradient(135deg, #f97316, #ea580c) !important; border:none !important; color:#fff !important; font-weight:800 !important; display:inline-flex !important; align-items:center !important; justify-content:center !important; gap:7px !important; padding:0 18px !important; height:42px !important; border-radius:24px !important; text-decoration:none !important; box-shadow:0 4px 14px rgba(249,115,22,0.35) !important; transition:all 0.25s ease !important; white-space:nowrap !important; flex-shrink:0 !important; font-size:0.84rem !important; cursor:pointer !important;';
+            patronBtn.innerHTML = '<i class="fa-solid fa-heart-circle-plus" style="color:#fef08a; font-size:0.95rem;"></i> <span class="btn-text">Zostań Patronem</span>';
+            patronBtn.title = 'Wspieraj misję na Patronite (patronite.pl/osobowoscplus)';
+
+            // Umieść za przyciskiem Kawa / Wiadomość lub na początku
+            const coffeeBtn = container.querySelector('[onclick*="Coffee"], [onclick*="coffee"]');
+            const msgBtn = container.querySelector('[onclick*="Message"], [onclick*="message"], .btn-action-primary');
+            if (coffeeBtn && coffeeBtn.nextSibling) {
+                container.insertBefore(patronBtn, coffeeBtn.nextSibling);
+            } else if (msgBtn && msgBtn.nextSibling) {
+                container.insertBefore(patronBtn, msgBtn.nextSibling);
+            } else {
+                container.appendChild(patronBtn);
+            }
+        });
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.injectUniversalPatroniteButton === 'function') window.injectUniversalPatroniteButton();
+        });
+    } else {
+        if (typeof window.injectUniversalPatroniteButton === 'function') window.injectUniversalPatroniteButton();
+    }
 
     // Wstrzyknięcie Paska do DOM (pod nagłówek)
     function injectMobileAuthBar() {
