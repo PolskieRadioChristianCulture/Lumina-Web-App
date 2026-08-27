@@ -2914,7 +2914,12 @@
                     <label style="display:flex; align-items:center; gap:8px; font-size:0.84rem; font-weight:800; color:#f472b6;">
                         <i class="fa-solid fa-star" style="color:#facc15;"></i> Wizytówka na Karuzeli Głównej LUMINA
                     </label>
-                    <span id="currentCarouselMediaLabel" style="font-size:0.72rem; color:#a855f7; font-weight:700; background:rgba(168,85,247,0.15); padding:2px 8px; border-radius:10px;">Awatar</span>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <button type="button" onclick="document.getElementById('carouselPhotoDirectFileInput').click()" style="background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; border:none; padding:4px 10px; border-radius:12px; font-size:0.72rem; font-weight:800; display:flex; align-items:center; gap:5px; cursor:pointer; box-shadow:0 2px 8px rgba(236,72,153,0.4); transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            <i class="fa-solid fa-plus"></i> Dodaj zdjęcie
+                        </button>
+                        <span id="currentCarouselMediaLabel" style="font-size:0.72rem; color:#a855f7; font-weight:700; background:rgba(168,85,247,0.15); padding:2px 8px; border-radius:10px;">Awatar</span>
+                    </div>
                 </div>
                 <p style="font-size:0.75rem; color:#94a3b8; margin-bottom:12px; line-height:1.4;">
                     Wybierz, które zdjęcie z Twojej galerii lub wideo profilowe ma wyświetlać się oficjalnie na stronie głównej w karuzeli:
@@ -2922,9 +2927,11 @@
                 <div id="carouselMediaSelectionGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap:10px; margin-bottom:6px;">
                     <!-- Dynamicznie generowane kafelki wyboru -->
                 </div>
+                <input type="file" id="carouselPhotoDirectFileInput" accept="image/*" style="display:none;" onchange="handleCarouselPhotoDirectUpload(event)">
                 <input type="hidden" id="editCarouselMediaUrl" value="">
                 <input type="hidden" id="editCarouselMediaType" value="photo">
             </div>
+
 
             <form id="editProfileForm" onsubmit="saveProfileEdits(event)">
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
@@ -5642,13 +5649,54 @@
                 `;
             });
 
-            grid.innerHTML = html;
+            // 4. Kafel Dodawania Nowego Zdjęcia (+) do Karuzeli
+            const uploadTileHtml = `
+                <div onclick="document.getElementById('carouselPhotoDirectFileInput').click()" title="Kliknij +, aby wybrać lub wgrać nowe zdjęcie na Karuzelę LUMINA" style="position:relative; cursor:pointer; border-radius:10px; height:100px; background:rgba(236,72,153,0.08); border:2px dashed rgba(236,72,153,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:#f472b6; transition:all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);" onmouseover="this.style.borderColor='#ec4899';this.style.background='rgba(236,72,153,0.18)';this.style.transform='translateY(-2px) scale(1.02)';" onmouseout="this.style.borderColor='rgba(236,72,153,0.55)';this.style.background='rgba(236,72,153,0.08)';this.style.transform='none';">
+                    <div style="width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.1rem; box-shadow:0 2px 8px rgba(236,72,153,0.4);">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                    <div style="font-size:0.65rem; font-weight:800; text-align:center; color:#f472b6; line-height:1.2;">
+                        Wybierz nowe<br>zdjęcie (+)
+                    </div>
+                </div>
+            `;
+
+            grid.innerHTML = uploadTileHtml + html;
             
             const labelEl = document.getElementById('currentCarouselMediaLabel');
             if (labelEl) {
                 labelEl.textContent = activeType === 'video' ? '🎬 Film Profilowy' : '⭐ Zdjęcie Profilowe';
             }
         }
+
+        window.handleCarouselPhotoDirectUpload = function(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            
+            showToast('Przetwarzanie wybranego zdjęcia do karuzeli... 🕊️');
+            compressAndReadImage(file, 900, 900, 0.85, async function(dataUrl) {
+                const slug = getRequestedUserSlug();
+                const cur = getProfileData() || {};
+                cur.photos = cur.photos || [];
+                
+                if (!cur.photos.includes(dataUrl)) {
+                    cur.photos.unshift(dataUrl);
+                }
+                
+                const urlInput = document.getElementById('editCarouselMediaUrl');
+                const typeInput = document.getElementById('editCarouselMediaType');
+                if (urlInput) urlInput.value = dataUrl;
+                if (typeInput) typeInput.value = 'photo';
+                
+                await window.setAsCarouselFeaturedMedia(dataUrl, 'photo');
+                
+                renderCarouselMediaSelectionGrid();
+                renderPhotos();
+                renderProfile();
+                showToast('⭐ Zdjęcie zostało pomyślnie wgrane i wybrane na Karuzelę LUMINA! ✨');
+            });
+            e.target.value = '';
+        };
 
         window.selectCarouselMedia = function(url, type) {
             const urlInput = document.getElementById('editCarouselMediaUrl');
@@ -5657,6 +5705,7 @@
             if (typeInput) typeInput.value = type;
             renderCarouselMediaSelectionGrid();
         };
+
 
         window.setAsCarouselFeaturedMedia = async function(mediaUrl, mediaType = 'photo') {
             if (!mediaUrl) return;
