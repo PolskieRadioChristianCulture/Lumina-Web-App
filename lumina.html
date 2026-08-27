@@ -2672,62 +2672,58 @@
                 display: none !important;
             }
         }
-    </style>
-<style>
-
         /* ═════════ 100% UNIFIED CARD BADGES (MATCH & NEW) ═════════ */
         .card-match {
-        .card-match {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            bottom: auto;
-            right: auto;
-            height: 28px;
-            padding: 0 11px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            position: absolute !important;
+            top: 12px !important;
+            left: 12px !important;
+            bottom: auto !important;
+            right: auto !important;
+            height: 28px !important;
+            padding: 0 11px !important;
+            border-radius: 14px !important;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             color: #fff !important;
             font-size: 0.76rem !important;
             font-weight: 800 !important;
             font-family: 'Outfit', sans-serif !important;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.35);
-            border: 1px solid rgba(255,255,255,0.25);
-            z-index: 5;
-            box-sizing: border-box;
-            line-height: 1;
-            white-space: nowrap;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.35) !important;
+            border: 1px solid rgba(255,255,255,0.25) !important;
+            z-index: 5 !important;
+            box-sizing: border-box !important;
+            line-height: 1 !important;
+            white-space: nowrap !important;
         }
 
         .card-new-badge {
-            position: absolute;
-            top: 12px;
-            left: auto;
-            right: 48px; /* Obok serduszka, aby nie kolidować z dopasowaniem */
-            bottom: auto;
-            height: 28px;
-            padding: 0 10px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #10b981, #059669);
+            position: absolute !important;
+            top: 12px !important;
+            left: auto !important;
+            right: 48px !important; /* Obok serduszka (które jest na right: 12px) */
+            bottom: auto !important;
+            height: 28px !important;
+            padding: 0 10px !important;
+            border-radius: 14px !important;
+            background: linear-gradient(135deg, #10b981, #059669) !important;
             color: #fff !important;
             font-size: 0.72rem !important;
             font-weight: 800 !important;
             font-family: 'Outfit', sans-serif !important;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            box-shadow: 0 2px 8px rgba(16,185,129,0.45);
-            border: 1px solid rgba(255,255,255,0.35);
-            z-index: 6;
-            box-sizing: border-box;
-            line-height: 1;
-            white-space: nowrap;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 4px !important;
+            box-shadow: 0 2px 8px rgba(16,185,129,0.45) !important;
+            border: 1px solid rgba(255,255,255,0.35) !important;
+            z-index: 6 !important;
+            box-sizing: border-box !important;
+            line-height: 1 !important;
+            white-space: nowrap !important;
         }
 </style>
 <!-- Realtime Firestore Community Profiles Synchronizer (Carousel & Directory) -->
@@ -4939,19 +4935,30 @@
                 if (!currentUser) {
                     currentUser = JSON.parse(localStorage.getItem('lumina_current_user') || 'null');
                 }
-                if (currentUser) {
-                    const myUid = currentUser.uid || currentUser.id;
-                    const myEmail = (currentUser.email || '').toLowerCase();
-                    const isCezary = myEmail.includes('nazirczarkes') || myEmail.includes('cezary');
-                    const isWioletta = myEmail.includes('wioletta');
+                const myProfile = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || '{}');
+                const mySlug = (myProfile.slug || myProfile.uid || '').toLowerCase();
+                const myUid = currentUser ? (currentUser.uid || currentUser.id) : '';
+                const myEmail = currentUser ? (currentUser.email || '').toLowerCase() : '';
+                const isCezary = myEmail.includes('nazirczarkes') || myEmail.includes('cezary');
+                const isWioletta = myEmail.includes('wioletta');
 
-                    if ((slug === 'cezaryrgowski' && isCezary) ||
-                        (slug === 'wiolettarogowska' && isWioletta) ||
-                        (slug === myUid) ||
-                        (slug === 'my_profile')) {
-                        const myProfile = JSON.parse(localStorage.getItem('lumina_my_profile') || '{}');
-                        Object.assign(live, myProfile);
-                    }
+                if ((slug.toLowerCase() === mySlug) ||
+                    (slug === myUid) ||
+                    (slug === 'my_profile') ||
+                    (slug === 'cezaryrgowski' && isCezary) ||
+                    (slug === 'wiolettarogowska' && isWioletta)) {
+                    Object.assign(live, myProfile);
+                }
+            } catch(e) {}
+
+            // 4. Custom carousel media override (from localStorage or profile)
+            try {
+                const cleanSlug = slug.replace(/^u_/, '');
+                const customCarouselMedia = localStorage.getItem('lumina_carousel_' + slug) || 
+                                            localStorage.getItem('lumina_carousel_' + cleanSlug) || 
+                                            live.carouselMediaUrl;
+                if (customCarouselMedia) {
+                    live.carouselMediaUrl = customCarouselMedia;
                 }
             } catch(e) {}
 
@@ -4968,7 +4975,7 @@
             if (slug === 'cezaryrgowski') {
                 live.name = 'Cezary Rogowski';
                 live.age = 51;
-                live.avatar = 'avatar_cezary_karuzela_2026.jpg';
+                live.avatar = live.carouselMediaUrl || 'avatar_cezary_karuzela_2026.jpg';
                 live.city = 'Ostrowiec Świętokrzyski, Polska';
                 live.status = 'Żonaty';
                 live.isFounder = true;
@@ -4976,27 +4983,27 @@
             } else if (slug === 'radiocc') {
                 live.name = 'Christian Culture';
                 live.age = '';
-                live.avatar = 'avatar_christian_culture_hq_2026.jpg';
+                live.avatar = live.carouselMediaUrl || 'avatar_christian_culture_hq_2026.jpg';
                 live.city = 'Polska';
                 live.isMissionAccount = true;
                 live.profileUrl = 'lumina.radiocc.html';
             } else if (slug === 'ccwomen') {
                 live.name = 'CC WOMEN';
                 live.age = '';
-                live.avatar = 'avatar_ccwomen_official_2026.jpg';
+                live.avatar = live.carouselMediaUrl || 'avatar_ccwomen_official_2026.jpg';
                 live.city = 'Polska';
                 live.isMissionAccount = true;
                 live.profileUrl = 'lumina.ccwomen.html';
             } else if (slug === 'weronika') {
                 live.name = 'Weronika';
                 live.age = 25;
-                live.avatar = 'avatar_weronika_hq_2026.jpg';
+                live.avatar = live.carouselMediaUrl || 'avatar_weronika_hq_2026.jpg';
                 live.city = 'Kraków, Polska';
                 live.profileUrl = 'lumina-profile.html?u=weronika';
             } else if (slug === 'wiolettarogowska') {
                 live.name = 'Wioletta Rogowska';
                 live.age = 50;
-                live.avatar = 'avatar_wioletta_official.jpg';
+                live.avatar = live.carouselMediaUrl || 'avatar_wioletta_official.jpg';
                 live.city = 'Ostrowiec Świętokrzyski, Polska';
                 live.status = 'Mężatka';
                 live.isFounder = true;
@@ -5017,6 +5024,7 @@
 
             return live;
         };
+
 
         // ── Sync All Profile Cards in the Carousel in 100% Realtime ──
         window._baseStaticCardsHtml = null;
@@ -5183,10 +5191,12 @@
                         img.setAttribute('src', 'avatar_urszula.jpg');
                     }
                 }
-                if (img && p.avatar) {
-                    img.src = p.avatar;
+                const targetMedia = p.carouselMediaUrl || localStorage.getItem('lumina_carousel_' + slug) || localStorage.getItem('lumina_carousel_' + slug.replace(/^u_/, '')) || p.avatar;
+                if (img && targetMedia) {
+                    img.src = targetMedia;
                     img.alt = p.name || slug;
                 }
+
 
                 const matchBadge = card.querySelector('.card-match');
                 if (matchBadge) {

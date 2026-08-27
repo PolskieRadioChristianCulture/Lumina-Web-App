@@ -5674,7 +5674,7 @@
             if (!file) return;
             
             showToast('Przetwarzanie wybranego zdjęcia do karuzeli... 🕊️');
-            compressAndReadImage(file, 900, 900, 0.85, async function(dataUrl) {
+            compressAndReadImage(file, 640, 640, 0.72, async function(dataUrl) {
                 const slug = getRequestedUserSlug();
                 const cur = getProfileData() || {};
                 cur.photos = cur.photos || [];
@@ -5724,7 +5724,6 @@
                         finalUrl = await window.LuminaDB.uploadPhoto(mediaUrl, slug + '_carousel');
                     } catch(uploadErr) {
                         console.warn('[Carousel] Nie udało się wgrać zdjęcia do Storage:', uploadErr);
-                        // Zostajemy przy base64 — zapisujemy tylko lokalnie, nie do Firestore
                         finalUrl = mediaUrl;
                     }
                 }
@@ -5744,14 +5743,13 @@
                 localStorage.setItem('lumina_carousel_' + clean, finalUrl);
             } catch(e) {}
             try {
-                const safeCur = { ...cur };
-                if (finalUrl.startsWith('data:') && finalUrl.length > 500000) safeCur.carouselMediaUrl = 'indexeddb:lumina_carousel_' + slug;
-                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(safeCur));
-                localStorage.setItem('lumina_profile_' + clean, JSON.stringify(safeCur));
-                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(safeCur));
-                localStorage.setItem('lumina_current_user_profile', JSON.stringify(safeCur));
-                localStorage.setItem('lumina_my_profile', JSON.stringify(safeCur));
+                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                localStorage.setItem('lumina_profile_' + clean, JSON.stringify(cur));
+                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
+                localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
             } catch(e) {}
+
 
             // 2. ZAWSZE zapisz carouselMediaUrl bezpośrednio do Firestore (merge)
             //    — o ile URL nie jest base64 (base64 nie trafia do Firestore, zbyt duży)
