@@ -4651,6 +4651,132 @@
             }
         }
 
+        // ══════════ REAKCJE EMOTIKONAMI NA WIADOMOŚCI CZATU ══════════
+        window.handleChatReaction = async function(type, chatId, msgId, emoji) {
+            if (!window.LuminaDB) return;
+            const myUser = window.LuminaDB.getCurrentUser();
+            const myProfile = window.LuminaDB.getCurrentProfile();
+            const userObj = {
+                slug: myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest',
+                name: myProfile?.name || myUser?.displayName
+            };
+
+            if (type === 'direct') {
+                await window.LuminaDB.toggleDirectMessageReaction(chatId, msgId, emoji, userObj);
+            } else if (type === 'public') {
+                await window.LuminaDB.togglePublicChatMessageReaction(msgId, emoji, userObj);
+            }
+        };
+
+        window.toggleReactionPicker = function(btnEl, type, chatId, msgId) {
+            const existing = document.querySelector('.lumina-reaction-picker');
+            if (existing && existing._targetBtn === btnEl) {
+                existing.remove();
+                return;
+            }
+            document.querySelectorAll('.lumina-reaction-picker').forEach(p => p.remove());
+            if (!btnEl) return;
+
+            const rect = btnEl.getBoundingClientRect();
+            const picker = document.createElement('div');
+            picker.className = 'lumina-reaction-picker';
+            picker._targetBtn = btnEl;
+            picker.style.cssText = 'position:fixed; background:rgba(15,23,42,0.97); border:1.5px solid rgba(255,255,255,0.22); border-radius:28px; padding:6px 12px; display:flex; gap:6px; align-items:center; z-index:999999; box-shadow:0 16px 40px rgba(0,0,0,0.8), 0 0 20px rgba(168,85,247,0.25); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); user-select:none; max-width:calc(100vw - 24px); overflow-x:auto; scrollbar-width:none; transform:scale(0.9); opacity:0; transition:transform 0.18s cubic-bezier(0.16,1,0.3,1), opacity 0.18s ease;';
+
+            const emojis = ['❤️', '🙏', '✨', '✝️', '🔥', '🕊️', '📖', '👑', '👍', '👏', '😊', '🛡️'];
+            emojis.forEach(em => {
+                const sp = document.createElement('span');
+                sp.textContent = em;
+                sp.style.cssText = 'font-size:1.35rem; line-height:1; cursor:pointer; padding:4px 6px; border-radius:10px; transition:transform 0.15s ease, background 0.15s ease; display:inline-flex; align-items:center; justify-content:center;';
+                sp.onmouseover = () => {
+                    sp.style.transform = 'scale(1.35) translateY(-2px)';
+                    sp.style.background = 'rgba(255,255,255,0.15)';
+                };
+                sp.onmouseout = () => {
+                    sp.style.transform = 'scale(1)';
+                    sp.style.background = 'transparent';
+                };
+                sp.onclick = (ev) => {
+                    ev.stopPropagation();
+                    window.handleChatReaction(type, chatId, msgId, em);
+                    picker.remove();
+                };
+                picker.appendChild(sp);
+            });
+
+            document.body.appendChild(picker);
+
+            const pickerWidth = picker.offsetWidth || 340;
+            const pickerHeight = picker.offsetHeight || 46;
+
+            let left = rect.left + (rect.width / 2) - (pickerWidth / 2);
+            if (left < 12) left = 12;
+            if (left + pickerWidth > window.innerWidth - 12) {
+                left = window.innerWidth - pickerWidth - 12;
+            }
+
+            let top = rect.top - pickerHeight - 8;
+            if (top < 70) {
+                top = rect.bottom + 8;
+            }
+
+            picker.style.left = left + 'px';
+            picker.style.top = top + 'px';
+
+            requestAnimationFrame(() => {
+                picker.style.transform = 'scale(1)';
+                picker.style.opacity = '1';
+            });
+
+            const dismissHandler = (ev) => {
+                if (!picker.contains(ev.target) && ev.target !== btnEl && !btnEl.contains(ev.target)) {
+                    picker.remove();
+                    document.removeEventListener('pointerdown', dismissHandler);
+                    window.removeEventListener('resize', dismissHandler);
+                }
+            };
+            setTimeout(() => {
+                document.addEventListener('pointerdown', dismissHandler);
+                window.addEventListener('resize', dismissHandler);
+            }, 50);
+        };
+
+        function buildMessageReactionsHtml(msg, type, chatId, myId) {
+            const reactions = msg.reactions || {};
+            const reactionKeys = Object.keys(reactions);
+            let chipsHtml = '';
+
+            reactionKeys.forEach(emojiKey => {
+                const usersList = reactions[emojiKey] || [];
+                if (usersList.length > 0) {
+                    const hasMyReaction = usersList.some(u => (typeof u === 'string' ? u === myId : u.id === myId));
+                    const tooltipNames = usersList.map(u => (typeof u === 'string' ? u : u.name || u.id)).join(', ');
+                    chipsHtml += `
+                        <button type="button" onclick="window.handleChatReaction('${type}', '${chatId}', '${escapeForInlineJs(msg.id || '')}', '${emojiKey}')" 
+                              style="display:inline-flex; align-items:center; gap:3px; background:${hasMyReaction ? 'rgba(168,85,247,0.38)' : 'rgba(255,255,255,0.09)'}; border:1px solid ${hasMyReaction ? '#c084fc' : 'rgba(255,255,255,0.18)'}; color:${hasMyReaction ? '#fdf4ff' : '#e2e8f0'}; font-size:0.72rem; padding:1px 6px; border-radius:10px; cursor:pointer; font-family:inherit; transition:all 0.15s ease;" 
+                              title="Reagujący: ${escapeHtml(tooltipNames)}">
+                            <span>${emojiKey}</span> <span style="font-size:0.65rem; font-weight:700; opacity:0.9;">${usersList.length}</span>
+                        </button>
+                    `;
+                }
+            });
+
+            const addBtn = `
+                <button type="button" onclick="window.toggleReactionPicker(this, '${type}', '${chatId}', '${escapeForInlineJs(msg.id || '')}')" 
+                        style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14); color:#cbd5e1; font-size:0.68rem; border-radius:10px; padding:1px 6px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:3px;" 
+                        title="Dodaj emotikon / reakcję">
+                    <i class="fa-regular fa-face-smile"></i> +
+                </button>
+            `;
+
+            return `
+                <div style="display:flex; flex-wrap:wrap; gap:4px; margin-top:5px; align-items:center;">
+                    ${chipsHtml}
+                    ${addBtn}
+                </div>
+            `;
+        }
+
         window.reportChatMessage = async function(messageId, authorId) {
             if (!window.LuminaDB || typeof window.LuminaDB.reportContent !== 'function') return;
             const reason = window.prompt('Dlaczego zgłaszasz tę wiadomość? (opcjonalnie opisz powód)', '');
