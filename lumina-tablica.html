@@ -6006,19 +6006,22 @@
             if (!btnEl) return;
 
             const rect = btnEl.getBoundingClientRect();
+            const cardEl = btnEl.closest('.modal-card') || document.querySelector('#directMessagesModal .modal-card') || document.body;
+            const cardRect = cardEl.getBoundingClientRect();
+
             const picker = document.createElement('div');
             picker.className = 'lumina-reaction-picker';
             picker._targetBtn = btnEl;
-            picker.style.cssText = 'position:fixed; background:rgba(15,23,42,0.97); border:1.5px solid rgba(255,255,255,0.22); border-radius:28px; padding:6px 12px; display:flex; gap:6px; align-items:center; z-index:999999; box-shadow:0 16px 40px rgba(0,0,0,0.8), 0 0 20px rgba(168,85,247,0.25); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); user-select:none; max-width:calc(100vw - 24px); overflow-x:auto; scrollbar-width:none; transform:scale(0.9); opacity:0; transition:transform 0.18s cubic-bezier(0.16,1,0.3,1), opacity 0.18s ease;';
+            picker.style.cssText = 'position:fixed; background:rgba(15,23,42,0.98); border:1.5px solid rgba(168,85,247,0.45); border-radius:20px; padding:6px 8px; display:grid; grid-template-columns:repeat(6, 1fr); gap:3px; align-items:center; justify-items:center; z-index:999999; box-shadow:0 16px 40px rgba(0,0,0,0.85), 0 0 20px rgba(168,85,247,0.25); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); user-select:none; width:max-content; max-width:260px; transform:scale(0.9); opacity:0; transition:transform 0.18s cubic-bezier(0.16,1,0.3,1), opacity 0.18s ease;';
 
             const emojis = ['❤️', '🙏', '✨', '✝️', '🔥', '🕊️', '📖', '👑', '👍', '👏', '😊', '🛡️'];
             emojis.forEach(em => {
                 const sp = document.createElement('span');
                 sp.textContent = em;
-                sp.style.cssText = 'font-size:1.35rem; line-height:1; cursor:pointer; padding:4px 6px; border-radius:10px; transition:transform 0.15s ease, background 0.15s ease; display:inline-flex; align-items:center; justify-content:center;';
+                sp.style.cssText = 'font-size:1.25rem; line-height:1; cursor:pointer; width:34px; height:34px; border-radius:8px; transition:transform 0.15s ease, background 0.15s ease; display:inline-flex; align-items:center; justify-content:center;';
                 sp.onmouseover = () => {
                     sp.style.transform = 'scale(1.35) translateY(-2px)';
-                    sp.style.background = 'rgba(255,255,255,0.15)';
+                    sp.style.background = 'rgba(255,255,255,0.18)';
                 };
                 sp.onmouseout = () => {
                     sp.style.transform = 'scale(1)';
@@ -6034,17 +6037,18 @@
 
             document.body.appendChild(picker);
 
-            const pickerWidth = picker.offsetWidth || 340;
-            const pickerHeight = picker.offsetHeight || 46;
+            const pickerWidth = picker.offsetWidth || 230;
+            const pickerHeight = picker.offsetHeight || 80;
+
+            const minLeft = Math.max(cardRect.left + 8, 8);
+            const maxLeft = Math.min(cardRect.right - pickerWidth - 8, window.innerWidth - pickerWidth - 8);
 
             let left = rect.left + (rect.width / 2) - (pickerWidth / 2);
-            if (left < 12) left = 12;
-            if (left + pickerWidth > window.innerWidth - 12) {
-                left = window.innerWidth - pickerWidth - 12;
-            }
+            if (left < minLeft) left = minLeft;
+            if (left > maxLeft) left = maxLeft;
 
             let top = rect.top - pickerHeight - 8;
-            if (top < 70) {
+            if (top < Math.max(cardRect.top + 8, 60)) {
                 top = rect.bottom + 8;
             }
 
