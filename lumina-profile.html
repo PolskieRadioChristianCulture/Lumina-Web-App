@@ -5797,10 +5797,14 @@
                 await window.LuminaMediaStore.setItem('lumina_carousel_' + slug, finalUrl);
             }
 
+            if (typeof renderCarouselMediaSelectionGrid === 'function') {
+                renderCarouselMediaSelectionGrid();
+            }
             renderPhotos();
             renderProfile();
             showToast(mediaType === 'video' ? '🎬 Film profilowy ustawiony jako główny w karuzeli!' : '⭐ Zdjęcie zostało ustawione jako Twoja wizytówka na Karuzeli LUMINA! Karuzela zaktualizowana ✅');
         };
+
 
 
         window.handleProfileVideoUpload = function(e) {

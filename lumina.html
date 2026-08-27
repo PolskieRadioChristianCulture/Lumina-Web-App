@@ -2704,7 +2704,7 @@
             position: absolute !important;
             top: 12px !important;
             left: auto !important;
-            right: 48px !important; /* Obok serduszka (które jest na right: 12px) */
+            right: 60px !important; /* Dokładnie 10px czystego odstępu od serduszka (które kończy się na right: 50px) */
             bottom: auto !important;
             height: 28px !important;
             padding: 0 10px !important;
@@ -5110,17 +5110,15 @@
                     return `
                         <div class="profile-card cloud-registered-user-card" id="card_profile_${pKey}" data-profile-slug="${pKey}" data-category="${p.gender || 'spolecznosc'} spolecznosc" onclick="openCommunityProfile('${pKey}')">
                             <div class="card-photo" style="position:relative;">
-                                <div style="position:absolute; top:12px; left:12px; display:flex; align-items:center; gap:6px; z-index:5; pointer-events:none;">
-                                    <div class="card-match" style="position:static !important; background: ${liveScore === '0%' ? 'rgba(100, 116, 139, 0.55)' : (isLocalUser || liveScore === 'Twój profil' ? 'linear-gradient(135deg, #ec4899, #8b5cf6)' : 'linear-gradient(135deg, #ec4899, #8b5cf6)')};">${liveScore}</div>
-                                    ${(isNew && !isLocalUser && liveScore !== 'Twój profil') ? `
-                                        <div class="card-new-badge" style="position:static !important;">
-                                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
-                                        </div>
-                                    ` : ''}
-                                </div>
+                                <div class="card-match" style="background: ${liveScore === '0%' ? 'rgba(100, 116, 139, 0.55)' : (isLocalUser || liveScore === 'Twój profil' ? 'linear-gradient(135deg, #ec4899, #8b5cf6)' : 'linear-gradient(135deg, #ec4899, #8b5cf6)')};">${liveScore}</div>
+                                ${(isNew && !isLocalUser && liveScore !== 'Twój profil') ? `
+                                    <div class="card-new-badge">
+                                        <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> NOWY
+                                    </div>
+                                ` : ''}
                                 ${isVideoMedia ? `
                                     <video src="${mediaUrl}" autoplay muted loop playsinline poster="${userAvatar}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"></video>
-                                    <div class="card-video-badge" style="position:absolute; top:12px; right:48px; background:rgba(0,0,0,0.65); backdrop-filter:blur(6px); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; gap:4px; z-index:3;">
+                                    <div class="card-video-badge" style="position:absolute; top:12px; right:60px; background:rgba(0,0,0,0.65); backdrop-filter:blur(6px); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; gap:4px; z-index:3;">
                                         <i class="fa-solid fa-play" style="color:#ec4899; font-size:0.55rem;"></i> WIDEO
                                     </div>
                                 ` : `
@@ -5128,6 +5126,7 @@
                                 `}
                                 <button class="card-heart" onclick="toggleLike(event,this, '${pKey}', '${userName}', '${userAvatar}')"><i class="fa-solid fa-heart"></i></button>
                             </div>
+
                             <div class="card-body">
                                 <div class="card-name">${userName}${userAge}</div>
                                 <div class="card-city">📍 ${userCity} • <span style="color:#10b981;font-weight:800;">${isLocalUser ? 'Mój Profil' : (isNew ? '✨ NOWY PROFIL' : (p.status || 'Społeczność'))}</span></div>
