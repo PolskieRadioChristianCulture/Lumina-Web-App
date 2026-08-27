@@ -3174,7 +3174,7 @@ export function calculateProfileMatchScore(targetProfile, currentProfile) {
 
     const myProfile = currentProfile || (typeof window.LuminaDB?.getCurrentProfile === 'function' ? window.LuminaDB.getCurrentProfile() : null);
     if (!myProfile || !myProfile.name || myProfile.slug === 'guest') {
-        return 'Wymaga profilu';
+        return null; // Dla gości/niezalogowanych nie wyświetlamy technicznego badge'a (Opcja A)
     }
 
     // Jeśli przeglądamy własny profil
