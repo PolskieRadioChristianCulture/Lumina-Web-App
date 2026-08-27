@@ -1422,4 +1422,58 @@
         }
     }
 
+    // ══════════════════════════════════════════════════════════════════════════
+    // LUMINA MEDIA STORE (IndexedDB Storage for Large Avatars, GIFs and Videos)
+    // ══════════════════════════════════════════════════════════════════════════
+    window.LuminaMediaStore = {
+        dbPromise: null,
+        getDB() {
+            if (!this.dbPromise) {
+                this.dbPromise = new Promise((resolve, reject) => {
+                    if (!window.indexedDB) return resolve(null);
+                    const req = indexedDB.open('LuminaMediaStore', 1);
+                    req.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains('media')) {
+                            db.createObjectStore('media');
+                        }
+                    };
+                    req.onsuccess = (e) => resolve(e.target.result);
+                    req.onerror = (e) => resolve(null);
+                });
+            }
+            return this.dbPromise;
+        },
+        async setItem(key, data) {
+            try {
+                const db = await this.getDB();
+                if (!db) return false;
+                return new Promise((resolve) => {
+                    const tx = db.transaction('media', 'readwrite');
+                    const store = tx.objectStore('media');
+                    const req = store.put(data, key);
+                    req.onsuccess = () => resolve(true);
+                    req.onerror = () => resolve(false);
+                });
+            } catch(e) {
+                return false;
+            }
+        },
+        async getItem(key) {
+            try {
+                const db = await this.getDB();
+                if (!db) return null;
+                return new Promise((resolve) => {
+                    const tx = db.transaction('media', 'readonly');
+                    const store = tx.objectStore('media');
+                    const req = store.get(key);
+                    req.onsuccess = () => resolve(req.result || null);
+                    req.onerror = () => resolve(null);
+                });
+            } catch(e) {
+                return null;
+            }
+        }
+    };
+
 })();

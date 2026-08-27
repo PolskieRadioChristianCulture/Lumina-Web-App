@@ -4077,6 +4077,32 @@
                 };
             }
 
+            // Twarde zabezpieczenie profilu Biblia Audio Christian Culture (GIF / Wideo / Awatar)
+            if (slug.includes('bibliaaudio') || slug === 'u_bibliaaudiochristianculture_3248') {
+                const bba = PROFILES_DB['u_bibliaaudiochristianculture_3248'] || PROFILES_DB['bibliaaudio'] || {};
+                const localAv = localStorage.getItem('lumina_avatar_' + slug) || localStorage.getItem('lumina_avatar_u_bibliaaudiochristianculture_3248');
+                const localVid = localStorage.getItem('lumina_avatar_video_' + slug) || localStorage.getItem('lumina_avatar_video_u_bibliaaudiochristianculture_3248');
+                const cloud = (window._cloudProfileData && (window._cloudProfileData.slug === slug || window._cloudProfileData.uid === slug)) ? window._cloudProfileData : {};
+                
+                let effectiveAvatar = 'avatar_biblia_audio.gif';
+                if (localAv && !localAv.includes('googleusercontent.com') && !localAv.includes('lumina_icon')) {
+                    effectiveAvatar = localAv;
+                } else if (cloud.avatar && !cloud.avatar.includes('googleusercontent.com') && !cloud.avatar.includes('lumina_icon')) {
+                    effectiveAvatar = cloud.avatar;
+                }
+                
+                return {
+                    ...bba,
+                    ...cloud,
+                    name: 'Biblia Audio Christian Culture',
+                    avatar: effectiveAvatar,
+                    avatarVideo: localVid || cloud.avatarVideo || '',
+                    cover: cloud.cover || 'lumina_default_cover.jpg',
+                    isMissionAccount: true,
+                    verified: true
+                };
+            }
+
             // 1. Priorytet: Pobrany obiekt z chmury Firestore
             if (window._cloudProfileData) {
                 const cSlug = (window._cloudProfileData.slug || '').toLowerCase();
@@ -4648,16 +4674,41 @@
             })();
 
             const avatarEl = document.getElementById('avatarImgEl');
-            const targetAv = data.photoVerified === false
+            let targetAv = data.photoVerified === false
                 ? (data.avatar || 'lumina_logo.jpg') // wymuszony werdykt serwera — cache lokalny nie może go ominąć
-                : (localStorage.getItem('lumina_avatar_' + slug) || data.avatar || 'lumina_icon.jpg');
+                : (localStorage.getItem('lumina_avatar_' + slug) || data.avatar || (slug.includes('bibliaaudio') ? 'avatar_biblia_audio.gif' : 'lumina_icon.jpg'));
+            
+            if (slug.includes('bibliaaudio') && (targetAv.includes('googleusercontent.com') || targetAv.includes('lumina_icon') || !targetAv)) {
+                targetAv = 'avatar_biblia_audio.gif';
+            }
+
             if (avatarEl) {
-                avatarEl.onerror = () => { avatarEl.onerror = null; avatarEl.src = 'lumina_icon.jpg'; };
-                avatarEl.src = targetAv;
+                const defaultFallback = slug.includes('bibliaaudio') ? 'avatar_biblia_audio.gif' : 'lumina_icon.jpg';
+                avatarEl.onerror = () => { avatarEl.onerror = null; avatarEl.src = defaultFallback; };
+                
+                if (targetAv && targetAv.startsWith('indexeddb:')) {
+                    const idbKey = targetAv.replace('indexeddb:', '');
+                    if (window.LuminaMediaStore) {
+                        window.LuminaMediaStore.getItem(idbKey).then(dataUrl => {
+                            if (dataUrl && avatarEl) avatarEl.src = dataUrl;
+                        });
+                    }
+                } else {
+                    avatarEl.src = targetAv;
+                }
+
+                if (window.LuminaMediaStore) {
+                    window.LuminaMediaStore.getItem('lumina_avatar_' + slug).then(idb => {
+                        if (idb && avatarEl && avatarEl.src !== idb) {
+                            avatarEl.src = idb;
+                        }
+                    });
+                }
+
                 if (document.getElementById('myComposerAvatar')) {
                     const compAv = document.getElementById('myComposerAvatar');
-                    compAv.onerror = () => { compAv.onerror = null; compAv.src = 'lumina_icon.jpg'; };
-                    compAv.src = targetAv;
+                    compAv.onerror = () => { compAv.onerror = null; compAv.src = defaultFallback; };
+                    compAv.src = targetAv.startsWith('indexeddb:') ? defaultFallback : targetAv;
                 }
             }
             const coverEl = document.getElementById('coverPhotoEl');
@@ -5307,36 +5358,54 @@
         }
 
         // File Upload Handlers
-        function handleAvatarFileSelect(e) {
+        async function handleAvatarFileSelect(e) {
             const file = e.target.files && e.target.files[0];
             if (!file) return;
-            showToast('Przetwarzanie zdjęcia profilowego... 🕊️');
-            compressAndReadImage(file, 800, 800, 0.85, function(dataUrl) {
+            showToast('Przetwarzanie i zapisywanie zdjęcia/animacji... 🕊️');
+            compressAndReadImage(file, 800, 800, 0.85, async function(dataUrl) {
                 const slug = getRequestedUserSlug();
                 const clean = slug.replace(/^u_/, '');
                 const cur = getProfileData();
                 cur.avatar = dataUrl;
                 window._cloudProfileData = cur;
+
+                // 1. Zapis do IndexedDB (bez limitu rozmiaru dla dużych animacji GIF)
+                if (window.LuminaMediaStore) {
+                    await window.LuminaMediaStore.setItem('lumina_avatar_' + slug, dataUrl);
+                    await window.LuminaMediaStore.setItem('lumina_avatar_' + clean, dataUrl);
+                }
+
+                // 2. Bezpieczny zapis do LocalStorage (z obsługą QuotaExceededError)
                 try {
                     localStorage.setItem('lumina_avatar_' + slug, dataUrl);
                     localStorage.setItem('lumina_avatar_' + clean, dataUrl);
                     localStorage.setItem('lumina_avatar_u_' + clean, dataUrl);
-                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
-                    localStorage.setItem('lumina_profile_' + clean, JSON.stringify(cur));
-                    localStorage.setItem('lumina_profile_u_' + clean, JSON.stringify(cur));
-                    localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
-                    localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
-                    localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
+                } catch(err) {}
+
+                try {
+                    const safeCur = { ...cur };
+                    if (dataUrl.length > 500000) {
+                        safeCur.avatar = 'indexeddb:lumina_avatar_' + slug;
+                    }
+                    localStorage.setItem('lumina_profile_' + slug, JSON.stringify(safeCur));
+                    localStorage.setItem('lumina_profile_' + clean, JSON.stringify(safeCur));
+                    localStorage.setItem('lumina_profile_u_' + clean, JSON.stringify(safeCur));
+                    localStorage.setItem(MAIN_USER_KEY, JSON.stringify(safeCur));
+                    localStorage.setItem('lumina_current_user_profile', JSON.stringify(safeCur));
+                    localStorage.setItem('lumina_my_profile', JSON.stringify(safeCur));
                 } catch(err) {}
                 
                 const avEl = document.getElementById('avatarImgEl');
                 if (avEl) avEl.src = dataUrl;
 
-                if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
-                    window.LuminaDB.saveProfileToCloud(slug, cur);
+                // 3. Zapis do chmury Firestore (jeśli < 800KB)
+                if (dataUrl.length < 800000) {
+                    if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                        window.LuminaDB.saveProfileToCloud(slug, cur);
+                    }
                 }
                 renderProfile();
-                showToast('Zdjęcie profilowe zostało zaktualizowane i zapisane! ✨✨');
+                showToast('Zdjęcie / animacja profilowa została pomyślnie zaktualizowana i zapisana! ✨✨');
             });
             e.target.value = '';
         }
@@ -7075,12 +7144,16 @@
                                 verseRef: f.verseRef?.stringValue || 'Flp 4, 13',
                                 bio: f.bio?.stringValue || '',
                                 status: f.status?.stringValue || 'Panna/Kawaler',
-                                avatar: f.avatar?.stringValue || 'lumina_icon.jpg',
+                                avatar: (f.avatar?.stringValue && !f.avatar.stringValue.includes('googleusercontent.com')) ? f.avatar.stringValue : (f.carouselMediaUrl?.stringValue && !f.carouselMediaUrl.stringValue.includes('googleusercontent.com') ? f.carouselMediaUrl.stringValue : (slug.includes('bibliaaudio') ? 'avatar_biblia_audio.gif' : (f.avatar?.stringValue || 'lumina_icon.jpg'))),
+                                avatarVideo: f.avatarVideo?.stringValue || f.carouselVideo?.stringValue || '',
+                                carouselMediaType: f.carouselMediaType?.stringValue || (f.avatarVideo?.stringValue ? 'video' : 'photo'),
+                                carouselMediaUrl: f.carouselMediaUrl?.stringValue || f.avatar?.stringValue || '',
+                                carouselVideo: f.carouselVideo?.stringValue || f.avatarVideo?.stringValue || '',
                                 cover: f.cover?.stringValue || 'lumina_default_cover.jpg',
                                 visibility: f.visibility?.stringValue || 'public',
                                 matchScore: f.matchScore?.stringValue || '98%',
                                 isVerified: true,
-                                photos: f.photos?.arrayValue?.values ? f.photos.arrayValue.values.map(v => v.stringValue).filter(Boolean) : [f.avatar?.stringValue || 'lumina_icon.jpg'],
+                                photos: f.photos?.arrayValue?.values ? f.photos.arrayValue.values.map(v => v.stringValue).filter(Boolean) : [slug.includes('bibliaaudio') ? 'avatar_biblia_audio.gif' : (f.avatar?.stringValue || 'lumina_icon.jpg')],
                                 posts: []
                             };
                             window._cloudProfileData = parsed;

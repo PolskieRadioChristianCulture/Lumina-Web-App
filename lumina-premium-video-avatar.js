@@ -50,15 +50,15 @@
 
     // Domyślne przypisania wideo dla profili specjalnych (jeśli użytkownik jeszcze nie wgrał własnego)
     const SPECIAL_PROFILES_DEFAULT_VIDEOS = {
-        
         'cezaryrgowski': 'wideo_profilowe_cezary_rogowski.mp4',
         'studiodobregoslowa': 'czesc_dobrze_ze_jestes.mp4',
         'cctv': 'Reklama 2 Sklep CC.mp4',
         'radiocc': 'Reklama Sklep CC Karuzela Profili.mp4',
-        
         'ccmen': 'Reklama Sklep CC Karuzela Profili.mp4',
         'osobowoscplus': 'czesc_dobrze_ze_jestes.mp4',
-        'wiolettarogowska': 'wioletta_profile_video.mp4'
+        'wiolettarogowska': 'wioletta_profile_video.mp4',
+        'u_bibliaaudiochristianculture_3248': 'avatar_biblia_audio.gif',
+        'bibliaaudio': 'avatar_biblia_audio.gif'
     };
 
     class LuminaPremiumVideoAvatarEngine {
@@ -524,6 +524,18 @@
                 let iframeEl = wrap.querySelector('iframe.avatar-video-element');
 
                 if (videoUrl) {
+                    const isGif = videoUrl.endsWith('.gif') || videoUrl.includes('image/gif') || videoUrl.includes('.gif?');
+                    if (isGif) {
+                        wrap.classList.remove('has-premium-video');
+                        if (videoEl) videoEl.remove();
+                        if (iframeEl) iframeEl.remove();
+                        const targetImg = wrap.querySelector('img.avatar-img, img.profile-avatar-img, img#avatarImgEl');
+                        if (targetImg && targetImg.src !== videoUrl) {
+                            targetImg.src = videoUrl;
+                        }
+                        return;
+                    }
+
                     wrap.classList.add('has-premium-video');
                     const ytId = this.getYouTubeId(videoUrl);
 
