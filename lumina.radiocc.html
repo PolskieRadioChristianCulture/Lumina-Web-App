@@ -866,6 +866,59 @@
             <!-- Main Feed Stream -->
             <main class="main-feed-col">
 
+                <!-- ── COMPOSER POSTÓW (Master Admin only) ── -->
+                <div class="feed-composer" id="radioComposerBox" style="display:none;">
+                    <div class="composer-top" style="align-items:flex-start;gap:12px;">
+                        <div class="avatar-wrap" style="position:relative;flex-shrink:0;">
+                            <img loading="lazy" src="logo_radio_cc.jpg" onerror="this.src='lumina_icon.jpg'" alt="Radio CC" class="composer-avatar" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid #06b6d4;">
+                            <span class="avatar-status-badge"></span>
+                        </div>
+                        <div style="flex:1;">
+                            <textarea id="radioComposerInput" class="composer-input"
+                                placeholder="HalleluYah ✨ #DobrzeŻeJesteś #PolskieRadioCC — podziel się słowem, muzyczną inspiracją lub zachętą..."
+                                rows="3"
+                                style="width:100%;resize:vertical;min-height:80px;background:rgba(6,182,212,0.06);border:1.5px solid rgba(6,182,212,0.35);border-radius:14px;padding:12px 14px;font-size:0.93rem;color:#e2e8f0;font-family:inherit;line-height:1.6;outline:none;transition:border-color 0.2s;"
+                                onfocus="this.style.borderColor='#06b6d4'" onblur="this.style.borderColor='rgba(6,182,212,0.35)'"
+                            ></textarea>
+
+                            <!-- Image attachment preview -->
+                            <div id="radioComposerImgPreview" style="display:none;position:relative;margin:8px 0 4px;border-radius:12px;overflow:hidden;max-height:200px;background:#0f172a;border:1px solid rgba(6,182,212,0.3);">
+                                <img id="radioComposerAttachedImg" src="" style="width:100%;height:160px;object-fit:cover;display:block;">
+                                <button type="button" onclick="removeRadioPostImage()" style="position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(225,29,72,0.9);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Usuń grafikę"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+
+                            <!-- Video embed preview -->
+                            <div id="radioComposerVideoPreview" style="display:none;margin:8px 0 4px;border-radius:12px;overflow:hidden;border:1px solid rgba(6,182,212,0.3);background:#0f172a;padding:10px 14px;font-size:0.82rem;color:#38bdf8;">
+                                <i class="fa-brands fa-youtube" style="color:#ef4444;"></i>
+                                <span id="radioComposerVideoUrl" style="margin-left:6px;word-break:break-all;"></span>
+                                <button type="button" onclick="removeRadioPostVideo()" style="margin-left:10px;background:rgba(225,29,72,0.85);border:none;color:#fff;border-radius:20px;padding:2px 10px;cursor:pointer;font-size:0.78rem;"><i class="fa-solid fa-xmark"></i> Usuń</button>
+                            </div>
+
+                            <div class="composer-actions" style="margin-top:10px;flex-wrap:wrap;gap:8px;">
+                                <button class="composer-btn-attach" onclick="triggerRadioPostImageUpload()" title="Dołącz grafikę z dysku">
+                                    <i class="fa-solid fa-image" style="color:#22c55e;"></i> Grafika
+                                </button>
+                                <button class="composer-btn-attach" onclick="promptRadioPostEmbedVideo()" title="Wstaw link YouTube lub MP4">
+                                    <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Wideo
+                                </button>
+                                <button class="composer-btn-publish" onclick="publishRadioPost()" style="background:linear-gradient(135deg,#06b6d4,#0891b2);box-shadow:0 4px 14px rgba(6,182,212,0.4);">
+                                    <i class="fa-solid fa-share"></i> Opublikuj
+                                </button>
+                            </div>
+
+                            <!-- Hidden file input -->
+                            <input type="file" id="radioPostFileInput" accept="image/*" style="display:none;" onchange="handleRadioPostImageSelect(event)">
+                        </div>
+                    </div>
+                </div>
+                <!-- /COMPOSER -->
+
+                <!-- Dynamic feed stream (published posts appear here) -->
+                <div id="radioFeedStream"></div>
+
+                <!-- Divider -->
+                <div style="border-top:1px solid rgba(6,182,212,0.15);margin:8px 0 20px;"></div>
+
                 <!-- 🌟 POST 1: Pasmo Dobrego Słowa 🌟 -->
                 <article class="feed-post-card" id="post_radio_1">
                     <div class="post-top-header">
@@ -1046,6 +1099,161 @@ Włącz Polskie Radio CC i pozwól, aby pieśni uwielbienia towarzyszyły Ci w c
                 btn.style.background = 'linear-gradient(135deg, var(--gold-accent), #d97706)';
             }
         }
+
+        /* ═══════════════════════════════════════════════
+           COMPOSER POSTÓW – Polskie Radio CC
+           Wyświetlany tylko po zalogowaniu jako Master Admin
+        ═══════════════════════════════════════════════ */
+
+        let _radioPostAttachedImageDataURL = null;
+        let _radioPostEmbedVideoURL = null;
+
+        function initRadioComposer() {
+            const isAdmin = (
+                (typeof window.isMasterAdmin === 'function' && window.isMasterAdmin()) ||
+                sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
+                localStorage.getItem('lumina_auth_master_admin') === 'true'
+            );
+            const box = document.getElementById('radioComposerBox');
+            if (box) box.style.display = isAdmin ? 'block' : 'none';
+        }
+
+        function triggerRadioPostImageUpload() {
+            document.getElementById('radioPostFileInput').click();
+        }
+
+        function handleRadioPostImageSelect(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                _radioPostAttachedImageDataURL = ev.target.result;
+                const img = document.getElementById('radioComposerAttachedImg');
+                const box = document.getElementById('radioComposerImgPreview');
+                if (img) img.src = ev.target.result;
+                if (box) box.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+            e.target.value = '';
+        }
+
+        function removeRadioPostImage() {
+            _radioPostAttachedImageDataURL = null;
+            const box = document.getElementById('radioComposerImgPreview');
+            const img = document.getElementById('radioComposerAttachedImg');
+            if (box) box.style.display = 'none';
+            if (img) img.src = '';
+        }
+
+        function promptRadioPostEmbedVideo() {
+            const url = prompt('Wklej link do wideo (YouTube, MP4 itp.):');
+            if (!url || !url.trim()) return;
+            _radioPostEmbedVideoURL = url.trim();
+            const previewBox = document.getElementById('radioComposerVideoPreview');
+            const urlSpan = document.getElementById('radioComposerVideoUrl');
+            if (previewBox) previewBox.style.display = 'block';
+            if (urlSpan) urlSpan.textContent = _radioPostEmbedVideoURL;
+        }
+
+        function removeRadioPostVideo() {
+            _radioPostEmbedVideoURL = null;
+            const previewBox = document.getElementById('radioComposerVideoPreview');
+            const urlSpan = document.getElementById('radioComposerVideoUrl');
+            if (previewBox) previewBox.style.display = 'none';
+            if (urlSpan) urlSpan.textContent = '';
+        }
+
+        function publishRadioPost() {
+            const isAdmin = (
+                (typeof window.isMasterAdmin === 'function' && window.isMasterAdmin()) ||
+                sessionStorage.getItem('lumina_auth_master_admin') === 'true' ||
+                localStorage.getItem('lumina_auth_master_admin') === 'true'
+            );
+            if (!isAdmin) {
+                showToast('🔒 Zaloguj się jako Administrator, aby publikować posty.');
+                return;
+            }
+
+            const textarea = document.getElementById('radioComposerInput');
+            const text = textarea ? textarea.value.trim() : '';
+            if (!text && !_radioPostAttachedImageDataURL && !_radioPostEmbedVideoURL) {
+                showToast('✏️ Wpisz treść posta, dołącz grafikę lub wideo.');
+                return;
+            }
+
+            // Build post HTML
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
+            const timeStr = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+            const postId = 'radioPost_' + Date.now();
+
+            let mediaHTML = '';
+            if (_radioPostAttachedImageDataURL) {
+                mediaHTML += `<div style="margin:12px 0;border-radius:14px;overflow:hidden;"><img src="${_radioPostAttachedImageDataURL}" style="width:100%;max-height:400px;object-fit:cover;display:block;border-radius:14px;"></div>`;
+            }
+            if (_radioPostEmbedVideoURL) {
+                let embedSrc = _radioPostEmbedVideoURL;
+                const ytMatch = _radioPostEmbedVideoURL.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+                if (ytMatch) embedSrc = `https://www.youtube.com/embed/${ytMatch[1]}`;
+                mediaHTML += `<div style="margin:12px 0;border-radius:14px;overflow:hidden;position:relative;padding-bottom:56.25%;background:#000;">
+                    <iframe src="${embedSrc}" style="position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:14px;" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
+                </div>`;
+            }
+
+            const textHTML = text ? `<div class="post-text-content" style="white-space:pre-wrap;">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>` : '';
+
+            const postHTML = `
+            <article class="feed-post-card" id="${postId}" style="border-left:3px solid #06b6d4;">
+                <div class="post-top-header">
+                    <div class="post-author-box">
+                        <img src="logo_radio_cc.jpg" onerror="this.src='lumina_icon.jpg'" alt="Polskie Radio CC" class="post-author-img">
+                        <div>
+                            <div class="post-author-name">Polskie Radio CC <span class="post-badge-daily">Ramówka 24/7</span></div>
+                            <div class="post-time">${dateStr} • ${timeStr} • 🌍 Publiczny</div>
+                        </div>
+                    </div>
+                    <button class="btn-action-secondary" style="padding:4px 10px;font-size:0.75rem;color:#ef4444;border-color:rgba(239,68,68,0.4);" onclick="deleteRadioPost('${postId}')" title="Usuń post">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+                <div class="post-body">
+                    ${textHTML}
+                    ${mediaHTML}
+                </div>
+                <div class="post-actions-bar">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <button class="post-action-btn" id="like_${postId}" onclick="togglePostLike(this,'likeC_${postId}')">
+                            <i class="fa-solid fa-heart"></i> <span id="likeC_${postId}">0</span>
+                        </button>
+                        <button class="post-action-btn" id="amen_${postId}" onclick="togglePostAmen(this,'amenC_${postId}')">
+                            <i class="fa-solid fa-hands-praying"></i> Amen (<span id="amenC_${postId}">0</span>)
+                        </button>
+                    </div>
+                    <button class="post-action-btn" onclick="openShareModal()"><i class="fa-solid fa-share-nodes"></i> Poleć</button>
+                </div>
+            </article>`;
+
+            const stream = document.getElementById('radioFeedStream');
+            if (stream) stream.insertAdjacentHTML('afterbegin', postHTML);
+
+            // Reset composer
+            if (textarea) textarea.value = '';
+            removeRadioPostImage();
+            removeRadioPostVideo();
+            showToast('✅ Post opublikowany przez Radio CC!');
+        }
+
+        function deleteRadioPost(postId) {
+            if (!confirm('Usunąć ten post?')) return;
+            const el = document.getElementById(postId);
+            if (el) el.remove();
+            showToast('🗑️ Post usunięty.');
+        }
+
+        // Inicjalizuj composer przy załadowaniu i po zdarzeniach auth
+        document.addEventListener('DOMContentLoaded', initRadioComposer);
+        document.addEventListener('lumina_auth_changed', initRadioComposer);
+        window.addEventListener('storage', initRadioComposer);
     </script>
     <script src="lumina-admin-profile-suite.js"></script>
     <script src="lumina-premium-video-avatar.js"></script>
