@@ -18,3 +18,15 @@ try {
 
 exports.scheduledMorningDevotionPush = chatPush.scheduledMorningDevotionPush;
 exports.onCudaTablicaPostPublished = chatPush.onCudaTablicaPostPublished;
+
+// ════════════════════════════════════════════════════════════════
+// Cuda Każdego Dnia — automatyczna synchronizacja z chmury Google
+// ════════════════════════════════════════════════════════════════
+try {
+    const cudaSync = require('./lumina-cuda-sync-function.js');
+    if (cudaSync && cudaSync.scheduledCudaKazdegoDniaSync) {
+        exports.scheduledCudaKazdegoDniaSync = cudaSync.scheduledCudaKazdegoDniaSync;
+    }
+} catch(e) {
+    console.warn('Cuda sync module load notice:', e.message);
+}
