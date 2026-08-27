@@ -3344,6 +3344,8 @@ export function startPresenceHeartbeat() {
             await setDoc(presenceRef, {
                 uid: u ? u.uid : null,
                 displayName: (p && p.name) || (u && u.displayName) || 'Gość LUMINA',
+                avatar: (p && p.avatar) || (u && u.photoURL) || 'lumina_icon.jpg',
+                slug: (p && p.slug) || (u && u.uid) || '',
                 isLoggedIn: !!u,
                 gender: detectedGender || 'unknown',
                 page: window.location.pathname.split('/').pop() || 'lumina.html',
@@ -3369,10 +3371,27 @@ export function startPresenceHeartbeat() {
     });
 }
 
+export function subscribeToOnlinePresence(callback) {
+    if (!db || typeof callback !== 'function') return () => {};
+    return onSnapshot(collection(db, 'lumina_presence'), (snap) => {
+        const ninetySecAgo = Date.now() - 90000;
+        const activeList = [];
+        snap.forEach(d => {
+            const data = d.data();
+            const millis = data.lastActiveMillis || (data.lastActive?.toDate ? data.lastActive.toDate().getTime() : 0);
+            if (millis >= ninetySecAgo) {
+                activeList.push({ id: d.id, ...data });
+            }
+        });
+        callback(activeList);
+    }, (err) => console.warn('[Presence] onSnapshot error:', err));
+}
+
 // Auto-start heartbeat for every visitor
 try {
     startPresenceHeartbeat();
 } catch(e) {}
+
 
 export function listenToFounderTelemetry(callback) {
     if (!db || typeof callback !== 'function') return () => {};
@@ -3523,6 +3542,7 @@ export async function updateAgentNoteStatusInCloud(noteId, status = 'done') {
 window.LuminaDB = window.LuminaDB || {};
 window.LuminaDB.startPresenceHeartbeat = startPresenceHeartbeat;
 window.LuminaDB.listenToFounderTelemetry = listenToFounderTelemetry;
+window.LuminaDB.subscribeToOnlinePresence = subscribeToOnlinePresence;
 window.LuminaDB.saveAgentNoteToCloud = saveAgentNoteToCloud;
 window.LuminaDB.getAgentNotesFromCloud = getAgentNotesFromCloud;
 window.LuminaDB.updateAgentNoteStatusInCloud = updateAgentNoteStatusInCloud;

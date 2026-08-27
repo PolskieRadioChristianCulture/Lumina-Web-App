@@ -1649,7 +1649,7 @@
         }
         .tablica-online-avatar-item:first-child {
             margin-left: 0;
-            z-index: 4;
+            z-index: 10;
         }
         .tablica-online-avatar-item:hover {
             transform: translateY(-3px) scale(1.18);
@@ -1679,6 +1679,7 @@
         .tablica-online-more-btn {
             width: 32px;
             height: 32px;
+            min-width: 32px;
             border-radius: 50%;
             background: rgba(52, 211, 153, 0.16);
             border: 2px solid #34d399; /* Seledynowa obręcz */
@@ -1687,13 +1688,16 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.72rem;
             font-weight: 800;
             margin-left: -7px;
             z-index: 1;
-            transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease;
+            transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
             backdrop-filter: blur(8px);
             cursor: pointer;
+            line-height: 1;
+            padding: 0 2px;
+            letter-spacing: -0.3px;
         }
         .tablica-online-more-btn:hover {
             transform: translateY(-3px) scale(1.18);
@@ -3387,22 +3391,39 @@
             </div>
             <div style="display:flex; align-items:center; justify-content:space-between; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1);">
                 <div id="tablicaOnlineAvatarsContainer" class="tablica-online-avatars-wrap">
-                    <div class="tablica-online-avatar-item" title="Zalogowany: Cezary Rogowski ✨ ˘" style="z-index: 4;" onclick="event.stopPropagation(); window.location.href='lumina.cezaryrgowski.html';">
+                    <div class="tablica-online-avatar-item" title="Zalogowany: Cezary Rogowski ✨" style="z-index: 8;" onclick="event.stopPropagation(); window.location.href='lumina.cezaryrgowski.html';">
                         <img src="avatar_christian_culture_hq_2026.jpg?v=20260825_urszula_real_face_v370" alt="Cezary" class="tablica-online-avatar-img home-cezary-avatar" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
-                    <div class="tablica-online-avatar-item" title="Zalogowana: Wioletta Rogowska ✨ ˘" style="z-index: 3;" onclick="event.stopPropagation(); window.location.href='lumina.wiolettarogowska.html';">
+                    <div class="tablica-online-avatar-item" title="Zalogowana: Wioletta Rogowska ✨" style="z-index: 7;" onclick="event.stopPropagation(); window.location.href='lumina.wiolettarogowska.html';">
                         <img src="avatar_wioletta_official.jpg" alt="Wioletta" class="tablica-online-avatar-img home-wioletta-avatar" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
                         <span class="tablica-online-dot"></span>
                     </div>
-                    <div class="tablica-online-avatar-item" title="Zalogowana: Magdalena ✨ ˘" style="z-index: 2;" onclick="event.stopPropagation(); window.location.href='lumina-profile.html?u=u_magdalena_9102';">
+                    <div class="tablica-online-avatar-item" title="Zalogowany: Andrzej Thiel ✨" style="z-index: 6;" onclick="event.stopPropagation(); window.location.href='lumina.andrzejthiel.html';">
+                        <img src="avatar_andrzej_thiel.jpg" alt="Andrzej" class="tablica-online-avatar-img" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
+                        <span class="tablica-online-dot"></span>
+                    </div>
+                    <div class="tablica-online-avatar-item" title="Zalogowana: Magdalena ✨" style="z-index: 5;" onclick="event.stopPropagation(); window.location.href='lumina.magdalena.html';">
                         <img src="avatar_magdalena.png" alt="Magdalena" class="tablica-online-avatar-img" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='avatar_magdalena.png';">
                         <span class="tablica-online-dot"></span>
                     </div>
-                    <div class="tablica-online-more-btn" onclick="event.stopPropagation(); openAllOnlineUsersModal();" title="Zobacz wszystkich użytkowników dostępnych online ✨ ˘" aria-label="Więcej zalogowanych użytkowników">
-                        <i class="fa-solid fa-plus"></i>
+                    <div class="tablica-online-avatar-item" title="Zalogowany: Tomasz ✨" style="z-index: 4;" onclick="event.stopPropagation(); window.location.href='lumina-profile.html?u=tomek';">
+                        <img src="avatar_widget_tomek.jpg" alt="Tomasz" class="tablica-online-avatar-img" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
+                        <span class="tablica-online-dot"></span>
+                    </div>
+                    <div class="tablica-online-avatar-item" title="Zalogowana: Noemi ✨" style="z-index: 3;" onclick="event.stopPropagation(); window.location.href='lumina-profile.html?u=noemi';">
+                        <img src="avatar_noemi.jpg" alt="Noemi" class="tablica-online-avatar-img" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
+                        <span class="tablica-online-dot"></span>
+                    </div>
+                    <div class="tablica-online-avatar-item" title="Zalogowana: Anna ✨" style="z-index: 2;" onclick="event.stopPropagation(); window.location.href='lumina-profile.html?u=anna';">
+                        <img src="lumina_anna2.jpg" alt="Anna" class="tablica-online-avatar-img" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
+                        <span class="tablica-online-dot"></span>
+                    </div>
+                    <div class="tablica-online-more-btn" onclick="event.stopPropagation(); openAllOnlineUsersModal();" title="Zobacz wszystkich użytkowników dostępnych online ✨" aria-label="Liczba zalogowanych użytkowników online">
+                        +7
                     </div>
                 </div>
+
                 <span style="color:#38bdf8; font-size:0.84rem; font-weight:800; display:flex; align-items:center; gap:6px;">
                     Otwórz Tablicę <i class="fa-solid fa-arrow-right"></i>
                 </span>
@@ -5459,56 +5480,128 @@
 
             // Pool of active/online members in LUMINA community
             const activeCommunityPool = [
-                { name: 'Cezary Rogowski', avatar: 'avatar_cezary_official.jpg', slug: 'cezaryrgowski' },
-                { name: 'Andrzej Thiel', avatar: 'avatar_andrzej_thiel.jpg', slug: 'andrzejthiel' },
+                { name: 'Cezary Rogowski', avatar: 'avatar_christian_culture_hq_2026.jpg?v=20260825_urszula_real_face_v370', slug: 'cezaryrgowski' },
                 { name: 'Wioletta Rogowska', avatar: 'avatar_wioletta_official.jpg', slug: 'wiolettarogowska' },
-                { name: 'Magdalena', avatar: 'avatar_magdalena.jpg', slug: 'magdalena' },
+                { name: 'Andrzej Thiel', avatar: 'avatar_andrzej_thiel.jpg', slug: 'andrzejthiel' },
+                { name: 'Magdalena', avatar: 'avatar_magdalena.png', slug: 'magdalena' },
                 { name: 'Tomasz', avatar: 'avatar_widget_tomek.jpg', slug: 'tomek' },
                 { name: 'Noemi', avatar: 'avatar_noemi.jpg', slug: 'noemi' },
-                { name: 'Anna', avatar: 'lumina_anna2.jpg', slug: 'anna' }
+                { name: 'Anna', avatar: 'lumina_anna2.jpg', slug: 'anna' },
+                { name: 'Krzysztof', avatar: 'avatar_krzysztof.jpg', slug: 'krzysztof' },
+                { name: 'Maria', avatar: 'avatar_maria.jpg', slug: 'maria' },
+                { name: 'Piotr', avatar: 'avatar_piotr.jpg', slug: 'piotr' }
             ];
 
             let loggedInList = [];
+            const seenSlugs = new Set();
 
+            // 1. Zalogowany użytkownik na pierwszym miejscu
             if (currentUser && (currentUser.name || currentUser.displayName)) {
                 const myName = currentUser.name || currentUser.displayName || 'Twój Profil';
-                const myAvatar = currentUser.avatar || currentUser.photoURL || 'lumina_icon.jpg';
-                const mySlug = currentUser.slug || currentUser.uid || 'me';
+                const myAvatar = currentUser.avatar || currentUser.photoURL || 'avatar_cezary_official.jpg';
+                const mySlug = (currentUser.slug || currentUser.uid || 'me').toLowerCase();
 
-                const filtered = activeCommunityPool.filter(u => 
-                    u.slug !== mySlug && 
-                    !myName.toLowerCase().includes(u.name.toLowerCase())
-                );
-                loggedInList = [{ name: myName, avatar: myAvatar, slug: mySlug, isMe: true }, ...filtered];
-            } else {
-                loggedInList = [...activeCommunityPool];
+                loggedInList.push({ name: myName, avatar: myAvatar, slug: mySlug, isMe: true });
+                seenSlugs.add(mySlug);
+                seenSlugs.add(myName.toLowerCase());
             }
 
-            // Exactly 3 avatars displayed, and when > 3 logged in users, 4th element is '+' icon
-            const topThree = loggedInList.slice(0, 3);
-            const hasMore = loggedInList.length > 3;
+            // 2. Aktywni użytkownicy w czasie rzeczywistym z Firestore Presence (lumina_presence)
+            if (Array.isArray(window._liveOnlineUsers) && window._liveOnlineUsers.length > 0) {
+                window._liveOnlineUsers.forEach(u => {
+                    const uSlug = (u.slug || u.uid || u.id || '').toLowerCase();
+                    const uName = u.displayName || u.name || '';
+                    if (uName && !seenSlugs.has(uSlug) && !seenSlugs.has(uName.toLowerCase())) {
+                        loggedInList.push({
+                            name: uName,
+                            avatar: u.avatar || 'lumina_icon.jpg',
+                            slug: uSlug
+                        });
+                        if (uSlug) seenSlugs.add(uSlug);
+                        seenSlugs.add(uName.toLowerCase());
+                    }
+                });
+            }
+
+            // 3. Zarejestrowani użytkownicy z chmury Firestore
+            if (Array.isArray(window.cloudProfilesCache) && window.cloudProfilesCache.length > 0) {
+                window.cloudProfilesCache.forEach(p => {
+                    const pSlug = (p.slug || p.uid || p.id || '').toLowerCase();
+                    const pName = p.name || '';
+                    if (pName && !seenSlugs.has(pSlug) && !seenSlugs.has(pName.toLowerCase())) {
+                        loggedInList.push({
+                            name: pName,
+                            avatar: p.avatar || 'lumina_icon.jpg',
+                            slug: pSlug
+                        });
+                        if (pSlug) seenSlugs.add(pSlug);
+                        seenSlugs.add(pName.toLowerCase());
+                    }
+                });
+            }
+
+            // 4. Dopełnij bazową pulą społeczności
+            activeCommunityPool.forEach(u => {
+                const uSlug = (u.slug || '').toLowerCase();
+                const uName = (u.name || '').toLowerCase();
+                if (!seenSlugs.has(uSlug) && !seenSlugs.has(uName)) {
+                    loggedInList.push(u);
+                    if (uSlug) seenSlugs.add(uSlug);
+                    seenSlugs.add(uName);
+                }
+            });
+
+            // Wyświetlenie dokładnie do 7 awatarów
+            const topSeven = loggedInList.slice(0, 7);
+            const totalCount = Math.max(loggedInList.length, window._livePresenceCount || 0);
 
             let html = '';
-            topThree.forEach((user, idx) => {
-                const zIndex = 4 - idx;
+            topSeven.forEach((user, idx) => {
+                const zIndex = 10 - idx;
                 html += `
-                    <div class="tablica-online-avatar-item" title="Zalogowany użytkownik: ${user.name} ✨ ˘" style="z-index: ${zIndex};" onclick="event.stopPropagation(); if ('${user.slug || ''}') window.openCommunityProfile('${user.slug || ''}')">
+                    <div class="tablica-online-avatar-item" title="Zalogowany użytkownik: ${user.name} ✨" style="z-index: ${zIndex};" onclick="event.stopPropagation(); if ('${user.slug || ''}') window.openCommunityProfile('${user.slug || ''}')">
                         <img loading="lazy" decoding="async" src="${user.avatar}" alt="${user.name}" class="tablica-online-avatar-img" onerror="this.src='lumina_icon.jpg'">
                         <span class="tablica-online-dot"></span>
                     </div>
                 `;
             });
 
-            if (hasMore) {
+            // Znak + zamieniony na liczbę wszystkich zalogowanych użytkowników w czasie rzeczywistym
+            if (totalCount > 0) {
+                const countDisplay = totalCount > 99 ? '+99' : `+${totalCount}`;
                 html += `
-                    <div class="tablica-online-more-btn" title="Zobacz wszystkich zalogowanych użytkowników online (${loggedInList.length} aktywnych)" aria-label="Więcej zalogowanych użytkowników" onclick="event.stopPropagation(); if(typeof window.openAllOnlineUsersModal==='function'){ window.openAllOnlineUsersModal(); } else { window.location.href='lumina-tablica.html'; }">
-                        <i class="fa-solid fa-plus"></i>
+                    <div class="tablica-online-more-btn" title="Zobacz wszystkich zalogowanych użytkowników online (${totalCount} aktywnych w czasie rzeczywistym)" aria-label="Wszyscy zalogowani użytkownicy: ${totalCount}" onclick="event.stopPropagation(); if(typeof window.openAllOnlineUsersModal==='function'){ window.openAllOnlineUsersModal(); } else { window.location.href='lumina-tablica.html'; }">
+                        ${countDisplay}
                     </div>
                 `;
             }
 
             container.innerHTML = html;
         };
+
+        // Realtime Presence Listener dla Tablicy LUMINA
+        try {
+            if (window.LuminaDB && typeof window.LuminaDB.subscribeToOnlinePresence === 'function') {
+                window.LuminaDB.subscribeToOnlinePresence(function(activeUsers) {
+                    window._liveOnlineUsers = activeUsers;
+                    window._livePresenceCount = activeUsers.length;
+                    if (typeof window.renderTablicaOnlineAvatars === 'function') {
+                        window.renderTablicaOnlineAvatars();
+                    }
+                });
+            } else if (window.LuminaDB && typeof window.LuminaDB.listenToFounderTelemetry === 'function') {
+                window.LuminaDB.listenToFounderTelemetry(function(telemetry) {
+                    if (telemetry && typeof telemetry.onlineTotal === 'number') {
+                        window._livePresenceCount = telemetry.onlineTotal;
+                        if (typeof window.renderTablicaOnlineAvatars === 'function') {
+                            window.renderTablicaOnlineAvatars();
+                        }
+                    }
+                });
+            }
+        } catch(presErr) {
+            console.warn('[Presence] Inicjalizacja nasłuchu:', presErr);
+        }
 
         // Initialize synchronization across all events
         window.syncUserSavedProfileToHomepage = function() {
@@ -5522,6 +5615,7 @@
         window.addEventListener('storage', window.syncUserSavedProfileToHomepage);
         window.addEventListener('lumina-profile-updated', window.syncUserSavedProfileToHomepage);
         window.addEventListener('lumina-auth-state', window.syncUserSavedProfileToHomepage);
+
         // ── Auth modal ──
         window.openAuth = function(tab = 'login') {
             const m = document.getElementById('authModal');
