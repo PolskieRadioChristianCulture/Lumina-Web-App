@@ -436,33 +436,16 @@
                 }
             }
 
-            // 5) Trigger Evening Shows (18:00 - 20:00): Pon-Pt = Totalny Atak, Sobota = Kino, Niedziela = Świadectwa
-            const dayOfWeek = now.getDay();
+            // 5) Trigger Evening Shows (18:00 - 20:00): Totalny Atak codziennie
             if (hour >= 18 && hour < 20) {
-                if (dayOfWeek === 6) { // Sobota -> Chrześcijański Blok Filmowy
-                    isSpecialSlotActive = true;
-                    const targetFilmChannel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "kino-live.html";
-                    if (currentUrl !== targetFilmChannel) {
-                        switchChannel(targetFilmChannel);
-                    }
-                    return;
-                } else if (dayOfWeek === 0) { // Niedziela -> Świadectwa
-                    isSpecialSlotActive = true;
-                    const targetTestimonyChannel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "swiadectwa-live.html";
-                    if (currentUrl !== targetTestimonyChannel) {
-                        switchChannel(targetTestimonyChannel);
-                    }
-                    return;
-                } else { // Poniedziałek - Piątek -> Totalny Atak (Wykłady)
-                    isSpecialSlotActive = true;
-                    const targetAtakChannel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "totalny-atak-live.html";
-                    if (currentUrl !== targetAtakChannel) {
-                        switchChannel(targetAtakChannel);
-                    }
-                    return;
+                isSpecialSlotActive = true;
+                const targetAtakChannel = isSafeMonetizationMode ? "biblia-spiewana-live.html" : "totalny-atak-live.html";
+                if (currentUrl !== targetAtakChannel) {
+                    switchChannel(targetAtakChannel);
                 }
+                return;
             } else {
-                if (isSpecialSlotActive && (currentUrl === "totalny-atak-live.html" || currentUrl === "kino-live.html" || currentUrl === "swiadectwa-live.html" || currentUrl === "biblia-spiewana-live.html")) {
+                if (isSpecialSlotActive && (currentUrl === "totalny-atak-live.html" || currentUrl === "biblia-spiewana-live.html")) {
                     isSpecialSlotActive = false;
                 }
             }
