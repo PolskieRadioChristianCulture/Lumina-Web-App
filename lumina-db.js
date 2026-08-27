@@ -575,7 +575,7 @@ export async function loginWithGoogle() {
 
         const user = result.user;
         let existingProfile = null;
-        const isRadioCC = (user.email && (user.email.toLowerCase() === 'radiochristianculture@gmail.com' || user.email.toLowerCase().startsWith('radiochristianculture'))) || (user.displayName && user.displayName.toLowerCase() === 'christian culture');
+        const isRadioCC = (user.email && (user.email.toLowerCase() === 'radiochristianculture@gmail.com' || user.email.toLowerCase().startsWith('radiochristianculture') || user.email.includes('bibliaaudio'))) || (user.displayName && (user.displayName.toLowerCase() === 'christian culture' || user.displayName.toLowerCase().includes('biblia audio') || user.displayName.toLowerCase().includes('polskie radio cc')));
         
         try {
             const docSnap = await getDoc(doc(activeDb, 'lumina_profiles', user.uid));
@@ -593,7 +593,6 @@ export async function loginWithGoogle() {
                     existingProfile.bio = 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.';
                     try {
                         await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
-                        await setDoc(doc(activeDb, 'lumina_profiles', 'radiocc'), existingProfile, { merge: true });
                     } catch(e) {}
                 }
             }
@@ -607,9 +606,9 @@ export async function loginWithGoogle() {
             if (isRadioCC) cleanSlug = 'radiocc';
             else if (isCezary) cleanSlug = 'cezaryrgowski';
             else if (isWioletta) cleanSlug = 'wiolettarogowska';
-            else cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000);
+            else cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + user.uid.substring(0, 4).toLowerCase();
             
-            const userAvatar = user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));
+            const userAvatar = user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : (isRadioCC ? 'logo_radio_cc.jpg' : 'lumina_icon.jpg')));
             
             existingProfile = {
                 uid: user.uid,
@@ -656,7 +655,6 @@ export async function loginWithGoogle() {
             if (activeDb) {
                 try {
                     await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
-                    await setDoc(doc(activeDb, 'lumina_profiles', cleanSlug), existingProfile, { merge: true });
                 } catch(e) {}
             }
         }

@@ -5020,16 +5020,29 @@
                     'studiodobregoslowa', 'osobowoscplus', 'noemi', 'dawid', 'weronika', 'tomek', 'anna', 'piotr', 'julia', 'magdalena'
                 ]);
                 const renderedKeys = new Set(exactSystemSlugs);
+                const renderedNames = new Set([
+                    'cezary rogowski', 'wioletta rogowska', 'andrzej thiel', 'christian culture', 'polskie radio cc', 
+                    'telewizja cctv', 'christian culture tv', 'cc men', 'cc women', 'studio dobrego słowa', 'osobowość plus', 
+                    'noemi', 'dawid', 'weronika', 'tomasz', 'tomek', 'anna', 'piotr', 'julia', 'magdalena'
+                ]);
 
                 // Helper to build a single community card
                 function buildCommunityCard(p, isLocalUser = false) {
                     if (!p || !p.name) return '';
                     const pKey = (p.slug || p.uid || p.id || '').toLowerCase().trim();
+                    const normName = (p.name || '').toLowerCase().trim().replace(/\s+/g, ' ');
+                    const cleanNameKey = normName.replace(/[^a-z0-9]/g, '');
+
                     if (!pKey || renderedKeys.has(pKey)) return '';
-                    // Prevent duplicate by name if already rendered
-                    const normName = (p.name || '').toLowerCase().trim();
+                    if (cleanNameKey && (renderedNames.has(normName) || renderedNames.has(cleanNameKey))) return '';
                     if (exactSystemSlugs.has(pKey)) return '';
+
                     renderedKeys.add(pKey);
+                    if (p.slug) renderedKeys.add(p.slug.toLowerCase().trim());
+                    if (p.uid) renderedKeys.add(p.uid.toLowerCase().trim());
+                    if (p.id) renderedKeys.add(p.id.toLowerCase().trim());
+                    if (normName) renderedNames.add(normName);
+                    if (cleanNameKey) renderedNames.add(cleanNameKey);
 
                     const isVideoMedia = (p.carouselMediaType === 'video' || (p.carouselMediaUrl && (p.carouselMediaUrl.endsWith('.mp4') || p.carouselMediaUrl.endsWith('.webm') || p.carouselMediaUrl.includes('data:video/'))) || (p.avatarVideo && p.carouselMediaType === 'video'));
                     let rawAvatar = p.avatar || 'avatar_urszula.jpg';
@@ -5091,17 +5104,14 @@
                     }
                 } catch(e) {}
 
-                // 2. Add all Firestore community profiles
-                Object.values(window._cloudProfilesMap || {}).forEach(p => {
+                // 2. Add all unique Firestore community profiles
+                const candidatesPool = [
+                    ...(Array.isArray(window._cachedLiveProfiles) ? window._cachedLiveProfiles : []),
+                    ...Object.values(window._cloudProfilesMap || {})
+                ];
+                candidatesPool.forEach(p => {
                     cloudCardsHtml += buildCommunityCard(p, false);
                 });
-
-                // 3. Add cached profiles array if present
-                if (Array.isArray(window._cachedLiveProfiles)) {
-                    window._cachedLiveProfiles.forEach(p => {
-                        cloudCardsHtml += buildCommunityCard(p, false);
-                    });
-                }
             } catch(err) {
                 console.warn('Error generating cloud profile cards:', err);
             }
