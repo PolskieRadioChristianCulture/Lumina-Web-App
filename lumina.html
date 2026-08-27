@@ -5045,8 +5045,8 @@
                     if (cleanNameKey) renderedNames.add(cleanNameKey);
 
                     const isVideoMedia = (p.carouselMediaType === 'video' || (p.carouselMediaUrl && (p.carouselMediaUrl.endsWith('.mp4') || p.carouselMediaUrl.endsWith('.webm') || p.carouselMediaUrl.includes('data:video/'))) || (p.avatarVideo && p.carouselMediaType === 'video'));
-                    let rawAvatar = p.avatar || 'avatar_urszula.jpg';
-                    const isMissionProfile = ['radiocc', 'cctv', 'osobowoscplus', 'studiodobregoslowa', 'ccmen', 'ccwomen'].includes(pKey);
+                    const isMissionProfile = ['radiocc', 'cctv', 'osobowoscplus', 'studiodobregoslowa', 'ccmen', 'ccwomen', 'u_bibliaaudiochristianculture_3248', 'bibliaaudio'].includes(pKey) || pKey.includes('bibliaaudio');
+                    let rawAvatar = p.avatar || (isMissionProfile && pKey.includes('bibliaaudio') ? 'avatar_biblia_audio.gif' : 'avatar_urszula.jpg');
                     
                     // PANCERNA BLOKADA: profile prywatne (np. Urszula) NIE MOGĄ mieć logotypu Radia CC / Google photo
                     if (!isMissionProfile && (rawAvatar.includes('googleusercontent.com') || rawAvatar.includes('christian_culture') || rawAvatar.includes('radio') || rawAvatar.includes('placeholder'))) {
@@ -5054,6 +5054,9 @@
                     }
                     if (pKey.includes('urszula') || (p.name && p.name.includes('Urszula'))) {
                         rawAvatar = 'avatar_urszula.jpg';
+                    }
+                    if (isMissionProfile && pKey.includes('bibliaaudio') && (!p.avatar || p.avatar.includes('googleusercontent.com'))) {
+                        rawAvatar = 'avatar_biblia_audio.gif';
                     }
 
                     let mediaUrl = p.carouselMediaUrl || (isVideoMedia ? (p.avatarVideo || p.carouselVideo) : rawAvatar);

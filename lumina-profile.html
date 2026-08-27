@@ -4004,6 +4004,48 @@
                 tags: ['Męstwo', 'CC MEN', 'Odpowiedzialność', 'Wierność'],
                 photos: ['logo_cc_men.jpg', 'lumina_default_cover.jpg'],
                 posts: []
+            },
+            'u_bibliaaudiochristianculture_3248': {
+                name: 'Biblia Audio Christian Culture',
+                age: 'Misja',
+                city: 'Warszawa, Polska',
+                avatar: 'avatar_biblia_audio.gif',
+                cover: 'lumina_default_cover.jpg',
+                coverPosY: '50%',
+                job: 'Oficjalny Profil Biblia Audio CC',
+                church: 'Christian Culture',
+                denom: 'Słowo Boże & Audio',
+                status: 'Oficjalny Profil Misyjny',
+                pin: '7777',
+                visibility: 'public',
+                match: '100%',
+                verse: '„Słowo Twoje jest pochodnią dla moich stóp i światłem na mojej ścieżce.”',
+                verseRef: '— Psalm 119, 105',
+                bio: 'Oficjalny profil Biblia Audio Christian Culture w portalu LUMINA. Codzienne nagrania Pisma Świętego, Biblia Śpiewana oraz muzyka chwały.',
+                tags: ['Biblia Audio', 'Słowo Boże', 'Biblia Śpiewana', 'Ewangelizacja'],
+                photos: ['avatar_biblia_audio.gif', 'lumina_default_cover.jpg'],
+                posts: []
+            },
+            'bibliaaudio': {
+                name: 'Biblia Audio Christian Culture',
+                age: 'Misja',
+                city: 'Warszawa, Polska',
+                avatar: 'avatar_biblia_audio.gif',
+                cover: 'lumina_default_cover.jpg',
+                coverPosY: '50%',
+                job: 'Oficjalny Profil Biblia Audio CC',
+                church: 'Christian Culture',
+                denom: 'Słowo Boże & Audio',
+                status: 'Oficjalny Profil Misyjny',
+                pin: '7777',
+                visibility: 'public',
+                match: '100%',
+                verse: '„Słowo Twoje jest pochodnią dla moich stóp i światłem na mojej ścieżce.”',
+                verseRef: '— Psalm 119, 105',
+                bio: 'Oficjalny profil Biblia Audio Christian Culture w portalu LUMINA. Codzienne nagrania Pisma Świętego, Biblia Śpiewana oraz muzyka chwały.',
+                tags: ['Biblia Audio', 'Słowo Boże', 'Biblia Śpiewana', 'Ewangelizacja'],
+                photos: ['avatar_biblia_audio.gif', 'lumina_default_cover.jpg'],
+                posts: []
             }
         };
 
@@ -5104,8 +5146,18 @@
             showToast('Twój wpis został pomyślnie opublikowany na profilu i tablicy! ✨✨');
         }
 
-        // ── Robust Image Resizer & Compressor for LocalStorage ──
+        // ── Robust Image Resizer & Compressor for LocalStorage (Preserves GIF Animation) ──
         function compressAndReadImage(file, maxWidth, maxHeight, quality, callback) {
+            if (!file) return;
+            const isGif = file.type === 'image/gif' || (file.name && file.name.toLowerCase().endsWith('.gif'));
+            if (isGif) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    callback(e.target.result);
+                };
+                reader.readAsDataURL(file);
+                return;
+            }
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
@@ -5134,6 +5186,35 @@
                 img.src = e.target.result;
             };
             reader.readAsDataURL(file);
+        }
+
+        function promptAvatarUrl() {
+            const url = prompt('Wklej bezpośredni link (URL) do zdjęcia lub animacji GIF:');
+            if (!url || !url.trim()) return;
+            const cleanUrl = url.trim();
+            const slug = getRequestedUserSlug();
+            const clean = slug.replace(/^u_/, '');
+            const cur = getProfileData();
+            cur.avatar = cleanUrl;
+            window._cloudProfileData = cur;
+            try {
+                localStorage.setItem('lumina_avatar_' + slug, cleanUrl);
+                localStorage.setItem('lumina_avatar_' + clean, cleanUrl);
+                localStorage.setItem('lumina_avatar_u_' + clean, cleanUrl);
+                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
+                localStorage.setItem('lumina_profile_' + clean, JSON.stringify(cur));
+                localStorage.setItem('lumina_profile_u_' + clean, JSON.stringify(cur));
+                localStorage.setItem(MAIN_USER_KEY, JSON.stringify(cur));
+                localStorage.setItem('lumina_current_user_profile', JSON.stringify(cur));
+                localStorage.setItem('lumina_my_profile', JSON.stringify(cur));
+            } catch(err) {}
+            const avEl = document.getElementById('avatarImgEl');
+            if (avEl) avEl.src = cleanUrl;
+            if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
+                window.LuminaDB.saveProfileToCloud(slug, cur);
+            }
+            renderProfile();
+            showToast('Zapisano awatar (GIF / URL)! ✨✨');
         }
 
         // ── Direct Upload Triggers ──
@@ -7219,7 +7300,10 @@
                     <i class="fa-solid fa-expand"></i> Wyświetl w pełnym wymiarze
                 </button>
                 <button type="button" class="admin-suite-btn btn-success" onclick="closeModal('modalAvatarOptions'); document.getElementById('avatarFileInput').click();" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:700; font-size:0.88rem;">
-                    <i class="fa-solid fa-camera"></i> Wgraj nowe zdjęcie z dysku
+                    <i class="fa-solid fa-camera"></i> Wgraj nowe zdjęcie lub animację GIF
+                </button>
+                <button type="button" class="admin-suite-btn btn-primary" onclick="closeModal('modalAvatarOptions'); promptAvatarUrl();" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:700; font-size:0.88rem; background:rgba(56,189,248,0.18); border:1px solid rgba(56,189,248,0.45); color:#38bdf8;">
+                    <i class="fa-solid fa-link"></i> Wklej link do GIF / zdjęcia
                 </button>
                 <button type="button" class="admin-suite-btn btn-danger" onclick="closeModal('modalAvatarOptions'); resetAvatarToDefault();" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:700; font-size:0.88rem;">
                     <i class="fa-solid fa-trash-can"></i> Usuń zdjęcie profilowe

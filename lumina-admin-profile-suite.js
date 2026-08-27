@@ -22,6 +22,7 @@
         { slug: 'cctv', name: 'Telewizja CCTV', role: 'Oficjalna Telewizja Internetowa', type: 'broadcast', verified: true, avatar: 'logo_cctv.png' },
         { slug: 'ccwomen', name: 'Christian Culture Women', role: 'Społeczność Kobiet', type: 'community', verified: true, avatar: 'logo_cc_women.jpg' },
         { slug: 'ccmen', name: 'Christian Culture Men', role: 'Społeczność Mężczyzn', type: 'community', verified: true, avatar: 'logo_cc_men.jpg' },
+        { slug: 'u_bibliaaudiochristianculture_3248', name: 'Biblia Audio Christian Culture', role: 'Oficjalny Kanał Biblia Audio CC', type: 'channel', verified: true, avatar: 'avatar_biblia_audio.gif' },
         { slug: 'magdalena', name: 'Magdalena', role: 'Członkini Społeczności', type: 'user', verified: false, avatar: 'avatar_magdalena.jpg' }
     ];
 
@@ -2488,6 +2489,16 @@
         },
 
         compressAndProcessImage: function(file, maxDim, quality, callback) {
+            if (!file) return;
+            const isGif = file.type === 'image/gif' || (file.name && file.name.toLowerCase().endsWith('.gif'));
+            if (isGif) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    callback(e.target.result);
+                };
+                reader.readAsDataURL(file);
+                return;
+            }
             const reader = new FileReader();
             reader.onload = (e) => {
                 const img = new Image();
