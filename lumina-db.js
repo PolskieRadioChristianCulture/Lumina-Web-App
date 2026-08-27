@@ -1819,7 +1819,7 @@ export function normalizeChatUserId(idOrSlug) {
     const isCezary = (str === 'cezaryrgowski' || str === 'cezary' || str.includes('cezary') || 
         str.includes('nazirczarkes') || str.includes('studiodees7') || str.includes('czarkes') ||
         str === '1zhaexihqzgz8nzebr0dyc7wlg93' || str === 'sectuwwrsv8pnkhsrxgyivjbajn1' || 
-        str === 'u5seqt54fcnocfcxjirckowjhqc2' || str.startsWith('u_cezary'));
+        str === 'u5seqt54fcnocfcxjirckowjhqc2' || str === 'u_cezary_official' || str === 'u_cezary');
     if (isCezary) return 'cezaryrgowski';
     
     // 2. Christian Culture / Radio CC mappings:
@@ -1836,10 +1836,8 @@ export function normalizeChatUserId(idOrSlug) {
     // 4. Andrzej Thiel:
     if (str === 'andrzejthiel' || str === 'andrzej') return 'andrzejthiel';
 
-    // 5. Brat Robert:
-    if (str === 'robert' || str === 'bratrobert' || str === 'brat_robert' || 
-        str === 'robertlukaszpio' || str.includes('robert') || str.includes('lukaszpio') || 
-        str.includes('robertlukasz') || str.startsWith('u_robert')) return 'robertlukaszpio';
+    // 5. Brat Robert Łukasz Pio (tylko oficjalny profil, nie blokować innych Robertów):
+    if (str === 'robertlukaszpio' || str === 'bratrobert' || str === 'brat_robert' || str === 'u_robertukaszpio_5668') return 'robertlukaszpio';
     
     return str;
 }
@@ -1847,22 +1845,25 @@ export function normalizeChatUserId(idOrSlug) {
 export function getChatId(userA, userB) {
     const a = normalizeChatUserId(userA);
     const b = normalizeChatUserId(userB);
+    if (!a && !b) return 'guest_chat';
+    if (!a) return b;
+    if (!b) return a;
     return [a, b].sort().join('_');
 }
 
 const activeDirectChatListeners = new Map();
 
 export function subscribeToDirectMessages(chatId, onUpdate) {
+    if (!chatId) return () => {};
     let normalizedChatId = chatId;
-    if (chatId && chatId.includes('_')) {
+
+    // Bezpieczna normalizacja bez niszczenia slugów z podkreślnikami (np. u_jan_1234)
+    if (chatId.includes('_')) {
         const parts = chatId.split('_');
         if (parts.length === 2) {
             normalizedChatId = getChatId(parts[0], parts[1]);
         } else {
-            // Check if contains known slugs
-            const uA = parts.find(p => p.includes('radiocc') || p.includes('christian') || p.includes('cezary') || p.includes('wioletta')) || parts[0];
-            const uB = parts.find(p => p !== uA) || parts[1] || 'guest';
-            normalizedChatId = getChatId(uA, uB);
+            normalizedChatId = chatId;
         }
     }
 
@@ -1937,29 +1938,40 @@ export function subscribeToDirectMessages(chatId, onUpdate) {
 
 export async function sendDirectMessageToCloud(chatId, messageObj) {
     const user = currentUserState;
-    const fromId = normalizeChatUserId(messageObj.senderId || (user ? (user.slug || user.uid) : (localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest')));
-    let receiverId = normalizeChatUserId(messageObj.receiverId);
+    const myProfile = currentProfileState;
+    const fromId = normalizeChatUserId(messageObj.senderId || (myProfile ? (myProfile.slug || myProfile.uid) : (user ? (user.slug || user.uid) : (localStorage.getItem('lumina_current_user_slug') || localStorage.getItem('lumina_guest_id') || 'guest'))));
+    let receiverId = messageObj.receiverId ? normalizeChatUserId(messageObj.receiverId) : null;
     
     if (!receiverId || receiverId === 'guest') {
-        if (chatId && chatId.includes('_')) {
-            const parts = chatId.split('_');
-            const other = parts.map(p => normalizeChatUserId(p)).find(u => u !== fromId);
-            if (other) receiverId = other;
+        if (chatId) {
+            if (chatId.startsWith(fromId + '_')) {
+                receiverId = normalizeChatUserId(chatId.slice(fromId.length + 1));
+            } else if (chatId.endsWith('_' + fromId)) {
+                receiverId = normalizeChatUserId(chatId.slice(0, -(fromId.length + 1)));
+            } else if (chatId.includes('_')) {
+                const parts = chatId.split('_');
+                if (parts.length === 2) {
+                    receiverId = parts[0] === fromId ? parts[1] : parts[0];
+                }
+            }
         }
     }
+    if (!receiverId) receiverId = 'guest';
 
-    const normalizedChatId = getChatId(fromId, receiverId || 'guest');
-    const senderName = messageObj.senderName || currentProfileState?.name || user?.displayName || (fromId === 'radiocc' ? 'Christian Culture' : (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')));
-    const senderAvatar = messageObj.senderAvatar || currentProfileState?.avatar || user?.photoURL || (fromId === 'radiocc' ? 'avatar_cezary_official.jpg' : (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')));
+    const normalizedChatId = getChatId(fromId, receiverId);
+    const senderName = messageObj.senderName || myProfile?.name || user?.displayName || (fromId === 'radiocc' ? 'Christian Culture' : (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')));
+    const senderAvatar = messageObj.senderAvatar || myProfile?.avatar || user?.photoURL || (fromId === 'radiocc' ? 'avatar_cezary_official.jpg' : (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')));
     const senderBadge = messageObj.senderBadge || (fromId === 'radiocc' ? '🕊️ Misja CC' : (fromId === 'cezaryrgowski' ? '👑 Założyciel' : (fromId === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Społeczność')));
 
     const fullMsg = {
         chatId: normalizedChatId,
         senderId: fromId,
+        senderUid: user?.uid || fromId,
         senderName: senderName,
         senderAvatar: senderAvatar,
         senderBadge: senderBadge,
         receiverId: receiverId,
+        users: Array.from(new Set([fromId, receiverId, ...(user?.uid ? [user.uid] : [])].filter(Boolean))),
         text: messageObj.text || '',
         type: messageObj.type || 'text',
         ...(messageObj.imageUrl ? { imageUrl: messageObj.imageUrl } : {}),
@@ -1995,7 +2007,15 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
         // Also write to subcollection (Backup)
         addDoc(collection(db, `lumina_chats/${normalizedChatId}/messages`), fullMsg).catch(() => {});
 
-        // Update chat room metadata with exact normalized users array
+        // Update chat room metadata with exact normalized users array (both slugs & UIDs)
+        const chatUsers = Array.from(new Set([
+            fromId,
+            receiverId,
+            ...(user?.uid ? [user.uid] : []),
+            ...(myProfile?.uid ? [myProfile.uid] : []),
+            ...(messageObj.receiverUid ? [messageObj.receiverUid] : [])
+        ].filter(Boolean)));
+
         setDoc(doc(db, 'lumina_chats', normalizedChatId), {
             chatId: normalizedChatId,
             lastMessageText: fullMsg.text,
@@ -2005,8 +2025,24 @@ export async function sendDirectMessageToCloud(chatId, messageObj) {
             lastSenderAvatar: senderAvatar,
             lastSenderBadge: senderBadge,
             lastMessageType: fullMsg.type || 'text',
-            users: [fromId, receiverId]
+            users: chatUsers
         }, { merge: true }).catch(() => {});
+
+        // Add real-time notification document in Firestore for recipient
+        try {
+            addDoc(collection(db, 'lumina_notifications'), {
+                recipientId: receiverId,
+                senderId: fromId,
+                senderName: senderName,
+                senderAvatar: senderAvatar,
+                title: `Masz wiadomość od ${senderName}`,
+                body: fullMsg.text || 'Wysłał nową wiadomość 💬',
+                type: 'chat_direct',
+                chatId: normalizedChatId,
+                isRead: false,
+                createdAt: serverTimestamp()
+            }).catch(() => {});
+        } catch(notifErr) {}
 
         return msgRef.id;
     } catch(e) {
@@ -2706,6 +2742,41 @@ export function startRealtimeChatNotificationsListener() {
                     }
                 });
             }, (err) => console.warn('Private Chat notif listener notice:', err));
+
+            // 3. Listen directly to lumina_notifications collection for recipient
+            try {
+                const notifsQuery = query(
+                    collection(db, 'lumina_notifications'),
+                    where('recipientId', '==', myId),
+                    orderBy('createdAt', 'desc'),
+                    limit(15)
+                );
+                onSnapshot(notifsQuery, (snap) => {
+                    snap.docChanges().forEach((change) => {
+                        if (change.type === 'added') {
+                            const data = change.doc.data();
+                            const docId = change.doc.id;
+                            if (handledMessageIds.has('notif_' + docId)) return;
+                            handledMessageIds.add('notif_' + docId);
+
+                            const senderId = normalizeChatUserId(data.senderId);
+                            if (senderId === myId) return;
+
+                            const ts = data.createdAt?.seconds ? (data.createdAt.seconds * 1000) : Date.now();
+                            if (ts >= sessionStartTime) {
+                                triggerLuminaPushNotification({
+                                    title: data.title || 'Masz nową wiadomość',
+                                    body: data.body || '',
+                                    avatar: data.senderAvatar || 'lumina_icon.jpg',
+                                    senderName: data.senderName || 'Rozmówca',
+                                    senderId: senderId,
+                                    type: data.type === 'chat_direct' ? 'private' : (data.type || 'private')
+                                });
+                            }
+                        }
+                    });
+                }, () => {});
+            } catch(e) {}
         }
     } catch(e) {}
 }

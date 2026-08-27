@@ -6596,13 +6596,26 @@
         ];
 
         async function fetchCommunityUsersDirectory() {
-            if (dmCommunityUsersCache.length > 0) return dmCommunityUsersCache;
-
             const map = new Map();
             DEFAULT_COMMUNITY_PROFILES.forEach(p => map.set(p.slug, p));
 
+            // 1. Fetch live profiles from Firestore SDK / cache if available
+            if (window.cloudProfilesCache && Array.isArray(window.cloudProfilesCache)) {
+                window.cloudProfilesCache.forEach(p => {
+                    if (!p || !p.slug) return;
+                    const slug = p.slug;
+                    const name = p.name || slug;
+                    const job = p.job || 'Członek Społeczności LUMINA ✨';
+                    const city = p.city || 'Polska';
+                    const avatar = p.avatar || 'lumina_icon.jpg';
+                    const isMission = (slug === 'cezaryrgowski' || slug === 'wiolettarogowska' || slug === 'radiocc' || slug === 'andrzejthiel' || slug === 'studiodobregoslowa' || slug === 'osobowoscplus');
+                    const badge = isMission ? (slug === 'cezaryrgowski' ? '👑 Założyciel' : (slug === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Misja CC')) : '✨ Społeczność';
+                    map.set(slug, { slug, name, job, city, avatar, badge, isMission, uid: p.uid });
+                });
+            }
+
             try {
-                // 1. Fetch from Firestore REST API
+                // 2. Fetch from Firestore REST API as fallback
                 const restUrl = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_profiles?pageSize=100';
                 const res = await fetch(restUrl);
                 if (res.ok) {
@@ -6626,6 +6639,21 @@
 
             dmCommunityUsersCache = Array.from(map.values());
             return dmCommunityUsersCache;
+        }
+
+        // Live Realtime sync of all community registered users
+        if (typeof window !== 'undefined') {
+            setTimeout(() => {
+                if (window.LuminaDB && typeof window.LuminaDB.subscribeToAllCommunityProfiles === 'function') {
+                    window.LuminaDB.subscribeToAllCommunityProfiles((profiles) => {
+                        window.cloudProfilesCache = profiles;
+                        dmCommunityUsersCache = [];
+                        if (typeof renderDmUsersAndConversations === 'function') {
+                            renderDmUsersAndConversations();
+                        }
+                    });
+                }
+            }, 1000);
         }
 
         function filterCommunityUsersForDm(query) {

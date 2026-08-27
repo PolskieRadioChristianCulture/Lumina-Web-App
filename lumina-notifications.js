@@ -572,17 +572,18 @@
             }
 
             const myId = window.LuminaDB.normalizeChatUserId(rawMyId);
-            console.log('[LUMINA Notifications] Initialized Realtime Cloud Listener for user:', myId);
+            const myUid = curUser?.uid || curProfile?.uid || null;
+            console.log('[LUMINA Notifications] Initialized Realtime Cloud Listener for user:', myId, myUid ? `(uid: ${myUid})` : '');
 
             // 1. Nasłuchuj pokoi czatu użytkownika (nowe wiadomości 1:1)
             if (typeof window.LuminaDB.subscribeToUserChats === 'function') {
                 const sessionStartTime = Date.now() - 30000;
-                window.LuminaDB.subscribeToUserChats(myId, (chats) => {
+                const handleChats = (chats) => {
                     if (!chats || !chats.length) return;
                     chats.forEach(chat => {
                         const lastSender = window.LuminaDB.normalizeChatUserId(chat.lastSenderId);
-                        // Jeśli ostatnia wiadomość jest od kogoś innego (np. Cezary do Wioletty)
-                        if (lastSender && lastSender !== myId) {
+                        // Jeśli ostatnia wiadomość jest od kogoś innego
+                        if (lastSender && lastSender !== myId && (!myUid || lastSender !== myUid)) {
                             let msgTime = Date.now();
                             if (typeof chat.lastMessageTimestamp === 'number') {
                                 msgTime = chat.lastMessageTimestamp;
@@ -595,7 +596,7 @@
                             const notifKey = `lumina_notified_msg_${chat.id || chat.chatId}_${msgTime}`;
                             if (!localStorage.getItem(notifKey) && (msgTime > sessionStartTime)) {
                                 localStorage.setItem(notifKey, '1');
-                                const senderName = chat.lastSenderName || (lastSender.includes('cezary') ? 'Cezary Rogowski (Mąż 💖)' : 'Użytkownik LUMINA');
+                                const senderName = chat.lastSenderName || (lastSender.includes('cezary') ? 'Cezary Rogowski (Mąż 💖)' : (lastSender.includes('wioletta') ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
                                 const senderAvatar = (typeof window.resolveChatAvatar === 'function') ? window.resolveChatAvatar(chat.lastSenderId, senderName, chat.lastSenderAvatar) : (chat.lastSenderAvatar || 'avatar_cezary_official.jpg');
                                 const text = chat.lastMessageText || 'Wysłał(a) Ci nową wiadomość 💬';
 
@@ -608,7 +609,12 @@
                             }
                         }
                     });
-                });
+                };
+
+                window.LuminaDB.subscribeToUserChats(myId, handleChats);
+                if (myUid && myUid !== myId) {
+                    window.LuminaDB.subscribeToUserChats(myUid, handleChats);
+                }
             }
         }
 
