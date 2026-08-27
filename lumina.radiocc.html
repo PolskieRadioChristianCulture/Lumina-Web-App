@@ -919,6 +919,78 @@
                 <!-- Divider -->
                 <div style="border-top:1px solid rgba(6,182,212,0.15);margin:8px 0 20px;"></div>
 
+                <!-- 🎵 POST 0: Playlista YouTube – Biblia Śpiewana & Uwielbienie 🎵 -->
+                <article class="feed-post-card" id="post_radio_playlist" style="border-left:3px solid #06b6d4;">
+                    <div class="post-top-header">
+                        <div class="post-author-box">
+                            <img src="logo_radio_cc.jpg" onerror="this.src='lumina_icon.jpg'" alt="Polskie Radio CC" class="post-author-img">
+                            <div>
+                                <div class="post-author-name">
+                                    Polskie Radio CC
+                                    <span class="post-badge-daily">Playlista 24/7</span>
+                                </div>
+                                <div class="post-time">📌 PRZYPIĘTY • 🎵 Muzyka Uwielbienia • 🌍 Publiczny</div>
+                            </div>
+                        </div>
+                        <button class="btn-action-secondary" style="padding:6px 12px;font-size:0.78rem;" onclick="openShareModal()">
+                            <i class="fa-solid fa-share-nodes"></i> Udostępnij
+                        </button>
+                    </div>
+
+                    <div class="post-body">
+                        <div class="post-series-tag">
+                            <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> BIBLIA ŚPIEWANA &amp; UWIELBIENIE — PEŁNA PLAYLISTA
+                        </div>
+
+                        <h2 class="post-title">Słuchaj całej playlisty uwielbienia Polskiego Radia CC 🎶</h2>
+
+                        <div class="post-text-content">
+Zanurz się w świecie muzyki chwały i śpiewanych Słów Bożych. Cała kolekcja piosenek uwielbieniowych Polskiego Radia CC — dostępna bezpośrednio tutaj, na profilu LUMINA.
+
+<strong style="color:#cffafe;">▶ Naciśnij play i pozwól muzyce nieść Twoje serce ku Bogu.</strong>
+                        </div>
+
+                        <!-- YouTube Playlist Embed -->
+                        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:16px;margin-top:16px;background:#000;box-shadow:0 8px 32px rgba(6,182,212,0.25);border:1px solid rgba(6,182,212,0.3);">
+                            <iframe
+                                style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:16px;"
+                                src="https://www.youtube.com/embed/videoseries?si=iFvnR2jnA8srhgpj&amp;list=PLKOxPWmme0G0"
+                                title="Polskie Radio CC – Playlista Uwielbienia &amp; Biblia Śpiewana"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+
+                        <p style="margin-top:14px;font-size:0.82rem;color:#64748b;">
+                            <i class="fa-brands fa-youtube" style="color:#ef4444;"></i>
+                            Playlista dostępna też na
+                            <a href="https://www.youtube.com/playlist?list=PLKOxPWmme0G0" target="_blank" rel="noopener" style="color:#06b6d4;text-decoration:none;font-weight:700;">YouTube ↗</a>
+                        </p>
+                    </div>
+
+                    <!-- Post Actions Bar -->
+                    <div class="post-actions-bar">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <button class="post-action-btn active-heart" id="btnPostLikePlaylist" onclick="togglePostLike(this, 'likeCountPlaylist')">
+                                <i class="fa-solid fa-heart"></i> <span id="likeCountPlaylist">247</span>
+                            </button>
+                            <button class="post-action-btn active-amen" id="btnPostAmenPlaylist" onclick="togglePostAmen(this, 'amenCountPlaylist')">
+                                <i class="fa-solid fa-hands-praying"></i> Amen (<span id="amenCountPlaylist">214</span>)
+                            </button>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <a href="https://www.youtube.com/playlist?list=PLKOxPWmme0G0" target="_blank" rel="noopener" class="post-action-btn">
+                                <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Otwórz na YT
+                            </a>
+                            <button class="post-action-btn" onclick="openShareModal()">
+                                <i class="fa-solid fa-share-nodes"></i> Poleć Radio
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
                 <!-- 🌟 POST 1: Pasmo Dobrego Słowa 🌟 -->
                 <article class="feed-post-card" id="post_radio_1">
                     <div class="post-top-header">
