@@ -4405,7 +4405,31 @@
                 amen: 198
             });
 
-            // 0.0. Andrzej Thiel - Cuda Każdego Dnia (26 SIERPNIA 2026 - DZISIAJ)
+            // 0.0. Andrzej Thiel - Cuda Każdego Dnia (27 SIERPNIA 2026 - DZISIAJ)
+            try {
+                const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
+                const aProfile = aJson ? JSON.parse(aJson) : null;
+                const aAvatar = (aProfile && aProfile.avatar) ? aProfile.avatar : 'avatar_andrzej_thiel.jpg';
+                const aName = (aProfile && aProfile.name) ? aProfile.name : 'Andrzej Thiel';
+                const aCudaImg27 = localStorage.getItem('lumina_cuda_image_27') || 'cuda_kazdego_dnia_27_sierpnia_2026.jpg';
+
+                posts.push({
+                    id: 'post_andrzej_cuda_27_08_2026',
+                    type: 'post',
+                    author: aName,
+                    authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
+                    authorAvatar: aAvatar,
+                    authorSlug: 'andrzejthiel',
+                    time: '27 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Dzisiaj)',
+                    title: 'CUDA KAŻDEGO DNIA! 27 SIERPNIA 2026. MODLITWA JEST KLUCZEM, KTÓRY OTWIERA KAŻDE DRZWI!',
+                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nMODLITWA JEST KLUCZEM, KTÓRY OTWIERA KAŻDE DRZWI!\n\nKiedy się modlisz, Bóg otwiera drzwi. Zupełnie niespodziewane drzwi i często nie te, o których myśleliśmy i o które się modliliśmy! Bóg ma swoje, Jemu tylko wiadome sposoby, ale to twoja modlitwa sprawia, że to co niemożliwe staje się możliwe. Nawet niedostępne, nadzwyczajnie chronione więzienie, w którym Herod uwięził Piotra nie stanowiło dla Boga przeszkody. Pilnowało go szesnastu żołnierzy, a do dwóch z nich był przykuty podwójnym łańcuchem. Wyobrażasz to sobie? (zobacz Dz.12,4-10). Zaś w czasie, kiedy cały zbór gorliwie się modlił o jego ocalenie, Piotr spał. Bóg cudownie odpowiedział na te modlitwy! Posłał anioła, który uwolnił go z kajdanów i wyprowadził na wolność: „A gdy minęli pierwszą i drugą straż, doszli do żelaznej bramy, która im się sama otworzyła; i wyszli na zewnątrz” (Dz.12,10).\n\nTo jest możliwe, ponieważ Jezus jest Tym, który ma klucze do każdych drzwi: „Ten który otwiera, a nikt nie zamknie, i Ten który zamyka, a nikt nie otworzy” (Ap.3,7). Może stoisz przed jakimiś zamkniętymi drzwiami? Bóg ma moc je otworzyć, ale też może pokazać ci inną drogę, zgodną z Jego planem. Nie zniechęcaj się, nie traktuj zamkniętych drzwi jako porażki. Apostoł Paweł razem ze współpracownikami chcieli udać się w misyjną podróż do Azji Mniejszej (dzisiejsza Turcja) jednak Duch Święty im na to nie pozwolił. Otworzyły się natomiast dla nich drzwi w Macedonii. (zob. Dz.16,6-10).\n\nW modlitwie proś Bożego Ducha o prowadzenie, byś wiedział, kiedy odpuścić, a kiedy ruszyć dalej z odwagą. To było też stałą modlitwą apostoła Pawła, by Bóg otwierał mu nowe możliwości i by umiał je wykorzystać: „A módlcie się też za nas, aby Bóg otworzył nam drzwi dla Słowa” (Kol.4,3).\n\nJeśli modlisz się o prowadzenie Boże, bądź gotowy na możliwości jakie Bóg będzie stawiać na twojej drodze.\n\n„Panie drogi, proszę Cię byś Ty kierował moim życiem. Bo tylko Ty znasz konsekwencje moich wyborów. Kiedy stoję na skrzyżowaniu, pokaż mi właściwą drogę. Zamknij te okazje, które choć kuszą, nie są w Twoim planie dla mnie, a otwórz drzwi, przez które mam przejść. Dodaj mi odwagi, by zrobić pierwszy krok”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
+                    image: aCudaImg27,
+                    likes: 291,
+                    amen: 264
+                });
+            } catch(e) {}
+
+            // 0.1. Andrzej Thiel - Cuda Każdego Dnia (26 SIERPNIA 2026 - WCZORAJ)
             try {
                 const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
                 const aProfile = aJson ? JSON.parse(aJson) : null;
@@ -4420,7 +4444,7 @@
                     authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
-                    time: '26 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Dzisiaj)',
+                    time: '26 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Wczoraj)',
                     title: 'CUDA KAŻDEGO DNIA! 26 SIERPNIA 2026. JEŚLI NIE WIESZ, JAK SIĘ MODLIĆ...!',
                     text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nJEŚLI NIE WIESZ, JAK SIĘ MODLIĆ...!\n\nChciałbyś lub chciałabyś się modlić, ale nie wiesz jak? Brakuje Ci słów? A może Twoja modlitwa stała się rutyną? Spróbuj modlić się do Boga Jego własnym Słowem. Jezus powiedział: „Słowa, które Ja wam powiedziałem, są duchem i życiem” (J.6,63). Gdy wypowiadasz je w modlitwie, pozwalasz Bożej prawdzie przenikać swoje serce i patrzeć na siebie, innych oraz swoje okoliczności z Bożej perspekpytywy. Zamiast przedstawiać Bogu własne plany i prosić Go, by je pobłogosławił, uczysz się mówić: „Panie, chcę zaufać Tobie i nie polegać na własnym rozumie, bo Twoje myśli przewyższają moje myśli” ((Prz.3,5; Iz.55,9). Jeśli trudno ci ubrać w słowa swoje emocje, sięgnij po Psalmy. Znajdziesz w nich szczere wołanie, wdzięczność, ból, nadzieję i uwielbienie. Możesz je śmiało personalizować – przecież to Twoja osobista rozmowa z Ojcem.\n\nOto kilka przykładów:\n• Oddając Bogu chwałę – módl się słowami Psalmu 100: „Panie, Ty jesteś moim Bogiem. Ty mnie stworzyłeś i do Ciebie należę. Przychodzę przed Ciebie z dziękczynieniem, a na Twoje dziedzińce – z uwielbieniem. Dziękuję Ci, Panie i błogosławię Twoje imię. Jesteś dobry, a Twoje miłosierdzie trwa na wieki. Twoja prawda trwa przez wszystkie pokolenia. Amen”.\n• Gdy potrzebujesz kierunku: „Panie, naucz mnie pełnić Twoją wolę, bo Ty jesteś moim Bogiem. Niech Twój dobry Duch prowadzi mnie właściwą drogą” (Ps.143,10).\n• Gdy brakuje Ci wiary: „Wierzę, Panie. Pomóż mi przezwyciężyć moją niewiarę” (Mk. 9,24).\n• Modląc się o bliskich: „Niech Twój Duch spocznie na… (imię): Duch mądrości i rozumu, Duch rady i mocy, Duch poznania i bojaźni Pana” (Iz. 11,2).\n• Modląc się o dzieci lub wnuki: „Ojcze, spraw, aby wzrastał w mądrości, w łasce u Ciebie i u ludzi” (Łk.2,52). A gdy wychodzi z domu: „Niech Twoi aniołowie strzegą go na wszystkich jego drogach” (Ps.91,11).\n• Kiedy jest ci ciężko: „Panie, odpowiedz na wołanie moje, sprawiedliwy Boże mój! W ucisku ulżyłeś mi. Zmiłuj się nade mną i wysłuchaj modlitwę moją” (Ps.4,2).\n• Kiedy się boisz: „Panie, Ty jesteś moją światłością i moim zbawieniem – kogo miałbym się bać? Ty jesteś ochroną mojego życia, więc nie chcę ulegać lękowi. Pomóż mi zaufać Tobie bardziej niż moim obawom.” (Ps.27,1)\n• Kiedy masz złamane serce: „Kochany Ojcze, dziękuję Ci, że jesteś blisko tych, których serce jest złamane. Widzisz mój ból i nie zostawiasz mnie samego. Proszę, podnieś mnie na duchu, uzdrów moje serce i napełnij mnie swoją nadzieją.” (Ps.34,19)\n\nWierzę, że znajdziesz wiele innych Bożych Słów, które tchną w ciebie życie.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg26,

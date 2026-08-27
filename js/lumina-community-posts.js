@@ -50,6 +50,37 @@
 
     const LUMINA_CORE_POSTS_DATA = [
         {
+            id: 'post_ckd_2026_08_27',
+            type: 'post',
+            author: 'Andrzej Thiel',
+            authorRole: 'Opracowuje Rozważania „Cuda Każdego Dnia” ✨ • Sieradz',
+            authorAvatar: 'avatar_andrzej_thiel.jpg',
+            authorSlug: 'andrzejthiel',
+            time: '27 Sierpnia 2026 • 📖 Cuda Każdego Dnia (Dzisiaj)',
+            title: 'MODLITWA JEST KLUCZEM, KTÓRY OTWIERA KAŻDE DRZWI! • Cuda Każdego Dnia ✨',
+            text: `CUDA KAŻDEGO DNIA! 
+27 SIERPNIA 2026.
+Przeczytaj i zobacz jak Bóg przemienia twoje życie.
+
+MODLITWA JEST KLUCZEM, KTÓRY OTWIERA KAŻDE DRZWI!
+
+Kiedy się modlisz, Bóg otwiera drzwi. Zupełnie niespodziewane drzwi i często nie te, o których myśleliśmy i o które się modliliśmy! Bóg ma swoje, Jemu tylko wiadome sposoby, ale to twoja modlitwa sprawia, że to co niemożliwe staje się możliwe. Nawet niedostępne, nadzwyczajnie chronione więzienie, w którym Herod uwięził Piotra nie stanowiło dla Boga przeszkody. Pilnowało go szesnastu żołnierzy, a do dwóch z nich był przykuty podwójnym łańcuchem. Wyobrażasz to sobie? (zobacz Dz.12,4-10). Zaś w czasie, kiedy cały zbór gorliwie się modlił o jego ocalenie, Piotr spał. Bóg cudownie odpowiedział na te modlitwy! Posłał anioła, który uwolnił go z kajdanów i wyprowadził na wolność: „A gdy minęli pierwszą i drugą straż, doszli do żelaznej bramy, która im się sama otworzyła; i wyszli na zewnątrz” (Dz.12,10).
+
+To jest możliwe, ponieważ Jezus jest Tym, który ma klucze do każdych drzwi: „Ten który otwiera, a nikt nie zamknie, i Ten który zamyka, a nikt nie otworzy” (Ap.3,7). Może stoisz przed jakimiś zamkniętymi drzwiami? Bóg ma moc je otworzyć, ale też może pokazać ci inną drogę, zgodną z Jego planem. Nie zniechęcaj się, nie traktuj zamkniętych drzwi jako porażki. Apostoł Paweł razem ze współpracownikami chcieli udać się w misyjną podróż do Azji Mniejszej (dzisiejsza Turcja) jednak Duch Święty im na to nie pozwolił. Otworzyły się natomiast dla nich drzwi w Macedonii. (zob. Dz.16,6-10).
+
+W modlitwie proś Bożego Ducha o prowadzenie, byś wiedział, kiedy odpuścić, a kiedy ruszyć dalej z odwagą. To było też stałą modlitwą apostoła Pawła, by Bóg otwierał mu nowe możliwości i by umiał je wykorzystać: „A módlcie się też za nas, aby Bóg otworzył nam drzwi dla Słowa” (Kol.4,3).
+
+Jeśli modlisz się o prowadzenie Boże, bądź gotowy na możliwości jakie Bóg będzie stawiać na twojej drodze.
+
+„Panie drogi, proszę Cię byś Ty kierował moim życiem. Bo tylko Ty znasz konsekwencje moich wyborów. Kiedy stoję na skrzyżowaniu, pokaż mi właściwą drogę. Zamknij te okazje, które choć kuszą, nie są w Twoim planie dla mnie, a otwórz drzwi, przez które mam przejść. Dodaj mi odwagi, by zrobić pierwszy krok”.
+/opr. na podst. wiad. B.K./.
+
+Dziękuję, że jesteś! ❤️`,
+            image: 'cuda_kazdego_dnia_27_sierpnia_2026.jpg',
+            likes: 291,
+            amen: 264
+        },
+        {
             id: 'post_ckd_2026_08_26',
             type: 'post',
             author: 'Andrzej Thiel',
