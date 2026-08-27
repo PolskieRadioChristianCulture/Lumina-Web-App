@@ -20,7 +20,7 @@
             this.initFirestoreRealtimeListener();
         }
 
-        // 0. Dźwięk powiadomienia (Harmoniczne Chime CC)
+        // 0. Dźwięk powiadomienia (Harmoniczne Chime CC z Debounce)
         initAudio() {
             try {
                 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -32,6 +32,12 @@
 
         playChime() {
             try {
+                const now = Date.now();
+                if (window._lastLuminaChimeTime && (now - window._lastLuminaChimeTime < 1800)) {
+                    return; // Zabezpieczenie przed nałożeniem dźwięków (Debounce)
+                }
+                window._lastLuminaChimeTime = now;
+
                 if (!this.audioCtx) this.initAudio();
                 if (!this.audioCtx) return;
                 const ctx = this.audioCtx;
@@ -471,12 +477,26 @@
                 }
             }
 
-            // Sync with profile message action buttons (Wiadomość ✈️)
+            // Sync with profile message action buttons (Wiadomosc)
             const profileBadges = document.querySelectorAll('.profile-msg-badge, #btnProfileMessageBadge, .btn-msg-badge');
             profileBadges.forEach(b => {
                 b.setAttribute('data-count', String(count));
                 if (count > 0) {
                     b.style.setProperty('display', 'inline-flex', 'important');
+                    b.textContent = count > 9 ? '9+' : String(count);
+                } else {
+                    b.style.setProperty('display', 'none', 'important');
+                    b.textContent = '';
+                }
+            });
+
+            // Sync with floating chat button badge & bottom navigation badge
+            const floatingBadge = document.getElementById('floatingChatBadge');
+            const bottomBadge = document.getElementById('bottomNavMsgBadge');
+            [floatingBadge, bottomBadge].forEach(b => {
+                if (!b) return;
+                if (count > 0) {
+                    b.style.setProperty('display', 'flex', 'important');
                     b.textContent = count > 9 ? '9+' : String(count);
                 } else {
                     b.style.setProperty('display', 'none', 'important');
@@ -496,6 +516,16 @@
                 list.innerHTML = '';
                 return;
             }
+
+            const escapeHtml = (str) => {
+                if (!str) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            };
 
             list.innerHTML = this.notifications.map(n => `
                 <div class="notif-item ${n.unread ? 'unread' : ''}" onclick="window.LuminaNotifications.handleItemClick('${n.id}', '${n.actionUrl}')">
@@ -517,6 +547,9 @@
                 this.updateBadge();
                 this.renderList();
                 this.saveToStorage();
+                if (this.unreadCount === 0 && typeof window.updateLuminaMessagesBadge === 'function') {
+                    window.updateLuminaMessagesBadge(0);
+                }
             }
             if (url && url !== '#') {
                 window.location.href = url;
@@ -538,6 +571,9 @@
             this.updateBadge();
             this.renderList();
             this.saveToStorage();
+            if (typeof window.updateLuminaMessagesBadge === 'function') {
+                window.updateLuminaMessagesBadge(0);
+            }
             if (typeof window.showToast === 'function') {
                 window.showToast('Wszystkie powiadomienia oznaczone jako przeczytane! ✨');
             }
@@ -549,6 +585,9 @@
             this.updateBadge();
             this.renderList();
             this.saveToStorage();
+            if (typeof window.updateLuminaMessagesBadge === 'function') {
+                window.updateLuminaMessagesBadge(0);
+            }
             if (typeof window.showToast === 'function') {
                 window.showToast('Wyczyszczono listę powiadomień 🗑️');
             }
@@ -556,7 +595,6 @@
 
         // 6. Podpięcie pod zdarzenia systemowe LUMINA
         
-        // ── PANCERNY NASŁUCH POWIADOMIEŃ W CZASIE RZECZYWISTYM Z CLOUD FIRESTORE ──
         initFirestoreRealtimeListener() {
             if (!window.LuminaDB) {
                 setTimeout(() => this.initFirestoreRealtimeListener(), 500);

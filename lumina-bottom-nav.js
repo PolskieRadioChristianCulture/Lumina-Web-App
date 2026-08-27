@@ -839,10 +839,12 @@
         </div>
     `;
 
-    // 4. Globalne funkcje i Real-Time Live Badge dla Wiadomości i Pływającego Dymka
+    // 4. Globalne funkcje i Real-Time Live Badge dla Wiadomości, Dzwonka i Pływającego Dymka
     window.updateLuminaMessagesBadge = function(count) {
         const badge = document.getElementById('floatingChatBadge');
         const bottomBadge = document.getElementById('bottomNavMsgBadge');
+        const notifBadge = document.getElementById('notif-badge');
+        const mobileNotifBadge = document.querySelector('.m-nav-notif-badge');
         const profileBadges = Array.from(document.querySelectorAll('.profile-msg-badge, #btnProfileMessageBadge, .btn-msg-badge, .nav-msg-badge'));
         const num = typeof count === 'number' ? count : parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10);
         
@@ -853,8 +855,29 @@
                 b.textContent = num > 9 ? '9+' : num;
             } else {
                 b.style.display = 'none';
+                b.textContent = '';
             }
         });
+
+        // Synchronizacja z dzwonkiem powiadomień (Centrum Powiadomień LUMINA)
+        if (num === 0 && window.LuminaNotifications) {
+            window.LuminaNotifications.unreadCount = 0;
+            if (Array.isArray(window.LuminaNotifications.notifications)) {
+                window.LuminaNotifications.notifications.forEach(n => n.unread = false);
+                window.LuminaNotifications.saveToStorage();
+            }
+            window.LuminaNotifications.updateBadge();
+        } else if (notifBadge && num === 0) {
+            notifBadge.style.display = 'none';
+            notifBadge.textContent = '';
+            document.body.setAttribute('data-unread-count', '0');
+        }
+
+        if (mobileNotifBadge && num === 0) {
+            mobileNotifBadge.style.display = 'none';
+            mobileNotifBadge.textContent = '';
+        }
+
         localStorage.setItem('lumina_messages_unread_count', String(num));
     };
 

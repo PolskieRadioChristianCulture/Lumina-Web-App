@@ -2388,6 +2388,12 @@ export function subscribeToUserChats(userId, onUpdate) {
 
 export function playNotificationChime() {
     try {
+        const now = Date.now();
+        if (window._lastLuminaChimeTime && (now - window._lastLuminaChimeTime < 1800)) {
+            return; // Zabezpieczenie przed nałożeniem dźwięków (Debounce)
+        }
+        window._lastLuminaChimeTime = now;
+
         const audio = new Audio('masz-wiadomosc.mp3');
         audio.volume = 1.0;
         const playPromise = audio.play();
@@ -2536,7 +2542,6 @@ export async function showSystemDrawerNotification({ title, body, avatar, sender
     }
 
     if (!('Notification' in window) || Notification.permission !== 'granted') {
-        console.warn('[LUMINA Push] Notification permission not granted:', Notification?.permission);
         return;
     }
 
@@ -2548,11 +2553,8 @@ export async function showSystemDrawerNotification({ title, body, avatar, sender
     const origin = window.location.origin;
     const pathPrefix = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
     const baseUrl = origin + pathPrefix;
-
-    const rawIcon = avatar || 'avatar_cezary_official.jpg';
-    const iconUrl = rawIcon.startsWith('http') ? rawIcon : (baseUrl + rawIcon.replace(/^\.\//, ''));
-    const badgeUrl = baseUrl + 'lumina-icon-192.png';
-    const imageUrl = image ? (image.startsWith('http') ? image : baseUrl + image.replace(/^\.\//, '')) : undefined;
+    const iconUrl = avatar && avatar.startsWith('http') ? avatar : baseUrl + (avatar || 'lumina_icon.jpg');
+    const imageUrl = image && image.startsWith('http') ? image : (image ? baseUrl + image : null);
 
     const notifOptions = {
         body: notifBody,
@@ -2617,16 +2619,30 @@ export function triggerLuminaPushNotification({ title, body, avatar, senderName,
         }
     } catch(e) {}
 
-    // 2. Play official voice notification audio + vibration
+    // 2. Play official voice notification audio + vibration (Debounced single chime)
     playNotificationChime();
     if ('vibrate' in navigator) {
         try { navigator.vibrate([160, 80, 160]); } catch(e) {}
     }
 
-    // 3. In-app floating banner
+    // 3. Centralized Notification Center Integration (Dzwonek powiadomień)
+    try {
+        if (window.LuminaNotifications && typeof window.LuminaNotifications.push === 'function') {
+            const dispName = senderName || (senderId === 'cezaryrgowski' ? 'Cezary Rogowski' : (senderId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
+            window.LuminaNotifications.push(
+                title || `💬 Nowa wiadomość: ${dispName}`,
+                body || 'Wysłał(a) nową wiadomość w społeczności LUMINA',
+                avatar || 'lumina_icon.jpg',
+                type === 'public' ? 'lumina.html' : 'lumina.html',
+                false // playSound = false, bo chime jest już odtworzony wyżej!
+            );
+        }
+    } catch(e) {}
+
+    // 4. In-app floating banner
     showInAppChatBanner({ title, body, avatar, senderName, senderId, type });
 
-    // 4. Android / OS System Drawer Notification (Belka Powiadomień jak FB / YT)
+    // 5. Android / OS System Drawer Notification (Belka Powiadomień jak FB / YT)
     showSystemDrawerNotification({ title, body, avatar, senderName, senderId, type, image });
 }
 
