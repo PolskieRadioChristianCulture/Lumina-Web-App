@@ -51,7 +51,7 @@ async function fetchHtml(url) {
 function parseArchiveIndex(html) {
   const seen = new Set();
   const entries = [];
-  const linkRe = /<a[^>]+href=["'](\/artykul\/[^"']+)["'][^>]*>([\s\S]{0,400}?)<\/a>/gi;
+  const linkRe = /<a[^>]+href=["'](\/artykul\/[^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
   let m;
   while ((m = linkRe.exec(html)) !== null) {
     const slug = m[1].replace(/^\/artykul\//, '').replace(/[^a-zA-Z0-9_-]/g, '');
