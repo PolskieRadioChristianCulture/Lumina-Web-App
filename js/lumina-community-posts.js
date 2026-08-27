@@ -50,6 +50,42 @@
 
     const LUMINA_CORE_POSTS_DATA = [
         {
+            id: 'post_dzj_2026_08_28',
+            type: 'post',
+            author: 'Cezary Rogowski',
+            authorRole: '☀️ Dobrze, że jesteś • Założyciel Christian Culture ✨',
+            authorAvatar: 'avatar_cezary_official.jpg',
+            authorSlug: 'cezaryrgowski',
+            time: '28 Sierpnia 2026 • ☀️ Dobrze, że jesteś',
+            title: '☀️ Lato z Jezusem — Wielkie Pytania (Dzień 28)',
+            text: `☀️ **Lato z Jezusem — Wielkie Pytania**
+**Dzień 28 — 31 bardzo osobistych pytań Syna/Córki do Ojca: Dlaczego tak łatwo ulegam lękowi przed odrzuceniem mojej autorytetu i zdania?**
+
+W dwudziestym ósmym dniu cyklu „Lato z Jezusem — Wielkie Pytania” rozbrajamy mechanizm obrony kruchego ego oraz lęk przed utratą autorytetu, gdy ktoś kwestionuje nasze decyzje.
+
+W psychologii przywództwa zjawisko „kruchości autorytetu opartego na statusie” opisuje lidera, który panicznie boi się krytyki, ponieważ jego siła wynika z pozycji, a nie z wewnętrznej spójności. Wróg bezwzględnie żeruje na tej słabości, zmuszając nas do walki o każdą błahostkę. Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i królewską klasą odpierał ataki autorytetów religijnych tamtego czasu. Chrześcijański lider najwyższej klasy nie walczy o własne ego – działa z nienagannym profesjonalizmem, opierając swój autorytet na prawdzie.
+
+**Jezus mówi dziś do Ciebie:**
+„Wtedy Jezus odezwał się i rzekł do nich: 'Zapytam was i ja o jedną rzecz...'” *(Mateusza 21,24)*
+
+**Zadanie Taktyczne:**
+Zmiażdż dziś potrzebę dominacji i lęk przed podważeniem Twojego zdania na swoim polu bitwy. Jeśli ktoś dzisiaj zakwestionuje Twoje kompetencje lub decyzję, nie reaguj gniewem ani lękiem. Odpowiedz z nienaganną klasą i spokojem. Wnieś do swojego środowiska standard dojrzałości i prawdziwego autorytetu.
+
+W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
+
+**Modlitwa Bojowa:**
+„Ojcze, odrzucam kłamstwa nieprzyjaciela i lęk o utratę ludzkiego uznania. Przepraszam, że walczyłem o pozycję zamiast służyć w prawdzie. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą i spokojem dzierżył autorytet, który mi powierzyłeś, zdobywając ten świat dla Twojej chwały.”
+
+Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
+
+PODAJ DALEJ 🔴
+www.polskieradio.cc | www.cclite.pl
+Apps: https://play.google.com/store/apps/dev?id=5215448773598149938&authuser=1`,
+            image: 'promo_dzj.jpg',
+            likes: 95,
+            amen: 89
+        },
+        {
             id: 'post_ckd_2026_08_27',
             type: 'post',
             author: 'Andrzej Thiel',
