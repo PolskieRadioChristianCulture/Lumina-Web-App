@@ -552,6 +552,25 @@
                 }
             }
             if (url && url !== '#') {
+                try {
+                    const parsedUrl = new URL(url, window.location.href);
+                    const openChatUser = parsedUrl.searchParams.get('openChat') || parsedUrl.searchParams.get('chatWith');
+                    const openPublic = parsedUrl.searchParams.get('openPublicChat');
+                    const msgId = parsedUrl.searchParams.get('messageId') || parsedUrl.searchParams.get('msgId');
+
+                    if (openChatUser && typeof window.openChatWith === 'function') {
+                        const dd = document.getElementById('notif-dropdown');
+                        if (dd) dd.classList.remove('active');
+                        window.openChatWith(item?.senderName || openChatUser, item?.icon || 'lumina_icon.jpg', openChatUser, msgId);
+                        return;
+                    } else if (openPublic) {
+                        const dd = document.getElementById('notif-dropdown');
+                        if (dd) dd.classList.remove('active');
+                        if (typeof window.openDirectMessagesModal === 'function') window.openDirectMessagesModal();
+                        if (typeof window.switchMessengerMainTab === 'function') window.switchMessengerMainTab('public');
+                        return;
+                    }
+                } catch(e) {}
                 window.location.href = url;
             }
         }

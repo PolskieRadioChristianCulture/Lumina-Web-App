@@ -292,22 +292,38 @@ self.addEventListener('notificationclick', (event) => {
     event.notification.close();
     const action = event.action;
     const data = event.notification.data || {};
-    let targetUrl = data.url || './lumina.html';
+    let targetUrl = data.url;
+
+    const sender = data.senderId || data.senderSlug || data.chatPartnerId || (data.data && (data.data.senderId || data.data.senderSlug));
+    const msgId = data.messageId || data.msgId || (data.data && (data.data.messageId || data.data.msgId));
+    const isPublic = data.type === 'public' || data.openPublicChat || (data.data && data.data.type === 'public');
 
     if (action === 'share' && (data.devotionId || data.postId)) {
         targetUrl = `./lumina-tablica.html?share=${encodeURIComponent(data.devotionId || data.postId)}`;
-    } else if (action === 'reply' && data.senderId) {
-        targetUrl = `./lumina.html?openChat=${encodeURIComponent(data.senderId)}`;
-    } else if (action === 'view' && data.slug) {
+    } else if (action === 'view' && data.slug && !sender) {
         targetUrl = `./lumina-profile.html?u=${encodeURIComponent(data.slug)}`;
-    } else if (action === 'welcome' && data.slug) {
-        targetUrl = `./lumina.html?openChat=${encodeURIComponent(data.slug)}&welcome=1`;
+    } else if (isPublic) {
+        targetUrl = `./lumina.html?openPublicChat=1`;
+    } else if (sender) {
+        targetUrl = `./lumina.html?openChat=${encodeURIComponent(sender)}${msgId ? '&messageId=' + encodeURIComponent(msgId) : ''}`;
+    } else if (!targetUrl) {
+        targetUrl = './lumina.html';
     }
 
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
             for (let client of windowClients) {
                 if (client.url && 'focus' in client) {
+                    client.postMessage({
+                        type: 'OPEN_LUMINA_CHAT',
+                        chatData: {
+                            senderId: sender,
+                            senderName: data.senderName,
+                            senderAvatar: data.avatar || data.icon,
+                            type: isPublic ? 'public' : 'private',
+                            messageId: msgId
+                        }
+                    });
                     if (targetUrl && 'navigate' in client) {
                         client.navigate(targetUrl);
                     }

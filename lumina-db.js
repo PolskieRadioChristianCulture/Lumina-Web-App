@@ -2571,7 +2571,12 @@ export async function showSystemDrawerNotification({ title, body, avatar, sender
     const pathPrefix = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
     const baseUrl = origin + pathPrefix;
     const iconUrl = avatar && avatar.startsWith('http') ? avatar : baseUrl + (avatar || 'lumina_icon.jpg');
+    const badgeUrl = baseUrl + 'lumina_icon.jpg';
     const imageUrl = image && image.startsWith('http') ? image : (image ? baseUrl + image : null);
+
+    const chatTargetUrl = type === 'public' 
+        ? `${baseUrl}lumina.html?openPublicChat=1` 
+        : `${baseUrl}lumina.html?openChat=${encodeURIComponent(senderId || '')}`;
 
     const notifOptions = {
         body: notifBody,
@@ -2583,7 +2588,7 @@ export async function showSystemDrawerNotification({ title, body, avatar, sender
         silent: false,
         vibrate: [200, 100, 200, 100, 200],
         data: {
-            url: window.location.href,
+            url: chatTargetUrl,
             type: type || 'chat',
             senderId: senderId,
             senderName: dispName,
@@ -2606,11 +2611,39 @@ export async function showSystemDrawerNotification({ title, body, avatar, sender
                 return;
             }
         }
-        new Notification(notifTitle, notifOptions);
+        const notif = new Notification(notifTitle, notifOptions);
+        notif.onclick = function(event) {
+            event.preventDefault();
+            window.focus();
+            if (type === 'public') {
+                if (typeof window.openDirectMessagesModal === 'function') window.openDirectMessagesModal();
+                if (typeof window.switchMessengerMainTab === 'function') window.switchMessengerMainTab('public');
+            } else if (senderId) {
+                if (typeof window.openChatWith === 'function') {
+                    window.openChatWith(dispName, iconUrl, senderId);
+                } else {
+                    window.location.href = chatTargetUrl;
+                }
+            }
+        };
     } catch(err) {
         console.warn('showNotification error fallback:', err);
         try {
-            new Notification(notifTitle, notifOptions);
+            const notif = new Notification(notifTitle, notifOptions);
+            notif.onclick = function(event) {
+                event.preventDefault();
+                window.focus();
+                if (type === 'public') {
+                    if (typeof window.openDirectMessagesModal === 'function') window.openDirectMessagesModal();
+                    if (typeof window.switchMessengerMainTab === 'function') window.switchMessengerMainTab('public');
+                } else if (senderId) {
+                    if (typeof window.openChatWith === 'function') {
+                        window.openChatWith(dispName, iconUrl, senderId);
+                    } else {
+                        window.location.href = chatTargetUrl;
+                    }
+                }
+            };
         } catch(e) {}
     }
 }
@@ -2646,11 +2679,14 @@ export function triggerLuminaPushNotification({ title, body, avatar, senderName,
     try {
         if (window.LuminaNotifications && typeof window.LuminaNotifications.push === 'function') {
             const dispName = senderName || (senderId === 'cezaryrgowski' ? 'Cezary Rogowski' : (senderId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
+            const notifTargetUrl = type === 'public' 
+                ? 'lumina.html?openPublicChat=1' 
+                : `lumina.html?openChat=${encodeURIComponent(senderId || '')}`;
             window.LuminaNotifications.push(
                 title || `💬 Nowa wiadomość: ${dispName}`,
                 body || 'Wysłał(a) nową wiadomość w społeczności LUMINA',
                 avatar || 'lumina_icon.jpg',
-                type === 'public' ? 'lumina.html' : 'lumina.html',
+                notifTargetUrl,
                 false // playSound = false, bo chime jest już odtworzony wyżej!
             );
         }

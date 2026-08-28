@@ -9006,34 +9006,54 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
         function handleUrlChatParams() {
             const params = new URLSearchParams(window.location.search);
-            const chatUser = params.get('openChat');
-            const msgId = params.get('messageId');
-            const openPublic = params.get('openPublicChat');
+            const chatUser = params.get('openChat') || params.get('chatWith') || params.get('chat') || params.get('partnerId');
+            const msgId = params.get('messageId') || params.get('msgId');
+            const openPublic = params.get('openPublicChat') || params.get('publicChat');
 
             if (msgId) window._targetChatMessageId = msgId;
 
             if (chatUser) {
-                setTimeout(function() {
-                    const normUser = chatUser.trim();
-                    let name = 'Rozmówca';
-                    let avatar = 'lumina_icon.jpg';
+                const normUser = chatUser.trim();
+                let attempts = 0;
+                const tryOpen = () => {
+                    attempts++;
+                    let name = (normUser === 'cezaryrgowski') ? 'Cezary Rogowski' : ((normUser === 'wiolettarogowska') ? 'Wioletta Rogowska' : 'Rozmówca');
+                    let avatar = (normUser === 'cezaryrgowski') ? 'avatar_cezary_official.jpg' : ((normUser === 'wiolettarogowska') ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg');
 
-                    // Try to resolve name from community map
                     if (window._cloudProfilesMap && window._cloudProfilesMap[normUser]) {
                         name = window._cloudProfilesMap[normUser].name || name;
                         avatar = window._cloudProfilesMap[normUser].avatar || avatar;
+                    } else if (typeof PROFILES_DB !== 'undefined' && PROFILES_DB[normUser]) {
+                        name = PROFILES_DB[normUser].name || name;
+                        avatar = PROFILES_DB[normUser].avatar || avatar;
+                    } else if (typeof window.getLiveProfile === 'function') {
+                        const p = window.getLiveProfile(normUser);
+                        if (p) {
+                            name = p.name || name;
+                            avatar = p.avatar || avatar;
+                        }
                     }
 
                     if (typeof window.openChatWith === 'function') {
                         window.openChatWith(name, avatar, normUser, msgId);
+                    } else if (attempts < 10) {
+                        setTimeout(tryOpen, 200);
                     }
-                }, 500);
+                };
+                setTimeout(tryOpen, 250);
             } else if (openPublic) {
-                setTimeout(function() {
+                let attempts = 0;
+                const tryOpenPublic = () => {
+                    attempts++;
                     const modal = document.getElementById('publicChatModal') || document.getElementById('directMessagesModal');
-                    if (modal) modal.classList.add('open');
-                    if (typeof switchMessengerMainTab === 'function') switchMessengerMainTab('public');
-                }, 500);
+                    if (modal) {
+                        modal.classList.add('open');
+                        if (typeof switchMessengerMainTab === 'function') switchMessengerMainTab('public');
+                    } else if (attempts < 10) {
+                        setTimeout(tryOpenPublic, 200);
+                    }
+                };
+                setTimeout(tryOpenPublic, 250);
             }
         }
 
