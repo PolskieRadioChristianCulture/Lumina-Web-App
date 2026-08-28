@@ -20,36 +20,64 @@ try {
     fcmMessaging.onBackgroundMessage((payload) => {
         console.log('[SW] FCM Background Message received:', payload);
         const data = payload.data || {};
-        const isDevotion = (data.type === 'devotion' || data.type === 'ckd' || data.isDevotion === 'true');
-        
-        const title = payload.notification?.title || data.title || (isDevotion ? '🕊️ Dobrze, że jesteś • Rozważanie' : 'LUMINA ✨');
-        const body = payload.notification?.body || data.body || data.text || 'Nowe rozważanie jest już dostępne na Tablicy Społeczności.';
-        const icon = data.icon || data.avatar || payload.notification?.icon || './lumina_icon.jpg';
-        const urlToOpen = data.url || './lumina-tablica.html?openDevotion=today';
+        const notification = payload.notification || {};
+        const type = data.type || 'general';
+
+        const title = notification.title || data.title || 'LUMINA ✨';
+        const body = notification.body || data.body || data.text || 'Masz nowe powiadomienie w portalu LUMINA.';
+        const icon = notification.icon || data.icon || data.avatar || './lumina_icon.jpg';
+        const image = notification.image || data.image || data.imageUrl || undefined;
+        let urlToOpen = data.url || './lumina.html';
 
         let actions = [
-            { action: 'read', title: '📖 Czytaj' },
-            { action: 'share', title: '🕊️ Udostępnij' }
+            { action: 'open', title: 'Otwórz LUMINA 🕊️' }
         ];
 
-        if (!isDevotion && data.senderId) {
+        if (type === 'devotion' || type === 'ckd') {
             actions = [
-                { action: 'read', title: '💬 Odpowiedz' },
-                { action: 'open', title: 'Otwórz LUMINA' }
+                { action: 'read', title: '📖 Czytaj' },
+                { action: 'share', title: '🕊️ Udostępnij' }
             ];
+        } else if (type === 'new_profile') {
+            actions = [
+                { action: 'view', title: '👀 Zobacz Profil' },
+                { action: 'welcome', title: '🕊️ Powitaj' }
+            ];
+            if (data.slug) urlToOpen = `./lumina-profile.html?u=${encodeURIComponent(data.slug)}`;
+        } else if (type === 'new_post') {
+            actions = [
+                { action: 'read', title: '📖 Zobacz Wpis' },
+                { action: 'like', title: '❤️ Polub' }
+            ];
+            if (data.postId) urlToOpen = `./lumina-tablica.html?postId=${encodeURIComponent(data.postId)}`;
+        } else if (type === 'direct_message' || type === 'mention') {
+            actions = [
+                { action: 'reply', title: '💬 Odpowiedz' },
+                { action: 'open', title: 'Otwórz Czat' }
+            ];
+            if (data.senderId) urlToOpen = `./lumina.html?openChat=${encodeURIComponent(data.senderId)}`;
+        } else if (type === 'public_chat') {
+            actions = [
+                { action: 'open', title: '💬 Dołącz do rozmowy' }
+            ];
+            urlToOpen = './lumina.html?openPublicChat=1';
         }
+
+        const tag = notification.tag || data.tag || `lumina_${type}_${Date.now()}`;
+        const requireInteraction = (type === 'direct_message' || type === 'mention' || type === 'devotion' || type === 'ckd');
 
         const notificationOptions = {
             body: body,
             icon: icon,
             badge: './lumina_icon.jpg',
-            image: data.image || data.imageUrl || undefined,
-            tag: isDevotion ? ('lumina_devotion_' + (data.devotionId || new Date().toISOString().split('T')[0])) : ('lumina_notif_' + (data.senderId || Date.now())),
+            image: image,
+            tag: tag,
             renotify: true,
             vibrate: [200, 100, 200],
-            requireInteraction: isDevotion,
+            requireInteraction: requireInteraction,
             data: {
                 url: urlToOpen,
+                type: type,
                 ...data
             },
             actions: actions
@@ -58,23 +86,25 @@ try {
         return self.registration.showNotification(title, notificationOptions);
     });
 } catch(err) {
-    console.warn('[sw-lumina.js] Firebase FCM init in SW error:', err);
+    console.warn('[SW] Firebase FCM init in SW error:', err);
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA PRODUCTION PWA SERVICE WORKER (v3.9.0)
+// LUMINA PRODUCTION PWA SERVICE WORKER (v3.9.1)
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v3.9.0';
+const CACHE_NAME = 'lumina-pwa-cache-v3.9.1';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
     './lumina-tablica.html',
+    './lumina-profile.html',
     './manifest-lumina.json',
     './lumina-icon-192.png',
     './lumina-icon-512.png',
-    './icon.png'
+    './icon.png',
+    './lumina_icon.jpg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -99,8 +129,10 @@ self.addEventListener('activate', event => {
         caches.keys().then(keys => {
             return Promise.all(
                 keys.map(key => {
-                    console.log('[SW] Deleting cache:', key);
-                    return caches.delete(key);
+                    if (key !== CACHE_NAME) {
+                        console.log('[SW] Deleting old cache:', key);
+                        return caches.delete(key);
+                    }
                 })
             );
         }).then(() => self.clients.claim())
@@ -185,26 +217,67 @@ self.addEventListener('fetch', (event) => {
 });
 
 // ══════════════════════════════════════════════════════════════════════════
-// PUSH NOTIFICATION RECEIVER (Direct Chat & Mission Notifications)
+// PUSH NOTIFICATION RECEIVER (Direct Chat, Profiles, Posts, CKD)
 // ══════════════════════════════════════════════════════════════════════════
 self.addEventListener('push', (event) => {
-    let data = {};
+    let payload = {};
     try {
-        data = event.data ? event.data.json() : {};
+        payload = event.data ? event.data.json() : {};
     } catch (e) {
-        data = { title: 'LUMINA • Nowa Wiadomość ✨', body: event.data ? event.data.text() : 'Otrzymałeś nową wiadomość w portalu LUMINA.' };
+        payload = {
+            notification: {
+                title: 'LUMINA ✨',
+                body: event.data ? event.data.text() : 'Masz nowe powiadomienie.'
+            }
+        };
     }
 
-    const title = data.title || 'LUMINA • Społeczność Chrześcijańska';
+    const data = payload.data || {};
+    const notification = payload.notification || {};
+    const type = data.type || 'general';
+
+    const title = notification.title || data.title || 'LUMINA • Społeczność Chrześcijańska';
+    const body = notification.body || data.body || 'Otrzymałeś nową wiadomość w portalu LUMINA.';
+    const icon = notification.icon || data.icon || './lumina-icon-192.png';
+    const image = notification.image || data.image || data.imageUrl || undefined;
+    const url = data.url || './lumina.html';
+
+    let actions = [
+        { action: 'open', title: 'Otwórz LUMINA 🕊️' }
+    ];
+
+    if (type === 'new_profile') {
+        actions = [
+            { action: 'view', title: '👀 Zobacz Profil' },
+            { action: 'welcome', title: '🕊️ Powitaj' }
+        ];
+    } else if (type === 'new_post') {
+        actions = [
+            { action: 'read', title: '📖 Zobacz Wpis' },
+            { action: 'like', title: '❤️ Polub' }
+        ];
+    } else if (type === 'direct_message' || type === 'mention') {
+        actions = [
+            { action: 'reply', title: '💬 Odpowiedz' },
+            { action: 'open', title: 'Otwórz Czat' }
+        ];
+    }
+
     const options = {
-        body: data.body || 'Masz nowe powiadomienie w aplikacji LUMINA.',
-        icon: data.icon || './lumina-icon-192.png',
-        badge: './icon.png',
+        body: body,
+        icon: icon,
+        badge: './lumina_icon.jpg',
+        image: image,
         data: {
-            url: data.url || './lumina.html'
+            url: url,
+            type: type,
+            ...data
         },
-        vibrate: [100, 50, 100],
-        requireInteraction: false
+        tag: notification.tag || data.tag || `lumina_${type}_${Date.now()}`,
+        renotify: true,
+        vibrate: [200, 100, 200],
+        requireInteraction: (type === 'direct_message' || type === 'mention' || type === 'devotion' || type === 'ckd'),
+        actions: actions
     };
 
     event.waitUntil(
@@ -212,14 +285,32 @@ self.addEventListener('push', (event) => {
     );
 });
 
+// ══════════════════════════════════════════════════════════════════════════
+// NOTIFICATION CLICK HANDLER — DEEP-LINKING TO PAGES & CHAT
+// ══════════════════════════════════════════════════════════════════════════
 self.addEventListener('notificationclick', (event) => {
     event.notification.close();
-    const targetUrl = event.notification.data?.url || './lumina.html';
+    const action = event.action;
+    const data = event.notification.data || {};
+    let targetUrl = data.url || './lumina.html';
+
+    if (action === 'share' && (data.devotionId || data.postId)) {
+        targetUrl = `./lumina-tablica.html?share=${encodeURIComponent(data.devotionId || data.postId)}`;
+    } else if (action === 'reply' && data.senderId) {
+        targetUrl = `./lumina.html?openChat=${encodeURIComponent(data.senderId)}`;
+    } else if (action === 'view' && data.slug) {
+        targetUrl = `./lumina-profile.html?u=${encodeURIComponent(data.slug)}`;
+    } else if (action === 'welcome' && data.slug) {
+        targetUrl = `./lumina.html?openChat=${encodeURIComponent(data.slug)}&welcome=1`;
+    }
 
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
             for (let client of windowClients) {
-                if (client.url.includes('lumina.html') && 'focus' in client) {
+                if (client.url && 'focus' in client) {
+                    if (targetUrl && 'navigate' in client) {
+                        client.navigate(targetUrl);
+                    }
                     return client.focus();
                 }
             }

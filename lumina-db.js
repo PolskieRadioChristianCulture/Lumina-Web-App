@@ -115,7 +115,7 @@ export async function requestNotificationPermission(userUid) {
                 if (supported && app) messaging = getMessaging(app);
             }
             if (messaging) {
-                const registration = await navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260824_v364', { scope: './' });
+                const registration = await navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260828_v391', { scope: './' });
                 const token = await getToken(messaging, {
                     vapidKey: LUMINA_VAPID_KEY,
                     serviceWorkerRegistration: registration
@@ -124,15 +124,22 @@ export async function requestNotificationPermission(userUid) {
                 if (token && db) {
                     try {
                         const tokenKey = token.replace(/[^a-zA-Z0-9_-]/g, '').slice(-32);
+                        const effectiveUid = userUid || (currentUserState ? currentUserState.uid : null) || localStorage.getItem('lumina_current_user_slug') || 'anonymous';
+                        const effectiveSlug = localStorage.getItem('lumina_current_user_slug') || (currentProfileState ? (currentProfileState.slug || currentProfileState.uid) : '') || '';
+                        const platform = /Android/i.test(navigator.userAgent) ? 'android' : (/iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'ios' : 'web');
+
                         await setDoc(doc(db, 'LuminaDeviceTokens', tokenKey), {
                             token: token,
-                            uid: userUid || localStorage.getItem('lumina_current_user_slug') || 'anonymous',
-                            platform: 'web',
+                            uid: effectiveUid,
+                            slug: effectiveSlug,
+                            userSlug: effectiveSlug,
+                            userName: currentProfileState?.name || currentUserState?.displayName || '',
+                            platform: platform,
                             userAgent: navigator.userAgent || 'unknown',
                             enabled: true,
                             updatedAt: serverTimestamp()
                         }, { merge: true });
-                        console.log('[LUMINA Push] Token saved to LuminaDeviceTokens collection in Firestore');
+                        console.log('[LUMINA Push] Token pomyślnie zarejestrowany w LuminaDeviceTokens w Firestore! 🕊️');
                     } catch(e) {
                         console.warn('[LUMINA Push] Error saving to LuminaDeviceTokens:', e);
                     }
@@ -140,6 +147,16 @@ export async function requestNotificationPermission(userUid) {
                     if (userUid) {
                         try {
                             await updateDoc(doc(db, 'lumina_profiles', userUid), {
+                                fcmToken: token,
+                                notificationsEnabled: true,
+                                updatedAt: serverTimestamp()
+                            });
+                        } catch(e) {}
+                    }
+                    const curSlug = localStorage.getItem('lumina_current_user_slug');
+                    if (curSlug && curSlug !== userUid) {
+                        try {
+                            await updateDoc(doc(db, 'lumina_profiles', curSlug), {
                                 fcmToken: token,
                                 notificationsEnabled: true,
                                 updatedAt: serverTimestamp()

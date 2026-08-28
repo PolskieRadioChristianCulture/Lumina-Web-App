@@ -6,6 +6,10 @@ const chatPush = require('./lumina-chat-push-functions.js');
 
 exports.onDirectMessageCreated = chatPush.onDirectMessageCreated;
 exports.onPublicChatMessageCreated = chatPush.onPublicChatMessageCreated;
+exports.onLuminaProfileCreated = chatPush.onLuminaProfileCreated;
+exports.onLuminaPostCreated = chatPush.onLuminaPostCreated;
+exports.onCudaTablicaPostPublished = chatPush.onLuminaPostCreated; // Alias kompatybilności wstecznej
+exports.scheduledMorningDevotionPush = chatPush.scheduledMorningDevotionPush;
 
 try {
     const photoVerif = require('./lumina-photo-verification-functions.js');
@@ -15,9 +19,6 @@ try {
 } catch(e) {
     console.warn('Photo verification module load notice:', e.message);
 }
-
-exports.scheduledMorningDevotionPush = chatPush.scheduledMorningDevotionPush;
-exports.onCudaTablicaPostPublished = chatPush.onCudaTablicaPostPublished;
 
 const ckdSync = require('./lumina-ckd-sync-function.js');
 exports.scheduledCudaKazdegoDniaSync = ckdSync.scheduledCudaKazdegoDniaSync;
