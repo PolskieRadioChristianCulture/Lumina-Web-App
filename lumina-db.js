@@ -2930,6 +2930,96 @@ export async function recordProfileLike(targetIdOrSlug, targetData = {}, type = 
     };
 }
 
+/**
+ * PRAWDZIWY SYSTEM OBSERWOWANIA (zastępuje fałszywy licznik lokalny, który
+ * tylko zwiększał liczbę w przeglądarce, i brakującą funkcję na 3 stronach,
+ * gdzie przycisk "Obserwuj" w ogóle nie działał — rzucał błąd w konsoli).
+ * Jedna, wspólna implementacja zamiast duplikowania w każdym pliku profilu.
+ */
+export async function toggleFollow(targetSlug, targetData = {}) {
+    if (!db || !targetSlug) return { following: false, error: 'no-db-or-target' };
+
+    const myId = normalizeChatUserId(
+        currentProfileState?.slug || currentProfileState?.uid ||
+        currentUserState?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest'
+    );
+    if (myId === targetSlug) return { following: false, error: 'self-follow' };
+
+    // WAŻNE: relacja obserwowania zapisywana jest w kolekcji lumina_likes
+    // z polem type:'follow' — DOKŁADNIE tam, skąd już czyta ją wdrożona
+    // funkcja onLuminaPostCreated (zapytanie where('to','==',authorSlug)
+    // .where('type','==','follow')). Osobna kolekcja byłaby niewidoczna
+    // dla tej funkcji i powiadomienia nigdy by nie doszły.
+    // UWAGA — ograniczenie istniejącego modelu danych, nie wprowadzone tutaj:
+    // ID dokumentu (${myId}_${targetSlug}) jest współdzielone z systemem
+    // "polub profil" (recordProfileLike), który używa tego samego schematu.
+    // Jeśli ta sama para użytkowników ma już relację type:'like', obserwowanie
+    // ją nadpisze. To pre-istniejące ograniczenie architektury lumina_likes,
+    // nie coś wprowadzonego przez tę funkcję — do rozważenia osobno, jeśli
+    // "polub" i "obserwuj" mają współistnieć niezależnie dla tej samej pary.
+    const followDocId = `${myId}_${targetSlug}`;
+    const followRef = doc(db, 'lumina_likes', followDocId);
+    let nowFollowing;
+
+    try {
+        const existing = await getDoc(followRef);
+        if (existing.exists() && existing.data()?.type === 'follow') {
+            await deleteDoc(followRef);
+            nowFollowing = false;
+        } else {
+            await setDoc(followRef, {
+                from: myId,
+                to: targetSlug,
+                fromName: currentProfileState?.name || currentUserState?.displayName || 'Użytkownik LUMINA',
+                fromAvatar: currentProfileState?.avatar || 'lumina_icon.jpg',
+                toName: targetData.name || targetSlug,
+                toAvatar: targetData.avatar || 'lumina_icon.jpg',
+                type: 'follow',
+                timestamp: serverTimestamp(),
+            });
+            nowFollowing = true;
+        }
+    } catch (err) {
+        console.warn('[LUMINA Follow] Błąd:', err.message);
+        return { following: isFollowingLocally(targetSlug), error: err.message };
+    }
+
+    try { localStorage.setItem(`lumina_following_${targetSlug}`, nowFollowing ? '1' : '0'); } catch (e) {}
+    return { following: nowFollowing };
+}
+
+export function isFollowingLocally(targetSlug) {
+    try { return localStorage.getItem(`lumina_following_${targetSlug}`) === '1'; } catch (e) { return false; }
+}
+
+/**
+ * Globalny handler dla istniejących przycisków onclick="toggleProfileFollow(this)"
+ * — podpina prawdziwy system pod już istniejący HTML, bez potrzeby zmiany
+ * znaczników na każdej stronie profilu.
+ */
+window.toggleProfileFollow = async function (btn) {
+    const targetSlug = (window._currentProfileSlug || document.body.dataset.profileSlug || '').toLowerCase();
+    if (!targetSlug) { console.warn('[LUMINA Follow] Nie ustawiono window._currentProfileSlug na tej stronie.'); return; }
+
+    const targetName = document.querySelector('.profile-name, #profileName, #userNameEl')?.textContent?.trim() || targetSlug;
+    const result = await toggleFollow(targetSlug, { name: targetName });
+    if (result.error) { if (typeof showToast === 'function') showToast('Nie udało się zaktualizować obserwowania.'); return; }
+
+    const textEl = document.getElementById('followBtnText');
+    const countEl = document.getElementById('followCountBadge');
+    const statCountEl = document.getElementById('statFollowersCount');
+    if (textEl) textEl.textContent = result.following ? 'Obserwujesz' : 'Obserwuj';
+    if (countEl) {
+        const cur = parseInt(countEl.textContent || '0', 10) || 0;
+        const next = Math.max(0, cur + (result.following ? 1 : -1));
+        countEl.textContent = next;
+        if (statCountEl) statCountEl.textContent = next;
+    }
+    if (typeof showToast === 'function') {
+        showToast(result.following ? `Obserwujesz teraz ${targetName}! 🔔` : `Przestałeś obserwować ${targetName}.`);
+    }
+};
+
 export function subscribeToUserMatches(userId, onUpdate) {
     if (!db || !userId) return () => {};
     try {

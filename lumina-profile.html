@@ -4223,6 +4223,7 @@
 
         function getProfileData() {
             const slug = getRequestedUserSlug();
+            window._currentProfileSlug = slug; // dla wspólnego window.toggleProfileFollow w lumina-db.js
             if (slug.includes('magdalena') || slug === 'magda') { window.location.replace('lumina.magdalena.html'); return; }
             
             // Twarde zabezpieczenie kanału CC Women
