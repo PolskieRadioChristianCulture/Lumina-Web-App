@@ -764,6 +764,88 @@
             box-shadow: 0 0 14px rgba(168, 85, 247, 0.6);
         }
 
+        /* ══════════ FAITH & LIFE BADGES (MAKIETA 6 & 1) ══════════ */
+        .faith-badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 7px;
+            margin-top: 10px;
+            margin-bottom: 4px;
+        }
+
+        .faith-badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+        }
+
+        .faith-badge-pill.prayer {
+            background: rgba(168, 85, 247, 0.16);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            color: #d8b4fe;
+        }
+
+        .faith-badge-pill.worship {
+            background: rgba(250, 204, 21, 0.16);
+            border: 1px solid rgba(250, 204, 21, 0.45);
+            color: #fde047;
+        }
+
+        .faith-badge-pill.marriage {
+            background: rgba(236, 72, 153, 0.16);
+            border: 1px solid rgba(236, 72, 153, 0.4);
+            color: #f472b6;
+        }
+
+        .faith-badge-pill.bible {
+            background: rgba(56, 189, 248, 0.16);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #7dd3fc;
+        }
+
+        .faith-badge-pill.passion {
+            background: rgba(34, 197, 94, 0.16);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #86efac;
+        }
+
+        .faith-prompt-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .faith-prompt-label {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #facc15;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .faith-prompt-answer {
+            font-size: 0.90rem;
+            line-height: 1.55;
+            color: #e2e8f0;
+            font-style: italic;
+        }
+
         /* ── Security Bar & Badges ── */
         .profile-security-bar.visible {
             display: flex !important;
@@ -2703,6 +2785,14 @@
                             <span class="stat-tag-chip" id="statLikesChip" style="background:rgba(236,72,153,0.14); border:1px solid rgba(236,72,153,0.35); color:#f472b6; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-heart"></i> <span id="statLikesCount">120</span> Polubień</span>
                             <span class="stat-tag-chip" id="statFollowersChip" style="background:rgba(59,130,246,0.14); border:1px solid rgba(59,130,246,0.35); color:#93c5fd; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-users"></i> <span id="statFollowersCount">310</span> Obserwujących</span>
                         </div>
+
+                        <!-- ══════════ FAITH & LIFE BADGES BAR (MAKIETA 6 & 1) ══════════ -->
+                        <div class="faith-badges-container" id="faithBadgesBar">
+                            <span class="faith-badge-pill prayer" id="badgePrayer"><i class="fa-solid fa-hands-praying"></i> Codzienna modlitwa</span>
+                            <span class="faith-badge-pill worship" id="badgeWorship"><i class="fa-solid fa-church"></i> Sobotnie / Niedzielne nabożeństwo / Msza</span>
+                            <span class="faith-badge-pill bible" id="badgeBible"><i class="fa-solid fa-book-bible"></i> Czytanie Pisma Świętego</span>
+                            <span class="faith-badge-pill marriage" id="badgeMarriage"><i class="fa-solid fa-ring"></i> Małżeństwo w Bożej woli</span>
+                        </div>
                     </div>
                     </div><!-- end profile-head-main -->
 
@@ -2876,16 +2966,39 @@
 
                 <!-- Tab: Wartości & Wiara -->
                 <div id="tab-faith" class="tab-content-pane" style="display:none;">
-                    <div class="sidebar-card">
+                    <div class="sidebar-card" style="margin-bottom: 16px;">
                         <div class="card-title">
-                            <span>Fundament Duchowy</span>
+                            <span><i class="fa-solid fa-cross" style="color:#facc15;"></i> Fundament Duchowy & Praktyki</span>
                             <button class="card-edit-btn" onclick="openEditProfileModal('faith')" title="Edytuj wartości"><i class="fa-solid fa-pencil"></i></button>
                         </div>
-                        <div class="info-list" style="font-size:0.92rem;">
-                            <div class="info-row"><i class="fa-solid fa-heart" style="color:#ec4899;"></i><div><span class="info-label">Podejście do Małżeństwa:</span> Sakrament i przymierze na całe życie.</div></div>
-                            <div class="info-row"><i class="fa-solid fa-music" style="color:#a855f7;"></i><div><span class="info-label">Muzyka Duchowa:</span> Hillsong, Bethel, Polskie Uwielbienie, Biblia Śpiewana CC.</div></div>
-                            <div class="info-row"><i class="fa-solid fa-hands-holding-child" style="color:#06b6d4;"></i><div><span class="info-label">Wizja Rodziny:</span> Otwartość na dar życia, wychowanie w miłości i prawdzie Ewangelii.</div></div>
+                        <div class="faith-badges-container" style="margin-bottom: 16px;" id="tabFaithBadgesContainer">
+                            <span class="faith-badge-pill prayer"><i class="fa-solid fa-hands-praying"></i> Codzienna modlitwa</span>
+                            <span class="faith-badge-pill worship"><i class="fa-solid fa-church"></i> Sobotnie / Niedzielne nabożeństwo / Msza</span>
+                            <span class="faith-badge-pill bible"><i class="fa-solid fa-book-bible"></i> Czytanie Pisma Świętego</span>
+                            <span class="faith-badge-pill marriage"><i class="fa-solid fa-ring"></i> Małżeństwo w Bożej woli</span>
+                            <span class="faith-badge-pill passion"><i class="fa-solid fa-music"></i> Muzyka Uwielbienia</span>
                         </div>
+                        <div class="info-list" style="font-size:0.92rem;">
+                            <div class="info-row"><i class="fa-solid fa-heart" style="color:#ec4899;"></i><div><span class="info-label">Podejście do Małżeństwa:</span> Sakrament i przymierze na całe życie oparte na Chrystusie.</div></div>
+                            <div class="info-row"><i class="fa-solid fa-music" style="color:#a855f7;"></i><div><span class="info-label">Muzyka Duchowa:</span> Uwielbienie, Worship, Hillsong, Biblia Śpiewana CC.</div></div>
+                            <div class="info-row"><i class="fa-solid fa-hands-holding-child" style="color:#06b6d4;"></i><div><span class="info-label">Wizja Rodziny:</span> Otwartość na dar życia, wzajemny szacunek i wychowanie w prawdzie Ewangelii.</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Christian Value Prompts (Makieta 1 & 6) -->
+                    <div class="faith-prompt-card">
+                        <div class="faith-prompt-label"><i class="fa-solid fa-quote-left"></i> W relacji najbardziej szukam:</div>
+                        <div class="faith-prompt-answer" id="promptRelAnswer">„Wspólnego wzrastania w wierze, szczerej przyjaźni, zaufania i budowania Bożego domu.”</div>
+                    </div>
+
+                    <div class="faith-prompt-card">
+                        <div class="faith-prompt-label"><i class="fa-solid fa-church"></i> Sobotnie / Niedzielne nabożeństwo / Msza to dla mnie:</div>
+                        <div class="faith-prompt-answer" id="promptWorshipAnswer">„Święty czas zatrzymania, spotkania z Panem we wspólnocie i napełnienia pokojem serca na cały tydzień.”</div>
+                    </div>
+
+                    <div class="faith-prompt-card">
+                        <div class="faith-prompt-label"><i class="fa-solid fa-mug-hot"></i> Nasze pierwsze spotkanie wyobrażam sobie jako:</div>
+                        <div class="faith-prompt-answer" id="promptCoffeeAnswer">„Dobrą kawę, swobodny spacer i otwartą, głęboką rozmowę o wartościach bez stresu i pośpiechu.”</div>
                     </div>
                 </div>
 
@@ -4694,6 +4807,30 @@
             }
             document.getElementById('userBioFull').textContent = data.bio || 'Witaj na profilu w społeczności LUMINA!';
             document.getElementById('modalMsgRecipient').textContent = data.name.split(' ')[0] || data.name;
+
+            // ══════════ DYNAMIC FAITH & LIFE BADGES RENDERING (MAKIETA 6 & 1) ══════════
+            const badgesBar = document.getElementById('faithBadgesBar');
+            if (badgesBar) {
+                const defaultBadges = [
+                    { type: 'prayer', icon: 'fa-hands-praying', text: data.prayerHabit || 'Codzienna modlitwa' },
+                    { type: 'worship', icon: 'fa-church', text: data.worshipDay || 'Sobotnie / Niedzielne nabożeństwo / Msza' },
+                    { type: 'bible', icon: 'fa-book-bible', text: data.bibleHabit || 'Czytanie Pisma Świętego' },
+                    { type: 'marriage', icon: 'fa-ring', text: data.marriageGoal || (data.status === 'Żonaty' || data.status === 'Mężatka' ? 'Szczęśliwe małżeństwo w Chrystusie' : 'Małżeństwo w Bożej woli') }
+                ];
+                badgesBar.innerHTML = defaultBadges.map(b => `
+                    <span class="faith-badge-pill ${b.type}"><i class="fa-solid ${b.icon}"></i> ${b.text}</span>
+                `).join('');
+            }
+
+            if (document.getElementById('promptRelAnswer') && data.promptRel) {
+                document.getElementById('promptRelAnswer').textContent = `„${data.promptRel}”`;
+            }
+            if (document.getElementById('promptWorshipAnswer') && data.promptWorship) {
+                document.getElementById('promptWorshipAnswer').textContent = `„${data.promptWorship}”`;
+            }
+            if (document.getElementById('promptCoffeeAnswer') && data.promptCoffee) {
+                document.getElementById('promptCoffeeAnswer').textContent = `„${data.promptCoffee}”`;
+            }
 
             // ══════════ WYMÓG PRAWDZIWEGO ZDJĘCIA PROFILOWEGO ══════════
             // data.avatar jest już nadpisywany logiem LUMINA po stronie serwera

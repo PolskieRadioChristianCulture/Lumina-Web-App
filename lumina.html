@@ -567,6 +567,45 @@
             max-width: 95vw;
         }
 
+        /* ══════════ FAITH & LIFE BADGES (MAKIETA 6 & 1) ══════════ */
+        .faith-badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+        }
+        .faith-badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+        .faith-badge-pill.prayer {
+            background: rgba(168, 85, 247, 0.16);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            color: #d8b4fe;
+        }
+        .faith-badge-pill.worship {
+            background: rgba(250, 204, 21, 0.16);
+            border: 1px solid rgba(250, 204, 21, 0.45);
+            color: #fde047;
+        }
+        .faith-badge-pill.marriage {
+            background: rgba(236, 72, 153, 0.16);
+            border: 1px solid rgba(236, 72, 153, 0.4);
+            color: #f472b6;
+        }
+        .faith-badge-pill.bible {
+            background: rgba(56, 189, 248, 0.16);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #7dd3fc;
+        }
+
         /* ══════════ DEVOTIONAL BANNER RESPONSIVE STYLES (MAKIETA 3) ══════════ */
         .devotional-banner-section {
             max-width: 1100px;
@@ -3872,7 +3911,15 @@
             <div style="text-align:center;margin-bottom:14px;">
                 <div id="mImg"></div>
                 <h3 id="mName" style="font-size:1.25rem;font-weight:800;margin:10px 0 4px; color:#fff;"></h3>
-                <div id="mLoc" style="font-size:0.82rem;color:#a78bfa;font-weight:700;"></div>
+                <div id="mLoc" style="font-size:0.82rem;color:#a78bfa;font-weight:700;margin-bottom:10px;"></div>
+                
+                <!-- ══════════ FAITH & LIFE BADGES (MAKIETA 6 & 1) ══════════ -->
+                <div class="faith-badges-container" id="mFaithBadgesBox" style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:0 auto 12px; max-width:420px;">
+                    <span class="faith-badge-pill prayer"><i class="fa-solid fa-hands-praying"></i> Codzienna modlitwa</span>
+                    <span class="faith-badge-pill worship"><i class="fa-solid fa-church"></i> Sobotnie / Niedzielne nabożeństwo / Msza</span>
+                    <span class="faith-badge-pill bible"><i class="fa-solid fa-book-bible"></i> Czytanie Pisma Świętego</span>
+                    <span class="faith-badge-pill marriage"><i class="fa-solid fa-ring"></i> Małżeństwo w Bożej woli</span>
+                </div>
             </div>
             
             <p id="mDesc" style="font-size:0.85rem;color:#cbd5e1;line-height:1.55;font-style:italic;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);padding:12px 14px;border-radius:12px;margin-bottom:14px;"></p>
@@ -5637,6 +5684,20 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const mDesc = document.getElementById('mDesc');
             if (mDesc) {
                 mDesc.textContent = `"${p.bio || p.job || 'Chrześcijanin szukający Bożej relacji i wspólnoty.'}"`;
+            }
+
+            // Fill Faith & Life Badges (Makieta 6 & 1)
+            const mBadgesBox = document.getElementById('mFaithBadgesBox');
+            if (mBadgesBox) {
+                const defaultBadges = [
+                    { type: 'prayer', icon: 'fa-hands-praying', text: p.prayerHabit || 'Codzienna modlitwa' },
+                    { type: 'worship', icon: 'fa-church', text: p.worshipDay || 'Sobotnie / Niedzielne nabożeństwo / Msza' },
+                    { type: 'bible', icon: 'fa-book-bible', text: p.bibleHabit || 'Czytanie Pisma Świętego' },
+                    { type: 'marriage', icon: 'fa-ring', text: p.marriageGoal || (p.isFounder ? 'Małżeństwo w Chrystusie' : 'Małżeństwo w Bożej woli') }
+                ];
+                mBadgesBox.innerHTML = defaultBadges.map(b => `
+                    <span class="faith-badge-pill ${b.type}"><i class="fa-solid ${b.icon}"></i> ${b.text}</span>
+                `).join('');
             }
 
             // Fill Explainable Match Breakdown
