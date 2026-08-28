@@ -3708,7 +3708,7 @@
                 verseRef: '— Księga Jozuego 24, 15',
                 bio: 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture.',
                 tags: ['Muzyka Uwielbienia', 'Wędrówki Górskie', 'Pismo Święte', 'Ewangelizacja', 'Nowe Technologie'],
-                photos: ['avatar_cezary_official.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'],
+                photos: ['avatar_cezary_official.jpg', 'avatar_cezary_karuzela_2026.jpg', 'avatar_cezary.jpg'],
                 posts: [
                     {
                         id: 'post_c1',
@@ -4811,8 +4811,13 @@
         // ── Photos Gallery & Deletion ──
         function renderPhotos() {
             const data = getProfileData();
-            const photos = Array.isArray(data.photos) ? data.photos : ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'];
-            const carouselSrc = localStorage.getItem('lumina_carousel_' + getRequestedUserSlug()) || data.carouselMediaUrl || '';
+            let photos = Array.isArray(data.photos) ? data.photos : ['avatar_cezary_official.jpg', 'avatar_cezary_karuzela_2026.jpg', 'avatar_cezary.jpg'];
+            const slug = getRequestedUserSlug();
+            if (slug.includes('cezary')) {
+                photos = photos.filter(p => typeof p === 'string' && !p.includes('tomek') && !p.includes('avatar_widget_tomek'));
+                if (photos.length === 0) photos = ['avatar_cezary_official.jpg', 'avatar_cezary_karuzela_2026.jpg', 'avatar_cezary.jpg'];
+            }
+            const carouselSrc = localStorage.getItem('lumina_carousel_' + slug) || data.carouselMediaUrl || '';
 
             const miniGrid = document.getElementById('miniPhotoGrid');
             if (miniGrid) {
@@ -4898,7 +4903,7 @@
             const slug = getRequestedUserSlug();
             const cur = getProfileData();
             if (!cur.photos || !Array.isArray(cur.photos)) {
-                cur.photos = ['avatar_new1.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'];
+                cur.photos = ['avatar_cezary_official.jpg', 'avatar_cezary_karuzela_2026.jpg', 'avatar_cezary.jpg'];
             }
             
             if (index < 0 || index >= cur.photos.length) return;

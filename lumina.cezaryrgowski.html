@@ -3274,9 +3274,9 @@
                         <button class="card-edit-btn" onclick="triggerGalleryUpload()" title="Wgraj nowe zdjęcie z dysku"><i class="fa-solid fa-plus"></i></button>
                     </div>
                     <div class="photo-grid-mini" id="miniPhotoGrid">
-                        <img loading="lazy" decoding="async" src="avatar_cezary_karuzela_2026.jpg?v=20260825_urszula_real_face_v370" alt="Photo" class="photo-thumb" id="miniPhoto1" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
-                        <img loading="lazy" decoding="async" src="avatar_widget_tomek.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
-                        <img loading="lazy" decoding="async" src="lumina_default_cover.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
+                        <img loading="lazy" decoding="async" src="avatar_cezary_karuzela_2026.jpg" alt="Photo" class="photo-thumb" id="miniPhoto1" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
+                        <img loading="lazy" decoding="async" src="avatar_cezary_official.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
+                        <img loading="lazy" decoding="async" src="avatar_cezary.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
                     </div>
                 </div>
 
@@ -4291,7 +4291,7 @@
             avatarVideo: 'wideo_profilowe_cezary_rogowski.mp4',
             bio: 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture. Wierzymy, że małżeństwo oparte na Chrystusie jest źródłem niesamowitej siły, pokoju i ewangelizacyjnego świadectwa.',
             tags: ['Muzyka Uwielbienia', 'Wędrówki Górskie', 'Pismo Święte', 'Ewangelizacja', 'Nowe Technologie', 'Głębokie Rozmowy'],
-            photos: ['avatar_cezary_official.jpg', 'avatar_widget_tomek.jpg', 'lumina_default_cover.jpg'],
+            photos: ['avatar_cezary_official.jpg', 'avatar_cezary_karuzela_2026.jpg', 'avatar_cezary.jpg'],
             posts: [
                 {
                     id: 'post_dzj_2026_08_28',
@@ -4596,7 +4596,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                         age: age,
                         city: parsed.city || 'Ostrowiec Świętokrzyski, Polska',
                         visibility: parsed.visibility || 'public',
-                        photos: Array.isArray(parsed.photos) && parsed.photos.length ? parsed.photos : [...defaultProfile.photos],
+                        photos: (Array.isArray(parsed.photos) && parsed.photos.length ? parsed.photos : [...defaultProfile.photos]).filter(p => typeof p === 'string' && !p.includes('tomek') && !p.includes('avatar_widget_tomek')),
                         posts: Array.isArray(parsed.posts) ? parsed.posts : [...defaultProfile.posts]
                     };
                 }
@@ -5063,6 +5063,10 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                 const saved = JSON.parse(localStorage.getItem('lumina_photos_cezaryrgowski') || 'null');
                 if (Array.isArray(saved)) photos = saved;
             } catch(e) {}
+            photos = photos.filter(p => typeof p === 'string' && !p.includes('tomek') && !p.includes('avatar_widget_tomek'));
+            if (photos.length === 0) {
+                photos = ['avatar_cezary_official.jpg', 'avatar_cezary_karuzela_2026.jpg', 'avatar_cezary.jpg'];
+            }
             
             // Mini sidebar grid
             const miniGrid = document.getElementById('miniPhotoGrid');
