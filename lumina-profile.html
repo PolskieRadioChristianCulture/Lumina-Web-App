@@ -2884,6 +2884,9 @@
                     <div class="verse-box">
                         <div class="verse-text" id="userVerseText">„Wszystko mogę w Tym, który mnie umacnia.”</div>
                         <div class="verse-ref" id="userVerseRef">— Flp 4, 13</div>
+                        <button type="button" onclick="openVerseStoryFromProfile()" style="margin-top:12px;width:100%;padding:9px 12px;border-radius:20px;background:linear-gradient(135deg, rgba(236,72,153,0.2), rgba(139,92,246,0.2));border:1px solid rgba(250,204,21,0.5);color:#fef08a;font-weight:800;font-size:0.78rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s;-webkit-tap-highlight-color:transparent;">
+                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#facc15;"></i> Stwórz Kartę Story 9:16 📲
+                        </button>
                     </div>
                 </div>
 
@@ -7663,9 +7666,25 @@
                 bar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         };
+
+        window.openVerseStoryFromProfile = function() {
+            const verseText = document.getElementById('userVerseText')?.textContent?.replace(/^[„"']|[”"']$/g, '').trim() || "Wszystko mogę w Tym, który mnie umacnia.";
+            const verseRef = document.getElementById('userVerseRef')?.textContent?.replace(/^[—\-]\s*/, '').trim() || "List do Filipian 4, 13";
+            const authorName = document.getElementById('userNameEl')?.textContent?.trim() || "Społeczność LUMINA";
+            const slug = window._profileSlug || "";
+            if (typeof window.openLuminaStoryGenerator === 'function') {
+                window.openLuminaStoryGenerator({
+                    verse: verseText,
+                    verseRef: verseRef,
+                    authorName: authorName,
+                    slug: slug
+                });
+            }
+        };
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>
+    <script src="lumina-story-card-generator.js" defer></script>
     <script src="lumina-bottom-nav.js?v=20260825_urszula_real_face_v370" defer></script>
     <script src="lumina-notifications.js?v=20260825_urszula_real_face_v370" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
