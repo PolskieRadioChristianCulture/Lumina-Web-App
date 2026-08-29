@@ -345,6 +345,31 @@ function checkAggressiveDomPolling() {
   }
 }
 
+// ══════════════════════════════════════════════════════════════════════════
+// REGUŁA J — Podstawianie zdjęcia konkretnej osoby w onerror="" obrazka
+// (ta sama klasa błędu co reguła B, ale w formie, której B nie łapie —
+// atrybut onerror, nie return/wyrażenie domyślne. Realnie znaleziony błąd:
+// własny awatar użytkownika, gdy nie wczyta się z sieci, podstawiał zdjęcie
+// Cezarego zamiast neutralnej ikony.)
+// ══════════════════════════════════════════════════════════════════════════
+function checkOnErrorIdentitySubstitution() {
+  checksRun++;
+  for (const f of HTML_FILES) {
+    const content = readFile(f);
+    const genericPattern = /onerror=["'][^"']*\.src\s*=\s*['"]avatar_(cezary_official|wioletta_official|andrzej_thiel)[^'"]*['"]/gi;
+    let m;
+    while ((m = genericPattern.exec(content)) !== null) {
+      const lineNum = content.slice(0, m.index).split('\n').length;
+      report(
+        'J-ONERROR-IDENTITY-SUBSTITUTION',
+        f,
+        `Linia ${lineNum}: obrazek, który przy błędzie ładowania podstawia zdjęcie konkretnej, znanej osoby ("${m[0].slice(0, 80)}..."). ` +
+        `Jeśli to awatar OGÓLNEGO użytkownika (nie strony tej konkretnej osoby) — to ten sam błąd, przez który każdy widział twarz Cezarego przy własnej wiadomości. Użyj neutralnej ikony (lumina_icon.jpg).`
+      );
+    }
+  }
+}
+
 function checkInlineScriptSyntax() {
   checksRun++;
   for (const f of HTML_FILES) {
@@ -379,6 +404,7 @@ checkMojibake();
 checkUnescapedUserContent();
 checkCrossFileFunctionDrift();
 checkAggressiveDomPolling();
+checkOnErrorIdentitySubstitution();
 checkInlineScriptSyntax();
 
 // ══════════════════════════════════════════════════════════════════════════
