@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ══════════════════════════════════════════════════════════════════════════
  * LUMINA VIRAL SCRIPTURE STORY ENGINE (lumina-story-card-generator.js)
  * Generator Luksusowych Kart Wersetów & Świadectw w Formacie 9:16 (Story / WhatsApp Status)
@@ -472,7 +472,7 @@
         ctx.fillStyle = theme.goldAccent;
         ctx.font = "800 32px 'Outfit', sans-serif";
         ctx.letterSpacing = "2px";
-        const linkUrl = config.slug ? `polskieradio.cc/lumina.html?ref=${config.slug}` : `polskieradio.cc/lumina.html`;
+        const linkUrl = config.slug ? `polskieradio.cc/lumina/${config.slug}` : `polskieradio.cc/lumina`;
         ctx.fillText(linkUrl, W / 2, footerY + 50);
         ctx.restore();
     }
@@ -631,7 +631,7 @@
         const canvas = document.getElementById('storyCanvasPreview');
         if (!canvas) return;
 
-        const shareUrl = currentConfig.slug ? `https://polskieradio.cc/lumina.html?ref=${currentConfig.slug}` : `https://polskieradio.cc/lumina.html`;
+        const shareUrl = currentConfig.slug ? `https://polskieradio.cc/lumina/${currentConfig.slug}` : `https://polskieradio.cc/lumina`;
         const shareText = `✨ Słowo Boże z portalu LUMINA: „${currentConfig.text}” (${currentConfig.ref}) • ${shareUrl}`;
 
         canvas.toBlob(async (blob) => {
@@ -676,7 +676,7 @@
     };
 
     window.copyStoryLink = function() {
-        const shareUrl = currentConfig.slug ? `https://polskieradio.cc/lumina.html?ref=${currentConfig.slug}` : `https://polskieradio.cc/lumina.html`;
+        const shareUrl = currentConfig.slug ? `https://polskieradio.cc/lumina/${currentConfig.slug}` : `https://polskieradio.cc/lumina`;
         if (navigator.clipboard) {
             navigator.clipboard.writeText(shareUrl);
             if (typeof window.showLuminaToast === 'function') {
