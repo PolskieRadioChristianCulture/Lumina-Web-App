@@ -2,9 +2,10 @@
 import { ref } from "vue";
 import ProfileGrid from "@/features/profiles/ProfileGrid.vue";
 import FeedTimeline from "@/features/feed/FeedTimeline.vue";
+import ChatView from "@/features/chat/ChatView.vue";
 import BottomNav from "@/components/BottomNav.vue";
 
-const activeView = ref<"profiles" | "feed">("feed");
+const activeView = ref<"profiles" | "feed" | "chat">("feed");
 </script>
 
 <template>
@@ -32,15 +33,27 @@ const activeView = ref<"profiles" | "feed">("feed");
         >
           ✨ Katalog Profili
         </button>
+        <button 
+          type="button" 
+          class="switch-tab" 
+          :class="{ 'is-active': activeView === 'chat' }"
+          @click="activeView = 'chat'"
+        >
+          💬 Komunikator
+        </button>
       </div>
     </header>
 
     <!-- Active View Area -->
     <FeedTimeline v-if="activeView === 'feed'" />
-    <ProfileGrid v-else />
+    <ProfileGrid v-else-if="activeView === 'profiles'" />
+    <ChatView v-else />
 
     <!-- Bottom Navigation Bar -->
-    <BottomNav :current-route="activeView === 'feed' ? 'tablica' : 'odkrywaj'" />
+    <BottomNav 
+      :current-route="activeView === 'feed' ? 'tablica' : (activeView === 'profiles' ? 'odkrywaj' : 'czat')" 
+      :unread-chat-count="1"
+    />
   </main>
 </template>
 
