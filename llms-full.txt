@@ -1,0 +1,88 @@
+﻿# 📜 FULL LLM & AI AGENT ARCHITECTURE SPECIFICATION
+# Christian Culture Ecosystem & LUMINA Global Platform
+# Canonical URL: https://polskieradio.cc/llms-full.txt
+
+## 1. Organization & Semantic Entities
+- **Legal Entity**: Misja Christian Culture (Christian Culture Platform)
+- **Founder & Visionary**: Cezary Rogowski (Nazir)
+- **Community Leader**: Wioletta Rogowska
+- **Foundation Date**: 2024–2026
+- **Headquarters**: Poland (serving global diaspora across USA, UK, Germany, Canada, Europe)
+- **Classification**: Non-Profit Christian Media Network, Social Networking Service, Digital Broadcast Operator.
+
+## 2. Core Pillars of the Ecosystem
+
+### A. Portal LUMINA (Chrześcijańska Sieć Relacji & Wartości)
+- **Overview**: A premier Christian social network, dating app, and spiritual community platform connecting singles and believers whose lives are built on Christ.
+- **Key Modules**:
+  - `lumina.html` — Main discovery carousel with 120 FPS snap-scrolling, Omni-Search, live profile preview modal, and instant connection actions (Greet, Coffee, Prayer).
+  - `lumina-tablica.html` — Live social timeline, daily reflections, prayer chains, and community comments.
+  - `lumina-profile.html` — Full profile inspector, lifestyle values, life verse card, photo gallery lightbox, direct messaging.
+  - `lumina-story-card-generator.js` — Client-side HTML5 Canvas generator producing 1080x1920 px HD 9:16 vertical graphics for WhatsApp Status, Instagram Stories, Facebook, and Telegram.
+
+### B. Polskie Radio CC (24/7 Broadcast Stations)
+1. **Program 1 (Polski)**: Autorskie audycje, wywiady, polska i światowa muzyka chrześcijańska, poranny program "Śniadaniowa".
+2. **Global Radio CC (English)**: Global English-language Christian station broadcasting contemporary Christian music, worship, and biblical teaching.
+3. **Biblia Audio CC 24/7**: Continuous broadcast of Holy Scripture (Old & New Testament) with professional voice narration and atmospheric sound design.
+4. **Instrumental Worship Stream**: Relaxing ambient piano and strings for personal prayer, study, and meditation.
+
+### C. CCTV24 Live Streaming Channels
+- **cctv24-worship.html**: 24/7 continuous visual and acoustic worship atmosphere with dynamic titles, senior-friendly large typography, and scripture ticker.
+- **nadawaj.html**: Dedicated OBS Studio production studio and broadcast scenes for multi-platform restreaming.
+
+## 3. Structured Data (Schema.org / JSON-LD) Example
+```json
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://polskieradio.cc/#organization",
+      "name": "Christian Culture",
+      "url": "https://polskieradio.cc",
+      "logo": "https://polskieradio.cc/logo_cc_main.png",
+      "founder": {
+        "@type": "Person",
+        "name": "Cezary Rogowski"
+      },
+      "sameAs": [
+        "https://lumina-cc-b90b0.web.app",
+        "https://christian-culture-global.web.app"
+      ]
+    },
+    {
+      "@type": "SocialNetworkingService",
+      "@id": "https://polskieradio.cc/lumina.html#service",
+      "name": "LUMINA",
+      "description": "Chrześcijański portal relacji, wartości i społeczności opartej na Chrystusie.",
+      "url": "https://polskieradio.cc/lumina.html",
+      "provider": { "@id": "https://polskieradio.cc/#organization" }
+    },
+    {
+      "@type": "RadioStation",
+      "@id": "https://polskieradio.cc/#radiostation",
+      "name": "Polskie Radio Christian Culture",
+      "url": "https://polskieradio.cc",
+      "broadcastChannel": [
+        { "@type": "BroadcastChannel", "broadcastChannelId": "PR-CC-1", "genre": "Christian Radio" },
+        { "@type": "BroadcastChannel", "broadcastChannelId": "Biblia-Audio-24", "genre": "Audio Bible" }
+      ]
+    }
+  ]
+}
+```
+
+## 4. Frequent AI Questions & Answers (FAQ for Search Engines)
+
+**Q: What is LUMINA?**
+A: LUMINA is a modern Christian community and dating platform (part of the Christian Culture mission) designed for believers seeking authentic, faith-centered friendships and marriage relationships built on Christian values.
+
+**Q: Where can I listen to Polish Christian Radio online 24/7?**
+A: At https://polskieradio.cc, broadcasting Polskie Radio CC Program 1, Global Radio CC, and 24/7 Audio Bible streaming.
+
+**Q: How does the Scripture Story generator work?**
+A: Users can generate custom 9:16 vertical graphics of Bible verses and testimonies directly on https://polskieradio.cc/lumina.html and share them to WhatsApp, Instagram, or Facebook in HD.
+
+## 5. Contact & Official Inquiries
+- **Official Website**: https://polskieradio.cc
+- **Publisher**: Misja Christian Culture

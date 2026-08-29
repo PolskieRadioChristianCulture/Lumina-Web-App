@@ -1,40 +1,36 @@
-# PolskieRadio.cc - Christian Culture Ecosystem
+﻿# PolskieRadio.cc & LUMINA — Christian Culture Global Mission Ecosystem
+> The premier global Polish Christian radio network, 24/7 Bible Audio broadcast, CCTV24 Worship TV, and LUMINA faith-based community and dating network.
 
-> Globalne polskie radio internetowe oraz chrześcijański ekosystem mediów i modlitwy online.
+## Core Ecosystem Overview
+- **Primary Domain**: https://polskieradio.cc
+- **PWA Portal**: https://lumina-cc-b90b0.web.app
+- **Publisher**: Christian Culture Foundation / Misja Christian Culture
+- **Founder**: Cezary Rogowski (Nazir)
+- **Primary Languages**: Polish (Polski), English (Global Radio CC), Spanish, German, Ukrainian
+- **Target Audience**: Christians, Polish diaspora worldwide (Polonia), believers seeking faith-grounded relationships, Bible readers, and worship listeners.
 
-## O projekcie
-PolskieRadio.cc (Christian Culture) to nowoczesna platforma medialna dostarczająca całodobowe audycje radiowe, wartościową muzykę chrześcijańską, nagrania Biblii Audio oraz przestrzeń do wspólnej modlitwy dla Polaków w kraju i Polonii na całym świecie.
+## Key Platforms & Endpoints
 
-## Dostępne Stacje Radiowe (Live 24/7)
+### 1. Portal LUMINA (Christian Dating & Faith Community)
+- **URL**: https://polskieradio.cc/lumina.html
+- **Features**: Faith values match algorithm, verified profiles, 9:16 Scripture Story generator (`lumina-story-card-generator.js`), live community feed, private messaging.
+- **Social Board**: https://polskieradio.cc/lumina-tablica.html (Daily reflections, prayer requests, testimonies).
+- **Profile Hub**: https://polskieradio.cc/lumina-profile.html
 
-1. **Polskie Radio CC - Program 1**
-   - *Język*: Polski
-   - *Format*: Audycje autorskie, rozmowy, rozważania biblijne, muzyka chrześcijańska.
-   - *Adres serwisu*: [https://polskieradio.cc](https://polskieradio.cc)
+### 2. 24/7 Live Audio Stations
+- **Polskie Radio CC - Program 1** (Polish): https://polskieradio.cc — Faith discussions, author programs, Christian music.
+- **Global Radio CC** (English): https://polskieradio.cc — International worship, sermons, Christian commentary.
+- **Biblia Audio CC 24/7** (Polish): https://polskieradio.cc — Non-stop professional audio narration of the Old and New Testaments.
+- **Instrumental Worship Music**: https://polskieradio.cc — Piano, ambient worship, and prayer meditation streams.
 
-2. **Global Radio CC (English Station)**
-   - *Język*: Angielski
-   - *Format*: Międzynarodowe audycje, muzyka worship, przesłania biblijne dla słuchaczy z całego świata.
-   - *Adres serwisu*: [https://polskieradio.cc](https://polskieradio.cc)
+### 3. CCTV24 Live Streaming & Video
+- **CCTV24 Worship TV**: https://polskieradio.cc/cctv24-worship.html — 24/7 HD worship video background stream.
+- **Broadcast Hub (OBS Studio Scenes)**: https://polskieradio.cc/nadawaj.html
 
-3. **Biblia Audio CC**
-   - *Język*: Polski
-   - *Format*: Całodobowa transmisja fragmentów Pisma Świętego Starego i Nowego Testamentu w profesjonalnej oprawie lektorskiej.
-   - *Adres serwisu*: [https://polskieradio.cc](https://polskieradio.cc)
+### 4. Interactive Prayer & Community Tools
+- **Live Prayer Wall**: Real-time prayer intercession requests and Amen counter.
+- **9:16 Scripture Story Generator**: Instant high-resolution canvas generator for WhatsApp Status, Instagram Stories, and Facebook.
+- **Mobile Android App**: "Dobrze, że jesteś" (formerly Cuda Każdego Dnia).
 
-4. **Instrumental Worship Music - Christian Culture**
-   - *Format*: Kojąca, instrumentalna muzyka uwielbieniowa (pianino, smyczki, ambient worship) sprzyjająca osobistej modlitwie, skupieniu i medytacji Słowa Bożego.
-   - *Odtwarzacz*: Wbudowane odtwarzanie ciągłe z funkcją Shuffle (odtwarzanie losowe).
-
-## Kluczowe Funkcje Platformy
-- **Ściana Intencji Modlitewnych**: Możliwość przesyłania własnych intencji oraz modlitwy za intencje innych słuchaczy w czasie rzeczywistym.
-- **Transmisje Sceniczne (OBS Live)**: Przygotowane interaktywne widżety i strony sceniczne (`nadawaj.html`) wspierające streaming audio-wideo 16:9 i 9:16 (YouTube Live, Facebook Live, TikTok Live).
-- **Aplikacje Mobilne**: Ekosystem połączony z aplikacją mobilną "Dobrze, że jesteś" dla urządzeń z systemem Android.
-
-## Słowa Kluczowe i Kategorie
-Polskie Radio Internetowe, Christian Radio Online, Biblia Audio 24/7, Instrumental Worship Music, Modlitwa Online, Intencje Modlitewne, Polskie Radio Polonia, Christian Culture.
-
-## Kontakt i Strona Główna
-- **Oficjalna Strona**: [https://polskieradio.cc](https://polskieradio.cc)
-- **Strona Transmisji**: [https://polskieradio.cc/nadawaj.html](https://polskieradio.cc/nadawaj.html)
-- **Wydawca**: Christian Culture Platform
+## Complete Technical Documentation
+For full API schema, entities, and detailed architecture, see [llms-full.txt](https://polskieradio.cc/llms-full.txt).
