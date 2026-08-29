@@ -3805,22 +3805,45 @@ window.share3DBadgeToFeed = async function() {
 };
 
 // ══════════════════════════════════════════════════════════════════════════
-// ── GENUINE PROFILE MATCH SCORE ALGORITHM (Wyznanie, Wartości, Miasto, Wiek) ──
-// ══════════════════════════════════════════════════════════════════════════
+export function detectProfileGender(p) {
+    if (!p) return 'unknown';
+    const g = (p.gender || '').toLowerCase().trim();
+    if (g === 'kobieta' || g === 'female' || g === 'woman' || g === 'dziewczyna') return 'female';
+    if (g === 'mezczyzna' || g === 'mężczyzna' || g === 'male' || g === 'man' || g === 'facet') return 'male';
+
+    const denom = (p.denom || '').toLowerCase();
+    if (denom.includes('chrześcijanka') || denom.includes('kobieta')) return 'female';
+    if (denom.includes('chrześcijanin') || denom.includes('mężczyzna')) return 'male';
+
+    const status = (p.status || '').toLowerCase();
+    if (status.includes('panna') || status.includes('mężatka') || status.includes('rozwiedziona') || status.includes('wdowa')) return 'female';
+    if (status.includes('kawaler') || status.includes('żonaty') || status.includes('rozwiedziony') || status.includes('wdowiec')) return 'male';
+
+    const slug = (p.slug || p.id || '').toLowerCase();
+    if (slug.includes('wioletta') || slug.includes('magdalena') || slug.includes('dorota') || slug.includes('urszula') || slug.includes('anna') || slug.includes('noemi') || slug.includes('weronika') || slug.includes('dominika') || slug.includes('sylwia') || slug.includes('bernardeta') || slug.includes('ccwomen') || slug.includes('jola')) return 'female';
+    if (slug.includes('cezary') || slug.includes('andrzej') || slug.includes('robert') || slug.includes('lukasz') || slug.includes('tomek') || slug.includes('dawid') || slug.includes('rafal') || slug.includes('ccmen')) return 'male';
+
+    const name = (p.name || p.displayName || '').toLowerCase().trim();
+    if (name.endsWith('a') && !name.startsWith('kuba') && !name.startsWith('barnaba')) return 'female';
+    return 'male';
+}
+
 export function calculateProfileMatchScore(targetProfile, currentProfile) {
     if (!targetProfile) return null;
     
-    // Profile misyjne / kanały redakcyjne nie mają sztucznego procentu matrymonialnego
-    if (targetProfile.isMissionAccount || targetProfile.isMission || 
+    // Profile misyjne / kanały redakcyjne / oficjalne konta nie mają procentu dopasowania matrymonialnego
+    if (targetProfile.isMissionAccount || targetProfile.isMission || targetProfile.isFounder ||
         targetProfile.slug === 'radiocc' || targetProfile.slug === 'studiodobregoslowa' || 
         targetProfile.slug === 'osobowoscplus' || targetProfile.slug === 'ccwomen' ||
-        targetProfile.slug === 'jolawojcik' || targetProfile.slug === 'andrzejthiel') {
-        return '✨ Misja CC';
+        targetProfile.slug === 'jolawojcik' || targetProfile.slug === 'andrzejthiel' ||
+        targetProfile.slug === 'cezaryrgowski' || targetProfile.slug === 'cezaryrogowski' ||
+        targetProfile.slug === 'wiolettarogowska') {
+        return null;
     }
 
     const myProfile = currentProfile || (typeof window.LuminaDB?.getCurrentProfile === 'function' ? window.LuminaDB.getCurrentProfile() : null);
     if (!myProfile || !myProfile.name || myProfile.slug === 'guest') {
-        return null; // Dla gości/niezalogowanych nie wyświetlamy technicznego badge'a (Opcja A)
+        return null; // Dla gości/niezalogowanych nie wyświetlamy
     }
 
     // Jeśli przeglądamy własny profil
@@ -3828,7 +3851,17 @@ export function calculateProfileMatchScore(targetProfile, currentProfile) {
         return 'Twój profil';
     }
 
-    let score = 50; // Baza wyjściowa
+    // ── PANCERNA REGUŁA DOPASOWANIA PŁCI: ──
+    // Profile męskie NIE MOGĄ mieć dopasowań z profilami męskimi,
+    // a profile kobiece NIE MOGĄ mieć dopasowań z profilami kobiecymi.
+    const myGender = detectProfileGender(myProfile);
+    const targetGender = detectProfileGender(targetProfile);
+
+    if (myGender === targetGender && myGender !== 'unknown') {
+        return null; // Ta sama płeć (męski-męski lub kobiecy-kobiecy) -> brak dopasowania
+    }
+
+    let score = 55; // Baza wyjściowa dla par o przeciwnej płci
 
     // 1. Zgodność wyznaniowa (Chrześcijaństwo / Denominacja) - max +20%
     if (myProfile.denom && targetProfile.denom) {
@@ -3866,19 +3899,8 @@ export function calculateProfileMatchScore(targetProfile, currentProfile) {
         else if (diff > 15) score -= 10;
     }
 
-    // 5. Preferencje płci (LookingFor / Gender)
-    if (myProfile.lookingFor && targetProfile.gender) {
-        const looking = myProfile.lookingFor.toLowerCase();
-        const targetG = targetProfile.gender.toLowerCase();
-        if ((looking.includes('kobiet') && !targetG.includes('kobiet')) ||
-            (looking.includes('mężczyzn') && !targetG.includes('mężczyzn')) ||
-            (looking.includes('mezczyzn') && !targetG.includes('mezczyzn'))) {
-            score -= 25;
-        }
-    }
-
-    // Clamp score 15% - 99%
-    score = Math.max(15, Math.min(99, Math.round(score)));
+    // Clamp score 50% - 99%
+    score = Math.max(50, Math.min(99, Math.round(score)));
     return score + '%';
 }
 
@@ -4383,6 +4405,8 @@ window.LuminaDB.getUserBadges = getUserBadges;
 window.LuminaDB.render3DBadgesGridHtml = render3DBadgesGridHtml;
 window.LuminaDB.open3DBadgeDetailsModal = open3DBadgeDetailsModal;
 window.LuminaDB.ensure3DBadgeModalInDom = ensure3DBadgeModalInDom;
+window.LuminaDB.detectProfileGender = detectProfileGender;
+window.LuminaDB.calculateProfileMatchScore = calculateProfileMatchScore;
 
 export function isProfileNew(p) {
     if (!p) return false;
