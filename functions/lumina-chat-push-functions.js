@@ -126,9 +126,9 @@ async function sendToTokens(tokens, { title, body, icon, image, url, tag, data =
     const payloadData = {
         title: title || 'LUMINA ✨',
         body: body || '',
-        url: url || 'https://polskieradio.cc/lumina.html',
-        icon: icon || 'https://polskieradio.cc/lumina_icon.jpg',
-        badge: 'https://polskieradio.cc/lumina_icon.jpg',
+        url: url || 'https://polskieradio.cc/lumina',
+        icon: icon || 'https://polskieradio.cc/lumina-icon-512.png',
+        badge: 'https://polskieradio.cc/lumina-icon-192.png',
         tag: tag || 'lumina-general',
         ...(image ? { image } : {}),
         ...data
@@ -150,8 +150,8 @@ async function sendToTokens(tokens, { title, body, icon, image, url, tag, data =
             notification: {
                 title: title,
                 body: body,
-                icon: icon || 'https://polskieradio.cc/lumina_icon.jpg',
-                badge: 'https://polskieradio.cc/lumina_icon.jpg',
+                icon: icon || 'https://polskieradio.cc/lumina-icon-512.png',
+                badge: 'https://polskieradio.cc/lumina-icon-192.png',
                 image: image || undefined,
                 tag: tag || 'lumina-general',
                 renotify: true,
@@ -159,7 +159,7 @@ async function sendToTokens(tokens, { title, body, icon, image, url, tag, data =
                 actions: webpushActions,
             },
             fcmOptions: {
-                link: url || 'https://polskieradio.cc/lumina.html'
+                link: url || 'https://polskieradio.cc/lumina'
             },
         },
         tokens: tokens,

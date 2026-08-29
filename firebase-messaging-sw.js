@@ -25,7 +25,7 @@ try {
 
         const title = notification.title || data.title || 'LUMINA ✨';
         const body = notification.body || data.body || data.text || 'Masz nowe powiadomienie w portalu LUMINA.';
-        const icon = notification.icon || data.icon || data.avatar || './lumina_icon.jpg';
+        const icon = notification.icon || data.icon || data.avatar || './lumina-icon-512.png';
         const image = notification.image || data.image || data.imageUrl || undefined;
         let urlToOpen = data.url || './lumina.html';
 
@@ -75,7 +75,7 @@ try {
         const notificationOptions = {
             body: body,
             icon: icon,
-            badge: './lumina_icon.jpg',
+            badge: './lumina-icon-192.png',
             image: image,
             tag: tag,
             renotify: true,
