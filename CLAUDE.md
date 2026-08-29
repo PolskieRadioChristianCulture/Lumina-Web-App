@@ -6,12 +6,19 @@ Gdy Dowódca (Użytkownik) wpisze w czacie **`@ICC`** lub **`@monit`**, masz **b
 ```markdown
 📡 PEŁNY MONIT OPERACYJNY [@ICC]:
 * 🤖 **Aktywny Agent:** Claude (Anthropic)
-* 🎯 **Bieżące Zadanie:** [Nad czym dokładnie w tej sekundzie pracujesz]
+* 🎯 **Bieżące Zadanie:** [Zadanie pobrane z .github/DISPATCH_BOARD.md]
 * 📦 **Ostatni Commit:** [ID commita z git log -1] | Gałąź: main
 * 🛡️ **Strażnik Kodu:** [Wynik: node scripts/straznik-kodu-check.js]
 * 🌐 **Status Produkcji:** [Firebase Hosting: live / zsynchronizowano]
-* 📋 **Następny Krok:** [Co robisz dalej / na co czekasz]
+* 📋 **Następny Krok:** [Co robisz dalej / przekazanie do Antigravity na deploy]
 ```
+
+---
+
+## 🎯 SZTAB DYSPOZYCJI ZADAŃ (Antigravity ➔ Claude)
+* **Główny Koordynator Zadań:** Antigravity (działa w imieniu Dowódcy Nazira).
+* **Jak pobrać zadanie:** Sprawdź plik **`.github/DISPATCH_BOARD.md`**. Znajdź zadanie ze statusem `TODO` dopasowane do Twoich kompetencji (logika, audyt, UX, architektura), zmień na `IN_PROGRESS` i realizuj.
+* **Po wykonaniu:** Uruchom `node scripts/straznik-kodu-check.js`, ustaw w `DISPATCH_BOARD.md` status `READY_FOR_REVIEW` i zamelduj: `@Antigravity - zadanie gotowe do weryfikacji i wdrożenia`.
 
 ---
 
@@ -22,7 +29,7 @@ Zawsze przed i w trakcie wykonywania kroków zadeklaruj:
 ---
 
 ## 🔄 ROTACJA I ZASTĘPOWALNOŚĆ (Token-Limit Resilience)
-Dowódca korzysta z darmowych pakietów narzędzi AI. W każdej chwili innemu agentowi (np. Antigravity, GPT, Gemini, Copilot) mogą skończyć się tokeny. Gdy zostajesz wywołany słowem *"kontynuuj"*, *"dokończ"* lub `@ICC`, sprawdź `git status` i natychmiast podejmij zadanie w punkcie przerwania.
+Dowódca korzysta z darmowych pakietów narzędzi AI. W każdej chwili innemu agentowi mogą skończyć się tokeny. Gdy zostajesz wywołany słowem *"kontynuuj"*, *"dokończ"* lub `@ICC`, sprawdź `git status`, pobierz stan z `DISPATCH_BOARD.md` i natychmiast podejmij zadanie w punkcie przerwania.
 
 ---
 
