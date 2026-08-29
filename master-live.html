@@ -15,7 +15,34 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>CC Master Control Room (Auto-Switch)</title>
+    <title>CC Master Control Room (Auto-Switch) | Telewizja Christian Culture 24/7</title>
+
+    <!-- Facebook & Open Graph Video Player Metadata -->
+    <meta property="og:type" content="video.other">
+    <meta property="og:site_name" content="Telewizja Christian Culture 24/7">
+    <meta property="og:title" content="🔴 TELEWIZJA CC TV24 LIVE — Transmisja na Żywo 24/7">
+    <meta property="og:description" content="Oglądaj na żywo transmisję telewizyjną Christian Culture: Zjednoczeni za Polskę, Studium Biblijne, Muzyka Uwielbienia, Apokalipsa oraz wykłady prof. Waltera Veitha. Kliknij, aby włączyć transmisję!">
+    <meta property="og:url" content="https://polskieradio.cc/master">
+    <meta property="og:image" content="https://polskieradio.cc/tv24_cc.png">
+    <meta property="og:image:secure_url" content="https://polskieradio.cc/tv24_cc.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Telewizja CC TV24 Transmisja Na Żywo">
+    <meta property="og:video" content="https://polskieradio.cc/master">
+    <meta property="og:video:secure_url" content="https://polskieradio.cc/master">
+    <meta property="og:video:type" content="text/html">
+    <meta property="og:video:width" content="1280">
+    <meta property="og:video:height" content="720">
+
+    <!-- Twitter / X Player Card -->
+    <meta name="twitter:card" content="player">
+    <meta name="twitter:title" content="🔴 CC TV24 LIVE — Transmisja Telewizyjna Na Żywo">
+    <meta name="twitter:description" content="Dołącz do transmisji telewizyjnej Christian Culture 24/7. Kliknij i oglądaj na żywo!">
+    <meta name="twitter:image" content="https://polskieradio.cc/tv24_cc.png">
+    <meta name="twitter:player" content="https://polskieradio.cc/master">
+    <meta name="twitter:player:width" content="1280">
+    <meta name="twitter:player:height" content="720">
     
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -614,13 +641,13 @@
             </div>
         </div>
 
-        <!-- RIGHT CTA BUTTON -->
-        <div class="lumina-ticker-cta">
+        <!-- RIGHT CTA BUTTONS -->
+        <div class="lumina-ticker-cta" style="display:flex; align-items:center; gap:8px;">
+            <button type="button" class="lumina-cta-btn" onclick="shareToFacebook()" style="background:#1877F2; border-color:#3b82f6; color:#fff; cursor:pointer;" title="Udostępnij transmisję na Facebooku">
+                <i class="fa-brands fa-facebook"></i> UDOSTĘPNIJ NA FB
+            </button>
             <a href="/lumina" target="_blank" class="lumina-cta-btn">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i> DOŁĄCZ DO LUMINA
-            </a>
-        </div>
-    </div>
             </a>
         </div>
     </div>
@@ -998,6 +1025,23 @@
                 endSpecialSlot();
             }
         });
+
+        // Share to Facebook handler with pre-populated live broadcast link & autoplay
+        window.shareToFacebook = function() {
+            const shareUrl = encodeURIComponent('https://polskieradio.cc/master?autoplay=1&source=fb');
+            const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
+            window.open(fbUrl, '_blank', 'width=640,height=560,toolbar=0,menubar=0,location=0,status=0');
+        };
+
+        // Smart Autoplay & Fast Unmute for Facebook / Social Referrers
+        (function detectSocialReferrer() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isSocial = urlParams.has('fbclid') || urlParams.get('source') === 'fb' || urlParams.get('autoplay') === '1' || document.referrer.includes('facebook.com') || (navigator.userAgent && (navigator.userAgent.includes('FBAN') || navigator.userAgent.includes('FBAV')));
+            if (isSocial) {
+                console.log("MCR: Visitor arrived from Social / Facebook. Engaging instant autostart & un-muted playback!");
+                [100, 300, 600, 1000, 1800, 3200].forEach(delay => setTimeout(unmuteSubframe, delay));
+            }
+        })();
 
         // Start checking schedule every 10 seconds
         setInterval(checkSchedule, 10000);
