@@ -34,3 +34,4 @@ jobs:
           REPO_OWNER: ${{ github.repository_owner }}
         run: |
           node scripts/icc_scan.js
+
