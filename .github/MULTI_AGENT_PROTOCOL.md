@@ -17,10 +17,23 @@ Dokument ten określa zasady współpracy, formaty komunikacji i procedury opera
 
 ---
 
-## 🔄 1. ZASADA DYNAMICZNEJ ZASTĘPOWALNOŚCI (TOKEN-LIMIT RESILIENCE)
+## 📡 1. OBOWIĄZKOWY MONIT OPERACYJNY („AKTUALNIE PRACUJĘ NAD...”)
+
+> 🔔 **Żelazny Obowiązek Każdego Agenta:**
+> Każdy agent rozpoczynający, prowadzący lub wznawiający pracę ma **bezwzględny obowiązek** natychmiastowego zadeklarowania jasnego komunikatu statusu, aby Dowódca oraz inni agenci dokładnie wiedzieli, co się dzieje.
+
+### Standard Monitu:
+* **Na początku i w trakcie pracy:**
+  `📡 MONIT OPERACYJNY: [Nazwa Agenta] ➔ Aktualnie pracuję nad: [konkretne zadanie / plik / funkcja]...`
+* **Po zakończeniu zadania:**
+  `✅ MONIT ZAKOŃCZENIA: [Nazwa Agenta] ➔ Ukończono: [zakres prac] | Strażnik Kodu: [wynik] | Gotowy do przekazania pałeczki.`
+
+---
+
+## 🔄 2. ZASADA DYNAMICZNEJ ZASTĘPOWALNOŚCI (TOKEN-LIMIT RESILIENCE)
 
 > ⚡ **Kluczowa Reguła Operacyjna Dowódcy:**
-> Dowództwo korzysta z bezpłatnych pakietów narzędzi AI. W dowolnym momencie danemu agentowi mogą wyczerpać się limity zapytań / tokenów (Rate Limits / Quota). 
+> Dowództwo korzysta z bezpłatnych pakietów narzędzi AI. W dowolnym momencie danemu agentowi mogą wyczerpać się limity zapytań / tokenów (*Rate Limits / Quota*). 
 > **Wszyscy agenci mają bezwzględny obowiązek inteligentnego, natychmiastowego i płynnego przejmowania zadań przerwanych przez poprzednika.**
 
 ### Zasady Płynnego Zastępstwa (Smart Handover):
@@ -30,7 +43,7 @@ Dokument ten określa zasady współpracy, formaty komunikacji i procedury opera
 
 ---
 
-## 🏷️ 2. Format Podpisu Commitów (Standard Wieloosobowy)
+## 🏷️ 3. Format Podpisu Commitów (Standard Wieloosobowy)
 
 Każdy commit w repozytorium musi jednoznacznie wskazywać typ zmiany, moduł oraz agenta wykonawczego:
 
@@ -50,7 +63,7 @@ Dozwolone prefiksy: `feat`, `fix`, `refactor`, `style`, `docs`, `ci`, `chore`, `
 
 ---
 
-## 📋 3. Standard Notatki Przekazania (Handoff Template)
+## 📋 4. Standard Notatki Przekazania (Handoff Template)
 
 Gdy agent kończy etap i przekazuje zadanie kolejnemu agentowi w Issue, PR lub dyskusji, stosuje standardowy raport:
 
@@ -65,7 +78,7 @@ Gdy agent kończy etap i przekazuje zadanie kolejnemu agentowi w Issue, PR lub d
 
 ---
 
-## 🛡️ 4. Pancerne Zasady Jakości i Bezpieczeństwa (Zero Kolizji)
+## 🛡️ 5. Pancerne Zasady Jakości i Bezpieczeństwa (Zero Kolizji)
 
 1. **Egzekucja Strażnika Kodu:**
    * Przed każdym zatwierdzeniem kodu (`git commit` / `git push`) **bezwzględnie uruchamiamy**:
@@ -87,7 +100,7 @@ Gdy agent kończy etap i przekazuje zadanie kolejnemu agentowi w Issue, PR lub d
 
 ---
 
-## 🏷️ 5. Wywołania i Etykiety Agentów (@mentions)
+## 🏷️ 6. Wywołania i Etykiety Agentów (@mentions)
 
 * `@Antigravity` — Zadania terminalowe, wdrożenia Firebase, skrypty wykonawcze, egzekucja Strażnika Kodu
 * `@Claude` — Przegląd kodu (*Code Review*), optymalizacja kaskad stylów, logika biznesowa, dostępność i UX
