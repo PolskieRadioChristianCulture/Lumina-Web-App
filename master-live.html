@@ -920,13 +920,20 @@
             }
         }
 
-        // Forward click/touch interaction to unmute nested iframe & video bumper
-        function unmuteSubframe() {
+        // Auto-hide unmute banner after 4 seconds so it doesn't cover the top bar
+        function hideMasterBanner() {
             const banner = document.getElementById('masterUnmuteBanner');
             if (banner) {
+                banner.style.transition = 'opacity 0.6s ease';
                 banner.style.opacity = '0';
-                setTimeout(() => { banner.style.display = 'none'; }, 500);
+                setTimeout(() => { banner.style.display = 'none'; }, 600);
             }
+        }
+        setTimeout(hideMasterBanner, 4000);
+
+        // Forward click/touch interaction to unmute nested iframe & video bumper
+        function unmuteSubframe() {
+            hideMasterBanner();
             try {
                 if (bumperVideo) {
                     bumperVideo.muted = false;
