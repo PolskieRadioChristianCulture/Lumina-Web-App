@@ -23,3 +23,11 @@ try {
 const ckdSync = require('./lumina-ckd-sync-function.js');
 exports.scheduledCudaKazdegoDniaSync = ckdSync.scheduledCudaKazdegoDniaSync;
 exports.triggerCudaKazdegoDniaSyncNow = ckdSync.triggerCudaKazdegoDniaSyncNow;
+
+const badges = require('./lumina-badges-functions.js');
+exports.onProfileCreatedCheckFounderBadge = badges.onProfileCreatedCheckFounderBadge;
+exports.onPostCreatedCheckFirstStepBadge = badges.onPostCreatedCheckFirstStepBadge;
+exports.onFollowCreatedCheckBridgeBuilderBadge = badges.onFollowCreatedCheckBridgeBuilderBadge;
+exports.onShareCreatedCheckAmbassadorBadge = badges.onShareCreatedCheckAmbassadorBadge;
+exports.scheduledDailyBadgeCheck = badges.scheduledDailyBadgeCheck;
+

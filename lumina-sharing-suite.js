@@ -395,6 +395,13 @@
         const encodedText = encodeURIComponent(`${text}\n\n${url}`);
         const encodedUrl = encodeURIComponent(url);
 
+        // NAPRAWA: udostępnianie było w 100% bezstanowe — otwierało panel,
+        // ale nigdzie nie zapisywało faktu, że do udostępnienia doszło.
+        // To zapisuje realne zdarzenie, potrzebne m.in. pod odznakę "Ambasador".
+        if (platform !== 'native' && typeof window.recordShareEvent === 'function') {
+            window.recordShareEvent({ platform, url, title });
+        }
+
         switch (platform) {
             case 'whatsapp':
                 window.open(`https://api.whatsapp.com/send?text=${encodedText}`, '_blank');
@@ -414,6 +421,9 @@
             case 'native':
                 if (navigator.share) {
                     navigator.share({ title, text, url }).then(() => {
+                        if (typeof window.recordShareEvent === 'function') {
+                            window.recordShareEvent({ platform: 'native', url, title });
+                        }
                         if (typeof showToast === 'function') showToast('Dziękujemy za udostępnienie! ✨🕊️');
                     }).catch(() => {});
                 } else {
