@@ -1,4 +1,30 @@
-# 🤖 CODEX AI ONBOARDING & ARCHITECTURE GUIDE (LUMINA & CHRISTIAN CULTURE)
+﻿# 🤖 MULTI-AGENT INSTRUCTIONS (AGENTS.md) — CHRISTIAN CULTURE & LUMINA
+
+## 🚨 NACZELNE HASŁO OPERACYJNE DOWÓDCY: `@ICC` (lub `@monit`)
+Gdy Dowódca (Użytkownik) wpisze w czacie **`@ICC`** lub **`@monit`**, masz **bezwzględny obowiązek** natychmiast wygenerować pełny, ustrukturyzowany **Raport Gotowości Bojowej**:
+
+```markdown
+📡 PEŁNY MONIT OPERACYJNY [@ICC]:
+* 🤖 **Aktywny Agent:** [Twoja Nazwa Agenta, np. Agent GPT / Antigravity / Gemini]
+* 🎯 **Bieżące Zadanie:** [Nad czym dokładnie w tej sekundzie pracujesz]
+* 📦 **Ostatni Commit:** [ID commita z git log -1] | Gałąź: main
+* 🛡️ **Strażnik Kodu:** [Wynik: node scripts/straznik-kodu-check.js]
+* 🌐 **Status Produkcji:** [Firebase Hosting: live / zsynchronizowano]
+* 📋 **Następny Krok:** [Co robisz dalej / na co czekasz]
+```
+
+---
+
+## 📡 MONIT PRZY KAŻDEJ AKCJI („Aktualnie pracuję nad...”)
+Zawsze przed i w trakcie wykonywania kroków zadeklaruj:
+`📡 MONIT OPERACYJNY: [Nazwa Agenta] ➔ Aktualnie pracuję nad: [opis zadania/pliku]...`
+
+---
+
+## 🔄 ROTACJA I ZASTĘPOWALNOŚĆ (Token-Limit Resilience)
+Dowódca korzysta z bezpłatnych pakietów narzędzi AI. W dowolnym momencie danemu agentowi mogą skończyć się tokeny (Quota). Gdy zostajesz wywołany słowem *"kontynuuj"*, *"dokończ"* lub `@ICC`, sprawdź `git status` i natychmiast podejmij zadanie w punkcie przerwania.
+
+---
 
 ## 📌 Project Overview
 **LUMINA** is a premier Christian dating and community web platform and PWA part of the **Christian Culture** mission ecosystem.
@@ -32,48 +58,15 @@
 
 ## 🛡️ Critical Architecture Rules & Constraints (Non-Negotiable)
 
-1. **UTF-8 & Emoji Encoding Integrity:**
+1. **Egzekucja Strażnika Kodu przed commitem:**
+   - Zawsze uruchom: `node scripts/straznik-kodu-check.js` (wymagane 0 naruszeń).
+2. **UTF-8 & Emoji Encoding Integrity:**
    - Always preserve UTF-8 encoding. Never corrupt Polish diacritics (`ą, ć, ę, ł, ń, ó, ś, ź, ż`) or emojis (`🕊️, 🙏, 👑, ✨, ☕, ❤️`).
-2. **Protected Production Files (READ-ONLY):**
+3. **Protected Production Files (READ-ONLY):**
    - `cctv24-worship.html` and other active live TV streams are strictly frozen in production. Do not edit them unless explicitly ordered.
-3. **Mission Control Privacy:**
+4. **Mission Control Privacy:**
    - Mission Control is the Commander's private panel. Never display or expose "Mission Control" text or references on public websites.
-4. **Dual Git Remotes:**
+5. **Dual Git Remotes:**
    - Changes must be pushed to both remotes:
      - `origin`: `https://github.com/PolskieRadioChristianCulture/Strona-www-Christian-Culture`
      - `lumina-repo`: `https://github.com/PolskieRadioChristianCulture/Lumina-Web-App.git`
-5. **No Regressions (Filar VIII):**
-   - Never break working features when adding new enhancements. Validate JavaScript syntax across all scripts before pushing.
-
----
-
-## 🚀 Common Commands & Scripts
-
-### 1. Kontrola regresji (wymagana przed przekazaniem zmian)
-```powershell
-npm test
-```
-
-### 2. Commit and Push to Both Remotes
-```powershell
-git add -- <wyłącznie-pliki-z-tego-zadania>
-git commit -m "feat/fix: descriptive message"
-git push origin main
-git push lumina-repo main
-```
-
-W repozytorium współdzielonym nie używaj `git add .`, nie nadpisuj cudzych
-zmian i nie wykonuj wymuszonego pushowania. Pełna procedura współpracy jest w
-`CONTRIBUTING.md`.
-
-### 3. Deploy to Production
-```powershell
-firebase deploy --project lumina-cc --only hosting:lumina
-```
-
----
-
-## 👑 Authorized Commander Accounts
-- `nazirczarkes@gmail.com` (Commander Nazir / Cezary Rogowski)
-- `radiochristianculture@gmail.com` (Mission Christian Culture / AI Agent)
-- `studiodees7@gmail.com` (Production & Media)
