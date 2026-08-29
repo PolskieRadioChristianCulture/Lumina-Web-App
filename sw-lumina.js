@@ -96,7 +96,7 @@ try {
 }
 
 // ══════════════════════════════════════════════════════════════════════════
-// LUMINA PRODUCTION PWA SERVICE WORKER (v3.9.1)
+// LUMINA PRODUCTION PWA SERVICE WORKER (v4.0.0)
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 

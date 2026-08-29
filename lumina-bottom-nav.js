@@ -669,7 +669,7 @@
                         <i class="fa-solid fa-shield-halved" style="color:#facc15;"></i> LUMINA • Bezpieczeństwo
                     </span>
                     <span style="font-weight:800; color:#facc15; background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.4); padding:3px 12px; border-radius:12px; font-family:'Outfit',sans-serif; letter-spacing:0.4px;">
-                        Wydanie v3.6.4
+                        Wydanie v4.0.0
                     </span>
                 </div>
             </div>
