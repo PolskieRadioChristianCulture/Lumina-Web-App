@@ -3890,12 +3890,8 @@
                     </div>
                 </div>
 
-                <!-- Quick Christian Emoji Bar -->
-                <div style="display: flex; gap: 6px; padding: 6px 14px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); overflow-x:auto;">
-                    <button type="button" onclick="insertPublicChatQuickText('Pokój Wam! Niech Bóg błogosławi dzisiejszy dzień ✨')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨ Błogosławieństwo</button>
-                    <button type="button" onclick="insertPublicChatQuickText('Proszę o modlitwę w mojej intencji ✨')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨ Prośba o modlitwę</button>
-                    <button type="button" onclick="insertPublicChatQuickText('Dziękuję Bogu za cudowny czas! Chwała Panu! ✨🙌')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨ Świadectwo</button>
-                </div>
+                <!-- Quick Christian Smart Blessings Bar -->
+                <div id="publicChatSmartBar" class="chat-quick-bar" data-target-input="publicChatInput"></div>
 
                 <!-- Wskaźnik "X pisze..." -->
                 <div id="publicChatTypingIndicator" class="lumina-typing-indicator"></div>
@@ -4011,12 +4007,8 @@
                         </div>
                     </div>
 
-                    <!-- Quick Christian Emoji Bar -->
-                    <div style="display: flex; gap: 6px; padding: 6px 14px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); overflow-x:auto;">
-                        <button type="button" onclick="insertChatQuickText('Niech Bóg Ci błogosławi! ✨')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨ Błogosławieństwo</button>
-                        <button type="button" onclick="insertChatQuickText('Chętnie pomodlę się w Twojej intencji! ✨')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">✨ Modlitwa</button>
-                        <button type="button" onclick="insertChatQuickText('Masz ochotę na chrześcijańską kawę? ☕')" style="padding: 4px 10px; border-radius: 14px; background: rgba(255,255,255,0.05); border: none; color: #cbd5e1; font-size: 0.72rem; cursor: pointer; white-space:nowrap;">☕ Kawa</button>
-                    </div>
+                    <!-- Quick Christian Smart Blessings Bar -->
+                    <div id="activeChatSmartBar" class="chat-quick-bar" data-target-input="activeChatInput"></div>
 
                     <!-- Chat Input Form -->
                     <form id="activeChatForm" class="chat-input-bar" onsubmit="handleSendActiveChatMessage(event)" style="display: flex; gap: 8px; padding: 10px 14px; background: rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.1);">
@@ -8392,6 +8384,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     </script>
     <script src="lumina-scroll-top.js" defer></script>
     <script src="lumina-story-card-generator.js" defer></script>
+    <script src="lumina-smart-blessings.js" defer></script>
     <script src="lumina-bottom-nav.js?v=20260825_urszula_real_face_v370" defer></script>
     <script src="lumina-notifications.js?v=4.0.0" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
