@@ -6278,6 +6278,27 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
         // ── Today's Devotional Reader Modal & Live Sync ──
         window.openTodayDevotionalModal = function() {
+            if (window._luminaDailyReflection) {
+                const ref = window._luminaDailyReflection;
+                const mTitle = document.getElementById('modalDevotionTitle');
+                if (mTitle && ref.title) mTitle.textContent = ref.title;
+                const mVerseBox = document.getElementById('modalDevotionVerseBox');
+                const mVerse = document.getElementById('modalDevotionVerseText');
+                if (mVerse) {
+                    if (ref.verse) {
+                        mVerse.textContent = ref.verse;
+                        if (mVerseBox) mVerseBox.style.display = 'block';
+                    } else if (mVerseBox) {
+                        mVerseBox.style.display = 'none';
+                    }
+                }
+                const mBody = document.getElementById('modalDevotionBody');
+                if (mBody && (ref.fullTextHtml || ref.fullText)) {
+                    mBody.innerHTML = `<p style="line-height:1.7;">${ref.fullTextHtml || ref.fullText}</p>`;
+                }
+            } else if (window.LuminaDB && typeof window.LuminaDB.loadLuminaDailyDevotional === 'function') {
+                window.LuminaDB.loadLuminaDailyDevotional();
+            }
             const modal = document.getElementById('devotionalModal');
             if (modal) modal.classList.add('open');
         };

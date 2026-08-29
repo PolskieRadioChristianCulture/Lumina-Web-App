@@ -3381,9 +3381,179 @@ export function calculateProfileMatchScore(targetProfile, currentProfile) {
 
 window.calculateProfileMatchScore = calculateProfileMatchScore;
 
+// ══════════════════════════════════════════════════════════════════════════
+// AUTOMATYCZNE POBIERANIE ROZWAŻANIA DNIA (FAITH & GROWTH HUB)
+// ══════════════════════════════════════════════════════════════════════════
+export async function loadLuminaDailyDevotional() {
+    try {
+        const now = new Date();
+        const pad = (n) => n < 10 ? '0' + n : n;
+        const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+
+        const dayNames = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+        const monthNames = ['Stycznia', 'Lutego', 'Marca', 'Kwietnia', 'Maja', 'Czerwca', 'Lipca', 'Sierpnia', 'Września', 'Października', 'Listopada', 'Grudnia'];
+        const formattedDatePl = `${dayNames[now.getDay()]}, ${now.getDate()} ${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+
+        let devotionData = null;
+
+        // 1. Próba pobrania z Firestore cc-mission-control (kolekcja web_inspirations)
+        try {
+            const mcConfig = {
+                apiKey: "AIzaSyDou1gYyuJnuF2WocXEqglfRPqqwMm0Ge4",
+                authDomain: "cc-mission-control.firebaseapp.com",
+                projectId: "cc-mission-control",
+                storageBucket: "cc-mission-control.firebasestorage.app",
+                messagingSenderId: "519207260358",
+                appId: "1:519207260358:web:d875a610f438ecad2c47c7"
+            };
+            const existingApps = getApps();
+            let mcApp = existingApps.find(a => a.name === 'lumina-mc');
+            if (!mcApp) {
+                mcApp = initializeApp(mcConfig, 'lumina-mc');
+            }
+            const mcDb = getFirestore(mcApp);
+
+            const q = query(
+                collection(mcDb, 'web_inspirations'),
+                orderBy('date', 'desc'),
+                limit(10)
+            );
+            const snap = await getDocs(q);
+            if (!snap.empty) {
+                let matched = null;
+                for (const docSnap of snap.docs) {
+                    const d = docSnap.data();
+                    if (d.date === todayStr) {
+                        matched = d;
+                        break;
+                    }
+                }
+                devotionData = matched || snap.docs[0].data();
+            }
+        } catch (fsErr) {
+            console.warn('LUMINA: Pobieranie rozważania z chmury Firebase (fallback do bazy lokalnej):', fsErr.message);
+        }
+
+        // 2. Fallback do rozwazania_baza.json
+        if (!devotionData) {
+            try {
+                const res = await fetch('rozwazania_baza.json?v=' + Date.now());
+                if (res.ok) {
+                    const list = await res.json();
+                    if (Array.isArray(list) && list.length > 0) {
+                        const found = list.find(r => r.date === todayStr);
+                        devotionData = found || list[0];
+                    }
+                }
+            } catch (jsonErr) {
+                console.warn('LUMINA: Pobieranie rozważania z JSON fallback:', jsonErr.message);
+            }
+        }
+
+        if (!devotionData) return;
+
+        // Ekstrakcja danych
+        const title = devotionData.title || `☀️ Dobrze, że jesteś — Słowo na Dziś`;
+        const rawContent = devotionData.contentWeb || devotionData.fullText || devotionData.content || devotionData.teaser || '';
+        const teaser = devotionData.teaser || (rawContent.length > 160 ? rawContent.substring(0, 160) + '...' : rawContent);
+
+        // Ekstrakcja wersetu biblijnego
+        let verseText = '';
+        const verseMatch = rawContent.match(/„([^”]+)”\s*\(([^)]+)\)/) || rawContent.match(/"([^"]+)"\s*\(([^)]+)\)/);
+        if (verseMatch) {
+            verseText = `„${verseMatch[1]}” (${verseMatch[2]})`;
+        }
+
+        // Formatowanie tekstu HTML z aktywnymi linkami
+        const formattedHtml = (typeof formatRichTextAndMedia === 'function') ? formatRichTextAndMedia(rawContent) : rawContent
+            .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
+                const href = url.startsWith('http') ? url : 'https://' + url;
+                let label = 'Otwórz odnośnik';
+                if (url.includes('chat.whatsapp.com')) label = 'Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp)';
+                else if (url.includes('play.google.com')) label = 'Pobierz bezpłatne aplikacje w Google Play';
+                else if (url.includes('polskieradio.cc')) label = 'Polskie Radio Christian Culture';
+                else if (url.includes('cclite.pl')) label = 'Telewizja CC Lite';
+                else {
+                    try { label = new URL(href).hostname; } catch(e) { label = 'Otwórz odnośnik'; }
+                }
+                return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: #facc15; text-decoration: underline; font-weight: bold;">${label}</a>`;
+            })
+            .replace(/\n\n/g, '</p><p style="margin-top: 14px; line-height: 1.7;">')
+            .replace(/\n/g, '<br/>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+        // Aktualizacja DOM na stronie głównej (lumina.html)
+        const dateBadge = document.getElementById('devotionalDateBadge');
+        if (dateBadge) dateBadge.textContent = formattedDatePl;
+
+        const cardTitle = document.getElementById('devotionalCardTitle');
+        if (cardTitle) cardTitle.textContent = title;
+
+        const cardSnippet = document.getElementById('devotionalCardSnippet');
+        if (cardSnippet) cardSnippet.textContent = teaser;
+
+        const modalTitle = document.getElementById('modalDevotionTitle');
+        if (modalTitle) modalTitle.textContent = title;
+
+        const modalVerseBox = document.getElementById('modalDevotionVerseBox');
+        const modalVerseText = document.getElementById('modalDevotionVerseText');
+        if (modalVerseText) {
+            if (verseText) {
+                modalVerseText.textContent = verseText;
+                if (modalVerseBox) modalVerseBox.style.display = 'block';
+            } else if (modalVerseBox) {
+                modalVerseBox.style.display = 'none';
+            }
+        }
+
+        const modalBody = document.getElementById('modalDevotionBody');
+        if (modalBody) {
+            modalBody.innerHTML = `<p style="line-height: 1.7;">${formattedHtml}</p>`;
+        }
+
+        // Zapis do stanu globalnego
+        window._luminaDailyReflection = {
+            id: devotionData.id || ('daily_rozwazanie_' + todayStr),
+            title: title,
+            date: devotionData.date || todayStr,
+            fullText: rawContent,
+            fullTextHtml: formattedHtml,
+            teaser: teaser,
+            verse: verseText,
+            imageUrl: devotionData.imageUrl || 'promo_dzj.jpg'
+        };
+
+    } catch (err) {
+        console.warn('loadLuminaDailyDevotional global error:', err);
+    }
+}
+
+// Auto-inicjalizacja przy starcie strony i odświeżanie cykliczne
+if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            if (document.getElementById('todayDevotionalBanner') || document.getElementById('devotionalModal')) {
+                loadLuminaDailyDevotional();
+            }
+        });
+    } else {
+        if (document.getElementById('todayDevotionalBanner') || document.getElementById('devotionalModal')) {
+            loadLuminaDailyDevotional();
+        }
+    }
+    setInterval(() => {
+        if (document.getElementById('todayDevotionalBanner') || document.getElementById('devotionalModal')) {
+            loadLuminaDailyDevotional();
+        }
+    }, 900000); // Co 15 minut
+}
+
+window.loadLuminaDailyDevotional = loadLuminaDailyDevotional;
+
 // Global window attachment for seamless cross-script integration
 window.LuminaDB = {
     isProfileNew,
+    loadLuminaDailyDevotional,
 
     onAuthChange,
     getCurrentUser,
