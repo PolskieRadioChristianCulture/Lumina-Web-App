@@ -65,6 +65,7 @@
     <link rel="stylesheet" href="lumina-responsive-reset.css?v=2.5">
     <!-- Lumina Auto-Repair & Error Guardian Engine -->
     <script src="lumina-auto-repair.js"></script>
+    <script>window._currentProfileSlug = 'andrzejthiel';</script>
     <script type="module" src="lumina-db.js?v=1786937913306"></script>
     <script type="module" src="lumina-core.js"></script>
     <script type="module" src="lumina-security.js"></script>
@@ -1469,7 +1470,21 @@
         }
 
         let isFollowing = false;
-        function toggleFollowAndrzej(btn) {
+        // Prawdziwy system obserwowania zintegrowany z Firestore (lumina_likes)
+        async function toggleFollowAndrzej(btn) {
+            if (typeof window.toggleFollow === 'function') {
+                const result = await window.toggleFollow('andrzejthiel', { name: 'Andrzej Thiel', avatar: 'avatar_andrzej_thiel.jpg' });
+                if (result.error) { if (typeof showToast === 'function') showToast('Nie udało się zaktualizować obserwowania.'); return; }
+                btn.innerHTML = result.following
+                    ? '<i class="fa-solid fa-check"></i> Obserwujesz'
+                    : '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
+                btn.style.background = result.following ? '#10b981' : 'linear-gradient(135deg, var(--gold-accent), #d97706)';
+                if (typeof showToast === 'function') {
+                    showToast(result.following ? '✨ Obserwujesz profil Andrzeja Thiela!' : 'Przestałeś obserwować Andrzeja Thiela.');
+                }
+                return;
+            }
+            // Awaryjny fallback, gdyby lumina-db.js się nie załadował
             isFollowing = !isFollowing;
             if (isFollowing) {
                 btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';

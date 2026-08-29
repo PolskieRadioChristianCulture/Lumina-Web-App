@@ -3033,6 +3033,8 @@ export function isFollowingLocally(targetSlug) {
  * — podpina prawdziwy system pod już istniejący HTML, bez potrzeby zmiany
  * znaczników na każdej stronie profilu.
  */
+window.toggleFollow = toggleFollow;
+
 window.toggleProfileFollow = async function (btn) {
     const targetSlug = (window._currentProfileSlug || document.body.dataset.profileSlug || '').toLowerCase();
     if (!targetSlug) { console.warn('[LUMINA Follow] Nie ustawiono window._currentProfileSlug na tej stronie.'); return; }
