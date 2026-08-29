@@ -3212,29 +3212,43 @@ export function resolveMentionHandle(handle) {
     };
 }
 
+export function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 export function formatRichTextAndMedia(rawText) {
     if (!rawText) return { html: '', embedHtml: '', urls: [] };
     
+    // 1. Zabezpieczenie przed XSS (Sanityzacja znaczników HTML)
+    const sanitizedText = escapeHtml(rawText);
+
     // Regex for URLs
     const urlRegex = /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/gi;
-    const foundUrls = rawText.match(urlRegex) || [];
+    const foundUrls = sanitizedText.match(urlRegex) || [];
     
     // Replace URLs in text with rich styled <a> links
-    let formattedText = rawText.replace(urlRegex, (url) => {
+    let formattedText = sanitizedText.replace(urlRegex, (url) => {
         let display = url.replace(/^https?:\/\/(www\.)?/, '');
         if (display.length > 38) display = display.substring(0, 35) + '...';
-        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="post-rich-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>`;
+        const safeUrl = encodeURI(url).replace(/"/g, '&quot;');
+        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="post-rich-link" onclick="event.stopPropagation()"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.72rem;"></i> ${display}</a>`;
     });
 
     // Replace @mentions with clickable profile pills
     formattedText = formattedText.replace(/@([a-zA-Z0-9_]+)/g, (match, handle) => {
         const hInfo = resolveMentionHandle(handle);
-        return `<a href="${hInfo.url}" class="lumina-mention-pill" title="Przejdź do profilu: ${hInfo.name}" onclick="event.stopPropagation()"><i class="fa-solid fa-at"></i>${handle}</a>`;
+        return `<a href="${encodeURI(hInfo.url)}" class="lumina-mention-pill" title="Przejdź do profilu: ${escapeHtml(hInfo.name)}" onclick="event.stopPropagation()"><i class="fa-solid fa-at"></i>${escapeHtml(handle)}</a>`;
     });
 
     // Replace #hashtags with clickable search pills
     formattedText = formattedText.replace(/#([a-zA-Z0-9_ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)/g, (match, tag) => {
-        return `<a href="lumina-tablica.html?q=%23${encodeURIComponent(tag)}" class="lumina-hashtag-pill" title="Filtruj wpisy #${tag}" onclick="event.stopPropagation()"><i class="fa-solid fa-hashtag"></i>${tag}</a>`;
+        return `<a href="lumina-tablica.html?q=%23${encodeURIComponent(tag)}" class="lumina-hashtag-pill" title="Filtruj wpisy #${escapeHtml(tag)}" onclick="event.stopPropagation()"><i class="fa-solid fa-hashtag"></i>${escapeHtml(tag)}</a>`;
     });
 
     // Replace linebreaks with <br>

@@ -2,60 +2,180 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Master admin helper
+    // Master admin helper (Zweryfikowany przez Firebase Auth token)
     function isMasterAdmin() {
       return request.auth != null && (
         request.auth.token.email == 'nazirczarkes@gmail.com' ||
         request.auth.uid == 'nazirczarkes'
       );
     }
+
+    // Helper: czy użytkownik jest uwierzytelniony
+    function isAuthenticated() {
+      return request.auth != null;
+    }
     
-    // Public read and author edit for Lumina profiles
+    // ══════════════════════════════════════════════════════════════
+    // 1. PROFILE UŻYTKOWNIKÓW (lumina_profiles)
+    // ══════════════════════════════════════════════════════════════
     match /lumina_profiles/{profileId} {
       allow read: if true;
-      allow write: if isMasterAdmin() || request.auth != null || resource == null;
+      allow create: if isMasterAdmin() || isAuthenticated() || 
+        (request.resource.data.keys().hasAll(['name']) && request.resource.data.name is string);
+      allow update: if isMasterAdmin() || 
+        (isAuthenticated() && (request.auth.uid == profileId || request.auth.uid == resource.data.uid || request.auth.uid == request.resource.data.uid)) ||
+        (resource == null);
+      allow delete: if isMasterAdmin() || 
+        (isAuthenticated() && (request.auth.uid == profileId || request.auth.uid == resource.data.uid));
     }
     
-    // Public read, authenticated or guest create for posts
+    // ══════════════════════════════════════════════════════════════
+    // 2. WPISY NA TABLICY (lumina_posts)
+    // ══════════════════════════════════════════════════════════════
     match /lumina_posts/{postId} {
       allow read: if true;
-      allow create: if true;
-      allow update, delete: if isMasterAdmin() || request.auth != null;
+      allow create: if isMasterAdmin() || isAuthenticated() || 
+        (request.resource.data.keys().hasAll(['text', 'author']) && request.resource.data.text is string);
+      // Modyfikacja treści tylko dla autora; inni mogą jedynie aktualizować licznik polubień/reakcji
+      allow update: if isMasterAdmin() || 
+        (isAuthenticated() && (request.auth.uid == resource.data.authorId || request.auth.uid == resource.data.authorUid)) ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'amen', 'reactions', 'comments', 'likesCount', 'amenCount', 'isPinnedByAdmin', 'pinned']);
+      allow delete: if isMasterAdmin() || 
+        (isAuthenticated() && (request.auth.uid == resource.data.authorId || request.auth.uid == resource.data.authorUid));
     }
     
-    // Public read for CC Mission Campaigns
+    // ══════════════════════════════════════════════════════════════
+    // 3. KAMPANIE & REKLAMY MISYJNE (lumina_campaigns)
+    // ══════════════════════════════════════════════════════════════
     match /lumina_campaigns/{campaignId} {
       allow read: if true;
-      allow write: if isMasterAdmin() || request.auth != null;
+      allow write: if isMasterAdmin() || isAuthenticated();
     }
     
-    // Direct Chats & Messages (Top-level and Nested)
+    // ══════════════════════════════════════════════════════════════
+    // 4. WIADOMOŚCI PRYWATNE (lumina_direct_messages)
+    // ══════════════════════════════════════════════════════════════
     match /lumina_direct_messages/{messageId} {
-      allow read, write: if true;
+      // Odczyt tylko dla uczestników rozmowy lub Master Admina
+      allow read: if isMasterAdmin() || 
+        (isAuthenticated() && (
+          request.auth.uid == resource.data.senderId || 
+          request.auth.uid == resource.data.receiverId || 
+          (resource.data.participants is list && request.auth.uid in resource.data.participants)
+        )) ||
+        (resource == null);
+      
+      // Tworzenie wiadomości
+      allow create: if isMasterAdmin() || isAuthenticated() || 
+        (request.resource.data.keys().hasAll(['chatId', 'text', 'senderId']) && 
+         request.resource.data.text is string && 
+         request.resource.data.text.size() <= 4000);
+      
+      // Aktualizacja (np. oznaczenie jako przeczytane, dodanie reakcji emoji)
+      allow update: if isMasterAdmin() || 
+        (isAuthenticated() && (
+          request.auth.uid == resource.data.senderId || 
+          request.auth.uid == resource.data.receiverId || 
+          (resource.data.participants is list && request.auth.uid in resource.data.participants)
+        )) ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['isRead', 'status', 'readAt', 'readByName', 'reactions']);
+      
+      // Usunięcie wiadomości tylko przez nadawcę lub admina
+      allow delete: if isMasterAdmin() || 
+        (isAuthenticated() && request.auth.uid == resource.data.senderId);
     }
 
+    // ══════════════════════════════════════════════════════════════
+    // 5. CZAT OGÓLNY (lumina_public_chat_messages)
+    // ══════════════════════════════════════════════════════════════
     match /lumina_public_chat_messages/{messageId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['text', 'senderName']) && 
+        request.resource.data.text is string && 
+        request.resource.data.text.size() <= 2000;
+      allow update: if isMasterAdmin() || 
+        (isAuthenticated() && request.auth.uid == resource.data.senderId) ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reactions', 'seenBy']);
+      allow delete: if isMasterAdmin() || 
+        (isAuthenticated() && request.auth.uid == resource.data.senderId);
     }
 
+    // ══════════════════════════════════════════════════════════════
+    // 6. POKOJE CZATU & PODKOLEKCJE (lumina_chats)
+    // ══════════════════════════════════════════════════════════════
     match /lumina_chats/{chatId} {
-      allow read, write: if true;
+      allow read: if isMasterAdmin() || 
+        (isAuthenticated() && (resource == null || (resource.data.participants is list && request.auth.uid in resource.data.participants))) ||
+        (resource == null);
+      allow write: if isMasterAdmin() || isAuthenticated() || 
+        (request.resource.data.keys().hasAll(['updatedAt']));
       
       match /messages/{messageId} {
-        allow read, write: if true;
+        allow read: if isMasterAdmin() || 
+          (isAuthenticated() && (
+            request.auth.uid == resource.data.senderId || 
+            request.auth.uid == resource.data.receiverId || 
+            (resource.data.participants is list && request.auth.uid in resource.data.participants)
+          )) ||
+          (resource == null);
+        allow create: if isMasterAdmin() || isAuthenticated() || 
+          (request.resource.data.keys().hasAll(['text', 'senderId']) && request.resource.data.text is string);
+        allow update: if isMasterAdmin() || 
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['isRead', 'status', 'readAt', 'readByName', 'reactions']);
+        allow delete: if isMasterAdmin() || 
+          (isAuthenticated() && request.auth.uid == resource.data.senderId);
       }
     }
     
-    // Moderation Reports (Any user can submit a report, admin has full read/manage access)
+    // ══════════════════════════════════════════════════════════════
+    // 7. ZGŁOSZENIA MODERACJI (lumina_reports)
+    // ══════════════════════════════════════════════════════════════
     match /lumina_reports/{reportId} {
+      allow create: if request.resource.data.keys().hasAll(['reason', 'targetId']) && 
+        request.resource.data.reason is string;
+      // Odczyt, modyfikacja i usuwanie zgłoszeń TYLKO DLA MASTER ADMINA
+      allow read, update, delete: if isMasterAdmin();
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // 8. POLUBIENIA & OBSERWOWANIE (lumina_likes)
+    // ══════════════════════════════════════════════════════════════
+    match /lumina_likes/{likeId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['targetSlug', 'type']);
+      allow delete: if isMasterAdmin() || isAuthenticated() || resource.data.fromSlug is string;
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // 9. BLOKADY UŻYTKOWNIKÓW (lumina_user_blocks)
+    // ══════════════════════════════════════════════════════════════
+    match /lumina_user_blocks/{blockId} {
+      allow read, write: if isMasterAdmin() || isAuthenticated();
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // 10. STATUS OBECNOŚCI (lumina_presence)
+    // ══════════════════════════════════════════════════════════════
+    match /lumina_presence/{presenceId} {
+      allow read, write: if true;
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // 11. POWIADOMIENIA PUSH & CLOUD (lumina_notifications)
+    // ══════════════════════════════════════════════════════════════
+    match /lumina_notifications/{notifId} {
+      allow read: if isMasterAdmin() || 
+        (isAuthenticated() && (request.auth.uid == resource.data.recipientId || request.auth.uid == resource.data.userId));
       allow create: if true;
-      allow read, update, delete: if isMasterAdmin() || request.auth != null;
+      allow update, delete: if isMasterAdmin() || 
+        (isAuthenticated() && (request.auth.uid == resource.data.recipientId || request.auth.uid == resource.data.userId));
     }
     
-    // Default fallback
+    // ══════════════════════════════════════════════════════════════
+    // 12. DOMYŚLNA BLOKADA (ZASADA NAJMNIEJSZYCH UPRAWNIEŃ)
+    // ══════════════════════════════════════════════════════════════
     match /{document=**} {
-      allow read: if true;
-      allow write: if isMasterAdmin() || request.auth != null;
+      allow read, write: if isMasterAdmin();
     }
   }
 }

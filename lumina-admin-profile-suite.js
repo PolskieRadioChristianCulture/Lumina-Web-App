@@ -2089,11 +2089,14 @@
             const ageEls = document.querySelectorAll('.age-tag, #userAgeCityEl');
             ageEls.forEach(el => { if (data.age || data.city) el.textContent = [data.age, data.city].filter(Boolean).join(' • '); });
 
+            // Helper escapeHtml
+            const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+
             // Apply Verse
             const verseEls = document.querySelectorAll('.verse-box, .profile-verse');
             verseEls.forEach(el => {
                 if (data.verse) {
-                    el.innerHTML = `„${data.verse}” <span class="verse-ref" style="display:block; margin-top:6px; color:#facc15; font-weight:700;">${data.verseRef || ''}</span>`;
+                    el.innerHTML = `„${esc(data.verse)}” <span class="verse-ref" style="display:block; margin-top:6px; color:#facc15; font-weight:700;">${esc(data.verseRef || '')}</span>`;
                 }
             });
 
@@ -2105,7 +2108,7 @@
             if (data.tags && data.tags.length > 0) {
                 const tagsContainer = document.querySelector('.profile-tags-row, .tags-container, .profile-tags');
                 if (tagsContainer) {
-                    tagsContainer.innerHTML = data.tags.map(t => `<span class="tag-pill gold">${t}</span>`).join(' ');
+                    tagsContainer.innerHTML = data.tags.map(t => `<span class="tag-pill gold">${esc(t)}</span>`).join(' ');
                 }
             }
         },

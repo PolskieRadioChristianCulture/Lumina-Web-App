@@ -17,3 +17,15 @@ audio/worship_downloads/
 temp_google_ai_studio/
 node_modules/
 functions/node_modules/
+
+# Secrets & Credentials Security
+commander_ai_auth.json
+commander_ai_state.json
+*auth*.json
+*secret*.json
+*Key*.json
+*serviceAccount*.json
+*.pem
+*.key
+.env*
+
