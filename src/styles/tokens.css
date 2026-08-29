@@ -1,0 +1,36 @@
+﻿/**
+ * ══════════════════════════════════════════════════════════════════════════
+ * LUMINA DESIGN TOKENS (Christian Culture Brand Theme)
+ * ══════════════════════════════════════════════════════════════════════════
+ */
+
+:root {
+  /* Brand Palette */
+  --cc-bg-primary: #070c18;
+  --cc-bg-card: rgba(15, 23, 42, 0.78);
+  --cc-bg-card-hover: rgba(22, 33, 62, 0.88);
+  --cc-border-glass: rgba(255, 255, 255, 0.10);
+  --cc-border-gold: rgba(245, 158, 11, 0.45);
+  
+  /* Accents */
+  --cc-gold-primary: #f59e0b;
+  --cc-gold-light: #fef08a;
+  --cc-pink-accent: #ec4899;
+  --cc-purple-accent: #8b5cf6;
+  --cc-blue-accent: #38bdf8;
+  --cc-green-online: #10b981;
+  
+  /* Typography */
+  --cc-text-primary: #ffffff;
+  --cc-text-secondary: #94a3b8;
+  --cc-text-muted: #64748b;
+  --cc-font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --cc-font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Shadows & Depth */
+  --cc-shadow-card: 0 12px 32px rgba(0, 0, 0, 0.55);
+  --cc-shadow-gold: 0 8px 24px rgba(245, 158, 11, 0.35);
+  --cc-radius-lg: 20px;
+  --cc-radius-md: 14px;
+  --cc-radius-sm: 8px;
+}

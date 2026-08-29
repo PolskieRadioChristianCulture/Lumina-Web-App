@@ -6,8 +6,10 @@
   "main": "server.js",
   "scripts": {
     "dev": "node server.js",
+    "dev:lumina": "vite",
+    "build:lumina": "vite build",
     "start": "node server.js",
-    "build": "echo 'No build required for static site'",
+    "build": "vite build",
     "test:guardian": "node straznik-kodu-check.js",
     "test:guardian:extended": "node scripts/straznik-kodu-check.js",
     "test:smoke": "node scripts/lumina-smoke-check.js",
@@ -16,6 +18,14 @@
   },
   "dependencies": {
     "express": "^4.19.2",
-    "sharp": "^0.35.3"
+    "firebase": "^12.18.0",
+    "sharp": "^0.35.3",
+    "vue": "^3.5.42"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.8",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2",
+    "vue-tsc": "^3.3.11"
   }
 }
