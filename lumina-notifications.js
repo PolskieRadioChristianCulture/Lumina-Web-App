@@ -850,12 +850,15 @@
                                 const senderName = chat.lastSenderName || (lastSender.includes('cezary') ? 'Cezary Rogowski (Mąż 💖)' : (lastSender.includes('wioletta') ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
                                 const senderAvatar = (typeof window.resolveChatAvatar === 'function') ? window.resolveChatAvatar(chat.lastSenderId, senderName, chat.lastSenderAvatar) : (chat.lastSenderAvatar || 'avatar_cezary_official.jpg');
                                 const text = chat.lastMessageText || 'Wysłał(a) Ci nową wiadomość 💬';
+                                const targetUrl = `lumina.html?openChat=${encodeURIComponent(lastSender)}&chatWith=${encodeURIComponent(lastSender)}&msgId=${encodeURIComponent(chat.id || '')}`;
 
                                 this.push(
                                     `💬 Nowa wiadomość od: ${senderName}`,
                                     text,
                                     senderAvatar,
-                                    'lumina.html'
+                                    targetUrl,
+                                    true,
+                                    `chat_${lastSender}`
                                 );
                             }
                         }
@@ -872,11 +875,15 @@
         listenToEvents() {
             window.addEventListener('lumina:coffee_invite', (e) => {
                 const det = e.detail || {};
+                const sId = det.senderId || det.senderSlug || 'uzytkownik';
+                const targetUrl = `lumina.html?openChat=${encodeURIComponent(sId)}&chatWith=${encodeURIComponent(sId)}`;
                 this.push(
                     '☕ Zaproszenie na Chrześcijańską Kawę!',
                     `${det.senderName || 'Użytkownik'} zaprasza Cię na Kawę 🕊️`,
                     det.senderAvatar || 'avatar_new1.jpg',
-                    'lumina.html#odkrywaj'
+                    targetUrl,
+                    true,
+                    `coffee_${sId}`
                 );
             });
 
@@ -886,37 +893,51 @@
                     '🕊️ Nowe Amen pod Twoim wpisem!',
                     `${det.userName || 'Ktoś'} powiedział Amen pod Twoim świadectwem ✨`,
                     'lumina_icon.jpg',
-                    'lumina-tablica.html'
+                    'lumina-tablica.html',
+                    true,
+                    'amen_reaction'
                 );
             });
 
             window.addEventListener('lumina:new_message', (e) => {
                 const det = e.detail || {};
+                const sId = det.senderId || det.senderSlug || 'uzytkownik';
+                const targetUrl = `lumina.html?openChat=${encodeURIComponent(sId)}&chatWith=${encodeURIComponent(sId)}`;
                 this.push(
-                    '💬 Nowa wiadomość',
-                    `${det.senderName || 'Użytkownik'}: ${det.text || 'Wysłał nową wiadomość'}`,
+                    `💬 Nowa wiadomość od: ${det.senderName || 'Użytkownik'}`,
+                    `${det.text || 'Wysłał nową wiadomość'}`,
                     det.senderAvatar || 'avatar_new1.jpg',
-                    'lumina.html'
+                    targetUrl,
+                    true,
+                    `chat_${sId}`
                 );
             });
 
             window.addEventListener('lumina:profile_like', (e) => {
                 const det = e.detail || {};
+                const sId = det.senderId || det.senderSlug || 'uzytkownik';
+                const targetUrl = `lumina.html?openChat=${encodeURIComponent(sId)}&chatWith=${encodeURIComponent(sId)}`;
                 this.push(
                     '💖 Polubienie profilu!',
                     `${det.senderName || 'Ktoś'} polubił Twój profil w społeczności LUMINA.`,
                     det.senderAvatar || 'lumina_icon.jpg',
-                    'lumina.html'
+                    targetUrl,
+                    true,
+                    `like_${sId}`
                 );
             });
 
             window.addEventListener('lumina:profile_follow', (e) => {
                 const det = e.detail || {};
+                const sId = det.senderId || det.senderSlug || 'uzytkownik';
+                const targetUrl = `lumina.html?openChat=${encodeURIComponent(sId)}&chatWith=${encodeURIComponent(sId)}`;
                 this.push(
                     '🔔 Nowy obserwujący!',
                     `${det.senderName || 'Użytkownik'} zaczął obserwować Twoje wpisy i profil.`,
                     det.senderAvatar || 'lumina_icon.jpg',
-                    'lumina.html'
+                    targetUrl,
+                    true,
+                    `follow_${sId}`
                 );
             });
 

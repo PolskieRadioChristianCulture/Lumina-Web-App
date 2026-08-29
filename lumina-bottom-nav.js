@@ -892,18 +892,20 @@
     };
 
     window.openLuminaChatModal = function() {
+        const unreadCount = parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10);
+        const targetTab = unreadCount > 0 ? 'private' : null;
+
         if (typeof window.openDirectMessagesModal === 'function') {
-            window.openDirectMessagesModal();
+            window.openDirectMessagesModal(targetTab);
         } else if (document.getElementById('directMessagesModal')) {
             const m = document.getElementById('directMessagesModal');
             m.classList.add('open');
             if (typeof window.switchMessengerMainTab === 'function') {
-                window.switchMessengerMainTab('public');
+                window.switchMessengerMainTab(targetTab || 'private');
             }
         } else {
             window.openCcMessagesModal();
         }
-        window.updateLuminaMessagesBadge(0);
     };
 
     window.openCcMessagesModal = function() {
