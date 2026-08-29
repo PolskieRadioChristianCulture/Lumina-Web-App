@@ -17,12 +17,27 @@ Dokument ten określa zasady współpracy, formaty komunikacji i procedury opera
 
 ---
 
-## 📡 1. OBOWIĄZKOWY MONIT OPERACYJNY („AKTUALNIE PRACUJĘ NAD...”)
+## 🔑 1. HASŁA OPERACYJNE DOWÓDCY (@ICC / @monit / @status)
 
-> 🔔 **Żelazny Obowiązek Każdego Agenta:**
-> Każdy agent rozpoczynający, prowadzący lub wznawiający pracę ma **bezwzględny obowiązek** natychmiastowego zadeklarowania jasnego komunikatu statusu, aby Dowódca oraz inni agenci dokładnie wiedzieli, co się dzieje.
+> ⚡ **Naczelne Hasło Wywołania Pełnego Monitu: `@ICC` (lub `@monit`)**
+> Gdy Dowódca wpisze w czacie `@ICC` lub `@monit`, aktywny agent ma **bezwzględny obowiązek** natychmiastowego wygenerowania pełnego, ustrukturyzowanego **Raportu Gotowości Bojowej**:
 
-### Standard Monitu:
+```markdown
+📡 PEŁNY MONIT OPERACYJNY [@ICC]:
+* 🤖 **Aktywny Agent:** [Nazwa Agenta, np. Antigravity / Claude / Copilot]
+* 🎯 **Bieżące Zadanie:** [Nad czym dokładnie w tej sekundzie pracujemy]
+* 📦 **Ostatni Commit:** [ID commita, np. 9bc3f05] | Gałąź: main
+* 🛡️ **Strażnik Kodu:** [Wynik audytu node scripts/straznik-kodu-check.js - np. 10/10 reguł zaliczonych, 0 naruszeń]
+* 🌐 **Status Produkcji:** [Firebase Hosting: live / zsynchronizowano]
+* 📋 **Następny Krok:** [Co robimy dalej / na co czekamy]
+```
+
+---
+
+## 📡 2. OBOWIĄZKOWY MONIT BIEŻĄCY („AKTUALNIE PRACUJĘ NAD...”)
+
+Każdy agent rozpoczynający, prowadzący lub wznawiający pracę ma **bezwzględny obowiązek** meldowania swojego statusu:
+
 * **Na początku i w trakcie pracy:**
   `📡 MONIT OPERACYJNY: [Nazwa Agenta] ➔ Aktualnie pracuję nad: [konkretne zadanie / plik / funkcja]...`
 * **Po zakończeniu zadania:**
@@ -30,20 +45,20 @@ Dokument ten określa zasady współpracy, formaty komunikacji i procedury opera
 
 ---
 
-## 🔄 2. ZASADA DYNAMICZNEJ ZASTĘPOWALNOŚCI (TOKEN-LIMIT RESILIENCE)
+## 🔄 3. ZASADA DYNAMICZNEJ ZASTĘPOWALNOŚCI (TOKEN-LIMIT RESILIENCE)
 
 > ⚡ **Kluczowa Reguła Operacyjna Dowódcy:**
 > Dowództwo korzysta z bezpłatnych pakietów narzędzi AI. W dowolnym momencie danemu agentowi mogą wyczerpać się limity zapytań / tokenów (*Rate Limits / Quota*). 
 > **Wszyscy agenci mają bezwzględny obowiązek inteligentnego, natychmiastowego i płynnego przejmowania zadań przerwanych przez poprzednika.**
 
 ### Zasady Płynnego Zastępstwa (Smart Handover):
-1. **Natychmiastowa Kontynuacja:** Gdy nowy agent zostaje wywołany przez Dowódcę słowem *"kontynuuj"*, *"dokończ"* lub nowym poleceniem, sprawdza `git status`, ostatnie commity i natychmiast podejmuje pracę w punkcie przerwania — bez zbędnych pytań wstępnych.
+1. **Natychmiastowa Kontynuacja:** Gdy nowy agent zostaje wywołany przez Dowódcę słowem *"kontynuuj"*, *"dokończ"*, `@ICC` lub nowym poleceniem, sprawdza `git status`, ostatnie commity i natychmiast podejmuje pracę w punkcie przerwania — bez zbędnych pytań wstępnych.
 2. **Niezależność od Narzędzia:** Każdy model w zespole posiada kompetencje do dokończenia prac każdego innego modelu (programowanie, refaktoryzacja, audyt, dokumentacja).
 3. **Pamięć Stanu w Repozytorium:** Stan prac jest zawsze utrwalany w commitach, plikach konfiguracyjnych i raportach, co pozwala dowolnemu agentowi wejść do akcji w ułamku sekundy.
 
 ---
 
-## 🏷️ 3. Format Podpisu Commitów (Standard Wieloosobowy)
+## 🏷️ 4. Format Podpisu Commitów (Standard Wieloosobowy)
 
 Każdy commit w repozytorium musi jednoznacznie wskazywać typ zmiany, moduł oraz agenta wykonawczego:
 
@@ -63,7 +78,7 @@ Dozwolone prefiksy: `feat`, `fix`, `refactor`, `style`, `docs`, `ci`, `chore`, `
 
 ---
 
-## 📋 4. Standard Notatki Przekazania (Handoff Template)
+## 📋 5. Standard Notatki Przekazania (Handoff Template)
 
 Gdy agent kończy etap i przekazuje zadanie kolejnemu agentowi w Issue, PR lub dyskusji, stosuje standardowy raport:
 
@@ -78,7 +93,7 @@ Gdy agent kończy etap i przekazuje zadanie kolejnemu agentowi w Issue, PR lub d
 
 ---
 
-## 🛡️ 5. Pancerne Zasady Jakości i Bezpieczeństwa (Zero Kolizji)
+## 🛡️ 6. Pancerne Zasady Jakości i Bezpieczeństwa (Zero Kolizji)
 
 1. **Egzekucja Strażnika Kodu:**
    * Przed każdym zatwierdzeniem kodu (`git commit` / `git push`) **bezwzględnie uruchamiamy**:
@@ -100,7 +115,7 @@ Gdy agent kończy etap i przekazuje zadanie kolejnemu agentowi w Issue, PR lub d
 
 ---
 
-## 🏷️ 6. Wywołania i Etykiety Agentów (@mentions)
+## 🏷️ 7. Wywołania i Etykiety Agentów (@mentions)
 
 * `@Antigravity` — Zadania terminalowe, wdrożenia Firebase, skrypty wykonawcze, egzekucja Strażnika Kodu
 * `@Claude` — Przegląd kodu (*Code Review*), optymalizacja kaskad stylów, logika biznesowa, dostępność i UX
