@@ -43,7 +43,7 @@
 
         .channel-frame {
             width: 100%;
-            height: calc(100% - 80px);
+            height: calc(100% - 88px);
             border: none;
             position: absolute;
             top: 0;
@@ -90,7 +90,7 @@
             align-items: flex-end; /* Position info card at bottom so presenters' faces remain visible! */
             justify-content: center;
             opacity: 0;
-            padding-bottom: 85px; /* Stay nicely above bottom LUMINA ticker bar */
+            padding-bottom: 95px; /* Stay nicely above bottom LUMINA ticker bar */
             transition: opacity 0.6s ease;
             overflow: hidden;
         }
@@ -211,11 +211,11 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 80px;
+            height: 88px;
             z-index: 99999;
-            background: #050811;
-            border-top: 2.5px solid var(--gold-primary);
-            box-shadow: 0 -10px 35px rgba(0, 0, 0, 0.95), 0 0 25px rgba(212, 175, 55, 0.25);
+            background: #040711;
+            border-top: 3px solid var(--gold-primary);
+            box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.98), 0 0 30px rgba(212, 175, 55, 0.35);
             display: flex;
             align-items: center;
             overflow: hidden;
@@ -229,8 +229,8 @@
             align-items: center;
             gap: 14px;
             padding: 0 24px 0 26px;
-            background: linear-gradient(90deg, rgba(212, 175, 55, 0.25) 0%, rgba(10, 15, 30, 0.95) 85%, rgba(10, 15, 30, 0) 100%);
-            border-right: 1.5px solid rgba(212, 175, 55, 0.4);
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.28) 0%, rgba(10, 15, 30, 0.98) 85%, rgba(10, 15, 30, 0) 100%);
+            border-right: 2px solid rgba(212, 175, 55, 0.5);
             flex-shrink: 0;
             z-index: 10;
             text-decoration: none;
@@ -239,19 +239,19 @@
         }
 
         .lumina-ticker-brand:hover {
-            background: linear-gradient(90deg, rgba(212, 175, 55, 0.38) 0%, rgba(14, 22, 42, 0.98) 85%, rgba(14, 22, 42, 0) 100%);
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.4) 0%, rgba(14, 22, 42, 0.98) 85%, rgba(14, 22, 42, 0) 100%);
         }
 
         .lumina-brand-icon-box {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
             background: linear-gradient(135deg, #101626 0%, #1c2438 100%);
-            border: 2px solid rgba(212, 175, 55, 0.85);
+            border: 2px solid rgba(212, 175, 55, 0.9);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 18px rgba(212, 175, 55, 0.55);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
             flex-shrink: 0;
             overflow: hidden;
         }
@@ -265,43 +265,43 @@
         .lumina-brand-texts {
             display: flex;
             flex-direction: column;
-            line-height: 1.15;
+            line-height: 1.1;
         }
 
         .lumina-brand-title {
             font-family: 'Cinzel', serif;
-            font-size: 1.35rem;
+            font-size: 1.55rem;
             font-weight: 900;
             letter-spacing: 2.5px;
             color: #ffffff;
             display: flex;
             align-items: center;
             gap: 6px;
-            text-shadow: 0 2px 12px rgba(212, 175, 55, 0.6);
+            text-shadow: 0 2px 14px rgba(212, 175, 55, 0.7);
         }
 
         .lumina-brand-title span {
-            color: var(--gold-primary);
+            color: #ffd700;
         }
 
         .lumina-brand-tag {
-            font-size: 0.76rem;
-            font-weight: 800;
+            font-size: 0.85rem;
+            font-weight: 900;
             letter-spacing: 1.5px;
             text-transform: uppercase;
             color: #38bdf8;
             display: flex;
             align-items: center;
-            gap: 5px;
-            margin-top: 2px;
+            gap: 6px;
+            margin-top: 3px;
         }
 
         .lumina-brand-tag .pulse-dot {
-            width: 7px;
-            height: 7px;
+            width: 8px;
+            height: 8px;
             background: #38bdf8;
             border-radius: 50%;
-            box-shadow: 0 0 8px #38bdf8;
+            box-shadow: 0 0 10px #38bdf8;
             animation: luminaDotPulse 1.5s infinite;
         }
 
@@ -318,19 +318,20 @@
             position: relative;
             display: flex;
             align-items: center;
-            mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 2%, rgba(0,0,0,1) 98%, transparent 100%);
-            -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 2%, rgba(0,0,0,1) 98%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 1.5%, rgba(0,0,0,1) 98.5%, transparent 100%);
+            -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 1.5%, rgba(0,0,0,1) 98.5%, transparent 100%);
         }
 
         .lumina-ticker-content {
             display: flex;
             align-items: center;
             white-space: nowrap;
-            animation: luminaTickerScroll 160s linear infinite;
-            font-size: 1.35rem;
-            font-weight: 700;
-            letter-spacing: 0.3px;
+            animation: luminaTickerScroll 180s linear infinite;
+            font-size: 1.65rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
             color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
         }
 
         .lumina-ticker-content:hover {
@@ -345,64 +346,68 @@
         .lumina-ticker-item {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            padding: 0 35px;
+            gap: 14px;
+            padding: 0 40px;
         }
 
         .lumina-ticker-item strong {
-            color: var(--gold-primary);
+            color: #ffd700;
             font-weight: 900;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
         }
 
         .lumina-ticker-item .badge-news {
-            background: rgba(56, 189, 248, 0.22);
-            border: 1.5px solid rgba(56, 189, 248, 0.65);
-            color: #38bdf8;
-            font-size: 0.88rem;
+            background: rgba(56, 189, 248, 0.25);
+            border: 2px solid #38bdf8;
+            color: #ffffff;
+            font-size: 1.05rem;
             font-weight: 900;
-            padding: 4px 12px;
-            border-radius: 8px;
-            letter-spacing: 0.8px;
+            padding: 5px 15px;
+            border-radius: 10px;
+            letter-spacing: 1px;
             text-transform: uppercase;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
         }
 
         .lumina-ticker-item .badge-gold {
-            background: rgba(212, 175, 55, 0.22);
-            border: 1.5px solid rgba(212, 175, 55, 0.65);
-            color: #f3e5ab;
-            font-size: 0.88rem;
+            background: rgba(212, 175, 55, 0.25);
+            border: 2px solid #ffd700;
+            color: #ffffff;
+            font-size: 1.05rem;
             font-weight: 900;
-            padding: 4px 12px;
-            border-radius: 8px;
-            letter-spacing: 0.8px;
+            padding: 5px 15px;
+            border-radius: 10px;
+            letter-spacing: 1px;
             text-transform: uppercase;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
         }
 
         .lumina-ticker-item .badge-pink {
-            background: rgba(236, 72, 153, 0.22);
-            border: 1.5px solid rgba(236, 72, 153, 0.65);
-            color: #f472b6;
-            font-size: 0.88rem;
+            background: rgba(236, 72, 153, 0.25);
+            border: 2px solid #f472b6;
+            color: #ffffff;
+            font-size: 1.05rem;
             font-weight: 900;
-            padding: 4px 12px;
-            border-radius: 8px;
-            letter-spacing: 0.8px;
+            padding: 5px 15px;
+            border-radius: 10px;
+            letter-spacing: 1px;
             text-transform: uppercase;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
+            box-shadow: 0 0 12px rgba(236, 72, 153, 0.35);
         }
 
         .lumina-ticker-item .separator {
-            color: rgba(212, 175, 55, 0.65);
-            font-size: 1.1rem;
-            margin: 0 8px;
+            color: #ffd700;
+            font-size: 1.35rem;
+            margin: 0 10px;
         }
 
         .lumina-ticker-cta {
@@ -410,25 +415,25 @@
             display: flex;
             align-items: center;
             padding: 0 24px 0 20px;
-            background: linear-gradient(270deg, rgba(212, 175, 55, 0.25) 0%, rgba(10, 15, 30, 0.95) 85%, rgba(10, 15, 30, 0) 100%);
-            border-left: 1.5px solid rgba(212, 175, 55, 0.4);
+            background: linear-gradient(270deg, rgba(212, 175, 55, 0.28) 0%, rgba(10, 15, 30, 0.98) 85%, rgba(10, 15, 30, 0) 100%);
+            border-left: 2px solid rgba(212, 175, 55, 0.5);
             flex-shrink: 0;
             z-index: 10;
         }
 
         .lumina-cta-btn {
-            background: linear-gradient(135deg, var(--gold-primary), #fff0a8, var(--gold-dark));
+            background: linear-gradient(135deg, #ffd700, #ffffff, #d4af37);
             color: #000;
             font-weight: 900;
-            font-size: 0.92rem;
-            letter-spacing: 0.8px;
-            padding: 12px 22px;
+            font-size: 1.02rem;
+            letter-spacing: 1px;
+            padding: 14px 26px;
             border-radius: 30px;
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 0 22px rgba(212, 175, 55, 0.55);
+            gap: 9px;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.65);
             transition: all 0.25s ease;
             text-transform: uppercase;
             white-space: nowrap;
@@ -436,19 +441,46 @@
 
         .lumina-cta-btn:hover {
             transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.85);
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.95);
             color: #000;
         }
 
         @media (max-width: 900px) {
+            .lumina-master-ticker {
+                height: 82px;
+            }
+            .channel-frame {
+                height: calc(100% - 82px) !important;
+            }
+            .lumina-ticker-content {
+                font-size: 1.45rem; /* Senior-friendly large text on mobile */
+            }
             .lumina-ticker-cta {
                 display: none;
             }
             .lumina-ticker-brand {
-                padding: 0 14px;
+                padding: 0 12px;
+                gap: 8px;
+            }
+            .lumina-brand-icon-box {
+                width: 44px;
+                height: 44px;
+            }
+            .lumina-brand-title {
+                font-size: 1.25rem;
             }
             .lumina-brand-tag {
                 display: none;
+            }
+            .lumina-ticker-item {
+                padding: 0 25px;
+                gap: 10px;
+            }
+            .lumina-ticker-item .badge-news,
+            .lumina-ticker-item .badge-gold,
+            .lumina-ticker-item .badge-pink {
+                font-size: 0.95rem;
+                padding: 4px 10px;
             }
         }
 
