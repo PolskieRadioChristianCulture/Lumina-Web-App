@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ══════════════════════════════════════════════════════════════════════════
  * LUMINA SMART CHAT BLESSINGS & SCRIPTURE ENGINE (lumina-smart-blessings.js)
  * Inteligentne Podpowiedzi, Błogosławieństwa i Wersety Biblijne Czasu Rzeczywistego
@@ -290,6 +290,25 @@
             .smart-cycle-btn:hover {
                 color: #facc15;
                 border-color: #facc15;
+            }
+            @keyframes pulseUnreadRoom {
+                0%, 100% {
+                    border-color: #ef4444;
+                    box-shadow: 0 0 14px rgba(239, 68, 68, 0.45);
+                }
+                50% {
+                    border-color: #facc15;
+                    box-shadow: 0 0 22px rgba(250, 204, 21, 0.7);
+                }
+            }
+            @keyframes pulseBadge {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.1);
+                    filter: drop-shadow(0 0 6px #ef4444);
+                }
             }
         `;
         document.head.appendChild(styleEl);

@@ -8051,26 +8051,37 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         : 'rgba(255,255,255,0.03)');
                 const borderColor = hasUnread ? '#ef4444' : (isLeader ? 'rgba(236,72,153,0.35)' : 'rgba(255,255,255,0.08)');
                 const avatarBorder = hasUnread ? '#ef4444' : (isLeader ? '#ec4899' : '#a855f7');
+                const roomHighlightStyle = hasUnread
+                    ? (unreadCount > 1
+                        ? 'border:2px solid #ef4444; box-shadow:0 0 18px rgba(239,68,68,0.65), inset 0 0 8px rgba(239,68,68,0.2); animation: pulseUnreadRoom 2s infinite ease-in-out;'
+                        : 'border:2px solid #ef4444; box-shadow:0 0 14px rgba(239,68,68,0.45); animation: pulseUnreadRoom 2s infinite ease-in-out;')
+                    : `border:1.5px solid ${borderColor};`;
+
+                const avatarBadgeHtml = hasUnread
+                    ? (unreadCount > 1
+                        ? `<span class="dm-avatar-badge" style="position:absolute; top:-5px; right:-5px; background:linear-gradient(135deg, #ef4444, #ec4899); color:#fff; font-size:0.72rem; font-weight:900; min-width:20px; height:20px; padding:0 4px; border-radius:10px; display:flex; align-items:center; justify-content:center; border:2px solid #070d1e; box-shadow:0 0 10px rgba(239,68,68,0.85); z-index:3; animation:pulseBadge 2s infinite;">${unreadCount > 99 ? '99+' : unreadCount}</span>`
+                        : `<span class="dm-avatar-badge" style="position:absolute; top:-4px; right:-4px; background:#ef4444; color:#fff; font-size:0.68rem; font-weight:900; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #070d1e; box-shadow:0 0 8px #ef4444; z-index:3;">1</span>`)
+                    : '';
 
                 html += `
                     <div onclick="openChatWith('${escapeForInlineJs(u.name)}', '${escapeForInlineJs(u.avatar)}', '${escapeForInlineJs(u.slug)}')" 
-                         style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:${cardBg}; border:1.5px solid ${borderColor}; border-radius:14px; cursor:pointer; transition:all 0.2s ease; position:relative; ${hasUnread ? 'box-shadow: 0 0 16px rgba(239,68,68,0.45);' : ''}"
+                         style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:${cardBg}; ${roomHighlightStyle} border-radius:14px; cursor:pointer; transition:all 0.2s ease; position:relative;"
                          onmouseover="this.style.transform='translateY(-1px)'; this.style.borderColor='#ec4899';"
-                         onmouseout="this.style.transform='none'; this.style.borderColor='${borderColor}';">
+                         onmouseout="this.style.transform='none'; this.style.borderColor='${hasUnread ? '#ef4444' : borderColor}';">
                         <div style="position:relative; flex-shrink:0;">
                             <img loading="lazy" decoding="async" src="${escapeHtml(u.avatar || 'lumina_icon.jpg')}" alt="${escapeHtml(u.name)}" style="width:44px; height:44px; border-radius:50%; object-fit:cover; display:block; border:2px solid ${avatarBorder};">
                             <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
-                            ${hasUnread ? `<span style="position:absolute; top:-4px; right:-4px; background:#ef4444; color:#fff; font-size:0.68rem; font-weight:800; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #070d1e; box-shadow:0 0 8px #ef4444;">${unreadCount}</span>` : ''}
+                            ${avatarBadgeHtml}
                         </div>
                         <div style="flex:1; min-width:0;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px; gap:6px;">
                                 <span style="font-weight:800; font-size:0.88rem; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(u.name)}</span>
                                 <span style="font-size:0.65rem; color:${hasUnread ? '#fca5a5' : (isLeader ? '#facc15' : '#38bdf8')}; font-weight:800; flex-shrink:0; background:rgba(0,0,0,0.35); padding:2px 7px; border-radius:6px;">
-                                    ${hasUnread ? '🔴 NOWA WIADOMOŚĆ' : escapeHtml(u.badge)}
+                                    ${hasUnread ? (unreadCount > 1 ? `🔴 ${unreadCount} NOWE WIADOMOŚCI` : '🔴 NOWA WIADOMOŚĆ') : escapeHtml(u.badge)}
                                 </span>
                             </div>
                             <div style="font-size:0.74rem; color:${hasUnread ? '#fef08a' : '#cbd5e1'}; font-weight:${hasUnread ? '700' : '400'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                                ${hasUnread ? '💬 Masz nową wiadomość w tym pokoju — kliknij aby wejść!' : escapeHtml(u.job || u.city || 'Społeczność LUMINA ✨')}
+                                ${hasUnread ? (unreadCount > 1 ? `💬 Masz ${unreadCount} nowe wiadomości w tym pokoju — kliknij!` : '💬 Masz nową wiadomość w tym pokoju — kliknij aby wejść!') : escapeHtml(u.job || u.city || 'Społeczność LUMINA ✨')}
                             </div>
                         </div>
                         <div style="display:flex; align-items:center; gap:4px; color:${hasUnread ? '#fff' : '#f472b6'}; font-size:0.75rem; font-weight:800; flex-shrink:0; background:${hasUnread ? 'linear-gradient(135deg,#ef4444,#ec4899)' : 'rgba(236,72,153,0.12)'}; padding:5px 10px; border-radius:10px;">
