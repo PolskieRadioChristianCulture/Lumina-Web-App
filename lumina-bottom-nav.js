@@ -677,12 +677,12 @@
 
         <nav class="lumina-bottom-nav" id="luminaBottomNav" role="navigation" aria-label="Nawigacja dolna LUMINA">
             <!-- 1. Odkrywaj -->
-            <a href="lumina.html" class="lumina-nav-tab ${isDiscover ? 'active' : ''}" id="navTabDiscover" title="Odkrywaj Chrześcijańskie Profile">
+            <a href="lumina" class="lumina-nav-tab ${isDiscover ? 'active' : ''}" id="navTabDiscover" title="Odkrywaj Chrześcijańskie Profile">
                 <i class="fa-solid fa-heart-circle-bolt"></i>
             </a>
 
             <!-- 2. Tablica Społeczności -->
-            <a href="lumina-tablica.html" class="lumina-nav-tab ${isTablica ? 'active' : ''}" id="navTabFeed" title="Główna Tablica Społeczności">
+            <a href="tablica" class="lumina-nav-tab ${isTablica ? 'active' : ''}" id="navTabFeed" title="Główna Tablica Społeczności">
                 <i class="fa-solid fa-users-viewfinder"></i>
             </a>
 
@@ -729,7 +729,7 @@
                 </div>
                 
                 <div style="display:flex; flex-direction:column; gap:10px;" id="ccMessagesModalList">
-                    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href='lumina.html'">
+                    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href="lumina"">
                         <img src="avatar_cezary_official.jpg" alt="Cezary" style="width:46px; height:46px; border-radius:50%; object-fit:cover; border:1.5px solid #facc15;">
                         <div style="flex:1;">
                             <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -740,7 +740,7 @@
                         </div>
                     </div>
 
-                    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href='lumina.ccwomen.html'">
+                    <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.location.href="lumina/ccwomen"">
                         <img src="logo_cc_women.jpg?v=20260820" alt="CC Women" style="width:46px; height:46px; border-radius:50%; object-fit:cover; border:1.5px solid #ec4899;">
                         <div style="flex:1;">
                             <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -753,7 +753,7 @@
                 </div>
 
                 <div style="margin-top:16px; text-align:center;">
-                    <a href="lumina.html" style="display:inline-block; font-size:0.82rem; color:#facc15; text-decoration:none; font-weight:700;">
+                    <a href="lumina" style="display:inline-block; font-size:0.82rem; color:#facc15; text-decoration:none; font-weight:700;">
                         Odkryj nowe profile i zaproś kogoś na Kawę
                     </a>
                 </div>

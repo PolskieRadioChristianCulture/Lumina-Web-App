@@ -2554,7 +2554,7 @@
 
     <!-- ══════════ NAVBAR ══════════ -->
     <nav class="lumina-nav">
-        <a href="lumina.html" class="nav-logo-text">
+        <a href="lumina" class="nav-logo-text">
             <img loading="lazy" decoding="async" src="lumina_icon.jpg" alt="LUMINA Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
             <span>LUMINA</span>
         </a>
@@ -2580,8 +2580,8 @@
                 <!-- Wysuwany panel nawigacji (Glassmorphism Drawer) -->
                 <div class="top-nav-drawer" id="topNavDrawer" style="display:none; position:absolute; top:calc(100% + 10px); right:0; width:260px; background:rgba(11,17,32,0.96); border:1.5px solid rgba(168,85,247,0.45); border-radius:20px; box-shadow:0 20px 50px rgba(0,0,0,0.85); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); padding:10px; z-index:10002; flex-direction:column; gap:4px;">
                     <a href="index.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-house" style="color:#38bdf8;"></i> <span>Strona Główna Radia</span></a>
-                    <a href="lumina.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-wand-magic-sparkles" style="color:#ec4899;"></i> <span>Portal LUMINA</span></a>
-                    <a href="lumina-tablica.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-rectangle-list" style="color:#facc15;"></i> <span>Tablica Społeczności</span></a>
+                    <a href="lumina" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-wand-magic-sparkles" style="color:#ec4899;"></i> <span>Portal LUMINA</span></a>
+                    <a href="tablica" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-rectangle-list" style="color:#facc15;"></i> <span>Tablica Społeczności</span></a>
                     <a href="lumina.html#odkrywaj" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof scrollToSection==='function') scrollToSection('odkrywaj');"><i class="fa-solid fa-compass" style="color:#c084fc;"></i> <span>Odkrywaj Profile</span></a>
                     <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openDirectMessagesModal==='function') openDirectMessagesModal(); else if(typeof openMessageModal==='function') openMessageModal(); else if(typeof openLuminaChatModal==='function') openLuminaChatModal();"><i class="fa-solid fa-comments" style="color:#34d399;"></i> <span>Wiadomości & Czat</span></button>
                     <button type="button" class="drawer-nav-item" onclick="closeTopNavDrawer(); if(typeof openShareLuminaModal==='function') openShareLuminaModal();"><i class="fa-solid fa-share-nodes" style="color:#a78bfa;"></i> <span>Polecaj Portal</span></button>
@@ -2722,7 +2722,7 @@
             <div style="display: flex; flex-direction: column; gap: 10px; max-width: 320px; margin: 0 auto;">
                 <button type="button" class="btn-action-primary" style="width:100%; justify-content:center; padding: 13px; font-size: 0.88rem;" onclick="openPrivateRequestModal()"><i class="fa-solid fa-paper-plane"></i> Poproś o dostęp do profilu</button>
                 <button type="button" class="btn-action-secondary" style="width:100%; justify-content:center; padding: 12px; font-size: 0.85rem;" onclick="promptPrivateAccessCode()"><i class="fa-solid fa-key"></i> Wprowadź Kod Dostępu / PIN</button>
-                <a href="lumina.html" style="margin-top: 10px; font-size: 0.82rem; color: #94a3b8; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><i class="fa-solid fa-arrow-left"></i> Wróć do Portalu LUMINA</a>
+                <a href="lumina" style="margin-top: 10px; font-size: 0.82rem; color: #94a3b8; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><i class="fa-solid fa-arrow-left"></i> Wróć do Portalu LUMINA</a>
             </div>
         </div>
 
@@ -7696,7 +7696,7 @@
         <button type="button" onclick="acceptCookies()" style="background: transparent; border: none; color: #94a3b8; font-size: 16px; cursor: pointer; padding: 2px 6px; line-height: 1;" title="Zamknij">✝️</button>
     </div>
     <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 2px;">
-        <a href="lumina.html" style="color: #f59e0b; text-decoration: underline; font-size: 11.5px;">Polityka Prywatności</a>
+        <a href="lumina" style="color: #f59e0b; text-decoration: underline; font-size: 11.5px;">Polityka Prywatności</a>
         <div style="display: flex; gap: 8px;">
             <button type="button" onclick="rejectCookies()" style="background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit;">Odrzuć</button>
             <button type="button" onclick="acceptCookies()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none; padding: 6px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 12px; font-family: inherit; box-shadow: 0 2px 8px rgba(245,158,11,0.4);">Akceptuję</button>
