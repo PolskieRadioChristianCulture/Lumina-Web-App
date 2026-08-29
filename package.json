@@ -14,7 +14,9 @@
     "test:guardian:extended": "node scripts/straznik-kodu-check.js",
     "test:smoke": "node scripts/lumina-smoke-check.js",
     "test:inline": "node validate_lumina.js",
-    "test": "npm run test:guardian && npm run test:guardian:extended && npm run test:smoke && npm run test:inline"
+    "test:unit": "vitest run",
+    "test:all": "npm run test:unit && npm run test:guardian:extended && npm run build:lumina",
+    "test": "npm run test:all"
   },
   "dependencies": {
     "express": "^4.19.2",
@@ -25,8 +27,11 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.8",
+    "@vue/test-utils": "^2.5.0",
+    "happy-dom": "^20.11.15",
     "typescript": "^7.0.2",
     "vite": "^8.2.2",
+    "vitest": "^4.1.11",
     "vue-tsc": "^3.3.11"
   }
 }
