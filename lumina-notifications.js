@@ -20,7 +20,7 @@
             this.initFirestoreRealtimeListener();
         }
 
-        // 0. Dźwięk powiadomienia (Harmoniczne Chime CC z Debounce)
+        // 0. Dźwięk powiadomienia (Harmoniczne Chime CC z Debounce & Quiet Hours)
         initAudio() {
             try {
                 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -30,8 +30,23 @@
             } catch(e) {}
         }
 
+        isQuietHours() {
+            try {
+                const prefs = JSON.parse(localStorage.getItem('lumina_notif_prefs') || '{}');
+                if (prefs.quietHoursEnabled === false) return false;
+                const h = new Date().getHours();
+                const start = prefs.quietHoursStart ? parseInt(prefs.quietHoursStart.split(':')[0], 10) : 22;
+                const end = prefs.quietHoursEnd ? parseInt(prefs.quietHoursEnd.split(':')[0], 10) : 8;
+                return (start > end) ? (h >= start || h < end) : (h >= start && h < end);
+            } catch(e) {
+                return false;
+            }
+        }
+
         playChime() {
             try {
+                if (this.isQuietHours()) return; // Tryb nocny / Quiet Hours
+
                 const now = Date.now();
                 if (window._lastLuminaChimeTime && (now - window._lastLuminaChimeTime < 1800)) {
                     return; // Zabezpieczenie przed nałożeniem dźwięków (Debounce)
@@ -409,12 +424,30 @@
 
         saveToStorage() {
             try {
-                localStorage.setItem('lumina_inapp_notifications', JSON.stringify(this.notifications.slice(0, 35)));
+                localStorage.setItem('lumina_inapp_notifications', JSON.stringify(this.notifications.slice(0, 50)));
             } catch(e) {}
         }
 
-        // 5. Dodanie Nowego Powiadomienia
-        push(title, body, icon = 'lumina_icon.jpg', actionUrl = 'lumina-tablica.html', playSound = true) {
+        // 5. Dodanie Nowego Powiadomienia (z inteligentnym grupowaniem i Rich Cards)
+        push(title, body, icon = 'lumina_icon.jpg', actionUrl = 'lumina-tablica.html', playSound = true, groupKey = null) {
+            if (groupKey) {
+                const existingIndex = this.notifications.findIndex(n => n.groupKey === groupKey);
+                if (existingIndex !== -1) {
+                    const existing = this.notifications[existingIndex];
+                    existing.groupCount = (existing.groupCount || 1) + 1;
+                    existing.unread = true;
+                    existing.time = 'Przed chwilą';
+                    existing.body = `${body} (${existing.groupCount} reakcji)`;
+                    this.notifications.splice(existingIndex, 1);
+                    this.notifications.unshift(existing);
+                    this.updateBadge();
+                    this.renderList();
+                    this.saveToStorage();
+                    if (playSound) this.playChime();
+                    return;
+                }
+            }
+
             const notif = {
                 id: 'notif_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
                 title,
@@ -422,7 +455,9 @@
                 icon: icon || 'lumina_icon.jpg',
                 actionUrl: actionUrl || 'lumina-tablica.html',
                 time: 'Przed chwilą',
-                unread: true
+                unread: true,
+                groupKey: groupKey || null,
+                groupCount: 1
             };
 
             this.notifications.unshift(notif);
@@ -438,8 +473,9 @@
                 try {
                     const sysNotif = new Notification(title, {
                         body: body,
-                        icon: icon,
-                        badge: 'lumina_icon.jpg'
+                        icon: icon || 'lumina_icon.jpg',
+                        badge: 'lumina_icon.jpg',
+                        tag: groupKey || notif.id
                     });
                     sysNotif.onclick = () => {
                         window.focus();

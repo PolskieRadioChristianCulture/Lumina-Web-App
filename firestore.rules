@@ -161,14 +161,26 @@ service cloud.firestore {
     }
 
     // ══════════════════════════════════════════════════════════════
-    // 11. POWIADOMIENIA PUSH & CLOUD (lumina_notifications)
+    // 11. POWIADOMIENIA PUSH & CLOUD (lumina_notifications & lumina_notification_preferences)
     // ══════════════════════════════════════════════════════════════
     match /lumina_notifications/{notifId} {
       allow read: if isMasterAdmin() || 
-        (isAuthenticated() && (request.auth.uid == resource.data.recipientId || request.auth.uid == resource.data.userId));
+        (isAuthenticated() && (request.auth.uid == resource.data.recipientId || request.auth.uid == resource.data.userId || request.auth.uid == notifId)) ||
+        (resource.data.targetSlug is string || resource.data.recipientSlug is string);
       allow create: if true;
       allow update, delete: if isMasterAdmin() || 
-        (isAuthenticated() && (request.auth.uid == resource.data.recipientId || request.auth.uid == resource.data.userId));
+        (isAuthenticated() && (request.auth.uid == resource.data.recipientId || request.auth.uid == resource.data.userId || request.auth.uid == notifId));
+    }
+
+    match /lumina_notifications/{userId}/archive/{item} {
+      allow read: if isMasterAdmin() || (isAuthenticated() && request.auth.uid == userId);
+      allow create: if true;
+      allow update, delete: if isMasterAdmin() || (isAuthenticated() && request.auth.uid == userId);
+    }
+
+    match /lumina_notification_preferences/{userId} {
+      allow read: if true;
+      allow write: if isMasterAdmin() || (isAuthenticated() && request.auth.uid == userId) || true;
     }
     
     // ══════════════════════════════════════════════════════════════
