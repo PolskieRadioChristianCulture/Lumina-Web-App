@@ -621,24 +621,28 @@ body.owner-mode-active .owner-only {
     .profile-container,
     .profile-card-layout,
     .profile-wrapper {
-        padding-left: 10px !important;
-        padding-right: 10px !important;
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+        padding-top: 4px !important;
+        margin-top: 0 !important;
+        margin-bottom: 16px !important;
         width: 100% !important;
         max-width: 100vw !important;
     }
 
     .profile-cover-wrap,
     .profile-cover {
-        height: clamp(140px, 32vw, 220px) !important;
+        height: clamp(140px, 32vw, 210px) !important;
         border-radius: 16px 16px 0 0 !important;
+        margin-bottom: 0 !important;
     }
 
     .profile-head-main {
         flex-direction: column !important;
         align-items: flex-start !important;
-        gap: 12px !important;
-        margin-top: -50px !important;
-        padding: 0 12px !important;
+        gap: 10px !important;
+        margin-top: -46px !important;
+        padding: 0 10px !important;
     }
 
     .profile-avatar-wrap,
