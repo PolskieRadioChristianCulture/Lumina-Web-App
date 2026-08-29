@@ -1,36 +1,37 @@
 ﻿# 🎯 TABLICA DYSPOZYCJI I KOLEJKA ZADAŃ SZTABU [@ICC]
-### *Chief Coordinator: Antigravity | Commander: Dowódca Nazir*
-
-Tablica koordynacji wielomodelowej. Każdy agent zgłaszający gotowość pobiera stąd aktualne zadanie lub melduje wykonanie.
+### *Zasada Dynamicznego Lidera (Ten agent dowodzi sztabem, który w danej chwili ma tokeny)*
+### *Commander: Dowódca Nazir*
 
 ---
 
-## 🟢 1. REJESTR AKTYWNYCH AGENTÓW (CHECK-IN)
+## 👑 1. AKTUALNY LIDER SZTABU & REJESTR AGENTÓW
 
-| Agent | Status | Ostatni Meldujący Commit | Bieżący Przydział |
+| Agent | Status Tokenów | Rola w Tej Chwili | Ostatni Commit |
 |---|---|---|---|
-| **Antigravity (Google)** | 🟢 AKTYWNY (Chief Dispatcher) | `4b451ec` | Koordynacja sztabu, Strażnik Kodu & Deploy |
-| **Claude (Anthropic)** | 🟡 GOTOWY DO PRZYDZIAŁU | — | Oczekiwanie na dyspozycję |
-| **GitHub Copilot (MS)** | 🟡 GOTOWY DO PRZYDZIAŁU | — | Oczekiwanie na dyspozycję |
-| **Agent GPT (OpenAI)** | 🟡 GOTOWY DO PRZYDZIAŁU | — | Oczekiwanie na dyspozycję |
-| **Google AI Studio (Gemini)** | 🟢 AKTYWNY | `4b451ec` | Multimodalny Daemon Czasu Rzeczywistego |
+| **Antigravity (Google)** | 🟢 AKTYWNE TOKENY | 👑 AKTUALNY LIDER (Chief Lead) | `9fae678` |
+| **Claude (Anthropic)** | 🟢 / 🟡 ZASTĘPSTWO GOTOWE | Potencjalny Lider (Dynamic Failover) | — |
+| **GitHub Copilot (MS)** | 🟢 / 🟡 ZASTĘPSTWO GOTOWE | Potencjalny Lider (Dynamic Failover) | — |
+| **Agent GPT (OpenAI)** | 🟢 / 🟡 ZASTĘPSTWO GOTOWE | Potencjalny Lider (Dynamic Failover) | — |
+| **Google AI Studio (Gemini)**| 🟢 AKTYWNE TOKENY | Multimodalny Daemon Czasu Rzeczywistego | `9fae678` |
+
+> ⚡ **Zasada Przejęcia Lidera:** Jeśli Antigravity wyczerpie limit, Claude, Copilot lub Agent GPT natychmiast wpisuje się jako 👑 AKTUALNY LIDER i prowadzi zadania dalej bez przestoju!
 
 ---
 
 ## 📋 2. KOLEJKA ZADAŃ DO WYKONANIA (DISPATCH QUEUE)
 
 ### 📌 Zadanie Aktualne:
-* **ID:** `TASK-ICC-001`
-* **Nazwa:** Ustanowienie Sztabowego Systemu Dyspozycji i Koordynacji Zadań
-* **Przydział:** Antigravity (Chief Coordinator)
+* **ID:** `TASK-ICC-002`
+* **Nazwa:** Wdrożenie Zasady Dynamicznego Liderstwa Sztabu (Rotating Chief Leader)
+* **Prowadzący Lider:** Antigravity
 * **Status:** `DONE` (Ukończono & Zsynchronizowano)
-* **Kryteria Akceptacji:** Wdrożenie instrukcji we wszystkich silnikach AI, utworzenie tablicy dyspozycji, pomyślny test Strażnika Kodu (10/10).
+* **Kryteria Akceptacji:** Wpisanie zasady płynnego przejmowania roli Lidera do wszystkich instrukcji AI, pomyślny test Strażnika Kodu (10/10).
 
 ---
 
-## 🔄 3. PROCEDURA POBIERANIA I ZDAWANIA ZADAŃ
+## 🔄 3. PROCEDURA PRZEJĘCIA ROLI LIDERA
 
-1. **Zgłoszenie Gotowości:** Agent wchodzący do akcji sprawdza `DISPATCH_BOARD.md` i melduje:
-   `📡 MONIT OPERACYJNY: [Nazwa Agenta] ➔ Zgłaszam gotowość do podjęcia zadania z DISPATCH_BOARD.md`
-2. **Pobranie Zadania:** Agent podejmuje zadanie o statusie `TODO`, zmienia jego status na `IN_PROGRESS` i wpisuje swoje imię.
-3. **Zakończenie & Odbiór:** Po zakończeniu uruchamia `node scripts/straznik-kodu-check.js`, ustawia status na `READY_FOR_REVIEW` i przekazuje pałeczkę do Antigravity w celu weryfikacji i deployu.
+1. **Wykrycie braku tokenów u poprzednika:** Nowy agent wchodzący do czatu przejmuje stery.
+2. **Monit Przejęcia:** Melduje:
+   `👑 MONIT PRZEJĘCIA LIDERA [@ICC]: [Nazwa Nowego Agenta] ➔ Przejmuję rolę Lidera Sztabu (aktywne tokeny). Podejmuję zadanie [ID] z DISPATCH_BOARD.md`
+3. **Prowadzenie & Deploy:** Nowy Lider weryfikuje kod Strażnikiem Kodu (`node scripts/straznik-kodu-check.js`) i wykonuje commit oraz deploy na Firebase.
