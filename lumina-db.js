@@ -115,12 +115,18 @@ export async function requestNotificationPermission(userUid) {
                 if (supported && app) messaging = getMessaging(app);
             }
             if (messaging) {
-                const registration = await navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260828_v391', { scope: './' });
+                const registration = await navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260829_v400', { scope: './' });
                 const token = await getToken(messaging, {
                     vapidKey: LUMINA_VAPID_KEY,
                     serviceWorkerRegistration: registration
                 });
                 
+                if (token) {
+                    try {
+                        localStorage.setItem('lumina_fcm_token', token);
+                    } catch(e) {}
+                }
+
                 if (token && db) {
                     try {
                         const tokenKey = token.replace(/[^a-zA-Z0-9_-]/g, '').slice(-32);
@@ -137,6 +143,7 @@ export async function requestNotificationPermission(userUid) {
                             platform: platform,
                             userAgent: navigator.userAgent || 'unknown',
                             enabled: true,
+                            lastSeenAt: serverTimestamp(),
                             updatedAt: serverTimestamp()
                         }, { merge: true });
                         console.log('[LUMINA Push] Token pomyślnie zarejestrowany w LuminaDeviceTokens w Firestore! 🕊️');

@@ -18,6 +18,7 @@
             this.loadStoredNotifications();
             this.listenToEvents();
             this.initFirestoreRealtimeListener();
+            this.initSoftPrompt();
         }
 
         // 0. Dźwięk powiadomienia (Harmoniczne Chime CC z Debounce & Quiet Hours)
@@ -340,6 +341,114 @@
                     }
                 }
 
+                #luminaPushSoftPrompt {
+                    position: fixed;
+                    bottom: calc(84px + env(safe-area-inset-bottom, 16px));
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 999998;
+                    width: calc(100% - 32px);
+                    max-width: 440px;
+                    animation: slideUpPrompt 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                    transition: opacity 0.3s ease, transform 0.3s ease;
+                }
+                #luminaPushSoftPrompt.fade-out {
+                    opacity: 0;
+                    transform: translateX(-50%) translateY(20px);
+                }
+                .lumina-push-soft-card {
+                    background: rgba(11, 18, 38, 0.96);
+                    backdrop-filter: blur(18px);
+                    -webkit-backdrop-filter: blur(18px);
+                    border: 1.5px solid rgba(250, 204, 21, 0.6);
+                    border-radius: 20px;
+                    padding: 12px 14px;
+                    box-shadow: 0 16px 45px rgba(0,0,0,0.8), 0 0 25px rgba(250, 204, 21, 0.25);
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    color: #fff;
+                    font-family: 'Plus Jakarta Sans', sans-serif;
+                }
+                .push-soft-icon {
+                    width: 38px;
+                    height: 38px;
+                    border-radius: 50%;
+                    background: linear-gradient(135deg, rgba(236,72,153,0.3), rgba(139,92,246,0.3));
+                    border: 1px solid rgba(250, 204, 21, 0.7);
+                    color: #facc15;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.1rem;
+                    flex-shrink: 0;
+                    animation: pulseBell 2s infinite;
+                }
+                @keyframes pulseBell {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.1); filter: drop-shadow(0 0 8px #facc15); }
+                }
+                .push-soft-content {
+                    flex: 1;
+                    min-width: 0;
+                }
+                .push-soft-title {
+                    font-size: 0.86rem;
+                    font-weight: 800;
+                    color: #facc15;
+                    font-family: 'Outfit', sans-serif;
+                    margin-bottom: 2px;
+                }
+                .push-soft-desc {
+                    font-size: 0.74rem;
+                    color: #cbd5e1;
+                    line-height: 1.35;
+                }
+                .push-soft-actions {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    flex-shrink: 0;
+                }
+                .push-soft-btn-enable {
+                    background: linear-gradient(135deg, #ec4899, #8b5cf6);
+                    border: 1px solid rgba(250, 204, 21, 0.6);
+                    color: #fff;
+                    font-weight: 800;
+                    font-size: 0.8rem;
+                    padding: 8px 14px;
+                    border-radius: 20px;
+                    cursor: pointer;
+                    white-space: nowrap;
+                    box-shadow: 0 4px 14px rgba(236,72,153,0.4);
+                    transition: transform 0.2s;
+                }
+                .push-soft-btn-enable:active {
+                    transform: scale(0.94);
+                }
+                .push-soft-btn-close {
+                    background: rgba(255,255,255,0.08);
+                    border: none;
+                    color: #94a3b8;
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 0.8rem;
+                    transition: all 0.2s;
+                }
+                .push-soft-btn-close:hover {
+                    color: #fff;
+                    background: rgba(255,255,255,0.18);
+                }
+                @keyframes slideUpPrompt {
+                    from { opacity: 0; transform: translateX(-50%) translateY(30px); }
+                    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+                }
+
             </style>`;
 
             // Wstrzyknięcie dzwonka w navbarze obok Radia CC
@@ -380,7 +489,7 @@
                 bar.classList.add('show');
                 bar.innerHTML = `
                     <span>🔔 Włącz powiadomienia na żywo</span>
-                    <button type="button" class="notif-push-enable-btn" onclick="window.LuminaNotifications.requestBrowserPermission()">Włącz</button>
+                    <button type="button" class="notif-push-enable-btn" onclick="window.requestLuminaPushPermission()">Włącz</button>
                 `;
             } else {
                 bar.classList.remove('show');
@@ -388,8 +497,57 @@
             }
         }
 
-        // 3. Uprawnienia Przeglądarki
+        // 3a. Soft-Prompt Banner (Eleganckie zaproszenie do powiadomień)
+        initSoftPrompt() {
+            if (!("Notification" in window) || Notification.permission !== "default") return;
+
+            try {
+                const dismissed = localStorage.getItem('lumina_push_prompt_dismissed');
+                if (dismissed && (Date.now() - parseInt(dismissed, 10) < 3 * 24 * 3600 * 1000)) {
+                    return; // Odroczone na 3 dni
+                }
+            } catch(e) {}
+
+            setTimeout(() => {
+                if (document.getElementById('luminaPushSoftPrompt') || Notification.permission !== "default") return;
+
+                const promptEl = document.createElement('div');
+                promptEl.id = 'luminaPushSoftPrompt';
+                promptEl.innerHTML = `
+                    <div class="lumina-push-soft-card">
+                        <div class="push-soft-icon">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <div class="push-soft-content">
+                            <div class="push-soft-title">✨ Bądź na bieżąco z Misją</div>
+                            <div class="push-soft-desc">Otrzymuj poranne rozważania, transmisje CCTV24 i wiadomości w społeczności LUMINA.</div>
+                        </div>
+                        <div class="push-soft-actions">
+                            <button type="button" class="push-soft-btn-enable" onclick="window.requestLuminaPushPermission()">Włącz 🔔</button>
+                            <button type="button" class="push-soft-btn-close" onclick="window.LuminaNotifications.dismissSoftPrompt()" title="Później">✕</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(promptEl);
+            }, 3500);
+        }
+
+        dismissSoftPrompt() {
+            try {
+                localStorage.setItem('lumina_push_prompt_dismissed', Date.now().toString());
+            } catch(e) {}
+            const el = document.getElementById('luminaPushSoftPrompt');
+            if (el) {
+                el.classList.add('fade-out');
+                setTimeout(() => el.remove(), 300);
+            }
+        }
+
+        // 3b. Uprawnienia Przeglądarki
         async requestBrowserPermission() {
+            if (typeof window.requestLuminaPushPermission === 'function') {
+                return await window.requestLuminaPushPermission();
+            }
             if ("Notification" in window && Notification.permission === "default") {
                 try {
                     const perm = await Notification.requestPermission();
@@ -950,18 +1108,26 @@ window.requestLuminaPushPermission = async function() {
         }
         const perm = await Notification.requestPermission();
         if (perm === 'granted') {
+            const promptEl = document.getElementById('luminaPushSoftPrompt');
+            if (promptEl) promptEl.remove();
+
             if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
-                const userSlug = localStorage.getItem('lumina_current_user_slug') || 'robertlukaszpio';
+                const userSlug = localStorage.getItem('lumina_current_user_slug') || 'anonymous';
                 await window.LuminaDB.requestNotificationPermission(userSlug);
             }
-            if (typeof window.showToast === 'function') {
-                window.showToast('🔔 Powiadomienia PUSH zostały aktywowane! Otrzymasz wiadomości nawet przy wyłączonej aplikacji. ✨');
-            } else {
-                alert('🔔 Powiadomienia PUSH aktywowane!');
+            if (window.LuminaNotifications) {
+                window.LuminaNotifications.updatePushBar();
+                window.LuminaNotifications.push('🔔 Powiadomienia Aktywne', 'Dziękujemy! Będziesz otrzymywać powiadomienia o rozważaniach, transmisjach CCTV24 i wiadomościach.', 'lumina_icon.jpg', 'lumina-tablica.html');
+            }
+            if (typeof window.showLuminaToast === 'function') {
+                window.showLuminaToast('🔔 Powiadomienia PUSH zostały pomyślnie aktywowane!');
+            } else if (typeof window.showToast === 'function') {
+                window.showToast('🔔 Powiadomienia PUSH zostały pomyślnie aktywowane!');
             }
             return true;
         } else {
-            alert('Uprawnienia do powiadomień zostały zablokowane w ustawieniach przeglądarki. Kliknij ikonę kłódki przy adresie strony, aby zezwolić.');
+            const promptEl = document.getElementById('luminaPushSoftPrompt');
+            if (promptEl) promptEl.remove();
             return false;
         }
     } catch(e) {
@@ -969,4 +1135,22 @@ window.requestLuminaPushPermission = async function() {
         return false;
     }
 };
+
+// ── Cicha synchronizacja tokena FCM w tle przy starcie ──
+window.syncLuminaPushTokenSilently = async function() {
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    try {
+        if (window.LuminaDB && typeof window.LuminaDB.requestNotificationPermission === 'function') {
+            const userSlug = localStorage.getItem('lumina_current_user_slug') || 'anonymous';
+            await window.LuminaDB.requestNotificationPermission(userSlug);
+        }
+    } catch(e) {}
+};
+
+// Uruchomienie cichej synchronizacji przy załadowaniu strony
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(window.syncLuminaPushTokenSilently, 2000));
+} else {
+    setTimeout(window.syncLuminaPushTokenSilently, 2000);
+}
 
