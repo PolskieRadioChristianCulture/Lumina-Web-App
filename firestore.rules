@@ -184,7 +184,16 @@ service cloud.firestore {
     }
     
     // ══════════════════════════════════════════════════════════════
-    // 12. DOMYŚLNA BLOKADA (ZASADA NAJMNIEJSZYCH UPRAWNIEŃ)
+    // 12. TOKENY URZĄDZEŃ WEB PUSH (LuminaDeviceTokens)
+    // ══════════════════════════════════════════════════════════════
+    match /LuminaDeviceTokens/{tokenId} {
+      allow read: if isMasterAdmin();
+      allow create, update: if true;
+      allow delete: if isMasterAdmin() || isAuthenticated();
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // 13. DOMYŚLNA BLOKADA (ZASADA NAJMNIEJSZYCH UPRAWNIEŃ)
     // ══════════════════════════════════════════════════════════════
     match /{document=**} {
       allow read, write: if isMasterAdmin();
