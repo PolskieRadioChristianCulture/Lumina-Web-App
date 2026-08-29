@@ -1,21 +1,30 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useAuthStore } from "@/stores/authStore";
 import ProfileGrid from "@/features/profiles/ProfileGrid.vue";
 import FeedTimeline from "@/features/feed/FeedTimeline.vue";
 import ChatView from "@/features/chat/ChatView.vue";
 import BottomNav from "@/components/BottomNav.vue";
+import AuthModal from "@/features/auth/AuthModal.vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 const activeView = ref<"profiles" | "feed" | "chat">("feed");
+const authStore = useAuthStore();
+
+onMounted(() => {
+  authStore.init();
+});
 </script>
 
 <template>
   <main class="lumina-app-root">
-    <!-- Top View Switcher -->
+    <!-- Top Header -->
     <header class="app-header">
       <div class="header-logo">
         <span class="logo-accent">LUMINA</span>
         <span class="logo-sub">Christian Culture</span>
       </div>
+
       <div class="view-switch">
         <button 
           type="button" 
@@ -23,7 +32,7 @@ const activeView = ref<"profiles" | "feed" | "chat">("feed");
           :class="{ 'is-active': activeView === 'feed' }"
           @click="activeView = 'feed'"
         >
-          📰 Tablica Wpisów
+          📰 Tablica
         </button>
         <button 
           type="button" 
@@ -31,7 +40,7 @@ const activeView = ref<"profiles" | "feed" | "chat">("feed");
           :class="{ 'is-active': activeView === 'profiles' }"
           @click="activeView = 'profiles'"
         >
-          ✨ Katalog Profili
+          ✨ Odkrywaj
         </button>
         <button 
           type="button" 
@@ -42,12 +51,35 @@ const activeView = ref<"profiles" | "feed" | "chat">("feed");
           💬 Komunikator
         </button>
       </div>
+
+      <!-- Auth Controls -->
+      <div class="header-auth">
+        <div v-if="authStore.isAuthenticated" class="user-pill">
+          <span class="user-name">{{ authStore.displayName }}</span>
+          <span v-if="authStore.isAdmin" class="admin-badge">Admin</span>
+          <button type="button" class="btn-logout" @click="authStore.logout" title="Wyloguj">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+        <BaseButton 
+          v-else 
+          variant="gold" 
+          size="sm" 
+          icon="fa-solid fa-user-lock"
+          @click="authStore.openAuthModal"
+        >
+          Zaloguj się
+        </BaseButton>
+      </div>
     </header>
 
     <!-- Active View Area -->
     <FeedTimeline v-if="activeView === 'feed'" />
     <ProfileGrid v-else-if="activeView === 'profiles'" />
     <ChatView v-else />
+
+    <!-- Auth Modal -->
+    <AuthModal />
 
     <!-- Bottom Navigation Bar -->
     <BottomNav 
@@ -137,5 +169,50 @@ body {
 .switch-tab.is-active {
   background: linear-gradient(135deg, #f59e0b, #d97706);
   color: #000000;
+}
+
+.header-auth {
+  display: flex;
+  align-items: center;
+}
+
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.user-name {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.admin-badge {
+  background: #f59e0b;
+  color: #000000;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+
+.btn-logout {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 2px 4px;
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
+}
+
+.btn-logout:hover {
+  color: #ef4444;
 }
 </style>
