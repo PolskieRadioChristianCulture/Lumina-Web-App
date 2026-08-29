@@ -3195,6 +3195,7 @@
                 <button class="tab-btn" onclick="switchTab('tab-about', this)" title="Świadectwo & O Mnie"><i class="fa-solid fa-user"></i> <span class="tab-text">Świadectwo & O Mnie</span></button>
                 <button class="tab-btn" onclick="switchTab('tab-photos', this)" title="Galeria Zdjęć"><i class="fa-solid fa-images"></i> <span class="tab-text">Galeria Zdjęć</span></button>
                 <button class="tab-btn" onclick="switchTab('tab-faith', this)" title="Wartości & Wiara"><i class="fa-solid fa-book-bible"></i> <span class="tab-text">Wartości & Wiara</span></button>
+                <button class="tab-btn" onclick="switchTab('tab-badges', this)" title="Wyróżnienia & Odznaki 3D"><i class="fa-solid fa-medal" style="color:#f59e0b;"></i> <span class="tab-text">Odznaki 3D</span></button>
             </div>
         </section>
 
@@ -3280,6 +3281,9 @@
                         <img loading="lazy" decoding="async" src="avatar_cezary.jpg" alt="Photo" class="photo-thumb" onclick="openPhotoLightbox(this.src, 'Fotografia z galerii LUMINA ✨')">
                     </div>
                 </div>
+
+                <!-- 3D Badges Quick Showcase -->
+                <div id="sidebar3DBadgesBox"></div>
 
             </aside>
 
@@ -3435,6 +3439,11 @@
                             <div class="info-row"><i class="fa-solid fa-hands-holding-child" style="color:#06b6d4;"></i><div><span class="info-label">Wizja Rodziny:</span> Otwartość na dar życia, wychowanie w miłości i prawdzie Ewangelii.</div></div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Tab: Wyróżnienia & Odznaki 3D -->
+                <div id="tab-badges" class="tab-content-pane" style="display:none;">
+                    <div id="tab3DBadgesContainer"></div>
                 </div>
 
             </section>
@@ -5086,6 +5095,19 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
 
             renderPhotos();
             renderPosts();
+
+            // ══════════ 3D FAITH & ENGAGEMENT BADGES RENDERING ══════════
+            const badgesBox = document.getElementById('tab3DBadgesContainer');
+            const sideBadgesBox = document.getElementById('sidebar3DBadgesBox');
+            if (window.LuminaDB && typeof window.LuminaDB.render3DBadgesGridHtml === 'function') {
+                const badgesHtml = window.LuminaDB.render3DBadgesGridHtml('cezaryrgowski', data.name || 'Cezary Rogowski');
+                if (badgesBox) badgesBox.innerHTML = badgesHtml;
+                if (sideBadgesBox) sideBadgesBox.innerHTML = badgesHtml;
+            } else if (typeof render3DBadgesGridHtml === 'function') {
+                const badgesHtml = render3DBadgesGridHtml('cezaryrgowski', data.name || 'Cezary Rogowski');
+                if (badgesBox) badgesBox.innerHTML = badgesHtml;
+                if (sideBadgesBox) sideBadgesBox.innerHTML = badgesHtml;
+            }
         }
 
         // ── Photos Gallery & Deletion ──

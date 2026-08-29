@@ -911,6 +911,9 @@
                     </a>
                 </div>
 
+                <!-- 3D Badges Quick Showcase -->
+                <div id="sidebar3DBadgesBox"></div>
+
             </aside>
 
             <!-- Main Feed Stream -->
@@ -1511,12 +1514,24 @@
             reader.readAsDataURL(file);
         }
 
-        // Initialize saved devotion graphic
+        // Initialize saved devotion graphic & 3D Badges
         document.addEventListener('DOMContentLoaded', () => {
             const savedCudaImg = localStorage.getItem('lumina_cuda_image');
             if (savedCudaImg) {
                 const imgEl = document.getElementById('cudaDevotionFeaturedImg');
                 if (imgEl) imgEl.src = savedCudaImg;
+            }
+
+            const sideBadgesBox = document.getElementById('sidebar3DBadgesBox');
+            if (sideBadgesBox && window.LuminaDB && typeof window.LuminaDB.render3DBadgesGridHtml === 'function') {
+                sideBadgesBox.innerHTML = window.LuminaDB.render3DBadgesGridHtml('andrzejthiel', 'Andrzej Thiel');
+            } else {
+                setTimeout(() => {
+                    const sb = document.getElementById('sidebar3DBadgesBox');
+                    if (sb && window.LuminaDB && typeof window.LuminaDB.render3DBadgesGridHtml === 'function') {
+                        sb.innerHTML = window.LuminaDB.render3DBadgesGridHtml('andrzejthiel', 'Andrzej Thiel');
+                    }
+                }, 400);
             }
         });
     </script>

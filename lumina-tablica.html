@@ -5345,6 +5345,16 @@
                     ? window.LuminaDB.formatRichTextAndMedia(rawBody)
                     : { html: rawBody, embedHtml: '' };
 
+                let topBadgeHtml = '';
+                if (window.LuminaDB?.getUserBadges) {
+                    const uBadges = window.LuminaDB.getUserBadges(item.authorSlug || item.author);
+                    if (uBadges && uBadges.length > 0) {
+                        const topB = uBadges[0];
+                        const safeAuthor = (item.author || '').replace(/'/g, "\\'");
+                        topBadgeHtml = `<span onclick="event.preventDefault(); event.stopPropagation(); window.open3DBadgeDetailsModal('${topB.id}', '${safeAuthor}')" style="cursor:pointer; display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:10px; background:${topB.gradient}; color:#fff; box-shadow:0 2px 8px ${topB.bgGlow}; margin-left:6px;" title="Wyróżnienie 3D: ${topB.name} (${topB.tier})"><i class="${topB.icon}"></i> <span>${topB.name}</span></span>`;
+                    }
+                }
+
                 return `
                     <article class="post-card-1x1 ${item._isPinnedByAdmin ? 'post-card-pinned-admin' : ''}" id="${item.id}">
                         <!-- Top Header -->
@@ -5352,7 +5362,7 @@
                             <a href="${authorLink}" class="post-author-box">
                                 <img loading="lazy" decoding="async" src="${authorAvatarSrc}" alt="${item.author}" class="post-author-img" style="object-fit:cover;" onerror="this.onerror=null; this.src='lumina_logo_portal.jpg';">
                                 <div>
-                                    <div class="post-author-name">${item.author} <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.75rem;"></i></div>
+                                    <div class="post-author-name">${item.author} <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.75rem;"></i> ${topBadgeHtml}</div>
                                     <div class="post-author-role">${item.time || item.createdAt || 'Dzisiaj'}</div>
                                 </div>
                             </a>
