@@ -8,30 +8,28 @@
 
 | Agent | Status Tokenów | Rola w Tej Chwili | Ostatni Commit |
 |---|---|---|---|
-| **Antigravity (Google)** | 🟢 AKTYWNE TOKENY | 👑 AKTUALNY LIDER (Chief Lead) | `9fae678` |
+| **Antigravity (Google)** | 🟢 AKTYWNE TOKENY | 👑 AKTUALNY LIDER (Chief Lead) | `bef6f14` |
 | **Claude (Anthropic)** | 🟢 / 🟡 ZASTĘPSTWO GOTOWE | Potencjalny Lider (Dynamic Failover) | — |
 | **GitHub Copilot (MS)** | 🟢 / 🟡 ZASTĘPSTWO GOTOWE | Potencjalny Lider (Dynamic Failover) | — |
 | **Agent GPT (OpenAI)** | 🟢 / 🟡 ZASTĘPSTWO GOTOWE | Potencjalny Lider (Dynamic Failover) | — |
-| **Google AI Studio (Gemini)**| 🟢 AKTYWNE TOKENY | Multimodalny Daemon Czasu Rzeczywistego | `9fae678` |
-
-> ⚡ **Zasada Przejęcia Lidera:** Jeśli Antigravity wyczerpie limit, Claude, Copilot lub Agent GPT natychmiast wpisuje się jako 👑 AKTUALNY LIDER i prowadzi zadania dalej bez przestoju!
+| **Google AI Studio (Gemini)**| 🟢 AKTYWNE TOKENY | Multimodalny Daemon Czasu Rzeczywistego | `bef6f14` |
 
 ---
 
 ## 📋 2. KOLEJKA ZADAŃ DO WYKONANIA (DISPATCH QUEUE)
 
 ### 📌 Zadanie Aktualne:
-* **ID:** `TASK-ICC-002`
-* **Nazwa:** Wdrożenie Zasady Dynamicznego Liderstwa Sztabu (Rotating Chief Leader)
-* **Prowadzący Lider:** Antigravity
-* **Status:** `DONE` (Ukończono & Zsynchronizowano)
-* **Kryteria Akceptacji:** Wpisanie zasady płynnego przejmowania roli Lidera do wszystkich instrukcji AI, pomyślny test Strażnika Kodu (10/10).
+* **ID:** `TASK-ICC-003`
+* **Nazwa:** Kompleksowy Audyt i Architektura Mobile-First Full Premium dla Portalu LUMINA
+* **Prowadzący Lider:** Antigravity (Chief Lead)
+* **Status:** `IN_PROGRESS`
+* **Zakres prac:**
+  1. Audyt responsywności, tap-targets (44px+), Safe Area insets (iOS/Android) w `lumina.html`, `lumina-profile.html`, `lumina-tablica.html` i `lumina-bottom-nav.js`.
+  2. Płynność gestów dotykowych (Swipe, Carousel, Lightbox, Modale).
+  3. Globalny design system Full Premium (Glassmorphism, typografia, mikrointerakcje, optymalizacja PWA).
+  4. Przygotowanie planu wdrożeniowego `implementation_plan.md`.
 
 ---
 
 ## 🔄 3. PROCEDURA PRZEJĘCIA ROLI LIDERA
-
-1. **Wykrycie braku tokenów u poprzednika:** Nowy agent wchodzący do czatu przejmuje stery.
-2. **Monit Przejęcia:** Melduje:
-   `👑 MONIT PRZEJĘCIA LIDERA [@ICC]: [Nazwa Nowego Agenta] ➔ Przejmuję rolę Lidera Sztabu (aktywne tokeny). Podejmuję zadanie [ID] z DISPATCH_BOARD.md`
-3. **Prowadzenie & Deploy:** Nowy Lider weryfikuje kod Strażnikiem Kodu (`node scripts/straznik-kodu-check.js`) i wykonuje commit oraz deploy na Firebase.
+W razie wyczerpania limitu tokenów u bieżącego lidera, kolejny dostępny agent melduje przejęcie sterów i kontynuuje `TASK-ICC-003`.

@@ -2027,7 +2027,7 @@
 
         @media (max-width: 900px) {
             .lumina-scroll-top-btn {
-                bottom: 92px !important; /* Elevated clearly above mobile nav */
+                bottom: calc(92px + env(safe-area-inset-bottom, 8px)) !important; /* Elevated clearly above mobile nav */
                 right: 20px !important;
                 width: 48px !important;
                 height: 48px !important;

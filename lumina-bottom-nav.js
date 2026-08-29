@@ -270,7 +270,7 @@
         }
 
         body {
-            padding-bottom: 85px !important;
+            padding-bottom: calc(84px + env(safe-area-inset-bottom, 12px)) !important;
         }
 
         @media (max-width: 900px) {
@@ -282,20 +282,30 @@
                 width: 100% !important;
                 min-width: unset !important;
                 max-width: unset !important;
-                height: 68px !important;
+                height: calc(64px + env(safe-area-inset-bottom, 8px)) !important;
                 border-radius: 0 !important;
                 border-left: none !important;
                 border-right: none !important;
                 border-bottom: none !important;
+                border-top: 1px solid rgba(250, 204, 21, 0.3) !important;
                 padding: 0 4px !important;
-                padding-bottom: env(safe-area-inset-bottom, 6px) !important;
+                padding-bottom: env(safe-area-inset-bottom, 8px) !important;
+                background: rgba(9, 14, 30, 0.95) !important;
+                backdrop-filter: blur(32px) saturate(200%) !important;
+                -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
+                box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.85), 0 0 20px rgba(250, 204, 21, 0.15) !important;
             }
             .lumina-nav-tab {
                 font-size: 0.65rem !important;
                 padding: 4px 6px !important;
+                min-height: 48px !important;
+                -webkit-tap-highlight-color: transparent !important;
+            }
+            .lumina-nav-tab:active {
+                transform: scale(0.92) !important;
             }
             body {
-                padding-bottom: 78px !important;
+                padding-bottom: calc(84px + env(safe-area-inset-bottom, 12px)) !important;
             }
         }
 
@@ -456,7 +466,7 @@
 
         @media (max-width: 900px) {
             .lumina-bottom-menu-popup {
-                bottom: 80px !important;
+                bottom: calc(76px + env(safe-area-inset-bottom, 10px)) !important;
                 width: 94vw !important;
             }
         }
@@ -517,7 +527,7 @@
 
         @media (max-width: 768px) {
             .lumina-floating-chat-btn {
-                bottom: 144px !important; /* Positioned directly above scroll-top (bottom: 88px) */
+                bottom: calc(144px + env(safe-area-inset-bottom, 8px)) !important; /* Positioned directly above scroll-top */
                 right: 18px !important;
                 width: 48px !important;
                 height: 48px !important;

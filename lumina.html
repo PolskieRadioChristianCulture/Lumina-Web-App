@@ -1114,10 +1114,40 @@
         }
 
         @media (max-width: 992px) {
-            .carousel-container { margin-top: 24px; padding: 0 10px; overflow: visible; }
-            .profiles-grid { gap: 18px; padding: 42px 10px 45px; }
-            .profile-card { flex: 0 0 280px; height: 390px; opacity: 0.95; transform: scale(0.96); }
-            .profile-card.featured { transform: translateY(-10px) scale(1.03) !important; }
+            .carousel-container { margin-top: 24px; padding: 0; overflow: visible; }
+            .profiles-grid {
+                gap: 16px;
+                padding: 30px 16px 40px;
+                scroll-snap-type: x mandatory;
+                scroll-padding: 0 16px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .profile-card {
+                flex: 0 0 285px;
+                height: 400px;
+                opacity: 1;
+                transform: none;
+                scroll-snap-align: center;
+                scroll-snap-stop: always;
+                -webkit-tap-highlight-color: transparent;
+                will-change: transform;
+            }
+            .profile-card.featured,
+            .profile-card.active-center-card {
+                transform: translateY(-8px) scale(1.02) !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profiles-grid {
+                gap: 14px;
+                padding: 20px 14px 30px;
+            }
+            .profile-card {
+                flex: 0 0 calc(100vw - 48px);
+                max-width: 325px;
+                height: 415px;
+            }
         }
 
         @media (max-width: 680px) {
@@ -2182,8 +2212,39 @@
             }
         }
 
-        /* ── Fullscreen Mobile Chat Messenger Modal ── */
+        /* ── Fullscreen Mobile Chat Messenger Modal & Bottom-Sheet Profile Modal ── */
         @media (max-width: 768px) {
+            #profileModal.modal-overlay {
+                padding: 0 !important;
+                align-items: flex-end !important;
+                justify-content: center !important;
+            }
+            #profileModal .modal-card {
+                width: 100vw !important;
+                max-width: 100vw !important;
+                max-height: 85vh !important;
+                max-height: 85dvh !important;
+                border-radius: 28px 28px 0 0 !important;
+                border-bottom: none !important;
+                border-left: none !important;
+                border-right: none !important;
+                border-top: 1.5px solid rgba(250, 204, 21, 0.45) !important;
+                padding: 24px 18px calc(24px + env(safe-area-inset-bottom, 14px)) 18px !important;
+                box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.85) !important;
+                transform: translateY(100%);
+                transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1) !important;
+            }
+            #profileModal.modal-overlay.open .modal-card {
+                transform: translateY(0) !important;
+            }
+            #profileModal .modal-close-btn {
+                width: 36px !important;
+                height: 36px !important;
+                font-size: 1rem !important;
+                top: 16px !important;
+                right: 16px !important;
+            }
+
             #directMessagesModal.modal-overlay {
                 padding: 0 !important;
                 align-items: stretch !important;
