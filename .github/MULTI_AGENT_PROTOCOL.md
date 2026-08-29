@@ -17,7 +17,20 @@ Dokument ten określa zasady współpracy, formaty komunikacji i procedury opera
 
 ---
 
-## 🏷️ 1. Format Podpisu Commitów (Standard Wieloosobowy)
+## 🔄 1. ZASADA DYNAMICZNEJ ZASTĘPOWALNOŚCI (TOKEN-LIMIT RESILIENCE)
+
+> ⚡ **Kluczowa Reguła Operacyjna Dowódcy:**
+> Dowództwo korzysta z bezpłatnych pakietów narzędzi AI. W dowolnym momencie danemu agentowi mogą wyczerpać się limity zapytań / tokenów (Rate Limits / Quota). 
+> **Wszyscy agenci mają bezwzględny obowiązek inteligentnego, natychmiastowego i płynnego przejmowania zadań przerwanych przez poprzednika.**
+
+### Zasady Płynnego Zastępstwa (Smart Handover):
+1. **Natychmiastowa Kontynuacja:** Gdy nowy agent zostaje wywołany przez Dowódcę słowem *"kontynuuj"*, *"dokończ"* lub nowym poleceniem, sprawdza `git status`, ostatnie commity i natychmiast podejmuje pracę w punkcie przerwania — bez zbędnych pytań wstępnych.
+2. **Niezależność od Narzędzia:** Każdy model w zespole posiada kompetencje do dokończenia prac każdego innego modelu (programowanie, refaktoryzacja, audyt, dokumentacja).
+3. **Pamięć Stanu w Repozytorium:** Stan prac jest zawsze utrwalany w commitach, plikach konfiguracyjnych i raportach, co pozwala dowolnemu agentowi wejść do akcji w ułamku sekundy.
+
+---
+
+## 🏷️ 2. Format Podpisu Commitów (Standard Wieloosobowy)
 
 Każdy commit w repozytorium musi jednoznacznie wskazywać typ zmiany, moduł oraz agenta wykonawczego:
 
@@ -37,7 +50,7 @@ Dozwolone prefiksy: `feat`, `fix`, `refactor`, `style`, `docs`, `ci`, `chore`, `
 
 ---
 
-## 📋 2. Standard Notatki Przekazania (Handoff Template)
+## 📋 3. Standard Notatki Przekazania (Handoff Template)
 
 Gdy agent kończy etap i przekazuje zadanie kolejnemu agentowi w Issue, PR lub dyskusji, stosuje standardowy raport:
 
@@ -52,7 +65,7 @@ Gdy agent kończy etap i przekazuje zadanie kolejnemu agentowi w Issue, PR lub d
 
 ---
 
-## 🛡️ 3. Pancerne Zasady Jakości i Bezpieczeństwa (Zero Kolizji)
+## 🛡️ 4. Pancerne Zasady Jakości i Bezpieczeństwa (Zero Kolizji)
 
 1. **Egzekucja Strażnika Kodu:**
    * Przed każdym zatwierdzeniem kodu (`git commit` / `git push`) **bezwzględnie uruchamiamy**:
@@ -74,7 +87,7 @@ Gdy agent kończy etap i przekazuje zadanie kolejnemu agentowi w Issue, PR lub d
 
 ---
 
-## 🏷️ 4. Wywołania i Etykiety Agentów (@mentions)
+## 🏷️ 5. Wywołania i Etykiety Agentów (@mentions)
 
 * `@Antigravity` — Zadania terminalowe, wdrożenia Firebase, skrypty wykonawcze, egzekucja Strażnika Kodu
 * `@Claude` — Przegląd kodu (*Code Review*), optymalizacja kaskad stylów, logika biznesowa, dostępność i UX
