@@ -60,7 +60,13 @@ try {
             actions = [
                 { action: 'open', title: '💬 Dołącz do rozmowy' }
             ];
-            urlToOpen = './lumina.html?openPublicChat=1';
+            urlToOpen = '/lumina?openPublicChat=1';
+        } else if (type === 'tv_schedule' || type === 'tv24' || type === 'live') {
+            actions = [
+                { action: 'watch', title: '📺 Oglądaj w CC TV24' },
+                { action: 'program', title: '📋 Ramówka TV' }
+            ];
+            urlToOpen = data.url || '/master';
         }
 
         const tag = notification.tag || data.tag || `lumina_${type}_${Date.now()}`;
@@ -298,16 +304,20 @@ self.addEventListener('notificationclick', (event) => {
     const msgId = data.messageId || data.msgId || (data.data && (data.data.messageId || data.data.msgId));
     const isPublic = data.type === 'public' || data.openPublicChat || (data.data && data.data.type === 'public');
 
-    if (action === 'share' && (data.devotionId || data.postId)) {
-        targetUrl = `./lumina-tablica.html?share=${encodeURIComponent(data.devotionId || data.postId)}`;
+    if (action === 'watch') {
+        targetUrl = data.url || '/master';
+    } else if (action === 'program') {
+        targetUrl = '/program';
+    } else if (action === 'share' && (data.devotionId || data.postId)) {
+        targetUrl = `/tablica?share=${encodeURIComponent(data.devotionId || data.postId)}`;
     } else if (action === 'view' && data.slug && !sender) {
-        targetUrl = `./lumina-profile.html?u=${encodeURIComponent(data.slug)}`;
+        targetUrl = `/lumina/${encodeURIComponent(data.slug)}`;
     } else if (isPublic) {
-        targetUrl = `./lumina.html?openPublicChat=1`;
+        targetUrl = `/lumina?openPublicChat=1`;
     } else if (sender) {
-        targetUrl = `./lumina.html?openChat=${encodeURIComponent(sender)}${msgId ? '&messageId=' + encodeURIComponent(msgId) : ''}`;
+        targetUrl = `/lumina?openChat=${encodeURIComponent(sender)}${msgId ? '&messageId=' + encodeURIComponent(msgId) : ''}`;
     } else if (!targetUrl) {
-        targetUrl = './lumina.html';
+        targetUrl = '/lumina';
     }
 
     event.waitUntil(

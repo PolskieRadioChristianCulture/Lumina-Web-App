@@ -788,6 +788,98 @@
         }
     };
 
+    // ── HARMONOGRAM POWIADOMIEŃ PUSH RAMÓWKI CC TV24 ──
+    const CC_TV24_NOTIF_SCHEDULE = [
+        {
+            startHour: 6,
+            title: "🌅 Zjednoczeni za Polskę — Na Żywo w CC TV24!",
+            body: "Rozpoczynamy pasmo poranne: Modlitwa za Polskę, inspiracje i Słowo Boże na dobry dzień.",
+            icon: "tv24_cc.png",
+            url: "/master"
+        },
+        {
+            startHour: 10,
+            title: "🎵 Biblia Śpiewana & Worship — Na Żywo!",
+            body: "Włącz telewizję CC TV24: Śpiewane Przypowieści Salomona i utwory uwielbienia.",
+            icon: "Logo_Biblia_Spiewana.jpg",
+            url: "/biblia-spiewana"
+        },
+        {
+            startHour: 12,
+            title: "📖 Studium Telewizyjne Pisma Świętego",
+            body: "Teraz w CC TV24: Głębokie rozważanie Słowa Bożego, wersety i nauczanie biblijne.",
+            icon: "studium_logo.png",
+            url: "/studium"
+        },
+        {
+            startHour: 14,
+            title: "📜 Apokalipsa: Dzień po Dniu — CC TV24",
+            body: "Odkrywaj proroctwa i Księgę Nadziei. Transmisja telewizyjna na żywo.",
+            icon: "tv24_cc.png",
+            url: "/apokalipsa"
+        },
+        {
+            startHour: 16,
+            title: "🎶 Śpiewajmy Panu — Pasmo Uwielbienia",
+            body: "Codzienne 60 minut najpiękniejszych pieśni chwały i nowości muzycznych w CC TV24.",
+            icon: "tv24_cc.png",
+            url: "/spiewajmy-panu"
+        },
+        {
+            startHour: 18,
+            title: "⚡ Prof. Walter Veith | Totalny Atak — CC TV24",
+            body: "Premiera wykładu prof. Waltera Veitha na czas końca. Odkryj prawdę Pisma Świętego!",
+            icon: "walter_veith.png",
+            url: "/totalny-atak"
+        },
+        {
+            startHour: 20,
+            title: "🎬 Kino Chrześcijańskie & Świadectwa Wiary",
+            body: "Wieczorny seans filmowy oraz poruszające historie nawróceń i uzdrowień w CC TV24.",
+            icon: "tv24_cc.png",
+            url: "/kino"
+        },
+        {
+            startHour: 22,
+            title: "🕊️ Nocne Czuwanie & Modlitwa 24/7",
+            body: "Spokojna noc, relaksacyjna muzyka chwały i wyciszenie przed snem w CC TV24.",
+            icon: "tv24_cc.png",
+            url: "/czuwanie"
+        }
+    ];
+
+    function checkAndScheduleTVScheduleNotifications() {
+        try {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const todayStr = `${year}-${month}-${day}`;
+
+            // Znajdź pozycję z ramówki odpowiadającą bieżącej godzinie
+            const slot = CC_TV24_NOTIF_SCHEDULE.find(item => item.startHour === currentHour);
+            if (!slot) return;
+
+            const notifKey = `lumina_tv_notif_${slot.startHour}_${todayStr}`;
+            const lastSent = localStorage.getItem(notifKey);
+
+            if (!lastSent) {
+                localStorage.setItem(notifKey, todayStr);
+                if (typeof window.luminaNotify === 'function') {
+                    window.luminaNotify(
+                        slot.title,
+                        slot.body,
+                        slot.icon,
+                        slot.url
+                    );
+                }
+            }
+        } catch (e) {
+            console.error('Błąd harmonogramu powiadomień TV24:', e);
+        }
+    }
+
     function checkAndScheduleDailyBlessing() {
         try {
             const now = new Date();
@@ -817,6 +909,11 @@
         }
     }
 
+    function runAllLuminaSchedulers() {
+        checkAndScheduleDailyBlessing();
+        checkAndScheduleTVScheduleNotifications();
+    }
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => { 
             window.LuminaNotifications = new LuminaNotificationEngine();
@@ -833,13 +930,13 @@
         }, 1500);
  
             // Sprawdź przy załadowaniu i powtarzaj co 30 sekund
-            setTimeout(checkAndScheduleDailyBlessing, 2500);
-            setInterval(checkAndScheduleDailyBlessing, 30000);
+            setTimeout(runAllLuminaSchedulers, 2500);
+            setInterval(runAllLuminaSchedulers, 30000);
         });
     } else {
         window.LuminaNotifications = new LuminaNotificationEngine();
-        setTimeout(checkAndScheduleDailyBlessing, 2500);
-        setInterval(checkAndScheduleDailyBlessing, 30000);
+        setTimeout(runAllLuminaSchedulers, 2500);
+        setInterval(runAllLuminaSchedulers, 30000);
     }
 })();
 
