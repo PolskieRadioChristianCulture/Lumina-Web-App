@@ -49,18 +49,22 @@
 
 ## 🚀 Common Commands & Scripts
 
-### 1. Check JavaScript Syntax (Zero-Error Verification)
+### 1. Kontrola regresji (wymagana przed przekazaniem zmian)
 ```powershell
-node scratch/check_all_syntax.js
+npm test
 ```
 
 ### 2. Commit and Push to Both Remotes
 ```powershell
-git add .
+git add -- <wyłącznie-pliki-z-tego-zadania>
 git commit -m "feat/fix: descriptive message"
 git push origin main
 git push lumina-repo main
 ```
+
+W repozytorium współdzielonym nie używaj `git add .`, nie nadpisuj cudzych
+zmian i nie wykonuj wymuszonego pushowania. Pełna procedura współpracy jest w
+`CONTRIBUTING.md`.
 
 ### 3. Deploy to Production
 ```powershell
