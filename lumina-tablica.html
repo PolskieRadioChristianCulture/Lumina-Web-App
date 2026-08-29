@@ -5268,6 +5268,7 @@
                                     <button class="post-action-btn" onclick="toggleFeedLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 48}</span></button>
                                     <button class="post-action-btn" onclick="toggleFeedAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 41}</span><span class="btn-text"> Amen</span></button>
                                     <button class="post-action-btn" onclick="toggleComments('${item.id}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze</span></button>
+                                    <button class="post-action-btn" onclick="window.openLuminaStoryGenerator ? window.openLuminaStoryGenerator({ verse: '${(item.teaser || item.title || '').replace(/'/g, "\\'")}', ref: 'Rozważanie Christian Culture' }) : null" title="Stwórz Kartę Story 9:16" style="color:#facc15;"><i class="fa-solid fa-wand-magic-sparkles"></i><span class="btn-text"> Story</span></button>
                                 </div>
                                 <button class="post-action-btn" onclick="sharePostLink('${item.id}')" title="Udostępnij"><i class="fa-solid fa-share-nodes"></i></button>
                             </div>
@@ -5400,6 +5401,7 @@
                                 <button class="post-action-btn" onclick="toggleFeedLike(this)" title="Polubienie"><i class="fa-solid fa-heart"></i> <span class="count">${item.likes || 14}</span></button>
                                 <button class="post-action-btn" onclick="toggleFeedAmen(this)" title="Amen!"><i class="fa-solid fa-hands-praying"></i> <span class="amen-count">${item.amen || 9}</span><span class="btn-text"> Amen</span></button>
                                 <button class="post-action-btn" onclick="toggleComments('${item.id}')" title="Komentarze"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Komentarze</span></button>
+                                <button class="post-action-btn" onclick="window.openStoryFromTablicaPost('${item.id}')" title="Stwórz Kartę Story 9:16" style="color:#facc15;"><i class="fa-solid fa-wand-magic-sparkles"></i><span class="btn-text"> Story</span></button>
                             </div>
                             <div style="display:flex; gap:4px; align-items:center;">
                                 ${isAdmin ? `
@@ -7473,8 +7475,23 @@
             syncFounderAvatar();
             renderFeed();
         });
+
+        window.openStoryFromTablicaPost = function(postId) {
+            const post = (typeof FEED_DATA !== 'undefined' && Array.isArray(FEED_DATA)) ? FEED_DATA.find(p => p.id === postId) : null;
+            if (!post) return;
+            const cleanText = (post.text || post.title || "Bóg jest miłością").replace(/<[^>]*>?/gm, '').trim();
+            if (typeof window.openLuminaStoryGenerator === 'function') {
+                window.openLuminaStoryGenerator({
+                    verse: cleanText.length > 240 ? cleanText.substring(0, 240) + '...' : cleanText,
+                    verseRef: post.type === 'verse' ? (post.verseRef || 'Pismo Święte') : `Świadectwo • ${post.author || 'LUMINA'}`,
+                    authorName: post.author || 'Społeczność LUMINA',
+                    slug: post.authorSlug || ''
+                });
+            }
+        };
     </script>
     <script src="lumina-scroll-top.js" defer></script>
+    <script src="lumina-story-card-generator.js" defer></script>
     <script src="lumina-bottom-nav.js?v=20260825_urszula_real_face_v370" defer></script>
     <script src="lumina-notifications.js?v=20260825_urszula_real_face_v370" defer></script>
 <!-- ══════════ DARMOWY BANER COOKIES & CONSENT MODE V2 (LUMINA) ══════════ -->
