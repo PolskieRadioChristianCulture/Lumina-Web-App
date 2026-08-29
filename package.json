@@ -7,7 +7,12 @@
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
-    "build": "echo 'No build required for static site'"
+    "build": "echo 'No build required for static site'",
+    "test:guardian": "node straznik-kodu-check.js",
+    "test:guardian:extended": "node scripts/straznik-kodu-check.js",
+    "test:smoke": "node scripts/lumina-smoke-check.js",
+    "test:inline": "node validate_lumina.js",
+    "test": "npm run test:guardian && npm run test:guardian:extended && npm run test:smoke && npm run test:inline"
   },
   "dependencies": {
     "express": "^4.19.2",

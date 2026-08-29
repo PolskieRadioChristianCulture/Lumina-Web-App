@@ -23,8 +23,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Uruchom Strażnika Kodu
-        run: node straznik-kodu-check.js
+      - name: Uruchom kontrole regresji LUMINA
+        run: npm test
 
       - name: Wynik
         if: failure()
