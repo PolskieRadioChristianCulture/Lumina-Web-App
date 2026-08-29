@@ -8119,6 +8119,73 @@
             handleUrlChatParams();
         }
     })();
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // ── WEB SHARE TARGET RECEIVER ("Udostępnij na Lumina" z Android / Windows / iOS) ──
+    // ══════════════════════════════════════════════════════════════════════════
+    (function initWebShareTargetReceiver() {
+        function handleIncomingWebShare() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const shareTitle = params.get('share_title') || params.get('title') || '';
+                const shareText = params.get('share_text') || params.get('text') || '';
+                const shareUrl = params.get('share_url') || params.get('url') || '';
+
+                if (!shareTitle && !shareText && !shareUrl) return;
+
+                let attempts = 0;
+                const tryOpenPublisherWithSharedData = () => {
+                    attempts++;
+                    const modal = document.getElementById('campaignModal');
+                    const titleInput = document.getElementById('campTitleInput');
+                    const descInput = document.getElementById('campDescInput');
+                    const btnUrlInput = document.getElementById('campBtnUrl');
+                    const btnTextInput = document.getElementById('campBtnText');
+
+                    if (modal && titleInput && descInput) {
+                        if (typeof openCampaignModal === 'function') {
+                            openCampaignModal('announcement');
+                        } else {
+                            modal.classList.add('open');
+                        }
+
+                        let combinedBody = '';
+                        if (shareText) combinedBody += shareText;
+                        if (shareUrl && !shareText.includes(shareUrl)) {
+                            combinedBody += (combinedBody ? '\n\n' : '') + shareUrl;
+                        }
+
+                        titleInput.value = shareTitle || (shareUrl ? 'Polecam: ' + shareUrl : 'Udostępniona treść');
+                        descInput.value = combinedBody;
+
+                        if (shareUrl && btnUrlInput) {
+                            btnUrlInput.value = shareUrl;
+                            if (btnTextInput) btnTextInput.value = 'Zobacz Materiał ➔';
+                        }
+
+                        if (typeof showToast === 'function') {
+                            showToast('✨ Udostępniona treść została dołączona do nowego wpisu! Kliknij Zapisz i Opublikuj.');
+                        }
+
+                        const cleanUrl = window.location.pathname + window.location.hash;
+                        window.history.replaceState({}, document.title, cleanUrl);
+                    } else if (attempts < 15) {
+                        setTimeout(tryOpenPublisherWithSharedData, 200);
+                    }
+                };
+
+                setTimeout(tryOpenPublisherWithSharedData, 350);
+            } catch (e) {
+                console.warn('[WebShareTarget] Błąd odbioru danych:', e);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', handleIncomingWebShare);
+        } else {
+            handleIncomingWebShare();
+        }
+    })();
     </script>
 </body>
 </html>

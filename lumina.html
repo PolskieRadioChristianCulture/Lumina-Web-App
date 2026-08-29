@@ -9084,6 +9084,16 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             handleUrlChatParams();
         }
     })();
+
+    // ── WEB SHARE TARGET FORWARDER TO TABLICA ──
+    (function forwardWebShareTarget() {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('share_title') || params.has('share_text') || params.has('share_url')) {
+                window.location.replace('lumina-tablica.html' + window.location.search);
+            }
+        } catch (e) {}
+    })();
     </script>
 </body>
 </html>
