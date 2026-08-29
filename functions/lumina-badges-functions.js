@@ -18,8 +18,15 @@ const { onDocumentCreated } = require('firebase-functions/v2/firestore');
 const { onSchedule } = require('firebase-functions/v2/scheduler');
 const { logger } = require('firebase-functions');
 
-if (!getApps().length) initializeApp();
-const db = getFirestore();
+let _db = null;
+function getDb() {
+    if (!_db) {
+        if (!getApps().length) initializeApp();
+        _db = getFirestore();
+    }
+    return _db;
+}
+
 const REGION = 'europe-west1';
 
 const FOUNDER_CUTOFF_COUNT = 100; // pierwsze 100 zarejestrowanych kont
@@ -36,7 +43,7 @@ const STREAK_THRESHOLDS = {
  */
 async function awardBadgeIfNew(uid, badgeId) {
     const docId = `${uid}_${badgeId}`;
-    const ref = db.doc(`lumina_user_badges/${docId}`);
+    const ref = getDb().doc(`lumina_user_badges/${docId}`);
     const existing = await ref.get();
     if (existing.exists) return false;
 
@@ -56,7 +63,7 @@ exports.onProfileCreatedCheckFounderBadge = onDocumentCreated(
     async (event) => {
         const uid = event.params.uid;
         try {
-            const countSnap = await db.collection('lumina_profiles').count().get();
+            const countSnap = await getDb().collection('lumina_profiles').count().get();
             const total = countSnap.data().count;
             if (total <= FOUNDER_CUTOFF_COUNT) {
                 await awardBadgeIfNew(uid, 'founder');
@@ -80,7 +87,7 @@ exports.onPostCreatedCheckFirstStepBadge = onDocumentCreated(
         if (!authorSlug) return;
 
         try {
-            const postsSnap = await db.collection('lumina_posts')
+            const postsSnap = await getDb().collection('lumina_posts')
                 .where('authorSlug', '==', authorSlug)
                 .count().get();
             if (postsSnap.data().count === 1) {
@@ -108,7 +115,7 @@ exports.onFollowCreatedCheckBridgeBuilderBadge = onDocumentCreated(
         if (!targetUid) return;
 
         try {
-            const followersSnap = await db.collection('lumina_likes')
+            const followersSnap = await getDb().collection('lumina_likes')
                 .where('to', '==', targetUid)
                 .where('type', '==', 'follow')
                 .count().get();
@@ -136,7 +143,7 @@ exports.onShareCreatedCheckAmbassadorBadge = onDocumentCreated(
         if (!uid) return;
 
         try {
-            const sharesSnap = await db.collection('lumina_share_events')
+            const sharesSnap = await getDb().collection('lumina_share_events')
                 .where('uid', '==', uid)
                 .count().get();
             if (sharesSnap.data().count >= 5) {
@@ -161,7 +168,7 @@ exports.scheduledDailyBadgeCheck = onSchedule(
         let awarded = 0;
 
         // --- Passy (streaki) ---
-        const streaksSnap = await db.collection('lumina_activity_streaks').get();
+        const streaksSnap = await getDb().collection('lumina_activity_streaks').get();
         for (const streakDoc of streaksSnap.docs) {
             const data = streakDoc.data();
             const uid = data.uid || streakDoc.id;
@@ -175,7 +182,7 @@ exports.scheduledDailyBadgeCheck = onSchedule(
 
         // --- Rok w Rodzinie (na podstawie daty rejestracji profilu) ---
         const oneYearAgo = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
-        const profilesSnap = await db.collection('lumina_profiles')
+        const profilesSnap = await getDb().collection('lumina_profiles')
             .where('createdAt', '<=', oneYearAgo)
             .get();
         for (const profileDoc of profilesSnap.docs) {
