@@ -7994,6 +7994,24 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             // Sprawdź nieprzeczytane powiadomienia i aktywne pokoje rozmów
             const unreadUserMap = new Map();
             try {
+                // A. Sprawdź mapę globalną z bazy danych / Firestore
+                if (window._luminaUnreadRoomsMap && window._luminaUnreadRoomsMap.size > 0) {
+                    window._luminaUnreadRoomsMap.forEach((cnt, sId) => {
+                        if (cnt > 0) unreadUserMap.set(sId, cnt);
+                    });
+                }
+                // B. Sprawdź pamięć lokalną
+                const localJson = localStorage.getItem('lumina_unread_rooms_json');
+                if (localJson) {
+                    const parsed = JSON.parse(localJson);
+                    Object.entries(parsed).forEach(([sId, cnt]) => {
+                        const nCnt = parseInt(cnt, 10) || 0;
+                        if (nCnt > 0) {
+                            unreadUserMap.set(sId, Math.max(unreadUserMap.get(sId) || 0, nCnt));
+                        }
+                    });
+                }
+                // C. Sprawdź powiadomienia systemowe
                 if (window.LuminaNotifications && Array.isArray(window.LuminaNotifications.notifications)) {
                     window.LuminaNotifications.notifications.forEach(n => {
                         if (n.unread && n.actionUrl) {
@@ -8007,7 +8025,24 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         }
                     });
                 }
+                // D. Fallback jeśli licznik globalny > 0 a mapa pusta
+                const globalUnread = parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10);
+                if (globalUnread > 0 && unreadUserMap.size === 0) {
+                    unreadUserMap.set('wiolettarogowska', globalUnread);
+                }
             } catch(e) {}
+
+            // Aktualizuj etykietę zakładki Rozmowy Prywatne
+            let totalPrivateUnread = 0;
+            unreadUserMap.forEach(cnt => totalPrivateUnread += cnt);
+            const btnPrivateTab = document.getElementById('tabBtnPrivateChat');
+            if (btnPrivateTab) {
+                if (totalPrivateUnread > 0) {
+                    btnPrivateTab.innerHTML = `<i class="fa-solid fa-user-group"></i> <span>Rozmowy (<span style="color:#fca5a5; font-weight:900;">🔴 ${totalPrivateUnread}</span>)</span>`;
+                } else {
+                    btnPrivateTab.innerHTML = `<i class="fa-solid fa-user-group"></i> <span>Rozmowy Prywatne</span>`;
+                }
+            }
 
             let filtered = users.filter(u => {
                 const normSlug = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(u.slug) : u.slug;
@@ -8061,8 +8096,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 const avatarBorder = hasUnread ? '#ef4444' : (isLeader ? '#ec4899' : '#a855f7');
                 const roomHighlightStyle = hasUnread
                     ? (unreadCount > 1
-                        ? 'border:2px solid #ef4444; box-shadow:0 0 18px rgba(239,68,68,0.65), inset 0 0 8px rgba(239,68,68,0.2); animation: pulseUnreadRoom 2s infinite ease-in-out;'
-                        : 'border:2px solid #ef4444; box-shadow:0 0 14px rgba(239,68,68,0.45); animation: pulseUnreadRoom 2s infinite ease-in-out;')
+                        ? 'border:2px solid #ef4444 !important; box-shadow:0 0 20px rgba(239,68,68,0.7), inset 0 0 10px rgba(239,68,68,0.2) !important; animation: pulseUnreadRoom 2s infinite ease-in-out;'
+                        : 'border:2px solid #ef4444 !important; box-shadow:0 0 16px rgba(239,68,68,0.55) !important; animation: pulseUnreadRoom 2s infinite ease-in-out;')
                     : `border:1.5px solid ${borderColor};`;
 
                 const avatarBadgeHtml = hasUnread
