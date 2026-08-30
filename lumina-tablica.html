@@ -6863,20 +6863,6 @@
                         }
                     });
                 }
-                // C. Sprawdź powiadomienia systemowe
-                if (window.LuminaNotifications && Array.isArray(window.LuminaNotifications.notifications)) {
-                    window.LuminaNotifications.notifications.forEach(n => {
-                        if (n.unread && n.actionUrl) {
-                            try {
-                                const u = new URL(n.actionUrl, window.location.href);
-                                const senderSlug = u.searchParams.get('openChat') || u.searchParams.get('chatWith');
-                                if (senderSlug) {
-                                    unreadUserMap.set(senderSlug, (unreadUserMap.get(senderSlug) || 0) + 1);
-                                }
-                            } catch(e) {}
-                        }
-                    });
-                }
             } catch(e) {}
 
             // Aktualizuj etykietę zakładki Rozmowy Prywatne

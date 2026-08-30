@@ -7343,16 +7343,18 @@
             // Sprawdź nieprzeczytane powiadomienia i aktywne pokoje rozmów
             const unreadUserMap = new Map();
             try {
-                if (window.LuminaNotifications && Array.isArray(window.LuminaNotifications.notifications)) {
-                    window.LuminaNotifications.notifications.forEach(n => {
-                        if (n.unread && n.actionUrl) {
-                            try {
-                                const u = new URL(n.actionUrl, window.location.href);
-                                const senderSlug = u.searchParams.get('openChat') || u.searchParams.get('chatWith');
-                                if (senderSlug) {
-                                    unreadUserMap.set(senderSlug, (unreadUserMap.get(senderSlug) || 0) + 1);
-                                }
-                            } catch(e) {}
+                if (window._luminaUnreadRoomsMap && window._luminaUnreadRoomsMap.size > 0) {
+                    window._luminaUnreadRoomsMap.forEach((cnt, sId) => {
+                        if (cnt > 0) unreadUserMap.set(sId, cnt);
+                    });
+                }
+                const localJson = localStorage.getItem('lumina_unread_rooms_json');
+                if (localJson) {
+                    const parsed = JSON.parse(localJson);
+                    Object.entries(parsed).forEach(([sId, cnt]) => {
+                        const nCnt = parseInt(cnt, 10) || 0;
+                        if (nCnt > 0) {
+                            unreadUserMap.set(sId, Math.max(unreadUserMap.get(sId) || 0, nCnt));
                         }
                     });
                 }

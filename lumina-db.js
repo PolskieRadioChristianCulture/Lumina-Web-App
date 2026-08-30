@@ -389,6 +389,28 @@ if (auth) {
     onAuthStateChanged(auth, async (user) => {
         currentUserState = user;
         if (user) {
+            // Sprawdź czy to nowe/inne konto niż poprzednio — jeśli tak, zresetuj stare powiadomienia i liczniki
+            try {
+                const prevUid = localStorage.getItem('lumina_last_authenticated_uid');
+                if (prevUid && prevUid !== user.uid) {
+                    localStorage.setItem('lumina_messages_unread_count', '0');
+                    localStorage.removeItem('lumina_unread_rooms_json');
+                    localStorage.removeItem('lumina_inapp_notifications');
+                    if (window._luminaUnreadRoomsMap) window._luminaUnreadRoomsMap.clear();
+                    if (window.LuminaNotifications) {
+                        window.LuminaNotifications.notifications = [];
+                        window.LuminaNotifications.unreadCount = 0;
+                        window.LuminaNotifications.updateBadge();
+                    }
+                    if (typeof window.updateLuminaMessagesBadge === 'function') {
+                        window.updateLuminaMessagesBadge(0);
+                    }
+                    const b = document.getElementById('floatingChatBadge');
+                    if (b) { b.style.display = 'none'; b.textContent = ''; }
+                }
+                localStorage.setItem('lumina_last_authenticated_uid', user.uid);
+            } catch(e) {}
+
             // Save basic user session in localStorage immediately
             try {
                 const uData = {
@@ -519,6 +541,14 @@ if (auth) {
                 localStorage.removeItem('lumina_current_user_profile');
                 localStorage.removeItem('lumina_my_profile');
                 localStorage.removeItem('lumina_user_session');
+                localStorage.setItem('lumina_messages_unread_count', '0');
+                localStorage.removeItem('lumina_unread_rooms_json');
+                if (window._luminaUnreadRoomsMap) window._luminaUnreadRoomsMap.clear();
+                if (typeof window.updateLuminaMessagesBadge === 'function') {
+                    window.updateLuminaMessagesBadge(0);
+                }
+                const b = document.getElementById('floatingChatBadge');
+                if (b) { b.style.display = 'none'; b.textContent = ''; }
             } catch(e) {}
         }
         
