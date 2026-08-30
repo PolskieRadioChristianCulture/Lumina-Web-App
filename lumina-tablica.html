@@ -907,6 +907,13 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+        /* ── Post Top Header Layout & Mobile Compact Badges ── */
+        .post-top-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            min-width: 0;
             padding: 12px 14px;
             background: rgba(15, 23, 42, 0.6);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -917,13 +924,18 @@
             gap: 10px;
             text-decoration: none;
             color: inherit;
+            min-width: 0;
+            flex: 1;
+            overflow: hidden;
         }
         .post-author-img {
             width: 38px;
             height: 38px;
             border-radius: 50%;
             object-fit: cover;
+            flex-shrink: 0;
             border: 1.5px solid rgba(255, 255, 255, 0.2);
+            image-rendering: -webkit-optimize-contrast;
         }
         .post-author-name {
             font-size: 0.88rem;
@@ -932,10 +944,22 @@
             align-items: center;
             gap: 5px;
             color: #f8fafc;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .post-author-role {
             font-size: 0.70rem;
             color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .post-header-actions {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         /* Category / Campaign Badges */
@@ -948,12 +972,39 @@
             font-size: 0.68rem;
             font-weight: 800;
             letter-spacing: 0.2px;
+            white-space: nowrap;
         }
         .badge-type-post { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35); }
         .badge-type-ad { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.45); }
         .badge-type-promo { background: rgba(236, 72, 153, 0.18); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.45); }
         .badge-type-ann { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.45); }
         .badge-type-event { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45); }
+
+        @media (max-width: 768px) {
+            .post-top-header {
+                padding: 10px 12px;
+                gap: 6px;
+            }
+            .post-badge-text-label,
+            .badge-type-tag-text {
+                display: none !important;
+            }
+            .user-top-badge {
+                padding: 2px 6px !important;
+                font-size: 0.82rem !important;
+                border-radius: 8px !important;
+                margin-left: 2px !important;
+            }
+            .badge-type-tag {
+                padding: 3px 6px !important;
+                font-size: 0.82rem !important;
+                border-radius: 8px !important;
+                gap: 0 !important;
+            }
+            .badge-type-tag i {
+                margin: 0 !important;
+            }
+        }
 
                         /* ── CC MISSION CAMPAIGN FULL UNTOUCHED GRAPHIC CONTAINER (NO CROPPING) ── */
         .campaign-media-container {
@@ -4609,7 +4660,7 @@
                     time: timeC1,
                     title: 'Fundament Bożej Relacji',
                     text: 'Witaj na portalu LUMINA! Wierzę, że najpiękniejsze relacje rodzą się wtedy, gdy Chrystus jest w centrum każdego kroku. Szukajmy bratnich dusz, z którymi będziemy wspólnie służyć, modlić się i budować Boże Królestwo! ☕✨',
-                    image: cAvatar || 'avatar_cezary_official.jpg',
+                    image: 'avatar_cezary_official.jpg',
                     likes: 42,
                     amen: 38
                 });
@@ -4650,7 +4701,7 @@
                     time: timeW1,
                     title: 'Miłość Przewyższająca Perły',
                     text: 'Razem z moim mężem Cezarym wierzymy z całego serca, że Boże relacje budowane na fundamencie Chrystusa przynoszą niegasnący pokój, prawdziwą miłość i siłę na każdy dzień! ✨✨',
-                    image: wAvatar || 'avatar_wioletta_official.jpg',
+                    image: 'avatar_wioletta_official.jpg',
                     likes: 64,
                     amen: 59
                 });
@@ -5296,13 +5347,13 @@
                 const isCampaign = (item.type === 'ad' || item.type === 'promo' || item.type === 'announcement' || item.type === 'event');
                 
                 let badgeHtml = '';
-                if (item._isPinnedByAdmin) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(135deg, rgba(245,158,11,0.25), rgba(234,179,8,0.35)); border:1px solid #f59e0b; color:#fef08a; font-weight:800; box-shadow:0 0 12px rgba(245,158,11,0.35);"><i class="fa-solid fa-thumbtack" style="transform:rotate(-45deg); color:#fbbf24; margin-right:4px;"></i> Przypięty Wpis</span>';
-                else if (item._pinned) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(168,85,247,0.25));border-color:rgba(245,158,11,0.5);color:#fbbf24;"><i class="fa-solid fa-sun"></i> Rozważanie Dnia</span>';
-                else if (item.type === 'ad') badgeHtml = '<span class="badge-type-tag badge-type-ad"><i class="fa-solid fa-rectangle-ad"></i> Reklama Misji CC</span>';
-                else if (item.type === 'promo') badgeHtml = '<span class="badge-type-tag badge-type-promo"><i class="fa-solid fa-rocket"></i> Promocja CC</span>';
-                else if (item.type === 'announcement') badgeHtml = '<span class="badge-type-tag badge-type-ann"><i class="fa-solid fa-scroll"></i> Ogłoszenie CC</span>';
-                else if (item.type === 'event') badgeHtml = '<span class="badge-type-tag badge-type-event"><i class="fa-solid fa-calendar-star"></i> Wydarzenie</span>';
-                else badgeHtml = '<span class="badge-type-tag badge-type-post"><i class="fa-solid fa-wand-magic-sparkles"></i> Społeczność</span>';
+                if (item._isPinnedByAdmin) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(135deg, rgba(245,158,11,0.25), rgba(234,179,8,0.35)); border:1px solid #f59e0b; color:#fef08a; font-weight:800; box-shadow:0 0 12px rgba(245,158,11,0.35);" title="Przypięty Wpis"><i class="fa-solid fa-thumbtack" style="transform:rotate(-45deg); color:#fbbf24;"></i> <span class="badge-type-tag-text">Przypięty Wpis</span></span>';
+                else if (item._pinned) badgeHtml = '<span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(168,85,247,0.25));border-color:rgba(245,158,11,0.5);color:#fbbf24;" title="Rozważanie Dnia"><i class="fa-solid fa-sun"></i> <span class="badge-type-tag-text">Rozważanie Dnia</span></span>';
+                else if (item.type === 'ad') badgeHtml = '<span class="badge-type-tag badge-type-ad" title="Reklama Misji CC"><i class="fa-solid fa-rectangle-ad"></i> <span class="badge-type-tag-text">Reklama CC</span></span>';
+                else if (item.type === 'promo') badgeHtml = '<span class="badge-type-tag badge-type-promo" title="Promocja CC"><i class="fa-solid fa-rocket"></i> <span class="badge-type-tag-text">Promocja CC</span></span>';
+                else if (item.type === 'announcement') badgeHtml = '<span class="badge-type-tag badge-type-ann" title="Ogłoszenie CC"><i class="fa-solid fa-scroll"></i> <span class="badge-type-tag-text">Ogłoszenie</span></span>';
+                else if (item.type === 'event') badgeHtml = '<span class="badge-type-tag badge-type-event" title="Wydarzenie"><i class="fa-solid fa-calendar-star"></i> <span class="badge-type-tag-text">Wydarzenie</span></span>';
+                else badgeHtml = '<span class="badge-type-tag badge-type-post" title="Społeczność"><i class="fa-solid fa-wand-magic-sparkles"></i> <span class="badge-type-tag-text">Społeczność</span></span>';
 
                 const authorLink = item.authorSlug ? (item.authorSlug === 'cezaryrgowski' ? 'lumina.cezaryrgowski.html' : (item.authorSlug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : (item.authorSlug === 'jolawojcik' ? 'lumina.jolawojcik.html' : (item.authorSlug === 'andrzejthiel' ? 'lumina.andrzejthiel.html' : (item.authorSlug === 'magdalena' ? 'lumina.magdalena.html' : `lumina-profile.html?u=${item.authorSlug}`))))) : '#';
 
@@ -5344,7 +5395,7 @@
                     if (uBadges && uBadges.length > 0) {
                         const topB = uBadges[0];
                         const safeAuthor = (item.author || '').replace(/'/g, "\\'");
-                        topBadgeHtml = `<span onclick="event.preventDefault(); event.stopPropagation(); window.open3DBadgeDetailsModal('${topB.id}', '${safeAuthor}')" style="cursor:pointer; display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:10px; background:${topB.gradient}; color:#fff; box-shadow:0 2px 8px ${topB.bgGlow}; margin-left:6px;" title="Wyróżnienie 3D: ${topB.name} (${topB.tier})"><i class="${topB.icon}"></i> <span>${topB.name}</span></span>`;
+                        topBadgeHtml = `<span class="user-top-badge" onclick="event.preventDefault(); event.stopPropagation(); window.open3DBadgeDetailsModal('${topB.id}', '${safeAuthor}')" style="cursor:pointer; display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:10px; background:${topB.gradient}; color:#fff; box-shadow:0 2px 8px ${topB.bgGlow}; margin-left:4px; flex-shrink:0;" title="Wyróżnienie: ${topB.name} (${topB.tier})"><i class="${topB.icon}"></i> <span class="post-badge-text-label">${topB.name}</span></span>`;
                     }
                 }
 
@@ -5354,12 +5405,12 @@
                         <div class="post-top-header">
                             <a href="${authorLink}" class="post-author-box">
                                 <img loading="lazy" decoding="async" src="${authorAvatarSrc}" alt="${item.author}" class="post-author-img" style="object-fit:cover;" onerror="this.onerror=null; this.src='lumina_logo_portal.jpg';">
-                                <div>
-                                    <div class="post-author-name">${item.author} <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.75rem;"></i> ${topBadgeHtml}</div>
+                                <div style="min-width:0; overflow:hidden;">
+                                    <div class="post-author-name">${item.author} <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.75rem; flex-shrink:0;"></i> ${topBadgeHtml}</div>
                                     <div class="post-author-role">${item.time || item.createdAt || 'Dzisiaj'}</div>
                                 </div>
                             </a>
-                            <div style="display:flex; align-items:center; gap:8px;">
+                            <div class="post-header-actions">
                                 <div>${badgeHtml}</div>
                                 <button type="button" onclick="openReportModal('post', '${item.id}', '${item.authorSlug || item.author}')" title="Zgłoś / Moderacja" style="background:none; border:none; color:#64748b; cursor:pointer; font-size:0.75rem; padding:4px;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                             </div>
@@ -5571,6 +5622,12 @@
                 img.onload = function() {
                     let width = img.width;
                     let height = img.height;
+
+                    if (width < 350 || height < 350) {
+                        alert('⚠️ Wybrane zdjęcie ma zbyt niską rozdzielczość (' + width + 'x' + height + ' px). Zgodnie ze standardem jakości portalu LUMINA, nie publikujemy grafik o niskiej jakości. Prosimy o dodanie zdjęcia w wysokiej jakości HD (min. 400x400 px). ✨');
+                        return;
+                    }
+
                     if (width > height) {
                         if (width > maxWidth) {
                             height = Math.round((height * maxWidth) / width);
@@ -5586,8 +5643,10 @@
                     canvas.width = width;
                     canvas.height = height;
                     const ctx = canvas.getContext('2d');
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
                     ctx.drawImage(img, 0, 0, width, height);
-                    const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                    const dataUrl = canvas.toDataURL('image/jpeg', quality || 0.92);
                     callback(dataUrl);
                 };
                 img.src = e.target.result;
