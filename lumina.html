@@ -5778,13 +5778,17 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 // Exact unique system slugs that already have static cards
                 const exactSystemSlugs = new Set([
                     'cezaryrgowski', 'wiolettarogowska', 'andrzejthiel', 'radiocc', 'cctv', 'ccmen', 'ccwomen', 
-                    'studiodobregoslowa', 'osobowoscplus', 'noemi', 'dawid', 'weronika', 'tomek', 'anna', 'piotr', 'julia', 'magdalena'
+                    'studiodobregoslowa', 'osobowoscplus', 'noemi', 'dawid', 'weronika', 'tomek', 'anna', 'piotr', 'julia', 'magdalena',
+                    'lumina', 'christianculture', 'christian_culture', 'portal_lumina', 'portallumina', 'radiochristianculture',
+                    'u_urszula_7685', 'urszula', 'ula', 'u_ula'
                 ]);
                 const renderedKeys = new Set(exactSystemSlugs);
                 const renderedNames = new Set([
                     'cezary rogowski', 'wioletta rogowska', 'andrzej thiel', 'christian culture', 'polskie radio cc', 
                     'telewizja cctv', 'christian culture tv', 'cc men', 'cc women', 'studio dobrego słowa', 'osobowość plus', 
-                    'noemi', 'dawid', 'weronika', 'tomasz', 'tomek', 'anna', 'piotr', 'julia', 'magdalena'
+                    'noemi', 'dawid', 'weronika', 'tomasz', 'tomek', 'anna', 'piotr', 'julia', 'magdalena',
+                    'lumina', 'portal lumina', 'radio christian culture', 'misja christian culture',
+                    'urszula', 'ula', 'urszula k.'
                 ]);
 
                 // Helper to build a single community card
@@ -5794,6 +5798,22 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     const cleanPKey = pKey.replace(/^u_/, '');
                     const normName = (p.name || '').toLowerCase().trim().replace(/\s+/g, ' ');
                     const cleanNameKey = normName.replace(/[^a-z0-9]/g, '');
+
+                    // Filtruj i deduplikuj wszelkie warianty profilu LUMINA / Misji
+                    if (pKey.includes('lumina') || normName.includes('lumina') || cleanNameKey.includes('lumina') || (p.job && p.job.includes('Oficjalny profil Misji'))) {
+                        return '';
+                    }
+
+                    // Filtruj i deduplikuj wszelkie warianty profilu Urszula / Ula do dokładnie 1 karty
+                    if (pKey.includes('urszula') || pKey.includes('ula') || normName === 'ula' || normName === 'urszula' || cleanNameKey.startsWith('ula') || cleanNameKey.startsWith('urszula')) {
+                        if (renderedKeys.has('urszula_dedup_lock')) return '';
+                        renderedKeys.add('urszula_dedup_lock');
+                        renderedKeys.add('urszula');
+                        renderedKeys.add('ula');
+                        renderedKeys.add('u_urszula_7685');
+                        renderedNames.add('urszula');
+                        renderedNames.add('ula');
+                    }
 
                     if (!pKey || renderedKeys.has(pKey)) return '';
                     if (cleanNameKey && (renderedNames.has(normName) || renderedNames.has(cleanNameKey))) return '';
@@ -5823,7 +5843,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     const isMissionProfile = ['radiocc', 'cctv', 'osobowoscplus', 'studiodobregoslowa', 'ccmen', 'ccwomen'].includes(pKey);
                     
                     let rawAvatar = p.avatar || (pKey.includes('bibliaaudio') ? 'avatar_biblia_audio.gif' : 'lumina_icon.jpg');
-                    if (pKey.includes('urszula') || (p.name && p.name.includes('Urszula'))) {
+                    if (pKey.includes('urszula') || pKey.includes('ula') || (p.name && (p.name.includes('Urszula') || p.name.includes('Ula')))) {
                         rawAvatar = 'avatar_urszula.jpg';
                     }
 
@@ -5895,14 +5915,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 console.warn('Error generating cloud profile cards:', err);
             }
 
-            // 3. Combine base static cards + cloud registered cards
+            // 3. Combine base static cards + cloud registered cards (unikalny zestaw)
             const baseSet = (window._baseStaticCardsHtml || '') + cloudCardsHtml;
             if (!baseSet) return;
 
             if (window._lastGeneratedBaseSet !== baseSet) {
                 window._lastGeneratedBaseSet = baseSet;
-                // Render 3 infinite sets
-                carousel.innerHTML = baseSet + baseSet + baseSet;
+                // Renderuj unikalny zestaw kart (bez potrajania)
+                carousel.innerHTML = baseSet;
                 
                 // Immediately activate and play all 3 promotional videos across all sets
                 setTimeout(function() {
@@ -7323,46 +7343,21 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const step = Math.round(cardWidth + gap);
             const scrollAmount = step * direction;
 
-            carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            if (direction > 0 && (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 20)) {
+                carousel.scrollTo({ left: 0, behavior: 'smooth' });
+            } else if (direction < 0 && carousel.scrollLeft <= 10) {
+                carousel.scrollTo({ left: carousel.scrollWidth, behavior: 'smooth' });
+            } else {
+                carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
 
             setTimeout(() => {
-                window.handleInfiniteScrollBoundary();
                 window.updateCenterActiveCard();
             }, 350);
         };
 
         window.handleInfiniteScrollBoundary = function() {
-            if (isInfiniteLoopResetting) return;
-            const carousel = document.getElementById('profilesCarousel');
-            if (!carousel) return;
-
-            const visibleCards = Array.from(carousel.querySelectorAll('.profile-card')).filter(c => c.style.display !== 'none');
-            if (visibleCards.length < 6) return;
-
-            const singleSetCount = Math.floor(visibleCards.length / 3);
-            if (singleSetCount < 1) return;
-
-            const firstCard = visibleCards[0];
-            const cardWidth = firstCard ? (firstCard.getBoundingClientRect().width || 320) : 320;
-            const gap = 24;
-            const singleSetWidth = Math.round((cardWidth + gap) * singleSetCount);
-
-            // Shift silently when crossing boundary
-            if (carousel.scrollLeft >= singleSetWidth * 1.95) {
-                isInfiniteLoopResetting = true;
-                const prev = carousel.style.scrollBehavior;
-                carousel.style.scrollBehavior = 'auto';
-                carousel.scrollLeft -= singleSetWidth;
-                carousel.style.scrollBehavior = prev;
-                setTimeout(() => { isInfiniteLoopResetting = false; }, 80);
-            } else if (carousel.scrollLeft <= singleSetWidth * 0.2) {
-                isInfiniteLoopResetting = true;
-                const prev = carousel.style.scrollBehavior;
-                carousel.style.scrollBehavior = 'auto';
-                carousel.scrollLeft += singleSetWidth;
-                carousel.style.scrollBehavior = prev;
-                setTimeout(() => { isInfiniteLoopResetting = false; }, 80);
-            }
+            // Unikalny zestaw kart - płynna nawigacja bez duplikatów
         };
 
         window.updateCenterActiveCard = function() {
