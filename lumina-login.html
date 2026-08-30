@@ -18,6 +18,35 @@
     <meta name="twitter:image" content="https://polskieradio.cc/lumina_logo_portal.jpg">
     <link rel="icon" href="lumina_icon.jpg" type="image/jpeg">
 
+    <!-- Natychmiastowa weryfikacja sesji w nagłówku: zalogowani nie widzą tego okna -->
+    <script>
+        (function() {
+            try {
+                const uid = localStorage.getItem('lumina_user_uid');
+                const slug = localStorage.getItem('lumina_current_user_slug');
+                const prof = localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_current_user');
+                let isLogged = (uid && uid.length > 5) || (slug && slug !== 'guest' && slug !== 'gosc' && slug !== 'anonymous');
+                if (!isLogged && prof) {
+                    try {
+                        const p = JSON.parse(prof);
+                        if (p && (p.uid || (p.slug && p.slug !== 'guest' && p.slug !== 'gosc'))) isLogged = true;
+                    } catch(e) {}
+                }
+                if (isLogged) {
+                    const params = new URLSearchParams(window.location.search);
+                    const r = params.get('redirect') || params.get('to') || params.get('target');
+                    let target = 'lumina';
+                    if (r) {
+                        if (r === 'tablica' || r.includes('tablica')) target = 'tablica';
+                        else if (r === 'profil' || r.includes('profil')) target = 'profil';
+                        else target = r;
+                    }
+                    window.location.replace(target);
+                }
+            } catch(e) {}
+        })();
+    </script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -48,6 +77,15 @@
             position: relative;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.96) translateY(8px);
+            transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+        }
+        .container.ready {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
         }
         .logo-wrap {
             position: relative;
@@ -161,7 +199,7 @@
 </head>
 <body>
 
-    <div class="container">
+    <div class="container" id="loginContainer">
         <div class="logo-wrap">
             <img src="lumina_logo_portal.jpg" onerror="this.src='lumina_icon.jpg'" alt="LUMINA Logo" class="logo">
         </div>
@@ -208,20 +246,25 @@
             return 'lumina';
         }
 
-        // Automatyczne przekierowanie, jeśli użytkownik jest już zalogowany
+        // Błyskawiczne przekierowanie dla zalogowanych — okno nie pokazuje się zalogowanym
         async function checkAutoLogin() {
             try {
                 const { auth } = await ensureDbReady();
                 const curUser = getCurrentUser();
                 if (curUser && curUser.uid) {
-                    statusEl.className = 'status-msg success';
-                    statusEl.textContent = 'Jesteś już zalogowany. Przenoszenie do portalu...';
-                    setTimeout(() => {
-                        window.location.href = getRedirectTarget();
-                    }, 500);
+                    window.location.replace(getRedirectTarget());
+                    return;
                 }
-            } catch(e) {
-                // cicho przejdź do gotowości
+                if (auth && auth.currentUser) {
+                    window.location.replace(getRedirectTarget());
+                    return;
+                }
+            } catch(e) {}
+
+            // Użytkownik jest niezalogowany: płynnie odsłoń okno logowania
+            const container = document.getElementById('loginContainer');
+            if (container) {
+                container.classList.add('ready');
             }
         }
         checkAutoLogin();
