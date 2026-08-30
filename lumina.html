@@ -1723,6 +1723,61 @@
             display: flex; align-items: center; justify-content: center;
         }
 
+        /* ══════════ PULSING CAROUSEL FOLLOW BUTTON (GUEST CTA) ══════════ */
+        .btn-carousel-follow-pulse {
+            position: absolute;
+            top: 42px;
+            left: 12px;
+            z-index: 7;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 4px 11px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: 1.5px solid rgba(255, 255, 255, 0.45);
+            box-shadow: 0 4px 14px rgba(236, 72, 153, 0.45), 0 0 10px rgba(236, 72, 153, 0.35);
+            cursor: pointer;
+            animation: pulseCarouselFollow 2s infinite ease-in-out;
+            transition: transform 0.2s ease, background 0.25s ease, box-shadow 0.25s ease;
+            outline: none;
+            white-space: nowrap;
+        }
+
+        .btn-carousel-follow-pulse:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 18px rgba(236, 72, 153, 0.7), 0 0 18px rgba(236, 72, 153, 0.6);
+        }
+
+        .btn-carousel-follow-pulse.is-following {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+            animation: none;
+        }
+
+        @keyframes pulseCarouselFollow {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7), 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                transform: scale(1.06);
+                box-shadow: 0 0 0 6px rgba(236, 72, 153, 0), 0 6px 16px rgba(236, 72, 153, 0.6);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(236, 72, 153, 0), 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+        }
+
         /* Card body – 100% odsłonięte zdjęcie, dolny gradient wyłącznie z imieniem i wiekiem / nazwą */
         .card-body {
             position: absolute;
@@ -5919,7 +5974,103 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 v.load();
                 v.play().catch(() => {});
             });
+
+            // Aktywuj pulsujący przycisk OBSERWUJ pod dopasowaniem dla wszystkich kart w karuzeli
+            if (typeof window.enhanceCarouselCardsWithFollowButtons === 'function') {
+                window.enhanceCarouselCardsWithFollowButtons();
+            }
         };
+
+        // ── Pulsujący Przycisk OBSERWUJ na Karuzeli Profili (Dla Niezalogowanych Gości zintegrowany z Google Auth) ──
+        window.handleCarouselFollowClick = async function(event, btn, slug, name, avatar) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            if (!slug) return;
+            const targetData = { name: name || slug, avatar: avatar || 'lumina_icon.jpg' };
+
+            const isLogged = typeof window.isLuminaUserLoggedIn === 'function' ? window.isLuminaUserLoggedIn() : false;
+
+            if (!isLogged) {
+                if (typeof window.openLoginToFollowModal === 'function') {
+                    window.openLoginToFollowModal(slug, targetData, (res) => {
+                        if (res && res.following) {
+                            btn.classList.add('is-following');
+                            btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
+                        }
+                    });
+                } else if (typeof window.openAuthModal === 'function') {
+                    window.openAuthModal();
+                }
+                return;
+            }
+
+            if (typeof window.toggleFollow === 'function') {
+                const res = await window.toggleFollow(slug, targetData);
+                if (res && res.requiresAuth) return;
+                if (res && res.following) {
+                    btn.classList.add('is-following');
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
+                    if (typeof showToast === 'function') showToast(`✨ Obserwujesz profil ${name || slug}!`);
+                } else if (res && res.following === false) {
+                    btn.classList.remove('is-following');
+                    btn.innerHTML = '<i class="fa-solid fa-bell"></i> OBSERWUJ';
+                    if (typeof showToast === 'function') showToast(`Przestałeś obserwować ${name || slug}.`);
+                }
+            }
+        };
+
+        window.enhanceCarouselCardsWithFollowButtons = function() {
+            const carousel = document.getElementById('profilesCarousel');
+            if (!carousel) return;
+
+            carousel.querySelectorAll('.profile-card').forEach(card => {
+                if (card.classList.contains('video-card') || card.id === 'promoAdCard') return;
+
+                const slug = card.dataset.profileSlug || card.id.replace('card_profile_', '');
+                if (!slug) return;
+
+                const photoWrap = card.querySelector('.card-photo');
+                if (!photoWrap) return;
+
+                let followBtn = photoWrap.querySelector('.btn-carousel-follow-pulse');
+                const nameEl = card.querySelector('.card-name');
+                const rawName = nameEl ? nameEl.textContent.split(',')[0].trim() : slug;
+                const imgEl = card.querySelector('.card-photo img');
+                const avatar = imgEl ? imgEl.src : 'lumina_icon.jpg';
+                const isFollowing = localStorage.getItem(`lumina_following_${slug}`) === '1';
+
+                if (!followBtn) {
+                    followBtn = document.createElement('button');
+                    followBtn.type = 'button';
+                    followBtn.className = 'btn-carousel-follow-pulse' + (isFollowing ? ' is-following' : '');
+                    followBtn.innerHTML = isFollowing 
+                        ? '<i class="fa-solid fa-check"></i> Obserwujesz' 
+                        : '<i class="fa-solid fa-bell"></i> OBSERWUJ';
+                    followBtn.onclick = (e) => window.handleCarouselFollowClick(e, followBtn, slug, rawName, avatar);
+                    photoWrap.appendChild(followBtn);
+                } else {
+                    if (isFollowing) {
+                        followBtn.classList.add('is-following');
+                        followBtn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
+                    } else {
+                        followBtn.classList.remove('is-following');
+                        followBtn.innerHTML = '<i class="fa-solid fa-bell"></i> OBSERWUJ';
+                    }
+                }
+            });
+        };
+
+        // Automatyczny start przy ładowaniu strony
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(window.enhanceCarouselCardsWithFollowButtons, 600);
+            });
+        } else {
+            setTimeout(window.enhanceCarouselCardsWithFollowButtons, 600);
+        }
 
         // ── Open Profile Modal with 100% Live Data & Explainable AI Match ──
         window.openCommunityProfile = function(slug) {
