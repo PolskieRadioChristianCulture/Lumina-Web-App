@@ -20,7 +20,7 @@
         { slug: 'osobowoscplus', name: 'Osobowość Plus', role: 'Kanał Formacyjny', type: 'channel', verified: true, avatar: 'logo_osobowosc_plus.jpg' },
         { slug: 'radiocc', name: 'Polskie Radio CC', role: 'Główny Nadawca Radiowy', type: 'broadcast', verified: true, avatar: 'logo_radio_cc.jpg' },
         { slug: 'cctv', name: 'Telewizja CCTV', role: 'Oficjalna Telewizja Internetowa', type: 'broadcast', verified: true, avatar: 'logo_cctv.png' },
-        { slug: 'ccwomen', name: 'Christian Culture Women', role: 'Społeczność Kobiet', type: 'community', verified: true, avatar: 'logo_cc_women.jpg' },
+        { slug: 'ccwomen', name: 'Christian Culture Women', role: 'Społeczność Kobiet', type: 'community', verified: true, avatar: 'avatar_ccwomen_official_2026.jpg', avatarVideo: 'wideo_profilowe_ccwomen.mp4' },
         { slug: 'ccmen', name: 'Christian Culture Men', role: 'Społeczność Mężczyzn', type: 'community', verified: true, avatar: 'logo_cc_men.jpg' },
         { slug: 'u_bibliaaudiochristianculture_3248', name: 'Biblia Audio Christian Culture', role: 'Oficjalny Kanał Biblia Audio CC', type: 'channel', verified: true, avatar: 'avatar_biblia_audio.gif' },
         { slug: 'magdalena', name: 'Magdalena', role: 'Członkini Społeczności', type: 'user', verified: false, avatar: 'avatar_magdalena.jpg' }

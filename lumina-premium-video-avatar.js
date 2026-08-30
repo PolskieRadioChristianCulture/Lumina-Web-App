@@ -215,7 +215,15 @@
                 });
             }
 
-            triggerMount();
+                        triggerMount();
+
+            const resumeAllVideos = () => {
+                document.querySelectorAll('video.avatar-video-element').forEach(v => {
+                    if (v.paused) v.play().catch(() => {});
+                });
+            };
+            document.addEventListener('touchstart', resumeAllVideos, { passive: true, once: true });
+            document.addEventListener('click', resumeAllVideos, { passive: true, once: true });
         }
 
         injectStyles() {
@@ -239,8 +247,8 @@
                     border-radius: 50%;
                     z-index: 3;
                     pointer-events: none;
-                    background: #000;
-                    box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+                    background: transparent;
+                    box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
                 }
 
                 .avatar-wrap.has-premium-video {
@@ -584,18 +592,41 @@
                             videoEl.autoplay = true;
                             videoEl.loop = true;
                             videoEl.muted = true;
+                            videoEl.defaultMuted = true;
                             videoEl.playsInline = true;
+                            videoEl.setAttribute('autoplay', '');
+                            videoEl.setAttribute('loop', '');
+                            videoEl.setAttribute('muted', '');
                             videoEl.setAttribute('playsinline', '');
                             videoEl.setAttribute('webkit-playsinline', '');
                             videoEl.setAttribute('disablepictureinpicture', '');
                             wrap.appendChild(videoEl);
                         }
 
+                        videoEl.onerror = () => {
+                            console.warn('[LUMINA][VideoAvatar] Błąd odtwarzania wideo:', videoUrl);
+                            if (videoUrl && videoUrl.startsWith('data:')) {
+                                try {
+                                    localStorage.removeItem('lumina_avatar_video_' + slug);
+                                } catch(e) {}
+                                const fallbackUrl = SPECIAL_PROFILES_DEFAULT_VIDEOS[slug] || 'wideo_profilowe_ccwomen.mp4';
+                                if (videoEl.getAttribute('data-src') !== fallbackUrl) {
+                                    videoEl.setAttribute('data-src', fallbackUrl);
+                                    videoEl.src = fallbackUrl;
+                                    videoEl.load();
+                                    videoEl.play().catch(() => {});
+                                }
+                            }
+                        };
+
                         if (videoEl.getAttribute('data-src') !== videoUrl) {
                             videoEl.setAttribute('data-src', videoUrl);
                             videoEl.src = videoUrl;
                             videoEl.load();
-                            videoEl.play().catch(() => {});
+                            const p = videoEl.play();
+                            if (p !== undefined) {
+                                p.catch(() => {});
+                            }
                         }
 
                         videoEl.ontimeupdate = () => {
