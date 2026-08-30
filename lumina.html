@@ -5834,7 +5834,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                                 ${(liveScore && liveScore !== 'Wymaga profilu' && liveScore !== '0%') ? `
                                     <div class="card-match" style="background: ${isLocalUser || liveScore === 'Twój profil' ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #ec4899, #8b5cf6)'};">${liveScore}</div>
                                 ` : ''}
-                                ${!isLocalUser ? `
+                                ${(!isLocalUser && localStorage.getItem('lumina_following_' + pKey) !== '1') ? `
                                     <button type="button" class="btn-carousel-follow-pulse" onclick="handleCarouselFollowClick(event, this, '${pKey}', '${userName}', '${userAvatar}')">
                                         <i class="fa-solid fa-bell"></i> OBSERWUJ
                                     </button>
@@ -6283,8 +6283,12 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (!isLogged) {
                 window.openLoginToFollowModal(slug, targetData, (res) => {
                     if (res && res.following) {
-                        btn.classList.add('is-following');
-                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
+                        if (btn) {
+                            btn.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+                            btn.style.opacity = '0';
+                            btn.style.transform = 'scale(0.7)';
+                            setTimeout(() => { btn.style.display = 'none'; }, 350);
+                        }
                     }
                 });
                 return;
@@ -6300,12 +6304,20 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 const res = await followFn(slug, targetData);
                 if (res && res.requiresAuth) return;
                 if (res && res.following) {
-                    btn.classList.add('is-following');
-                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
+                    if (btn) {
+                        btn.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+                        btn.style.opacity = '0';
+                        btn.style.transform = 'scale(0.7)';
+                        setTimeout(() => { btn.style.display = 'none'; }, 350);
+                    }
                     if (typeof showToast === 'function') showToast(`✨ Obserwujesz profil ${name || slug}!`);
                 } else if (res && res.following === false) {
-                    btn.classList.remove('is-following');
-                    btn.innerHTML = '<i class="fa-solid fa-bell"></i> OBSERWUJ';
+                    if (btn) {
+                        btn.style.display = 'inline-flex';
+                        btn.style.opacity = '1';
+                        btn.style.transform = 'scale(1)';
+                        btn.innerHTML = '<i class="fa-solid fa-bell"></i> OBSERWUJ';
+                    }
                     if (typeof showToast === 'function') showToast(`Przestałeś obserwować ${name || slug}.`);
                 }
             }
@@ -6325,29 +6337,33 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 if (!photoWrap) return;
 
                 let followBtn = photoWrap.querySelector('.btn-carousel-follow-pulse');
+                const isFollowing = localStorage.getItem(`lumina_following_${slug}`) === '1' || (typeof window.isFollowingLocally === 'function' && window.isFollowingLocally(slug));
+
+                // Gdy użytkownik już obserwuje profil, przycisk w oknie karuzeli NIE powinien się wyświetlać
+                if (isFollowing) {
+                    if (followBtn) {
+                        followBtn.style.display = 'none';
+                    }
+                    return;
+                }
+
                 const nameEl = card.querySelector('.card-name');
                 const rawName = nameEl ? nameEl.textContent.split(',')[0].trim() : slug;
                 const imgEl = card.querySelector('.card-photo img');
                 const avatar = imgEl ? imgEl.src : 'lumina_icon.jpg';
-                const isFollowing = localStorage.getItem(`lumina_following_${slug}`) === '1';
 
                 if (!followBtn) {
                     followBtn = document.createElement('button');
                     followBtn.type = 'button';
-                    followBtn.className = 'btn-carousel-follow-pulse' + (isFollowing ? ' is-following' : '');
-                    followBtn.innerHTML = isFollowing 
-                        ? '<i class="fa-solid fa-check"></i> Obserwujesz' 
-                        : '<i class="fa-solid fa-bell"></i> OBSERWUJ';
+                    followBtn.className = 'btn-carousel-follow-pulse';
+                    followBtn.innerHTML = '<i class="fa-solid fa-bell"></i> OBSERWUJ';
                     followBtn.onclick = (e) => window.handleCarouselFollowClick(e, followBtn, slug, rawName, avatar);
                     photoWrap.appendChild(followBtn);
                 } else {
-                    if (isFollowing) {
-                        followBtn.classList.add('is-following');
-                        followBtn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
-                    } else {
-                        followBtn.classList.remove('is-following');
-                        followBtn.innerHTML = '<i class="fa-solid fa-bell"></i> OBSERWUJ';
-                    }
+                    followBtn.style.display = 'inline-flex';
+                    followBtn.style.opacity = '1';
+                    followBtn.style.transform = 'scale(1)';
+                    followBtn.innerHTML = '<i class="fa-solid fa-bell"></i> OBSERWUJ';
                 }
             });
         };
