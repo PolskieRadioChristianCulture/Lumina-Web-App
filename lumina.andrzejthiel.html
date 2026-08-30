@@ -1477,6 +1477,7 @@
         async function toggleFollowAndrzej(btn) {
             if (typeof window.toggleFollow === 'function') {
                 const result = await window.toggleFollow('andrzejthiel', { name: 'Andrzej Thiel', avatar: 'avatar_andrzej_thiel.jpg' });
+                if (result.requiresAuth) return;
                 if (result.error) { if (typeof showToast === 'function') showToast('Nie udało się zaktualizować obserwowania.'); return; }
                 btn.innerHTML = result.following
                     ? '<i class="fa-solid fa-check"></i> Obserwujesz'

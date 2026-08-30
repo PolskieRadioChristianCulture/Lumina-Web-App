@@ -1084,16 +1084,23 @@ Zapraszamy do oglądania najnowszych wydań programów CCTV24. W tym tygodniu ro
             if (isAmen) showToast('🙏 Wypowiedziano Amen!');
         }
 
-        let isFollowing = false;
-        function toggleFollowProfile(btn) {
-            isFollowing = !isFollowing;
-            if (isFollowing) {
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
-                btn.style.background = '#10b981';
-                showToast('✨ Obserwujesz Christian Culture TV!');
-            } else {
-                btn.innerHTML = '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
-                btn.style.background = 'linear-gradient(135deg, var(--blue-accent), #2563eb)';
+        async function toggleFollowProfile(btn) {
+            const targetSlug = 'cctv';
+            const targetData = { name: 'Christian Culture TV', avatar: 'logo_cctv.png' };
+            if (typeof window.toggleFollow === 'function') {
+                const res = await window.toggleFollow(targetSlug, targetData);
+                if (res && res.requiresAuth) return;
+                if (res && res.following) {
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
+                    btn.style.background = '#10b981';
+                    showToast('✨ Obserwujesz Christian Culture TV!');
+                } else if (res && res.following === false) {
+                    btn.innerHTML = '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
+                    btn.style.background = 'linear-gradient(135deg, var(--blue-accent), #2563eb)';
+                    showToast('Przestałeś obserwować Christian Culture TV.');
+                }
+            } else if (typeof window.openLoginToFollowModal === 'function') {
+                window.openLoginToFollowModal(targetSlug, targetData);
             }
         }
     </script>

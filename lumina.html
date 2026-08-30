@@ -9297,6 +9297,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const p = _activeQuickActionProfile || {};
             const name = p.name || slug;
 
+            if (typeof window.isLuminaUserLoggedIn === 'function' && !window.isLuminaUserLoggedIn()) {
+                window.closeProfileQuickActions();
+                if (typeof window.openLoginToFollowModal === 'function') {
+                    window.openLoginToFollowModal(slug, { name: name, avatar: p.avatar });
+                }
+                return;
+            }
+
             if (window.LuminaDB && typeof window.LuminaDB.recordProfileLike === 'function') {
                 window.LuminaDB.recordProfileLike(slug, { name: name, avatar: p.avatar }, 'follow');
             }

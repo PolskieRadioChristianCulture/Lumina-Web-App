@@ -1038,16 +1038,23 @@ To księga otuchy dla wierzących w trudnych czasach. Bóg ma pełną kontrolę 
             if (isAmen) showToast('🙏 Wypowiedziano Amen!');
         }
 
-        let isFollowing = false;
-        function toggleFollowProfile(btn) {
-            isFollowing = !isFollowing;
-            if (isFollowing) {
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
-                btn.style.background = '#10b981';
-                showToast('✨ Obserwujesz profil Studio Dobrego Słowa!');
-            } else {
-                btn.innerHTML = '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
-                btn.style.background = 'linear-gradient(135deg, var(--red-accent), #b91c1c)';
+        async function toggleFollowProfile(btn) {
+            const targetSlug = 'studiodobregoslowa';
+            const targetData = { name: 'Studio Dobrego Słowa', avatar: 'logo_studio_dobrego_slowa.jpg' };
+            if (typeof window.toggleFollow === 'function') {
+                const res = await window.toggleFollow(targetSlug, targetData);
+                if (res && res.requiresAuth) return;
+                if (res && res.following) {
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
+                    btn.style.background = '#10b981';
+                    showToast('✨ Obserwujesz profil Studio Dobrego Słowa!');
+                } else if (res && res.following === false) {
+                    btn.innerHTML = '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
+                    btn.style.background = 'linear-gradient(135deg, var(--red-accent), #b91c1c)';
+                    showToast('Przestałeś obserwować profil Studio Dobrego Słowa.');
+                }
+            } else if (typeof window.openLoginToFollowModal === 'function') {
+                window.openLoginToFollowModal(targetSlug, targetData);
             }
         }
     </script>

@@ -5926,6 +5926,13 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
         window.toggleProfileFollow = function(btn) {
             const STORAGE_FOLLOW_KEY = 'lumina_following_cezaryrgowski';
             const isCurrentlyFollowing = localStorage.getItem(STORAGE_FOLLOW_KEY) === 'true';
+
+            if (!isCurrentlyFollowing && typeof window.isLuminaUserLoggedIn === 'function' && !window.isLuminaUserLoggedIn()) {
+                if (typeof window.openLoginToFollowModal === 'function') {
+                    window.openLoginToFollowModal('cezaryrgowski', { name: 'Cezary Rogowski', avatar: 'avatar_cezary_official.jpg' });
+                }
+                return;
+            }
             
             const btnEl = btn || document.getElementById('btnProfileFollow');
             const iconEl = document.getElementById('followBtnIcon');

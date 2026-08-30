@@ -2977,10 +2977,288 @@ export async function recordProfileLike(targetIdOrSlug, targetData = {}, type = 
  * PRAWDZIWY SYSTEM OBSERWOWANIA (zastępuje fałszywy licznik lokalny, który
  * tylko zwiększał liczbę w przeglądarce, i brakującą funkcję na 3 stronach,
  * gdzie przycisk "Obserwuj" w ogóle nie działał — rzucał błąd w konsoli).
- * Jedna, wspólna implementacja zamiast duplikowania w każdym pliku profilu.
+export function isUserAuthenticated() {
+    if (currentUserState && currentUserState.uid) return true;
+    if (currentProfileState && (currentProfileState.uid || (currentProfileState.slug && currentProfileState.slug !== 'guest' && currentProfileState.slug !== 'gosc'))) return true;
+    const curUid = localStorage.getItem('lumina_user_uid');
+    if (curUid && curUid.length > 5) return true;
+    const curSlug = localStorage.getItem('lumina_current_user_slug');
+    if (curSlug && curSlug !== 'guest' && curSlug !== 'gosc' && curSlug !== 'anonymous') return true;
+    const curP = localStorage.getItem('lumina_current_user_profile');
+    if (curP) {
+        try {
+            const p = JSON.parse(curP);
+            if (p && (p.uid || (p.slug && p.slug !== 'guest' && p.slug !== 'gosc'))) return true;
+        } catch(e) {}
+    }
+    return false;
+}
+window.isLuminaUserLoggedIn = isUserAuthenticated;
+
+let pendingFollowTarget = null;
+
+export function openLoginToFollowModal(targetSlug, targetData = {}, onSuccess = null) {
+    pendingFollowTarget = { slug: targetSlug, data: targetData, onSuccess };
+    
+    let modal = document.getElementById('luminaLoginToFollowModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'luminaLoginToFollowModal';
+        modal.className = 'lumina-follow-auth-modal-overlay';
+        modal.innerHTML = `
+            <div class="lumina-follow-auth-card">
+                <button type="button" class="lumina-follow-modal-close" onclick="window.closeLoginToFollowModal()" aria-label="Zamknij">&times;</button>
+                <div class="lumina-follow-auth-icon-wrap">
+                    <div class="lumina-follow-icon-glow">
+                        <i class="fa-solid fa-heart-circle-plus"></i>
+                    </div>
+                </div>
+                <h3 class="lumina-follow-auth-title">Zaloguj się, aby obserwować</h3>
+                <p class="lumina-follow-auth-desc">
+                    Aby obserwować profil <strong id="luminaFollowTargetName">użytkownika</strong> i być na bieżąco z nowymi wpisami, zaloguj się do portalu LUMINA.
+                </p>
+                <div class="lumina-follow-auth-actions">
+                    <button type="button" id="btnLuminaFollowGoogleLogin" class="btn-lumina-google-auth" onclick="window.handleFollowGoogleLogin()">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        <span id="btnLuminaFollowGoogleText">Zaloguj się z Google</span>
+                    </button>
+                    <a href="lumina.html#login" class="btn-lumina-email-login-link">
+                        Masz konto z hasłem? Zaloguj się przez e-mail
+                    </a>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        if (!document.getElementById('luminaFollowAuthStyles')) {
+            const st = document.createElement('style');
+            st.id = 'luminaFollowAuthStyles';
+            st.textContent = `
+                .lumina-follow-auth-modal-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(7, 14, 36, 0.88);
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                    z-index: 100000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+                }
+                .lumina-follow-auth-modal-overlay.open {
+                    opacity: 1;
+                    visibility: visible;
+                }
+                .lumina-follow-auth-card {
+                    position: relative;
+                    width: 100%;
+                    max-width: 440px;
+                    background: linear-gradient(145deg, #0f1d42 0%, #09122c 100%);
+                    border: 1px solid rgba(236, 72, 153, 0.35);
+                    border-radius: 28px;
+                    padding: 34px 26px 28px;
+                    text-align: center;
+                    box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 35px rgba(236,72,153,0.25);
+                    transform: scale(0.92) translateY(12px);
+                    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                }
+                .lumina-follow-auth-modal-overlay.open .lumina-follow-auth-card {
+                    transform: scale(1) translateY(0);
+                }
+                .lumina-follow-modal-close {
+                    position: absolute;
+                    top: 16px;
+                    right: 18px;
+                    background: rgba(255, 255, 255, 0.08);
+                    border: 1px solid rgba(255, 255, 255, 0.15);
+                    color: #94a3b8;
+                    width: 34px;
+                    height: 34px;
+                    border-radius: 50%;
+                    font-size: 1.25rem;
+                    line-height: 1;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.2s ease;
+                }
+                .lumina-follow-modal-close:hover {
+                    background: rgba(239, 68, 68, 0.2);
+                    color: #fff;
+                    border-color: rgba(239, 68, 68, 0.5);
+                }
+                .lumina-follow-auth-icon-wrap {
+                    display: flex;
+                    justify-content: center;
+                    margin-bottom: 16px;
+                }
+                .lumina-follow-icon-glow {
+                    width: 72px;
+                    height: 72px;
+                    border-radius: 50%;
+                    background: radial-gradient(circle, rgba(236, 72, 153, 0.25) 0%, rgba(236, 72, 153, 0.05) 70%, transparent 100%);
+                    border: 2px solid rgba(236, 72, 153, 0.5);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 2.2rem;
+                    color: #ec4899;
+                    box-shadow: 0 0 24px rgba(236, 72, 153, 0.4);
+                    animation: pulseHeartGlow 2.5s ease-in-out infinite alternate;
+                }
+                @keyframes pulseHeartGlow {
+                    0% { transform: scale(0.96); box-shadow: 0 0 16px rgba(236, 72, 153, 0.3); }
+                    100% { transform: scale(1.04); box-shadow: 0 0 32px rgba(236, 72, 153, 0.6); }
+                }
+                .lumina-follow-auth-title {
+                    font-family: 'Outfit', sans-serif;
+                    font-size: 1.45rem;
+                    font-weight: 800;
+                    color: #fff;
+                    margin: 0 0 10px 0;
+                    letter-spacing: -0.3px;
+                }
+                .lumina-follow-auth-desc {
+                    font-size: 0.92rem;
+                    line-height: 1.55;
+                    color: #cbd5e1;
+                    margin: 0 0 24px 0;
+                }
+                .lumina-follow-auth-desc strong {
+                    color: #fce7f3;
+                    font-weight: 700;
+                }
+                .lumina-follow-auth-actions {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+                .btn-lumina-google-auth {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 12px;
+                    padding: 13px 20px;
+                    background: #ffffff;
+                    color: #0f172a;
+                    font-weight: 800;
+                    font-size: 0.98rem;
+                    border-radius: 30px;
+                    border: none;
+                    cursor: pointer;
+                    box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 16px rgba(255,255,255,0.2);
+                    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+                }
+                .btn-lumina-google-auth:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 20px rgba(255,255,255,0.3);
+                    background: #f8fafc;
+                }
+                .btn-lumina-email-login-link {
+                    font-size: 0.82rem;
+                    color: #94a3b8;
+                    text-decoration: underline;
+                    transition: color 0.2s;
+                    margin-top: 4px;
+                }
+                .btn-lumina-email-login-link:hover {
+                    color: #f8fafc;
+                }
+            `;
+            document.head.appendChild(st);
+        }
+    }
+
+    const nameEl = document.getElementById('luminaFollowTargetName');
+    if (nameEl) {
+        nameEl.textContent = targetData.name || targetSlug || 'tego profilu';
+    }
+
+    modal.classList.add('open');
+}
+
+window.closeLoginToFollowModal = function() {
+    const modal = document.getElementById('luminaLoginToFollowModal');
+    if (modal) modal.classList.remove('open');
+};
+
+window.openLoginToFollowModal = openLoginToFollowModal;
+
+window.handleFollowGoogleLogin = async function() {
+    const btn = document.getElementById('btnLuminaFollowGoogleLogin');
+    const textEl = document.getElementById('btnLuminaFollowGoogleText');
+    if (btn) btn.disabled = true;
+    if (textEl) textEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Logowanie...';
+
+    try {
+        const loginRes = await loginWithGoogle();
+        if (loginRes && loginRes.isRedirecting) {
+            return;
+        }
+
+        window.closeLoginToFollowModal();
+
+        if (pendingFollowTarget && pendingFollowTarget.slug) {
+            const targetSlug = pendingFollowTarget.slug;
+            const targetData = pendingFollowTarget.data || {};
+            const res = await toggleFollow(targetSlug, targetData);
+
+            if (typeof pendingFollowTarget.onSuccess === 'function') {
+                pendingFollowTarget.onSuccess(res);
+            } else {
+                document.querySelectorAll('.btn-action-primary, .btn-action-follow, #btnProfileFollow').forEach(b => {
+                    if (b.textContent.includes('Obserwuj') || b.textContent.includes('Polub')) {
+                        b.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
+                        b.style.background = '#10b981';
+                    }
+                });
+                const name = targetData.name || targetSlug;
+                if (typeof showToast === 'function') {
+                    showToast(`✨ Witamy w LUMINA! Obserwujesz teraz ${name}.`);
+                }
+            }
+        }
+    } catch(err) {
+        console.warn('[LUMINA Follow Auth] Błąd logowania z Google:', err);
+        if (typeof showToast === 'function') {
+            showToast('Nie udało się zalogować przez Google. Spróbuj ponownie.');
+        } else {
+            alert('Nie udało się zalogować przez Google. Spróbuj ponownie.');
+        }
+    } finally {
+        if (btn) btn.disabled = false;
+        if (textEl) textEl.textContent = 'Zaloguj się z Google';
+    }
+};
+
+/**
+ * ══════════════════════════════════════════════════════════════════════════
+ * LUMINA FOLLOW SYSTEM
+ * ══════════════════════════════════════════════════════════════════════════
  */
 export async function toggleFollow(targetSlug, targetData = {}) {
-    if (!db || !targetSlug) return { following: false, error: 'no-db-or-target' };
+    if (!targetSlug) return { following: false, error: 'no-target' };
+
+    if (!isUserAuthenticated()) {
+        openLoginToFollowModal(targetSlug, targetData);
+        return { following: false, requiresAuth: true };
+    }
+
+    if (!db) return { following: false, error: 'no-db' };
 
     const myId = normalizeChatUserId(
         currentProfileState?.slug || currentProfileState?.uid ||
@@ -2988,18 +3266,6 @@ export async function toggleFollow(targetSlug, targetData = {}) {
     );
     if (myId === targetSlug) return { following: false, error: 'self-follow' };
 
-    // WAŻNE: relacja obserwowania zapisywana jest w kolekcji lumina_likes
-    // z polem type:'follow' — DOKŁADNIE tam, skąd już czyta ją wdrożona
-    // funkcja onLuminaPostCreated (zapytanie where('to','==',authorSlug)
-    // .where('type','==','follow')). Osobna kolekcja byłaby niewidoczna
-    // dla tej funkcji i powiadomienia nigdy by nie doszły.
-    // UWAGA — ograniczenie istniejącego modelu danych, nie wprowadzone tutaj:
-    // ID dokumentu (${myId}_${targetSlug}) jest współdzielone z systemem
-    // "polub profil" (recordProfileLike), który używa tego samego schematu.
-    // Jeśli ta sama para użytkowników ma już relację type:'like', obserwowanie
-    // ją nadpisze. To pre-istniejące ograniczenie architektury lumina_likes,
-    // nie coś wprowadzonego przez tę funkcję — do rozważenia osobno, jeśli
-    // "polub" i "obserwuj" mają współistnieć niezależnie dla tej samej pary.
     const followDocId = `${myId}_${targetSlug}`;
     const followRef = doc(db, 'lumina_likes', followDocId);
     let nowFollowing;
@@ -3035,19 +3301,21 @@ export function isFollowingLocally(targetSlug) {
     try { return localStorage.getItem(`lumina_following_${targetSlug}`) === '1'; } catch (e) { return false; }
 }
 
-/**
- * Globalny handler dla istniejących przycisków onclick="toggleProfileFollow(this)"
- * — podpina prawdziwy system pod już istniejący HTML, bez potrzeby zmiany
- * znaczników na każdej stronie profilu.
- */
 window.toggleFollow = toggleFollow;
 
 window.toggleProfileFollow = async function (btn) {
     const targetSlug = (window._currentProfileSlug || document.body.dataset.profileSlug || '').toLowerCase();
     if (!targetSlug) { console.warn('[LUMINA Follow] Nie ustawiono window._currentProfileSlug na tej stronie.'); return; }
 
-    const targetName = document.querySelector('.profile-name, #profileName, #userNameEl')?.textContent?.trim() || targetSlug;
+    const targetName = document.querySelector('.profile-name, #profileName, #userNameEl, .profile-title-name')?.textContent?.trim() || targetSlug;
+    
+    if (!isUserAuthenticated()) {
+        openLoginToFollowModal(targetSlug, { name: targetName });
+        return;
+    }
+
     const result = await toggleFollow(targetSlug, { name: targetName });
+    if (result.requiresAuth) return;
     if (result.error) { if (typeof showToast === 'function') showToast('Nie udało się zaktualizować obserwowania.'); return; }
 
     const textEl = document.getElementById('followBtnText');
@@ -4217,7 +4485,10 @@ window.LuminaDB = {
     LUMINA_HANDLES,
     resolveMentionHandle,
     normalizePhoneNumber,
-    calculateProfileMatchScore
+    calculateProfileMatchScore,
+    isUserAuthenticated,
+    openLoginToFollowModal,
+    toggleFollow
 };
 
 
@@ -4233,6 +4504,9 @@ window.firebaseAuth = auth;
 window.firebaseDb = db;
 window.LuminaDB = window.LuminaDB || {};
 window.LuminaDB.loginWithGoogle = loginWithGoogle;
+window.LuminaDB.isUserAuthenticated = isUserAuthenticated;
+window.LuminaDB.openLoginToFollowModal = openLoginToFollowModal;
+window.LuminaDB.toggleFollow = toggleFollow;
 
 
 // ══════════════════════════════════════════════════════════════════════════

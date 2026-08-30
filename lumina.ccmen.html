@@ -1005,16 +1005,23 @@ Współczesny świat często myli siłę z dominacją. Biblia uczy nas, że najs
             if (isAmen) showToast('🙏 Wypowiedziano Amen!');
         }
 
-        let isFollowing = false;
-        function toggleFollowProfile(btn) {
-            isFollowing = !isFollowing;
-            if (isFollowing) {
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
-                btn.style.background = '#10b981';
-                showToast('✨ Obserwujesz profil CC Men!');
-            } else {
-                btn.innerHTML = '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
-                btn.style.background = 'linear-gradient(135deg, var(--amber-accent), #d97706)';
+        async function toggleFollowProfile(btn) {
+            const targetSlug = 'ccmen';
+            const targetData = { name: 'CC Men', avatar: 'logo_cc_men.jpg' };
+            if (typeof window.toggleFollow === 'function') {
+                const res = await window.toggleFollow(targetSlug, targetData);
+                if (res && res.requiresAuth) return;
+                if (res && res.following) {
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
+                    btn.style.background = '#10b981';
+                    showToast('✨ Obserwujesz profil CC Men!');
+                } else if (res && res.following === false) {
+                    btn.innerHTML = '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
+                    btn.style.background = 'linear-gradient(135deg, var(--amber-accent), #d97706)';
+                    showToast('Przestałeś obserwować profil CC Men.');
+                }
+            } else if (typeof window.openLoginToFollowModal === 'function') {
+                window.openLoginToFollowModal(targetSlug, targetData);
             }
         }
     </script>

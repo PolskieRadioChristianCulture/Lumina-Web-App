@@ -1160,16 +1160,23 @@ Włącz Polskie Radio CC i pozwól, aby pieśni uwielbienia towarzyszyły Ci w c
             if (isAmen) showToast('🙏 Wypowiedziano Amen!');
         }
 
-        let isFollowing = false;
-        function toggleFollowProfile(btn) {
-            isFollowing = !isFollowing;
-            if (isFollowing) {
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
-                btn.style.background = '#10b981';
-                showToast('✨ Obserwujesz Polskie Radio CC!');
-            } else {
-                btn.innerHTML = '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
-                btn.style.background = 'linear-gradient(135deg, var(--gold-accent), #d97706)';
+        async function toggleFollowProfile(btn) {
+            const targetSlug = 'radiocc';
+            const targetData = { name: 'Polskie Radio CC', avatar: 'logo_radio_cc.jpg' };
+            if (typeof window.toggleFollow === 'function') {
+                const res = await window.toggleFollow(targetSlug, targetData);
+                if (res && res.requiresAuth) return;
+                if (res && res.following) {
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
+                    btn.style.background = '#10b981';
+                    showToast('✨ Obserwujesz Polskie Radio CC!');
+                } else if (res && res.following === false) {
+                    btn.innerHTML = '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
+                    btn.style.background = 'linear-gradient(135deg, var(--gold-accent), #d97706)';
+                    showToast('Przestałeś obserwować Polskie Radio CC.');
+                }
+            } else if (typeof window.openLoginToFollowModal === 'function') {
+                window.openLoginToFollowModal(targetSlug, targetData);
             }
         }
 

@@ -1133,16 +1133,23 @@ Zdrowe granice nie są budowaniem murów, lecz drzwiami z zamkiem — to Ty decy
             if (isAmen) showToast('🙏 Wypowiedziano Amen!');
         }
 
-        let isFollowing = false;
-        function toggleFollowProfile(btn) {
-            isFollowing = !isFollowing;
-            if (isFollowing) {
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
-                btn.style.background = '#10b981';
-                showToast('✨ Obserwujesz profil OSOBOWOŚĆ +!');
-            } else {
-                btn.innerHTML = '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
-                btn.style.background = 'linear-gradient(135deg, var(--purple-accent), #7c3aed)';
+        async function toggleFollowProfile(btn) {
+            const targetSlug = 'osobowoscplus';
+            const targetData = { name: 'OSOBOWOŚĆ +', avatar: 'logo_osobowosc_plus.jpg' };
+            if (typeof window.toggleFollow === 'function') {
+                const res = await window.toggleFollow(targetSlug, targetData);
+                if (res && res.requiresAuth) return;
+                if (res && res.following) {
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Obserwujesz';
+                    btn.style.background = '#10b981';
+                    showToast('✨ Obserwujesz profil OSOBOWOŚĆ +!');
+                } else if (res && res.following === false) {
+                    btn.innerHTML = '<i class="fa-solid fa-heart"></i> Obserwuj / Polub';
+                    btn.style.background = 'linear-gradient(135deg, var(--purple-accent), #7c3aed)';
+                    showToast('Przestałeś obserwować profil OSOBOWOŚĆ +.');
+                }
+            } else if (typeof window.openLoginToFollowModal === 'function') {
+                window.openLoginToFollowModal(targetSlug, targetData);
             }
         }
     </script>
