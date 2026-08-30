@@ -2977,6 +2977,7 @@ export async function recordProfileLike(targetIdOrSlug, targetData = {}, type = 
  * PRAWDZIWY SYSTEM OBSERWOWANIA (zastępuje fałszywy licznik lokalny, który
  * tylko zwiększał liczbę w przeglądarce, i brakującą funkcję na 3 stronach,
  * gdzie przycisk "Obserwuj" w ogóle nie działał — rzucał błąd w konsoli).
+ */
 export function isUserAuthenticated() {
     if (currentUserState && currentUserState.uid) return true;
     if (currentProfileState && (currentProfileState.uid || (currentProfileState.slug && currentProfileState.slug !== 'guest' && currentProfileState.slug !== 'gosc'))) return true;
