@@ -31,6 +31,9 @@
         }
       ],
       "rewrites": [
+        { "source": "/login", "destination": "/lumina-login.html" },
+        { "source": "/zaloguj", "destination": "/lumina-login.html" },
+        { "source": "/lumina-login", "destination": "/lumina-login.html" },
         { "source": "/lumina", "destination": "/lumina.html" },
         { "source": "/tablica", "destination": "/lumina-tablica.html" },
         { "source": "/profil", "destination": "/lumina-profile.html" },

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LUMINA — Zaloguj się z Google</title>
+    
+    <!-- Open Graph / Social Sharing Metadata (SMS, WhatsApp, Messenger, Facebook) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Portal LUMINA — Dołącz jednym kliknięciem ✨">
+    <meta property="og:description" content="Chrześcijańska społeczność, inspirujące rozważania i wartościowe relacje. Kliknij, aby zalogować się przez Google.">
+    <meta property="og:image" content="https://polskieradio.cc/lumina_logo_portal.jpg">
+    <meta property="og:url" content="https://polskieradio.cc/login">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Portal LUMINA — Zaloguj się z Google">
+    <meta name="twitter:description" content="Dołącz do chrześcijańskiej społeczności LUMINA jednym kliknięciem.">
+    <meta name="twitter:image" content="https://polskieradio.cc/lumina_logo_portal.jpg">
+    <link rel="icon" href="lumina_icon.jpg" type="image/jpeg">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background: radial-gradient(circle at center, #101935 0%, #060b18 100%);
+            color: #f3f3f3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background: linear-gradient(145deg, #131d3d 0%, #0c142b 100%);
+            border: 2px solid rgba(212, 175, 55, 0.6); /* Złoty akcent */
+            border-radius: 28px;
+            padding: 44px 28px 36px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(212, 175, 55, 0.2);
+            position: relative;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .logo-wrap {
+            position: relative;
+            width: 116px;
+            height: 116px;
+            margin: 0 auto 24px;
+        }
+        .logo {
+            width: 116px;
+            height: 116px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2.5px solid #d4af37;
+            box-shadow: 0 0 24px rgba(212, 175, 55, 0.4);
+            display: block;
+        }
+        .portal-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #ffffff 0%, #fef08a 50%, #eab308 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .portal-tagline {
+            font-size: 0.92rem;
+            color: #cbd5e1;
+            line-height: 1.45;
+            margin-bottom: 28px;
+        }
+        
+        /* Przycisk Google zgodny z oficjalnym brandingiem */
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            background-color: #ffffff;
+            color: #1f2937;
+            border: none;
+            border-radius: 16px;
+            padding: 16px 22px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 16px rgba(255,255,255,0.25);
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .google-btn:hover:not(:disabled) {
+            background-color: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.5), 0 0 22px rgba(255,255,255,0.35);
+        }
+        .google-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        .google-btn:disabled {
+            opacity: 0.75;
+            cursor: not-allowed;
+        }
+        .google-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .status-msg {
+            margin-top: 18px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            min-height: 20px;
+            transition: color 0.2s;
+        }
+        .status-msg.error {
+            color: #f87171;
+        }
+        .status-msg.success {
+            color: #4ade80;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+            font-size: 0.78rem;
+            color: #64748b;
+            line-height: 1.4;
+        }
+        .footer-note a {
+            color: #d4af37;
+            text-decoration: none;
+        }
+        .footer-note a:hover {
+            text-decoration: underline;
+        }
+
+        /* Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,0.2);
+            border-radius: 50%;
+            border-top-color: #4285F4;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo-wrap">
+            <img src="lumina_logo_portal.jpg" onerror="this.src='lumina_icon.jpg'" alt="LUMINA Logo" class="logo">
+        </div>
+
+        <h1 class="portal-title">LUMINA</h1>
+        <p class="portal-tagline">Chrześcijańska Społeczność & Wartościowe Relacje</p>
+        
+        <button type="button" class="google-btn" id="btnGoogleLogin" onclick="handleDirectGoogleLogin()">
+            <svg class="google-icon" id="googleIconSvg" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span id="btnGoogleText">Zaloguj się z Google</span>
+        </button>
+
+        <div class="status-msg" id="statusMsg">Logowanie jednym kliknięciem</div>
+
+        <div class="footer-note">
+            Bezpieczne logowanie kontem Google do portalu <a href="lumina">LUMINA</a>.
+        </div>
+    </div>
+
+    <!-- Integracja silnika Firebase Auth LUMINA -->
+    <script type="module">
+        import { loginWithGoogle, ensureDbReady, getCurrentUser, getCurrentProfile } from './lumina-db.js?v=login_1788094000';
+
+        const btn = document.getElementById('btnGoogleLogin');
+        const textEl = document.getElementById('btnGoogleText');
+        const iconSvg = document.getElementById('googleIconSvg');
+        const statusEl = document.getElementById('statusMsg');
+
+        // Pobierz cel przekierowania z URL (np. ?redirect=tablica lub ?redirect=profil)
+        function getRedirectTarget() {
+            const params = new URLSearchParams(window.location.search);
+            const r = params.get('redirect') || params.get('to') || params.get('target');
+            if (r) {
+                if (r === 'tablica' || r.includes('tablica')) return 'tablica';
+                if (r === 'profil' || r.includes('profil')) return 'profil';
+                if (r.startsWith('http') || r.startsWith('/')) return r;
+                return r;
+            }
+            return 'lumina';
+        }
+
+        // Automatyczne przekierowanie, jeśli użytkownik jest już zalogowany
+        async function checkAutoLogin() {
+            try {
+                const { auth } = await ensureDbReady();
+                const curUser = getCurrentUser();
+                if (curUser && curUser.uid) {
+                    statusEl.className = 'status-msg success';
+                    statusEl.textContent = 'Jesteś już zalogowany. Przenoszenie do portalu...';
+                    setTimeout(() => {
+                        window.location.href = getRedirectTarget();
+                    }, 500);
+                }
+            } catch(e) {
+                // cicho przejdź do gotowości
+            }
+        }
+        checkAutoLogin();
+
+        window.handleDirectGoogleLogin = async function() {
+            if (btn) btn.disabled = true;
+            if (iconSvg) iconSvg.style.display = 'none';
+            if (textEl) textEl.innerHTML = '<span class="spinner"></span> &nbsp; Logowanie...';
+            if (statusEl) {
+                statusEl.className = 'status-msg';
+                statusEl.textContent = 'Trwa autoryzacja konta Google...';
+            }
+
+            try {
+                const res = await loginWithGoogle();
+                if (res && res.isRedirecting) {
+                    if (statusEl) statusEl.textContent = 'Przekierowywanie do Google...';
+                    return;
+                }
+
+                if (statusEl) {
+                    statusEl.className = 'status-msg success';
+                    statusEl.textContent = '✨ Zalogowano pomyślnie! Witamy w LUMINA.';
+                }
+
+                setTimeout(() => {
+                    window.location.href = getRedirectTarget();
+                }, 400);
+
+            } catch (err) {
+                console.error('Google Auth Error:', err);
+                if (btn) btn.disabled = false;
+                if (iconSvg) iconSvg.style.display = 'block';
+                if (textEl) textEl.textContent = 'Zaloguj się z Google';
+                if (statusEl) {
+                    statusEl.className = 'status-msg error';
+                    if (err.code === 'auth/popup-closed-by-user') {
+                        statusEl.textContent = 'Okno logowania zostało zamknięte. Spróbuj ponownie.';
+                    } else if (err.code === 'auth/network-request-failed') {
+                        statusEl.textContent = 'Błąd połączenia. Sprawdź internet i spróbuj ponownie.';
+                    } else {
+                        statusEl.textContent = 'Nie udało się zalogować. Spróbuj ponownie.';
+                    }
+                }
+            }
+        };
+    </script>
+</body>
+</html>
