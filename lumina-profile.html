@@ -2826,7 +2826,7 @@
                         <!-- ══════════ FAITH & LIFE BADGES BAR (MAKIETA 6 & 1) ══════════ -->
                         <div class="faith-badges-container" id="faithBadgesBar">
                             <span class="faith-badge-pill prayer" id="badgePrayer"><i class="fa-solid fa-hands-praying"></i> Codzienna modlitwa</span>
-                            <span class="faith-badge-pill worship" id="badgeWorship"><i class="fa-solid fa-church"></i> Sobotnie / Niedzielne nabożeństwo / Msza</span>
+                            <span class="faith-badge-pill worship" id="badgeWorship"><i class="fa-solid fa-church"></i> Niedzielne nabożeństwo</span>
                             <span class="faith-badge-pill bible" id="badgeBible"><i class="fa-solid fa-book-bible"></i> Czytanie Pisma Świętego</span>
                             <span class="faith-badge-pill marriage" id="badgeMarriage"><i class="fa-solid fa-ring"></i> Małżeństwo w Bożej woli</span>
                         </div>
@@ -3023,7 +3023,7 @@
                         </div>
                         <div class="faith-badges-container" style="margin-bottom: 16px;" id="tabFaithBadgesContainer">
                             <span class="faith-badge-pill prayer"><i class="fa-solid fa-hands-praying"></i> Codzienna modlitwa</span>
-                            <span class="faith-badge-pill worship"><i class="fa-solid fa-church"></i> Sobotnie / Niedzielne nabożeństwo / Msza</span>
+                            <span class="faith-badge-pill worship"><i class="fa-solid fa-church"></i> Niedzielne nabożeństwo</span>
                             <span class="faith-badge-pill bible"><i class="fa-solid fa-book-bible"></i> Czytanie Pisma Świętego</span>
                             <span class="faith-badge-pill marriage"><i class="fa-solid fa-ring"></i> Małżeństwo w Bożej woli</span>
                             <span class="faith-badge-pill passion"><i class="fa-solid fa-music"></i> Muzyka Uwielbienia</span>
@@ -3042,7 +3042,7 @@
                     </div>
 
                     <div class="faith-prompt-card">
-                        <div class="faith-prompt-label"><i class="fa-solid fa-church"></i> Sobotnie / Niedzielne nabożeństwo / Msza to dla mnie:</div>
+                        <div class="faith-prompt-label"><i class="fa-solid fa-church"></i> Nabożeństwo / Eucharystia to dla mnie:</div>
                         <div class="faith-prompt-answer" id="promptWorshipAnswer">„Święty czas zatrzymania, spotkania z Panem we wspólnocie i napełnienia pokojem serca na cały tydzień.”</div>
                     </div>
 
@@ -3172,6 +3172,15 @@
                         <label style="display:block; font-size:0.75rem; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Wspólnota / Kościół</label>
                         <input type="text" id="editChurch" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:16px;">
                     </div>
+                </div>
+
+                <div style="margin-bottom:12px;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; color:#facc15; margin-bottom:4px;"><i class="fa-solid fa-church"></i> Nabożeństwo / Eucharystia (Wybierz opcję dla Twojej odznaki)</label>
+                    <select id="editWorshipDay" style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(250,204,21,0.35); color:#fff; font-family:inherit; font-size:15px; font-weight:700;">
+                        <option value="Sobotnie nabożeństwo" style="background:#0b1838;">⛪ Sobotnie nabożeństwo</option>
+                        <option value="Niedzielne nabożeństwo" style="background:#0b1838;">⛪ Niedzielne nabożeństwo</option>
+                        <option value="Msza Święta" style="background:#0b1838;">⛪ Msza Święta</option>
+                    </select>
                 </div>
 
                 <div style="margin-bottom:12px;">
@@ -4861,7 +4870,7 @@
             if (badgesBar) {
                 const defaultBadges = [
                     { type: 'prayer', icon: 'fa-hands-praying', text: data.prayerHabit || 'Codzienna modlitwa' },
-                    { type: 'worship', icon: 'fa-church', text: data.worshipDay || 'Sobotnie / Niedzielne nabożeństwo / Msza' },
+                    { type: 'worship', icon: 'fa-church', text: data.worshipDay || 'Niedzielne nabożeństwo' },
                     { type: 'bible', icon: 'fa-book-bible', text: data.bibleHabit || 'Czytanie Pisma Świętego' },
                     { type: 'marriage', icon: 'fa-ring', text: data.marriageGoal || (data.status === 'Żonaty' || data.status === 'Mężatka' ? 'Szczęśliwe małżeństwo w Chrystusie' : 'Małżeństwo w Bożej woli') }
                 ];
@@ -6101,6 +6110,9 @@
             document.getElementById('editAge').value = data.age;
             document.getElementById('editCity').value = data.city;
             document.getElementById('editDenom').value = data.denom;
+            if (document.getElementById('editWorshipDay')) {
+                document.getElementById('editWorshipDay').value = data.worshipDay || 'Niedzielne nabożeństwo';
+            }
             document.getElementById('editJob').value = data.job;
             document.getElementById('editChurch').value = data.church;
             document.getElementById('editVerse').value = data.verse;
@@ -6140,6 +6152,7 @@
             const ageVal = document.getElementById('editAge')?.value?.trim();
             const cityVal = document.getElementById('editCity')?.value?.trim();
             const denomVal = document.getElementById('editDenom')?.value?.trim();
+            const worshipDayVal = document.getElementById('editWorshipDay')?.value?.trim();
             const jobVal = document.getElementById('editJob')?.value?.trim();
             const churchVal = document.getElementById('editChurch')?.value?.trim();
             const verseVal = document.getElementById('editVerse')?.value?.trim();
@@ -6157,6 +6170,7 @@
                 age: ageVal || cur.age || '',
                 city: cityVal || cur.city || 'Polska',
                 denom: denomVal || cur.denom || 'Chrześcijanin',
+                worshipDay: worshipDayVal || cur.worshipDay || 'Niedzielne nabożeństwo',
                 job: jobVal || cur.job || '',
                 church: churchVal || cur.church || '',
                 verse: verseVal !== undefined && verseVal !== '' ? verseVal : (cur.verse || ''),

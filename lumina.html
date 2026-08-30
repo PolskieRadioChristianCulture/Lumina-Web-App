@@ -4238,7 +4238,7 @@
                 <!-- ══════════ FAITH & LIFE BADGES (MAKIETA 6 & 1) ══════════ -->
                 <div class="faith-badges-container" id="mFaithBadgesBox" style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:0 auto 12px; max-width:420px;">
                     <span class="faith-badge-pill prayer"><i class="fa-solid fa-hands-praying"></i> Codzienna modlitwa</span>
-                    <span class="faith-badge-pill worship"><i class="fa-solid fa-church"></i> Sobotnie / Niedzielne nabożeństwo / Msza</span>
+                    <span class="faith-badge-pill worship"><i class="fa-solid fa-church"></i> Niedzielne nabożeństwo</span>
                     <span class="faith-badge-pill bible"><i class="fa-solid fa-book-bible"></i> Czytanie Pisma Świętego</span>
                     <span class="faith-badge-pill marriage"><i class="fa-solid fa-ring"></i> Małżeństwo w Bożej woli</span>
                 </div>
@@ -4508,6 +4508,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                                 <option value="Ewangeliczne / Protestant" style="background:#0b1838;">Ewangeliczne / Protestant</option>
                                 <option value="Prawosławne" style="background:#0b1838;">Prawosławne</option>
                                 <option value="Chrześcijanin poszukujący" style="background:#0b1838;">Chrześcijanin poszukujący</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label><i class="fa-solid fa-church" style="color:#facc15;"></i> Nabożeństwo / Eucharystia (Wybierz opcję dla odznaki)</label>
+                            <select id="obWorshipDay" style="width:100%; padding:10px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid rgba(250,204,21,0.35); color:#fff; font-family:inherit; font-weight:700;">
+                                <option value="Sobotnie nabożeństwo" style="background:#0b1838;">⛪ Sobotnie nabożeństwo</option>
+                                <option value="Niedzielne nabożeństwo" style="background:#0b1838;" selected>⛪ Niedzielne nabożeństwo</option>
+                                <option value="Msza Święta" style="background:#0b1838;">⛪ Msza Święta</option>
                             </select>
                         </div>
                         <div class="form-row">
@@ -5101,6 +5109,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const email = document.getElementById('obEmail')?.value.trim() || '';
             const pass = document.getElementById('obPassword')?.value || '';
             const denom = document.getElementById('obDenom')?.value || 'Rzymskokatolickie';
+            const worshipDay = document.getElementById('obWorshipDay')?.value || (denom === 'Rzymskokatolickie' ? 'Msza Święta' : 'Niedzielne nabożeństwo');
             const church = document.getElementById('obChurch')?.value.trim() || '';
             const verse = document.getElementById('obVerse')?.value.trim() || '„Wszystko mogę w Tym, który mnie umacnia”';
             const bio = document.getElementById('obBio')?.value.trim() || 'Chrześcijanin poszukujący Bożej relacji opartej na zaufaniu i miłości.';
@@ -5136,6 +5145,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 city: city,
                 email: email,
                 denom: denom,
+                worshipDay: worshipDay,
                 church: church,
                 verse: verse,
                 verseRef: '1 J 4, 8',
@@ -6416,7 +6426,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (mBadgesBox) {
                 const defaultBadges = [
                     { type: 'prayer', icon: 'fa-hands-praying', text: p.prayerHabit || 'Codzienna modlitwa' },
-                    { type: 'worship', icon: 'fa-church', text: p.worshipDay || 'Sobotnie / Niedzielne nabożeństwo / Msza' },
+                    { type: 'worship', icon: 'fa-church', text: p.worshipDay || (p.denom === 'Rzymskokatolickie' ? 'Msza Święta' : 'Niedzielne nabożeństwo') },
                     { type: 'bible', icon: 'fa-book-bible', text: p.bibleHabit || 'Czytanie Pisma Świętego' },
                     { type: 'marriage', icon: 'fa-ring', text: p.marriageGoal || (p.isFounder ? 'Małżeństwo w Chrystusie' : 'Małżeństwo w Bożej woli') }
                 ];
