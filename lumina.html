@@ -6417,8 +6417,16 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     }
                 }
                 const mBody = document.getElementById('modalDevotionBody');
-                if (mBody && (ref.fullTextHtml || ref.fullText)) {
-                    mBody.innerHTML = `<p style="line-height:1.7;">${ref.fullTextHtml || ref.fullText}</p>`;
+                if (mBody) {
+                    let htmlStr = '';
+                    if (typeof ref.fullTextHtml === 'string' && ref.fullTextHtml) {
+                        htmlStr = ref.fullTextHtml;
+                    } else if (typeof ref.fullTextHtml === 'object' && ref.fullTextHtml && typeof ref.fullTextHtml.html === 'string') {
+                        htmlStr = ref.fullTextHtml.html + (ref.fullTextHtml.embedHtml || '');
+                    } else if (typeof ref.fullText === 'string') {
+                        htmlStr = ref.fullText;
+                    }
+                    mBody.innerHTML = `<div style="line-height:1.75; font-size:0.92rem;">${htmlStr}</div>`;
                 }
             } else if (window.LuminaDB && typeof window.LuminaDB.loadLuminaDailyDevotional === 'function') {
                 window.LuminaDB.loadLuminaDailyDevotional();

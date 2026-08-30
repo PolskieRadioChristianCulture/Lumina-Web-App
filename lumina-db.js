@@ -4011,22 +4011,33 @@ export async function loadLuminaDailyDevotional() {
         }
 
         // Formatowanie tekstu HTML z aktywnymi linkami
-        const formattedHtml = (typeof formatRichTextAndMedia === 'function') ? formatRichTextAndMedia(rawContent) : rawContent
-            .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
-                const href = url.startsWith('http') ? url : 'https://' + url;
-                let label = 'Otwórz odnośnik';
-                if (url.includes('chat.whatsapp.com')) label = 'Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp)';
-                else if (url.includes('play.google.com')) label = 'Pobierz bezpłatne aplikacje w Google Play';
-                else if (url.includes('polskieradio.cc')) label = 'Polskie Radio Christian Culture';
-                else if (url.includes('cclite.pl')) label = 'Telewizja CC Lite';
-                else {
-                    try { label = new URL(href).hostname; } catch(e) { label = 'Otwórz odnośnik'; }
-                }
-                return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: #facc15; text-decoration: underline; font-weight: bold;">${label}</a>`;
-            })
-            .replace(/\n\n/g, '</p><p style="margin-top: 14px; line-height: 1.7;">')
-            .replace(/\n/g, '<br/>')
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        let formattedHtml = '';
+        if (typeof formatRichTextAndMedia === 'function') {
+            const res = formatRichTextAndMedia(rawContent);
+            if (res && typeof res === 'object' && typeof res.html === 'string') {
+                formattedHtml = res.html + (res.embedHtml || '');
+            } else if (typeof res === 'string') {
+                formattedHtml = res;
+            }
+        }
+        if (!formattedHtml) {
+            formattedHtml = rawContent
+                .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
+                    const href = url.startsWith('http') ? url : 'https://' + url;
+                    let label = 'Otwórz odnośnik';
+                    if (url.includes('chat.whatsapp.com')) label = 'Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp)';
+                    else if (url.includes('play.google.com')) label = 'Pobierz bezpłatne aplikacje w Google Play';
+                    else if (url.includes('polskieradio.cc')) label = 'Polskie Radio Christian Culture';
+                    else if (url.includes('cclite.pl')) label = 'Telewizja CC Lite';
+                    else {
+                        try { label = new URL(href).hostname; } catch(e) { label = 'Otwórz odnośnik'; }
+                    }
+                    return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: #facc15; text-decoration: underline; font-weight: bold;">${label}</a>`;
+                })
+                .replace(/\n\n/g, '</p><p style="margin-top: 14px; line-height: 1.7;">')
+                .replace(/\n/g, '<br/>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
 
         // Aktualizacja DOM na stronie głównej (lumina.html)
         const dateBadge = document.getElementById('devotionalDateBadge');
