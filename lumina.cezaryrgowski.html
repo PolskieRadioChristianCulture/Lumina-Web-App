@@ -6403,7 +6403,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
         function renderPublicChatMessages(messages) {
             const box = document.getElementById('publicChatMessagesBox');
             if (!box) return;
-            const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 120 || box.scrollHeight <= box.clientHeight;
+            const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 160 || box.scrollHeight <= box.clientHeight || !window._publicChatInitialScrollDone;
 
             const myUser = window.LuminaDB?.getCurrentUser();
             const myProfile = window.LuminaDB?.getCurrentProfile();
@@ -6467,11 +6467,12 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                         setTimeout(() => targetEl.classList.remove('chat-message-highlight'), 3000);
                         window._targetChatMessageId = null;
                     } else {
-                        if (wasNearBottom) { box.scrollTop = box.scrollHeight; }
+                        scrollChatToBottom(box, false);
                     }
                 }, 100);
-            } else if (typeof wasNearBottom !== 'undefined' ? wasNearBottom : true) {
-                if (wasNearBottom) { box.scrollTop = box.scrollHeight; }
+            } else if (!window._publicChatInitialScrollDone || wasNearBottom) {
+                scrollChatToBottom(box, window._publicChatInitialScrollDone ? true : false);
+                window._publicChatInitialScrollDone = true;
             }
         }
 
@@ -7327,7 +7328,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
             });
 
             box.innerHTML = html;
-            const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 120 || box.scrollHeight <= box.clientHeight;
+            const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 160 || box.scrollHeight <= box.clientHeight || !window._activeChatInitialScrollDone;
             const targetMsgId = window._targetChatMessageId;
             if (targetMsgId) {
                 setTimeout(() => {
@@ -7337,9 +7338,14 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                         targetEl.classList.add('chat-message-highlight');
                         setTimeout(() => targetEl.classList.remove('chat-message-highlight'), 3000);
                         window._targetChatMessageId = null;
-                    } else if (wasNearBottom) { box.scrollTop = box.scrollHeight; }
+                    } else {
+                        scrollChatToBottom(box, false);
+                    }
                 }, 100);
-            } else if (wasNearBottom) { box.scrollTop = box.scrollHeight; }
+            } else if (!window._activeChatInitialScrollDone || wasNearBottom) {
+                scrollChatToBottom(box, window._activeChatInitialScrollDone ? true : false);
+                window._activeChatInitialScrollDone = true;
+            }
 
             if (window.LuminaDB && typeof window.LuminaDB.markDirectMessagesAsRead === 'function' && activeChatSession?.chatId) {
                 window.LuminaDB.markDirectMessagesAsRead(activeChatSession.chatId, myId, myProfile?.name || myUser?.displayName);

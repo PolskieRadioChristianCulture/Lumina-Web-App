@@ -6479,6 +6479,24 @@
         let activeChatSession = null;
         let activeChatUnsubscribe = null;
 
+        function scrollChatToBottom(boxOrId, isSmooth = false) {
+            const box = typeof boxOrId === 'string' ? document.getElementById(boxOrId) : boxOrId;
+            if (!box) return;
+            const execute = () => {
+                if (isSmooth) {
+                    box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' });
+                } else {
+                    box.scrollTop = box.scrollHeight;
+                }
+            };
+            execute();
+            requestAnimationFrame(execute);
+            setTimeout(execute, 40);
+            setTimeout(execute, 120);
+            setTimeout(execute, 300);
+        }
+        window.scrollChatToBottom = scrollChatToBottom;
+
         function switchMessengerMainTab(tab) {
             checkAndShowCommanderTab();
             const btnPublic = document.getElementById('tabBtnPublicChat');
@@ -6508,6 +6526,7 @@
                 if (viewPrivate) viewPrivate.style.display = 'none';
                 if (viewCommander) viewCommander.style.display = 'none';
                 initPublicChatListener();
+                scrollChatToBottom('publicChatMessagesBox', false);
             } else if (tab === 'commander') {
                 if (btnPublic) {
                     btnPublic.style.background = 'transparent';
@@ -6528,6 +6547,7 @@
                 if (viewPrivate) viewPrivate.style.display = 'none';
                 if (viewCommander) viewCommander.style.display = 'flex';
                 initCommanderChatListener();
+                scrollChatToBottom('commanderChatMessagesBox', false);
             } else {
                 if (btnPublic) {
                     btnPublic.style.background = 'transparent';
@@ -6575,7 +6595,7 @@
         function renderPublicChatMessages(messages) {
             const box = document.getElementById('publicChatMessagesBox');
             if (!box) return;
-            const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 120 || box.scrollHeight <= box.clientHeight;
+            const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 160 || box.scrollHeight <= box.clientHeight || !window._publicChatInitialScrollDone;
 
             const myUser = window.LuminaDB?.getCurrentUser();
             const myProfile = window.LuminaDB?.getCurrentProfile();
@@ -6639,11 +6659,12 @@
                         setTimeout(() => targetEl.classList.remove('chat-message-highlight'), 3000);
                         window._targetChatMessageId = null;
                     } else {
-                        if (wasNearBottom) { box.scrollTop = box.scrollHeight; }
+                        scrollChatToBottom(box, false);
                     }
                 }, 100);
-            } else if (typeof wasNearBottom !== 'undefined' ? wasNearBottom : true) {
-                if (wasNearBottom) { box.scrollTop = box.scrollHeight; }
+            } else if (!window._publicChatInitialScrollDone || wasNearBottom) {
+                scrollChatToBottom(box, window._publicChatInitialScrollDone ? true : false);
+                window._publicChatInitialScrollDone = true;
             }
         }
 
@@ -7097,9 +7118,10 @@
                     });
 
                     box.innerHTML = html;
-            if (typeof wasNearBottom !== 'undefined' ? wasNearBottom : true) {
-                if (wasNearBottom) { box.scrollTop = box.scrollHeight; }
-            }
+                    if (!window._commanderChatInitialScrollDone || wasNearBottom) {
+                        scrollChatToBottom(box, window._commanderChatInitialScrollDone ? true : false);
+                        window._commanderChatInitialScrollDone = true;
+                    }
                 } catch(e) {
                     console.warn('Lumina Commander Chat sync notice:', e.message);
                 }
@@ -7440,72 +7462,6 @@
             }
         }
 
-        function openChatWith(name, avatar, slug, targetMessageId) {
-            if (targetMessageId) window._targetChatMessageId = targetMessageId;
-            const m = document.getElementById('directMessagesModal');
-            if (m) m.classList.add('open');
-
-            switchMessengerMainTab('private');
-
-            const listView = document.getElementById('dmListView');
-            const chatView = document.getElementById('dmChatRoomView');
-            if (listView) listView.style.display = 'none';
-            if (chatView) chatView.style.display = 'flex';
-
-            const nameEl = document.getElementById('activeChatName');
-            const avatarEl = document.getElementById('activeChatAvatar');
-            if (nameEl) nameEl.textContent = name;
-            if (avatarEl) avatarEl.src = avatar || 'lumina_icon.jpg';
-
-            const myUser = window.LuminaDB?.getCurrentUser();
-            const myProfile = window.LuminaDB?.getCurrentProfile();
-            const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || (localStorage.getItem('lumina_guest_id') || 'guest');
-            const fromId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
-            let toId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(slug || name) : (slug || name.toLowerCase().replace(/\s+/g, ''));
-
-            if (fromId === toId) {
-                if (fromId === 'cezaryrgowski') {
-                    toId = 'wiolettarogowska';
-                    if (nameEl) nameEl.textContent = 'Wioletta Rogowska';
-                    if (avatarEl) avatarEl.src = 'avatar_wioletta_official.jpg';
-                } else if (fromId === 'wiolettarogowska') {
-                    toId = 'cezaryrgowski';
-                    if (nameEl) nameEl.textContent = 'Cezary Rogowski';
-                    if (avatarEl) avatarEl.src = 'avatar_cezary_official.jpg';
-                }
-            }
-
-            const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : [fromId, toId].sort().join('_');
-
-            activeChatSession = {
-                chatId: chatId,
-                targetId: toId,
-                targetName: nameEl?.textContent || name,
-                targetAvatar: avatarEl?.src || avatar
-            };
-
-            const box = document.getElementById('activeChatMessagesBox');
-            if (box) {
-                box.innerHTML = `
-                    <div style="text-align:center;margin:10px 0;">
-                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${name} w Chrystusie ✨</span>
-                    </div>
-                `;
-            }
-
-            if (activeChatUnsubscribe) activeChatUnsubscribe();
-
-            if (window.LuminaDB) {
-                activeChatUnsubscribe = window.LuminaDB.subscribeToDirectMessages(chatId, (messages) => {
-                    renderDirectChatMessages(messages, fromId);
-                });
-            }
-            setTimeout(() => {
-                const input = document.getElementById('activeChatInput');
-                if (input) input.focus();
-            }, 150);
-        }
-
         function renderDirectChatMessages(messages, myId) {
             const box = document.getElementById('activeChatMessagesBox');
             if (!box) return;
@@ -7560,7 +7516,7 @@
             });
 
             box.innerHTML = html;
-            const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 120 || box.scrollHeight <= box.clientHeight;
+            const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 160 || box.scrollHeight <= box.clientHeight || !window._activeChatInitialScrollDone;
             const targetMsgId = window._targetChatMessageId;
             if (targetMsgId) {
                 setTimeout(() => {
@@ -7570,9 +7526,131 @@
                         targetEl.classList.add('chat-message-highlight');
                         setTimeout(() => targetEl.classList.remove('chat-message-highlight'), 3000);
                         window._targetChatMessageId = null;
-                    } else if (wasNearBottom) { box.scrollTop = box.scrollHeight; }
+                    } else {
+                        scrollChatToBottom(box, false);
+                    }
                 }, 100);
-            } else if (wasNearBottom) { box.scrollTop = box.scrollHeight; }
+            } else if (!window._activeChatInitialScrollDone || wasNearBottom) {
+                scrollChatToBottom(box, window._activeChatInitialScrollDone ? true : false);
+                window._activeChatInitialScrollDone = true;
+            }
+
+            if (window.LuminaDB && typeof window.LuminaDB.markDirectMessagesAsRead === 'function' && activeChatSession?.chatId) {
+                window.LuminaDB.markDirectMessagesAsRead(activeChatSession.chatId, myId, myProfile?.name || myUser?.displayName);
+            }
+        }
+
+        function openChatWith(name, avatar, slug, targetMessageId) {
+            if (targetMessageId) window._targetChatMessageId = targetMessageId;
+            window._activeChatInitialScrollDone = false;
+            const m = document.getElementById('directMessagesModal');
+            if (m) m.classList.add('open');
+
+            switchMessengerMainTab('private');
+
+            const listView = document.getElementById('dmListView');
+            const chatView = document.getElementById('dmChatRoomView');
+            if (listView) listView.style.display = 'none';
+            if (chatView) chatView.style.display = 'flex';
+
+            const nameEl = document.getElementById('activeChatName');
+            const avatarEl = document.getElementById('activeChatAvatar');
+            if (nameEl) nameEl.textContent = name;
+            if (avatarEl) avatarEl.src = avatar || 'lumina_icon.jpg';
+
+            const myUser = window.LuminaDB?.getCurrentUser();
+            const myProfile = window.LuminaDB?.getCurrentProfile();
+            const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || (localStorage.getItem('lumina_guest_id') || 'guest');
+            const fromId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
+            let toId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(slug || name) : (slug || name.toLowerCase().replace(/\s+/g, ''));
+
+            if (fromId === toId) {
+                if (fromId === 'cezaryrgowski') {
+                    toId = 'wiolettarogowska';
+                    if (nameEl) nameEl.textContent = 'Wioletta Rogowska';
+                    if (avatarEl) avatarEl.src = 'avatar_wioletta_official.jpg';
+                } else if (fromId === 'wiolettarogowska') {
+                    toId = 'cezaryrgowski';
+                    if (nameEl) nameEl.textContent = 'Cezary Rogowski';
+                    if (avatarEl) avatarEl.src = 'avatar_cezary_official.jpg';
+                }
+            }
+
+            const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : [fromId, toId].sort().join('_');
+
+            activeChatSession = {
+                chatId: chatId,
+                targetId: toId,
+                targetName: nameEl?.textContent || name,
+                targetAvatar: avatarEl?.src || avatar
+            };
+
+            const box = document.getElementById('activeChatMessagesBox');
+            if (box) {
+                box.innerHTML = `
+                    <div style="text-align:center;margin:10px 0;">
+                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${name} w Chrystusie ✨</span>
+                    </div>
+                `;
+                scrollChatToBottom(box, false);
+            }
+
+            if (activeChatUnsubscribe) activeChatUnsubscribe();
+
+            if (window.LuminaDB) {
+                activeChatUnsubscribe = window.LuminaDB.subscribeToDirectMessages(chatId, (messages) => {
+                    renderDirectChatMessages(messages, fromId);
+                });
+            }
+            setTimeout(() => {
+                const input = document.getElementById('activeChatInput');
+                if (input) input.focus();
+                scrollChatToBottom('activeChatMessagesBox', false);
+            }, 150);
+        }
+
+                        readStatusHtml = '<span style="color:#ffffff; font-weight:800; display:inline-flex; align-items:center; gap:4px; font-size:0.72rem; background:rgba(0,0,0,0.42); padding:3px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.35); text-shadow:0 1px 2px rgba(0,0,0,0.6);" title="Dostarczono na telefon / serwer o ' + delivTime + '"><i class="fa-solid fa-check-double" style="color:#38bdf8; font-size:0.78rem;"></i> Dostarczono</span>';
+                    } else {
+                        readStatusHtml = '<span style="color:#ffffff; font-weight:700; display:inline-flex; align-items:center; gap:4px; font-size:0.72rem; background:rgba(0,0,0,0.42); padding:3px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.3); text-shadow:0 1px 2px rgba(0,0,0,0.6);" title="Wysłana na serwer"><i class="fa-solid fa-check" style="color:#e2e8f0; font-size:0.78rem;"></i> Wysłana</span>';
+                    }
+                }
+
+                const reactionsHtml = typeof buildMessageReactionsHtml === 'function' ? buildMessageReactionsHtml(msg, 'direct', activeChatSession?.chatId || '', myId) : '';
+
+                html += `
+                    <div style="display:flex; justify-content:${align}; margin-bottom:4px;" id="msg_${msg.id || ''}" data-message-id="${msg.id || ''}">
+                        <div style="max-width:78%; padding:10px 14px; border-radius:${radius}; background:${bg}; color:${color}; font-size:0.86rem; line-height:1.45; box-shadow:0 2px 8px rgba(0,0,0,0.25); position:relative;">
+                            <div style="font-weight:700; font-size:0.72rem; color:rgba(255,255,255,0.85); margin-bottom:2px;">${escapeHtml(msg.senderName || (isMe ? 'Ty' : 'Rozmówca'))}</div>
+                            <div>${escapeHtml(msg.text)}</div>
+                            ${reactionsHtml}
+                            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.70rem; color:#ffffff; font-weight:600; margin-top:6px; gap:8px;">
+                                <span style="text-shadow:0 1px 2px rgba(0,0,0,0.5); opacity:0.95;">${time}</span>
+                                ${readStatusHtml ? `<span>${readStatusHtml}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            box.innerHTML = html;
+            const wasNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 160 || box.scrollHeight <= box.clientHeight || !window._activeChatInitialScrollDone;
+            const targetMsgId = window._targetChatMessageId;
+            if (targetMsgId) {
+                setTimeout(() => {
+                    const targetEl = document.getElementById('msg_' + targetMsgId);
+                    if (targetEl) {
+                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        targetEl.classList.add('chat-message-highlight');
+                        setTimeout(() => targetEl.classList.remove('chat-message-highlight'), 3000);
+                        window._targetChatMessageId = null;
+                    } else {
+                        scrollChatToBottom(box, false);
+                    }
+                }, 100);
+            } else if (!window._activeChatInitialScrollDone || wasNearBottom) {
+                scrollChatToBottom(box, window._activeChatInitialScrollDone ? true : false);
+                window._activeChatInitialScrollDone = true;
+            }
 
             if (window.LuminaDB && typeof window.LuminaDB.markDirectMessagesAsRead === 'function' && activeChatSession?.chatId) {
                 window.LuminaDB.markDirectMessagesAsRead(activeChatSession.chatId, myId, myProfile?.name || myUser?.displayName);
