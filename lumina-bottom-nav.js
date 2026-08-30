@@ -596,7 +596,7 @@
     } catch(e) {}
 
     // Stan nieprzeczytanych wiadomości
-    const initialUnread = parseInt(localStorage.getItem('lumina_messages_unread_count') || '1', 10);
+    const initialUnread = parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10);
 
     // 3. Wstrzyknięcie Struktury HTML
     const navHtml = `

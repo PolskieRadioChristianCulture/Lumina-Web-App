@@ -2786,9 +2786,16 @@ export function startRealtimeChatNotificationsListener() {
                 // Update badge in real-time if chat is closed
                 const isModalOpen = document.getElementById('directMessagesModal')?.classList.contains('open') ||
                                     document.getElementById('modalCcMessages')?.classList.contains('open');
-                if (!isModalOpen && totalUnread > 0) {
+                if (!isModalOpen) {
                     if (typeof window.updateLuminaMessagesBadge === 'function') {
                         window.updateLuminaMessagesBadge(totalUnread);
+                    } else {
+                        localStorage.setItem('lumina_messages_unread_count', String(totalUnread));
+                        const b = document.getElementById('floatingChatBadge');
+                        if (b) {
+                            b.style.display = totalUnread > 0 ? 'flex' : 'none';
+                            b.textContent = totalUnread > 9 ? '9+' : totalUnread;
+                        }
                     }
                 }
 

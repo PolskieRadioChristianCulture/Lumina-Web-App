@@ -6877,11 +6877,6 @@
                         }
                     });
                 }
-                // D. Fallback jeśli licznik globalny > 0 a mapa pusta
-                const globalUnread = parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10);
-                if (globalUnread > 0 && unreadUserMap.size === 0) {
-                    unreadUserMap.set('wiolettarogowska', globalUnread);
-                }
             } catch(e) {}
 
             // Aktualizuj etykietę zakładki Rozmowy Prywatne

@@ -8723,11 +8723,6 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         }
                     });
                 }
-                // D. Fallback jeśli licznik globalny > 0 a mapa pusta
-                const globalUnread = parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10);
-                if (globalUnread > 0 && unreadUserMap.size === 0) {
-                    unreadUserMap.set('wiolettarogowska', globalUnread);
-                }
             } catch(e) {}
 
             // Aktualizuj etykietę zakładki Rozmowy Prywatne
@@ -8918,6 +8913,24 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             // Clear unread notifications/badges for this specific room
             try {
+                localStorage.setItem(`lumina_chat_read_${chatId}`, String(Date.now()));
+                const normRoomKey = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : chatId;
+                localStorage.setItem(`lumina_chat_read_${normRoomKey}`, String(Date.now()));
+
+                const localJson = localStorage.getItem('lumina_unread_rooms_json');
+                if (localJson) {
+                    try {
+                        const parsed = JSON.parse(localJson);
+                        delete parsed[toId];
+                        delete parsed[slug];
+                        localStorage.setItem('lumina_unread_rooms_json', JSON.stringify(parsed));
+                    } catch(e) {}
+                }
+                if (window._luminaUnreadRoomsMap) {
+                    window._luminaUnreadRoomsMap.delete(toId);
+                    window._luminaUnreadRoomsMap.delete(slug);
+                }
+
                 if (window.LuminaNotifications && Array.isArray(window.LuminaNotifications.notifications)) {
                     let clearedAny = false;
                     window.LuminaNotifications.notifications.forEach(n => {
@@ -8938,6 +8951,9 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     if (typeof window.updateLuminaMessagesBadge === 'function') {
                         window.updateLuminaMessagesBadge(Math.max(0, curCount - 1));
                     }
+                }
+                if (window.LuminaDB && typeof window.LuminaDB.markDirectMessagesAsRead === 'function') {
+                    window.LuminaDB.markDirectMessagesAsRead(chatId, fromId, myProfile?.name || myUser?.displayName);
                 }
             } catch(e) {}
 
