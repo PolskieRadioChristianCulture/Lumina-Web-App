@@ -3928,6 +3928,72 @@ export function calculateProfileMatchScore(targetProfile, currentProfile) {
 window.calculateProfileMatchScore = calculateProfileMatchScore;
 
 // ══════════════════════════════════════════════════════════════════════════
+// STANDARD FORMATOWANIA ROZWAŻAŃ: DOBRZE, ŻE JESTEŚ • CHRISTIAN CULTURE PREMIUM
+// Reguła portalu: Żadne surowe adresy URL ani niebieskie linki nie są widoczne w tekście. 
+// Każdy link jest eleganckim, lśniącym przyciskiem funkcyjnym z polską etykietą!
+// ══════════════════════════════════════════════════════════════════════════
+export function formatLuminaDevotionalContent(rawText) {
+    if (!rawText) return '';
+    let text = rawText;
+
+    // 1. WhatsApp invite -> zamień na elegancki zielony przycisk
+    text = text.replace(/https?:\/\/chat\.whatsapp\.com\/[a-zA-Z0-9_-]+(?:\s*[-–—]?\s*(?:Wejdź do zespołu ludzi z pasją!?|Dołącz do grupy WhatsApp!?))?/gi, (match) => {
+        const urlMatch = match.match(/https?:\/\/chat\.whatsapp\.com\/[a-zA-Z0-9_-]+/i);
+        const url = urlMatch ? urlMatch[0] : 'https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0';
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link whatsapp-link"><i class="fa-brands fa-whatsapp"></i> Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp) <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+    });
+
+    // 2. Google Play Apps -> zamień na złoty przycisk aplikacji
+    text = text.replace(/(?:Apps:\s*)?https?:\/\/play\.google\.com\/store\/apps\/[^\s<)]+/gi, (match) => {
+        const url = match.replace(/^Apps:\s*/i, '').trim();
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link apps-link"><i class="fa-brands fa-google-play"></i> Pobierz bezpłatne aplikacje w Google Play <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+    });
+
+    // 3. Polskie Radio CC -> zamień na szafirowy przycisk Radia CC
+    text = text.replace(/(?:https?:\/\/)?(?:www\.)?polskieradio\.cc[^\s<)]*/gi, () => {
+        return `<a href="https://www.polskieradio.cc" target="_blank" rel="noopener noreferrer" class="reflection-smart-link radio-link"><i class="fa-solid fa-radio"></i> Polskie Radio Christian Culture <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+    });
+
+    // 4. CC Lite -> zamień na różowy przycisk Telewizji CC Lite
+    text = text.replace(/(?:https?:\/\/)?(?:www\.)?cclite\.pl[^\s<)]*/gi, () => {
+        return `<a href="https://www.cclite.pl" target="_blank" rel="noopener noreferrer" class="reflection-smart-link tv-link"><i class="fa-solid fa-tv"></i> Telewizja CC Lite <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+    });
+
+    // 5. Usuń surowe pozostałości linków i tagów OpenGraph lub podwójnych linków
+    text = text.replace(/🌐\s*chat\.whatsapp\.com[^\s<]*/gi, '');
+    text = text.replace(/CHAT\.WHATSAPP\.COM/gi, '');
+    text = text.replace(/Otwórz stronę w nowej karcie\.\.\./gi, '');
+
+    // 6. Markdown links [Tytuł](https://...)
+    text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, (match, label, url) => {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="reflection-smart-link apps-link">${label} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+    });
+
+    // 7. Podział na akapity i formatowanie modułów (Pismo, Zadanie, Modlitwa, Kanały)
+    return text
+        .split(/\n\n+/)
+        .filter(p => p.trim())
+        .map(p => {
+            const trimmed = p.trim();
+            if (trimmed.startsWith('Jezus mówi dziś do Ciebie:') || trimmed.match(/^„[^”]+”\s*\([^)]+\)/)) {
+                return `<div class="reflection-scripture-box"><div class="scripture-label"><i class="fa-solid fa-book-bible"></i> Jezus mówi dziś do Ciebie:</div><div class="scripture-quote">${trimmed.replace(/^Jezus mówi dziś do Ciebie:\s*/i, '').replace(/\n/g, '<br>')}</div></div>`;
+            }
+            if (trimmed.startsWith('Zadanie Taktyczne:')) {
+                return `<div class="reflection-task-box"><div class="task-label"><i class="fa-solid fa-shield-halved"></i> Zadanie Taktyczne:</div><p style="margin:0; font-size:0.93rem; color:#f1f5f9; line-height:1.7;">${trimmed.replace(/^Zadanie Taktyczne:\s*/i, '').replace(/\n/g, '<br>')}</p></div>`;
+            }
+            if (trimmed.startsWith('Modlitwa Bojowa:') || trimmed.startsWith('Modlitwa:')) {
+                return `<div class="reflection-prayer-box"><div class="prayer-label"><i class="fa-solid fa-hands-praying"></i> Modlitwa Bojowa:</div><p style="margin:0; font-style:italic; font-size:0.95rem; line-height:1.75; color:#f8fafc;">${trimmed.replace(/^(?:Modlitwa Bojowa|Modlitwa):\s*/i, '').replace(/\n/g, '<br>')}</p></div>`;
+            }
+            if (trimmed.startsWith('Baza i wzrost:') || trimmed.includes('PODAJ DALEJ') || trimmed.includes('reflection-smart-link')) {
+                return `<div class="reflection-links-container"><div style="font-size:0.82rem; font-weight:800; color:#f59e0b; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:10px;"><i class="fa-solid fa-network-wired"></i> Społeczność & Kanały LUMINA</div>${trimmed.replace(/\n/g, '<br>')}</div>`;
+            }
+            return `<p style="margin:0 0 14px; line-height:1.75; color:#e2e8f0; font-size:0.94rem;">${trimmed.replace(/\n/g, '<br>')}</p>`;
+        })
+        .join('');
+}
+window.formatLuminaDevotionalContent = formatLuminaDevotionalContent;
+
+// ══════════════════════════════════════════════════════════════════════════
 // AUTOMATYCZNE POBIERANIE ROZWAŻANIA DNIA (FAITH & GROWTH HUB)
 // ══════════════════════════════════════════════════════════════════════════
 export async function loadLuminaDailyDevotional() {
@@ -4010,34 +4076,8 @@ export async function loadLuminaDailyDevotional() {
             verseText = `„${verseMatch[1]}” (${verseMatch[2]})`;
         }
 
-        // Formatowanie tekstu HTML z aktywnymi linkami
-        let formattedHtml = '';
-        if (typeof formatRichTextAndMedia === 'function') {
-            const res = formatRichTextAndMedia(rawContent);
-            if (res && typeof res === 'object' && typeof res.html === 'string') {
-                formattedHtml = res.html + (res.embedHtml || '');
-            } else if (typeof res === 'string') {
-                formattedHtml = res;
-            }
-        }
-        if (!formattedHtml) {
-            formattedHtml = rawContent
-                .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
-                    const href = url.startsWith('http') ? url : 'https://' + url;
-                    let label = 'Otwórz odnośnik';
-                    if (url.includes('chat.whatsapp.com')) label = 'Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp)';
-                    else if (url.includes('play.google.com')) label = 'Pobierz bezpłatne aplikacje w Google Play';
-                    else if (url.includes('polskieradio.cc')) label = 'Polskie Radio Christian Culture';
-                    else if (url.includes('cclite.pl')) label = 'Telewizja CC Lite';
-                    else {
-                        try { label = new URL(href).hostname; } catch(e) { label = 'Otwórz odnośnik'; }
-                    }
-                    return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: #facc15; text-decoration: underline; font-weight: bold;">${label}</a>`;
-                })
-                .replace(/\n\n/g, '</p><p style="margin-top: 14px; line-height: 1.7;">')
-                .replace(/\n/g, '<br/>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        }
+        // Formatowanie tekstu HTML z aktywnymi przyciskami (Standard Premium Christian Culture)
+        const formattedHtml = formatLuminaDevotionalContent(rawContent);
 
         // Aktualizacja DOM na stronie głównej (lumina.html)
         const dateBadge = document.getElementById('devotionalDateBadge');

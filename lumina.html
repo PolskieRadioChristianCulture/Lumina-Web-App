@@ -2370,6 +2370,115 @@
             transition: transform 0.2s;
         }
         .btn-modal-submit:hover { transform: scale(1.02); }
+        /* ──────────────────── DEVOTIONAL REFLECTION PREMIUM STYLES ──────────────────── */
+        .reflection-smart-link {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 7px !important;
+            padding: 8px 16px !important;
+            border-radius: 20px !important;
+            font-weight: 700 !important;
+            font-size: 0.84rem !important;
+            text-decoration: none !important;
+            transition: all 0.22s ease !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+            margin: 4px 6px 4px 0 !important;
+            vertical-align: middle !important;
+        }
+        .reflection-smart-link:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4) !important;
+            filter: brightness(1.15) !important;
+        }
+        .reflection-smart-link.whatsapp-link {
+            background: rgba(34, 197, 94, 0.16) !important;
+            border: 1.5px solid #22c55e !important;
+            color: #4ade80 !important;
+        }
+        .reflection-smart-link.radio-link {
+            background: rgba(59, 130, 246, 0.16) !important;
+            border: 1.5px solid #3b82f6 !important;
+            color: #93c5fd !important;
+        }
+        .reflection-smart-link.tv-link {
+            background: rgba(236, 72, 153, 0.16) !important;
+            border: 1.5px solid #ec4899 !important;
+            color: #f472b6 !important;
+        }
+        .reflection-smart-link.apps-link {
+            background: rgba(245, 158, 11, 0.16) !important;
+            border: 1.5px solid #f59e0b !important;
+            color: #fde047 !important;
+        }
+        .reflection-scripture-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(11, 24, 56, 0.9));
+            border-left: 4px solid #f59e0b;
+            padding: 14px 18px;
+            border-radius: 0 14px 14px 0;
+            margin: 16px 0;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        }
+        .reflection-scripture-box .scripture-label {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #fbbf24;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .reflection-scripture-box .scripture-quote {
+            font-size: 1rem;
+            font-style: italic;
+            font-weight: 600;
+            line-height: 1.6;
+            color: #fef08a;
+        }
+        .reflection-task-box {
+            background: rgba(30, 41, 59, 0.75);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin: 16px 0;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        .reflection-task-box .task-label {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .reflection-prayer-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(15, 23, 42, 0.92));
+            border-left: 4px solid #a855f7;
+            padding: 14px 18px;
+            border-radius: 0 14px 14px 0;
+            margin: 16px 0;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        }
+        .reflection-prayer-box .prayer-label {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #c084fc;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .reflection-links-container {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
         /* ──────────────────── UNIVERSAL LUMINA TOAST ──────────────────── */
         .toast {
@@ -6454,14 +6563,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 const mBody = document.getElementById('modalDevotionBody');
                 if (mBody) {
                     let htmlStr = '';
-                    if (typeof ref.fullTextHtml === 'string' && ref.fullTextHtml) {
+                    if (typeof window.formatLuminaDevotionalContent === 'function') {
+                        htmlStr = window.formatLuminaDevotionalContent(ref.fullText || ref.fullTextHtml || '');
+                    } else if (typeof ref.fullTextHtml === 'string' && ref.fullTextHtml) {
                         htmlStr = ref.fullTextHtml;
-                    } else if (typeof ref.fullTextHtml === 'object' && ref.fullTextHtml && typeof ref.fullTextHtml.html === 'string') {
-                        htmlStr = ref.fullTextHtml.html + (ref.fullTextHtml.embedHtml || '');
                     } else if (typeof ref.fullText === 'string') {
                         htmlStr = ref.fullText;
                     }
-                    mBody.innerHTML = `<div style="line-height:1.75; font-size:0.92rem;">${htmlStr}</div>`;
+                    mBody.innerHTML = `<div style="line-height:1.75; font-size:0.94rem;">${htmlStr}</div>`;
                 }
             } else if (window.LuminaDB && typeof window.LuminaDB.loadLuminaDailyDevotional === 'function') {
                 window.LuminaDB.loadLuminaDailyDevotional();
