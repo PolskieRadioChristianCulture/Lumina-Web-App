@@ -269,13 +269,17 @@
                 }
                 .notif-item {
                     display: flex !important;
+                    flex-direction: row !important;
+                    align-items: flex-start !important;
                     gap: 12px !important;
                     padding: 12px 16px !important;
                     border-bottom: 1px solid rgba(255,255,255,0.05) !important;
                     cursor: pointer !important;
                     transition: background 0.2s !important;
-                    align-items: center !important;
                     text-decoration: none !important;
+                    width: 100% !important;
+                    box-sizing: border-box !important;
+                    overflow: hidden !important;
                 }
                 .notif-item:hover { 
                     background: rgba(255,255,255,0.06) !important; 
@@ -284,24 +288,36 @@
                     background: rgba(245,158,11,0.10) !important; 
                     border-left: 3px solid #f59e0b !important; 
                 }
-                .notif-avatar { 
-                    width: 38px !important; 
-                    height: 38px !important; 
+                .notif-item img,
+                .notif-avatar,
+                .notif-item-icon { 
+                    width: 40px !important; 
+                    height: 40px !important; 
+                    min-width: 40px !important;
+                    min-height: 40px !important;
+                    max-width: 40px !important;
+                    max-height: 40px !important;
                     border-radius: 50% !important; 
                     object-fit: cover !important; 
                     border: 1.5px solid rgba(250,204,21,0.4) !important; 
                     flex-shrink: 0 !important; 
+                    display: block !important;
                 }
-                .notif-content { 
+                .notif-content,
+                .notif-item-content { 
                     flex: 1 !important; 
                     font-size: 12.5px !important; 
                     color: #cbd5e1 !important; 
                     line-height: 1.4 !important; 
-                    min-width: 0;
+                    min-width: 0 !important;
+                    overflow: hidden !important;
+                    word-break: break-word !important;
                 }
-                .notif-content strong { 
+                .notif-content strong,
+                .notif-item-title { 
                     color: #fff !important; 
                     font-size: 13px !important; 
+                    font-weight: 700 !important;
                 }
                 .notif-time { 
                     font-size: 10.5px !important; 
@@ -309,7 +325,18 @@
                     margin-top: 4px !important; 
                 }
                 .notif-empty { 
-                    display: none !important;
+                    padding: 30px 20px !important;
+                    text-align: center !important;
+                    color: #94a3b8 !important;
+                    font-size: 13px !important;
+                    display: flex !important;
+                    flex-direction: column !important;
+                    align-items: center !important;
+                    gap: 8px !important;
+                }
+                .notif-empty i {
+                    font-size: 24px !important;
+                    color: #64748b !important;
                 }
                 @keyframes notifSlideDown { 
                     from { opacity:0; transform: translateY(-8px) scale(0.96); } 
@@ -692,11 +719,11 @@
 
             list.innerHTML = this.notifications.map(n => `
                 <div class="notif-item ${n.unread ? 'unread' : ''}" onclick="window.LuminaNotifications.handleItemClick('${n.id}', '${n.actionUrl || '#'}')">
-                    <img src="${n.icon || 'lumina_icon.jpg'}" class="notif-item-icon" alt="" onerror="this.src='lumina_icon.jpg'">
-                    <div class="notif-item-content">
-                        <div class="notif-item-title">${escapeHtml(n.title)}</div>
-                        <div style="margin-top:2px; font-size:12px; color:#cbd5e1;">${escapeHtml(n.body)}</div>
-                        <div class="notif-time">${n.time}</div>
+                    <img src="${n.icon || 'lumina_icon.jpg'}" class="notif-avatar" alt="" onerror="this.src='lumina_icon.jpg'" style="width:40px;height:40px;min-width:40px;max-width:40px;border-radius:50%;object-fit:cover;flex-shrink:0;display:block;">
+                    <div class="notif-content" style="flex:1;min-width:0;overflow:hidden;">
+                        <div style="font-weight:700;color:#fff;font-size:13px;line-height:1.3;">${escapeHtml(n.title)}</div>
+                        <div style="margin-top:2px;font-size:12px;color:#cbd5e1;line-height:1.35;word-break:break-word;">${escapeHtml(n.body)}</div>
+                        <div class="notif-time" style="font-size:10.5px;color:#94a3b8;margin-top:4px;">${n.time || 'Przed chwilą'}</div>
                     </div>
                 </div>
             `).join('');
