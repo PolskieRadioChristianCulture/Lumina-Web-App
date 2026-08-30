@@ -69,49 +69,20 @@
         }
     }
 
-    // 4. Remote Version Checker
+    // 4. Remote Version Checker (W 100% cicha aktualizacja w tle — ZERO wyskakujących okienek)
     async function checkForUpdatesFromServer(forcePrompt = false, waitingWorker = null) {
         try {
-            const timestamp = Date.now();
-            const res = await fetch(`version.json?_t=${timestamp}`, {
-                cache: 'no-store',
-                headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' }
-            });
-
-            if (!res.ok) return;
-            const remote = await res.json();
-            const remoteVersion = remote.version || CURRENT_CLIENT_VERSION;
-
-            const localVersion = CURRENT_CLIENT_VERSION;
-            const dismissedVersion = sessionStorage.getItem(DISMISS_UPDATE_KEY);
-
-            const hasNewerVersion = isVersionNewer(remoteVersion, localVersion);
-
-            if (hasNewerVersion) {
-                if (dismissedVersion === remoteVersion && !forcePrompt) {
-                    return;
-                }
-                showUpdateNotification(remote, waitingWorker || (swRegistration && swRegistration.waiting));
-            } else {
-                localStorage.setItem(LAST_SEEN_VERSION_KEY, remoteVersion);
+            const targetWorker = waitingWorker || (swRegistration && swRegistration.waiting);
+            if (targetWorker) {
+                targetWorker.postMessage({ type: 'SKIP_WAITING' });
             }
-        } catch (e) {
-            console.log('[LUMINA PWA] Pomijam sprawdzenie wersji (offline/sieć):', e.message);
-        }
-    }
-
-    function isVersionNewer(remote, local) {
-        if (!remote || !local) return false;
-        if (remote === local) return false;
-        const rParts = remote.split('.').map(n => parseInt(n, 10) || 0);
-        const lParts = local.split('.').map(n => parseInt(n, 10) || 0);
-        for (let i = 0; i < Math.max(rParts.length, lParts.length); i++) {
-            const r = rParts[i] || 0;
-            const l = lParts[i] || 0;
-            if (r > l) return true;
-            if (r < l) return false;
-        }
-        return false;
+            if (swRegistration) {
+                swRegistration.update().catch(() => {});
+            }
+            // Zabezpieczenie przed wiszącym banerem w DOM
+            const banner = document.getElementById('luminaUpdateBanner');
+            if (banner) banner.remove();
+        } catch (e) {}
     }
 
     // 5. Inject Styles
@@ -422,132 +393,21 @@
         document.head.appendChild(style);
     }
 
-    // 6. Show Update Notification Banner
+    // 6. Show Update Notification (Wyciszona — brak nachalnych okien modalnych w przeglądarce)
     function showUpdateNotification(versionInfo, waitingWorker) {
-        if (updatePromptActive) return;
-        updatePromptActive = true;
-
-        let banner = document.getElementById('luminaUpdateBanner');
-        if (!banner) {
-            banner = document.createElement('div');
-            banner.id = 'luminaUpdateBanner';
-            banner.className = 'lumina-update-banner';
-            document.body.appendChild(banner);
+        const banner = document.getElementById('luminaUpdateBanner');
+        if (banner) banner.remove();
+        if (waitingWorker) {
+            try { waitingWorker.postMessage({ type: 'SKIP_WAITING' }); } catch(e) {}
         }
-
-        const changesHtml = Array.isArray(versionInfo.changes) && versionInfo.changes.length > 0
-            ? `<div class="lumina-update-changelog">
-                 <div style="font-weight:700;margin-bottom:4px;color:#facc15;">Co nowego w tej wersji:</div>
-                 <ul>${versionInfo.changes.map(c => `<li>${c}</li>`).join('')}</ul>
-               </div>`
-            : '';
-
-        banner.innerHTML = `
-            <div class="lumina-update-header">
-                <div class="lumina-update-icon-wrap">
-                    <i class="fa-solid fa-arrows-rotate"></i>
-                </div>
-                <div class="lumina-update-title-box">
-                    <div class="lumina-update-title">
-                        <span>Dostępna nowa wersja LUMINA</span>
-                        <span class="lumina-update-version-tag">v${versionInfo.version || CURRENT_CLIENT_VERSION}</span>
-                    </div>
-                    <div class="lumina-update-desc">${versionInfo.releaseName || 'Wprowadziliśmy ważne ulepszenia i nowe funkcje!'}</div>
-                </div>
-                <button type="button" class="lumina-pwa-btn-close" id="btnUpdateDismissClose" title="Pomiń teraz">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            ${changesHtml}
-            <div class="lumina-update-actions">
-                <button type="button" class="lumina-update-btn-dismiss" id="btnUpdateDismissLater">
-                    Później
-                </button>
-                <button type="button" class="lumina-update-btn-refresh" id="btnUpdateApplyNow">
-                    <i class="fa-solid fa-bolt"></i> Zaktualizuj teraz ✨ </button>
-            </div>
-        `;
-
-        setTimeout(() => {
-            banner.classList.add('visible');
-        }, 300);
-
-        const applyUpdate = async () => {
-            const btn = document.getElementById('btnUpdateApplyNow');
-            if (btn) {
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Aktualizowanie...';
-                btn.disabled = true;
-                btn.style.opacity = '0.8';
-            }
-
-            localStorage.setItem(LAST_SEEN_VERSION_KEY, versionInfo.version || CURRENT_CLIENT_VERSION);
-
-            // 1. Post SKIP_WAITING to all service worker instances
-            try {
-                if (waitingWorker) waitingWorker.postMessage({ type: 'SKIP_WAITING' });
-                if (swRegistration) {
-                    if (swRegistration.waiting) swRegistration.waiting.postMessage({ type: 'SKIP_WAITING' });
-                    if (swRegistration.installing) swRegistration.installing.postMessage({ type: 'SKIP_WAITING' });
-                    if (swRegistration.active) swRegistration.active.postMessage({ type: 'SKIP_WAITING' });
-                }
-            } catch (e) {}
-
-            // 2. Clear all browser cache storage
-            try {
-                if ('caches' in window) {
-                    const keys = await caches.keys();
-                    await Promise.all(keys.map(k => caches.delete(k)));
-                }
-            } catch (e) {}
-
-            // 3. Force reload with cache buster query
-            setTimeout(() => {
-                const url = new URL(window.location.href);
-                url.searchParams.set('_v', Date.now());
-                window.location.href = url.toString();
-            }, 350);
-        };
-
-        const dismissUpdate = () => {
-            banner.classList.remove('visible');
-            sessionStorage.setItem(DISMISS_UPDATE_KEY, versionInfo.version || CURRENT_CLIENT_VERSION);
-            updatePromptActive = false;
-        };
-
-        document.getElementById('btnUpdateApplyNow').addEventListener('click', applyUpdate);
-        document.getElementById('btnUpdateDismissLater').addEventListener('click', dismissUpdate);
-        document.getElementById('btnUpdateDismissClose').addEventListener('click', dismissUpdate);
+        if (swRegistration && swRegistration.waiting) {
+            try { swRegistration.waiting.postMessage({ type: 'SKIP_WAITING' }); } catch(e) {}
+        }
     }
 
     // 7. Create Install Banner
     function createInstallBanner() {
-        if (document.getElementById('luminaPwaBanner')) return;
-
-        const banner = document.createElement('div');
-        banner.id = 'luminaPwaBanner';
-        banner.className = 'lumina-pwa-banner';
-        banner.innerHTML = `
-            <img src="lumina-icon-192.png" alt="LUMINA" class="lumina-pwa-icon" onerror="this.src='icon.png'">
-            <div class="lumina-pwa-content">
-                <div class="lumina-pwa-title">
-                    <span>LUMINA App</span>
-                    <span style="font-size:0.68rem; background:rgba(168,85,247,0.25); color:#d8b4fe; padding:2px 6px; border-radius:6px; font-weight:700;">PRO</span>
-                </div>
-                <div class="lumina-pwa-desc">Zainstaluj na ekranie głównym telefonu dla błyskawicznego dostępu!</div>
-            </div>
-            <div class="lumina-pwa-actions">
-                <button type="button" class="lumina-pwa-btn-install" id="btnPwaInstallAction">
-                    <i class="fa-solid fa-download"></i> Instaluj
-                </button>
-                <button type="button" class="lumina-pwa-btn-close" id="btnPwaInstallClose" title="Zamknij">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-        `;
-        document.body.appendChild(banner);
-
-        document.getElementById('btnPwaInstallAction').addEventListener('click', triggerInstallFlow);
-        document.getElementById('btnPwaInstallClose').addEventListener('click', dismissInstallBanner);
+        return;
     }
 
     // 8. Create iOS Install Modal
@@ -613,13 +473,11 @@
                     console.log('[LUMINA PWA] Użytkownik zaakceptował instalację aplikacji.');
                 }
                 deferredInstallPrompt = null;
-                dismissInstallBanner();
             });
         } else if (isIOSDevice()) {
             createIOSModal();
             const modal = document.getElementById('luminaIosModal');
             if (modal) modal.classList.add('open');
-            dismissInstallBanner();
         } else {
             if (typeof window.showToast === 'function') {
                 window.showToast('Aby zainstalować aplikację, wybierz ikonę instalacji na pasku adresu przeglądarki 📲');
@@ -628,28 +486,25 @@
     }
 
     function showInstallBanner() {
-        if (isRunningStandalone()) return;
-        if (sessionStorage.getItem(DISMISS_INSTALL_KEY) === 'true') return;
-
-        createInstallBanner();
-        setTimeout(() => {
-            const banner = document.getElementById('luminaPwaBanner');
-            if (banner) banner.classList.add('visible');
-        }, 1500);
+        return;
     }
 
     function dismissInstallBanner() {
         const banner = document.getElementById('luminaPwaBanner');
-        if (banner) {
-            banner.classList.remove('visible');
-            sessionStorage.setItem(DISMISS_INSTALL_KEY, 'true');
-        }
+        if (banner) banner.remove();
+        sessionStorage.setItem(DISMISS_INSTALL_KEY, 'true');
     }
 
     // 10. Initialization
     function init() {
         registerLuminaServiceWorker();
         injectPWAStyles();
+
+        // Natychmiastowe usunięcie ewentualnych starych banerów
+        const oldBanner = document.getElementById('luminaUpdateBanner');
+        if (oldBanner) oldBanner.remove();
+        const oldPwaBanner = document.getElementById('luminaPwaBanner');
+        if (oldPwaBanner) oldPwaBanner.remove();
 
         setTimeout(() => {
             checkForUpdatesFromServer();
@@ -674,20 +529,12 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredInstallPrompt = e;
-            showInstallBanner();
         });
 
         window.addEventListener('appinstalled', () => {
             console.log('[LUMINA PWA] Aplikacja zainstalowana pomyślnie!');
             dismissInstallBanner();
-            if (typeof window.showToast === 'function') {
-                window.showToast('Aplikacja LUMINA została zainstalowana na Twoim urządzeniu! 📱✨');
-            }
         });
-
-        if (isIOSDevice() && !isRunningStandalone()) {
-            setTimeout(showInstallBanner, 2500);
-        }
     }
 
     if (document.readyState === 'loading') {
