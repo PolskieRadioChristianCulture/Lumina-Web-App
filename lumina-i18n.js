@@ -6,11 +6,11 @@
 (function() {
     'use strict';
 
-    // Force permanent Polish standard
+    // Set default Polish language without blocking browser translation tools
     try {
-        localStorage.setItem('lumina_lang', 'pl');
-        sessionStorage.setItem('lumina_lang', 'pl');
-        document.cookie = "googtrans=/pl/pl; path=/;";
+        if (!localStorage.getItem('lumina_lang')) {
+            localStorage.setItem('lumina_lang', 'pl');
+        }
     } catch(e){}
 
     const currentLuminaLang = 'pl';

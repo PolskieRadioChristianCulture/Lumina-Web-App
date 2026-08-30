@@ -1057,5 +1057,27 @@ body.owner-mode-active .owner-only {
         padding: 18px 14px !important;
         margin: 0 auto !important;
     }
+
+    /* ── Ergonomia Dotykowa 44x44px (Apple HIG & Google Material) ── */
+    .modal-close,
+    .lumina-follow-modal-close,
+    .btn-modal-close,
+    .close-modal-btn,
+    .cc-modal-close,
+    .messenger-close-btn,
+    .floating-chat-close {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        touch-action: manipulation !important;
+        cursor: pointer !important;
+        pointer-events: auto !important;
+        z-index: 20 !important;
+    }
 }
+
 

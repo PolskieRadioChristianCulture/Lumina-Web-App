@@ -2,12 +2,12 @@
 <html lang="pl">
 <head>
 <script>
-    // ── LUMINA PURE POLISH ENFORCER ──
+    // ── LUMINA GLOBAL LANGUAGE ENABLER ──
     (function(){
         try {
-            localStorage.setItem('lumina_lang', 'pl');
-            sessionStorage.setItem('lumina_lang', 'pl');
-            document.cookie = "googtrans=/pl/pl; path=/;";
+            if (!localStorage.getItem('lumina_lang')) {
+                localStorage.setItem('lumina_lang', 'pl');
+            }
         } catch(e){}
         try {
             ['lumina_profile_cezaryrgowski', 'lumina_current_user_profile', 'lumina_my_profile'].forEach(k => {
