@@ -451,7 +451,7 @@
 
             </style>`;
 
-            // Wstrzyknięcie dzwonka w navbarze obok Radia CC
+            // Wstrzyknięcie dzwonka wyłącznie w navbarze obok Radia CC lub w akcjach nagłówka
             const radioWidget = document.getElementById('radioWidget') || 
                                 document.querySelector('.nav-radio-btn') || 
                                 document.querySelector('.nav-radio-pill') || 
@@ -461,12 +461,13 @@
                 radioWidget.insertAdjacentHTML('afterend', html);
             } else {
                 const rightContainer = document.querySelector('.header-right') || 
-                                       document.querySelector('.nav-actions') || 
-                                       document.querySelector('.profile-navbar > div:last-child') ||
-                                       document.querySelector('.lumina-nav > div:last-child') ||
-                                       document.body;
+                                       document.querySelector('.nav-actions') ||
+                                       document.querySelector('.header-actions');
                 if (rightContainer) {
                     rightContainer.insertAdjacentHTML('afterbegin', html);
+                } else {
+                    // Na stronach profili bez dedykowanego slotu w navbarze NIE wstrzykujemy dzwonka do body!
+                    return;
                 }
             }
 
