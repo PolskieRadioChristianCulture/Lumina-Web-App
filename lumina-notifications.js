@@ -1000,10 +1000,10 @@
         },
         {
             startHour: 16,
-            title: "🎶 Śpiewajmy Panu — Pasmo Uwielbienia",
-            body: "Codzienne 60 minut najpiękniejszych pieśni chwały i nowości muzycznych w CC TV24.",
+            title: "🎶 Codzienne Uwielbienie — Pasmo Muzyczne",
+            body: "Codzienne 2 godziny najpiękniejszych pieśni chwały i nowości muzycznych w CC TV24.",
             icon: "tv24_cc.png",
-            url: "/spiewajmy-panu"
+            url: "/codzienne-uwielbienie"
         },
         {
             startHour: 18,
