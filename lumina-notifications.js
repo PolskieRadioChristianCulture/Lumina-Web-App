@@ -659,7 +659,7 @@
                 }
             }
 
-            // Sync with mobile badge if present
+            // Sync with mobile bell badge if present
             const mBadge = document.querySelector('.m-nav-notif-badge');
             if (mBadge) {
                 mBadge.setAttribute('data-count', String(count));
@@ -671,33 +671,6 @@
                     mBadge.textContent = '';
                 }
             }
-
-            // Sync with profile message action buttons (Wiadomosc)
-            const profileBadges = document.querySelectorAll('.profile-msg-badge, #btnProfileMessageBadge, .btn-msg-badge');
-            profileBadges.forEach(b => {
-                b.setAttribute('data-count', String(count));
-                if (count > 0) {
-                    b.style.setProperty('display', 'inline-flex', 'important');
-                    b.textContent = count > 9 ? '9+' : String(count);
-                } else {
-                    b.style.setProperty('display', 'none', 'important');
-                    b.textContent = '';
-                }
-            });
-
-            // Sync with floating chat button badge & bottom navigation badge
-            const floatingBadge = document.getElementById('floatingChatBadge');
-            const bottomBadge = document.getElementById('bottomNavMsgBadge');
-            [floatingBadge, bottomBadge].forEach(b => {
-                if (!b) return;
-                if (count > 0) {
-                    b.style.setProperty('display', 'flex', 'important');
-                    b.textContent = count > 9 ? '9+' : String(count);
-                } else {
-                    b.style.setProperty('display', 'none', 'important');
-                    b.textContent = '';
-                }
-            });
         }
 
         renderList() {
@@ -708,25 +681,20 @@
             }
             if (!list) return;
             if (this.notifications.length === 0) {
-                list.innerHTML = '';
+                list.innerHTML = `
+                    <div class="notif-empty">
+                        <i class="fa-regular fa-bell-slash"></i>
+                        <div>Brak nowych powiadomień</div>
+                    </div>
+                `;
                 return;
             }
 
-            const escapeHtml = (str) => {
-                if (!str) return '';
-                return String(str)
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;')
-                    .replace(/'/g, '&#039;');
-            };
-
             list.innerHTML = this.notifications.map(n => `
-                <div class="notif-item ${n.unread ? 'unread' : ''}" onclick="window.LuminaNotifications.handleItemClick('${n.id}', '${n.actionUrl}')">
-                    <img src="${n.icon}" class="notif-avatar" alt="Avatar" onerror="this.src='lumina_icon.jpg'">
-                    <div class="notif-content">
-                        <div><strong>${escapeHtml(n.title)}</strong></div>
+                <div class="notif-item ${n.unread ? 'unread' : ''}" onclick="window.LuminaNotifications.handleItemClick('${n.id}', '${n.actionUrl || '#'}')">
+                    <img src="${n.icon || 'lumina_icon.jpg'}" class="notif-item-icon" alt="" onerror="this.src='lumina_icon.jpg'">
+                    <div class="notif-item-content">
+                        <div class="notif-item-title">${escapeHtml(n.title)}</div>
                         <div style="margin-top:2px; font-size:12px; color:#cbd5e1;">${escapeHtml(n.body)}</div>
                         <div class="notif-time">${n.time}</div>
                     </div>
@@ -742,9 +710,6 @@
                 this.updateBadge();
                 this.renderList();
                 this.saveToStorage();
-                if (this.unreadCount === 0 && typeof window.updateLuminaMessagesBadge === 'function') {
-                    window.updateLuminaMessagesBadge(0);
-                }
             }
             if (url && url !== '#') {
                 try {
@@ -785,9 +750,6 @@
             this.updateBadge();
             this.renderList();
             this.saveToStorage();
-            if (typeof window.updateLuminaMessagesBadge === 'function') {
-                window.updateLuminaMessagesBadge(0);
-            }
             if (typeof window.showToast === 'function') {
                 window.showToast('Wszystkie powiadomienia oznaczone jako przeczytane! ✨');
             }
@@ -799,78 +761,15 @@
             this.updateBadge();
             this.renderList();
             this.saveToStorage();
-            if (typeof window.updateLuminaMessagesBadge === 'function') {
-                window.updateLuminaMessagesBadge(0);
-            }
             if (typeof window.showToast === 'function') {
                 window.showToast('Wyczyszczono listę powiadomień 🗑️');
             }
         }
 
-        // 6. Podpięcie pod zdarzenia systemowe LUMINA
+        // 6. Podpięcie pod zdarzenia systemowe LUMINA (Dzwonek = WYŁĄCZNIE powiadomienia systemowe)
         
         initFirestoreRealtimeListener() {
-            if (!window.LuminaDB) {
-                setTimeout(() => this.initFirestoreRealtimeListener(), 500);
-                return;
-            }
-
-            const curUser = (typeof window.LuminaDB.getCurrentUser === 'function') ? window.LuminaDB.getCurrentUser() : null;
-            const curProfile = (typeof window.LuminaDB.getCurrentProfile === 'function') ? window.LuminaDB.getCurrentProfile() : null;
-            const rawMyId = curProfile?.slug || curProfile?.uid || curUser?.slug || curUser?.uid || localStorage.getItem('lumina_current_user_slug') || (window.location.href.includes('wioletta') ? 'wiolettarogowska' : (window.location.href.includes('cezary') ? 'cezaryrgowski' : ''));
-            if (!rawMyId) {
-                setTimeout(() => this.initFirestoreRealtimeListener(), 1200);
-                return;
-            }
-
-            const myId = window.LuminaDB.normalizeChatUserId(rawMyId);
-            const myUid = curUser?.uid || curProfile?.uid || null;
-            console.log('[LUMINA Notifications] Initialized Realtime Cloud Listener for user:', myId, myUid ? `(uid: ${myUid})` : '');
-
-            // 1. Nasłuchuj pokoi czatu użytkownika (nowe wiadomości 1:1)
-            if (typeof window.LuminaDB.subscribeToUserChats === 'function') {
-                const sessionStartTime = Date.now() - 30000;
-                const handleChats = (chats) => {
-                    if (!chats || !chats.length) return;
-                    chats.forEach(chat => {
-                        const lastSender = window.LuminaDB.normalizeChatUserId(chat.lastSenderId);
-                        // Jeśli ostatnia wiadomość jest od kogoś innego
-                        if (lastSender && lastSender !== myId && (!myUid || lastSender !== myUid)) {
-                            let msgTime = Date.now();
-                            if (typeof chat.lastMessageTimestamp === 'number') {
-                                msgTime = chat.lastMessageTimestamp;
-                            } else if (chat.lastMessageTimestamp?.seconds) {
-                                msgTime = chat.lastMessageTimestamp.seconds * 1000;
-                            } else if (typeof chat.lastMessageTimestamp?.toDate === 'function') {
-                                msgTime = chat.lastMessageTimestamp.toDate().getTime();
-                            }
-
-                            const notifKey = `lumina_notified_msg_${chat.id || chat.chatId}_${msgTime}`;
-                            if (!localStorage.getItem(notifKey) && (msgTime > sessionStartTime)) {
-                                localStorage.setItem(notifKey, '1');
-                                const senderName = chat.lastSenderName || (lastSender.includes('cezary') ? 'Cezary Rogowski (Mąż 💖)' : (lastSender.includes('wioletta') ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'));
-                                const senderAvatar = (typeof window.resolveChatAvatar === 'function') ? window.resolveChatAvatar(chat.lastSenderId, senderName, chat.lastSenderAvatar) : (chat.lastSenderAvatar || 'avatar_cezary_official.jpg');
-                                const text = chat.lastMessageText || 'Wysłał(a) Ci nową wiadomość 💬';
-                                const targetUrl = `lumina.html?openChat=${encodeURIComponent(lastSender)}&chatWith=${encodeURIComponent(lastSender)}&msgId=${encodeURIComponent(chat.id || '')}`;
-
-                                this.push(
-                                    `💬 Nowa wiadomość od: ${senderName}`,
-                                    text,
-                                    senderAvatar,
-                                    targetUrl,
-                                    true,
-                                    `chat_${lastSender}`
-                                );
-                            }
-                        }
-                    });
-                };
-
-                window.LuminaDB.subscribeToUserChats(myId, handleChats);
-                if (myUid && myUid !== myId) {
-                    window.LuminaDB.subscribeToUserChats(myUid, handleChats);
-                }
-            }
+            // Dzwonek nie nasłuchuje czatów 1:1 - czaty trafiają wyłącznie do dymka wiadomości
         }
 
         listenToEvents() {
@@ -897,20 +796,6 @@
                     'lumina-tablica.html',
                     true,
                     'amen_reaction'
-                );
-            });
-
-            window.addEventListener('lumina:new_message', (e) => {
-                const det = e.detail || {};
-                const sId = det.senderId || det.senderSlug || 'uzytkownik';
-                const targetUrl = `lumina.html?openChat=${encodeURIComponent(sId)}&chatWith=${encodeURIComponent(sId)}`;
-                this.push(
-                    `💬 Nowa wiadomość od: ${det.senderName || 'Użytkownik'}`,
-                    `${det.text || 'Wysłał nową wiadomość'}`,
-                    det.senderAvatar || 'avatar_new1.jpg',
-                    targetUrl,
-                    true,
-                    `chat_${sId}`
                 );
             });
 
