@@ -3048,18 +3048,20 @@ export function openLoginToFollowModal(targetSlug, targetData = {}, onSuccess = 
                     background: rgba(7, 14, 36, 0.88);
                     backdrop-filter: blur(12px);
                     -webkit-backdrop-filter: blur(12px);
-                    z-index: 100000;
+                    z-index: 10000005 !important;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     padding: 20px;
                     opacity: 0;
                     visibility: hidden;
+                    pointer-events: none;
                     transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
                 }
                 .lumina-follow-auth-modal-overlay.open {
                     opacity: 1;
                     visibility: visible;
+                    pointer-events: auto;
                 }
                 .lumina-follow-auth-card {
                     position: relative;
