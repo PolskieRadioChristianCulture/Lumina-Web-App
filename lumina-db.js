@@ -115,7 +115,7 @@ export async function requestNotificationPermission(userUid) {
                 if (supported && app) messaging = getMessaging(app);
             }
             if (messaging) {
-                const registration = await navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260829_v400', { scope: './' });
+                const registration = await navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260830_v410', { scope: './' });
                 const token = await getToken(messaging, {
                     vapidKey: LUMINA_VAPID_KEY,
                     serviceWorkerRegistration: registration
