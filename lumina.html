@@ -6293,6 +6293,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             if (!isLogged) {
                 window.openLoginToFollowModal(slug, targetData, (res) => {
                     if (res && res.following) {
+                        try { localStorage.setItem(`lumina_following_${slug}`, '1'); } catch(e) {}
                         if (btn) {
                             btn.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
                             btn.style.opacity = '0';
@@ -6304,32 +6305,25 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 return;
             }
 
-            let followFn = window.toggleFollow;
+            let followFn = window.followProfile || (window.LuminaDB && window.LuminaDB.followProfile);
             if (typeof followFn !== 'function') {
                 const dbEngine = await getLuminaDBEngine();
-                followFn = (dbEngine && dbEngine.toggleFollow) || window.toggleFollow;
+                followFn = (dbEngine && dbEngine.followProfile) || window.followProfile || window.toggleFollow;
             }
 
             if (typeof followFn === 'function') {
                 const res = await followFn(slug, targetData);
                 if (res && res.requiresAuth) return;
-                if (res && res.following) {
-                    if (btn) {
-                        btn.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
-                        btn.style.opacity = '0';
-                        btn.style.transform = 'scale(0.7)';
-                        setTimeout(() => { btn.style.display = 'none'; }, 350);
-                    }
-                    if (typeof showToast === 'function') showToast(`✨ Obserwujesz profil ${name || slug}!`);
-                } else if (res && res.following === false) {
-                    if (btn) {
-                        btn.style.display = 'inline-flex';
-                        btn.style.opacity = '1';
-                        btn.style.transform = 'scale(1)';
-                        btn.innerHTML = '<i class="fa-solid fa-bell"></i> OBSERWUJ';
-                    }
-                    if (typeof showToast === 'function') showToast(`Przestałeś obserwować ${name || slug}.`);
+                
+                // Kliknięcie "OBSERWUJ" na karuzeli ZAWSZE aktywuje obserwowanie
+                try { localStorage.setItem(`lumina_following_${slug}`, '1'); } catch(e) {}
+                if (btn) {
+                    btn.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+                    btn.style.opacity = '0';
+                    btn.style.transform = 'scale(0.7)';
+                    setTimeout(() => { btn.style.display = 'none'; }, 350);
                 }
+                if (typeof showToast === 'function') showToast(`✨ Obserwujesz profil ${name || slug}!`);
             }
         };
 
@@ -6382,9 +6376,15 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(window.enhanceCarouselCardsWithFollowButtons, 600);
+                setTimeout(() => {
+                    if (typeof window.syncUserFollowsFromCloud === 'function') window.syncUserFollowsFromCloud();
+                }, 1200);
             });
         } else {
             setTimeout(window.enhanceCarouselCardsWithFollowButtons, 600);
+            setTimeout(() => {
+                if (typeof window.syncUserFollowsFromCloud === 'function') window.syncUserFollowsFromCloud();
+            }, 1200);
         }
 
         // ── Open Profile Modal with 100% Live Data & Explainable AI Match ──

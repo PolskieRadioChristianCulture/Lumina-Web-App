@@ -3260,7 +3260,15 @@ window.handleFollowGoogleLogin = async function() {
  * LUMINA FOLLOW SYSTEM
  * ══════════════════════════════════════════════════════════════════════════
  */
-export async function toggleFollow(targetSlug, targetData = {}) {
+export async function followProfile(targetSlug, targetData = {}) {
+    return toggleFollow(targetSlug, targetData, 'follow');
+}
+
+export async function unfollowProfile(targetSlug, targetData = {}) {
+    return toggleFollow(targetSlug, targetData, 'unfollow');
+}
+
+export async function toggleFollow(targetSlug, targetData = {}, forceAction = null) {
     if (!targetSlug) return { following: false, error: 'no-target' };
 
     if (!isUserAuthenticated()) {
@@ -3268,13 +3276,17 @@ export async function toggleFollow(targetSlug, targetData = {}) {
         return { following: false, requiresAuth: true };
     }
 
-    if (!db) return { following: false, error: 'no-db' };
-
     const myId = normalizeChatUserId(
         currentProfileState?.slug || currentProfileState?.uid ||
         currentUserState?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest'
     );
     if (myId === targetSlug) return { following: false, error: 'self-follow' };
+
+    if (!db) {
+        const localNow = forceAction === 'unfollow' ? false : (forceAction === 'follow' ? true : !isFollowingLocally(targetSlug));
+        try { localStorage.setItem(`lumina_following_${targetSlug}`, localNow ? '1' : '0'); } catch (e) {}
+        return { following: localNow };
+    }
 
     const followDocId = `${myId}_${targetSlug}`;
     const followRef = doc(db, 'lumina_likes', followDocId);
@@ -3282,25 +3294,49 @@ export async function toggleFollow(targetSlug, targetData = {}) {
 
     try {
         const existing = await getDoc(followRef);
-        if (existing.exists() && existing.data()?.type === 'follow') {
-            await deleteDoc(followRef);
-            nowFollowing = false;
-        } else {
-            await setDoc(followRef, {
-                from: myId,
-                to: targetSlug,
-                fromName: currentProfileState?.name || currentUserState?.displayName || 'Użytkownik LUMINA',
-                fromAvatar: currentProfileState?.avatar || 'lumina_icon.jpg',
-                toName: targetData.name || targetSlug,
-                toAvatar: targetData.avatar || 'lumina_icon.jpg',
-                type: 'follow',
-                timestamp: serverTimestamp(),
-            });
+        const alreadyFollowing = existing.exists() && existing.data()?.type === 'follow';
+
+        if (forceAction === 'follow') {
             nowFollowing = true;
+            if (!alreadyFollowing) {
+                await setDoc(followRef, {
+                    from: myId,
+                    to: targetSlug,
+                    fromName: currentProfileState?.name || currentUserState?.displayName || 'Użytkownik LUMINA',
+                    fromAvatar: currentProfileState?.avatar || 'lumina_icon.jpg',
+                    toName: targetData.name || targetSlug,
+                    toAvatar: targetData.avatar || 'lumina_icon.jpg',
+                    type: 'follow',
+                    timestamp: serverTimestamp(),
+                });
+            }
+        } else if (forceAction === 'unfollow') {
+            nowFollowing = false;
+            if (alreadyFollowing) {
+                await deleteDoc(followRef);
+            }
+        } else {
+            // Normalne przełączanie (toggle)
+            if (alreadyFollowing) {
+                await deleteDoc(followRef);
+                nowFollowing = false;
+            } else {
+                await setDoc(followRef, {
+                    from: myId,
+                    to: targetSlug,
+                    fromName: currentProfileState?.name || currentUserState?.displayName || 'Użytkownik LUMINA',
+                    fromAvatar: currentProfileState?.avatar || 'lumina_icon.jpg',
+                    toName: targetData.name || targetSlug,
+                    toAvatar: targetData.avatar || 'lumina_icon.jpg',
+                    type: 'follow',
+                    timestamp: serverTimestamp(),
+                });
+                nowFollowing = true;
+            }
         }
     } catch (err) {
         console.warn('[LUMINA Follow] Błąd:', err.message);
-        return { following: isFollowingLocally(targetSlug), error: err.message };
+        nowFollowing = forceAction === 'follow' ? true : (forceAction === 'unfollow' ? false : !isFollowingLocally(targetSlug));
     }
 
     try { localStorage.setItem(`lumina_following_${targetSlug}`, nowFollowing ? '1' : '0'); } catch (e) {}
@@ -3311,7 +3347,37 @@ export function isFollowingLocally(targetSlug) {
     try { return localStorage.getItem(`lumina_following_${targetSlug}`) === '1'; } catch (e) { return false; }
 }
 
+export async function syncUserFollowsFromCloud() {
+    try {
+        if (!db) return;
+        const myId = normalizeChatUserId(
+            currentProfileState?.slug || currentProfileState?.uid ||
+            currentUserState?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest'
+        );
+        if (!myId || myId === 'guest') return;
+
+        const q = query(collection(db, 'lumina_likes'), where('from', '==', myId), where('type', '==', 'follow'), limit(100));
+        const snap = await getDocs(q);
+        snap.forEach(d => {
+            const data = d.data();
+            if (data && data.to) {
+                localStorage.setItem(`lumina_following_${data.to}`, '1');
+            }
+        });
+
+        if (typeof window.enhanceCarouselCardsWithFollowButtons === 'function') {
+            window.enhanceCarouselCardsWithFollowButtons();
+        }
+    } catch(e) {
+        console.warn('[LUMINA Follow Sync] notice:', e.message);
+    }
+}
+
+window.followProfile = followProfile;
+window.unfollowProfile = unfollowProfile;
 window.toggleFollow = toggleFollow;
+window.isFollowingLocally = isFollowingLocally;
+window.syncUserFollowsFromCloud = syncUserFollowsFromCloud;
 
 window.toggleProfileFollow = async function (btn) {
     const targetSlug = (window._currentProfileSlug || document.body.dataset.profileSlug || '').toLowerCase();
