@@ -3815,6 +3815,26 @@
                     </div>
                 </div>
 
+                <!-- 11c. Urszula / Ula (Członkini Społeczności LUMINA • Kraków) -->
+                <div class="profile-card" id="card_profile_u_urszula_7685" data-profile-slug="u_urszula_7685" onclick="openCommunityProfile('u_urszula_7685')" data-category="kobieta spolecznosc" style="cursor:pointer;">
+                    <div class="card-photo" style="position:relative;">
+                        <div class="card-new-badge">
+                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> SPOŁECZNOŚĆ
+                        </div>
+                        <img src="avatar_urszula.jpg" onerror="this.src='lumina_icon.jpg'" alt="Urszula" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="btn-carousel-follow-pulse" onclick="handleCarouselFollowClick(event, this, 'u_urszula_7685', 'Urszula', 'avatar_urszula.jpg')">
+                            <i class="fa-solid fa-bell"></i> OBSERWUJ
+                        </button>
+                        <button class="card-heart" onclick="toggleLike(event,this,'u_urszula_7685','Urszula','avatar_urszula.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">98%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Urszula, 46</div>
+                        <div class="card-city">📍 Kraków • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ Społeczność</span></div>
+                        <div class="card-desc">"Chrześcijanka, dla której Bóg i rodzina są na pierwszym miejscu. Pasjonatka muzyki uwielbienia."</div>
+                    </div>
+                </div>
+
                 <!-- 12. Magdalena (Kobieta) -->
                 <div class="profile-card" id="card_profile_magdalena" data-profile-slug="magdalena" onclick="openCommunityProfile('magdalena')" data-category="kobieta">
                     <div class="card-photo" style="position:relative;">
@@ -3864,6 +3884,22 @@
                         <div class="card-name">Anna, 28</div>
                         <div class="card-city">📍 Warszawa • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span></div>
                         <div class="card-desc">"Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania świata."</div>
+                    </div>
+                </div>
+
+                <!-- 14b. Portal LUMINA (Oficjalny Profil Portalu Społecznościowego) -->
+                <div class="profile-card mission-profile-card" id="card_profile_lumina" data-profile-slug="lumina" onclick="window.location.href='tablica'" data-category="misja spolecznosc" style="cursor:pointer;">
+                    <div class="card-photo">
+                        <img src="lumina_logo_portal.jpg" onerror="this.src='lumina_icon.jpg'" alt="Portal LUMINA" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+                        <button class="card-heart liked" onclick="toggleLike(event,this,'lumina','Portal LUMINA','lumina_logo_portal.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #a855f7, #6366f1);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name" style="display:flex;align-items:center;gap:6px;">
+                            Portal LUMINA <i class="fa-solid fa-circle-check" style="color:#38bdf8;font-size:0.9rem;" title="Oficjalny Profil Portalu"></i>
+                        </div>
+                        <div class="card-city">📍 Christian Culture • <b style="color:#a855f7;">✨ Społeczność Wiary</b></div>
+                        <div class="card-desc">"Chrześcijańska Platforma Społecznościowa dla każdego. Buduj wartościowe relacje w Chrystusie."</div>
                     </div>
                 </div>
 
@@ -8579,7 +8615,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             { slug: 'osobowoscplus', name: 'Osobowość Plus', job: 'Formacja Chrześcijańska & Psychologia 🕊️', city: 'Polska', avatar: 'logo_osobowosc_plus.jpg', badge: '🕊️ Formacja', isMission: true },
             { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'u_urszula_7685', name: 'Urszula', job: 'Członkini Społeczności LUMINA 🕊️', city: 'Kraków, Polska', avatar: 'avatar_urszula.jpg', badge: '✨ Społeczność', isMission: false },
-            { slug: 'u_anna_3421', name: 'Anna', job: 'Kobiety Christian Culture 🌸', city: 'Kraków, Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false }
+            { slug: 'u_anna_3421', name: 'Anna', job: 'Kobiety Christian Culture 🌸', city: 'Kraków, Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'lumina', name: 'Portal LUMINA', job: 'Chrześcijańska Platforma Społecznościowa ✨', city: 'Polska', avatar: 'lumina_logo_portal.jpg', badge: '👑 Oficjalny Portal', isMission: true }
         ];
 
         async function fetchCommunityUsersDirectory() {
