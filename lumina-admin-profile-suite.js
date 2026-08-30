@@ -28,6 +28,8 @@
 
     // Helper: pobiera slug aktualnie przeglądanego profilu
     function detectCurrentProfileSlug() {
+        if (window._currentProfileSlug) return window._currentProfileSlug.toLowerCase().trim();
+
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('u')) return urlParams.get('u').toLowerCase().trim();
 

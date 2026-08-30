@@ -26,6 +26,13 @@
             desc: 'Oficjalne wideo profilowe Współzałożycielki Christian Culture'
         },
         {
+            id: 'preset_ccwomen_official',
+            title: 'CC Women • Służba Kobiet CC',
+            badge: 'Oficjalne CC Women',
+            url: 'wideo_profilowe_ccwomen.mp4',
+            desc: 'Oficjalne wideo profilowe społeczności Christian Culture Women'
+        },
+        {
             id: 'preset_cc_store',
             title: 'Christian Culture • Oficjalne Wideo CC',
             badge: 'Polecane CC',
@@ -55,6 +62,7 @@
         'cctv': 'Reklama 2 Sklep CC.mp4',
         'radiocc': 'Reklama Sklep CC Karuzela Profili.mp4',
         'ccmen': 'Reklama Sklep CC Karuzela Profili.mp4',
+        'ccwomen': 'wideo_profilowe_ccwomen.mp4',
         'osobowoscplus': 'czesc_dobrze_ze_jestes.mp4',
         'wiolettarogowska': 'wioletta_profile_video.mp4',
         'u_bibliaaudiochristianculture_3248': 'avatar_biblia_audio.gif',
@@ -95,6 +103,11 @@
 
         detectCurrentSlug() {
             try {
+                // 0. Ze zdefiniowanej na stronie zmiennej globalnej window._currentProfileSlug
+                if (window._currentProfileSlug) {
+                    return window._currentProfileSlug.toLowerCase().trim();
+                }
+
                 // 1. Z funkcji getRequestedUserSlug (jeśli dostępna na stronie)
                 if (typeof window.getRequestedUserSlug === 'function') {
                     const reqSlug = window.getRequestedUserSlug();
