@@ -391,7 +391,21 @@
         .operator-panel, .toggle-panel-trigger, .live-outer-controls, #live-outer-controls {
             display: none !important;
         }
-</style>
+
+        /* HIDE LOCAL TICKER WHEN EMBEDDED IN MASTER CONTROL ROOM (MASTER-LIVE) */
+        body.inside-iframe .bottom-ticker-bar,
+        html.inside-iframe .bottom-ticker-bar {
+            display: none !important;
+        }
+    </style>
+    <script>
+        if (window.self !== window.top || window.location.search.includes('in_mcr=1')) {
+            document.documentElement.classList.add('inside-iframe');
+            document.addEventListener('DOMContentLoaded', () => {
+                if (document.body) document.body.classList.add('inside-iframe');
+            });
+        }
+    </script>
 </head>
 <body>
 
