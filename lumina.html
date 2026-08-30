@@ -2371,19 +2371,54 @@
         }
         .btn-modal-submit:hover { transform: scale(1.02); }
 
-        /* ──────────────────── TOAST ──────────────────── */
+        /* ──────────────────── UNIVERSAL LUMINA TOAST ──────────────────── */
         .toast {
-            position: fixed; bottom: 28px; right: 28px;
-            background: linear-gradient(90deg, #a855f7, #06b6d4);
-            color: #fff; padding: 12px 22px;
-            border-radius: 30px; font-weight: 700; font-size: 0.87rem;
-            display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 8px 28px rgba(168,85,247,0.5);
+            position: fixed;
+            bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(15, 23, 42, 0.96) !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            color: #f8fafc !important;
+            padding: 13px 20px !important;
+            border-radius: 16px !important;
+            font-size: 0.88rem !important;
+            font-weight: 700 !important;
+            line-height: 1.45 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 12px !important;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75), 0 0 20px rgba(250, 204, 21, 0.25) !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.55) !important;
             z-index: 999999999 !important;
-            transform: translateY(100px); opacity: 0;
-            transition: transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275), opacity 0.3s;
+            opacity: 0;
+            pointer-events: none;
+            width: max-content;
+            max-width: min(92vw, 420px) !important;
+            min-width: 220px;
+            box-sizing: border-box !important;
+            word-break: normal;
+            overflow-wrap: break-word;
+            transition: transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275), opacity 0.3s ease;
         }
-        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.show {
+            transform: translateX(-50%) translateY(0) !important;
+            opacity: 1 !important;
+            pointer-events: auto;
+        }
+        .toast i {
+            font-size: 1.2rem !important;
+            color: #facc15 !important;
+            flex-shrink: 0 !important;
+        }
+        .toast span {
+            flex: 1;
+            min-width: 0;
+            text-align: left;
+        }
 
         /* ──────────────────── ELEGANT INTEGRATED RADIO (IN NAVBAR) ──────────────────── */
         .nav-radio-pill {
