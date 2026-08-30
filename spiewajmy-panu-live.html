@@ -411,8 +411,9 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // ── 2. Codzienne Uwielbienie Playlist Config ──
+        // ── 2. Codzienne Uwielbienie Playlist Config (538 Utworów) ──
         const PLAYLIST_ID = "PLHy3TNFso_uLnL_I1TPR4d35H6FuSVIUW";
+        const TOTAL_PLAYLIST_TRACKS = 538;
 
         function getDayOfYear() {
             const now = new Date();
@@ -422,6 +423,28 @@
             return Math.floor(diff / oneDay);
         }
 
+        function calculateDailyStartingTrackIndex() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('ep')) {
+                const parsed = parseInt(urlParams.get('ep'));
+                if (!isNaN(parsed) && parsed > 0) return (parsed - 1) % TOTAL_PLAYLIST_TRACKS;
+            }
+            if (urlParams.has('track')) {
+                const parsed = parseInt(urlParams.get('track'));
+                if (!isNaN(parsed) && parsed >= 0) return parsed % TOTAL_PLAYLIST_TRACKS;
+            }
+
+            const now = new Date();
+            const dayOfYear = getDayOfYear();
+            const dayOfMonth = now.getDate();
+            const month = now.getMonth() + 1;
+            // Algorytm rozpraszający 538 utworów — każdy dzień roku rozpoczyna emisję z innego pasma utworów
+            const dailySeedIndex = ((dayOfYear * 79) + (dayOfMonth * 17) + (month * 43)) % TOTAL_PLAYLIST_TRACKS;
+            return dailySeedIndex;
+        }
+
+        const initialTrackIndex = calculateDailyStartingTrackIndex();
+
         // ── 3. YouTube Iframe Player ──
         const isPreloadMuted = window.location.search.includes('muted=1');
         let player = null;
@@ -429,7 +452,7 @@
         const playerIframe = document.getElementById("yt-player");
         if (playerIframe) {
             const muteParam = isPreloadMuted ? '&mute=1' : '';
-            playerIframe.src = `https://www.youtube.com/embed/videoseries?list=${PLAYLIST_ID}&autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1&loop=1${muteParam}`;
+            playerIframe.src = `https://www.youtube.com/embed/videoseries?list=${PLAYLIST_ID}&index=${initialTrackIndex}&autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1&loop=1${muteParam}`;
         }
 
         function onYouTubeIframeAPIReady() {
@@ -497,12 +520,12 @@
                     player.loadPlaylist({
                         list: PLAYLIST_ID,
                         listType: 'playlist',
-                        index: getDayOfYear() % 15
+                        index: initialTrackIndex
                     });
                 }
                 if (player && typeof player.setShuffle === 'function') {
                     player.setShuffle(true);
-                    console.log("Codzienne Uwielbienie: Shuffle mode enabled!");
+                    console.log("Codzienne Uwielbienie (538 utworów): Shuffle i rotacja dzienna aktywne! Startowy utwór: #" + (initialTrackIndex + 1));
                 }
             } catch(e) {}
 
