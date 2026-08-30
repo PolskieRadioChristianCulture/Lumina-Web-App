@@ -3531,13 +3531,13 @@
                         <span class="devotional-tag">
                             <i class="fa-solid fa-sparkles"></i> Słowo Dnia
                         </span>
-                        <span class="devotional-date" id="devotionalDateBadge">Piątek, 28 Sierpnia</span>
+                        <span class="devotional-date" id="devotionalDateBadge">Niedziela, 30 Sierpnia</span>
                     </div>
                     <h3 class="devotional-title" id="devotionalCardTitle">
-                        ☀️ Dobrze, że jesteś — Lato z Jezusem: Wielkie Pytania (Dzień 28)
+                        ☀️ Dobrze, że jesteś — Lato z Jezusem: Wielkie Pytania (Dzień 30)
                     </h3>
                     <p class="devotional-snippet" id="devotionalCardSnippet">
-                        Dlaczego tak łatwo ulegam lękowi przed odrzuceniem mojego autorytetu? Słowo Boże uczy postawy Jezusa.
+                        Dlaczego tak łatwo ulegam lękowi przed samotnością i brakiem zrozumienia przez najbliższych? Jezus mówi: Nie jestem sam, bo Ojciec jest ze Mną.
                     </p>
                 </div>
             </div>
@@ -7018,6 +7018,75 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             const modal = document.getElementById('devotionalModal');
             if (modal) modal.classList.add('open');
         };
+
+        // ── Automatyczna, niezawodna synchronizacja rozważania dnia na stronie głównej ──
+        window.syncTodayDevotionalBanner = async function() {
+            const now = new Date();
+            const pad = (n) => n < 10 ? '0' + n : n;
+            const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+            const dayNames = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+            const monthNames = ['Stycznia', 'Lutego', 'Marca', 'Kwietnia', 'Maja', 'Czerwca', 'Lipca', 'Sierpnia', 'Września', 'Października', 'Listopada', 'Grudnia'];
+            const formattedDatePl = `${dayNames[now.getDay()]}, ${now.getDate()} ${monthNames[now.getMonth()]}`;
+
+            // 1. Zaktualizuj plakietkę daty natychmiast
+            const dateBadge = document.getElementById('devotionalDateBadge');
+            if (dateBadge) dateBadge.textContent = formattedDatePl;
+
+            // 2. Jeśli LuminaDB jest dostępne i ma loadLuminaDailyDevotional
+            if (window.LuminaDB && typeof window.LuminaDB.loadLuminaDailyDevotional === 'function') {
+                try {
+                    await window.LuminaDB.loadLuminaDailyDevotional();
+                    return;
+                } catch(e) {}
+            }
+
+            // 3. Bezpośredni fallback z bazy rozwazania_baza.json
+            try {
+                const res = await fetch('rozwazania_baza.json?v=' + Date.now());
+                if (res.ok) {
+                    const list = await res.json();
+                    if (Array.isArray(list) && list.length > 0) {
+                        const found = list.find(r => r.date === todayStr) || list[0];
+                        if (found) {
+                            const title = found.title || `☀️ Dobrze, że jesteś — Lato z Jezusem: Wielkie Pytania`;
+                            const rawContent = found.contentWeb || found.fullText || found.content || found.teaser || '';
+                            const teaser = found.teaser || (rawContent.length > 160 ? rawContent.substring(0, 160) + '...' : rawContent);
+
+                            const cardTitle = document.getElementById('devotionalCardTitle');
+                            if (cardTitle) cardTitle.textContent = title;
+
+                            const cardSnippet = document.getElementById('devotionalCardSnippet');
+                            if (cardSnippet) cardSnippet.textContent = teaser;
+
+                            let verseText = '';
+                            const verseMatch = rawContent.match(/„([^”]+)”\s*\(([^)]+)\)/) || rawContent.match(/"([^"]+)"\s*\(([^)]+)\)/);
+                            if (verseMatch) verseText = `„${verseMatch[1]}” (${verseMatch[2]})`;
+
+                            window._luminaDailyReflection = {
+                                id: found.id || ('daily_rozwazanie_' + todayStr),
+                                title: title,
+                                date: found.date || todayStr,
+                                fullText: rawContent,
+                                fullTextHtml: (typeof window.formatLuminaDevotionalContent === 'function') ? window.formatLuminaDevotionalContent(rawContent) : rawContent,
+                                teaser: teaser,
+                                verse: verseText,
+                                imageUrl: found.imageUrl || 'promo_dzj.jpg'
+                            };
+                        }
+                    }
+                }
+            } catch(err) {
+                console.warn('LUMINA: Błąd pobierania rozważania dnia:', err);
+            }
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                window.syncTodayDevotionalBanner();
+            });
+        } else {
+            window.syncTodayDevotionalBanner();
+        }
 
         window.reactDevotionAmen = function() {
             const btn = document.getElementById('btnDevotionAmen');

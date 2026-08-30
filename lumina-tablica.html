@@ -405,7 +405,44 @@
                     if (typeof renderFeed === 'function') renderFeed();
                 }
             } catch(e) {
-                console.warn('Lumina Board: Informacja o rozważaniu (użyto standardu lokalnego):', e.message);
+                console.warn('Lumina Board: Błąd Firestore (próba pobrania z rozwazania_baza.json):', e.message);
+                try {
+                    const now = new Date();
+                    const pad = (n) => n < 10 ? '0' + n : n;
+                    const today = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+
+                    const res = await fetch('rozwazania_baza.json?v=' + Date.now());
+                    if (res.ok) {
+                        const list = await res.json();
+                        if (Array.isArray(list) && list.length > 0) {
+                            const data = list.find(r => r.date === today) || list[0];
+                            if (data && (data.contentWeb || data.fullText)) {
+                                const fullContent = data.contentWeb || data.fullText || data.teaser || '';
+                                const formattedContent = formatContentWithActiveLinks(fullContent);
+
+                                window._luminaDailyReflection = {
+                                    id: 'daily_rozwazanie_' + (data.date || today),
+                                    type: 'reflection',
+                                    author: 'Cezary Rogowski',
+                                    authorRole: `☀️ Dobrze, że jesteś • Założyciel Christian Culture ✨`,
+                                    authorAvatar: 'avatar_cezary_official.jpg',
+                                    authorSlug: 'cezaryrgowski',
+                                    time: `${data.date || today} • ☀️ Cykl: Dobrze, że jesteś`,
+                                    title: data.title || '☀️ Lato z Jezusem — Wielkie Pytania',
+                                    fullTextHtml: formattedContent,
+                                    image: data.imageUrl || 'promo_dzj.jpg',
+                                    likes: data.likes || 198,
+                                    amen: data.amen || 174,
+                                    _pinned: true,
+                                    _isReflection: true
+                                };
+                                if (typeof renderFeed === 'function') renderFeed();
+                            }
+                        }
+                    }
+                } catch(fetchErr) {
+                    console.warn('Lumina Board: Fallback z pliku JSON nie powiódł się:', fetchErr.message);
+                }
             }
         }
 
