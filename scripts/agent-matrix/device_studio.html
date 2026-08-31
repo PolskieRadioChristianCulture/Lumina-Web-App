@@ -41,7 +41,7 @@
       color: var(--text-main);
       font-family: 'Plus Jakarta Sans', sans-serif;
       min-height: 100vh;
-      overflow-x: hidden;
+      overflow-x: auto;
       display: flex;
       flex-direction: column;
     }
@@ -153,6 +153,34 @@
       box-shadow: 0 0 20px var(--gold-glow);
     }
 
+    .layout-switcher {
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      gap: 4px;
+    }
+
+    .layout-btn {
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .layout-btn.active {
+      background: #7c3aed;
+      color: #fff;
+      box-shadow: 0 0 12px var(--purple-glow);
+    }
+
     .server-switcher {
       display: flex;
       align-items: center;
@@ -176,9 +204,9 @@
     }
 
     .server-btn.active {
-      background: #7c3aed;
+      background: #0ea5e9;
       color: #fff;
-      box-shadow: 0 0 12px var(--purple-glow);
+      box-shadow: 0 0 12px rgba(14, 165, 233, 0.4);
     }
 
     .zoom-ctrl {
@@ -201,21 +229,33 @@
     /* ── MAIN STUDIO CANVAS ── */
     .studio-canvas {
       flex: 1;
-      padding: 26px;
+      padding: 26px 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      overflow-x: auto;
+      min-width: 100%;
     }
 
     .phones-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(390px, 1fr));
-      gap: 36px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
       width: 100%;
-      max-width: 1800px;
-      justify-items: center;
+      max-width: 100%;
+      justify-content: center;
       transform-origin: top center;
-      transition: transform 0.3s ease;
+      transition: transform 0.25s ease, gap 0.25s ease;
+    }
+
+    /* When in Panorama 1-Row mode (or zoom <= 50%) */
+    .phones-grid.mode-row {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      gap: 16px !important;
+      width: max-content !important;
+      justify-content: center !important;
     }
 
     /* ── INDIVIDUAL PHONE CARD SUITE ── */
@@ -232,6 +272,7 @@
       backdrop-filter: blur(10px);
       transition: all 0.3s ease;
       width: calc(var(--phone-w) + 32px);
+      flex-shrink: 0;
     }
 
     .phone-unit:hover {
@@ -482,7 +523,7 @@
       border-color: var(--gold-primary);
     }
 
-    /* Automation Bar */
+    /* Automation Box */
     .automation-box {
       background: rgba(0, 0, 0, 0.35);
       border: 1px solid rgba(124, 58, 237, 0.3);
@@ -595,37 +636,46 @@
 
     <div class="matrix-toolbar">
       <button class="btn-action btn-add-phone" onclick="addNewPhone()">
-        <i class="fa-solid fa-circle-plus"></i> Dodaj Nowy Telefon (+)
+        <i class="fa-solid fa-circle-plus"></i> Dodaj Telefon (+)
       </button>
 
       <button class="btn-action btn-gold" onclick="sendGlobalBlessing()">
-        <i class="fa-solid fa-dove"></i> Błogosławieństwo Dla Wszystkich
+        <i class="fa-solid fa-dove"></i> Błogosławieństwo
       </button>
 
+      <div class="layout-switcher">
+        <button class="layout-btn" id="btnLayoutRow" onclick="setLayoutMode('row')">
+          <i class="fa-solid fa-grip-lines"></i> 1 Rząd (Panorama)
+        </button>
+        <button class="layout-btn active" id="btnLayoutAuto" onclick="setLayoutMode('auto')">
+          <i class="fa-solid fa-table-cells"></i> Siatka / Auto
+        </button>
+      </div>
+
       <button class="btn-action" onclick="toggleAllAutomations()">
-        <i class="fa-solid fa-robot"></i> Przełącz Wszystkie Automatyzacje
+        <i class="fa-solid fa-robot"></i> Automatyzacje
       </button>
 
       <button class="btn-action" onclick="reloadAll()">
-        <i class="fa-solid fa-rotate"></i> Odśwież Wszystkie
+        <i class="fa-solid fa-rotate"></i> Odśwież
       </button>
 
       <div class="server-switcher">
         <button class="server-btn active" id="srvProd" onclick="setServer('prod')">Produkcja</button>
-        <button class="server-btn" id="srvLocal" onclick="setServer('local')">Lokalny (3000)</button>
+        <button class="server-btn" id="srvLocal" onclick="setServer('local')">Lokalny</button>
       </div>
 
       <div class="zoom-ctrl">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="range" id="zoomSlider" min="40" max="100" value="80" oninput="applyZoom(this.value)">
-        <span id="zoomVal">80%</span>
+        <input type="range" id="zoomSlider" min="30" max="100" value="40" oninput="applyZoom(this.value)">
+        <span id="zoomVal">40%</span>
       </div>
     </div>
   </header>
 
   <!-- MAIN CANVAS WITH DYNAMIC VIRTUAL PHONES -->
   <main class="studio-canvas">
-    <div class="phones-grid" id="phonesGrid">
+    <div class="phones-grid mode-row" id="phonesGrid">
       <!-- Virtual Phone Units dynamically rendered here -->
     </div>
   </main>
@@ -673,6 +723,7 @@
     ];
 
     let currentServer = 'prod'; // 'prod' or 'local'
+    let currentLayoutMode = 'auto'; // 'auto' or 'row'
     const PROD_BASE = 'https://polskieradio.cc';
     const LOCAL_BASE = 'http://localhost:3000';
 
@@ -693,13 +744,13 @@
       // Default starter 7 phones if empty
       if (!phones || phones.length === 0) {
         phones = [
-          { id: 1, profileId: "cezary", autoId: "none", autoActive: false, deviceTime: "11:15" },
-          { id: 2, profileId: "wioletta", autoId: "none", autoActive: false, deviceTime: "11:15" },
-          { id: 3, profileId: "jola", autoId: "blessings", autoActive: true, deviceTime: "11:15" },
-          { id: 4, profileId: "andrzej", autoId: "radio_listener", autoActive: true, deviceTime: "11:15" },
-          { id: 5, profileId: "magdalena", autoId: "prayer", autoActive: true, deviceTime: "11:15" },
-          { id: 6, profileId: "ccmen", autoId: "board_curator", autoActive: true, deviceTime: "11:15" },
-          { id: 7, profileId: "ccwomen", autoId: "story_creator", autoActive: true, deviceTime: "11:15" }
+          { id: 1, profileId: "cezary", autoId: "none", autoActive: false, deviceTime: "11:30" },
+          { id: 2, profileId: "wioletta", autoId: "none", autoActive: false, deviceTime: "11:30" },
+          { id: 3, profileId: "jola", autoId: "blessings", autoActive: true, deviceTime: "11:30" },
+          { id: 4, profileId: "andrzej", autoId: "radio_listener", autoActive: true, deviceTime: "11:30" },
+          { id: 5, profileId: "magdalena", autoId: "prayer", autoActive: true, deviceTime: "11:30" },
+          { id: 6, profileId: "ccmen", autoId: "board_curator", autoActive: true, deviceTime: "11:30" },
+          { id: 7, profileId: "ccwomen", autoId: "story_creator", autoActive: true, deviceTime: "11:30" }
         ];
       }
     }
@@ -775,7 +826,7 @@
 
             <!-- Status Bar -->
             <div class="phone-status-bar">
-              <span>${phone.deviceTime || '11:15'}</span>
+              <span>${phone.deviceTime || '11:30'}</span>
               <div class="status-icons">
                 <i class="fa-solid fa-signal"></i>
                 <span>5G</span>
@@ -847,7 +898,7 @@
         profileId: "lumina",
         autoId: "none",
         autoActive: false,
-        deviceTime: "11:15"
+        deviceTime: "11:30"
       });
       saveState();
       renderGrid();
@@ -954,17 +1005,33 @@
       reloadAll();
     }
 
+    // Layout Switcher
+    function setLayoutMode(mode) {
+      currentLayoutMode = mode;
+      document.getElementById('btnLayoutRow').className = 'layout-btn ' + (mode === 'row' ? 'active' : '');
+      document.getElementById('btnLayoutAuto').className = 'layout-btn ' + (mode === 'auto' ? 'active' : '');
+      applyZoom(document.getElementById('zoomSlider').value);
+    }
+
     // Zoom
     function applyZoom(val) {
       document.getElementById('zoomVal').innerText = val + '%';
       const scale = val / 100;
-      document.getElementById('phonesGrid').style.transform = `scale(${scale})`;
+      const grid = document.getElementById('phonesGrid');
+      grid.style.transform = `scale(${scale})`;
+
+      // Przy skali <= 50% lub przy aktywnym trybie "row" telefony ustawiają się w 1 poziomym rzędzie
+      if (val <= 50 || currentLayoutMode === 'row') {
+        grid.classList.add('mode-row');
+      } else {
+        grid.classList.remove('mode-row');
+      }
     }
 
     // Init
     loadSavedState();
     renderGrid();
-    applyZoom(80);
+    applyZoom(40);
   </script>
 </body>
 </html>
