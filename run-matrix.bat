@@ -6,5 +6,5 @@ echo =========================================================================
 echo.
 echo Uruchamianie wizualnego symulatora smartfonow na ekranie...
 echo.
-cmd /c "npm run studio"
+node scripts/agent-matrix/launch_studio.js
 pause

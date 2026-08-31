@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ══════════════════════════════════════════════════════════════════════════
  * LUMINA MOBILE STUDIO — NATIVE DESKTOP LAUNCHER
  * ══════════════════════════════════════════════════════════════════════════
@@ -41,7 +41,16 @@ async function launchStudio() {
   await page.goto(studioUrl);
 
   console.log('✅ Aplikacja LUMINA Mobile Studio została uruchomiona na Pulpicie!');
-  console.log('Naciśnij Ctrl+C lub zamknij okno, aby zakończyć.\n');
+  console.log('Okno aplikacji pozostanie otwarte. Naciśnij Ctrl+C lub zamknij okno, aby zakończyć.\n');
+
+  // Utrzymuj proces aktywny tak długo, jak otwarte jest okno aplikacji
+  await new Promise((resolve) => {
+    browser.on('disconnected', resolve);
+    page.on('close', () => {
+      browser.close().then(resolve).catch(resolve);
+    });
+  });
+  console.log('[Studio] Okno zostało zamknięte. Zakończono sesję.');
 }
 
 launchStudio().catch(err => {
