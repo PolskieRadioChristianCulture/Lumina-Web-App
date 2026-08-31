@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
 <!-- Google Consent Mode v2 (Default Denied) -->
@@ -291,14 +291,17 @@
 
         /* ── TICKER / PASEK INFORMACYJNY CC ── */
         .vod-ticker-bar {
-            background: linear-gradient(90deg, #091024 0%, #101c40 50%, #091024 100%);
+            background: linear-gradient(90deg, #070d1e 0%, #0d1738 50%, #070d1e 100%);
             border-bottom: 1px solid var(--border-gold);
-            padding: 8px 16px;
+            padding: 8px 18px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
             overflow: hidden;
+            position: relative;
+            z-index: 50;
             font-size: 0.84rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
         .ticker-badge {
@@ -306,23 +309,36 @@
             color: #000;
             font-weight: 900;
             font-size: 0.72rem;
-            padding: 3px 10px;
+            padding: 5px 12px;
             border-radius: 12px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
             flex-shrink: 0;
             letter-spacing: 0.5px;
-            box-shadow: 0 0 10px var(--gold-glow);
+            box-shadow: 0 0 12px var(--gold-glow);
+            z-index: 10;
+            position: relative;
+        }
+
+        .ticker-viewport {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            mask-image: linear-gradient(to right, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
         }
 
         .ticker-content-track {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 30px;
+            gap: 40px;
             white-space: nowrap;
-            animation: tickerScroll 42s linear infinite;
+            animation: tickerScroll 48s linear infinite;
             will-change: transform;
+            padding-left: 100%;
         }
 
         .vod-ticker-bar:hover .ticker-content-track {
@@ -331,7 +347,7 @@
 
         @keyframes tickerScroll {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            100% { transform: translateX(-100%); }
         }
 
         .ticker-item {
@@ -339,6 +355,7 @@
             align-items: center;
             gap: 8px;
             color: #e2e8f0;
+            font-size: 0.84rem;
         }
 
         .ticker-item i {
@@ -1086,16 +1103,18 @@
         <div class="ticker-badge">
             <i class="fa-solid fa-satellite-dish"></i> CC INFO 24/7
         </div>
-        <div class="ticker-content-track" id="tickerTrack">
-            <!-- Rendered by JS from VodDB.ticker -->
-            <div class="ticker-item"><i class="fa-solid fa-film"></i> <span>VOD CHRISTIAN CULTURE: Najlepsze kino chrześcijańskie, filmy z wartościami i świadectwa wiary 24/7 za darmo.</span></div>
-            <div class="ticker-item"><i class="fa-solid fa-sun"></i> <span>PORTAL LUMINA: Dołącz do ogólnoświatowej społeczności wiary na lumina.cc — twórz profil, dyskutuj i dziel się świadectwem.</span></div>
-            <div class="ticker-item"><i class="fa-solid fa-radio"></i> <span>POLSKIE RADIO CC: Muzyka uwielbienia, Biblia Śpiewana i codzienne audycje formacyjne na żywo w polskieradio.cc.</span></div>
-            <div class="ticker-item"><i class="fa-solid fa-mobile-screen-button"></i> <span>APLIKACJA „DOBRZE, ŻE JESTEŚ”: Pobierz aplikację z codziennymi rozważaniami, Słowem Bożym i inspiracją na każdy dzień.</span></div>
-            <div class="ticker-item"><i class="fa-solid fa-heart"></i> <span>WSPARCIE MISJI: Pomóż nam rozwijać chrześcijańskie kino, radio i aplikacje — dziękujemy za Twoje modlitwy i wsparcie!</span></div>
-            <!-- Duplicated for seamless loop -->
-            <div class="ticker-item"><i class="fa-solid fa-film"></i> <span>VOD CHRISTIAN CULTURE: Najlepsze kino chrześcijańskie, filmy z wartościami i świadectwa wiary 24/7 za darmo.</span></div>
-            <div class="ticker-item"><i class="fa-solid fa-sun"></i> <span>PORTAL LUMINA: Dołącz do ogólnoświatowej społeczności wiary na lumina.cc — twórz profil, dyskutuj i dziel się świadectwem.</span></div>
+        <div class="ticker-viewport">
+            <div class="ticker-content-track" id="tickerTrack">
+                <!-- Rendered by JS from VodDB.ticker -->
+                <div class="ticker-item"><i class="fa-solid fa-film"></i> <span>VOD CHRISTIAN CULTURE: Najlepsze kino chrześcijańskie, filmy z wartościami i świadectwa wiary 24/7 za darmo.</span></div>
+                <div class="ticker-item"><i class="fa-solid fa-sun"></i> <span>PORTAL LUMINA: Dołącz do ogólnoświatowej społeczności wiary na lumina.cc — twórz profil, dyskutuj i dziel się świadectwem.</span></div>
+                <div class="ticker-item"><i class="fa-solid fa-radio"></i> <span>POLSKIE RADIO CC: Muzyka uwielbienia, Biblia Śpiewana i codzienne audycje formacyjne na żywo w polskieradio.cc.</span></div>
+                <div class="ticker-item"><i class="fa-solid fa-mobile-screen-button"></i> <span>APLIKACJA „DOBRZE, ŻE JESTEŚ”: Pobierz aplikację z codziennymi rozważaniami, Słowem Bożym i inspiracją na każdy dzień.</span></div>
+                <div class="ticker-item"><i class="fa-solid fa-heart"></i> <span>WSPARCIE MISJI: Pomóż nam rozwijać chrześcijańskie kino, radio i aplikacje — dziękujemy za Twoje modlitwy i wsparcie!</span></div>
+                <!-- Duplicated for seamless loop -->
+                <div class="ticker-item"><i class="fa-solid fa-film"></i> <span>VOD CHRISTIAN CULTURE: Najlepsze kino chrześcijańskie, filmy z wartościami i świadectwa wiary 24/7 za darmo.</span></div>
+                <div class="ticker-item"><i class="fa-solid fa-sun"></i> <span>PORTAL LUMINA: Dołącz do ogólnoświatowej społeczności wiary na lumina.cc — twórz profil, dyskutuj i dziel się świadectwem.</span></div>
+            </div>
         </div>
     </div>
 
@@ -1277,9 +1296,18 @@
 
         // Inicjalizacja po załadowaniu DOM
         document.addEventListener('DOMContentLoaded', () => {
+            initTicker();
             renderMoviesCatalog();
             checkUrlParamsForMovie();
         });
+
+        function initTicker() {
+            const track = document.getElementById('tickerTrack');
+            if (!track || !window.VodDB || !window.VodDB.ticker) return;
+            const items = window.VodDB.ticker;
+            const html = items.map(item => `<div class="ticker-item"><i class="fa-solid ${item.icon}"></i> <span>${item.text}</span></div>`).join('');
+            track.innerHTML = html + html;
+        }
 
         // 1. Sprawdzenie parametru ?film=ID w URL
         function checkUrlParamsForMovie() {
