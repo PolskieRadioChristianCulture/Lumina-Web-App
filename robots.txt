@@ -1,4 +1,4 @@
-﻿# 🤖 ROBOTS.TXT — CHRISTIAN CULTURE & LUMINA ECOSYSTEM
+# 🤖 ROBOTS.TXT — CHRISTIAN CULTURE & LUMINA ECOSYSTEM
 # Global Multi-Agent AI & Search Engine Crawler Permissions
 # Primary Host: https://polskieradio.cc
 
@@ -14,6 +14,9 @@ User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: PerplexityBot

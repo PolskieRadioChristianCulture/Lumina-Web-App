@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
@@ -7,15 +7,63 @@
   <!-- 1. Strona Główna Radia i Ekosystemu Christian Culture -->
   <url>
     <loc>https://polskieradio.cc/</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
-  <!-- 2. Portal LUMINA - Chrześcijańska Sieć Relacji & Randek -->
+  <!-- 2. VOD Christian Culture - Dobre Kino 24/7 (Filmy Chrześcijańskie) -->
+  <url>
+    <loc>https://polskieradio.cc/vod</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+    <video:video>
+      <video:thumbnail_loc>https://img.vider.info/i/1mx8x1/7/3/przecz-ocalonych-2016-lektor.png</video:thumbnail_loc>
+      <video:title>Przełęcz ocalonych (Hacksaw Ridge) — Cały Film Lektor PL</video:title>
+      <video:description>Oparta na faktach historia Desmonda Dossa – chrześcijańskiego sanitariusza bez broni na froncie II wojny światowej. Reżyseria: Mel Gibson.</video:description>
+      <video:player_loc>https://polskieradio.cc/vod?film=przelecz-ocalonych-hacksaw-ridge</video:player_loc>
+      <video:duration>8340</video:duration>
+      <video:publication_date>2016-11-04</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:category>Kino Chrześcijańskie / Biograficzny</video:category>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://img.vider.info/i/8m8nxv/7/3/chata.png</video:thumbnail_loc>
+      <video:title>Chata (The Shack) — Cały Film Lektor PL</video:title>
+      <video:description>Ekranizacja światowego bestsellera o wierze, przebaczeniu i bezwarunkowej miłości Boga. W rolach głównych: Sam Worthington, Octavia Spencer.</video:description>
+      <video:player_loc>https://polskieradio.cc/vod?film=chata-the-shack</video:player_loc>
+      <video:duration>7920</video:duration>
+      <video:publication_date>2017-03-03</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:category>Kino Chrześcijańskie / Dramat</video:category>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://i.ytimg.com/vi/GMdQIwKh22A/hqdefault.jpg</video:thumbnail_loc>
+      <video:title>JEZUS – Ewangelia wg św. Łukasza (1979) — Cały Film Lektor PL</video:title>
+      <video:description>Klasyczna ekranizacja Ewangelii wg św. Łukasza przedstawiająca życie, cuda, śmierć i zmartwychwstanie Jezusa Chrystusa.</video:description>
+      <video:player_loc>https://polskieradio.cc/vod?film=film-jezus-ewangelia-lukasza</video:player_loc>
+      <video:duration>7680</video:duration>
+      <video:publication_date>1979-10-19</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:category>Biblijny / Historyczny</video:category>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://i.ytimg.com/vi/Mxlw-eQFh-c/hqdefault.jpg</video:thumbnail_loc>
+      <video:title>Bóg nie umarł (God's Not Dead) — Cały Film Lektor PL</video:title>
+      <video:description>Poruszający dramat o studencie broniącym wiary w Boga przed ateistycznym profesorem filozofii.</video:description>
+      <video:player_loc>https://polskieradio.cc/vod?film=bog-nie-umar-1</video:player_loc>
+      <video:duration>6780</video:duration>
+      <video:publication_date>2014-03-21</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:category>Dramat / Wiara</video:category>
+    </video:video>
+  </url>
+
+  <!-- 3. Portal LUMINA - Chrześcijańska Sieć Relacji & Randek -->
   <url>
     <loc>https://polskieradio.cc/lumina</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-31</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.95</priority>
   </url>

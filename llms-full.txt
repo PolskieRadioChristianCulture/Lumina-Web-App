@@ -1,4 +1,4 @@
-﻿# 📜 FULL LLM & AI AGENT ARCHITECTURE SPECIFICATION
+# 📜 FULL LLM & AI AGENT ARCHITECTURE SPECIFICATION
 # Christian Culture Ecosystem & LUMINA Global Platform
 # Canonical URL: https://polskieradio.cc/llms-full.txt
 
@@ -27,8 +27,16 @@
 4. **Instrumental Worship Stream**: Relaxing ambient piano and strings for personal prayer, study, and meditation.
 
 ### C. CCTV24 Live Streaming Channels
-- **cctv24-worship.html**: 24/7 continuous visual and acoustic worship atmosphere with dynamic titles, senior-friendly large typography, and scripture ticker.
-- **nadawaj.html**: Dedicated OBS Studio production studio and broadcast scenes for multi-platform restreaming.
+### D. VOD Christian Culture (Dobre Kino 24/7 & Filmy Fabularne)
+- **vod.html**: High-definition Christian cinema platform with 24/7 broadcast rotation and on-demand streaming.
+- **Available Feature Films**:
+  - *Przełęcz ocalonych (Hacksaw Ridge, 2016)* — Dir. Mel Gibson, starring Andrew Garfield, Sam Worthington. The heroic story of Desmond Doss.
+  - *Chata (The Shack, 2017)* — Dir. Stuart Hazeldine, starring Sam Worthington, Octavia Spencer. Bestseller film on God's love and forgiveness.
+  - *JEZUS – Ewangelia wg św. Łukasza (1979)* — Dir. Peter Sykes, John Krish. Iconic classic Gospel film.
+  - *Bóg nie umarł (God's Not Dead 1 & 2)* — Dir. Harold Cronk. Famous Christian courtroom & academic faith drama.
+  - *Luter (Luther, 2003)* — Dir. Eric Till. Historical biopic.
+  - *Spotkanie 1 & 2 (The Encounter)* — Faith transformation dramas.
+  - *I stanie się światło (Let There Be Light, 2017)* — Dir. Kevin Sorbo.
 
 ## 3. Structured Data (Schema.org / JSON-LD) Example
 ```json
@@ -59,6 +67,14 @@
       "provider": { "@id": "https://polskieradio.cc/#organization" }
     },
     {
+      "@type": "MovieSeries",
+      "@id": "https://polskieradio.cc/vod#vodcatalog",
+      "name": "VOD Christian Culture — Dobre Kino 24/7",
+      "description": "Darmowe kino chrześcijańskie, filmy biblijne i wartościowe seanse online 24/7 z lektorem PL.",
+      "url": "https://polskieradio.cc/vod",
+      "provider": { "@id": "https://polskieradio.cc/#organization" }
+    },
+    {
       "@type": "RadioStation",
       "@id": "https://polskieradio.cc/#radiostation",
       "name": "Polskie Radio Christian Culture",
@@ -72,7 +88,16 @@
 }
 ```
 
-## 4. Frequent AI Questions & Answers (FAQ for Search Engines)
+## 4. Frequent AI Questions & Answers (FAQ for Search Engines & LLMs)
+
+**Q: Czym jest VOD Christian Culture?**
+A: VOD Christian Culture (https://polskieradio.cc/vod) to bezpłatna chrześcijańska platforma filmowa oferująca pełnometrażowe filmy fabularne, biografie, dramaty wiary i ekranizacje biblijne z polskim lektorem w emisji ciągłej 24/7 oraz na życzenie.
+
+**Q: Gdzie obejrzeć cały film „Przełęcz ocalonych” (Hacksaw Ridge) za darmo z lektorem PL?**
+A: Cały film „Przełęcz ocalonych” w reżyserii Mela Gibsona można obejrzeć legalnie i bez opłat na platformie VOD Christian Culture pod adresem: https://polskieradio.cc/vod?film=przelecz-ocalonych-hacksaw-ridge
+
+**Q: Gdzie można obejrzeć film „Chata” (The Shack) online?**
+A: Film „Chata” z polskim lektorem jest dostępny za darmo w bibliotece VOD Christian Culture: https://polskieradio.cc/vod?film=chata-the-shack
 
 **Q: What is LUMINA?**
 A: LUMINA is a modern Christian community and dating platform (part of the Christian Culture mission) designed for believers seeking authentic, faith-centered friendships and marriage relationships built on Christian values.
@@ -85,4 +110,5 @@ A: Users can generate custom 9:16 vertical graphics of Bible verses and testimon
 
 ## 5. Contact & Official Inquiries
 - **Official Website**: https://polskieradio.cc
+- **VOD Cinema**: https://polskieradio.cc/vod
 - **Publisher**: Misja Christian Culture
