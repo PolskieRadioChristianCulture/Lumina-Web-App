@@ -756,8 +756,12 @@
         <i class="fa-solid fa-right-from-bracket"></i> Wyloguj ze Wszystkich
       </button>
 
-      <button class="btn-action" onclick="reloadAll()">
+      <button class="btn-action" onclick="reloadAll()" title="Odśwież zawartość wszystkich telefonów">
         <i class="fa-solid fa-rotate"></i> Odśwież
+      </button>
+
+      <button class="btn-action" onclick="resetAllPhones()" title="Zresetuj wszystkie telefony do domyślnej wyszukiwarki">
+        <i class="fa-solid fa-arrows-rotate" style="color:var(--accent-cyan);"></i> Reset Telefonów
       </button>
 
       <div class="server-switcher">
@@ -836,7 +840,11 @@
     // Load State from LocalStorage
     function loadSavedState() {
       try {
-        const saved = localStorage.getItem('matrix_cc_phones_v2');
+        // Clean legacy v2 / v3 keys to avoid stale configurations
+        localStorage.removeItem('matrix_cc_phones_v2');
+        localStorage.removeItem('matrix_cc_phones_v3');
+
+        const saved = localStorage.getItem('matrix_cc_phones_v4');
         if (saved) {
           phones = JSON.parse(saved);
         }
@@ -844,23 +852,40 @@
         console.warn('Błąd odczytu zapisanych telefonów:', e);
       }
 
-      // Default starter 7 phones if empty
+      // Default starter 7 phones with search.html browser
       if (!phones || phones.length === 0) {
-        phones = [
-          { id: 1, profileId: "browser", autoId: "none",            autoActive: false, deviceTime: "11:35", customUrl: "" },
-          { id: 2, profileId: "browser", autoId: "none",            autoActive: false, deviceTime: "11:35", customUrl: "" },
-          { id: 3, profileId: "browser", autoId: "blessings",       autoActive: true,  deviceTime: "11:35", customUrl: "" },
-          { id: 4, profileId: "browser", autoId: "radio_listener",  autoActive: true,  deviceTime: "11:35", customUrl: "" },
-          { id: 5, profileId: "browser", autoId: "prayer",          autoActive: true,  deviceTime: "11:35", customUrl: "" },
-          { id: 6, profileId: "browser", autoId: "board_curator",   autoActive: true,  deviceTime: "11:35", customUrl: "" },
-          { id: 7, profileId: "browser", autoId: "story_creator",   autoActive: true,  deviceTime: "11:35", customUrl: "" }
-        ];
+        phones = getDefaultPhones();
+        saveState();
       }
+    }
+
+    function getDefaultPhones() {
+      return [
+        { id: 1, profileId: "browser", autoId: "none",            autoActive: false, deviceTime: "11:35", customUrl: "" },
+        { id: 2, profileId: "browser", autoId: "none",            autoActive: false, deviceTime: "11:35", customUrl: "" },
+        { id: 3, profileId: "browser", autoId: "blessings",       autoActive: true,  deviceTime: "11:35", customUrl: "" },
+        { id: 4, profileId: "browser", autoId: "radio_listener",  autoActive: true,  deviceTime: "11:35", customUrl: "" },
+        { id: 5, profileId: "browser", autoId: "prayer",          autoActive: true,  deviceTime: "11:35", customUrl: "" },
+        { id: 6, profileId: "browser", autoId: "board_curator",   autoActive: true,  deviceTime: "11:35", customUrl: "" },
+        { id: 7, profileId: "browser", autoId: "story_creator",   autoActive: true,  deviceTime: "11:35", customUrl: "" }
+      ];
+    }
+
+    function resetAllPhones() {
+      try {
+        localStorage.removeItem('matrix_cc_phones_v2');
+        localStorage.removeItem('matrix_cc_phones_v3');
+        localStorage.removeItem('matrix_cc_phones_v4');
+      } catch (e) {}
+      phones = getDefaultPhones();
+      saveState();
+      renderGrid();
+      document.getElementById('matrixStatus').innerText = '✅ Zresetowano wszystkie telefony do domyślnej wyszukiwarki CC (search.html).';
     }
 
     function saveState() {
       try {
-        localStorage.setItem('matrix_cc_phones_v2', JSON.stringify(phones));
+        localStorage.setItem('matrix_cc_phones_v4', JSON.stringify(phones));
       } catch (e) {}
     }
 
