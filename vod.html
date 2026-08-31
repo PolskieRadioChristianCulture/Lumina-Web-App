@@ -436,26 +436,50 @@
     }
     </script>
 
-    <!-- CSS STYLES -->
+        <!-- CSS STYLES (LUXURY BLACK, BRUSHED SILVER & 3D GLASSMORPHISM) -->
     <style>
         :root {
-            --gold-primary: #d4af37;
-            --gold-light: #fef08a;
-            --gold-glow: rgba(212, 175, 55, 0.4);
-            --amber-accent: #f59e0b;
-            --cyan-accent: #38bdf8;
-            --bg-deep: #060913;
-            --bg-card: rgba(11, 18, 38, 0.88);
-            --bg-card-hover: rgba(18, 28, 58, 0.95);
-            --border-navy: rgba(56, 189, 248, 0.15);
-            --border-gold: rgba(212, 175, 55, 0.35);
+            /* ── Pure Luxury Black & Deep Obsidian ── */
+            --bg-deep: #010204;
+            --bg-obsidian: #07080c;
+            --bg-surface-glass: rgba(10, 12, 18, 0.75);
+            --bg-card-glass: rgba(13, 16, 24, 0.68);
+            --bg-card-hover: rgba(22, 27, 40, 0.88);
+            --bg-drawer-glass: rgba(5, 7, 12, 0.96);
+
+            /* ── Brushed Silver, Platinum & Chrome ── */
+            --silver-100: #ffffff;
+            --silver-200: #f8fafc;
+            --silver-300: #e2e8f0;
+            --silver-400: #cbd5e1;
+            --silver-500: #94a3b8;
+            --silver-600: #64748b;
+            --silver-glow: rgba(226, 232, 240, 0.45);
+            --silver-glow-subtle: rgba(226, 232, 240, 0.18);
+            --silver-glow-intense: rgba(255, 255, 255, 0.65);
+            --silver-brushed: linear-gradient(135deg, #ffffff 0%, #cbd5e1 25%, #94a3b8 50%, #e2e8f0 75%, #ffffff 100%);
+            --silver-metallic-btn: linear-gradient(180deg, #ffffff 0%, #e2e8f0 40%, #cbd5e1 55%, #94a3b8 100%);
+            --silver-badge-gradient: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #64748b 100%);
+            --silver-border: rgba(226, 232, 240, 0.28);
+            --silver-border-bright: rgba(255, 255, 255, 0.45);
+
+            /* ── Crystal Glassmorphism & Borders ── */
+            --border-glass: rgba(255, 255, 255, 0.12);
+            --border-glass-bright: rgba(255, 255, 255, 0.24);
+            --glass-blur: blur(24px);
+            --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.35);
+
+            /* ── Accents & Typography ── */
+            --accent-cyan: #38bdf8;
+            --accent-silver: #e2e8f0;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
+            --text-silver: #e2e8f0;
             --font-display: 'Cinzel', serif;
             --font-body: 'Outfit', sans-serif;
-            --radius-xl: 20px;
-            --radius-lg: 14px;
-            --radius-md: 10px;
+            --radius-xl: 22px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
         }
 
         * {
@@ -473,9 +497,10 @@
         body {
             background-color: var(--bg-deep);
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 60%),
-                radial-gradient(circle at 10% 40%, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 50% -10%, rgba(226, 232, 240, 0.12) 0%, transparent 65%),
+                radial-gradient(circle at 10% 35%, rgba(148, 163, 184, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 90% 75%, rgba(255, 255, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 50% 110%, rgba(56, 189, 248, 0.03) 0%, transparent 50%);
             background-attachment: fixed;
             color: var(--text-main);
             font-family: var(--font-body);
@@ -485,16 +510,33 @@
             padding-bottom: 0;
         }
 
-        /* ── TOP NAV BAR ── */
+        /* ── 3D & METALLIC SHIMMER KEYFRAMES ── */
+        @keyframes silverShimmer {
+            0% { background-position: -200% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        @keyframes metallicBeamFlow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        @keyframes dotPulseSilver {
+            0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 8px rgba(255,255,255,0.9); }
+            50% { transform: scale(1.35); opacity: 0.7; box-shadow: 0 0 16px rgba(226,232,240,1); }
+        }
+
+        /* ── TOP NAV BAR (FROSTED GLASS & BRUSHED PLATINUM) ── */
         .vod-header {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(6, 9, 19, 0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-navy);
-            padding: max(10px, env(safe-area-inset-top)) 20px 10px;
+            background: rgba(3, 4, 8, 0.86);
+            backdrop-filter: blur(28px) saturate(190%);
+            -webkit-backdrop-filter: blur(28px) saturate(190%);
+            border-bottom: 1px solid var(--silver-border);
+            box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.12), 0 10px 30px rgba(0, 0, 0, 0.85);
+            padding: max(12px, env(safe-area-inset-top)) 24px 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -508,16 +550,24 @@
             text-decoration: none;
             color: inherit;
             min-width: 0;
+            position: relative;
         }
 
         .vod-logo-img {
             width: 48px;
             height: 48px;
-            border-radius: 12px;
+            border-radius: 14px;
             object-fit: cover;
-            border: 1.5px solid var(--gold-primary);
-            box-shadow: 0 0 16px var(--gold-glow);
+            border: 1.5px solid var(--silver-300);
+            box-shadow: 0 0 20px var(--silver-glow-subtle), inset 0 0 10px rgba(255,255,255,0.3);
             flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .vod-brand:hover .vod-logo-img {
+            transform: scale(1.05) rotate(1deg);
+            border-color: #ffffff;
+            box-shadow: 0 0 25px var(--silver-glow);
         }
 
         .vod-brand-text {
@@ -526,10 +576,11 @@
 
         .vod-brand-title {
             font-family: var(--font-display);
-            font-size: clamp(0.95rem, 2.5vw, 1.25rem);
-            font-weight: 800;
-            letter-spacing: 0.8px;
-            background: linear-gradient(135deg, #fff 0%, var(--gold-light) 50%, var(--gold-primary) 100%);
+            font-size: clamp(1rem, 2.5vw, 1.32rem);
+            font-weight: 900;
+            letter-spacing: 1.2px;
+            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 35%, #94a3b8 70%, #f8fafc 100%);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: flex;
@@ -538,90 +589,100 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            text-shadow: 0 0 20px rgba(255,255,255,0.25);
+        }
+
+        .vod-brand-title i {
+            color: var(--silver-200);
+            text-shadow: 0 0 12px var(--silver-glow);
         }
 
         .vod-brand-sub {
             font-size: 0.72rem;
-            color: var(--text-muted);
-            letter-spacing: 0.5px;
+            color: var(--silver-500);
+            letter-spacing: 0.8px;
             text-transform: uppercase;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-weight: 500;
         }
 
         .vod-nav-links {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             flex-shrink: 0;
         }
 
         .nav-btn-link {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 0.82rem;
-            font-weight: 600;
+            gap: 7px;
+            padding: 8px 16px;
+            border-radius: 24px;
+            font-size: 0.84rem;
+            font-weight: 700;
             text-decoration: none;
-            color: #cbd5e1;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            min-height: 40px;
-            transition: all 0.2s ease;
+            color: var(--silver-300);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            min-height: 42px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .nav-btn-link:hover, .nav-btn-link:active {
-            background: rgba(212, 175, 55, 0.2);
-            border-color: var(--gold-primary);
-            color: var(--gold-light);
-            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--silver-300);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 16px var(--silver-glow-subtle);
         }
 
         .nav-btn-lumina {
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(168, 85, 247, 0.2));
-            border-color: rgba(56, 189, 248, 0.4);
-            color: #38bdf8;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(226, 232, 240, 0.12));
+            border-color: rgba(56, 189, 248, 0.35);
+            color: #7dd3fc;
         }
 
         .nav-btn-lumina:hover, .nav-btn-lumina:active {
             border-color: #38bdf8;
-            color: #7dd3fc;
-            box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
         }
 
-        /* ── TICKER / PASEK INFORMACYJNY CC ── */
+        /* ── TICKER (OBSIDIAN GLASS & BRUSHED SILVER) ── */
         .vod-ticker-bar {
-            background: linear-gradient(90deg, #070d1e 0%, #0d1738 50%, #070d1e 100%);
-            border-bottom: 1.5px solid var(--border-gold);
-            padding: 10px 18px;
+            background: linear-gradient(90deg, #020306 0%, #080a12 50%, #020306 100%);
+            border-bottom: 1.5px solid var(--silver-border);
+            padding: 11px 22px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 18px;
             overflow: hidden;
             position: relative;
             z-index: 50;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.06);
         }
 
         .ticker-badge {
-            background: linear-gradient(135deg, var(--gold-primary), #b45309);
-            color: #000;
+            background: var(--silver-metallic-btn);
+            color: #050608;
             font-weight: 900;
-            font-size: 0.78rem;
-            padding: 6px 12px;
-            border-radius: 12px;
+            font-size: 0.82rem;
+            padding: 6px 14px;
+            border-radius: 14px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
             flex-shrink: 0;
-            letter-spacing: 0.5px;
-            box-shadow: 0 0 14px var(--gold-glow);
+            letter-spacing: 0.6px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5), 0 0 16px var(--silver-glow);
             z-index: 10;
             position: relative;
             text-transform: uppercase;
+            border: 1px solid rgba(255, 255, 255, 0.8);
         }
 
         .ticker-viewport {
@@ -630,14 +691,14 @@
             position: relative;
             display: flex;
             align-items: center;
-            mask-image: linear-gradient(to right, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
         }
 
         .ticker-content-track {
             display: inline-flex;
             align-items: center;
-            gap: 50px;
+            gap: 55px;
             white-space: nowrap;
             animation: tickerScroll 130s linear infinite;
             will-change: transform;
@@ -656,35 +717,43 @@
         .ticker-item {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            color: #f8fafc;
-            font-size: 0.95rem;
+            gap: 10px;
+            color: var(--silver-200);
+            font-size: 0.98rem;
             font-weight: 600;
-            letter-spacing: 0.2px;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
         }
 
         .ticker-item i {
-            color: #fbbf24;
-            font-size: 1rem;
+            color: #ffffff;
+            font-size: 1.05rem;
+            text-shadow: 0 0 10px var(--silver-glow);
         }
 
         /* ── MAIN CONTAINER ── */
         .vod-container {
-            max-width: 1360px;
+            max-width: 1380px;
             margin: 0 auto;
-            padding: 24px 20px 60px;
+            padding: 28px 20px 70px;
         }
 
-        /* ── CINEMA STAGE (THEATER HERO) ── */
+        /* ── CINEMA STAGE (3D THEATER HERO & BRUSHED TITANIUM SHELL) ── */
         .cinema-stage-card {
-            background: var(--bg-card);
-            border: 1.5px solid var(--border-gold);
+            background: var(--bg-surface-glass);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1.5px solid var(--silver-border);
             border-radius: var(--radius-xl);
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(212, 175, 55, 0.15);
-            margin-bottom: 32px;
+            box-shadow: 
+                0 25px 65px rgba(0, 0, 0, 0.95), 
+                0 0 40px var(--silver-glow-subtle),
+                inset 0 1px 1px 0 rgba(255, 255, 255, 0.35);
+            margin-bottom: 36px;
             position: relative;
+            transform-style: preserve-3d;
+            transition: all 0.35s ease;
         }
 
         .cinema-stage-card::before {
@@ -694,15 +763,10 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--gold-primary), #f59e0b, #38bdf8, var(--gold-primary));
+            background: linear-gradient(90deg, #ffffff 0%, #94a3b8 25%, #e2e8f0 50%, #ffffff 75%, #94a3b8 100%);
             background-size: 200% 100%;
-            animation: liveGradientFlow 4s linear infinite;
+            animation: metallicBeamFlow 5s linear infinite;
             z-index: 5;
-        }
-
-        @keyframes liveGradientFlow {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 200% 0%; }
         }
 
         /* 16:9 Video Wrapper */
@@ -711,6 +775,7 @@
             width: 100%;
             padding-top: 56.25%; /* 16:9 */
             background: #000;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.9);
         }
 
         .cinema-player-wrapper iframe,
@@ -723,50 +788,58 @@
             border: none;
         }
 
-        /* Pre-roll Banner Overlay */
+        /* Pre-roll Banner Overlay (3D Platinum Pill) */
         .preroll-overlay-pill {
             position: absolute;
-            top: 14px;
-            left: 14px;
+            top: 16px;
+            left: 16px;
             z-index: 10;
-            background: rgba(15, 23, 42, 0.92);
-            border: 1px solid var(--gold-primary);
-            color: var(--gold-light);
-            font-size: 0.76rem;
+            background: rgba(5, 7, 12, 0.92);
+            border: 1px solid var(--silver-border-bright);
+            color: #ffffff;
+            font-size: 0.78rem;
             font-weight: 800;
-            padding: 6px 14px;
-            border-radius: 20px;
+            padding: 7px 16px;
+            border-radius: 24px;
             display: none;
             align-items: center;
             gap: 8px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.8), 0 0 15px var(--silver-glow-subtle);
+            letter-spacing: 0.5px;
         }
 
         .preroll-overlay-pill.show {
             display: inline-flex;
         }
 
+        .preroll-overlay-pill i {
+            color: #ffffff;
+            text-shadow: 0 0 10px var(--silver-glow);
+        }
+
+        /* Skip Pre-roll Button (Brushed Silver Metal 3D) */
         .btn-skip-preroll {
             position: absolute;
-            bottom: 16px;
-            right: 16px;
+            bottom: 18px;
+            right: 18px;
             z-index: 10;
-            background: linear-gradient(135deg, #d97706, #b45309);
-            border: 1.5px solid var(--gold-light);
-            color: #fff;
-            font-size: 0.84rem;
-            font-weight: 800;
-            padding: 8px 18px;
-            border-radius: 24px;
+            background: var(--silver-metallic-btn);
+            border: 1.5px solid #ffffff;
+            color: #050608;
+            font-size: 0.86rem;
+            font-weight: 900;
+            padding: 9px 22px;
+            border-radius: 28px;
             cursor: pointer;
             display: none;
             align-items: center;
             gap: 8px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
-            transition: all 0.2s ease;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.9), 0 0 20px var(--silver-glow);
+            transition: all 0.25s ease;
             min-height: 44px;
+            letter-spacing: 0.4px;
         }
 
         .btn-skip-preroll.show {
@@ -774,27 +847,28 @@
         }
 
         .btn-skip-preroll:hover, .btn-skip-preroll:active {
-            transform: scale(1.04);
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            box-shadow: 0 0 20px var(--gold-glow);
+            transform: scale(1.05) translateY(-2px);
+            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 50%, #e2e8f0 100%);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9), 0 0 25px var(--silver-glow-intense);
         }
 
-        /* Cinema Control Bar */
+        /* Cinema Control Bar (Frosted Obsidian Glass) */
         .cinema-controls-bar {
-            padding: 16px 22px;
-            background: rgba(8, 14, 30, 0.96);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px 24px;
+            background: rgba(6, 8, 14, 0.94);
+            border-top: 1px solid var(--border-glass-bright);
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
             flex-wrap: wrap;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
         .now-playing-box {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             min-width: 0;
             flex: 1;
         }
@@ -802,29 +876,25 @@
         .live-pulse-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid #ef4444;
-            color: #f87171;
-            font-size: 0.72rem;
-            font-weight: 800;
-            padding: 5px 10px;
-            border-radius: 12px;
-            letter-spacing: 0.5px;
+            gap: 7px;
+            background: rgba(226, 232, 240, 0.12);
+            border: 1px solid var(--silver-border-bright);
+            color: #ffffff;
+            font-size: 0.74rem;
+            font-weight: 900;
+            padding: 6px 12px;
+            border-radius: 14px;
+            letter-spacing: 0.6px;
             flex-shrink: 0;
+            box-shadow: 0 0 14px var(--silver-glow-subtle);
         }
 
         .pulse-dot {
             width: 7px;
             height: 7px;
-            background: #ef4444;
+            background: #ffffff;
             border-radius: 50%;
-            animation: dotPulse 1.2s infinite;
-        }
-
-        @keyframes dotPulse {
-            0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 6px #ef4444; }
-            50% { transform: scale(1.35); opacity: 0.6; box-shadow: 0 0 12px #ef4444; }
+            animation: dotPulseSilver 1.4s infinite;
         }
 
         .now-playing-info {
@@ -833,23 +903,24 @@
         }
 
         .now-playing-title {
-            font-size: 1.15rem;
+            font-size: 1.18rem;
             font-weight: 800;
-            color: #fff;
+            color: #ffffff;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             display: flex;
             align-items: center;
             gap: 8px;
+            letter-spacing: 0.3px;
         }
 
         .now-playing-meta {
-            font-size: 0.78rem;
-            color: var(--text-muted);
+            font-size: 0.80rem;
+            color: var(--silver-400);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             margin-top: 2px;
             flex-wrap: wrap;
         }
@@ -857,50 +928,54 @@
         .cinema-buttons-group {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             flex-shrink: 0;
         }
 
+        /* Brushed Silver 3D Push-Buttons */
         .btn-cinema-action {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #e2e8f0;
-            font-size: 0.82rem;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--silver-200);
+            font-size: 0.84rem;
             font-weight: 700;
-            padding: 8px 14px;
+            padding: 9px 16px;
             border-radius: var(--radius-md);
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
             min-height: 44px;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             user-select: none;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.25);
         }
 
         .btn-cinema-action:hover, .btn-cinema-action:active {
-            background: rgba(212, 175, 55, 0.2);
-            border-color: var(--gold-primary);
-            color: var(--gold-light);
-            transform: translateY(-1px);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(226, 232, 240, 0.12) 100%);
+            border-color: #ffffff;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7), 0 0 18px var(--silver-glow-subtle);
         }
 
         .btn-cinema-action.active {
-            background: rgba(34, 197, 94, 0.25);
-            border-color: #22c55e;
-            color: #86efac;
+            background: linear-gradient(180deg, rgba(56, 189, 248, 0.25) 0%, rgba(56, 189, 248, 0.12) 100%);
+            border-color: var(--accent-cyan);
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
         }
 
-        /* Movie Details Summary Drawer */
+        /* Movie Details Summary Drawer (Smoked Crystal Glass) */
         .cinema-synopsis-drawer {
-            padding: 16px 24px 20px;
-            background: rgba(6, 11, 24, 0.98);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px 26px 24px;
+            background: var(--bg-drawer-glass);
+            border-top: 1px solid var(--border-glass);
             display: flex;
-            gap: 20px;
-            font-size: 0.88rem;
-            color: #cbd5e1;
-            line-height: 1.6;
+            gap: 24px;
+            font-size: 0.90rem;
+            color: var(--silver-300);
+            line-height: 1.65;
         }
 
         .synopsis-text {
@@ -908,24 +983,24 @@
         }
 
         .synopsis-side-info {
-            width: 280px;
+            width: 300px;
             flex-shrink: 0;
-            border-left: 1px solid rgba(255, 255, 255, 0.08);
-            padding-left: 20px;
-            font-size: 0.80rem;
+            border-left: 1px solid var(--border-glass);
+            padding-left: 24px;
+            font-size: 0.82rem;
         }
 
         .side-info-item {
-            margin-bottom: 8px;
+            margin-bottom: 9px;
         }
 
         .side-info-label {
-            color: var(--text-muted);
+            color: var(--silver-500);
             font-weight: 600;
         }
 
         .side-info-val {
-            color: #fff;
+            color: #ffffff;
             font-weight: 700;
         }
 
@@ -935,26 +1010,27 @@
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            margin: 36px 0 20px;
+            margin: 40px 0 24px;
             flex-wrap: wrap;
         }
 
         .section-title {
             font-family: var(--font-display);
-            font-size: 1.22rem;
-            font-weight: 800;
-            color: #fff;
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: #ffffff;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            letter-spacing: 0.3px;
-            line-height: 1.25;
+            gap: 10px;
+            letter-spacing: 0.6px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
         }
 
         .section-title i {
-            color: var(--gold-primary);
+            color: #ffffff;
             flex-shrink: 0;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            text-shadow: 0 0 14px var(--silver-glow);
         }
 
         .search-and-filters {
@@ -969,97 +1045,118 @@
         }
 
         .vod-search-input {
-            background: rgba(11, 18, 38, 0.85);
-            border: 1px solid var(--border-navy);
-            border-radius: 20px;
-            padding: 9px 16px 9px 38px;
-            font-size: 0.86rem;
-            color: #fff;
+            background: rgba(10, 13, 20, 0.85);
+            border: 1px solid var(--silver-border);
+            border-radius: 24px;
+            padding: 10px 18px 10px 42px;
+            font-size: 0.88rem;
+            color: #ffffff;
             outline: none;
-            width: 240px;
+            width: 250px;
             font-family: inherit;
             min-height: 44px;
-            transition: all 0.2s ease;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.6), 0 2px 10px rgba(0,0,0,0.5);
+            transition: all 0.25s ease;
         }
 
         .vod-search-input:focus {
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 14px var(--gold-glow);
-            width: 280px;
+            border-color: #ffffff;
+            box-shadow: 0 0 20px var(--silver-glow), inset 0 1px 3px rgba(0,0,0,0.5);
+            width: 290px;
+            background: rgba(16, 20, 32, 0.95);
         }
 
         .search-wrap i {
             position: absolute;
-            left: 14px;
+            left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            color: var(--silver-400);
+            font-size: 0.9rem;
             pointer-events: none;
         }
 
         .filter-pills {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
         .filter-pill {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #94a3b8;
-            font-size: 0.80rem;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: var(--silver-400);
+            font-size: 0.82rem;
             font-weight: 700;
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 9px 18px;
+            border-radius: 24px;
             cursor: pointer;
-            min-height: 40px;
+            min-height: 42px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            transition: all 0.2s ease;
+            gap: 7px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             user-select: none;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
         }
 
         .filter-pill:hover,
-        .filter-pill:active,
-        .filter-pill.active {
-            background: var(--gold-primary);
-            color: #000;
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 12px var(--gold-glow);
+        .filter-pill:active {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            border-color: var(--silver-300);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 15px var(--silver-glow-subtle);
         }
 
-        /* ── MOVIE GRID (VOD CATALOG) ── */
+        .filter-pill.active {
+            background: var(--silver-metallic-btn);
+            color: #030406;
+            border-color: #ffffff;
+            font-weight: 900;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.8), 0 0 22px var(--silver-glow);
+            transform: translateY(-1px);
+        }
+
+        /* ── MOVIE GRID (VOD 3D ACRYLIC GLASS MONOLITHS) ── */
         .vod-movies-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 26px;
+            perspective: 1200px;
         }
 
         .movie-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-navy);
+            background: var(--bg-card-glass);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1.2px solid var(--border-glass-bright);
             border-radius: var(--radius-lg);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.38s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             cursor: pointer;
-            backdrop-filter: blur(12px);
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.8), 
+                inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
+            transform-style: preserve-3d;
         }
 
         .movie-card:hover {
-            transform: translateY(-6px);
-            border-color: var(--gold-primary);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.25);
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--silver-border-bright);
+            box-shadow: 
+                0 25px 55px rgba(0, 0, 0, 0.95), 
+                0 0 30px var(--silver-glow-subtle),
+                inset 0 1px 2px 0 rgba(255, 255, 255, 0.5);
         }
 
         .movie-card.active-playing {
-            border: 2px solid var(--gold-primary);
-            box-shadow: 0 0 25px var(--gold-glow);
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 35px var(--silver-glow), 0 20px 45px rgba(0,0,0,0.9);
         }
 
         .movie-poster-wrap {
@@ -1077,60 +1174,64 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.4s ease;
+            transition: transform 0.45s ease;
         }
 
         .movie-card:hover .movie-poster-img {
-            transform: scale(1.06);
+            transform: scale(1.08);
         }
 
+        /* Brushed Platinum Badges */
         .movie-badge-tag {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            background: linear-gradient(135deg, var(--gold-primary), #b45309);
-            color: #000;
-            font-size: 0.68rem;
+            top: 12px;
+            left: 12px;
+            background: var(--silver-badge-gradient);
+            color: #030406;
+            font-size: 0.70rem;
             font-weight: 900;
-            padding: 4px 10px;
-            border-radius: 8px;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            padding: 4px 11px;
+            border-radius: 9px;
+            letter-spacing: 0.6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.7), 0 0 10px var(--silver-glow-subtle);
             z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.9);
         }
 
         .movie-duration-tag {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.85);
-            color: #fff;
-            font-size: 0.72rem;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(3, 4, 8, 0.88);
+            color: #ffffff;
+            font-size: 0.74rem;
             font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 3px 9px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(8px);
             z-index: 2;
         }
 
         .movie-play-hover-btn {
             position: absolute;
             inset: 0;
-            background: rgba(6, 9, 19, 0.6);
+            background: rgba(2, 3, 6, 0.65);
+            backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.25s ease;
             z-index: 3;
         }
 
         .movie-play-hover-btn i {
-            font-size: 3rem;
-            color: var(--gold-light);
-            text-shadow: 0 0 20px var(--gold-primary);
-            transform: scale(0.8);
-            transition: transform 0.2s ease;
+            font-size: 3.2rem;
+            color: #ffffff;
+            text-shadow: 0 0 25px var(--silver-glow);
+            transform: scale(0.85);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .movie-card:hover .movie-play-hover-btn {
@@ -1141,46 +1242,48 @@
             transform: scale(1);
         }
 
+        /* Sponsored Ad Card (Ruby & Platinum Glass) */
         .movie-card-ad {
-            border: 1px solid rgba(225, 29, 72, 0.45);
-            background: linear-gradient(180deg, rgba(30, 10, 20, 0.6) 0%, rgba(11, 18, 38, 0.95) 100%);
-            box-shadow: 0 4px 20px rgba(225, 29, 72, 0.12);
+            border: 1.5px solid rgba(225, 29, 72, 0.45);
+            background: linear-gradient(180deg, rgba(30, 8, 16, 0.7) 0%, rgba(10, 12, 20, 0.95) 100%);
+            box-shadow: 0 8px 30px rgba(225, 29, 72, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         .movie-card-ad:hover {
             border-color: #f43f5e;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(225, 29, 72, 0.4);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(225, 29, 72, 0.45);
         }
 
         .movie-card-body {
-            padding: 16px;
+            padding: 18px;
             display: flex;
             flex-direction: column;
             flex: 1;
         }
 
         .movie-card-title {
-            font-size: 1.05rem;
+            font-size: 1.08rem;
             font-weight: 800;
-            color: #fff;
+            color: #ffffff;
             margin-bottom: 6px;
             line-height: 1.35;
+            letter-spacing: 0.2px;
         }
 
         .movie-card-meta {
-            font-size: 0.76rem;
-            color: var(--text-muted);
+            font-size: 0.78rem;
+            color: var(--silver-400);
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .movie-card-desc {
-            font-size: 0.82rem;
-            color: #94a3b8;
-            line-height: 1.5;
-            margin-bottom: 14px;
+            font-size: 0.84rem;
+            color: var(--silver-400);
+            line-height: 1.55;
+            margin-bottom: 16px;
             flex: 1;
             display: -webkit-box;
             -webkit-line-clamp: 3;
@@ -1192,119 +1295,139 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 12px;
+            border-top: 1px solid var(--border-glass);
+            padding-top: 14px;
             margin-top: auto;
             gap: 10px;
         }
 
+        /* Brushed Silver 3D CTA Button */
         .btn-play-card {
-            background: linear-gradient(135deg, var(--gold-primary), #b45309);
-            color: #000;
-            font-weight: 800;
-            font-size: 0.82rem;
-            padding: 8px 18px;
-            border-radius: 20px;
-            border: none;
+            background: var(--silver-metallic-btn);
+            color: #030406;
+            font-weight: 900;
+            font-size: 0.84rem;
+            padding: 9px 20px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.9);
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 7px;
             min-height: 44px;
-            transition: all 0.2s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 15px var(--silver-glow-subtle), inset 0 1px 0 #ffffff;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: 0.3px;
         }
 
         .btn-play-card:hover, .btn-play-card:active {
-            background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
-            box-shadow: 0 0 14px var(--gold-glow);
-            transform: scale(1.03);
+            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 50%, #e2e8f0 100%);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8), 0 0 25px var(--silver-glow-intense);
+            transform: scale(1.04) translateY(-2px);
         }
 
         .btn-share-card {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--silver-400);
             cursor: pointer;
             font-size: 0.95rem;
             min-width: 44px;
             min-height: 44px;
-            border-radius: 12px;
+            border-radius: 14px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
         }
 
         .btn-share-card:hover, .btn-share-card:active {
-            color: var(--cyan-accent);
-            border-color: var(--cyan-accent);
-            background: rgba(56, 189, 248, 0.1);
+            color: #ffffff;
+            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 18px var(--silver-glow-subtle);
+            transform: scale(1.06);
         }
 
-        /* ── FOOTER & MISSION BANNER ── */
+        /* ── FOOTER & MISSION BANNER (LUXURY GLASS MONOLITH) ── */
         .vod-footer-banner {
-            margin-top: 60px;
-            background: linear-gradient(135deg, rgba(14, 24, 52, 0.9) 0%, rgba(6, 10, 24, 0.95) 100%);
-            border: 1px solid var(--border-gold);
+            margin-top: 65px;
+            background: linear-gradient(135deg, rgba(10, 13, 20, 0.92) 0%, rgba(3, 4, 8, 0.96) 100%);
+            border: 1.5px solid var(--silver-border);
             border-radius: var(--radius-xl);
-            padding: 30px 36px;
+            padding: 34px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 24px;
+            gap: 28px;
             flex-wrap: wrap;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px var(--silver-glow-subtle), inset 0 1px 1px rgba(255,255,255,0.3);
+            backdrop-filter: var(--glass-blur);
         }
 
         .footer-banner-text h3 {
             font-family: var(--font-display);
-            font-size: 1.35rem;
-            color: #fff;
-            margin-bottom: 6px;
+            font-size: 1.40rem;
+            color: #ffffff;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-banner-text h3 i {
+            color: #ffffff;
+            text-shadow: 0 0 15px var(--silver-glow);
         }
 
         .footer-banner-text p {
-            font-size: 0.88rem;
-            color: #94a3b8;
-            max-width: 650px;
-            line-height: 1.55;
+            font-size: 0.90rem;
+            color: var(--silver-400);
+            max-width: 680px;
+            line-height: 1.6;
         }
 
         .footer-banner-btns {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             flex-wrap: wrap;
         }
 
         .btn-footer-gold {
-            background: linear-gradient(135deg, var(--gold-primary), #d97706);
-            color: #000;
-            font-weight: 800;
-            font-size: 0.88rem;
-            padding: 10px 22px;
-            border-radius: 24px;
+            background: var(--silver-metallic-btn);
+            color: #030406;
+            font-weight: 900;
+            font-size: 0.90rem;
+            padding: 12px 26px;
+            border-radius: 28px;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            min-height: 44px;
-            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
-            transition: all 0.2s ease;
+            gap: 9px;
+            min-height: 48px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7), 0 0 20px var(--silver-glow), inset 0 1px 0 #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: 0.3px;
         }
 
         .btn-footer-gold:hover, .btn-footer-gold:active {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 22px rgba(212, 175, 55, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 30px var(--silver-glow-intense);
+            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 50%, #e2e8f0 100%);
         }
 
         /* ── SHARE MODAL & TOAST ── */
         .share-modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.82);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             display: none;
             align-items: center;
             justify-content: center;
@@ -1317,37 +1440,43 @@
         }
 
         .share-modal-box {
-            background: #0b1428;
-            border: 1px solid var(--border-gold);
+            background: rgba(8, 10, 16, 0.96);
+            border: 1.5px solid var(--silver-border-bright);
             border-radius: var(--radius-xl);
-            padding: 24px;
+            padding: 28px;
             max-width: 440px;
             width: 100%;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.95), 0 0 30px var(--silver-glow-subtle), inset 0 1px 1px rgba(255,255,255,0.4);
             position: relative;
         }
 
         .share-modal-title {
             font-family: var(--font-display);
-            font-size: 1.15rem;
-            color: #fff;
+            font-size: 1.20rem;
+            color: #ffffff;
             margin-bottom: 14px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .share-modal-title i {
+            color: #ffffff;
+            text-shadow: 0 0 12px var(--silver-glow);
         }
 
         .share-grid-btns {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
+            gap: 12px;
+            margin-bottom: 18px;
         }
 
         .btn-share-social {
             padding: 12px;
-            border-radius: 12px;
-            font-size: 0.84rem;
+            border-radius: 14px;
+            font-size: 0.86rem;
             font-weight: 700;
             color: #fff;
             border: none;
@@ -1357,11 +1486,12 @@
             justify-content: center;
             gap: 8px;
             min-height: 46px;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .btn-share-social:hover, .btn-share-social:active {
-            transform: scale(1.03);
+            transform: scale(1.04);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.7);
         }
 
         .btn-wa { background: #22c55e; }
@@ -1371,22 +1501,23 @@
 
         .toast-box {
             position: fixed;
-            bottom: 24px;
+            bottom: 28px;
             left: 50%;
             transform: translateX(-50%) translateY(20px);
             opacity: 0;
             visibility: hidden;
-            background: #0f172a;
-            border: 1px solid var(--gold-primary);
-            color: #fff;
-            font-size: 0.88rem;
+            background: rgba(8, 10, 16, 0.95);
+            border: 1.5px solid var(--silver-border-bright);
+            color: #ffffff;
+            font-size: 0.90rem;
             font-weight: 700;
-            padding: 10px 22px;
-            border-radius: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            padding: 12px 26px;
+            border-radius: 34px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9), 0 0 25px var(--silver-glow-subtle);
             z-index: 2000;
             transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
             pointer-events: none;
+            backdrop-filter: blur(14px);
         }
 
         .toast-box.show {
@@ -1402,14 +1533,14 @@
         body.cinema-mode .vod-movies-grid,
         body.cinema-mode .vod-footer-banner,
         body.cinema-mode .vod-mobile-bottom-nav {
-            opacity: 0.15;
-            filter: blur(2px);
+            opacity: 0.10;
+            filter: blur(3px);
             pointer-events: none;
-            transition: all 0.4s ease;
+            transition: all 0.45s ease;
         }
 
         body.cinema-mode .cinema-stage-card {
-            box-shadow: 0 0 80px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 100px var(--silver-glow), 0 30px 80px rgba(0,0,0,1);
             transform: scale(1.02);
             z-index: 500;
         }
@@ -1422,14 +1553,14 @@
             left: 0;
             right: 0;
             z-index: 900;
-            background: rgba(6, 9, 19, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(212, 175, 55, 0.3);
-            padding: 6px 10px calc(6px + env(safe-area-inset-bottom));
+            background: rgba(3, 4, 8, 0.92);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border-top: 1px solid var(--silver-border);
+            padding: 7px 10px calc(7px + env(safe-area-inset-bottom));
             justify-content: space-around;
             align-items: center;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 -6px 25px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255,255,255,0.12);
         }
 
         .mobile-nav-item {
@@ -1438,14 +1569,14 @@
             align-items: center;
             justify-content: center;
             gap: 3px;
-            color: #94a3b8;
-            font-size: 0.68rem;
+            color: var(--silver-400);
+            font-size: 0.70rem;
             font-weight: 700;
             text-decoration: none;
             min-height: 44px;
             min-width: 44px;
-            padding: 4px 6px;
-            border-radius: 10px;
+            padding: 4px 8px;
+            border-radius: 12px;
             background: none;
             border: none;
             cursor: pointer;
@@ -1453,18 +1584,18 @@
         }
 
         .mobile-nav-item i {
-            font-size: 1.15rem;
-            color: #cbd5e1;
+            font-size: 1.18rem;
+            color: var(--silver-300);
             transition: color 0.2s ease;
         }
 
         .mobile-nav-item:active, .mobile-nav-item.active {
-            color: var(--gold-light);
+            color: #ffffff;
         }
 
         .mobile-nav-item:active i, .mobile-nav-item.active i {
-            color: var(--gold-primary);
-            text-shadow: 0 0 10px var(--gold-glow);
+            color: #ffffff;
+            text-shadow: 0 0 14px var(--silver-glow);
         }
 
         /* ══════════════════════════════════════════════════════════════════
@@ -1473,13 +1604,13 @@
         @media (max-width: 900px) {
             .vod-movies-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 18px;
+                gap: 20px;
             }
         }
 
         @media (max-width: 768px) {
             body {
-                padding-bottom: calc(64px + env(safe-area-inset-bottom));
+                padding-bottom: calc(68px + env(safe-area-inset-bottom));
             }
 
             .vod-mobile-bottom-nav {
@@ -1487,16 +1618,16 @@
             }
 
             .toast-box {
-                bottom: calc(72px + env(safe-area-inset-bottom));
+                bottom: calc(76px + env(safe-area-inset-bottom));
                 width: calc(100% - 32px);
                 max-width: 380px;
                 text-align: center;
-                font-size: 0.84rem;
+                font-size: 0.86rem;
             }
 
             /* Header */
             .vod-header {
-                padding: max(8px, env(safe-area-inset-top)) 12px 8px;
+                padding: max(8px, env(safe-area-inset-top)) 14px 8px;
                 gap: 10px;
             }
 
@@ -1505,17 +1636,17 @@
             }
 
             .vod-logo-img {
-                width: 40px;
-                height: 40px;
-                border-radius: 10px;
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
             }
 
             .vod-brand-title {
-                font-size: 1.02rem;
+                font-size: 1.05rem;
             }
 
             .vod-brand-sub {
-                font-size: 0.65rem;
+                font-size: 0.66rem;
             }
 
             .vod-nav-links .nav-btn-link span {
@@ -1523,66 +1654,66 @@
             }
 
             .nav-btn-link {
-                padding: 6px 10px;
+                padding: 6px 12px;
                 min-height: 40px;
-                border-radius: 12px;
+                border-radius: 14px;
             }
 
             .nav-btn-link i {
                 margin: 0 !important;
-                font-size: 0.95rem;
+                font-size: 0.98rem;
             }
 
             /* Ticker */
             .vod-ticker-bar {
-                padding: 8px 12px;
+                padding: 8px 14px;
                 gap: 10px;
             }
 
             .ticker-badge {
-                font-size: 0.70rem;
-                padding: 4px 8px;
-                border-radius: 8px;
+                font-size: 0.72rem;
+                padding: 5px 10px;
+                border-radius: 10px;
             }
 
             .ticker-item {
-                font-size: 0.85rem;
+                font-size: 0.88rem;
                 gap: 6px;
             }
 
             /* Container */
             .vod-container {
-                padding: 14px 12px 30px;
+                padding: 16px 12px 34px;
             }
 
             /* Cinema Stage */
             .cinema-stage-card {
-                border-radius: 16px;
-                margin-bottom: 20px;
-                border-width: 1px;
+                border-radius: 18px;
+                margin-bottom: 22px;
+                border-width: 1.2px;
             }
 
             .preroll-overlay-pill {
-                top: 8px;
-                left: 8px;
-                font-size: 0.68rem;
-                padding: 4px 10px;
+                top: 10px;
+                left: 10px;
+                font-size: 0.70rem;
+                padding: 5px 12px;
             }
 
             .btn-skip-preroll {
-                bottom: 10px;
-                right: 10px;
-                font-size: 0.75rem;
-                padding: 6px 14px;
+                bottom: 12px;
+                right: 12px;
+                font-size: 0.78rem;
+                padding: 7px 16px;
                 min-height: 40px;
             }
 
             /* Controls Bar */
             .cinema-controls-bar {
-                padding: 12px 14px;
+                padding: 14px 16px;
                 flex-direction: column;
                 align-items: stretch;
-                gap: 12px;
+                gap: 14px;
             }
 
             .now-playing-box {
@@ -1591,13 +1722,13 @@
             }
 
             .now-playing-title {
-                font-size: 1.02rem;
+                font-size: 1.05rem;
                 white-space: normal;
                 line-height: 1.3;
             }
 
             .now-playing-meta {
-                font-size: 0.74rem;
+                font-size: 0.76rem;
                 gap: 6px;
             }
 
@@ -1611,7 +1742,7 @@
             .btn-cinema-action {
                 min-height: 44px;
                 padding: 6px 4px;
-                font-size: 0.72rem;
+                font-size: 0.74rem;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
@@ -1621,26 +1752,26 @@
             }
 
             .btn-cinema-action i {
-                font-size: 0.95rem;
+                font-size: 0.98rem;
             }
 
             /* Synopsis Drawer */
             .cinema-synopsis-drawer {
-                padding: 14px 14px 18px;
+                padding: 16px 16px 20px;
                 flex-direction: column;
-                gap: 12px;
-                font-size: 0.85rem;
+                gap: 14px;
+                font-size: 0.86rem;
             }
 
             .synopsis-side-info {
                 width: 100%;
                 border-left: none;
-                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                border-top: 1px solid var(--border-glass);
                 padding-left: 0;
-                padding-top: 12px;
+                padding-top: 14px;
                 display: flex;
                 flex-direction: column;
-                gap: 6px;
+                gap: 7px;
             }
 
             .side-info-item {
@@ -1648,22 +1779,22 @@
                 justify-content: space-between;
                 align-items: center;
                 background: rgba(255, 255, 255, 0.03);
-                padding: 6px 10px;
-                border-radius: 8px;
+                padding: 7px 12px;
+                border-radius: 10px;
                 margin-bottom: 0;
-                font-size: 0.78rem;
+                font-size: 0.80rem;
             }
 
             /* Section & Filters */
             .section-bar {
-                margin: 22px 0 14px;
+                margin: 24px 0 16px;
                 flex-direction: column;
                 align-items: stretch;
-                gap: 12px;
+                gap: 14px;
             }
 
             .section-title {
-                font-size: 1.02rem;
+                font-size: 1.08rem;
                 gap: 8px;
                 line-height: 1.25;
             }
@@ -1682,8 +1813,8 @@
                 width: 100% !important;
                 min-height: 44px;
                 font-size: 0.88rem;
-                padding: 10px 14px 10px 38px;
-                border-radius: 12px;
+                padding: 10px 14px 10px 40px;
+                border-radius: 14px;
             }
 
             .filter-pills {
@@ -1692,7 +1823,7 @@
                 flex-wrap: nowrap;
                 gap: 6px;
                 width: 100%;
-                padding-bottom: 4px;
+                padding-bottom: 6px;
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
             }
@@ -1703,26 +1834,26 @@
 
             .filter-pill {
                 min-height: 40px;
-                padding: 8px 14px;
-                font-size: 0.78rem;
+                padding: 8px 16px;
+                font-size: 0.80rem;
                 white-space: nowrap;
                 flex-shrink: 0;
-                border-radius: 18px;
+                border-radius: 20px;
             }
 
             /* Footer Banner */
             .vod-footer-banner {
-                margin-top: 32px;
-                padding: 20px 16px;
-                border-radius: 16px;
+                margin-top: 36px;
+                padding: 24px 18px;
+                border-radius: 18px;
                 flex-direction: column;
                 align-items: stretch;
                 text-align: center;
-                gap: 16px;
+                gap: 18px;
             }
 
             .footer-banner-text h3 {
-                font-size: 1.15rem;
+                font-size: 1.20rem;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -1730,8 +1861,8 @@
             }
 
             .footer-banner-text p {
-                font-size: 0.82rem;
-                line-height: 1.5;
+                font-size: 0.84rem;
+                line-height: 1.55;
             }
 
             .footer-banner-btns {
@@ -1742,17 +1873,17 @@
 
             .btn-footer-gold, .vod-footer-banner .btn-cinema-action {
                 width: 100%;
-                min-height: 44px;
+                min-height: 46px;
                 justify-content: center;
-                font-size: 0.86rem;
-                border-radius: 22px;
+                font-size: 0.88rem;
+                border-radius: 24px;
             }
         }
 
         @media (max-width: 580px) {
             .vod-movies-grid {
                 grid-template-columns: 1fr;
-                gap: 16px;
+                gap: 18px;
             }
 
             .movie-card {
@@ -1760,17 +1891,17 @@
             }
 
             .movie-card-body {
-                padding: 14px;
+                padding: 16px;
             }
 
             .movie-card-title {
-                font-size: 1.05rem;
+                font-size: 1.08rem;
             }
 
             .btn-play-card {
                 flex: 1;
-                font-size: 0.84rem;
-                padding: 10px 14px;
+                font-size: 0.86rem;
+                padding: 10px 16px;
             }
         }
     </style>
@@ -1782,7 +1913,7 @@
             <img src="logo_vod_cc.jpg" onerror="this.src='lumina_icon.jpg'" alt="VOD Christian Culture" class="vod-logo-img">
             <div class="vod-brand-text">
                 <div class="vod-brand-title">
-                    VOD CHRISTIAN CULTURE <i class="fa-solid fa-film" style="font-size:0.85rem; color:var(--gold-primary);"></i>
+                    VOD CHRISTIAN CULTURE <i class="fa-solid fa-film" style="font-size:0.85rem; color:var(--silver-200);"></i>
                 </div>
                 <div class="vod-brand-sub">Kino Chrześcijańskie • Emisja 24/7 & Na Życzenie</div>
             </div>
@@ -1795,13 +1926,12 @@
             <a href="lumina" class="nav-btn-link nav-btn-lumina" title="Portal Społeczności LUMINA">
                 <i class="fa-solid fa-globe"></i> <span>Portal LUMINA</span>
             </a>
-            <a href="https://polskieradio.cc/#wsparcie" target="_blank" class="nav-btn-link" style="border-color:rgba(212,175,55,0.4); color:var(--gold-light);" title="Wsparcie Ewangelizacji">
-                <i class="fa-solid fa-heart" style="color:#ec4899;"></i> <span>Wsparcie</span>
+            <a href="https://polskieradio.cc/#wsparcie" target="_blank" class="nav-btn-link" style="border-color:var(--silver-border-bright); color:#ffffff;" title="Wsparcie Ewangelizacji">
+                <i class="fa-solid fa-heart" style="color:#f43f5e;"></i> <span>Wsparcie</span>
             </a>
         </nav>
     </header>
-
-    <!-- ══════════ SUBTELNY PASEK INFORMACYJNY (NEWS TICKER CC) ══════════ -->
+<!-- ══════════ SUBTELNY PASEK INFORMACYJNY (NEWS TICKER CC) ══════════ -->
     <div class="vod-ticker-bar">
         <div class="ticker-badge">
             <i class="fa-solid fa-satellite-dish"></i> <span>CC INFO 24/7</span>
@@ -1834,7 +1964,7 @@
 
                 <!-- Pre-roll Info Pill -->
                 <div class="preroll-overlay-pill" id="prerollPill">
-                    <i class="fa-solid fa-clapperboard" style="color:var(--gold-primary);"></i>
+                    <i class="fa-solid fa-clapperboard" style="color:#ffffff;"></i>
                     <span>ZWIASTUN MISJI CC • ZA CHWILĘ SEANS GŁÓWNY</span>
                 </div>
 
@@ -1932,7 +2062,7 @@
         <!-- ══════════ PROMOTION & COMMUNITY BANNER ══════════ -->
         <section class="vod-footer-banner">
             <div class="footer-banner-text">
-                <h3><i class="fa-solid fa-dove" style="color:var(--gold-primary);"></i> Misja Ewangelizacji przez Media</h3>
+                <h3><i class="fa-solid fa-dove" style="color:#ffffff;"></i> Misja Ewangelizacji przez Media</h3>
                 <p>
                     VOD Christian Culture jest częścią ogólnopolskiego i międzynarodowego dzieła ewangelizacyjnego Christian Culture. 
                     Udostępniamy wartościowe kino, audycje radiowe i codzienne rozważania, by budować wiarę i nadzieję w Chrystusie.
@@ -1978,7 +2108,7 @@
     <div class="share-modal-overlay" id="shareModal" onclick="closeShareModal(event)">
         <div class="share-modal-box">
             <div class="share-modal-title">
-                <i class="fa-solid fa-share-nodes" style="color:var(--gold-primary);"></i> Udostępnij Film
+                <i class="fa-solid fa-share-nodes" style="color:#ffffff;"></i> Udostępnij Film
             </div>
             <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:16px;" id="shareModalSubtitle">
                 Poleć ten wartościowy film swoim bliskim i znajomym:
@@ -2215,7 +2345,7 @@
         // Aktualizacja interfejsu Teraz Odtwarzane
         function updateNowPlayingUI(movie) {
             if (!movie) return;
-            document.getElementById('currentMovieTitle').innerHTML = movie.title + ' <span style="font-size:0.75rem; background:rgba(212,175,55,0.2); border:1px solid var(--gold-primary); color:var(--gold-light); padding:2px 8px; border-radius:10px;">HD</span>';
+            document.getElementById('currentMovieTitle').innerHTML = movie.title + ' <span style="font-size:0.75rem; background:rgba(226,232,240,0.15); border:1px solid rgba(255,255,255,0.4); color:#ffffff; box-shadow:0 0 10px rgba(226,232,240,0.3); padding:2px 8px; border-radius:10px;">HD</span>';
             document.getElementById('currentMovieCategory').textContent = movie.category;
             document.getElementById('currentMovieYear').textContent = movie.year;
             document.getElementById('currentMovieDuration').textContent = movie.duration;
@@ -2259,7 +2389,7 @@
             }
 
             if (list.length === 0) {
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding:40px; color:#94a3b8;"><i class="fa-solid fa-film" style="font-size:2rem; margin-bottom:10px; color:#f59e0b;"></i><br>Brak filmów spełniających podane kryteria.</div>';
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding:40px; color:#94a3b8;"><i class="fa-solid fa-film" style="font-size:2rem; margin-bottom:10px; color:#e2e8f0;"></i><br>Brak filmów spełniających podane kryteria.</div>';
                 return;
             }
 
