@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Kanał Misyjny YouTube • LUMINA Mobile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #090d1a;
+      color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 100vh;
+    }
+    
+    .channel-header {
+      background: linear-gradient(135deg, #1e1b4b, #0f172a);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .yt-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: #ff0000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #fff;
+      box-shadow: 0 0 16px rgba(255, 0, 0, 0.4);
+      flex-shrink: 0;
+    }
+
+    .channel-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .channel-handle {
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+
+    .btn-yt-sub {
+      margin-left: auto;
+      background: #ff0000;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 20px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-yt-sub:hover {
+      background: #cc0000;
+      transform: scale(1.05);
+    }
+
+    /* Video Player Container */
+    .player-box {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .player-box iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Mission Description & Actions */
+    .mission-card {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mission-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #d4af37;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mission-text {
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .action-links {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .btn-mission-link {
+      flex: 1;
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #f8fafc;
+      padding: 9px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-decoration: none;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-mission-link:hover {
+      background: #7c3aed;
+      border-color: #a855f7;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Channel Header -->
+  <div class="channel-header">
+    <div class="yt-icon">
+      <i class="fa-brands fa-youtube"></i>
+    </div>
+    <div>
+      <div class="channel-title" id="channelName">Kanał Misyjny YT</div>
+      <div class="channel-handle" id="channelHandle">@osobowośćPLUS</div>
+    </div>
+    <a href="#" id="ytExternalLink" target="_blank" class="btn-yt-sub">
+      <i class="fa-solid fa-play"></i> YouTube
+    </a>
+  </div>
+
+  <!-- Embedded Player -->
+  <div class="player-box" id="playerContainer">
+    <iframe id="ytIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+  <!-- Mission Card -->
+  <div class="mission-card">
+    <div class="mission-title">
+      <i class="fa-solid fa-dove"></i> Misja Ewangelizacyjna & Formacja
+    </div>
+    <div class="mission-text" id="missionDesc">
+      Oficjalny kanał misyjny w ekosystemie Christian Culture. Transmisje na żywo, wykłady, formacja i umacnianie w wierze.
+    </div>
+
+    <div class="action-links">
+      <a href="javascript:void(0)" id="luminaProfileLink" class="btn-mission-link">
+        <i class="fa-solid fa-user"></i> Profil LUMINA
+      </a>
+      <a href="https://polskieradio.cc/tablica" target="_top" class="btn-mission-link">
+        <i class="fa-solid fa-newspaper"></i> Tablica Społeczności
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    let channel = params.get('channel') || '@osobowośćPLUS';
+    let videoId = params.get('v') || '';
+    let rawUrl = params.get('url') || '';
+
+    try {
+      channel = decodeURIComponent(channel);
+    } catch (e) {}
+
+    document.getElementById('channelHandle').innerText = channel;
+
+    // Check specific known mission channels
+    const lowerChannel = channel.toLowerCase();
+    if (lowerChannel.includes('osobow') || lowerChannel.includes('osobowo')) {
+      document.getElementById('channelName').innerText = 'OSOBOWOŚĆ +';
+      document.getElementById('missionDesc').innerText = 'Oficjalny kanał YouTube OSOBOWOŚĆ +. Rozwój dojrzałości, tożsamość w Bogu i mądre relacje w świetle Słowa Bożego.';
+      document.getElementById('luminaProfileLink').href = 'https://polskieradio.cc/lumina.osobowoscplus.html';
+      document.getElementById('ytExternalLink').href = 'https://www.youtube.com/@osobowo%C5%9B%C4%87PLUS';
+      
+      // Load live/playlist embed
+      if (!videoId) {
+        document.getElementById('ytIframe').src = 'https://www.youtube-nocookie.com/embed?listType=search&list=OSOBOWO%C5%9A%C4%86%2B%20Christian%20Culture';
+      }
+    } else if (lowerChannel.includes('cezary') || lowerChannel.includes('rogowski')) {
+      document.getElementById('channelName').innerText = 'Cezary Rogowski';
+      document.getElementById('missionDesc').innerText = 'Kanał Założyciela Christian Culture i portalu LUMINA. Relacje, ewangelizacja i misja.';
+      document.getElementById('luminaProfileLink').href = 'https://polskieradio.cc/lumina.cezaryrgowski.html';
+      document.getElementById('ytExternalLink').href = 'https://www.youtube.com/@CezaryRogowski';
+    } else if (lowerChannel.includes('andrzej') || lowerChannel.includes('thiel')) {
+      document.getElementById('channelName').innerText = 'Andrzej Thiel';
+      document.getElementById('missionDesc').innerText = 'Lektor Pisma Świętego i muzyk uwielbienia Christian Culture.';
+      document.getElementById('luminaProfileLink').href = 'https://polskieradio.cc/lumina.andrzejthiel.html';
+      document.getElementById('ytExternalLink').href = 'https://www.youtube.com/@AndrzejThiel';
+    } else if (lowerChannel.includes('studiodobregoslowa')) {
+      document.getElementById('channelName').innerText = 'Studio Dobrego Słowa';
+      document.getElementById('luminaProfileLink').href = 'https://polskieradio.cc/lumina.studiodobregoslowa.html';
+      document.getElementById('ytExternalLink').href = 'https://www.youtube.com/@studiodobregoslowa';
+    } else {
+      document.getElementById('channelName').innerText = channel;
+      document.getElementById('ytExternalLink').href = `https://www.youtube.com/${channel.startsWith('@') ? channel : '@' + channel}`;
+      document.getElementById('luminaProfileLink').href = 'https://polskieradio.cc/lumina';
+    }
+
+    if (videoId) {
+      document.getElementById('ytIframe').src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&playsinline=1`;
+    } else if (!document.getElementById('ytIframe').src) {
+      document.getElementById('ytIframe').src = `https://www.youtube-nocookie.com/embed?listType=search&list=${encodeURIComponent(channel)}`;
+    }
+  </script>
+</body>
+</html>
