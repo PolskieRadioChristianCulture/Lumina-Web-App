@@ -3565,7 +3565,7 @@
                         
                         <!-- EMBEDDED LIVING AUTOSTART BROADCAST PLAYER -->
                         <div class="mission-live-player-wrapper">
-                            <iframe src="cctv24-worship.html" 
+                            <iframe src="cctv24-worship.html?muted=1&mute=1&in_mcr=1" 
                                     title="Instrumental Worship Music CC • TV LIVE 24/7"
                                     allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share" 
                                     allowfullscreen 
@@ -6603,7 +6603,7 @@
                         
                         <!-- EMBEDDED LIVING AUTOSTART BROADCAST PLAYER -->
                         <div class="mission-live-player-wrapper">
-                            <iframe src="${p.streamUrl}" 
+                            <iframe src="${p.streamUrl ? (p.streamUrl.includes('?') ? p.streamUrl + '&muted=1&mute=1&in_mcr=1' : p.streamUrl + '?muted=1&mute=1&in_mcr=1') : 'cctv24-worship.html?muted=1&mute=1&in_mcr=1'}" 
                                     title="${escapeHtml(p.channelTitle || 'Transmisja na Żywo')}"
                                     allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share" 
                                     allowfullscreen 
