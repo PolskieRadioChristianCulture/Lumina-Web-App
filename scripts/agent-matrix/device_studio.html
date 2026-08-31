@@ -637,6 +637,21 @@
     }
     .btn-quick-nav:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); background: rgba(0,212,255,0.06); }
 
+    .btn-logout-single {
+      background: rgba(220, 38, 38, 0.15);
+      border: 1px solid rgba(220, 38, 38, 0.35);
+      color: #f87171;
+      padding: 7px 10px; border-radius: 8px;
+      font-size: 0.78rem; cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .btn-logout-single:hover {
+      background: rgba(220, 38, 38, 0.3);
+      border-color: #ef4444;
+      color: #fff;
+    }
+
     .automation-box {
       background: rgba(0,0,0,0.5);
       border: 1px solid rgba(0,212,255,0.12);
@@ -1034,8 +1049,11 @@
             </div>
 
             <div class="auth-bar">
-              <button class="btn-auth-google" onclick="loginWithGoogle(${phone.id})">
-                <i class="fa-brands fa-google"></i> Zaloguj z Google
+              <button class="btn-auth-google" onclick="loginWithGoogle(${phone.id})" title="Zaloguj konto Google dla tego telefonu (Sesja #${index + 1})">
+                <i class="fa-brands fa-google"></i> Zaloguj #${index + 1}
+              </button>
+              <button class="btn-logout-single" onclick="logoutSinglePhone(${phone.id})" title="Wyloguj tylko ten telefon #${index + 1}">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
               </button>
               <button class="btn-quick-nav" title="Strona Główna / Portal" onclick="navigatePhone(${phone.id}, '/lumina')">
                 <i class="fa-solid fa-house"></i>
@@ -1214,13 +1232,36 @@
       document.getElementById('matrixStatus').innerText = anyActive ? "Wyłączono wszystkie automatyzacje." : "Uruchomiono wszystkie automatyzacje!";
     }
 
-    // Google Login Action
+    // Google Login Action - Scoped to individual phone session
     function loginWithGoogle(id) {
-      const loginUrl = `${getBaseUrl()}/lumina-login.html`;
+      const idx = phones.findIndex(p => p.id === id) + 1;
+      const loginUrl = `${getBaseUrl()}/lumina-login.html?phone_id=${id}&session_id=${id}`;
+
+      // Otwórz w dedykowanym, niezależnym oknie dla tego telefonu
+      window.open(loginUrl, `matrix_auth_session_${id}`, 'width=460,height=740,menubar=no,toolbar=no');
+
       const iframe = document.getElementById(`iframe-${id}`);
       const input = document.getElementById(`url-input-${id}`);
       if (iframe) iframe.src = loginUrl;
       if (input) input.value = loginUrl;
+
+      document.getElementById('matrixStatus').innerText = `🔑 Telefon #${idx}: Uruchomiono niezależną ścieżkę logowania (Sesja #${idx}).`;
+    }
+
+    // Single Phone Logout Action
+    function logoutSinglePhone(id) {
+      const idx = phones.findIndex(p => p.id === id) + 1;
+      const phone = phones.find(p => p.id === id);
+      if (phone) {
+        phone.profileId = "browser";
+        phone.customUrl = "search.html";
+        saveState();
+        const iframe = document.getElementById(`iframe-${id}`);
+        const input = document.getElementById(`url-input-${id}`);
+        if (iframe) iframe.src = 'search.html';
+        if (input) input.value = 'search.html';
+        document.getElementById('matrixStatus').innerText = `🔓 Telefon #${idx}: Wylogowano sesję i przywrócono czystą wyszukiwarkę.`;
+      }
     }
 
     // Quick Navigate
