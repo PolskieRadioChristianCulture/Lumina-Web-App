@@ -354,8 +354,9 @@
             groupsBtn.type = 'button';
             groupsBtn.id = 'tabBtnGroupsChat';
             groupsBtn.onclick = () => window.switchMessengerMainTab('groups');
-            groupsBtn.style.cssText = 'flex:1; padding:8px 10px; border-radius:10px; border:none; background:transparent; color:#94a3b8; font-weight:700; font-family:inherit; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:all 0.2s; touch-action:manipulation;';
-            groupsBtn.innerHTML = '<i class="fa-solid fa-users"></i> <span class="tab-label">Grupy & Pokoje</span>';
+            groupsBtn.style.cssText = 'flex:1; min-height:44px; min-width:44px; padding:0; border-radius:10px; border:none; background:transparent; color:#94a3b8; font-weight:700; font-family:inherit; font-size:0.8rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px; transition:all 0.2s; touch-action:manipulation;';
+            groupsBtn.title = 'Grupy & Pokoje';
+            groupsBtn.innerHTML = '<i class="fa-solid fa-users"></i><span class="tab-label" aria-hidden="true"> Grupy &amp; Pokoje</span>';
 
             const privateBtn = document.getElementById('tabBtnPrivateChat');
             if (privateBtn) {
