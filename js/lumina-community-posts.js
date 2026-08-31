@@ -50,6 +50,38 @@
 
     const LUMINA_CORE_POSTS_DATA = [
         {
+            id: 'post_vod_mega_hity_kina',
+            type: 'promo',
+            author: 'Christian Culture VOD',
+            authorRole: '🎬 Kino Chrześcijańskie • Mega Hity Świata ✨',
+            authorAvatar: 'logo_vod_cc.jpg',
+            authorSlug: 'cctv',
+            time: '🎬 REPERTUAR VOD • MEGA HITY ŚWIATOWEGO KINA',
+            title: '🎬 VOD Christian Culture — MEGA HITY ŚWIATOWEGO KINA 🍿✨',
+            text: `🎬 **VOD Christian Culture — MEGA HITY ŚWIATOWEGO KINA** 🍿✨
+
+Zapraszamy do oficjalnego kina **VOD Christian Culture**! Oglądaj pełnometrażowe, legalne i inspirujące filmy chrześcijańskie, poruszające dramaty oparte na faktach, historie wiary, męstwa, nadziei oraz walki dobra ze złem w najwyższej jakości z polskim lektorem.
+
+🌟 **Co zyskujesz w VOD Christian Culture?**
+• 🍿 **Mega Hity Światowego Kina** — wyselekcjonowane arcydzieła kina wiary,
+• 🎬 **Oglądanie na życzenie (VOD)** lub w całodobowej rotacji kinowej 24/7,
+• 💯 **100% Bezpłatnie** — bez abonamentów, bez ukrytych opłat, bez komercyjnych reklam,
+• 📱 **Dostępne na każdym urządzeniu** — komputer, tablet, smartfon i Smart TV.
+
+Odkryj kino, które nie tylko bawi, ale przede wszystkim przemienia serca, buduje wiarę i daje nadzieję!
+
+👉 **Oglądaj teraz za darmo:** https://polskieradio.cc/vod
+
+PODAJ DALEJ 🔴
+www.polskieradio.cc/vod | www.polskieradio.cc | www.polskieradio.cc/lumina`,
+            image: 'vod_hity_kina.gif',
+            ctaText: 'Przejdź do Kina VOD CC 🎬 ▶',
+            ctaUrl: 'https://polskieradio.cc/vod',
+            likes: 428,
+            amen: 396,
+            _sortTs: Date.now() + 9999999998
+        },
+        {
             id: 'post_live_cezary_instrumental',
             type: 'broadcast',
             isLiveBroadcastPost: true,
