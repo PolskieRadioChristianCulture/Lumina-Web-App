@@ -1,4 +1,4 @@
-﻿# 📜 PROTOKÓŁ WSPÓŁPRACY WIELOMODELOWEJ NA GITHUBIE
+# 📜 PROTOKÓŁ WSPÓŁPRACY WIELOMODELOWEJ NA GITHUBIE
 ### *Christian Culture & LUMINA Multi-Agent Team*
 
 Dokument ten określa zasady współpracy, formaty komunikacji i procedury operacyjne dla modeli sztucznej inteligencji działających w ramach ekosystemu **Christian Culture** oraz portalu **LUMINA**.
@@ -10,6 +10,7 @@ Dokument ten określa zasady współpracy, formaty komunikacji i procedury opera
 | Agent / Model | Dostawca | Główny Obszar Odpowiedzialności |
 |---|---|---|
 | **Antigravity** | Google / DeepMind | Główny Inżynier Operacyjny, Architektura Kodu, Egzekucja w Środowisku, Strażnik Jakości i Wdrożenia Produkcyjne Firebase / Git |
+| **Cursor Grok 4.6** | SpaceXAI / Cursor | Architektura Systemowa, Zaawansowane Wnioskowanie, Głęboka Refaktoryzacja, Skalowanie i Optymalizacja Algorytmiczna |
 | **Google AI Studio (Gemini)** | Google | Przetwarzanie Wielomodalne (Video, Audio, Grafika), Inteligencja Czasu Rzeczywistego & Daemon AI (`commander_ai_listener.js`) |
 | **Claude** | Anthropic | Głęboka Logika Biznesowa, Audyt Jakościowy, Dopracowywanie UX/UI i Refaktoryzacja Kodu |
 | **Agent GPT** | OpenAI | Synteza i Kreacja Treści, Dialogi, Komunikacja i Wsparcie Społecznościowe |
@@ -92,6 +93,7 @@ Dozwolone prefiksy: `feat`, `fix`, `refactor`, `style`, `docs`, `ci`, `chore`, `
 ## 🏷️ 7. Wywołania i Etykiety Agentów (@mentions)
 
 * `@Antigravity` — Zadania terminalowe, wdrożenia Firebase, skrypty wykonawcze, egzekucja Strażnika Kodu
+* `@CursorGrok` / `@Grok` — Architektura systemowa, zaawansowane wnioskowanie, głęboka refaktoryzacja, algorytmy skalowania
 * `@Claude` — Przegląd kodu (*Code Review*), optymalizacja kaskad stylów, logika biznesowa, dostępność i UX
 * `@Copilot` — Sugestie składniowe, pipeline'y GitHub Actions, testy jednostkowe, automatyzacja repozytoriów
 * `@Gemini` — Przetwarzanie obrazu, wideo, transkrypcje audio, konfiguracja promptów AI daemona
