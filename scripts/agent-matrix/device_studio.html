@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>LUMINA Mobile Studio — Wielourządzeniowy Symulator Telefonów</title>
+  <title>MATRIX CC — Wielourządzeniowy Symulator Smartfonów & Centrum Automatyzacji</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,23 +11,22 @@
   
   <style>
     :root {
-      --bg-dark: #070a14;
-      --bg-surface: #0f172a;
-      --bg-card: rgba(30, 41, 59, 0.7);
+      --bg-dark: #050811;
+      --bg-surface: #0b1329;
+      --bg-card: rgba(18, 28, 56, 0.75);
       --gold-primary: #d4af37;
-      --gold-glow: rgba(212, 175, 55, 0.4);
+      --gold-glow: rgba(212, 175, 55, 0.45);
       --purple-accent: #7c3aed;
-      --purple-glow: rgba(124, 58, 237, 0.35);
+      --purple-glow: rgba(124, 58, 237, 0.4);
+      --cyan-accent: #06b6d4;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --border-color: rgba(255, 255, 255, 0.1);
+      --border-color: rgba(255, 255, 255, 0.12);
       
-      /* Phone Chassis Dimensions */
+      /* Phone Dimensions */
       --phone-w: 380px;
-      --phone-h: 780px;
-      --phone-radius: 48px;
-      --bezel-color: #1e293b;
-      --frame-border: #334155;
+      --phone-h: 760px;
+      --phone-radius: 46px;
     }
 
     * {
@@ -38,7 +37,7 @@
     }
 
     body {
-      background: radial-gradient(circle at top center, #1e1b4b 0%, #070a14 70%);
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #070a14 50%, #030712 100%);
       color: var(--text-main);
       font-family: 'Plus Jakarta Sans', sans-serif;
       min-height: 100vh;
@@ -47,10 +46,10 @@
       flex-direction: column;
     }
 
-    /* ── HEADER / STUDIO CONTROL BAR ── */
-    .studio-header {
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(20px);
+    /* ── HEADER / MATRIX CC CONTROL BAR ── */
+    .matrix-header {
+      background: rgba(11, 19, 41, 0.92);
+      backdrop-filter: blur(25px);
       border-bottom: 1px solid var(--border-color);
       padding: 12px 24px;
       display: flex;
@@ -59,34 +58,36 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
-    .studio-brand {
+    .matrix-brand {
       display: flex;
       align-items: center;
       gap: 14px;
     }
 
     .brand-logo {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       border-radius: 12px;
       background: linear-gradient(135deg, #4f46e5, #9333ea);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 15px var(--purple-glow);
-      font-size: 20px;
+      box-shadow: 0 0 20px var(--purple-glow);
+      font-size: 22px;
       color: #fff;
     }
 
     .brand-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      background: linear-gradient(135deg, #fff, #d4af37);
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      background: linear-gradient(135deg, #ffffff 30%, #d4af37 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -97,18 +98,19 @@
       letter-spacing: 0.5px;
     }
 
-    /* Control Actions */
-    .studio-controls {
+    /* Toolbar Actions */
+    .matrix-toolbar {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .btn-ctrl {
+    .btn-action {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 8px 16px;
+      padding: 9px 16px;
       border-radius: 10px;
       font-size: 0.85rem;
       font-weight: 600;
@@ -116,20 +118,27 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .btn-ctrl:hover {
-      background: rgba(255, 255, 255, 0.1);
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.12);
       border-color: var(--gold-primary);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(212, 175, 55, 0.25);
     }
 
-    .btn-ctrl.active {
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
-      border-color: #a855f7;
-      box-shadow: 0 0 15px var(--purple-glow);
+    .btn-add-phone {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      font-weight: 700;
+      border: 1px solid #34d399;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
+    }
+
+    .btn-add-phone:hover {
+      background: linear-gradient(135deg, #34d399, #10b981);
+      box-shadow: 0 0 24px rgba(16, 185, 129, 0.5);
     }
 
     .btn-gold {
@@ -140,23 +149,51 @@
     }
 
     .btn-gold:hover {
-      background: linear-gradient(135deg, #f3e5ab, #d4af37);
-      box-shadow: 0 0 18px var(--gold-glow);
+      background: linear-gradient(135deg, #fef08a, #d4af37);
+      box-shadow: 0 0 20px var(--gold-glow);
     }
 
-    .zoom-slider-wrap {
+    .server-switcher {
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      gap: 4px;
+    }
+
+    .server-btn {
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .server-btn.active {
+      background: #7c3aed;
+      color: #fff;
+      box-shadow: 0 0 12px var(--purple-glow);
+    }
+
+    .zoom-ctrl {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.4);
       padding: 6px 14px;
       border-radius: 10px;
       border: 1px solid var(--border-color);
       font-size: 0.8rem;
     }
 
-    .zoom-slider-wrap input {
-      width: 100px;
+    .zoom-ctrl input {
+      width: 90px;
       accent-color: var(--gold-primary);
       cursor: pointer;
     }
@@ -164,32 +201,130 @@
     /* ── MAIN STUDIO CANVAS ── */
     .studio-canvas {
       flex: 1;
-      padding: 30px;
+      padding: 26px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 30px;
     }
 
-    .grid-container {
+    .phones-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(390px, 1fr));
-      gap: 40px;
+      grid-template-columns: repeat(auto-fill, minmax(390px, 1fr));
+      gap: 36px;
       width: 100%;
-      max-width: 1700px;
+      max-width: 1800px;
       justify-items: center;
-      transition: transform 0.3s ease;
       transform-origin: top center;
+      transition: transform 0.3s ease;
     }
 
-    /* ── REALISTIC SMARTPHONE CHASSIS ── */
-    .phone-wrapper {
+    /* ── INDIVIDUAL PHONE CARD SUITE ── */
+    .phone-unit {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      width: calc(var(--phone-w) + 32px);
     }
 
+    .phone-unit:hover {
+      border-color: rgba(212, 175, 55, 0.4);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(124, 58, 237, 0.2);
+    }
+
+    /* Phone Unit Header (Selector & Title) */
+    .phone-unit-header {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .phone-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .phone-id-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gold-primary);
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    .phone-header-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-tiny {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      transition: all 0.2s;
+    }
+
+    .btn-tiny:hover {
+      color: #fff;
+      border-color: var(--gold-primary);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .btn-tiny.delete:hover {
+      background: #ef4444;
+      border-color: #f87171;
+      color: #fff;
+    }
+
+    /* Profile Selector Dropdown */
+    .profile-select-wrap {
+      width: 100%;
+      display: flex;
+      gap: 6px;
+    }
+
+    .select-profile {
+      flex: 1;
+      background: #090d1a;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: #f8fafc;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .select-profile option {
+      background: #0b1329;
+      color: #fff;
+      padding: 6px;
+    }
+
+    /* ── REALISTIC PHONE HARDWARE CHASSIS ── */
     .phone-device {
       width: var(--phone-w);
       height: var(--phone-h);
@@ -197,34 +332,24 @@
       border-radius: var(--phone-radius);
       position: relative;
       box-shadow: 
-        0 0 0 4px #475569,
-        0 0 0 7px #1e293b,
-        0 25px 50px -12px rgba(0, 0, 0, 0.8),
+        0 0 0 3px #64748b,
+        0 0 0 6px #1e293b,
+        0 20px 45px -10px rgba(0, 0, 0, 0.8),
         0 0 30px rgba(124, 58, 237, 0.15);
-      border: 6px solid #0f172a;
+      border: 5px solid #0f172a;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: all 0.3s ease;
     }
 
-    .phone-device:hover {
-      box-shadow: 
-        0 0 0 4px var(--gold-primary),
-        0 0 0 8px #1e293b,
-        0 30px 60px -10px rgba(0, 0, 0, 0.9),
-        0 0 40px var(--gold-glow);
-      transform: translateY(-4px);
-    }
-
-    /* Phone Dynamic Island / Camera Notch */
+    /* Notch / Dynamic Island */
     .phone-notch {
       position: absolute;
       top: 10px;
       left: 50%;
       transform: translateX(-50%);
-      width: 110px;
-      height: 28px;
+      width: 105px;
+      height: 26px;
       background: #000;
       border-radius: 20px;
       z-index: 100;
@@ -232,58 +357,59 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
     }
 
     .camera-lens {
-      width: 11px;
-      height: 11px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #334155, #000);
+      background: radial-gradient(circle at 30% 30%, #475569, #000);
       border: 1px solid #1e293b;
     }
 
     .sensor-dot {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
       border-radius: 50%;
       background: #0f172a;
     }
 
-    /* Phone Status Bar */
+    /* Status Bar */
     .phone-status-bar {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 44px;
-      padding: 0 24px;
+      height: 42px;
+      padding: 0 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
       color: #fff;
       z-index: 90;
       pointer-events: none;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.9);
     }
 
     .status-icons {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.7rem;
+      gap: 5px;
+      font-size: 0.68rem;
     }
 
-    /* Phone Screen Viewport */
+    /* Screen Viewport */
     .phone-screen {
       width: 100%;
       height: 100%;
       border: none;
       background: #090d1a;
-      border-radius: calc(var(--phone-radius) - 6px);
+      border-radius: calc(var(--phone-radius) - 5px);
       overflow: hidden;
+      position: relative;
     }
 
     .phone-screen iframe {
@@ -293,270 +419,354 @@
       display: block;
     }
 
-    /* Phone Home Bar Indicator */
+    /* Home Bar */
     .phone-home-bar {
       position: absolute;
       bottom: 8px;
       left: 50%;
       transform: translateX(-50%);
-      width: 130px;
+      width: 120px;
       height: 4px;
-      background: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.5);
       border-radius: 10px;
       z-index: 100;
       pointer-events: none;
-      backdrop-filter: blur(4px);
     }
 
-    /* ── AGENT INFO CARD UNDER PHONE ── */
-    .agent-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 12px 18px;
-      width: var(--phone-w);
+    /* ── CONTROLS & AUTOMATION FOOTER PER PHONE ── */
+    .phone-unit-footer {
+      width: 100%;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .agent-meta {
+    .auth-bar {
       display: flex;
-      align-items: center;
-      gap: 12px;
+      gap: 6px;
     }
 
-    .agent-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      border: 2px solid var(--gold-primary);
-      object-fit: cover;
-      background: #1e293b;
-    }
-
-    .agent-name {
-      font-weight: 700;
-      font-size: 0.95rem;
+    .btn-auth-google {
+      flex: 1;
+      background: linear-gradient(135deg, #ea4335, #db4437);
       color: #fff;
-    }
-
-    .agent-role {
-      font-size: 0.75rem;
-      color: var(--gold-primary);
-    }
-
-    .agent-badge-live {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(34, 197, 94, 0.15);
-      border: 1px solid rgba(34, 197, 94, 0.4);
-      color: #4ade80;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 4px 8px;
-      border-radius: 20px;
-    }
-
-    .pulse-dot {
-      width: 6px;
-      height: 6px;
-      background: #22c55e;
-      border-radius: 50%;
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.5); opacity: 0.4; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .agent-actions {
-      display: flex;
-      gap: 6px;
-    }
-
-    .btn-icon {
-      width: 32px;
-      height: 32px;
+      border: none;
+      padding: 7px 12px;
       border-radius: 8px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
+      font-size: 0.78rem;
+      font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 6px;
       cursor: pointer;
-      font-size: 0.8rem;
       transition: all 0.2s;
     }
 
-    .btn-icon:hover {
-      background: var(--gold-primary);
-      color: #000;
+    .btn-auth-google:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 0 12px rgba(234, 67, 53, 0.4);
     }
 
-    /* ── LIVE INTERACTION CONSOLE (BOTTOM DRAWER) ── */
-    .studio-console {
-      background: rgba(15, 23, 42, 0.95);
+    .btn-quick-nav {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    .btn-quick-nav:hover {
+      border-color: var(--gold-primary);
+    }
+
+    /* Automation Bar */
+    .automation-box {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .auto-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+    }
+
+    .auto-label {
+      color: #c084fc;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .auto-toggle-btn {
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .auto-toggle-btn.active {
+      background: #22c55e;
+      color: #000;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+    }
+
+    .auto-toggle-btn.inactive {
+      background: #475569;
+      color: #cbd5e1;
+    }
+
+    .select-auto {
+      width: 100%;
+      background: #0b1329;
+      border: 1px solid var(--border-color);
+      color: #e2e8f0;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      outline: none;
+    }
+
+    .auto-status-msg {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ── FOOTER STATUS BAR ── */
+    .matrix-console {
+      background: rgba(11, 19, 41, 0.96);
       backdrop-filter: blur(20px);
       border-top: 1px solid var(--border-color);
-      padding: 12px 24px;
+      padding: 10px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: sticky;
       bottom: 0;
       z-index: 1000;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
     }
 
-    .console-feed {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--text-muted);
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      background: #22c55e;
+      border-radius: 50%;
+      animation: pulseAnim 1.5s infinite;
+      display: inline-block;
     }
 
-    .console-tag {
-      background: rgba(124, 58, 237, 0.2);
-      border: 1px solid rgba(124, 58, 237, 0.5);
-      color: #c084fc;
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 0.72rem;
+    @keyframes pulseAnim {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.6); opacity: 0.3; }
+      100% { transform: scale(1); opacity: 1; }
     }
   </style>
 </head>
 <body>
 
-  <!-- TOP STUDIO CONTROL BAR -->
-  <header class="studio-header">
-    <div class="studio-brand">
+  <!-- MATRIX CC HEADER -->
+  <header class="matrix-header">
+    <div class="matrix-brand">
       <div class="brand-logo">
         <i class="fa-solid fa-cross"></i>
       </div>
       <div>
-        <div class="brand-title">LUMINA MOBILE STUDIO</div>
-        <div class="brand-subtitle">Wielourządzeniowy Symulator Smartfonów Społeczności CC</div>
+        <div class="brand-title">MATRIX CC — VIRTUAL PHONE SUITE</div>
+        <div class="brand-subtitle">Niezależny Symulator Smartfonów & Centrum Zautomatyzowanej Misji</div>
       </div>
     </div>
 
-    <div class="studio-controls">
-      <button class="btn-ctrl active" onclick="switchView('grid')">
-        <i class="fa-solid fa-grip"></i> Siatka 7 Telefonów
+    <div class="matrix-toolbar">
+      <button class="btn-action btn-add-phone" onclick="addNewPhone()">
+        <i class="fa-solid fa-circle-plus"></i> Dodaj Nowy Telefon (+)
       </button>
-      <button class="btn-ctrl" onclick="switchView('focus')">
-        <i class="fa-solid fa-mobile-screen"></i> Pojedynczy Smartfon
+
+      <button class="btn-action btn-gold" onclick="sendGlobalBlessing()">
+        <i class="fa-solid fa-dove"></i> Błogosławieństwo Dla Wszystkich
       </button>
-      <button class="btn-ctrl btn-gold" onclick="injectAllBlessings()">
-        <i class="fa-solid fa-dove"></i> Wyślij Błogosławieństwo
+
+      <button class="btn-action" onclick="toggleAllAutomations()">
+        <i class="fa-solid fa-robot"></i> Przełącz Wszystkie Automatyzacje
       </button>
-      <button class="btn-ctrl" onclick="reloadAllPhones()">
+
+      <button class="btn-action" onclick="reloadAll()">
         <i class="fa-solid fa-rotate"></i> Odśwież Wszystkie
       </button>
-      
-      <div class="zoom-slider-wrap">
+
+      <div class="server-switcher">
+        <button class="server-btn active" id="srvProd" onclick="setServer('prod')">Produkcja</button>
+        <button class="server-btn" id="srvLocal" onclick="setServer('local')">Lokalny (3000)</button>
+      </div>
+
+      <div class="zoom-ctrl">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="range" id="zoomSlider" min="50" max="100" value="85" oninput="applyZoom(this.value)">
-        <span id="zoomVal">85%</span>
+        <input type="range" id="zoomSlider" min="40" max="100" value="80" oninput="applyZoom(this.value)">
+        <span id="zoomVal">80%</span>
       </div>
     </div>
   </header>
 
-  <!-- MAIN CANVAS WITH 7 SMARTPHONES -->
+  <!-- MAIN CANVAS WITH DYNAMIC VIRTUAL PHONES -->
   <main class="studio-canvas">
-    <div class="grid-container" id="phonesGrid">
-      <!-- Phone Instances will be dynamically populated -->
+    <div class="phones-grid" id="phonesGrid">
+      <!-- Virtual Phone Units dynamically rendered here -->
     </div>
   </main>
 
-  <!-- BOTTOM CONSOLE BAR -->
-  <footer class="studio-console">
-    <div class="console-feed">
-      <span class="console-tag">MATRIX LIVE</span>
-      <span id="consoleStatusText">Aktywny symulator 7 instancji smartfonów. Wszystkie urządzenia zsynchronizowane z chmurą.</span>
+  <!-- CONSOLE STATUS FOOTER -->
+  <footer class="matrix-console">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span class="pulse-dot"></span>
+      <span id="matrixStatus">MATRIX CC gotowy. Wszystkie wirtualne telefony działają w niezależnych sesjach.</span>
     </div>
-    <div style="color: var(--gold-primary); font-weight: 600;">
-      <i class="fa-solid fa-shield-halved"></i> Standard Mobile First & Zero Regresji
+    <div style="color: var(--gold-primary); font-weight: 700;">
+      <i class="fa-solid fa-shield-halved"></i> Ekosystem Christian Culture • Panel Dowódcy Nazira
     </div>
   </footer>
 
   <script>
-    const AGENTS_DATA = [
-      {
-        id: "cezary",
-        name: "Cezary Rogowski",
-        role: "Założyciel & Dowódca",
-        url: "https://polskieradio.cc/lumina.cezaryrgowski",
-        avatar: "avatar_cezary_official.jpg",
-        time: "10:58"
-      },
-      {
-        id: "wioletta",
-        name: "Wioletta Rogowska",
-        role: "Liderka Społeczności CC",
-        url: "https://polskieradio.cc/lumina.wiolettarogowska",
-        avatar: "avatar_wioletta_official.jpg",
-        time: "10:58"
-      },
-      {
-        id: "jola",
-        name: "Jola Wójcik",
-        role: "Użytkownik (Warszawa)",
-        url: "https://polskieradio.cc/lumina.jolawojcik",
-        avatar: "avatar_jola_official.jpg",
-        time: "10:58"
-      },
-      {
-        id: "andrzej",
-        name: "Andrzej Thiel",
-        role: "Lektor & Muzyk Uwielbienia",
-        url: "https://polskieradio.cc/lumina.andrzejthiel",
-        avatar: "avatar_andrzej_official.jpg",
-        time: "10:58"
-      },
-      {
-        id: "magdalena",
-        name: "Magdalena",
-        role: "Modlitwa (Gdańsk)",
-        url: "https://polskieradio.cc/lumina.magdalena",
-        avatar: "avatar_magdalena.jpg",
-        time: "10:58"
-      },
-      {
-        id: "ccmen",
-        name: "Mężczyźni CC",
-        role: "Wspólnota Mężczyzn",
-        url: "https://polskieradio.cc/lumina.ccmen",
-        avatar: "avatar_ccmen.jpg",
-        time: "10:58"
-      },
-      {
-        id: "ccwomen",
-        name: "Kobiety CC",
-        role: "Wspólnota Kobiet",
-        url: "https://polskieradio.cc/lumina.ccwomen",
-        avatar: "avatar_ccwomen.jpg",
-        time: "10:58"
-      }
+    // PROFILE CATALOG
+    const PROFILE_OPTIONS = [
+      { id: "cezary", label: "👑 Cezary Rogowski (Dowódca)", path: "/lumina.cezaryrgowski", avatar: "avatar_cezary_official.jpg" },
+      { id: "wioletta", label: "🌸 Wioletta Rogowska (Liderka CC)", path: "/lumina.wiolettarogowska", avatar: "avatar_wioletta_official.jpg" },
+      { id: "jola", label: "🕊️ Jola Wójcik (Warszawa)", path: "/lumina.jolawojcik", avatar: "avatar_jola_official.jpg" },
+      { id: "andrzej", label: "📖 Andrzej Thiel (Lektor & Uwielbienie)", path: "/lumina.andrzejthiel", avatar: "avatar_andrzej_official.jpg" },
+      { id: "magdalena", label: "🙏 Magdalena (Gdańsk)", path: "/lumina.magdalena", avatar: "avatar_magdalena.jpg" },
+      { id: "ccmen", label: "⚔️ Mężczyźni CC (Wspólnota Mężczyzn)", path: "/lumina.ccmen", avatar: "avatar_ccmen.jpg" },
+      { id: "ccwomen", label: "🌺 Kobiety CC (Wspólnota Kobiet)", path: "/lumina.ccwomen", avatar: "avatar_ccwomen.jpg" },
+      { id: "radiocc", label: "📻 Polskie Radio Christian Culture", path: "/lumina.radiocc", avatar: "lumina-icon-192.png" },
+      { id: "studiodobregoslowa", label: "🎙️ Studio Dobrego Słowa", path: "/lumina.studiodobregoslowa", avatar: "lumina-icon-192.png" },
+      { id: "cctv", label: "📺 CCTV24 CC (Kanał TV)", path: "/lumina.cctv", avatar: "lumina-icon-192.png" },
+      { id: "osobowoscplus", label: "🌟 Osobowość Plus", path: "/lumina.osobowoscplus", avatar: "lumina-icon-192.png" },
+      { id: "tablica", label: "📰 Tablica Społeczności LUMINA", path: "/tablica", avatar: "lumina-icon-192.png" },
+      { id: "lumina", label: "✨ Portal Główny & Randki LUMINA", path: "/lumina", avatar: "lumina-icon-192.png" },
+      { id: "login", label: "🔑 Panel Logowania Google / Email", path: "/lumina-login.html", avatar: "lumina-icon-192.png" },
+      { id: "modlitwa", label: "✝️ Ściana Modlitwy (Zjednoczeni za Polskę)", path: "/modlitwa.html", avatar: "lumina-icon-192.png" },
+      { id: "worship", label: "🎵 CCTV24 Worship Live TV", path: "/cctv24-worship.html", avatar: "lumina-icon-192.png" }
     ];
 
-    function renderPhones() {
+    // AUTOMATION PRESETS
+    const AUTOMATION_OPTIONS = [
+      { id: "none", label: "🎮 Sterowanie ręczne (Brak automatu)" },
+      { id: "blessings", label: "✨ Smart Blessings (Automatyczne Błogosławieństwa)" },
+      { id: "prayer", label: "🙏 Czuwanie i Modlitwa Wstawiennicza" },
+      { id: "board_curator", label: "📰 Przeglądanie i Polubienia Tablicy" },
+      { id: "radio_listener", label: "📻 Odsłuch Worship & Radio CC" },
+      { id: "story_creator", label: "📜 Eksploracja Kart Słowa 9:16" }
+    ];
+
+    let currentServer = 'prod'; // 'prod' or 'local'
+    const PROD_BASE = 'https://polskieradio.cc';
+    const LOCAL_BASE = 'http://localhost:3000';
+
+    // State of all active phones
+    let phones = [];
+
+    // Load State from LocalStorage
+    function loadSavedState() {
+      try {
+        const saved = localStorage.getItem('matrix_cc_phones_v2');
+        if (saved) {
+          phones = JSON.parse(saved);
+        }
+      } catch (e) {
+        console.warn('Błąd odczytu zapisanych telefonów:', e);
+      }
+
+      // Default starter 7 phones if empty
+      if (!phones || phones.length === 0) {
+        phones = [
+          { id: 1, profileId: "cezary", autoId: "none", autoActive: false, deviceTime: "11:15" },
+          { id: 2, profileId: "wioletta", autoId: "none", autoActive: false, deviceTime: "11:15" },
+          { id: 3, profileId: "jola", autoId: "blessings", autoActive: true, deviceTime: "11:15" },
+          { id: 4, profileId: "andrzej", autoId: "radio_listener", autoActive: true, deviceTime: "11:15" },
+          { id: 5, profileId: "magdalena", autoId: "prayer", autoActive: true, deviceTime: "11:15" },
+          { id: 6, profileId: "ccmen", autoId: "board_curator", autoActive: true, deviceTime: "11:15" },
+          { id: 7, profileId: "ccwomen", autoId: "story_creator", autoActive: true, deviceTime: "11:15" }
+        ];
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem('matrix_cc_phones_v2', JSON.stringify(phones));
+      } catch (e) {}
+    }
+
+    function getBaseUrl() {
+      return currentServer === 'local' ? LOCAL_BASE : PROD_BASE;
+    }
+
+    function getProfileUrl(profileId) {
+      const p = PROFILE_OPTIONS.find(x => x.id === profileId) || PROFILE_OPTIONS[0];
+      return `${getBaseUrl()}${p.path}`;
+    }
+
+    // Render All Phone Units
+    function renderGrid() {
       const grid = document.getElementById('phonesGrid');
       grid.innerHTML = '';
 
-      AGENTS_DATA.forEach((agent, idx) => {
-        const wrap = document.createElement('div');
-        wrap.className = 'phone-wrapper';
-        wrap.id = `phone-wrap-${agent.id}`;
+      phones.forEach((phone, index) => {
+        const selectedProf = PROFILE_OPTIONS.find(p => p.id === phone.profileId) || PROFILE_OPTIONS[0];
+        const selectedAuto = AUTOMATION_OPTIONS.find(a => a.id === phone.autoId) || AUTOMATION_OPTIONS[0];
+        const targetUrl = getProfileUrl(phone.profileId);
 
-        wrap.innerHTML = `
-          <div class="phone-device" id="device-${agent.id}">
+        const card = document.createElement('div');
+        card.className = 'phone-unit';
+        card.id = `unit-${phone.id}`;
+
+        card.innerHTML = `
+          <!-- PHONE HEADER (Profile Switcher & Actions) -->
+          <div class="phone-unit-header">
+            <div class="phone-header-top">
+              <div class="phone-id-badge">
+                <i class="fa-solid fa-mobile-screen-button"></i> Telefon #${index + 1}
+              </div>
+              <div class="phone-header-actions">
+                <button class="btn-tiny" title="Odśwież ten telefon" onclick="reloadPhone(${phone.id})">
+                  <i class="fa-solid fa-rotate-right"></i>
+                </button>
+                <button class="btn-tiny" title="Otwórz w osobnym oknie" onclick="openWindow('${targetUrl}')">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+                <button class="btn-tiny delete" title="Usuń ten telefon" onclick="deletePhone(${phone.id})">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Profile Selector Dropdown -->
+            <div class="profile-select-wrap">
+              <select class="select-profile" onchange="changePhoneProfile(${phone.id}, this.value)">
+                ${PROFILE_OPTIONS.map(opt => `
+                  <option value="${opt.id}" ${opt.id === phone.profileId ? 'selected' : ''}>
+                    ${opt.label}
+                  </option>
+                `).join('')}
+              </select>
+            </div>
+          </div>
+
+          <!-- PHYSICAL PHONE CHASSIS -->
+          <div class="phone-device" id="device-${phone.id}">
             <!-- Dynamic Island -->
             <div class="phone-notch">
               <div class="sensor-dot"></div>
@@ -565,7 +775,7 @@
 
             <!-- Status Bar -->
             <div class="phone-status-bar">
-              <span>${agent.time}</span>
+              <span>${phone.deviceTime || '11:15'}</span>
               <div class="status-icons">
                 <i class="fa-solid fa-signal"></i>
                 <span>5G</span>
@@ -574,69 +784,187 @@
               </div>
             </div>
 
-            <!-- Screen Viewport -->
+            <!-- Interactive Screen (Iframe) -->
             <div class="phone-screen">
-              <iframe id="iframe-${agent.id}" src="${agent.url}" loading="lazy"></iframe>
+              <iframe id="iframe-${phone.id}" src="${targetUrl}" allow="camera; microphone; geolocation"></iframe>
             </div>
 
             <!-- Home Bar -->
             <div class="phone-home-bar"></div>
           </div>
 
-          <!-- Info Card -->
-          <div class="agent-card">
-            <div class="agent-meta">
-              <img src="${agent.avatar}" class="agent-avatar" onerror="this.src='lumina-icon-192.png'">
-              <div>
-                <div class="agent-name">${agent.name}</div>
-                <div class="agent-role">${agent.role}</div>
-              </div>
+          <!-- CONTROLS & AUTOMATION FOOTER -->
+          <div class="phone-unit-footer">
+            <div class="auth-bar">
+              <button class="btn-auth-google" onclick="loginWithGoogle(${phone.id})">
+                <i class="fa-brands fa-google"></i> Zaloguj z Google
+              </button>
+              <button class="btn-quick-nav" title="Strona Główna / Portal" onclick="navigatePhone(${phone.id}, '/lumina')">
+                <i class="fa-solid fa-house"></i>
+              </button>
+              <button class="btn-quick-nav" title="Tablica" onclick="navigatePhone(${phone.id}, '/tablica')">
+                <i class="fa-solid fa-newspaper"></i>
+              </button>
             </div>
-            <div class="agent-badge-live">
-              <div class="pulse-dot"></div> ONLINE
+
+            <!-- Automation Box -->
+            <div class="automation-box">
+              <div class="auto-top">
+                <div class="auto-label">
+                  <i class="fa-solid fa-brain"></i> Dedykowana Automatyzacja:
+                </div>
+                <button class="auto-toggle-btn ${phone.autoActive ? 'active' : 'inactive'}" onclick="togglePhoneAuto(${phone.id})">
+                  ${phone.autoActive ? 'AKTYWNY' : 'WYŁĄCZONY'}
+                </button>
+              </div>
+
+              <select class="select-auto" onchange="changePhoneAuto(${phone.id}, this.value)">
+                ${AUTOMATION_OPTIONS.map(opt => `
+                  <option value="${opt.id}" ${opt.id === phone.autoId ? 'selected' : ''}>
+                    ${opt.label}
+                  </option>
+                `).join('')}
+              </select>
+
+              <div class="auto-status-msg" id="auto-status-${phone.id}">
+                <i class="fa-solid fa-circle-info"></i> ${phone.autoActive ? 'Robot wykonuje zaplanowane zadania misyjne.' : 'Gotowy do pracy manualnej.'}
+              </div>
             </div>
           </div>
         `;
 
-        grid.appendChild(wrap);
+        grid.appendChild(card);
       });
+
+      document.getElementById('matrixStatus').innerText = `Aktywne wirtualne telefony: ${phones.length} szt. Wszystkie gotowe do pracy.`;
     }
 
+    // Add New Phone
+    function addNewPhone() {
+      const newId = Date.now();
+      phones.push({
+        id: newId,
+        profileId: "lumina",
+        autoId: "none",
+        autoActive: false,
+        deviceTime: "11:15"
+      });
+      saveState();
+      renderGrid();
+      document.getElementById('matrixStatus').innerText = `Dodano nowy telefon #${phones.length}. Wybierz dla niego profil z listy.`;
+    }
+
+    // Delete Phone
+    function deletePhone(id) {
+      if (phones.length <= 1) {
+        alert("Musi pozostać co najmniej jeden wirtualny telefon.");
+        return;
+      }
+      phones = phones.filter(p => p.id !== id);
+      saveState();
+      renderGrid();
+    }
+
+    // Change Profile
+    function changePhoneProfile(id, newProfileId) {
+      const phone = phones.find(p => p.id === id);
+      if (phone) {
+        phone.profileId = newProfileId;
+        saveState();
+        const iframe = document.getElementById(`iframe-${id}`);
+        if (iframe) {
+          iframe.src = getProfileUrl(newProfileId);
+        }
+      }
+    }
+
+    // Change Automation
+    function changePhoneAuto(id, newAutoId) {
+      const phone = phones.find(p => p.id === id);
+      if (phone) {
+        phone.autoId = newAutoId;
+        saveState();
+      }
+    }
+
+    // Toggle Automation
+    function togglePhoneAuto(id) {
+      const phone = phones.find(p => p.id === id);
+      if (phone) {
+        phone.autoActive = !phone.autoActive;
+        saveState();
+        renderGrid();
+      }
+    }
+
+    // Toggle All Automations
+    function toggleAllAutomations() {
+      const anyActive = phones.some(p => p.autoActive);
+      phones.forEach(p => p.autoActive = !anyActive);
+      saveState();
+      renderGrid();
+      document.getElementById('matrixStatus').innerText = anyActive ? "Wyłączono wszystkie automatyzacje." : "Uruchomiono wszystkie automatyzacje!";
+    }
+
+    // Google Login Action
+    function loginWithGoogle(id) {
+      const loginUrl = `${getBaseUrl()}/lumina-login.html`;
+      const iframe = document.getElementById(`iframe-${id}`);
+      if (iframe) {
+        iframe.src = loginUrl;
+      }
+    }
+
+    // Quick Navigate
+    function navigatePhone(id, path) {
+      const iframe = document.getElementById(`iframe-${id}`);
+      if (iframe) {
+        iframe.src = `${getBaseUrl()}${path}`;
+      }
+    }
+
+    // Reload Phone
+    function reloadPhone(id) {
+      const iframe = document.getElementById(`iframe-${id}`);
+      if (iframe) iframe.src = iframe.src;
+    }
+
+    // Reload All
+    function reloadAll() {
+      phones.forEach(p => reloadPhone(p.id));
+      document.getElementById('matrixStatus').innerText = "Odświeżono wszystkie ekrany telefonów.";
+    }
+
+    // Open Window
+    function openWindow(url) {
+      window.open(url, '_blank', 'width=420,height=860');
+    }
+
+    // Global Blessing
+    function sendGlobalBlessing() {
+      alert("🕊️ Wysłano impuls Bożego Błogosławieństwa Czasu Rzeczywistego do wszystkich wirtualnych telefonów w Matrix CC!");
+      document.getElementById('matrixStatus').innerText = "✨ Wysłano impuls błogosławieństwa biblijnego do wszystkich aktywnych telefonów.";
+    }
+
+    // Server Switcher
+    function setServer(srv) {
+      currentServer = srv;
+      document.getElementById('srvProd').className = 'server-btn ' + (srv === 'prod' ? 'active' : '');
+      document.getElementById('srvLocal').className = 'server-btn ' + (srv === 'local' ? 'active' : '');
+      reloadAll();
+    }
+
+    // Zoom
     function applyZoom(val) {
       document.getElementById('zoomVal').innerText = val + '%';
       const scale = val / 100;
       document.getElementById('phonesGrid').style.transform = `scale(${scale})`;
     }
 
-    function reloadAllPhones() {
-      AGENTS_DATA.forEach(agent => {
-        const iframe = document.getElementById(`iframe-${agent.id}`);
-        if (iframe) iframe.src = iframe.src;
-      });
-      document.getElementById('consoleStatusText').innerText = "Odświeżono wszystkie ekrany smartfonów.";
-    }
-
-    function injectAllBlessings() {
-      document.getElementById('consoleStatusText').innerText = "✨ Wysłano impuls Błogosławieństwa Czasu Rzeczywistego do wszystkich 7 telefonów!";
-      alert("🕊️ Wysłano poranne błogosławieństwo biblijne do wszystkich 7 aktywnych urządzeń w symulatorze!");
-    }
-
-    function switchView(mode) {
-      const grid = document.getElementById('phonesGrid');
-      if (mode === 'focus') {
-        grid.style.gridTemplateColumns = '1fr';
-        applyZoom(100);
-        document.getElementById('zoomSlider').value = 100;
-      } else {
-        grid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(390px, 1fr))';
-        applyZoom(85);
-        document.getElementById('zoomSlider').value = 85;
-      }
-    }
-
-    // Start
-    renderPhones();
-    applyZoom(85);
+    // Init
+    loadSavedState();
+    renderGrid();
+    applyZoom(80);
   </script>
 </body>
 </html>
