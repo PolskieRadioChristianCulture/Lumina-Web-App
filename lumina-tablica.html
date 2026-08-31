@@ -5381,16 +5381,33 @@
 
             let combined = [];
 
-            // 1. Oficjalny Patron Misji Christian Culture (KONCEPT STUDIO) — na samej górze Tablicy
+            // ═══════════════════════════════════════════════════════════════════════════════
+            // 👑 ŻELAZNY STANDARD SZCZYTU TABLICY LUMINA (TRZY STAŁE POZYCJE):
+            // 1. Rozważanie z serii „Dobrze, że jesteś” (Cezary Rogowski) — NA SAMEJ GÓRZE
+            // 2. Oficjalny Patron Misji: KONCEPT STUDIO — ZARAZ POD „Dobrze, że jesteś”
+            // 3. Rozważanie z serii „Cuda Każdego Dnia” (Andrzej Thiel — zawsze najnowsze)
+            // ═══════════════════════════════════════════════════════════════════════════════
+
+            // 1. POZYCJA 1: Rozważanie z serii „Dobrze, że jesteś” (Cezary Rogowski)
+            if (window._luminaDailyReflection) {
+                combined.push(window._luminaDailyReflection);
+            }
+
+            // 2. POZYCJA 2: Reklama Oficjalnego Patrona Misji Christian Culture (KONCEPT STUDIO)
             combined.push({
                 id: 'patron_koncept_studio_top',
                 type: 'official_patron_koncept',
                 _isSpecialRender: true
             });
 
-            // 2. Stałe miejsce dla "Cuda Każdego Dnia / Dobrze, że jesteś" — ZARAZ POD REKLAMĄ KONCEPT!
-            if (window._luminaDailyReflection) {
-                combined.push(window._luminaDailyReflection);
+            // 3. POZYCJA 3: Rozważanie z serii „Cuda Każdego Dnia” (Andrzej Thiel — zawsze najnowsze)
+            let topCkdPost = userPosts.find(p => p._isCkdDaily || p.id === 'post_andrzej_cuda_31_08_2026' || p.category === 'ckd' || (p.authorSlug === 'andrzejthiel' && p.title && p.title.includes('CUDA KAŻDEGO DNIA')));
+            if (!topCkdPost) {
+                topCkdPost = userPosts.find(p => p.authorSlug === 'andrzejthiel');
+            }
+            if (topCkdPost) {
+                topCkdPost._isTopCkdSlot = true;
+                combined.push(topCkdPost);
             }
 
             // 2. Separate pinned vs unpinned items
@@ -5399,6 +5416,9 @@
             const normalCampaigns = [];
 
             userPosts.forEach(p => {
+                if (p._isTopCkdSlot || (topCkdPost && p.id === topCkdPost.id)) {
+                    return; // Już umieszczony na stałej pozycji 3 zaraz pod reklamą KONCEPT!
+                }
                 if (pinnedPostIds.includes(p.id)) {
                     p._isPinnedByAdmin = true;
                     pinnedItems.push(p);

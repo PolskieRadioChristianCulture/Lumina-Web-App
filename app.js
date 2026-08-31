@@ -1390,21 +1390,55 @@ function drawRoundedRect(ctx, x, y, width, height, radius) {
     ctx.fill();
 }
 
-// 9. SMOOTH LINK SCROLLING
+// 9. SMOOTH LINK SCROLLING & DIRECT HASH ROUTING (ROBUST RECT COORDINATES)
+function smoothScrollToElement(targetElement) {
+    if (!targetElement) return;
+    const headerOffset = 80;
+    const elementPosition = targetElement.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+    });
+}
+
 document.querySelectorAll('.scroll-to').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
+        if (!targetId || targetId === '#') return;
         
+        // Close side drawer if open
+        const drawer = document.getElementById("sideDrawer");
+        const drawerOverlay = document.getElementById("drawerOverlay");
+        if (drawer) drawer.classList.remove("open");
+        if (drawerOverlay) drawerOverlay.classList.remove("visible");
+
+        const targetElement = document.querySelector(targetId);
         if (targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 70, // subtract header height
-                behavior: 'smooth'
-            });
+            smoothScrollToElement(targetElement);
+            if (history.pushState) {
+                history.pushState(null, null, targetId);
+            }
         }
     });
 });
+
+// Obsługa bezpośredniego wejścia z linku z hashem (np. https://polskieradio.cc/#aktualnosci-sierpien)
+function handleInitialHashScroll() {
+    if (window.location.hash) {
+        try {
+            const target = document.querySelector(window.location.hash);
+            if (target) {
+                setTimeout(() => smoothScrollToElement(target), 150);
+                setTimeout(() => smoothScrollToElement(target), 500);
+                setTimeout(() => smoothScrollToElement(target), 1200);
+            }
+        } catch(e) {}
+    }
+}
+window.addEventListener('load', handleInitialHashScroll);
+window.addEventListener('hashchange', handleInitialHashScroll);
 
 // 10. HERO PLAY BUTTON AUTO-PLAY LOGIC
 const heroPlayBtn = document.getElementById("heroPlayBtn");
