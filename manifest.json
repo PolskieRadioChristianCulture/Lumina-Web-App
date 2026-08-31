@@ -3,8 +3,8 @@
   "name": "LUMINA – Chrześcijańska Społeczność & Randki",
   "short_name": "LUMINA",
   "description": "Chrześcijański portal randkowy i społecznościowy. Odkryj wartościowe relacje oparte na wierze, miłości i czystości wartości chrześcijańskich.",
-  "start_url": "lumina.html?source=pwa",
-  "scope": "./",
+  "start_url": "/lumina?source=pwa",
+  "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "window-controls-overlay", "minimal-ui"],
   "orientation": "portrait",
@@ -46,7 +46,7 @@
       "purpose": "any"
     },
     {
-      "src": "icon.png",
+      "src": "lumina-push-icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
@@ -57,33 +57,33 @@
       "name": "Tablica Społeczności",
       "short_name": "Tablica",
       "description": "Najnowsze wpisy, modlitwy i aktywność społeczności LUMINA",
-      "url": "lumina-tablica.html?source=pwa_shortcut",
+      "url": "/tablica?source=pwa_shortcut",
       "icons": [{ "src": "lumina-icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Odkrywaj i Randki",
       "short_name": "Randki",
       "description": "Poznaj profile chrześcijan o wspólnych wartościach",
-      "url": "lumina.html?source=pwa_shortcut",
+      "url": "/lumina?source=pwa_shortcut",
       "icons": [{ "src": "lumina-icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Mój Profil",
       "short_name": "Profil",
       "description": "Edycja i podgląd profilu użytkownika",
-      "url": "lumina-profile.html?source=pwa_shortcut",
+      "url": "/profil?source=pwa_shortcut",
       "icons": [{ "src": "lumina-icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Modlitwy Live",
       "short_name": "Modlitwa",
       "description": "Wstawiennictwo i wspólnota modlitewna",
-      "url": "modlitwa.html?source=pwa_shortcut",
+      "url": "/zapolske?source=pwa_shortcut",
       "icons": [{ "src": "lumina-icon-192.png", "sizes": "192x192" }]
     }
   ],
   "share_target": {
-    "action": "lumina-tablica.html",
+    "action": "/tablica",
     "method": "GET",
     "enctype": "application/x-www-form-urlencoded",
     "params": {

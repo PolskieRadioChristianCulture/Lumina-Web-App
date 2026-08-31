@@ -125,15 +125,16 @@
           "headers": [
             {
               "key": "Cache-Control",
-              "value": "no-cache, no-store, must-revalidate"
-            },
+              "value": "public, max-age=3600, stale-while-revalidate=86400"
+            }
+          ]
+        },
+        {
+          "source": "**/*.@(jpg|jpeg|png|webp|gif|svg|woff2|woff|ttf|ico)",
+          "headers": [
             {
-              "key": "Pragma",
-              "value": "no-cache"
-            },
-            {
-              "key": "Expires",
-              "value": "0"
+              "key": "Cache-Control",
+              "value": "public, max-age=604800, stale-while-revalidate=86400"
             }
           ]
         },
@@ -293,15 +294,16 @@
           "headers": [
             {
               "key": "Cache-Control",
-              "value": "no-cache, no-store, must-revalidate"
-            },
+              "value": "public, max-age=3600, stale-while-revalidate=86400"
+            }
+          ]
+        },
+        {
+          "source": "**/*.@(jpg|jpeg|png|webp|gif|svg|woff2|woff|ttf|ico)",
+          "headers": [
             {
-              "key": "Pragma",
-              "value": "no-cache"
-            },
-            {
-              "key": "Expires",
-              "value": "0"
+              "key": "Cache-Control",
+              "value": "public, max-age=604800, stale-while-revalidate=86400"
             }
           ]
         },
