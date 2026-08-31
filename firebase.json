@@ -31,6 +31,9 @@
         }
       ],
       "rewrites": [
+        { "source": "/vod", "destination": "/vod.html" },
+        { "source": "/kino-vod", "destination": "/vod.html" },
+        { "source": "/filmy", "destination": "/vod.html" },
         { "source": "/login", "destination": "/lumina-login.html" },
         { "source": "/zaloguj", "destination": "/lumina-login.html" },
         { "source": "/lumina-login", "destination": "/lumina-login.html" },
