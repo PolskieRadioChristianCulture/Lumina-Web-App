@@ -2842,7 +2842,12 @@
             #tabBtnCommanderChat .tab-label,
             #tabBtnPrivateChat .tab-label,
             #tabBtnGroupsChat .tab-label,
-            .messenger-tab-btn .tab-label { display: none !important; }
+            .messenger-tab-btn .tab-label,
+            #tabBtnPublicChat span:not(.tab-badge),
+            #tabBtnCommanderChat span:not(.tab-badge),
+            #tabBtnPrivateChat span:not(.tab-badge),
+            #tabBtnGroupsChat span:not(.tab-badge),
+            .messenger-tab-btn span:not(.tab-badge) { display: none !important; }
             #tabBtnPublicChat,
             #tabBtnCommanderChat,
             #tabBtnPrivateChat,
@@ -7190,9 +7195,9 @@
             const btnPrivateTab = document.getElementById('tabBtnPrivateChat');
             if (btnPrivateTab) {
                 if (totalPrivateUnread > 0) {
-                    btnPrivateTab.innerHTML = `<i class="fa-solid fa-user-group"></i> <span>Rozmowy (<span style="color:#fca5a5; font-weight:900;">🔴 ${totalPrivateUnread}</span>)</span>`;
+                    btnPrivateTab.innerHTML = `<i class="fa-solid fa-user-group"></i><span class="tab-badge" style="position:absolute; top:4px; right:4px; background:#ef4444; color:#fff; font-size:10px; font-weight:900; border-radius:50%; min-width:16px; height:16px; display:inline-flex; align-items:center; justify-content:center; padding:0 3px; line-height:1;">${totalPrivateUnread}</span><span class="tab-label"> Rozmowy (<span style="color:#fca5a5; font-weight:900;">🔴 ${totalPrivateUnread}</span>)</span>`;
                 } else {
-                    btnPrivateTab.innerHTML = `<i class="fa-solid fa-user-group"></i> <span>Rozmowy Prywatne</span>`;
+                    btnPrivateTab.innerHTML = `<i class="fa-solid fa-user-group"></i><span class="tab-label"> Rozmowy Prywatne</span>`;
                 }
             }
 
@@ -8858,8 +8863,7 @@
                 btn.style.height = '';
                 btn.style.width = '';
                 // Hide label span if present
-                var label = btn.querySelector('.tab-label');
-                if (label) label.style.display = 'none';
+                btn.querySelectorAll('span:not(.tab-badge)').forEach(function(s) { s.style.display = 'none'; });
             });
             // Fix .modal-close-btn: must stay perfectly round 44x44, NOT oval
             document.querySelectorAll('.modal-close-btn').forEach(function(btn) {

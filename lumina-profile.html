@@ -2430,7 +2430,12 @@
             #tabBtnCommanderChat .tab-label,
             #tabBtnPrivateChat .tab-label,
             #tabBtnGroupsChat .tab-label,
-            .messenger-tab-btn .tab-label { display: none !important; }
+            .messenger-tab-btn .tab-label,
+            #tabBtnPublicChat span:not(.tab-badge),
+            #tabBtnCommanderChat span:not(.tab-badge),
+            #tabBtnPrivateChat span:not(.tab-badge),
+            #tabBtnGroupsChat span:not(.tab-badge),
+            .messenger-tab-btn span:not(.tab-badge) { display: none !important; }
             #tabBtnPublicChat,
             #tabBtnCommanderChat,
             #tabBtnPrivateChat,
@@ -8372,8 +8377,7 @@
                 btn.style.height = '';
                 btn.style.width = '';
                 // Hide label span if present
-                var label = btn.querySelector('.tab-label');
-                if (label) label.style.display = 'none';
+                btn.querySelectorAll('span:not(.tab-badge)').forEach(function(s) { s.style.display = 'none'; });
             });
             // Fix .modal-close-btn: must stay perfectly round 44x44, NOT oval
             document.querySelectorAll('.modal-close-btn').forEach(function(btn) {
