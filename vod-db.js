@@ -185,7 +185,7 @@
             id: 'patronite-osobowoscplus',
             type: 'ad_card',
             targetUrl: 'https://patronite.pl/osobowoscplus',
-            image: 'zostan-patronem-cc.gif',
+            image: 'zostan-patronem-cc.gif?v=20260831_2230',
             badge: 'PATRONITE',
             badgeColor: 'linear-gradient(135deg, #e11d48, #be123c)',
             title: 'Zostań Patronem Misji Christian Culture',
