@@ -921,58 +921,69 @@
 
     function normalizeUrl(input) {
       let raw = input.trim();
-      if (!raw) return `${getBaseUrl()}/lumina`;
+      if (!raw) return 'search.html';
 
       let decoded = raw;
       try { decoded = decodeURIComponent(raw); } catch (e) {}
+
+      // Pliki lokalne
+      if (decoded === 'search.html' || decoded.startsWith('search.html?') ||
+          decoded === 'yt_embed_viewer.html' || decoded.startsWith('yt_embed_viewer.html?') ||
+          decoded === 'browser.html' || decoded.startsWith('browser.html?')) {
+        return decoded;
+      }
+
+      // Słowa kluczowe: google / wyszukiwarka
+      if (decoded.toLowerCase() === 'google' || decoded.toLowerCase() === 'google.com' || decoded.toLowerCase() === 'google.pl') {
+        return 'search.html';
+      }
+
+      // Słowa kluczowe: youtube / yt
+      if (decoded.toLowerCase() === 'youtube' || decoded.toLowerCase() === 'yt' || decoded.toLowerCase() === 'youtube.com') {
+        return 'yt_embed_viewer.html';
+      }
 
       // Rozpoznaj bezpośredni @handle (wpisany bez youtube.com)
       if (/^@[a-zA-Z0-9_\u0080-\uFFFF.-]+$/.test(decoded)) {
         return `yt_embed_viewer.html?channel=${encodeURIComponent(decoded)}`;
       }
 
-      // YouTube — dowolny film, kanal lub shorts
+      // YouTube — dowolny film, kanał lub shorts
       if (decoded.includes('youtube.com') || decoded.includes('youtu.be')) {
-
-        // 1. Shorts
         const shortsMatch = decoded.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/i);
         if (shortsMatch && shortsMatch[1]) {
           return `yt_embed_viewer.html?v=${shortsMatch[1]}&type=shorts`;
         }
-
-        // 2. Konkretny film (watch?v= lub youtu.be/)
         const videoMatch = decoded.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
         if (videoMatch && videoMatch[1]) {
           return `yt_embed_viewer.html?v=${videoMatch[1]}`;
         }
-
-        // 3. Playlista (?list=PLxxxx)
         const playlistMatch = decoded.match(/[?&]list=([a-zA-Z0-9_-]+)/i);
         if (playlistMatch && playlistMatch[1]) {
           return `yt_embed_viewer.html?list=${playlistMatch[1]}`;
         }
-
-        // 4. Kanał po @handle
         const handleMatch = decoded.match(/@([a-zA-Z0-9_\u0080-\uFFFF.-]+)/);
         if (handleMatch && handleMatch[0]) {
           return `yt_embed_viewer.html?channel=${encodeURIComponent(handleMatch[0])}`;
         }
-
-        // 5. Wyszukiwanie / inne URL YouTube
-        const qParam = decoded.match(/[?&](?:q|search_query)=([^&]+)/i);
-        if (qParam && qParam[1]) {
-          return `yt_embed_viewer.html?q=${qParam[1]}`;
-        }
-
-        // Fallback — zaladuj w viewerze z pelnym URL
-        return `yt_embed_viewer.html?q=${encodeURIComponent(decoded)}`;
+        return `yt_embed_viewer.html`;
       }
 
+      // Ścieżki wewnętrzne portalu (/lumina, /tablica, /modlitwa itp.)
       if (raw.startsWith('/')) return `${getBaseUrl()}${raw}`;
-      if (!/^https?:\/\//i.test(raw)) {
-        raw = 'https://' + raw;
+
+      // Jeśli wpisano pełny URL http:// lub https://
+      if (/^https?:\/\//i.test(raw)) {
+        return raw;
       }
-      return raw;
+
+      // Jeśli wygląda jak domena (posiada kropkę i nie ma spacji, np. polskieradio.cc, onet.pl)
+      if (raw.includes('.') && !raw.includes(' ')) {
+        return 'https://' + raw;
+      }
+
+      // Dowolna inna fraza / zapytanie tekstowe -> skieruj do wyszukiwarki CC
+      return `search.html?q=${encodeURIComponent(raw)}`;
     }
 
     // Render All Phone Units
@@ -1037,7 +1048,7 @@
               <input type="text" 
                      id="url-input-${phone.id}" 
                      class="url-input-field" 
-                     placeholder="Wklej https://... lub www..." 
+                     placeholder="Szukaj lub wpisz adres (np. google, youtube)..." 
                      value="${phone.customUrl || targetUrl}"
                      onkeydown="if(event.key==='Enter') loadCustomUrl(${phone.id})">
               <button class="btn-url-action go" title="Załaduj stronę (Enter)" onclick="loadCustomUrl(${phone.id})">
@@ -1106,25 +1117,9 @@
       const iframe = document.getElementById(`iframe-${id}`);
       if (!iframe || !phone) return;
 
-      // Wyznacz docelowy URL przez normalizeUrl
       let normalized = normalizeUrl(rawVal);
 
-      // Jeśli URL jest zewnętrzny (http/https) i NIE jest to plik lokalny (browser.html, yt_embed_viewer.html, etc.)
-      // → załaduj przez browser.html żeby działało wyszukiwanie i obsługa blokad iframe
-      const isLocal = normalized.startsWith('browser.html') ||
-                      normalized.startsWith('yt_embed_viewer.html') ||
-                      normalized.startsWith('./') ||
-                      normalized.startsWith('../') ||
-                      normalized.includes('polskieradio.cc') ||
-                      normalized.includes('localhost:');
-
-      if (!isLocal && (normalized.startsWith('http://') || normalized.startsWith('https://'))) {
-        normalized = `browser.html?url=${encodeURIComponent(normalized)}`;
-      }
-
-      // Zapamiętaj oryginalny wpisany URL — nie nadpisuj inputa
       phone.customUrl = rawVal;
-      // Zostaw aktualny profil jeśli to browser, inaczej ustaw custom
       if (phone.profileId !== 'browser') {
         phone.profileId = 'custom';
       }
@@ -1133,7 +1128,7 @@
       iframe.src = normalized;
       input.blur();
       const idx = phones.findIndex(p => p.id === id) + 1;
-      document.getElementById('matrixStatus').innerText = `📱 Telefon #${idx}: Ładuję "${rawVal}"`;
+      document.getElementById('matrixStatus').innerText = `📱 Telefon #${idx}: Załadowano "${rawVal}"`;
     }
 
     // Paste from Clipboard and Load

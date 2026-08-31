@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
@@ -432,19 +432,24 @@ function doSearch() {
 }
 
 function fetchDDG(q) {
-  const url = 'https://api.duckduckgo.com/?q=' + encodeURIComponent(q) +
-              '&format=json&no_html=1&skip_disambig=1&no_redirect=1';
+  const ddgUrl = 'https://api.duckduckgo.com/?q=' + encodeURIComponent(q) +
+                 '&format=json&no_html=1&skip_disambig=1&no_redirect=1';
+  const wikiUrl = 'https://pl.wikipedia.org/w/api.php?action=opensearch&search=' + encodeURIComponent(q) +
+                  '&limit=10&format=json&origin=*';
 
-  fetch(url)
-    .then(r => r.json())
-    .then(data => renderDDG(q, data))
-    .catch(() => {
-      // Fallback: show open-in-browser option
-      renderFallback(q);
-    });
+  Promise.allSettled([
+    fetch(ddgUrl).then(r => r.json()).catch(() => null),
+    fetch(wikiUrl).then(r => r.json()).catch(() => null)
+  ]).then(results => {
+    const ddgData = results[0].status === 'fulfilled' ? results[0].value : null;
+    const wikiData = results[1].status === 'fulfilled' ? results[1].value : null;
+    renderCombinedResults(q, ddgData, wikiData);
+  }).catch(() => {
+    renderFallback(q);
+  });
 }
 
-function renderDDG(q, data) {
+function renderCombinedResults(q, data, wikiData) {
   const instantBox = document.getElementById('instantBox');
   const instantTitle = document.getElementById('instantTitle');
   const instantText = document.getElementById('instantText');
@@ -454,15 +459,16 @@ function renderDDG(q, data) {
   const resultsList = document.getElementById('resultsList');
   const pageNav = document.getElementById('pageNav');
 
-  // Clear
   resultsList.innerHTML = '';
   relatedChips.innerHTML = '';
   pageNav.style.display = 'none';
   instantBox.classList.remove('show');
   relatedChips.style.display = 'none';
 
-  // Instant Answer
-  if (data.Abstract || data.Answer) {
+  allResults = [];
+
+  // 1. DuckDuckGo Instant Answer
+  if (data && (data.Abstract || data.Answer)) {
     const txt = data.Answer || data.Abstract;
     const src = data.AbstractSource || data.AnswerType || '';
     const srcUrl = data.AbstractURL || '';
@@ -483,18 +489,14 @@ function renderDDG(q, data) {
     }
   }
 
-  // Related Topics as results
-  allResults = [];
-
-  // RelatedTopics
-  if (data.RelatedTopics && data.RelatedTopics.length > 0) {
+  // 2. DuckDuckGo Related Topics
+  if (data && data.RelatedTopics && data.RelatedTopics.length > 0) {
     data.RelatedTopics.forEach(t => {
       if (t.Text && t.FirstURL) {
         allResults.push({
           title: t.Text.split(' - ')[0] || t.Text.substring(0, 60),
           snippet: t.Text,
-          url: t.FirstURL,
-          icon: t.Icon && t.Icon.URL ? t.Icon.URL : null
+          url: t.FirstURL
         });
       } else if (t.Topics) {
         t.Topics.forEach(st => {
@@ -510,48 +512,40 @@ function renderDDG(q, data) {
     });
   }
 
-  // Results array
-  if (data.Results && data.Results.length > 0) {
-    data.Results.forEach(r => {
-      allResults.push({ title: r.Text, snippet: r.Text, url: r.FirstURL });
-    });
-  }
-
-  // If we have nothing, add a "search on web" card + open-in-new-tab
-  if (allResults.length === 0 && !data.Abstract && !data.Answer) {
-    renderFallback(q);
-    return;
-  }
-
-  // Related keywords chips
-  if (data.RelatedTopics && data.RelatedTopics.length > 0) {
-    const chips = data.RelatedTopics
-      .filter(t => t.Name)
-      .slice(0, 8)
-      .map(t => `<div class="chip" onclick="searchQuery('${q} ${t.Name}')">${t.Name}</div>`);
-    if (chips.length > 0) {
-      relatedChips.innerHTML = chips.join('');
-      relatedChips.style.display = 'flex';
+  // 3. Wikipedia OpenSearch Results
+  if (wikiData && Array.isArray(wikiData) && wikiData.length >= 4) {
+    const titles = wikiData[1] || [];
+    const descs = wikiData[2] || [];
+    const urls = wikiData[3] || [];
+    for (let i = 0; i < titles.length; i++) {
+      if (titles[i] && urls[i]) {
+        // Unikaj duplikatów
+        if (!allResults.some(r => r.url === urls[i])) {
+          allResults.push({
+            title: titles[i],
+            snippet: descs[i] || ('Artykuł w encyklopedii: ' + titles[i]),
+            url: urls[i]
+          });
+        }
+      }
     }
   }
 
+  // 4. Always add Google & YouTube search action cards at the top
+  const googleCard = {
+    title: `🔍 Szukaj "${q}" w Google`,
+    snippet: `Otwórz pełne wyniki wyszukiwania Google dla hasła "${q}".`,
+    url: `https://www.google.com/search?q=${encodeURIComponent(q)}`
+  };
+  const ytCard = {
+    title: `▶️ Oglądaj wideo dla "${q}" na YouTube`,
+    snippet: `Znajdź filmy, transmisje i nagrania wideo na YouTube dla "${q}".`,
+    url: `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`
+  };
+  allResults.unshift(ytCard);
+  allResults.unshift(googleCard);
+
   renderPage(1);
-
-  // Always add web-search card at top for opening full results
-  const webCard = document.createElement('div');
-  webCard.className = 'result-card';
-  webCard.style.cssText = 'border-color:rgba(200,168,75,0.2);margin-bottom:8px;';
-  webCard.innerHTML = `
-    <div class="result-url"><i class="fa-solid fa-globe" style="color:#4285F4;"></i> <span>duckduckgo.com • Pełne wyniki</span></div>
-    <div class="result-title">🔍 Otwórz pełne wyniki wyszukiwania dla: "${q}"</div>
-    <div class="result-snippet">Kliknij aby zobaczyć wszystkie wyniki wyszukiwania w pełnej wyszukiwarce DuckDuckGo.</div>
-    <div class="result-open">
-      <a class="btn-open-page" href="javascript:void(0)" onclick="openPage('https://duckduckgo.com/?q=${encodeURIComponent(q)}')">
-        <i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz pełne wyniki
-      </a>
-    </div>`;
-  resultsList.insertBefore(webCard, resultsList.firstChild);
-
   showResults();
 }
 
@@ -668,14 +662,36 @@ function searchQuery(q) {
 }
 
 function openPage(url) {
-  // Notify parent (device_studio) to navigate this phone's iframe
+  if (!url) return;
+
+  // External sites that block iframes (Google, Facebook, etc.) - open in popup
+  const isExternalBlocked = url.includes('google.com') ||
+                            url.includes('google.pl') ||
+                            url.includes('facebook.com') ||
+                            url.includes('instagram.com') ||
+                            url.includes('twitter.com') ||
+                            url.includes('x.com');
+
+  if (isExternalBlocked) {
+    window.open(url, '_blank');
+    return;
+  }
+
+  // YouTube URLs - route to in-phone YouTube Hub
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    const vm = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    if (vm) {
+      window.location.href = 'yt_embed_viewer.html?v=' + vm[1];
+      return;
+    }
+  }
+
+  // Notify parent (device_studio) or navigate directly
   try {
     if (window.parent && window.parent !== window) {
-      // Try postMessage to parent with url to navigate
       window.parent.postMessage({ type: 'MATRIX_NAVIGATE', url: url }, '*');
     }
   } catch(e) {}
-  // Also try direct navigation in current frame
   window.location.href = url;
 }
 </script>
