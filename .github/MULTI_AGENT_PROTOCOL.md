@@ -93,6 +93,7 @@ Dozwolone prefiksy: `feat`, `fix`, `refactor`, `style`, `docs`, `ci`, `chore`, `
 ## 🏷️ 7. Wywołania i Etykiety Agentów (@mentions)
 
 * `@Antigravity` — Zadania terminalowe, wdrożenia Firebase, skrypty wykonawcze, egzekucja Strażnika Kodu
+* `@MCC` / `@Matrix` — Dedykowany Agent MATRIX CC, symulator smartfonów Playwright, automatyzacje profili i hub wideo
 * `@CursorGrok` / `@Grok` — Architektura systemowa, zaawansowane wnioskowanie, głęboka refaktoryzacja, algorytmy skalowania
 * `@Claude` — Przegląd kodu (*Code Review*), optymalizacja kaskad stylów, logika biznesowa, dostępność i UX
 * `@Copilot` — Sugestie składniowe, pipeline'y GitHub Actions, testy jednostkowe, automatyzacja repozytoriów

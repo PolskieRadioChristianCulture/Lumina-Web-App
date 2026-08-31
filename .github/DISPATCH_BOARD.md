@@ -1,4 +1,4 @@
-﻿# 🎯 TABLICA DYSPOZYCJI I KOLEJKA ZADAŃ SZTABU [@ICC]
+# 🎯 TABLICA DYSPOZYCJI I KOLEJKA ZADAŃ SZTABU [@ICC]
 ### *Zasada Dynamicznego Lidera (Ten agent dowodzi sztabem, który w danej chwili ma tokeny)*
 ### *Commander: Dowódca Nazir | Aktualny Lider: Antigravity (Google)*
 
@@ -27,8 +27,10 @@
 * **ID:** `TASK-ICC-007` — Globalna Optymalizacja AI SEO & Generative Engine Optimization (GEO) ➔ `DONE`
 * **ID:** `TASK-ICC-008` — Wdrożenie Pakietu 4 Złotych Poprawek dla Web Push & FCM Device Token Persistence ➔ `DONE`
 * **ID:** `TASK-ICC-009` — Automatyczne Inteligentne Błogosławieństwa i Wersety Biblijne Czasu Rzeczywistego w Czacie ➔ `DONE`
+* **ID:** `TASK-ICC-014` — Architektura i Wdrożenie Platformy MATRIX CC (@MCC) z Regułami Dedykowanego Agenta ➔ `DONE`
 
 ---
 
 ## 🔄 3. PROCEDURA PRZEJĘCIA ROLI LIDERA
 W razie wyczerpania tokenów u bieżącego lidera, kolejny dostępny agent melduje przejęcie sterów.
+Wszelkie prace związane z symulatorem smartfonów i automatyzacjami kierowane są do modułu **`@MCC`** ([`.github/MATRIX_CC_AGENT_RULES.md`](.github/MATRIX_CC_AGENT_RULES.md)).
