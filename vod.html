@@ -1118,7 +1118,9 @@
             position: fixed;
             bottom: 24px;
             left: 50%;
-            transform: translateX(-50%) translateY(100px);
+            transform: translateX(-50%) translateY(20px);
+            opacity: 0;
+            visibility: hidden;
             background: #0f172a;
             border: 1px solid var(--gold-primary);
             color: #fff;
@@ -1128,12 +1130,14 @@
             border-radius: 30px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.8);
             z-index: 2000;
-            transition: transform 0.3s ease;
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
             pointer-events: none;
         }
 
         .toast-box.show {
             transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            visibility: visible;
         }
 
         /* ── CINEMA MODE (LIGHTS OFF) ── */
@@ -1745,7 +1749,7 @@
     </div>
 
     <!-- Toast Notification -->
-    <div class="toast-box" id="toastBox">✨ Link skopiowany do schowka!</div>
+    <div class="toast-box" id="toastBox" aria-live="polite"></div>
     <!-- ══════════ SCRIPTS ══════════ -->
     <script src="vod-db.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
