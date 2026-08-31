@@ -227,7 +227,6 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
     <button class="filter-tab active" onclick="setFilter('web')"><i class="fa-solid fa-globe"></i> Wszystko</button>
     <button class="filter-tab" onclick="setFilter('news')"><i class="fa-solid fa-newspaper"></i> Aktualności</button>
     <button class="filter-tab" onclick="setFilter('images')"><i class="fa-solid fa-image"></i> Obrazy</button>
-    <button class="filter-tab" onclick="setFilter('videos')"><i class="fa-solid fa-film"></i> Wideo</button>
     <button class="filter-tab" onclick="setFilter('maps')"><i class="fa-solid fa-map"></i> Mapy</button>
   </div>
 </div>
@@ -254,9 +253,9 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
         <div class="quick-icon" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)"><i class="fa-solid fa-newspaper" style="color:#fff"></i></div>
         <div class="quick-label">Tablica</div>
       </div>
-      <div class="quick-item" onclick="openPage('yt_embed_viewer.html')">
-        <div class="quick-icon" style="background:#ff0000"><i class="fa-brands fa-youtube" style="color:#fff"></i></div>
-        <div class="quick-label">YouTube CC</div>
+      <div class="quick-item" onclick="openPage('https://polskieradio.cc/cctv24-worship.html')">
+        <div class="quick-icon" style="background:linear-gradient(135deg,#e11d48,#be123c)"><i class="fa-solid fa-tv" style="color:#fff"></i></div>
+        <div class="quick-label">CCTV24 TV</div>
       </div>
       <div class="quick-item" onclick="openPage('https://polskieradio.cc/lumina')">
         <div class="quick-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"><i class="fa-solid fa-sparkles" style="color:#fff"></i></div>
@@ -266,7 +265,7 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
         <div class="quick-icon" style="background:linear-gradient(135deg,#d4af37,#b8860b)"><i class="fa-solid fa-book-bible" style="color:#fff"></i></div>
         <div class="quick-label">Biblia</div>
       </div>
-      <div class="quick-item" onclick="searchQuery('modlitwa chrześcijańska')">
+      <div class="quick-item" onclick="openPage('https://polskieradio.cc/modlitwa.html')">
         <div class="quick-icon" style="background:linear-gradient(135deg,#10b981,#047857)"><i class="fa-solid fa-hands-praying" style="color:#fff"></i></div>
         <div class="quick-label">Modlitwa</div>
       </div>
@@ -280,19 +279,19 @@ body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,
       </div>
     </div>
 
-    <div class="section-label">Kanały Misyjne CC</div>
+    <div class="section-label">Profile Misyjne LUMINA</div>
     <div class="mission-list">
-      <div class="mission-item" onclick="openPage('yt_embed_viewer.html?channel=@osobowoscPLUS')">
+      <div class="mission-item" onclick="openPage('https://polskieradio.cc/lumina.osobowoscplus')">
         <div class="m-icon" style="background:linear-gradient(135deg,#ef4444,#f59e0b)"><i class="fa-solid fa-star" style="color:#fff"></i></div>
         <div><div class="m-name">OSOBOWOŚĆ +</div><div class="m-sub">Formacja i Dojrzałość w Bogu</div></div>
         <i class="fa-solid fa-chevron-right" style="color:var(--dim);font-size:0.7rem;margin-left:auto;"></i>
       </div>
-      <div class="mission-item" onclick="openPage('yt_embed_viewer.html?channel=@CezaryRogowski')">
+      <div class="mission-item" onclick="openPage('https://polskieradio.cc/lumina.cezaryrgowski')">
         <div class="m-icon" style="background:linear-gradient(135deg,#d4af37,#b8860b)"><i class="fa-solid fa-crown" style="color:#fff"></i></div>
         <div><div class="m-name">Cezary Rogowski</div><div class="m-sub">Założyciel Christian Culture</div></div>
         <i class="fa-solid fa-chevron-right" style="color:var(--dim);font-size:0.7rem;margin-left:auto;"></i>
       </div>
-      <div class="mission-item" onclick="openPage('yt_embed_viewer.html?channel=@AndrzejThiel')">
+      <div class="mission-item" onclick="openPage('https://polskieradio.cc/lumina.andrzejthiel')">
         <div class="m-icon" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)"><i class="fa-solid fa-book-bible" style="color:#fff"></i></div>
         <div><div class="m-name">Andrzej Thiel</div><div class="m-sub">Słowo Boże i Uwielbienie</div></div>
         <i class="fa-solid fa-chevron-right" style="color:var(--dim);font-size:0.7rem;margin-left:auto;"></i>
@@ -408,12 +407,6 @@ function doSearch() {
   showLoading(q);
 
   // Handle special navigation
-  if (/^@[a-zA-Z0-9_.%-]+$/.test(q)) {
-    openPage('yt_embed_viewer.html?channel=' + encodeURIComponent(q)); return;
-  }
-  if (q.includes('youtube.com') || q.includes('youtu.be') || q.startsWith('yt_')) {
-    openPage('yt_embed_viewer.html?q=' + encodeURIComponent(q)); return;
-  }
   if (/^https?:\/\//i.test(q) || (q.includes('.') && !q.includes(' '))) {
     openPage(q.startsWith('http') ? q : 'https://' + q); return;
   }
@@ -424,9 +417,6 @@ function doSearch() {
   }
   if (currentFilter === 'images') {
     fetchImages(q); return;
-  }
-  if (currentFilter === 'videos') {
-    openPage('yt_embed_viewer.html?q=' + encodeURIComponent(q)); return;
   }
   if (currentFilter === 'news') {
     fetchNews(q); return;
@@ -536,18 +526,12 @@ function renderCombinedResults(q, data, wikiData) {
     }
   }
 
-  // 4. Always add MATRIX search & YouTube search action cards at the top
+  // 4. Always add MATRIX search action card at the top
   const matrixCard = {
     title: `🌐 Szukaj "${q}" w sieci (MATRIX Search)`,
     snippet: `Przeszukaj otwarte zasoby internetowe i misyjne dla hasła "${q}".`,
     url: `https://duckduckgo.com/?q=${encodeURIComponent(q)}`
   };
-  const ytCard = {
-    title: `▶️ Oglądaj "${q}" w YouTube CC`,
-    snippet: `Odtwarzaj filmy, transmisje i nagrania wideo na YouTube dla "${q}".`,
-    url: `yt_embed_viewer.html?q=${encodeURIComponent(q)}`
-  };
-  allResults.unshift(ytCard);
   allResults.unshift(matrixCard);
 
   renderPage(1);
@@ -621,8 +605,6 @@ function renderFallback(q) {
       url:`https://www.google.com/search?q=${encodeURIComponent(q)}` },
     { name:'Wikipedia', icon:'fa-brands fa-wikipedia-w', color:'#e8e8e8',
       url:`https://pl.wikipedia.org/w/index.php?search=${encodeURIComponent(q)}` },
-    { name:'YouTube', icon:'fa-brands fa-youtube', color:'#ff0000',
-      url:`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}` },
   ];
 
   engines.forEach(e => {
@@ -669,9 +651,11 @@ function searchQuery(q) {
 function openPage(url) {
   if (!url) return;
 
-  // External sites that block iframes (Google, Facebook, etc.) - open in popup
+  // External sites that block iframes (Google, YouTube, Facebook, etc.) - open in popup
   const isExternalBlocked = url.includes('google.com') ||
                             url.includes('google.pl') ||
+                            url.includes('youtube.com') ||
+                            url.includes('youtu.be') ||
                             url.includes('facebook.com') ||
                             url.includes('instagram.com') ||
                             url.includes('twitter.com') ||
@@ -680,15 +664,6 @@ function openPage(url) {
   if (isExternalBlocked) {
     window.open(url, '_blank');
     return;
-  }
-
-  // YouTube URLs - route to in-phone YouTube Hub
-  if (url.includes('youtube.com') || url.includes('youtu.be')) {
-    const vm = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-    if (vm) {
-      window.location.href = 'yt_embed_viewer.html?v=' + vm[1];
-      return;
-    }
   }
 
   // Notify parent (device_studio) or navigate directly
