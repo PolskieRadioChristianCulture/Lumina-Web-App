@@ -20,6 +20,22 @@
     // Katalog filmów fabularnych VOD (@vod)
     const VOD_MOVIES_CATALOG = [
         {
+            id: 'film-jezus-ewangelia-lukasza',
+            youtubeId: 'GMdQIwKh22A',
+            title: 'JEZUS – Ewangelia wg św. Łukasza',
+            origTitle: 'Jesus (The Jesus Film)',
+            year: 1979,
+            duration: '128 min',
+            category: 'Biblijny / Historyczny',
+            director: 'Peter Sykes, John Krish',
+            cast: 'Brian Deacon, Rivka Neuman, Alexander Scourby, Joseph Shiloach',
+            description: 'Klasyczna, najsłynniejsza w historii kina ekranizacja Ewangelii według św. Łukasza (1979). Wiernie ukazuje narodziny, nauczanie, niezwykłe cuda, śmierć na krzyżu oraz chwalebne zmartwychwstanie Jezusa Chrystusa. Przetłumaczona na ponad 2000 języków i obejrzana przez miliardy widzów na całym świecie.',
+            thumbnail: 'https://i.ytimg.com/vi/GMdQIwKh22A/hqdefault.jpg',
+            featured: true,
+            badge: 'NOWOŚĆ',
+            tags: ['film jezus', 'ewangelia według św łukasza', 'jezus chrystus', 'brian deacon', 'życie jezusa', 'cały film lektor pl']
+        },
+        {
             id: 'bog-nie-umar-1',
             youtubeId: 'Mxlw-eQFh-c',
             title: "Bóg nie umarł (God's Not Dead)",
