@@ -197,6 +197,11 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        html {
+            -webkit-text-size-adjust: 100%;
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: var(--bg-deep);
             background-image: 
@@ -209,6 +214,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             line-height: 1.5;
+            padding-bottom: 0;
         }
 
         /* ── TOP NAV BAR ── */
@@ -218,8 +224,9 @@
             z-index: 100;
             background: rgba(6, 9, 19, 0.92);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-navy);
-            padding: 12px 20px;
+            padding: max(10px, env(safe-area-inset-top)) 20px 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -232,6 +239,7 @@
             gap: 14px;
             text-decoration: none;
             color: inherit;
+            min-width: 0;
         }
 
         .vod-logo-img {
@@ -241,19 +249,27 @@
             object-fit: cover;
             border: 1.5px solid var(--gold-primary);
             box-shadow: 0 0 16px var(--gold-glow);
+            flex-shrink: 0;
+        }
+
+        .vod-brand-text {
+            min-width: 0;
         }
 
         .vod-brand-title {
             font-family: var(--font-display);
-            font-size: 1.25rem;
+            font-size: clamp(0.95rem, 2.5vw, 1.25rem);
             font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
             background: linear-gradient(135deg, #fff 0%, var(--gold-light) 50%, var(--gold-primary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .vod-brand-sub {
@@ -261,19 +277,23 @@
             color: var(--text-muted);
             letter-spacing: 0.5px;
             text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .vod-nav-links {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
         .nav-btn-link {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 7px 14px;
+            padding: 8px 14px;
             border-radius: 20px;
             font-size: 0.82rem;
             font-weight: 600;
@@ -281,10 +301,11 @@
             color: #cbd5e1;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 40px;
             transition: all 0.2s ease;
         }
 
-        .nav-btn-link:hover {
+        .nav-btn-link:hover, .nav-btn-link:active {
             background: rgba(212, 175, 55, 0.2);
             border-color: var(--gold-primary);
             color: var(--gold-light);
@@ -297,7 +318,7 @@
             color: #38bdf8;
         }
 
-        .nav-btn-lumina:hover {
+        .nav-btn-lumina:hover, .nav-btn-lumina:active {
             border-color: #38bdf8;
             color: #7dd3fc;
             box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
@@ -307,10 +328,10 @@
         .vod-ticker-bar {
             background: linear-gradient(90deg, #070d1e 0%, #0d1738 50%, #070d1e 100%);
             border-bottom: 1.5px solid var(--border-gold);
-            padding: 12px 22px;
+            padding: 10px 18px;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
             overflow: hidden;
             position: relative;
             z-index: 50;
@@ -321,14 +342,14 @@
             background: linear-gradient(135deg, var(--gold-primary), #b45309);
             color: #000;
             font-weight: 900;
-            font-size: 0.84rem;
-            padding: 7px 16px;
-            border-radius: 14px;
+            font-size: 0.78rem;
+            padding: 6px 12px;
+            border-radius: 12px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex-shrink: 0;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.5px;
             box-shadow: 0 0 14px var(--gold-glow);
             z-index: 10;
             position: relative;
@@ -341,16 +362,16 @@
             position: relative;
             display: flex;
             align-items: center;
-            mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
         }
 
         .ticker-content-track {
             display: inline-flex;
             align-items: center;
-            gap: 60px;
+            gap: 50px;
             white-space: nowrap;
-            animation: tickerScroll 140s linear infinite;
+            animation: tickerScroll 130s linear infinite;
             will-change: transform;
             padding-left: 100%;
         }
@@ -367,9 +388,9 @@
         .ticker-item {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             color: #f8fafc;
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             font-weight: 600;
             letter-spacing: 0.2px;
             text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
@@ -377,7 +398,7 @@
 
         .ticker-item i {
             color: #fbbf24;
-            font-size: 1.15rem;
+            font-size: 1rem;
         }
 
         /* ── MAIN CONTAINER ── */
@@ -440,7 +461,7 @@
             top: 14px;
             left: 14px;
             z-index: 10;
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.92);
             border: 1px solid var(--gold-primary);
             color: var(--gold-light);
             font-size: 0.76rem;
@@ -460,8 +481,8 @@
 
         .btn-skip-preroll {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            bottom: 16px;
+            right: 16px;
             z-index: 10;
             background: linear-gradient(135deg, #d97706, #b45309);
             border: 1.5px solid var(--gold-light);
@@ -477,22 +498,23 @@
             backdrop-filter: blur(12px);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
             transition: all 0.2s ease;
+            min-height: 44px;
         }
 
         .btn-skip-preroll.show {
             display: inline-flex;
         }
 
-        .btn-skip-preroll:hover {
-            transform: scale(1.05);
+        .btn-skip-preroll:hover, .btn-skip-preroll:active {
+            transform: scale(1.04);
             background: linear-gradient(135deg, #f59e0b, #d97706);
             box-shadow: 0 0 20px var(--gold-glow);
         }
 
         /* Cinema Control Bar */
         .cinema-controls-bar {
-            padding: 16px 24px;
-            background: rgba(8, 14, 30, 0.95);
+            padding: 16px 22px;
+            background: rgba(8, 14, 30, 0.96);
             border-top: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             align-items: center;
@@ -504,7 +526,7 @@
         .now-playing-box {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             min-width: 0;
             flex: 1;
         }
@@ -518,7 +540,7 @@
             color: #f87171;
             font-size: 0.72rem;
             font-weight: 800;
-            padding: 4px 10px;
+            padding: 5px 10px;
             border-radius: 12px;
             letter-spacing: 0.5px;
             flex-shrink: 0;
@@ -539,6 +561,7 @@
 
         .now-playing-info {
             min-width: 0;
+            flex: 1;
         }
 
         .now-playing-title {
@@ -558,8 +581,9 @@
             color: var(--text-muted);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             margin-top: 2px;
+            flex-wrap: wrap;
         }
 
         .cinema-buttons-group {
@@ -573,7 +597,7 @@
             background: rgba(255, 255, 255, 0.07);
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: #e2e8f0;
-            font-size: 0.80rem;
+            font-size: 0.82rem;
             font-weight: 700;
             padding: 8px 14px;
             border-radius: var(--radius-md);
@@ -581,10 +605,12 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            min-height: 44px;
             transition: all 0.2s ease;
+            user-select: none;
         }
 
-        .btn-cinema-action:hover {
+        .btn-cinema-action:hover, .btn-cinema-action:active {
             background: rgba(212, 175, 55, 0.2);
             border-color: var(--gold-primary);
             color: var(--gold-light);
@@ -647,7 +673,7 @@
 
         .section-title {
             font-family: var(--font-display);
-            font-size: 1.45rem;
+            font-size: 1.35rem;
             font-weight: 800;
             color: #fff;
             display: flex;
@@ -666,16 +692,21 @@
             flex-wrap: wrap;
         }
 
+        .search-wrap {
+            position: relative;
+        }
+
         .vod-search-input {
-            background: rgba(11, 18, 38, 0.8);
+            background: rgba(11, 18, 38, 0.85);
             border: 1px solid var(--border-navy);
             border-radius: 20px;
-            padding: 8px 16px 8px 36px;
-            font-size: 0.84rem;
+            padding: 9px 16px 9px 38px;
+            font-size: 0.86rem;
             color: #fff;
             outline: none;
             width: 240px;
             font-family: inherit;
+            min-height: 44px;
             transition: all 0.2s ease;
         }
 
@@ -685,17 +716,14 @@
             width: 280px;
         }
 
-        .search-wrap {
-            position: relative;
-        }
-
         .search-wrap i {
             position: absolute;
             left: 14px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-muted);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            pointer-events: none;
         }
 
         .filter-pills {
@@ -708,15 +736,22 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #94a3b8;
-            font-size: 0.78rem;
+            font-size: 0.80rem;
             font-weight: 700;
-            padding: 6px 14px;
-            border-radius: 16px;
+            padding: 8px 16px;
+            border-radius: 20px;
             cursor: pointer;
+            min-height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             transition: all 0.2s ease;
+            user-select: none;
         }
 
         .filter-pill:hover,
+        .filter-pill:active,
         .filter-pill.active {
             background: var(--gold-primary);
             color: #000;
@@ -785,7 +820,7 @@
             color: #000;
             font-size: 0.68rem;
             font-weight: 900;
-            padding: 3px 8px;
+            padding: 4px 10px;
             border-radius: 8px;
             letter-spacing: 0.5px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.5);
@@ -796,11 +831,11 @@
             position: absolute;
             bottom: 10px;
             right: 10px;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             color: #fff;
             font-size: 0.72rem;
             font-weight: 700;
-            padding: 2px 8px;
+            padding: 3px 8px;
             border-radius: 6px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             z-index: 2;
@@ -877,6 +912,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.08);
             padding-top: 12px;
             margin-top: auto;
+            gap: 10px;
         }
 
         .btn-play-card {
@@ -884,34 +920,43 @@
             color: #000;
             font-weight: 800;
             font-size: 0.82rem;
-            padding: 7px 16px;
-            border-radius: 18px;
+            padding: 8px 18px;
+            border-radius: 20px;
             border: none;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
+            min-height: 44px;
             transition: all 0.2s ease;
         }
 
-        .btn-play-card:hover {
+        .btn-play-card:hover, .btn-play-card:active {
             background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
             box-shadow: 0 0 14px var(--gold-glow);
             transform: scale(1.03);
         }
 
         .btn-share-card {
-            background: none;
-            border: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--text-muted);
             cursor: pointer;
-            font-size: 0.9rem;
-            padding: 6px;
-            transition: color 0.2s;
+            font-size: 0.95rem;
+            min-width: 44px;
+            min-height: 44px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
         }
 
-        .btn-share-card:hover {
+        .btn-share-card:hover, .btn-share-card:active {
             color: var(--cyan-accent);
+            border-color: var(--cyan-accent);
+            background: rgba(56, 189, 248, 0.1);
         }
 
         /* ── FOOTER & MISSION BANNER ── */
@@ -960,11 +1005,12 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            min-height: 44px;
             box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
             transition: all 0.2s ease;
         }
 
-        .btn-footer-gold:hover {
+        .btn-footer-gold:hover, .btn-footer-gold:active {
             transform: translateY(-2px);
             box-shadow: 0 6px 22px rgba(212, 175, 55, 0.5);
         }
@@ -973,8 +1019,9 @@
         .share-modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.82);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             display: none;
             align-items: center;
             justify-content: center;
@@ -990,7 +1037,7 @@
             background: #0b1428;
             border: 1px solid var(--border-gold);
             border-radius: var(--radius-xl);
-            padding: 26px;
+            padding: 24px;
             max-width: 440px;
             width: 100%;
             box-shadow: 0 10px 40px rgba(0,0,0,0.8);
@@ -1001,7 +1048,7 @@
             font-family: var(--font-display);
             font-size: 1.15rem;
             color: #fff;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -1015,7 +1062,7 @@
         }
 
         .btn-share-social {
-            padding: 10px;
+            padding: 12px;
             border-radius: 12px;
             font-size: 0.84rem;
             font-weight: 700;
@@ -1026,10 +1073,11 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            min-height: 46px;
             transition: transform 0.2s ease;
         }
 
-        .btn-share-social:hover {
+        .btn-share-social:hover, .btn-share-social:active {
             transform: scale(1.03);
         }
 
@@ -1065,7 +1113,8 @@
         body.cinema-mode .vod-ticker-bar,
         body.cinema-mode .section-bar,
         body.cinema-mode .vod-movies-grid,
-        body.cinema-mode .vod-footer-banner {
+        body.cinema-mode .vod-footer-banner,
+        body.cinema-mode .vod-mobile-bottom-nav {
             opacity: 0.15;
             filter: blur(2px);
             pointer-events: none;
@@ -1078,15 +1127,362 @@
             z-index: 500;
         }
 
-        /* Responsive */
+        /* ── MOBILE BOTTOM NAVIGATION BAR ── */
+        .vod-mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            background: rgba(6, 9, 19, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 6px 10px calc(6px + env(safe-area-inset-bottom));
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            color: #94a3b8;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-decoration: none;
+            min-height: 44px;
+            min-width: 44px;
+            padding: 4px 6px;
+            border-radius: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-nav-item i {
+            font-size: 1.15rem;
+            color: #cbd5e1;
+            transition: color 0.2s ease;
+        }
+
+        .mobile-nav-item:active, .mobile-nav-item.active {
+            color: var(--gold-light);
+        }
+
+        .mobile-nav-item:active i, .mobile-nav-item.active i {
+            color: var(--gold-primary);
+            text-shadow: 0 0 10px var(--gold-glow);
+        }
+
+        /* ══════════════════════════════════════════════════════════════════
+           RESPONSIVE DESIGN (TABLETS & SMARTPHONES)
+           ══════════════════════════════════════════════════════════════════ */
+        @media (max-width: 900px) {
+            .vod-movies-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 18px;
+            }
+        }
+
         @media (max-width: 768px) {
-            .vod-header { padding: 10px 14px; }
-            .vod-brand-title { font-size: 1.05rem; }
-            .vod-container { padding: 14px 12px 40px; }
-            .cinema-synopsis-drawer { flex-direction: column; }
-            .synopsis-side-info { width: 100%; border-left: none; border-top: 1px solid rgba(255,255,255,0.08); padding-left: 0; padding-top: 14px; }
-            .cinema-controls-bar { flex-direction: column; align-items: flex-start; }
-            .cinema-buttons-group { width: 100%; justify-content: space-between; }
+            body {
+                padding-bottom: calc(64px + env(safe-area-inset-bottom));
+            }
+
+            .vod-mobile-bottom-nav {
+                display: flex;
+            }
+
+            .toast-box {
+                bottom: calc(72px + env(safe-area-inset-bottom));
+                width: calc(100% - 32px);
+                max-width: 380px;
+                text-align: center;
+                font-size: 0.84rem;
+            }
+
+            /* Header */
+            .vod-header {
+                padding: max(8px, env(safe-area-inset-top)) 12px 8px;
+                gap: 10px;
+            }
+
+            .vod-brand {
+                gap: 10px;
+            }
+
+            .vod-logo-img {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+            }
+
+            .vod-brand-title {
+                font-size: 1.02rem;
+            }
+
+            .vod-brand-sub {
+                font-size: 0.65rem;
+            }
+
+            .vod-nav-links .nav-btn-link span {
+                display: none;
+            }
+
+            .nav-btn-link {
+                padding: 6px 10px;
+                min-height: 40px;
+                border-radius: 12px;
+            }
+
+            .nav-btn-link i {
+                margin: 0 !important;
+                font-size: 0.95rem;
+            }
+
+            /* Ticker */
+            .vod-ticker-bar {
+                padding: 8px 12px;
+                gap: 10px;
+            }
+
+            .ticker-badge {
+                font-size: 0.70rem;
+                padding: 4px 8px;
+                border-radius: 8px;
+            }
+
+            .ticker-item {
+                font-size: 0.85rem;
+                gap: 6px;
+            }
+
+            /* Container */
+            .vod-container {
+                padding: 14px 12px 30px;
+            }
+
+            /* Cinema Stage */
+            .cinema-stage-card {
+                border-radius: 16px;
+                margin-bottom: 20px;
+                border-width: 1px;
+            }
+
+            .preroll-overlay-pill {
+                top: 8px;
+                left: 8px;
+                font-size: 0.68rem;
+                padding: 4px 10px;
+            }
+
+            .btn-skip-preroll {
+                bottom: 10px;
+                right: 10px;
+                font-size: 0.75rem;
+                padding: 6px 14px;
+                min-height: 40px;
+            }
+
+            /* Controls Bar */
+            .cinema-controls-bar {
+                padding: 12px 14px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .now-playing-box {
+                width: 100%;
+                gap: 10px;
+            }
+
+            .now-playing-title {
+                font-size: 1.02rem;
+                white-space: normal;
+                line-height: 1.3;
+            }
+
+            .now-playing-meta {
+                font-size: 0.74rem;
+                gap: 6px;
+            }
+
+            .cinema-buttons-group {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                width: 100%;
+                gap: 6px;
+            }
+
+            .btn-cinema-action {
+                min-height: 44px;
+                padding: 6px 4px;
+                font-size: 0.72rem;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 3px;
+                border-radius: 10px;
+                text-align: center;
+            }
+
+            .btn-cinema-action i {
+                font-size: 0.95rem;
+            }
+
+            /* Synopsis Drawer */
+            .cinema-synopsis-drawer {
+                padding: 14px 14px 18px;
+                flex-direction: column;
+                gap: 12px;
+                font-size: 0.85rem;
+            }
+
+            .synopsis-side-info {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                padding-left: 0;
+                padding-top: 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .side-info-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: rgba(255, 255, 255, 0.03);
+                padding: 6px 10px;
+                border-radius: 8px;
+                margin-bottom: 0;
+                font-size: 0.78rem;
+            }
+
+            /* Section & Filters */
+            .section-bar {
+                margin: 22px 0 14px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .section-title {
+                font-size: 1.15rem;
+            }
+
+            .search-and-filters {
+                width: 100%;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-wrap {
+                width: 100%;
+            }
+
+            .vod-search-input {
+                width: 100% !important;
+                min-height: 44px;
+                font-size: 0.88rem;
+                padding: 10px 14px 10px 38px;
+                border-radius: 12px;
+            }
+
+            .filter-pills {
+                display: flex;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                gap: 6px;
+                width: 100%;
+                padding-bottom: 4px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .filter-pills::-webkit-scrollbar {
+                display: none;
+            }
+
+            .filter-pill {
+                min-height: 40px;
+                padding: 8px 14px;
+                font-size: 0.78rem;
+                white-space: nowrap;
+                flex-shrink: 0;
+                border-radius: 18px;
+            }
+
+            /* Footer Banner */
+            .vod-footer-banner {
+                margin-top: 32px;
+                padding: 20px 16px;
+                border-radius: 16px;
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                gap: 16px;
+            }
+
+            .footer-banner-text h3 {
+                font-size: 1.15rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+            }
+
+            .footer-banner-text p {
+                font-size: 0.82rem;
+                line-height: 1.5;
+            }
+
+            .footer-banner-btns {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .btn-footer-gold, .vod-footer-banner .btn-cinema-action {
+                width: 100%;
+                min-height: 44px;
+                justify-content: center;
+                font-size: 0.86rem;
+                border-radius: 22px;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .vod-movies-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .movie-card {
+                border-radius: 16px;
+            }
+
+            .movie-card-body {
+                padding: 14px;
+            }
+
+            .movie-card-title {
+                font-size: 1.05rem;
+            }
+
+            .btn-play-card {
+                flex: 1;
+                font-size: 0.84rem;
+                padding: 10px 14px;
+            }
         }
     </style>
 </head>
@@ -1095,23 +1491,23 @@
     <header class="vod-header">
         <a href="vod" class="vod-brand">
             <img src="logo_vod_cc.jpg" onerror="this.src='lumina_icon.jpg'" alt="VOD Christian Culture" class="vod-logo-img">
-            <div>
+            <div class="vod-brand-text">
                 <div class="vod-brand-title">
-                    VOD CHRISTIAN CULTURE <i class="fa-solid fa-film" style="font-size:0.9rem; color:var(--gold-primary);"></i>
+                    VOD CHRISTIAN CULTURE <i class="fa-solid fa-film" style="font-size:0.85rem; color:var(--gold-primary);"></i>
                 </div>
                 <div class="vod-brand-sub">Kino Chrześcijańskie • Emisja 24/7 & Na Życzenie</div>
             </div>
         </a>
 
         <nav class="vod-nav-links">
-            <a href="https://polskieradio.cc" class="nav-btn-link">
-                <i class="fa-solid fa-radio" style="color:#38bdf8;"></i> Radio CC
+            <a href="https://polskieradio.cc" class="nav-btn-link" title="Polskie Radio Christian Culture">
+                <i class="fa-solid fa-radio" style="color:#38bdf8;"></i> <span>Radio CC</span>
             </a>
-            <a href="lumina" class="nav-btn-link nav-btn-lumina">
-                <i class="fa-solid fa-globe"></i> Portal LUMINA
+            <a href="lumina" class="nav-btn-link nav-btn-lumina" title="Portal Społeczności LUMINA">
+                <i class="fa-solid fa-globe"></i> <span>Portal LUMINA</span>
             </a>
-            <a href="https://polskieradio.cc/#wsparcie" target="_blank" class="nav-btn-link" style="border-color:rgba(212,175,55,0.4); color:var(--gold-light);">
-                <i class="fa-solid fa-heart" style="color:#ec4899;"></i> Wsparcie
+            <a href="https://polskieradio.cc/#wsparcie" target="_blank" class="nav-btn-link" style="border-color:rgba(212,175,55,0.4); color:var(--gold-light);" title="Wsparcie Ewangelizacji">
+                <i class="fa-solid fa-heart" style="color:#ec4899;"></i> <span>Wsparcie</span>
             </a>
         </nav>
     </header>
@@ -1119,7 +1515,7 @@
     <!-- ══════════ SUBTELNY PASEK INFORMACYJNY (NEWS TICKER CC) ══════════ -->
     <div class="vod-ticker-bar">
         <div class="ticker-badge">
-            <i class="fa-solid fa-satellite-dish"></i> CC INFO 24/7
+            <i class="fa-solid fa-satellite-dish"></i> <span>CC INFO 24/7</span>
         </div>
         <div class="ticker-viewport">
             <div class="ticker-content-track" id="tickerTrack">
@@ -1216,7 +1612,7 @@
         </section>
 
         <!-- ══════════ SECTION HEADER & FILTERS ══════════ -->
-        <div class="section-bar">
+        <div class="section-bar" id="vodMoviesSection">
             <h2 class="section-title">
                 <i class="fa-solid fa-film"></i> Biblioteka Filmów VOD • Wybierz i Oglądaj
             </h2>
@@ -1224,11 +1620,12 @@
             <div class="search-and-filters">
                 <div class="search-wrap">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" class="vod-search-input" id="vodSearchInput" placeholder="Szukaj filmu, tematu..." oninput="filterVodCatalog()">
+                    <input type="text" class="vod-search-input" id="vodSearchInput" placeholder="Szukaj filmu, reżysera, tematu..." oninput="filterVodCatalog()">
                 </div>
 
-                <div class="filter-pills">
-                    <button class="filter-pill active" onclick="setCategoryFilter('all', this)">Wszystkie (6)</button>
+                <div class="filter-pills" id="filterPillsContainer">
+                    <button class="filter-pill active" onclick="setCategoryFilter('all', this)">Wszystkie (7)</button>
+                    <button class="filter-pill" onclick="setCategoryFilter('Biblijny', this)"><i class="fa-solid fa-book-bible"></i> Biblijne</button>
                     <button class="filter-pill" onclick="setCategoryFilter('Dramat', this)">Dramat</button>
                     <button class="filter-pill" onclick="setCategoryFilter('Biograficzny', this)">Biograficzny</button>
                     <button class="filter-pill" onclick="setCategoryFilter('sądowy', this)">Proces / Sąd</button>
@@ -1262,6 +1659,30 @@
         </section>
 
     </main>
+
+    <!-- ══════════ MOBILE BOTTOM NAVIGATION BAR ══════════ -->
+    <nav class="vod-mobile-bottom-nav" aria-label="Nawigacja mobilna VOD">
+        <button type="button" class="mobile-nav-item active" onclick="scrollToPlayer(event)" title="Przejdź do Odtwarzacza">
+            <i class="fa-solid fa-play"></i>
+            <span>Seans</span>
+        </button>
+        <button type="button" class="mobile-nav-item" onclick="scrollToCatalog(event)" title="Katalog Filmów">
+            <i class="fa-solid fa-film"></i>
+            <span>Katalog</span>
+        </button>
+        <a href="lumina" class="mobile-nav-item" title="Portal LUMINA">
+            <i class="fa-solid fa-globe"></i>
+            <span>LUMINA</span>
+        </a>
+        <a href="https://polskieradio.cc" class="mobile-nav-item" title="Polskie Radio CC">
+            <i class="fa-solid fa-radio"></i>
+            <span>Radio</span>
+        </a>
+        <button type="button" class="mobile-nav-item" onclick="openShareCurrentMovie()" title="Udostępnij Film">
+            <i class="fa-solid fa-share-nodes"></i>
+            <span>Poleć</span>
+        </button>
+    </nav>
 
     <!-- ══════════ SHARE MODAL ══════════ -->
     <div class="share-modal-overlay" id="shareModal" onclick="closeShareModal(event)">
@@ -1639,6 +2060,23 @@
                 });
             } else {
                 prompt('Skopiuj link do filmu:', url);
+            }
+        };
+
+        // Smooth Scrolling dla Nawigacji Mobilnej
+        window.scrollToPlayer = function(e) {
+            if (e) e.preventDefault();
+            const el = document.getElementById('cinemaStage');
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        window.scrollToCatalog = function(e) {
+            if (e) e.preventDefault();
+            const el = document.getElementById('vodMoviesSection');
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         };
 
