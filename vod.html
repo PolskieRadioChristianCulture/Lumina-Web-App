@@ -72,6 +72,20 @@
           "position": 1,
           "item": {
             "@type": "Movie",
+            "name": "Chata (The Shack)",
+            "director": "Stuart Hazeldine",
+            "dateCreated": "2017",
+            "inLanguage": "pl",
+            "genre": "Dramat",
+            "image": "https://img.vider.info/i/8m8nxv/7/3/chata.png",
+            "url": "https://polskieradio.cc/vod?film=chata-the-shack"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "Movie",
             "name": "JEZUS – Ewangelia wg św. Łukasza",
             "director": "Peter Sykes, John Krish",
             "dateCreated": "1979",
@@ -83,7 +97,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 2,
+          "position": 3,
           "item": {
             "@type": "Movie",
             "name": "Bóg nie umarł (God's Not Dead)",
@@ -97,7 +111,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 3,
+          "position": 4,
           "item": {
             "@type": "Movie",
             "name": "Bóg nie umarł 2 (God's Not Dead 2)",
@@ -111,7 +125,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 4,
+          "position": 5,
           "item": {
             "@type": "Movie",
             "name": "Luter – człowiek, który zmienił oblicze Kościoła",
@@ -125,7 +139,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 5,
+          "position": 6,
           "item": {
             "@type": "Movie",
             "name": "Spotkanie (The Encounter)",
@@ -139,7 +153,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 6,
+          "position": 7,
           "item": {
             "@type": "Movie",
             "name": "Spotkanie 2: Raj utracony",
@@ -153,7 +167,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 7,
+          "position": 8,
           "item": {
             "@type": "Movie",
             "name": "I stanie się światło",
@@ -1541,6 +1555,7 @@
             <!-- Video Player Frame -->
             <div class="cinema-player-wrapper">
                 <div id="ytPlayerContainer"></div>
+                <iframe id="customIframePlayer" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; border:none; z-index:2;" allowfullscreen="true" allowscriptaccess="always" scrolling="no" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
 
                 <!-- Pre-roll Info Pill -->
                 <div class="preroll-overlay-pill" id="prerollPill">
@@ -1624,7 +1639,7 @@
                 </div>
 
                 <div class="filter-pills" id="filterPillsContainer">
-                    <button class="filter-pill active" onclick="setCategoryFilter('all', this)">Wszystkie (7)</button>
+                    <button class="filter-pill active" onclick="setCategoryFilter('all', this)">Wszystkie (8)</button>
                     <button class="filter-pill" onclick="setCategoryFilter('Biblijny', this)"><i class="fa-solid fa-book-bible"></i> Biblijne</button>
                     <button class="filter-pill" onclick="setCategoryFilter('Dramat', this)">Dramat</button>
                     <button class="filter-pill" onclick="setCategoryFilter('Biograficzny', this)">Biograficzny</button>
@@ -1793,12 +1808,14 @@
                 event.target.unMute();
                 event.target.setVolume(100);
             } catch (e) {}
-            event.target.playVideo();
             isAudioMuted = false;
             updateAudioUI(true);
             enableAudioOnFirstInteraction();
             if (isPrerollPlaying) {
+                event.target.playVideo();
                 handlePrerollStart();
+            } else {
+                startMainMovie();
             }
         }
 
@@ -1837,13 +1854,34 @@
             document.getElementById('prerollPill').classList.remove('show');
             document.getElementById('btnSkipPreroll').classList.remove('show');
 
-            if (player && currentMovie) {
-                player.loadVideoById(currentMovie.youtubeId);
-                try {
-                    player.unMute();
-                    player.setVolume(100);
-                } catch(e) {}
-                player.playVideo();
+            const ytContainer = document.getElementById('ytPlayerContainer');
+            const customIframe = document.getElementById('customIframePlayer');
+
+            if (currentMovie) {
+                if (currentMovie.embedType === 'iframe' && currentMovie.embedUrl) {
+                    if (player && typeof player.stopVideo === 'function') {
+                        try { player.stopVideo(); } catch(e) {}
+                    }
+                    if (ytContainer) ytContainer.style.display = 'none';
+                    if (customIframe) {
+                        customIframe.src = currentMovie.embedUrl;
+                        customIframe.style.display = 'block';
+                    }
+                } else {
+                    if (customIframe) {
+                        customIframe.style.display = 'none';
+                        customIframe.src = 'about:blank';
+                    }
+                    if (ytContainer) ytContainer.style.display = 'block';
+                    if (player && currentMovie.youtubeId) {
+                        player.loadVideoById(currentMovie.youtubeId);
+                        try {
+                            player.unMute();
+                            player.setVolume(100);
+                        } catch(e) {}
+                        player.playVideo();
+                    }
+                }
                 isAudioMuted = false;
                 updateAudioUI(true);
                 updateNowPlayingUI(currentMovie);
@@ -1862,12 +1900,22 @@
             // Jeśli pre-roll włączony, zagraj krótki pre-roll, a potem film
             if (window.VodDB.preroll.enabled) {
                 isPrerollPlaying = true;
-                player.loadVideoById(window.VodDB.preroll.videoId);
-                try {
-                    player.unMute();
-                    player.setVolume(100);
-                } catch(e) {}
-                player.playVideo();
+                const ytContainer = document.getElementById('ytPlayerContainer');
+                const customIframe = document.getElementById('customIframePlayer');
+                if (customIframe) {
+                    customIframe.style.display = 'none';
+                    customIframe.src = 'about:blank';
+                }
+                if (ytContainer) ytContainer.style.display = 'block';
+
+                if (player) {
+                    player.loadVideoById(window.VodDB.preroll.videoId);
+                    try {
+                        player.unMute();
+                        player.setVolume(100);
+                    } catch(e) {}
+                    player.playVideo();
+                }
                 isAudioMuted = false;
                 updateAudioUI(true);
                 handlePrerollStart();
@@ -2025,6 +2073,10 @@
 
         // Sterowanie Dźwiękiem
         window.toggleCinemaAudio = function() {
+            if (currentMovie && currentMovie.embedType === 'iframe') {
+                showToast('🔊 Dźwięk jest regulowany bezpośrednio w odtwarzaczu filmu');
+                return;
+            }
             if (!player) return;
             if (isAudioMuted) {
                 try {

@@ -20,6 +20,24 @@
     // Katalog filmów fabularnych VOD (@vod)
     const VOD_MOVIES_CATALOG = [
         {
+            id: 'chata-the-shack',
+            embedType: 'iframe',
+            embedUrl: 'https://vider.info/embed/video/8m8nxv',
+            embedId: '8m8nxv',
+            title: 'Chata (The Shack)',
+            origTitle: 'The Shack',
+            year: 2017,
+            duration: '132 min',
+            category: 'Dramat / Wiara',
+            director: 'Stuart Hazeldine',
+            cast: 'Sam Worthington, Octavia Spencer, Tim McGraw, Radha Mitchell, Aviv Alush',
+            description: 'Poruszająca ekranizacja światowego bestsellera. Po rodzinnej tragedii Mack Phillips pogrąża się w kryzysie wiary i żałobie. Otrzymuje tajemnicze zaproszenie do opuszczonej leśnej chaty, gdzie doświadcza niezwykłego spotkania, które prowadzi go przez drogę głębokiego przebaczenia, duchowego uzdrowienia i bezwarunkowej miłości Boga.',
+            thumbnail: 'https://img.vider.info/i/8m8nxv/7/3/chata.png',
+            featured: true,
+            badge: 'POLECAMY',
+            tags: ['chata', 'the shack', 'dramat chrześcijański', 'przebaczenie', 'miłość boża', 'octavia spencer', 'sam worthington', 'cały film lektor pl']
+        },
+        {
             id: 'film-jezus-ewangelia-lukasza',
             youtubeId: 'GMdQIwKh22A',
             title: 'JEZUS – Ewangelia wg św. Łukasza',
@@ -151,11 +169,11 @@
 
         getMovieById: function(id) {
             if (!id) return VOD_MOVIES_CATALOG[0];
-            return VOD_MOVIES_CATALOG.find(m => m.id === id || m.youtubeId === id) || VOD_MOVIES_CATALOG[0];
+            return VOD_MOVIES_CATALOG.find(m => m.id === id || m.youtubeId === id || m.embedId === id) || VOD_MOVIES_CATALOG[0];
         },
 
         getNextMovie: function(currentId) {
-            const idx = VOD_MOVIES_CATALOG.findIndex(m => m.id === currentId || m.youtubeId === currentId);
+            const idx = VOD_MOVIES_CATALOG.findIndex(m => m.id === currentId || m.youtubeId === currentId || m.embedId === currentId);
             if (idx === -1 || idx >= VOD_MOVIES_CATALOG.length - 1) {
                 return VOD_MOVIES_CATALOG[0];
             }
