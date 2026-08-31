@@ -291,6 +291,43 @@
                 color: #facc15;
                 border-color: #facc15;
             }
+            .smart-action-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                padding: 4px 10px;
+                border-radius: 14px;
+                font-size: 0.72rem;
+                font-weight: 800;
+                font-family: 'Outfit', sans-serif;
+                cursor: pointer;
+                white-space: nowrap;
+                flex-shrink: 0;
+                transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+                -webkit-tap-highlight-color: transparent;
+            }
+            .smart-action-btn.scripture-vault-btn {
+                background: linear-gradient(135deg, rgba(234, 179, 8, 0.25), rgba(245, 158, 11, 0.25));
+                border: 1px solid rgba(250, 204, 21, 0.6);
+                color: #fef08a;
+            }
+            .smart-action-btn.scripture-vault-btn:hover {
+                background: linear-gradient(135deg, rgba(234, 179, 8, 0.4), rgba(245, 158, 11, 0.4));
+                border-color: #facc15;
+                box-shadow: 0 0 12px rgba(250, 204, 21, 0.4);
+                transform: translateY(-1px);
+            }
+            .smart-action-btn.icebreakers-btn {
+                background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(236, 72, 153, 0.25));
+                border: 1px solid rgba(216, 180, 254, 0.6);
+                color: #f5d0fe;
+            }
+            .smart-action-btn.icebreakers-btn:hover {
+                background: linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(236, 72, 153, 0.4));
+                border-color: #f472b6;
+                box-shadow: 0 0 12px rgba(236, 72, 153, 0.4);
+                transform: translateY(-1px);
+            }
             @keyframes pulseUnreadRoom {
                 0%, 100% {
                     border-color: #ef4444;
@@ -314,6 +351,82 @@
         document.head.appendChild(styleEl);
     }
 
+    // ── BAZA WERSETÓW TEMATYCZNYCH DLA CZATU ──
+    const SCRIPTURE_VAULT = [
+        {
+            category: '🌟 Błogosławieństwo & Pokój',
+            items: [
+                { ref: 'Lb 6, 24-26', text: '„Niech cię Pan błogosławi i strzeże. Niech Pan rozjaśni oblicze swoje nad tobą i niech ci będzie miłościwy. Niech Pan zwróci ku tobie swoje oblicze i obdarzy cię pokojem.” (Lb 6, 24-26) 🕊️✨' },
+                { ref: 'J 14, 27', text: '„Pokój zostawiam wam, pokój mój daję wam. Nie tak jak daje świat, Ja wam daję. Niech się nie trwoży serce wasze ani się nie lęka.” (J 14, 27) 🕊️' },
+                { ref: 'Ps 121, 1-2', text: '„Wznoszę swe oczy ku górom: Skądże nadejdzie mi pomoc? Pomoc moja jest od Pana, który stworzył niebo i ziemię.” (Ps 121, 1-2) ⛰️✨' },
+                { ref: 'Ps 29, 11', text: '„Pan da siłę swojemu ludowi, Pan pobłogosławi swój lud pokojem.” (Ps 29, 11) 🙏' }
+            ]
+        },
+        {
+            category: '🛡️ Odwaga & Zwycięstwo',
+            items: [
+                { ref: 'Joz 1, 9', text: '„Czyż ci nie rozkazałem: Bądź mężny i mocny? Nie bój się i nie lękaj, bo z tobą jest Pan, Bóg twój, wszędzie, gdziekolwiek pójdziesz.” (Joz 1, 9) 🛡️⚔️' },
+                { ref: 'Iz 41, 10', text: '„Nie bój się, bo Ja jestem z tobą; nie lękaj się, bo Ja jestem twoim Bogiem. Umocnię cię, a także wspomogę, podtrzymam cię prawicą swej sprawiedliwości.” (Iz 41, 10) ✝️' },
+                { ref: 'Flp 4, 13', text: '„Wszystko mogę w Tym, który mnie umacnia — w Chrystusie.” (Flp 4, 13) 💪✨' },
+                { ref: '2 Tm 1, 7', text: '„Albowiem nie dał nam Bóg ducha bojaźni, ale mocy, miłości i trzeźwego myślenia.” (2 Tm 1, 7) 🔥' }
+            ]
+        },
+        {
+            category: '❤️ Miłość & Relacje',
+            items: [
+                { ref: '1 Kor 13, 4.7', text: '„Miłość cierpliwa jest, łaskawa jest. Wszystko znosi, wszystkiemu wierzy, we wszystkim pokłada nadzieję, wszystko przetrzyma.” (1 Kor 13, 4.7) ❤️🕊️' },
+                { ref: 'Kol 3, 14', text: '„Na to zaś wszystko przyobleczcie miłość, która jest spoiwem doskonałości.” (Kol 3, 14) 💍✨' },
+                { ref: '1 J 4, 19', text: '„My miłujemy, ponieważ On pierwszy nas umiłował.” (1 J 4, 19) ❤️' },
+                { ref: 'Prz 17, 17', text: '„Przyjaciel kocha w każdym czasie, a bratem staje się w nieszczęściu.” (Prz 17, 17) 🤝' }
+            ]
+        },
+        {
+            category: '🕊️ Pocieszenie & Nadzieja',
+            items: [
+                { ref: 'Rz 8, 28', text: '„Wiemy też, że Bóg z tymi, którzy Go miłują, współdziała we wszystkim dla ich dobra.” (Rz 8, 28) ✨' },
+                { ref: 'Jr 29, 11', text: '„Jestem bowiem świadomy zamiarów, jakie mam wobec was — wyrocznia Pana — zamiarów pokoju, a nie nieszczęścia, aby zapewnić wam przyszłość i nadzieję.” (Jr 29, 11) 🕊️' },
+                { ref: 'Ps 23, 1-3', text: '„Pan jest moim pasterzem, nie brak mi niczego. Pozwala mi leżeć na zielonych pastwiskach. Prowadzi mnie nad wody, gdzie mogę odpocząć: orzeźwia moją duszę.” (Ps 23, 1-3) 🌿' },
+                { ref: 'Mt 11, 28', text: '„Przyjdźcie do Mnie wszyscy, którzy utrudzeni i obciążeni jesteście, a Ja wam dam ukojenie.” (Mt 11, 28) 🕯️' }
+            ]
+        },
+        {
+            category: '🧭 Mądrość & Kierunek',
+            items: [
+                { ref: 'Prz 3, 5-6', text: '„Zaufaj Panu z całego swojego serca, a nie polegaj na własnym rozumie. Pamiętaj o Nim na wszystkich swoich drogach, a On prostować będzie twoje ścieżki.” (Prz 3, 5-6) 🧭✨' },
+                { ref: 'Ps 119, 105', text: '„Twoje Słowo jest lampą dla moich stóp i światłem na mojej ścieżce.” (Ps 119, 105) 💡📖' },
+                { ref: 'Jk 1, 5', text: '„Jeśli zaś komuś z was brakuje mądrości, niech prosi o nią Boga, który daje wszystkim chętnie i bez wypominania, a będzie mu dana.” (Jk 1, 5) 🙏' }
+            ]
+        }
+    ];
+
+    // ── BAZA PYTAŃ PRZEŁAMUJĄCYCH LODY (ICEBREAKERS) ──
+    const ICEBREAKERS = [
+        {
+            category: '📖 Słowo Boże & Wiara',
+            questions: [
+                'Jaki fragment Pisma Świętego jest Twoim ulubionym wersetem życia i dlaczego? 📖✨',
+                'Co w ostatnim czasie najbardziej poruszyło Twoje serce podczas osobistej modlitwy lub czytania Słowa? 🕊️',
+                'Jaka pieśń lub utwór uwielbienia towarzyszy Ci najczęściej w tym tygodniu? 🎵🙏'
+            ]
+        },
+        {
+            category: '✨ Doświadczenie Bożej Łaski',
+            questions: [
+                'W jakich codziennych momentach najmocniej odczuwasz Bożą obecność i pokój serca? 🌿',
+                'Jakie Boże dzieło lub świadectwo w Twoim życiu dało Ci największą siłę i nadzieję? ✨',
+                'O co dobrego mogę się dziś w wolnej chwili pomodlić w Twojej intencji? 🙏'
+            ]
+        },
+        {
+            category: '🌸 Społeczność, Pasje & Wartości',
+            questions: [
+                'W jaki sposób najchętniej spędzasz wolny czas — spacery na łonie natury, dobra książka czy muzyka? ☀️',
+                'Do jakiej wspólnoty lub kościoła należysz i czym się w nim zajmujesz? ⛪',
+                'Co najbardziej cenisz w relacjach z ludźmi, którzy dzielą te same chrześcijańskie wartości? 🤝❤️'
+            ]
+        }
+    ];
+
     // Wstawienie tekstu do wskazanego pola input
     window.insertChatSmartBlessing = function(targetInputId, text) {
         let input = document.getElementById(targetInputId);
@@ -328,12 +441,139 @@
         input.value = text;
         input.focus();
 
-        // Wywołanie zdarzeń input & change, by podpięte silniki (np. wskaźnik pisania) zareagowały
         input.dispatchEvent(new Event('input', { bubbles: true }));
         input.dispatchEvent(new Event('change', { bubbles: true }));
 
+        // Zamknij modale jeśli były otwarte
+        window.closeLuminaScripturePicker();
+        window.closeLuminaIcebreakersPicker();
+
         if (typeof window.showToast === 'function') {
-            window.showToast('✨ Wstawiono błogosławieństwo do wiadomości');
+            window.showToast('✨ Wstawiono treść do wiadomości');
+        }
+    };
+
+    // ── MODAL BIBLIOTEKI WERSETÓW ──
+    window.openLuminaScripturePicker = function(targetInputId) {
+        let modal = document.getElementById('luminaScriptureVaultModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'luminaScriptureVaultModal';
+            modal.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:999999; display:flex; align-items:center; justify-content:center; padding:16px; opacity:0; pointer-events:none; transition:opacity 0.25s ease;';
+            document.body.appendChild(modal);
+        }
+
+        let bodyHtml = SCRIPTURE_VAULT.map(cat => `
+            <div style="margin-bottom:18px;">
+                <div style="font-size:0.85rem; font-weight:800; color:#facc15; font-family:'Outfit',sans-serif; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                    ${cat.category}
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:8px;">
+                    ${cat.items.map(it => {
+                        const escaped = it.text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                        return `
+                            <div onclick="window.insertChatSmartBlessing('${targetInputId}', '${escaped}')" 
+                                 style="background:rgba(255,255,255,0.04); border:1px solid rgba(250,204,21,0.25); border-radius:12px; padding:10px 12px; cursor:pointer; transition:all 0.2s;"
+                                 onmouseover="this.style.background='rgba(250,204,21,0.12)'; this.style.borderColor='#facc15'; this.style.transform='translateY(-1px)';"
+                                 onmouseout="this.style.background='rgba(255,255,255,0.04)'; this.style.borderColor='rgba(250,204,21,0.25)'; this.style.transform='none';">
+                                <div style="font-size:0.75rem; font-weight:800; color:#fef08a; margin-bottom:3px;"><i class="fa-solid fa-book-bible"></i> ${it.ref}</div>
+                                <div style="font-size:0.78rem; color:#cbd5e1; line-height:1.4;">${it.text}</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `).join('');
+
+        modal.innerHTML = `
+            <div style="background:#0b1329; border:1.5px solid rgba(250,204,21,0.4); border-radius:20px; max-width:640px; width:100%; max-height:85vh; display:flex; flex-direction:column; box-shadow:0 20px 50px rgba(0,0,0,0.8); overflow:hidden;">
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02);">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg, #eab308, #ca8a04); display:flex; align-items:center; justify-content:center; color:#000; font-size:1.1rem;"><i class="fa-solid fa-book-bible"></i></span>
+                        <div>
+                            <div style="font-weight:800; font-size:1rem; color:#fff; font-family:'Outfit',sans-serif;">Biblioteka Słowa Bożego ✨</div>
+                            <div style="font-size:0.72rem; color:#94a3b8;">Kliknij werset, aby wstawić go bezpośrednio do rozmowy</div>
+                        </div>
+                    </div>
+                    <button onclick="window.closeLuminaScripturePicker()" style="background:rgba(255,255,255,0.08); border:none; color:#fff; width:44px; height:44px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1.1rem; touch-action:manipulation;"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div style="padding:16px 20px; overflow-y:auto; flex:1;">
+                    ${bodyHtml}
+                </div>
+            </div>
+        `;
+
+        modal.style.opacity = '1';
+        modal.style.pointerEvents = 'auto';
+    };
+
+    window.closeLuminaScripturePicker = function() {
+        const modal = document.getElementById('luminaScriptureVaultModal');
+        if (modal) {
+            modal.style.opacity = '0';
+            modal.style.pointerEvents = 'none';
+        }
+    };
+
+    // ── MODAL PYTAŃ NA START (ICEBREAKERS) ──
+    window.openLuminaIcebreakersPicker = function(targetInputId) {
+        let modal = document.getElementById('luminaIcebreakersModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'luminaIcebreakersModal';
+            modal.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:999999; display:flex; align-items:center; justify-content:center; padding:16px; opacity:0; pointer-events:none; transition:opacity 0.25s ease;';
+            document.body.appendChild(modal);
+        }
+
+        let bodyHtml = ICEBREAKERS.map(cat => `
+            <div style="margin-bottom:18px;">
+                <div style="font-size:0.85rem; font-weight:800; color:#f472b6; font-family:'Outfit',sans-serif; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                    ${cat.category}
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    ${cat.questions.map(q => {
+                        const escaped = q.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                        return `
+                            <div onclick="window.insertChatSmartBlessing('${targetInputId}', '${escaped}')" 
+                                 style="background:rgba(255,255,255,0.04); border:1px solid rgba(236,72,153,0.25); border-radius:12px; padding:12px 14px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:space-between; gap:10px;"
+                                 onmouseover="this.style.background='rgba(236,72,153,0.12)'; this.style.borderColor='#ec4899'; this.style.transform='translateX(3px)';"
+                                 onmouseout="this.style.background='rgba(255,255,255,0.04)'; this.style.borderColor='rgba(236,72,153,0.25)'; this.style.transform='none';">
+                                <div style="font-size:0.82rem; color:#f1f5f9; line-height:1.45; font-weight:600;">${q}</div>
+                                <span style="font-size:0.75rem; color:#f472b6; font-weight:800; flex-shrink:0; background:rgba(236,72,153,0.15); padding:4px 8px; border-radius:8px;">Wstaw 💬</span>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `).join('');
+
+        modal.innerHTML = `
+            <div style="background:#0b1329; border:1.5px solid rgba(236,72,153,0.4); border-radius:20px; max-width:600px; width:100%; max-height:85vh; display:flex; flex-direction:column; box-shadow:0 20px 50px rgba(0,0,0,0.8); overflow:hidden;">
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02);">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg, #ec4899, #a855f7); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.1rem;"><i class="fa-solid fa-comments"></i></span>
+                        <div>
+                            <div style="font-weight:800; font-size:1rem; color:#fff; font-family:'Outfit',sans-serif;">Pytania Przełamujące Lody 💬</div>
+                            <div style="font-size:0.72rem; color:#94a3b8;">Wartościowe tematy do rozpoczęcia budującej rozmowy</div>
+                        </div>
+                    </div>
+                    <button onclick="window.closeLuminaIcebreakersPicker()" style="background:rgba(255,255,255,0.08); border:none; color:#fff; width:44px; height:44px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1.1rem; touch-action:manipulation;"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div style="padding:16px 20px; overflow-y:auto; flex:1;">
+                    ${bodyHtml}
+                </div>
+            </div>
+        `;
+
+        modal.style.opacity = '1';
+        modal.style.pointerEvents = 'auto';
+    };
+
+    window.closeLuminaIcebreakersPicker = function() {
+        const modal = document.getElementById('luminaIcebreakersModal');
+        if (modal) {
+            modal.style.opacity = '0';
+            modal.style.pointerEvents = 'none';
         }
     };
 
@@ -362,6 +602,12 @@
             <div class="smart-time-badge" style="background:${cat.badgeBg}; border:1px solid ${cat.badgeBorder}; color:${cat.badgeColor};">
                 ${cat.label}
             </div>
+            <button type="button" class="smart-action-btn scripture-vault-btn" onclick="window.openLuminaScripturePicker('${targetInputId}')">
+                <i class="fa-solid fa-book-bible"></i> Wersety
+            </button>
+            <button type="button" class="smart-action-btn icebreakers-btn" onclick="window.openLuminaIcebreakersPicker('${targetInputId}')">
+                <i class="fa-solid fa-comments"></i> Pytania na start
+            </button>
             ${chipsHtml}
             <button type="button" class="smart-cycle-btn" onclick="window._cycleSmartBlessings('${targetInputId}', this)" title="Zmień zestaw błogosławieństw">
                 <i class="fa-solid fa-arrows-rotate"></i> Losuj
@@ -395,6 +641,12 @@
             <div class="smart-time-badge" style="background:${cat.badgeBg}; border:1px solid ${cat.badgeBorder}; color:${cat.badgeColor};">
                 ${cat.label}
             </div>
+            <button type="button" class="smart-action-btn scripture-vault-btn" onclick="window.openLuminaScripturePicker('${targetInputId}')">
+                <i class="fa-solid fa-book-bible"></i> Wersety
+            </button>
+            <button type="button" class="smart-action-btn icebreakers-btn" onclick="window.openLuminaIcebreakersPicker('${targetInputId}')">
+                <i class="fa-solid fa-comments"></i> Pytania na start
+            </button>
             ${chipsHtml}
             <button type="button" class="smart-cycle-btn" onclick="window._cycleSmartBlessings('${targetInputId}', this)" title="Zmień zestaw błogosławieństw">
                 <i class="fa-solid fa-arrows-rotate"></i> Losuj
