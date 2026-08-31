@@ -296,6 +296,13 @@
                         </div>
                         <div style="padding:8px 12px; border-radius:14px; font-size:0.84rem; line-height:1.45; ${isMe ? 'background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; border-bottom-right-radius:2px;' : 'background:rgba(255,255,255,0.08); color:#f1f5f9; border-bottom-left-radius:2px; border:1px solid rgba(255,255,255,0.1);'}">
                             ${text}
+                            ${isMe ? `
+                                <div style="display:flex; justify-content:flex-end; align-items:center; margin-top:4px; font-size:0.68rem; color:#fff;">
+                                    <span style="background:rgba(0,0,0,0.4); padding:2px 6px; border-radius:6px; font-weight:800; display:inline-flex; align-items:center; gap:4px;">
+                                        <i class="fa-solid fa-check-double" style="color:${msg.isRead ? '#fde047' : '#38bdf8'};"></i> ${msg.isRead ? ('Odczytano' + (msg.readByName ? ' przez: ' + msg.readByName : '')) : 'Dostarczono'}
+                                    </span>
+                                </div>
+                            ` : ''}
                         </div>
                     </div>
                 </div>

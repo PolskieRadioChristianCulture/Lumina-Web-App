@@ -7745,17 +7745,19 @@
                 const color = '#fff';
                 const radius = isMe ? '16px 16px 4px 16px' : '16px 16px 16px 4px';
                 const time = msg.dateStr || (msg.timestamp?.seconds ? new Date(msg.timestamp.seconds * 1000).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : 'Teraz');
+
                 let readStatusHtml = '';
                 if (isMe) {
+                    const partnerName = activeChatSession?.partnerName || 'Rozmówca';
+                    const readerName = msg.readByName || partnerName;
                     if (msg.isRead || msg.status === 'read') {
-                        const readTime = msg.readAt ? new Date(msg.readAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
-                        const whoRead = msg.readByName ? (' przez: ' + escapeHtml(msg.readByName)) : '';
-                        readStatusHtml = '<span style="color:#ffffff; font-weight:800; display:inline-flex; align-items:center; gap:4px; font-size:0.72rem; background:rgba(0,0,0,0.42); padding:3px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.35); text-shadow:0 1px 2px rgba(0,0,0,0.6);" title="Odczytana' + whoRead + ' o ' + (readTime || 'przed chwilą') + '"><i class="fa-solid fa-check-double" style="color:#fde047; font-size:0.78rem;"></i> Odczytano' + (readTime ? ' • ' + readTime : '') + '</span>';
+                        const readTime = msg.readAt ? new Date(msg.readAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : time;
+                        readStatusHtml = '<span style="color:#ffffff; font-weight:800; display:inline-flex; align-items:center; gap:5px; font-size:0.72rem; background:rgba(0,0,0,0.52); padding:3px 8px; border-radius:8px; border:1px solid rgba(250,204,21,0.6); text-shadow:0 1px 2px rgba(0,0,0,0.8);" title="Wiadomość odczytana przez: ' + escapeHtml(readerName) + ' o ' + readTime + '"><i class="fa-solid fa-check-double" style="color:#fde047; font-size:0.80rem;"></i> Odczytano przez: <strong style="color:#fde047; font-weight:900;">' + escapeHtml(readerName) + '</strong> • ' + readTime + '</span>';
                     } else if (msg.delivered || msg.status === 'delivered') {
                         const delivTime = msg.deliveredAt ? new Date(msg.deliveredAt).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : time;
-                        readStatusHtml = '<span style="color:#ffffff; font-weight:800; display:inline-flex; align-items:center; gap:4px; font-size:0.72rem; background:rgba(0,0,0,0.42); padding:3px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.35); text-shadow:0 1px 2px rgba(0,0,0,0.6);" title="Dostarczono na telefon / serwer o ' + delivTime + '"><i class="fa-solid fa-check-double" style="color:#38bdf8; font-size:0.78rem;"></i> Dostarczono</span>';
+                        readStatusHtml = '<span style="color:#ffffff; font-weight:800; display:inline-flex; align-items:center; gap:5px; font-size:0.72rem; background:rgba(0,0,0,0.52); padding:3px 8px; border-radius:8px; border:1px solid rgba(56,189,248,0.5); text-shadow:0 1px 2px rgba(0,0,0,0.8);" title="Dostarczono na telefon i serwer o ' + delivTime + '"><i class="fa-solid fa-check-double" style="color:#38bdf8; font-size:0.80rem;"></i> Dostarczono • ' + delivTime + '</span>';
                     } else {
-                        readStatusHtml = '<span style="color:#ffffff; font-weight:700; display:inline-flex; align-items:center; gap:4px; font-size:0.72rem; background:rgba(0,0,0,0.42); padding:3px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.3); text-shadow:0 1px 2px rgba(0,0,0,0.6);" title="Wysłana na serwer"><i class="fa-solid fa-check" style="color:#e2e8f0; font-size:0.78rem;"></i> Wysłana</span>';
+                        readStatusHtml = '<span style="color:#ffffff; font-weight:700; display:inline-flex; align-items:center; gap:5px; font-size:0.72rem; background:rgba(0,0,0,0.52); padding:3px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.25); text-shadow:0 1px 2px rgba(0,0,0,0.8);" title="Wysłana na serwer"><i class="fa-solid fa-check" style="color:#cbd5e1; font-size:0.78rem;"></i> Wysłana • ' + time + '</span>';
                     }
                 }
 
@@ -7801,208 +7803,159 @@
             }
         }
 
-        function openChatWith(name, avatar, slug, targetMessageId) {
-            if (targetMessageId) window._targetChatMessageId = targetMessageId;
-            window._activeChatInitialScrollDone = false;
-            const m = document.getElementById('directMessagesModal');
-            if (m) m.classList.add('open');
-
-            switchMessengerMainTab('private');
-
-            const listView = document.getElementById('dmListView');
-            const chatView = document.getElementById('dmChatRoomView');
-            if (listView) listView.style.display = 'none';
-            if (chatView) chatView.style.display = 'flex';
-
-            const nameEl = document.getElementById('activeChatName');
-            const avatarEl = document.getElementById('activeChatAvatar');
-            if (nameEl) nameEl.textContent = name;
-            if (avatarEl) avatarEl.src = avatar || 'lumina_icon.jpg';
-
-            const myUser = window.LuminaDB?.getCurrentUser();
-            const myProfile = window.LuminaDB?.getCurrentProfile();
-            const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || (localStorage.getItem('lumina_guest_id') || 'guest');
-            const fromId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
-            let toId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(slug || name) : (slug || name.toLowerCase().replace(/\s+/g, ''));
-
-            if (fromId === toId) {
-                if (fromId === 'cezaryrgowski') {
-                    toId = 'wiolettarogowska';
-                    if (nameEl) nameEl.textContent = 'Wioletta Rogowska';
-                    if (avatarEl) avatarEl.src = 'avatar_wioletta_official.jpg';
-                } else if (fromId === 'wiolettarogowska') {
-                    toId = 'cezaryrgowski';
-                    if (nameEl) nameEl.textContent = 'Cezary Rogowski';
-                    if (avatarEl) avatarEl.src = 'avatar_cezary_official.jpg';
-                }
-            }
-
-            const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : [fromId, toId].sort().join('_');
-
-            activeChatSession = {
-                chatId: chatId,
-                targetId: toId,
-                targetName: nameEl?.textContent || name,
-                targetAvatar: avatarEl?.src || avatar
-            };
-
-            const box = document.getElementById('activeChatMessagesBox');
-            if (box) {
-                box.innerHTML = `
-                    <div style="text-align:center;margin:10px 0;">
-                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${name} w Chrystusie ✨</span>
-                    </div>
-                `;
-                scrollChatToBottom(box, false);
-            }
-
-            if (activeChatUnsubscribe) activeChatUnsubscribe();
-
-            if (window.LuminaDB) {
-                activeChatUnsubscribe = window.LuminaDB.subscribeToDirectMessages(chatId, (messages) => {
-                    renderDirectChatMessages(messages, fromId);
-                });
-            }
-            setTimeout(() => {
-                const input = document.getElementById('activeChatInput');
-                if (input) input.focus();
-                scrollChatToBottom('activeChatMessagesBox', false);
-            }, 150);
-        }
-
         async function handleSendActiveChatMessage(e) {
-            if (e) e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             const input = document.getElementById('activeChatInput');
-            if (!input) return;
             const text = input.value.trim();
             if (!text || !activeChatSession) return;
 
             input.value = '';
+            scrollChatToBottom('activeChatMessagesBox', true);
 
             if (window.LuminaDB) {
-                const myUser = window.LuminaDB?.getCurrentUser();
-                const myProfile = window.LuminaDB?.getCurrentProfile();
-                const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest';
-                const fromId = window.LuminaDB.normalizeChatUserId(rawFrom);
-
                 await window.LuminaDB.sendDirectMessageToCloud(activeChatSession.chatId, {
-                    senderId: fromId,
-                    senderName: myProfile?.name || myUser?.displayName || (fromId === 'cezaryrgowski' ? 'Cezary Rogowski' : (fromId === 'wiolettarogowska' ? 'Wioletta Rogowska' : 'Użytkownik LUMINA')),
-                    senderAvatar: myProfile?.avatar || myUser?.photoURL || (fromId === 'cezaryrgowski' ? 'avatar_cezary_official.jpg' : (fromId === 'wiolettarogowska' ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg')),
                     receiverId: activeChatSession.targetId,
                     text: text
                 });
             }
         }
 
-        // Close modals on backdrop click
+        // ── Close modals on backdrop click ──
         document.querySelectorAll('.modal-overlay').forEach(bg =>
-            bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); })
+            bg.addEventListener('click', e => { 
+                if (e.target === bg) {
+                    bg.classList.remove('open');
+                    bg.style.display = 'none';
+                }
+            })
         );
 
-        // Fast direct REST profile fetching on load
-        async function fetchProfileDirectFast() {
-            const slug = getRequestedUserSlug();
-            if (!slug) return;
-            try {
-                const restUrl = 'https://firestore.googleapis.com/v1/projects/lumina-cc/databases/(default)/documents/lumina_profiles?key=AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M&pageSize=100';
-                const res = await fetch(restUrl);
-                if (res.ok) {
-                    const json = await res.json();
-                    if (json.documents) {
-                        const target = slug.toLowerCase();
-                        const found = json.documents.find(d => {
-                            const docId = d.name.split('/').pop().toLowerCase();
-                            const f = d.fields || {};
-                            const s = (f.slug?.stringValue || '').toLowerCase();
-                            const u = (f.uid?.stringValue || '').toLowerCase();
-                            return docId === target || s === target || u === target;
-                        });
-                        if (found) {
-                            const f = found.fields || {};
-                            const parsed = {
-                                uid: f.uid?.stringValue || found.name.split('/').pop(),
-                                slug: f.slug?.stringValue || slug,
-                                name: f.name?.stringValue || 'Użytkownik LUMINA',
-                                age: f.age ? (f.age.integerValue || f.age.stringValue) : '',
-                                city: f.city?.stringValue || 'Polska',
-                                gender: f.gender?.stringValue || 'kobieta',
-                                lookingFor: f.lookingFor?.stringValue || 'mezczyzna',
-                                denom: f.denom?.stringValue || 'Chrześcijanin',
-                                church: f.church?.stringValue || '',
-                                job: f.job?.stringValue || 'Społeczność LUMINA ✨',
-                                verse: f.verse?.stringValue || '„Wszystko mogę w Tym, który mnie umacnia.”',
-                                verseRef: f.verseRef?.stringValue || 'Flp 4, 13',
-                                bio: f.bio?.stringValue || '',
-                                status: f.status?.stringValue || 'Panna/Kawaler',
-                                avatar: (f.avatar?.stringValue && !f.avatar.stringValue.includes('googleusercontent.com')) ? f.avatar.stringValue : (f.carouselMediaUrl?.stringValue && !f.carouselMediaUrl.stringValue.includes('googleusercontent.com') ? f.carouselMediaUrl.stringValue : (slug.includes('bibliaaudio') ? 'avatar_biblia_audio.gif' : (f.avatar?.stringValue || 'lumina_icon.jpg'))),
-                                avatarVideo: f.avatarVideo?.stringValue || f.carouselVideo?.stringValue || '',
-                                carouselMediaType: f.carouselMediaType?.stringValue || (f.avatarVideo?.stringValue ? 'video' : 'photo'),
-                                carouselMediaUrl: f.carouselMediaUrl?.stringValue || f.avatar?.stringValue || '',
-                                carouselVideo: f.carouselVideo?.stringValue || f.avatarVideo?.stringValue || '',
-                                cover: f.cover?.stringValue || 'lumina_default_cover.jpg',
-                                visibility: f.visibility?.stringValue || 'public',
-                                matchScore: f.matchScore?.stringValue || '98%',
-                                isVerified: true,
-                                photos: f.photos?.arrayValue?.values ? f.photos.arrayValue.values.map(v => v.stringValue).filter(Boolean) : [slug.includes('bibliaaudio') ? 'avatar_biblia_audio.gif' : (f.avatar?.stringValue || 'lumina_icon.jpg')],
-                                posts: []
-                            };
-                            window._cloudProfileData = parsed;
-                            try {
-                                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(parsed));
-                                if (parsed.slug) localStorage.setItem('lumina_profile_' + parsed.slug.toLowerCase(), JSON.stringify(parsed));
-                                if (parsed.uid) localStorage.setItem('lumina_profile_' + parsed.uid, JSON.stringify(parsed));
-                            } catch(e) {}
-                            checkOwnerAuthSession();
-                            renderProfile();
-                        }
+        // ── 3D Reveal & Interactions ──
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = entry.target.dataset.origTrans || 'translateY(0)';
                     }
-                }
-            } catch(e) {
-                console.warn('fetchProfileDirectFast notice:', e);
-            }
-        }
+                });
+            }, { threshold: 0.1 });
 
-        // Initialize immediately and on DOM load
-        try {
-            fetchProfileDirectFast();
-            renderProfile();
-        } catch(e) {
-            console.error("Immediate renderProfile error:", e);
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            fetchProfileDirectFast();
-            renderProfile();
-
-            window.addEventListener('lumina_post_published', () => renderPosts());
-            window.addEventListener('storage', () => renderPosts());
-
-            const initCloudSync = () => {
-                if (window.LuminaDB) {
-                    const slug = getRequestedUserSlug();
-                    window.LuminaDB.subscribeToProfile(slug, (cloudData) => {
-                        if (cloudData) {
-                            window._cloudProfileData = cloudData;
-                            try {
-                                localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cloudData));
-                                if (cloudData.slug) localStorage.setItem('lumina_profile_' + cloudData.slug.toLowerCase(), JSON.stringify(cloudData));
-                                if (cloudData.uid) localStorage.setItem('lumina_profile_' + cloudData.uid, JSON.stringify(cloudData));
-                            } catch(e) {}
-                            checkOwnerAuthSession();
-                            renderProfile();
-                        }
-                    });
-                    if (window.LuminaDB.subscribeToFeedPosts) {
-                        window.LuminaDB.subscribeToFeedPosts(() => renderPosts());
-                    }
+            document.querySelectorAll('.why-item, .widget-panel').forEach((el, i) => {
+                if (el.classList.contains('widget-panel')) {
+                    el.style.opacity = '0';
+                    el.style.transition = `opacity 1s ease ${i * 0.1}s`;
                 } else {
-                    setTimeout(initCloudSync, 300);
+                    const comp = window.getComputedStyle(el);
+                    el.dataset.origTrans = comp.transform !== 'none' ? comp.transform : 'translateY(0)';
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(40px)';
+                    el.style.transition = `opacity 0.8s cubic-bezier(0.2, 1, 0.2, 1) ${i * 0.1}s, transform 0.8s cubic-bezier(0.2, 1, 0.2, 1) ${i * 0.1}s`;
                 }
-            };
-            initCloudSync();
+                observer.observe(el);
+                
+                el.addEventListener('transitionend', function handler(e) {
+                    if(e.propertyName === 'opacity') {
+                        el.style.transition = ''; 
+                        el.style.transform = ''; 
+                        el.removeEventListener('transitionend', handler);
+                    }
+                });
+            });
         });
-        window.addEventListener('load', renderProfile);
+
+        // ── UNIVERSAL OMNI-SEARCH ENGINE (Global Shortcuts & Profiles Resolver) ──
+        const OMNI_DIRECTORY = [
+            { query: '@ccwomen @women @cc_women cc women ccwomen', name: 'CC Women • YouTube', handle: '@ccwomen', role: 'Oficjalny Kanał YouTube CC Women 🌸', avatar: 'logo_cc_women.jpg', url: 'lumina.ccwomen.html', type: 'channel' },
+            { query: '@cezary @cezaryrgowski @cezaryrogowski cezary rogowski', name: 'Cezary Rogowski', handle: '@cezary', role: 'Założyciel Christian Culture ✨', avatar: 'avatar_cezary_official.jpg', url: 'lumina.cezaryrgowski.html', type: 'founder' },
+            { query: '@wioletta @wiolettarogowska wioletta rogowska', name: 'Wioletta Rogowska', handle: '@wioletta', role: 'Współzałożycielka Christian Culture 🌸', avatar: 'avatar_wioletta_official.jpg', url: 'lumina.wiolettarogowska.html', type: 'founder' },
+            { query: '@radiocc @radio radio christian culture radio na zywo', name: 'Radio Christian Culture', handle: '@radiocc', role: 'Stacja Radiowa & Transmisja Na Żywo ✨', avatar: 'lumina_icon.jpg', url: 'index.html', type: 'media' },
+            { query: '@lumina @tablica tablica spolecznosci posty', name: 'Tablica Społeczności', handle: '@lumina', role: 'Główny Strumień Wpisów i Świadectw ✨', avatar: 'lumina_icon.jpg', url: 'lumina-tablica.html', type: 'feed' },
+            { query: '@noemi noemi wroclaw', name: 'Noemi (28)', handle: '@noemi', role: 'Głęboka wiara i pasja do natury ✨', avatar: 'avatar_noemi.jpg', url: 'lumina-profile.html?u=noemi', type: 'user' },
+            { query: '@tomasz @tomek tomasz góry', name: 'Tomasz (29)', handle: '@tomek', role: 'Wędrówki górskie i uwielbienie ✨”', avatar: 'avatar_widget_tomek.jpg', url: 'lumina-profile.html?u=tomek', type: 'user' },
+            { query: '@weronika weronika krakow', name: 'Weronika (24)', handle: '@weronika', role: 'Muzyka chrześcijańska i śpiew ✨', avatar: 'avatar_weronika.jpg', url: 'lumina-profile.html?u=weronika', type: 'user' },
+            { query: '@jola @jolawojcik jola wojcik biblijny czas modlitwy', name: 'Jola Wójcik', handle: '@jolawojcik', role: 'Biblijny Czas Modlitwy • Polskie Radio CC 🕊️🌸', avatar: 'avatar_jolawojcik.jpg', url: 'lumina.jolawojcik.html', type: 'user' },
+            { query: '#modlitwa modlitwa intencje', name: '#modlitwa', handle: '#modlitwa', role: 'Wpisy modlitewne na Tablicy ✨', avatar: 'lumina_icon.jpg', url: 'lumina-tablica.html?q=%23modlitwa', type: 'tag' },
+            { query: '#uwielbienie uwielbienie muzyka', name: '#uwielbienie', handle: '#uwielbienie', role: 'Pieśni i muzyka chwały ✨', avatar: 'lumina_icon.jpg', url: 'lumina-tablica.html?q=%23uwielbienie', type: 'tag' },
+            { query: '#ccwomen kobiety wiary', name: '#ccwomen', handle: '#ccwomen', role: 'Społeczność i wpisy CC Women 🌸', avatar: 'logo_cc_women.jpg', url: 'lumina-tablica.html?q=%23ccwomen', type: 'tag' }
+        ];
+
+        window.handleOmniSearchInput = function(val) {
+            const dropdown = document.getElementById('omniDropdown');
+            if (!dropdown) return;
+            const term = (val || '').trim().toLowerCase();
+            if (!term) {
+                dropdown.classList.remove('open');
+                dropdown.innerHTML = '';
+                return;
+            }
+
+            const matches = OMNI_DIRECTORY.filter(item => 
+                item.query.toLowerCase().includes(term) || 
+                item.name.toLowerCase().includes(term) || 
+                item.role.toLowerCase().includes(term) ||
+                item.handle.toLowerCase().includes(term)
+            );
+
+            if (matches.length === 0) {
+                dropdown.innerHTML = `
+                    <div style="padding:12px 16px; font-size:0.84rem; color:#94a3b8; display:flex; justify-content:space-between; align-items:center;">
+                        <span>Szukaj "<b>${val}</b>" na Tablicy:</span>
+                        <a href="lumina-tablica.html?q=${encodeURIComponent(val)}" class="shortcut-chip" style="margin:0;"><i class="fa-solid fa-magnifying-glass"></i> Otwórz Tablicę</a>
+                    </div>
+                `;
+            } else {
+                dropdown.innerHTML = matches.map(item => `
+                    <div class="omni-item" onclick="window.location.href='${item.url}'">
+                        <img loading="lazy" decoding="async" src="${item.avatar}" alt="${item.name}" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1px solid rgba(168,85,247,0.5);">
+                        <div style="flex:1; min-width:0;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-weight:700; font-size:0.88rem; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.name}</span>
+                                <span class="lumina-mention-pill" style="font-size:0.7rem;">${item.handle}</span>
+                            </div>
+                            <div style="font-size:0.75rem; color:#94a3b8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.role}</div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right" style="color:#a855f7; font-size:0.85rem;"></i>
+                    </div>
+                `).join('');
+            }
+            dropdown.classList.add('open');
+        };
+
+        window.executeOmniSearch = function() {
+            const input = document.getElementById('omniSearchInput');
+            const val = input ? input.value.trim() : '';
+            if (!val) {
+                scrollToSection('odkrywaj');
+                return;
+            }
+            const clean = val.toLowerCase();
+            const match = OMNI_DIRECTORY.find(item => item.handle.toLowerCase() === clean || item.query.includes(clean));
+            if (match) {
+                window.location.href = match.url;
+            } else if (clean.startsWith('#')) {
+                window.location.href = `lumina-tablica.html?q=${encodeURIComponent(clean)}`;
+            } else if (clean.startsWith('@')) {
+                const slug = clean.replace('@', '');
+                window.location.href = `lumina-profile.html?u=${encodeURIComponent(slug)}`;
+            } else {
+                window.location.href = `lumina-tablica.html?q=${encodeURIComponent(val)}`;
+            }
+        };
+
+        window.quickJumpTo = function(handleOrTag) {
+            const input = document.getElementById('omniSearchInput');
+            if (input) input.value = handleOrTag;
+            executeOmniSearch();
+        };
+
+        document.addEventListener('click', (e) => {
+            const box = document.getElementById('universalSearchBox');
+            const dropdown = document.getElementById('omniDropdown');
+            if (box && dropdown && !box.contains(e.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
     
         // ── Universal Smooth Scroll to Top Logic ──
         window.scrollToTopPage = function() {

@@ -2409,7 +2409,8 @@ export async function markDirectMessagesAsRead(chatId, currentUserId, currentUse
         snap.forEach(d => {
             const data = d.data();
             const normReceiver = normalizeChatUserId(data.receiverId);
-            if ((normReceiver === normMyId || data.receiverId === normMyId) && (!data.isRead || data.status !== 'read')) {
+            const normSender = normalizeChatUserId(data.senderId);
+            if (normSender !== normMyId && (!data.isRead || data.status !== 'read')) {
                 const ref = doc(db, 'lumina_direct_messages', d.id);
                 promises.push(updateDoc(ref, {
                     isRead: true,
