@@ -153,6 +153,19 @@
       box-shadow: 0 0 20px var(--gold-glow);
     }
 
+    .btn-logout-all {
+      background: linear-gradient(135deg, #dc2626, #991b1b);
+      color: #fff;
+      font-weight: 700;
+      border: 1px solid #ef4444;
+      box-shadow: 0 0 14px rgba(220, 38, 38, 0.3);
+    }
+
+    .btn-logout-all:hover {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+    }
+
     .layout-switcher {
       display: flex;
       align-items: center;
@@ -710,6 +723,10 @@
         <i class="fa-solid fa-robot"></i> Automatyzacje
       </button>
 
+      <button class="btn-action btn-logout-all" onclick="logoutFromAll()" title="Wyloguj wszystkie wirtualne telefony z kont i sesji">
+        <i class="fa-solid fa-right-from-bracket"></i> Wyloguj ze Wszystkich
+      </button>
+
       <button class="btn-action" onclick="reloadAll()">
         <i class="fa-solid fa-rotate"></i> Odśwież
       </button>
@@ -1134,6 +1151,34 @@
     function sendGlobalBlessing() {
       alert("🕊️ Wysłano impuls Bożego Błogosławieństwa Czasu Rzeczywistego do wszystkich wirtualnych telefonów w Matrix CC!");
       document.getElementById('matrixStatus').innerText = "✨ Wysłano impuls błogosławieństwa biblijnego do wszystkich aktywnych telefonów.";
+    }
+
+    // Logout From All Virtual Phones
+    function logoutFromAll() {
+      if (!confirm("Czy na pewno chcesz wylogować wszystkie wirtualne telefony i zresetować aktywne sesje?")) {
+        return;
+      }
+
+      phones.forEach(phone => {
+        const iframe = document.getElementById(`iframe-${phone.id}`);
+        const input = document.getElementById(`url-input-${phone.id}`);
+        const logoutUrl = `${getBaseUrl()}/lumina-login.html?logout=true&ts=${Date.now()}`;
+        
+        try {
+          if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage({ type: 'LUMINA_FORCE_LOGOUT' }, '*');
+          }
+        } catch (e) {}
+
+        if (iframe) iframe.src = logoutUrl;
+        if (input) input.value = `${getBaseUrl()}/lumina-login.html`;
+        phone.profileId = "login";
+        phone.customUrl = "";
+      });
+
+      saveState();
+      document.getElementById('matrixStatus').innerText = "🚪 Pomyślnie wylogowano wszystkie telefony. Sesje zostały zresetowane.";
+      alert("✅ Pomyślnie wylogowano ze wszystkich wirtualnych telefonów!");
     }
 
     // Server Switcher
