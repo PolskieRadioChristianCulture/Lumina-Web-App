@@ -4112,13 +4112,13 @@
 
                 <!-- Navigation Tabs: [ ✨ Czat Ogólny (Publiczny) ] [ ✨ Prywatne (1:1) ] -->
                 <div style="display:flex; background:rgba(255,255,255,0.05); padding:4px; border-radius:14px; gap:6px;">
-                    <button type="button" id="tabBtnPublicChat" onclick="switchMessengerMainTab('public')" style="flex:1; padding:8px 10px; border-radius:10px; border:none; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-weight:800; font-family:inherit; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(236,72,153,0.3); transition:all 0.2s;">
+                    <button type="button" id="tabBtnPublicChat" onclick="switchMessengerMainTab('public')" style="flex:1; min-height:44px; min-width:44px; padding:0; border-radius:10px; border:none; background:linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; font-weight:800; font-family:inherit; font-size:0.8rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:0; box-shadow:0 2px 8px rgba(236,72,153,0.3); transition:all 0.2s; touch-action:manipulation;">
                         <i class="fa-solid fa-earth-europe"></i> <span class="tab-label">Czat Ogólny (Publiczny)</span>
                     </button>
-                                        <button type="button" id="tabBtnCommanderChat" onclick="switchMessengerMainTab('commander')" style="display:none; flex:1; padding:8px 10px; border-radius:10px; border:none; background:linear-gradient(135deg, #f59e0b, #d97706); color:#000; font-weight:800; font-family:inherit; font-size:0.8rem; cursor:pointer; align-items:center; justify-content:center; gap:6px; box-shadow:0 0 12px rgba(245,158,11,0.45); transition:all 0.2s;">
+                                        <button type="button" id="tabBtnCommanderChat" onclick="switchMessengerMainTab('commander')" style="display:none; flex:1; min-height:44px; min-width:44px; padding:0; border-radius:10px; border:none; background:linear-gradient(135deg, #f59e0b, #d97706); color:#000; font-weight:800; font-family:inherit; font-size:0.8rem; cursor:pointer; align-items:center; justify-content:center; gap:0; box-shadow:0 0 12px rgba(245,158,11,0.45); transition:all 0.2s; touch-action:manipulation;">
                         <i class="fa-solid fa-crown"></i> <span class="tab-label">Sztab Dowództwa CC</span>
                     </button>
-                    <button type="button" id="tabBtnPrivateChat" onclick="switchMessengerMainTab('private')" style="flex:1; padding:8px 10px; border-radius:10px; border:none; background:transparent; color:#94a3b8; font-weight:700; font-family:inherit; font-size:0.8rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:all 0.2s;">
+                    <button type="button" id="tabBtnPrivateChat" onclick="switchMessengerMainTab('private')" style="flex:1; min-height:44px; min-width:44px; padding:0; border-radius:10px; border:none; background:transparent; color:#94a3b8; font-weight:700; font-family:inherit; font-size:0.8rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:0; transition:all 0.2s; touch-action:manipulation;">
                         <i class="fa-solid fa-lock"></i> <span class="tab-label">Rozmowy Prywatne (1:1)</span>
                     </button>
                 </div>
@@ -4818,7 +4818,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                             <i class="fa-solid fa-arrows-rotate" style="color: #c084fc; font-size: 1.1rem;"></i>
                             <span style="font-weight: 800; font-size: 0.92rem; color: #fff;">Wymuś Aktualizację Aplikacji</span>
                         </div>
-                        <span style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v4.0.0</span>
+                        <span style="font-size: 0.68rem; padding: 2px 8px; border-radius: 8px; background: rgba(168,85,247,0.25); color: #e9d5ff; font-weight: 700;">v4.1.0</span>
                     </div>
                     <p style="font-size: 0.76rem; color: #cbd5e1; margin: 0 0 10px 0; line-height: 1.4;">
                         Wyczyść pamięć podręczną (cache), zaktualizuj pliki Service Worker i pobierz najnowszą wersję portalu LUMINA.
@@ -7335,7 +7335,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         }
 
         /* ══════════════════════════════════════════════════════════════════════════
-         * ULTRA-STABLE PROFILES CAROUSEL & DISCOVERY ENGINE (LUMINA v4.0.0)
+         * ULTRA-STABLE PROFILES CAROUSEL & DISCOVERY ENGINE (LUMINA v4.1.0)
          * ══════════════════════════════════════════════════════════════════════════ */
         let carouselAutoplayTimer = null;
         let isCarouselInteracting = false;
@@ -10132,6 +10132,56 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 window.location.replace('lumina-tablica.html' + window.location.search);
             }
         } catch (e) {}
+    })();
+    </script>
+
+    <script>
+    // SMCC §Mobile — Tab Button Mobile Enforcer (v4.1.0)
+    // Prevents JS-applied inline styles from restoring text on small screens
+    (function() {
+        var MOBILE_BP = 640;
+        var TAB_IDS = ['tabBtnPublicChat','tabBtnCommanderChat','tabBtnPrivateChat','tabBtnGroupsChat'];
+        function enforceMobile() {
+            if (window.innerWidth > MOBILE_BP) return;
+            TAB_IDS.forEach(function(id) {
+                var btn = document.getElementById(id);
+                if (!btn) return;
+                btn.style.padding = '0';
+                btn.style.minHeight = '44px';
+                btn.style.minWidth = '44px';
+                btn.style.gap = '0';
+                // Hide label span if present
+                var label = btn.querySelector('.tab-label');
+                if (label) label.style.display = 'none';
+            });
+        }
+        // Run on load
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(enforceMobile, 200);
+            setTimeout(enforceMobile, 800);
+            setTimeout(enforceMobile, 2000);
+        });
+        // Run whenever switchMessengerMainTab fires (patch it)
+        var _origSwitch = null;
+        function patchSwitch() {
+            if (window.switchMessengerMainTab && window.switchMessengerMainTab._mobilePatchApplied) return;
+            if (window.switchMessengerMainTab) {
+                _origSwitch = window.switchMessengerMainTab;
+                window.switchMessengerMainTab = function(tab) {
+                    _origSwitch(tab);
+                    setTimeout(enforceMobile, 0);
+                    setTimeout(enforceMobile, 100);
+                };
+                window.switchMessengerMainTab._mobilePatchApplied = true;
+            }
+        }
+        // Poll for switchMessengerMainTab to be defined (loaded via defer)
+        var _patchInterval = setInterval(function() {
+            if (window.switchMessengerMainTab) { patchSwitch(); clearInterval(_patchInterval); }
+        }, 200);
+        setTimeout(function() { clearInterval(_patchInterval); }, 10000);
+        // Also enforce on resize
+        window.addEventListener('resize', enforceMobile);
     })();
     </script>
 </body>
