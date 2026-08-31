@@ -353,21 +353,35 @@ const KNOWN_BLOCKED = [
   'netflix.com','amazon.com'
 ];
 
-function isLikelyBlocked(url) {
+function isBlocked(url) {
   const lc = url.toLowerCase();
   return KNOWN_BLOCKED.some(d => lc.includes(d));
+}
+
+// Sites that block iframes
+const IFRAME_BLOCKED = [
+  'google.com','google.pl','facebook.com','fb.com','instagram.com',
+  'twitter.com','x.com','tiktok.com','whatsapp.com','web.whatsapp.com',
+  'linkedin.com','netflix.com','amazon.com','amazon.pl','allegro.pl'
+];
+
+function isBlocked(url) {
+  try {
+    const h = new URL(url.startsWith('http') ? url : 'https://'+url).hostname.replace('www.','');
+    return IFRAME_BLOCKED.some(d => h === d || h.endsWith('.'+d));
+  } catch(e) { return false; }
 }
 
 function resolveUrl(raw) {
   raw = raw.trim();
   if (!raw) return null;
 
-  // Local files (yt_embed_viewer, etc)
+  // Local files
   if (raw.startsWith('yt_embed_viewer') || raw.startsWith('browser') || raw.startsWith('./') || raw.startsWith('../')) {
     return raw;
   }
 
-  // YouTube URLs - delegate to viewer
+  // YouTube URLs
   if (raw.includes('youtube.com') || raw.includes('youtu.be')) {
     const vm = raw.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
     if (vm) return `yt_embed_viewer.html?v=${vm[1]}${raw.includes('/shorts/') ? '&type=shorts' : ''}`;
@@ -384,14 +398,14 @@ function resolveUrl(raw) {
   // Already full URL
   if (/^https?:\/\//i.test(raw)) return raw;
 
-  // Relative path
+  // Relative path on polskieradio.cc
   if (raw.startsWith('/')) return 'https://polskieradio.cc' + raw;
 
-  // Looks like domain (has a dot)
-  if (raw.includes('.') && !raw.includes(' ')) return 'https://' + raw;
+  // Looks like a domain
+  if (raw.includes('.') && !raw.includes(' ') && !raw.includes('?')) return 'https://' + raw;
 
-  // Search query
-  return 'https://www.google.com/search?q=' + encodeURIComponent(raw) + '&igu=1';
+  // Search query → DuckDuckGo (allows iframes, Google does not)
+  return 'https://duckduckgo.com/?q=' + encodeURIComponent(raw) + '&ia=web';
 }
 
 function navigate(raw) {
@@ -402,9 +416,9 @@ function navigate(raw) {
   lastQuery = raw;
 
   // Update URL bar
-  urlInput.value = url.startsWith('yt_embed_viewer') ? raw : url;
+  urlInput.value = (url.startsWith('yt_embed_viewer') || url.startsWith('duckduckgo')) ? raw : url;
 
-  // Hide newtab
+  // Hide overlays
   newtab.classList.remove('active');
   blockedOverlay.classList.remove('show');
 
@@ -413,29 +427,35 @@ function navigate(raw) {
   lockIcon.className = 'fa-solid ' + (isHttps ? 'fa-lock' : 'fa-triangle-exclamation') + ' favicon';
   lockIcon.style.color = isHttps ? '#4ade80' : '#fb923c';
 
+  // Check blocked BEFORE loading (saves time)
+  if (url.startsWith('http') && isBlocked(url)) {
+    showBlocked(url, raw);
+    return;
+  }
+
   // Load in iframe
   reloadIcon.className = 'fa-solid fa-xmark';
   frame.src = url;
-
-  // Check for likely blocked after short delay
-  if (isLikelyBlocked(url)) {
-    setTimeout(() => showBlocked(url), 1800);
-  }
 }
 
-function showBlocked(url) {
-  // Check if frame loaded something (rough heuristic)
+function showBlocked(url, rawQuery) {
   blockedOverlay.classList.add('show');
-  document.getElementById('blockedTitle').innerText = 'Witryna blokuje osadzanie';
+  let hostname = url;
+  try { hostname = new URL(url.startsWith('http') ? url : 'https://'+url).hostname; } catch(e) {}
+  document.getElementById('blockedTitle').innerText = 'Witryna blokuje osadzanie w ramkach';
   document.getElementById('blockedDesc').innerText =
-    'Ta witryna ('+new URL(url.startsWith('http') ? url : 'https://'+url).hostname+') blokuje otwieranie w ramkach iframe. Możesz ją otworzyć bezpośrednio lub wyszukać.';
+    hostname + ' nie pozwala na otwieranie się wewnątrz innych stron (polityka X-Frame-Options). Możesz ją otworzyć bezpośrednio.';
   document.getElementById('btnOpenExt').href = url;
-  document.getElementById('btnOpenExt').onclick = () => window.open(url, '_blank');
+  document.getElementById('btnOpenExt').onclick = (e) => { e.preventDefault(); window.open(url, '_blank'); };
+  // Ustaw alt button na DuckDuckGo
+  const altBtn = document.getElementById('btnAlt');
+  altBtn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Szukaj: "' + (rawQuery || hostname) + '"';
+  altBtn.onclick = () => tryAlternative(rawQuery || hostname);
 }
 
-function tryAlternative() {
-  const q = lastQuery || urlInput.value;
-  navigate('https://www.google.com/search?q=' + encodeURIComponent(q) + '&igu=1');
+function tryAlternative(q) {
+  q = q || lastQuery || urlInput.value;
+  navigate('https://duckduckgo.com/?q=' + encodeURIComponent(q) + '&ia=web');
   blockedOverlay.classList.remove('show');
 }
 
@@ -487,10 +507,11 @@ frame.addEventListener('error', () => {
 const sp = new URLSearchParams(window.location.search);
 const startUrl = sp.get('url') || '';
 if (startUrl) {
-  navigate(startUrl);
+  try { navigate(decodeURIComponent(startUrl)); } catch(e) { navigate(startUrl); }
 } else {
   goHome();
 }
 </script>
 </body>
 </html>
+

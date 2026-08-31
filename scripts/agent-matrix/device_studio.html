@@ -1059,23 +1059,38 @@
       const rawVal = input.value.trim();
       if (!rawVal) return;
 
-      const normalized = normalizeUrl(rawVal);
-      // Nie nadpisuj wartości input — zostaw to co użytkownik wpisał
-
       const phone = phones.find(p => p.id === id);
-      if (phone) {
-        phone.customUrl = rawVal;   // Zapamiętaj oryginalny wpisany URL
-        phone.profileId = "custom";
-        saveState();
+      const iframe = document.getElementById(`iframe-${id}`);
+      if (!iframe || !phone) return;
+
+      // Wyznacz docelowy URL przez normalizeUrl
+      let normalized = normalizeUrl(rawVal);
+
+      // Jeśli URL jest zewnętrzny (http/https) i NIE jest to plik lokalny (browser.html, yt_embed_viewer.html, etc.)
+      // → załaduj przez browser.html żeby działało wyszukiwanie i obsługa blokad iframe
+      const isLocal = normalized.startsWith('browser.html') ||
+                      normalized.startsWith('yt_embed_viewer.html') ||
+                      normalized.startsWith('./') ||
+                      normalized.startsWith('../') ||
+                      normalized.includes('polskieradio.cc') ||
+                      normalized.includes('localhost:');
+
+      if (!isLocal && (normalized.startsWith('http://') || normalized.startsWith('https://'))) {
+        normalized = `browser.html?url=${encodeURIComponent(normalized)}`;
       }
 
-      const iframe = document.getElementById(`iframe-${id}`);
-      if (iframe) {
-        iframe.src = normalized;
+      // Zapamiętaj oryginalny wpisany URL — nie nadpisuj inputa
+      phone.customUrl = rawVal;
+      // Zostaw aktualny profil jeśli to browser, inaczej ustaw custom
+      if (phone.profileId !== 'browser') {
+        phone.profileId = 'custom';
       }
-      input.blur(); // Schowaj klawiaturę
+      saveState();
+
+      iframe.src = normalized;
+      input.blur();
       const idx = phones.findIndex(p => p.id === id) + 1;
-      document.getElementById('matrixStatus').innerText = `📱 Telefon #${idx}: Ładuję ${rawVal}`;
+      document.getElementById('matrixStatus').innerText = `📱 Telefon #${idx}: Ładuję "${rawVal}"`;
     }
 
     // Paste from Clipboard and Load
@@ -1107,7 +1122,7 @@
       const newId = Date.now();
       phones.push({
         id: newId,
-        profileId: "lumina",
+        profileId: "browser",
         autoId: "none",
         autoActive: false,
         deviceTime: "11:35",
@@ -1115,7 +1130,7 @@
       });
       saveState();
       renderGrid();
-      document.getElementById('matrixStatus').innerText = `Dodano nowy telefon #${phones.length}. Wybierz dla niego profil lub wpisz adres URL.`;
+      document.getElementById('matrixStatus').innerText = `Dodano nowy telefon #${phones.length}. Przeglądarka Google gotowa.`;
     }
 
     // Delete Phone
