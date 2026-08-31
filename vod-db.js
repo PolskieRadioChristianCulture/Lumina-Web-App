@@ -135,7 +135,7 @@
 
     // Subtelne komunikaty paska informacyjnego (News Ticker CC)
     const VOD_TICKER_MESSAGES = [
-        { icon: 'fa-film', text: 'VOD CHRISTIAN CULTURE: Najlepsze kino chrześcijańskie, filmy z wartościami i świadectwa wiary 24/7 za darmo.' },
+        { icon: 'fa-film', text: 'VOD CHRISTIAN CULTURE: Dobre Kino 24/7, filmy chrześcijańskie i świadectwa wiary za darmo.' },
         { icon: 'fa-sun', text: 'PORTAL LUMINA: Dołącz do ogólnoświatowej społeczności wiary na lumina.cc — twórz profil, dyskutuj i dziel się świadectwem.' },
         { icon: 'fa-radio', text: 'POLSKIE RADIO CC: Muzyka uwielbienia, Biblia Śpiewana i codzienne audycje formacyjne na żywo w polskieradio.cc.' },
         { icon: 'fa-mobile-screen-button', text: 'APLIKACJA „DOBRZE, ŻE JESTEŚ”: Pobierz aplikację z codziennymi rozważaniami, Słowem Bożym i inspiracją na każdy dzień.' },

@@ -91,7 +91,7 @@ class LuminaTablicaEngine {
                 type: 'mission_vod',
                 title: 'VOD Christian Culture • Film „JEZUS” (Ewangelia wg św. Łukasza)',
                 tag: '🎬 KINO CHRZEŚCIJAŃSKIE VOD',
-                desc: 'Obejrzyj za darmo najsłynniejszy film w historii kina chrześcijańskiego. Pełnometrażowe kino z wartościami 24/7 i na życzenie.',
+                desc: 'Obejrzyj za darmo najsłynniejszy film w historii kina chrześcijańskiego. Dobre Kino 24/7 i na życzenie.',
                 image: 'https://i.ytimg.com/vi/GMdQIwKh22A/hqdefault.jpg',
                 link: 'vod.html?film=film-jezus-ewangelia-lukasza'
             },
