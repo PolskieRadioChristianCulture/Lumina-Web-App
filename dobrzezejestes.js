@@ -100,11 +100,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const loadReflectionData = async () => {
         try {
-            const q = query(collection(db, "web_inspirations"), orderBy("date", "desc"), limit(1));
+            const now = new Date();
+            const pad = (n) => n < 10 ? '0' + n : n;
+            const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+
+            const q = query(collection(db, "web_inspirations"), orderBy("date", "desc"), limit(10));
             const snap = await getDocs(q);
 
             if (!snap.empty) {
-                const doc = snap.docs[0].data();
+                const validDocs = snap.docs.map(d => d.data()).filter(d => d.date && d.date <= todayStr);
+                const doc = validDocs.find(d => d.date === todayStr) || validDocs[0];
+                if (!doc) throw new Error("No valid reflection found for today or past dates.");
                 
                 let dateStr = "Dzisiaj";
                 if (doc.timestamp && doc.timestamp.toDate) {

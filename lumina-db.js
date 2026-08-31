@@ -4684,15 +4684,8 @@ export async function loadLuminaDailyDevotional() {
             );
             const snap = await getDocs(q);
             if (!snap.empty) {
-                let matched = null;
-                for (const docSnap of snap.docs) {
-                    const d = docSnap.data();
-                    if (d.date === todayStr) {
-                        matched = d;
-                        break;
-                    }
-                }
-                devotionData = matched || snap.docs[0].data();
+                const validDocs = snap.docs.map(docSnap => docSnap.data()).filter(d => d.date && d.date <= todayStr);
+                devotionData = validDocs.find(d => d.date === todayStr) || validDocs[0] || null;
             }
         } catch (fsErr) {
             console.warn('LUMINA: Pobieranie rozważania z chmury Firebase (fallback do bazy lokalnej):', fsErr.message);
@@ -4701,12 +4694,12 @@ export async function loadLuminaDailyDevotional() {
         // 2. Fallback do rozwazania_baza.json
         if (!devotionData) {
             try {
-                const res = await fetch('rozwazania_baza.json?v=' + Date.now());
+                const res = await fetch('/rozwazania_baza.json?v=' + Date.now());
                 if (res.ok) {
                     const list = await res.json();
                     if (Array.isArray(list) && list.length > 0) {
-                        const found = list.find(r => r.date === todayStr);
-                        devotionData = found || list[0];
+                        const validList = list.filter(r => r.date && r.date <= todayStr);
+                        devotionData = validList.find(r => r.date === todayStr) || validList[0] || null;
                     }
                 }
             } catch (jsonErr) {

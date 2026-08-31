@@ -373,13 +373,8 @@
                 );
                 const snap = await getDocs(q);
                 if (!snap.empty) {
-                    let data = snap.docs[0].data();
-                    for (const doc of snap.docs) {
-                        if (doc.data().date === today) {
-                            data = doc.data();
-                            break;
-                        }
-                    }
+                    const validDocs = snap.docs.map(docSnap => docSnap.data()).filter(d => d.date && d.date <= today);
+                    let data = validDocs.find(d => d.date === today) || validDocs[0] || null;
 
                     if (data && (data.contentWeb || data.fullText)) {
                         const fullContent = data.contentWeb || data.fullText || data.teaser || '';
@@ -411,11 +406,12 @@
                     const pad = (n) => n < 10 ? '0' + n : n;
                     const today = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
 
-                    const res = await fetch('rozwazania_baza.json?v=' + Date.now());
+                    const res = await fetch('/rozwazania_baza.json?v=' + Date.now());
                     if (res.ok) {
                         const list = await res.json();
                         if (Array.isArray(list) && list.length > 0) {
-                            const data = list.find(r => r.date === today) || list[0];
+                            const validList = list.filter(r => r.date && r.date <= today);
+                            const data = validList.find(r => r.date === today) || validList[0] || null;
                             if (data && (data.contentWeb || data.fullText)) {
                                 const fullContent = data.contentWeb || data.fullText || data.teaser || '';
                                 const formattedContent = formatContentWithActiveLinks(fullContent);
