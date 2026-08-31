@@ -1146,6 +1146,17 @@
             transform: scale(1);
         }
 
+        .movie-card-ad {
+            border: 1px solid rgba(225, 29, 72, 0.45);
+            background: linear-gradient(180deg, rgba(30, 10, 20, 0.6) 0%, rgba(11, 18, 38, 0.95) 100%);
+            box-shadow: 0 4px 20px rgba(225, 29, 72, 0.12);
+        }
+
+        .movie-card-ad:hover {
+            border-color: #f43f5e;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(225, 29, 72, 0.4);
+        }
+
         .movie-card-body {
             padding: 16px;
             display: flex;
@@ -2257,9 +2268,10 @@
                 return;
             }
 
-            grid.innerHTML = list.map(m => {
+            let cardsHtml = [];
+            list.forEach((m, idx) => {
                 const isPlaying = (currentMovie && currentMovie.id === m.id);
-                return `
+                cardsHtml.push(`
                     <article class="movie-card ${isPlaying ? 'active-playing' : ''}" data-id="${m.id}" onclick="selectMovieOnDemand('${m.id}')">
                         <div class="movie-poster-wrap">
                             <img src="${m.thumbnail}" alt="${m.title}" class="movie-poster-img" loading="lazy">
@@ -2288,8 +2300,48 @@
                             </div>
                         </div>
                     </article>
-                `;
-            }).join('');
+                `);
+
+                // Wstrzyknięcie karty reklamowej / wsparcia Patronite
+                if (window.VodDB && window.VodDB.ads && window.VodDB.ads.length > 0) {
+                    window.VodDB.ads.forEach(ad => {
+                        const targetIndex = (ad.insertAfterIndex !== undefined) ? ad.insertAfterIndex - 1 : 1;
+                        if (idx === targetIndex) {
+                            cardsHtml.push(`
+                                <article class="movie-card movie-card-ad" onclick="window.open('${ad.targetUrl}', '_blank')" title="Odwiedź profil Patronite">
+                                    <div class="movie-poster-wrap">
+                                        <img src="${ad.image}" alt="${ad.title}" class="movie-poster-img" style="object-fit:cover;" loading="lazy">
+                                        <span class="movie-badge-tag" style="background:${ad.badgeColor || '#e11d48'}; color:#fff;"><i class="fa-solid fa-heart"></i> ${ad.badge}</span>
+                                        <span class="movie-duration-tag" style="background:rgba(0,0,0,0.85); color:#ffd700;"><i class="fa-solid fa-hand-holding-heart"></i> Wspieraj Misję</span>
+                                        <div class="movie-play-hover-btn" style="background:#e11d48;">
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="movie-card-body">
+                                        <h3 class="movie-card-title" style="color:#ffd700;">${ad.title}</h3>
+                                        <div class="movie-card-meta">
+                                            <span style="color:#f43f5e; font-weight:700;">${ad.subtitle}</span>
+                                        </div>
+                                        <p class="movie-card-desc">${ad.description}</p>
+                                        
+                                        <div class="movie-card-cta">
+                                            <a href="${ad.targetUrl}" target="_blank" rel="noopener noreferrer" class="btn-play-card" style="background:linear-gradient(135deg, #e11d48, #be123c); color:#fff; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;" onclick="event.stopPropagation();">
+                                                <i class="fa-solid ${ad.ctaIcon || 'fa-heart'}"></i> ${ad.ctaText || 'Zostań Patronem'}
+                                            </a>
+                                            <button type="button" class="btn-share-card" onclick="event.stopPropagation(); if (navigator.share) { navigator.share({title:'Patronite - Misja Christian Culture', url:'${ad.targetUrl}'}); } else { showToast('Skopiowano link do Patronite!'); navigator.clipboard.writeText('${ad.targetUrl}'); }" title="Udostępnij zbiórkę">
+                                                <i class="fa-solid fa-share-nodes"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </article>
+                            `);
+                        }
+                    });
+                }
+            });
+
+            grid.innerHTML = cardsHtml.join('');
         }
 
         // Filtry i wyszukiwarka

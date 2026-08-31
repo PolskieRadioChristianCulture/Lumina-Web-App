@@ -179,11 +179,31 @@
         { icon: 'fa-tv', text: 'TELEWIZJA CCTV24: Całodobowy program ewangelizacyjny, wykłady prof. Waltera Veitha i studium Pisma Świętego.' }
     ];
 
+    // Reklamy i wsparcie misji (np. Patronite)
+    const VOD_SPONSORED_ADS = [
+        {
+            id: 'patronite-osobowoscplus',
+            type: 'ad_card',
+            targetUrl: 'https://patronite.pl/osobowoscplus',
+            image: 'zostan-patronem-cc.gif',
+            badge: 'PATRONITE',
+            badgeColor: 'linear-gradient(135deg, #e11d48, #be123c)',
+            title: 'Zostań Patronem Misji Christian Culture',
+            subtitle: 'Wsparcie Twórczości • OsobowośćPLUS',
+            description: 'Twoje wsparcie pozwala tworzyć i rozwijać dobre kino, 24/7 radio oraz bezpłatną ewangelizację multimedialną w całej Polsce i na świecie. Dołącz do grona Patronów!',
+            ctaText: 'Zostań Patronem',
+            ctaIcon: 'fa-heart',
+            ctaColor: '#e11d48',
+            insertAfterIndex: 2 // Po 2. filmie na liście
+        }
+    ];
+
     // API publiczne modułu VOD
     const VodDB = {
         preroll: VOD_PREROLL_CONFIG,
         movies: VOD_MOVIES_CATALOG,
         ticker: VOD_TICKER_MESSAGES,
+        ads: VOD_SPONSORED_ADS,
 
         getMovieById: function(id) {
             if (!id) return VOD_MOVIES_CATALOG[0];
@@ -199,7 +219,7 @@
         },
 
         addMovie: function(movieObj) {
-            if (movieObj && movieObj.youtubeId) {
+            if (movieObj && (movieObj.youtubeId || movieObj.embedUrl)) {
                 VOD_MOVIES_CATALOG.push(movieObj);
                 return true;
             }

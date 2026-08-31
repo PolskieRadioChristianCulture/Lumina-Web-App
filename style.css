@@ -3256,6 +3256,31 @@ html {
 }
 
 /* 2-Block Cascading Shortcuts Menu */
+#actionsList {
+    max-height: calc(100vh - 85px);
+    max-height: calc(100dvh - 85px);
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(212, 175, 55, 0.45) rgba(0, 0, 0, 0.25);
+}
+
+#actionsList::-webkit-scrollbar {
+    width: 5px;
+}
+#actionsList::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+}
+#actionsList::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.45);
+    border-radius: 6px;
+}
+#actionsList::-webkit-scrollbar-thumb:hover {
+    background: var(--gold-primary);
+}
+
 .shortcuts-blocks-container {
     display: flex;
     gap: 10px;
@@ -3288,13 +3313,24 @@ html {
     transition-delay: 0.4s;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     #actionsList {
-        width: 310px !important;
-        right: -10px !important;
+        width: min(340px, calc(100vw - 20px)) !important;
+        right: -6px !important;
+        max-height: calc(100vh - 75px) !important;
+        max-height: calc(100dvh - 75px) !important;
+        padding: 12px 10px !important;
     }
     .shortcuts-blocks-container {
-        flex-direction: column;
-        gap: 8px;
+        flex-direction: column !important;
+        gap: 8px !important;
     }
 }
+
+@media (max-width: 400px) {
+    #actionsList {
+        width: calc(100vw - 16px) !important;
+        right: -8px !important;
+    }
+}
+

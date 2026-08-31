@@ -569,7 +569,7 @@
                     </button>
                     
                     <!-- Vertical Dropdown Shortcuts Panel (2-Block Cascading Grid) -->
-                    <div id="actionsList" style="position: absolute; top: calc(100% + 12px); right: 0; width: 540px; background: rgba(10, 12, 22, 0.96); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1.5px solid var(--border-gold-low); border-radius: 18px; padding: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 10px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100;">
+                    <div id="actionsList" style="position: absolute; top: calc(100% + 12px); right: 0; width: 540px; max-height: calc(100vh - 85px); max-height: calc(100dvh - 85px); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; background: rgba(10, 12, 22, 0.96); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1.5px solid var(--border-gold-low); border-radius: 18px; padding: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 10px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100;">
                         
                         <!-- Header inside shortcuts panel -->
                         <div style="font-size: 0.65rem; font-weight: 800; color: rgba(255,255,255,0.45); letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 4px 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.08); font-family: 'Cinzel', serif; text-align: left;">
