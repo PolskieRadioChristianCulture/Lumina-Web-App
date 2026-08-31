@@ -194,7 +194,7 @@
             ctaText: 'Zostań Patronem',
             ctaIcon: 'fa-heart',
             ctaColor: '#e11d48',
-            insertAfterIndex: 2 // Po 2. filmie na liście
+            insertAfterIndex: 1 // Między 1. a 2. filmem (między Przełęczą a Chatą)
         }
     ];
 
