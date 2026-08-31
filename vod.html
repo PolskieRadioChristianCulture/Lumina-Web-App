@@ -292,33 +292,33 @@
         /* ── TICKER / PASEK INFORMACYJNY CC ── */
         .vod-ticker-bar {
             background: linear-gradient(90deg, #070d1e 0%, #0d1738 50%, #070d1e 100%);
-            border-bottom: 1px solid var(--border-gold);
-            padding: 8px 18px;
+            border-bottom: 1.5px solid var(--border-gold);
+            padding: 12px 22px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 20px;
             overflow: hidden;
             position: relative;
             z-index: 50;
-            font-size: 0.84rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
         .ticker-badge {
             background: linear-gradient(135deg, var(--gold-primary), #b45309);
             color: #000;
             font-weight: 900;
-            font-size: 0.72rem;
-            padding: 5px 12px;
-            border-radius: 12px;
+            font-size: 0.84rem;
+            padding: 7px 16px;
+            border-radius: 14px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             flex-shrink: 0;
-            letter-spacing: 0.5px;
-            box-shadow: 0 0 12px var(--gold-glow);
+            letter-spacing: 0.6px;
+            box-shadow: 0 0 14px var(--gold-glow);
             z-index: 10;
             position: relative;
+            text-transform: uppercase;
         }
 
         .ticker-viewport {
@@ -327,16 +327,16 @@
             position: relative;
             display: flex;
             align-items: center;
-            mask-image: linear-gradient(to right, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
         }
 
         .ticker-content-track {
             display: inline-flex;
             align-items: center;
-            gap: 40px;
+            gap: 60px;
             white-space: nowrap;
-            animation: tickerScroll 48s linear infinite;
+            animation: tickerScroll 140s linear infinite;
             will-change: transform;
             padding-left: 100%;
         }
@@ -353,13 +353,17 @@
         .ticker-item {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            color: #e2e8f0;
-            font-size: 0.84rem;
+            gap: 10px;
+            color: #f8fafc;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
         }
 
         .ticker-item i {
-            color: var(--amber-accent);
+            color: #fbbf24;
+            font-size: 1.15rem;
         }
 
         /* ── MAIN CONTAINER ── */
