@@ -216,6 +216,9 @@
         }
       ],
       "rewrites": [
+        { "source": "/vod", "destination": "/vod.html" },
+        { "source": "/kino-vod", "destination": "/vod.html" },
+        { "source": "/filmy", "destination": "/vod.html" },
         { "source": "/lumina", "destination": "/lumina.html" },
         { "source": "/tablica", "destination": "/lumina-tablica.html" },
         { "source": "/profil", "destination": "/lumina-profile.html" },
