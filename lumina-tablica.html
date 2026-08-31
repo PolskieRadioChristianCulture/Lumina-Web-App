@@ -6849,7 +6849,7 @@
                 // A. Sprawdź mapę globalną z bazy danych / Firestore
                 if (window._luminaUnreadRoomsMap && window._luminaUnreadRoomsMap.size > 0) {
                     window._luminaUnreadRoomsMap.forEach((cnt, sId) => {
-                        if (cnt > 0) unreadUserMap.set(sId, cnt);
+                        if (cnt > 0) unreadUserMap.set(String(sId).toLowerCase(), cnt);
                     });
                 }
                 // B. Sprawdź pamięć lokalną
@@ -6859,11 +6859,26 @@
                     Object.entries(parsed).forEach(([sId, cnt]) => {
                         const nCnt = parseInt(cnt, 10) || 0;
                         if (nCnt > 0) {
-                            unreadUserMap.set(sId, Math.max(unreadUserMap.get(sId) || 0, nCnt));
+                            const k = String(sId).toLowerCase();
+                            unreadUserMap.set(k, Math.max(unreadUserMap.get(k) || 0, nCnt));
                         }
                     });
                 }
             } catch(e) {}
+
+            const getUnreadForUser = (u) => {
+                if (!u) return 0;
+                const s1 = String(u.slug || '').toLowerCase();
+                const s2 = window.LuminaDB ? String(window.LuminaDB.normalizeChatUserId(u.slug) || '').toLowerCase() : s1;
+                const s3 = u.uid ? String(u.uid).toLowerCase() : '';
+                const s4 = u.name ? String(u.name).toLowerCase() : '';
+                return Math.max(
+                    unreadUserMap.get(s1) || 0,
+                    unreadUserMap.get(s2) || 0,
+                    s3 ? (unreadUserMap.get(s3) || 0) : 0,
+                    s4 ? (unreadUserMap.get(s4) || 0) : 0
+                );
+            };
 
             // Aktualizuj etykietę zakładki Rozmowy Prywatne
             let totalPrivateUnread = 0;
@@ -6896,10 +6911,10 @@
                 return true;
             });
 
-            // Sortowanie: użytkownicy z nieprzeczytanymi wiadomościami na samej górze!
+            // Sortowanie: pokoje z nieprzeczytanymi wiadomościami ZAWSZE na samej górze!
             filtered.sort((a, b) => {
-                const unreadA = unreadUserMap.get(a.slug) || 0;
-                const unreadB = unreadUserMap.get(b.slug) || 0;
+                const unreadA = getUnreadForUser(a);
+                const unreadB = getUnreadForUser(b);
                 if (unreadA !== unreadB) return unreadB - unreadA;
                 if (a.isMission !== b.isMission) return a.isMission ? -1 : 1;
                 return (a.name || '').localeCompare(b.name || '');
@@ -6919,7 +6934,7 @@
             let html = '';
             filtered.forEach(u => {
                 const isLeader = u.isMission;
-                const unreadCount = unreadUserMap.get(u.slug) || 0;
+                const unreadCount = getUnreadForUser(u);
                 const hasUnread = unreadCount > 0;
 
                 const cardBg = hasUnread
@@ -6931,14 +6946,14 @@
                 const avatarBorder = hasUnread ? '#ef4444' : (isLeader ? '#ec4899' : '#a855f7');
                 const roomHighlightStyle = hasUnread
                     ? (unreadCount > 1
-                        ? 'border:2px solid #ef4444 !important; box-shadow:0 0 20px rgba(239,68,68,0.7), inset 0 0 10px rgba(239,68,68,0.2) !important; animation: pulseUnreadRoom 2s infinite ease-in-out;'
-                        : 'border:2px solid #ef4444 !important; box-shadow:0 0 16px rgba(239,68,68,0.55) !important; animation: pulseUnreadRoom 2s infinite ease-in-out;')
+                        ? 'border:2px solid #ef4444 !important; box-shadow:0 0 22px rgba(239,68,68,0.8), inset 0 0 10px rgba(239,68,68,0.25) !important; animation: pulseUnreadRoom 2s infinite ease-in-out;'
+                        : 'border:2px solid #ef4444 !important; box-shadow:0 0 16px rgba(239,68,68,0.65) !important; animation: pulseUnreadRoom 2s infinite ease-in-out;')
                     : `border:1.5px solid ${borderColor};`;
 
                 const avatarBadgeHtml = hasUnread
                     ? (unreadCount > 1
-                        ? `<span class="dm-avatar-badge" style="position:absolute; top:-5px; right:-5px; background:linear-gradient(135deg, #ef4444, #ec4899); color:#fff; font-size:0.72rem; font-weight:900; min-width:20px; height:20px; padding:0 4px; border-radius:10px; display:flex; align-items:center; justify-content:center; border:2px solid #070d1e; box-shadow:0 0 10px rgba(239,68,68,0.85); z-index:3; animation:pulseBadge 2s infinite;">${unreadCount > 99 ? '99+' : unreadCount}</span>`
-                        : `<span class="dm-avatar-badge" style="position:absolute; top:-4px; right:-4px; background:#ef4444; color:#fff; font-size:0.68rem; font-weight:900; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #070d1e; box-shadow:0 0 8px #ef4444; z-index:3;">1</span>`)
+                        ? `<span class="dm-avatar-badge" style="position:absolute; top:-6px; right:-6px; background:linear-gradient(135deg, #ef4444, #ec4899); color:#fff; font-size:0.72rem; font-weight:900; min-width:20px; height:20px; padding:0 5px; border-radius:10px; display:flex; align-items:center; justify-content:center; border:2px solid #070d1e; box-shadow:0 0 10px rgba(239,68,68,0.9); z-index:4; animation:pulseBadge 2s infinite;">${unreadCount > 99 ? '99+' : unreadCount}</span>`
+                        : `<span class="dm-avatar-badge" style="position:absolute; top:-5px; right:-5px; background:#ef4444; color:#fff; font-size:0.68rem; font-weight:900; width:19px; height:19px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #070d1e; box-shadow:0 0 8px #ef4444; z-index:4;">1</span>`)
                     : '';
 
                 html += `
@@ -6962,7 +6977,7 @@
                                 ${hasUnread ? (unreadCount > 1 ? `💬 Masz ${unreadCount} nowe wiadomości w tym pokoju — kliknij!` : '💬 Masz nową wiadomość w tym pokoju — kliknij aby wejść!') : escapeHtml(u.job || u.city || 'Społeczność LUMINA ✨')}
                             </div>
                         </div>
-                        <div style="display:flex; align-items:center; gap:4px; color:${hasUnread ? '#fff' : '#f472b6'}; font-size:0.75rem; font-weight:800; flex-shrink:0; background:${hasUnread ? 'linear-gradient(135deg,#ef4444,#ec4899)' : 'rgba(236,72,153,0.12)'}; padding:5px 10px; border-radius:10px;">
+                        <div style="display:flex; align-items:center; gap:4px; color:${hasUnread ? '#fff' : '#f472b6'}; font-size:0.75rem; font-weight:800; flex-shrink:0; background:${hasUnread ? 'linear-gradient(135deg,#ef4444,#ec4899)' : 'rgba(236,72,153,0.12)'}; padding:5px 10px; border-radius:10px; box-shadow:${hasUnread ? '0 0 10px rgba(239,68,68,0.5)' : 'none'};">
                             <span>${hasUnread ? 'Otwórz' : 'Czat'}</span> <i class="fa-solid fa-arrow-right" style="font-size:0.65rem;"></i>
                         </div>
                     </div>
@@ -6971,6 +6986,7 @@
 
             listEl.innerHTML = html;
         }
+        window.renderDmUsersAndConversations = renderDmUsersAndConversations;
 
         function loadPrivateConversationsList() {
             renderDmUsersAndConversations();

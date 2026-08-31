@@ -2794,24 +2794,51 @@ export function startRealtimeChatNotificationsListener() {
             const chatsQuery = query(
                 collection(db, 'lumina_chats'),
                 where('users', 'array-contains', myId),
-                limit(30)
+                limit(40)
             );
 
             onSnapshot(chatsQuery, (snap) => {
                 const currentMyId = getMyUserId();
                 let totalUnread = 0;
+                const unreadMap = new Map();
+                const unreadJson = {};
 
                 snap.forEach(d => {
                     const data = d.data();
                     const senderId = normalizeChatUserId(data.lastSenderId);
-                    if (senderId && senderId !== currentMyId) {
-                        const lastReadTime = parseInt(localStorage.getItem(`lumina_chat_read_${d.id}`) || '0', 10);
+                    const isFromMe = (senderId === currentMyId) || (data.lastSenderId === currentMyId);
+
+                    if (!isFromMe && senderId && senderId !== 'guest') {
+                        const chatId = d.id;
+                        const otherUser = Array.isArray(data.users)
+                            ? (data.users.find(u => normalizeChatUserId(u) !== currentMyId) || senderId)
+                            : senderId;
+                        const normOther = normalizeChatUserId(otherUser);
+
+                        const lastReadTime = Math.max(
+                            parseInt(localStorage.getItem(`lumina_chat_read_${chatId}`) || '0', 10),
+                            parseInt(localStorage.getItem(`lumina_chat_read_${normOther}`) || '0', 10),
+                            parseInt(localStorage.getItem(`lumina_chat_read_${senderId}`) || '0', 10),
+                            parseInt(localStorage.getItem(`lumina_chat_read_${data.lastSenderId}`) || '0', 10)
+                        );
                         const msgTime = data.lastMessageTimestamp?.seconds ? (data.lastMessageTimestamp.seconds * 1000) : (data.createdAt || 0);
+
                         if (msgTime > lastReadTime) {
                             totalUnread++;
+                            const keysToMark = [normOther, senderId, data.lastSenderId, String(otherUser).toLowerCase()].filter(Boolean);
+                            keysToMark.forEach(k => {
+                                const prev = unreadMap.get(k) || 0;
+                                unreadMap.set(k, prev + 1);
+                                unreadJson[k] = prev + 1;
+                            });
                         }
                     }
                 });
+
+                window._luminaUnreadRoomsMap = unreadMap;
+                try {
+                    localStorage.setItem('lumina_unread_rooms_json', JSON.stringify(unreadJson));
+                } catch(e) {}
 
                 // Update badge in real-time if chat is closed
                 const isModalOpen = document.getElementById('directMessagesModal')?.classList.contains('open') ||
@@ -2827,6 +2854,11 @@ export function startRealtimeChatNotificationsListener() {
                             b.textContent = totalUnread > 9 ? '9+' : totalUnread;
                         }
                     }
+                }
+
+                // Odśwież listę pokoi w otwartym lub gotowym oknie czatu
+                if (typeof window.renderDmUsersAndConversations === 'function') {
+                    try { window.renderDmUsersAndConversations(); } catch(e) {}
                 }
 
                 snap.docChanges().forEach((change) => {

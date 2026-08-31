@@ -4305,6 +4305,40 @@
             photos: ['avatar_cezary_official.jpg', 'avatar_cezary_karuzela_2026.jpg', 'avatar_cezary.jpg'],
             posts: [
                 {
+                    id: 'post_dzj_2026_08_31',
+                    author: 'Cezary Rogowski',
+                    time: 'Poniedziałek, 31 Sierpnia 2026 • ☀️ Dobrze, że jesteś',
+                    title: '☀️ Lato z Jezusem — Wielkie Pytania (Dzień 31 - Finał Cyklu)',
+                    text: `☀️ **Lato z Jezusem — Wielkie Pytania**
+**Dzień 31 — Finał Cyklu: Dlaczego tak łatwo ulegam lękowi przed ostatecznym krokiem i wejściem w nową jakość życia?**
+
+W trzydziestym pierwszym, finałowym dniu cyklu „Lato z Jezusem — Wielkie Pytania” zamykamy tę potężną formacyjną podróż i stajemy na progu całkowicie nowej jakości.
+
+W psychologii zmiany moment przejścia (transition phase) wymaga porzucenia dawnej tożsamości i odważnego wejścia w nieznane, co często wyzwala lęk przed utratą kontroli. Słowo Boże przez proroka Izajasza przypomina nam niezmienną obietnicę: „Nie bój się, bo Ja jestem z tobą”. Zamykając dziś letni cykl, patrzymy z wdzięcznością na wszystko, co Bóg w nas odbudował. Chrześcijański lider najwyższej klasy nie lęka się nowych wyzwań – przekracza progi z nienaganną klasą i niezachwianą wiarą.
+
+Już jutro, od 1 września, otwieramy nowy, przełomowy rozdział i zapraszamy na zupełnie nowy cykl rozważań pod tytułem „Słowa Mają Moc”!
+
+**Jezus mówi dziś do Ciebie:**
+„Nie bój się, bo Ja jestem z tobą; nie lękaj się, bo Ja jestem twoim Bogiem.” *(Izajasza 41,10)*
+
+**Zadanie Taktyczne:**
+Zmiażdż dziś lęk przed progiem zmian na swoim polu bitwy. Podsumuj ten miesiąc z wdzięcznością i zrób ostateczny krok w nową jakość życia. Przygotuj się na jutrzejszą inaugurację cyklu „Słowa Mają Moc”. Wnieś do swojego domu i firmy standard odwagi i dojrzałego autorytetu.
+
+W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
+
+**Modlitwa Bojowa:**
+„Ojcze, odrzucam kłamstwa nieprzyjaciela i lęk przed nowym etapem. Dziękuję Ci za zamknięcie cyklu 'Lato z Jezusem' i za to, że od 1 września wkraczamy w potężny cykl 'Słowa Mają Moc'. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą zdobywał ten świat dla Twojej chwały.”
+
+Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
+
+PODAJ DALEJ 🔴
+www.polskieradio.cc | www.cclite.pl
+Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`,
+                    likes: 112,
+                    amen: 106,
+                    image: 'promo_dzj.jpg'
+                },
+                {
                     id: 'post_dzj_2026_08_30',
                     author: 'Cezary Rogowski',
                     time: 'Niedziela, 30 Sierpnia 2026 • ☀️ Dobrze, że jesteś',
@@ -7127,6 +7161,41 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
             const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || 'guest';
             const myId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
 
+            // Sprawdź nieprzeczytane powiadomienia i aktywne pokoje rozmów
+            const unreadUserMap = new Map();
+            try {
+                if (window._luminaUnreadRoomsMap && window._luminaUnreadRoomsMap.size > 0) {
+                    window._luminaUnreadRoomsMap.forEach((cnt, sId) => {
+                        if (cnt > 0) unreadUserMap.set(String(sId).toLowerCase(), cnt);
+                    });
+                }
+                const localJson = localStorage.getItem('lumina_unread_rooms_json');
+                if (localJson) {
+                    const parsed = JSON.parse(localJson);
+                    Object.entries(parsed).forEach(([sId, cnt]) => {
+                        const nCnt = parseInt(cnt, 10) || 0;
+                        if (nCnt > 0) {
+                            const k = String(sId).toLowerCase();
+                            unreadUserMap.set(k, Math.max(unreadUserMap.get(k) || 0, nCnt));
+                        }
+                    });
+                }
+            } catch(e) {}
+
+            const getUnreadForUser = (u) => {
+                if (!u) return 0;
+                const s1 = String(u.slug || '').toLowerCase();
+                const s2 = window.LuminaDB ? String(window.LuminaDB.normalizeChatUserId(u.slug) || '').toLowerCase() : s1;
+                const s3 = u.uid ? String(u.uid).toLowerCase() : '';
+                const s4 = u.name ? String(u.name).toLowerCase() : '';
+                return Math.max(
+                    unreadUserMap.get(s1) || 0,
+                    unreadUserMap.get(s2) || 0,
+                    s3 ? (unreadUserMap.get(s3) || 0) : 0,
+                    s4 ? (unreadUserMap.get(s4) || 0) : 0
+                );
+            };
+
             let filtered = users.filter(u => {
                 const normSlug = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(u.slug) : u.slug;
                 if (normSlug === myId) return false; // Nie pokazuj samego siebie na liście odbiorców
@@ -7146,6 +7215,15 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                 return true;
             });
 
+            // Sortowanie: pokoje z nieprzeczytanymi wiadomościami ZAWSZE na samej górze!
+            filtered.sort((a, b) => {
+                const unreadA = getUnreadForUser(a);
+                const unreadB = getUnreadForUser(b);
+                if (unreadA !== unreadB) return unreadB - unreadA;
+                if (a.isMission !== b.isMission) return a.isMission ? -1 : 1;
+                return (a.name || '').localeCompare(b.name || '');
+            });
+
             if (filtered.length === 0) {
                 listEl.innerHTML = `
                     <div style="text-align:center; padding:25px 10px; color:#94a3b8;">
@@ -7160,30 +7238,51 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
             let html = '';
             filtered.forEach(u => {
                 const isLeader = u.isMission;
-                const cardBg = isLeader 
-                    ? 'linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))' 
-                    : 'rgba(255,255,255,0.03)';
-                const borderColor = isLeader ? 'rgba(236,72,153,0.35)' : 'rgba(255,255,255,0.08)';
-                const avatarBorder = isLeader ? '#ec4899' : '#a855f7';
+                const unreadCount = getUnreadForUser(u);
+                const hasUnread = unreadCount > 0;
+
+                const cardBg = hasUnread
+                    ? 'linear-gradient(135deg, rgba(239,68,68,0.22), rgba(168,85,247,0.22))'
+                    : (isLeader 
+                        ? 'linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))' 
+                        : 'rgba(255,255,255,0.03)');
+                const borderColor = hasUnread ? '#ef4444' : (isLeader ? 'rgba(236,72,153,0.35)' : 'rgba(255,255,255,0.08)');
+                const avatarBorder = hasUnread ? '#ef4444' : (isLeader ? '#ec4899' : '#a855f7');
+                const roomHighlightStyle = hasUnread
+                    ? (unreadCount > 1
+                        ? 'border:2px solid #ef4444 !important; box-shadow:0 0 22px rgba(239,68,68,0.8), inset 0 0 10px rgba(239,68,68,0.25) !important; animation: pulseUnreadRoom 2s infinite ease-in-out;'
+                        : 'border:2px solid #ef4444 !important; box-shadow:0 0 16px rgba(239,68,68,0.65) !important; animation: pulseUnreadRoom 2s infinite ease-in-out;')
+                    : `border:1.5px solid ${borderColor};`;
+
+                const avatarBadgeHtml = hasUnread
+                    ? (unreadCount > 1
+                        ? `<span class="dm-avatar-badge" style="position:absolute; top:-6px; right:-6px; background:linear-gradient(135deg, #ef4444, #ec4899); color:#fff; font-size:0.72rem; font-weight:900; min-width:20px; height:20px; padding:0 5px; border-radius:10px; display:flex; align-items:center; justify-content:center; border:2px solid #070d1e; box-shadow:0 0 10px rgba(239,68,68,0.9); z-index:4; animation:pulseBadge 2s infinite;">${unreadCount > 99 ? '99+' : unreadCount}</span>`
+                        : `<span class="dm-avatar-badge" style="position:absolute; top:-5px; right:-5px; background:#ef4444; color:#fff; font-size:0.68rem; font-weight:900; width:19px; height:19px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #070d1e; box-shadow:0 0 8px #ef4444; z-index:4;">1</span>`)
+                    : '';
 
                 html += `
                     <div onclick="openChatWith('${escapeForInlineJs(u.name)}', '${escapeForInlineJs(u.avatar)}', '${escapeForInlineJs(u.slug)}')" 
-                         style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:${cardBg}; border:1px solid ${borderColor}; border-radius:14px; cursor:pointer; transition:all 0.2s ease; position:relative;"
+                         style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:${cardBg}; ${roomHighlightStyle} border-radius:14px; cursor:pointer; transition:all 0.2s ease; position:relative;"
                          onmouseover="this.style.transform='translateY(-1px)'; this.style.borderColor='#ec4899';"
-                         onmouseout="this.style.transform='none'; this.style.borderColor='${borderColor}';">
+                         onmouseout="this.style.transform='none'; this.style.borderColor='${hasUnread ? '#ef4444' : borderColor}';">
                         <div style="position:relative; flex-shrink:0;">
                             <img loading="lazy" decoding="async" src="${escapeHtml(u.avatar || 'lumina_icon.jpg')}" alt="${escapeHtml(u.name)}" style="width:42px; height:42px; border-radius:50%; object-fit:cover; display:block; border:2px solid ${avatarBorder};">
                             <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; background:#10b981; border-radius:50%; border:2px solid #090d1a;"></span>
+                            ${avatarBadgeHtml}
                         </div>
                         <div style="flex:1; min-width:0;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px; gap:6px;">
                                 <span style="font-weight:800; font-size:0.88rem; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(u.name)}</span>
-                                <span style="font-size:0.65rem; color:${isLeader ? '#facc15' : '#38bdf8'}; font-weight:700; flex-shrink:0; background:rgba(0,0,0,0.3); padding:1px 6px; border-radius:6px;">${escapeHtml(u.badge)}</span>
+                                <span style="font-size:0.65rem; color:${hasUnread ? '#fca5a5' : (isLeader ? '#facc15' : '#38bdf8')}; font-weight:800; flex-shrink:0; background:rgba(0,0,0,0.35); padding:2px 7px; border-radius:6px;">
+                                    ${hasUnread ? (unreadCount > 1 ? `🔴 ${unreadCount} NOWE WIADOMOŚCI` : '🔴 NOWA WIADOMOŚĆ') : escapeHtml(u.badge)}
+                                </span>
                             </div>
-                            <div style="font-size:0.74rem; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(u.job || u.city || 'Społeczność LUMINA ✨')}</div>
+                            <div style="font-size:0.74rem; color:${hasUnread ? '#fef08a' : '#cbd5e1'}; font-weight:${hasUnread ? '700' : '400'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                ${hasUnread ? (unreadCount > 1 ? `💬 Masz ${unreadCount} nowe wiadomości w tym pokoju — kliknij!` : '💬 Masz nową wiadomość w tym pokoju — kliknij aby wejść!') : escapeHtml(u.job || u.city || 'Społeczność LUMINA ✨')}
+                            </div>
                         </div>
-                        <div style="display:flex; align-items:center; gap:4px; color:#f472b6; font-size:0.75rem; font-weight:700; flex-shrink:0; background:rgba(236,72,153,0.12); padding:4px 8px; border-radius:10px;">
-                            <span>Czat</span> <i class="fa-solid fa-arrow-right" style="font-size:0.65rem;"></i>
+                        <div style="display:flex; align-items:center; gap:4px; color:${hasUnread ? '#fff' : '#f472b6'}; font-size:0.75rem; font-weight:800; flex-shrink:0; background:${hasUnread ? 'linear-gradient(135deg,#ef4444,#ec4899)' : 'rgba(236,72,153,0.12)'}; padding:5px 10px; border-radius:10px; box-shadow:${hasUnread ? '0 0 10px rgba(239,68,68,0.5)' : 'none'};">
+                            <span>${hasUnread ? 'Otwórz' : 'Czat'}</span> <i class="fa-solid fa-arrow-right" style="font-size:0.65rem;"></i>
                         </div>
                     </div>
                 `;
@@ -7191,6 +7290,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
 
             listEl.innerHTML = html;
         }
+        window.renderDmUsersAndConversations = renderDmUsersAndConversations;
 
         function loadPrivateConversationsList() {
             renderDmUsersAndConversations();

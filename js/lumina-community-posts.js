@@ -50,6 +50,44 @@
 
     const LUMINA_CORE_POSTS_DATA = [
         {
+            id: 'post_dzj_2026_08_31',
+            type: 'post',
+            author: 'Cezary Rogowski',
+            authorRole: '☀️ Dobrze, że jesteś • Założyciel Christian Culture ✨',
+            authorAvatar: 'avatar_cezary_official.jpg',
+            authorSlug: 'cezaryrgowski',
+            time: '31 Sierpnia 2026 • ☀️ Dobrze, że jesteś',
+            title: '☀️ Lato z Jezusem — Wielkie Pytania (Dzień 31 - Finał Cyklu)',
+            text: `☀️ **Lato z Jezusem — Wielkie Pytania**
+**Dzień 31 — Finał Cyklu: Dlaczego tak łatwo ulegam lękowi przed ostatecznym krokiem i wejściem w nową jakość życia?**
+
+W trzydziestym pierwszym, finałowym dniu cyklu „Lato z Jezusem — Wielkie Pytania” zamykamy tę potężną formacyjną podróż i stajemy na progu całkowicie nowej jakości.
+
+W psychologii zmiany moment przejścia (transition phase) wymaga porzucenia dawnej tożsamości i odważnego wejścia w nieznane, co często wyzwala lęk przed utratą kontroli. Słowo Boże przez proroka Izajasza przypomina nam niezmienną obietnicę: „Nie bój się, bo Ja jestem z tobą”. Zamykając dziś letni cykl, patrzymy z wdzięcznością na wszystko, co Bóg w nas odbudował. Chrześcijański lider najwyższej klasy nie lęka się nowych wyzwań – przekracza progi z nienaganną klasą i niezachwianą wiarą.
+
+Już jutro, od 1 września, otwieramy nowy, przełomowy rozdział i zapraszamy na zupełnie nowy cykl rozważań pod tytułem „Słowa Mają Moc”!
+
+**Jezus mówi dziś do Ciebie:**
+„Nie bój się, bo Ja jestem z tobą; nie lękaj się, bo Ja jestem twoim Bogiem.” *(Izajasza 41,10)*
+
+**Zadanie Taktyczne:**
+Zmiażdż dziś lęk przed progiem zmian na swoim polu bitwy. Podsumuj ten miesiąc z wdzięcznością i zrób ostateczny krok w nową jakość życia. Przygotuj się na jutrzejszą inaugurację cyklu „Słowa Mają Moc”. Wnieś do swojego domu i firmy standard odwagi i dojrzałego autorytetu.
+
+W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
+
+**Modlitwa Bojowa:**
+„Ojcze, odrzucam kłamstwa nieprzyjaciela i lęk przed nowym etapem. Dziękuję Ci za zamknięcie cyklu 'Lato z Jezusem' i za to, że od 1 września wkraczamy w potężny cykl 'Słowa Mają Moc'. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą zdobywał ten świat dla Twojej chwały.”
+
+Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
+
+PODAJ DALEJ 🔴
+www.polskieradio.cc | www.cclite.pl
+Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`,
+            image: 'promo_dzj.jpg',
+            likes: 112,
+            amen: 106
+        },
+        {
             id: 'post_dzj_2026_08_30',
             type: 'post',
             author: 'Cezary Rogowski',
