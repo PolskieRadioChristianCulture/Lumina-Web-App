@@ -4445,10 +4445,13 @@
 
         // ── Intelligent Timestamp Extractor for chronological sorting ──
         // Returns a numeric Unix-ms timestamp from any post field combination.
-        // Precedence: Firestore Timestamp → numeric ms → ISO string → static date label parse → 0 (unknown/no date).
+        // Precedence: Numeric _sortTs → Firestore Timestamp → numeric ms → ISO string → relative text ("15 min temu") → static date label parse.
         function extractSortTs(post) {
-            // Firestore Timestamp object {seconds, nanoseconds}
-            const raw = post.createdAtTimestamp || post.createdAtDateStr || post._sortTs || null;
+            if (!post) return 0;
+            if (typeof post._sortTs === 'number' && post._sortTs > 0) return post._sortTs;
+
+            // Firestore Timestamp object {seconds, nanoseconds} lub bezpośrednie pola daty
+            const raw = post.createdAtTimestamp || post.createdAtDateStr || post.createdAt || post.timestamp || null;
             if (raw) {
                 if (typeof raw === 'object' && raw.seconds) return raw.seconds * 1000;
                 if (typeof raw === 'number') return raw;
@@ -4457,70 +4460,125 @@
                     if (!isNaN(p)) return p;
                 }
             }
-            // Parse static time labels embedded in post.time field
-            // e.g. "22 SIERPNIA 2026 • ✨...", "Dzisiaj, 16:20 • ...", "Wczoraj, 17:50 • ..."
+
+            // Parsowanie relatywnych i sformatowanych etykiet czasowych w post.time
+            // np. "15 min temu • ☁️ Chmura", "Dzisiaj o 06:15", "31 SIERPNIA 2026 • 🕊️ Cuda Każdego Dnia"
             if (post.time && typeof post.time === 'string') {
                 const t = post.time;
-                const now = new Date();
-                // Try: "DD MIESIĄCA YYYY" Polish format
-                const MONTHS_PL = { STYCZNIA:0, LUTEGO:1, MARCA:2, KWIETNIA:3, MAJA:4, CZERWCA:5,
-                                    LIPCA:6, SIERPNIA:7, WRZEŚNIA:8, PAŹDZIERNIKA:9, LISTOPADA:10, GRUDNIA:11 };
-                const mDateLong = t.match(/(\d{1,2})\s+([A-ZĄĆĘŁŃÓŚŹŻ]+)\s+(\d{4})/i);
+                const now = Date.now();
+
+                // 1. Relatywne minuty ("15 min temu", "2 minuty temu")
+                const mMin = t.match(/(\d+)\s*min/i);
+                if (mMin) return now - parseInt(mMin[1], 10) * 60 * 1000;
+
+                // 2. Relatywne godziny ("2 godz. temu", "1 godzinę temu", "3 h temu")
+                const mGodz = t.match(/(\d+)\s*(?:godz|godzin|h)/i);
+                if (mGodz) return now - parseInt(mGodz[1], 10) * 3600 * 1000;
+
+                // 3. Relatywne dni ("2 dni temu")
+                const mDni = t.match(/(\d+)\s*(?:dni|dzień|d)\s*temu/i);
+                if (mDni) return now - parseInt(mDni[1], 10) * 86400 * 1000;
+
+                // 4. "Przed chwilą"
+                if (/Przed chwil/i.test(t)) return now;
+
+                // 5. "Dzisiaj o HH:MM" lub "Dzisiaj, HH:MM"
+                const mToday = t.match(/Dzisiaj[,\s]+(?:o\s+)?(\d{1,2}):(\d{2})/i);
+                if (mToday) {
+                    const d = new Date();
+                    d.setHours(parseInt(mToday[1], 10), parseInt(mToday[2], 10), 0, 0);
+                    return d.getTime();
+                }
+
+                // 6. "Wczoraj o HH:MM" lub "Wczoraj, HH:MM"
+                const mYesterday = t.match(/Wczoraj[,\s]+(?:o\s+)?(\d{1,2}):(\d{2})/i);
+                if (mYesterday) {
+                    const d = new Date();
+                    d.setDate(d.getDate() - 1);
+                    d.setHours(parseInt(mYesterday[1], 10), parseInt(mYesterday[2], 10), 0, 0);
+                    return d.getTime();
+                }
+
+                // 7. Format polski: "DD MIESIĄCA YYYY" (np. "31 SIERPNIA 2026", "27 SIERPNIA 2026")
+                const MONTHS_PL = {
+                    STYCZNIA:0, LUTEGO:1, MARCA:2, KWIETNIA:3, MAJA:4, CZERWCA:5,
+                    LIPCA:6, SIERPNIA:7, WRZEŚNIA:8, PAŹDZIERNIKA:9, LISTOPADA:10, GRUDNIA:11
+                };
+                const mDateLong = t.match(/(\d{1,2})\s+([A-ZĄĆĘŁŃÓŚŹŻa-ząćęłńóśźż]+)\s+(\d{4})/i);
                 if (mDateLong) {
                     const mo = MONTHS_PL[(mDateLong[2] || '').toUpperCase()];
                     if (mo !== undefined) {
-                        // Extract optional HH:MM time from same label
                         const mTime = t.match(/(\d{2}):(\d{2})/);
-                        const d = new Date(parseInt(mDateLong[3]), mo, parseInt(mDateLong[1]),
-                                          mTime ? parseInt(mTime[1]) : 6,
-                                          mTime ? parseInt(mTime[2]) : 0);
-                        if (!isNaN(d)) return d.getTime();
+                        const d = new Date(parseInt(mDateLong[3], 10), mo, parseInt(mDateLong[1], 10),
+                                          mTime ? parseInt(mTime[1], 10) : 6,
+                                          mTime ? parseInt(mTime[2], 10) : 0);
+                        if (!isNaN(d.getTime())) return d.getTime();
                     }
                 }
-                // "Dzisiaj, HH:MM" / "Wczoraj, HH:MM"
-                const mToday = t.match(/^Dzisiaj[,\s]+(\d{2}):(\d{2})/i);
-                if (mToday) {
-                    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(mToday[1]), parseInt(mToday[2]));
-                    return d.getTime();
+
+                // 8. Format "DD.MM.YYYY"
+                const mDotDate = t.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})(?:[,\s]+(?:o\s+)?(\d{1,2}):(\d{2}))?/);
+                if (mDotDate) {
+                    const d = new Date(parseInt(mDotDate[3], 10), parseInt(mDotDate[2], 10) - 1, parseInt(mDotDate[1], 10),
+                                      mDotDate[4] ? parseInt(mDotDate[4], 10) : 6,
+                                      mDotDate[5] ? parseInt(mDotDate[5], 10) : 0);
+                    if (!isNaN(d.getTime())) return d.getTime();
                 }
-                const mYesterday = t.match(/^Wczoraj[,\s]+(\d{2}):(\d{2})/i);
-                if (mYesterday) {
-                    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, parseInt(mYesterday[1]), parseInt(mYesterday[2]));
-                    return d.getTime();
+
+                // 9. ISO date string
+                const mISO = t.match(/\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2})?/);
+                if (mISO) {
+                    const p = Date.parse(mISO[0]);
+                    if (!isNaN(p)) return p;
                 }
-                // ISO date inside string
-                const mISO = t.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/);
-                if (mISO) { const p = Date.parse(mISO[0]); if (!isNaN(p)) return p; }
-                // Fallback: if contains "Przed chwilą" treat as now
-                if (/Przed chwil/i.test(t)) return Date.now();
             }
-            return 0; // unknown → sink to bottom
+            return 0; // fallback dla nieznanych dat
         }
 
         function getUserFeedPosts() {
             const posts = [];
+            const seenPostIds = new Set();
+            const seenSlugs = new Set();
 
-            // 0. Real-time Cloud Posts from Firestore
+            // 0. Real-time Cloud Posts from Firestore (Najwyższy priorytet danych live)
             if (window.cloudFeedPosts && Array.isArray(window.cloudFeedPosts) && window.cloudFeedPosts.length > 0) {
                 window.cloudFeedPosts.forEach(cp => {
-                    const tsRaw = cp.createdAtTimestamp || cp.createdAtDateStr || cp.time;
+                    if (!cp || !cp.id || seenPostIds.has(cp.id)) return;
+                    seenPostIds.add(cp.id);
+
+                    const tsRaw = cp.createdAtTimestamp || cp.createdAtDateStr || cp.createdAt || cp.timestamp || cp.time;
                     let sortTs = 0;
                     if (tsRaw && typeof tsRaw === 'object' && tsRaw.seconds) sortTs = tsRaw.seconds * 1000;
                     else if (typeof tsRaw === 'number') sortTs = tsRaw;
-                    else if (typeof tsRaw === 'string') { const p = Date.parse(tsRaw); if (!isNaN(p)) sortTs = p; }
+                    else if (typeof tsRaw === 'string') {
+                        const p = Date.parse(tsRaw);
+                        if (!isNaN(p)) sortTs = p;
+                    }
+                    if (!sortTs) {
+                        sortTs = extractSortTs(cp);
+                    }
+
+                    const isCkd = (cp.category === 'ckd') || (cp.isDevotion === true) || (cp.authorSlug === 'andrzejthiel') || String(cp.title || '').toUpperCase().includes('CUDA KAŻDEGO DNIA');
+                    if (cp.sourceSlug) seenSlugs.add(cp.sourceSlug);
+
                     posts.push({
                         id: cp.id,
                         type: cp.type || 'post',
-                        author: cp.author || 'Użytkownik LUMINA',
-                        authorRole: cp.authorRole || 'Społeczność LUMINA ✨',
-                        authorAvatar: cp.authorAvatar || 'icon.png',
-                        authorSlug: cp.authorSlug || '',
+                        category: cp.category || (isCkd ? 'ckd' : 'general'),
+                        isDevotion: isCkd,
+                        author: cp.author || cp.authorName || 'Użytkownik LUMINA',
+                        authorRole: cp.authorRole || (isCkd ? 'Cuda Każdego Dnia 📖✨ • Sieradz' : 'Społeczność LUMINA ✨'),
+                        authorAvatar: cp.authorAvatar || cp.avatar || (isCkd ? 'avatar_andrzej_thiel.jpg' : 'icon.png'),
+                        authorSlug: cp.authorSlug || (isCkd ? 'andrzejthiel' : ''),
                         time: formatPostTimestamp(cp.createdAtTimestamp || cp.createdAtDateStr || cp.time, 'Przed chwilą') + ' • ☁️ Chmura',
                         title: cp.title || '',
-                        text: cp.text || '',
-                        image: cp.image || null,
-                        likes: cp.likes || 1,
+                        text: cp.text || cp.content || '',
+                        image: cp.image || cp.imageUrl || null,
+                        sourceUrl: cp.sourceUrl || '',
+                        sourceSlug: cp.sourceSlug || '',
+                        likes: cp.likes || 0,
                         amen: cp.amen || 0,
+                        createdAtTimestamp: cp.createdAtTimestamp,
                         _sortTs: sortTs
                     });
                 });
@@ -4534,15 +4592,16 @@
                 authorRole: 'Oficjalna Misja CCTV24 ✨✨ • 24/7',
                 authorAvatar: 'logo_cctv.png',
                 authorSlug: 'cctv',
-                time: '21 SIERPNIA 2026 • ✨ NOWOŚĆ / PREMIERA (Dzisiaj)',
+                time: '21 SIERPNIA 2026 • ✨ NOWOŚĆ / PREMIERA',
                 title: '✨ NOWOŚĆ! CCTV24 INSTRUMENTAL WORSHIP 24/7 – Muzyka Uwielbienia & Kontemplacji',
                 text: 'Z radością i wdzięcznością Bogu oddajemy w Wasze ręce nowy całodobowy kanał wideo & audio: CCTV24 INSTRUMENTAL WORSHIP! ✨✨\n\nPrzenieś się w przestrzeń głębokiej modlitwy, pokoju serca i Bożej obecności. 24 godziny na dobę bez przerw i bez reklam – najpiękniejsze instrumentalne utwory uwielbienia, wersety Pisma Świętego i filmowe scenerie stworzenia w jakości HD.\n\nKliknij i oglądaj na żywo w nowym oknie:\n✨ https://polskieradio.cc/cctv24-worship.html\n\nNiech ten kanał będzie dla Was źródłem wyciszenia, odpoczynku i nieustannego uwielbienia naszego Pana! ✨✨',
                 image: 'INSTRUMENTAL WORSHIP MUSIC - CHRISTIAN CULTURE.jpg',
                 likes: 215,
-                amen: 198
+                amen: 198,
+                _sortTs: new Date(2026, 7, 21, 12, 0).getTime()
             });
 
-            // 0.0. Andrzej Thiel - Cuda Każdego Dnia (27 SIERPNIA 2026 - DZISIAJ)
+            // 0.1. Andrzej Thiel - Cuda Każdego Dnia (Fallback offline)
             try {
                 const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
                 const aProfile = aJson ? JSON.parse(aJson) : null;
@@ -4553,40 +4612,19 @@
                 posts.push({
                     id: 'post_andrzej_cuda_27_08_2026',
                     type: 'post',
+                    category: 'ckd',
+                    isDevotion: true,
                     author: aName,
                     authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
-                    time: '27 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Dzisiaj)',
+                    time: '27 SIERPNIA 2026 • ✨ Cuda Każdego Dnia',
                     title: 'CUDA KAŻDEGO DNIA! 27 SIERPNIA 2026. MODLITWA JEST KLUCZEM, KTÓRY OTWIERA KAŻDE DRZWI!',
-                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nMODLITWA JEST KLUCZEM, KTÓRY OTWIERA KAŻDE DRZWI!\n\nKiedy się modlisz, Bóg otwiera drzwi. Zupełnie niespodziewane drzwi i często nie te, o których myśleliśmy i o które się modliliśmy! Bóg ma swoje, Jemu tylko wiadome sposoby, ale to twoja modlitwa sprawia, że to co niemożliwe staje się możliwe. Nawet niedostępne, nadzwyczajnie chronione więzienie, w którym Herod uwięził Piotra nie stanowiło dla Boga przeszkody. Pilnowało go szesnastu żołnierzy, a do dwóch z nich był przykuty podwójnym łańcuchem. Wyobrażasz to sobie? (zobacz Dz.12,4-10). Zaś w czasie, kiedy cały zbór gorliwie się modlił o jego ocalenie, Piotr spał. Bóg cudownie odpowiedział na te modlitwy! Posłał anioła, który uwolnił go z kajdanów i wyprowadził na wolność: „A gdy minęli pierwszą i drugą straż, doszli do żelaznej bramy, która im się sama otworzyła; i wyszli na zewnątrz” (Dz.12,10).\n\nTo jest możliwe, ponieważ Jezus jest Tym, który ma klucze do każdych drzwi: „Ten który otwiera, a nikt nie zamknie, i Ten który zamyka, a nikt nie otworzy” (Ap.3,7). Może stoisz przed jakimiś zamkniętymi drzwiami? Bóg ma moc je otworzyć, ale też może pokazać ci inną drogę, zgodną z Jego planem. Nie zniechęcaj się, nie traktuj zamkniętych drzwi jako porażki. Apostoł Paweł razem ze współpracownikami chcieli udać się w misyjną podróż do Azji Mniejszej (dzisiejsza Turcja) jednak Duch Święty im na to nie pozwolił. Otworzyły się natomiast dla nich drzwi w Macedonii. (zob. Dz.16,6-10).\n\nW modlitwie proś Bożego Ducha o prowadzenie, byś wiedział, kiedy odpuścić, a kiedy ruszyć dalej z odwagą. To było też stałą modlitwą apostoła Pawła, by Bóg otwierał mu nowe możliwości i by umiał je wykorzystać: „A módlcie się też za nas, aby Bóg otworzył nam drzwi dla Słowa” (Kol.4,3).\n\nJeśli modlisz się o prowadzenie Boże, bądź gotowy na możliwości jakie Bóg będzie stawiać na twojej drodze.\n\n„Panie drogi, proszę Cię byś Ty kierował moim życiem. Bo tylko Ty znasz konsekwencje moich wyborów. Kiedy stoję na skrzyżowaniu, pokaż mi właściwą drogę. Zamknij te okazje, które choć kuszą, nie są w Twoim planie dla mnie, a otwórz drzwi, przez które mam przejść. Dodaj mi odwagi, by zrobić pierwszy krok”.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
+                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nMODLITWA JEST KLUCZEM, KTÓRY OTWIERA KAŻDE DRZWI!\n\nKiedy się modlisz, Bóg otwiera drzwi. Zupełnie niespodziewane drzwi i często nie te, o których myśleliśmy i o które się modliliśmy! Bóg ma swoje, Jemu tylko wiadome sposoby, ale to twoja modlitwa sprawia, że to co niemożliwe staje się możliwe.\n\nDziękuję, że jesteś!\n❤️',
                     image: aCudaImg27,
                     likes: 291,
-                    amen: 264
-                });
-            } catch(e) {}
-
-            // 0.1. Andrzej Thiel - Cuda Każdego Dnia (26 SIERPNIA 2026 - WCZORAJ)
-            try {
-                const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
-                const aProfile = aJson ? JSON.parse(aJson) : null;
-                const aAvatar = (aProfile && aProfile.avatar) ? aProfile.avatar : 'avatar_andrzej_thiel.jpg';
-                const aName = (aProfile && aProfile.name) ? aProfile.name : 'Andrzej Thiel';
-                const aCudaImg26 = localStorage.getItem('lumina_cuda_image_26') || 'cuda_kazdego_dnia_26_sierpnia_2026.jpg';
-
-                posts.push({
-                    id: 'post_andrzej_cuda_26_08_2026',
-                    type: 'post',
-                    author: aName,
-                    authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
-                    authorAvatar: aAvatar,
-                    authorSlug: 'andrzejthiel',
-                    time: '26 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Wczoraj)',
-                    title: 'CUDA KAŻDEGO DNIA! 26 SIERPNIA 2026. JEŚLI NIE WIESZ, JAK SIĘ MODLIĆ...!',
-                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nJEŚLI NIE WIESZ, JAK SIĘ MODLIĆ...!\n\nChciałbyś lub chciałabyś się modlić, ale nie wiesz jak? Brakuje Ci słów? A może Twoja modlitwa stała się rutyną? Spróbuj modlić się do Boga Jego własnym Słowem. Jezus powiedział: „Słowa, które Ja wam powiedziałem, są duchem i życiem” (J.6,63). Gdy wypowiadasz je w modlitwie, pozwalasz Bożej prawdzie przenikać swoje serce i patrzeć na siebie, innych oraz swoje okoliczności z Bożej perspekpytywy. Zamiast przedstawiać Bogu własne plany i prosić Go, by je pobłogosławił, uczysz się mówić: „Panie, chcę zaufać Tobie i nie polegać na własnym rozumie, bo Twoje myśli przewyższają moje myśli” ((Prz.3,5; Iz.55,9). Jeśli trudno ci ubrać w słowa swoje emocje, sięgnij po Psalmy. Znajdziesz w nich szczere wołanie, wdzięczność, ból, nadzieję i uwielbienie. Możesz je śmiało personalizować – przecież to Twoja osobista rozmowa z Ojcem.\n\nOto kilka przykładów:\n• Oddając Bogu chwałę – módl się słowami Psalmu 100: „Panie, Ty jesteś moim Bogiem. Ty mnie stworzyłeś i do Ciebie należę. Przychodzę przed Ciebie z dziękczynieniem, a na Twoje dziedzińce – z uwielbieniem. Dziękuję Ci, Panie i błogosławię Twoje imię. Jesteś dobry, a Twoje miłosierdzie trwa na wieki. Twoja prawda trwa przez wszystkie pokolenia. Amen”.\n• Gdy potrzebujesz kierunku: „Panie, naucz mnie pełnić Twoją wolę, bo Ty jesteś moim Bogiem. Niech Twój dobry Duch prowadzi mnie właściwą drogą” (Ps.143,10).\n• Gdy brakuje Ci wiary: „Wierzę, Panie. Pomóż mi przezwyciężyć moją niewiarę” (Mk. 9,24).\n• Modląc się o bliskich: „Niech Twój Duch spocznie na… (imię): Duch mądrości i rozumu, Duch rady i mocy, Duch poznania i bojaźni Pana” (Iz. 11,2).\n• Modląc się o dzieci lub wnuki: „Ojcze, spraw, aby wzrastał w mądrości, w łasce u Ciebie i u ludzi” (Łk.2,52). A gdy wychodzi z domu: „Niech Twoi aniołowie strzegą go na wszystkich jego drogach” (Ps.91,11).\n• Kiedy jest ci ciężko: „Panie, odpowiedz na wołanie moje, sprawiedliwy Boże mój! W ucisku ulżyłeś mi. Zmiłuj się nade mną i wysłuchaj modlitwę moją” (Ps.4,2).\n• Kiedy się boisz: „Panie, Ty jesteś moją światłością i moim zbawieniem – kogo miałbym się bać? Ty jesteś ochroną mojego życia, więc nie chcę ulegać lękowi. Pomóż mi zaufać Tobie bardziej niż moim obawom.” (Ps.27,1)\n• Kiedy masz złamane serce: „Kochany Ojcze, dziękuję Ci, że jesteś blisko tych, których serce jest złamane. Widzisz mój ból i nie zostawiasz mnie samego. Proszę, podnieś mnie na duchu, uzdrów moje serce i napełnij mnie swoją nadzieją.” (Ps.34,19)\n\nWierzę, że znajdziesz wiele innych Bożych Słów, które tchną w ciebie życie.\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️',
-                    image: aCudaImg26,
-                    likes: 284,
-                    amen: 256
+                    amen: 264,
+                    _sortTs: new Date(2026, 7, 27, 6, 0).getTime()
                 });
             } catch(e) {}
 
