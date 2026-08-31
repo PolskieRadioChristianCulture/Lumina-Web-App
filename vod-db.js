@@ -20,6 +20,24 @@
     // Katalog filmów fabularnych VOD (@vod)
     const VOD_MOVIES_CATALOG = [
         {
+            id: 'przelecz-ocalonych-hacksaw-ridge',
+            embedType: 'iframe',
+            embedUrl: 'https://vider.info/embed/video/1mx8x1',
+            embedId: '1mx8x1',
+            title: 'Przełęcz ocalonych (Hacksaw Ridge)',
+            origTitle: 'Hacksaw Ridge',
+            year: 2016,
+            duration: '139 min',
+            category: 'Biograficzny / Wojenny',
+            director: 'Mel Gibson',
+            cast: 'Andrew Garfield, Sam Worthington, Vince Vaughn, Teresa Palmer, Luke Bracey, Hugo Weaving',
+            description: 'Oparta na faktach, poruszająca historia Desmonda Dossa – młodego chrześcijanina, który z powodów wiary odmawia noszenia broni i zabijania podczas II wojny światowej. Jako sanitariusz bez jednego wystrzału, z nieustanną modlitwą „Panie, pomóż mi uratować jeszcze jednego”, ocala życie 75 rannym towarzyszy w piekle bitwy o Okinawę. Pierwszy w historii obdżektor odznaczony Medalem Honoru.',
+            thumbnail: 'https://img.vider.info/i/1mx8x1/7/3/przecz-ocalonych-2016-lektor.png',
+            featured: true,
+            badge: 'MEGA HIT',
+            tags: ['przełęcz ocalonych', 'hacksaw ridge', 'mel gibson', 'desmond doss', 'andrew garfield', 'wiara', 'bohaterstwo', 'cały film lektor pl']
+        },
+        {
             id: 'chata-the-shack',
             embedType: 'iframe',
             embedUrl: 'https://vider.info/embed/video/8m8nxv',

@@ -72,6 +72,20 @@
           "position": 1,
           "item": {
             "@type": "Movie",
+            "name": "Przełęcz ocalonych (Hacksaw Ridge)",
+            "director": "Mel Gibson",
+            "dateCreated": "2016",
+            "inLanguage": "pl",
+            "genre": "Biograficzny / Wojenny",
+            "image": "https://img.vider.info/i/1mx8x1/7/3/przecz-ocalonych-2016-lektor.png",
+            "url": "https://polskieradio.cc/vod?film=przelecz-ocalonych-hacksaw-ridge"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "Movie",
             "name": "Chata (The Shack)",
             "director": "Stuart Hazeldine",
             "dateCreated": "2017",
@@ -83,7 +97,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 2,
+          "position": 3,
           "item": {
             "@type": "Movie",
             "name": "JEZUS – Ewangelia wg św. Łukasza",
@@ -97,7 +111,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 3,
+          "position": 4,
           "item": {
             "@type": "Movie",
             "name": "Bóg nie umarł (God's Not Dead)",
@@ -111,7 +125,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 4,
+          "position": 5,
           "item": {
             "@type": "Movie",
             "name": "Bóg nie umarł 2 (God's Not Dead 2)",
@@ -125,7 +139,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 5,
+          "position": 6,
           "item": {
             "@type": "Movie",
             "name": "Luter – człowiek, który zmienił oblicze Kościoła",
@@ -139,7 +153,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 6,
+          "position": 7,
           "item": {
             "@type": "Movie",
             "name": "Spotkanie (The Encounter)",
@@ -153,7 +167,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 7,
+          "position": 8,
           "item": {
             "@type": "Movie",
             "name": "Spotkanie 2: Raj utracony",
@@ -167,7 +181,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 8,
+          "position": 9,
           "item": {
             "@type": "Movie",
             "name": "I stanie się światło",
@@ -1639,7 +1653,7 @@
                 </div>
 
                 <div class="filter-pills" id="filterPillsContainer">
-                    <button class="filter-pill active" onclick="setCategoryFilter('all', this)">Wszystkie (8)</button>
+                    <button class="filter-pill active" onclick="setCategoryFilter('all', this)">Wszystkie (9)</button>
                     <button class="filter-pill" onclick="setCategoryFilter('Biblijny', this)"><i class="fa-solid fa-book-bible"></i> Biblijne</button>
                     <button class="filter-pill" onclick="setCategoryFilter('Dramat', this)">Dramat</button>
                     <button class="filter-pill" onclick="setCategoryFilter('Biograficzny', this)">Biograficzny</button>
@@ -1864,7 +1878,9 @@
                     }
                     if (ytContainer) ytContainer.style.display = 'none';
                     if (customIframe) {
-                        customIframe.src = currentMovie.embedUrl;
+                        const targetUrl = currentMovie.embedUrl + (currentMovie.embedUrl.includes('?') ? '&' : '?') + 'autoplay=1&auto=1';
+                        customIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+                        customIframe.src = targetUrl;
                         customIframe.style.display = 'block';
                     }
                 } else {
