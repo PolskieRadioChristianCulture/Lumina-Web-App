@@ -38,14 +38,43 @@ document.addEventListener("DOMContentLoaded", () => {
     const hDateBox = document.getElementById("homepageDzjDate");
     const hContentBox = document.getElementById("homepageDzjContent");
 
+    const formatReflectionText = (rawContent) => {
+        if (!rawContent) return '';
+        return rawContent
+            .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
+                const href = url.startsWith('http') ? url : 'https://' + url;
+                let label = 'Otwórz odnośnik';
+                if (url.includes('chat.whatsapp.com')) {
+                    label = 'Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp)';
+                } else if (url.includes('play.google.com')) {
+                    label = 'Pobierz bezpłatne aplikacje w Google Play';
+                } else if (url.includes('polskieradio.cc')) {
+                    label = 'Polskie Radio Christian Culture';
+                } else if (url.includes('cclite.pl')) {
+                    label = 'Telewizja CC Lite';
+                } else {
+                    try {
+                        const urlObj = new URL(href);
+                        label = urlObj.hostname;
+                    } catch (e) {
+                        label = 'Otwórz odnośnik';
+                    }
+                }
+                return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: #facc15; text-decoration: underline; font-weight: bold;">${label}</a>`;
+            })
+            .replace(/\n\n/g, '</p><p class="mt-4" style="margin-top: 14px; margin-bottom: 14px; line-height: 1.8;">')
+            .replace(/\n/g, '<br/>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    };
+
     const populateContent = (title, formattedContent, dateStr) => {
         // Populate modal
         if (titleBox) titleBox.textContent = title;
         if (dateBox) dateBox.textContent = dateStr;
         if (contentBox) {
             contentBox.innerHTML = `
-                <div class="dzj-text-content">
-                    <p>${formattedContent}</p>
+                <div class="dzj-text-content" style="color: #e0e0e0; line-height: 1.8; font-weight: 300;">
+                    <p style="margin-bottom: 14px; line-height: 1.8;">${formattedContent}</p>
                 </div>
                 
                 <!-- Przycisk Udostępnij & TV -->
@@ -92,88 +121,90 @@ document.addEventListener("DOMContentLoaded", () => {
         if (hContentBox) {
             hContentBox.innerHTML = `
                 <div class="dzj-text-content" style="color: #e0e0e0; line-height: 1.8; font-weight: 300;">
-                    <p>${formattedContent}</p>
+                    <p style="margin-bottom: 14px; line-height: 1.8;">${formattedContent}</p>
                 </div>
             `;
         }
     };
 
     const loadReflectionData = async () => {
-        try {
-            const now = new Date();
-            const pad = (n) => n < 10 ? '0' + n : n;
-            const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+        const now = new Date();
+        const pad = (n) => n < 10 ? '0' + n : n;
+        const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+        
+        let docData = null;
 
+        // 1. Próba pobrania z Firestore
+        try {
             const q = query(collection(db, "web_inspirations"), orderBy("date", "desc"), limit(10));
             const snap = await getDocs(q);
 
             if (!snap.empty) {
                 const validDocs = snap.docs.map(d => d.data()).filter(d => d.date && d.date <= todayStr);
-                const doc = validDocs.find(d => d.date === todayStr) || validDocs[0];
-                if (!doc) throw new Error("No valid reflection found for today or past dates.");
-                
-                let dateStr = "Dzisiaj";
-                if (doc.timestamp && doc.timestamp.toDate) {
-                    const date = doc.timestamp.toDate();
-                    dateStr = date.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
-                }
-
-                const title = doc.title || "Codzienna Inspiracja";
-                const rawContent = doc.contentWeb || doc.content || "Brak treści na dziś.";
-                window.currentDzjTitle = title;
-                window.currentDzjText = rawContent;
-
-                let formattedContent = rawContent
-                    .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
-                        const href = url.startsWith('http') ? url : 'https://' + url;
-                        let label = 'Otwórz odnośnik';
-                        if (url.includes('chat.whatsapp.com')) {
-                            label = 'Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp)';
-                        } else if (url.includes('play.google.com')) {
-                            label = 'Pobierz bezpłatne aplikacje w Google Play';
-                        } else if (url.includes('polskieradio.cc')) {
-                            label = 'Polskie Radio Christian Culture';
-                        } else if (url.includes('cclite.pl')) {
-                            label = 'Telewizja CC Lite';
-                        } else {
-                            try {
-                                const urlObj = new URL(href);
-                                label = urlObj.hostname;
-                            } catch (e) {
-                                label = 'Otwórz odnośnik';
-                            }
-                        }
-                        return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: #facc15; text-decoration: underline; font-weight: bold;">${label}</a>`;
-                    })
-                    .replace(/\n\n/g, '</p><p class="mt-4">')
-                    .replace(/\n/g, '<br/>')
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-                populateContent(title, formattedContent, dateStr);
-            } else {
-                throw new Error("No reflection found in Firestore query.");
+                docData = validDocs.find(d => d.date === todayStr) || validDocs[0] || null;
             }
         } catch (e) {
-            console.error("Błąd pobierania rozważania z Firestore:", e);
-            const defaultTitle = "☀️ Lato z Jezusem — Wielkie Pytania";
-            const defaultDate = "22 sierpnia 2026";
-            const rawContent = `☀️ Lato z Jezusem — Wielkie Pytania
-Dzień 22 — 31 bardzo osobistych pytań Syna/Córki do Ojca: Dlaczego tak łatwo ulegam lękowi przed odrzuceniem moich granic?
+            console.warn("LUMINA/DZJ: Błąd Firestore (przełączam na rozwazania_baza.json):", e.message);
+        }
 
-W dwudziestym drugim dniu cyklu „Lato z Jezusem — Wielkie Pytania” rozbrajamy pułapkę toksycznej uległości oraz nieumiejętności wyznaczania zdrowych, dojrzałych granic.
+        // 2. Fallback do rozwazania_baza.json (gdy Firestore jest niedostępny lub limit wyczerpany)
+        if (!docData) {
+            try {
+                const res = await fetch('/rozwazania_baza.json?v=' + Date.now());
+                if (res.ok) {
+                    const list = await res.json();
+                    if (Array.isArray(list) && list.length > 0) {
+                        const validList = list.filter(r => r.date && r.date <= todayStr);
+                        docData = validList.find(r => r.date === todayStr) || validList[0] || null;
+                    }
+                }
+            } catch (jsonErr) {
+                console.warn("LUMINA/DZJ: Błąd pobierania JSON fallback:", jsonErr.message);
+            }
+        }
 
-W psychologii relacyjnej zjawisko „syndromu zadowalacza ludzi” (people-pleasing syndrome) opisuje wzorzec zachowania, w którym jednostka rezygnuje z własnych granic i potrzeb ze strachu przed odrzuceniem lub konfliktem. Wróg bezwzględnie wykorzystuje tę słabość, prowadząc nas do chronicznego wypalenia. Słowo Ewangelii pokazuje nam postawę Jezusa, który potrafił usunąć się na miejsce pustynne wbrew oczekiwaniom tłumów. Chrześcijański lider najwyższej klasy dba o swoje zasoby i stawia jasne granice z nienaganną, królewską klasą, wiedząc, że nieprzemyślana uległość niszczy potencjał oddania.
+        // 3. Jeśli mamy dane (z Firestore lub JSON)
+        if (docData && (docData.contentWeb || docData.fullText || docData.teaser)) {
+            const dParts = (docData.date || todayStr).split('-');
+            let dateLabel = docData.date || todayStr;
+            if (dParts.length === 3) {
+                const monthNames = ['Stycznia', 'Lutego', 'Marca', 'Kwietnia', 'Maja', 'Czerwca', 'Lipca', 'Sierpnia', 'Września', 'Października', 'Listopada', 'Grudnia'];
+                const mIdx = parseInt(dParts[1], 10) - 1;
+                dateLabel = `${parseInt(dParts[2], 10)} ${monthNames[mIdx] || ''} ${dParts[0]}`;
+            }
+
+            const title = docData.title || "☀️ Lato z Jezusem — Wielkie Pytania (Dzień 31 - Finał Cyklu)";
+            const rawContent = docData.contentWeb || docData.fullText || docData.teaser || '';
+            window.currentDzjTitle = title;
+            window.currentDzjText = rawContent;
+
+            const formattedContent = formatReflectionText(rawContent);
+            populateContent(title, formattedContent, dateLabel);
+            return;
+        }
+
+        // 4. Ostateczny bezpieczny fallback (Dzień 31 — 31 sierpnia 2026)
+        const defaultTitle = "☀️ Lato z Jezusem — Wielkie Pytania (Dzień 31 - Finał Cyklu)";
+        const defaultDate = "31 sierpnia 2026";
+        const rawContent = `☀️ Lato z Jezusem — Wielkie Pytania
+Dzień 31 — Finał Cyklu: Dlaczego tak łatwo ulegam lękowi przed ostatecznym krokiem i wejściem w nową jakość życia?
+
+W trzydziestym pierwszym, finałowym dniu cyklu „Lato z Jezusem — Wielkie Pytania” zamykamy tę potężną formacyjną podróż i stajemy na progu całkowicie nowej jakości.
+
+W psychologii zmiany moment przejścia (transition phase) wymaga porzucenia dawnej tożsamości i odważnego wejścia w nieznane, co często wyzwala lęk przed utratą kontroli. Słowo Boże przez proroka Izajasza przypomina nam niezmienną obietnicę: „Nie bój się, bo Ja jestem z tobą”. Zamykając dziś letni cykl, patrzymy z wdzięcznością na wszystko, co Bóg w nas odbudował. Chrześcijański lider najwyższej klasy nie lęka się nowych wyzwań – przekracza progi z nienaganną klasą i niezachwianą wiarą.
+
+Już jutro, od 1 września, otwieramy nowy, przełomowy rozdział i zapraszamy na zupełnie nowy cykl rozważań pod tytułem „Słowa Mają Moc”!
 
 Jezus mówi dziś do Ciebie:
-„On jednak usunie się na miejsca pustynne i modlił się.” (Łukasza 5,16)
+„Nie bój się, bo Ja jestem z tobą; nie lękaj się, bo Ja jestem twoim Bogiem.” (Izajasza 41,10)
 
 Zadanie Taktyczne:
-Zmiażdż dziś lęk przed postawieniem granicy na swoim polu bitwy. Zidentyfikuj relację lub obszar, w którym z powodu uległości pozwaliasz nadwyrężać swój czas i energię. Wyznacz zdrową, jasną granicę z pełnym spokojem i szacunkiem. Wnieś do swojego domu i środowiska standard dojrzałości, ochrony zasobów i niezachwianego autorytetu.
+Zmiażdż dziś lęk przed progiem zmian na swoim polu bitwy. Podsumuj ten miesiąc z wdzięcznością i zrób ostateczny krok w nową jakość życia. Przygotuj się na jutrzejszą inaugurację cyklu „Słowa Mają Moc”. Wnieś do swojego domu i firmy standard odwagi i dojrzałego autorytetu.
 
 W Christian Culture aplikacje i portale są zawsze BEZPŁATNE.
 
 Modlitwa Bojowa:
-„Ojcze, odrzucam kłamstwa nieprzyjaciela i lęk przed odrzuceniem z powodu stawiania granic. Przepraszam, że zaniedbywałem swoje zasoby przez źle pojętą uległość. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą i mądrością zarządzał moim czasem i energią, zdobywając ten świat dla Twojej chwały.”
+„Ojcze, odrzucam kłamstwa nieprzyjaciela i lęk przed nowym etapem. Dziękuję Ci za zamknięcie cyklu 'Lato z Jezusem' i za to, że od 1 września wkraczamy w potężny cykl 'Słowa Mają Moc'. Daj mi odwagę, rygor i wyrazisty charakter, bym z nienaganną klasą zdobywał ten świat dla Twojej chwały.”
 
 Baza i wzrost: https://chat.whatsapp.com/DBTRDxQWamZDWaOkjupSt0 – Wejdź do zespołu ludzi z pasją!
 
@@ -181,37 +212,11 @@ PODAJ DALEJ 🔴
 www.polskieradio.cc | www.cclite.pl
 Apps: https://play.google.com/store/apps/dev?id=5215448773598149938`;
 
-            window.currentDzjTitle = defaultTitle;
-            window.currentDzjText = rawContent;
+        window.currentDzjTitle = defaultTitle;
+        window.currentDzjText = rawContent;
 
-            let formattedContent = rawContent
-                .replace(/((?:https?:\/\/|www\.)[^\s\n<]+)/g, (url) => {
-                    const href = url.startsWith('http') ? url : 'https://' + url;
-                    let label = 'Otwórz odnośnik';
-                    if (url.includes('chat.whatsapp.com')) {
-                        label = 'Wejdź do zespołu ludzi z pasją! (Grupa WhatsApp)';
-                    } else if (url.includes('play.google.com')) {
-                        label = 'Pobierz bezpłatne aplikacje w Google Play';
-                    } else if (url.includes('polskieradio.cc')) {
-                        label = 'Polskie Radio Christian Culture';
-                    } else if (url.includes('cclite.pl')) {
-                        label = 'Telewizja CC Lite';
-                    } else {
-                        try {
-                            const urlObj = new URL(href);
-                            label = urlObj.hostname;
-                        } catch (e) {
-                            label = 'Otwórz odnośnik';
-                        }
-                    }
-                    return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color: #facc15; text-decoration: underline; font-weight: bold;">${label}</a>`;
-                })
-                .replace(/\n\n/g, '</p><p class="mt-4">')
-                .replace(/\n/g, '<br/>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-            populateContent(defaultTitle, formattedContent, defaultDate);
-        }
+        const formattedContent = formatReflectionText(rawContent);
+        populateContent(defaultTitle, formattedContent, defaultDate);
     };
 
     const scrollToSection = () => {
