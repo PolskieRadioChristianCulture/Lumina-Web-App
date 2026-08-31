@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ══════════════════════════════════════════════════════════════════════════
  * LUMINA AGENT MATRIX — 7-GRID PLAYWRIGHT LAUNCHER
  * ══════════════════════════════════════════════════════════════════════════
@@ -16,9 +16,10 @@ import { scenarios } from './scenarios.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Wczytaj konfigurację matrycy
+// Wczytaj konfigurację matrycy (z obsługą i usuwaniem ewentualnego BOM)
 const configPath = path.join(__dirname, 'config.json');
-const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+const rawConfig = fs.readFileSync(configPath, 'utf8').replace(/^\uFEFF/, '');
+const config = JSON.parse(rawConfig);
 
 // Wybór środowiska: production vs local
 const isLocal = process.argv.includes('--local') || process.env.MATRIX_ENV === 'local';
