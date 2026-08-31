@@ -3546,6 +3546,49 @@
                 <!-- Tab: Tablica & Wpisy -->
                 <div id="tab-feed" class="tab-content-pane">
 
+                    <!-- 🔴 1. GŁÓWNY PRZYPIĘTY POST: TV LIVE INSTRUMENTAL 24/7 (NAD PLAYLISTĄ YT) -->
+                    <article class="post-card mission-live-broadcast-card" id="post_live_cezary_instrumental_top" style="margin-bottom: 22px; border-color: rgba(142, 45, 226, 0.45); box-shadow: 0 8px 32px rgba(142, 45, 226, 0.15);">
+                        <div class="post-header">
+                            <img loading="lazy" decoding="async" src="avatar_cezary_official.jpg" alt="Cezary Rogowski" class="post-avatar">
+                            <div>
+                                <div class="post-author">Cezary Rogowski <span class="mission-live-pill"><span class="pulse-dot"></span> NA ŻYWO</span></div>
+                                <div class="post-time">🔴 TRANSMISJA NA ŻYWO • TV LIVE INSTRUMENTAL 24/7</div>
+                            </div>
+                            <div class="live-viewer-chip" style="margin-left:auto; background:rgba(212,175,55,0.15); border:1px solid rgba(212,175,55,0.35); color:#ffd700; padding:4px 10px; border-radius:12px; font-size:0.75rem; font-weight:800; display:flex; align-items:center; gap:6px;">
+                                <i class="fa-solid fa-satellite-dish"></i> <span>EMISJA 24/7</span>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <div style="font-weight:800; color:#fff; font-size:1.12rem; margin-bottom:6px; line-height:1.35;">🔴 TV LIVE 24/7: Instrumental Worship Music — Christian Culture</div>
+                            <div style="color:#cbd5e1; font-size:0.92rem; line-height:1.55;">Oficjalny telewizyjny kanał muzyki instrumentalnej uwielbienia. Nieprzerwany strumień 31 wyselekcjonowanych kompozycji stworzonych do modlitwy, osobistego wyciszenia, rozważania Słowa Bożego i pracy.</div>
+                        </div>
+                        
+                        <!-- EMBEDDED LIVING AUTOSTART BROADCAST PLAYER -->
+                        <div class="mission-live-player-wrapper">
+                            <iframe src="cctv24-worship.html" 
+                                    title="Instrumental Worship Music CC • TV LIVE 24/7"
+                                    allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share" 
+                                    allowfullscreen 
+                                    loading="eager"></iframe>
+                            
+                            <div class="mission-live-player-overlay">
+                                <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
+                                    <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
+                                </button>
+                                <a href="cctv24-worship.html" target="_blank" class="btn-expand-live" title="Otwórz pełny kanał TV w nowej karcie">
+                                    <i class="fa-solid fa-tv"></i> <span>Pełny Ekran TV</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="post-footer">
+                            <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">348</span><span class="btn-text"> Polubień</span></button>
+                            <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen! (312)</span></button>
+                            <a href="cctv24-worship.html" target="_blank" class="post-action-btn" style="text-decoration:none; color:inherit;"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="btn-text"> Otwórz Kanał</span></a>
+                            <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Napisz</span></button>
+                        </div>
+                    </article>
+
                     <!-- 🎬 Playlista YouTube Cezarego Rogowskiego -->
                     <div class="sidebar-card" style="padding:0; overflow:hidden; border-radius:20px; margin-bottom:18px;">
                         <div style="display:flex; align-items:center; gap:10px; padding:14px 18px 12px; border-bottom:1px solid rgba(255,255,255,0.08);">
@@ -3615,49 +3658,6 @@
                     <!-- Feed Posts Stream -->
                     <div id="feedStream">
                         
-                        <!-- Pinned Living TV LIVE Instrumental Broadcast Post -->
-                        <article class="post-card mission-live-broadcast-card" id="post_live_cezary_instrumental">
-                            <div class="post-header">
-                                <img loading="lazy" decoding="async" src="avatar_cezary_official.jpg" alt="Cezary Rogowski" class="post-avatar">
-                                <div>
-                                    <div class="post-author">Cezary Rogowski <span class="mission-live-pill"><span class="pulse-dot"></span> NA ŻYWO</span></div>
-                                    <div class="post-time">🔴 TRANSMISJA NA ŻYWO • TV LIVE INSTRUMENTAL 24/7</div>
-                                </div>
-                                <div class="live-viewer-chip" style="margin-left:auto; background:rgba(212,175,55,0.15); border:1px solid rgba(212,175,55,0.35); color:#ffd700; padding:4px 10px; border-radius:12px; font-size:0.75rem; font-weight:800; display:flex; align-items:center; gap:6px;">
-                                    <i class="fa-solid fa-satellite-dish"></i> <span>EMISJA 24/7</span>
-                                </div>
-                            </div>
-                            <div class="post-content">
-                                <div style="font-weight:800; color:#fff; font-size:1.08rem; margin-bottom:6px; line-height:1.35;">🔴 TV LIVE 24/7: Instrumental Worship Music — Christian Culture</div>
-                                <div style="color:#cbd5e1; font-size:0.90rem; line-height:1.5;">Oficjalny telewizyjny kanał muzyki instrumentalnej uwielbienia. Nieprzerwany strumień 31 wyselekcjonowanych kompozycji stworzonych do modlitwy, osobistego wyciszenia, rozważania Słowa Bożego i pracy.</div>
-                            </div>
-                            
-                            <!-- EMBEDDED LIVING AUTOSTART BROADCAST PLAYER -->
-                            <div class="mission-live-player-wrapper">
-                                <iframe src="cctv24-worship.html" 
-                                        title="Instrumental Worship Music CC • TV LIVE 24/7"
-                                        allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share" 
-                                        allowfullscreen 
-                                        loading="eager"></iframe>
-                                
-                                <div class="mission-live-player-overlay">
-                                    <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
-                                        <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
-                                    </button>
-                                    <a href="cctv24-worship.html" target="_blank" class="btn-expand-live" title="Otwórz pełny kanał TV w nowej karcie">
-                                        <i class="fa-solid fa-tv"></i> <span>Pełny Ekran TV</span>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="post-footer">
-                                <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">348</span><span class="btn-text"> Polubień</span></button>
-                                <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen! (312)</span></button>
-                                <a href="cctv24-worship.html" target="_blank" class="post-action-btn" style="text-decoration:none; color:inherit;"><i class="fa-solid fa-arrow-up-right-from-square"></i><span class="btn-text"> Otwórz Kanał</span></a>
-                                <button class="post-action-btn" onclick="openMessageModal()"><i class="fa-solid fa-comment-dots"></i><span class="btn-text"> Napisz</span></button>
-                            </div>
-                        </article>
-
                         <!-- Post 1 -->
                         <article class="post-card">
                             <div class="post-header">
@@ -5855,28 +5855,9 @@
                 }
             } catch(e) {}
 
-            // 0. Dynamic Living Live Broadcast Channel Autostart Post (Pinned at top)
-            const liveBroadcastPost = {
-                id: 'post_live_cezary_instrumental',
-                author: 'Cezary Rogowski',
-                authorAvatar: data.avatar || 'avatar_cezary_official.jpg',
-                authorRole: '👑 Założyciel Christian Culture & Portalu LUMINA',
-                authorSlug: 'cezaryrgowski',
-                time: '🔴 TRANSMISJA NA ŻYWO • TV LIVE INSTRUMENTAL 24/7',
-                isLiveBroadcastPost: true,
-                streamUrl: 'cctv24-worship.html',
-                fullPageUrl: 'cctv24-worship.html',
-                channelTitle: 'Instrumental Worship Music CC • TV LIVE 24/7',
-                showTitle: '🔴 TV LIVE 24/7: Instrumental Worship Music — Christian Culture',
-                description: 'Oficjalny telewizyjny kanał muzyki instrumentalnej uwielbienia. Nieprzerwany strumień 31 wyselekcjonowanych kompozycji stworzonych do modlitwy, osobistego wyciszenia, rozważania Słowa Bożego i pracy.',
-                badge: '🔴 TRANSMISJA NA ŻYWO • TV LIVE INSTRUMENTAL 24/7',
-                likes: 348,
-                amen: 312,
-                _sortTs: Date.now() + 10000000000
-            };
-            result.unshift(liveBroadcastPost);
-
-            return result;
+            // Sortuj chronologicznie od najnowszego do najstarszego (pomijając duplikat TV Live wyeksponowany na samej górze profilu)
+            result.sort((a, b) => (b._sortTs || extractSortTs(b)) - (a._sortTs || extractSortTs(a)));
+            return result.filter(p => p.id !== 'post_live_cezary_instrumental' && p.id !== 'post_live_cezary_master' && !p.isLiveBroadcastPost);
         }
 
         async function loadCezaryReflectionsJson() {
