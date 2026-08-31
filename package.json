@@ -18,7 +18,8 @@
     "test:all": "npm run test:unit && npm run test:guardian:extended && npm run build:lumina",
     "test": "npm run test:all",
     "matrix": "node scripts/agent-matrix/launch_grid.js",
-    "matrix:local": "node scripts/agent-matrix/launch_grid.js --local"
+    "matrix:local": "node scripts/agent-matrix/launch_grid.js --local",
+    "studio": "node scripts/agent-matrix/launch_studio.js"
   },
   "dependencies": {
     "express": "^4.19.2",
@@ -31,6 +32,7 @@
     "@vitejs/plugin-vue": "^6.0.8",
     "@vue/test-utils": "^2.5.0",
     "happy-dom": "^20.11.15",
+    "playwright": "^1.62.1",
     "typescript": "^7.0.2",
     "vite": "^8.2.2",
     "vitest": "^4.1.11",

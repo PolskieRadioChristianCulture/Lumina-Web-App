@@ -1,10 +1,10 @@
 @echo off
-title LUMINA AGENT MATRIX - 7-Grid Simulator
+title LUMINA MOBILE STUDIO - Phone Suite
 echo =========================================================================
-echo             LUMINA AGENT MATRIX (7-GRID PLAYWRIGHT SIMULATOR)
+echo             LUMINA MOBILE STUDIO (PHONE SUITE DESKTOP)
 echo =========================================================================
 echo.
-echo Uruchamianie 7 okien mobilnych na ekranie...
+echo Uruchamianie wizualnego symulatora smartfonow na ekranie...
 echo.
-cmd /c "npm run matrix"
+cmd /c "npm run studio"
 pause
