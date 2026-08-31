@@ -2097,7 +2097,7 @@
 
         .modal-close-btn {
             position: absolute; top: 14px; right: 14px;
-            width: 30px; height: 30px; border-radius: 50%;
+            width: 44px; height: 44px; min-width: 44px; min-height: 44px; max-width: 44px; max-height: 44px; border-radius: 50%;
             background: rgba(255,255,255,0.1); border: none;
             color: #fff; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
@@ -2455,10 +2455,31 @@
             .lumina-filter-trigger-text,
             .lumina-events-btn-label { display: none !important; }
 
-            /* 4. Globalny touch-target dla wszystkich elementów klikalnych */
-            button, a.btn, .btn, [role="button"] {
+            /* 4. Globalny touch-target — bezpieczna wersja bez zniekształceń */
+            /* Przyciski prostokątne i linkowe */
+            a.btn, .btn-primary, .btn-secondary, .btn-action,
+            input[type="button"], input[type="submit"] {
                 min-height: 44px;
                 touch-action: manipulation;
+            }
+            /* touch-action dla wszystkich przycisków bez wpływu na wymiary */
+            button { touch-action: manipulation; }
+
+            /* Naprawa modal-close-btn: był 28x28 → oval przez min-height:44px */
+            .modal-close-btn {
+                width: 44px !important;
+                height: 44px !important;
+                min-height: 44px !important;
+                min-width: 44px !important;
+                max-width: 44px !important;
+                max-height: 44px !important;
+                border-radius: 50% !important;
+                padding: 0 !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 1rem !important;
+                flex-shrink: 0 !important;
             }
         }
     </style>
@@ -8345,10 +8366,25 @@
                 btn.style.padding = '0';
                 btn.style.minHeight = '44px';
                 btn.style.minWidth = '44px';
+                btn.style.maxHeight = '';
+                btn.style.maxWidth = '';
                 btn.style.gap = '0';
+                btn.style.height = '';
+                btn.style.width = '';
                 // Hide label span if present
                 var label = btn.querySelector('.tab-label');
                 if (label) label.style.display = 'none';
+            });
+            // Fix .modal-close-btn: must stay perfectly round 44x44, NOT oval
+            document.querySelectorAll('.modal-close-btn').forEach(function(btn) {
+                btn.style.width = '44px';
+                btn.style.height = '44px';
+                btn.style.minWidth = '44px';
+                btn.style.minHeight = '44px';
+                btn.style.maxWidth = '44px';
+                btn.style.maxHeight = '44px';
+                btn.style.padding = '0';
+                btn.style.borderRadius = '50%';
             });
         }
         // Run on load

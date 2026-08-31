@@ -548,8 +548,12 @@
             box-shadow: 0 0 14px rgba(245, 158, 11, 0.3);
         }
         .nav-radio-play {
-            width: 28px;
-            height: 28px;
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            min-height: 44px;
+            max-width: 44px;
+            max-height: 44px;
             border-radius: 50%;
             background: linear-gradient(135deg, #f59e0b, #d97706);
             color: #fff;
@@ -1622,8 +1626,12 @@
             background: #a855f7;
             color: #fff;
             border: none;
-            width: 30px;
-            height: 30px;
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            min-height: 44px;
+            max-width: 44px;
+            max-height: 44px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
@@ -1699,8 +1707,12 @@
             background: rgba(255, 255, 255, 0.1);
             border: none;
             color: #fff;
-            width: 30px;
-            height: 30px;
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            min-height: 44px;
+            max-width: 44px;
+            max-height: 44px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
@@ -2468,8 +2480,12 @@
         }
 
         .btn-ad-admin-action {
-            width: 30px;
-            height: 30px;
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            min-height: 44px;
+            max-width: 44px;
+            max-height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -2851,10 +2867,31 @@
             .lumina-filter-trigger-text,
             .lumina-events-btn-label { display: none !important; }
 
-            /* 4. Globalny touch-target dla wszystkich elementów klikalnych */
-            button, a.btn, .btn, [role="button"] {
+            /* 4. Globalny touch-target — bezpieczna wersja bez zniekształceń */
+            /* Przyciski prostokątne i linkowe */
+            a.btn, .btn-primary, .btn-secondary, .btn-action,
+            input[type="button"], input[type="submit"] {
                 min-height: 44px;
                 touch-action: manipulation;
+            }
+            /* touch-action dla wszystkich przycisków bez wpływu na wymiary */
+            button { touch-action: manipulation; }
+
+            /* Naprawa modal-close-btn: był 28x28 → oval przez min-height:44px */
+            .modal-close-btn {
+                width: 44px !important;
+                height: 44px !important;
+                min-height: 44px !important;
+                min-width: 44px !important;
+                max-width: 44px !important;
+                max-height: 44px !important;
+                border-radius: 50% !important;
+                padding: 0 !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 1rem !important;
+                flex-shrink: 0 !important;
             }
         }
     </style>
@@ -4737,6 +4774,34 @@
                 _sortTs: new Date(2026, 7, 21, 12, 0).getTime()
             });
 
+                        // 0.0. Andrzej Thiel - Cuda Każdego Dnia (31 SIERPNIA 2026 - DZISIAJ)
+            try {
+                const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
+                const aProfile = aJson ? JSON.parse(aJson) : null;
+                const aAvatar = (aProfile && aProfile.avatar) ? aProfile.avatar : 'avatar_andrzej_thiel.jpg';
+                const aName = (aProfile && aProfile.name) ? aProfile.name : 'Andrzej Thiel';
+                const aCudaImg31 = localStorage.getItem('lumina_cuda_image_31') || 'cuda_kazdego_dnia_27_sierpnia_2026.jpg';
+
+                posts.push({
+                    id: 'post_andrzej_cuda_31_08_2026',
+                    type: 'post',
+                    category: 'ckd',
+                    isDevotion: true,
+                    _isCkdDaily: true,
+                    author: aName,
+                    authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
+                    authorAvatar: aAvatar,
+                    authorSlug: 'andrzejthiel',
+                    time: '31 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Dzisiaj)',
+                    title: 'CUDA KAŻDEGO DNIA! 31 SIERPNIA 2026. ODKRYJ BOŻY POKÓJ W KAŻDYM DNIU!',
+                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nODKRYJ BOŻY POKÓJ W KAŻDYM DNIU!\n\nZamykając sierpień, dziękujemy Bogu za każdy cud i każdą wysłuchaną modlitwę. Niezależnie od wyzwań, które stoją przed tobą, pamiętaj, że Boży pokój przewyższa wszelki rozum. Kiedy oddajesz swoje troski w Jego ręce, On prowadzi cię przez najtrudniejsze chwile z niesamowitą miłością i troską.\n\nJezus mówi do Ciebie dzisiaj:\n„Pokój zostawiam wam, mój pokój daję wam; nie jak świat daje, Ja wam daję. Niech się nie trwoży serce wasze ani nie lęka!” (Jana 14,27).\n\nDziękuję, że jesteś!\n❤️',
+                    image: aCudaImg31,
+                    likes: 312,
+                    amen: 289,
+                    _sortTs: new Date(2026, 7, 31, 6, 0).getTime()
+                });
+            } catch(e) {}
+
             // 0.1. Andrzej Thiel - Cuda Każdego Dnia (Fallback offline)
             try {
                 const aJson = localStorage.getItem('lumina_profile_andrzejthiel');
@@ -5596,7 +5661,7 @@
                                     </div>
                                 </div>
                                 <div class="post-header-actions">
-                                    <span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(250,204,21,0.15));border-color:rgba(245,158,11,0.6);color:#fbbf24; font-weight:800;" title="Rozważanie: Cuda Każdego Dnia"><i class="fa-solid fa-sun" style="color:#f59e0b;"></i> <span class="badge-type-tag-text">Cuda Każdego Dnia</span></span>
+                                    <span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(250,204,21,0.15));border-color:rgba(245,158,11,0.6);color:#fbbf24; font-weight:800;" title="Rozważanie: Dobrze, że jesteś"><i class="fa-solid fa-sun" style="color:#f59e0b;"></i> <span class="badge-type-tag-text">Dobrze, że jesteś</span></span>
                                 </div>
                             </div>
 
@@ -8767,10 +8832,25 @@
                 btn.style.padding = '0';
                 btn.style.minHeight = '44px';
                 btn.style.minWidth = '44px';
+                btn.style.maxHeight = '';
+                btn.style.maxWidth = '';
                 btn.style.gap = '0';
+                btn.style.height = '';
+                btn.style.width = '';
                 // Hide label span if present
                 var label = btn.querySelector('.tab-label');
                 if (label) label.style.display = 'none';
+            });
+            // Fix .modal-close-btn: must stay perfectly round 44x44, NOT oval
+            document.querySelectorAll('.modal-close-btn').forEach(function(btn) {
+                btn.style.width = '44px';
+                btn.style.height = '44px';
+                btn.style.minWidth = '44px';
+                btn.style.minHeight = '44px';
+                btn.style.maxWidth = '44px';
+                btn.style.maxHeight = '44px';
+                btn.style.padding = '0';
+                btn.style.borderRadius = '50%';
             });
         }
         // Run on load
