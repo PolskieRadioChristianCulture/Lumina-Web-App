@@ -855,16 +855,25 @@
     // Load State from LocalStorage
     function loadSavedState() {
       try {
-        // Clean legacy v2 / v3 keys to avoid stale configurations
         localStorage.removeItem('matrix_cc_phones_v2');
         localStorage.removeItem('matrix_cc_phones_v3');
+        localStorage.removeItem('matrix_cc_phones_v4');
 
-        const saved = localStorage.getItem('matrix_cc_phones_v4');
+        const saved = localStorage.getItem('matrix_cc_phones_v5');
         if (saved) {
           phones = JSON.parse(saved);
         }
       } catch (e) {
         console.warn('Błąd odczytu zapisanych telefonów:', e);
+      }
+
+      // Sanitize customUrls
+      if (phones && phones.length > 0) {
+        phones.forEach(p => {
+          if (p.profileId === 'browser' && p.customUrl && (p.customUrl.includes('google') || p.customUrl.includes('search.html'))) {
+            p.customUrl = '';
+          }
+        });
       }
 
       // Default starter 7 phones with search.html browser
@@ -891,6 +900,7 @@
         localStorage.removeItem('matrix_cc_phones_v2');
         localStorage.removeItem('matrix_cc_phones_v3');
         localStorage.removeItem('matrix_cc_phones_v4');
+        localStorage.removeItem('matrix_cc_phones_v5');
       } catch (e) {}
       phones = getDefaultPhones();
       saveState();
@@ -900,7 +910,7 @@
 
     function saveState() {
       try {
-        localStorage.setItem('matrix_cc_phones_v4', JSON.stringify(phones));
+        localStorage.setItem('matrix_cc_phones_v5', JSON.stringify(phones));
       } catch (e) {}
     }
 
@@ -910,7 +920,8 @@
 
     function getPhoneUrl(phone) {
       if (phone.customUrl && phone.customUrl.trim() !== '') {
-        return normalizeUrl(phone.customUrl);
+        const norm = normalizeUrl(phone.customUrl);
+        return norm;
       }
       const p = PROFILE_OPTIONS.find(x => x.id === phone.profileId) || PROFILE_OPTIONS[0];
       if (p.isBrowser) return 'search.html';
@@ -920,36 +931,31 @@
     }
 
     function normalizeUrl(input) {
-      let raw = input.trim();
+      let raw = (input || '').trim();
       if (!raw) return 'search.html';
 
       let decoded = raw;
       try { decoded = decodeURIComponent(raw); } catch (e) {}
+      const lc = decoded.toLowerCase();
 
       // Pliki lokalne
-      if (decoded === 'search.html' || decoded.startsWith('search.html?') ||
-          decoded === 'yt_embed_viewer.html' || decoded.startsWith('yt_embed_viewer.html?') ||
-          decoded === 'browser.html' || decoded.startsWith('browser.html?')) {
+      if (lc === 'search.html' || lc.startsWith('search.html?') ||
+          lc === 'yt_embed_viewer.html' || lc.startsWith('yt_embed_viewer.html?') ||
+          lc === 'browser.html' || lc.startsWith('browser.html?')) {
         return decoded;
       }
 
-      // Słowa kluczowe: google / wyszukiwarka
-      if (decoded.toLowerCase() === 'google' || decoded.toLowerCase() === 'google.com' || decoded.toLowerCase() === 'google.pl') {
+      // Wszystkie warianty Google (google.pl, google.com, https://www.google.pl, google, itp.)
+      if (lc === 'google' || lc.includes('google.com') || lc.includes('google.pl') || lc.includes('google.de') || lc.includes('google.co')) {
+        const qMatch = decoded.match(/[?&]q=([^&]+)/i);
+        if (qMatch && qMatch[1]) {
+          return `search.html?q=${encodeURIComponent(decodeURIComponent(qMatch[1]))}`;
+        }
         return 'search.html';
       }
 
-      // Słowa kluczowe: youtube / yt
-      if (decoded.toLowerCase() === 'youtube' || decoded.toLowerCase() === 'yt' || decoded.toLowerCase() === 'youtube.com') {
-        return 'yt_embed_viewer.html';
-      }
-
-      // Rozpoznaj bezpośredni @handle (wpisany bez youtube.com)
-      if (/^@[a-zA-Z0-9_\u0080-\uFFFF.-]+$/.test(decoded)) {
-        return `yt_embed_viewer.html?channel=${encodeURIComponent(decoded)}`;
-      }
-
-      // YouTube — dowolny film, kanał lub shorts
-      if (decoded.includes('youtube.com') || decoded.includes('youtu.be')) {
+      // Wszystkie warianty YouTube (youtube.com, youtu.be, yt, @handle)
+      if (lc === 'youtube' || lc === 'yt' || lc.includes('youtube.com') || lc.includes('youtu.be') || /^@[a-zA-Z0-9_\u0080-\uFFFF.-]+$/.test(decoded)) {
         const shortsMatch = decoded.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/i);
         if (shortsMatch && shortsMatch[1]) {
           return `yt_embed_viewer.html?v=${shortsMatch[1]}&type=shorts`;
@@ -966,7 +972,16 @@
         if (handleMatch && handleMatch[0]) {
           return `yt_embed_viewer.html?channel=${encodeURIComponent(handleMatch[0])}`;
         }
-        return `yt_embed_viewer.html`;
+        return 'yt_embed_viewer.html';
+      }
+
+      // Wyszukiwarki zewnętrzne (bing, duckduckgo itp.)
+      if (lc.includes('bing.com') || lc.includes('duckduckgo.com') || lc.includes('yahoo.com')) {
+        const qMatch = decoded.match(/[?&]q=([^&]+)/i);
+        if (qMatch && qMatch[1]) {
+          return `search.html?q=${encodeURIComponent(decodeURIComponent(qMatch[1]))}`;
+        }
+        return 'search.html';
       }
 
       // Ścieżki wewnętrzne portalu (/lumina, /tablica, /modlitwa itp.)
@@ -1119,9 +1134,17 @@
 
       let normalized = normalizeUrl(rawVal);
 
-      phone.customUrl = rawVal;
-      if (phone.profileId !== 'browser') {
-        phone.profileId = 'custom';
+      if (normalized === 'search.html' || normalized.startsWith('search.html?')) {
+        phone.profileId = 'browser';
+        phone.customUrl = '';
+      } else if (normalized === 'yt_embed_viewer.html' || normalized.startsWith('yt_embed_viewer.html?')) {
+        phone.profileId = 'youtube';
+        phone.customUrl = normalized;
+      } else {
+        phone.customUrl = rawVal;
+        if (phone.profileId !== 'browser') {
+          phone.profileId = 'custom';
+        }
       }
       saveState();
 
