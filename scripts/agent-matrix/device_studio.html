@@ -482,6 +482,60 @@
       gap: 10px;
     }
 
+    /* Custom URL Address Bar */
+    .url-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: #050a17;
+      border: 1px solid rgba(14, 165, 233, 0.4);
+      border-radius: 10px;
+      padding: 4px 8px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .url-input-field {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #38bdf8;
+      font-family: monospace;
+      font-size: 0.78rem;
+      outline: none;
+      padding: 4px;
+      user-select: text;
+    }
+
+    .url-input-field::placeholder {
+      color: #64748b;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .btn-url-action {
+      background: #1e293b;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #e2e8f0;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      transition: all 0.2s;
+    }
+
+    .btn-url-action:hover {
+      background: #0ea5e9;
+      color: #fff;
+    }
+
+    .btn-url-action.go:hover {
+      background: #22c55e;
+      color: #000;
+    }
+
     .auth-bar {
       display: flex;
       gap: 6px;
@@ -709,7 +763,8 @@
       { id: "lumina", label: "✨ Portal Główny & Randki LUMINA", path: "/lumina", avatar: "lumina-icon-192.png" },
       { id: "login", label: "🔑 Panel Logowania Google / Email", path: "/lumina-login.html", avatar: "lumina-icon-192.png" },
       { id: "modlitwa", label: "✝️ Ściana Modlitwy (Zjednoczeni za Polskę)", path: "/modlitwa.html", avatar: "lumina-icon-192.png" },
-      { id: "worship", label: "🎵 CCTV24 Worship Live TV", path: "/cctv24-worship.html", avatar: "lumina-icon-192.png" }
+      { id: "worship", label: "🎵 CCTV24 Worship Live TV", path: "/cctv24-worship.html", avatar: "lumina-icon-192.png" },
+      { id: "custom", label: "🌐 Własny adres URL (Wpisz / Wklej poniżej)", path: "", avatar: "lumina-icon-192.png" }
     ];
 
     // AUTOMATION PRESETS
@@ -744,13 +799,13 @@
       // Default starter 7 phones if empty
       if (!phones || phones.length === 0) {
         phones = [
-          { id: 1, profileId: "cezary", autoId: "none", autoActive: false, deviceTime: "11:30" },
-          { id: 2, profileId: "wioletta", autoId: "none", autoActive: false, deviceTime: "11:30" },
-          { id: 3, profileId: "jola", autoId: "blessings", autoActive: true, deviceTime: "11:30" },
-          { id: 4, profileId: "andrzej", autoId: "radio_listener", autoActive: true, deviceTime: "11:30" },
-          { id: 5, profileId: "magdalena", autoId: "prayer", autoActive: true, deviceTime: "11:30" },
-          { id: 6, profileId: "ccmen", autoId: "board_curator", autoActive: true, deviceTime: "11:30" },
-          { id: 7, profileId: "ccwomen", autoId: "story_creator", autoActive: true, deviceTime: "11:30" }
+          { id: 1, profileId: "cezary", autoId: "none", autoActive: false, deviceTime: "11:35", customUrl: "" },
+          { id: 2, profileId: "wioletta", autoId: "none", autoActive: false, deviceTime: "11:35", customUrl: "" },
+          { id: 3, profileId: "jola", autoId: "blessings", autoActive: true, deviceTime: "11:35", customUrl: "" },
+          { id: 4, profileId: "andrzej", autoId: "radio_listener", autoActive: true, deviceTime: "11:35", customUrl: "" },
+          { id: 5, profileId: "magdalena", autoId: "prayer", autoActive: true, deviceTime: "11:35", customUrl: "" },
+          { id: 6, profileId: "ccmen", autoId: "board_curator", autoActive: true, deviceTime: "11:35", customUrl: "" },
+          { id: 7, profileId: "ccwomen", autoId: "story_creator", autoActive: true, deviceTime: "11:35", customUrl: "" }
         ];
       }
     }
@@ -765,9 +820,22 @@
       return currentServer === 'local' ? LOCAL_BASE : PROD_BASE;
     }
 
-    function getProfileUrl(profileId) {
-      const p = PROFILE_OPTIONS.find(x => x.id === profileId) || PROFILE_OPTIONS[0];
+    function getPhoneUrl(phone) {
+      if (phone.customUrl && phone.customUrl.trim() !== '') {
+        return normalizeUrl(phone.customUrl);
+      }
+      const p = PROFILE_OPTIONS.find(x => x.id === phone.profileId) || PROFILE_OPTIONS[0];
       return `${getBaseUrl()}${p.path}`;
+    }
+
+    function normalizeUrl(input) {
+      let url = input.trim();
+      if (!url) return `${getBaseUrl()}/lumina`;
+      if (url.startsWith('/')) return `${getBaseUrl()}${url}`;
+      if (!/^https?:\/\//i.test(url)) {
+        url = 'https://' + url;
+      }
+      return url;
     }
 
     // Render All Phone Units
@@ -778,7 +846,7 @@
       phones.forEach((phone, index) => {
         const selectedProf = PROFILE_OPTIONS.find(p => p.id === phone.profileId) || PROFILE_OPTIONS[0];
         const selectedAuto = AUTOMATION_OPTIONS.find(a => a.id === phone.autoId) || AUTOMATION_OPTIONS[0];
-        const targetUrl = getProfileUrl(phone.profileId);
+        const targetUrl = getPhoneUrl(phone);
 
         const card = document.createElement('div');
         card.className = 'phone-unit';
@@ -826,7 +894,7 @@
 
             <!-- Status Bar -->
             <div class="phone-status-bar">
-              <span>${phone.deviceTime || '11:30'}</span>
+              <span>${phone.deviceTime || '11:35'}</span>
               <div class="status-icons">
                 <i class="fa-solid fa-signal"></i>
                 <span>5G</span>
@@ -846,6 +914,23 @@
 
           <!-- CONTROLS & AUTOMATION FOOTER -->
           <div class="phone-unit-footer">
+            <!-- Custom URL Address Bar (Input / Paste / Go) -->
+            <div class="url-bar-wrap">
+              <i class="fa-solid fa-globe" style="color:#38bdf8; font-size:0.75rem; margin-left:2px;"></i>
+              <input type="text" 
+                     id="url-input-${phone.id}" 
+                     class="url-input-field" 
+                     placeholder="Wklej https://... lub www..." 
+                     value="${phone.customUrl || targetUrl}"
+                     onkeydown="if(event.key==='Enter') loadCustomUrl(${phone.id})">
+              <button class="btn-url-action go" title="Załaduj stronę (Enter)" onclick="loadCustomUrl(${phone.id})">
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+              <button class="btn-url-action" title="Wklej ze schowka i załaduj" onclick="pasteAndLoadUrl(${phone.id})">
+                <i class="fa-solid fa-paste"></i>
+              </button>
+            </div>
+
             <div class="auth-bar">
               <button class="btn-auth-google" onclick="loginWithGoogle(${phone.id})">
                 <i class="fa-brands fa-google"></i> Zaloguj z Google
@@ -890,6 +975,54 @@
       document.getElementById('matrixStatus').innerText = `Aktywne wirtualne telefony: ${phones.length} szt. Wszystkie gotowe do pracy.`;
     }
 
+    // Load Custom URL entered in input field
+    function loadCustomUrl(id) {
+      const input = document.getElementById(`url-input-${id}`);
+      if (!input) return;
+      const rawVal = input.value.trim();
+      if (!rawVal) return;
+
+      const normalized = normalizeUrl(rawVal);
+      input.value = normalized;
+
+      const phone = phones.find(p => p.id === id);
+      if (phone) {
+        phone.customUrl = normalized;
+        phone.profileId = "custom";
+        saveState();
+      }
+
+      const iframe = document.getElementById(`iframe-${id}`);
+      if (iframe) {
+        iframe.src = normalized;
+      }
+      document.getElementById('matrixStatus').innerText = `Załadowano adres ${normalized} do Telefonu #${phones.findIndex(p => p.id === id) + 1}.`;
+    }
+
+    // Paste from Clipboard and Load
+    async function pasteAndLoadUrl(id) {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text && text.trim()) {
+          const input = document.getElementById(`url-input-${id}`);
+          if (input) {
+            input.value = text.trim();
+            loadCustomUrl(id);
+          }
+        }
+      } catch (err) {
+        // Fallback prompt if clipboard API blocked
+        const pasted = prompt("Wklej adres URL (https://... lub www...):");
+        if (pasted && pasted.trim()) {
+          const input = document.getElementById(`url-input-${id}`);
+          if (input) {
+            input.value = pasted.trim();
+            loadCustomUrl(id);
+          }
+        }
+      }
+    }
+
     // Add New Phone
     function addNewPhone() {
       const newId = Date.now();
@@ -898,11 +1031,12 @@
         profileId: "lumina",
         autoId: "none",
         autoActive: false,
-        deviceTime: "11:30"
+        deviceTime: "11:35",
+        customUrl: ""
       });
       saveState();
       renderGrid();
-      document.getElementById('matrixStatus').innerText = `Dodano nowy telefon #${phones.length}. Wybierz dla niego profil z listy.`;
+      document.getElementById('matrixStatus').innerText = `Dodano nowy telefon #${phones.length}. Wybierz dla niego profil lub wpisz adres URL.`;
     }
 
     // Delete Phone
@@ -921,11 +1055,15 @@
       const phone = phones.find(p => p.id === id);
       if (phone) {
         phone.profileId = newProfileId;
+        if (newProfileId !== 'custom') {
+          phone.customUrl = '';
+        }
         saveState();
         const iframe = document.getElementById(`iframe-${id}`);
-        if (iframe) {
-          iframe.src = getProfileUrl(newProfileId);
-        }
+        const input = document.getElementById(`url-input-${id}`);
+        const newUrl = getPhoneUrl(phone);
+        if (iframe) iframe.src = newUrl;
+        if (input) input.value = newUrl;
       }
     }
 
@@ -961,17 +1099,18 @@
     function loginWithGoogle(id) {
       const loginUrl = `${getBaseUrl()}/lumina-login.html`;
       const iframe = document.getElementById(`iframe-${id}`);
-      if (iframe) {
-        iframe.src = loginUrl;
-      }
+      const input = document.getElementById(`url-input-${id}`);
+      if (iframe) iframe.src = loginUrl;
+      if (input) input.value = loginUrl;
     }
 
     // Quick Navigate
     function navigatePhone(id, path) {
+      const fullUrl = `${getBaseUrl()}${path}`;
       const iframe = document.getElementById(`iframe-${id}`);
-      if (iframe) {
-        iframe.src = `${getBaseUrl()}${path}`;
-      }
+      const input = document.getElementById(`url-input-${id}`);
+      if (iframe) iframe.src = fullUrl;
+      if (input) input.value = fullUrl;
     }
 
     // Reload Phone
