@@ -346,3 +346,21 @@ self.addEventListener('notificationclick', (event) => {
         })
     );
 });
+
+// ══════════════════════════════════════════════════════════════════════════
+// PERIODIC BACKGROUND SYNC (Missionary Devotion Sync at Dawn)
+// ══════════════════════════════════════════════════════════════════════════
+self.addEventListener('periodicsync', (event) => {
+    if (event.tag === 'lumina-daily-mission-sync') {
+        console.log('[SW] Periodic background mission sync triggered');
+        event.waitUntil(
+            caches.open('lumina-dynamic-v4.1.0').then((cache) => {
+                return fetch('./lumina-tablica.html?sync=1', { cache: 'no-cache' })
+                    .then((response) => {
+                        if (response && response.ok) cache.put('./lumina-tablica.html', response.clone());
+                    })
+                    .catch((err) => console.log('[SW] Background cache update skipped offline:', err));
+            })
+        );
+    }
+});

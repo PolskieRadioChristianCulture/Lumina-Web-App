@@ -5309,7 +5309,14 @@
 
             let combined = [];
 
-            // 1. Pinned Daily Reflection (top of feed)
+            // 1. Oficjalny Patron Misji Christian Culture (KONCEPT STUDIO) — na samej górze Tablicy
+            combined.push({
+                id: 'patron_koncept_studio_top',
+                type: 'official_patron_koncept',
+                _isSpecialRender: true
+            });
+
+            // 2. Stałe miejsce dla "Cuda Każdego Dnia / Dobrze, że jesteś" — ZARAZ POD REKLAMĄ KONCEPT!
             if (window._luminaDailyReflection) {
                 combined.push(window._luminaDailyReflection);
             }
@@ -5534,7 +5541,35 @@
                     `;
                 }
 
-                // ── Specjalna karta rozważania "Dobrze, że jesteś" ──
+                // ── 0. Oficjalny Patron Misji Christian Culture (KONCEPT STUDIO) ──
+                if (item.type === 'official_patron_koncept') {
+                    return `
+                        <aside class="official-sponsor-banner-card" style="margin: 0 0 24px; background: linear-gradient(135deg, rgba(15,23,42,0.92), rgba(30,41,59,0.92)); border: 1.5px solid rgba(250,204,21,0.45); border-radius: 20px; overflow: hidden; box-shadow: 0 12px 36px rgba(0,0,0,0.65);">
+                            <div style="padding: 10px 18px; background: rgba(250,204,21,0.12); border-bottom: 1px solid rgba(250,204,21,0.25); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                                <div style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 800; color: #facc15; text-transform: uppercase; letter-spacing: 0.8px;">
+                                    <i class="fa-solid fa-crown"></i> Oficjalny Patron Misji Christian Culture
+                                </div>
+                                <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="font-size: 0.78rem; font-weight: 700; color: #38bdf8; text-decoration: none; display: flex; align-items: center; gap: 5px;">
+                                    koncept-studio.pl <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.75rem;"></i>
+                                </a>
+                            </div>
+                            <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="display: block; text-decoration: none; position: relative; overflow: hidden;">
+                                <img src="oficjalny_sponsor.jpg" alt="Koncept Studio – Oficjalny Patron Christian Culture" loading="lazy" decoding="async" style="width: 100%; max-height: 320px; object-fit: cover; display: block; transition: transform 0.3s ease;">
+                            </a>
+                            <div style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+                                <div style="flex: 1; min-width: 240px;">
+                                    <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; color: #fff; margin: 0 0 4px 0;">Koncept Studio • Kreacja Wizualna, Druk & Branding</h3>
+                                    <p style="font-size: 0.82rem; color: #94a3b8; margin: 0; line-height: 1.4;">Dziękujemy naszemu oficjalnemu patronowi za nieocenione wsparcie rozwoju chrześcijańskich mediów i dzieła ewangelizacyjnego CC.</p>
+                                </div>
+                                <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="padding: 9px 18px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(245,158,11,0.35); flex-shrink: 0;">
+                                    Odwiedź Koncept Studio ➜
+                                </a>
+                            </div>
+                        </aside>
+                    `;
+                }
+
+                // ── Specjalna karta rozważania "Dobrze, że jesteś / Cuda Każdego Dnia" (Zaraz pod Patronem) ──
                 if (item._isReflection) {
                     const imgHtml = item.image
                         ? `<div style="width:100%; aspect-ratio:16/9; border-radius:14px; overflow:hidden; margin-bottom:18px;">
@@ -5554,7 +5589,7 @@
                                     </div>
                                 </div>
                                 <div class="post-header-actions">
-                                    <span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(250,204,21,0.15));border-color:rgba(245,158,11,0.6);color:#fbbf24; font-weight:800;" title="Rozważanie: Dobrze, że jesteś"><i class="fa-solid fa-sun" style="color:#f59e0b;"></i> <span class="badge-type-tag-text">Dobrze, że jesteś</span></span>
+                                    <span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(250,204,21,0.15));border-color:rgba(245,158,11,0.6);color:#fbbf24; font-weight:800;" title="Rozważanie: Cuda Każdego Dnia"><i class="fa-solid fa-sun" style="color:#f59e0b;"></i> <span class="badge-type-tag-text">Cuda Każdego Dnia</span></span>
                                 </div>
                             </div>
 
@@ -5579,31 +5614,6 @@
                                 <button class="post-action-btn" onclick="sharePostLink('${item.id}')" title="Udostępnij"><i class="fa-solid fa-share-nodes"></i></button>
                             </div>
                         </article>
-
-                        <!-- ══════════ OFICJALNY PATRON: KONCEPT STUDIO (POD ROZWAŻANIEM) ══════════ -->
-                        <aside class="official-sponsor-banner-card" style="margin: 24px 0 28px; background: linear-gradient(135deg, rgba(15,23,42,0.92), rgba(30,41,59,0.92)); border: 1.5px solid rgba(250,204,21,0.45); border-radius: 20px; overflow: hidden; box-shadow: 0 12px 36px rgba(0,0,0,0.65);">
-                            <div style="padding: 10px 18px; background: rgba(250,204,21,0.12); border-bottom: 1px solid rgba(250,204,21,0.25); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-                                <div style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 800; color: #facc15; text-transform: uppercase; letter-spacing: 0.8px;">
-                                    <i class="fa-solid fa-crown"></i> Oficjalny Patron Misji Christian Culture
-                                </div>
-                                <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="font-size: 0.78rem; font-weight: 700; color: #38bdf8; text-decoration: none; display: flex; align-items: center; gap: 5px;">
-                                    koncept-studio.pl <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.75rem;"></i>
-                                </a>
-                            </div>
-                            <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="display: block; text-decoration: none; position: relative; overflow: hidden;">
-                                <img src="oficjalny_sponsor.jpg" alt="Koncept Studio – Oficjalny Patron Christian Culture" loading="lazy" decoding="async" style="width: 100%; max-height: 320px; object-fit: cover; display: block; transition: transform 0.3s ease;">
-                            </a>
-                            <div style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
-                                <div style="flex: 1; min-width: 240px;">
-                                    <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; color: #fff; margin: 0 0 4px 0;">Koncept Studio • Kreacja Wizualna, Druk & Branding</h3>
-                                    <p style="font-size: 0.82rem; color: #94a3b8; margin: 0; line-height: 1.4;">Dziękujemy naszemu oficjalnemu patronowi za nieocenione wsparcie rozwoju chrześcijańskich mediów i dzieła ewangelizacyjnego CC.</p>
-                                </div>
-                                <a href="https://koncept-studio.pl/" target="_blank" rel="noopener noreferrer" style="padding: 9px 18px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; text-decoration: none; font-weight: 800; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(245,158,11,0.35); flex-shrink: 0;">
-                                    Odwiedź Koncept Studio ➜
-                                </a>
-                            </div>
-                        </aside>
-
                     `;
                 }
 
@@ -8013,6 +8023,7 @@
     <script src="lumina-smart-blessings.js" defer></script>
     <script src="js/lumina-groups-engine.js" defer></script>
     <script src="js/lumina-events-engine.js" defer></script>
+    <script src="js/lumina-background-mission-service.js" defer></script>
     <script src="lumina-bottom-nav.js?v=4.1.0_20260830" defer></script>
     <script src="lumina-notifications.js?v=4.1.0_20260830" defer></script>
     <script type="module" src="lumina-badges-engine.js?v=4.1.0_20260830"></script>
