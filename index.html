@@ -1120,8 +1120,12 @@
             <!-- Artykuł - Misja Trwa -->
             <div id="aktualnosci-sierpien" style="margin-top: 40px; scroll-margin-top: 100px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--border-gold-low); background: rgba(0,0,0,0.5); padding: 30px; position: relative;">
                 <span id="aktualnosci-lipiec" style="position: absolute; top: -100px; left: 0;"></span>
+                <span id="aktualnosci" style="position: absolute; top: -100px; left: 0;"></span>
+                <span id="raport" style="position: absolute; top: -100px; left: 0;"></span>
+                <span id="sprawozdanie" style="position: absolute; top: -100px; left: 0;"></span>
+                <span id="sprawozdanie-misyjne" style="position: absolute; top: -100px; left: 0;"></span>
                 <button 
-                    onclick="if(navigator.share){navigator.share({title:'Zobacz najnowsze sprawozdanie misyjne Christian Culture!',text:'Zobacz najnowsze sprawozdanie misyjne Christian Culture za sierpień 2026!',url:'https://www.polskieradio.cc/#aktualnosci-sierpien'}).catch(console.error)}else{navigator.clipboard.writeText('https://www.polskieradio.cc/#aktualnosci-sierpien');alert('Skopiowano link do schowka!');}"
+                    onclick="if(navigator.share){navigator.share({title:'Zobacz najnowsze sprawozdanie misyjne Christian Culture!',text:'Zobacz najnowsze sprawozdanie misyjne Christian Culture za sierpień 2026!',url:'https://polskieradio.cc/#aktualnosci-sierpien'}).catch(console.error)}else{navigator.clipboard.writeText('https://polskieradio.cc/#aktualnosci-sierpien');alert('Skopiowano link do schowka!');}"
                     style="position: absolute; top: 20px; right: 20px; padding: 10px; background: rgba(212,175,55,0.1); border: 1px solid var(--border-gold-low); color: var(--gold-primary); border-radius: 50%; cursor: pointer; transition: 0.3s; z-index: 10;"
                     title="Udostępnij raport"
                     onmouseover="this.style.background='var(--gold-primary)'; this.style.color='#000';"
@@ -2172,9 +2176,52 @@
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="module" src="app.js?v=32"></script>
     <script type="module" src="dobrzezejestes.js?v=20260831_v8"></script>
-    <script type="module" src="lumina-i18n.js?v=3.5"></script>
-    <script src="lumina-pwa-installer.js?v=4.0.0"></script>
+    <script>
+        // Automatic reliable smooth-scroller for news report hashes
+        (function() {
+            function checkAndScrollToHash() {
+                var hash = window.location.hash;
+                if (!hash) return;
+                var aliases = ['#aktualnosci-sierpien', '#aktualnosci-lipiec', '#aktualnosci', '#raport', '#sprawozdanie', '#sprawozdanie-misyjne'];
+                var isNewsHash = aliases.indexOf(hash.toLowerCase()) !== -1 || hash.toLowerCase().indexOf('aktualnosci') !== -1 || hash.toLowerCase().indexOf('raport') !== -1;
+                
+                if (isNewsHash) {
+                    var el = document.getElementById('aktualnosci-sierpien') || document.querySelector(hash);
+                    if (el) {
+                        var headerOffset = 80;
+                        var elementPosition = el.getBoundingClientRect().top;
+                        var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
 
+                        // Visual highlight pulse so the user instantly sees the report
+                        el.style.transition = 'box-shadow 0.6s ease, border-color 0.6s ease';
+                        el.style.borderColor = 'var(--gold-primary)';
+                        el.style.boxShadow = '0 0 35px rgba(212, 175, 55, 0.45)';
+                        setTimeout(function() {
+                            el.style.borderColor = 'var(--border-gold-low)';
+                            el.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
+                        }, 3000);
+                    }
+                }
+            }
+
+            // Trigger at multiple intervals to handle dynamic images and media loading
+            window.addEventListener('DOMContentLoaded', function() {
+                setTimeout(checkAndScrollToHash, 80);
+                setTimeout(checkAndScrollToHash, 400);
+                setTimeout(checkAndScrollToHash, 1000);
+            });
+            window.addEventListener('load', function() {
+                setTimeout(checkAndScrollToHash, 100);
+                setTimeout(checkAndScrollToHash, 600);
+            });
+            window.addEventListener('hashchange', checkAndScrollToHash);
+        })();
+    </script>
 </body>
 </html>
 
