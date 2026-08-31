@@ -70,6 +70,100 @@
       box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
       flex-wrap: wrap;
       gap: 12px;
+      transition: padding 0.3s ease, gap 0.3s ease;
+      overflow: hidden;
+    }
+
+    /* Przycisk Toggle Belki */
+    .btn-header-toggle {
+      position: fixed;
+      top: 8px;
+      right: 14px;
+      z-index: 1100;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(11, 19, 41, 0.95);
+      border: 1px solid rgba(212, 175, 55, 0.6);
+      color: var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+      transition: all 0.25s;
+    }
+
+    .btn-header-toggle:hover {
+      background: rgba(212, 175, 55, 0.2);
+      border-color: var(--gold-primary);
+      transform: scale(1.1);
+    }
+
+    /* Belka zwinięta – mini-pasek */
+    .matrix-header.collapsed {
+      padding: 0;
+      gap: 0;
+      border-bottom-color: transparent;
+      box-shadow: none;
+    }
+
+    .matrix-header.collapsed .matrix-brand,
+    .matrix-header.collapsed .matrix-toolbar {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      pointer-events: none;
+      transition: max-height 0.3s ease, opacity 0.25s ease;
+    }
+
+    .matrix-header:not(.collapsed) .matrix-brand,
+    .matrix-header:not(.collapsed) .matrix-toolbar {
+      max-height: 200px;
+      opacity: 1;
+      overflow: visible;
+      pointer-events: auto;
+      transition: max-height 0.35s ease, opacity 0.3s ease;
+    }
+
+    /* Mini-pill widoczny gdy zwinięty */
+    .header-mini-pill {
+      display: none;
+      position: fixed;
+      top: 6px;
+      left: 12px;
+      z-index: 1050;
+      background: rgba(11, 19, 41, 0.92);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 20px;
+      padding: 4px 12px 4px 8px;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--gold-primary);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .header-mini-pill:hover {
+      background: rgba(30, 41, 59, 0.98);
+      border-color: var(--gold-primary);
+    }
+
+    .header-mini-pill.visible {
+      display: flex;
+    }
+
+    .mini-pill-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 6px #10b981;
+      animation: pulse 1.5s infinite;
     }
 
     .matrix-brand {
@@ -698,8 +792,21 @@
 </head>
 <body>
 
+  <!-- PRZYCISK TOGGLE BELKI (zawsze widoczny) -->
+  <button class="btn-header-toggle" id="btnHeaderToggle" onclick="toggleHeader()" title="Zwiń / Rozwiń belkę sterowania">
+    <i class="fa-solid fa-chevron-up" id="headerToggleIcon"></i>
+  </button>
+
+  <!-- MINI-PILL (widoczny gdy belka zwinięta) -->
+  <div class="header-mini-pill" id="headerMiniPill" onclick="toggleHeader()" title="Rozwiń belkę sterowania">
+    <span class="mini-pill-dot"></span>
+    <i class="fa-solid fa-cross" style="color:#a78bfa; font-size:0.8rem;"></i>
+    MATRIX CC
+    <i class="fa-solid fa-chevron-down" style="font-size:0.65rem; opacity:0.7;"></i>
+  </div>
+
   <!-- MATRIX CC HEADER -->
-  <header class="matrix-header">
+  <header class="matrix-header" id="matrixHeader">
     <div class="matrix-brand">
       <div class="brand-logo">
         <i class="fa-solid fa-cross"></i>
@@ -1269,10 +1376,47 @@
       }
     }
 
+    // ── TOGGLE BELKI STEROWANIA ──
+    let headerCollapsed = false;
+
+    function toggleHeader() {
+      const header = document.getElementById('matrixHeader');
+      const icon = document.getElementById('headerToggleIcon');
+      const pill = document.getElementById('headerMiniPill');
+
+      headerCollapsed = !headerCollapsed;
+
+      if (headerCollapsed) {
+        header.classList.add('collapsed');
+        icon.className = 'fa-solid fa-chevron-down';
+        pill.classList.add('visible');
+        localStorage.setItem('matrix_header_collapsed', '1');
+      } else {
+        header.classList.remove('collapsed');
+        icon.className = 'fa-solid fa-chevron-up';
+        pill.classList.remove('visible');
+        localStorage.setItem('matrix_header_collapsed', '0');
+      }
+    }
+
+    // Skrót klawiszowy: klawisz H (gdy nie wpisujemy w input)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'h' || e.key === 'H') {
+        if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+          toggleHeader();
+        }
+      }
+    });
+
     // Init
     loadSavedState();
     renderGrid();
     applyZoom(40);
+
+    // Przywróć stan belki z localStorage
+    if (localStorage.getItem('matrix_header_collapsed') === '1') {
+      toggleHeader();
+    }
   </script>
 </body>
 </html>
