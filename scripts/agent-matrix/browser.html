@@ -1,0 +1,496 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Mobile Browser</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bar-h:44px;
+  --nav-h:48px;
+  --bg:#0a0a0b;
+  --surface:#111113;
+  --border:rgba(255,255,255,0.08);
+  --text:#e8ecf0;
+  --muted:#6b7280;
+  --accent:#00d4ff;
+  --metal:rgba(192,200,216,0.12);
+}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;display:flex;flex-direction:column;}
+
+/* TOP BROWSER BAR */
+.browser-bar{
+  height:var(--bar-h);
+  background:linear-gradient(180deg,#1a1a1c,#111113);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:4px;padding:0 6px;
+  flex-shrink:0;
+  box-shadow:0 1px 0 rgba(0,212,255,0.06);
+}
+.nav-btn{
+  width:32px;height:32px;border-radius:8px;border:none;
+  background:transparent;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;cursor:pointer;transition:all 0.15s;flex-shrink:0;
+}
+.nav-btn:hover{background:var(--metal);color:var(--text);}
+.nav-btn:disabled{opacity:0.3;cursor:default;}
+.nav-btn:active{transform:scale(0.9);}
+
+.url-bar{
+  flex:1;height:30px;
+  background:rgba(0,0,0,0.5);
+  border:1px solid var(--border);
+  border-radius:15px;
+  display:flex;align-items:center;gap:6px;padding:0 10px;
+  cursor:text;transition:border-color 0.2s;
+}
+.url-bar:focus-within{border-color:rgba(0,212,255,0.35);}
+.url-bar .favicon{font-size:11px;color:var(--muted);flex-shrink:0;}
+.url-bar input{
+  flex:1;background:transparent;border:none;outline:none;
+  font-size:11.5px;color:var(--accent);
+  font-family:'SF Mono','Fira Code',monospace;
+  user-select:text;-webkit-user-select:text;
+  min-width:0;
+}
+.url-bar input::placeholder{color:var(--muted);font-family:system-ui,sans-serif;}
+
+/* IFRAME VIEWPORT */
+.browser-viewport{flex:1;position:relative;overflow:hidden;}
+.browser-viewport iframe{
+  position:absolute;inset:0;width:100%;height:100%;
+  border:none;background:#fff;
+}
+
+/* BLOCKED OVERLAY */
+.blocked-overlay{
+  display:none;position:absolute;inset:0;
+  background:var(--bg);
+  flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;padding:24px;text-align:center;z-index:10;
+}
+.blocked-overlay.show{display:flex;}
+.blocked-icon{font-size:48px;color:var(--muted);}
+.blocked-title{font-size:0.95rem;font-weight:700;color:var(--text);}
+.blocked-desc{font-size:0.78rem;color:var(--muted);line-height:1.5;max-width:260px;}
+.blocked-actions{display:flex;flex-direction:column;gap:8px;width:100%;max-width:260px;}
+.btn-open-ext{
+  background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(0,100,180,0.1));
+  border:1px solid rgba(0,212,255,0.4);color:var(--accent);
+  padding:9px 16px;border-radius:10px;font-size:0.8rem;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;
+  text-decoration:none;transition:all 0.2s;
+}
+.btn-open-ext:hover{background:rgba(0,212,255,0.2);}
+.btn-try-duckduck{
+  background:rgba(255,165,0,0.1);border:1px solid rgba(255,165,0,0.3);
+  color:#fb923c;padding:9px 16px;border-radius:10px;font-size:0.8rem;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all 0.2s;
+}
+.btn-try-duckduck:hover{background:rgba(255,165,0,0.15);}
+
+/* BOTTOM NAV TABS */
+.browser-nav{
+  height:var(--nav-h);
+  background:linear-gradient(180deg,#111113,#0a0a0b);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-around;
+  flex-shrink:0;
+}
+.tab-btn{
+  flex:1;height:100%;border:none;background:transparent;
+  color:var(--muted);font-size:11px;font-weight:600;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  cursor:pointer;transition:color 0.15s;padding:4px 0;
+}
+.tab-btn i{font-size:16px;}
+.tab-btn.active{color:var(--accent);}
+.tab-btn:active{opacity:0.7;}
+
+/* NEWTAB / HOME PAGE */
+.newtab-page{
+  display:none;position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% -20%,rgba(0,212,255,0.05) 0%,transparent 60%),
+             #050507;
+  overflow-y:auto;padding:32px 20px 20px;z-index:5;
+}
+.newtab-page.active{display:block;}
+
+.nt-search-wrap{margin-bottom:28px;}
+.nt-logo{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-bottom:20px;
+}
+.nt-logo-g{
+  font-size:2.2rem;font-weight:800;letter-spacing:-1px;
+  background:linear-gradient(135deg,#4285F4,#34A853,#FBBC05,#EA4335);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.nt-search-form{
+  display:flex;align-items:center;gap:0;
+  background:rgba(20,20,24,0.9);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:24px;padding:0 6px 0 16px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.5);
+  transition:border-color 0.2s;
+}
+.nt-search-form:focus-within{border-color:rgba(0,212,255,0.4);}
+.nt-search-input{
+  flex:1;border:none;background:transparent;
+  color:var(--text);font-size:0.92rem;padding:12px 0;
+  outline:none;user-select:text;-webkit-user-select:text;
+}
+.nt-search-input::placeholder{color:var(--muted);}
+.nt-search-btn{
+  width:36px;height:36px;border-radius:50%;border:none;
+  background:rgba(0,212,255,0.12);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;cursor:pointer;transition:all 0.2s;flex-shrink:0;
+}
+.nt-search-btn:hover{background:rgba(0,212,255,0.2);}
+
+.nt-section-title{
+  font-size:0.75rem;font-weight:700;color:var(--muted);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;
+}
+.nt-quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;}
+.nt-quick-item{
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  border-radius:14px;padding:12px 6px;cursor:pointer;transition:all 0.2s;
+  text-decoration:none;
+}
+.nt-quick-item:hover{background:rgba(0,212,255,0.06);border-color:rgba(0,212,255,0.25);}
+.nt-quick-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:17px;
+}
+.nt-quick-label{font-size:0.65rem;font-weight:600;color:var(--muted);text-align:center;line-height:1.2;}
+
+.nt-mission-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.nt-mission-item{
+  background:rgba(255,255,255,0.03);border:1px solid var(--border);
+  border-radius:12px;padding:10px 12px;cursor:pointer;
+  display:flex;align-items:center;gap:10px;transition:all 0.2s;
+}
+.nt-mission-item:hover{background:rgba(0,212,255,0.05);border-color:rgba(0,212,255,0.2);}
+.nt-mission-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.nt-mission-name{font-size:0.8rem;font-weight:700;color:var(--text);}
+.nt-mission-sub{font-size:0.68rem;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<!-- TOP BROWSER BAR -->
+<div class="browser-bar">
+  <button class="nav-btn" id="btnBack" onclick="goBack()" disabled title="Wstecz">
+    <i class="fa-solid fa-arrow-left"></i>
+  </button>
+  <button class="nav-btn" id="btnForward" onclick="goForward()" disabled title="Dalej">
+    <i class="fa-solid fa-arrow-right"></i>
+  </button>
+  <button class="nav-btn" id="btnReload" onclick="reloadPage()" title="Odśwież">
+    <i class="fa-solid fa-rotate-right" id="reloadIcon"></i>
+  </button>
+
+  <div class="url-bar" onclick="document.getElementById('urlInput').focus()">
+    <i class="fa-solid fa-lock favicon" id="lockIcon"></i>
+    <input type="text" id="urlInput"
+           placeholder="Szukaj w Google lub wpisz adres..."
+           onkeydown="if(event.key==='Enter'){navigate(this.value);this.blur();}"
+           onfocus="this.select()">
+  </div>
+
+  <button class="nav-btn" onclick="goHome()" title="Strona startowa">
+    <i class="fa-solid fa-house"></i>
+  </button>
+</div>
+
+<!-- PAGE VIEWPORT -->
+<div class="browser-viewport" id="viewport">
+
+  <!-- NEWTAB / HOME PAGE -->
+  <div class="newtab-page active" id="newtabPage">
+    <!-- Google Logo + Search -->
+    <div class="nt-search-wrap">
+      <div class="nt-logo">
+        <span class="nt-logo-g">Google</span>
+      </div>
+      <form class="nt-search-form" onsubmit="event.preventDefault(); doGoogleSearch();">
+        <input type="text" class="nt-search-input" id="googleSearchInput"
+               placeholder="Szukaj w Google..." autocomplete="off">
+        <button type="submit" class="nt-search-btn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- Quick Access -->
+    <div class="nt-section-title">Szybki dostęp</div>
+    <div class="nt-quick-grid">
+      <a class="nt-quick-item" onclick="navigate('https://www.google.com')" href="javascript:void(0)">
+        <div class="nt-quick-icon" style="background:linear-gradient(135deg,#4285F4,#34A853)"><i class="fa-brands fa-google" style="color:#fff"></i></div>
+        <div class="nt-quick-label">Google</div>
+      </a>
+      <a class="nt-quick-item" onclick="navigate('https://www.youtube.com')" href="javascript:void(0)">
+        <div class="nt-quick-icon" style="background:#ff0000"><i class="fa-brands fa-youtube" style="color:#fff"></i></div>
+        <div class="nt-quick-label">YouTube</div>
+      </a>
+      <a class="nt-quick-item" onclick="navigate('https://maps.google.com')" href="javascript:void(0)">
+        <div class="nt-quick-icon" style="background:linear-gradient(135deg,#34A853,#0F9D58)"><i class="fa-solid fa-map-location-dot" style="color:#fff"></i></div>
+        <div class="nt-quick-label">Google Maps</div>
+      </a>
+      <a class="nt-quick-item" onclick="navigate('https://gmail.com')" href="javascript:void(0)">
+        <div class="nt-quick-icon" style="background:linear-gradient(135deg,#EA4335,#c0392b)"><i class="fa-regular fa-envelope" style="color:#fff"></i></div>
+        <div class="nt-quick-label">Gmail</div>
+      </a>
+      <a class="nt-quick-item" onclick="navigate('https://polskieradio.cc')" href="javascript:void(0)">
+        <div class="nt-quick-icon" style="background:linear-gradient(135deg,#7c3aed,#4338ca)"><i class="fa-solid fa-cross" style="color:#fff"></i></div>
+        <div class="nt-quick-label">CC Radio</div>
+      </a>
+      <a class="nt-quick-item" onclick="navigate('https://polskieradio.cc/tablica')" href="javascript:void(0)">
+        <div class="nt-quick-icon" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)"><i class="fa-solid fa-newspaper" style="color:#fff"></i></div>
+        <div class="nt-quick-label">Tablica CC</div>
+      </a>
+      <a class="nt-quick-item" onclick="navigate('https://www.facebook.com')" href="javascript:void(0)">
+        <div class="nt-quick-icon" style="background:#1877F2"><i class="fa-brands fa-facebook-f" style="color:#fff"></i></div>
+        <div class="nt-quick-label">Facebook</div>
+      </a>
+      <a class="nt-quick-item" onclick="navigate('https://www.instagram.com')" href="javascript:void(0)">
+        <div class="nt-quick-icon" style="background:linear-gradient(135deg,#E1306C,#833AB4,#F77737)"><i class="fa-brands fa-instagram" style="color:#fff"></i></div>
+        <div class="nt-quick-label">Instagram</div>
+      </a>
+    </div>
+
+    <!-- Misje CC -->
+    <div class="nt-section-title">Kanały Misyjne CC</div>
+    <div class="nt-mission-list">
+      <div class="nt-mission-item" onclick="navigate('yt_embed_viewer.html?channel=@osobowoscPLUS')">
+        <div class="nt-mission-icon" style="background:linear-gradient(135deg,#ef4444,#f59e0b)"><i class="fa-solid fa-star" style="color:#fff"></i></div>
+        <div><div class="nt-mission-name">OSOBOWOŚĆ +</div><div class="nt-mission-sub">@osobowoscPLUS • Formacja i Relacje</div></div>
+        <i class="fa-solid fa-chevron-right" style="color:#374151;font-size:0.75rem;margin-left:auto;"></i>
+      </div>
+      <div class="nt-mission-item" onclick="navigate('yt_embed_viewer.html?channel=@CezaryRogowski')">
+        <div class="nt-mission-icon" style="background:linear-gradient(135deg,#d4af37,#b8860b)"><i class="fa-solid fa-crown" style="color:#fff"></i></div>
+        <div><div class="nt-mission-name">Cezary Rogowski</div><div class="nt-mission-sub">@CezaryRogowski • Założyciel CC</div></div>
+        <i class="fa-solid fa-chevron-right" style="color:#374151;font-size:0.75rem;margin-left:auto;"></i>
+      </div>
+      <div class="nt-mission-item" onclick="navigate('yt_embed_viewer.html?channel=@AndrzejThiel')">
+        <div class="nt-mission-icon" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)"><i class="fa-solid fa-book-bible" style="color:#fff"></i></div>
+        <div><div class="nt-mission-name">Andrzej Thiel</div><div class="nt-mission-sub">@AndrzejThiel • Słowo i Uwielbienie</div></div>
+        <i class="fa-solid fa-chevron-right" style="color:#374151;font-size:0.75rem;margin-left:auto;"></i>
+      </div>
+      <div class="nt-mission-item" onclick="navigate('polskieradio.cc/lumina')">
+        <div class="nt-mission-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"><i class="fa-solid fa-sparkles" style="color:#fff"></i></div>
+        <div><div class="nt-mission-name">Portal LUMINA</div><div class="nt-mission-sub">polskieradio.cc/lumina</div></div>
+        <i class="fa-solid fa-chevron-right" style="color:#374151;font-size:0.75rem;margin-left:auto;"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCKED OVERLAY -->
+  <div class="blocked-overlay" id="blockedOverlay">
+    <div class="blocked-icon"><i class="fa-solid fa-ban"></i></div>
+    <div class="blocked-title" id="blockedTitle">Strona zablokowana</div>
+    <div class="blocked-desc" id="blockedDesc">
+      Ta witryna blokuje osadzanie w ramkach (X-Frame-Options / CSP). Możesz ją otworzyć bezpośrednio.
+    </div>
+    <div class="blocked-actions">
+      <a id="btnOpenExt" href="#" target="_blank" class="btn-open-ext">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz w nowej karcie
+      </a>
+      <button class="btn-try-duckduck" onclick="tryAlternative()" id="btnAlt">
+        <i class="fa-brands fa-google"></i> Szukaj przez Google
+      </button>
+    </div>
+  </div>
+
+  <!-- PAGE IFRAME -->
+  <iframe id="pageFrame" src="" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-presentation" allowfullscreen></iframe>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="browser-nav">
+  <button class="tab-btn active" id="btnTabBrowser" onclick="showBrowserView()">
+    <i class="fa-solid fa-globe"></i>
+    <span>Przeglądarka</span>
+  </button>
+  <button class="tab-btn" id="btnTabMission" onclick="navigate('polskieradio.cc/lumina')">
+    <i class="fa-solid fa-cross"></i>
+    <span>Misja CC</span>
+  </button>
+  <button class="tab-btn" id="btnTabYT" onclick="navigate('yt_embed_viewer.html')">
+    <i class="fa-brands fa-youtube"></i>
+    <span>YouTube CC</span>
+  </button>
+  <button class="tab-btn" id="btnTabHome" onclick="goHome()">
+    <i class="fa-solid fa-house"></i>
+    <span>Start</span>
+  </button>
+</div>
+
+<script>
+let currentUrl = '';
+let lastQuery = '';
+
+const frame = document.getElementById('pageFrame');
+const urlInput = document.getElementById('urlInput');
+const newtab = document.getElementById('newtabPage');
+const blockedOverlay = document.getElementById('blockedOverlay');
+const lockIcon = document.getElementById('lockIcon');
+const btnBack = document.getElementById('btnBack');
+const btnForward = document.getElementById('btnForward');
+const reloadIcon = document.getElementById('reloadIcon');
+
+// Sites known to block iframes - try to detect
+const KNOWN_BLOCKED = [
+  'google.com/search','google.pl','google.com','facebook.com','instagram.com',
+  'twitter.com','x.com','tiktok.com','whatsapp.com','linkedin.com',
+  'netflix.com','amazon.com'
+];
+
+function isLikelyBlocked(url) {
+  const lc = url.toLowerCase();
+  return KNOWN_BLOCKED.some(d => lc.includes(d));
+}
+
+function resolveUrl(raw) {
+  raw = raw.trim();
+  if (!raw) return null;
+
+  // Local files (yt_embed_viewer, etc)
+  if (raw.startsWith('yt_embed_viewer') || raw.startsWith('browser') || raw.startsWith('./') || raw.startsWith('../')) {
+    return raw;
+  }
+
+  // YouTube URLs - delegate to viewer
+  if (raw.includes('youtube.com') || raw.includes('youtu.be')) {
+    const vm = raw.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+    if (vm) return `yt_embed_viewer.html?v=${vm[1]}${raw.includes('/shorts/') ? '&type=shorts' : ''}`;
+    const hm = raw.match(/@([a-zA-Z0-9_.%-]+)/);
+    if (hm) return `yt_embed_viewer.html?channel=${encodeURIComponent(hm[0])}`;
+    return `yt_embed_viewer.html?q=${encodeURIComponent(raw)}`;
+  }
+
+  // @handle
+  if (/^@[a-zA-Z0-9_.%-]+$/.test(raw)) {
+    return `yt_embed_viewer.html?channel=${encodeURIComponent(raw)}`;
+  }
+
+  // Already full URL
+  if (/^https?:\/\//i.test(raw)) return raw;
+
+  // Relative path
+  if (raw.startsWith('/')) return 'https://polskieradio.cc' + raw;
+
+  // Looks like domain (has a dot)
+  if (raw.includes('.') && !raw.includes(' ')) return 'https://' + raw;
+
+  // Search query
+  return 'https://www.google.com/search?q=' + encodeURIComponent(raw) + '&igu=1';
+}
+
+function navigate(raw) {
+  const url = resolveUrl(raw);
+  if (!url) return;
+
+  currentUrl = url;
+  lastQuery = raw;
+
+  // Update URL bar
+  urlInput.value = url.startsWith('yt_embed_viewer') ? raw : url;
+
+  // Hide newtab
+  newtab.classList.remove('active');
+  blockedOverlay.classList.remove('show');
+
+  // Lock icon
+  const isHttps = url.startsWith('https://') || url.startsWith('yt_');
+  lockIcon.className = 'fa-solid ' + (isHttps ? 'fa-lock' : 'fa-triangle-exclamation') + ' favicon';
+  lockIcon.style.color = isHttps ? '#4ade80' : '#fb923c';
+
+  // Load in iframe
+  reloadIcon.className = 'fa-solid fa-xmark';
+  frame.src = url;
+
+  // Check for likely blocked after short delay
+  if (isLikelyBlocked(url)) {
+    setTimeout(() => showBlocked(url), 1800);
+  }
+}
+
+function showBlocked(url) {
+  // Check if frame loaded something (rough heuristic)
+  blockedOverlay.classList.add('show');
+  document.getElementById('blockedTitle').innerText = 'Witryna blokuje osadzanie';
+  document.getElementById('blockedDesc').innerText =
+    'Ta witryna ('+new URL(url.startsWith('http') ? url : 'https://'+url).hostname+') blokuje otwieranie w ramkach iframe. Możesz ją otworzyć bezpośrednio lub wyszukać.';
+  document.getElementById('btnOpenExt').href = url;
+  document.getElementById('btnOpenExt').onclick = () => window.open(url, '_blank');
+}
+
+function tryAlternative() {
+  const q = lastQuery || urlInput.value;
+  navigate('https://www.google.com/search?q=' + encodeURIComponent(q) + '&igu=1');
+  blockedOverlay.classList.remove('show');
+}
+
+function doGoogleSearch() {
+  const q = document.getElementById('googleSearchInput').value.trim();
+  if (!q) return;
+  navigate(q);
+}
+
+function goBack() { try { frame.contentWindow.history.back(); } catch(e) {} }
+function goForward() { try { frame.contentWindow.history.forward(); } catch(e) {} }
+function reloadPage() {
+  if (newtab.classList.contains('active')) return;
+  frame.src = frame.src;
+}
+function goHome() {
+  newtab.classList.add('active');
+  blockedOverlay.classList.remove('show');
+  frame.src = '';
+  urlInput.value = '';
+  lockIcon.className = 'fa-solid fa-globe favicon';
+  lockIcon.style.color = '';
+  reloadIcon.className = 'fa-solid fa-rotate-right';
+}
+function showBrowserView() {
+  // Just focus url bar
+  urlInput.focus();
+}
+
+frame.addEventListener('load', () => {
+  reloadIcon.className = 'fa-solid fa-rotate-right';
+  // Update URL bar with current frame url if possible
+  try {
+    const loc = frame.contentWindow.location.href;
+    if (loc && loc !== 'about:blank') {
+      urlInput.value = loc;
+      currentUrl = loc;
+    }
+  } catch(e) {}
+  // Enable back/forward heuristic
+  btnBack.disabled = false;
+});
+
+frame.addEventListener('error', () => {
+  reloadIcon.className = 'fa-solid fa-rotate-right';
+});
+
+// Parse startup URL from query params
+const sp = new URLSearchParams(window.location.search);
+const startUrl = sp.get('url') || '';
+if (startUrl) {
+  navigate(startUrl);
+} else {
+  goHome();
+}
+</script>
+</body>
+</html>
