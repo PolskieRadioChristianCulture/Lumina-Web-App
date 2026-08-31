@@ -1573,8 +1573,8 @@
                 </div>
 
                 <div class="cinema-buttons-group">
-                    <button type="button" class="btn-cinema-action" id="btnUnmuteAudio" onclick="toggleCinemaAudio()" title="Włącz dźwięk">
-                        <i class="fa-solid fa-volume-xmark" id="audioIcon"></i> <span id="audioLabel">Dźwięk</span>
+                    <button type="button" class="btn-cinema-action active" id="btnUnmuteAudio" onclick="toggleCinemaAudio()" title="Sterowanie dźwiękiem">
+                        <i class="fa-solid fa-volume-high" id="audioIcon"></i> <span id="audioLabel">Dźwięk WŁ.</span>
                     </button>
                     <button type="button" class="btn-cinema-action" onclick="playNextMovie()" title="Następny film w rotacji">
                         <i class="fa-solid fa-forward"></i> <span>Następny</span>
@@ -1730,7 +1730,7 @@
         let isPrerollPlaying = false;
         let currentMovie = null;
         let activeCategoryFilter = 'all';
-        let isAudioMuted = true;
+        let isAudioMuted = false;
         let prerollSkipTimer = null;
 
         // Inicjalizacja po załadowaniu DOM
@@ -1738,6 +1738,7 @@
             initTicker();
             renderMoviesCatalog();
             checkUrlParamsForMovie();
+            enableAudioOnFirstInteraction();
         });
 
         function initTicker() {
@@ -1764,7 +1765,7 @@
         window.onYouTubeIframeAPIReady = function() {
             const initialVideoId = (window.VodDB && window.VodDB.preroll.enabled) 
                 ? window.VodDB.preroll.videoId 
-                : (currentMovie ? currentMovie.youtubeId : 'Mxlw-eQFh-c');
+                : (currentMovie ? currentMovie.youtubeId : 'GMdQIwKh22A');
 
             isPrerollPlaying = (window.VodDB && window.VodDB.preroll.enabled);
 
@@ -1772,7 +1773,7 @@
                 videoId: initialVideoId,
                 playerVars: {
                     autoplay: 1,
-                    mute: 1,
+                    mute: 0,
                     controls: 1,
                     rel: 0,
                     modestbranding: 1,
@@ -1788,7 +1789,14 @@
 
         function onPlayerReady(event) {
             isPlayerReady = true;
+            try {
+                event.target.unMute();
+                event.target.setVolume(100);
+            } catch (e) {}
             event.target.playVideo();
+            isAudioMuted = false;
+            updateAudioUI(true);
+            enableAudioOnFirstInteraction();
             if (isPrerollPlaying) {
                 handlePrerollStart();
             }
@@ -1831,7 +1839,13 @@
 
             if (player && currentMovie) {
                 player.loadVideoById(currentMovie.youtubeId);
+                try {
+                    player.unMute();
+                    player.setVolume(100);
+                } catch(e) {}
                 player.playVideo();
+                isAudioMuted = false;
+                updateAudioUI(true);
                 updateNowPlayingUI(currentMovie);
             }
         }
@@ -1849,7 +1863,13 @@
             if (window.VodDB.preroll.enabled) {
                 isPrerollPlaying = true;
                 player.loadVideoById(window.VodDB.preroll.videoId);
+                try {
+                    player.unMute();
+                    player.setVolume(100);
+                } catch(e) {}
                 player.playVideo();
+                isAudioMuted = false;
+                updateAudioUI(true);
                 handlePrerollStart();
             } else {
                 startMainMovie();
@@ -1966,27 +1986,60 @@
             filterVodCatalog();
         };
 
-        // Sterowanie Dźwiękiem
-        window.toggleCinemaAudio = function() {
-            if (!player) return;
+        // Aktualizacja wyglądu przycisku audio
+        function updateAudioUI(unmuted) {
             const btn = document.getElementById('btnUnmuteAudio');
             const icon = document.getElementById('audioIcon');
             const label = document.getElementById('audioLabel');
-
-            if (isAudioMuted) {
-                player.unMute();
-                player.setVolume(100);
-                isAudioMuted = false;
+            if (!btn || !icon || !label) return;
+            if (unmuted) {
                 btn.classList.add('active');
                 icon.className = 'fa-solid fa-volume-high';
                 label.textContent = 'Dźwięk WŁ.';
-                showToast('🔊 Dźwięk włączony!');
             } else {
-                player.mute();
-                isAudioMuted = true;
                 btn.classList.remove('active');
                 icon.className = 'fa-solid fa-volume-xmark';
                 label.textContent = 'Dźwięk';
+            }
+        }
+
+        // Odblokowanie pełnego dźwięku przy pierwszym dotknięciu/kliknięciu (Zasady Autoplay przeglądarek)
+        function enableAudioOnFirstInteraction() {
+            const unmuteHandler = () => {
+                if (player && typeof player.unMute === 'function') {
+                    try {
+                        player.unMute();
+                        player.setVolume(100);
+                        isAudioMuted = false;
+                        updateAudioUI(true);
+                    } catch(e) {}
+                }
+                ['click', 'touchstart', 'touchend', 'scroll', 'keydown'].forEach(evt => {
+                    document.removeEventListener(evt, unmuteHandler, { capture: true });
+                });
+            };
+            ['click', 'touchstart', 'touchend', 'scroll', 'keydown'].forEach(evt => {
+                document.addEventListener(evt, unmuteHandler, { capture: true, once: true });
+            });
+        }
+
+        // Sterowanie Dźwiękiem
+        window.toggleCinemaAudio = function() {
+            if (!player) return;
+            if (isAudioMuted) {
+                try {
+                    player.unMute();
+                    player.setVolume(100);
+                } catch(e) {}
+                isAudioMuted = false;
+                updateAudioUI(true);
+                showToast('🔊 Dźwięk włączony!');
+            } else {
+                try {
+                    player.mute();
+                } catch(e) {}
+                isAudioMuted = true;
+                updateAudioUI(false);
                 showToast('🔇 Wyciszono dźwięk');
             }
         };
