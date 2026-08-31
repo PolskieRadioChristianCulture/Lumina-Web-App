@@ -873,9 +873,9 @@
         return normalizeUrl(phone.customUrl);
       }
       const p = PROFILE_OPTIONS.find(x => x.id === phone.profileId) || PROFILE_OPTIONS[0];
-      if (p.isBrowser) return 'browser.html';
+      if (p.isBrowser) return 'search.html';
       if (p.isYT)      return 'yt_embed_viewer.html';
-      if (!p.path)     return 'browser.html';
+      if (!p.path)     return 'search.html';
       return `${getBaseUrl()}${p.path}`;
     }
 
@@ -1317,6 +1317,32 @@
       if (e.key === 'h' || e.key === 'H') {
         if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
           toggleHeader();
+        }
+      }
+    });
+
+    // ── POSTMESSAGE: search.html/browser.html → device_studio navigation ──
+    window.addEventListener('message', (e) => {
+      if (!e.data || e.data.type !== 'MATRIX_NAVIGATE') return;
+      const url = e.data.url;
+      if (!url) return;
+
+      // Find which phone's iframe sent this
+      const iframes = document.querySelectorAll('iframe[id^="iframe-"]');
+      for (const iframe of iframes) {
+        if (iframe.contentWindow === e.source) {
+          const phoneId = parseInt(iframe.id.replace('iframe-', ''));
+          const normalized = normalizeUrl(url);
+          iframe.src = normalized;
+
+          // Update URL bar
+          const inp = document.getElementById(`url-input-${phoneId}`);
+          if (inp) inp.value = url;
+
+          // Save state
+          const phone = phones.find(p => p.id === phoneId);
+          if (phone) { phone.customUrl = url; saveState(); }
+          break;
         }
       }
     });

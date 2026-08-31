@@ -1,0 +1,683 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Wyszukiwarka MATRIX CC</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#050507;--surface:#0f0f11;--card:#141416;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --text:#e8ecf0;--muted:#6b7280;--dim:#374151;
+  --cyan:#00d4ff;--cyan-g:rgba(0,212,255,0.15);
+  --gold:#c8a84b;--green:#4ade80;
+}
+html,body{height:100%;overflow-x:hidden;}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Plus Jakarta Sans',sans-serif;display:flex;flex-direction:column;min-height:100%;}
+
+/* ── HEADER ── */
+.search-header{
+  background:linear-gradient(180deg,rgba(18,18,22,0.98),rgba(10,10,12,0.95));
+  border-bottom:1px solid var(--border);
+  padding:10px 12px 8px;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 4px 20px rgba(0,0,0,0.6),0 1px 0 rgba(0,212,255,0.06);
+}
+.header-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.logo-badge{
+  width:30px;height:30px;border-radius:8px;flex-shrink:0;
+  background:linear-gradient(135deg,#4285F4 0%,#34A853 35%,#FBBC05 65%,#EA4335 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:#fff;font-weight:900;
+  box-shadow:0 0 12px rgba(66,133,244,0.4);
+}
+.logo-text{font-size:1rem;font-weight:800;letter-spacing:0.5px;color:var(--text);}
+.logo-sub{font-size:0.65rem;color:var(--muted);letter-spacing:0.5px;}
+
+/* Search Bar */
+.search-form{
+  display:flex;align-items:center;gap:0;
+  background:rgba(0,0,0,0.5);
+  border:1px solid var(--border2);
+  border-radius:22px;
+  padding:0 6px 0 14px;
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+.search-form:focus-within{border-color:rgba(0,212,255,0.4);box-shadow:0 0 0 3px rgba(0,212,255,0.08);}
+.search-icon{color:var(--muted);font-size:13px;margin-right:4px;}
+.search-input{
+  flex:1;border:none;background:transparent;
+  color:var(--text);font-size:0.88rem;padding:10px 0;
+  outline:none;user-select:text;-webkit-user-select:text;
+}
+.search-input::placeholder{color:var(--dim);}
+.search-btn{
+  width:34px;height:34px;border-radius:50%;border:none;
+  background:rgba(0,212,255,0.12);color:var(--cyan);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;cursor:pointer;transition:all 0.2s;flex-shrink:0;
+}
+.search-btn:hover{background:rgba(0,212,255,0.22);}
+.clear-btn{
+  width:26px;height:26px;border-radius:50%;border:none;
+  background:transparent;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;cursor:pointer;margin-right:2px;
+}
+.clear-btn:hover{color:var(--text);}
+
+/* Filter Tabs */
+.filter-tabs{display:flex;gap:4px;overflow-x:auto;padding:6px 12px 0;scrollbar-width:none;}
+.filter-tabs::-webkit-scrollbar{display:none;}
+.filter-tab{
+  padding:5px 12px;border-radius:20px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);font-size:0.72rem;font-weight:600;
+  cursor:pointer;white-space:nowrap;transition:all 0.15s;font-family:inherit;
+  display:flex;align-items:center;gap:5px;
+}
+.filter-tab.active{background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.3);color:var(--cyan);}
+.filter-tab:hover:not(.active){border-color:var(--border2);color:var(--text);}
+
+/* ── MAIN CONTENT ── */
+.content{flex:1;padding:12px;}
+
+/* Instant Answer Box */
+.instant-box{
+  background:linear-gradient(145deg,rgba(20,20,24,0.9),rgba(12,12,16,0.95));
+  border:1px solid rgba(0,212,255,0.2);
+  border-radius:14px;padding:14px;margin-bottom:12px;
+  display:none;
+}
+.instant-box.show{display:block;}
+.instant-title{font-size:1rem;font-weight:800;color:var(--text);margin-bottom:6px;line-height:1.3;}
+.instant-text{font-size:0.8rem;color:#cbd5e1;line-height:1.55;margin-bottom:8px;}
+.instant-source{font-size:0.72rem;color:var(--muted);display:flex;align-items:center;gap:5px;}
+.instant-source a{color:var(--cyan);text-decoration:none;}
+.instant-img{float:right;width:72px;height:72px;border-radius:8px;object-fit:cover;margin:0 0 6px 10px;border:1px solid var(--border);}
+
+/* Result Cards */
+.results-list{display:flex;flex-direction:column;gap:8px;}
+.result-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:11px 13px;cursor:pointer;
+  transition:all 0.18s;
+}
+.result-card:hover{border-color:rgba(0,212,255,0.25);background:rgba(18,18,24,0.95);}
+.result-url{font-size:0.68rem;color:var(--muted);margin-bottom:3px;
+  display:flex;align-items:center;gap:5px;overflow:hidden;white-space:nowrap;}
+.result-favicon{width:14px;height:14px;border-radius:3px;background:var(--surface);}
+.result-domain{overflow:hidden;text-overflow:ellipsis;}
+.result-title{font-size:0.85rem;font-weight:700;color:#7dd3fc;line-height:1.3;margin-bottom:4px;}
+.result-title:hover{color:var(--cyan);}
+.result-snippet{font-size:0.76rem;color:#94a3b8;line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.result-open{display:flex;justify-content:flex-end;margin-top:6px;gap:5px;}
+.btn-open-page{
+  background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);
+  color:var(--cyan);padding:4px 10px;border-radius:8px;
+  font-size:0.7rem;font-weight:700;cursor:pointer;transition:all 0.15s;
+  display:flex;align-items:center;gap:5px;text-decoration:none;
+}
+.btn-open-page:hover{background:rgba(0,212,255,0.15);}
+.btn-open-ext{
+  background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  color:var(--muted);padding:4px 10px;border-radius:8px;
+  font-size:0.7rem;font-weight:600;cursor:pointer;transition:all 0.15s;
+  display:flex;align-items:center;gap:5px;
+}
+.btn-open-ext:hover{color:var(--text);}
+
+/* State panels */
+.state-panel{display:none;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 20px;text-align:center;gap:14px;}
+.state-panel.show{display:flex;}
+.state-icon{font-size:40px;color:var(--dim);}
+.state-title{font-size:0.95rem;font-weight:700;color:var(--text);}
+.state-sub{font-size:0.78rem;color:var(--muted);line-height:1.5;max-width:260px;}
+
+/* Spinner */
+.spinner{width:32px;height:32px;border-radius:50%;border:3px solid var(--border2);
+  border-top-color:var(--cyan);animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* HOME PAGE */
+.home-page{padding:20px 16px;}
+.home-logo{text-align:center;margin-bottom:20px;}
+.home-logo-g{
+  font-size:2.4rem;font-weight:900;letter-spacing:-1px;
+  background:linear-gradient(135deg,#4285F4 0%,#34A853 30%,#FBBC05 60%,#EA4335 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  display:inline-block;
+}
+.home-logo-sub{font-size:0.7rem;color:var(--muted);margin-top:2px;letter-spacing:1px;text-transform:uppercase;}
+
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;}
+.quick-item{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:11px 5px;cursor:pointer;transition:all 0.18s;
+}
+.quick-item:hover{border-color:rgba(0,212,255,0.25);transform:translateY(-2px);}
+.quick-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.quick-label{font-size:0.62rem;font-weight:700;color:var(--muted);text-align:center;line-height:1.2;}
+
+.section-label{font-size:0.7rem;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.mission-list{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.mission-item{
+  background:var(--card);border:1px solid var(--border);border-radius:11px;
+  padding:9px 11px;cursor:pointer;display:flex;align-items:center;gap:10px;
+  transition:all 0.18s;
+}
+.mission-item:hover{border-color:rgba(0,212,255,0.2);background:rgba(18,18,24,0.95);}
+.m-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.m-name{font-size:0.78rem;font-weight:700;color:var(--text);}
+.m-sub{font-size:0.65rem;color:var(--muted);}
+
+/* Related topics chips */
+.related-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;margin-bottom:12px;}
+.chip{
+  background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  border-radius:16px;padding:5px 11px;font-size:0.72rem;color:var(--text);
+  cursor:pointer;transition:all 0.15s;
+}
+.chip:hover{border-color:rgba(0,212,255,0.3);color:var(--cyan);}
+
+/* Page navigation */
+.page-nav{display:flex;justify-content:center;gap:8px;padding:16px 0;flex-wrap:wrap;}
+.btn-pg{
+  width:34px;height:34px;border-radius:8px;border:1px solid var(--border);
+  background:var(--card);color:var(--muted);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.8rem;cursor:pointer;transition:all 0.15s;
+}
+.btn-pg.active{background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.3);color:var(--cyan);}
+.btn-pg:hover:not(.active){border-color:var(--border2);color:var(--text);}
+</style>
+</head>
+<body>
+
+<!-- HEADER SEARCH -->
+<div class="search-header">
+  <div class="header-top">
+    <div class="logo-badge">G</div>
+    <div>
+      <div class="logo-text">Wyszukiwarka CC</div>
+      <div class="logo-sub">Powered by DuckDuckGo API</div>
+    </div>
+  </div>
+  <form class="search-form" onsubmit="event.preventDefault(); doSearch();">
+    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    <input type="search" class="search-input" id="searchInput"
+           placeholder="Szukaj czegokolwiek..." autocomplete="off"
+           oninput="onInputChange(this.value)">
+    <button type="button" class="clear-btn" id="clearBtn" onclick="clearSearch()" style="display:none;">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <button type="submit" class="search-btn">
+      <i class="fa-solid fa-arrow-right" id="searchBtnIcon"></i>
+    </button>
+  </form>
+  <div class="filter-tabs" id="filterTabs" style="display:none;">
+    <button class="filter-tab active" onclick="setFilter('web')"><i class="fa-solid fa-globe"></i> Wszystko</button>
+    <button class="filter-tab" onclick="setFilter('news')"><i class="fa-solid fa-newspaper"></i> Aktualności</button>
+    <button class="filter-tab" onclick="setFilter('images')"><i class="fa-solid fa-image"></i> Obrazy</button>
+    <button class="filter-tab" onclick="setFilter('videos')"><i class="fa-solid fa-film"></i> Wideo</button>
+    <button class="filter-tab" onclick="setFilter('maps')"><i class="fa-solid fa-map"></i> Mapy</button>
+  </div>
+</div>
+
+<!-- CONTENT AREA -->
+<div class="content" id="contentArea">
+
+  <!-- HOME PAGE -->
+  <div id="homePage" class="home-page">
+    <div class="home-logo">
+      <div class="home-logo-g">Szukaj</div>
+      <div class="home-logo-sub">Wyszukiwarka Misyjna MATRIX CC</div>
+    </div>
+
+    <div class="section-label">Szybki dostęp</div>
+    <div class="quick-grid">
+      <div class="quick-item" onclick="openPage('https://polskieradio.cc')">
+        <div class="quick-icon" style="background:linear-gradient(135deg,#7c3aed,#4338ca)"><i class="fa-solid fa-cross" style="color:#fff"></i></div>
+        <div class="quick-label">CC Radio</div>
+      </div>
+      <div class="quick-item" onclick="openPage('https://polskieradio.cc/tablica')">
+        <div class="quick-icon" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)"><i class="fa-solid fa-newspaper" style="color:#fff"></i></div>
+        <div class="quick-label">Tablica</div>
+      </div>
+      <div class="quick-item" onclick="openPage('yt_embed_viewer.html')">
+        <div class="quick-icon" style="background:#ff0000"><i class="fa-brands fa-youtube" style="color:#fff"></i></div>
+        <div class="quick-label">YouTube CC</div>
+      </div>
+      <div class="quick-item" onclick="openPage('https://polskieradio.cc/lumina')">
+        <div class="quick-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"><i class="fa-solid fa-sparkles" style="color:#fff"></i></div>
+        <div class="quick-label">LUMINA</div>
+      </div>
+      <div class="quick-item" onclick="searchQuery('Biblia Słowo Boże')">
+        <div class="quick-icon" style="background:linear-gradient(135deg,#d4af37,#b8860b)"><i class="fa-solid fa-book-bible" style="color:#fff"></i></div>
+        <div class="quick-label">Biblia</div>
+      </div>
+      <div class="quick-item" onclick="searchQuery('modlitwa chrześcijańska')">
+        <div class="quick-icon" style="background:linear-gradient(135deg,#10b981,#047857)"><i class="fa-solid fa-hands-praying" style="color:#fff"></i></div>
+        <div class="quick-label">Modlitwa</div>
+      </div>
+      <div class="quick-item" onclick="openPage('https://maps.google.com')">
+        <div class="quick-icon" style="background:linear-gradient(135deg,#34A853,#0F9D58)"><i class="fa-solid fa-map-location-dot" style="color:#fff"></i></div>
+        <div class="quick-label">Mapy</div>
+      </div>
+      <div class="quick-item" onclick="openPage('https://translate.google.pl')">
+        <div class="quick-icon" style="background:linear-gradient(135deg,#4285F4,#1a56c4)"><i class="fa-solid fa-language" style="color:#fff"></i></div>
+        <div class="quick-label">Tłumacz</div>
+      </div>
+    </div>
+
+    <div class="section-label">Kanały Misyjne CC</div>
+    <div class="mission-list">
+      <div class="mission-item" onclick="openPage('yt_embed_viewer.html?channel=@osobowoscPLUS')">
+        <div class="m-icon" style="background:linear-gradient(135deg,#ef4444,#f59e0b)"><i class="fa-solid fa-star" style="color:#fff"></i></div>
+        <div><div class="m-name">OSOBOWOŚĆ +</div><div class="m-sub">Formacja i Dojrzałość w Bogu</div></div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--dim);font-size:0.7rem;margin-left:auto;"></i>
+      </div>
+      <div class="mission-item" onclick="openPage('yt_embed_viewer.html?channel=@CezaryRogowski')">
+        <div class="m-icon" style="background:linear-gradient(135deg,#d4af37,#b8860b)"><i class="fa-solid fa-crown" style="color:#fff"></i></div>
+        <div><div class="m-name">Cezary Rogowski</div><div class="m-sub">Założyciel Christian Culture</div></div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--dim);font-size:0.7rem;margin-left:auto;"></i>
+      </div>
+      <div class="mission-item" onclick="openPage('yt_embed_viewer.html?channel=@AndrzejThiel')">
+        <div class="m-icon" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)"><i class="fa-solid fa-book-bible" style="color:#fff"></i></div>
+        <div><div class="m-name">Andrzej Thiel</div><div class="m-sub">Słowo Boże i Uwielbienie</div></div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--dim);font-size:0.7rem;margin-left:auto;"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="state-panel" id="loadingPanel">
+    <div class="spinner"></div>
+    <div class="state-sub" id="loadingText">Wyszukuję...</div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="resultsArea" style="display:none;">
+    <div class="instant-box" id="instantBox">
+      <img class="instant-img" id="instantImg" src="" alt="" style="display:none;">
+      <div class="instant-title" id="instantTitle"></div>
+      <div class="instant-text" id="instantText"></div>
+      <div class="instant-source" id="instantSource"></div>
+    </div>
+    <div class="related-chips" id="relatedChips" style="display:none;"></div>
+    <div class="results-list" id="resultsList"></div>
+    <div class="page-nav" id="pageNav" style="display:none;"></div>
+  </div>
+
+  <!-- NO RESULTS -->
+  <div class="state-panel" id="noResultsPanel">
+    <div class="state-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+    <div class="state-title">Brak wyników</div>
+    <div class="state-sub" id="noResultsText">Nie znaleziono wyników dla tego zapytania. Spróbuj innych słów kluczowych.</div>
+  </div>
+
+</div>
+
+<script>
+let currentQuery = '';
+let currentFilter = 'web';
+let currentPage = 1;
+const RESULTS_PER_PAGE = 10;
+let allResults = [];
+
+const searchInput = document.getElementById('searchInput');
+const clearBtn = document.getElementById('clearBtn');
+const homePage = document.getElementById('homePage');
+const loadingPanel = document.getElementById('loadingPanel');
+const resultsArea = document.getElementById('resultsArea');
+const noResultsPanel = document.getElementById('noResultsPanel');
+const filterTabs = document.getElementById('filterTabs');
+
+// Check for startup query param
+const sp = new URLSearchParams(window.location.search);
+const startQ = sp.get('q') || '';
+if (startQ) { searchInput.value = startQ; doSearch(); }
+
+function onInputChange(val) {
+  clearBtn.style.display = val ? 'flex' : 'none';
+}
+
+function clearSearch() {
+  searchInput.value = '';
+  clearBtn.style.display = 'none';
+  searchInput.focus();
+  showHome();
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+  event.target.closest('.filter-tab').classList.add('active');
+  if (currentQuery) doSearch();
+}
+
+function showHome() {
+  homePage.style.display = 'block';
+  resultsArea.style.display = 'none';
+  loadingPanel.classList.remove('show');
+  noResultsPanel.classList.remove('show');
+  filterTabs.style.display = 'none';
+}
+
+function showLoading(q) {
+  homePage.style.display = 'none';
+  resultsArea.style.display = 'none';
+  noResultsPanel.classList.remove('show');
+  loadingPanel.classList.add('show');
+  document.getElementById('loadingText').innerText = 'Szukam: "' + q + '"...';
+}
+
+function showResults() {
+  loadingPanel.classList.remove('show');
+  noResultsPanel.classList.remove('show');
+  resultsArea.style.display = 'block';
+  filterTabs.style.display = 'flex';
+}
+
+function showNoResults(q) {
+  loadingPanel.classList.remove('show');
+  resultsArea.style.display = 'none';
+  noResultsPanel.classList.add('show');
+  document.getElementById('noResultsText').innerText =
+    'Brak wyników dla "' + q + '". Spróbuj innych słów kluczowych.';
+  filterTabs.style.display = 'flex';
+}
+
+function doSearch() {
+  const q = searchInput.value.trim();
+  if (!q) { showHome(); return; }
+
+  currentQuery = q;
+  currentPage = 1;
+  clearBtn.style.display = 'flex';
+  showLoading(q);
+
+  // Handle special navigation
+  if (/^@[a-zA-Z0-9_.%-]+$/.test(q)) {
+    openPage('yt_embed_viewer.html?channel=' + encodeURIComponent(q)); return;
+  }
+  if (q.includes('youtube.com') || q.includes('youtu.be') || q.startsWith('yt_')) {
+    openPage('yt_embed_viewer.html?q=' + encodeURIComponent(q)); return;
+  }
+  if (/^https?:\/\//i.test(q) || (q.includes('.') && !q.includes(' '))) {
+    openPage(q.startsWith('http') ? q : 'https://' + q); return;
+  }
+
+  // Route special filters
+  if (currentFilter === 'maps') {
+    openPage('https://www.google.com/maps/search/' + encodeURIComponent(q)); return;
+  }
+  if (currentFilter === 'images') {
+    fetchImages(q); return;
+  }
+  if (currentFilter === 'videos') {
+    openPage('yt_embed_viewer.html?q=' + encodeURIComponent(q)); return;
+  }
+  if (currentFilter === 'news') {
+    fetchNews(q); return;
+  }
+
+  // DuckDuckGo Instant Answer API
+  fetchDDG(q);
+}
+
+function fetchDDG(q) {
+  const url = 'https://api.duckduckgo.com/?q=' + encodeURIComponent(q) +
+              '&format=json&no_html=1&skip_disambig=1&no_redirect=1';
+
+  fetch(url)
+    .then(r => r.json())
+    .then(data => renderDDG(q, data))
+    .catch(() => {
+      // Fallback: show open-in-browser option
+      renderFallback(q);
+    });
+}
+
+function renderDDG(q, data) {
+  const instantBox = document.getElementById('instantBox');
+  const instantTitle = document.getElementById('instantTitle');
+  const instantText = document.getElementById('instantText');
+  const instantSource = document.getElementById('instantSource');
+  const instantImg = document.getElementById('instantImg');
+  const relatedChips = document.getElementById('relatedChips');
+  const resultsList = document.getElementById('resultsList');
+  const pageNav = document.getElementById('pageNav');
+
+  // Clear
+  resultsList.innerHTML = '';
+  relatedChips.innerHTML = '';
+  pageNav.style.display = 'none';
+  instantBox.classList.remove('show');
+  relatedChips.style.display = 'none';
+
+  // Instant Answer
+  if (data.Abstract || data.Answer) {
+    const txt = data.Answer || data.Abstract;
+    const src = data.AbstractSource || data.AnswerType || '';
+    const srcUrl = data.AbstractURL || '';
+    const imgUrl = data.Image || '';
+
+    if (txt) {
+      instantTitle.innerText = data.Heading || q;
+      instantText.innerText = txt;
+      instantSource.innerHTML = src ?
+        `<i class="fa-solid fa-circle-info"></i> Źródło: <a href="javascript:void(0)" onclick="openPage('${srcUrl}')">${src}</a>` : '';
+      if (imgUrl) {
+        instantImg.src = imgUrl.startsWith('http') ? imgUrl : 'https://duckduckgo.com' + imgUrl;
+        instantImg.style.display = 'block';
+      } else {
+        instantImg.style.display = 'none';
+      }
+      instantBox.classList.add('show');
+    }
+  }
+
+  // Related Topics as results
+  allResults = [];
+
+  // RelatedTopics
+  if (data.RelatedTopics && data.RelatedTopics.length > 0) {
+    data.RelatedTopics.forEach(t => {
+      if (t.Text && t.FirstURL) {
+        allResults.push({
+          title: t.Text.split(' - ')[0] || t.Text.substring(0, 60),
+          snippet: t.Text,
+          url: t.FirstURL,
+          icon: t.Icon && t.Icon.URL ? t.Icon.URL : null
+        });
+      } else if (t.Topics) {
+        t.Topics.forEach(st => {
+          if (st.Text && st.FirstURL) {
+            allResults.push({
+              title: st.Text.split(' - ')[0] || st.Text.substring(0, 60),
+              snippet: st.Text,
+              url: st.FirstURL
+            });
+          }
+        });
+      }
+    });
+  }
+
+  // Results array
+  if (data.Results && data.Results.length > 0) {
+    data.Results.forEach(r => {
+      allResults.push({ title: r.Text, snippet: r.Text, url: r.FirstURL });
+    });
+  }
+
+  // If we have nothing, add a "search on web" card + open-in-new-tab
+  if (allResults.length === 0 && !data.Abstract && !data.Answer) {
+    renderFallback(q);
+    return;
+  }
+
+  // Related keywords chips
+  if (data.RelatedTopics && data.RelatedTopics.length > 0) {
+    const chips = data.RelatedTopics
+      .filter(t => t.Name)
+      .slice(0, 8)
+      .map(t => `<div class="chip" onclick="searchQuery('${q} ${t.Name}')">${t.Name}</div>`);
+    if (chips.length > 0) {
+      relatedChips.innerHTML = chips.join('');
+      relatedChips.style.display = 'flex';
+    }
+  }
+
+  renderPage(1);
+
+  // Always add web-search card at top for opening full results
+  const webCard = document.createElement('div');
+  webCard.className = 'result-card';
+  webCard.style.cssText = 'border-color:rgba(200,168,75,0.2);margin-bottom:8px;';
+  webCard.innerHTML = `
+    <div class="result-url"><i class="fa-solid fa-globe" style="color:#4285F4;"></i> <span>duckduckgo.com • Pełne wyniki</span></div>
+    <div class="result-title">🔍 Otwórz pełne wyniki wyszukiwania dla: "${q}"</div>
+    <div class="result-snippet">Kliknij aby zobaczyć wszystkie wyniki wyszukiwania w pełnej wyszukiwarce DuckDuckGo.</div>
+    <div class="result-open">
+      <a class="btn-open-page" href="javascript:void(0)" onclick="openPage('https://duckduckgo.com/?q=${encodeURIComponent(q)}')">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz pełne wyniki
+      </a>
+    </div>`;
+  resultsList.insertBefore(webCard, resultsList.firstChild);
+
+  showResults();
+}
+
+function renderPage(page) {
+  const resultsList = document.getElementById('resultsList');
+  resultsList.innerHTML = '';
+  const start = (page - 1) * RESULTS_PER_PAGE;
+  const items = allResults.slice(start, start + RESULTS_PER_PAGE);
+
+  if (items.length === 0) { showNoResults(currentQuery); return; }
+
+  items.forEach(r => {
+    const card = createResultCard(r);
+    resultsList.appendChild(card);
+  });
+
+  // Pagination
+  const total = Math.ceil(allResults.length / RESULTS_PER_PAGE);
+  const nav = document.getElementById('pageNav');
+  if (total > 1) {
+    nav.innerHTML = '';
+    for (let i = 1; i <= Math.min(total, 5); i++) {
+      const btn = document.createElement('button');
+      btn.className = 'btn-pg' + (i === page ? ' active' : '');
+      btn.innerText = i;
+      btn.onclick = () => { currentPage = i; renderPage(i); window.scrollTo(0, 0); };
+      nav.appendChild(btn);
+    }
+    nav.style.display = 'flex';
+  } else {
+    nav.style.display = 'none';
+  }
+}
+
+function createResultCard(r) {
+  const card = document.createElement('div');
+  card.className = 'result-card';
+  let domain = r.url;
+  try { domain = new URL(r.url.startsWith('http') ? r.url : 'https://'+r.url).hostname; } catch(e) {}
+
+  const favicon = `https://www.google.com/s2/favicons?domain=${domain}&sz=16`;
+  card.innerHTML = `
+    <div class="result-url">
+      <img class="result-favicon" src="${favicon}" onerror="this.style.display='none'" alt="">
+      <span class="result-domain">${domain}</span>
+    </div>
+    <div class="result-title">${r.title || domain}</div>
+    <div class="result-snippet">${r.snippet || ''}</div>
+    <div class="result-open">
+      <a class="btn-open-page" href="javascript:void(0)" onclick="openPage('${r.url}')">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz
+      </a>
+    </div>`;
+  return card;
+}
+
+function renderFallback(q) {
+  const resultsList = document.getElementById('resultsList');
+  document.getElementById('relatedChips').style.display = 'none';
+  resultsList.innerHTML = '';
+
+  const engines = [
+    { name:'DuckDuckGo', icon:'fa-magnifying-glass', color:'#ff6600',
+      url:`https://duckduckgo.com/?q=${encodeURIComponent(q)}` },
+    { name:'Bing', icon:'fa-b', color:'#00809d',
+      url:`https://www.bing.com/search?q=${encodeURIComponent(q)}` },
+    { name:'Google (nowa karta)', icon:'fa-brands fa-google', color:'#4285F4',
+      url:`https://www.google.com/search?q=${encodeURIComponent(q)}` },
+    { name:'Wikipedia', icon:'fa-brands fa-wikipedia-w', color:'#e8e8e8',
+      url:`https://pl.wikipedia.org/w/index.php?search=${encodeURIComponent(q)}` },
+    { name:'YouTube', icon:'fa-brands fa-youtube', color:'#ff0000',
+      url:`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}` },
+  ];
+
+  engines.forEach(e => {
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.innerHTML = `
+      <div class="result-url"><i class="${e.icon}" style="color:${e.color};"></i> <span>${e.name}</span></div>
+      <div class="result-title">Szukaj "${q}" w ${e.name}</div>
+      <div class="result-open">
+        <a class="btn-open-page" href="javascript:void(0)" onclick="openPage('${e.url}')">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz
+        </a>
+      </div>`;
+    resultsList.appendChild(card);
+  });
+  showResults();
+}
+
+function fetchImages(q) {
+  const results = [
+    { title: 'Obrazy: ' + q, snippet: 'Wyniki obrazów z DuckDuckGo', url: `https://duckduckgo.com/?q=${encodeURIComponent(q)}&ia=images&iax=images` },
+    { title: 'Google Obrazy: ' + q, snippet: 'Wyszukiwanie obrazów w Google', url: `https://www.google.com/search?q=${encodeURIComponent(q)}&tbm=isch` }
+  ];
+  allResults = results;
+  renderPage(1);
+  showResults();
+}
+
+function fetchNews(q) {
+  allResults = [
+    { title: 'Aktualności: ' + q + ' – DuckDuckGo', snippet: 'Najnowsze wiadomości', url: `https://duckduckgo.com/?q=${encodeURIComponent(q)}&ia=news` },
+    { title: 'Google News: ' + q, snippet: 'Wiadomości z Google News', url: `https://news.google.com/search?q=${encodeURIComponent(q)}` }
+  ];
+  renderPage(1);
+  showResults();
+}
+
+function searchQuery(q) {
+  searchInput.value = q;
+  clearBtn.style.display = 'flex';
+  doSearch();
+}
+
+function openPage(url) {
+  // Notify parent (device_studio) to navigate this phone's iframe
+  try {
+    if (window.parent && window.parent !== window) {
+      // Try postMessage to parent with url to navigate
+      window.parent.postMessage({ type: 'MATRIX_NAVIGATE', url: url }, '*');
+    }
+  } catch(e) {}
+  // Also try direct navigation in current frame
+  window.location.href = url;
+}
+</script>
+</body>
+</html>
