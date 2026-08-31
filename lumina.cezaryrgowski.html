@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
 <script>
@@ -4729,6 +4729,15 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                     if (!age || age === '32' || age === 32 || age === '30' || age === 30) {
                         age = '51';
                     }
+                    let posts = [...defaultProfile.posts];
+                    if (Array.isArray(parsed.posts)) {
+                        parsed.posts.forEach(p => {
+                            if (p && p.id && !posts.some(dp => dp.id === p.id)) {
+                                posts.push(p);
+                            }
+                        });
+                    }
+
                     return {
                         ...defaultProfile,
                         ...parsed,
@@ -4739,7 +4748,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
                         city: parsed.city || 'Ostrowiec Świętokrzyski, Polska',
                         visibility: parsed.visibility || 'public',
                         photos: (Array.isArray(parsed.photos) && parsed.photos.length ? parsed.photos : [...defaultProfile.photos]).filter(p => typeof p === 'string' && !p.includes('tomek') && !p.includes('avatar_widget_tomek')),
-                        posts: Array.isArray(parsed.posts) ? parsed.posts : [...defaultProfile.posts]
+                        posts: posts
                     };
                 }
             } catch (e) {}
@@ -5360,11 +5369,195 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
             return text;
         }
 
+        // ── Chronological Smart Timestamp Parser ──
+        function extractSortTs(post) {
+            if (!post) return 0;
+            if (typeof post._sortTs === 'number' && post._sortTs > 0) return post._sortTs;
+
+            const raw = post.createdAtTimestamp || post.createdAtDateStr || post.createdAt || post.timestamp || null;
+            if (raw) {
+                if (typeof raw === 'object' && raw.seconds) return raw.seconds * 1000;
+                if (typeof raw === 'number') return raw;
+                if (typeof raw === 'string') {
+                    const p = Date.parse(raw);
+                    if (!isNaN(p)) return p;
+                }
+            }
+
+            if (post.time && typeof post.time === 'string') {
+                const t = post.time;
+                const now = Date.now();
+
+                const mMin = t.match(/(\d+)\s*min/i);
+                if (mMin) return now - parseInt(mMin[1], 10) * 60 * 1000;
+
+                const mGodz = t.match(/(\d+)\s*(?:godz|godzin|h)/i);
+                if (mGodz) return now - parseInt(mGodz[1], 10) * 3600 * 1000;
+
+                const mDni = t.match(/(\d+)\s*(?:dni|dzień|d)\s*temu/i);
+                if (mDni) return now - parseInt(mDni[1], 10) * 86400 * 1000;
+
+                if (/Przed chwil/i.test(t)) return now;
+
+                const mToday = t.match(/Dzisiaj[,\s]+(?:o\s+)?(\d{1,2}):(\d{2})/i);
+                if (mToday) {
+                    const d = new Date();
+                    d.setHours(parseInt(mToday[1], 10), parseInt(mToday[2], 10), 0, 0);
+                    return d.getTime();
+                }
+
+                const mYesterday = t.match(/Wczoraj[,\s]+(?:o\s+)?(\d{1,2}):(\d{2})/i);
+                if (mYesterday) {
+                    const d = new Date();
+                    d.setDate(d.getDate() - 1);
+                    d.setHours(parseInt(mYesterday[1], 10), parseInt(mYesterday[2], 10), 0, 0);
+                    return d.getTime();
+                }
+
+                const MONTHS_PL = {
+                    STYCZNIA:0, LUTEGO:1, MARCA:2, KWIETNIA:3, MAJA:4, CZERWCA:5,
+                    LIPCA:6, SIERPNIA:7, WRZEŚNIA:8, PAŹDZIERNIKA:9, LISTOPADA:10, GRUDNIA:11
+                };
+                const mDateLong = t.match(/(\d{1,2})\s+([A-ZĄĆĘŁŃÓŚŹŻa-ząćęłńóśźż]+)\s+(\d{4})/i);
+                if (mDateLong) {
+                    const mo = MONTHS_PL[(mDateLong[2] || '').toUpperCase()];
+                    if (mo !== undefined) {
+                        const mTime = t.match(/(\d{2}):(\d{2})/);
+                        const d = new Date(parseInt(mDateLong[3], 10), mo, parseInt(mDateLong[1], 10),
+                                          mTime ? parseInt(mTime[1], 10) : 6,
+                                          mTime ? parseInt(mTime[2], 10) : 0);
+                        if (!isNaN(d.getTime())) return d.getTime();
+                    }
+                }
+
+                const mDotDate = t.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})(?:[,\s]+(?:o\s+)?(\d{1,2}):(\d{2}))?/);
+                if (mDotDate) {
+                    const d = new Date(parseInt(mDotDate[3], 10), parseInt(mDotDate[2], 10) - 1, parseInt(mDotDate[1], 10),
+                                      mDotDate[4] ? parseInt(mDotDate[4], 10) : 6,
+                                      mDotDate[5] ? parseInt(mDotDate[5], 10) : 0);
+                    if (!isNaN(d.getTime())) return d.getTime();
+                }
+
+                const mISO = t.match(/\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2})?/);
+                if (mISO) {
+                    const p = Date.parse(mISO[0]);
+                    if (!isNaN(p)) return p;
+                }
+            }
+            return 0;
+        }
+
+        // ── Pancerne Źródło Wszystkich Postów i Autorskich Rozważań Cezarego Rogowskiego ──
+        function getCezaryAllPosts() {
+            const data = getProfileData();
+            const result = [];
+            const seenIds = new Set();
+
+            // 1. Dynamiczne rozważania z bazy JSON (rozwazania_baza.json - 32 dni)
+            if (window.allCezaryReflections && Array.isArray(window.allCezaryReflections)) {
+                window.allCezaryReflections.forEach(ref => {
+                    if (!ref || !ref.id || seenIds.has(ref.id)) return;
+                    seenIds.add(ref.id);
+                    
+                    const ts = ref.date ? new Date(ref.date + 'T06:00:00Z').getTime() : Date.now();
+                    const dParts = (ref.date || '').split('-');
+                    let dateLabel = ref.date || '';
+                    if (dParts.length === 3) {
+                        const monthNames = ['Stycznia', 'Lutego', 'Marca', 'Kwietnia', 'Maja', 'Czerwca', 'Lipca', 'Sierpnia', 'Września', 'Października', 'Listopada', 'Grudnia'];
+                        const mIdx = parseInt(dParts[1], 10) - 1;
+                        dateLabel = `${parseInt(dParts[2], 10)} ${monthNames[mIdx] || ''} ${dParts[0]}`;
+                    }
+
+                    result.push({
+                        id: ref.id,
+                        author: 'Cezary Rogowski',
+                        authorRole: '☀️ Dobrze, że jesteś • Założyciel Christian Culture ✨',
+                        authorAvatar: data.avatar || 'avatar_cezary_official.jpg',
+                        authorSlug: 'cezaryrgowski',
+                        time: `${dateLabel} • ☀️ Słowo na Dzień`,
+                        title: ref.title || '☀️ Rozważanie Słowa Bożego',
+                        text: ref.contentWeb || ref.fullText || ref.teaser || '',
+                        image: ref.imageUrl || 'promo_dzj.jpg',
+                        likes: 120 + (ref.day || 1) * 3,
+                        amen: 110 + (ref.day || 1) * 3,
+                        _sortTs: ts
+                    });
+                });
+            }
+
+            // 2. Posty z pliku js/lumina-community-posts.js (LUMINA_CORE_POSTS_DATA)
+            if (typeof LUMINA_CORE_POSTS_DATA !== 'undefined' && Array.isArray(LUMINA_CORE_POSTS_DATA)) {
+                LUMINA_CORE_POSTS_DATA.forEach(cp => {
+                    if (!cp || !cp.id || seenIds.has(cp.id)) return;
+                    if (cp.authorSlug === 'cezaryrgowski' || cp.author === 'Cezary Rogowski' || cp.authorRole?.includes('Cezary')) {
+                        seenIds.add(cp.id);
+                        result.push({
+                            ...cp,
+                            author: 'Cezary Rogowski',
+                            authorAvatar: data.avatar || cp.authorAvatar || 'avatar_cezary_official.jpg',
+                            _sortTs: extractSortTs(cp)
+                        });
+                    }
+                });
+            }
+
+            // 3. Posty z domyślnego profilu w kodzie oraz lokalne wpisy
+            const localPosts = Array.isArray(data.posts) ? data.posts : [];
+            localPosts.forEach(lp => {
+                if (!lp || !lp.id || seenIds.has(lp.id)) return;
+                seenIds.add(lp.id);
+                result.push({
+                    ...lp,
+                    author: lp.author || data.name || 'Cezary Rogowski',
+                    authorAvatar: data.avatar || lp.authorAvatar || 'avatar_cezary_official.jpg',
+                    _sortTs: extractSortTs(lp)
+                });
+            });
+
+            // 4. Cloud Posts z cache / Firestore
+            try {
+                const rawCloud = localStorage.getItem('lumina_cloud_posts_cache');
+                if (rawCloud) {
+                    const list = JSON.parse(rawCloud);
+                    if (Array.isArray(list)) {
+                        list.forEach(cp => {
+                            if (!cp || !cp.id || seenIds.has(cp.id)) return;
+                            if (cp.authorSlug === 'cezaryrgowski' || cp.author === 'Cezary Rogowski') {
+                                seenIds.add(cp.id);
+                                result.push({
+                                    ...cp,
+                                    _sortTs: extractSortTs(cp)
+                                });
+                            }
+                        });
+                    }
+                }
+            } catch(e) {}
+
+            // Sortuj chronologicznie od najnowszego do najstarszego
+            result.sort((a, b) => (b._sortTs || extractSortTs(b)) - (a._sortTs || extractSortTs(a)));
+
+            return result;
+        }
+
+        async function loadCezaryReflectionsJson() {
+            try {
+                const res = await fetch('rozwazania_baza.json?v=' + Date.now());
+                if (res.ok) {
+                    const data = await res.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        window.allCezaryReflections = data;
+                        renderPosts();
+                    }
+                }
+            } catch(e) {
+                console.warn('[LUMINA] Błąd pobierania rozwazania_baza.json na profilu Cezarego:', e);
+            }
+        }
+
         function renderPosts() {
             const data = getProfileData();
-            const posts = (window.LuminaDB?.getAuthorPosts) 
-                ? window.LuminaDB.getAuthorPosts('cezaryrgowski', data.name)
-                : (Array.isArray(data.posts) ? data.posts : []);
+            const posts = getCezaryAllPosts();
             const stream = document.getElementById('feedStream');
             if (!stream) return;
 
@@ -7523,6 +7716,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
             checkOwnerAuthSession();
             renderProfileView();
             initGuestFollowState();
+            loadCezaryReflectionsJson();
 
             window.addEventListener('lumina_post_published', () => renderPosts());
             window.addEventListener('storage', () => renderPosts());
@@ -7868,6 +8062,7 @@ PODAJ DALEJ ✨ www.polskieradio.cc | www.cclite.pl`,
             }).join('');
         }
     </script>
+    <script src="js/lumina-community-posts.js"></script>
     <script src="lumina-admin-profile-suite.js?v=20260825_urszula_real_face_v370"></script>
     <script src="lumina-premium-video-avatar.js"></script>
 <script>
