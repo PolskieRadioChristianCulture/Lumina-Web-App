@@ -1,0 +1,89 @@
+﻿{
+  "matrixVersion": "1.0.0",
+  "name": "LUMINA Agent Matrix (7-Grid Simulator)",
+  "baseUrlProduction": "https://polskieradio.cc",
+  "baseUrlLocal": "http://localhost:3000",
+  "window": {
+    "width": 390,
+    "height": 844,
+    "outerWidth": 410,
+    "outerHeight": 890,
+    "columns": 4,
+    "spacingX": 10,
+    "spacingY": 10,
+    "startX": 20,
+    "startY": 20
+  },
+  "agents": [
+    {
+      "id": "agent-01-cezary",
+      "name": "Cezary Rogowski",
+      "slug": "cezaryrgowski",
+      "role": "Założyciel & Dowódca",
+      "avatar": "avatar_cezary_official.jpg",
+      "startPath": "/lumina.cezaryrgowski",
+      "scenario": "leader_overview",
+      "gridIndex": 0
+    },
+    {
+      "id": "agent-02-wioletta",
+      "name": "Wioletta Rogowska",
+      "slug": "wiolettarogowska",
+      "role": "Liderka Społeczności CC",
+      "avatar": "avatar_wioletta_official.jpg",
+      "startPath": "/lumina.wiolettarogowska",
+      "scenario": "community_board_curator",
+      "gridIndex": 1
+    },
+    {
+      "id": "agent-03-jola",
+      "name": "Jola Wójcik",
+      "slug": "jolawojcik",
+      "role": "Użytkownik Zweryfikowany (Warszawa)",
+      "avatar": "avatar_jola_official.jpg",
+      "startPath": "/lumina.jolawojcik",
+      "scenario": "active_chat_blessings",
+      "gridIndex": 2
+    },
+    {
+      "id": "agent-04-andrzej",
+      "name": "Andrzej Thiel",
+      "slug": "andrzejthiel",
+      "role": "Lektor & Muzyk Uwielbienia",
+      "avatar": "avatar_andrzej_official.jpg",
+      "startPath": "/lumina.andrzejthiel",
+      "scenario": "worship_listener",
+      "gridIndex": 3
+    },
+    {
+      "id": "agent-05-magdalena",
+      "name": "Magdalena",
+      "slug": "magdalena",
+      "role": "Grupa Modlitewna (Gdańsk)",
+      "avatar": "avatar_magdalena.jpg",
+      "startPath": "/lumina.magdalena",
+      "scenario": "prayer_intercession",
+      "gridIndex": 4
+    },
+    {
+      "id": "agent-06-ccmen",
+      "name": "Mężczyźni CC",
+      "slug": "ccmen",
+      "role": "Wspólnota Mężczyzn Wiary",
+      "avatar": "avatar_ccmen.jpg",
+      "startPath": "/lumina.ccmen",
+      "scenario": "feed_interaction",
+      "gridIndex": 5
+    },
+    {
+      "id": "agent-07-ccwomen",
+      "name": "Kobiety CC",
+      "slug": "ccwomen",
+      "role": "Wspólnota Kobiet Wiary",
+      "avatar": "avatar_ccwomen.jpg",
+      "startPath": "/lumina.ccwomen",
+      "scenario": "scripture_story_explorer",
+      "gridIndex": 6
+    }
+  ]
+}

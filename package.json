@@ -16,7 +16,9 @@
     "test:inline": "node validate_lumina.js",
     "test:unit": "vitest run",
     "test:all": "npm run test:unit && npm run test:guardian:extended && npm run build:lumina",
-    "test": "npm run test:all"
+    "test": "npm run test:all",
+    "matrix": "node scripts/agent-matrix/launch_grid.js",
+    "matrix:local": "node scripts/agent-matrix/launch_grid.js --local"
   },
   "dependencies": {
     "express": "^4.19.2",
