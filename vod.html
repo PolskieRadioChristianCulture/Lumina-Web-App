@@ -701,16 +701,20 @@
 
         .section-title {
             font-family: var(--font-display);
-            font-size: 1.35rem;
+            font-size: 1.22rem;
             font-weight: 800;
             color: #fff;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            letter-spacing: 0.3px;
+            line-height: 1.25;
         }
 
         .section-title i {
             color: var(--gold-primary);
+            flex-shrink: 0;
+            font-size: 1.1rem;
         }
 
         .search-and-filters {
@@ -1408,7 +1412,9 @@
             }
 
             .section-title {
-                font-size: 1.15rem;
+                font-size: 1.02rem;
+                gap: 8px;
+                line-height: 1.25;
             }
 
             .search-and-filters {
@@ -1647,7 +1653,7 @@
         <!-- ══════════ SECTION HEADER & FILTERS ══════════ -->
         <div class="section-bar" id="vodMoviesSection">
             <h2 class="section-title">
-                <i class="fa-solid fa-film"></i> Biblioteka Filmów VOD • Wybierz i Oglądaj
+                <i class="fa-solid fa-film"></i> Biblioteka Filmów VOD
             </h2>
 
             <div class="search-and-filters">
@@ -1751,7 +1757,7 @@
     <!-- Toast Notification -->
     <div class="toast-box" id="toastBox" aria-live="polite"></div>
     <!-- ══════════ SCRIPTS ══════════ -->
-    <script src="vod-db.js"></script>
+    <script src="vod-db.js?v=20260831_2135"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
