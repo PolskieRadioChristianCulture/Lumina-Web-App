@@ -813,7 +813,7 @@
   <script>
     // PROFILE CATALOG
     const PROFILE_OPTIONS = [
-      { id: "browser", label: "🌐 Przeglądarka Google (Domyślna)", path: "", isBrowser: true },
+      { id: "browser", label: "🌐 Wyszukiwarka MATRIX CC (Domyślna)", path: "", isBrowser: true },
       { id: "cezary", label: "👑 Cezary Rogowski (Dowódca)", path: "/lumina.cezaryrgowski", avatar: "avatar_cezary_official.jpg" },
       { id: "wioletta", label: "🌸 Wioletta Rogowska (Liderka CC)", path: "/lumina.wiolettarogowska", avatar: "avatar_wioletta_official.jpg" },
       { id: "jola", label: "🕊️ Jola Wójcik (Warszawa)", path: "/lumina.jolawojcik", avatar: "avatar_jola_official.jpg" },
@@ -1063,7 +1063,7 @@
               <input type="text" 
                      id="url-input-${phone.id}" 
                      class="url-input-field" 
-                     placeholder="Szukaj lub wpisz adres (np. google, youtube)..." 
+                     placeholder="Szukaj w MATRIX CC lub wpisz adres..." 
                      value="${phone.customUrl || targetUrl}"
                      onkeydown="if(event.key==='Enter') loadCustomUrl(${phone.id})">
               <button class="btn-url-action go" title="Załaduj stronę (Enter)" onclick="loadCustomUrl(${phone.id})">
