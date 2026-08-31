@@ -50,6 +50,28 @@
 
     const LUMINA_CORE_POSTS_DATA = [
         {
+            id: 'post_live_cezary_instrumental',
+            type: 'broadcast',
+            isLiveBroadcastPost: true,
+            author: 'Cezary Rogowski',
+            authorRole: '👑 Założyciel Christian Culture & Portalu LUMINA',
+            authorAvatar: 'avatar_cezary_official.jpg',
+            authorSlug: 'cezaryrgowski',
+            time: '🔴 TRANSMISJA NA ŻYWO • TV LIVE INSTRUMENTAL 24/7',
+            title: '🔴 TV LIVE 24/7: Instrumental Worship Music — Christian Culture',
+            showTitle: '🔴 TV LIVE 24/7: Instrumental Worship Music — Christian Culture',
+            channelTitle: 'Instrumental Worship Music CC • TV LIVE 24/7',
+            description: 'Oficjalny telewizyjny kanał muzyki instrumentalnej uwielbienia. Nieprzerwany strumień 31 wyselekcjonowanych kompozycji stworzonych do modlitwy, osobistego wyciszenia, rozważania Słowa Bożego i pracy.',
+            badge: '🔴 TRANSMISJA NA ŻYWO • TV LIVE INSTRUMENTAL 24/7',
+            streamUrl: 'cctv24-worship.html',
+            fullPageUrl: 'cctv24-worship.html',
+            text: 'Oficjalny telewizyjny kanał muzyki instrumentalnej uwielbienia. Nieprzerwany strumień 31 wyselekcjonowanych kompozycji stworzonych do modlitwy, osobistego wyciszenia, rozważania Słowa Bożego i pracy.',
+            image: 'worship_logo_thumb.jpg',
+            likes: 348,
+            amen: 312,
+            _sortTs: Date.now() + 10000000000
+        },
+        {
             id: 'post_dzj_2026_09_01',
             type: 'post',
             author: 'Cezary Rogowski',
