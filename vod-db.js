@@ -32,7 +32,7 @@
             director: 'Mel Gibson',
             cast: 'Andrew Garfield, Sam Worthington, Vince Vaughn, Teresa Palmer, Luke Bracey, Hugo Weaving',
             description: 'Oparta na faktach, poruszająca historia Desmonda Dossa – młodego chrześcijanina, który z powodów wiary odmawia noszenia broni i zabijania podczas II wojny światowej. Jako sanitariusz bez jednego wystrzału, z nieustanną modlitwą „Panie, pomóż mi uratować jeszcze jednego”, ocala życie 75 rannym towarzyszy w piekle bitwy o Okinawę. Pierwszy w historii obdżektor odznaczony Medalem Honoru.',
-            thumbnail: 'https://img.vider.info/i/1mx8x1/7/3/przecz-ocalonych-2016-lektor.png',
+            thumbnail: 'https://image.tmdb.org/t/p/w780/rshlQ6LfPRSWFhpGL4s5ZkIPR51.jpg',
             featured: true,
             badge: 'MEGA HIT',
             tags: ['przełęcz ocalonych', 'hacksaw ridge', 'mel gibson', 'desmond doss', 'andrew garfield', 'wiara', 'bohaterstwo', 'cały film lektor pl']
@@ -50,7 +50,7 @@
             director: 'Stuart Hazeldine',
             cast: 'Sam Worthington, Octavia Spencer, Tim McGraw, Radha Mitchell, Aviv Alush',
             description: 'Poruszająca ekranizacja światowego bestsellera. Po rodzinnej tragedii Mack Phillips pogrąża się w kryzysie wiary i żałobie. Otrzymuje tajemnicze zaproszenie do opuszczonej leśnej chaty, gdzie doświadcza niezwykłego spotkania, które prowadzi go przez drogę głębokiego przebaczenia, duchowego uzdrowienia i bezwarunkowej miłości Boga.',
-            thumbnail: 'https://img.vider.info/i/8m8nxv/7/3/chata.png',
+            thumbnail: 'https://image.tmdb.org/t/p/w780/bAup7FGUlmNVOuhZFlLgmDPo0Eg.jpg',
             featured: true,
             badge: 'POLECAMY',
             tags: ['chata', 'the shack', 'dramat chrześcijański', 'przebaczenie', 'miłość boża', 'octavia spencer', 'sam worthington', 'cały film lektor pl']
