@@ -3235,6 +3235,62 @@
     }
 }
 </style>
+
+    /* ── DYNAMIC CHAT STATUS PILLS WITH AUTO-FADE ── */
+    @keyframes luminaStatusPillFadeOut {
+        0% { opacity: 1; max-width: 180px; transform: scale(1); margin-left: 6px; }
+        70% { opacity: 1; max-width: 180px; transform: scale(1); margin-left: 6px; }
+        100% { opacity: 0; max-width: 0; transform: scale(0.9); margin-left: 0; padding-left: 0; padding-right: 0; border: none; pointer-events: none; }
+    }
+
+    .lumina-msg-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.70rem;
+        font-weight: 800;
+        padding: 2.5px 8px;
+        border-radius: 8px;
+        overflow: hidden;
+        white-space: nowrap;
+        animation: luminaStatusPillFadeOut 4.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        transition: opacity 0.3s ease, max-width 0.3s ease, padding 0.3s ease;
+        vertical-align: middle;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+        cursor: pointer;
+    }
+
+    .lumina-msg-bubble:hover .lumina-msg-status-pill,
+    .lumina-msg-bubble:active .lumina-msg-status-pill,
+    .lumina-msg-bubble.show-status .lumina-msg-status-pill {
+        opacity: 1 !important;
+        max-width: 180px !important;
+        animation: none !important;
+        padding: 2.5px 8px !important;
+        margin-left: 6px !important;
+    }
+
+    .lumina-msg-status-pill.status-read {
+        color: #86efac !important;
+        background: rgba(34, 197, 94, 0.28) !important;
+        border: 1px solid rgba(34, 197, 94, 0.6) !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+    }
+
+    .lumina-msg-status-pill.status-unread {
+        color: #fed7aa !important;
+        background: rgba(249, 115, 22, 0.28) !important;
+        border: 1px solid rgba(249, 115, 22, 0.6) !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+    }
+
+    .lumina-msg-status-pill.status-delivered {
+        color: #bae6fd !important;
+        background: rgba(56, 189, 248, 0.28) !important;
+        border: 1px solid rgba(56, 189, 248, 0.6) !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+    }
+
 </head>
 <body class="owner-mode-active">
 
