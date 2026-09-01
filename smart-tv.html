@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Christian Culture Smart TV • Telewizja, Radio & Kino VOD 24/7</title>
+  
+  <!-- Smart TV Metatags -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#05070c">
+  <link rel="manifest" href="manifest-tv.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon.png">
+
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --gold-primary: #d4af37;
+      --gold-glow: rgba(212, 175, 55, 0.6);
+      --purple-accent: #7c3aed;
+      --purple-glow: rgba(124, 58, 237, 0.5);
+      --bg-dark: #05070c;
+      --bg-surface: #0a0e1a;
+      --bg-card: rgba(18, 26, 46, 0.85);
+      --text-main: #ffffff;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      outline: none;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 10%, #151c36 0%, #060913 60%, #020307 100%);
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2.5vh 3.5vw;
+      cursor: default;
+    }
+
+    /* Auto-hide cursor when TV is idle */
+    body.tv-idle {
+      cursor: none !important;
+    }
+
+    body.tv-idle .tv-osd-fade {
+      opacity: 0.15;
+      transition: opacity 1s ease;
+    }
+
+    /* ── HEADER ── */
+    .tv-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 8vh;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 1.5vh;
+    }
+
+    .tv-brand {
+      display: flex;
+      align-items: center;
+      gap: 1.5vw;
+    }
+
+    .tv-logo-box {
+      width: 5.5vh;
+      height: 5.5vh;
+      background: linear-gradient(135deg, #d4af37, #996515);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8vh;
+      color: #000;
+      box-shadow: 0 0 20px var(--gold-glow);
+    }
+
+    .tv-title {
+      font-family: 'Cinzel', serif;
+      font-size: 3vh;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      background: linear-gradient(135deg, #ffffff 40%, #d4af37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tv-live-rds {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 1vh 2vw;
+      border-radius: 50px;
+    }
+
+    .live-dot {
+      width: 1.4vh;
+      height: 1.4vh;
+      background: #ef4444;
+      border-radius: 50%;
+      box-shadow: 0 0 12px #ef4444;
+      animation: pulseLive 1.5s infinite;
+    }
+
+    @keyframes pulseLive {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .rds-text {
+      font-size: 2.2vh;
+      font-weight: 600;
+      color: #f1f5f9;
+      max-width: 35vw;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tv-clock {
+      font-size: 3.2vh;
+      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+      color: var(--gold-primary);
+      text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    }
+
+    /* ── MAIN STAGE (HERO PLAYER + INFO) ── */
+    .tv-main-stage {
+      display: flex;
+      gap: 2.5vw;
+      height: 52vh;
+      margin: 1.5vh 0;
+    }
+
+    .tv-player-container {
+      flex: 1.7;
+      background: #000;
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .tv-player-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .tv-audio-visualizer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, #1e1b4b 0%, #030712 90%);
+      padding: 3vh;
+      text-align: center;
+      gap: 2vh;
+    }
+
+    .vis-album-art {
+      width: 18vh;
+      height: 18vh;
+      border-radius: 20px;
+      border: 2px solid var(--gold-primary);
+      box-shadow: 0 0 30px var(--gold-glow);
+      object-fit: cover;
+    }
+
+    .vis-station-title {
+      font-family: 'Cinzel', serif;
+      font-size: 3.2vh;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .vis-track-title {
+      font-size: 2.2vh;
+      color: var(--gold-primary);
+      max-width: 80%;
+    }
+
+    .tv-sidebar-info {
+      flex: 1;
+      background: var(--bg-card);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 2.5vh 2vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(20px);
+    }
+
+    .sidebar-header {
+      font-size: 2.6vh;
+      font-weight: 700;
+      color: var(--gold-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 1vh;
+    }
+
+    .sidebar-desc {
+      font-size: 2vh;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    .sidebar-actions {
+      display: flex;
+      gap: 1vw;
+    }
+
+    /* ── CHANNELS CAROUSEL (D-PAD FOCUSABLE) ── */
+    .tv-channels-carousel {
+      height: 20vh;
+      display: flex;
+      gap: 1.5vw;
+      overflow-x: hidden;
+      padding: 1vh 0;
+    }
+
+    .tv-channel-card {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.85);
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 1.5vh 1.2vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .channel-badge-num {
+      position: absolute;
+      top: 1vh;
+      right: 1vh;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--gold-primary);
+      font-weight: 800;
+      font-size: 1.8vh;
+      padding: 0.2vh 0.8vw;
+      border-radius: 8px;
+    }
+
+    .channel-icon {
+      font-size: 3.5vh;
+      color: var(--gold-primary);
+      margin-bottom: 0.5vh;
+    }
+
+    .channel-name {
+      font-size: 2.1vh;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .channel-tag {
+      font-size: 1.6vh;
+      color: var(--text-muted);
+    }
+
+    /* ── FOCUS STATE DLA PILOTA (SPATIAL NAVIGATION) ── */
+    .focusable:focus,
+    .tv-channel-card:focus,
+    .tv-btn:focus {
+      border-color: var(--gold-primary) !important;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(124, 58, 237, 0.3)) !important;
+      transform: scale(1.06) !important;
+      box-shadow: 0 0 35px var(--gold-glow), 0 10px 25px rgba(0, 0, 0, 0.8) !important;
+      z-index: 100;
+    }
+
+    .tv-channel-card.active {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.15);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+    }
+
+    /* ── BUTTONS ── */
+    .tv-btn {
+      flex: 1;
+      padding: 1.5vh;
+      background: #1e293b;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 1.9vh;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .tv-btn.gold {
+      background: linear-gradient(135deg, #d4af37, #996515);
+      color: #000;
+      border: none;
+    }
+
+    /* ── FOOTER GUIDE ── */
+    .tv-footer-guide {
+      height: 4vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1.8vh;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 1vh;
+    }
+
+    .key-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #f1f5f9;
+      font-weight: 700;
+      padding: 0.2vh 0.6vw;
+      border-radius: 6px;
+      margin: 0 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TV TOP BAR -->
+  <header class="tv-header tv-osd-fade">
+    <div class="tv-brand">
+      <div class="tv-logo-box">
+        <i class="fa-solid fa-cross"></i>
+      </div>
+      <div>
+        <div class="tv-title">POLSKIERADIO.CC • SMART TV</div>
+      </div>
+    </div>
+
+    <div class="tv-live-rds">
+      <div class="live-dot"></div>
+      <span class="rds-text" id="tvRdsTitle">CCTV24 Live • Transmisja Telewizyjna 24/7</span>
+    </div>
+
+    <div class="tv-clock" id="tvClock">12:00</div>
+  </header>
+
+  <!-- MAIN STAGE (VIDEO / VISUALIZER & SIDEBAR) -->
+  <main class="tv-main-stage">
+    <div class="tv-player-container focusable" tabindex="0" id="mainPlayerFrame">
+      <iframe id="tvIframe" src="cctv24-worship.html" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <div id="tvAudioVisualizer" class="tv-audio-visualizer" style="display:none;">
+        <img id="visArt" src="icon.png" class="vis-album-art" alt="Okładka">
+        <div class="vis-station-title" id="visStationName">Polskie Radio Christian Culture</div>
+        <div class="vis-track-title" id="visTrackName">Nadawanie na żywo 24/7</div>
+      </div>
+    </div>
+
+    <aside class="tv-sidebar-info tv-osd-fade">
+      <div>
+        <div class="sidebar-header">
+          <i class="fa-solid fa-tower-broadcast"></i> <span id="infoTitle">Telewizja CCTV24</span>
+        </div>
+        <p class="sidebar-desc" id="infoDesc" style="margin-top: 1.5vh;">
+          Całodobowy kanał telewizyjny Christian Culture: uwielbienie, transmisje na żywo, modlitwa Zjednoczeni za Polskę oraz autorskie pasma formacyjne.
+        </p>
+      </div>
+
+      <div class="sidebar-actions">
+        <button class="tv-btn gold focusable" tabindex="0" onclick="toggleFullscreen()">
+          <i class="fa-solid fa-expand"></i> Pełny Ekran (OK)
+        </button>
+        <button class="tv-btn focusable" tabindex="0" onclick="openVODCinema()">
+          <i class="fa-solid fa-film"></i> Repertuar VOD
+        </button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- TV CHANNELS CAROUSEL (CHANNELS 1-6) -->
+  <section class="tv-channels-carousel tv-osd-fade" id="channelsCarousel">
+    <div class="tv-channel-card focusable active" tabindex="0" onclick="switchChannel(1)">
+      <span class="channel-badge-num">1</span>
+      <i class="fa-solid fa-radio channel-icon"></i>
+      <div class="channel-name">Radio CC</div>
+      <div class="channel-tag">Główna Ramówka</div>
+    </div>
+
+    <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(2)">
+      <span class="channel-badge-num">2</span>
+      <i class="fa-solid fa-dove channel-icon"></i>
+      <div class="channel-name">Worship Music</div>
+      <div class="channel-tag">Muzyka Modlitewna</div>
+    </div>
+
+    <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(3)">
+      <span class="channel-badge-num">3</span>
+      <i class="fa-solid fa-book-bible channel-icon"></i>
+      <div class="channel-name">Biblia Audio</div>
+      <div class="channel-tag">Słowo Boże 24/7</div>
+    </div>
+
+    <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(4)">
+      <span class="channel-badge-num">4</span>
+      <i class="fa-solid fa-tv channel-icon"></i>
+      <div class="channel-name">CCTV24 TV</div>
+      <div class="channel-tag">Studio na Żywo</div>
+    </div>
+
+    <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(5)">
+      <span class="channel-badge-num">5</span>
+      <i class="fa-solid fa-clapperboard channel-icon"></i>
+      <div class="channel-name">Dobre Kino VOD</div>
+      <div class="channel-tag">Filmy Chrześcijańskie</div>
+    </div>
+
+    <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(6)">
+      <span class="channel-badge-num">6</span>
+      <i class="fa-solid fa-hands-praying channel-icon"></i>
+      <div class="channel-name">Ściana Modlitwy</div>
+      <div class="channel-tag">Zjednoczeni za Polskę</div>
+    </div>
+  </section>
+
+  <!-- FOOTER REMOTE CONTROL GUIDE -->
+  <footer class="tv-footer-guide tv-osd-fade">
+    <div>
+      Sterowanie Pilotem: 
+      <span class="key-badge">1 - 6</span> Szybka Stacja
+      <span class="key-badge">▲ ▼ ◀ ▶</span> Nawigacja
+      <span class="key-badge">OK</span> Wybierz / Pełny Ekran
+    </div>
+    <div>
+      <i class="fa-solid fa-shield-halved" style="color:var(--gold-primary);"></i> Ekosystem Christian Culture • Tryb Smart TV
+    </div>
+  </footer>
+
+  <!-- Audio Element for Radio Streams -->
+  <audio id="tvAudioPlayer" preload="none"></audio>
+
+  <!-- Smart TV Engine -->
+  <script src="smart-tv-engine.js"></script>
+
+  <script>
+    // CHANNEL CATALOG
+    const CHANNELS = {
+      1: {
+        type: 'audio',
+        name: 'Polskie Radio Christian Culture',
+        stream: 'https://stream.open.fm/106',
+        desc: 'Główna ramówka Polskiego Radia Christian Culture: rozważania, audycje, muzyka chrześcijańska i formacja wiary.',
+        art: 'icon.png'
+      },
+      2: {
+        type: 'audio',
+        name: 'Instrumental Worship Music',
+        stream: 'https://stream.open.fm/328',
+        desc: 'Najpiękniejsza muzyka instrumentalna do modlitwy, osobistego wyciszenia i odpoczynku w Bożej obecności.',
+        art: 'app-ambient-sleep.webp'
+      },
+      3: {
+        type: 'audio',
+        name: 'Biblia Audio & Słowo Boże 24/7',
+        stream: 'https://stream.open.fm/106',
+        desc: 'Nieprzerwane czytanie Pisma Świętego i rozważania biblijne przez całą dobę.',
+        art: 'tlo_tv_biblia.jpg'
+      },
+      4: {
+        type: 'video',
+        name: 'Telewizja CCTV24 Live',
+        url: 'cctv24-worship.html',
+        desc: 'Całodobowy kanał telewizyjny Christian Culture: uwielbienie, transmisje na żywo, modlitwa i autorskie pasma formacyjne.'
+      },
+      5: {
+        type: 'video',
+        name: 'VOD Dobre Kino 24/7',
+        url: 'vod.html',
+        desc: 'Pełnometrażowe filmy fabularne i dokumentalne kina chrześcijańskiego z lektorem PL: Przełęcz ocalonych, Chata, JEZUS, Bóg nie umarł, Luter.'
+      },
+      6: {
+        type: 'video',
+        name: 'Ściana Modlitwy Zjednoczeni za Polskę',
+        url: 'modlitwa.html',
+        desc: 'Ogólnopolski szturm modlitewny o Ojczyznę, rodziny i przebudzenie duchowe narodu.'
+      }
+    };
+
+    let activeChannelId = 4;
+    const audio = document.getElementById('tvAudioPlayer');
+    const iframe = document.getElementById('tvIframe');
+    const visualizer = document.getElementById('tvAudioVisualizer');
+
+    // Switch Channel
+    function switchChannel(id) {
+      activeChannelId = id;
+      const ch = CHANNELS[id];
+      if (!ch) return;
+
+      // Update Active Card in UI
+      const cards = document.querySelectorAll('.tv-channel-card');
+      cards.forEach((c, idx) => {
+        if (idx + 1 === id) c.classList.add('active');
+        else c.classList.remove('active');
+      });
+
+      // Update Sidebar Info & Top RDS
+      document.getElementById('infoTitle').innerText = ch.name;
+      document.getElementById('infoDesc').innerText = ch.desc;
+      document.getElementById('tvRdsTitle').innerText = ch.name;
+
+      if (ch.type === 'video') {
+        audio.pause();
+        visualizer.style.display = 'none';
+        iframe.style.display = 'block';
+        iframe.src = ch.url;
+      } else {
+        iframe.style.display = 'none';
+        visualizer.style.display = 'flex';
+        document.getElementById('visArt').src = ch.art || 'icon.png';
+        document.getElementById('visStationName').innerText = ch.name;
+        document.getElementById('visTrackName').innerText = 'Odtwarzanie strumienia 24/7...';
+        audio.src = ch.stream;
+        audio.play().catch(e => console.warn('Wymagany gest użytkownika do audio:', e));
+      }
+    }
+
+    // Remote Hook: Quick Numeric Key 1-6
+    window.onTVQuickChannel = function(num) {
+      if (num >= 1 && num <= 6) {
+        switchChannel(num);
+      }
+    };
+
+    // Remote Hook: Play/Pause Toggle
+    window.onTVTogglePlay = function() {
+      if (CHANNELS[activeChannelId].type === 'audio') {
+        if (audio.paused) audio.play();
+        else audio.pause();
+      }
+    };
+
+    // Fullscreen Toggle
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.log(err));
+      } else {
+        document.exitFullscreen().catch(err => console.log(err));
+      }
+    }
+
+    function openVODCinema() {
+      switchChannel(5);
+    }
+
+    // Clock Updater
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('tvClock').innerText = `${h}:${m}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Default start
+    switchChannel(4);
+  </script>
+</body>
+</html>
