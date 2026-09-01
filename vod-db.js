@@ -20,6 +20,22 @@
     // Katalog filmów fabularnych VOD (@vod)
     const VOD_MOVIES_CATALOG = [
         {
+            id: 'sprawa-chrystusa',
+            youtubeId: 'LnnlqaQ19_0',
+            title: 'Sprawa Chrystusa (The Case for Christ)',
+            origTitle: 'The Case for Christ',
+            year: 2017,
+            duration: '112 min',
+            category: 'Dramat / Oparty na faktach',
+            director: 'Jon Gunn',
+            cast: 'Mike Vogel, Erika Christensen, Faye Dunaway, Tom Nowicki',
+            description: 'Oparta na autentycznej historii. Lee Strobel – nagradzany dziennikarz śledczy Chicago Tribune i zagorzały ateista – postanawia obalić wiarę swojej żony, która właśnie nawróciła się na chrześcijaństwo. Używając całego warsztatu dziennikarskiego i naukowego, przez dwa lata prowadzi dochodzenie w sprawie zmartwychwstania Chrystusa. Wyniki badań zmieniają wszystko. Jeden z najważniejszych filmów ewangelizacyjnych XXI wieku.',
+            thumbnail: 'https://i.ytimg.com/vi/LnnlqaQ19_0/maxresdefault.jpg',
+            featured: true,
+            badge: 'NOWOŚĆ',
+            tags: ['sprawa chrystusa', 'the case for christ', 'lee strobel', 'zmartwychwstanie', 'dowody na wiarę', 'dziennikarz ateista', 'nawrócenie', 'oparty na faktach', 'film chrześcijański', 'lektor pl', 'cały film']
+        },
+        {
             id: 'przelecz-ocalonych-hacksaw-ridge',
             embedType: 'iframe',
             embedUrl: 'https://vider.info/embed/video/1mx8x1',
