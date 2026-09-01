@@ -3334,3 +3334,193 @@ html {
     }
 }
 
+/* ════════════════════════════════════════════════════════════════════════
+   Q&A / FAQ ACCORDION COMPONENT (GEO / AIO & USER EXPERIENCE)
+   ════════════════════════════════════════════════════════════════════════ */
+.qna-section {
+    position: relative;
+    padding: 70px 20px 80px 20px;
+    background: radial-gradient(circle at 50% 10%, rgba(212, 175, 55, 0.07) 0%, rgba(8, 10, 18, 0.98) 70%);
+    border-top: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.qna-container {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.qna-header-box {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.qna-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    color: var(--gold-primary);
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+}
+
+.qna-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+    color: #ffffff;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+}
+
+.qna-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    max-width: 680px;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+}
+
+.qna-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.qna-item {
+    background: rgba(16, 20, 34, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+
+.qna-item:hover {
+    border-color: rgba(212, 175, 55, 0.45);
+    box-shadow: 0 6px 24px rgba(212, 175, 55, 0.1);
+}
+
+.qna-item[open] {
+    border-color: var(--gold-primary);
+    background: rgba(20, 25, 42, 0.92);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.15);
+}
+
+.qna-summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    user-select: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+    transition: color 0.2s ease;
+}
+
+.qna-summary::-webkit-details-marker {
+    display: none;
+}
+
+.qna-summary:hover {
+    color: var(--gold-light);
+}
+
+.qna-q-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    line-height: 1.35;
+}
+
+.qna-badge-q {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    color: var(--gold-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 900;
+    flex-shrink: 0;
+}
+
+.qna-chevron {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--gold-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s;
+}
+
+.qna-item[open] .qna-chevron {
+    transform: rotate(180deg);
+    background: var(--gold-primary);
+    color: #000;
+}
+
+.qna-answer {
+    padding: 0 22px 20px 22px;
+    color: #d4d4d8;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+    padding-top: 14px;
+}
+
+.qna-answer p {
+    margin-bottom: 12px;
+}
+
+.qna-answer p:last-child {
+    margin-bottom: 0;
+}
+
+.qna-answer a {
+    color: var(--gold-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 600;
+}
+
+.qna-answer a:hover {
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .qna-section {
+        padding: 50px 14px 60px 14px;
+    }
+    .qna-summary {
+        padding: 14px 16px;
+        font-size: 0.95rem;
+    }
+    .qna-answer {
+        padding: 0 16px 16px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+
