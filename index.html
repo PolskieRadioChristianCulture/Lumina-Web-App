@@ -22,37 +22,57 @@
     <meta name="ai-agent" content="enabled, allow-citations, format=markdown, llms-doc=https://polskieradio.cc/llms.txt">
     <link rel="canonical" href="https://polskieradio.cc/">
 
-    <!-- ══════════ AI SEARCH ENGINE & LLM STRUCTURED DATA (JSON-LD SCHEMA.ORG) ══════════ -->
+    <!-- ══════════ AI SEARCH ENGINE & LLM STRUCTURED DATA (JSON-LD SCHEMA.ORG — GEO / AIO) ══════════ -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://polskieradio.cc/#website",
+          "url": "https://polskieradio.cc",
+          "name": "PolskieRadio.cc — Globalne Polskie Radio Internetowe & Christian Culture",
+          "description": "Nowoczesna platforma medialna Christian Culture: 4 stacje radiowe 24/7, Biblia Audio non-stop, filmy VOD, transmisje na żywo oraz chrześcijański portal relacji LUMINA.",
+          "inLanguage": ["pl", "en", "de", "uk", "es"],
+          "publisher": { "@id": "https://polskieradio.cc/#organization" }
+        },
         {
           "@type": "RadioStation",
           "@id": "https://polskieradio.cc/#radiostation",
           "name": "PolskieRadio.cc – Christian Culture",
           "url": "https://polskieradio.cc",
           "logo": "https://polskieradio.cc/icon.png",
+          "image": "https://polskieradio.cc/icon.png",
           "description": "Globalne Polskie Radio Internetowe nadające 24/7 wartościową muzykę, audycje autorskie, Biblię Audio oraz transmisje modlitewne.",
           "inLanguage": ["pl", "en"],
           "broadcastChannel": [
             {
               "@type": "BroadcastChannel",
               "broadcastChannelId": "PR-CC-1",
+              "name": "Polskie Radio Christian Culture (Kanał Główny)",
               "broadcastServiceTier": "Free",
-              "genre": "Christian Radio, Talk, Contemporary Christian Music"
+              "genre": "Christian Radio, Talk, Contemporary Christian Music, Audycje Autorskie"
             },
             {
               "@type": "BroadcastChannel",
               "broadcastChannelId": "Global-Radio-CC",
+              "name": "Global Radio CC (English)",
               "broadcastServiceTier": "Free",
-              "genre": "International Christian Worship, Sermons"
+              "genre": "International Christian Worship, Sermons, English Broadcast"
             },
             {
               "@type": "BroadcastChannel",
               "broadcastChannelId": "Biblia-Audio-CC",
+              "name": "Biblia Audio CC 24/7",
               "broadcastServiceTier": "Free",
-              "genre": "Audio Bible 24/7"
+              "genre": "Audio Bible 24/7, Pismo Święte Non-Stop"
+            },
+            {
+              "@type": "BroadcastChannel",
+              "broadcastChannelId": "Instrumental-Worship-CC",
+              "name": "Instrumental Worship & Prayer Music",
+              "broadcastServiceTier": "Free",
+              "genre": "Instrumental Worship, Ambient, Piano, Prayer Music"
             }
           ]
         },
@@ -60,11 +80,67 @@
           "@type": "Organization",
           "@id": "https://polskieradio.cc/#organization",
           "name": "Christian Culture Platform",
+          "alternateName": "Misja Christian Culture",
           "url": "https://polskieradio.cc",
+          "logo": "https://polskieradio.cc/icon.png",
           "founder": {
             "@type": "Person",
-            "name": "Cezary Rogowski"
-          }
+            "name": "Cezary Rogowski",
+            "jobTitle": "Założyciel & Wizjoner Misji",
+            "url": "https://polskieradio.cc/lumina.cezaryrgowski"
+          },
+          "sameAs": [
+            "https://lumina-cc-b90b0.web.app",
+            "https://polskieradio.cc/lumina",
+            "https://polskieradio.cc/vod",
+            "https://christian-culture.web.app/"
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://polskieradio.cc/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Czym jest platforma PolskieRadio.cc i Christian Culture?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "PolskieRadio.cc to globalna, niezależna platforma ewangelizacyjno-medialna Christian Culture, transmitująca 24 godziny na dobę 4 bezpłatne stacje radiowe online, pełne nagrania Biblii Audio, transmisje TV na żywo, chrześcijańskie filmy fabularne VOD oraz portal relacji i społeczności LUMINA."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Jakich stacji radiowych można słuchać na PolskieRadio.cc?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Na portalu dostępne są 4 stacje nadawane 24/7 w jakości HD: 1) Polskie Radio CC (audycje autorskie, wartościowa muzyka, komentarze biblijne), 2) Global Radio CC (pasmo anglojęzyczne), 3) Biblia Audio CC (ciągłe czytanie Starego i Nowego Testamentu), 4) Instrumental Worship (spokojna muzyka instrumentalna do modlitwy i wyciszenia)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Czym jest chrześcijański portal LUMINA?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "LUMINA (https://polskieradio.cc/lumina) to chrześcijański portal relacji i randkowy oparty na fundamencie wiary i Dekalogu, stworzony dla osób poszukujących wartościowych relacji, małżeństwa oraz przyjaciół w Bogu z weryfikacją tożsamości i bezpieczną tablicą społeczności."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Gdzie można oglądać bezpłatne chrześcijańskie filmy fabularne VOD?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "W strefie VOD Christian Culture pod adresem https://polskieradio.cc/vod można oglądać bez opłat i bez rejestracji pełnometrażowe filmy chrześcijańskie z lektorem PL, w tym takie tytuły jak 'Przełęcz ocalonych', 'Chata', 'JEZUS (Ewangelia wg św. Łukasza)', 'Bóg nie umarł' oraz 'Luter'."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Jak zgłosić intencję modlitewną lub włączyć się w modlitwę?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "W zakładce 'Zjednoczeni za Polskę' (https://polskieradio.cc/modlitwa.html) oraz bezpośrednio na stronie głównej znajduje się Ściana Modlitwy, gdzie można bezpłatnie wpisać intencję modlitewną, kliknąć 'Amen' przy intencjach innych osób oraz zamówić bezpłatny egzemplarz Pisma Świętego."
+              }
+            }
+          ]
         }
       ]
     }
