@@ -432,6 +432,12 @@
             color: #f87171 !important;
         }
 
+        .vod-icon-bg {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.28), rgba(217, 119, 6, 0.28)) !important;
+            border: 1px solid rgba(245, 158, 11, 0.55) !important;
+            color: #facc15 !important;
+        }
+
         .profile-icon-bg {
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(56, 189, 248, 0.25)) !important;
             border: 1px solid rgba(168, 85, 247, 0.5) !important;
@@ -641,7 +647,18 @@
                         </div>
                     </button>
 
-                    <!-- 3. Mój Profil / Ustawienia -->
+                    <!-- 3. VOD Christian Culture -->
+                    <a href="https://polskieradio.cc/vod" target="_blank" rel="noopener noreferrer" class="lumina-menu-btn" onclick="if(window.toggleCcBottomNavMenu) window.toggleCcBottomNavMenu(event);" title="VOD Christian Culture – Mega Hity Kina 24/7">
+                        <div class="lumina-menu-btn-icon vod-icon-bg">
+                            <i class="fa-solid fa-film"></i>
+                        </div>
+                        <div class="lumina-menu-btn-content">
+                            <div class="lumina-menu-btn-title">VOD Christian Culture 🍿</div>
+                            <div class="lumina-menu-btn-sub">Filmy Chrześcijańskie & Kino 24/7</div>
+                        </div>
+                    </a>
+
+                    <!-- 4. Mój Profil / Ustawienia -->
                     <button type="button" class="lumina-menu-btn" onclick="window.handleBottomNavProfileClick(event); window.toggleCcBottomNavMenu(event);" title="Mój Profil / Panel Właściciela">
                         <div class="lumina-menu-btn-icon profile-icon-bg">
                             <i class="fa-solid fa-user-gear"></i>
@@ -789,6 +806,15 @@
                         <div style="flex:1;">
                             <div style="font-weight:800; font-size:0.92rem;">Christian Culture TV (CCTV24)</div>
                             <div style="font-size:0.75rem; color:#94a3b8;">Telewizja internetowa z pasmami wideo i transmisjami</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right" style="color:#64748b; font-size:0.85rem;"></i>
+                    </a>
+
+                    <a href="https://polskieradio.cc/vod" target="_blank" rel="noopener noreferrer" class="network-item-link" style="display:flex; align-items:center; gap:14px; padding:12px 14px; border-radius:16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); text-decoration:none; color:#fff; transition:background 0.2s;">
+                        <i class="fa-solid fa-film" style="font-size:1.3rem; color:#f59e0b; width:28px; text-align:center;"></i>
+                        <div style="flex:1;">
+                            <div style="font-weight:800; font-size:0.92rem;">VOD Christian Culture • Kino 24/7</div>
+                            <div style="font-size:0.75rem; color:#94a3b8;">Filmy chrześcijańskie, Mega Hity Kina z polskim lektorem</div>
                         </div>
                         <i class="fa-solid fa-chevron-right" style="color:#64748b; font-size:0.85rem;"></i>
                     </a>
