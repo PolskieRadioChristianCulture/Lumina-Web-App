@@ -1,0 +1,32 @@
+2026/08/31-10:59:23.965 4e94 Creating DB C:\Users\czark\Christian_Culture_Projekty\polskieradio.cc\scripts\agent-matrix\.matrix_sessions\agent-01-cezary\Default\IndexedDB\https_polskieradio.cc_0.indexeddb.leveldb since it was missing.
+2026/08/31-10:59:23.979 4e94 Reusing MANIFEST C:\Users\czark\Christian_Culture_Projekty\polskieradio.cc\scripts\agent-matrix\.matrix_sessions\agent-01-cezary\Default\IndexedDB\https_polskieradio.cc_0.indexeddb.leveldb/MANIFEST-000001
+2026/08/31-10:59:25.055 2278 Level-0 table #5: started
+2026/08/31-10:59:25.072 2278 Level-0 table #5: 1351 bytes OK
+2026/08/31-10:59:25.074 2278 Delete type=0 #3
+2026/08/31-10:59:25.075 4e94 Manual compaction at level-0 from '\x00\x01\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x02\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/08/31-10:59:25.310 4e94 Level-0 table #7: started
+2026/08/31-10:59:25.323 4e94 Level-0 table #7: 1441 bytes OK
+2026/08/31-10:59:25.324 4e94 Delete type=0 #4
+2026/08/31-10:59:25.325 67b8 Manual compaction at level-0 from '\x00\x04\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x05\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/08/31-10:59:25.325 67b8 Manual compaction at level-1 from '\x00\x04\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x05\x00\x00\x00' @ 0 : 0; will stop at '\x00\x05\x00\x00\x05' @ 123 : 1
+2026/08/31-10:59:25.325 67b8 Compacting 1@1 + 1@2 files
+2026/08/31-10:59:25.340 67b8 Generated table #8@1: 37 keys, 874 bytes
+2026/08/31-10:59:25.340 67b8 Compacted 1@1 + 1@2 files => 874 bytes
+2026/08/31-10:59:25.341 67b8 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/08/31-10:59:25.343 67b8 Delete type=2 #7
+2026/08/31-10:59:25.344 67b8 Manual compaction at level-1 from '\x00\x05\x00\x00\x05' @ 123 : 1 .. '\x00\x05\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/08/31-10:59:25.374 67b8 Level-0 table #10: started
+2026/08/31-10:59:25.388 67b8 Level-0 table #10: 1203 bytes OK
+2026/08/31-10:59:25.390 67b8 Delete type=2 #5
+2026/08/31-10:59:25.390 67b8 Delete type=0 #6
+2026/08/31-10:59:25.391 67b8 Manual compaction at level-0 from '\x00\x06\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x07\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/08/31-10:59:27.460 4724 Level-0 table #12: started
+2026/08/31-10:59:27.483 4724 Level-0 table #12: 2773 bytes OK
+2026/08/31-10:59:27.487 4724 Delete type=0 #9
+2026/08/31-10:59:27.488 314c Manual compaction at level-0 from '\x00\x07\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x08\x00\x00\x00' @ 0 : 0; will stop at '\x00\x07\x00\x00\x05' @ 258 : 1
+2026/08/31-10:59:27.488 314c Compacting 1@0 + 1@1 files
+2026/08/31-10:59:27.513 314c Generated table #13@0: 65 keys, 2135 bytes
+2026/08/31-10:59:27.514 314c Compacted 1@0 + 1@1 files => 2135 bytes
+2026/08/31-10:59:27.520 314c compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/08/31-10:59:27.523 314c Delete type=2 #12
+2026/08/31-10:59:27.524 314c Manual compaction at level-0 from '\x00\x07\x00\x00\x05' @ 258 : 1 .. '\x00\x08\x00\x00\x00' @ 0 : 0; will stop at (end)

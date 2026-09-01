@@ -1,0 +1,20 @@
+2026/08/31-10:59:28.884 4508 Creating DB C:\Users\czark\Christian_Culture_Projekty\polskieradio.cc\scripts\agent-matrix\.matrix_sessions\agent-03-jola\Default\IndexedDB\https_polskieradio.cc_0.indexeddb.leveldb since it was missing.
+2026/08/31-10:59:28.902 4508 Reusing MANIFEST C:\Users\czark\Christian_Culture_Projekty\polskieradio.cc\scripts\agent-matrix\.matrix_sessions\agent-03-jola\Default\IndexedDB\https_polskieradio.cc_0.indexeddb.leveldb/MANIFEST-000001
+2026/08/31-10:59:28.918 4508 Level-0 table #5: started
+2026/08/31-10:59:28.931 4508 Level-0 table #5: 1297 bytes OK
+2026/08/31-10:59:28.932 4508 Delete type=0 #3
+2026/08/31-10:59:28.933 6fa8 Manual compaction at level-0 from '\x00\x01\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x02\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/08/31-10:59:28.934 4508 Level-0 table #7: started
+2026/08/31-10:59:28.946 4508 Level-0 table #7: 1871 bytes OK
+2026/08/31-10:59:28.947 4508 Delete type=0 #4
+2026/08/31-10:59:28.948 6fa8 Manual compaction at level-0 from '\x00\x04\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x05\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/08/31-10:59:30.755 4508 Level-0 table #9: started
+2026/08/31-10:59:30.777 4508 Level-0 table #9: 2244 bytes OK
+2026/08/31-10:59:30.778 4508 Delete type=0 #6
+2026/08/31-10:59:30.779 6304 Manual compaction at level-0 from '\x00\x06\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x07\x00\x00\x00' @ 0 : 0; will stop at '\x00\x06\x00\x00\x05' @ 227 : 1
+2026/08/31-10:59:30.779 6304 Compacting 1@0 + 1@1 files
+2026/08/31-10:59:30.794 6304 Generated table #10@0: 88 keys, 2184 bytes
+2026/08/31-10:59:30.794 6304 Compacted 1@0 + 1@1 files => 2184 bytes
+2026/08/31-10:59:30.843 6304 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/08/31-10:59:30.845 6304 Delete type=2 #9
+2026/08/31-10:59:30.845 6fa8 Manual compaction at level-0 from '\x00\x06\x00\x00\x05' @ 227 : 1 .. '\x00\x07\x00\x00\x00' @ 0 : 0; will stop at (end)
