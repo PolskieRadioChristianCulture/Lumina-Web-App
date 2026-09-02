@@ -66,19 +66,83 @@
     }
 
     /* TV Anti-Flicker: GPU layer stability */
-    .tv-header, .tv-channel-card, .tv-sidebar-info, .tv-btn, .tv-header-btn {
+    .tv-channel-card, .tv-sidebar-info, .tv-btn, .tv-header-btn {
+      will-change: border-color, box-shadow;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    /* ── HEADER ── */
+    .tv-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 8vh;
+      min-height: 48px;
+      background: var(--bg-surface-glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--silver-border);
+      border-radius: 20px;
+      padding: 0 1.5vw;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 8px 25px rgba(0,0,0,0.6);
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .tv-brand {
+      display: flex;
+      align-items: center;
+      gap: 1vw;
+      flex-shrink: 0;
+    }
+
+    .tv-logo-box {
+      width: 42px;
+      height: 42px;
+      background: var(--silver-metallic);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: #000;
+      box-shadow: 0 0 15px var(--silver-glow);
+      flex-shrink: 0;
+    }
+
+    .tv-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.7rem, 1.5vw, 1rem);
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #e2e8f0;
+      white-space: nowrap;
+    }
+
+    .tv-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5vw;
+      flex: 1;
+      justify-content: flex-end;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .tv-header-btn {
       background: rgba(30, 41, 59, 0.85);
       border: 1px solid var(--silver-border);
       color: #fff;
-      padding: 0.6vh 0.9vw;
+      padding: 0.5vh 0.9vw;
       border-radius: 10px;
-      font-size: 1.5vh;
+      font-size: clamp(0.65rem, 1.2vw, 0.85rem);
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
       flex-shrink: 0;
+      white-space: nowrap;
       transition: all 0.2s;
     }
 
@@ -116,13 +180,15 @@
     }
 
     .rds-text {
-      font-size: 1.6vh;
+      font-size: clamp(0.65rem, 1.4vh, 0.9rem);
       font-weight: 600;
       color: #f1f5f9;
-      max-width: 18vw;
+      max-width: 14vw;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      flex-shrink: 1;
+      min-width: 0;
     }
 
     .tv-clock {
@@ -605,7 +671,7 @@
       </div>
       <iframe id="tvIframe" src="about:blank" allow="autoplay; fullscreen" allowfullscreen style="display:none;"></iframe>
       <div id="tvAudioVisualizer" class="tv-audio-visualizer">
-        <img id="visArt" src="icon.png" class="vis-album-art" alt="Okładka Stacji">
+        <img id="visArt" src="Aplikacja Christian Culture.png" class="vis-album-art" alt="Okładka Stacji" onerror="this.src='icon.png'">
         <div class="vis-station-title" id="visStationName">Polskie Radio Christian Culture</div>
         <div class="vis-track-title" id="visTrackName">Stacja Główna • Nadawanie 24/7</div>
         <div class="audio-playing-bars" id="audioBars">
@@ -656,7 +722,7 @@
       <!-- 1: RADIO PL -->
       <div class="tv-channel-card focusable active" tabindex="0" onclick="switchChannel(1)">
         <div class="channel-card-top">
-          <img src="logo-radio-cc.png" class="channel-card-logo" alt="Radio CC (PL)" onerror="this.src='icon.png'">
+          <img src="Aplikacja Christian Culture.png" class="channel-card-logo" alt="Radio CC (PL)" onerror="this.src='icon.png'">
           <span class="channel-badge-num">1</span>
         </div>
         <div class="channel-name">Radio CC (PL)</div>
@@ -666,7 +732,7 @@
       <!-- 2: INSTRUMENTAL WORSHIP -->
       <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(2)">
         <div class="channel-card-top">
-          <img src="logo-worship.jpg" class="channel-card-logo" alt="Worship Music" onerror="this.src='app-ambient-sleep.webp'">
+          <img src="worship_logo_bg.jpg" class="channel-card-logo" alt="Worship Music" onerror="this.src='app-ambient-sleep.webp'">
           <span class="channel-badge-num">2</span>
         </div>
         <div class="channel-name">Worship Music</div>
@@ -676,7 +742,7 @@
       <!-- 3: RADIO BIBLIA AUDIO (PL) -->
       <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(3)">
         <div class="channel-card-top">
-          <img src="logo-biblia-audio.jpg" class="channel-card-logo" alt="Radio Biblia Audio" onerror="this.src='tlo_tv_biblia.jpg'">
+          <img src="Logo Biblia Audio CC.jpg" class="channel-card-logo" alt="Radio Biblia Audio" onerror="this.src='tlo_tv_biblia.jpg'">
           <span class="channel-badge-num">3</span>
         </div>
         <div class="channel-name">Radio Biblia</div>
@@ -686,7 +752,7 @@
       <!-- 4: RADIO GLOBAL CC -->
       <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(4)">
         <div class="channel-card-top">
-          <img src="logo-radio-global.webp" class="channel-card-logo" alt="Radio Global" onerror="this.src='icon.png'">
+          <img src="Aplikacja CC Lite.jpg" class="channel-card-logo" alt="Radio Global" onerror="this.src='icon.png'">
           <span class="channel-badge-num">4</span>
         </div>
         <div class="channel-name">Radio Global</div>
@@ -696,7 +762,7 @@
       <!-- 5: GLOBAL BIBLIA AUDIO (EN/WORLD) -->
       <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(5)">
         <div class="channel-card-top">
-          <img src="logo-globalna-biblia.jpg" class="channel-card-logo" alt="Global Audio Bible" onerror="this.src='icon.png'">
+          <img src="Logo Globalna Biblia Audio.jpg" class="channel-card-logo" alt="Global Audio Bible" onerror="this.src='icon.png'">
           <span class="channel-badge-num">5</span>
         </div>
         <div class="channel-name">Global Bible</div>
@@ -706,7 +772,7 @@
       <!-- 6: BIBLIA ŚPIEWANA -->
       <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(6)">
         <div class="channel-card-top">
-          <img src="logo-biblia-spiewana.jpg" class="channel-card-logo" alt="Biblia Śpiewana" onerror="this.src='tlo_tv_biblia.jpg'">
+          <img src="Logo_Biblia_Spiewana.jpg" class="channel-card-logo" alt="Biblia Śpiewana" onerror="this.src='tlo_tv_biblia.jpg'">
           <span class="channel-badge-num">6</span>
         </div>
         <div class="channel-name">Biblia Śpiewana</div>
@@ -789,55 +855,55 @@
         id: 'poland',
         type: 'audio',
         isPlaylist: false,
-        name: 'Polskie Radio Christian Culture (PL)',
+        name: 'RADIO PL — Christian Culture',
         stream: 'https://stream.zeno.fm/vz96pvl3pnktv',
         desc: 'Główna stacja radiowa Christian Culture: rozważania biblijne, muzyka chrześcijańska, autorskie audycje formacyjne i transmisje modlitewne.',
-        art: 'logo-radio-cc.png'
+        art: 'Aplikacja Christian Culture.png'
       },
       2: {
         id: 'instrumental_worship',
         type: 'audio',
         isPlaylist: true,
         playlist: WORSHIP_PLAYLIST,
-        name: 'Instrumental Worship Music',
+        name: 'INSTRUMENTAL WORSHIP',
         desc: 'Ciągła, nieprzerwana muzyka instrumentalna do modlitwy, osobistego wyciszenia i odpoczynku w Bożej obecności.',
-        art: 'logo-worship.jpg'
+        art: 'worship_logo_bg.jpg'
       },
       3: {
         id: 'biblia_audio',
         type: 'audio',
         isPlaylist: true,
         playlist: BIBLIA_SPIEWANA_PLAYLIST,
-        name: 'Radio Biblia Audio (PL)',
+        name: 'RADIO BIBLIA — Pismo Święte',
         desc: 'Nieprzerwane czytanie Pisma Świętego i rozważania biblijne w języku polskim non-stop.',
-        art: 'logo-biblia-audio.jpg'
+        art: 'Logo Biblia Audio CC.jpg'
       },
       4: {
         id: 'global',
         type: 'audio',
         isPlaylist: false,
-        name: 'Radio Global Christian Culture',
+        name: 'RADIO GLOBAL — Christian Culture',
         stream: 'https://stream.zeno.fm/umej2cuqncluv',
         desc: 'Światowy strumień Christian Culture łączący chrześcijan na wszystkich kontynentach.',
-        art: 'logo-radio-global.webp'
+        art: 'Aplikacja CC Lite.jpg'
       },
       5: {
         id: 'global_biblia',
         type: 'audio',
         isPlaylist: false,
-        name: 'Global Audio Bible (EN/World)',
+        name: 'GLOBAL BIBLIA — Audio Bible',
         stream: 'https://stream.zeno.fm/gn3uhltrrytuv',
         desc: 'Global Word of God & Scripture Readings in English and international languages 24/7.',
-        art: 'logo-globalna-biblia.jpg'
+        art: 'Logo Globalna Biblia Audio.jpg'
       },
       6: {
         id: 'biblia_spiewana',
         type: 'audio',
         isPlaylist: true,
         playlist: BIBLIA_SPIEWANA_PLAYLIST,
-        name: 'Biblia Śpiewana & Psalmy',
+        name: 'BIBLIA ŚPIEWANA & PSALMY',
         desc: 'Słowo Boże wyśpiewane w pięknych aranżacjach: Księga Przypowieści Salomona i Psalmy.',
-        art: 'logo-biblia-spiewana.jpg'
+        art: 'Logo_Biblia_Spiewana.jpg'
       },
       7: {
         id: 'cctv24',
