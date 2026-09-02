@@ -578,7 +578,9 @@
       position: fixed;
       top: 3vh;
       right: 3vw;
-      z-index: 100000;
+      z-index: 100002;
+      transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: opacity, transform;
     }
 
     .tv-player-container.maximized .player-corner-controls {
@@ -605,6 +607,65 @@
       color: #000000 !important;
       box-shadow: 0 0 25px rgba(255,255,255,0.8) !important;
       transform: scale(1.05);
+    }
+
+    /* ── SMART TV OSD AUTO-HIDE & FULLSCREEN HUD ── */
+    .tv-osd-fade {
+      transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: opacity, transform;
+    }
+
+    /* In Fullscreen mode, header and carousel float above the video */
+    body.tv-fullscreen-active .tv-header {
+      position: fixed;
+      top: 2vh;
+      left: 3vw;
+      right: 3vw;
+      z-index: 100001;
+    }
+
+    body.tv-fullscreen-active .tv-sidebar-info,
+    body.tv-fullscreen-active .tv-footer-guide {
+      display: none !important;
+    }
+
+    body.tv-fullscreen-active .tv-carousel-container {
+      position: fixed;
+      bottom: 3vh;
+      left: 3vw;
+      right: 3vw;
+      z-index: 100001;
+      background: rgba(8, 12, 22, 0.9);
+      backdrop-filter: blur(20px);
+      padding: 1.2vh 1.5vw;
+      border-radius: 20px;
+      border: 1px solid var(--silver-border);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.85);
+    }
+
+    /* In Idle mode (hide OSD after 3.5s of inactivity) */
+    body.tv-idle .tv-osd-fade {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    body.tv-idle .tv-header {
+      transform: translateY(-25px);
+    }
+
+    body.tv-idle .tv-carousel-container,
+    body.tv-idle .tv-footer-guide {
+      transform: translateY(25px);
+    }
+
+    body.tv-idle .tv-sidebar-info {
+      transform: translateX(25px);
+    }
+
+    body.tv-idle .player-corner-controls {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateY(-15px);
     }
 
   
@@ -934,25 +995,62 @@
     const visualizer = document.getElementById('tvAudioVisualizer');
     const bars = document.getElementById('audioBars');
 
+    // ── OSD AUTO-HIDE & IDLE DETECTION (3.5s) ──
+    let tvIdleTimer = null;
+    function resetTVIdleTimer() {
+      document.body.classList.remove('tv-idle');
+      clearTimeout(tvIdleTimer);
+      tvIdleTimer = setTimeout(() => {
+        document.body.classList.add('tv-idle');
+      }, 3500);
+    }
+
+    ['mousemove', 'mousedown', 'keydown', 'touchstart', 'pointerdown', 'wheel'].forEach(evt => {
+      window.addEventListener(evt, resetTVIdleTimer, { passive: true });
+    });
+    resetTVIdleTimer();
+
     // Toggle Theater / Fullscreen stage mode (Expand / Minimize to initial view)
-    function toggleStageMaximize() {
+    function toggleStageMaximize(forceState) {
       const container = document.getElementById('mainPlayerFrame');
-      isStageMaximized = !isStageMaximized;
+      if (typeof forceState === 'boolean') {
+        isStageMaximized = forceState;
+      } else {
+        isStageMaximized = !isStageMaximized;
+      }
       
       if (isStageMaximized) {
         container.classList.add('maximized');
+        document.body.classList.add('tv-fullscreen-active');
         document.getElementById('cornerMaximizeIcon').className = 'fa-solid fa-compress';
         document.getElementById('cornerMaximizeLabel').innerText = 'Zminimalizuj [Powrót]';
       } else {
         container.classList.remove('maximized');
+        document.body.classList.remove('tv-fullscreen-active');
         document.getElementById('cornerMaximizeIcon').className = 'fa-solid fa-expand';
         document.getElementById('cornerMaximizeLabel').innerText = 'Pełny Ekran';
       }
+      resetTVIdleTimer();
     }
 
     function toggleFullscreen() {
       toggleStageMaximize();
+      if (isStageMaximized) {
+        if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        }
+      } else {
+        if (document.exitFullscreen && document.fullscreenElement) {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
     }
+
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement && isStageMaximized) {
+        toggleStageMaximize(false);
+      }
+    });
 
     // Play next track in playlist (Continuous 24/7 loop)
     function playNextTrack() {
@@ -1176,6 +1274,7 @@
     });
 
     function handleRemoteMessage(data) {
+      resetTVIdleTimer();
       if (!data) return;
       if (data.type === 'CHANNEL' && data.channel) {
         switchChannel(data.channel);
