@@ -541,6 +541,25 @@
       transform: scale(1.05);
     }
 
+  
+    .channel-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 0.6vh;
+    }
+
+    .channel-card-logo {
+      width: 4.5vh;
+      height: 4.5vh;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid var(--silver-border);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      background: #000;
+    }
+
   </style>
 </head>
 <body>
@@ -636,51 +655,64 @@
     <section class="tv-channels-carousel" id="channelsCarousel">
       <!-- 1: RADIO PL -->
       <div class="tv-channel-card focusable active" tabindex="0" onclick="switchChannel(1)">
-        <span class="channel-badge-num">1</span>
-        <i class="fa-solid fa-radio channel-icon"></i>
+        <div class="channel-card-top">
+          <img src="logo-radio-cc.png" class="channel-card-logo" alt="Radio CC (PL)" onerror="this.src='icon.png'">
+          <span class="channel-badge-num">1</span>
+        </div>
         <div class="channel-name">Radio CC (PL)</div>
-        <div class="channel-tag">Główna Stacja 24/7</div>
+        <div class="channel-tag">Główna Ramówka 24/7</div>
       </div>
 
       <!-- 2: INSTRUMENTAL WORSHIP -->
       <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(2)">
-        <span class="channel-badge-num">2</span>
-        <i class="fa-solid fa-dove channel-icon"></i>
+        <div class="channel-card-top">
+          <img src="logo-worship.jpg" class="channel-card-logo" alt="Worship Music" onerror="this.src='app-ambient-sleep.webp'">
+          <span class="channel-badge-num">2</span>
+        </div>
         <div class="channel-name">Worship Music</div>
         <div class="channel-tag">Modlitwa & Wyciszenie</div>
       </div>
 
       <!-- 3: RADIO BIBLIA AUDIO (PL) -->
       <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(3)">
-        <span class="channel-badge-num">3</span>
-        <i class="fa-solid fa-book-bible channel-icon"></i>
+        <div class="channel-card-top">
+          <img src="logo-biblia-audio.jpg" class="channel-card-logo" alt="Radio Biblia Audio" onerror="this.src='tlo_tv_biblia.jpg'">
+          <span class="channel-badge-num">3</span>
+        </div>
         <div class="channel-name">Radio Biblia</div>
-        <div class="channel-tag">Pismo Święte PL</div>
+        <div class="channel-tag">Pismo Święte PL 24/7</div>
       </div>
 
       <!-- 4: RADIO GLOBAL CC -->
       <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(4)">
-        <span class="channel-badge-num">4</span>
-        <i class="fa-solid fa-globe channel-icon"></i>
+        <div class="channel-card-top">
+          <img src="logo-radio-global.webp" class="channel-card-logo" alt="Radio Global" onerror="this.src='icon.png'">
+          <span class="channel-badge-num">4</span>
+        </div>
         <div class="channel-name">Radio Global</div>
         <div class="channel-tag">Światowy Zasięg CC</div>
       </div>
 
       <!-- 5: GLOBAL BIBLIA AUDIO (EN/WORLD) -->
       <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(5)">
-        <span class="channel-badge-num">5</span>
-        <i class="fa-solid fa-earth-americas channel-icon"></i>
+        <div class="channel-card-top">
+          <img src="logo-globalna-biblia.jpg" class="channel-card-logo" alt="Global Audio Bible" onerror="this.src='icon.png'">
+          <span class="channel-badge-num">5</span>
+        </div>
         <div class="channel-name">Global Bible</div>
         <div class="channel-tag">Word of God 24/7</div>
       </div>
 
       <!-- 6: BIBLIA ŚPIEWANA -->
       <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(6)">
-        <span class="channel-badge-num">6</span>
-        <i class="fa-solid fa-music channel-icon"></i>
+        <div class="channel-card-top">
+          <img src="logo-biblia-spiewana.jpg" class="channel-card-logo" alt="Biblia Śpiewana" onerror="this.src='tlo_tv_biblia.jpg'">
+          <span class="channel-badge-num">6</span>
+        </div>
         <div class="channel-name">Biblia Śpiewana</div>
         <div class="channel-tag">Przypowieści & Psalmy</div>
       </div>
+
     </section>
   </div>
 
@@ -747,55 +779,65 @@
   <script src="smart-tv-engine.js"></script>
 
   <script>
+    // PLAYLISTS EMBEDDED FOR CONTINUOUS 24/7 PLAYBACK
+    const WORSHIP_PLAYLIST = [{"id":"worship_1","title":"Przy Jego Tronie","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(1).mp3"},{"id":"worship_2","title":"Duch Świętości","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(2).mp3"},{"id":"worship_3","title":"Cisza Serca","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(3).mp3"},{"id":"worship_4","title":"W Jego Obecności","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(4).mp3"},{"id":"worship_5","title":"Modlitwa Poranna","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(5).mp3"},{"id":"worship_6","title":"Blask Wieczności","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(6).mp3"},{"id":"worship_7","title":"Uwielbienie","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(7).mp3"},{"id":"worship_8","title":"Ku Bożej Chwale","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM.mp3"},{"id":"worship_9","title":"Głęboki Las II","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/DEEP%20FOREST%202.mp3"},{"id":"worship_10","title":"Głęboki Las III","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/DEEP%20FOREST%203.mp3"},{"id":"worship_11","title":"Głęboki Las IV","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/DEEP%20FOREST%204.mp3"},{"id":"worship_12","title":"Głęboki Las","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/DEEP%20FOREST.mp3"},{"id":"worship_13","title":"Deep Forest – Oaza Pokoju","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/deep_forest_1.mp3"},{"id":"worship_14","title":"Deep Forest – Strumienie Wody Żywej","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/deep_forest_2.mp3"},{"id":"worship_15","title":"Deep Forest – Święta Obecność","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/deep_forest_3.mp3"},{"id":"worship_16","title":"Deep Forest – Cisza Przymierza","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/deep_forest_4.mp3"},{"id":"worship_17","title":"Dom z Pasją – Preludium","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(1).mp3"},{"id":"worship_18","title":"Dom z Pasją – Łaska","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(10).mp3"},{"id":"worship_19","title":"Dom z Pasją – Chwała","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(11).mp3"},{"id":"worship_20","title":"Dom z Pasją – Spoczynek","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(12).mp3"},{"id":"worship_21","title":"Dom z Pasją – Modlitwa","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(13).mp3"},{"id":"worship_22","title":"Dom z Pasją – Wieczność","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(14).mp3"},{"id":"worship_23","title":"Dom z Pasją – Finał","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(15).mp3"},{"id":"worship_24","title":"Dom z Pasją – Natchnienie","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(2).mp3"},{"id":"worship_25","title":"Dom z Pasją – Pokój","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(3).mp3"},{"id":"worship_26","title":"Dom z Pasją – Przymierze","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(4).mp3"},{"id":"worship_27","title":"Dom z Pasją – Wyciszenie","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(5).mp3"},{"id":"worship_28","title":"Dom z Pasją – Błogosławieństwo","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(6).mp3"},{"id":"worship_29","title":"Dom z Pasją – Światłość","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(7).mp3"},{"id":"worship_30","title":"Dom z Pasją – Wdzięczność","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad%20(8).mp3"},{"id":"worship_31","title":"Dom z Pasją – Kontemplacja","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20pasj%C4%85%20-%20podk%C5%82ad%20(9).mp3"},{"id":"worship_32","title":"Dom z Pasją – Świątynia","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Dom%20z%20Pasj%C4%85%20-%20podk%C5%82ad.mp3"},{"id":"worship_33","title":"Majowy Świt","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Maj%2017.mp3"},{"id":"worship_34","title":"Sardes – Pieśń Odnowy","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Sardes%20(1).mp3"},{"id":"worship_35","title":"Sardes – Pieśń Zwycięstwa","artist":"Christian Culture Music","album":"Instrumental Worship 24/7","duration":200,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/Sardes.mp3"}];
+    const BIBLIA_SPIEWANA_PLAYLIST = [{"id":"biblia_spiewana_1","title":"Śpiewane Przypowieści Salomona - Rozdział 1","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3"},{"id":"biblia_spiewana_2","title":"Śpiewane Przypowieści Salomona - Rozdział 2","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%202.mp3"},{"id":"biblia_spiewana_3","title":"Śpiewane Przypowieści Salomona - Rozdział 3","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%203.mp3"},{"id":"biblia_spiewana_4","title":"Śpiewane Przypowieści Salomona - Rozdział 4","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%204.mp3"},{"id":"biblia_spiewana_5","title":"Śpiewane Przypowieści Salomona - Rozdział 5","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%205.mp3"},{"id":"biblia_spiewana_6","title":"Śpiewane Przypowieści Salomona - Rozdział 6","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%206.mp3"},{"id":"biblia_spiewana_7","title":"Śpiewane Przypowieści Salomona - Rozdział 7","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%207.mp3"},{"id":"biblia_spiewana_8","title":"Śpiewane Przypowieści Salomona - Rozdział 8","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%208.mp3"},{"id":"biblia_spiewana_9","title":"Śpiewane Przypowieści Salomona - Rozdział 9","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%209.mp3"},{"id":"biblia_spiewana_10","title":"Śpiewane Przypowieści Salomona - Rozdział 10","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2010.mp3"},{"id":"biblia_spiewana_11","title":"Śpiewane Przypowieści Salomona - Rozdział 11","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%2011.mp3"},{"id":"biblia_spiewana_12","title":"Śpiewane Przypowieści Salomona - Rozdział 12","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2012.mp3"},{"id":"biblia_spiewana_13","title":"Śpiewane Przypowieści Salomona - Rozdział 13","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2013.mp3"},{"id":"biblia_spiewana_14","title":"Śpiewane Przypowieści Salomona - Rozdział 14","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2014.mp3"},{"id":"biblia_spiewana_15","title":"Śpiewane Przypowieści Salomona - Rozdział 15","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2015.mp3"},{"id":"biblia_spiewana_16","title":"Śpiewane Przypowieści Salomona - Rozdział 16","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2016.mp3"},{"id":"biblia_spiewana_17","title":"Śpiewane Przypowieści Salomona - Rozdział 17","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2017.mp3"},{"id":"biblia_spiewana_18","title":"Śpiewane Przypowieści Salomona - Rozdział 18","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2018.mp3"},{"id":"biblia_spiewana_19","title":"Śpiewane Przypowieści Salomona - Rozdział 19","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2019.mp3"},{"id":"biblia_spiewana_20","title":"Śpiewane Przypowieści Salomona - Rozdział 20","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2020.mp3"},{"id":"biblia_spiewana_21","title":"Śpiewane Przypowieści Salomona - Rozdział 21","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2021.mp3"},{"id":"biblia_spiewana_22","title":"Śpiewane Przypowieści Salomona - Rozdział 22","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2022.mp3"},{"id":"biblia_spiewana_23","title":"Śpiewane Przypowieści Salomona - Rozdział 23","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2023.mp3"},{"id":"biblia_spiewana_24","title":"Śpiewane Przypowieści Salomona - Rozdział 24","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2024.mp3"},{"id":"biblia_spiewana_25","title":"Śpiewane Przypowieści Salomona - Rozdział 25","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2025.mp3"},{"id":"biblia_spiewana_26","title":"Śpiewane Przypowieści Salomona - Rozdział 26","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2026.mp3"},{"id":"biblia_spiewana_27","title":"Śpiewane Przypowieści Salomona - Rozdział 27","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2027.mp3"},{"id":"biblia_spiewana_28","title":"Śpiewane Przypowieści Salomona - Rozdział 28","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2028.mp3"},{"id":"biblia_spiewana_29","title":"Śpiewane Przypowieści Salomona - Rozdział 29","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2029.mp3"},{"id":"biblia_spiewana_30","title":"Śpiewane Przypowieści Salomona - Rozdział 30","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2030.mp3"},{"id":"biblia_spiewana_31","title":"Śpiewane Przypowieści Salomona - Rozdział 31","artist":"Christian Culture Music","album":"Biblia Śpiewana - Przypowieści Salomona","duration":240,"url":"https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%20%E2%80%93%20Rozdzia%C5%82%2031.mp3"}];
+
     // 6 OFFICIAL RADIO STATIONS + TV/VOD CATALOG
     const STATIONS_DATA = {
       1: {
         id: 'poland',
         type: 'audio',
+        isPlaylist: false,
         name: 'Polskie Radio Christian Culture (PL)',
         stream: 'https://stream.zeno.fm/vz96pvl3pnktv',
         desc: 'Główna stacja radiowa Christian Culture: rozważania biblijne, muzyka chrześcijańska, autorskie audycje formacyjne i transmisje modlitewne.',
-        art: 'icon.png'
+        art: 'logo-radio-cc.png'
       },
       2: {
         id: 'instrumental_worship',
         type: 'audio',
+        isPlaylist: true,
+        playlist: WORSHIP_PLAYLIST,
         name: 'Instrumental Worship Music',
-        stream: 'https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/worship/CCM%20(1).mp3',
-        desc: 'Najpiękniejsza muzyka instrumentalna do modlitwy, osobistego wyciszenia i odpoczynku w Bożej obecności.',
-        art: 'app-ambient-sleep.webp'
+        desc: 'Ciągła, nieprzerwana muzyka instrumentalna do modlitwy, osobistego wyciszenia i odpoczynku w Bożej obecności.',
+        art: 'logo-worship.jpg'
       },
       3: {
         id: 'biblia_audio',
         type: 'audio',
+        isPlaylist: true,
+        playlist: BIBLIA_SPIEWANA_PLAYLIST,
         name: 'Radio Biblia Audio (PL)',
-        stream: 'https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3',
-        desc: 'Nieprzerwane czytanie Pisma Świętego i rozważania biblijne w języku polskim.',
-        art: 'tlo_tv_biblia.jpg'
+        desc: 'Nieprzerwane czytanie Pisma Świętego i rozważania biblijne w języku polskim non-stop.',
+        art: 'logo-biblia-audio.jpg'
       },
       4: {
         id: 'global',
         type: 'audio',
+        isPlaylist: false,
         name: 'Radio Global Christian Culture',
         stream: 'https://stream.zeno.fm/umej2cuqncluv',
         desc: 'Światowy strumień Christian Culture łączący chrześcijan na wszystkich kontynentach.',
-        art: 'app-cc-lite.webp'
+        art: 'logo-radio-global.webp'
       },
       5: {
         id: 'global_biblia',
         type: 'audio',
+        isPlaylist: false,
         name: 'Global Audio Bible (EN/World)',
         stream: 'https://stream.zeno.fm/gn3uhltrrytuv',
         desc: 'Global Word of God & Scripture Readings in English and international languages 24/7.',
-        art: 'icon.png'
+        art: 'logo-globalna-biblia.jpg'
       },
       6: {
         id: 'biblia_spiewana',
         type: 'audio',
+        isPlaylist: true,
+        playlist: BIBLIA_SPIEWANA_PLAYLIST,
         name: 'Biblia Śpiewana & Psalmy',
-        stream: 'https://cdn.jsdelivr.net/gh/PolskieRadioChristianCulture/Strona-www-Christian-Culture@main/audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3',
         desc: 'Słowo Boże wyśpiewane w pięknych aranżacjach: Księga Przypowieści Salomona i Psalmy.',
-        art: 'tlo_tv_biblia.jpg'
+        art: 'logo-biblia-spiewana.jpg'
       },
       7: {
         id: 'cctv24',
@@ -815,13 +857,14 @@
 
     let activeChannelId = 1;
     let isAudioPlaying = false;
+    let isStageMaximized = false;
+    let currentTrackIndex = 0;
+    let currentPlaylist = null;
+
     const audio = document.getElementById('tvAudioPlayer');
     const iframe = document.getElementById('tvIframe');
     const visualizer = document.getElementById('tvAudioVisualizer');
     const bars = document.getElementById('audioBars');
-
-
-    let isStageMaximized = false;
 
     // Toggle Theater / Fullscreen stage mode (Expand / Minimize to initial view)
     function toggleStageMaximize() {
@@ -843,7 +886,54 @@
       toggleStageMaximize();
     }
 
-    // Switch Channel / Station (Guaranteed No Sound Overlap & Clean Audio Isolation)
+    // Play next track in playlist (Continuous 24/7 loop)
+    function playNextTrack() {
+      const ch = STATIONS_DATA[activeChannelId];
+      if (!ch || !ch.isPlaylist || !ch.playlist || ch.playlist.length === 0) return;
+      
+      currentTrackIndex = (currentTrackIndex + 1) % ch.playlist.length;
+      const track = ch.playlist[currentTrackIndex];
+      
+      document.getElementById('visTrackName').innerText = (track.title || 'Utwór ' + (currentTrackIndex + 1)) + (track.artist ? ' • ' + track.artist : '');
+      document.getElementById('tvRdsTitle').innerText = (track.title || 'Audycja') + ' (' + ch.name + ')';
+      
+      audio.src = track.url;
+      audio.play().then(() => {
+        isAudioPlaying = true;
+        bars.style.display = 'flex';
+        updatePlayBtnState(true, 'Zatrzymaj (OK)');
+      }).catch(err => {
+        console.warn('Błąd odtwarzania kolejnego utworu:', err);
+        setTimeout(playNextTrack, 2000);
+      });
+    }
+
+    // Audio Event Handlers for Continuous Playback (Non-Stop Loop & Auto-Reconnect)
+    audio.onended = function() {
+      const ch = STATIONS_DATA[activeChannelId];
+      if (ch && ch.isPlaylist) {
+        playNextTrack();
+      } else if (ch && ch.type === 'audio') {
+        setTimeout(() => {
+          audio.src = ch.stream + '?ts=' + Date.now();
+          audio.play().catch(e => {});
+        }, 2000);
+      }
+    };
+
+    audio.onerror = function() {
+      const ch = STATIONS_DATA[activeChannelId];
+      if (ch && ch.isPlaylist) {
+        setTimeout(playNextTrack, 2000);
+      } else if (ch && ch.type === 'audio') {
+        setTimeout(() => {
+          audio.src = ch.stream + '?ts=' + Date.now();
+          audio.play().catch(e => {});
+        }, 3000);
+      }
+    };
+
+    // Switch Channel / Station (Guaranteed No Sound Overlap & Continuous Audio)
     function switchChannel(id) {
       activeChannelId = id;
       const ch = STATIONS_DATA[id];
@@ -885,9 +975,19 @@
         visualizer.style.display = 'flex';
         document.getElementById('visArt').src = ch.art || 'icon.png';
         document.getElementById('visStationName').innerText = ch.name;
-        document.getElementById('visTrackName').innerText = 'Stacja aktywna • Nadawanie 24/7';
+
+        if (ch.isPlaylist && ch.playlist && ch.playlist.length > 0) {
+          currentPlaylist = ch.playlist;
+          currentTrackIndex = 0;
+          const track = currentPlaylist[0];
+          document.getElementById('visTrackName').innerText = (track.title || 'Utwór 1') + (track.artist ? ' • ' + track.artist : '');
+          audio.src = track.url;
+        } else {
+          currentPlaylist = null;
+          document.getElementById('visTrackName').innerText = 'Stacja aktywna • Nadawanie 24/7';
+          audio.src = ch.stream;
+        }
         
-        audio.src = ch.stream;
         audio.play().then(() => {
           isAudioPlaying = true;
           bars.style.display = 'flex';
@@ -901,7 +1001,7 @@
       }
     }
 
-        function togglePlayPause() {
+    function togglePlayPause() {
       const ch = STATIONS_DATA[activeChannelId];
       if (ch.type === 'video') {
         toggleFullscreen();
@@ -938,7 +1038,7 @@
       togglePlayPause();
     };
 
-    // Remote Hook: Back button closes open modal
+    // Remote Hook: Back button closes open modal or restores maximized theater
     window.onTVBack = function() {
       if (isStageMaximized) {
         toggleStageMaximize();
@@ -947,15 +1047,6 @@
       closeModalDirect('pairingModal');
       closeModalDirect('patroniteModal');
     };
-
-    // Fullscreen
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => console.log(err));
-      } else {
-        document.exitFullscreen().catch(err => console.log(err));
-      }
-    }
 
     // Modals
     function openPairingModal() {
@@ -1015,8 +1106,9 @@
       }
     }
 
-    // Default start with Station 1 (Radio CC)
+    // Default start with Station 1 (Radio CC PL)
     switchChannel(1);
+
   </script>
 </body>
 </html>
