@@ -568,6 +568,192 @@
             to { opacity: 1; transform: scale(1); }
         }
     `;
+        /* ── POPUP DRAWER Q&A (Pytania i Odpowiedzi LUMINA) ── */
+        .lumina-qna-drawer {
+            position: fixed !important;
+            bottom: 94px !important;
+            left: 50% !important;
+            transform: translateX(-50%) translateY(16px) scale(0.96) !important;
+            width: 680px !important;
+            max-width: 95vw !important;
+            max-height: 80vh !important;
+            z-index: 10002 !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            display: none;
+            flex-direction: column !important;
+        }
+
+        .lumina-qna-drawer.open {
+            display: flex !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transform: translateX(-50%) translateY(0) scale(1) !important;
+        }
+
+        .lumina-qna-card {
+            background: rgba(11, 19, 41, 0.97) !important;
+            backdrop-filter: blur(30px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(30px) saturate(190%) !important;
+            border: 1.5px solid rgba(250, 204, 21, 0.45) !important;
+            border-radius: 26px !important;
+            padding: 20px 18px !important;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.95), 0 0 30px rgba(250, 204, 21, 0.25) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 12px !important;
+            max-height: 80vh !important;
+            overflow: hidden !important;
+        }
+
+        .lumina-qna-header {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding-bottom: 12px !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            flex-shrink: 0 !important;
+        }
+
+        .lumina-qna-title-box {
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+        }
+
+        .lumina-qna-icon {
+            width: 38px !important;
+            height: 38px !important;
+            border-radius: 12px !important;
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.25), rgba(236, 72, 153, 0.25)) !important;
+            border: 1px solid rgba(250, 204, 21, 0.5) !important;
+            color: #facc15 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 1.2rem !important;
+            flex-shrink: 0 !important;
+        }
+
+        .lumina-qna-scroll {
+            overflow-y: auto !important;
+            padding-right: 4px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 10px !important;
+            max-height: calc(80vh - 100px) !important;
+            scrollbar-width: thin !important;
+            scrollbar-color: rgba(250, 204, 21, 0.4) transparent !important;
+        }
+        .lumina-qna-scroll::-webkit-scrollbar {
+            width: 5px !important;
+        }
+        .lumina-qna-scroll::-webkit-scrollbar-thumb {
+            background: rgba(250, 204, 21, 0.4) !important;
+            border-radius: 10px !important;
+        }
+
+        .lumina-qna-item {
+            background: rgba(255, 255, 255, 0.04) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 16px !important;
+            overflow: hidden !important;
+            transition: all 0.22s ease !important;
+        }
+        .lumina-qna-item[open] {
+            background: rgba(250, 204, 21, 0.06) !important;
+            border-color: rgba(250, 204, 21, 0.35) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+        }
+
+        .lumina-qna-summary {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 12px 14px !important;
+            cursor: pointer !important;
+            user-select: none !important;
+            gap: 10px !important;
+            list-style: none !important;
+        }
+        .lumina-qna-summary::-webkit-details-marker {
+            display: none !important;
+        }
+
+        .lumina-qna-q-title {
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-size: 0.88rem !important;
+            font-weight: 700 !important;
+            color: #ffffff !important;
+            text-align: left !important;
+            line-height: 1.35 !important;
+        }
+
+        .lumina-qna-num {
+            width: 24px !important;
+            height: 24px !important;
+            border-radius: 50% !important;
+            background: rgba(250, 204, 21, 0.2) !important;
+            border: 1px solid rgba(250, 204, 21, 0.5) !important;
+            color: #facc15 !important;
+            font-size: 0.72rem !important;
+            font-weight: 800 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+        }
+
+        .lumina-qna-chevron {
+            color: #94a3b8 !important;
+            font-size: 0.85rem !important;
+            transition: transform 0.25s ease !important;
+            flex-shrink: 0 !important;
+        }
+        .lumina-qna-item[open] .lumina-qna-chevron {
+            transform: rotate(180deg) !important;
+            color: #facc15 !important;
+        }
+
+        .lumina-qna-answer {
+            padding: 4px 14px 14px 44px !important;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 0.82rem !important;
+            color: #cbd5e1 !important;
+            line-height: 1.6 !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+            margin-top: 4px !important;
+        }
+        .lumina-qna-answer p {
+            margin: 6px 0 !important;
+        }
+        .lumina-qna-answer ul {
+            margin: 6px 0 6px 16px !important;
+            padding: 0 !important;
+        }
+        .lumina-qna-answer li {
+            margin-bottom: 4px !important;
+        }
+
+        @media (max-width: 900px) {
+            .lumina-qna-drawer {
+                bottom: calc(76px + env(safe-area-inset-bottom, 10px)) !important;
+                width: 95vw !important;
+                max-height: 78vh !important;
+            }
+            .lumina-qna-card {
+                padding: 16px 12px !important;
+            }
+            .lumina-qna-answer {
+                padding: 4px 10px 12px 20px !important;
+            }
+        }
+
+    `;
 
     const styleEl = document.createElement('style');
     styleEl.id = 'lumina-bottom-nav-styles';
@@ -616,6 +802,160 @@
             <i class="fa-solid fa-comment-dots"></i>
             <span id="floatingChatBadge" class="lumina-floating-chat-badge" style="${initialUnread > 0 ? 'display:flex;' : 'display:none;'}">${initialUnread > 9 ? '9+' : initialUnread}</span>
         </button>
+
+
+        <!-- ══════════ POPUP ROZWIJANY Q&A (Pytania i Odpowiedzi LUMINA) ══════════ -->
+        <div id="luminaQnaDrawer" class="lumina-qna-drawer">
+            <div class="lumina-qna-card">
+                <div class="lumina-qna-header">
+                    <div class="lumina-qna-title-box">
+                        <div class="lumina-qna-icon">
+                            <i class="fa-solid fa-circle-question"></i>
+                        </div>
+                        <div>
+                            <div style="font-family:'Outfit',sans-serif; font-weight:800; color:#facc15; font-size:1.05rem; letter-spacing:0.5px;">Q&A • BAZA WIEDZY LUMINA</div>
+                            <div style="font-size:0.75rem; color:#94a3b8;">Najważniejsze pytania i odpowiedzi o portalu</div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="window.toggleLuminaQnaDrawer(event)" class="lumina-bottom-menu-close" title="Zamknij">&times;</button>
+                </div>
+
+                <div class="lumina-qna-scroll">
+                    <!-- Q1 -->
+                    <details class="lumina-qna-item" open>
+                        <summary class="lumina-qna-summary">
+                            <div class="lumina-qna-q-title">
+                                <span class="lumina-qna-num">1</span>
+                                <span>Czym jest portal LUMINA i jaka jest jego misja?</span>
+                            </div>
+                            <div class="lumina-qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                        </summary>
+                        <div class="lumina-qna-answer">
+                            <p><strong>LUMINA (Christian Culture)</strong> to suwerenny, bezpieczny chrześcijański portal relacji i wartości, stanowiący czystą alternatywę dla świeckich platform społecznościowych (TikTok, Instagram, Facebook, Tinder).</p>
+                            <p>Naszą misją jest łączenie ludzi wierzących na fundamencie Chrystusa w celu budowania trwałych małżeństw, chrześcijańskich przyjaźni, dzielenia się świadectwami wiary i wzajemnej modlitwy.</p>
+                        </div>
+                    </details>
+
+                    <!-- Q2 -->
+                    <details class="lumina-qna-item">
+                        <summary class="lumina-qna-summary">
+                            <div class="lumina-qna-q-title">
+                                <span class="lumina-qna-num">2</span>
+                                <span>Jak działa poznawanie ludzi i dopasowanie (Lumina Connect)?</span>
+                            </div>
+                            <div class="lumina-qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                        </summary>
+                        <div class="lumina-qna-answer">
+                            <p>Lumina Connect opiera się na algorytmie <em>Explainable AI Match</em>, który analizuje wspólne fundamenty wiary (100%), życiowe cele (95%), wartości (92%) oraz lokalizację.</p>
+                            <p>Zamiast płytkiego „swipe'owania”, oferujemy 3 bezstresowe akcje wejścia:</p>
+                            <ul>
+                                <li>👋 <strong>Poznajmy się:</strong> Delikatne chrześcijańskie przywitanie.</li>
+                                <li>☕ <strong>Zaproś na kawę:</strong> Bezpośrednie zaproszenie na rozmowę.</li>
+                                <li>🕊️ <strong>Pomódlmy się:</strong> Duchowe wsparcie i modlitwa wstawiennicza.</li>
+                            </ul>
+                        </div>
+                    </details>
+
+                    <!-- Q3 -->
+                    <details class="lumina-qna-item">
+                        <summary class="lumina-qna-summary">
+                            <div class="lumina-qna-q-title">
+                                <span class="lumina-qna-num">3</span>
+                                <span>Czy korzystanie z portalu LUMINA jest bezpłatne?</span>
+                            </div>
+                            <div class="lumina-qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                        </summary>
+                        <div class="lumina-qna-answer">
+                            <p><strong>Tak, w 100% bezpłatne!</strong> Przeglądanie profili, publikowanie postów na Tablicy, wiadomości czatu, słuchanie 6 stacji radiowych oraz oglądanie filmów w kinie VOD są całkowicie darmowe i wolne od nachalnych reklam komercyjnych.</p>
+                        </div>
+                    </details>
+
+                    <!-- Q4 -->
+                    <details class="lumina-qna-item">
+                        <summary class="lumina-qna-summary">
+                            <div class="lumina-qna-q-title">
+                                <span class="lumina-qna-num">4</span>
+                                <span>Jak LUMINA dba o bezpieczeństwo i autentyczność (Zero Fake / Zero Botów)?</span>
+                            </div>
+                            <div class="lumina-qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                        </summary>
+                        <div class="lumina-qna-answer">
+                            <p>Wdrożyliśmy zaawansowany <em>Lumina Trust System</em>:</p>
+                            <ul>
+                                <li>🛡️ <strong>Weryfikacja twarzy AI:</strong> Eliminacja fałszywych profili, memów i krajobrazów.</li>
+                                <li>📱 <strong>Weryfikacja SMS:</strong> Potwierdzenie realności każdego użytkownika.</li>
+                                <li>🔒 <strong>Zero tolerancji dla hejtu:</strong> Bezpieczna przestrzeń oparta na szacunku i prawie Bożym.</li>
+                            </ul>
+                        </div>
+                    </details>
+
+                    <!-- Q5 -->
+                    <details class="lumina-qna-item">
+                        <summary class="lumina-qna-summary">
+                            <div class="lumina-qna-q-title">
+                                <span class="lumina-qna-num">5</span>
+                                <span>Czym jest Tablica Społeczności (Lumina Feed)?</span>
+                            </div>
+                            <div class="lumina-qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                        </summary>
+                        <div class="lumina-qna-answer">
+                            <p>Tablica to centralny strumień inspiracji, na którym członkowie publikują świadectwa działania Boga, intencje modlitewne, werset dnia oraz codzienne rozważania biblijne Andrzeja Thiela i Cezarego Rogowskiego.</p>
+                        </div>
+                    </details>
+
+                    <!-- Q6 -->
+                    <details class="lumina-qna-item">
+                        <summary class="lumina-qna-summary">
+                            <div class="lumina-qna-q-title">
+                                <span class="lumina-qna-num">6</span>
+                                <span>Jakie multimedia są zintegrowane w portalu?</span>
+                            </div>
+                            <div class="lumina-qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                        </summary>
+                        <div class="lumina-qna-answer">
+                            <p>Bezpośrednio w portalu możesz korzystać z:</p>
+                            <ul>
+                                <li>📻 <strong>6 Stacji Radia CC:</strong> Radio PL, Instrumental Worship, Radio Biblia Audio, Radio Global, Global Bible, Biblia Śpiewana.</li>
+                                <li>📺 <strong>Telewizja CCTV24 Live:</strong> Całodobowy kanał uwielbienia i programów formacyjnych.</li>
+                                <li>🍿 <strong>Kino VOD:</strong> Pełnometrażowe filmy fabularne z polskim lektorem.</li>
+                            </ul>
+                        </div>
+                    </details>
+
+                    <!-- Q7 -->
+                    <details class="lumina-qna-item">
+                        <summary class="lumina-qna-summary">
+                            <div class="lumina-qna-q-title">
+                                <span class="lumina-qna-num">7</span>
+                                <span>Jak zainstalować portal LUMINA na telefonie (PWA)?</span>
+                            </div>
+                            <div class="lumina-qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                        </summary>
+                        <div class="lumina-qna-answer">
+                            <p>LUMINA działa jako aplikacja progresywna (PWA):</p>
+                            <ul>
+                                <li>🤖 <strong>Android:</strong> W menu Chrome wybierz <em>„Dodaj do ekranu głównego”</em> lub <em>„Zainstaluj aplikację”</em>.</li>
+                                <li>🍏 <strong>iPhone / iOS:</strong> W Safari kliknij ikonę <em>Udostępnij</em> (kwadrat ze strzałką w górę) i wybierz <em>„Do ekranu początkowego”</em>.</li>
+                            </ul>
+                        </div>
+                    </details>
+
+                    <!-- Q8 -->
+                    <details class="lumina-qna-item">
+                        <summary class="lumina-qna-summary">
+                            <div class="lumina-qna-q-title">
+                                <span class="lumina-qna-num">8</span>
+                                <span>Jak mogę wesprzeć rozwój misji i portalu LUMINA?</span>
+                            </div>
+                            <div class="lumina-qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                        </summary>
+                        <div class="lumina-qna-answer">
+                            <p>Możesz dołączyć do grona Mecenasów i Patronów na platformie <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" style="color:#facc15; font-weight:700; text-decoration:underline;">Patronite • Osobowość Plus</a>, wspierając budowę pierwszych niezależnych chrześcijańskich mediów w Polsce.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
 
         <!-- ══════════ POPUP ROZWIJANY Z IKONY III TRZECH LINII (Menu Mediów, TV & Profilu) ══════════ -->
         <div id="luminaBottomMenuPopup" class="lumina-bottom-menu-popup">
@@ -702,6 +1042,11 @@
             <a href="tablica" class="lumina-nav-tab ${isTablica ? 'active' : ''}" id="navTabFeed" title="Główna Tablica Społeczności">
                 <i class="fa-solid fa-users-viewfinder"></i>
             </a>
+
+            <!-- 3. Q&A (Pytania i Odpowiedzi) -->
+            <button type="button" class="lumina-nav-tab" id="navTabQnA" onclick="window.toggleLuminaQnaDrawer(event)" title="Pytania i Odpowiedzi (Q&A)">
+                <i class="fa-solid fa-circle-question"></i>
+            </button>
 
             <!-- 3. Menu Więcej (Trzy linie w pozycji poziomej: Radio, TV, Profil/Ustawienia, Master Admin) -->
             <button type="button" class="lumina-nav-tab" id="navTabMoreMenu" onclick="window.toggleCcBottomNavMenu(event)" title="Więcej opcji (Radio, TV, Profil, Master Admin)">
@@ -931,6 +1276,31 @@
     window.openCcStoreModal = function() {
         const m = document.getElementById('modalCcStore');
         if (m) m.classList.add('open');
+    };
+
+
+    window.toggleLuminaQnaDrawer = function(e) {
+        if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+        const drawer = document.getElementById('luminaQnaDrawer');
+        const qnaBtn = document.getElementById('navTabQnA');
+        const menuPopup = document.getElementById('luminaBottomMenuPopup');
+        const menuBtn = document.getElementById('navTabMoreMenu');
+        if (!drawer) return;
+
+        // Close menu popup if open
+        if (menuPopup && menuPopup.classList.contains('open')) {
+            menuPopup.classList.remove('open');
+            if (menuBtn) menuBtn.classList.remove('active');
+        }
+
+        const isCurrentlyOpen = drawer.classList.contains('open');
+        if (isCurrentlyOpen) {
+            drawer.classList.remove('open');
+            if (qnaBtn) qnaBtn.classList.remove('active');
+        } else {
+            drawer.classList.add('open');
+            if (qnaBtn) qnaBtn.classList.add('active');
+        }
     };
 
     window.toggleCcBottomNavMenu = function(e) {
