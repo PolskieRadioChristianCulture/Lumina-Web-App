@@ -2154,6 +2154,23 @@
 
     <!-- Scripts -->
     <script type="text/javascript">
+        // ── ENFORCE POLISH AS DEFAULT LANGUAGE ──
+        (function() {
+            try {
+                const savedLang = localStorage.getItem('lumina_lang');
+                if (!savedLang || savedLang === 'pl') {
+                    localStorage.setItem('lumina_lang', 'pl');
+                    if (document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen')) {
+                        document.cookie = 'googtrans=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                        if (window.location.hostname.includes('.')) {
+                            document.cookie = 'googtrans=; Path=/; domain=' + window.location.hostname + '; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                        }
+                        document.cookie = 'googtrans=/pl/pl; Path=/;';
+                    }
+                }
+            } catch(e) {}
+        })();
+
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'pl',
@@ -2167,27 +2184,25 @@
             const langBtn = document.getElementById('shortcutLangRow');
             const langText = document.getElementById('langToggleText');
  
-            // Function to check if translated to English (based on LuminaI18n or Google Translate cookie)
+            // Function to check if translated to English
             function isEnglish() {
-                return (window.LuminaI18n && window.LuminaI18n.getLang() === 'en') ||
-                       localStorage.getItem('lumina_lang') === 'en' ||
-                       document.cookie.includes('googtrans=/pl/en') || 
-                       document.cookie.includes('googtrans=%2Fpl%2Fen');
+                return localStorage.getItem('lumina_lang') === 'en' &&
+                       (document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen'));
             }
  
-            // Sync button label on load (with safety checks)
+            // Sync button label on load
             function syncLangButton() {
                 if (langText) {
                     if (isEnglish()) {
                         langText.textContent = 'PL';
                         if (langBtn) langBtn.title = 'Przełącz na język polski 🇵🇱';
                         const desc = langBtn ? langBtn.querySelector('span:last-child') : null;
-                        if (desc && desc.textContent.includes('angielski')) desc.textContent = 'Zmień na polski';
+                        if (desc) desc.textContent = 'Zmień na polski';
                     } else {
                         langText.textContent = 'EN';
                         if (langBtn) langBtn.title = 'Switch to English 🇬🇧';
                         const desc = langBtn ? langBtn.querySelector('span:last-child') : null;
-                        if (desc && desc.textContent.includes('polski')) desc.textContent = 'Zmień na angielski';
+                        if (desc) desc.textContent = 'Zmień na angielski';
                     }
                 }
             }
@@ -2196,17 +2211,22 @@
             if (langBtn) {
                 langBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (window.LuminaI18n && typeof window.LuminaI18n.toggle === 'function') {
-                        window.LuminaI18n.toggle();
-                    } else {
-                        const newLang = isEnglish() ? 'pl' : 'en';
-                        localStorage.setItem('lumina_lang', newLang);
-                        document.cookie = `googtrans=/pl/${newLang}; path=/;`;
+                    if (isEnglish()) {
+                        localStorage.setItem('lumina_lang', 'pl');
+                        document.cookie = 'googtrans=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
                         if (window.location.hostname.includes('.')) {
-                            document.cookie = `googtrans=/pl/${newLang}; path=/; domain=${window.location.hostname};`;
+                            document.cookie = 'googtrans=; Path=/; domain=' + window.location.hostname + '; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
                         }
+                        document.cookie = 'googtrans=/pl/pl; Path=/;';
+                        window.location.reload();
+                    } else {
+                        localStorage.setItem('lumina_lang', 'en');
+                        document.cookie = 'googtrans=/pl/en; Path=/;';
+                        if (window.location.hostname.includes('.')) {
+                            document.cookie = 'googtrans=/pl/en; Path=/; domain=' + window.location.hostname + ';';
+                        }
+                        window.location.reload();
                     }
-                    syncLangButton();
                 });
             }
  

@@ -1849,6 +1849,23 @@
 
     <!-- Scripts -->
     <script type="text/javascript">
+        // ── ENFORCE POLISH AS DEFAULT LANGUAGE ──
+        (function() {
+            try {
+                const savedLang = localStorage.getItem('lumina_lang');
+                if (!savedLang || savedLang === 'pl') {
+                    localStorage.setItem('lumina_lang', 'pl');
+                    if (document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen')) {
+                        document.cookie = 'googtrans=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                        if (window.location.hostname.includes('.')) {
+                            document.cookie = 'googtrans=; Path=/; domain=' + window.location.hostname + '; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                        }
+                        document.cookie = 'googtrans=/pl/pl; Path=/;';
+                    }
+                }
+            } catch(e) {}
+        })();
+
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'pl',
@@ -1864,7 +1881,8 @@
  
             // Function to check if translated to English (based on Google Translate cookie)
             function isEnglish() {
-                return document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen');
+                return localStorage.getItem('lumina_lang') === 'en' &&
+                       (document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen'));
             }
  
             // Sync button label on load (with safety checks)
@@ -1879,19 +1897,24 @@
             }
  
             if (langBtn && langText) {
-                langBtn.addEventListener('click', () => {
+                langBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
                     if (isEnglish()) {
                         // Switch back to Polish by clearing the cookies
+                        localStorage.setItem('lumina_lang', 'pl');
                         document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-                        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.polskieradio.cc";
+                        if (window.location.hostname.includes('.')) {
+                            document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname;
+                        }
                         document.cookie = "googtrans=/pl/pl; path=/";
-                        document.cookie = "googtrans=/pl/pl; path=/; domain=.polskieradio.cc";
                     } else {
                         // Switch to English
+                        localStorage.setItem('lumina_lang', 'en');
                         document.cookie = "googtrans=/pl/en; path=/";
-                        document.cookie = "googtrans=/pl/en; path=/; domain=.polskieradio.cc";
+                        if (window.location.hostname.includes('.')) {
+                            document.cookie = "googtrans=/pl/en; path=/; domain=" + window.location.hostname;
+                        }
                     }
-                    // Reload the page to let Google Translate apply the translation immediately
                     window.location.reload();
                 });
             }
