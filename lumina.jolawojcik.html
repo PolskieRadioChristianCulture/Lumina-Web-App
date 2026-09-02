@@ -828,7 +828,7 @@
             <div class="head-actions">
                 <button class="btn-action-primary" onclick="openMessageModal()"><i class="fa-solid fa-paper-plane"></i> Wiadomość</button>
                 <button class="btn-action-secondary" onclick="openCoffeeModal()"><i class="fa-solid fa-mug-hot"></i> Kawa</button>
-                <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="btn-action-secondary btn-action-patronite" style="background:linear-gradient(135deg, #f97316, #ea580c); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:0 18px; height:42px; border-radius:24px; text-decoration:none; box-shadow:0 4px 14px rgba(249,115,22,0.35); transition:all 0.25s ease; white-space:nowrap; flex-shrink:0;"><i class="fa-solid fa-heart-circle-plus" style="color:#fef08a; font-size:0.95rem;"></i> <span class="btn-text">Zostań Patronem</span></a>
+                <a href="https://youtube.com/playlist?list=PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN&si=KPXuvaZfOwtgwxba" target="_blank" rel="noopener noreferrer" class="btn-action-secondary btn-action-yt-playlist" style="background:linear-gradient(135deg, #ef4444, #dc2626); border:none; color:#fff; font-weight:800; display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:0 18px; height:42px; border-radius:24px; text-decoration:none; box-shadow:0 4px 14px rgba(239,68,68,0.35); transition:all 0.25s ease; white-space:nowrap; flex-shrink:0;"><i class="fa-solid fa-play" style="color:#fef08a; font-size:0.95rem;"></i> <span class="btn-text">Playlista Podcastów</span></a>
                 
                 <button type="button" class="btn-action-follow" id="btnProfileFollow" onclick="toggleProfileFollow(this)">
                     <i class="fa-solid fa-user-plus" id="followBtnIcon"></i>
@@ -934,6 +934,19 @@
                     </a>
                 </div>
 
+                <!-- YouTube Playlist Podcast Sidebar Card -->
+                <div class="sidebar-card" style="background:linear-gradient(135deg, rgba(239,68,68,0.14), rgba(11,24,56,0.95)); border:1px solid rgba(239,68,68,0.35);">
+                    <div class="card-title">
+                        <span style="color:#fca5a5;"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Oficjalny Podcast</span>
+                    </div>
+                    <p style="font-size:0.82rem; color:#cbd5e1; margin-bottom:12px; line-height:1.5;">
+                        Pełna seria „Biblijny Czas Modlitwy” na YouTube — rozważania, modlitwy wstawiennicze i fragmenty Pisma Świętego.
+                    </p>
+                    <a href="https://youtube.com/playlist?list=PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN&si=KPXuvaZfOwtgwxba" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="width:100%; justify-content:center; text-decoration:none; background:linear-gradient(135deg,#ef4444,#dc2626); gap:8px;">
+                        <i class="fa-solid fa-play"></i> Odtwórz Podcast ➔
+                    </a>
+                </div>
+
             </aside>
 
             <!-- Main Stream Content Area -->
@@ -955,6 +968,54 @@
                             Zapraszam Cię do zatrzymania się w Bożej obecności. Wspólnie otwieramy Pismo Święte, trwamy na modlitwie i powierzamy Panu Jezusowi nasze rodziny, zdrowie, serca oraz całą Ojczyznę. Niech te nagrania będą dla Ciebie źródłem pokoju, nadziei i duchowej siły każdego dnia!
                         </p>
                     </div>
+
+                    <!-- 🎬 OFICJALNA PLAYLISTA YOUTUBE: BIBLIJNY CZAS MODLITWY (PODCAST) 🎬 -->
+                    <article class="video-promo-card" id="post_youtube_playlist" style="border: 1.5px solid rgba(239,68,68,0.45); background: linear-gradient(180deg, rgba(17,35,80,0.98), rgba(11,24,56,0.98)); box-shadow: 0 10px 30px rgba(0,0,0,0.55); margin-bottom: 24px;">
+                        <div class="video-promo-header">
+                            <div class="video-promo-title" style="display:flex; align-items:center; gap:10px;">
+                                <i class="fa-brands fa-youtube" style="color:#ff4444; font-size:1.4rem;"></i>
+                                <div>
+                                    <span style="font-weight:800; color:#fff; font-size:1.05rem;">Biblijny Czas Modlitwy • Oficjalny Podcast YouTube</span>
+                                    <span style="background:linear-gradient(135deg,#ef4444,#dc2626); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:8px; margin-left:8px; text-transform:uppercase;">Pełna Playlista</span>
+                                </div>
+                            </div>
+                            <a href="https://youtube.com/playlist?list=PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN&si=KPXuvaZfOwtgwxba" target="_blank" rel="noopener noreferrer" style="font-size:0.78rem; color:#fca5a5; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); padding:5px 12px; border-radius:14px; font-weight:700;">
+                                <i class="fa-brands fa-youtube"></i> Otwórz w YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="video-embed-wrapper" style="position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:16px; border:1px solid rgba(239,68,68,0.35); box-shadow:0 8px 24px rgba(0,0,0,0.6); background:#000;">
+                            <iframe 
+                                src="https://www.youtube-nocookie.com/embed/videoseries?list=PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN&enablejsapi=1" 
+                                title="Biblijny Czas Modlitwy — Oficjalna Playlista YouTube" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen 
+                                loading="eager"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+                            </iframe>
+                        </div>
+
+                        <div class="video-promo-body" style="padding-top:16px;">
+                            <h3 style="font-size:1.15rem; font-weight:800; color:#fff; margin-bottom:6px;">
+                                🕊️ Wszystkie Odcinki Podcastu • Słuchaj i Módl się
+                            </h3>
+                            <p class="video-promo-desc" style="color:#cbd5e1; font-size:0.90rem; line-height:1.55; margin-bottom:14px;">
+                                Odtwarzaj całą serię podcastów bezpośrednio w portalu LUMINA. W prawym górnym rogu odtwarzacza możesz rozwinąć listę wszystkich odcinków serii i wybrać dowolne nagranie modlitewne.
+                            </p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <a href="https://youtube.com/playlist?list=PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN&si=KPXuvaZfOwtgwxba" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:linear-gradient(135deg, #ef4444, #dc2626); font-size:0.82rem; height:38px; padding:0 18px;">
+                                        <i class="fa-brands fa-youtube"></i> Odtwarzaj w YouTube
+                                    </a>
+                                    <button type="button" class="btn-action-secondary" onclick="copyText('https://youtube.com/playlist?list=PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN', 'Skopiowano link do playlisty! ✨')" style="font-size:0.82rem; height:38px; padding:0 16px;">
+                                        <i class="fa-solid fa-share-nodes"></i> Udostępnij Playlistę
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
 
                     <!-- Wideo 1 -->
                     <article class="video-promo-card">

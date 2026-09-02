@@ -292,6 +292,8 @@ export const PROFILES_DB = {
         bio: 'Chrześcijanka zakorzeniona w modlitwie i Słowie Bożym. Razem z Polskim Radiem Christian Culture zapraszam do wspólnego trwania w Bożej obecności w ramach serii Biblijny Czas Modlitwy.',
         tags: ['Biblijny Czas Modlitwy', 'Modlitwa', 'Słowo Boże', 'Radio Christian Culture', 'Wspólnota Wiary', 'Uwielbienie'],
         photos: ['avatar_jolawojcik.jpg', 'cover_jolawojcik.jpg'],
+        youtubePlaylistId: 'PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN',
+        youtubePlaylistUrl: 'https://youtube.com/playlist?list=PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN',
         youtubeVideos: ['EWY-J2gSqwo', 'nFbfDqf42Q4'],
         posts: [
             {

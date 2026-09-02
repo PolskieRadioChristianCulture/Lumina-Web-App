@@ -82,6 +82,39 @@ www.polskieradio.cc/vod | www.polskieradio.cc | www.polskieradio.cc/lumina`,
             _sortTs: Date.now() + 9999999998
         },
         {
+            id: 'post_jola_podcast_playlist',
+            type: 'promo',
+            author: 'Jola Wójcik',
+            authorRole: '🕊️ Biblijny Czas Modlitwy • Polskie Radio CC 🌸',
+            authorAvatar: 'avatar_jolawojcik.jpg',
+            authorSlug: 'jolawojcik',
+            time: '🕊️ OFICJALNY PODCAST • BIBLIJNY CZAS MODLITWY',
+            title: '🕊️ Podcast: Biblijny Czas Modlitwy — Pełna Playlista YouTube ✨',
+            text: `🕊️ **Biblijny Czas Modlitwy — Oficjalny Podcast & Playlista YouTube** ✨
+
+Serdecznie zapraszamy do wspólnego trwania w Bożej obecności w ramach oficjalnego podcastu modlitewnego **„Biblijny Czas Modlitwy”** Polskiego Radia Christian Culture, prowadzonego przez Jolę Wójcik.
+
+📖 **W serii podcastów znajdziesz:**
+• 🙏 **Głębokie modlitwy wstawiennicze** — za rodziny, zdrowie, ochronę i pokój w sercu,
+• 🕊️ **Medytacje i rozważania Słowa Bożego** wnoszące Bożą obecność do codzienności,
+• 🌸 **Wspólnotę wiary** i jedność z tysiącami słuchaczy z całej Polski.
+
+Wszystkie odcinki podcastu są stale dostępne i aktualizowane w oficjalnej playliście YouTube.
+
+👉 **Odtwarzaj całą serię:** https://youtube.com/playlist?list=PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN
+👉 **Profil w LUMINA:** https://polskieradio.cc/lumina.jolawojcik
+
+PODAJ DALEJ 🔴
+www.polskieradio.cc | www.polskieradio.cc/lumina.jolawojcik`,
+            image: 'cover_jolawojcik.jpg',
+            youtubePlaylistId: 'PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN',
+            ctaText: 'Odtwarzaj Podcast w YouTube 🎧 ▶',
+            ctaUrl: 'https://youtube.com/playlist?list=PLQBdxcl9HBc98HweGapf1brLPQBTf-6eN&si=KPXuvaZfOwtgwxba',
+            likes: 312,
+            amen: 289,
+            _sortTs: Date.now() + 9999999990
+        },
+        {
             id: 'post_live_cezary_instrumental',
             type: 'broadcast',
             isLiveBroadcastPost: true,
