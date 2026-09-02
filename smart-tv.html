@@ -553,6 +553,59 @@
       border-radius: 6px;
       margin: 0 4px;
     }
+  
+    /* ── MAXIMIZED PLAYER MODE (FULLSCREEN THEATER) ── */
+    .tv-player-container.maximized {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 9999 !important;
+      border-radius: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+      margin: 0 !important;
+    }
+
+    .tv-player-container.maximized iframe {
+      width: 100vw !important;
+      height: 100vh !important;
+    }
+
+    .player-corner-controls {
+      position: absolute;
+      top: 2.5vh;
+      right: 2.5vw;
+      z-index: 10000;
+      display: flex;
+      gap: 10px;
+      opacity: 0.9;
+      transition: opacity 0.3s;
+    }
+
+    .btn-corner-action {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--silver-border);
+      color: #ffffff;
+      padding: 0.9vh 1.5vw;
+      border-radius: 12px;
+      font-size: 1.8vh;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.7);
+    }
+    .btn-corner-action:focus, .btn-corner-action:hover {
+      background: #ffffff !important;
+      color: #000000 !important;
+      box-shadow: 0 0 25px rgba(255,255,255,0.8) !important;
+      transform: scale(1.05);
+    }
+
   </style>
 </head>
 <body>
@@ -591,7 +644,12 @@
   <!-- MAIN STAGE (VIDEO / VISUALIZER & SIDEBAR) -->
   <main class="tv-main-stage">
     <div class="tv-player-container focusable" tabindex="0" id="mainPlayerFrame">
-      <iframe id="tvIframe" src="cctv24-worship.html" allow="autoplay; fullscreen" allowfullscreen style="display:none;"></iframe>
+      <div class="player-corner-controls">
+        <button class="btn-corner-action focusable" tabindex="0" id="btnMaximizeStage" onclick="toggleStageMaximize()" title="Rozszerz / Zminimalizuj okno">
+          <i class="fa-solid fa-expand" id="cornerMaximizeIcon"></i> <span id="cornerMaximizeLabel">Pełny Ekran</span>
+        </button>
+      </div>
+      <iframe id="tvIframe" src="about:blank" allow="autoplay; fullscreen" allowfullscreen style="display:none;"></iframe>
       <div id="tvAudioVisualizer" class="tv-audio-visualizer">
         <img id="visArt" src="icon.png" class="vis-album-art" alt="Okładka Stacji">
         <div class="vis-station-title" id="visStationName">Polskie Radio Christian Culture</div>
@@ -827,7 +885,30 @@
     const visualizer = document.getElementById('tvAudioVisualizer');
     const bars = document.getElementById('audioBars');
 
-    // Switch Channel / Station
+
+    let isStageMaximized = false;
+
+    // Toggle Theater / Fullscreen stage mode (Expand / Minimize to initial view)
+    function toggleStageMaximize() {
+      const container = document.getElementById('mainPlayerFrame');
+      isStageMaximized = !isStageMaximized;
+      
+      if (isStageMaximized) {
+        container.classList.add('maximized');
+        document.getElementById('cornerMaximizeIcon').className = 'fa-solid fa-compress';
+        document.getElementById('cornerMaximizeLabel').innerText = 'Zminimalizuj [Powrót]';
+      } else {
+        container.classList.remove('maximized');
+        document.getElementById('cornerMaximizeIcon').className = 'fa-solid fa-expand';
+        document.getElementById('cornerMaximizeLabel').innerText = 'Pełny Ekran';
+      }
+    }
+
+    function toggleFullscreen() {
+      toggleStageMaximize();
+    }
+
+    // Switch Channel / Station (Guaranteed No Sound Overlap & Clean Audio Isolation)
     function switchChannel(id) {
       activeChannelId = id;
       const ch = STATIONS_DATA[id];
@@ -846,14 +927,26 @@
       document.getElementById('tvRdsTitle').innerText = ch.name;
 
       if (ch.type === 'video') {
+        // Stop and clear audio completely
         audio.pause();
+        audio.removeAttribute('src');
+        audio.load();
         isAudioPlaying = false;
+        bars.style.display = 'none';
+
+        // Show Video iframe with target stream
         visualizer.style.display = 'none';
         iframe.style.display = 'block';
-        iframe.src = ch.url;
+        if (iframe.src !== ch.url && !iframe.src.endsWith(ch.url)) {
+          iframe.src = ch.url;
+        }
         updatePlayBtnState(false, 'Kanał Wideo');
       } else {
+        // KILL background video iframe IMMEDIATELY to prevent audio overlap!
         iframe.style.display = 'none';
+        iframe.src = 'about:blank';
+
+        // Show Visualizer & Play Radio
         visualizer.style.display = 'flex';
         document.getElementById('visArt').src = ch.art || 'icon.png';
         document.getElementById('visStationName').innerText = ch.name;
@@ -865,7 +958,7 @@
           bars.style.display = 'flex';
           updatePlayBtnState(true, 'Zatrzymaj (OK)');
         }).catch(err => {
-          console.warn('Wymagany gest użytkownika:', err);
+          console.warn('Wymagany gest użytkownika do startu audio:', err);
           isAudioPlaying = false;
           bars.style.display = 'none';
           updatePlayBtnState(false, 'Odtwarzaj (OK)');
@@ -873,7 +966,7 @@
       }
     }
 
-    function togglePlayPause() {
+        function togglePlayPause() {
       const ch = STATIONS_DATA[activeChannelId];
       if (ch.type === 'video') {
         toggleFullscreen();
@@ -912,6 +1005,10 @@
 
     // Remote Hook: Back button closes open modal
     window.onTVBack = function() {
+      if (isStageMaximized) {
+        toggleStageMaximize();
+        return;
+      }
       closeModalDirect('pairingModal');
       closeModalDirect('patroniteModal');
     };
