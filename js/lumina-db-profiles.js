@@ -274,7 +274,7 @@ export const PROFILES_DB = {
         age: 'Polska',
         city: 'Polska',
         avatar: 'avatar_jolawojcik.jpg',
-        cover: 'lumina_default_cover.jpg',
+        cover: 'cover_jolawojcik.jpg',
         coverPosY: '50%',
         job: 'Biblijny Czas Modlitwy • Polskie Radio CC',
         role: 'Biblijny Czas Modlitwy 🕊️🌸',
@@ -291,7 +291,7 @@ export const PROFILES_DB = {
         verseRef: '— 1 List do Tesaloniczan 5, 17-18',
         bio: 'Chrześcijanka zakorzeniona w modlitwie i Słowie Bożym. Razem z Polskim Radiem Christian Culture zapraszam do wspólnego trwania w Bożej obecności w ramach serii Biblijny Czas Modlitwy.',
         tags: ['Biblijny Czas Modlitwy', 'Modlitwa', 'Słowo Boże', 'Radio Christian Culture', 'Wspólnota Wiary', 'Uwielbienie'],
-        photos: ['avatar_jolawojcik.jpg', 'lumina_default_cover.jpg'],
+        photos: ['avatar_jolawojcik.jpg', 'cover_jolawojcik.jpg'],
         youtubeVideos: ['EWY-J2gSqwo', 'nFbfDqf42Q4'],
         posts: [
             {
