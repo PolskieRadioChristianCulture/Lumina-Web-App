@@ -1932,6 +1932,217 @@
                 padding: 10px 16px;
             }
         }
+    
+        /* ══════════════════════════════════════════════════════════════════
+           Q&A / FAQ SECTION (Brushed Silver & Obsidian Glassmorphism)
+           ══════════════════════════════════════════════════════════════════ */
+        .qna-section {
+            position: relative;
+            padding: 60px 24px;
+            background: radial-gradient(circle at 50% 0%, rgba(226, 232, 240, 0.08) 0%, rgba(7, 8, 12, 0.95) 75%);
+            border: 1px solid var(--silver-border);
+            border-radius: 24px;
+            margin: 50px 0 20px 0;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .qna-container {
+            max-width: 980px;
+            margin: 0 auto;
+        }
+
+        .qna-header-box {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .qna-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(148, 163, 184, 0.1));
+            border: 1px solid var(--silver-border-bright);
+            color: #ffffff;
+            font-size: 0.76rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 6px 16px;
+            border-radius: 30px;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .qna-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+            font-weight: 800;
+            background: var(--silver-brushed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .qna-subtitle {
+            color: var(--text-muted);
+            font-size: 0.96rem;
+            max-width: 680px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .qna-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .qna-item {
+            background: var(--bg-card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid var(--silver-border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        .qna-item:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(20, 26, 38, 0.85);
+            box-shadow: 0 8px 25px rgba(226, 232, 240, 0.12);
+        }
+
+        .qna-item[open] {
+            border-color: #ffffff;
+            background: rgba(22, 30, 46, 0.95);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(226, 232, 240, 0.2);
+        }
+
+        .qna-summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            user-select: none;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            transition: color 0.2s ease;
+        }
+
+        .qna-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .qna-summary:hover {
+            color: #f1f5f9;
+        }
+
+        .qna-q-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            line-height: 1.35;
+        }
+
+        .qna-badge-q {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--silver-metallic-btn);
+            color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            font-weight: 900;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+        }
+
+        .qna-chevron {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--silver-border);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s;
+        }
+
+        .qna-item[open] .qna-chevron {
+            transform: rotate(180deg);
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+
+        .qna-answer {
+            padding: 0 22px 20px 22px;
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            line-height: 1.75;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 16px;
+        }
+
+        .qna-answer p {
+            margin-bottom: 12px;
+        }
+
+        .qna-answer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .qna-answer a {
+            color: #ffffff;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            font-weight: 700;
+        }
+
+        .qna-answer a:hover {
+            color: #38bdf8;
+        }
+
+        @media (max-width: 768px) {
+            .qna-section {
+                padding: 40px 16px;
+                margin: 36px 0 16px;
+                border-radius: 18px;
+            }
+            .qna-summary {
+                padding: 14px 16px;
+                font-size: 0.94rem;
+            }
+            .qna-badge-q {
+                width: 26px;
+                height: 26px;
+                font-size: 0.75rem;
+            }
+            .qna-chevron {
+                width: 28px;
+                height: 28px;
+                font-size: 0.75rem;
+            }
+            .qna-answer {
+                padding: 0 16px 16px 16px;
+                font-size: 0.88rem;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -2088,42 +2299,100 @@
         </div>
 
         <!-- ══════════ VOD Q&A PYTANIA I ODPOWIEDZI ══════════ -->
-        <section class="qna-section" id="vodQnaSection" style="margin: 40px 0 0 0; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.25);">
+        <section class="qna-section" id="vodQnaSection" aria-label="Najczęściej zadawane pytania o VOD">
             <div class="qna-container">
                 <div class="qna-header-box">
                     <span class="qna-tag"><i class="fa-solid fa-circle-question"></i> Kino z Wartościami</span>
                     <h2 class="qna-title">Pytania i Odpowiedzi o VOD</h2>
-                    <div style="height: 2px; width: 60px; background: #d4af37; margin: 12px auto 10px auto;"></div>
-                    <p class="qna-subtitle">Wszystko o bezpłatnym kinie chrześcijańskim, Lektorze PL i oglądaniu na Smart TV.</p>
+                    <div style="height: 2px; width: 60px; background: linear-gradient(90deg, #ffffff, #94a3b8); margin: 12px auto 10px auto; border-radius: 2px;"></div>
+                    <p class="qna-subtitle">Wszystko o bezpłatnym kinie chrześcijańskim, polskim lektorze, emisji 24/7 i oglądaniu na Smart TV.</p>
                 </div>
+
                 <div class="qna-accordion">
+                    <!-- Q1 -->
                     <details class="qna-item" open>
                         <summary class="qna-summary">
-                            <div class="qna-q-title"><span class="qna-badge-q">1</span><span>Czy filmy są w 100% bezpłatne i nie wymagają rejestracji?</span></div>
+                            <div class="qna-q-title">
+                                <span class="qna-badge-q">1</span>
+                                <span>Czy filmy są w 100% bezpłatne i nie wymagają rejestracji?</span>
+                            </div>
                             <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
                         </summary>
-                        <div class="qna-answer"><p><strong>Tak, cały katalog jest bezpłatny.</strong> Nie wymagamy rejestracji, logowania ani kart płatniczych. Kino chrześcijańskie udostępniamy w celach ewangelizacyjnych dla każdego.</p></div>
+                        <div class="qna-answer">
+                            <p><strong>Tak, cały katalog VOD Christian Culture jest w 100% bezpłatny.</strong> Nie pobieramy żadnych opłat, nie wymagamy rejestracji, logowania ani podawania kart płatniczych. Wszystkie pełnometrażowe filmy i ekranizacje udostępniamy w celach ewangelizacyjnych i formacyjnych dla każdego odbiorcy.</p>
+                        </div>
                     </details>
+
+                    <!-- Q2 -->
                     <details class="qna-item">
                         <summary class="qna-summary">
-                            <div class="qna-q-title"><span class="qna-badge-q">2</span><span>Czy filmy posiadają polską wersję językową (Lektor PL)?</span></div>
+                            <div class="qna-q-title">
+                                <span class="qna-badge-q">2</span>
+                                <span>Czy filmy posiadają polską wersję językową (Lektor PL)?</span>
+                            </div>
                             <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
                         </summary>
-                        <div class="qna-answer"><p>Tak. Wszystkie filmy fabularne emitowane są z <strong>polskim lektorem (Lektor PL)</strong> lub polskimi napisami — komfort dla całej rodziny.</p></div>
+                        <div class="qna-answer">
+                            <p><strong>Tak. Wszystkie filmy fabularne w naszym katalogu emitowane są z profesjonalnym polskim lektorem (Lektor PL)</strong> lub polskimi napisami. Dbamy o najwyższy komfort oglądania filmów w gronie rodzinnym, wspólnotowym i małżeńskim.</p>
+                        </div>
                     </details>
+
+                    <!-- Q3 -->
                     <details class="qna-item">
                         <summary class="qna-summary">
-                            <div class="qna-q-title"><span class="qna-badge-q">3</span><span>Jak działa Kino 24/7 i jak wybrać konkretny film?</span></div>
+                            <div class="qna-q-title">
+                                <span class="qna-badge-q">3</span>
+                                <span>Jak działa Kino 24/7 i jak wybrać konkretny film na żądanie?</span>
+                            </div>
                             <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
                         </summary>
-                        <div class="qna-answer"><p>Odtwarzacz transmituje nieprzerwaną ramówkę filmową 24/7. Aby obejrzeć konkretny tytuł natychmiast, kliknij jego plakat w <strong>Bibliotece Filmów VOD</strong> powyżej.</p></div>
+                        <div class="qna-answer">
+                            <p>Odtwarzacz główny transmituje nieprzerwaną, całodobową ramówkę filmową 24/7 (kolejne filmy startują automatycznie jeden po drugim). Jeśli chcesz obejrzeć <strong>dowolny konkretny film natychmiast na żądanie</strong>, po prostu kliknij jego plakat w sekcji <strong>Biblioteka Filmów VOD</strong> powyżej lub skorzystaj z wyszukiwarki i filtrów kategorii.</p>
+                        </div>
                     </details>
+
+                    <!-- Q4 -->
                     <details class="qna-item">
                         <summary class="qna-summary">
-                            <div class="qna-q-title"><span class="qna-badge-q">4</span><span>Jak oglądać filmy VOD na Smart TV?</span></div>
+                            <div class="qna-q-title">
+                                <span class="qna-badge-q">4</span>
+                                <span>Jak oglądać filmy VOD na telewizorze Smart TV?</span>
+                            </div>
                             <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
                         </summary>
-                        <div class="qna-answer"><p>Otwórz <code>polskieradio.cc/vod</code> w przeglądarce telewizora lub użyj Chromecast / AirPlay ze smartfona. Strona jest w pełni responsywna i zoptymalizowana pod Smart TV.</p></div>
+                        <div class="qna-answer">
+                            <p>Możesz oglądać VOD na Smart TV na dwa wygodne sposoby:</p>
+                            <p>1. Otwórz w przeglądarce telewizora dedykowany portal <strong><a href="https://polskieradio.cc/tv" target="_blank">polskieradio.cc/tv</a></strong> (z pełną obsługą pilota TV, klawiszy 1-6 i wirtualnego pilota w telefonie <strong><a href="https://polskieradio.cc/pilot" target="_blank">polskieradio.cc/pilot</a></strong>).</p>
+                            <p>2. Wejdź bezpośrednio na stronę <strong><code>polskieradio.cc/vod</code></strong> w przeglądarce TV lub prześlij obraz bezprzewodowo za pomocą technologii <strong>Chromecast / AirPlay</strong> ze swojego smartfona lub laptopa.</p>
+                        </div>
+                    </details>
+
+                    <!-- Q5 -->
+                    <details class="qna-item">
+                        <summary class="qna-summary">
+                            <div class="qna-q-title">
+                                <span class="qna-badge-q">5</span>
+                                <span>Jakie hity kina chrześcijańskiego znajdę w repertuarze?</span>
+                            </div>
+                            <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                        </summary>
+                        <div class="qna-answer">
+                            <p>W repertuarze VOD Christian Culture znajdziesz m.in. arcydzieła i nagradzane produkcje: <em>Przełęcz ocalonych (Hacksaw Ridge)</em>, <em>Chata (The Shack)</em>, <em>JEZUS wg Ewangelii św. Łukasza</em>, <em>Bóg nie umarł (God's Not Dead 1 & 2)</em>, <em>Luter</em>, <em>Spotkanie (The Encounter)</em>, <em>I stanie się światło</em> oraz poruszające świadectwa wiary i dokumenty biblijne.</p>
+                        </div>
+                    </details>
+
+                    <!-- Q6 -->
+                    <details class="qna-item">
+                        <summary class="qna-summary">
+                            <div class="qna-q-title">
+                                <span class="qna-badge-q">6</span>
+                                <span>Jak mogę wesprzeć rozwój kina chrześcijańskiego i nowe licencje filmowe?</span>
+                            </div>
+                            <div class="qna-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                        </summary>
+                        <div class="qna-answer">
+                            <p>Całość projektu rozwija się dzięki modlitwie i dobrowolnemu wsparciu Darczyńców oraz Patronów. Możesz dołączyć do grona osób wspierających ewangelizację przez media na oficjalnym profilu: <strong><a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer">Patronite • Osobowość Plus (patronite.pl/osobowoscplus)</a></strong>. Bóg zapłać za każde wsparcie!</p>
+                        </div>
                     </details>
                 </div>
             </div>
