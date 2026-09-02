@@ -739,7 +739,7 @@
         Zeskanuj kod aparatem w telefonie, aby natychmiast sterować telewizorem z poziomu smartfona (pilot, stacje, głośność).
       </p>
       <div class="qr-frame">
-        <img id="pairingQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&bgcolor=ffffff&color=000000&data=https%3A%2F%2Fpolskieradio.cc%2Fpilot" alt="QR Pilot">
+        <img id="pairingQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&bgcolor=ffffff&color=000000&data=https%3A%2F%2Fpolskieradio.cc%2Fpilot%3Fsession%3Dpublic" alt="QR Pilot">
       </div>
       <div>
         <div style="font-size:1.6vh; color:var(--text-muted); margin-bottom:0.5vh;">KOD SZYBKIEGO PAROWANIA:</div>
@@ -1074,19 +1074,37 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // ── SMART PHONE PAIRING ENGINE (BroadcastChannel + Storage Sync) ──
+    // ── SMART PHONE PAIRING ENGINE (Firebase Realtime Database - Cross-Device) ──
+    // Session: default "public" or from URL ?session=CODE
+    const _tvSessionId = new URLSearchParams(window.location.search).get('session') || 'public';
+
+    // Local BroadcastChannel still works for same-browser / same-tab usage
     const bc = ('BroadcastChannel' in window) ? new BroadcastChannel('cc_smart_tv_sync') : null;
-    if (bc) {
-      bc.onmessage = function(ev) {
-        handleRemoteMessage(ev.data);
-      };
-    }
-    window.addEventListener('storage', function(e) {
-      if (e.key === 'cc_smart_tv_cmd' && e.newValue) {
-        try {
-          handleRemoteMessage(JSON.parse(e.newValue));
-        } catch(err) {}
-      }
+    if (bc) bc.onmessage = (ev) => handleRemoteMessage(ev.data);
+
+    // Firebase Realtime DB listener — phone → TV cross-device
+    import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js').then(({ initializeApp }) => {
+      import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js').then(({ getDatabase, ref, onValue }) => {
+        const fbApp = initializeApp({
+          apiKey: "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M",
+          databaseURL: "https://lumina-cc-default-rtdb.europe-west1.firebasedatabase.app",
+          projectId: "lumina-cc",
+          appId: "1:413985877183:web:b0c99a686a4fb1b875aa0a"
+        }, 'smart-tv-remote-' + Date.now());
+        
+        const rtdb = getDatabase(fbApp);
+        const tvRef = ref(rtdb, 'tv_remote/' + _tvSessionId);
+
+        let lastTs = 0;
+        onValue(tvRef, (snap) => {
+          const data = snap.val();
+          if (!data || !data.ts || data.ts === lastTs) return;
+          lastTs = data.ts;
+          handleRemoteMessage(data);
+        });
+
+        console.log('[SmartTV] Firebase Pilot connected — session:', _tvSessionId);
+      });
     });
 
     function handleRemoteMessage(data) {
