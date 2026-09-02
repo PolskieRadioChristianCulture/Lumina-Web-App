@@ -680,11 +680,11 @@
                                 <!-- Shortcut: Language Toggle -->
                                 <div id="shortcutLangRow" style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
                                     <div style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold-low); flex-shrink: 0;">
-                                        <span id="langToggleText" style="color: var(--gold-primary); font-size: 0.7rem; font-weight: 800; font-family: 'Montserrat', sans-serif;">EN</span>
+                                        <i class="fa-solid fa-globe" style="color: var(--gold-primary); font-size: 0.85rem;"></i>
                                     </div>
                                     <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.2;">
                                         <span style="font-size: 0.8rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif;">Język / Language</span>
-                                        <span style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Zmień na angielski</span>
+                                        <span id="langSubtitle" style="font-size: 0.6rem; color: rgba(255,255,255,0.45); font-family: 'Inter', sans-serif;">Zmień na angielski</span>
                                     </div>
                                 </div>
                             </div>
@@ -1890,7 +1890,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const langBtn = document.getElementById('shortcutLangRow');
-            const langText = document.getElementById('langToggleText');
+            const langSubtitle = document.getElementById('langSubtitle');
  
             // Function to check if translated to English (based on Google Translate cookie)
             function isEnglish() {
@@ -1898,18 +1898,18 @@
                        (document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen'));
             }
  
-            // Sync button label on load (with safety checks)
-            if (langText) {
+            // Sync button label on load
+            if (langBtn) {
                 if (isEnglish()) {
-                    langText.textContent = 'PL';
-                    if (langBtn) langBtn.title = 'Przełącz na język polski';
+                    langBtn.title = 'Przełącz na język polski';
+                    if (langSubtitle) langSubtitle.textContent = 'Switch to Polish';
                 } else {
-                    langText.textContent = 'EN';
-                    if (langBtn) langBtn.title = 'Switch to English';
+                    langBtn.title = 'Switch to English';
+                    if (langSubtitle) langSubtitle.textContent = 'Zmień na angielski';
                 }
             }
  
-            if (langBtn && langText) {
+            if (langBtn) {
                 langBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     if (isEnglish()) {
