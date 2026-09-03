@@ -539,6 +539,75 @@
         .row-arrow-right { right: -14px; }
 
         /* ── MOVIE CARD 3D HOVER (NETFLIX CARD) ── */
+        /* ── ADD MOVIE ACTION CARD ── */
+        .movie-card-add {
+            flex: 0 0 280px;
+            border: 2px dashed rgba(250, 204, 21, 0.5) !important;
+            background: linear-gradient(180deg, rgba(20, 26, 46, 0.75) 0%, rgba(10, 14, 28, 0.95) 100%) !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+        }
+        .movie-card-add:hover {
+            border-color: #facc15 !important;
+            border-style: solid !important;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(250, 204, 21, 0.55) !important;
+            transform: scale(1.08) translateY(-6px);
+            z-index: 30;
+        }
+        .add-poster-box {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, rgba(250, 204, 21, 0.18) 0%, rgba(7, 9, 14, 0.95) 80%);
+            overflow: hidden;
+        }
+        .add-plus-circle {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: rgba(250, 204, 21, 0.15);
+            border: 2px solid #facc15;
+            color: #facc15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.3);
+        }
+        .movie-card-add:hover .add-plus-circle {
+            background: #facc15;
+            color: #000000;
+            transform: scale(1.15) rotate(90deg);
+            box-shadow: 0 0 25px rgba(250, 204, 21, 0.85);
+        }
+
+        /* Badge dla filmu w trakcie weryfikacji */
+        .movie-badge-pending {
+            background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+            color: #000000 !important;
+            font-weight: 900 !important;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.6) !important;
+            animation: pulseBadge 2s infinite ease-in-out;
+        }
+        @keyframes pulseBadge {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.04); }
+        }
+        .movie-card.is-pending {
+            border: 1.5px solid rgba(245, 158, 11, 0.65) !important;
+            background: linear-gradient(180deg, rgba(32, 24, 12, 0.85) 0%, rgba(15, 20, 35, 0.95) 100%) !important;
+        }
+
         .movie-card-ad {
             border: 1.5px solid rgba(225, 29, 72, 0.6) !important;
             background: linear-gradient(180deg, rgba(40, 12, 24, 0.85) 0%, rgba(15, 20, 35, 0.95) 100%) !important;
@@ -1351,6 +1420,105 @@
         </div>
     </section>
 
+
+    <!-- ══════════ MODAL DODAWANIA FILMU PRZEZ UŻYTKOWNIKA ══════════ -->
+    <div class="detail-modal-overlay" id="addMovieModal" onclick="if(event.target===this) closeAddMovieModal()">
+        <div class="detail-modal-card" style="max-width: 620px;">
+            <div style="padding: 18px 24px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between;">
+                <div style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-circle-plus" style="color: var(--gold-accent);"></i>
+                    <span>Zaproponuj film do VOD</span>
+                </div>
+                <button type="button" class="btn-close-modal" onclick="closeAddMovieModal()">&times;</button>
+            </div>
+
+            <form id="addMovieForm" onsubmit="handleMovieProposalSubmit(event)" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 15px;">
+                <div>
+                    <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">
+                        1. Tytuł filmu <span style="color: #f43f5e;">*</span>
+                    </label>
+                    <input type="text" id="proposalTitle" required placeholder="np. Paweł Apostoł, Ostatni szczyt, Ben-Hur..." 
+                           style="width: 100%; background: rgba(15, 20, 35, 0.9); border: 1px solid var(--silver-border); border-radius: 12px; padding: 11px 14px; color: #fff; font-size: 0.92rem; outline: none;">
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">
+                        2. Link do filmu (YouTube / Vider / www) <span style="color: #f43f5e;">*</span>
+                    </label>
+                    <input type="url" id="proposalUrl" required placeholder="https://www.youtube.com/watch?v=... lub https://youtu.be/..." 
+                           style="width: 100%; background: rgba(15, 20, 35, 0.9); border: 1px solid var(--silver-border); border-radius: 12px; padding: 11px 14px; color: #fff; font-size: 0.92rem; outline: none;"
+                           oninput="updateProposalPreview(this.value)">
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">
+                        3. Kategoria filmu
+                    </label>
+                    <select id="proposalCategory" style="width: 100%; background: #0f1424; border: 1px solid var(--silver-border); border-radius: 12px; padding: 11px 14px; color: #fff; font-size: 0.92rem; outline: none;">
+                        <option value="Hity Kinowe & Superprodukcje">Hity Kinowe & Superprodukcje</option>
+                        <option value="Ekranizacje Biblijne & Historia Zbawienia">Ekranizacje Biblijne & Historia Zbawienia</option>
+                        <option value="Dramaty Wiary & Poruszające Świadectwa">Dramaty Wiary & Poruszające Świadectwa</option>
+                        <option value="Wszystkie Filmy">Wszystkie Filmy</option>
+                    </select>
+                </div>
+
+                <!-- Podgląd miniatury na żywo -->
+                <div id="proposalPreviewBox" style="display: none; background: rgba(0,0,0,0.5); border: 1px solid var(--silver-border); border-radius: 14px; padding: 12px;">
+                    <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">
+                        <i class="fa-solid fa-eye" style="color: var(--gold-accent);"></i> Podgląd wykrytego wideo
+                    </div>
+                    <div style="width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; position: relative;">
+                        <img id="proposalThumbImg" src="" alt="Podgląd" style="width: 100%; height: 100%; object-fit: cover;">
+                        <span class="movie-card-badge movie-badge-pending" style="top: 8px; left: 8px;">⏳ WERYFIKOWANY</span>
+                    </div>
+                </div>
+
+                <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 12px; font-size: 0.82rem; color: #cbd5e1; line-height: 1.5;">
+                    <strong style="color: #fbbf24;"><i class="fa-solid fa-shield-halved"></i> Procedura weryfikacji:</strong>
+                    Każdy zgłoszony seans otrzymuje status <em>„Weryfikowany”</em> i jest sprawdzany przez zespół redakcyjny Christian Culture pod kątem zgodności z wartościami ewangelicznymi i jakości technicznej. Po zatwierdzeniu zostaje dopuszczony do oficjalnej emisji.
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 4px;">
+                    <button type="button" class="btn-hero-info" onclick="closeAddMovieModal()" style="flex: 1; justify-content: center;">
+                        Anuluj
+                    </button>
+                    <button type="submit" class="btn-hero-play" style="flex: 2; justify-content: center; background: var(--gold-accent); color: #000;">
+                        <i class="fa-solid fa-paper-plane"></i> Wyślij do weryfikacji
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ══════════ MODAL DLA FILMU OCZEKUJĄCEGO NA WERYFIKACJĘ ══════════ -->
+    <div class="detail-modal-overlay" id="pendingInfoModal" onclick="if(event.target===this) closePendingInfoModal()">
+        <div class="detail-modal-card" style="max-width: 580px;">
+            <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; overflow: hidden;">
+                <img id="pendingModalThumb" src="" alt="Miniatura" style="width: 100%; height: 100%; object-fit: cover;">
+                <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(15,20,36,0.95) 100%);"></div>
+                <span class="movie-card-badge movie-badge-pending" style="top: 14px; left: 14px; font-size: 0.8rem; padding: 5px 12px;">⏳ WERYFIKOWANY</span>
+                <button type="button" class="btn-close-detail" onclick="closePendingInfoModal()">&times;</button>
+            </div>
+            <div style="padding: 20px 24px 24px 24px; display: flex; flex-direction: column; gap: 14px;">
+                <h3 id="pendingModalTitle" style="font-family: var(--font-title); font-size: 1.4rem; font-weight: 800; color: #fff;">Tytuł</h3>
+                <div style="font-size: 0.85rem; color: #f59e0b; font-weight: 700;">
+                    <i class="fa-solid fa-clock"></i> Status: W trakcie weryfikacji redakcyjnej
+                </div>
+                <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.6;">
+                    Dziękujemy za przesłanie propozycji filmu! Seans oczekuje obecnie na sprawdzenie pod kątem wartości chrześcijańskich i jakości dźwięku/obrazu przez redakcję <strong>Christian Culture</strong>. Po pozytywnej weryfikacji film zostanie dopuszczony do całodobowej emisji VOD.
+                </p>
+                <div style="display: flex; gap: 10px; margin-top: 6px;">
+                    <button type="button" class="btn-hero-info" onclick="closePendingInfoModal()" style="flex: 1; justify-content: center;">
+                        Rozumiem
+                    </button>
+                    <button type="button" id="btnAdminApprove" class="btn-hero-play" style="display: none; flex: 1; justify-content: center; background: #22c55e; color: #fff;">
+                        <i class="fa-solid fa-check"></i> Dopuść do emisji
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ══════════ FOOTER ══════════ -->
     <footer class="vod-footer">
         <div style="font-weight:700; color:#fff;">&copy; 2026 VOD Christian Culture • Dobre Kino 24/7</div>
@@ -1429,7 +1597,55 @@
             }
         };
 
-        // 3. Renderowanie Poziomych Karuzel Kategorii (Netflix Rails)
+        // 3. Obsługa propozycji filmów użytkowników i weryfikacji
+        function getStoredProposals() {
+            try {
+                return JSON.parse(localStorage.getItem('vod_user_proposals') || '[]');
+            } catch(e) {
+                return [];
+            }
+        }
+
+        function saveStoredProposals(list) {
+            try {
+                localStorage.setItem('vod_user_proposals', JSON.stringify(list));
+            } catch(e) {}
+        }
+
+        function extractVideoDetailsFromUrl(url) {
+            if (!url) return { youtubeId: null, embedUrl: null, embedType: 'direct', thumbnail: 'logo_vod_cc.jpg' };
+            const cleanUrl = url.trim();
+            const ytMatch = cleanUrl.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+            if (ytMatch && ytMatch[1]) {
+                return {
+                    youtubeId: ytMatch[1],
+                    embedUrl: null,
+                    embedType: 'youtube',
+                    thumbnail: 'https://i.ytimg.com/vi/' + ytMatch[1] + '/hqdefault.jpg'
+                };
+            }
+            if (cleanUrl.includes('vider.info')) {
+                let embed = cleanUrl;
+                if (!cleanUrl.includes('/embed/video/')) {
+                    const viderMatch = cleanUrl.match(/vider\.info\/vid\/([a-zA-Z0-9]+)/i);
+                    if (viderMatch) embed = 'https://vider.info/embed/video/' + viderMatch[1];
+                }
+                return {
+                    youtubeId: null,
+                    embedUrl: embed,
+                    embedType: 'iframe',
+                    thumbnail: 'logo_vod_cc.jpg'
+                };
+            }
+            return {
+                youtubeId: null,
+                embedUrl: cleanUrl,
+                embedType: 'iframe',
+                thumbnail: 'logo_vod_cc.jpg'
+            };
+        }
+
+        // 3a. Renderowanie Poziomych Karuzel Kategorii (Netflix Rails) z przyciskiem "+" i weryfikacją
         function renderCategoryRails() {
             if (!window.VodDB || !window.VodDB.movies) return;
 
@@ -1438,21 +1654,23 @@
             const biblical = (typeof window.VodDB.getBiblical === 'function') ? window.VodDB.getBiblical() : allMovies.filter(m => m.category.includes('Biblij'));
             const dramas = (typeof window.VodDB.getDramas === 'function') ? window.VodDB.getDramas() : allMovies.filter(m => m.category.includes('Dramat'));
 
-            // Przekaż insertAd = true do Hitów oraz Pełnego Katalogu
-            renderTrack('trackHits', hits, true);
-            renderTrack('trackBiblical', biblical, false);
-            renderTrack('trackDramas', dramas, false);
-            renderTrack('trackAll', allMovies, true);
+            renderTrack('trackHits', hits, true, 'Hity Kinowe & Superprodukcje');
+            renderTrack('trackBiblical', biblical, false, 'Ekranizacje Biblijne & Historia Zbawienia');
+            renderTrack('trackDramas', dramas, false, 'Dramaty Wiary & Poruszające Świadectwa');
+            renderTrack('trackAll', allMovies, true, 'Wszystkie Filmy');
         }
 
-        function renderTrack(trackId, moviesList, insertAd = false) {
+        function renderTrack(trackId, moviesList, insertAd = false, categoryKey = 'all') {
             const track = document.getElementById(trackId);
             if (!track) return;
 
             let htmlParts = [];
+            const proposals = getStoredProposals();
+
+            // Filmy z bazy oficjalnej
             moviesList.forEach((m) => {
                 htmlParts.push(createMovieCardHtml(m));
-                // Wstawienie karty Patronite DOKŁADNIE po filmie Przełęcz ocalonych (między Przełęczą a Chatą)
+                // Wstawienie karty Patronite DOKŁADNIE po filmie Przełęcz ocalonych
                 if (insertAd && m.id === 'przelecz-ocalonych-hacksaw-ridge' && window.VodDB && window.VodDB.ads && window.VodDB.ads.length > 0) {
                     window.VodDB.ads.forEach(ad => {
                         htmlParts.push(createAdCardHtml(ad));
@@ -1460,7 +1678,82 @@
                 }
             });
 
+            // Wstawienie propozycji użytkowników pasujących do kategorii
+            proposals.forEach((p) => {
+                const matchesCategory = (categoryKey === 'Wszystkie Filmy') || 
+                    (categoryKey === 'all') || 
+                    (p.category && p.category.toLowerCase().includes(categoryKey.toLowerCase())) ||
+                    (categoryKey.includes('Biblij') && p.category && p.category.includes('Biblij')) ||
+                    (categoryKey.includes('Dramat') && p.category && p.category.includes('Dramat')) ||
+                    (categoryKey.includes('Hity') && p.category && p.category.includes('Hity'));
+
+                if (matchesCategory) {
+                    if (p.status === 'pending') {
+                        htmlParts.push(createPendingMovieCardHtml(p));
+                    } else if (p.status === 'approved') {
+                        htmlParts.push(createMovieCardHtml(p));
+                    }
+                }
+            });
+
+            // Karta "+" na samym końcu każdego rzędu do dodawania propozycji filmu
+            htmlParts.push(createAddMovieCardHtml(categoryKey));
+
             track.innerHTML = htmlParts.join('');
+        }
+
+        function createAddMovieCardHtml(categoryKey) {
+            return `
+                <article class="movie-card movie-card-add" onclick="openAddMovieModal('${categoryKey}')" title="Zaproponuj film do tej kategorii">
+                    <div class="movie-poster-box add-poster-box">
+                        <div class="add-plus-circle">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+                        <span class="movie-card-badge" style="background:linear-gradient(135deg, #facc15, #ca8a04); color:#000; font-weight:900;">DODAJ FILM</span>
+                    </div>
+                    <div class="movie-card-info" style="text-align:center;">
+                        <div class="movie-card-title" style="color:#facc15;">Zaproponuj film</div>
+                        <div class="movie-card-meta" style="justify-content:center; color:#94a3b8;">
+                            <span>Kliknij, aby zgłosić seans</span>
+                        </div>
+                        <div class="movie-card-actions" style="margin-top:4px;">
+                            <button type="button" class="btn-card-quickplay" style="background:rgba(250,204,21,0.15); border:1px solid #facc15; color:#facc15;">
+                                <i class="fa-solid fa-plus"></i> Zaproponuj
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function createPendingMovieCardHtml(m) {
+            return `
+                <article class="movie-card is-pending" data-id="${m.id}" onclick="openPendingInfoModal('${m.id}')" title="Film w trakcie weryfikacji redakcyjnej">
+                    <div class="movie-poster-box">
+                        <img src="${m.thumbnail}" alt="${m.title}" class="movie-poster-img" loading="lazy" onerror="this.src='logo_vod_cc.jpg'">
+                        <span class="movie-card-badge movie-badge-pending"><i class="fa-solid fa-clock"></i> WERYFIKOWANY</span>
+                        <span class="movie-card-duration"><i class="fa-solid fa-shield-halved"></i> Weryfikacja</span>
+                        <div class="movie-play-overlay-icon" style="color:#f59e0b; opacity:1;">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </div>
+                    </div>
+                    <div class="movie-card-info">
+                        <div class="movie-card-title">${m.title}</div>
+                        <div class="movie-card-meta">
+                            <span style="color:#f59e0b; font-weight:700;"><i class="fa-solid fa-clock"></i> Weryfikowany</span>
+                            <span class="movie-card-genre">${m.category || 'VOD'}</span>
+                        </div>
+                        <div class="movie-card-actions" onclick="event.stopPropagation();">
+                            <button type="button" class="btn-card-quickplay" onclick="openPendingInfoModal('${m.id}')" style="background:rgba(245,158,11,0.2); border:1px solid #f59e0b; color:#fbbf24;">
+                                <i class="fa-solid fa-clock"></i> Sprawdź status
+                            </button>
+                            <button type="button" class="btn-card-icon" onclick="openPendingInfoModal('${m.id}')" title="Status weryfikacji">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `;
         }
 
         function createAdCardHtml(ad) {
@@ -1525,6 +1818,125 @@
                 </article>
             `;
         }
+
+        // 3b. Obsługa Modalu Dodawania Filmu
+        window.openAddMovieModal = function(categoryKey) {
+            const modal = document.getElementById('addMovieModal');
+            const select = document.getElementById('proposalCategory');
+            if (select && categoryKey && categoryKey !== 'all') {
+                for (let i = 0; i < select.options.length; i++) {
+                    if (select.options[i].value.includes(categoryKey) || categoryKey.includes(select.options[i].value)) {
+                        select.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            document.getElementById('proposalTitle').value = '';
+            document.getElementById('proposalUrl').value = '';
+            document.getElementById('proposalPreviewBox').style.display = 'none';
+            modal.classList.add('open');
+        };
+
+        window.closeAddMovieModal = function() {
+            document.getElementById('addMovieModal').classList.remove('open');
+        };
+
+        window.updateProposalPreview = function(url) {
+            const box = document.getElementById('proposalPreviewBox');
+            const img = document.getElementById('proposalThumbImg');
+            const details = extractVideoDetailsFromUrl(url);
+            if (details.youtubeId) {
+                img.src = details.thumbnail;
+                box.style.display = 'block';
+            } else {
+                box.style.display = 'none';
+            }
+        };
+
+        window.handleMovieProposalSubmit = function(event) {
+            event.preventDefault();
+            const title = document.getElementById('proposalTitle').value.trim();
+            const url = document.getElementById('proposalUrl').value.trim();
+            const category = document.getElementById('proposalCategory').value;
+
+            if (!title || !url) return;
+
+            const details = extractVideoDetailsFromUrl(url);
+            const newProposal = {
+                id: 'prop_' + Date.now(),
+                title: title,
+                url: url,
+                youtubeId: details.youtubeId,
+                embedUrl: details.embedUrl,
+                embedType: details.embedType,
+                thumbnail: details.thumbnail,
+                category: category,
+                badge: 'WERYFIKOWANY',
+                duration: 'Weryfikacja',
+                year: new Date().getFullYear(),
+                description: 'Propozycja seansu zgłoszona przez widza VOD Christian Culture. Oczekuje na zatwierdzenie redakcyjne.',
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
+
+            const list = getStoredProposals();
+            list.unshift(newProposal);
+            saveStoredProposals(list);
+
+            // Rejestracja w pamięci runtime VodDB, aby odtwarzacz mógł go obsłużyć po dopuszczeniu
+            if (window.VodDB && window.VodDB.movies) {
+                window.VodDB.movies.push(newProposal);
+            }
+
+            closeAddMovieModal();
+            renderCategoryRails();
+
+            alert('🎬 Dziękujemy! Twoja propozycja filmu została dodana.\n\nFilm pojawił się w katalogu ze statusem "WERYFIKOWANY" i oczekuje na sprawdzenie przez zespół redakcyjny Christian Culture przed dopuszczeniem do emisji.');
+        };
+
+        // 3c. Obsługa Modalu Informacyjnego dla Filmu w Weryfikacji
+        window.openPendingInfoModal = function(proposalId) {
+            const list = getStoredProposals();
+            const p = list.find(x => x.id === proposalId);
+            if (!p) return;
+
+            document.getElementById('pendingModalThumb').src = p.thumbnail || 'logo_vod_cc.jpg';
+            document.getElementById('pendingModalTitle').textContent = p.title;
+
+            // Sprawdzenie uprawnień administratora (?admin=1 lub ?admin_vod=1)
+            const isAdmin = window.location.search.includes('admin=1') || window.location.search.includes('admin_vod=1');
+            const btnApprove = document.getElementById('btnAdminApprove');
+            if (btnApprove) {
+                if (isAdmin) {
+                    btnApprove.style.display = 'inline-flex';
+                    btnApprove.onclick = function() {
+                        approveMovieProposal(p.id);
+                    };
+                } else {
+                    btnApprove.style.display = 'none';
+                }
+            }
+
+            document.getElementById('pendingInfoModal').classList.add('open');
+        };
+
+        window.closePendingInfoModal = function() {
+            document.getElementById('pendingInfoModal').classList.remove('open');
+        };
+
+        window.approveMovieProposal = function(proposalId) {
+            const list = getStoredProposals();
+            const item = list.find(p => p.id === proposalId);
+            if (item) {
+                item.status = 'approved';
+                item.badge = 'NOWOŚĆ';
+                item.duration = 'Dopuszczony';
+                saveStoredProposals(list);
+                closePendingInfoModal();
+                renderCategoryRails();
+                alert('✅ Film został zatwierdzony i dopuszczony do oficjalnej emisji na platformie VOD!');
+            }
+        };
 
         // 4. Przewijanie karuzeli w lewo/prawo
         window.scrollRow = function(trackId, direction) {
