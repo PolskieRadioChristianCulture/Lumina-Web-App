@@ -1361,10 +1361,12 @@
       }
     }
 
-    // Start w trybie Ramówki (Dashboard):
-    // Użytkownik widzi od razu cały ekosystem: 6 stacji radiowych, Telewizję CCTV24 Live oraz Kino VOD.
-    // Po bezczynności (lub kliknięciu "Pełny Ekran") nastąpi płynne przejście w tryb pełnoekranowy.
+    // Start w trybie Pełnoekranowym — karuzela z Telewizją CCTV24 i Kino VOD
+    // widoczna jest na dolnym pasku nawigacyjnym nawet w trybie pełnoekranowym.
+    // Przycisk "Widok Ramówki" w belce pozwala w każdej chwili wyświetlić
+    // pełne menu z opisem, małym okienkiem i wszystkimi 8 kanałami.
     switchChannel(1);
+    toggleStageMaximize(true);
 
   </script>
 </body>
