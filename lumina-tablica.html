@@ -350,6 +350,8 @@
             title: '☀️ Lato z Jezusem — Wielkie Pytania (Dzień 22)',
             fullTextHtml: LUMINA_DAY22_DEVOTIONAL_HTML,
             image: 'promo_dzj.jpg',
+            streamUrl: 'https://polskieradio.cc/master-live',
+            isLiveBroadcastPost: true,
             likes: 215,
             amen: 192,
             _pinned: true,
@@ -5776,11 +5778,23 @@
 
                 // ── Specjalna karta rozważania "Dobrze, że jesteś / Cuda Każdego Dnia" (Zaraz pod Patronem) ──
                 if (item._isReflection) {
-                    const imgHtml = item.image
-                        ? `<div style="width:100%; aspect-ratio:16/9; border-radius:14px; overflow:hidden; margin-bottom:18px;">
-                                <img src="${item.image}" alt="${item.title}" style="width:100%; height:100%; object-fit:cover; display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">
-                           </div>`
-                        : '';
+                    const streamUrl = item.streamUrl || 'https://polskieradio.cc/master-live';
+                    const livePlayerHtml = `
+                        <div class="mission-live-player-wrapper" style="margin: 0 0 18px 0;">
+                            <iframe src="${streamUrl}" 
+                                    title="Telewizja Christian Culture 24/7 — Transmisja na Żywo" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    allowfullscreen 
+                                    loading="eager"></iframe>
+                            <div class="mission-live-player-overlay">
+                                <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
+                                    <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
+                                </button>
+                                <a href="${streamUrl.split('?')[0]}" target="_blank" class="btn-expand-live" title="Otwórz pełny kanał TV w nowej karcie">
+                                    <i class="fa-solid fa-tv"></i> <span>Pełny Ekran TV</span>
+                                </a>
+                            </div>
+                        </div>`;
                     const refAvatar = resolveLuminaAuthorAvatar(item);
                     return `
                         <article class="post-card-1x1" id="${item.id}" style="width: 100%;">
@@ -5793,14 +5807,15 @@
                                         <div class="post-author-role">${item.authorRole || item.time}</div>
                                     </div>
                                 </div>
-                                <div class="post-header-actions">
+                                <div class="post-header-actions" style="display:flex; align-items:center; gap:6px;">
+                                    <span class="badge-type-tag" style="background:rgba(239,68,68,0.2); border-color:#ef4444; color:#fca5a5; font-weight:800;" title="Transmisja Telewizyjna Na Żywo"><i class="fa-solid fa-circle" style="color:#ef4444; font-size:0.5rem; margin-right:2px;"></i> NA ŻYWO</span>
                                     <span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(250,204,21,0.15));border-color:rgba(245,158,11,0.6);color:#fbbf24; font-weight:800;" title="Rozważanie: Dobrze, że jesteś"><i class="fa-solid fa-sun" style="color:#f59e0b;"></i> <span class="badge-type-tag-text">Dobrze, że jesteś</span></span>
                                 </div>
                             </div>
 
                             <!-- Grafika (jeśli jest) -->
                             <div class="post-details-box" style="padding-top:4px;">
-                                ${imgHtml}
+                                ${livePlayerHtml}
                                 ${item.title ? `<div class="post-headline" style="font-size:1.15rem; margin-bottom:16px;">${item.title}</div>` : ''}
                                 <!-- Pełna treść rozważania -->
                                 <div style="font-size:0.93rem; color:#e2e8f0; line-height:1.8; font-family:'Plus Jakarta Sans',sans-serif;">
