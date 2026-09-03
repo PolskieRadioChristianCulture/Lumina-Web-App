@@ -1161,8 +1161,12 @@
             </div>
 
             <div class="cinema-player-screen-wrap">
-                <div id="ytPlayerContainer"></div>
-                <iframe id="customIframePlayer" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; border:none; z-index:2;" allowfullscreen="true" allowscriptaccess="always" scrolling="no" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                <iframe id="vodPlayerIframe" 
+                        src="about:blank" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" 
+                        allowfullscreen="true" 
+                        style="width:100%; height:100%; border:none; position:absolute; top:0; left:0;">
+                </iframe>
 
                 <!-- Pre-roll Overlay -->
                 <div class="preroll-pill" id="prerollPill">
@@ -1334,15 +1338,12 @@
     </footer>
 
     <!-- ══════════ SCRIPTS ══════════ -->
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="vod-db.js?v=20260903"></script>
+        <script src="vod-db.js?v=20260903"></script>
 
     <script>
     (function() {
         'use strict';
 
-        let player = null;
-        let isPlayerReady = false;
         let isPrerollPlaying = false;
         let currentMovie = null;
         let detailMovie = null;
@@ -1494,41 +1495,16 @@
             }
         };
 
-        // 6. YouTube IFrame API Callback & Kinowy Odtwarzacz
-        window.onYouTubeIframeAPIReady = function() {
-            isPlayerReady = true;
-            initPlayerInstance();
-        };
+        // 6. BŁYSKAWICZNY, NIEZAWODNY ODTWARZACZ KINOWY
+        function loadVideoToIframe(urlOrVideoId, isIframeEmbed) {
+            const iframe = document.getElementById('vodPlayerIframe');
+            if (!iframe) return;
 
-        function initPlayerInstance() {
-            if (player || !window.YT) return;
-            const initialId = (window.VodDB && window.VodDB.preroll.enabled) 
-                ? window.VodDB.preroll.videoId 
-                : 'LnnlqaQ19_0';
-
-            player = new YT.Player('ytPlayerContainer', {
-                videoId: initialId,
-                playerVars: {
-                    autoplay: 1,
-                    controls: 1,
-                    rel: 0,
-                    modestbranding: 1,
-                    playsinline: 1,
-                    origin: window.location.origin
-                },
-                events: {
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.ENDED) {
-                if (isPrerollPlaying) {
-                    startMainMoviePlayback();
-                } else {
-                    playNextMovie();
-                }
+            if (isIframeEmbed) {
+                iframe.src = urlOrVideoId + (urlOrVideoId.includes('?') ? '&' : '?') + 'autoplay=1&auto=1';
+            } else {
+                // YouTube Embed with autoplay and permissions
+                iframe.src = 'https://www.youtube-nocookie.com/embed/' + urlOrVideoId + '?autoplay=1&enablejsapi=1&rel=0&playsinline=1&modestbranding=1';
             }
         }
 
@@ -1543,43 +1519,27 @@
             document.getElementById('playerModalDesc').textContent = movie.description;
             document.getElementById('cinemaModal').classList.add('open');
 
-            const ytBox = document.getElementById('ytPlayerContainer');
-            const customIframe = document.getElementById('customIframePlayer');
-
-            // Jeśli film to iframe embed (np. Vider)
+            // Jeśli film to zewnętrzny iframe embed (np. Vider)
             if (movie.embedType === 'iframe' && movie.embedUrl) {
-                if (player && typeof player.stopVideo === 'function') {
-                    try { player.stopVideo(); } catch(e) {}
-                }
-                ytBox.style.display = 'none';
-                customIframe.src = movie.embedUrl + (movie.embedUrl.includes('?') ? '&' : '?') + 'autoplay=1&auto=1';
-                customIframe.style.display = 'block';
+                loadVideoToIframe(movie.embedUrl, true);
                 document.getElementById('prerollPill').classList.remove('show');
                 document.getElementById('btnSkipPreroll').classList.remove('show');
                 return;
             }
 
-            customIframe.style.display = 'none';
-            customIframe.src = 'about:blank';
-            ytBox.style.display = 'block';
-
             // Sprawdzenie Pre-rolla CC
-            if (window.VodDB && window.VodDB.preroll.enabled) {
+            if (window.VodDB && window.VodDB.preroll && window.VodDB.preroll.enabled && window.VodDB.preroll.videoId) {
                 isPrerollPlaying = true;
                 document.getElementById('prerollPill').classList.add('show');
                 const skipBtn = document.getElementById('btnSkipPreroll');
                 skipBtn.classList.remove('show');
 
+                loadVideoToIframe(window.VodDB.preroll.videoId, false);
+
                 if (prerollSkipTimer) clearTimeout(prerollSkipTimer);
                 prerollSkipTimer = setTimeout(() => {
                     skipBtn.classList.add('show');
                 }, (window.VodDB.preroll.skipAfterSeconds || 5) * 1000);
-
-                if (player && typeof player.loadVideoById === 'function') {
-                    player.loadVideoById(window.VodDB.preroll.videoId);
-                    try { player.unMute(); player.setVolume(100); } catch(e) {}
-                    player.playVideo();
-                }
             } else {
                 startMainMoviePlayback();
             }
@@ -1594,23 +1554,22 @@
             document.getElementById('prerollPill').classList.remove('show');
             document.getElementById('btnSkipPreroll').classList.remove('show');
 
-            if (player && currentMovie && currentMovie.youtubeId) {
-                player.loadVideoById(currentMovie.youtubeId);
-                try { player.unMute(); player.setVolume(100); } catch(e) {}
-                player.playVideo();
+            if (!currentMovie) return;
+
+            if (currentMovie.embedType === 'iframe' && currentMovie.embedUrl) {
+                loadVideoToIframe(currentMovie.embedUrl, true);
+            } else if (currentMovie.youtubeId) {
+                loadVideoToIframe(currentMovie.youtubeId, false);
             }
         }
 
         window.closeCinemaModal = function() {
             document.getElementById('cinemaModal').classList.remove('open');
-            if (player && typeof player.stopVideo === 'function') {
-                try { player.stopVideo(); } catch(e) {}
-            }
-            const customIframe = document.getElementById('customIframePlayer');
-            if (customIframe) {
-                customIframe.src = 'about:blank';
-                customIframe.style.display = 'none';
-            }
+            const iframe = document.getElementById('vodPlayerIframe');
+            if (iframe) iframe.src = 'about:blank';
+            if (prerollSkipTimer) clearTimeout(prerollSkipTimer);
+            document.getElementById('prerollPill').classList.remove('show');
+            document.getElementById('btnSkipPreroll').classList.remove('show');
         };
 
         window.handleCinemaModalBackdropClick = function(e) {
