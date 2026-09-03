@@ -340,6 +340,76 @@
             z-index: 1;
         }
 
+
+        /* ── HERO CAROUSEL CONTROLS & FADE TRANSITIONS ── */
+        .hero-content {
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+        .hero-content.fade-out {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+        .hero-controls-wrap {
+            position: absolute;
+            bottom: 25px;
+            right: 4vw;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(10, 14, 25, 0.6);
+            padding: 8px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+        }
+        .hero-nav-arrow {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.82rem;
+            transition: all 0.2s ease;
+        }
+        .hero-nav-arrow:hover {
+            background: rgba(250, 204, 21, 0.25);
+            border-color: #facc15;
+            color: #facc15;
+            transform: scale(1.1);
+        }
+        .hero-indicators-list {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .hero-indicator-dot {
+            width: 14px;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .hero-indicator-dot.active {
+            width: 28px;
+            background: #facc15;
+            box-shadow: 0 0 10px rgba(250, 204, 21, 0.7);
+        }
+        @media (max-width: 768px) {
+            .hero-controls-wrap {
+                bottom: 15px;
+                right: 50%;
+                transform: translateX(50%);
+            }
+        }
+
         .hero-content {
             position: relative;
             z-index: 2;
@@ -1164,6 +1234,13 @@
                 </button>
             </div>
         </div>
+
+        <!-- Cykliczne wskaźniki i nawigacja pętli Hero -->
+        <div class="hero-controls-wrap" aria-label="Nawigacja karuzeli filmowej">
+            <button type="button" class="hero-nav-arrow" onclick="prevHeroMovie()" title="Poprzedni film"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="hero-indicators-list" id="heroIndicatorsList"></div>
+            <button type="button" class="hero-nav-arrow" onclick="nextHeroMovie()" title="Następny film"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
     </section>
 
     <!-- ══════════ LIVE SEARCH RESULTS DRAWER ══════════ -->
@@ -1567,28 +1644,121 @@
             }, { passive: true });
         }
 
-        // 2. Inicjalizacja Hero Spotlight (Hit Główny)
+        // 2. Inicjalizacja Cyklicznej Pętli Hero Spotlight (wszystkie dostępne filmy w pętli)
+        let heroMoviesList = [];
+        let currentHeroIndex = 0;
+        let heroLoopTimer = null;
+        let isHeroHovered = false;
+
         function initHeroSpotlight() {
-            if (!window.VodDB || !window.VodDB.movies) return;
-            const heroMovie = (typeof window.VodDB.getFeaturedMovie === 'function') 
-                ? window.VodDB.getFeaturedMovie() 
-                : window.VodDB.movies[0];
+            if (!window.VodDB || !window.VodDB.movies || window.VodDB.movies.length === 0) return;
 
-            setHeroMovie(heroMovie);
+            heroMoviesList = window.VodDB.movies;
+            currentHeroIndex = 0;
+
+            renderHeroIndicators();
+            displayHeroMovie(currentHeroIndex, false);
+            startHeroLoop();
+
+            const heroSection = document.getElementById('heroSection');
+            if (heroSection) {
+                heroSection.addEventListener('mouseenter', () => {
+                    isHeroHovered = true;
+                    stopHeroLoop();
+                });
+                heroSection.addEventListener('mouseleave', () => {
+                    isHeroHovered = false;
+                    startHeroLoop();
+                });
+            }
         }
 
-        function setHeroMovie(m) {
-            if (!m) return;
+        function renderHeroIndicators() {
+            const list = document.getElementById('heroIndicatorsList');
+            if (!list) return;
+            list.innerHTML = heroMoviesList.map((m, idx) => `
+                <div class="hero-indicator-dot ${idx === 0 ? 'active' : ''}" 
+                     onclick="goToHeroMovie(${idx})" 
+                     title="${m.title}"></div>
+            `).join('');
+        }
+
+        function displayHeroMovie(index, animate = true) {
+            if (!heroMoviesList || heroMoviesList.length === 0) return;
+            if (index < 0) index = heroMoviesList.length - 1;
+            if (index >= heroMoviesList.length) index = 0;
+            currentHeroIndex = index;
+
+            const m = heroMoviesList[currentHeroIndex];
             currentMovie = m;
+
             const hero = document.getElementById('heroSection');
-            hero.style.backgroundImage = 'url(' + m.thumbnail + ')';
-            document.getElementById('heroTitle').textContent = m.title;
-            document.getElementById('heroBadge').textContent = m.badge || 'HIT KINOWY';
-            document.getElementById('heroYear').textContent = m.year;
-            document.getElementById('heroDuration').textContent = m.duration;
-            document.getElementById('heroCategory').textContent = m.category;
-            document.getElementById('heroSynopsis').textContent = m.description;
+            const content = document.querySelector('.hero-content');
+
+            const applyContent = () => {
+                hero.style.backgroundImage = 'url(' + m.thumbnail + ')';
+                document.getElementById('heroTitle').textContent = m.title;
+                document.getElementById('heroBadge').textContent = m.badge || 'HIT KINOWY';
+                document.getElementById('heroYear').textContent = m.year;
+                document.getElementById('heroDuration').textContent = m.duration;
+                document.getElementById('heroCategory').textContent = m.category;
+                document.getElementById('heroSynopsis').textContent = m.description;
+
+                // Aktualizacja kropek wskaźnika
+                const dots = document.querySelectorAll('.hero-indicator-dot');
+                dots.forEach((dot, dIdx) => {
+                    dot.classList.toggle('active', dIdx === currentHeroIndex);
+                });
+
+                if (content && animate) {
+                    content.classList.remove('fade-out');
+                }
+            };
+
+            if (animate && content) {
+                content.classList.add('fade-out');
+                setTimeout(applyContent, 300);
+            } else {
+                applyContent();
+            }
         }
+
+        function nextHeroMovie() {
+            displayHeroMovie(currentHeroIndex + 1, true);
+        }
+
+        function prevHeroMovie() {
+            displayHeroMovie(currentHeroIndex - 1, true);
+        }
+
+        function goToHeroMovie(idx) {
+            displayHeroMovie(idx, true);
+            stopHeroLoop();
+            if (!isHeroHovered) startHeroLoop();
+        }
+
+        function startHeroLoop() {
+            stopHeroLoop();
+            // Przełączanie filmu w pętli co 7.5 sekundy
+            heroLoopTimer = setInterval(() => {
+                const cinemaModal = document.getElementById('cinemaModal');
+                const isModalOpen = cinemaModal && cinemaModal.classList.contains('open');
+                if (!isHeroHovered && !isPrerollPlaying && !isModalOpen) {
+                    nextHeroMovie();
+                }
+            }, 7500);
+        }
+
+        function stopHeroLoop() {
+            if (heroLoopTimer) {
+                clearInterval(heroLoopTimer);
+                heroLoopTimer = null;
+            }
+        }
+
+        window.nextHeroMovie = nextHeroMovie;
+        window.prevHeroMovie = prevHeroMovie;
+        window.goToHeroMovie = goToHeroMovie;
 
         window.playHeroMovie = function() {
             if (currentMovie) {
