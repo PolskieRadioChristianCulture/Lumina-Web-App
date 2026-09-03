@@ -1236,9 +1236,11 @@
     <!-- ══════════ WSPARCIE MISJI & PATRONITE BANNER ══════════ -->
     <section class="patronite-banner-section" style="padding: 10px 4vw 30px 4vw;">
         <div style="background: linear-gradient(135deg, rgba(35, 12, 25, 0.9) 0%, rgba(15, 20, 35, 0.95) 100%); border: 1.5px solid rgba(225, 29, 72, 0.5); border-radius: 20px; padding: 22px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; box-shadow: 0 10px 30px rgba(225, 29, 72, 0.25);">
-            <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-                <img src="zostan-patronem-cc.gif?v=20260831_2230" alt="Zostań Patronem Misji Christian Culture" style="width: 120px; height: 120px; border-radius: 16px; object-fit: cover; border: 1.5px solid #f43f5e; box-shadow: 0 0 20px rgba(225, 29, 72, 0.4);">
-                <div style="max-width: 600px;">
+            <div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
+                <div style="width: 260px; max-width: 100%; aspect-ratio: 16 / 9; background: #000000; border-radius: 14px; border: 1.5px solid #f43f5e; box-shadow: 0 0 22px rgba(225, 29, 72, 0.45); overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <img src="zostan-patronem-cc.gif?v=20260831_2230" alt="Zostań Patronem Misji Christian Culture" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                </div>
+                <div style="max-width: 580px;">
                     <span style="background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 3px 10px; border-radius: 12px; text-transform: uppercase;"><i class="fa-solid fa-heart"></i> Wsparcie Twórczości</span>
                     <h3 style="font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: #ffd700; margin: 6px 0;">Zostań Patronem Misji Christian Culture</h3>
                     <p style="color: #cbd5e1; font-size: 0.88rem; line-height: 1.5;">Twoje dobrowolne wsparcie pozwala tworzyć i rozwijać dobre kino, 24/7 radio oraz bezpłatną ewangelizację multimedialną w całej Polsce i na świecie. Dołącz do grona Patronów!</p>
@@ -1464,8 +1466,8 @@
         function createAdCardHtml(ad) {
             return `
                 <article class="movie-card movie-card-ad" onclick="window.open('${ad.targetUrl}', '_blank')" title="Odwiedź profil Patronite">
-                    <div class="movie-poster-box">
-                        <img src="${ad.image}" alt="${ad.title}" class="movie-poster-img" style="object-fit:cover;" loading="lazy">
+                    <div class="movie-poster-box" style="background:#000000;">
+                        <img src="${ad.image}" alt="${ad.title}" class="movie-poster-img" style="object-fit:contain; background:#000000;" loading="lazy">
                         <span class="movie-card-badge" style="background:${ad.badgeColor || 'linear-gradient(135deg, #e11d48, #be123c)'}; color:#fff;"><i class="fa-solid fa-heart"></i> ${ad.badge}</span>
                         <span class="movie-card-duration" style="background:rgba(0,0,0,0.85); color:#ffd700;"><i class="fa-solid fa-hand-holding-heart"></i> Wspieraj Misję</span>
                         <div class="movie-play-overlay-icon" style="background:rgba(225, 29, 72, 0.45); color:#ffffff; opacity:1;">
