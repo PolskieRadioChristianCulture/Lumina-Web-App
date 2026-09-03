@@ -576,7 +576,7 @@
     .player-corner-controls {
       display: none;
       position: fixed;
-      top: 3vh;
+      top: 11vh;
       right: 3vw;
       z-index: 100002;
       transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -703,6 +703,11 @@
     </div>
 
     <div class="tv-header-actions">
+      <!-- Przełącznik Widok Ramówki / Pełny Ekran -->
+      <button class="tv-header-btn focusable" id="btnHeaderViewToggle" tabindex="0" onclick="toggleStageMaximize()" title="Przełącz Pełny Ekran / Widok Ramówki" style="border-color: var(--gold-accent);">
+        <i class="fa-solid fa-expand" id="headerViewIcon" style="color: var(--gold-accent);"></i> <span id="headerViewLabel">Pełny Ekran</span>
+      </button>
+
       <!-- QR Patronite Support Button -->
       <button class="tv-header-btn patronite focusable" tabindex="0" onclick="openPatroniteModal()">
         <i class="fa-solid fa-heart"></i> Patronite QR
@@ -772,11 +777,11 @@
     </aside>
   </main>
 
-  <!-- 6 RADIO STATIONS CAROUSEL -->
+  <!-- 6 RADIO STATIONS + CCTV24 TV + KINO VOD CAROUSEL -->
   <div class="tv-carousel-container tv-osd-fade">
     <div class="carousel-tab-bar">
-      <span class="carousel-label"><i class="fa-solid fa-radio"></i> 6 Stacji Radiowych Christian Culture (Klawisze 1 - 6 na pilocie)</span>
-      <span style="font-size:1.5vh; color:var(--gold-accent);">Wybierz pilotem lub wciśnij numer na pilocie</span>
+      <span class="carousel-label"><i class="fa-solid fa-layer-group"></i> 6 Stacji Radiowych • Telewizja CCTV24 Live • Kino VOD</span>
+      <span style="font-size:1.5vh; color:var(--gold-accent);">Klawisze 1-6: Radio • Klawisz 7: Telewizja CCTV24 • Klawisz 8: Kino VOD</span>
     </div>
 
     <section class="tv-channels-carousel" id="channelsCarousel">
@@ -840,6 +845,26 @@
         <div class="channel-tag">Przypowieści & Psalmy</div>
       </div>
 
+      <!-- 7: TELEWIZJA CCTV24 LIVE -->
+      <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(7)">
+        <div class="channel-card-top">
+          <img src="logo_cctv.png" class="channel-card-logo" alt="CCTV24 TV Live" onerror="this.src='icon.png'">
+          <span class="channel-badge-num" style="background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff;">7 • TV</span>
+        </div>
+        <div class="channel-name" style="color: #fca5a5;">CCTV24 TV</div>
+        <div class="channel-tag">Telewizja Live 24/7</div>
+      </div>
+
+      <!-- 8: KINO VOD -->
+      <div class="tv-channel-card focusable" tabindex="0" onclick="switchChannel(8)">
+        <div class="channel-card-top">
+          <img src="vod_hity_kina_poster.jpg" class="channel-card-logo" alt="Kino VOD" onerror="this.src='logo_vod_cc.jpg'">
+          <span class="channel-badge-num" style="background: linear-gradient(135deg, #a855f7, #6b21a8); color: #fff;">8 • VOD</span>
+        </div>
+        <div class="channel-name" style="color: #d8b4fe;">Kino VOD</div>
+        <div class="channel-tag">Hity Kina Chrześcijańskiego</div>
+      </div>
+
     </section>
   </div>
 
@@ -847,9 +872,12 @@
   <footer class="tv-footer-guide tv-osd-fade">
     <div>
       Sterowanie: 
-      <span class="key-badge">1 - 6</span> 6 Stacji Radiowych
+      <span class="key-badge">1 - 6</span> Radio
+      <span class="key-badge">7</span> CCTV24 TV
+      <span class="key-badge">8</span> Kino VOD
       <span class="key-badge">▲ ▼ ◀ ▶</span> Nawigacja
-      <span class="key-badge">OK</span> Wybierz / Odtwarzaj
+      <span class="key-badge">OK</span> Wybierz
+      <span class="key-badge">Powrót</span> Ramówka / Minimalizuj
     </div>
     <div>
       <i class="fa-solid fa-shield-halved" style="color:var(--silver-main);"></i> Ekosystem Christian Culture • Premium Smart TV
@@ -1002,18 +1030,18 @@
     }
 
     // ── OSD AUTO-HIDE & IDLE AUTO-FULLSCREEN ──
-    // Zamiast pozostawiać samo małe okno programu — automatycznie przechodź w tryb pełnoekranowy!
+    // Jeśli użytkownik zostawi ekran bezczynny w trybie ramówki — automatycznie przejdź w tryb pełnoekranowy!
     let tvIdleTimer = null;
     function resetTVIdleTimer() {
       document.body.classList.remove('tv-idle');
       clearTimeout(tvIdleTimer);
       tvIdleTimer = setTimeout(() => {
         document.body.classList.add('tv-idle');
-        // Jeśli użytkownik zminimalizował okno i zostawił ekran bezczynny, wróć automatycznie do pełnego ekranu
+        // Jeśli użytkownik zminimalizował okno i zostawił ekran bezczynny, płynnie przejdź w tryb pełnoekranowy
         if (!isStageMaximized && !isAnyModalOpen()) {
           toggleStageMaximize(true);
         }
-      }, 4500);
+      }, 7000);
     }
 
     ['mousemove', 'mousedown', 'keydown', 'touchstart', 'pointerdown', 'wheel'].forEach(evt => {
@@ -1029,17 +1057,26 @@
       } else {
         isStageMaximized = !isStageMaximized;
       }
+
+      const cornerIcon = document.getElementById('cornerMaximizeIcon');
+      const cornerLabel = document.getElementById('cornerMaximizeLabel');
+      const headerIcon = document.getElementById('headerViewIcon');
+      const headerLabel = document.getElementById('headerViewLabel');
       
       if (isStageMaximized) {
         container.classList.add('maximized');
         document.body.classList.add('tv-fullscreen-active');
-        document.getElementById('cornerMaximizeIcon').className = 'fa-solid fa-compress';
-        document.getElementById('cornerMaximizeLabel').innerText = 'Zminimalizuj [Powrót]';
+        if (cornerIcon) cornerIcon.className = 'fa-solid fa-table-columns';
+        if (cornerLabel) cornerLabel.innerText = 'Widok Ramówki [Powrót]';
+        if (headerIcon) headerIcon.className = 'fa-solid fa-table-columns';
+        if (headerLabel) headerLabel.innerText = 'Widok Ramówki';
       } else {
         container.classList.remove('maximized');
         document.body.classList.remove('tv-fullscreen-active');
-        document.getElementById('cornerMaximizeIcon').className = 'fa-solid fa-expand';
-        document.getElementById('cornerMaximizeLabel').innerText = 'Pełny Ekran';
+        if (cornerIcon) cornerIcon.className = 'fa-solid fa-expand';
+        if (cornerLabel) cornerLabel.innerText = 'Pełny Ekran';
+        if (headerIcon) headerIcon.className = 'fa-solid fa-expand';
+        if (headerLabel) headerLabel.innerText = 'Pełny Ekran';
       }
       resetTVIdleTimer();
     }
@@ -1225,9 +1262,9 @@
       document.getElementById('playLabel').innerText = label;
     }
 
-    // Remote Hook: Quick Numeric Key 1-6
+    // Remote Hook: Quick Numeric Key 1-8 (1-6 Radio, 7 CCTV24 TV, 8 VOD)
     window.onTVQuickChannel = function(num) {
-      if (num >= 1 && num <= 6) {
+      if (num >= 1 && num <= 8) {
         switchChannel(num);
       }
     };
@@ -1324,9 +1361,10 @@
       }
     }
 
-    // Default start with Station 1 (Radio CC PL) in Fullscreen Mode
+    // Start w trybie Ramówki (Dashboard):
+    // Użytkownik widzi od razu cały ekosystem: 6 stacji radiowych, Telewizję CCTV24 Live oraz Kino VOD.
+    // Po bezczynności (lub kliknięciu "Pełny Ekran") nastąpi płynne przejście w tryb pełnoekranowy.
     switchChannel(1);
-    toggleStageMaximize(true);
 
   </script>
 </body>

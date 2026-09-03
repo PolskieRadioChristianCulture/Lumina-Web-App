@@ -75,8 +75,8 @@
       window.addEventListener('keydown', (e) => {
         this.resetIdleTimer();
 
-        // Klawisze numeryczne 1-6 (Szybki wybór stacji)
-        if (e.key >= '1' && e.key <= '6') {
+        // Klawisze numeryczne 1-8 (Szybki wybór stacji 1-6, CCTV24 TV 7, VOD 8)
+        if (e.key >= '1' && e.key <= '8') {
           const channelNum = parseInt(e.key, 10);
           if (typeof global.onTVQuickChannel === 'function') {
             global.onTVQuickChannel(channelNum);
