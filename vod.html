@@ -1443,9 +1443,9 @@
 
                 <div>
                     <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">
-                        2. Link do filmu (YouTube / Vider / www) <span style="color: #f43f5e;">*</span>
+                        2. Link do filmu lub kod &lt;iframe&gt; (YouTube / Vider / www) <span style="color: #f43f5e;">*</span>
                     </label>
-                    <input type="url" id="proposalUrl" required placeholder="https://www.youtube.com/watch?v=... lub https://youtu.be/..." 
+                    <input type="text" id="proposalUrl" required placeholder="Wklej link (np. YouTube, Vider) lub kod <iframe>..." 
                            style="width: 100%; background: rgba(15, 20, 35, 0.9); border: 1px solid var(--silver-border); border-radius: 12px; padding: 11px 14px; color: #fff; font-size: 0.92rem; outline: none;"
                            oninput="updateProposalPreview(this.value)">
                 </div>
@@ -1462,13 +1462,15 @@
                     </select>
                 </div>
 
-                <!-- Podgląd miniatury na żywo -->
+                <!-- Podgląd miniatury / odtwarzacza na żywo -->
                 <div id="proposalPreviewBox" style="display: none; background: rgba(0,0,0,0.5); border: 1px solid var(--silver-border); border-radius: 14px; padding: 12px;">
-                    <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">
-                        <i class="fa-solid fa-eye" style="color: var(--gold-accent);"></i> Podgląd wykrytego wideo
+                    <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fa-solid fa-eye" style="color: var(--gold-accent);"></i> Podgląd wykrytego źródła</span>
+                        <span id="proposalPreviewType" style="color: #38bdf8; font-size: 0.72rem; text-transform: none;"></span>
                     </div>
                     <div style="width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; position: relative;">
-                        <img id="proposalThumbImg" src="" alt="Podgląd" style="width: 100%; height: 100%; object-fit: cover;">
+                        <img id="proposalThumbImg" src="" alt="Podgląd" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                        <iframe id="proposalIframePreview" src="about:blank" style="width: 100%; height: 100%; border: none; display: none;" allowfullscreen="true" scrolling="no"></iframe>
                         <span class="movie-card-badge movie-badge-pending" style="top: 8px; left: 8px;">⏳ WERYFIKOWANY</span>
                     </div>
                 </div>
@@ -1614,7 +1616,15 @@
 
         function extractVideoDetailsFromUrl(url) {
             if (!url) return { youtubeId: null, embedUrl: null, embedType: 'direct', thumbnail: 'logo_vod_cc.jpg' };
-            const cleanUrl = url.trim();
+            let cleanUrl = url.trim();
+
+            // 1. Sprawdzenie, czy użytkownik wkleił kod <iframe> (np. <iframe src="https://vider.info/embed/video/8m88mv" ...>)
+            const iframeSrcMatch = cleanUrl.match(/src=["']([^"']+)["']/i);
+            if (iframeSrcMatch && iframeSrcMatch[1]) {
+                cleanUrl = iframeSrcMatch[1].trim();
+            }
+
+            // 2. Obsługa YouTube
             const ytMatch = cleanUrl.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
             if (ytMatch && ytMatch[1]) {
                 return {
@@ -1624,6 +1634,8 @@
                     thumbnail: 'https://i.ytimg.com/vi/' + ytMatch[1] + '/hqdefault.jpg'
                 };
             }
+
+            // 3. Obsługa Vider.info
             if (cleanUrl.includes('vider.info')) {
                 let embed = cleanUrl;
                 if (!cleanUrl.includes('/embed/video/')) {
@@ -1637,6 +1649,8 @@
                     thumbnail: 'logo_vod_cc.jpg'
                 };
             }
+
+            // 4. Inne odtwarzacze iframe / linki
             return {
                 youtubeId: null,
                 embedUrl: cleanUrl,
@@ -1839,17 +1853,37 @@
 
         window.closeAddMovieModal = function() {
             document.getElementById('addMovieModal').classList.remove('open');
+            const iframe = document.getElementById('proposalIframePreview');
+            if (iframe) iframe.src = 'about:blank';
         };
 
         window.updateProposalPreview = function(url) {
             const box = document.getElementById('proposalPreviewBox');
             const img = document.getElementById('proposalThumbImg');
+            const iframe = document.getElementById('proposalIframePreview');
+            const typeLabel = document.getElementById('proposalPreviewType');
             const details = extractVideoDetailsFromUrl(url);
+
             if (details.youtubeId) {
                 img.src = details.thumbnail;
+                img.style.display = 'block';
+                if (iframe) {
+                    iframe.style.display = 'none';
+                    iframe.src = 'about:blank';
+                }
+                if (typeLabel) typeLabel.textContent = 'Wykryto: YouTube';
+                box.style.display = 'block';
+            } else if (details.embedUrl && details.embedUrl.startsWith('http')) {
+                img.style.display = 'none';
+                if (iframe) {
+                    iframe.src = details.embedUrl;
+                    iframe.style.display = 'block';
+                }
+                if (typeLabel) typeLabel.textContent = 'Wykryto: ' + (details.embedUrl.includes('vider') ? 'Vider.info (iframe)' : 'Odtwarzacz iframe');
                 box.style.display = 'block';
             } else {
                 box.style.display = 'none';
+                if (iframe) iframe.src = 'about:blank';
             }
         };
 
