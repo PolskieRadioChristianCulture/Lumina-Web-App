@@ -26,6 +26,9 @@
         "audio/**",
         "downloads/**"
       ],
+      "releaseConfig": {
+        "maxVersionsToKeep": 3
+      },
       "cleanUrls": true,
       "redirects": [
         {
