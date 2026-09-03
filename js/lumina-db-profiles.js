@@ -363,6 +363,84 @@ export const PROFILES_DB = {
                 image: 'lumina_default_cover.jpg'
             }
         ]
+    },
+
+    'u_zytagrzesik_7502': {
+        uid: 'z3PXzHryYuP8rQiXKW4jRORTFCg2',
+        slug: 'u_zytagrzesik_7502',
+        name: 'Zyta Grzesik',
+        age: '28',
+        city: 'Warszawa, Polska',
+        avatar: 'https://lh3.googleusercontent.com/a/ACg8ocKgf20c-QkXz0HyvwE-ygEggt64QkP_a0ZhhrpABNI1joZ4IgAArA=s96-c',
+        cover: 'lumina_default_cover.jpg',
+        coverPosY: '50%',
+        job: 'Członek Społeczności LUMINA ✨',
+        role: 'Społeczność LUMINA ✨',
+        church: 'Wspólnota Chrześcijańska',
+        denom: 'Rzymskokatolickie',
+        status: 'Panna/Kawaler',
+        pin: '7777',
+        visibility: 'public',
+        match: '100%',
+        matchScore: '100%',
+        stats: { friends: '42', posts: '1', likes: '89' },
+        verse: '„Wszystko mogę w Tym, który mnie umacnia”',
+        verseRef: '— List do Filipian 4, 13',
+        bio: 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
+        tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+        photos: ['https://lh3.googleusercontent.com/a/ACg8ocKgf20c-QkXz0HyvwE-ygEggt64QkP_a0ZhhrpABNI1joZ4IgAArA=s96-c', 'lumina_default_cover.jpg'],
+        posts: [
+            {
+                id: 'post_zyta_1',
+                author: 'Zyta Grzesik',
+                authorSlug: 'u_zytagrzesik_7502',
+                authorAvatar: 'https://lh3.googleusercontent.com/a/ACg8ocKgf20c-QkXz0HyvwE-ygEggt64QkP_a0ZhhrpABNI1joZ4IgAArA=s96-c',
+                time: 'Dzisiaj • ✨ Witaj w LUMINA',
+                text: 'Szczęść Boże wszystkim! Witam serdecznie w społeczności LUMINA. Niech Pan błogosławi nasze rozmowy i spotkania! 🕊️',
+                likes: 2,
+                amen: 1,
+                image: null
+            }
+        ]
+    },
+
+    'zytagrzesik': {
+        uid: 'z3PXzHryYuP8rQiXKW4jRORTFCg2',
+        slug: 'u_zytagrzesik_7502',
+        name: 'Zyta Grzesik',
+        age: '28',
+        city: 'Warszawa, Polska',
+        avatar: 'https://lh3.googleusercontent.com/a/ACg8ocKgf20c-QkXz0HyvwE-ygEggt64QkP_a0ZhhrpABNI1joZ4IgAArA=s96-c',
+        cover: 'lumina_default_cover.jpg',
+        coverPosY: '50%',
+        job: 'Członek Społeczności LUMINA ✨',
+        role: 'Społeczność LUMINA ✨',
+        church: 'Wspólnota Chrześcijańska',
+        denom: 'Rzymskokatolickie',
+        status: 'Panna/Kawaler',
+        pin: '7777',
+        visibility: 'public',
+        match: '100%',
+        matchScore: '100%',
+        stats: { friends: '42', posts: '1', likes: '89' },
+        verse: '„Wszystko mogę w Tym, który mnie umacnia”',
+        verseRef: '— List do Filipian 4, 13',
+        bio: 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
+        tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+        photos: ['https://lh3.googleusercontent.com/a/ACg8ocKgf20c-QkXz0HyvwE-ygEggt64QkP_a0ZhhrpABNI1joZ4IgAArA=s96-c', 'lumina_default_cover.jpg'],
+        posts: [
+            {
+                id: 'post_zyta_1',
+                author: 'Zyta Grzesik',
+                authorSlug: 'u_zytagrzesik_7502',
+                authorAvatar: 'https://lh3.googleusercontent.com/a/ACg8ocKgf20c-QkXz0HyvwE-ygEggt64QkP_a0ZhhrpABNI1joZ4IgAArA=s96-c',
+                time: 'Dzisiaj • ✨ Witaj w LUMINA',
+                text: 'Szczęść Boże wszystkim! Witam serdecznie w społeczności LUMINA. Niech Pan błogosławi nasze rozmowy i spotkania! 🕊️',
+                likes: 2,
+                amen: 1,
+                image: null
+            }
+        ]
     }
 };
 

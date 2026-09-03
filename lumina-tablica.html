@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
 <script>
@@ -3984,9 +3984,9 @@
                     <div class="chat-header-bar" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.1);">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <button type="button" onclick="returnToConversationsList()" style="background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer; padding: 4px 8px;"><i class="fa-solid fa-arrow-left"></i></button>
-                            <img loading="lazy" decoding="async" id="activeChatAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+                            <img loading="lazy" decoding="async" id="activeChatAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc; cursor: pointer; transition: transform 0.2s;" title="Zobacz profil użytkownika" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
                             <div>
-                                <div id="activeChatName" style="font-weight: 800; font-size: 0.95rem; color: #fff;">Rozmowa Prywatna</div>
+                                <div id="activeChatName" style="font-weight: 800; font-size: 0.95rem; color: #fff; cursor: pointer;" title="Zobacz profil użytkownika" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}">Rozmowa Prywatna</div>
                                 <div style="font-size: 0.7rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
                                     <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Bezpieczna Rozmowa 1:1 ✨ </div>
                             </div>
@@ -7368,6 +7368,21 @@
                 if (unreadA !== unreadB) return unreadB - unreadA;
                 if (a.isMission !== b.isMission) return a.isMission ? -1 : 1;
                 return (a.name || '').localeCompare(b.name || '');
+            });
+
+            // Deduplikacja unikalnych profili (np. duplikaty kont z Firestore po uid lub znormalizowanej nazwie)
+            const seenDms = new Set();
+            filtered = filtered.filter(u => {
+                const uidKey = u.uid ? `uid_${u.uid.toLowerCase().trim()}` : null;
+                const nameKey = u.name ? `name_${u.name.toLowerCase().trim().replace(/\s+/g, ' ')}` : null;
+                const slugKey = u.slug ? `slug_${u.slug.toLowerCase().trim()}` : null;
+                if (uidKey && seenDms.has(uidKey)) return false;
+                if (nameKey && seenDms.has(nameKey) && !u.isMission) return false;
+                if (slugKey && seenDms.has(slugKey)) return false;
+                if (uidKey) seenDms.add(uidKey);
+                if (nameKey && !u.isMission) seenDms.add(nameKey);
+                if (slugKey) seenDms.add(slugKey);
+                return true;
             });
 
             if (filtered.length === 0) {

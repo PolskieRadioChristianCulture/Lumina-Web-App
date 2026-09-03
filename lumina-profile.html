@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
 <script>
@@ -3825,9 +3825,9 @@
                     <div class="chat-header-bar" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.1);">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <button type="button" onclick="returnToConversationsList()" style="background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer; padding: 4px 8px;"><i class="fa-solid fa-arrow-left"></i></button>
-                            <img loading="lazy" decoding="async" id="activeChatAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc;">
+                            <img loading="lazy" decoding="async" id="activeChatAvatar" src="lumina_icon.jpg" alt="Rozmówca" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c084fc; cursor: pointer; transition: transform 0.2s;" title="Zobacz profil użytkownika" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
                             <div>
-                                <div id="activeChatName" style="font-weight: 800; font-size: 0.95rem; color: #fff;">Rozmowa Prywatna</div>
+                                <div id="activeChatName" style="font-weight: 800; font-size: 0.95rem; color: #fff; cursor: pointer;" title="Zobacz profil użytkownika" onclick="if(activeChatSession&&activeChatSession.targetId){closeModal('directMessagesModal'); window.location.href='lumina-profile.html?u='+encodeURIComponent(activeChatSession.targetId);}">Rozmowa Prywatna</div>
                                 <div style="font-size: 0.7rem; color: #10b981; display: flex; align-items: center; gap: 4px;">
                                     <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span> Bezpieczna Rozmowa 1:1 ✨ </div>
                             </div>
@@ -4494,6 +4494,80 @@
                 tags: ['Biblia Audio', 'Słowo Boże', 'Biblia Śpiewana', 'Ewangelizacja'],
                 photos: ['avatar_biblia_audio.gif', 'lumina_default_cover.jpg'],
                 posts: []
+            },
+            'u_zytagrzesik_7502': {
+                uid: 'z3PXzHryYuP8rQiXKW4jRORTFCg2',
+                slug: 'u_zytagrzesik_7502',
+                name: 'Zyta Grzesik',
+                age: '28',
+                city: 'Warszawa, Polska',
+                avatar: 'https://lh3.googleusercontent.com/a/ACg8ocKgf20c-QkXz0HyvwE-ygEggt64QkP_a0ZhhrpABNI1joZ4IgAArA=s96-c',
+                cover: 'lumina_default_cover.jpg',
+                coverPosY: '50%',
+                job: 'Członek Społeczności LUMINA ✨',
+                role: 'Społeczność LUMINA ✨',
+                church: 'Wspólnota Chrześcijańska',
+                denom: 'Rzymskokatolickie',
+                status: 'Panna/Kawaler',
+                pin: '7777',
+                visibility: 'public',
+                match: '100%',
+                matchScore: '100%',
+                verse: '„Wszystko mogę w Tym, który mnie umacnia”',
+                verseRef: '— List do Filipian 4, 13',
+                bio: 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
+                tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+                photos: ['https://lh3.googleusercontent.com/a/ACg8ocKgf20c-QkXz0HyvwE-ygEggt64QkP_a0ZhhrpABNI1joZ4IgAArA=s96-c', 'lumina_default_cover.jpg'],
+                posts: [
+                    {
+                        id: 'post_zyta_1',
+                        author: 'Zyta Grzesik',
+                        authorSlug: 'u_zytagrzesik_7502',
+                        authorAvatar: 'https://lh3.googleusercontent.com/a/ACg8ocKgf20c-QkXz0HyvwE-ygEggt64QkP_a0ZhhrpABNI1joZ4IgAArA=s96-c',
+                        time: 'Dzisiaj • ✨ Witaj w LUMINA',
+                        text: 'Szczęść Boże wszystkim! Witam serdecznie w społeczności LUMINA. Niech Pan błogosławi nasze rozmowy i spotkania! 🕊️',
+                        likes: 2,
+                        amen: 1,
+                        image: null
+                    }
+                ]
+            },
+            'zytagrzesik': {
+                uid: 'z3PXzHryYuP8rQiXKW4jRORTFCg2',
+                slug: 'u_zytagrzesik_7502',
+                name: 'Zyta Grzesik',
+                age: '28',
+                city: 'Warszawa, Polska',
+                avatar: 'https://lh3.googleusercontent.com/a/ACg8ocKgf20c-QkXz0HyvwE-ygEggt64QkP_a0ZhhrpABNI1joZ4IgAArA=s96-c',
+                cover: 'lumina_default_cover.jpg',
+                coverPosY: '50%',
+                job: 'Członek Społeczności LUMINA ✨',
+                role: 'Społeczność LUMINA ✨',
+                church: 'Wspólnota Chrześcijańska',
+                denom: 'Rzymskokatolickie',
+                status: 'Panna/Kawaler',
+                pin: '7777',
+                visibility: 'public',
+                match: '100%',
+                matchScore: '100%',
+                verse: '„Wszystko mogę w Tym, który mnie umacnia”',
+                verseRef: '— List do Filipian 4, 13',
+                bio: 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
+                tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+                photos: ['https://lh3.googleusercontent.com/a/ACg8ocKgf20c-QkXz0HyvwE-ygEggt64QkP_a0ZhhrpABNI1joZ4IgAArA=s96-c', 'lumina_default_cover.jpg'],
+                posts: [
+                    {
+                        id: 'post_zyta_1',
+                        author: 'Zyta Grzesik',
+                        authorSlug: 'u_zytagrzesik_7502',
+                        authorAvatar: 'https://lh3.googleusercontent.com/a/ACg8ocKgf20c-QkXz0HyvwE-ygEggt64QkP_a0ZhhrpABNI1joZ4IgAArA=s96-c',
+                        time: 'Dzisiaj • ✨ Witaj w LUMINA',
+                        text: 'Szczęść Boże wszystkim! Witam serdecznie w społeczności LUMINA. Niech Pan błogosławi nasze rozmowy i spotkania! 🕊️',
+                        likes: 2,
+                        amen: 1,
+                        image: null
+                    }
+                ]
             }
         };
 
@@ -7699,6 +7773,21 @@
                 return (a.name || '').localeCompare(b.name || '');
             });
 
+            // Deduplikacja unikalnych profili (np. duplikaty kont z Firestore po uid lub znormalizowanej nazwie)
+            const seenDms = new Set();
+            filtered = filtered.filter(u => {
+                const uidKey = u.uid ? `uid_${u.uid.toLowerCase().trim()}` : null;
+                const nameKey = u.name ? `name_${u.name.toLowerCase().trim().replace(/\s+/g, ' ')}` : null;
+                const slugKey = u.slug ? `slug_${u.slug.toLowerCase().trim()}` : null;
+                if (uidKey && seenDms.has(uidKey)) return false;
+                if (nameKey && seenDms.has(nameKey) && !u.isMission) return false;
+                if (slugKey && seenDms.has(slugKey)) return false;
+                if (uidKey) seenDms.add(uidKey);
+                if (nameKey && !u.isMission) seenDms.add(nameKey);
+                if (slugKey) seenDms.add(slugKey);
+                return true;
+            });
+
             if (filtered.length === 0) {
                 listEl.innerHTML = `
                     <div style="text-align:center; padding:25px 10px; color:#94a3b8;">
@@ -7780,8 +7869,102 @@
             const listView = document.getElementById('dmListView');
             const chatView = document.getElementById('dmChatRoomView');
             if (listView) listView.style.display = 'flex';
-            if (chatView) chatView.style.display = 'none'; renderDmUsersAndConversations();
+            if (chatView) chatView.style.display = 'none';
+            renderDmUsersAndConversations();
         }
+
+        function openChatWith(name, avatar, slug, targetMessageId) {
+            if (targetMessageId) window._targetChatMessageId = targetMessageId;
+            window._activeChatInitialScrollDone = false;
+            const m = document.getElementById('directMessagesModal');
+            if (m) m.classList.add('open');
+
+            switchMessengerMainTab('private');
+
+            const listView = document.getElementById('dmListView');
+            const chatView = document.getElementById('dmChatRoomView');
+            if (listView) listView.style.display = 'none';
+            if (chatView) chatView.style.display = 'flex';
+
+            const nameEl = document.getElementById('activeChatName');
+            const avatarEl = document.getElementById('activeChatAvatar');
+            if (nameEl) nameEl.textContent = name;
+            if (avatarEl) avatarEl.src = avatar || 'lumina_icon.jpg';
+
+            const myUser = window.LuminaDB?.getCurrentUser();
+            const myProfile = window.LuminaDB?.getCurrentProfile();
+            const rawFrom = myProfile?.slug || myProfile?.uid || myUser?.slug || myUser?.uid || localStorage.getItem('lumina_current_user_slug') || (localStorage.getItem('lumina_guest_id') || 'guest');
+            const fromId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(rawFrom) : rawFrom;
+            let toId = window.LuminaDB ? window.LuminaDB.normalizeChatUserId(slug || name) : (slug || name.toLowerCase().replace(/\s+/g, ''));
+
+            if (fromId === toId) {
+                if (fromId === 'cezaryrgowski') {
+                    toId = 'wiolettarogowska';
+                    if (nameEl) nameEl.textContent = 'Wioletta Rogowska';
+                    if (avatarEl) avatarEl.src = 'avatar_wioletta_official.jpg';
+                } else if (fromId === 'wiolettarogowska') {
+                    toId = 'cezaryrgowski';
+                    if (nameEl) nameEl.textContent = 'Cezary Rogowski';
+                    if (avatarEl) avatarEl.src = 'avatar_cezary_official.jpg';
+                }
+            }
+
+            const chatId = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : [fromId, toId].sort().join('_');
+
+            activeChatSession = {
+                chatId: chatId,
+                targetId: toId,
+                targetName: nameEl?.textContent || name,
+                targetAvatar: avatarEl?.src || avatar
+            };
+
+            const box = document.getElementById('activeChatMessagesBox');
+            if (box) {
+                box.innerHTML = `
+                    <div style="text-align:center;margin:10px 0;">
+                        <span style="font-size:0.72rem;color:#64748b;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:12px;">Rozpoczęto bezpieczną rozmowę z ${escapeHtml(activeChatSession.targetName)} w Chrystusie ✨</span>
+                    </div>
+                `;
+                scrollChatToBottom(box, false);
+            }
+
+            if (activeChatUnsubscribe) activeChatUnsubscribe();
+
+            try {
+                localStorage.setItem(`lumina_chat_read_${chatId}`, String(Date.now()));
+                const normRoomKey = window.LuminaDB ? window.LuminaDB.getChatId(fromId, toId) : chatId;
+                localStorage.setItem(`lumina_chat_read_${normRoomKey}`, String(Date.now()));
+
+                const localJson = localStorage.getItem('lumina_unread_rooms_json');
+                if (localJson) {
+                    try {
+                        const parsed = JSON.parse(localJson);
+                        delete parsed[toId];
+                        delete parsed[slug];
+                        localStorage.setItem('lumina_unread_rooms_json', JSON.stringify(parsed));
+                    } catch(e) {}
+                }
+                if (window._luminaUnreadRoomsMap) {
+                    window._luminaUnreadRoomsMap.delete(toId);
+                    window._luminaUnreadRoomsMap.delete(slug);
+                }
+                if (window.LuminaDB && typeof window.LuminaDB.markDirectMessagesAsRead === 'function') {
+                    window.LuminaDB.markDirectMessagesAsRead(chatId, fromId, myProfile?.name || myUser?.displayName);
+                }
+            } catch(e) {}
+
+            if (window.LuminaDB) {
+                activeChatUnsubscribe = window.LuminaDB.subscribeToDirectMessages(chatId, (messages) => {
+                    renderDirectChatMessages(messages, fromId);
+                });
+            }
+            setTimeout(() => {
+                const input = document.getElementById('activeChatInput');
+                if (input) input.focus();
+                scrollChatToBottom('activeChatMessagesBox', false);
+            }, 150);
+        }
+        window.openChatWith = openChatWith;
 
         function insertChatQuickText(txt) {
             const input = document.getElementById('activeChatInput');
@@ -7929,6 +8112,10 @@
                     }
                 });
             });
+
+            if (typeof renderProfile === 'function') {
+                renderProfile();
+            }
         });
 
         // ── UNIVERSAL OMNI-SEARCH ENGINE (Global Shortcuts & Profiles Resolver) ──
