@@ -19,12 +19,14 @@
         "**/*.zip",
         "**/*.wav",
         "**/*.mp3",
+        "**/*.mp4",
+        "scripts/**",
         "functions/**",
         "audio/**",
         "downloads/**"
       ],
       "releaseConfig": {
-        "maxVersionsToKeep": 3
+        "maxVersionsToKeep": 2
       },
       "cleanUrls": true,
       "redirects": [
