@@ -928,20 +928,40 @@
             position: relative;
             z-index: 50;
             display: flex;
-            gap: 12px;
+            gap: 10px;
             justify-content: center;
             align-items: center;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             margin: 0 auto;
             padding: 16px 16px 4px;
-            max-width: 850px;
+            max-width: 1050px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 900px) {
+            .discovery-filters-wrap {
+                max-width: 100%;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 12px 16px 8px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .discovery-filters-wrap::-webkit-scrollbar { display: none; }
+            .filter-chip {
+                flex-shrink: 0;
+            }
         }
 
         .filter-chip {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            flex-shrink: 0;
             gap: 7px;
-            padding: 9px 20px;
+            padding: 9px 18px;
             border-radius: 24px;
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(14px);
@@ -4249,12 +4269,16 @@
             <button class="carousel-btn right" onclick="scrollCarousel(1)"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
 
-        <!-- Discovery Match Filters (Wszyscy, Kobiety, Mężczyźni, 18-30 lat, Polecaj) - pod karuzelą -->
+        <!-- Discovery Match Filters (Wszyscy, Kobiety, Mężczyźni, 18-30 lat, Filtry Wartości, Polecaj) - pod karuzelą -->
         <div class="discovery-filters-wrap" style="margin-top: 16px;">
             <button class="filter-chip" id="chip_all" onclick="applyDiscoveryFilter('all', this)" title="Wszyscy" aria-label="Wszyscy"><i class="fa-solid fa-users"></i> <span class="filter-chip-text">Wszyscy</span></button>
             <button class="filter-chip" id="chip_kobiety" onclick="applyDiscoveryFilter('kobieta', this)" title="Kobiety" aria-label="Kobiety"><i class="fa-solid fa-venus"></i> <span class="filter-chip-text">Kobiety</span></button>
             <button class="filter-chip" id="chip_mezczyzni" onclick="applyDiscoveryFilter('mezczyzna', this)" title="Mężczyźni" aria-label="Mężczyźni"><i class="fa-solid fa-mars"></i> <span class="filter-chip-text">Mężczyźni</span></button>
             <button class="filter-chip" id="chip_mlodzi" onclick="applyDiscoveryFilter('mlodzi', this)" title="18–30 lat" aria-label="18–30 lat"><i class="fa-solid fa-bolt"></i> <span class="filter-chip-text">18–30 lat</span></button>
+            <button type="button" class="filter-chip" id="btnAdvancedFiltersModalTrigger" onclick="if(typeof openAdvancedFiltersModal==='function') openAdvancedFiltersModal();" title="Filtry Zaawansowane według Wartości & Wiary" aria-label="Filtry Wartości">
+                <i class="fa-solid fa-sliders" style="color:#facc15;"></i>
+                <span class="filter-chip-text">Filtry Wartości ⚙️</span>
+            </button>
 
             <!-- ✨ PRZYCISK "POLECAJ" (POLEĆ ZNAJOMEMU) W STYLU POZOSTAŁYCH PRZYCISKÓW ✨ -->
             <button type="button" class="filter-chip" id="btnRecommendLumina" onclick="openShareLuminaModal()" title="Poleć portal LUMINA znajomemu ✨" aria-label="Poleć portal znajomym">
