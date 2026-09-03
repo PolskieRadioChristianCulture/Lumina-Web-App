@@ -1928,7 +1928,56 @@
             closeAddMovieModal();
             renderCategoryRails();
 
-            alert('🎬 Dziękujemy! Twoja propozycja filmu została dodana.\n\nFilm pojawił się w katalogu ze statusem "WERYFIKOWANY" i oczekuje na sprawdzenie przez zespół redakcyjny Christian Culture przed dopuszczeniem do emisji.');
+            // ── Wysyłka powiadomień technicznych (Mission Control + WhatsApp Grupa Nazira) ──
+            (function sendTechnicalNotifications() {
+                try {
+                    const nowIso = new Date().toISOString();
+                    const nowFormatted = new Date().toLocaleString('pl-PL');
+
+                    // 1. Zapis do czatu technicznego Mission Control (FCM Push na telefon Dowódcy + wpis CommandQueue)
+                    const chatMsg = `🎬 NOWA PROPOZYCJA FILMU VOD DO WERYFIKACJI!\n\n📌 Tytuł: ${title}\n📂 Kategoria: ${category}\n🔗 Źródło: ${url}\n⏳ Status: WERYFIKOWANY\n🕒 Data: ${nowFormatted}\n\n👉 Sprawdź i zatwierdź w odtwarzaczu:\nhttps://polskieradio.cc/vod?admin=1`;
+
+                    fetch('https://firestore.googleapis.com/v1/projects/cc-mission-control/databases/(default)/documents/CommandQueue?key=AIzaSyDou1gYyuJnuF2WocXEqglfRPqqwMm0Ge4', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            fields: {
+                                command: { stringValue: chatMsg },
+                                sender: { stringValue: 'system_vod' },
+                                status: { stringValue: 'pending' },
+                                type: { stringValue: 'vod_proposal' },
+                                movieTitle: { stringValue: title },
+                                movieUrl: { stringValue: url },
+                                category: { stringValue: category },
+                                timestamp: { timestampValue: nowIso }
+                            }
+                        })
+                    }).catch(function(e) { console.warn('MC notify error:', e); });
+
+                    // 2. Dystrybucja na dedykowany czat WhatsApp (Grupa Nazira)
+                    const waMsg = `wyślij celowane [120363409279454206@g.us]: 🎬 *NOWA PROPOZYCJA FILMU DO WERYFIKACJI NA VOD* 🍿\n\n📌 *Tytuł:* ${title}\n📂 *Kategoria:* ${category}\n🔗 *Źródło:* ${url}\n⏳ *Status:* Weryfikowany\n\n👉 *Zatwierdź lub odrzuć emisję:* https://polskieradio.cc/vod?admin=1`;
+
+                    fetch('https://firestore.googleapis.com/v1/projects/cc-mission-control/databases/(default)/documents/CommandQueue?key=AIzaSyDou1gYyuJnuF2WocXEqglfRPqqwMm0Ge4', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            fields: {
+                                command: { stringValue: waMsg },
+                                sender: { stringValue: 'user' },
+                                status: { stringValue: 'pending' },
+                                type: { stringValue: 'vod_proposal_whatsapp' },
+                                movieTitle: { stringValue: title },
+                                timestamp: { timestampValue: nowIso }
+                            }
+                        })
+                    }).catch(function(e) { console.warn('WA notify error:', e); });
+
+                } catch (err) {
+                    console.warn('[VOD NOTIFY ERROR]', err);
+                }
+            })();
+
+            alert('🎬 Dziękujemy! Twoja propozycja filmu została zapisana.\n\nFilm pojawił się w katalogu ze statusem "WERYFIKOWANY", a powiadomienie zostało przesłane do zespołu technicznego Christian Culture.');
         };
 
         // 3c. Obsługa Modalu Informacyjnego dla Filmu w Weryfikacji
