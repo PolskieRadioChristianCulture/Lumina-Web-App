@@ -539,6 +539,15 @@
         .row-arrow-right { right: -14px; }
 
         /* ── MOVIE CARD 3D HOVER (NETFLIX CARD) ── */
+        .movie-card-ad {
+            border: 1.5px solid rgba(225, 29, 72, 0.6) !important;
+            background: linear-gradient(180deg, rgba(40, 12, 24, 0.85) 0%, rgba(15, 20, 35, 0.95) 100%) !important;
+            box-shadow: 0 8px 24px rgba(225, 29, 72, 0.25) !important;
+        }
+        .movie-card-ad:hover {
+            border-color: #f43f5e !important;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(225, 29, 72, 0.6) !important;
+        }
         .movie-card {
             flex: 0 0 280px;
             position: relative;
@@ -1224,6 +1233,23 @@
         </div>
     </div>
 
+    <!-- ══════════ WSPARCIE MISJI & PATRONITE BANNER ══════════ -->
+    <section class="patronite-banner-section" style="padding: 10px 4vw 30px 4vw;">
+        <div style="background: linear-gradient(135deg, rgba(35, 12, 25, 0.9) 0%, rgba(15, 20, 35, 0.95) 100%); border: 1.5px solid rgba(225, 29, 72, 0.5); border-radius: 20px; padding: 22px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; box-shadow: 0 10px 30px rgba(225, 29, 72, 0.25);">
+            <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+                <img src="zostan-patronem-cc.gif?v=20260831_2230" alt="Zostań Patronem Misji Christian Culture" style="width: 120px; height: 120px; border-radius: 16px; object-fit: cover; border: 1.5px solid #f43f5e; box-shadow: 0 0 20px rgba(225, 29, 72, 0.4);">
+                <div style="max-width: 600px;">
+                    <span style="background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 3px 10px; border-radius: 12px; text-transform: uppercase;"><i class="fa-solid fa-heart"></i> Wsparcie Twórczości</span>
+                    <h3 style="font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: #ffd700; margin: 6px 0;">Zostań Patronem Misji Christian Culture</h3>
+                    <p style="color: #cbd5e1; font-size: 0.88rem; line-height: 1.5;">Twoje dobrowolne wsparcie pozwala tworzyć i rozwijać dobre kino, 24/7 radio oraz bezpłatną ewangelizację multimedialną w całej Polsce i na świecie. Dołącz do grona Patronów!</p>
+                </div>
+            </div>
+            <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="btn-hero-play" style="background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; text-decoration: none; box-shadow: 0 6px 20px rgba(225, 29, 72, 0.45); white-space: nowrap;">
+                <i class="fa-solid fa-heart"></i> Zostań Patronem na Patronite
+            </a>
+        </div>
+    </section>
+
     <!-- ══════════ Q&A PYTANIA I ODPOWIEDZI ══════════ -->
     <section class="qna-section" id="vodQnaSection" aria-label="Najczęściej zadawane pytania o VOD">
         <div class="qna-container">
@@ -1410,17 +1436,59 @@
             const biblical = (typeof window.VodDB.getBiblical === 'function') ? window.VodDB.getBiblical() : allMovies.filter(m => m.category.includes('Biblij'));
             const dramas = (typeof window.VodDB.getDramas === 'function') ? window.VodDB.getDramas() : allMovies.filter(m => m.category.includes('Dramat'));
 
-            renderTrack('trackHits', hits);
-            renderTrack('trackBiblical', biblical);
-            renderTrack('trackDramas', dramas);
-            renderTrack('trackAll', allMovies);
+            // Przekaż insertAd = true do Hitów oraz Pełnego Katalogu
+            renderTrack('trackHits', hits, true);
+            renderTrack('trackBiblical', biblical, false);
+            renderTrack('trackDramas', dramas, false);
+            renderTrack('trackAll', allMovies, true);
         }
 
-        function renderTrack(trackId, moviesList) {
+        function renderTrack(trackId, moviesList, insertAd = false) {
             const track = document.getElementById(trackId);
             if (!track) return;
 
-            track.innerHTML = moviesList.map(m => createMovieCardHtml(m)).join('');
+            let htmlParts = [];
+            moviesList.forEach((m) => {
+                htmlParts.push(createMovieCardHtml(m));
+                // Wstawienie karty Patronite DOKŁADNIE po filmie Przełęcz ocalonych (między Przełęczą a Chatą)
+                if (insertAd && m.id === 'przelecz-ocalonych-hacksaw-ridge' && window.VodDB && window.VodDB.ads && window.VodDB.ads.length > 0) {
+                    window.VodDB.ads.forEach(ad => {
+                        htmlParts.push(createAdCardHtml(ad));
+                    });
+                }
+            });
+
+            track.innerHTML = htmlParts.join('');
+        }
+
+        function createAdCardHtml(ad) {
+            return `
+                <article class="movie-card movie-card-ad" onclick="window.open('${ad.targetUrl}', '_blank')" title="Odwiedź profil Patronite">
+                    <div class="movie-poster-box">
+                        <img src="${ad.image}" alt="${ad.title}" class="movie-poster-img" style="object-fit:cover;" loading="lazy">
+                        <span class="movie-card-badge" style="background:${ad.badgeColor || 'linear-gradient(135deg, #e11d48, #be123c)'}; color:#fff;"><i class="fa-solid fa-heart"></i> ${ad.badge}</span>
+                        <span class="movie-card-duration" style="background:rgba(0,0,0,0.85); color:#ffd700;"><i class="fa-solid fa-hand-holding-heart"></i> Wspieraj Misję</span>
+                        <div class="movie-play-overlay-icon" style="background:rgba(225, 29, 72, 0.45); color:#ffffff; opacity:1;">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                    </div>
+                    <div class="movie-card-info">
+                        <div class="movie-card-title" style="color:#ffd700;">${ad.title}</div>
+                        <div class="movie-card-meta">
+                            <span style="color:#f43f5e; font-weight:700;">${ad.subtitle}</span>
+                            <span style="color:#cbd5e1;"><i class="fa-solid fa-gift"></i> Patronite</span>
+                        </div>
+                        <div class="movie-card-actions" onclick="event.stopPropagation();">
+                            <a href="${ad.targetUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-quickplay" style="background:linear-gradient(135deg, #e11d48, #be123c); color:#ffffff; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
+                                <i class="fa-solid fa-heart"></i> ${ad.ctaText || 'Zostań Patronem'}
+                            </a>
+                            <button type="button" class="btn-card-icon" onclick="event.stopPropagation(); if (navigator.share) { navigator.share({title:'Patronite - Misja Christian Culture', url:'${ad.targetUrl}'}); } else { alert('Skopiowano link do Patronite!'); navigator.clipboard.writeText('${ad.targetUrl}'); }" title="Udostępnij zbiórkę">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `;
         }
 
         function createMovieCardHtml(m) {
@@ -1508,7 +1576,7 @@
             }
         }
 
-        // Otwarcie Odtwarzacza Kinowego
+        // Otwarcie Odtwarzacza Kinowego - ZAWSZE z oficjalnym zwiastunem CC
         window.openCinemaPlayer = function(movieId) {
             const movie = window.VodDB.getMovieById(movieId);
             if (!movie) return;
@@ -1519,43 +1587,47 @@
             document.getElementById('playerModalDesc').textContent = movie.description;
             document.getElementById('cinemaModal').classList.add('open');
 
-            // Jeśli film to zewnętrzny iframe embed (np. Vider)
-            if (movie.embedType === 'iframe' && movie.embedUrl) {
-                loadVideoToIframe(movie.embedUrl, true);
-                document.getElementById('prerollPill').classList.remove('show');
-                document.getElementById('btnSkipPreroll').classList.remove('show');
-                return;
-            }
-
-            // Sprawdzenie Pre-rolla CC
+            // ZAWSZE odtwarzaj zwiastun / pre-roll CC (5SbmWSjPNJY) przed KAŻDYM filmem (w tym Przełęcz ocalonych i Chata)
             if (window.VodDB && window.VodDB.preroll && window.VodDB.preroll.enabled && window.VodDB.preroll.videoId) {
                 isPrerollPlaying = true;
                 document.getElementById('prerollPill').classList.add('show');
                 const skipBtn = document.getElementById('btnSkipPreroll');
                 skipBtn.classList.remove('show');
 
+                // Start zwiastuna CC
                 loadVideoToIframe(window.VodDB.preroll.videoId, false);
 
                 if (prerollSkipTimer) clearTimeout(prerollSkipTimer);
                 prerollSkipTimer = setTimeout(() => {
                     skipBtn.classList.add('show');
                 }, (window.VodDB.preroll.skipAfterSeconds || 5) * 1000);
+
+                // Automatyczne przejście do filmu po 36 sekundach zwiastuna, jeśli użytkownik nie kliknie pomin
+                if (window.prerollAutoAdvanceTimer) clearTimeout(window.prerollAutoAdvanceTimer);
+                window.prerollAutoAdvanceTimer = setTimeout(() => {
+                    if (isPrerollPlaying) {
+                        startMainMoviePlayback();
+                    }
+                }, 36000);
             } else {
                 startMainMoviePlayback();
             }
         };
 
         window.skipPrerollIntro = function() {
+            if (window.prerollAutoAdvanceTimer) clearTimeout(window.prerollAutoAdvanceTimer);
             startMainMoviePlayback();
         };
 
         function startMainMoviePlayback() {
             isPrerollPlaying = false;
+            if (window.prerollAutoAdvanceTimer) clearTimeout(window.prerollAutoAdvanceTimer);
             document.getElementById('prerollPill').classList.remove('show');
             document.getElementById('btnSkipPreroll').classList.remove('show');
 
             if (!currentMovie) return;
 
+            // Uruchomienie właściwego filmu (zewnętrzny iframe Vider lub YouTube)
             if (currentMovie.embedType === 'iframe' && currentMovie.embedUrl) {
                 loadVideoToIframe(currentMovie.embedUrl, true);
             } else if (currentMovie.youtubeId) {
@@ -1568,6 +1640,7 @@
             const iframe = document.getElementById('vodPlayerIframe');
             if (iframe) iframe.src = 'about:blank';
             if (prerollSkipTimer) clearTimeout(prerollSkipTimer);
+            if (window.prerollAutoAdvanceTimer) clearTimeout(window.prerollAutoAdvanceTimer);
             document.getElementById('prerollPill').classList.remove('show');
             document.getElementById('btnSkipPreroll').classList.remove('show');
         };
@@ -1638,7 +1711,6 @@
                 openCinemaPlayer(filmId);
             }
         }
-
     })();
     </script>
 </body>
