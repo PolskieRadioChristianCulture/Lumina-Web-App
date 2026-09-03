@@ -350,7 +350,7 @@
             title: '☀️ Lato z Jezusem — Wielkie Pytania (Dzień 22)',
             fullTextHtml: LUMINA_DAY22_DEVOTIONAL_HTML,
             image: 'promo_dzj.jpg',
-            streamUrl: 'https://polskieradio.cc/master-live',
+            streamUrl: 'https://polskieradio.cc/master-live?muted=1&noticker=1&embed=1',
             isLiveBroadcastPost: true,
             likes: 215,
             amen: 192,
@@ -5778,7 +5778,8 @@
 
                 // ── Specjalna karta rozważania "Dobrze, że jesteś / Cuda Każdego Dnia" (Zaraz pod Patronem) ──
                 if (item._isReflection) {
-                    const streamUrl = item.streamUrl || 'https://polskieradio.cc/master-live';
+                    const baseStreamUrl = item.streamUrl || 'https://polskieradio.cc/master-live';
+                    const streamUrl = baseStreamUrl.includes('muted=1') ? baseStreamUrl : (baseStreamUrl + (baseStreamUrl.includes('?') ? '&' : '?') + 'muted=1&noticker=1&embed=1');
                     const livePlayerHtml = `
                         <div class="mission-live-player-wrapper" style="margin: 0 0 18px 0;">
                             <iframe src="${streamUrl}" 
@@ -6329,17 +6330,34 @@
             const card = btn.closest('.post-card-1x1') || btn.closest('.post-card') || btn.parentElement.parentElement;
             if (!card) return;
             const iframe = card.querySelector('iframe');
-            if (iframe && iframe.contentWindow) {
-                try {
-                    iframe.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*');
-                    iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-                    iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
-                } catch(e) {}
+            const isCurrentlyUnmuted = btn.dataset.unmuted === 'true';
+
+            if (!isCurrentlyUnmuted) {
+                if (iframe && iframe.contentWindow) {
+                    try {
+                        iframe.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*');
+                        iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                        iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                    } catch(e) {}
+                }
+                btn.dataset.unmuted = 'true';
+                btn.innerHTML = '<i class="fa-solid fa-volume-high" style="color:#22c55e;"></i> <span>Wycisz Dźwięk 🔊</span>';
+                btn.style.background = 'rgba(34, 197, 94, 0.3)';
+                btn.style.borderColor = '#22c55e';
+                btn.style.color = '#86efac';
+            } else {
+                if (iframe && iframe.contentWindow) {
+                    try {
+                        iframe.contentWindow.postMessage({ type: 'MUTE_AUDIO' }, '*');
+                        iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                    } catch(e) {}
+                }
+                btn.dataset.unmuted = 'false';
+                btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>';
+                btn.style.background = 'rgba(15, 23, 42, 0.85)';
+                btn.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                btn.style.color = '#fff';
             }
-            btn.innerHTML = '<i class="fa-solid fa-volume-high" style="color:#22c55e;"></i> <span>Dźwięk Włączony 🔊</span>';
-            btn.style.background = 'rgba(34, 197, 94, 0.3)';
-            btn.style.borderColor = '#22c55e';
-            btn.style.color = '#86efac';
         };
 
         // ── Toast System ──

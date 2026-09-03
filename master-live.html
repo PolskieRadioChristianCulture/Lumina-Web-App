@@ -10,6 +10,11 @@
 
   gtag('config', 'G-Y4EFTVBPE3');
 </script>
+    <script>
+        if (window.self !== window.top || window.location.search.includes('noticker') || window.location.search.includes('embed') || window.location.search.includes('muted')) {
+            document.documentElement.classList.add('no-ticker', 'embedded-mode');
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -505,6 +510,35 @@
             }
         }
 
+        /* Embedded / No-Ticker Mode (np. na Tablicy LUMINA) */
+        body.embedded-mode .lumina-master-ticker,
+        body.no-ticker .lumina-master-ticker,
+        html.no-ticker .lumina-master-ticker,
+        html.embedded-mode .lumina-master-ticker {
+            display: none !important;
+        }
+
+        body.embedded-mode .channel-frame,
+        body.no-ticker .channel-frame,
+        html.no-ticker .channel-frame,
+        html.embedded-mode .channel-frame {
+            height: 100% !important;
+        }
+
+        body.embedded-mode #bumper-video-overlay,
+        body.no-ticker #bumper-video-overlay,
+        html.no-ticker #bumper-video-overlay,
+        html.embedded-mode #bumper-video-overlay {
+            padding-bottom: 0 !important;
+        }
+
+        body.embedded-mode #masterUnmuteBanner,
+        body.no-ticker #masterUnmuteBanner,
+        html.no-ticker #masterUnmuteBanner,
+        html.embedded-mode #masterUnmuteBanner {
+            display: none !important;
+        }
+
         #master-status {
             position: absolute; top: 20px; left: 20px; color: rgba(255,255,255,0.3);
             z-index: 10000; font-size: 10px; pointer-events: none; text-transform: uppercase; letter-spacing: 2px;
@@ -647,6 +681,18 @@
     <div id="master-status">MCR: INITIALIZING...</div>
 
     <script>
+        // ── EMBED / MUTED / NO-TICKER DETECTION (np. Tablica LUMINA) ──
+        const urlParams = new URLSearchParams(window.location.search);
+        const isEmbedMode = urlParams.has('embed') || urlParams.get('embed') === '1' || urlParams.has('noticker') || urlParams.get('ticker') === '0' || urlParams.get('muted') === '1' || (window.self !== window.top);
+        const shouldHideTicker = isEmbedMode || urlParams.has('noticker') || urlParams.get('ticker') === '0';
+        let isMutedDefault = isEmbedMode || urlParams.get('muted') === '1';
+
+        if (shouldHideTicker) {
+            document.documentElement.classList.add('no-ticker', 'embedded-mode');
+            if (document.body) document.body.classList.add('no-ticker', 'embedded-mode');
+            else window.addEventListener('DOMContentLoaded', () => document.body.classList.add('no-ticker', 'embedded-mode'));
+        }
+
         const programMeta = {
             "spiewajmy-panu-live.html": {
                 title: "CODZIENNE UWIELBIENIE — BLOK MUZYCZNY",
@@ -879,7 +925,9 @@
 
             if (isFirstLoad) {
                 // First load -> direct smooth load on Active Frame
-                activeFrame.src = newChannel + "?autoplay=1&t=" + Date.now();
+                const sepChar = newChannel.includes("?") ? "&" : "?";
+                const audioQuery = isMutedDefault ? "muted=1&autoplay=1" : "autoplay=1";
+                activeFrame.src = newChannel + sepChar + audioQuery + "&t=" + Date.now();
                 fade.style.display = "block";
                 fade.style.opacity = "1";
                 setTimeout(() => {
@@ -942,7 +990,7 @@
                     // Unmute incoming frame audio at exact moment of frame swap
                     try {
                         if (inactiveFrame && inactiveFrame.contentWindow) {
-                            inactiveFrame.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*');
+                            if (!isMutedDefault) { inactiveFrame.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*'); }
                             inactiveFrame.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
                             inactiveFrame.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
                         }
@@ -1000,17 +1048,36 @@
                 }
             } catch(e) {}
         }
-        window.addEventListener('click', unmuteSubframe);
-        window.addEventListener('touchstart', unmuteSubframe);
 
-        // Automated audio unlock attempts for OBS Studio CEF and unattended players
-        [800, 1500, 3000, 5000].forEach(delay => {
-            setTimeout(unmuteSubframe, delay);
-        });
-        // Listen for completion signals from sub-channels (Apokalipsa, Studium, Księga Nadziei, etc.)
+        if (!isMutedDefault) {
+            window.addEventListener('click', unmuteSubframe);
+            window.addEventListener('touchstart', unmuteSubframe);
+            // Automated audio unlock attempts for OBS Studio CEF and unattended players
+            [800, 1500, 3000, 5000].forEach(delay => {
+                setTimeout(unmuteSubframe, delay);
+            });
+        }
+
+        // Listen for control & completion signals (from LUMINA feed parent or sub-channels)
         window.addEventListener('message', (event) => {
             if (!event || !event.data) return;
             const type = event.data.type || event.data;
+            if (type === 'UNMUTE_AUDIO') {
+                isMutedDefault = false;
+                unmuteSubframe();
+                return;
+            }
+            if (type === 'MUTE_AUDIO') {
+                isMutedDefault = true;
+                try {
+                    const frame = getActiveFrame();
+                    if (frame && frame.contentWindow) {
+                        frame.contentWindow.postMessage({ type: 'MUTE_AUDIO' }, '*');
+                        frame.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                    }
+                } catch(e) {}
+                return;
+            }
             if (type === 'APOKALIPSA_FINISHED' || type === 'STUDIUM_FINISHED' || type === 'KSIEGA_NADZIEI_FINISHED' || type === 'PROGRAM_FINISHED') {
                 console.log("MCR: Received completion signal (" + type + ") from sub-channel. Ending special slot immediately!");
                 endSpecialSlot();
