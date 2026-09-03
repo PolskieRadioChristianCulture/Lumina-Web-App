@@ -1437,9 +1437,9 @@
             <form id="addMovieForm" onsubmit="handleMovieProposalSubmit(event)" style="padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; max-height: calc(92vh - 140px);">
                 <div>
                     <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">
-                        1. Tytuł filmu <span style="color: #f43f5e;">*</span>
+                        1. Tytuł filmu <span style="color: #38bdf8; font-size: 0.75rem; font-weight: 600;">(zaciągany automatycznie z linku)</span>
                     </label>
-                    <input type="text" id="proposalTitle" required placeholder="np. Próba Ogniowa, Paweł Apostoł, Ostatni szczyt..." 
+                    <input type="text" id="proposalTitle" placeholder="Pobierany automatycznie po wklejeniu linku (lub wpisz własny)..." 
                            style="width: 100%; background: rgba(15, 20, 35, 0.9); border: 1px solid var(--silver-border); border-radius: 12px; padding: 11px 14px; color: #fff; font-size: 0.92rem; outline: none;">
                 </div>
 
@@ -1539,7 +1539,7 @@
     </footer>
 
     <!-- ══════════ SCRIPTS ══════════ -->
-        <script src="vod-db.js?v=20260903"></script>
+    <script src="vod-db.js?v=20260903_fireproof"></script>
 
     <script>
     (function() {
@@ -1605,7 +1605,22 @@
         // 3. Obsługa propozycji filmów użytkowników i weryfikacji
         function getStoredProposals() {
             try {
-                return JSON.parse(localStorage.getItem('vod_user_proposals') || '[]');
+                let list = JSON.parse(localStorage.getItem('vod_user_proposals') || '[]');
+                // Usuwanie duplikatów oraz filmów już oficjalnie wprowadzonych do bazy (np. Próba Ogniowa)
+                const seenKeys = new Set();
+                list = list.filter(p => {
+                    const key = (p.youtubeId || p.embedUrl || p.title || '').trim().toLowerCase();
+                    if (!key) return false;
+                    if (seenKeys.has(key)) return false; // Usuń duplikat
+                    seenKeys.add(key);
+                    // Usuń z propozycji tymczasowych, bo jest już w oficjalnym katalogu VOD
+                    if (p.embedUrl && p.embedUrl.includes('8m88mv')) return false;
+                    if (p.url && p.url.includes('8m88mv')) return false;
+                    if (p.title && p.title.toLowerCase().includes('próba ogniowa')) return false;
+                    return true;
+                });
+                localStorage.setItem('vod_user_proposals', JSON.stringify(list));
+                return list;
             } catch(e) {
                 return [];
             }
@@ -1865,8 +1880,25 @@
             const img = document.getElementById('proposalThumbImg');
             const iframe = document.getElementById('proposalIframePreview');
             const typeLabel = document.getElementById('proposalPreviewType');
+            const titleInput = document.getElementById('proposalTitle');
             const details = extractVideoDetailsFromUrl(url);
 
+            // 1. Sprawdzenie, czy kod iframe zawiera atrybut title="..."
+            const titleAttrMatch = url.match(/title=["']([^"']+)["']/i);
+            if (titleAttrMatch && titleAttrMatch[1]) {
+                titleInput.value = titleAttrMatch[1].trim();
+                titleInput.dataset.autofilled = 'true';
+            }
+
+            // 2. Jeśli to Vider.info dla Próby Ogniowej lub ze znanego linku
+            if (url.includes('8m88mv')) {
+                if (!titleInput.value || titleInput.dataset.autofilled === 'true') {
+                    titleInput.value = 'Próba Ogniowa (Fireproof)';
+                    titleInput.dataset.autofilled = 'true';
+                }
+            }
+
+            // 3. Obsługa YouTube z automatycznym pobieraniem tytułu przez oEmbed
             if (details.youtubeId) {
                 img.src = details.thumbnail;
                 img.style.display = 'block';
@@ -1874,16 +1906,44 @@
                     iframe.style.display = 'none';
                     iframe.src = 'about:blank';
                 }
-                if (typeLabel) typeLabel.textContent = 'Wykryto: YouTube';
+                if (typeLabel) typeLabel.textContent = 'Wykryto: YouTube (pobieram tytuł...)';
                 box.style.display = 'block';
+
+                // Automatyczne zaciąganie tytułu z YouTube oEmbed
+                fetch('https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=' + details.youtubeId + '&format=json')
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data && data.title) {
+                            if (!titleInput.value || titleInput.dataset.autofilled === 'true') {
+                                titleInput.value = data.title;
+                                titleInput.dataset.autofilled = 'true';
+                            }
+                            if (typeLabel) typeLabel.textContent = 'Wykryto: YouTube • ' + data.title;
+                        }
+                    })
+                    .catch(() => {
+                        if (typeLabel) typeLabel.textContent = 'Wykryto: YouTube';
+                    });
+
             } else if (details.embedUrl && details.embedUrl.startsWith('http')) {
                 img.style.display = 'none';
                 if (iframe) {
                     iframe.src = details.embedUrl;
                     iframe.style.display = 'block';
                 }
-                if (typeLabel) typeLabel.textContent = 'Wykryto: ' + (details.embedUrl.includes('vider') ? 'Vider.info (iframe)' : 'Odtwarzacz iframe');
+                const isVider = details.embedUrl.includes('vider');
+                if (typeLabel) typeLabel.textContent = 'Wykryto: ' + (isVider ? 'Vider.info (iframe)' : 'Odtwarzacz iframe');
                 box.style.display = 'block';
+
+                // Próba wyciągnięcia nazwy ze ścieżki linku
+                if (!titleInput.value || titleInput.dataset.autofilled === 'true') {
+                    const slugMatch = url.match(/(?:vid|video)\/([a-zA-Z0-9_-]+)/i);
+                    if (slugMatch && slugMatch[1] && isNaN(slugMatch[1])) {
+                        const cleanName = slugMatch[1].replace(/[-_]/g, ' ').replace(/w/g, l => l.toUpperCase());
+                        titleInput.value = cleanName;
+                        titleInput.dataset.autofilled = 'true';
+                    }
+                }
             } else {
                 box.style.display = 'none';
                 if (iframe) iframe.src = 'about:blank';
@@ -1892,11 +1952,20 @@
 
         window.handleMovieProposalSubmit = function(event) {
             event.preventDefault();
-            const title = document.getElementById('proposalTitle').value.trim();
+            let title = document.getElementById('proposalTitle').value.trim();
             const url = document.getElementById('proposalUrl').value.trim();
             const category = document.getElementById('proposalCategory').value;
 
-            if (!title || !url) return;
+            if (!url) {
+                alert('Proszę wkleić link lub kod iframe do filmu.');
+                return;
+            }
+
+            // Jeśli tytuł nie został wpisany, wygeneruj czytelną nazwę automatycznie
+            if (!title) {
+                const autoDetails = extractVideoDetailsFromUrl(url);
+                title = autoDetails.youtubeId ? ('Film YouTube (' + autoDetails.youtubeId + ')') : 'Nowy Seans Filmowy';
+            }
 
             const details = extractVideoDetailsFromUrl(url);
             const newProposal = {

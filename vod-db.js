@@ -72,6 +72,24 @@
             tags: ['chata', 'the shack', 'dramat chrześcijański', 'przebaczenie', 'miłość boża', 'octavia spencer', 'sam worthington', 'cały film lektor pl']
         },
         {
+            id: 'proba-ogniowa-fireproof',
+            embedType: 'iframe',
+            embedUrl: 'https://vider.info/embed/video/8m88mv',
+            embedId: '8m88mv',
+            title: 'Próba Ogniowa (Fireproof)',
+            origTitle: 'Fireproof',
+            year: 2008,
+            duration: '117 min',
+            category: 'Dramat / Wiara',
+            director: 'Alex Kendrick',
+            cast: 'Kirk Cameron, Erin Bethea, Ken Bevel, Stephen Dervan',
+            description: 'Kapitan straży pożarnej Caleb Holt żyje według zasady: nigdy nie zostawiaj partnera w ogniu. Jednak w domu, po siedmiu latach małżeństwa, jego relacja z żoną Catherine płonie w zgliszczach. Z pomocą ojca podejmuje 40-dniowe wyzwanie oparte na wierze i bezwarunkowej miłości.',
+            thumbnail: 'poster_proba_ogniowa.jpg',
+            featured: true,
+            badge: 'NOWOŚĆ',
+            tags: ['próba ogniowa', 'fireproof', 'kirk cameron', 'małżeństwo', 'wiara', 'dramat chrześcijański', 'vider', 'cały film lektor pl']
+        },
+        {
             id: 'film-jezus-ewangelia-lukasza',
             youtubeId: 'GMdQIwKh22A',
             title: 'JEZUS – Ewangelia wg św. Łukasza',
