@@ -995,14 +995,25 @@
     const visualizer = document.getElementById('tvAudioVisualizer');
     const bars = document.getElementById('audioBars');
 
-    // ── OSD AUTO-HIDE & IDLE DETECTION (3.5s) ──
+    function isAnyModalOpen() {
+      const p = document.getElementById('pairingModal');
+      const q = document.getElementById('patroniteModal');
+      return (p && p.style.display === 'flex') || (q && q.style.display === 'flex');
+    }
+
+    // ── OSD AUTO-HIDE & IDLE AUTO-FULLSCREEN ──
+    // Zamiast pozostawiać samo małe okno programu — automatycznie przechodź w tryb pełnoekranowy!
     let tvIdleTimer = null;
     function resetTVIdleTimer() {
       document.body.classList.remove('tv-idle');
       clearTimeout(tvIdleTimer);
       tvIdleTimer = setTimeout(() => {
         document.body.classList.add('tv-idle');
-      }, 3500);
+        // Jeśli użytkownik zminimalizował okno i zostawił ekran bezczynny, wróć automatycznie do pełnego ekranu
+        if (!isStageMaximized && !isAnyModalOpen()) {
+          toggleStageMaximize(true);
+        }
+      }, 4500);
     }
 
     ['mousemove', 'mousedown', 'keydown', 'touchstart', 'pointerdown', 'wheel'].forEach(evt => {
@@ -1046,9 +1057,29 @@
       }
     }
 
-    document.addEventListener('fullscreenchange', () => {
-      if (!document.fullscreenElement && isStageMaximized) {
-        toggleStageMaximize(false);
+    // Pierwszy gest użytkownika (kliknięcie / pilot) włącza natywny fullscreen przeglądarki TV
+    function triggerNativeFullscreenOnGesture() {
+      if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      window.removeEventListener('click', triggerNativeFullscreenOnGesture);
+      window.removeEventListener('keydown', triggerNativeFullscreenOnGesture);
+      window.removeEventListener('touchstart', triggerNativeFullscreenOnGesture);
+    }
+    window.addEventListener('click', triggerNativeFullscreenOnGesture, { passive: true });
+    window.addEventListener('keydown', triggerNativeFullscreenOnGesture, { passive: true });
+    window.addEventListener('touchstart', triggerNativeFullscreenOnGesture, { passive: true });
+
+    // Kliknięcie w ramkę małego okna programu natychmiast maksymalizuje do pełnego ekranu
+    document.addEventListener('DOMContentLoaded', () => {
+      const frame = document.getElementById('mainPlayerFrame');
+      if (frame) {
+        frame.addEventListener('click', (e) => {
+          if (e.target.closest('#btnMaximizeStage')) return;
+          if (!isStageMaximized) {
+            toggleStageMaximize(true);
+          }
+        });
       }
     });
 
@@ -1132,6 +1163,8 @@
           iframe.src = ch.url;
         }
         updatePlayBtnState(false, 'Kanał Wideo');
+        // Automatycznie przejdź w pełny ekran dla kanału wideo
+        toggleStageMaximize(true);
       } else {
         // KILL background video iframe IMMEDIATELY to prevent audio overlap!
         iframe.style.display = 'none';
@@ -1291,8 +1324,9 @@
       }
     }
 
-    // Default start with Station 1 (Radio CC PL)
+    // Default start with Station 1 (Radio CC PL) in Fullscreen Mode
     switchChannel(1);
+    toggleStageMaximize(true);
 
   </script>
 </body>
