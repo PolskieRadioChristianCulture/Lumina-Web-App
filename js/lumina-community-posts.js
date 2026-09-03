@@ -74,7 +74,7 @@ Odkryj kino, które nie tylko bawi, ale przede wszystkim przemienia serca, buduj
 
 PODAJ DALEJ 🔴
 www.polskieradio.cc/vod | www.polskieradio.cc | www.polskieradio.cc/lumina`,
-            image: 'vod_hity_kina.gif',
+            image: 'vod_hity_kina.mp4',
             ctaText: 'Przejdź do Kina VOD CC 🎬 ▶',
             ctaUrl: 'https://polskieradio.cc/vod',
             likes: 428,

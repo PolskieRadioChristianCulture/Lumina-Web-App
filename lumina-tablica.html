@@ -3332,7 +3332,7 @@
                     <span class="badge-patron" style="color:#25d366;"><i class="fa-brands fa-whatsapp"></i> Dom Modlitwy • Grupa WhatsApp</span>
                 </div>
                 <a href="https://chat.whatsapp.com/LGzSCB9K5Vp2jTF8dIALI6" target="_blank" rel="noopener noreferrer" class="card-916-media-wrap" title="Dołącz do grupy: Jeśli chcesz, pomodlę się o Ciebie">
-                    <img src="dom_modlitwy_narod_zydowski.gif" alt="DOM MODLITWY O ZBAWIENIE NARODU ŻYDOWSKIEGO I PRZECIW ANTYSEMITYZMOWI" class="card-916-img" loading="lazy" decoding="async">
+                    <video src="dom_modlitwy_narod_zydowski.mp4" poster="dom_modlitwy_poster.jpg" class="card-916-img" autoplay loop muted playsinline style="object-fit:cover; width:100%; height:100%; display:block;"></video>
                     <div class="card-916-overlay">
                         <div class="card-916-title" style="color:#fff; font-size:1.02rem; text-transform:uppercase;">DOM MODLITWY O ZBAWIENIE NARODU ŻYDOWSKIEGO</div>
                         <div class="card-916-sub">I PRZECIW ANTYSEMITYZMOWI • Grupa modlitewna: <em>„Jeśli chcesz, pomodlę się o Ciebie”</em>. Dołącz do wstawiennictwa!</div>
@@ -3534,7 +3534,7 @@
                     <span style="font-size:0.65rem; color:#fde047; font-weight:900; background:rgba(250,204,21,0.15); border:1px solid rgba(250,204,21,0.4); padding:1px 7px; border-radius:8px; text-transform:uppercase; letter-spacing:0.5px;">KINO 24/7</span>
                 </div>
                 <div class="card-916-media-wrap">
-                    <img src="vod_hity_kina.gif" alt="VOD Christian Culture • Mega Hity Światowego Kina" class="card-916-img" loading="eager" decoding="async">
+                    <video src="vod_hity_kina.mp4" poster="vod_hity_kina_poster.jpg" class="card-916-img" autoplay loop muted playsinline style="object-fit:cover; width:100%; height:100%; display:block;"></video>
                     <div class="card-916-overlay" style="padding:14px; background:linear-gradient(to top, rgba(7, 14, 36, 0.98) 0%, rgba(7, 14, 36, 0.90) 60%, rgba(7, 14, 36, 0.25) 88%, transparent 100%);">
                         <div class="card-916-title" style="font-size:1.08rem; color:#fde047; margin-bottom:6px; text-shadow:0 2px 10px rgba(0,0,0,0.9); font-weight:900;">
                             🎬 MEGA HITY ŚWIATOWEGO KINA
@@ -4396,7 +4396,7 @@
                 type: 'promo',
                 title: '🎬 VOD Christian Culture – MEGA HITY ŚWIATOWEGO KINA',
                 desc: 'Oglądaj pełnometrażowe filmy chrześcijańskie, poruszające dramaty, historie wiary i nadziei w jakości HD z polskim lektorem całkowicie bezpłatnie 24/7.',
-                image: 'vod_hity_kina.gif',
+                image: 'vod_hity_kina.mp4',
                 btnText: 'Oglądaj Filmy w VOD CC 🎬 ▶',
                 btnUrl: 'https://polskieradio.cc/vod',
                 author: 'Christian Culture VOD',
@@ -5912,17 +5912,17 @@
                                 </div>
                             </div>
                         ` : (
-                            (!item.image && richResult.embedHtml) ? '' : (
-                                isCampaign ? `
-                                    <div class="campaign-media-container">
-                                        <img src="${cardImgSrc}" alt="${item.title || item.author}" class="campaign-img-full" loading="lazy" onerror="this.onerror=null; this.src='${authorAvatarSrc}'">
-                                    </div>
+                            (!item.image && richResult.embedHtml) ? '' : (() => {
+                                const isVideoMedia = cardImgSrc && (cardImgSrc.endsWith('.mp4') || cardImgSrc.includes('.mp4'));
+                                const mediaTag = isVideoMedia 
+                                    ? `<video src="${cardImgSrc}" class="${isCampaign ? 'campaign-img-full' : 'media-img-1x1'}" autoplay loop muted playsinline poster="vod_hity_kina_poster.jpg" style="width:100%; height:100%; object-fit:cover; display:block;"></video>`
+                                    : `<img src="${cardImgSrc}" alt="${item.title || item.author}" class="${isCampaign ? 'campaign-img-full' : 'media-img-1x1'}" loading="lazy" onerror="this.onerror=null; this.src='${authorAvatarSrc}'">`;
+                                return isCampaign ? `
+                                    <div class="campaign-media-container">${mediaTag}</div>
                                 ` : `
-                                    <div class="media-container-1x1">
-                                        <img src="${cardImgSrc}" alt="${item.title || item.author}" class="media-img-1x1" loading="lazy" onerror="this.onerror=null; this.src='${authorAvatarSrc}'">
-                                    </div>
-                                `
-                            )
+                                    <div class="media-container-1x1">${mediaTag}</div>
+                                `;
+                            })()
                         )}
 
                         <!-- Details & Text -->
