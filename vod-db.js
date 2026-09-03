@@ -226,6 +226,22 @@
             return VOD_MOVIES_CATALOG.find(m => m.id === id || m.youtubeId === id || m.embedId === id) || VOD_MOVIES_CATALOG[0];
         },
 
+        getFeaturedMovie: function() {
+            return VOD_MOVIES_CATALOG.find(m => m.featured) || VOD_MOVIES_CATALOG[0];
+        },
+
+        getHits: function() {
+            return VOD_MOVIES_CATALOG.filter(m => m.badge === 'MEGA HIT' || m.badge === 'HIT KINOWY' || m.badge === 'NOWOŚĆ' || m.featured);
+        },
+
+        getBiblical: function() {
+            return VOD_MOVIES_CATALOG.filter(m => (m.category && m.category.toLowerCase().includes('biblij')) || (m.tags && m.tags.some(t => t.includes('jezus') || t.includes('bibl') || t.includes('ewangelia') || t.includes('pismo'))));
+        },
+
+        getDramas: function() {
+            return VOD_MOVIES_CATALOG.filter(m => (m.category && (m.category.toLowerCase().includes('dramat') || m.category.toLowerCase().includes('obyczaj'))) || (m.tags && m.tags.some(t => t.includes('dramat') || t.includes('wiara') || t.includes('świadectwo'))));
+        },
+
         getNextMovie: function(currentId) {
             const idx = VOD_MOVIES_CATALOG.findIndex(m => m.id === currentId || m.youtubeId === currentId || m.embedId === currentId);
             if (idx === -1 || idx >= VOD_MOVIES_CATALOG.length - 1) {
