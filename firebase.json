@@ -17,6 +17,10 @@
         "**/*.bat",
         "**/*.ps1",
         "**/*.zip",
+        "**/*.wav",
+        "**/*.mp3",
+        "**/*.mp4",
+        "**/*.gif",
         "tapeta_modlitwa.gif",
         "functions/**",
         "audio/**",
@@ -29,7 +33,6 @@
           "destination": "/cctv24-worship.html",
           "type": 301
         }
-      ],
       "rewrites": [
         { "source": "/vod", "destination": "/vod.html" },
         { "source": "/kino-vod", "destination": "/vod.html" },
@@ -205,18 +208,12 @@
         "**/*.bat",
         "**/*.ps1",
         "**/*.zip",
-        "tapeta_modlitwa.gif",
-        "functions/**",
+        "**/*.wav",
+        "**/*.mp3",
+        "**/*.mp4",
+        "**/*.gif",
         "audio/**",
         "downloads/**"
-      ],
-      "cleanUrls": true,
-      "redirects": [
-        {
-          "source": "/snadaniowa-live-worship.html",
-          "destination": "/cctv24-worship.html",
-          "type": 301
-        }
       ],
       "rewrites": [
         { "source": "/vod", "destination": "/vod.html" },
@@ -367,11 +364,5 @@
         }
       ]
     }
-  ],
-  "firestore": {
-    "rules": "firestore.rules"
-  },
-  "functions": {
-    "source": "functions"
-  }
+  ]
 }

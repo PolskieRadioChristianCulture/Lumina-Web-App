@@ -1890,7 +1890,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const langBtn = document.getElementById('shortcutLangRow');
-            const langText = document.getElementById('langToggleText');
+            const langSubtitle = document.getElementById('langSubtitle');
  
             // Function to check if translated to English (based on Google Translate cookie)
             function isEnglish() {
@@ -1898,18 +1898,18 @@
                        (document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen'));
             }
  
-            // Sync button label on load (with safety checks)
-            if (langText) {
+            // Sync button label on load
+            if (langBtn) {
                 if (isEnglish()) {
-                    langText.textContent = 'PL';
-                    if (langBtn) langBtn.title = 'Przełącz na język polski';
+                    langBtn.title = 'Przełącz na język polski';
+                    if (langSubtitle) langSubtitle.textContent = 'Switch to Polish';
                 } else {
-                    langText.textContent = 'EN';
-                    if (langBtn) langBtn.title = 'Switch to English';
+                    langBtn.title = 'Switch to English';
+                    if (langSubtitle) langSubtitle.textContent = 'Zmień na angielski';
                 }
             }
  
-            if (langBtn && langText) {
+            if (langBtn) {
                 langBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     if (isEnglish()) {

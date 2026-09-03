@@ -2245,7 +2245,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const langBtn = document.getElementById('shortcutLangRow');
-            const langText = document.getElementById('langToggleText');
+            const langSubtitle = document.getElementById('langSubtitle');
  
             // Function to check if translated to English
             function isEnglish() {
@@ -2255,17 +2255,13 @@
  
             // Sync button label on load
             function syncLangButton() {
-                if (langText) {
+                if (langBtn) {
                     if (isEnglish()) {
-                        langText.textContent = 'PL';
-                        if (langBtn) langBtn.title = 'Przełącz na język polski 🇵🇱';
-                        const desc = langBtn ? langBtn.querySelector('span:last-child') : null;
-                        if (desc) desc.textContent = 'Zmień na polski';
+                        langBtn.title = 'Przełącz na język polski 🇵🇱';
+                        if (langSubtitle) langSubtitle.textContent = 'Zmień na polski';
                     } else {
-                        langText.textContent = 'EN';
-                        if (langBtn) langBtn.title = 'Switch to English 🇬🇧';
-                        const desc = langBtn ? langBtn.querySelector('span:last-child') : null;
-                        if (desc) desc.textContent = 'Zmień na angielski';
+                        langBtn.title = 'Switch to English 🇬🇧';
+                        if (langSubtitle) langSubtitle.textContent = 'Zmień na angielski';
                     }
                 }
             }
