@@ -341,73 +341,40 @@
         }
 
 
-        /* ── HERO CAROUSEL CONTROLS & FADE TRANSITIONS ── */
+        /* ── HERO SUBTELNY WSKAŹNIK I ANIMACJE KINOWE ── */
         .hero-content {
             transition: opacity 0.35s ease, transform 0.35s ease;
         }
         .hero-content.fade-out {
             opacity: 0;
-            transform: translateY(12px);
+            transform: translateY(10px);
         }
-        .hero-controls-wrap {
-            position: absolute;
-            bottom: 25px;
-            right: 4vw;
-            z-index: 5;
+        .hero-subtle-indicator-bar {
             display: flex;
             align-items: center;
-            gap: 12px;
-            background: rgba(10, 14, 25, 0.6);
-            padding: 8px 14px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.7);
-        }
-        .hero-nav-arrow {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 0.82rem;
-            transition: all 0.2s ease;
-        }
-        .hero-nav-arrow:hover {
-            background: rgba(250, 204, 21, 0.25);
-            border-color: #facc15;
-            color: #facc15;
-            transform: scale(1.1);
+            gap: 8px;
+            margin-top: 8px;
         }
         .hero-indicators-list {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
         .hero-indicator-dot {
-            width: 14px;
-            height: 4px;
+            width: 12px;
+            height: 3px;
             border-radius: 2px;
             background: rgba(255, 255, 255, 0.25);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hero-indicator-dot:hover {
+            background: rgba(255, 255, 255, 0.6);
         }
         .hero-indicator-dot.active {
-            width: 28px;
+            width: 26px;
             background: #facc15;
-            box-shadow: 0 0 10px rgba(250, 204, 21, 0.7);
-        }
-        @media (max-width: 768px) {
-            .hero-controls-wrap {
-                bottom: 15px;
-                right: 50%;
-                transform: translateX(50%);
-            }
+            box-shadow: 0 0 8px rgba(250, 204, 21, 0.7);
         }
 
         .hero-content {
@@ -1154,8 +1121,40 @@
             .nav-links-menu { display: none; }
             .nav-search-input { width: 130px; }
             .nav-search-input:focus { width: 180px; }
-            .hero-billboard { min-height: 60vh; padding-bottom: 40px; }
-            .hero-title { font-size: 1.85rem; }
+            .hero-billboard { 
+                min-height: 62vh; 
+                padding: 90px 4vw 45px 4vw; 
+            }
+            .hero-title { font-size: 1.7rem; line-height: 1.2; margin: 4px 0; }
+            .hero-meta-line { font-size: 0.84rem; gap: 6px; }
+            .hero-synopsis { -webkit-line-clamp: 2; font-size: 0.84rem; line-height: 1.5; }
+            .hero-buttons-row {
+                display: flex;
+                flex-direction: row;
+                gap: 8px;
+                width: 100%;
+                margin-top: 4px;
+            }
+            .btn-hero-play, .btn-hero-info {
+                flex: 1;
+                padding: 10px 8px;
+                font-size: 0.85rem;
+                justify-content: center;
+                white-space: nowrap;
+                border-radius: 10px;
+            }
+            .hero-subtle-indicator-bar {
+                margin-top: 6px;
+                justify-content: flex-start;
+            }
+            .hero-indicator-dot {
+                width: 9px;
+                height: 3px;
+                gap: 4px;
+            }
+            .hero-indicator-dot.active {
+                width: 20px;
+            }
             .movie-card { flex: 0 0 220px; }
             .row-arrow-btn { display: none; }
             .qna-answer { padding: 4px 14px 14px 14px; }
@@ -1233,13 +1232,11 @@
                     <i class="fa-solid fa-circle-info"></i> Więcej informacji
                 </button>
             </div>
-        </div>
 
-        <!-- Cykliczne wskaźniki i nawigacja pętli Hero -->
-        <div class="hero-controls-wrap" aria-label="Nawigacja karuzeli filmowej">
-            <button type="button" class="hero-nav-arrow" onclick="prevHeroMovie()" title="Poprzedni film"><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="hero-indicators-list" id="heroIndicatorsList"></div>
-            <button type="button" class="hero-nav-arrow" onclick="nextHeroMovie()" title="Następny film"><i class="fa-solid fa-chevron-right"></i></button>
+            <!-- Subtelny wskaźnik seansu w pętli -->
+            <div class="hero-subtle-indicator-bar" aria-label="Wskaźnik seansu w pętli">
+                <div class="hero-indicators-list" id="heroIndicatorsList"></div>
+            </div>
         </div>
     </section>
 
@@ -1670,6 +1667,24 @@
                     isHeroHovered = false;
                     startHeroLoop();
                 });
+
+                // Obsługa gestu Swipe (przesunięcia palcem) na smartfonie
+                let touchStartX = 0;
+                heroSection.addEventListener('touchstart', (e) => {
+                    if (e.changedTouches && e.changedTouches[0]) {
+                        touchStartX = e.changedTouches[0].screenX;
+                    }
+                }, { passive: true });
+                heroSection.addEventListener('touchend', (e) => {
+                    if (e.changedTouches && e.changedTouches[0]) {
+                        const touchEndX = e.changedTouches[0].screenX;
+                        const diff = touchEndX - touchStartX;
+                        if (Math.abs(diff) > 40) {
+                            if (diff < 0) nextHeroMovie();
+                            else prevHeroMovie();
+                        }
+                    }
+                }, { passive: true });
             }
         }
 
