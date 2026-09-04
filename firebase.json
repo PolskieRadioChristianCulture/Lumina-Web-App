@@ -38,7 +38,10 @@
         "scripts/**",
         "functions/**",
         "audio/**",
-        "downloads/**"
+        "downloads/**",
+        "scripts/**",
+        "tests/**",
+        "internal/**"
       ],
       "releaseConfig": {
         "maxVersionsToKeep": 2
@@ -508,7 +511,12 @@
         "**/*.wav",
         "**/*.mp3",
         "audio/**",
-        "downloads/**"
+        "downloads/**",
+        "tapeta_modlitwa.gif",
+        "functions/**",
+        "scripts/**",
+        "tests/**",
+        "internal/**"
       ],
       "releaseConfig": {
         "maxVersionsToKeep": 3
