@@ -146,7 +146,19 @@ async function sendToTokens(tokens, { title, body, icon, image, url, tag, data =
         data: Object.fromEntries(
             Object.entries(payloadData).map(([k, v]) => [k, typeof v === 'string' ? v : JSON.stringify(v)])
         ),
+        android: {
+            priority: 'high',
+            notification: {
+                priority: 'high',
+                defaultSound: true,
+                defaultVibrateTimings: true,
+                channelId: 'lumina_messages'
+            }
+        },
         webpush: {
+            headers: {
+                Urgency: 'high'
+            },
             notification: {
                 title: title,
                 body: body,

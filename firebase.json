@@ -1,4 +1,19 @@
 {
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ]
+    }
+  ],
+  "firestore": {
+    "rules": "firestore.rules"
+  },
   "hosting": [
     {
       "target": "lumina",
@@ -37,89 +52,338 @@
         }
       ],
       "rewrites": [
-        { "source": "/vod", "destination": "/vod.html" },
-        { "source": "/kino-vod", "destination": "/vod.html" },
-        { "source": "/filmy", "destination": "/vod.html" },
-        { "source": "/login", "destination": "/lumina-login.html" },
-        { "source": "/zaloguj", "destination": "/lumina-login.html" },
-        { "source": "/lumina-login", "destination": "/lumina-login.html" },
-        { "source": "/lumina", "destination": "/lumina.html" },
-        { "source": "/tablica", "destination": "/lumina-tablica.html" },
-        { "source": "/profil", "destination": "/lumina-profile.html" },
-        { "source": "/profil/:slug", "destination": "/lumina-profile.html" },
-        { "source": "/lumina.jolawojcik", "destination": "/lumina.jolawojcik.html" },
-        { "source": "/lumina/jolawojcik", "destination": "/lumina.jolawojcik.html" },
-        { "source": "/lumina/jola-wojcik", "destination": "/lumina.jolawojcik.html" },
-        { "source": "/jolawojcik", "destination": "/lumina.jolawojcik.html" },
-        { "source": "/jola", "destination": "/lumina.jolawojcik.html" },
-        { "source": "/lumina.cezaryrgowski", "destination": "/lumina.cezaryrgowski.html" },
-        { "source": "/lumina.cezaryrogowski", "destination": "/lumina.cezaryrgowski.html" },
-        { "source": "/lumina/rogowski", "destination": "/lumina.cezaryrgowski.html" },
-        { "source": "/lumina/cezaryrgowski", "destination": "/lumina.cezaryrgowski.html" },
-        { "source": "/lumina/cezary-rogowski", "destination": "/lumina.cezaryrgowski.html" },
-        { "source": "/lumina.wiolettarogowska", "destination": "/lumina.wiolettarogowska.html" },
-        { "source": "/lumina/rogowska", "destination": "/lumina.wiolettarogowska.html" },
-        { "source": "/lumina/wiolettarogowska", "destination": "/lumina.wiolettarogowska.html" },
-        { "source": "/lumina/wioletta-rogowska", "destination": "/lumina.wiolettarogowska.html" },
-        { "source": "/lumina.andrzejthiel", "destination": "/lumina.andrzejthiel.html" },
-        { "source": "/lumina/thiel", "destination": "/lumina.andrzejthiel.html" },
-        { "source": "/lumina/andrzejthiel", "destination": "/lumina.andrzejthiel.html" },
-        { "source": "/lumina/andrzej-thiel", "destination": "/lumina.andrzejthiel.html" },
-        { "source": "/lumina.radiocc", "destination": "/lumina.radiocc.html" },
-        { "source": "/lumina/radiocc", "destination": "/lumina.radiocc.html" },
-        { "source": "/lumina/radio-cc", "destination": "/lumina.radiocc.html" },
-        { "source": "/lumina.ccmen", "destination": "/lumina.ccmen.html" },
-        { "source": "/lumina/ccmen", "destination": "/lumina.ccmen.html" },
-        { "source": "/lumina.ccwomen", "destination": "/lumina.ccwomen.html" },
-        { "source": "/lumina/ccwomen", "destination": "/lumina.ccwomen.html" },
-        { "source": "/lumina.studiodobregoslowa", "destination": "/lumina.studiodobregoslowa.html" },
-        { "source": "/lumina/studiodobregoslowa", "destination": "/lumina.studiodobregoslowa.html" },
-        { "source": "/lumina/studio-dobrego-slowa", "destination": "/lumina.studiodobregoslowa.html" },
-        { "source": "/lumina.cctv", "destination": "/lumina.cctv.html" },
-        { "source": "/lumina/cctv", "destination": "/lumina.cctv.html" },
-        { "source": "/lumina.magdalena", "destination": "/lumina.magdalena.html" },
-        { "source": "/lumina/magdalena", "destination": "/lumina.magdalena.html" },
-        { "source": "/lumina.osobowoscplus", "destination": "/lumina.osobowoscplus.html" },
-        { "source": "/lumina/osobowoscplus", "destination": "/lumina.osobowoscplus.html" },
-        { "source": "/lumina/osobowosc-plus", "destination": "/lumina.osobowoscplus.html" },
-        { "source": "/osobowoscplus", "destination": "/lumina.osobowoscplus.html" },
-        { "source": "/osobowosc-plus", "destination": "/lumina.osobowoscplus.html" },
-        { "source": "/lumina/:slug", "destination": "/lumina-profile.html" },
-        { "source": "/live", "destination": "/master-live.html" },
-        { "source": "/master", "destination": "/master-live.html" },
-        { "source": "/master-live", "destination": "/master-live.html" },
-        { "source": "/tv", "destination": "/smart-tv.html" },
-        { "source": "/telewizja", "destination": "/smart-tv.html" },
-        { "source": "/smart-tv", "destination": "/smart-tv.html" },
-        { "source": "/pilot", "destination": "/pilot.html" },
-        { "source": "/remote", "destination": "/pilot.html" },
-        { "source": "/nadawaj", "destination": "/nadawaj.html" },
-        { "source": "/totalny-atak", "destination": "/totalny-atak-live.html" },
-        { "source": "/studium", "destination": "/studium-live.html" },
-        { "source": "/kino", "destination": "/kino-live.html" },
-        { "source": "/spiewajmy-panu", "destination": "/spiewajmy-panu-live.html" },
-        { "source": "/codzienne-uwielbienie", "destination": "/spiewajmy-panu-live.html" },
-        { "source": "/uwielbienie-live", "destination": "/spiewajmy-panu-live.html" },
-        { "source": "/biblia-spiewana", "destination": "/biblia-spiewana-live.html" },
-        { "source": "/zapolske", "destination": "/zapolske-live.html" },
-        { "source": "/swiadectwa", "destination": "/swiadectwa-live.html" },
-        { "source": "/czuwanie", "destination": "/nocne-czuwanie-live.html" },
-        { "source": "/apokalipsa", "destination": "/apokalipsa-live.html" },
-        { "source": "/ksiega-nadziei", "destination": "/apokalipsa-ksiega-nadziei-live.html" },
-        { "source": "/modlitwa", "destination": "/modlitwa.html" },
-        { "source": "/bank-tresci", "destination": "/bank-tresci.html" },
-        { "source": "/cctv24-worship", "destination": "/cctv24-worship.html" },
-        { "source": "/worship", "destination": "/cctv24-worship.html" },
-        { "source": "/cctv24", "destination": "/cctv24.html" },
-        { "source": "/snadaniowa", "destination": "/snadaniowa.html" },
-        { "source": "/biblia-audio", "destination": "/biblia-audio.html" },
-        { "source": "/biblia-do-pobrania", "destination": "/biblia-do-pobrania.html" },
-        { "source": "/program", "destination": "/program.html" },
-        { "source": "/aktualnosci", "destination": "/aktualnosci.html" },
-        { "source": "/raport", "destination": "/aktualnosci.html" },
-        { "source": "/sprawozdanie", "destination": "/aktualnosci.html" },
-        { "source": "/aktualnosci-sierpien", "destination": "/aktualnosci.html" },
-        { "source": "/aktualnosci-lipiec", "destination": "/aktualnosci.html" }
+        {
+          "source": "/vod",
+          "destination": "/vod.html"
+        },
+        {
+          "source": "/kino-vod",
+          "destination": "/vod.html"
+        },
+        {
+          "source": "/filmy",
+          "destination": "/vod.html"
+        },
+        {
+          "source": "/login",
+          "destination": "/lumina-login.html"
+        },
+        {
+          "source": "/zaloguj",
+          "destination": "/lumina-login.html"
+        },
+        {
+          "source": "/lumina-login",
+          "destination": "/lumina-login.html"
+        },
+        {
+          "source": "/lumina",
+          "destination": "/lumina.html"
+        },
+        {
+          "source": "/tablica",
+          "destination": "/lumina-tablica.html"
+        },
+        {
+          "source": "/profil",
+          "destination": "/lumina-profile.html"
+        },
+        {
+          "source": "/profil/:slug",
+          "destination": "/lumina-profile.html"
+        },
+        {
+          "source": "/lumina.jolawojcik",
+          "destination": "/lumina.jolawojcik.html"
+        },
+        {
+          "source": "/lumina/jolawojcik",
+          "destination": "/lumina.jolawojcik.html"
+        },
+        {
+          "source": "/lumina/jola-wojcik",
+          "destination": "/lumina.jolawojcik.html"
+        },
+        {
+          "source": "/jolawojcik",
+          "destination": "/lumina.jolawojcik.html"
+        },
+        {
+          "source": "/jola",
+          "destination": "/lumina.jolawojcik.html"
+        },
+        {
+          "source": "/lumina.cezaryrgowski",
+          "destination": "/lumina.cezaryrgowski.html"
+        },
+        {
+          "source": "/lumina.cezaryrogowski",
+          "destination": "/lumina.cezaryrgowski.html"
+        },
+        {
+          "source": "/lumina/rogowski",
+          "destination": "/lumina.cezaryrgowski.html"
+        },
+        {
+          "source": "/lumina/cezaryrgowski",
+          "destination": "/lumina.cezaryrgowski.html"
+        },
+        {
+          "source": "/lumina/cezary-rogowski",
+          "destination": "/lumina.cezaryrgowski.html"
+        },
+        {
+          "source": "/lumina.wiolettarogowska",
+          "destination": "/lumina.wiolettarogowska.html"
+        },
+        {
+          "source": "/lumina/rogowska",
+          "destination": "/lumina.wiolettarogowska.html"
+        },
+        {
+          "source": "/lumina/wiolettarogowska",
+          "destination": "/lumina.wiolettarogowska.html"
+        },
+        {
+          "source": "/lumina/wioletta-rogowska",
+          "destination": "/lumina.wiolettarogowska.html"
+        },
+        {
+          "source": "/lumina.andrzejthiel",
+          "destination": "/lumina.andrzejthiel.html"
+        },
+        {
+          "source": "/lumina/thiel",
+          "destination": "/lumina.andrzejthiel.html"
+        },
+        {
+          "source": "/lumina/andrzejthiel",
+          "destination": "/lumina.andrzejthiel.html"
+        },
+        {
+          "source": "/lumina/andrzej-thiel",
+          "destination": "/lumina.andrzejthiel.html"
+        },
+        {
+          "source": "/lumina.radiocc",
+          "destination": "/lumina.radiocc.html"
+        },
+        {
+          "source": "/lumina/radiocc",
+          "destination": "/lumina.radiocc.html"
+        },
+        {
+          "source": "/lumina/radio-cc",
+          "destination": "/lumina.radiocc.html"
+        },
+        {
+          "source": "/lumina.ccmen",
+          "destination": "/lumina.ccmen.html"
+        },
+        {
+          "source": "/lumina/ccmen",
+          "destination": "/lumina.ccmen.html"
+        },
+        {
+          "source": "/lumina.ccwomen",
+          "destination": "/lumina.ccwomen.html"
+        },
+        {
+          "source": "/lumina/ccwomen",
+          "destination": "/lumina.ccwomen.html"
+        },
+        {
+          "source": "/lumina.studiodobregoslowa",
+          "destination": "/lumina.studiodobregoslowa.html"
+        },
+        {
+          "source": "/lumina/studiodobregoslowa",
+          "destination": "/lumina.studiodobregoslowa.html"
+        },
+        {
+          "source": "/lumina/studio-dobrego-slowa",
+          "destination": "/lumina.studiodobregoslowa.html"
+        },
+        {
+          "source": "/lumina.cctv",
+          "destination": "/lumina.cctv.html"
+        },
+        {
+          "source": "/lumina/cctv",
+          "destination": "/lumina.cctv.html"
+        },
+        {
+          "source": "/lumina.magdalena",
+          "destination": "/lumina.magdalena.html"
+        },
+        {
+          "source": "/lumina/magdalena",
+          "destination": "/lumina.magdalena.html"
+        },
+        {
+          "source": "/lumina.osobowoscplus",
+          "destination": "/lumina.osobowoscplus.html"
+        },
+        {
+          "source": "/lumina/osobowoscplus",
+          "destination": "/lumina.osobowoscplus.html"
+        },
+        {
+          "source": "/lumina/osobowosc-plus",
+          "destination": "/lumina.osobowoscplus.html"
+        },
+        {
+          "source": "/osobowoscplus",
+          "destination": "/lumina.osobowoscplus.html"
+        },
+        {
+          "source": "/osobowosc-plus",
+          "destination": "/lumina.osobowoscplus.html"
+        },
+        {
+          "source": "/lumina/:slug",
+          "destination": "/lumina-profile.html"
+        },
+        {
+          "source": "/live",
+          "destination": "/master-live.html"
+        },
+        {
+          "source": "/master",
+          "destination": "/master-live.html"
+        },
+        {
+          "source": "/master-live",
+          "destination": "/master-live.html"
+        },
+        {
+          "source": "/tv",
+          "destination": "/smart-tv.html"
+        },
+        {
+          "source": "/telewizja",
+          "destination": "/smart-tv.html"
+        },
+        {
+          "source": "/smart-tv",
+          "destination": "/smart-tv.html"
+        },
+        {
+          "source": "/pilot",
+          "destination": "/pilot.html"
+        },
+        {
+          "source": "/remote",
+          "destination": "/pilot.html"
+        },
+        {
+          "source": "/nadawaj",
+          "destination": "/nadawaj.html"
+        },
+        {
+          "source": "/totalny-atak",
+          "destination": "/totalny-atak-live.html"
+        },
+        {
+          "source": "/studium",
+          "destination": "/studium-live.html"
+        },
+        {
+          "source": "/kino",
+          "destination": "/kino-live.html"
+        },
+        {
+          "source": "/spiewajmy-panu",
+          "destination": "/spiewajmy-panu-live.html"
+        },
+        {
+          "source": "/codzienne-uwielbienie",
+          "destination": "/spiewajmy-panu-live.html"
+        },
+        {
+          "source": "/uwielbienie-live",
+          "destination": "/spiewajmy-panu-live.html"
+        },
+        {
+          "source": "/biblia-spiewana",
+          "destination": "/biblia-spiewana-live.html"
+        },
+        {
+          "source": "/zapolske",
+          "destination": "/zapolske-live.html"
+        },
+        {
+          "source": "/swiadectwa",
+          "destination": "/swiadectwa-live.html"
+        },
+        {
+          "source": "/czuwanie",
+          "destination": "/nocne-czuwanie-live.html"
+        },
+        {
+          "source": "/apokalipsa",
+          "destination": "/apokalipsa-live.html"
+        },
+        {
+          "source": "/ksiega-nadziei",
+          "destination": "/apokalipsa-ksiega-nadziei-live.html"
+        },
+        {
+          "source": "/modlitwa",
+          "destination": "/modlitwa.html"
+        },
+        {
+          "source": "/bank-tresci",
+          "destination": "/bank-tresci.html"
+        },
+        {
+          "source": "/cctv24-worship",
+          "destination": "/cctv24-worship.html"
+        },
+        {
+          "source": "/worship",
+          "destination": "/cctv24-worship.html"
+        },
+        {
+          "source": "/cctv24",
+          "destination": "/cctv24.html"
+        },
+        {
+          "source": "/snadaniowa",
+          "destination": "/snadaniowa.html"
+        },
+        {
+          "source": "/biblia-audio",
+          "destination": "/biblia-audio.html"
+        },
+        {
+          "source": "/biblia-do-pobrania",
+          "destination": "/biblia-do-pobrania.html"
+        },
+        {
+          "source": "/program",
+          "destination": "/program.html"
+        },
+        {
+          "source": "/aktualnosci",
+          "destination": "/aktualnosci.html"
+        },
+        {
+          "source": "/raport",
+          "destination": "/aktualnosci.html"
+        },
+        {
+          "source": "/sprawozdanie",
+          "destination": "/aktualnosci.html"
+        },
+        {
+          "source": "/aktualnosci-sierpien",
+          "destination": "/aktualnosci.html"
+        },
+        {
+          "source": "/aktualnosci-lipiec",
+          "destination": "/aktualnosci.html"
+        }
       ],
       "headers": [
         {
@@ -202,6 +466,10 @@
             {
               "key": "Cache-Control",
               "value": "no-cache, no-store, must-revalidate"
+            },
+            {
+              "key": "Service-Worker-Allowed",
+              "value": "/"
             }
           ]
         },
@@ -211,6 +479,10 @@
             {
               "key": "Cache-Control",
               "value": "no-cache, no-store, must-revalidate"
+            },
+            {
+              "key": "Service-Worker-Allowed",
+              "value": "/"
             }
           ]
         }
@@ -243,80 +515,302 @@
       },
       "cleanUrls": true,
       "rewrites": [
-        { "source": "/vod", "destination": "/vod.html" },
-        { "source": "/kino-vod", "destination": "/vod.html" },
-        { "source": "/filmy", "destination": "/vod.html" },
-        { "source": "/lumina", "destination": "/lumina.html" },
-        { "source": "/tablica", "destination": "/lumina-tablica.html" },
-        { "source": "/profil", "destination": "/lumina-profile.html" },
-        { "source": "/profil/:slug", "destination": "/lumina-profile.html" },
-        { "source": "/lumina.jolawojcik", "destination": "/lumina.jolawojcik.html" },
-        { "source": "/lumina/jolawojcik", "destination": "/lumina.jolawojcik.html" },
-        { "source": "/lumina/jola-wojcik", "destination": "/lumina.jolawojcik.html" },
-        { "source": "/jolawojcik", "destination": "/lumina.jolawojcik.html" },
-        { "source": "/jola", "destination": "/lumina.jolawojcik.html" },
-        { "source": "/lumina.cezaryrgowski", "destination": "/lumina.cezaryrgowski.html" },
-        { "source": "/lumina.cezaryrogowski", "destination": "/lumina.cezaryrgowski.html" },
-        { "source": "/lumina/rogowski", "destination": "/lumina.cezaryrgowski.html" },
-        { "source": "/lumina/cezaryrgowski", "destination": "/lumina.cezaryrgowski.html" },
-        { "source": "/lumina/cezary-rogowski", "destination": "/lumina.cezaryrgowski.html" },
-        { "source": "/lumina.wiolettarogowska", "destination": "/lumina.wiolettarogowska.html" },
-        { "source": "/lumina/rogowska", "destination": "/lumina.wiolettarogowska.html" },
-        { "source": "/lumina/wiolettarogowska", "destination": "/lumina.wiolettarogowska.html" },
-        { "source": "/lumina/wioletta-rogowska", "destination": "/lumina.wiolettarogowska.html" },
-        { "source": "/lumina.andrzejthiel", "destination": "/lumina.andrzejthiel.html" },
-        { "source": "/lumina/thiel", "destination": "/lumina.andrzejthiel.html" },
-        { "source": "/lumina/andrzejthiel", "destination": "/lumina.andrzejthiel.html" },
-        { "source": "/lumina/andrzej-thiel", "destination": "/lumina.andrzejthiel.html" },
-        { "source": "/lumina.radiocc", "destination": "/lumina.radiocc.html" },
-        { "source": "/lumina/radiocc", "destination": "/lumina.radiocc.html" },
-        { "source": "/lumina/radio-cc", "destination": "/lumina.radiocc.html" },
-        { "source": "/lumina.ccmen", "destination": "/lumina.ccmen.html" },
-        { "source": "/lumina/ccmen", "destination": "/lumina.ccmen.html" },
-        { "source": "/lumina.ccwomen", "destination": "/lumina.ccwomen.html" },
-        { "source": "/lumina/ccwomen", "destination": "/lumina.ccwomen.html" },
-        { "source": "/lumina.studiodobregoslowa", "destination": "/lumina.studiodobregoslowa.html" },
-        { "source": "/lumina/studiodobregoslowa", "destination": "/lumina.studiodobregoslowa.html" },
-        { "source": "/lumina/studio-dobrego-slowa", "destination": "/lumina.studiodobregoslowa.html" },
-        { "source": "/lumina.cctv", "destination": "/lumina.cctv.html" },
-        { "source": "/lumina/cctv", "destination": "/lumina.cctv.html" },
-        { "source": "/lumina.magdalena", "destination": "/lumina.magdalena.html" },
-        { "source": "/lumina/magdalena", "destination": "/lumina.magdalena.html" },
-        { "source": "/lumina.osobowoscplus", "destination": "/lumina.osobowoscplus.html" },
-        { "source": "/lumina/osobowoscplus", "destination": "/lumina.osobowoscplus.html" },
-        { "source": "/lumina/:slug", "destination": "/lumina-profile.html" },
-        { "source": "/live", "destination": "/master-live.html" },
-        { "source": "/master", "destination": "/master-live.html" },
-        { "source": "/master-live", "destination": "/master-live.html" },
-        { "source": "/tv", "destination": "/smart-tv.html" },
-        { "source": "/telewizja", "destination": "/smart-tv.html" },
-        { "source": "/smart-tv", "destination": "/smart-tv.html" },
-        { "source": "/pilot", "destination": "/pilot.html" },
-        { "source": "/remote", "destination": "/pilot.html" },
-        { "source": "/nadawaj", "destination": "/nadawaj.html" },
-        { "source": "/totalny-atak", "destination": "/totalny-atak-live.html" },
-        { "source": "/studium", "destination": "/studium-live.html" },
-        { "source": "/kino", "destination": "/kino-live.html" },
-        { "source": "/spiewajmy-panu", "destination": "/spiewajmy-panu-live.html" },
-        { "source": "/codzienne-uwielbienie", "destination": "/spiewajmy-panu-live.html" },
-        { "source": "/uwielbienie-live", "destination": "/spiewajmy-panu-live.html" },
-        { "source": "/biblia-spiewana", "destination": "/biblia-spiewana-live.html" },
-        { "source": "/zapolske", "destination": "/zapolske-live.html" },
-        { "source": "/swiadectwa", "destination": "/swiadectwa-live.html" },
-        { "source": "/apokalipsa", "destination": "/apokalipsa-live.html" },
-        { "source": "/ksiega-nadziei", "destination": "/apokalipsa-ksiega-nadziei-live.html" },
-        { "source": "/modlitwa", "destination": "/modlitwa.html" },
-        { "source": "/bank-tresci", "destination": "/bank-tresci.html" },
-        { "source": "/cctv24-worship", "destination": "/cctv24-worship.html" },
-        { "source": "/worship", "destination": "/cctv24-worship.html" },
-        { "source": "/biblia-audio", "destination": "/biblia-audio.html" },
-        { "source": "/biblia-do-pobrania", "destination": "/biblia-do-pobrania.html" },
-        { "source": "/program", "destination": "/program.html" },
-        { "source": "/aktualnosci", "destination": "/aktualnosci.html" },
-        { "source": "/raport", "destination": "/aktualnosci.html" },
-        { "source": "/sprawozdanie", "destination": "/aktualnosci.html" },
-        { "source": "/aktualnosci-sierpien", "destination": "/aktualnosci.html" },
-        { "source": "/aktualnosci-lipiec", "destination": "/aktualnosci.html" }
+        {
+          "source": "/vod",
+          "destination": "/vod.html"
+        },
+        {
+          "source": "/kino-vod",
+          "destination": "/vod.html"
+        },
+        {
+          "source": "/filmy",
+          "destination": "/vod.html"
+        },
+        {
+          "source": "/lumina",
+          "destination": "/lumina.html"
+        },
+        {
+          "source": "/tablica",
+          "destination": "/lumina-tablica.html"
+        },
+        {
+          "source": "/profil",
+          "destination": "/lumina-profile.html"
+        },
+        {
+          "source": "/profil/:slug",
+          "destination": "/lumina-profile.html"
+        },
+        {
+          "source": "/lumina.jolawojcik",
+          "destination": "/lumina.jolawojcik.html"
+        },
+        {
+          "source": "/lumina/jolawojcik",
+          "destination": "/lumina.jolawojcik.html"
+        },
+        {
+          "source": "/lumina/jola-wojcik",
+          "destination": "/lumina.jolawojcik.html"
+        },
+        {
+          "source": "/jolawojcik",
+          "destination": "/lumina.jolawojcik.html"
+        },
+        {
+          "source": "/jola",
+          "destination": "/lumina.jolawojcik.html"
+        },
+        {
+          "source": "/lumina.cezaryrgowski",
+          "destination": "/lumina.cezaryrgowski.html"
+        },
+        {
+          "source": "/lumina.cezaryrogowski",
+          "destination": "/lumina.cezaryrgowski.html"
+        },
+        {
+          "source": "/lumina/rogowski",
+          "destination": "/lumina.cezaryrgowski.html"
+        },
+        {
+          "source": "/lumina/cezaryrgowski",
+          "destination": "/lumina.cezaryrgowski.html"
+        },
+        {
+          "source": "/lumina/cezary-rogowski",
+          "destination": "/lumina.cezaryrgowski.html"
+        },
+        {
+          "source": "/lumina.wiolettarogowska",
+          "destination": "/lumina.wiolettarogowska.html"
+        },
+        {
+          "source": "/lumina/rogowska",
+          "destination": "/lumina.wiolettarogowska.html"
+        },
+        {
+          "source": "/lumina/wiolettarogowska",
+          "destination": "/lumina.wiolettarogowska.html"
+        },
+        {
+          "source": "/lumina/wioletta-rogowska",
+          "destination": "/lumina.wiolettarogowska.html"
+        },
+        {
+          "source": "/lumina.andrzejthiel",
+          "destination": "/lumina.andrzejthiel.html"
+        },
+        {
+          "source": "/lumina/thiel",
+          "destination": "/lumina.andrzejthiel.html"
+        },
+        {
+          "source": "/lumina/andrzejthiel",
+          "destination": "/lumina.andrzejthiel.html"
+        },
+        {
+          "source": "/lumina/andrzej-thiel",
+          "destination": "/lumina.andrzejthiel.html"
+        },
+        {
+          "source": "/lumina.radiocc",
+          "destination": "/lumina.radiocc.html"
+        },
+        {
+          "source": "/lumina/radiocc",
+          "destination": "/lumina.radiocc.html"
+        },
+        {
+          "source": "/lumina/radio-cc",
+          "destination": "/lumina.radiocc.html"
+        },
+        {
+          "source": "/lumina.ccmen",
+          "destination": "/lumina.ccmen.html"
+        },
+        {
+          "source": "/lumina/ccmen",
+          "destination": "/lumina.ccmen.html"
+        },
+        {
+          "source": "/lumina.ccwomen",
+          "destination": "/lumina.ccwomen.html"
+        },
+        {
+          "source": "/lumina/ccwomen",
+          "destination": "/lumina.ccwomen.html"
+        },
+        {
+          "source": "/lumina.studiodobregoslowa",
+          "destination": "/lumina.studiodobregoslowa.html"
+        },
+        {
+          "source": "/lumina/studiodobregoslowa",
+          "destination": "/lumina.studiodobregoslowa.html"
+        },
+        {
+          "source": "/lumina/studio-dobrego-slowa",
+          "destination": "/lumina.studiodobregoslowa.html"
+        },
+        {
+          "source": "/lumina.cctv",
+          "destination": "/lumina.cctv.html"
+        },
+        {
+          "source": "/lumina/cctv",
+          "destination": "/lumina.cctv.html"
+        },
+        {
+          "source": "/lumina.magdalena",
+          "destination": "/lumina.magdalena.html"
+        },
+        {
+          "source": "/lumina/magdalena",
+          "destination": "/lumina.magdalena.html"
+        },
+        {
+          "source": "/lumina.osobowoscplus",
+          "destination": "/lumina.osobowoscplus.html"
+        },
+        {
+          "source": "/lumina/osobowoscplus",
+          "destination": "/lumina.osobowoscplus.html"
+        },
+        {
+          "source": "/lumina/:slug",
+          "destination": "/lumina-profile.html"
+        },
+        {
+          "source": "/live",
+          "destination": "/master-live.html"
+        },
+        {
+          "source": "/master",
+          "destination": "/master-live.html"
+        },
+        {
+          "source": "/master-live",
+          "destination": "/master-live.html"
+        },
+        {
+          "source": "/tv",
+          "destination": "/smart-tv.html"
+        },
+        {
+          "source": "/telewizja",
+          "destination": "/smart-tv.html"
+        },
+        {
+          "source": "/smart-tv",
+          "destination": "/smart-tv.html"
+        },
+        {
+          "source": "/pilot",
+          "destination": "/pilot.html"
+        },
+        {
+          "source": "/remote",
+          "destination": "/pilot.html"
+        },
+        {
+          "source": "/nadawaj",
+          "destination": "/nadawaj.html"
+        },
+        {
+          "source": "/totalny-atak",
+          "destination": "/totalny-atak-live.html"
+        },
+        {
+          "source": "/studium",
+          "destination": "/studium-live.html"
+        },
+        {
+          "source": "/kino",
+          "destination": "/kino-live.html"
+        },
+        {
+          "source": "/spiewajmy-panu",
+          "destination": "/spiewajmy-panu-live.html"
+        },
+        {
+          "source": "/codzienne-uwielbienie",
+          "destination": "/spiewajmy-panu-live.html"
+        },
+        {
+          "source": "/uwielbienie-live",
+          "destination": "/spiewajmy-panu-live.html"
+        },
+        {
+          "source": "/biblia-spiewana",
+          "destination": "/biblia-spiewana-live.html"
+        },
+        {
+          "source": "/zapolske",
+          "destination": "/zapolske-live.html"
+        },
+        {
+          "source": "/swiadectwa",
+          "destination": "/swiadectwa-live.html"
+        },
+        {
+          "source": "/apokalipsa",
+          "destination": "/apokalipsa-live.html"
+        },
+        {
+          "source": "/ksiega-nadziei",
+          "destination": "/apokalipsa-ksiega-nadziei-live.html"
+        },
+        {
+          "source": "/modlitwa",
+          "destination": "/modlitwa.html"
+        },
+        {
+          "source": "/bank-tresci",
+          "destination": "/bank-tresci.html"
+        },
+        {
+          "source": "/cctv24-worship",
+          "destination": "/cctv24-worship.html"
+        },
+        {
+          "source": "/worship",
+          "destination": "/cctv24-worship.html"
+        },
+        {
+          "source": "/biblia-audio",
+          "destination": "/biblia-audio.html"
+        },
+        {
+          "source": "/biblia-do-pobrania",
+          "destination": "/biblia-do-pobrania.html"
+        },
+        {
+          "source": "/program",
+          "destination": "/program.html"
+        },
+        {
+          "source": "/aktualnosci",
+          "destination": "/aktualnosci.html"
+        },
+        {
+          "source": "/raport",
+          "destination": "/aktualnosci.html"
+        },
+        {
+          "source": "/sprawozdanie",
+          "destination": "/aktualnosci.html"
+        },
+        {
+          "source": "/aktualnosci-sierpien",
+          "destination": "/aktualnosci.html"
+        },
+        {
+          "source": "/aktualnosci-lipiec",
+          "destination": "/aktualnosci.html"
+        }
       ],
       "headers": [
         {
@@ -399,6 +893,10 @@
             {
               "key": "Cache-Control",
               "value": "no-cache, no-store, must-revalidate"
+            },
+            {
+              "key": "Service-Worker-Allowed",
+              "value": "/"
             }
           ]
         },
@@ -408,6 +906,10 @@
             {
               "key": "Cache-Control",
               "value": "no-cache, no-store, must-revalidate"
+            },
+            {
+              "key": "Service-Worker-Allowed",
+              "value": "/"
             }
           ]
         }

@@ -17,7 +17,7 @@
         if (!('serviceWorker' in navigator)) return;
 
         try {
-            const reg = await navigator.serviceWorker.register('./sw-lumina.js', { scope: './' });
+            const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260830_v410', { scope: './' });
             console.log('[LUMINA Background Mission] Service Worker zarejestrowany:', reg.scope);
 
             // Rejestracja Periodic Background Sync (Android Chrome/Edge/Samsung Browser)
