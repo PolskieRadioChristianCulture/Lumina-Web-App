@@ -209,8 +209,8 @@
             left: 50% !important;
             transform: translateX(-50%) !important;
             width: auto !important;
-            min-width: 290px !important;
-            max-width: 390px !important;
+            min-width: 240px !important;
+            max-width: 320px !important;
             height: 62px !important;
             background: rgba(9, 14, 30, 0.92) !important;
             backdrop-filter: blur(24px) saturate(180%) !important;
@@ -442,6 +442,12 @@
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(56, 189, 248, 0.25)) !important;
             border: 1px solid rgba(168, 85, 247, 0.5) !important;
             color: #c084fc !important;
+        }
+
+        .qna-icon-bg {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.25), rgba(236, 72, 153, 0.25)) !important;
+            border: 1px solid rgba(250, 204, 21, 0.5) !important;
+            color: #facc15 !important;
         }
 
         .admin-icon-bg {
@@ -1008,7 +1014,18 @@
                         </div>
                     </button>
 
-                    <!-- 4. Master Admin (dla Dowódcy / Master Admin) -->
+                    <!-- 5. Q&A (Pytania i Odpowiedzi) -->
+                    <button type="button" class="lumina-menu-btn" onclick="window.toggleLuminaQnaDrawer(event); window.toggleCcBottomNavMenu(event);" title="Pytania i Odpowiedzi (Q&A) • Baza Wiedzy LUMINA">
+                        <div class="lumina-menu-btn-icon qna-icon-bg">
+                            <i class="fa-solid fa-circle-question"></i>
+                        </div>
+                        <div class="lumina-menu-btn-content">
+                            <div class="lumina-menu-btn-title">Pytania i Odpowiedzi (Q&A)</div>
+                            <div class="lumina-menu-btn-sub">Baza Wiedzy & Bezpieczeństwo</div>
+                        </div>
+                    </button>
+
+                    <!-- 6. Master Admin (dla Dowódcy / Master Admin) -->
                     <button type="button" class="lumina-menu-btn admin-menu-btn" onclick="window.triggerSecretAdminPrompt(event); window.toggleCcBottomNavMenu(event);" title="Panel Master Admin">
                         <div class="lumina-menu-btn-icon admin-icon-bg">
                             <i class="fa-solid fa-shield-halved"></i>
@@ -1042,13 +1059,8 @@
                 <i class="fa-solid fa-users-viewfinder"></i>
             </a>
 
-            <!-- 3. Q&A (Pytania i Odpowiedzi) -->
-            <button type="button" class="lumina-nav-tab" id="navTabQnA" onclick="window.toggleLuminaQnaDrawer(event)" title="Pytania i Odpowiedzi (Q&A)">
-                <i class="fa-solid fa-circle-question"></i>
-            </button>
-
-            <!-- 3. Menu Więcej (Trzy linie w pozycji poziomej: Radio, TV, Profil/Ustawienia, Master Admin) -->
-            <button type="button" class="lumina-nav-tab" id="navTabMoreMenu" onclick="window.toggleCcBottomNavMenu(event)" title="Więcej opcji (Radio, TV, Profil, Master Admin)">
+            <!-- 3. Menu Więcej (Trzy linie w pozycji poziomej: Radio, TV, VOD, Profil, Q&A, Master Admin) -->
+            <button type="button" class="lumina-nav-tab" id="navTabMoreMenu" onclick="window.toggleCcBottomNavMenu(event)" title="Więcej opcji (Radio, TV, Profil, Q&A, Master Admin)">
                 <i class="fa-solid fa-bars" id="bottomNavBarsIcon"></i>
             </button>
         </nav>
