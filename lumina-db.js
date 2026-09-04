@@ -406,7 +406,12 @@ if (auth) {
                         window.updateLuminaMessagesBadge(0);
                     }
                     const b = document.getElementById('floatingChatBadge');
-                    if (b) { b.style.display = 'none'; b.textContent = ''; }
+                    if (b) {
+                        b.style.setProperty('display', 'none', 'important');
+                        b.classList.remove('visible');
+                        b.setAttribute('data-visible', 'false');
+                        b.textContent = '';
+                    }
                 }
                 localStorage.setItem('lumina_last_authenticated_uid', user.uid);
             } catch(e) {}
@@ -548,7 +553,12 @@ if (auth) {
                     window.updateLuminaMessagesBadge(0);
                 }
                 const b = document.getElementById('floatingChatBadge');
-                if (b) { b.style.display = 'none'; b.textContent = ''; }
+                if (b) {
+                    b.style.setProperty('display', 'none', 'important');
+                    b.classList.remove('visible');
+                    b.setAttribute('data-visible', 'false');
+                    b.textContent = '';
+                }
             } catch(e) {}
         }
         
@@ -2367,7 +2377,12 @@ export async function markDirectMessagesAsRead(chatId, currentUserId, currentUse
             window.updateLuminaMessagesBadge(0);
         } else {
             const b = document.getElementById('floatingChatBadge');
-            if (b) b.style.display = 'none';
+            if (b) {
+                b.style.setProperty('display', 'none', 'important');
+                b.classList.remove('visible');
+                b.setAttribute('data-visible', 'false');
+                b.textContent = '';
+            }
         }
     } catch(e) {}
 
@@ -2946,8 +2961,10 @@ export function triggerLuminaPushNotification({ title, body, avatar, senderName,
                 localStorage.setItem('lumina_messages_unread_count', String(next));
                 const b = document.getElementById('floatingChatBadge');
                 if (b) {
-                    b.style.display = 'flex';
-                    b.textContent = next > 9 ? '9+' : next;
+                    b.style.setProperty('display', 'flex', 'important');
+                    b.classList.add('visible');
+                    b.setAttribute('data-visible', 'true');
+                    b.textContent = next > 9 ? '9+' : String(next);
                 }
             }
         }
@@ -3097,8 +3114,17 @@ export function startRealtimeChatNotificationsListener() {
                         localStorage.setItem('lumina_messages_unread_count', String(totalUnread));
                         const b = document.getElementById('floatingChatBadge');
                         if (b) {
-                            b.style.display = totalUnread > 0 ? 'flex' : 'none';
-                            b.textContent = totalUnread > 9 ? '9+' : totalUnread;
+                            if (totalUnread > 0) {
+                                b.style.setProperty('display', 'flex', 'important');
+                                b.classList.add('visible');
+                                b.setAttribute('data-visible', 'true');
+                                b.textContent = totalUnread > 9 ? '9+' : String(totalUnread);
+                            } else {
+                                b.style.setProperty('display', 'none', 'important');
+                                b.classList.remove('visible');
+                                b.setAttribute('data-visible', 'false');
+                                b.textContent = '';
+                            }
                         }
                     }
                 }

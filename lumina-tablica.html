@@ -7548,8 +7548,17 @@
                 } else {
                     const b = document.getElementById('floatingChatBadge');
                     if (b) {
-                        b.style.display = remaining > 0 ? 'flex' : 'none';
-                        b.textContent = remaining > 9 ? '9+' : remaining;
+                        if (remaining > 0) {
+                            b.style.setProperty('display', 'flex', 'important');
+                            b.classList.add('visible');
+                            b.setAttribute('data-visible', 'true');
+                            b.textContent = remaining > 9 ? '9+' : String(remaining);
+                        } else {
+                            b.style.setProperty('display', 'none', 'important');
+                            b.classList.remove('visible');
+                            b.setAttribute('data-visible', 'false');
+                            b.textContent = '';
+                        }
                     }
                 }
             } catch(e) {}
