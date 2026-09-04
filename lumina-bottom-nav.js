@@ -524,17 +524,26 @@
             right: -3px !important;
             background: #ef4444 !important;
             color: #ffffff !important;
-            font-size: 0.68rem !important;
-            font-weight: 800 !important;
+            font-size: 0.72rem !important;
+            font-weight: 900 !important;
             font-family: 'Plus Jakarta Sans', sans-serif !important;
-            width: 20px !important;
+            min-width: 20px !important;
             height: 20px !important;
-            border-radius: 50% !important;
-            display: flex !important;
+            padding: 0 4px !important;
+            border-radius: 10px !important;
+            display: none !important;
             align-items: center !important;
             justify-content: center !important;
             border: 2px solid #090d1a !important;
             box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
+            line-height: 1 !important;
+            pointer-events: none !important;
+            box-sizing: border-box !important;
+            z-index: 10 !important;
+        }
+        .lumina-floating-chat-badge.visible,
+        .lumina-floating-chat-badge[data-visible="true"] {
+            display: flex !important;
         }
 
         @media (max-width: 768px) {
@@ -805,7 +814,7 @@
                 title="Otwórz Czat & Wiadomości LUMINA" 
                 aria-label="Czat i Wiadomości LUMINA">
             <i class="fa-solid fa-comment-dots"></i>
-            <span id="floatingChatBadge" class="lumina-floating-chat-badge" style="${initialUnread > 0 ? 'display:flex;' : 'display:none;'}">${initialUnread > 9 ? '9+' : initialUnread}</span>
+            <span id="floatingChatBadge" class="lumina-floating-chat-badge ${initialUnread > 0 ? 'visible' : ''}" data-visible="${initialUnread > 0 ? 'true' : 'false'}" style="${initialUnread > 0 ? 'display:flex !important;' : 'display:none !important;'}">${initialUnread > 0 ? (initialUnread > 9 ? '9+' : initialUnread) : ''}</span>
         </button>
 
 
@@ -1236,15 +1245,20 @@
         const badge = document.getElementById('floatingChatBadge');
         const bottomBadge = document.getElementById('bottomNavMsgBadge');
         const profileBadges = Array.from(document.querySelectorAll('.profile-msg-badge, #btnProfileMessageBadge, .btn-msg-badge, .nav-msg-badge'));
-        const num = typeof count === 'number' ? count : parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10);
+        const rawNum = typeof count === 'number' ? count : parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10);
+        const num = Math.max(0, isNaN(rawNum) ? 0 : rawNum);
         
         [badge, bottomBadge, ...profileBadges].forEach(b => {
             if (!b) return;
             if (num > 0) {
-                b.style.display = 'flex';
-                b.textContent = num > 9 ? '9+' : num;
+                b.style.setProperty('display', 'flex', 'important');
+                b.classList.add('visible');
+                b.setAttribute('data-visible', 'true');
+                b.textContent = num > 9 ? '9+' : String(num);
             } else {
-                b.style.display = 'none';
+                b.style.setProperty('display', 'none', 'important');
+                b.classList.remove('visible');
+                b.setAttribute('data-visible', 'false');
                 b.textContent = '';
             }
         });

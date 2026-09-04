@@ -9479,11 +9479,16 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         window.LuminaNotifications.saveToStorage();
                     }
                 }
-                const curCount = parseInt(localStorage.getItem('lumina_messages_unread_count') || '0', 10);
-                if (curCount > 0) {
-                    if (typeof window.updateLuminaMessagesBadge === 'function') {
-                        window.updateLuminaMessagesBadge(Math.max(0, curCount - 1));
-                    }
+                let remaining = 0;
+                if (localJson) {
+                    try {
+                        const parsedNow = JSON.parse(localStorage.getItem('lumina_unread_rooms_json') || '{}');
+                        Object.values(parsedNow).forEach(c => remaining += (parseInt(c, 10) || 0));
+                    } catch(e) {}
+                }
+                localStorage.setItem('lumina_messages_unread_count', String(remaining));
+                if (typeof window.updateLuminaMessagesBadge === 'function') {
+                    window.updateLuminaMessagesBadge(remaining);
                 }
                 if (window.LuminaDB && typeof window.LuminaDB.markDirectMessagesAsRead === 'function') {
                     window.LuminaDB.markDirectMessagesAsRead(chatId, fromId, myProfile?.name || myUser?.displayName);
