@@ -678,14 +678,18 @@ export async function loginWithGoogle() {
             else if (isWioletta) cleanSlug = 'wiolettarogowska';
             else cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + user.uid.substring(0, 4).toLowerCase();
             
-            const userAvatar = user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : (isRadioCC ? 'logo_radio_cc.jpg' : 'lumina_icon.jpg')));
+            const isMission = isRadioCC || (user.displayName && user.displayName.toLowerCase().includes('lumina')) || (cleanSlug.includes('lumina') && !cleanSlug.startsWith('u_'));
+            const isLetterAvatar = !user.photoURL || user.photoURL.includes('googleusercontent.com/a/');
+            const userAvatar = (isLetterAvatar ? null : user.photoURL) || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : (isRadioCC ? 'logo_radio_cc.jpg' : 'lumina_icon.jpg')));
+            const hasRealFace = isCezary || isWioletta || (!isLetterAvatar && typeof isLuminaRealPhoto === 'function' && isLuminaRealPhoto(userAvatar));
+            const isProfileDone = hasRealFace && (isCezary || isWioletta);
             
             existingProfile = {
                 uid: user.uid,
                 slug: cleanSlug,
                 name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
                 email: user.email || '',
-                age: isRadioCC ? 0 : (isCezary ? 51 : (isWioletta ? 50 : 28)),
+                age: (isRadioCC || isMission) ? null : (isCezary ? 51 : (isWioletta ? 50 : null)),
                 city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska'),
                 gender: isWioletta ? 'kobieta' : (isCezary ? 'mezczyzna' : 'kobieta'),
                 lookingFor: isWioletta ? 'mezczyzna' : 'kobieta',
@@ -693,7 +697,10 @@ export async function loginWithGoogle() {
                 church: isRadioCC ? 'Christian Culture' : 'Wspólnota Chrześcijańska',
                 job: isRadioCC ? 'Misja & Radio Christian Culture' : (isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Społeczność LUMINA ✨')),
                 status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler')),
-                isMissionAccount: isRadioCC || false,
+                isMissionAccount: isRadioCC || isMission || false,
+                hasRealPhoto: hasRealFace,
+                profileCompleted: isProfileDone,
+                needsProfileCompletion: !isProfileDone && !isRadioCC && !isMission,
                 verse: isRadioCC ? '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”' : (isCezary ? '„Ja i mój dom służyć będziemy Panu.”' : '„Wszystko mogę w Tym, który mnie umacnia”'),
                 verseRef: isRadioCC ? '— Ewangelia wg św. Marka 16, 15' : (isCezary ? '— Księga Jozuego 24, 15' : 'Flp 4, 13'),
                 bio: isRadioCC ? 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.' : (isCezary ? 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture.' : (isWioletta ? 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej rodziny zakorzenionej w Bogu.' : 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.')),
@@ -995,13 +1002,13 @@ export async function confirmPhoneVerificationCode(confirmationResult, verificat
                 uid: user.uid,
                 phoneNumber: user.phoneNumber,
                 name: basicData.name || 'Użytkownik LUMINA',
-                age: basicData.age || 25,
+                age: (basicData && basicData.age) ? Number(basicData.age) : null,
                 city: basicData.city || 'Polska',
                 gender: basicData.gender || 'kobieta',
                 lookingFor: basicData.lookingFor || 'mezczyzna',
                 denom: basicData.denom || 'Chrześcijanin',
                 status: basicData.status || 'Panna/Kawaler',
-                avatar: basicData.avatar || 'lumina-icon-192.png',
+                avatar: (basicData && basicData.avatar) ? basicData.avatar : 'lumina_icon.jpg',
                 cover: 'lumina_default_cover.jpg',
                 visibility: 'public',
                 matchScore: '96%',

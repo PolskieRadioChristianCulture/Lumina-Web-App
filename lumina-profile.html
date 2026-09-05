@@ -3990,7 +3990,8 @@
             'studiodobregoslowa': {
                 name: 'Studio Dobrego Słowa',
                 latestYoutubeId: 'hHug_C6XDPU',
-                age: 'Studio Medialne',
+                age: '',
+                isMissionAccount: true,
                 city: 'Piła, Polska',
                 avatar: 'studiodobregoslowa_avatar.jpg',
                 cover: 'studiodobregoslowa_cover.jpg',
@@ -4035,7 +4036,8 @@
 
             'u_ccwomen_9055': {
                 name: 'CC Women • Christian Culture',
-                age: 'Kanał YT',
+                age: '',
+                isMissionAccount: true,
                 city: 'Warszawa, Polska',
                 avatar: 'logo_cc_women.jpg',
                 cover: 'lumina_default_cover.jpg',
@@ -4188,7 +4190,7 @@
             },
             'noemi': {
                 name: 'Noemi',
-                age: '28',
+                age: '',
                 city: 'Wrocław, Polska',
                 avatar: 'avatar_noemi.jpg',
                 cover: 'lumina_default_cover.jpg',
@@ -4281,7 +4283,7 @@
             },
             'anna': {
                 name: 'Anna',
-                age: '28',
+                age: '',
                 city: 'Warszawa, Polska',
                 avatar: 'avatar_widget_ania.jpg',
                 cover: 'lumina_default_cover.jpg',
@@ -4374,7 +4376,8 @@
             },
             'osobowoscplus': {
                 name: 'OSOBOWOŚĆ + • Christian Culture',
-                age: 'Kanał YT',
+                age: '',
+                isMissionAccount: true,
                 city: 'Warszawa, Polska',
                 avatar: 'logo_osobowosc_plus.jpg',
                 cover: 'lumina_default_cover.jpg',
@@ -4396,6 +4399,7 @@
             'radiocc': {
                 name: 'Christian Culture',
                 age: '',
+                isMissionAccount: true,
                 city: 'Polska',
                 avatar: 'christian_culture_carousel_photo.jpg',
                 cover: 'lumina_default_cover.jpg',
@@ -4416,7 +4420,8 @@
             },
             'cctv': {
                 name: 'Christian Culture TV',
-                age: 'Telewizja',
+                age: '',
+                isMissionAccount: true,
                 city: 'Warszawa, Polska',
                 avatar: 'logo_cctv.png',
                 cover: 'lumina_default_cover.jpg',
@@ -4437,7 +4442,8 @@
             },
             'ccmen': {
                 name: 'CC MEN • Christian Culture',
-                age: 'Kanał YT',
+                age: '',
+                isMissionAccount: true,
                 city: 'Polska',
                 avatar: 'logo_cc_men.jpg',
                 cover: 'lumina_default_cover.jpg',
@@ -4458,7 +4464,8 @@
             },
             'u_bibliaaudiochristianculture_3248': {
                 name: 'Biblia Audio Christian Culture',
-                age: 'Misja',
+                age: '',
+                isMissionAccount: true,
                 city: 'Warszawa, Polska',
                 avatar: 'avatar_biblia_audio.gif',
                 cover: 'lumina_default_cover.jpg',
@@ -5139,17 +5146,18 @@
             }
 
             const isCCWomen = (slug.includes('ccwomen') || slug.includes('women') || slug.includes('9055'));
+            const isMission = data.isMissionAccount || data.isMission || isCCWomen || (slug && ['radiocc','cctv','ccmen','ccwomen','studiodobregoslowa','osobowoscplus','lumina','bibliaaudio','jolawojcik'].includes(slug.toLowerCase())) || (slug && (slug.startsWith('u_lumina') || slug.startsWith('u_bibliaaudio'))) || (data.name && (data.name.toLowerCase().includes('christian culture') || data.name.toLowerCase().includes('portal lumina') || data.name.toLowerCase().includes('studio dobrego słowa') || data.name.toLowerCase().includes('osobowość +')));
 
             document.getElementById('pageTitle').textContent = `${data.name} – Profil LUMINA | Christian Culture`;
             document.getElementById('userNameEl').textContent = data.name;
             
             if (isCCWomen) {
-                document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} • <b style="color:#ec4899;">🌸 Kanał YouTube CC Women</b>`;
-            } else if (data.isMissionAccount) {
-                document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} • <b style="color:#a855f7;">✨ Misja Christian Culture</b>`;
-            } else if (data.age && !isNaN(parseInt(data.age, 10)) && data.profileCompleted !== false && !data.needsProfileCompletion) {
+                document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city || 'Polska'} • <b style="color:#ec4899;">🌸 Kanał YouTube CC Women</b>`;
+            } else if (isMission) {
+                document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city || 'Polska'} • <b style="color:#a855f7;">✨ Misja Christian Culture</b>`;
+            } else if (!isMission && data.age && !isNaN(parseInt(data.age, 10)) && Number(data.age) > 0 && data.profileCompleted !== false && !data.needsProfileCompletion && (data.hasRealPhoto !== false)) {
                 let demoBadgeHtml = data.isDemo ? `<span class="badge-demo-chip" onclick="event.stopPropagation(); window.showDemoProfileModal();" style="cursor:pointer; background:rgba(99,102,241,0.18); border:1px solid rgba(99,102,241,0.4); color:#a5b4fc; padding:2px 8px; border-radius:12px; font-weight:700; font-size:0.75rem; display:inline-flex; align-items:center; gap:4px; margin-left:6px;" title="Kliknij, aby dowiedzieć się więcej"><i class="fa-solid fa-eye"></i> Profil Poglądowy</span>` : '';
-                document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} (${data.age} lat)${demoBadgeHtml}`;
+                document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city || 'Polska'} (${data.age} lat)${demoBadgeHtml}`;
             } else {
                 document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city || 'Polska'}`;
             }

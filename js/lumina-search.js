@@ -83,7 +83,7 @@ export const OMNI_BASE_PROFILES = [
         name: 'Noemi',
         handle: '@noemi',
         aliases: ['noemi', 'noemi wroclaw', 'biolog', 'psycholog'],
-        age: 28,
+        age: null,
         city: 'Wrocław, Polska',
         status: 'Panna • Szuka relacji z wartościami',
         job: 'Biolog & Edukatorka Przyrodnicza 🌿',
@@ -163,7 +163,7 @@ export const OMNI_BASE_PROFILES = [
         name: 'Anna',
         handle: '@anna',
         aliases: ['anna', 'ania', 'anna warszawa', 'pedagog', 'animatorka'],
-        age: 28,
+        age: null,
         city: 'Warszawa, Polska',
         status: 'Panna • Liderka uwielbienia',
         job: 'Pedagog & Animatorka Chrześcijańska 📚',
@@ -431,7 +431,8 @@ export function handleOmniSearchInput(val) {
             const isLetter = rawAv.includes('googleusercontent.com/a/');
             const avatar = (!rawAv || isLetter || rawAv === 'icon.png') ? 'lumina_icon.jpg' : rawAv;
             const name = item.name || 'Profil Społeczności';
-            const hasValidAge = item.age && Number(item.age) > 0 && item.profileCompleted !== false && !item.needsProfileCompletion;
+            const isMission = item.isMissionAccount || item.badge === 'Media CC' || (item.slug && ['radiocc','cctv','ccmen','ccwomen','studiodobregoslowa','osobowoscplus','lumina','bibliaaudio','jolawojcik'].includes(item.slug.toLowerCase())) || (name && (name.toLowerCase().includes('christian culture') || name.toLowerCase().includes('portal lumina') || name.toLowerCase().includes('studio dobrego słowa') || name.toLowerCase().includes('osobowość +')));
+            const hasValidAge = !isMission && item.age && Number(item.age) > 0 && item.profileCompleted !== false && !item.needsProfileCompletion && (item.hasRealPhoto !== false);
             const ageStr = hasValidAge ? `, ${item.age}` : '';
             const cityStr = item.city ? item.city.split(',')[0] : 'Polska';
             const jobOrBio = item.job || item.bio || item.status || 'Profil społeczności';

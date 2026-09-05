@@ -3926,7 +3926,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; width:fit-content;">✨ PROFIL POGLĄDOWY</div>
-                        <div class="card-name">Noemi, 28</div>
+                        <div class="card-name">Noemi</div>
                         <div class="card-city">📍 Wrocław • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span></div>
                         <div class="card-desc">"Spokój, las i głębokie rozmowy o Bogu przy herbacie. Szukam bratniej duszy."</div>
                     </div>
@@ -4202,7 +4202,7 @@
                     </div>
                     <div class="card-body">
                         <div class="card-preview-tag" style="font-size:0.68rem; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; width:fit-content;">✨ PROFIL POGLĄDOWY</div>
-                        <div class="card-name">Anna, 28</div>
+                        <div class="card-name">Anna</div>
                         <div class="card-city">📍 Warszawa • <span style="color:#64748b;font-weight:700;font-size:0.72rem;background:rgba(100,116,139,0.14);border:1px solid rgba(100,116,139,0.35);padding:2px 7px;border-radius:8px;">✨ Profil Poglądowy</span></div>
                         <div class="card-desc">"Uwielbia podróże i sztukę, szuka kogoś do wspólnego odkrywania świata."</div>
                     </div>
@@ -5943,7 +5943,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             'noemi': {
                 slug: 'noemi',
                 name: 'Noemi',
-                age: 28,
+                age: null,
                 city: 'Wrocław, Polska',
                 status: 'Panna • Szuka relacji z wartościami',
                 avatar: 'avatar_noemi.jpg',
@@ -5991,7 +5991,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             'anna': {
                 slug: 'anna',
                 name: 'Anna',
-                age: 28,
+                age: null,
                 city: 'Warszawa, Polska',
                 status: 'Panna • Liderka uwielbienia',
                 avatar: 'avatar_widget_ania.jpg',
@@ -6211,10 +6211,17 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             // Strict guard for Urszula (Private profile MUST have real face photo)
             if (slug === 'u_urszula_7685' || slug === 'urszula' || (live.name && live.name.toLowerCase().includes('urszula'))) {
                 live.name = 'Urszula';
-                live.age = '28';
                 live.avatar = 'avatar_urszula.jpg';
                 live.city = 'Kraków, Polska';
                 live.isMissionAccount = false;
+            }
+
+            // Mission profiles MUST NEVER have age
+            const MISSION_SLUGS = ['radiocc', 'cctv', 'ccmen', 'ccwomen', 'studiodobregoslowa', 'osobowoscplus', 'lumina', 'bibliaaudio', 'jolawojcik'];
+            const isMissionSlug = MISSION_SLUGS.includes(slug.toLowerCase()) || slug.startsWith('u_lumina') || slug.startsWith('u_bibliaaudio');
+            if (isMissionSlug || live.isMissionAccount || (live.name && (live.name.toLowerCase().includes('christian culture') || live.name.toLowerCase().includes('portal lumina') || live.name.toLowerCase().includes('studio dobrego słowa') || live.name.toLowerCase().includes('osobowość +')))) {
+                live.isMissionAccount = true;
+                live.age = '';
             }
 
             // Strict fallback guards for System & Founder Profiles
@@ -6233,6 +6240,20 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 live.city = 'Polska';
                 live.isMissionAccount = true;
                 live.profileUrl = 'lumina.radiocc.html';
+            } else if (slug === 'cctv') {
+                live.name = 'Christian Culture TV';
+                live.age = '';
+                live.avatar = live.carouselMediaUrl || 'logo_cctv.png';
+                live.city = 'Warszawa, Polska';
+                live.isMissionAccount = true;
+                live.profileUrl = 'lumina.cctv.html';
+            } else if (slug === 'ccmen') {
+                live.name = 'CC MEN';
+                live.age = '';
+                live.avatar = live.carouselMediaUrl || 'logo_cc_men.jpg';
+                live.city = 'Polska';
+                live.isMissionAccount = true;
+                live.profileUrl = 'lumina.ccmen.html';
             } else if (slug === 'ccwomen') {
                 live.name = 'CC WOMEN';
                 live.age = '';
@@ -6240,6 +6261,13 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 live.city = 'Polska';
                 live.isMissionAccount = true;
                 live.profileUrl = 'lumina.ccwomen.html';
+            } else if (slug === 'lumina') {
+                live.name = 'Portal LUMINA';
+                live.age = '';
+                live.avatar = 'lumina_logo_portal.jpg';
+                live.city = 'Christian Culture';
+                live.isMissionAccount = true;
+                live.profileUrl = 'tablica';
             } else if (slug === 'weronika') {
                 live.name = 'Weronika';
                 live.age = 25;
@@ -6374,7 +6402,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
                     let userAvatar = rawAvatar;
                     const userName = p.name;
-                    const hasValidAge = p.age && Number(p.age) > 0 && p.profileCompleted !== false && !p.needsProfileCompletion;
+                    const isMission = p.isMissionAccount || p.isMission || (p.slug && ['radiocc','cctv','ccmen','ccwomen','studiodobregoslowa','osobowoscplus','lumina','bibliaaudio','jolawojcik'].includes(p.slug.toLowerCase())) || (p.name && (p.name.toLowerCase().includes('christian culture') || p.name.toLowerCase().includes('portal lumina') || p.name.toLowerCase().includes('studio dobrego słowa') || p.name.toLowerCase().includes('osobowość +')));
+                    const hasValidAge = !isMission && p.age && Number(p.age) > 0 && p.profileCompleted !== false && !p.needsProfileCompletion && (p.hasRealPhoto !== false);
                     const userAge = hasValidAge ? ', ' + p.age : '';
                     const userCity = p.city ? p.city.split(',')[0] : 'Polska';
                     const userBio = p.bio ? (p.bio.length > 85 ? p.bio.substring(0, 85) + '...' : p.bio) : 'Szukam wartościowej relacji opartej na fundamencie Chrystusa ✨';
@@ -6495,12 +6524,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     }
                 }
 
+                const isMission = p.isMissionAccount || p.isMission || (slug && ['radiocc','cctv','ccmen','ccwomen','studiodobregoslowa','osobowoscplus','lumina','bibliaaudio','jolawojcik'].includes(slug.toLowerCase())) || (p.name && (p.name.toLowerCase().includes('christian culture') || p.name.toLowerCase().includes('portal lumina') || p.name.toLowerCase().includes('studio dobrego słowa') || p.name.toLowerCase().includes('osobowość +')));
                 const nameEl = card.querySelector('.card-name');
                 if (nameEl) {
-                    if (p.isMissionAccount) {
-                        nameEl.innerHTML = `${p.name} <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>`;
+                    if (isMission) {
+                        const ytIcon = (slug === 'osobowoscplus' || slug === 'radiocc' || slug === 'cctv' || slug === 'ccmen' || slug === 'ccwomen' || slug === 'studiodobregoslowa') ? ' <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>' : '';
+                        nameEl.innerHTML = `${p.name}${ytIcon}`;
                     } else {
-                        const hasValidAge = p.age && Number(p.age) > 0 && p.profileCompleted !== false && !p.needsProfileCompletion;
+                        const hasValidAge = p.age && Number(p.age) > 0 && p.profileCompleted !== false && !p.needsProfileCompletion && (p.hasRealPhoto !== false);
                         nameEl.textContent = `${p.name}${hasValidAge ? ', ' + p.age : ''}`;
                     }
                 }
@@ -6959,8 +6990,9 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             }
 
             const mName = document.getElementById('mName');
+            const isMission = p.isMissionAccount || p.isMission || (slug && ['radiocc','cctv','ccmen','ccwomen','studiodobregoslowa','osobowoscplus','lumina','bibliaaudio','jolawojcik'].includes(slug.toLowerCase())) || (p.name && (p.name.toLowerCase().includes('christian culture') || p.name.toLowerCase().includes('portal lumina') || p.name.toLowerCase().includes('studio dobrego słowa') || p.name.toLowerCase().includes('osobowość +')));
             if (mName) {
-                const hasValidAge = p.age && Number(p.age) > 0 && p.profileCompleted !== false && !p.needsProfileCompletion;
+                const hasValidAge = !isMission && p.age && Number(p.age) > 0 && p.profileCompleted !== false && !p.needsProfileCompletion && (p.hasRealPhoto !== false);
                 mName.textContent = `${p.name}${hasValidAge ? ', ' + p.age : ''}`;
             }
 
