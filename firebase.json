@@ -390,7 +390,7 @@
       ],
       "headers": [
         {
-          "source": "**/*.@(html|htm)",
+          "source": "**",
           "headers": [
             {
               "key": "Cache-Control",
@@ -822,7 +822,7 @@
       ],
       "headers": [
         {
-          "source": "**/*.@(html|htm)",
+          "source": "**",
           "headers": [
             {
               "key": "Cache-Control",
