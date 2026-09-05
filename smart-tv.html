@@ -1228,11 +1228,13 @@
           isAudioPlaying = true;
           bars.style.display = 'flex';
           updatePlayBtnState(true, 'Zatrzymaj (OK)');
+          publishTvState();
         }).catch(err => {
           console.warn('Wymagany gest użytkownika do startu audio:', err);
           isAudioPlaying = false;
           bars.style.display = 'none';
           updatePlayBtnState(false, 'Odtwarzaj (OK)');
+          publishTvState();
         });
       }
     }
@@ -1248,12 +1250,14 @@
           isAudioPlaying = true;
           bars.style.display = 'flex';
           updatePlayBtnState(true, 'Zatrzymaj (OK)');
+          publishTvState();
         });
       } else {
         audio.pause();
         isAudioPlaying = false;
         bars.style.display = 'none';
         updatePlayBtnState(false, 'Odtwarzaj (OK)');
+        publishTvState();
       }
     }
 
@@ -1311,35 +1315,93 @@
     updateClock();
 
     // ── SMART PHONE PAIRING ENGINE (Firebase Realtime Database - Cross-Device) ──
-    // Session: default "public" or from URL ?session=CODE
-    const _tvSessionId = new URLSearchParams(window.location.search).get('session') || 'public';
+    const _urlParams = new URLSearchParams(window.location.search);
+    let _tvSessionId = _urlParams.get('session');
+    if (!_tvSessionId) {
+      _tvSessionId = localStorage.getItem('cc_smart_tv_session');
+      if (!_tvSessionId || _tvSessionId === 'public') {
+        _tvSessionId = 'CC-' + Math.floor(1000 + Math.random() * 9000);
+        localStorage.setItem('cc_smart_tv_session', _tvSessionId);
+      }
+    }
+
+    // Aktualizacja kodu i QR w modalu parowania
+    const pairCodeEl = document.getElementById('pairCodeTxt');
+    const pairQrEl = document.getElementById('pairingQrImg');
+    if (pairCodeEl) pairCodeEl.textContent = _tvSessionId;
+    if (pairQrEl) {
+      const pilotUrl = 'https://polskieradio.cc/pilot?session=' + encodeURIComponent(_tvSessionId);
+      pairQrEl.src = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&bgcolor=ffffff&color=000000&data=' + encodeURIComponent(pilotUrl);
+    }
 
     // Local BroadcastChannel still works for same-browser / same-tab usage
     const bc = ('BroadcastChannel' in window) ? new BroadcastChannel('cc_smart_tv_sync') : null;
     if (bc) bc.onmessage = (ev) => handleRemoteMessage(ev.data);
 
-    // Firebase Realtime DB listener — phone → TV cross-device
+    let _tvStateRef = null;
+    let _rtdbSet = null;
+
+    function publishTvState() {
+      if (!_rtdbSet || !_tvStateRef) return;
+      try {
+        const ch = STATIONS_DATA[activeChannelId] || {};
+        const trackTitle = document.getElementById('visTrackName') ? document.getElementById('visTrackName').innerText : (ch.name || '');
+        _rtdbSet(_tvStateRef, {
+          channel: activeChannelId,
+          channelName: ch.name || ('Kanał ' + activeChannelId),
+          channelType: ch.type || 'audio',
+          isPlaying: (ch.type === 'video') ? true : isAudioPlaying,
+          title: trackTitle,
+          volume: audio ? Math.round(audio.volume * 100) : 100,
+          ts: Date.now()
+        }).catch(e => console.warn('[SmartTV State Sync Error]', e));
+      } catch(err) {
+        console.warn('[SmartTV State Sync Exception]', err);
+      }
+    }
+
+    // Firebase Realtime DB listener & Two-way State Publisher — phone ↔ TV cross-device
     import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js').then(({ initializeApp }) => {
-      import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js').then(({ getDatabase, ref, onValue }) => {
-        const fbApp = initializeApp({
-          apiKey: "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M",
-          databaseURL: "https://lumina-cc-default-rtdb.europe-west1.firebasedatabase.app",
-          projectId: "lumina-cc",
-          appId: "1:413985877183:web:b0c99a686a4fb1b875aa0a"
-        }, 'smart-tv-remote-' + Date.now());
-        
-        const rtdb = getDatabase(fbApp);
-        const tvRef = ref(rtdb, 'tv_remote/' + _tvSessionId);
+      import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js').then(({ getAuth, signInAnonymously }) => {
+        import('https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js').then(({ getDatabase, ref, set, onValue }) => {
+          const fbApp = initializeApp({
+            apiKey: "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M",
+            authDomain: "lumina-cc.firebaseapp.com",
+            databaseURL: "https://lumina-cc-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "lumina-cc",
+            appId: "1:413985877183:web:b0c99a686a4fb1b875aa0a"
+          }, 'smart-tv-remote-' + Date.now());
 
-        let lastTs = 0;
-        onValue(tvRef, (snap) => {
-          const data = snap.val();
-          if (!data || !data.ts || data.ts === lastTs) return;
-          lastTs = data.ts;
-          handleRemoteMessage(data);
+          const auth = getAuth(fbApp);
+          const rtdb = getDatabase(fbApp);
+
+          signInAnonymously(auth).then(() => {
+            console.log('[SmartTV] Firebase Auth Anonymous OK');
+            const tvRef = ref(rtdb, 'tv_remote/' + _tvSessionId);
+            _tvStateRef = ref(rtdb, 'tv_state/' + _tvSessionId);
+            _rtdbSet = set;
+
+            let lastTs = 0;
+            onValue(tvRef, (snap) => {
+              const data = snap.val();
+              if (!data || !data.ts || data.ts === lastTs) return;
+              lastTs = data.ts;
+              handleRemoteMessage(data);
+            });
+
+            publishTvState();
+            console.log('[SmartTV] Firebase Pilot connected & state sync active — session:', _tvSessionId);
+          }).catch(err => {
+            console.error('[SmartTV] Firebase Auth Error, using fallback:', err);
+            const tvRef = ref(rtdb, 'tv_remote/' + _tvSessionId);
+            _tvStateRef = ref(rtdb, 'tv_state/' + _tvSessionId);
+            _rtdbSet = set;
+            onValue(tvRef, (snap) => {
+              const data = snap.val();
+              if (data && data.ts) handleRemoteMessage(data);
+            });
+          });
         });
-
-        console.log('[SmartTV] Firebase Pilot connected — session:', _tvSessionId);
       });
     });
 
@@ -1347,11 +1409,15 @@
       resetTVIdleTimer();
       if (!data) return;
       if (data.type === 'CHANNEL' && data.channel) {
-        switchChannel(data.channel);
+        switchChannel(Number(data.channel));
       } else if (data.type === 'CMD') {
         if (data.action === 'play_pause') togglePlayPause();
         else if (data.action === 'fullscreen') toggleFullscreen();
-        else if (data.action === 'up' && window.SmartTV) window.SmartTV.navigateSpatial('up');
+        else if (data.action === 'vol_up') {
+          if (audio) audio.volume = Math.min(1, Number((audio.volume + 0.1).toFixed(2)));
+        } else if (data.action === 'vol_down') {
+          if (audio) audio.volume = Math.max(0, Number((audio.volume - 0.1).toFixed(2)));
+        } else if (data.action === 'up' && window.SmartTV) window.SmartTV.navigateSpatial('up');
         else if (data.action === 'down' && window.SmartTV) window.SmartTV.navigateSpatial('down');
         else if (data.action === 'left' && window.SmartTV) window.SmartTV.navigateSpatial('left');
         else if (data.action === 'right' && window.SmartTV) window.SmartTV.navigateSpatial('right');
@@ -1359,6 +1425,7 @@
           if (document.activeElement) document.activeElement.click();
         }
       }
+      publishTvState();
     }
 
     // Start w trybie Pełnoekranowym — karuzela z Telewizją CCTV24 i Kino VOD

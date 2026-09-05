@@ -114,6 +114,37 @@
       text-decoration: none; color: #fff;
     }
     .patronite-btn { background: #d4af37; color: #000; font-size: 0.75rem; font-weight: 800; padding: 6px 14px; border-radius: 20px; white-space: nowrap; }
+    /* Dynamic State Sync Styles */
+    .tv-status-card {
+      background: rgba(18,24,38,0.85);
+      border: 1px solid var(--silver-border);
+      border-radius: 14px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .tv-now-info { display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
+    .tv-now-station { font-size: 0.82rem; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tv-now-title { font-size: 0.72rem; color: var(--gold-accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tv-status-badge {
+      font-size: 0.65rem; font-weight: 800; color: #22c55e;
+      background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.4);
+      padding: 4px 9px; border-radius: 20px; display: flex; align-items: center; gap: 5px; flex-shrink: 0;
+    }
+    .btn-channel.active-channel, .btn-tv.active-channel {
+      border-color: var(--gold-accent) !important;
+      background: linear-gradient(135deg, rgba(212,175,55,0.22) 0%, rgba(15,23,42,0.95) 100%) !important;
+      box-shadow: 0 0 16px rgba(212,175,55,0.45);
+      transform: scale(1.02);
+    }
+    .active-badge {
+      position: absolute; bottom: 3px; font-size: 0.52rem; font-weight: 800;
+      color: var(--gold-accent); background: rgba(0,0,0,0.75);
+      padding: 1px 5px; border-radius: 10px; border: 1px solid rgba(212,175,55,0.5);
+      letter-spacing: 0.5px;
+    }
   </style>
 </head>
 <body>
@@ -125,6 +156,17 @@
     </div>
     <div class="pair-badge connecting" id="pairStatus">
       <i class="fa-solid fa-spinner fa-spin"></i> Łączenie...
+    </div>
+  </div>
+
+  <!-- Realtime Smart TV Status Bar -->
+  <div class="tv-status-card" id="tvStatusCard">
+    <div class="tv-now-info">
+      <div class="tv-now-station" id="tvNowStation">Oczekiwanie na Smart TV...</div>
+      <div class="tv-now-title" id="tvNowTitle">Sesja: <span id="tvSessionName" style="color:var(--gold-accent); font-weight:800;">---</span></div>
+    </div>
+    <div class="tv-status-badge" id="tvLiveBadge">
+      <i class="fa-solid fa-satellite-dish"></i> SYNC
     </div>
   </div>
 
@@ -147,18 +189,18 @@
 
   <div class="section-label">6 Stacji Radiowych</div>
   <div class="channels-grid">
-    <button class="btn-channel" onclick="sendChannel(1)"><span class="ch-num">1</span><img src="logo-radio-cc.png" class="ch-logo" onerror="this.remove()"><span class="ch-name">Radio CC (PL)</span></button>
-    <button class="btn-channel" onclick="sendChannel(2)"><span class="ch-num">2</span><img src="logo-worship.jpg" class="ch-logo" onerror="this.remove()"><span class="ch-name">Worship Music</span></button>
-    <button class="btn-channel" onclick="sendChannel(3)"><span class="ch-num">3</span><img src="logo-biblia-audio.jpg" class="ch-logo" onerror="this.remove()"><span class="ch-name">Radio Biblia</span></button>
-    <button class="btn-channel" onclick="sendChannel(4)"><span class="ch-num">4</span><img src="logo-radio-global.webp" class="ch-logo" onerror="this.remove()"><span class="ch-name">Radio Global</span></button>
-    <button class="btn-channel" onclick="sendChannel(5)"><span class="ch-num">5</span><img src="logo-globalna-biblia.jpg" class="ch-logo" onerror="this.remove()"><span class="ch-name">Global Bible</span></button>
-    <button class="btn-channel" onclick="sendChannel(6)"><span class="ch-num">6</span><img src="logo-biblia-spiewana.jpg" class="ch-logo" onerror="this.remove()"><span class="ch-name">Biblia Spiewa.</span></button>
+    <button class="btn-channel" data-ch="1" onclick="sendChannel(1)"><span class="ch-num">1</span><img src="logo-radio-cc.png" class="ch-logo" onerror="this.remove()"><span class="ch-name">Radio CC (PL)</span></button>
+    <button class="btn-channel" data-ch="2" onclick="sendChannel(2)"><span class="ch-num">2</span><img src="logo-worship.jpg" class="ch-logo" onerror="this.remove()"><span class="ch-name">Worship Music</span></button>
+    <button class="btn-channel" data-ch="3" onclick="sendChannel(3)"><span class="ch-num">3</span><img src="logo-biblia-audio.jpg" class="ch-logo" onerror="this.remove()"><span class="ch-name">Radio Biblia</span></button>
+    <button class="btn-channel" data-ch="4" onclick="sendChannel(4)"><span class="ch-num">4</span><img src="logo-radio-global.webp" class="ch-logo" onerror="this.remove()"><span class="ch-name">Radio Global</span></button>
+    <button class="btn-channel" data-ch="5" onclick="sendChannel(5)"><span class="ch-num">5</span><img src="logo-globalna-biblia.jpg" class="ch-logo" onerror="this.remove()"><span class="ch-name">Global Bible</span></button>
+    <button class="btn-channel" data-ch="6" onclick="sendChannel(6)"><span class="ch-num">6</span><img src="logo-biblia-spiewana.jpg" class="ch-logo" onerror="this.remove()"><span class="ch-name">Biblia Spiewa.</span></button>
   </div>
 
   <div class="section-label">Telewizja i Kino</div>
   <div class="tv-row">
-    <button class="btn-tv" onclick="sendChannel(7)"><i class="fa-solid fa-tv"></i> CCTV24 TV</button>
-    <button class="btn-tv" onclick="sendChannel(8)"><i class="fa-solid fa-film"></i> Kino VOD</button>
+    <button class="btn-tv" data-ch="7" onclick="sendChannel(7)"><i class="fa-solid fa-tv"></i> CCTV24 TV</button>
+    <button class="btn-tv" data-ch="8" onclick="sendChannel(8)"><i class="fa-solid fa-film"></i> Kino VOD</button>
   </div>
 
   <a href="https://patronite.pl/osobowoscplus" target="_blank" class="patronite-banner">
@@ -171,6 +213,7 @@
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
     import { getDatabase, ref, set, onValue } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
     const firebaseConfig = {
@@ -184,21 +227,78 @@
     };
 
     const app = initializeApp(firebaseConfig, 'pilot-' + Math.random());
+    const auth = getAuth(app);
     const rtdb = getDatabase(app);
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session') || 'public';
     const tvRef = ref(rtdb, 'tv_remote/' + sessionId);
+    const stateRef = ref(rtdb, 'tv_state/' + sessionId);
     const statusEl = document.getElementById('pairStatus');
+    const sessionNameEl = document.getElementById('tvSessionName');
+    if (sessionNameEl) sessionNameEl.textContent = sessionId;
 
-    onValue(ref(rtdb, '.info/connected'), (snap) => {
-      if (snap.val() === true) {
-        statusEl.className = 'pair-badge connected';
-        statusEl.innerHTML = '<i class="fa-solid fa-circle" style="font-size:0.55rem;"></i> POŁĄCZONO';
-      } else {
-        statusEl.className = 'pair-badge connecting';
-        statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Łączenie...';
-      }
+    signInAnonymously(auth).then(() => {
+      console.log('[Pilot] Firebase Auth Anonymous OK');
+      initListeners();
+    }).catch(err => {
+      console.error('[Pilot] Auth Error, falling back to direct listeners:', err);
+      initListeners();
     });
+
+    function initListeners() {
+      // 1. Status połączenia RTDB
+      onValue(ref(rtdb, '.info/connected'), (snap) => {
+        if (snap.val() === true) {
+          statusEl.className = 'pair-badge connected';
+          statusEl.innerHTML = '<i class="fa-solid fa-circle" style="font-size:0.55rem;"></i> POŁĄCZONO';
+        } else {
+          statusEl.className = 'pair-badge connecting';
+          statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Łączenie...';
+        }
+      });
+
+      // 2. Dwukierunkowa synchronizacja stanu ze Smart TV (Realtime Feedback)
+      onValue(stateRef, (snap) => {
+        const state = snap.val();
+        if (!state) return;
+        updateTvStateUI(state);
+      });
+    }
+
+    function updateTvStateUI(state) {
+      const stationEl = document.getElementById('tvNowStation');
+      const titleEl = document.getElementById('tvNowTitle');
+      const liveBadge = document.getElementById('tvLiveBadge');
+
+      if (stationEl && state.channelName) {
+        stationEl.textContent = state.channelName;
+      }
+      if (titleEl && state.title) {
+        titleEl.textContent = state.title;
+      }
+      if (liveBadge) {
+        liveBadge.innerHTML = state.isPlaying
+          ? '<i class="fa-solid fa-circle-play" style="color:#22c55e;"></i> GRA'
+          : '<i class="fa-solid fa-circle-pause" style="color:#f59e0b;"></i> PAUZA';
+      }
+
+      // Podświetlenie aktywnego kanału na pilocie
+      const activeNum = Number(state.channel);
+      document.querySelectorAll('.btn-channel, .btn-tv').forEach(btn => {
+        btn.classList.remove('active-channel');
+        const badge = btn.querySelector('.active-badge');
+        if (badge) badge.remove();
+      });
+
+      const activeBtn = document.querySelector(`[data-ch="${activeNum}"]`);
+      if (activeBtn) {
+        activeBtn.classList.add('active-channel');
+        const b = document.createElement('span');
+        b.className = 'active-badge';
+        b.textContent = 'NA ŻYWO';
+        activeBtn.appendChild(b);
+      }
+    }
 
     function vibrate(ms) { try { if (navigator.vibrate) navigator.vibrate(ms); } catch(e){} }
 
@@ -214,16 +314,18 @@
     window.sendCmd = function(action) {
       vibrate(30);
       set(tvRef, { type: 'CMD', action, ts: Date.now() }).then(flash).catch(e => {
+        console.warn('sendCmd error:', e);
         statusEl.className = 'pair-badge err';
-        statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> BRAK SIECI';
+        statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> BŁĄD SIECI';
       });
     };
 
     window.sendChannel = function(num) {
       vibrate(40);
       set(tvRef, { type: 'CHANNEL', channel: num, ts: Date.now() }).then(flash).catch(e => {
+        console.warn('sendChannel error:', e);
         statusEl.className = 'pair-badge err';
-        statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> BRAK SIECI';
+        statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> BŁĄD SIECI';
       });
     };
   </script>

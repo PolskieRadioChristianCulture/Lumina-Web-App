@@ -28,6 +28,7 @@
 * **ID:** `TASK-ICC-008` — Wdrożenie Pakietu 4 Złotych Poprawek dla Web Push & FCM Device Token Persistence ➔ `DONE`
 * **ID:** `TASK-ICC-009` — Automatyczne Inteligentne Błogosławieństwa i Wersety Biblijne Czasu Rzeczywistego w Czacie ➔ `DONE`
 * **ID:** `TASK-ICC-014` — Architektura i Wdrożenie Platformy MATRIX CC (@MCC) z Regułami Dedykowanego Agenta ➔ `DONE`
+* **ID:** `TASK-ICC-015` — Naprawa dwukierunkowego parowania Smart TV (/telewizja) z mobilnym pilotem (/pilot), anonimowa autoryzacja Firebase RTDB i synchronizacja stanu na żywo ➔ `DONE`
 
 ---
 
