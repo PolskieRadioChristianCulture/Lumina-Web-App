@@ -31,16 +31,18 @@ const { onRequest } = require('firebase-functions/v2/https');
 const { defineSecret } = require('firebase-functions/params');
 const { logger } = require('firebase-functions');
 let vision = null;
-try {
-    vision = require('@google-cloud/vision');
-} catch(e) {}
-
+let visionClient = null;
 const app = getApps().length === 0 ? initializeApp() : getApp();
 const db = getFirestore(app);
-let visionClient = null;
+
 function getVisionClient() {
-    if (!visionClient && vision) {
-        visionClient = new vision.ImageAnnotatorClient();
+    if (!visionClient) {
+        if (!vision) {
+            try { vision = require('@google-cloud/vision'); } catch(e) {}
+        }
+        if (vision) {
+            visionClient = new vision.ImageAnnotatorClient();
+        }
     }
     return visionClient;
 }
