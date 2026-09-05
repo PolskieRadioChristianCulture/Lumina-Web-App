@@ -427,9 +427,12 @@ export function handleOmniSearchInput(val) {
         `;
     } else {
         const renderedItems = matches.slice(0, 8).map(item => {
-            const avatar = item.avatar || 'lumina_icon.jpg';
+            const rawAv = item.avatar || '';
+            const isLetter = rawAv.includes('googleusercontent.com/a/');
+            const avatar = (!rawAv || isLetter || rawAv === 'icon.png') ? 'lumina_icon.jpg' : rawAv;
             const name = item.name || 'Profil Społeczności';
-            const ageStr = item.age ? `, ${item.age}` : '';
+            const hasValidAge = item.age && Number(item.age) > 0 && item.profileCompleted !== false && !item.needsProfileCompletion;
+            const ageStr = hasValidAge ? `, ${item.age}` : '';
             const cityStr = item.city ? item.city.split(',')[0] : 'Polska';
             const jobOrBio = item.job || item.bio || item.status || 'Profil społeczności';
             const shortJob = jobOrBio.length > 70 ? jobOrBio.substring(0, 70) + '...' : jobOrBio;

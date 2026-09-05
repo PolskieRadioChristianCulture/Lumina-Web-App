@@ -5147,7 +5147,7 @@
                 document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} • <b style="color:#ec4899;">🌸 Kanał YouTube CC Women</b>`;
             } else if (data.isMissionAccount) {
                 document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} • <b style="color:#a855f7;">✨ Misja Christian Culture</b>`;
-            } else if (data.age && !isNaN(parseInt(data.age, 10))) {
+            } else if (data.age && !isNaN(parseInt(data.age, 10)) && data.profileCompleted !== false && !data.needsProfileCompletion) {
                 let demoBadgeHtml = data.isDemo ? `<span class="badge-demo-chip" onclick="event.stopPropagation(); window.showDemoProfileModal();" style="cursor:pointer; background:rgba(99,102,241,0.18); border:1px solid rgba(99,102,241,0.4); color:#a5b4fc; padding:2px 8px; border-radius:12px; font-weight:700; font-size:0.75rem; display:inline-flex; align-items:center; gap:4px; margin-left:6px;" title="Kliknij, aby dowiedzieć się więcej"><i class="fa-solid fa-eye"></i> Profil Poglądowy</span>` : '';
                 document.getElementById('userAgeCityEl').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.city} (${data.age} lat)${demoBadgeHtml}`;
             } else {
@@ -5243,6 +5243,10 @@
                 ? (data.avatar || 'lumina_logo.jpg') // wymuszony werdykt serwera — cache lokalny nie może go ominąć
                 : (localStorage.getItem('lumina_avatar_' + slug) || data.avatar || (slug.includes('bibliaaudio') ? 'avatar_biblia_audio.gif' : 'lumina_icon.jpg'));
             
+            if (targetAv && (targetAv.includes('googleusercontent.com/a/') || targetAv === 'icon.png' || !targetAv)) {
+                targetAv = 'lumina_icon.jpg';
+            }
+            
             if (slug.includes('bibliaaudio') && (targetAv.includes('googleusercontent.com') || targetAv.includes('lumina_icon') || !targetAv)) {
                 targetAv = 'avatar_biblia_audio.gif';
             }
@@ -5306,7 +5310,7 @@
             }
 
             // Real photo requirement check for owner
-            if (isOwnerMode && (targetAv.includes('lumina_icon.jpg') || data.needsRealPhoto)) {
+            if (isOwnerMode && (targetAv.includes('lumina_icon.jpg') || targetAv.includes('googleusercontent.com/a/') || data.needsRealPhoto || data.profileCompleted === false || !data.age)) {
                 if (!sessionStorage.getItem('lumina_photo_prompt_dismissed')) {
                     setTimeout(() => {
                         const m = document.getElementById('modalRealPhotoRequired');

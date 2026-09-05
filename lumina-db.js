@@ -474,7 +474,10 @@ if (auth) {
                     else if (isWioletta) cleanSlug = 'wiolettarogowska';
                     else cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Math.floor(Math.random() * 8999 + 1000);
                     
-                    const userAvatar = user.photoURL || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));
+                    const isLetterAvatar = !user.photoURL || user.photoURL.includes('googleusercontent.com/a/');
+                    const userAvatar = (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : (isLetterAvatar ? 'lumina_icon.jpg' : user.photoURL)));
+                    const hasRealFace = (isCezary || isWioletta || isRadioCC) ? true : (!isLetterAvatar);
+                    const isProfileDone = Boolean(isCezary || isWioletta || isRadioCC);
                     
                     currentProfileState = {
                         uid: user.uid,
@@ -482,7 +485,10 @@ if (auth) {
                         name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
                         email: user.email || '',
                         avatar: userAvatar,
-                        age: isRadioCC ? 0 : (isCezary ? 51 : (isWioletta ? 50 : 28)),
+                        age: isRadioCC ? 0 : (isCezary ? 51 : (isWioletta ? 50 : null)),
+                        hasRealPhoto: hasRealFace,
+                        profileCompleted: isProfileDone,
+                        needsProfileCompletion: !isProfileDone,
                         city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska'),
                         status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler')),
                         job: isRadioCC ? 'Misja & Radio Christian Culture' : (isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Członek Społeczności LUMINA ✨')),
@@ -769,7 +775,7 @@ export async function registerWithEmail(email, password, basicData) {
             slug: userSlug,
             email: user.email,
             name: basicData.name || 'Użytkownik LUMINA',
-            age: basicData.age || 25,
+            age: basicData.age ? Number(basicData.age) : null,
             city: basicData.city || 'Polska',
             gender: basicData.gender || 'kobieta',
             lookingFor: basicData.lookingFor || 'mezczyzna',

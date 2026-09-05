@@ -2,6 +2,17 @@
 <html lang="pl">
 <head>
 <script>
+        // ── STRAŻNIK AUTENTYCZNOŚCI ZDJĘĆ LUMINA (@Strażnik SMCC) ──
+        function isLuminaRealPhoto(url) {
+            if (!url || typeof url !== 'string') return false;
+            const clean = url.trim().toLowerCase();
+            if (clean === 'lumina_icon.jpg' || clean === 'icon.png' || clean.endsWith('/lumina_icon.jpg')) return false;
+            if (clean.includes('googleusercontent.com/a/')) return false; // Automatycznie generowana litera Google na kolorowym tle
+            if (clean.startsWith('data:image/svg')) return false;
+            return true;
+        }
+        window.isLuminaRealPhoto = isLuminaRealPhoto;
+
     // ── LUMINA GLOBAL LANGUAGE ENABLER ──
     (function(){
         try {
@@ -6351,12 +6362,20 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                         rawAvatar = 'avatar_urszula.jpg';
                     }
 
+                    // Strażnik zdjęć: wykluczenie literek Google i placeholderów
+                    if (!isLuminaRealPhoto(rawAvatar)) {
+                        rawAvatar = 'lumina_icon.jpg';
+                    }
                     // Kluczowe: jeśli użytkownik wybrał zdjęcie/wideo na karuzelę (customCarouselUrl), to ma ono BEZWZGLĘDNY priorytet!
                     let mediaUrl = customCarouselUrl || (isVideoMedia ? (p.avatarVideo || p.carouselVideo) : (p.avatar || rawAvatar));
+                    if (!isLuminaRealPhoto(mediaUrl) && !isVideoMedia) {
+                        mediaUrl = 'lumina_icon.jpg';
+                    }
 
                     let userAvatar = rawAvatar;
                     const userName = p.name;
-                    const userAge = p.age ? ', ' + p.age : '';
+                    const hasValidAge = p.age && Number(p.age) > 0 && p.profileCompleted !== false && !p.needsProfileCompletion;
+                    const userAge = hasValidAge ? ', ' + p.age : '';
                     const userCity = p.city ? p.city.split(',')[0] : 'Polska';
                     const userBio = p.bio ? (p.bio.length > 85 ? p.bio.substring(0, 85) + '...' : p.bio) : 'Szukam wartościowej relacji opartej na fundamencie Chrystusa ✨';
                     const liveScore = isLocalUser ? 'Twój profil' : (window.calculateProfileMatchScore ? window.calculateProfileMatchScore(p) : null);
@@ -6454,7 +6473,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
                 const targetMedia = p.carouselMediaUrl || localStorage.getItem('lumina_carousel_' + slug) || localStorage.getItem('lumina_carousel_' + slug.replace(/^u_/, '')) || p.avatar;
                 if (img && targetMedia) {
-                    img.src = targetMedia;
+                    const finalMedia = isLuminaRealPhoto(targetMedia) ? targetMedia : 'lumina_icon.jpg';
+                    img.src = finalMedia;
                     img.alt = p.name || slug;
                 }
 
@@ -6480,7 +6500,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     if (p.isMissionAccount) {
                         nameEl.innerHTML = `${p.name} <i class="fa-brands fa-youtube" style="color:#ef4444;font-size:0.95rem;"></i>`;
                     } else {
-                        nameEl.textContent = `${p.name}${p.age ? ', ' + p.age : ''}`;
+                        const hasValidAge = p.age && Number(p.age) > 0 && p.profileCompleted !== false && !p.needsProfileCompletion;
+                        nameEl.textContent = `${p.name}${hasValidAge ? ', ' + p.age : ''}`;
                     }
                 }
 
@@ -6933,12 +6954,14 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             const mImg = document.getElementById('mImg');
             if (mImg) {
-                mImg.innerHTML = `<img loading="lazy" decoding="async" src="${p.avatar || 'lumina_icon.jpg'}" alt="${p.name}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);margin:0 auto;display:block;">`;
+                const finalAv = isLuminaRealPhoto(p.avatar) ? p.avatar : 'lumina_icon.jpg';
+                mImg.innerHTML = `<img loading="lazy" decoding="async" src="${finalAv}" alt="${p.name}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #a855f7;box-shadow:0 0 18px rgba(168,85,247,0.5);margin:0 auto;display:block;">`;
             }
 
             const mName = document.getElementById('mName');
             if (mName) {
-                mName.textContent = `${p.name}${p.age ? ', ' + p.age : ''}`;
+                const hasValidAge = p.age && Number(p.age) > 0 && p.profileCompleted !== false && !p.needsProfileCompletion;
+                mName.textContent = `${p.name}${hasValidAge ? ', ' + p.age : ''}`;
             }
 
             const isFounderOrMission = p.isFounder || p.isMissionAccount;
@@ -10013,25 +10036,72 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         </div>
     </div>
 
-    <!-- ══════════ MODAL: WYMÓG PRAWDZIWEGO ZDJĘCIA TWARZY ══════════ -->
-    <div class="modal-overlay" id="modalRealPhotoRequired" onclick="if(event.target===this) closeModal('modalRealPhotoRequired')" style="z-index: 100003;">
-        <div class="modal-card" style="max-width: 480px; text-align: center; background: #0b142e; border: 1.5px solid rgba(245, 158, 11, 0.5); border-radius: 24px; padding: 26px 22px;">
+    <!-- ══════════ MODAL: WYMÓG REGULAMINOWY UZUPEŁNIENIA PROFILU & ZDJĘCIA ══════════ -->
+    <div class="modal-overlay" id="modalRealPhotoRequired" style="z-index: 100003;">
+        <div class="modal-card" style="max-width: 500px; text-align: left; background: #0b142e; border: 2px solid rgba(245, 158, 11, 0.6); border-radius: 24px; padding: 26px 22px; box-shadow: 0 20px 60px rgba(0,0,0,0.8);">
             <button class="modal-close-btn" onclick="closeModal('modalRealPhotoRequired')"><i class="fa-solid fa-xmark"></i></button>
-            <div style="width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 1.4rem; color: #000; box-shadow: 0 4px 18px rgba(245, 158, 11, 0.4);">
-                <i class="fa-solid fa-camera"></i>
+            
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+                <div style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; color: #000; box-shadow: 0 4px 18px rgba(245, 158, 11, 0.4); flex-shrink: 0;">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <h3 style="color: #fff; font-size: 1.15rem; margin: 0; font-weight: 800;">Wymóg Regulaminowy LUMINA</h3>
+                    <span style="color: #f59e0b; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Autentyczność • Prawda • Bezpieczeństwo</span>
+                </div>
             </div>
-            <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 8px;">Wymagane Autentyczne Zdjęcie Twarzy</h3>
-            <p style="font-size: 0.86rem; color: #cbd5e1; line-height: 1.55; margin-bottom: 18px;">
-                Społeczność <b>LUMINA</b> opiera się na prawdzie, zaufaniu i wzajemnym szacunku. Wszyscy użytkownicy zobowiązani są do wgrania <b>prawdziwego zdjęcia przedstawiającego swoją twarz</b>.<br><br>
-                Do czasu wgrania własnego zdjęcia, Twój profil oznaczony jest oficjalnym logo portalu LUMINA.
-            </p>
-            <div style="display:flex; flex-direction:column; gap:10px;">
-                <button type="button" class="admin-suite-btn btn-success" onclick="closeModal('modalRealPhotoRequired'); window.location.href='lumina-profile.html?profileVisibility=public';" style="justify-content:center; padding:12px 18px; border-radius:14px; font-weight:800;">
-                    <i class="fa-solid fa-camera"></i> Przejdź do Profilu i Wgraj Zdjęcie
-                </button>
-                <button type="button" class="admin-suite-btn btn-secondary" onclick="closeModal('modalRealPhotoRequired')" style="justify-content:center; padding:10px 18px; border-radius:14px;">
-                    Przypomnij później
-                </button>
+
+            <div style="background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px;">
+                <p style="font-size: 0.84rem; color: #cbd5e1; line-height: 1.5; margin: 0;">
+                    Społeczność <b>LUMINA</b> opiera się na fundamencie chrześcijańskiej prawdy i wzajemnego zaufania. Każdy zarejestrowany użytkownik ma <b>bezwzględny obowiązek uzupełnienia profilu</b>: wgrania <b>prawdziwego zdjęcia twarzy</b> oraz podania <b>rzeczywistego wieku</b>. Anonimowe litery z Google są niedozwolone. Do czasu wgrania własnego zdjęcia profil wyświetla oficjalne logo LUMINA.
+                </p>
+            </div>
+
+            <!-- Formularz wgrania zdjęcia i danych -->
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+                <!-- Sekcja Awatara -->
+                <div style="display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.04); padding: 12px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                    <img id="modalProfileAvatarPreview" src="lumina_icon.jpg" alt="Podgląd Zdjęcia" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid #f59e0b; flex-shrink: 0;">
+                    <div style="flex: 1;">
+                        <input type="file" id="modalProfilePhotoInput" accept="image/*" style="display: none;" onchange="handleModalPhotoFileSelect(event)">
+                        <button type="button" onclick="document.getElementById('modalProfilePhotoInput').click()" style="min-height: 44px; min-width: 44px; width: 100%; padding: 10px 14px; border-radius: 12px; background: rgba(245, 158, 11, 0.18); border: 1px solid rgba(245, 158, 11, 0.5); color: #fbbf24; font-weight: 700; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fa-solid fa-camera"></i> Wgraj Zdjęcie Twarzy
+                        </button>
+                        <div id="modalPhotoStatusLabel" style="font-size: 0.75rem; color: #94a3b8; margin-top: 4px; text-align: center;">Format: JPG, PNG • Max 10MB</div>
+                    </div>
+                </div>
+
+                <!-- Wiek i Miejscowość -->
+                <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 10px;">
+                    <div>
+                        <label for="modalProfileAgeInput" style="display: block; font-size: 0.78rem; color: #94a3b8; font-weight: 700; margin-bottom: 4px;">Twój Wiek *</label>
+                        <input type="number" id="modalProfileAgeInput" min="18" max="99" placeholder="np. 32" style="width: 100%; min-height: 44px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.95rem; font-weight: 700; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label for="modalProfileCityInput" style="display: block; font-size: 0.78rem; color: #94a3b8; font-weight: 700; margin-bottom: 4px;">Miejscowość *</label>
+                        <input type="text" id="modalProfileCityInput" placeholder="np. Kraków" style="width: 100%; min-height: 44px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.95rem; box-sizing: border-box;">
+                    </div>
+                </div>
+
+                <!-- Stan Cywilny -->
+                <div>
+                    <label for="modalProfileStatusSelect" style="display: block; font-size: 0.78rem; color: #94a3b8; font-weight: 700; margin-bottom: 4px;">Stan Cywilny / Relacja</label>
+                    <select id="modalProfileStatusSelect" style="width: 100%; min-height: 44px; padding: 10px 12px; border-radius: 12px; background: #131d3d; border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 0.92rem; box-sizing: border-box;">
+                        <option value="Panna/Kawaler">Panna / Kawaler</option>
+                        <option value="Mężatka/Żonaty">Mężatka / Żonaty</option>
+                        <option value="Szukam Bożej Relacji">Szukam Bożej Relacji z Wartościami</option>
+                        <option value="Wspólnota i Przyjaźń">Wspólnota i Przyjaźń w Wierze</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+                    <button type="button" id="btnSubmitProfileCompletion" onclick="submitMandatoryProfileCompletion()" style="min-height: 46px; min-width: 44px; width: 100%; padding: 12px 18px; border-radius: 14px; background: linear-gradient(135deg, #10b981, #059669); border: none; color: #fff; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4);">
+                        <i class="fa-solid fa-check-double"></i> Zapisz i Zatwierdź Mój Profil ✨
+                    </button>
+                    <button type="button" onclick="closeModal('modalRealPhotoRequired')" style="min-height: 44px; min-width: 44px; width: 100%; padding: 10px 18px; border-radius: 14px; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #94a3b8; font-size: 0.85rem; cursor: pointer;">
+                        Przypomnij przy następnym logowaniu
+                    </button>
+                </div>
             </div>
         </div>
     </div>
