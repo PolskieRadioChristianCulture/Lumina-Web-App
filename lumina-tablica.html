@@ -5886,6 +5886,29 @@
                     ? window.LuminaDB.formatRichTextAndMedia(rawBody)
                     : { html: rawBody, embedHtml: '' };
 
+                let effectiveEmbedHtml = richResult.embedHtml || '';
+                if (!effectiveEmbedHtml && (item.embedHtml || item.youtubeUrl || item.playlistUrl)) {
+                    if (item.embedHtml) {
+                        effectiveEmbedHtml = item.embedHtml;
+                    } else {
+                        const targetYt = item.youtubeUrl || item.playlistUrl;
+                        const plId = window.LuminaDB?.extractYouTubePlaylistId ? window.LuminaDB.extractYouTubePlaylistId(targetYt) : null;
+                        if (plId) {
+                            effectiveEmbedHtml = `<div class="rich-youtube-embed"><iframe src="https://www.youtube.com/embed/videoseries?list=${plId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>`;
+                        } else {
+                            const ytId = window.LuminaDB?.extractYouTubeId ? window.LuminaDB.extractYouTubeId(targetYt) : null;
+                            if (ytId) {
+                                effectiveEmbedHtml = `<div class="rich-youtube-embed"><iframe src="https://www.youtube-nocookie.com/embed/${ytId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>`;
+                            }
+                if (!effectiveEmbedHtml && item.gdrive) {
+                    effectiveEmbedHtml = window.LuminaDB?.createGoogleDriveEmbedHtml ? window.LuminaDB.createGoogleDriveEmbedHtml(item.gdrive, { mode: item.gdrive.mode }) : '';
+                } else if (!effectiveEmbedHtml && item.gdriveEmbed) {
+                    effectiveEmbedHtml = window.LuminaDB?.createGoogleDriveEmbedHtml ? window.LuminaDB.createGoogleDriveEmbedHtml({ fileId: 'ext', previewEmbedUrl: item.gdriveEmbed, typeLabel: 'Plik z Dysku Google' }) : '';
+                }
+                        }
+                    }
+                }
+
                 let topBadgeHtml = '';
                 if (window.LuminaDB?.getUserBadges) {
                     const uBadges = window.LuminaDB.getUserBadges(item.authorSlug || item.author);
@@ -5931,7 +5954,7 @@
                                 </div>
                             </div>
                         ` : (
-                            (!item.image && richResult.embedHtml) ? '' : (() => {
+                            (!item.image && effectiveEmbedHtml) ? '' : (() => {
                                 const isVideoMedia = cardImgSrc && (cardImgSrc.endsWith('.mp4') || cardImgSrc.includes('.mp4'));
                                 const mediaTag = isVideoMedia 
                                     ? `<video src="${cardImgSrc}" class="${isCampaign ? 'campaign-img-full' : 'media-img-1x1'}" autoplay loop muted playsinline poster="vod_hity_kina_poster.jpg" style="width:100%; height:100%; object-fit:cover; display:block;"></video>`
@@ -5948,7 +5971,7 @@
                         <div class="post-details-box">
                             ${item.title ? `<div class="post-headline">${item.title}</div>` : ''}
                             ${richResult.html ? `<div class="post-desc-text">${richResult.html}</div>` : ''}
-                            ${richResult.embedHtml || ''}
+                            ${effectiveEmbedHtml || ''}
                             ${eventInfoHtml}
                             ${ctaHtml}
                         </div>

@@ -442,6 +442,98 @@ export const PROFILES_DB = {
                 image: null
             }
         ]
+    },
+
+    'u_robertukaszpio_5668': {
+        uid: 'jIdflt3G8ohgpCoWmCLJAZ9i5d42',
+        slug: 'u_robertukaszpio_5668',
+        name: 'Robert Łukasz Pio',
+        age: 41,
+        city: 'Polska',
+        avatar: 'lumina_icon.jpg',
+        cover: 'lumina_default_cover.jpg',
+        coverPosY: '50%',
+        job: 'Członek Społeczności LUMINA ✨',
+        role: 'Społeczność LUMINA ✨',
+        church: 'Wspólnota Chrześcijańska',
+        denom: 'Rzymskokatolickie',
+        status: 'Panna/Kawaler',
+        pin: '7777',
+        visibility: 'public',
+        match: '98%',
+        matchScore: '98%',
+        stats: { friends: '52', posts: '1', likes: '112' },
+        verse: '„Kto nie miłuje, nie zna Boga, bo Bóg jest miłością.”',
+        verseRef: '— 1 J 4, 8',
+        bio: 'Szczęść Boże! Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA. Zapraszam do zapoznania się z moją twórczością i playlistą wideo.',
+        tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo', 'Muzyka Uwielbienia'],
+        photos: ['lumina_icon.jpg', 'lumina_default_cover.jpg'],
+        featuredPlaylistUrl: 'https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&list=PLaheS83_AaGk',
+        featuredPlaylistIframe: '<iframe width="100%" height="315" src="https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&amp;list=PLaheS83_AaGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+        posts: [
+            {
+                id: 'post_robert_featured_playlist',
+                title: '🎬 Oficjalna Playlista Wideo • Robert Łukasz Pio',
+                author: 'Robert Łukasz Pio',
+                authorSlug: 'u_robertukaszpio_5668',
+                authorAvatar: 'lumina_icon.jpg',
+                authorRole: 'Społeczność LUMINA ✨',
+                time: 'Przypięty wpis • 🎬 Wideo Playlista',
+                text: 'Szczęść Boże! Zapraszam do oglądania i odsłuchiwania mojej oficjalnej playlisty wideo. Niech te nagrania będą dla Was błogosławieństwem i umocnieniem w drodze wiary! 🙏✨',
+                youtubeUrl: 'https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&list=PLaheS83_AaGk',
+                embedHtml: '<div class="rich-youtube-embed"><iframe src="https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&amp;list=PLaheS83_AaGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>',
+                likes: 12,
+                amen: 15,
+                image: null,
+                isPinned: true
+            }
+        ]
+    },
+
+    'robertukaszpio': {
+        uid: 'jIdflt3G8ohgpCoWmCLJAZ9i5d42',
+        slug: 'u_robertukaszpio_5668',
+        name: 'Robert Łukasz Pio',
+        age: 41,
+        city: 'Polska',
+        avatar: 'lumina_icon.jpg',
+        cover: 'lumina_default_cover.jpg',
+        coverPosY: '50%',
+        job: 'Członek Społeczności LUMINA ✨',
+        role: 'Społeczność LUMINA ✨',
+        church: 'Wspólnota Chrześcijańska',
+        denom: 'Rzymskokatolickie',
+        status: 'Panna/Kawaler',
+        pin: '7777',
+        visibility: 'public',
+        match: '98%',
+        matchScore: '98%',
+        stats: { friends: '52', posts: '1', likes: '112' },
+        verse: '„Kto nie miłuje, nie zna Boga, bo Bóg jest miłością.”',
+        verseRef: '— 1 J 4, 8',
+        bio: 'Szczęść Boże! Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA. Zapraszam do zapoznania się z moją twórczością i playlistą wideo.',
+        tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo', 'Muzyka Uwielbienia'],
+        photos: ['lumina_icon.jpg', 'lumina_default_cover.jpg'],
+        featuredPlaylistUrl: 'https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&list=PLaheS83_AaGk',
+        featuredPlaylistIframe: '<iframe width="100%" height="315" src="https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&amp;list=PLaheS83_AaGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+        posts: [
+            {
+                id: 'post_robert_featured_playlist',
+                title: '🎬 Oficjalna Playlista Wideo • Robert Łukasz Pio',
+                author: 'Robert Łukasz Pio',
+                authorSlug: 'u_robertukaszpio_5668',
+                authorAvatar: 'lumina_icon.jpg',
+                authorRole: 'Społeczność LUMINA ✨',
+                time: 'Przypięty wpis • 🎬 Wideo Playlista',
+                text: 'Szczęść Boże! Zapraszam do oglądania i odsłuchiwania mojej oficjalnej playlisty wideo. Niech te nagrania będą dla Was błogosławieństwem i umocnieniem w drodze wiary! 🙏✨',
+                youtubeUrl: 'https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&list=PLaheS83_AaGk',
+                embedHtml: '<div class="rich-youtube-embed"><iframe src="https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&amp;list=PLaheS83_AaGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>',
+                likes: 12,
+                amen: 15,
+                image: null,
+                isPinned: true
+            }
+        ]
     }
 };
 

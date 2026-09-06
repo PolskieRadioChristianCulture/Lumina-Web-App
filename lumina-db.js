@@ -1515,6 +1515,12 @@ export async function publishUniversalPost(postData) {
         title: postData.title || '',
         text: postData.text || postData.desc || '',
         image: postData.image || null,
+        youtubeUrl: postData.youtubeUrl || null,
+        embedHtml: postData.embedHtml || null,
+        playlistUrl: postData.playlistUrl || null,
+        isPinned: !!postData.isPinned,
+        gdrive: postData.gdrive || null,
+        gdriveEmbed: postData.gdriveEmbed || null,
         author: authorName,
         authorSlug: slug,
         authorAvatar: authorAvatar,
@@ -1532,7 +1538,8 @@ export async function publishUniversalPost(postData) {
             `lumina_profile_${slug}`,
             slug.includes('cezary') ? 'lumina_profile_cezaryrgowski' : null,
             slug.includes('wioletta') ? 'lumina_profile_wiolettarogowska' : null,
-            (slug.includes('women') || slug.includes('ccwomen')) ? 'lumina_profile_u_ccwomen_9055' : null
+            (slug.includes('women') || slug.includes('ccwomen')) ? 'lumina_profile_u_ccwomen_9055' : null,
+            (slug.includes('robert') || slug === 'u_robertukaszpio_5668') ? 'lumina_profile_u_robertukaszpio_5668' : null
         ].filter(Boolean);
 
         storageKeys.forEach(k => {
@@ -3862,12 +3869,30 @@ export function unblockUser(targetIdOrSlug) {
 
 export function extractYouTubeId(url) {
     if (!url) return null;
+    const str = String(url).trim();
+    // If iframe tag passed, extract src
+    const iframeMatch = str.match(/src=["']([^"']+)["']/i);
+    const targetUrl = iframeMatch ? iframeMatch[1] : str;
     const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([^"&?\/\s]{11})/i;
-    const match = url.match(regExp);
+    const match = targetUrl.match(regExp);
+    return (match && match[1]) ? match[1] : null;
+}
+
+export function extractYouTubePlaylistId(url) {
+    if (!url) return null;
+    const str = String(url).trim();
+    const iframeMatch = str.match(/src=["']([^"']+)["']/i);
+    const targetUrl = iframeMatch ? iframeMatch[1] : str;
+    const regExp = /[?&]list=([a-zA-Z0-9_-]+)/i;
+    const match = targetUrl.match(regExp);
     return (match && match[1]) ? match[1] : null;
 }
 
 export const LUMINA_HANDLES = {
+    'robert': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
+    'bratrobert': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
+    'robertlukaszpio': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
+    'u_robertukaszpio_5668': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
     'magdalena': { slug: 'magdalena', name: 'Magdalena (43)', url: 'lumina-profile.html?u=magdalena', avatar: 'avatar_magdalena.png', badge: '🕊️ Poznań' },
     'cezary': { slug: 'cezaryrgowski', name: 'Cezary Rogowski', url: 'lumina.cezaryrgowski.html', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel CC' },
     'cezaryrgowski': { slug: 'cezaryrgowski', name: 'Cezary Rogowski', url: 'lumina.cezaryrgowski.html', avatar: 'avatar_cezary_official.jpg', badge: '👑 Założyciel CC' },
@@ -3909,6 +3934,121 @@ export function resolveMentionHandle(handle) {
         avatar: 'lumina_icon.jpg',
         badge: 'Profil LUMINA'
     };
+}
+
+
+// ══════════════════════════════════════════════════════════════════════════
+// ── LUMINA GOOGLE DRIVE INTEGRATION SUITE (WSZYSCY UŻYTKOWNICY) ──
+// ══════════════════════════════════════════════════════════════════════════
+
+export function parseGoogleDriveUrl(url) {
+    if (!url) return null;
+    const cleanUrl = String(url).trim();
+
+    let fileId = null;
+    let type = 'file';
+    let typeLabel = 'Plik z Dysku Google';
+    let icon = 'fa-brands fa-google-drive';
+
+    // Match patterns:
+    // https://drive.google.com/file/d/FILE_ID/view...
+    // https://drive.google.com/open?id=FILE_ID
+    // https://docs.google.com/document/d/FILE_ID/...
+    // https://docs.google.com/presentation/d/FILE_ID/...
+    // https://docs.google.com/spreadsheets/d/FILE_ID/...
+    // https://docs.google.com/forms/d/FILE_ID/...
+    const fileMatch = cleanUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/i) || 
+                      cleanUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/i) ||
+                      cleanUrl.match(/\/d\/([a-zA-Z0-9_-]+)/i);
+
+    if (fileMatch && fileMatch[1]) {
+        fileId = fileMatch[1];
+    } else if (/^[a-zA-Z0-9_-]{20,}$/.test(cleanUrl)) {
+        fileId = cleanUrl;
+    }
+
+    if (!fileId) return null;
+
+    if (cleanUrl.includes('docs.google.com/document')) {
+        type = 'document';
+        typeLabel = 'Dokument Google Docs';
+        icon = 'fa-solid fa-file-lines';
+    } else if (cleanUrl.includes('docs.google.com/spreadsheets')) {
+        type = 'spreadsheet';
+        typeLabel = 'Arkusz Google Sheets';
+        icon = 'fa-solid fa-table-cells';
+    } else if (cleanUrl.includes('docs.google.com/presentation')) {
+        type = 'presentation';
+        typeLabel = 'Prezentacja Google Slides';
+        icon = 'fa-solid fa-file-powerpoint';
+    } else if (cleanUrl.includes('docs.google.com/forms')) {
+        type = 'form';
+        typeLabel = 'Formularz Google Forms';
+        icon = 'fa-solid fa-square-poll-vertical';
+    } else if (cleanUrl.includes('drive.google.com/drive/folders')) {
+        type = 'folder';
+        typeLabel = 'Katalog z Dysku Google';
+        icon = 'fa-solid fa-folder-open';
+    }
+
+    const previewEmbedUrl = type === 'document' 
+        ? `https://docs.google.com/document/d/${fileId}/preview`
+        : (type === 'presentation' 
+            ? `https://docs.google.com/presentation/d/${fileId}/preview`
+            : (type === 'spreadsheet' 
+                ? `https://docs.google.com/spreadsheets/d/${fileId}/preview`
+                : (type === 'form' 
+                    ? `https://docs.google.com/forms/d/${fileId}/viewform?embedded=true`
+                    : (type === 'folder'
+                        ? `https://drive.google.com/embeddedfolderview?id=${fileId}#grid`
+                        : `https://drive.google.com/file/d/${fileId}/preview`))));
+
+    return {
+        fileId: fileId,
+        type: type,
+        typeLabel: typeLabel,
+        icon: icon,
+        directImgUrl: `https://drive.google.com/thumbnail?id=${fileId}&sz=w1200`,
+        lh3ImgUrl: `https://lh3.googleusercontent.com/d/${fileId}`,
+        previewEmbedUrl: previewEmbedUrl,
+        viewUrl: `https://drive.google.com/file/d/${fileId}/view?usp=sharing`
+    };
+}
+
+export function createGoogleDriveEmbedHtml(gdriveData, options = {}) {
+    if (!gdriveData || !gdriveData.fileId) return '';
+    const isImageOnly = options.mode === 'image';
+    if (isImageOnly) {
+        return `
+            <div class="gdrive-img-box" style="position:relative; margin-top:10px; border-radius:14px; overflow:hidden; border:1px solid rgba(52,168,83,0.3); background:#07090e;">
+                <img src="${gdriveData.directImgUrl}" alt="Grafika z Dysku Google" class="post-image" loading="lazy" decoding="async" style="width:100%; max-height:480px; object-fit:contain; display:block;" onerror="this.onerror=null; this.src='${gdriveData.lh3ImgUrl}';">
+                <div style="position:absolute; bottom:8px; right:8px; background:rgba(0,0,0,0.75); border:1px solid rgba(52,168,83,0.5); color:#86efac; font-size:0.7rem; font-weight:800; padding:3px 8px; border-radius:12px; display:flex; align-items:center; gap:5px; backdrop-filter:blur(8px);">
+                    <i class="fa-brands fa-google-drive" style="color:#34a853;"></i> Dysk Google
+                </div>
+            </div>
+        `;
+    }
+
+    return `
+        <div class="rich-gdrive-embed" style="margin-top:12px; border-radius:16px; overflow:hidden; border:1.5px solid rgba(52,168,83,0.35); background:rgba(15,23,42,0.85); box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+            <div style="padding:10px 14px; background:rgba(52,168,83,0.12); border-bottom:1px solid rgba(52,168,83,0.25); display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                <div style="display:flex; align-items:center; gap:8px; font-size:0.85rem; font-weight:800; color:#fff;">
+                    <i class="${gdriveData.icon || 'fa-brands fa-google-drive'}" style="color:#34a853; font-size:1.15rem;"></i>
+                    <span>Dysk Google • ${gdriveData.typeLabel || 'Zasób'}</span>
+                </div>
+                <a href="${gdriveData.viewUrl}" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:#86efac; text-decoration:none; display:flex; align-items:center; gap:5px; font-weight:700; padding:4px 10px; border-radius:12px; background:rgba(52,168,83,0.2); border:1px solid rgba(52,168,83,0.4);" onclick="event.stopPropagation()">
+                    <span>Otwórz na Dysku</span> <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.65rem;"></i>
+                </a>
+            </div>
+            <div style="position:relative; width:100%; aspect-ratio:16/9; min-height:240px; background:#000;">
+                <iframe src="${gdriveData.previewEmbedUrl}" 
+                        title="Podgląd pliku z Dysku Google" 
+                        style="width:100%; height:100%; border:none; display:block;" 
+                        allow="autoplay" 
+                        loading="lazy"></iframe>
+            </div>
+        </div>
+    `;
 }
 
 export function escapeHtml(str) {
@@ -3953,22 +4093,58 @@ export function formatRichTextAndMedia(rawText) {
     // Replace linebreaks with <br>
     formattedText = formattedText.replace(/\n/g, '<br>');
 
-    // Generate Rich Embed Card if URL is present
+    // Generate Rich Embed Card if URL is present or iframe is embedded
     let embedHtml = '';
-    if (foundUrls.length > 0) {
-        const firstUrl = foundUrls[0];
-        const ytId = extractYouTubeId(firstUrl);
 
-        if (ytId) {
-            // YouTube Interactive Video Player Embed
+    // Check if rawText contains direct YouTube iframe
+    if (rawText && rawText.includes('<iframe') && (rawText.includes('youtube.com') || rawText.includes('youtu.be'))) {
+        const srcMatch = rawText.match(/src=["'](https?:\/\/[^"']+)["']/i);
+        if (srcMatch && srcMatch[1]) {
+            let embedSrc = srcMatch[1].replace(/&amp;/g, '&');
             embedHtml = `
                 <div class="rich-youtube-embed">
-                    <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?rel=0&modestbranding=1" 
+                    <iframe src="${escapeHtml(embedSrc)}" 
                             title="Odtwarzacz wideo YouTube" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin"
                             allowfullscreen></iframe>
                 </div>
             `;
+        }
+    }
+
+    if (!embedHtml && foundUrls.length > 0) {
+        const firstUrl = foundUrls[0];
+        const playlistId = extractYouTubePlaylistId(firstUrl);
+        const ytId = extractYouTubeId(firstUrl);
+
+        if (playlistId && (firstUrl.includes('videoseries') || firstUrl.includes('playlist') || !ytId)) {
+            // YouTube Playlist Embed
+            embedHtml = `
+                <div class="rich-youtube-embed">
+                    <iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=${encodeURIComponent(playlistId)}&rel=0&modestbranding=1" 
+                            title="Odtwarzacz playlisty YouTube" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                </div>
+            `;
+        } else if (ytId) {
+            // YouTube Interactive Video Player Embed
+            embedHtml = `
+                <div class="rich-youtube-embed">
+                    <iframe src="https://www.youtube-nocookie.com/embed/${ytId}?rel=0&modestbranding=1${playlistId ? `&list=${encodeURIComponent(playlistId)}` : ''}" 
+                            title="Odtwarzacz wideo YouTube" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                </div>
+            `;
+        } else if (firstUrl.includes('drive.google.com') || firstUrl.includes('docs.google.com')) {
+            const gdriveData = parseGoogleDriveUrl(firstUrl);
+            if (gdriveData) {
+                embedHtml = createGoogleDriveEmbedHtml(gdriveData);
+            }
         } else {
             // Social Media / OpenGraph Style Rich Preview Card
             try {
@@ -4900,7 +5076,10 @@ window.LuminaDB = {
     setActiveMissionPersona,
     publishAsMissionAccount,
     extractYouTubeId,
+    extractYouTubePlaylistId,
     formatRichTextAndMedia,
+    parseGoogleDriveUrl,
+    createGoogleDriveEmbedHtml,
     LUMINA_HANDLES,
     resolveMentionHandle,
     normalizePhoneNumber,

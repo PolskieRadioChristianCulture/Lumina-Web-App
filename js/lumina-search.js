@@ -300,6 +300,26 @@ export const OMNI_BASE_PROFILES = [
         url: 'lumina.ccwomen.html',
         type: 'channel',
         badge: 'Kanał YouTube CC'
+    },
+    {
+        id: 'u_robertukaszpio_5668',
+        slug: 'u_robertukaszpio_5668',
+        name: 'Robert Łukasz Pio',
+        handle: '@robert',
+        aliases: ['robert', 'bratrobert', 'robertlukaszpio', 'robert lukasz pio', 'u_robertukaszpio_5668'],
+        age: 41,
+        city: 'Polska',
+        status: 'Panna/Kawaler',
+        job: 'Członek Społeczności LUMINA ✨',
+        bio: 'Szczęść Boże! Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA. Zapraszam do zapoznania się z moją twórczością i playlistą wideo.',
+        verse: '„Kto nie miłuje, nie zna Boga, bo Bóg jest miłością.” (1 J 4, 8)',
+        church: 'Wspólnota Chrześcijańska',
+        denom: 'Rzymskokatolickie',
+        tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo', 'Muzyka Uwielbienia'],
+        avatar: 'lumina_icon.jpg',
+        url: 'lumina-profile.html?u=u_robertukaszpio_5668',
+        type: 'user',
+        badge: '✨ Społeczność'
     }
 ];
 

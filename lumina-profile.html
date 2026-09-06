@@ -3199,11 +3199,30 @@
                 <!-- Tab: Tablica & Wpisy -->
                 <div id="tab-feed" class="tab-content-pane">
                     
+                    <!-- Featured YouTube Playlist Container (np. Robert Łukasz Pio) -->
+                    <div id="profileFeaturedPlaylistContainer" style="display:none;"></div>
+
                     <!-- Composer -->
                     <div class="feed-composer">
-                        <div class="composer-top">
-                            <img loading="lazy" decoding="async" src="lumina_icon.jpg" alt="You" class="composer-avatar" id="myComposerAvatar" onerror="this.onerror=null; this.src='lumina_icon.jpg';">
-                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
+                        <div style="margin-bottom: 10px;">
+                            <input type="text" id="composerPostTitle" class="composer-title-input" placeholder="📌 Tytuł wpisu lub filmu (opcjonalnie)..." style="width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 12px; padding: 10px 14px; color: #fff; font-size: 0.95rem; font-weight: 700; font-family: inherit; outline: none; transition: border-color 0.2s;">
+                        </div>
+                        <div class="composer-top" style="align-items: flex-start; gap: 12px;">
+                            <img loading="lazy" decoding="async" src="lumina_icon.jpg" alt="You" class="composer-avatar" id="myComposerAvatar" onerror="this.onerror=null; this.src='lumina_icon.jpg';" style="margin-top: 4px; width: 44px; height: 44px; border-radius: 50%; object-fit: cover;">
+                            <textarea id="composerInput" class="composer-textarea" rows="3" placeholder="Napisz treść wpisu, refleksję, świadectwo lub intencję modlitewną..." style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 12px 14px; color: #f8fafc; font-size: 0.92rem; font-family: inherit; resize: vertical; min-height: 80px; outline: none; line-height: 1.5;"></textarea>
+                        </div>
+
+                        <!-- YouTube Link Input Box -->
+                        <div id="composerYoutubeBox" style="display: none; margin: 12px 0 6px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 12px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                                <div style="font-size: 0.82rem; font-weight: 700; color: #fca5a5; display: flex; align-items: center; gap: 6px;">
+                                    <i class="fa-brands fa-youtube" style="color: #ef4444; font-size: 1.1rem;"></i>
+                                    <span>Dołącz Wideo lub Playlistę YouTube</span>
+                                </div>
+                                <button type="button" onclick="closeComposerYoutubeBox()" style="background: none; border: none; color: #94a3b8; cursor: pointer; padding: 2px 6px; font-size: 0.9rem;" title="Zamknij"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                            <input type="text" id="composerYoutubeUrl" placeholder="Wklej link YouTube (wideo, shorts, playlista lub kod <iframe>)..." oninput="onComposerYoutubeInput(this.value)" style="width: 100%; background: rgba(15,23,42,0.85); border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; padding: 9px 12px; color: #fff; font-size: 0.88rem; outline: none;">
+                            <div id="composerYoutubePreview" style="margin-top: 10px; display: none;"></div>
                         </div>
 
                         <!-- Post Image Attachment Preview -->
@@ -3212,10 +3231,14 @@
                             <button type="button" onclick="removeAttachedPostImage()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.5);" title="Usuń dołączoną grafikę"><i class="fa-solid fa-xmark"></i></button>
                         </div>
 
-                        <div class="composer-actions">
-                            <button class="composer-btn-attach" onclick="triggerPostImageUpload()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Dołącz Grafikę do Posta</button>
-                            <button class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Dodaj Werset</button>
-                            <button class="composer-btn-publish" onclick="publishFeedPost()"><i class="fa-solid fa-share"></i> Opublikuj</button>
+                        <div class="composer-actions" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-top: 12px;">
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button type="button" class="composer-btn-attach" onclick="toggleComposerYoutubeBox()"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Wideo / Playlista YT</button>
+                                <button type="button" class="composer-btn-attach" onclick="triggerPostImageUpload()"><i class="fa-solid fa-image" style="color:#22c55e;"></i> Dołącz Grafikę</button>
+                                <button type="button" class="composer-btn-attach" onclick="insertVersePrompt()"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Dodaj Werset</button>
+                            </div>
+                            <button type="button" class="composer-btn-attach composer-btn-gdrive" onclick="openGoogleDriveModal()" title="Dołącz plik z Dysku Google (Wideo, Audio, Zdjęcie, Dokument, Arkusz, PDF)"><i class="fa-brands fa-google-drive" style="color:#34a853;"></i> Dysk Google</button>
+                                <button type="button" class="composer-btn-publish" onclick="publishFeedPost()" style="padding: 9px 20px; font-weight: 800;"><i class="fa-solid fa-paper-plane"></i> Opublikuj Wpis</button>
                         </div>
                     </div>
 
@@ -3476,7 +3499,11 @@
             <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">Zmień treść wpisu lub załączoną grafikę.</p>
             
             <form onsubmit="saveEditedPostSubmit(event)">
-                <textarea id="editPostTextarea" rows="4" placeholder="Treść wpisu..." style="width:100%; padding:12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:15px; margin-bottom:12px; outline:none; resize:vertical;" required></textarea>
+                <input type="text" id="editPostTitle" placeholder="Tytuł wpisu (opcjonalnie)..." style="width:100%; padding:10px 14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:15px; font-weight:700; margin-bottom:10px; outline:none;">
+                <textarea id="editPostTextarea" rows="4" placeholder="Treść wpisu..." style="width:100%; padding:12px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-family:inherit; font-size:15px; margin-bottom:10px; outline:none; resize:vertical;" required></textarea>
+                <div style="margin-bottom: 12px;">
+                    <input type="text" id="editPostYoutubeUrl" placeholder="Link do wideo / playlisty YouTube (opcjonalnie)..." style="width:100%; padding:9px 12px; border-radius:10px; background:rgba(15,23,42,0.85); border:1px solid rgba(239,68,68,0.35); color:#fff; font-size:13px; outline:none;">
+                </div>
                 
                 <!-- Edit Post Image Preview -->
                 <div id="editPostImgPreviewBox" style="display:none; position:relative; margin-bottom: 14px; border-radius:12px; overflow:hidden; max-height:220px; background:#0f172a; border: 1px solid rgba(255,255,255,0.15);">
@@ -3948,6 +3975,48 @@
         let attachedPostImageDataUrl = null;
 
         const PROFILES_DB = {
+            'u_robertukaszpio_5668': {
+                uid: 'jIdflt3G8ohgpCoWmCLJAZ9i5d42',
+                slug: 'u_robertukaszpio_5668',
+                name: 'Robert Łukasz Pio',
+                age: 41,
+                city: 'Polska',
+                avatar: 'lumina_icon.jpg',
+                cover: 'lumina_default_cover.jpg',
+                coverPosY: '50%',
+                job: 'Członek Społeczności LUMINA ✨',
+                church: 'Wspólnota Chrześcijańska',
+                denom: 'Chrześcijanin',
+                status: 'Panna / Kawaler',
+                pin: '7777',
+                visibility: 'public',
+                matchScore: '98%',
+                verse: '„Bóg jest miłością: kto trwa w miłości, trwa w Bogu, a Bóg trwa w nim.”',
+                verseRef: '— 1 J 4, 16',
+                bio: 'Chrześcijanin poszukujący Bożej relacji i prawdy Słowa Bożego. Zapraszam do oglądania i słuchania polecanej playlisty wideo ku Bożej chwale!',
+                tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo', 'YouTube', 'Playlista'],
+                photos: ['lumina_icon.jpg'],
+                featuredPlaylistUrl: 'https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&list=PLaheS83_AaGk',
+                featuredPlaylistIframe: '<iframe width="100%" height="315" src="https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&amp;list=PLaheS83_AaGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
+                posts: [
+                    {
+                        id: 'post_robert_featured_playlist',
+                        title: '🎬 Oficjalna Playlista Wideo • Robert Łukasz Pio',
+                        text: 'Zapraszam do oglądania i słuchania mojej stałej playlisty wideo. Niech te nagrania budują wiarę, niosą pokój i przybliżają do Boga! 🕊️✨',
+                        author: 'Robert Łukasz Pio',
+                        authorSlug: 'u_robertukaszpio_5668',
+                        authorAvatar: 'lumina_icon.jpg',
+                        authorRole: 'Społeczność LUMINA ✨',
+                        time: 'Przypięty wpis • 🎬 Playlista YouTube',
+                        isPinned: true,
+                        likes: 24,
+                        amen: 19,
+                        youtubeUrl: 'https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&list=PLaheS83_AaGk',
+                        embedHtml: '<div class="rich-youtube-embed"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&amp;list=PLaheS83_AaGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>',
+                        createdAtTimestamp: Date.now()
+                    }
+                ]
+            },
             'magdalena': {
                 uid: 'magdalena',
                 slug: 'magdalena',
@@ -4836,6 +4905,12 @@
                 if (curUser && curProf && (curProf.slug === slug || curProf.uid === slug || curUser.uid === slug)) {
                     isSelf = true;
                 }
+                if (curUser && (curUser.email === 'robrrtmarecki6@gmail.com' || curUser.uid === 'jIdflt3G8ohgpCoWmCLJAZ9i5d42') && (slug === 'u_robertukaszpio_5668' || slug === 'robertlukaszpio' || slug === 'bratrobert')) {
+                    isSelf = true;
+                }
+                if (sessionStorage.getItem('lumina_auth_owner_' + slug) === 'true' || localStorage.getItem('lumina_auth_owner_' + slug) === 'true') {
+                    isSelf = true;
+                }
             } catch(e) {}
 
             isOwnerMode = isMaster || isSelf;
@@ -5220,6 +5295,43 @@
                 document.getElementById('promptCoffeeAnswer').textContent = `„${data.promptCoffee}”`;
             }
 
+            // ══════════ FEATURED YOUTUBE PLAYLIST BOX (np. Robert Łukasz Pio) ══════════
+            const featContainer = document.getElementById('profileFeaturedPlaylistContainer');
+            if (featContainer) {
+                const isRobert = (slug === 'u_robertukaszpio_5668' || slug === 'robertlukaszpio' || slug === 'bratrobert');
+                const pUrl = data.featuredPlaylistUrl || (isRobert ? 'https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&list=PLaheS83_AaGk' : null);
+                if (pUrl || data.featuredPlaylistIframe) {
+                    featContainer.style.display = 'block';
+                    featContainer.innerHTML = `
+                        <div class="featured-playlist-card" style="background: linear-gradient(135deg, rgba(15,23,42,0.92), rgba(30,41,59,0.85)); border: 1px solid rgba(250,204,21,0.4); border-radius: 18px; padding: 20px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <div style="width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg,#ef4444,#b91c1c); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.25rem; box-shadow:0 4px 14px rgba(239,68,68,0.45); flex-shrink:0;">
+                                        <i class="fa-brands fa-youtube"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.15rem; color:#fff; display:flex; align-items:center; gap:8px;">
+                                            <span>Polecana Playlista YouTube</span>
+                                            <span style="font-size:0.65rem; font-weight:800; background:rgba(250,204,21,0.2); border:1px solid rgba(250,204,21,0.6); color:#facc15; padding:3px 8px; border-radius:12px; letter-spacing:0.5px;">OFICJALNA PLAYLISTA</span>
+                                        </div>
+                                        <div style="font-size:0.8rem; color:#94a3b8;">Oficjalne nagrania wideo • ${escapeHtml(data.name || 'Robert Łukasz Pio')}</div>
+                                    </div>
+                                </div>
+                                <a href="https://www.youtube.com/playlist?list=PLaheS83_AaGk" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#f1f5f9; padding:6px 14px; border-radius:20px; font-size:0.78rem; font-weight:700; text-decoration:none; transition:all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.25)'; this.style.borderColor='#ef4444';" onmouseout="this.style.background='rgba(255,255,255,0.08)'; this.style.borderColor='rgba(255,255,255,0.18)';">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz w YouTube
+                                </a>
+                            </div>
+                            <div class="rich-youtube-embed" style="margin:0; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,0.15); box-shadow:0 6px 20px rgba(0,0,0,0.6);">
+                                <iframe width="100%" height="100%" src="${pUrl || 'https://www.youtube.com/embed/videoseries?si=VTYOaWiSHSR0nZPi&list=PLaheS83_AaGk'}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    featContainer.style.display = 'none';
+                    featContainer.innerHTML = '';
+                }
+            }
+
             // ══════════ WYMÓG PRAWDZIWEGO ZDJĘCIA PROFILOWEGO ══════════
             // data.avatar jest już nadpisywany logiem LUMINA po stronie serwera
             // (Cloud Function onProfileAvatarChanged), jeśli zdjęcie nie przeszło
@@ -5560,12 +5672,41 @@
                     ? window.LuminaDB.formatRichTextAndMedia(p.text || '')
                     : { html: p.text || '', embedHtml: '' };
 
+                let effectiveEmbedHtml = p.embedHtml || '';
+                if (!effectiveEmbedHtml && p.youtubeUrl) {
+                    const parsedInfo = parseYouTubeEmbedUrl ? parseYouTubeEmbedUrl(p.youtubeUrl) : null;
+                    if (parsedInfo) {
+                        effectiveEmbedHtml = `
+                            <div class="rich-youtube-embed">
+                                <iframe src="${parsedInfo.embedUrl}" 
+                                        title="${escapeHtml(p.title || 'Wideo YouTube')}" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                        referrerpolicy="strict-origin-when-cross-origin"
+                                        allowfullscreen></iframe>
+                            </div>
+                        `;
+                    }
+                }
+                if (!effectiveEmbedHtml && p.gdrive) {
+                    effectiveEmbedHtml = window.LuminaDB?.createGoogleDriveEmbedHtml ? window.LuminaDB.createGoogleDriveEmbedHtml(p.gdrive, { mode: p.gdrive.mode }) : '';
+                } else if (!effectiveEmbedHtml && p.gdriveEmbed) {
+                    effectiveEmbedHtml = window.LuminaDB?.createGoogleDriveEmbedHtml ? window.LuminaDB.createGoogleDriveEmbedHtml({ fileId: 'ext', previewEmbedUrl: p.gdriveEmbed, typeLabel: 'Plik z Dysku Google' }) : '';
+                }
+                if (!effectiveEmbedHtml) {
+                    effectiveEmbedHtml = rich.embedHtml || '';
+                }
+
+                const hasRealPostImage = p.image && String(p.image).trim() !== '' && !String(p.image).includes('lumina_icon.jpg');
+
                 return `
                 <article class="post-card" id="${p.id}">
                     <div class="post-header">
                         <img loading="lazy" decoding="async" src="${p.authorAvatar || data.avatar || 'lumina_icon.jpg'}" alt="${p.author}" class="post-avatar">
                         <div>
-                            <div class="post-author">${p.author}</div>
+                            <div class="post-author" style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                                <span>${p.author}</span>
+                                ${p.isPinned ? `<span style="background:rgba(250,204,21,0.2); border:1px solid rgba(250,204,21,0.6); color:#facc15; font-size:0.65rem; font-weight:800; padding:1px 7px; border-radius:10px;"><i class="fa-solid fa-thumbtack"></i> Przypięty</span>` : ''}
+                            </div>
                             <div class="post-time">${p.time || 'Przed chwilą'}</div>
                         </div>
                         ${isOwnerMode ? `
@@ -5575,9 +5716,10 @@
                             </div>
                         ` : ''}
                     </div>
-                    <div class="post-content">${rich.html}</div>
-                    ${rich.embedHtml || ''}
-                    ${`<img src="${(p.image && p.image.trim() !== '') ? p.image : (p.authorAvatar || data.avatar || 'avatar_new1.jpg')}" alt="Post Image" class="post-image" loading="lazy" decoding="async" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')" onerror="this.onerror=null; this.src='${data.avatar || 'avatar_new1.jpg'}'">`}
+                    ${p.title ? `<div class="post-title" style="font-family:'Outfit',sans-serif; font-size:1.15rem; font-weight:800; color:#fff; margin-bottom:8px; line-height:1.35;">${escapeHtml(p.title)}</div>` : ''}
+                    ${p.text ? `<div class="post-content">${rich.html}</div>` : ''}
+                    ${effectiveEmbedHtml || ''}
+                    ${hasRealPostImage ? `<img src="${p.image}" alt="Post Image" class="post-image" loading="lazy" decoding="async" style="cursor:pointer;" onclick="openPhotoLightbox(this.src, 'Zdjęcie do wpisu • LUMINA ✨')">` : ''}
                     <div class="post-footer">
                         <button class="post-action-btn" onclick="togglePostLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-count">${p.likes || 1}</span><span class="btn-text"> Polubień</span></button>
                         <button class="post-action-btn amen" onclick="togglePostAmen(this)"><i class="fa-solid fa-hands-praying"></i><span class="btn-text"> Amen!</span></button>
@@ -5641,9 +5783,15 @@
             currentEditingPostId = postId;
             editingPostImageDataUrl = post.image || null;
 
+            const titleInput = document.getElementById('editPostTitle');
+            if (titleInput) titleInput.value = post.title || '';
+
             const textarea = document.getElementById('editPostTextarea');
             if (textarea) textarea.value = post.text || '';
             
+            const ytInput = document.getElementById('editPostYoutubeUrl');
+            if (ytInput) ytInput.value = post.youtubeUrl || '';
+
             const previewBox = document.getElementById('editPostImgPreviewBox');
             const attachedImg = document.getElementById('editPostAttachedImg');
             if (previewBox && attachedImg) {
@@ -5687,11 +5835,36 @@
             if (e) e.preventDefault();
             if (!currentEditingPostId) return;
 
+            const titleInput = document.getElementById('editPostTitle');
+            const newTitle = titleInput ? titleInput.value.trim() : '';
+
             const textarea = document.getElementById('editPostTextarea');
             const newText = textarea ? textarea.value.trim() : '';
-            if (!newText && !editingPostImageDataUrl) {
+
+            const ytInput = document.getElementById('editPostYoutubeUrl');
+            const newYt = ytInput ? ytInput.value.trim() : '';
+
+            if (!newText && !newTitle && !newYt && !editingPostImageDataUrl) {
                 showToast('Wpis nie może być pusty!');
                 return;
+            }
+
+            let updatedYoutubeUrl = null;
+            let updatedEmbedHtml = null;
+            if (newYt) {
+                const parsedInfo = parseYouTubeEmbedUrl(newYt);
+                if (parsedInfo) {
+                    updatedYoutubeUrl = parsedInfo.rawUrl;
+                    updatedEmbedHtml = `
+                        <div class="rich-youtube-embed">
+                            <iframe src="${parsedInfo.embedUrl}" 
+                                    title="${escapeHtml(newTitle || 'Wideo YouTube')}" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                        </div>
+                    `;
+                }
             }
 
             const slug = getRequestedUserSlug();
@@ -5700,20 +5873,31 @@
             let idx = cur.posts.findIndex(p => p.id === currentEditingPostId || p.id == currentEditingPostId);
             
             if (idx !== -1) {
+                cur.posts[idx].title = newTitle;
                 cur.posts[idx].text = newText;
                 cur.posts[idx].image = editingPostImageDataUrl || null;
+                if (updatedYoutubeUrl) {
+                    cur.posts[idx].youtubeUrl = updatedYoutubeUrl;
+                    cur.posts[idx].embedHtml = updatedEmbedHtml;
+                } else if (!newYt) {
+                    delete cur.posts[idx].youtubeUrl;
+                    delete cur.posts[idx].embedHtml;
+                }
                 if (!cur.posts[idx].time || !cur.posts[idx].time.includes('(edytowano)')) {
                     cur.posts[idx].time = (cur.posts[idx].time || 'Przed chwilą') + ' • (edytowano)';
                 }
             } else {
                 const updatedPost = {
                     id: currentEditingPostId,
+                    title: newTitle,
                     author: cur.name || 'Użytkownik LUMINA',
                     authorSlug: slug,
                     authorAvatar: cur.avatar || 'lumina_icon.jpg',
                     authorRole: cur.job ? `${cur.job} ✨` : 'Społeczność LUMINA ✨',
                     time: 'Przed chwilą • (edytowano)',
                     text: newText,
+                    youtubeUrl: updatedYoutubeUrl,
+                    embedHtml: updatedEmbedHtml,
                     likes: 1,
                     amen: 0,
                     image: editingPostImageDataUrl || null,
@@ -5824,27 +6008,262 @@
             document.getElementById('postImageFileInput').value = '';
         }
 
+        // YouTube Composer Controls
+        function toggleComposerYoutubeBox() {
+            const box = document.getElementById('composerYoutubeBox');
+            if (!box) return;
+            const isVisible = box.style.display !== 'none';
+            box.style.display = isVisible ? 'none' : 'block';
+            if (!isVisible) {
+                const input = document.getElementById('composerYoutubeUrl');
+                if (input) input.focus();
+            }
+        }
+
+        function closeComposerYoutubeBox() {
+            const box = document.getElementById('composerYoutubeBox');
+            if (box) box.style.display = 'none';
+            const input = document.getElementById('composerYoutubeUrl');
+            if (input) input.value = '';
+            const preview = document.getElementById('composerYoutubePreview');
+            if (preview) {
+                preview.style.display = 'none';
+                preview.innerHTML = '';
+            }
+        }
+
+        function parseYouTubeEmbedUrl(input) {
+            if (!input) return null;
+            const str = String(input).trim();
+            // Check direct iframe src
+            const iframeMatch = str.match(/src=["']([^"']+)["']/i);
+            const targetUrl = iframeMatch ? iframeMatch[1].replace(/&amp;/g, '&') : str;
+
+            const playlistMatch = targetUrl.match(/[?&]list=([a-zA-Z0-9_-]+)/i);
+            const playlistId = playlistMatch ? playlistMatch[1] : null;
+
+            const videoMatch = targetUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=|shorts\/)|youtu\.be\/)([^"&?\/\s]{11})/i);
+            const videoId = videoMatch ? videoMatch[1] : null;
+
+            if (playlistId && (targetUrl.includes('videoseries') || targetUrl.includes('playlist') || !videoId)) {
+                return {
+                    type: 'Playlista',
+                    embedUrl: `https://www.youtube-nocookie.com/embed/videoseries?list=${encodeURIComponent(playlistId)}&rel=0`,
+                    rawUrl: targetUrl
+                };
+            }
+            if (videoId) {
+                return {
+                    type: 'Film wideo',
+                    embedUrl: `https://www.youtube-nocookie.com/embed/${videoId}?rel=0${playlistId ? `&list=${encodeURIComponent(playlistId)}` : ''}`,
+                    rawUrl: targetUrl
+                };
+            }
+            if (targetUrl.includes('youtube.com/embed/')) {
+                return {
+                    type: 'Embed',
+                    embedUrl: targetUrl,
+                    rawUrl: targetUrl
+                };
+            }
+            return null;
+        }
+
+        function onComposerYoutubeInput(val) {
+            const preview = document.getElementById('composerYoutubePreview');
+            if (!preview) return;
+            const clean = String(val || '').trim();
+            if (!clean) {
+                preview.style.display = 'none';
+                preview.innerHTML = '';
+                return;
+            }
+
+            const embedInfo = parseYouTubeEmbedUrl(clean);
+            if (embedInfo) {
+                preview.style.display = 'block';
+                preview.innerHTML = `
+                    <div style="font-size:0.75rem; color:#86efac; margin-bottom:6px; font-weight:700;"><i class="fa-solid fa-circle-check"></i> Wykryto poprawny materiał YouTube (${embedInfo.type}):</div>
+                    <div class="rich-youtube-embed" style="margin:0; border-radius:10px; max-height:180px;">
+                        <iframe src="${embedInfo.embedUrl}" title="Podgląd YouTube" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                `;
+            } else {
+                preview.style.display = 'none';
+                preview.innerHTML = '';
+            }
+        }
+
+        
+        // ── GOOGLE DRIVE INTEGRATION SUITE (LUMINA ALL USERS) ──
+        let attachedGdriveData = null;
+        let gdrivePublishMode = 'embed';
+
+        window.openGoogleDriveModal = function() {
+            const modal = document.getElementById('googleDriveModal');
+            if (!modal) return;
+            modal.style.display = 'flex';
+            const input = document.getElementById('gdriveUrlInput');
+            if (input) {
+                if (attachedGdriveData && attachedGdriveData.originalUrl) {
+                    input.value = attachedGdriveData.originalUrl;
+                    handleGoogleDriveUrlInput(attachedGdriveData.originalUrl);
+                } else {
+                    input.value = '';
+                    setTimeout(() => input.focus(), 100);
+                }
+            }
+        };
+
+        window.closeGoogleDriveModal = function(event) {
+            if (event && event.target && event.target.id === 'googleDriveModal') {
+                closeGoogleDriveModalDirect();
+            }
+        };
+
+        window.closeGoogleDriveModalDirect = function() {
+            const modal = document.getElementById('googleDriveModal');
+            if (modal) modal.style.display = 'none';
+        };
+
+        window.openMyGoogleDriveExternal = function() {
+            window.open('https://drive.google.com', '_blank');
+        };
+
+        window.handleGoogleDriveUrlInput = function(val) {
+            const trimmed = String(val || '').trim();
+            const btn = document.getElementById('btnConfirmAttachGdrive');
+            const previewBox = document.getElementById('gdriveLivePreviewContainer');
+            const iframe = document.getElementById('gdrivePreviewIframe');
+            const img = document.getElementById('gdrivePreviewImg');
+            const typeLabel = document.getElementById('gdrivePreviewTypeLabel');
+            const icon = document.getElementById('gdrivePreviewIcon');
+
+            if (!trimmed) {
+                if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
+                if (previewBox) previewBox.style.display = 'none';
+                return;
+            }
+
+            const parsed = window.LuminaDB?.parseGoogleDriveUrl ? window.LuminaDB.parseGoogleDriveUrl(trimmed) : null;
+            if (parsed && parsed.fileId) {
+                parsed.originalUrl = trimmed;
+                parsed.mode = gdrivePublishMode;
+                window._tempGdriveParsed = parsed;
+
+                if (typeLabel) typeLabel.innerText = parsed.typeLabel;
+                if (icon) icon.className = parsed.icon;
+
+                if (previewBox) previewBox.style.display = 'block';
+
+                if (gdrivePublishMode === 'image') {
+                    if (iframe) { iframe.style.display = 'none'; iframe.src = ''; }
+                    if (img) { img.style.display = 'block'; img.src = parsed.directImgUrl; }
+                } else {
+                    if (img) { img.style.display = 'none'; img.src = ''; }
+                    if (iframe) { iframe.style.display = 'block'; iframe.src = parsed.previewEmbedUrl; }
+                }
+
+                if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+            } else {
+                if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
+                if (previewBox) previewBox.style.display = 'none';
+            }
+        };
+
+        window.setGdrivePublishMode = function(mode) {
+            gdrivePublishMode = mode;
+            if (window._tempGdriveParsed) {
+                window._tempGdriveParsed.mode = mode;
+                handleGoogleDriveUrlInput(window._tempGdriveParsed.originalUrl);
+            }
+        };
+
+        window.confirmAttachGoogleDrive = function() {
+            if (!window._tempGdriveParsed) return;
+            attachedGdriveData = Object.assign({}, window._tempGdriveParsed);
+            attachedGdriveData.mode = gdrivePublishMode;
+
+            const box = document.getElementById('composerGdriveAttachment');
+            const icon = document.getElementById('composerGdriveIcon');
+            const title = document.getElementById('composerGdriveTitle');
+            const sub = document.getElementById('composerGdriveSubtitle');
+
+            if (box) box.style.display = 'flex';
+            if (icon) icon.className = attachedGdriveData.icon || 'fa-brands fa-google-drive';
+            if (title) title.innerText = attachedGdriveData.typeLabel + ' (Dysk Google)';
+            if (sub) sub.innerText = attachedGdriveData.mode === 'image' ? 'Tryb: Grafika w poście' : 'Tryb: Interaktywny odtwarzacz / podgląd';
+
+            closeGoogleDriveModalDirect();
+            showToast('Dołączono plik z Dysku Google! ✨');
+        };
+
+        window.removeAttachedGoogleDrive = function() {
+            attachedGdriveData = null;
+            window._tempGdriveParsed = null;
+            const box = document.getElementById('composerGdriveAttachment');
+            if (box) box.style.display = 'none';
+            const input = document.getElementById('gdriveUrlInput');
+            if (input) input.value = '';
+            showToast('Usunięto załącznik z Dysku Google');
+        };
+
         async function publishFeedPost() {
+            const titleInput = document.getElementById('composerPostTitle');
+            const title = titleInput ? titleInput.value.trim() : '';
+
             const input = document.getElementById('composerInput');
             const val = input ? input.value.trim() : '';
-            if (!val && !attachedPostImageDataUrl) {
-                showToast('Wpisz treść lub dołącz grafikę przed publikacją!');
+
+            const ytInput = document.getElementById('composerYoutubeUrl');
+            const rawYt = ytInput ? ytInput.value.trim() : '';
+
+            if (!val && !title && !rawYt && !attachedPostImageDataUrl) {
+                showToast('Wpisz treść, tytuł lub dołącz wideo/grafikę przed publikacją!');
                 return;
             }
             const slug = getRequestedUserSlug();
             const cur = getProfileData();
+
+            // Resolve YouTube Embed
+            let youtubeUrl = null;
+            let embedHtml = null;
+            let playlistUrl = null;
+
+            const embedInfo = parseYouTubeEmbedUrl(rawYt || val);
+            if (embedInfo) {
+                youtubeUrl = embedInfo.rawUrl;
+                embedHtml = `
+                    <div class="rich-youtube-embed">
+                        <iframe src="${embedInfo.embedUrl}" 
+                                title="${escapeHtml(title || 'Wideo YouTube')}" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen></iframe>
+                    </div>
+                `;
+                if (embedInfo.type === 'Playlista') {
+                    playlistUrl = embedInfo.rawUrl;
+                }
+            }
+
             const newPost = {
                 id: 'post_' + Date.now(),
+                title: title || '',
+                text: val || '',
+                youtubeUrl: youtubeUrl,
+                embedHtml: embedHtml,
+                playlistUrl: playlistUrl,
+                image: attachedPostImageDataUrl || null,
                 author: cur.name || 'Użytkownik LUMINA',
                 authorSlug: slug,
                 authorAvatar: cur.avatar || 'lumina_icon.jpg',
-                authorRole: cur.job ? `${cur.job} ✨` : 'Społeczność LUMINA ✨',
+                authorRole: cur.job ? `${cur.job}` : 'Społeczność LUMINA ✨',
                 time: 'Przed chwilą • ✨ Nowy Wpis',
-                text: val || '',
                 likes: 1,
                 amen: 0,
-                image: attachedPostImageDataUrl || null,
-                createdAtTimestamp: Date.now()
+                createdAtTimestamp: Date.now(),
+                createdAtDateStr: new Date().toISOString()
             };
 
             // 1. Zapis lokalny
@@ -5854,7 +6273,7 @@
                 localStorage.setItem('lumina_profile_' + slug, JSON.stringify(cur));
             } catch(e) {}
 
-            // 2. Publikacja w LuminaDB
+            // 2. Publikacja w LuminaDB (Firestore lumina_posts -> Tablica Społeczności)
             if (window.LuminaDB?.publishUniversalPost) {
                 try {
                     await window.LuminaDB.publishUniversalPost(newPost);
@@ -5863,17 +6282,19 @@
                 }
             }
 
-            // 3. Zapis do chmury
+            // 3. Zapis do chmury profilu
             if (window.LuminaDB && typeof window.LuminaDB.saveProfileToCloud === 'function') {
                 try {
                     await window.LuminaDB.saveProfileToCloud(slug, cur);
                 } catch(err) {}
             }
 
+            if (titleInput) titleInput.value = '';
             if (input) input.value = '';
+            closeComposerYoutubeBox();
             removeAttachedPostImage();
             renderPosts();
-            showToast('Twój wpis został pomyślnie opublikowany na profilu i tablicy! ✨✨');
+            showToast('Twój wpis został pomyślnie opublikowany na profilu i tablicy społeczności! ✨✨');
         }
 
         // ── Robust Image Resizer & Compressor for LocalStorage (Preserves GIF Animation) ──
@@ -8144,11 +8565,26 @@
 
             if (typeof renderProfile === 'function') {
                 renderProfile();
+                renderPhotos();
+                renderPosts();
+            }
+
+            const reqSlug = getRequestedUserSlug();
+            if (window.LuminaDB && typeof window.LuminaDB.subscribeToProfile === 'function') {
+                window.LuminaDB.subscribeToProfile(reqSlug, (cloudProfile) => {
+                    if (cloudProfile && cloudProfile.name) {
+                        window._cloudProfileData = cloudProfile;
+                        if (typeof renderProfile === 'function') renderProfile();
+                        if (typeof renderPhotos === 'function') renderPhotos();
+                        if (typeof renderPosts === 'function') renderPosts();
+                    }
+                });
             }
         });
 
         // ── UNIVERSAL OMNI-SEARCH ENGINE (Global Shortcuts & Profiles Resolver) ──
         const OMNI_DIRECTORY = [
+            { query: '@robert @bratrobert @robertlukaszpio robert lukasz pio u_robertukaszpio_5668', name: 'Robert Łukasz Pio', handle: '@robert', role: 'Członek Społeczności LUMINA ✨', avatar: 'lumina_icon.jpg', url: 'lumina-profile.html?u=u_robertukaszpio_5668', type: 'user' },
             { query: '@ccwomen @women @cc_women cc women ccwomen', name: 'CC Women • YouTube', handle: '@ccwomen', role: 'Oficjalny Kanał YouTube CC Women 🌸', avatar: 'logo_cc_women.jpg', url: 'lumina.ccwomen.html', type: 'channel' },
             { query: '@cezary @cezaryrgowski @cezaryrogowski cezary rogowski', name: 'Cezary Rogowski', handle: '@cezary', role: 'Założyciel Christian Culture ✨', avatar: 'avatar_cezary_official.jpg', url: 'lumina.cezaryrgowski.html', type: 'founder' },
             { query: '@wioletta @wiolettarogowska wioletta rogowska', name: 'Wioletta Rogowska', handle: '@wioletta', role: 'Współzałożycielka Christian Culture 🌸', avatar: 'avatar_wioletta_official.jpg', url: 'lumina.wiolettarogowska.html', type: 'founder' },
@@ -8656,6 +9092,77 @@
         window.addEventListener('resize', enforceMobile);
     })();
     </script>
+
+<!-- Modal: Google Drive Integration -->
+<div id="googleDriveModal" class="lumina-modal-overlay" style="display:none; position:fixed; inset:0; z-index:100000; background:rgba(3,7,18,0.85); backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:16px;" onclick="closeGoogleDriveModal(event)">
+    <div class="lumina-modal-box" style="background:#0b1329; border:1.5px solid rgba(52,168,83,0.4); border-radius:24px; max-width:540px; width:100%; max-height:92vh; overflow-y:auto; padding:24px; box-shadow:0 20px 50px rgba(0,0,0,0.7); position:relative;" onclick="event.stopPropagation()">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <div style="width:42px; height:42px; border-radius:12px; background:rgba(52,168,83,0.2); border:1px solid rgba(52,168,83,0.4); display:flex; align-items:center; justify-content:center; color:#34a853; font-size:1.4rem;">
+                    <i class="fa-brands fa-google-drive"></i>
+                </div>
+                <div>
+                    <h3 style="font-size:1.15rem; font-weight:800; color:#fff; margin:0;">Dołącz z Dysku Google</h3>
+                    <div style="font-size:0.78rem; color:#94a3b8;">Wideo, Audio, Docs, PDF, Arkusze, Prezentacje, Grafiki</div>
+                </div>
+            </div>
+            <button type="button" onclick="closeGoogleDriveModalDirect()" style="background:rgba(255,255,255,0.06); border:none; color:#cbd5e1; width:36px; height:36px; border-radius:50%; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center;" title="Zamknij"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div style="background:rgba(52,168,83,0.08); border:1px solid rgba(52,168,83,0.25); border-radius:16px; padding:14px; margin-bottom:18px;">
+            <div style="font-size:0.82rem; font-weight:700; color:#86efac; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-circle-info"></i> Jak to działa?
+            </div>
+            <ol style="margin:0; padding-left:18px; font-size:0.78rem; color:#cbd5e1; line-height:1.6;">
+                <li>Otwórz swój <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" style="color:#60a5fa; text-decoration:underline; font-weight:700;">Dysk Google</a> i kliknij plik prawym przyciskiem myszy.</li>
+                <li>Wybierz <strong>Udostępnij &rarr; Skopiuj link</strong> (Upewnij się, że ustawione jest: <em>Każda osoba mająca link</em>).</li>
+                <li>Wklej link poniżej – LUMINA automatycznie rozpozna typ pliku i przygotuje interaktywny odtwarzacz lub podgląd!</li>
+            </ol>
+            <div style="margin-top:10px;">
+                <button type="button" onclick="openMyGoogleDriveExternal()" style="background:rgba(52,168,83,0.25); border:1px solid rgba(52,168,83,0.5); color:#fff; font-size:0.75rem; font-weight:700; padding:6px 12px; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz mój Dysk Google w nowym oknie
+                </button>
+            </div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <label for="gdriveUrlInput" style="display:block; font-size:0.85rem; font-weight:700; color:#e2e8f0; margin-bottom:6px;">Link do pliku z Dysku Google:</label>
+            <input type="text" id="gdriveUrlInput" placeholder="https://drive.google.com/file/d/.../view?usp=sharing" oninput="handleGoogleDriveUrlInput(this.value)" style="width:100%; box-sizing:border-box; background:#070b16; border:1.5px solid rgba(255,255,255,0.15); border-radius:12px; padding:12px 14px; font-size:0.9rem; color:#fff; outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='#34a853'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+        </div>
+
+        <!-- Detected file card / preview box -->
+        <div id="gdriveLivePreviewContainer" style="display:none; margin-bottom:18px; border-radius:16px; overflow:hidden; border:1px solid rgba(52,168,83,0.3); background:#060911;">
+            <div style="padding:10px 14px; background:rgba(52,168,83,0.15); border-bottom:1px solid rgba(52,168,83,0.2); display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:8px; font-size:0.82rem; font-weight:800; color:#fff;">
+                    <i id="gdrivePreviewIcon" class="fa-solid fa-file" style="color:#34a853;"></i>
+                    <span id="gdrivePreviewTypeLabel">Dokument</span>
+                </div>
+                <span style="font-size:0.7rem; color:#86efac; background:rgba(52,168,83,0.25); padding:2px 8px; border-radius:10px; font-weight:700;">Zweryfikowano link</span>
+            </div>
+            
+            <div style="position:relative; width:100%; aspect-ratio:16/9; max-height:220px; background:#000;">
+                <iframe id="gdrivePreviewIframe" src="" title="Podgląd pliku" style="width:100%; height:100%; border:none; display:none;"></iframe>
+                <img id="gdrivePreviewImg" src="" alt="Podgląd grafiki" style="width:100%; height:100%; object-fit:contain; display:none;">
+            </div>
+
+            <div style="padding:10px 14px; background:rgba(255,255,255,0.02); display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <span style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Styl wyświetlania:</span>
+                <label style="font-size:0.75rem; color:#e2e8f0; display:flex; align-items:center; gap:5px; cursor:pointer;">
+                    <input type="radio" name="gdriveModeRadio" value="embed" checked onchange="setGdrivePublishMode('embed')"> Interaktywny podgląd / odtwarzacz
+                </label>
+                <label style="font-size:0.75rem; color:#e2e8f0; display:flex; align-items:center; gap:5px; cursor:pointer;">
+                    <input type="radio" name="gdriveModeRadio" value="image" onchange="setGdrivePublishMode('image')"> Grafika w poście
+                </label>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px; justify-content:flex-end;">
+            <button type="button" onclick="closeGoogleDriveModalDirect()" style="background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; font-size:0.85rem; padding:10px 18px; border-radius:12px; cursor:pointer;">Anuluj</button>
+            <button type="button" id="btnConfirmAttachGdrive" onclick="confirmAttachGoogleDrive()" disabled style="background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; font-size:0.85rem; padding:10px 22px; border-radius:12px; cursor:pointer; opacity:0.5; box-shadow:0 4px 14px rgba(16,185,129,0.3);">Dołącz do wpisu</button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
 
