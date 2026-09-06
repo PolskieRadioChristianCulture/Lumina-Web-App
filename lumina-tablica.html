@@ -5210,6 +5210,24 @@
                     likes: 58,
                     amen: 51
                 });
+
+                if (cProfile && Array.isArray(cProfile.posts)) {
+                    cProfile.posts.forEach(cp => {
+                        if (!cp || !cp.id || seenPostIds.has(cp.id)) return;
+                        seenPostIds.add(cp.id);
+                        posts.push({
+                            ...cp,
+                            author: cp.author || cName,
+                            authorAvatar: cp.authorAvatar || cAvatar,
+                            authorSlug: 'cezaryrgowski',
+                            authorRole: cp.authorRole || 'Założyciel Christian Culture ✨',
+                            time: cp.time || (formatPostTimestamp(cp.createdAtTimestamp || extractSortTs(cp), 'Przed chwilą') + ' • ✨ Nowy Wpis'),
+                            likes: cp.likes || 1,
+                            amen: cp.amen || 0,
+                            _sortTs: cp.createdAtTimestamp || extractSortTs(cp) || Date.now()
+                        });
+                    });
+                }
             } catch(e) {}
 
             // 2. Wioletta Rogowska Posts (Dynamiczne daty)
@@ -5251,6 +5269,24 @@
                     likes: 72,
                     amen: 65
                 });
+
+                if (wProfile && Array.isArray(wProfile.posts)) {
+                    wProfile.posts.forEach(wp => {
+                        if (!wp || !wp.id || seenPostIds.has(wp.id)) return;
+                        seenPostIds.add(wp.id);
+                        posts.push({
+                            ...wp,
+                            author: wp.author || wName,
+                            authorAvatar: wp.authorAvatar || wAvatar,
+                            authorSlug: 'wiolettarogowska',
+                            authorRole: wp.authorRole || 'Współzałożycielka Christian Culture ✨',
+                            time: wp.time || (formatPostTimestamp(wp.createdAtTimestamp || extractSortTs(wp), 'Przed chwilą') + ' • ✨ Nowy Wpis'),
+                            likes: wp.likes || 1,
+                            amen: wp.amen || 0,
+                            _sortTs: wp.createdAtTimestamp || extractSortTs(wp) || Date.now()
+                        });
+                    });
+                }
             } catch(e) {}
 
             // 2b. Jola Wójcik Posts (Biblijny Czas Modlitwy)
@@ -5349,6 +5385,28 @@
                 likes: 39,
                 amen: 34
             });
+
+            // 7. Posty zalogowanego użytkownika (lumina_current_user_profile)
+            try {
+                const myP = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null');
+                if (myP && Array.isArray(myP.posts)) {
+                    myP.posts.forEach(mp => {
+                        if (!mp || !mp.id || seenPostIds.has(mp.id)) return;
+                        seenPostIds.add(mp.id);
+                        posts.push({
+                            ...mp,
+                            author: mp.author || myP.name || 'Użytkownik LUMINA',
+                            authorAvatar: mp.authorAvatar || myP.avatar || 'lumina_icon.jpg',
+                            authorSlug: mp.authorSlug || myP.slug || '',
+                            authorRole: mp.authorRole || 'Społeczność LUMINA ✨',
+                            time: mp.time || (formatPostTimestamp(mp.createdAtTimestamp || extractSortTs(mp), 'Przed chwilą') + ' • ✨ Społeczność'),
+                            likes: mp.likes || 1,
+                            amen: mp.amen || 0,
+                            _sortTs: mp.createdAtTimestamp || extractSortTs(mp) || Date.now()
+                        });
+                    });
+                }
+            } catch(e) {}
 
             return posts;
         }
@@ -8519,6 +8577,17 @@
                 }
             }, 30000);
         });
+        window.addEventListener('lumina_post_published', (e) => {
+            const p = e.detail;
+            if (p) {
+                if (!window.cloudFeedPosts) window.cloudFeedPosts = [];
+                if (!window.cloudFeedPosts.some(cp => cp.id === p.id)) {
+                    window.cloudFeedPosts.unshift(p);
+                }
+            }
+            renderFeed();
+        });
+
         window.addEventListener('storage', () => {
             syncFounderAvatar();
             renderFeed();

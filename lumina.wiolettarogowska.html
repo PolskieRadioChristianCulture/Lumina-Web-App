@@ -6108,6 +6108,16 @@
         );
 
         // ── 3D Reveal & Interactions ──
+        // ── Instant Re-render on Post Publish ──
+        window.addEventListener('lumina_post_published', function(e) {
+            if (typeof renderPosts === 'function') renderPosts();
+        });
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'lumina_profile_wiolettarogowska' || e.key === 'lumina_cloud_posts_cache') {
+                if (typeof renderPosts === 'function') renderPosts();
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
