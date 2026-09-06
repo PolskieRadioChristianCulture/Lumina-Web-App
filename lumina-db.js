@@ -455,6 +455,39 @@ if (auth) {
                         } catch(e) {}
                     }
                     
+                    // Auto-fix / enforce Cezary Rogowski official avatar
+                    const isCezaryUser = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.toLowerCase() === 'studiodees7@gmail.com' || user.email.toLowerCase() === 'osobowoscplus@gmail.com' || user.email.toLowerCase() === 'yourimaginationstudio@gmail.com' || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary')) || currentProfileState.slug === 'cezaryrgowski';
+                    if (isCezaryUser && !isRadioCC) {
+                        currentProfileState.slug = 'cezaryrgowski';
+                        currentProfileState.name = 'Cezary Rogowski';
+                        if (!currentProfileState.avatar || currentProfileState.avatar.includes('lumina_icon.jpg') || currentProfileState.avatar.includes('googleusercontent.com/a/')) {
+                            currentProfileState.avatar = 'avatar_cezary_official.jpg';
+                            currentProfileState.avatarVideo = 'cezary_rgowski_video_avatar.mp4';
+                            currentProfileState.hasRealPhoto = true;
+                            currentProfileState.profileCompleted = true;
+                            try {
+                                await setDoc(doc(db, 'lumina_profiles', user.uid), { avatar: 'avatar_cezary_official.jpg', avatarVideo: 'cezary_rgowski_video_avatar.mp4', hasRealPhoto: true, profileCompleted: true }, { merge: true });
+                                await setDoc(doc(db, 'lumina_profiles', 'cezaryrgowski'), { avatar: 'avatar_cezary_official.jpg', avatarVideo: 'cezary_rgowski_video_avatar.mp4', hasRealPhoto: true, profileCompleted: true }, { merge: true });
+                            } catch(e) {}
+                        }
+                    }
+
+                    // Auto-fix / enforce Wioletta Rogowska official avatar
+                    const isWiolettaUser = (user.email && user.email.toLowerCase().includes('wioletta1240')) || (user.displayName && user.displayName.toLowerCase().includes('wioletta')) || currentProfileState.slug === 'wiolettarogowska';
+                    if (isWiolettaUser) {
+                        currentProfileState.slug = 'wiolettarogowska';
+                        currentProfileState.name = 'Wioletta Rogowska';
+                        if (!currentProfileState.avatar || currentProfileState.avatar.includes('lumina_icon.jpg') || currentProfileState.avatar.includes('googleusercontent.com/a/')) {
+                            currentProfileState.avatar = 'avatar_wioletta_official.jpg';
+                            currentProfileState.hasRealPhoto = true;
+                            currentProfileState.profileCompleted = true;
+                            try {
+                                await setDoc(doc(db, 'lumina_profiles', user.uid), { avatar: 'avatar_wioletta_official.jpg', hasRealPhoto: true, profileCompleted: true }, { merge: true });
+                                await setDoc(doc(db, 'lumina_profiles', 'wiolettarogowska'), { avatar: 'avatar_wioletta_official.jpg', hasRealPhoto: true, profileCompleted: true }, { merge: true });
+                            } catch(e) {}
+                        }
+                    }
+
                     try {
                         localStorage.setItem('lumina_current_user_profile', JSON.stringify(currentProfileState));
                         localStorage.setItem('lumina_my_profile', JSON.stringify(currentProfileState));
@@ -465,7 +498,7 @@ if (auth) {
                     } catch(e) {}
                 } else {
                     // Check if Cezary Rogowski / Christian Culture / Wioletta by email/name
-                    const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.toLowerCase() === 'studiodees7@gmail.com' || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
+                    const isCezary = (user.email && (user.email.toLowerCase() === 'nazirczarkes@gmail.com' || user.email.toLowerCase() === 'studiodees7@gmail.com' || user.email.toLowerCase() === 'osobowoscplus@gmail.com' || user.email.toLowerCase() === 'yourimaginationstudio@gmail.com' || user.email.includes('czarkes'))) || (user.displayName && user.displayName.toLowerCase().includes('cezary'));
                     const isWioletta = (user.displayName && user.displayName.toLowerCase().includes('wioletta')) || (user.email && user.email.includes('wioletta1240'));
                     
                     let cleanSlug;

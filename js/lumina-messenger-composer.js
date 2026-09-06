@@ -11,6 +11,13 @@
     let msgAttachedGdriveData = null;
     let msgAttachedYoutubeUrl = null;
 
+    // Helper: get custom avatar from storage if exists
+    function getCustomAvatar(slug) {
+        try {
+            return localStorage.getItem('lumina_custom_avatar_' + slug) || localStorage.getItem('lumina_avatar_' + slug);
+        } catch(e) { return null; }
+    }
+
     // Helper: Resolve active logged-in user across Lumina ecosystem
     window.getLuminaActiveUser = function() {
         const path = (window.location.pathname || '').toLowerCase();
@@ -19,11 +26,11 @@
 
         // 1. Cezary Master / Owner Mode
         if (isCezaryPage && typeof isOwnerMode !== 'undefined' && isOwnerMode) {
-            let avatar = 'avatar_cezary_official.jpg';
+            let avatar = getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg';
             try {
                 if (typeof getProfileData === 'function') {
                     const d = getProfileData();
-                    if (d && d.avatar) avatar = d.avatar;
+                    if (d && d.avatar && !d.avatar.includes('lumina_icon.jpg')) avatar = d.avatar;
                 }
             } catch(e){}
             return {
@@ -41,18 +48,18 @@
             return {
                 name: 'Cezary Rogowski',
                 slug: 'cezaryrgowski',
-                avatar: 'avatar_cezary_official.jpg',
+                avatar: getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg',
                 role: 'Założyciel Christian Culture ✨'
             };
         }
 
         // 2. Wioletta Owner Mode
         if (isWiolettaPage && typeof isOwnerMode !== 'undefined' && isOwnerMode) {
-            let avatar = 'avatar_wioletta_official.jpg';
+            let avatar = getCustomAvatar('wiolettarogowska') || 'avatar_wioletta_official.jpg';
             try {
                 if (typeof getProfileData === 'function') {
                     const d = getProfileData();
-                    if (d && d.avatar) avatar = d.avatar;
+                    if (d && d.avatar && !d.avatar.includes('lumina_icon.jpg')) avatar = d.avatar;
                 }
             } catch(e){}
             return {
@@ -68,7 +75,7 @@
             return {
                 name: 'Wioletta Rogowska',
                 slug: 'wiolettarogowska',
-                avatar: 'avatar_wioletta_official.jpg',
+                avatar: getCustomAvatar('wiolettarogowska') || 'avatar_wioletta_official.jpg',
                 role: 'Współzałożycielka Christian Culture ✨'
             };
         }
@@ -78,6 +85,13 @@
             const p = window.LuminaDB.getCurrentProfile();
             if (p && p.name) {
                 if (!p.slug) p.slug = p.name.toLowerCase().replace(/[^a-z0-9_-]/g, '');
+                const isCez = p.slug === 'cezaryrgowski' || (p.name && p.name.toLowerCase().includes('cezary'));
+                const isWio = p.slug === 'wiolettarogowska' || (p.name && p.name.toLowerCase().includes('wioletta'));
+                if (isCez && (!p.avatar || p.avatar.includes('lumina_icon.jpg') || p.avatar.includes('googleusercontent.com/a/'))) {
+                    p.avatar = getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg';
+                } else if (isWio && (!p.avatar || p.avatar.includes('lumina_icon.jpg') || p.avatar.includes('googleusercontent.com/a/'))) {
+                    p.avatar = getCustomAvatar('wiolettarogowska') || 'avatar_wioletta_official.jpg';
+                }
                 return p;
             }
         }
@@ -86,11 +100,20 @@
             if (u && (u.displayName || u.email || u.name)) {
                 const name = u.displayName || u.name || (u.email ? u.email.split('@')[0] : 'Użytkownik LUMINA');
                 const slug = u.slug || (u.email ? u.email.split('@')[0].replace(/[^a-zA-Z0-9_-]/g, '') : name.toLowerCase().replace(/[^a-z0-9_-]/g, ''));
+                const isCez = slug === 'cezaryrgowski' || name.toLowerCase().includes('cezary') || (u.email && (u.email.includes('nazirczarkes') || u.email.includes('osobowoscplus') || u.email.includes('yourimaginationstudio') || u.email.includes('czarkes')));
+                const isWio = slug === 'wiolettarogowska' || name.toLowerCase().includes('wioletta') || (u.email && u.email.includes('wioletta1240'));
+                let avatar = u.photoURL || u.avatar || 'lumina_icon.jpg';
+                if (isCez && (!avatar || avatar.includes('lumina_icon.jpg') || avatar.includes('googleusercontent.com/a/'))) {
+                    avatar = getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg';
+                } else if (isWio && (!avatar || avatar.includes('lumina_icon.jpg') || avatar.includes('googleusercontent.com/a/'))) {
+                    avatar = getCustomAvatar('wiolettarogowska') || 'avatar_wioletta_official.jpg';
+                }
                 return {
-                    name: name,
-                    slug: slug,
-                    avatar: u.photoURL || u.avatar || 'lumina_icon.jpg',
-                    email: u.email || ''
+                    name: isCez ? 'Cezary Rogowski' : (isWio ? 'Wioletta Rogowska' : name),
+                    slug: isCez ? 'cezaryrgowski' : (isWio ? 'wiolettarogowska' : slug),
+                    avatar: avatar,
+                    email: u.email || '',
+                    role: isCez ? 'Założyciel Christian Culture ✨' : (isWio ? 'Współzałożycielka Christian Culture ✨' : 'Społeczność LUMINA ✨')
                 };
             }
         }
@@ -102,6 +125,13 @@
                 const parsed = JSON.parse(myProf);
                 if (parsed && parsed.name) {
                     if (!parsed.slug) parsed.slug = parsed.name.toLowerCase().replace(/[^a-z0-9_-]/g, '');
+                    const isCez = parsed.slug === 'cezaryrgowski' || (parsed.name && parsed.name.toLowerCase().includes('cezary'));
+                    const isWio = parsed.slug === 'wiolettarogowska' || (parsed.name && parsed.name.toLowerCase().includes('wioletta'));
+                    if (isCez && (!parsed.avatar || parsed.avatar.includes('lumina_icon.jpg') || parsed.avatar.includes('googleusercontent.com/a/'))) {
+                        parsed.avatar = getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg';
+                    } else if (isWio && (!parsed.avatar || parsed.avatar.includes('lumina_icon.jpg') || parsed.avatar.includes('googleusercontent.com/a/'))) {
+                        parsed.avatar = getCustomAvatar('wiolettarogowska') || 'avatar_wioletta_official.jpg';
+                    }
                     return parsed;
                 }
             }
@@ -115,6 +145,13 @@
                     const params = new URLSearchParams(window.location.search);
                     d.slug = params.get('u') || d.name.toLowerCase().replace(/[^a-z0-9_-]/g, '');
                 }
+                const isCez = d.slug === 'cezaryrgowski' || (d.name && d.name.toLowerCase().includes('cezary'));
+                const isWio = d.slug === 'wiolettarogowska' || (d.name && d.name.toLowerCase().includes('wioletta'));
+                if (isCez && (!d.avatar || d.avatar.includes('lumina_icon.jpg') || d.avatar.includes('googleusercontent.com/a/'))) {
+                    d.avatar = getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg';
+                } else if (isWio && (!d.avatar || d.avatar.includes('lumina_icon.jpg') || d.avatar.includes('googleusercontent.com/a/'))) {
+                    d.avatar = getCustomAvatar('wiolettarogowska') || 'avatar_wioletta_official.jpg';
+                }
                 return d;
             }
         }
@@ -123,10 +160,18 @@
         const savedSlug = localStorage.getItem('lumina_current_user_slug');
         const savedName = localStorage.getItem('lumina_current_user_name');
         if (savedSlug && savedName) {
+            const isCez = savedSlug === 'cezaryrgowski' || savedName.toLowerCase().includes('cezary');
+            const isWio = savedSlug === 'wiolettarogowska' || savedName.toLowerCase().includes('wioletta');
+            let avatar = localStorage.getItem('lumina_current_user_avatar') || 'lumina_icon.jpg';
+            if (isCez && (!avatar || avatar.includes('lumina_icon.jpg') || avatar.includes('googleusercontent.com/a/'))) {
+                avatar = getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg';
+            } else if (isWio && (!avatar || avatar.includes('lumina_icon.jpg') || avatar.includes('googleusercontent.com/a/'))) {
+                avatar = getCustomAvatar('wiolettarogowska') || 'avatar_wioletta_official.jpg';
+            }
             return {
                 name: savedName,
                 slug: savedSlug,
-                avatar: localStorage.getItem('lumina_current_user_avatar') || 'lumina_icon.jpg'
+                avatar: avatar
             };
         }
 
@@ -261,6 +306,33 @@
         }
     }
 
+    // Update Author Bar UI (Avatar & Name)
+    window.updateMsgComposerAuthorUI = function() {
+        const user = window.getLuminaActiveUser();
+        const av = document.getElementById('msgComposerAuthorAvatar');
+        const nm = document.getElementById('msgComposerAuthorName');
+        if (user) {
+            if (nm) nm.textContent = user.name || 'Użytkownik LUMINA';
+            if (av) {
+                const isCez = (user.name && user.name.toLowerCase().includes('cezary')) || user.slug === 'cezaryrgowski';
+                const isWio = (user.name && user.name.toLowerCase().includes('wioletta')) || user.slug === 'wiolettarogowska';
+                let targetAv = user.avatar;
+                if (isCez && (!targetAv || targetAv.includes('lumina_icon.jpg') || targetAv.includes('googleusercontent.com/a/'))) {
+                    targetAv = getCustomAvatar('cezaryrgowski') || 'avatar_cezary_official.jpg';
+                } else if (isWio && (!targetAv || targetAv.includes('lumina_icon.jpg') || targetAv.includes('googleusercontent.com/a/'))) {
+                    targetAv = getCustomAvatar('wiolettarogowska') || 'avatar_wioletta_official.jpg';
+                }
+                if (!targetAv) targetAv = 'lumina_icon.jpg';
+                av.src = targetAv;
+                av.onerror = function() {
+                    if (isCez) this.src = 'avatar_cezary_official.jpg';
+                    else if (isWio) this.src = 'avatar_wioletta_official.jpg';
+                    else this.src = 'lumina_icon.jpg';
+                };
+            }
+        }
+    };
+
     // Enhance switchMessengerMainTab
     function patchSwitchMessengerTab() {
         const originalSwitch = window.switchMessengerMainTab;
@@ -304,10 +376,7 @@
                     if (loggedInBox) loggedInBox.style.display = 'flex';
                     if (guestBox) guestBox.style.display = 'none';
 
-                    const av = document.getElementById('msgComposerAuthorAvatar');
-                    const nm = document.getElementById('msgComposerAuthorName');
-                    if (av) av.src = user.avatar || 'lumina_icon.jpg';
-                    if (nm) nm.textContent = user.name || 'Użytkownik LUMINA';
+                    window.updateMsgComposerAuthorUI();
 
                     const inp = document.getElementById('msgComposerInput');
                     if (inp) setTimeout(() => inp.focus(), 150);
@@ -707,7 +776,17 @@
     function setup() {
         initMessengerComposerUI();
         patchSwitchMessengerTab();
+        if (typeof window.updateMsgComposerAuthorUI === 'function') {
+            window.updateMsgComposerAuthorUI();
+        }
     }
+
+    window.addEventListener('lumina-auth-state', () => {
+        if (typeof window.updateMsgComposerAuthorUI === 'function') window.updateMsgComposerAuthorUI();
+    });
+    window.addEventListener('storage', () => {
+        if (typeof window.updateMsgComposerAuthorUI === 'function') window.updateMsgComposerAuthorUI();
+    });
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', setup);
