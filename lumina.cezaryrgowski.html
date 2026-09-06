@@ -1181,7 +1181,6 @@
 
         /* ══════════ OWNER / ADMIN ONLY CONTROLS (100% UKRYTE DLA GOŚCI) ══════════ */
         .cc-mission-publisher-bar,
-        .feed-composer,
         .right-founder-wing,
         .card-edit-btn,
         .avatar-edit-overlay,
@@ -1197,10 +1196,7 @@
         body.owner-mode-active .cc-mission-publisher-bar {
             display: block !important;
         }
-        body.owner-mode-active .feed-composer {
-            display: block !important;
-        }
-        body.owner-mode-active .right-founder-wing {
+                body.owner-mode-active .right-founder-wing {
             display: flex !important;
         }
         body.owner-mode-active .card-edit-btn {
@@ -3699,7 +3695,8 @@
                     <div class="feed-composer">
                         <div class="composer-top">
                             <img loading="lazy" decoding="async" src="avatar_cezary_karuzela_2026.jpg?v=20260825_urszula_real_face_v370" alt="Cezary" class="composer-avatar" id="myComposerAvatar">
-                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
+                            <input type="text" id="composerInput" class="composer-input" placeholder="Podziel się myślą, wersetem lub intencją modlitewną..." onfocus="if(!isOwnerMode) openSecurityModal(()=>document.getElementById('composerInput').focus())" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();publishFeedPost();}">
+                            <button type="button" onclick="toggleOwnerAuthMode()" id="composerOwnerStatusBadge" title="Status Właściciela" style="border:none; border-radius:10px; padding:6px 10px; font-size:0.75rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; transition:all 0.2s;"></button>
                         </div>
 
                         <!-- Post Image Attachment Preview -->
@@ -6117,8 +6114,10 @@
         // ── Security & Authentication System ──
         function checkOwnerAuthSession() {
             let ownerAccess = (sessionStorage.getItem(AUTH_SESSION_KEY) === 'true') || 
+                              (localStorage.getItem(AUTH_SESSION_KEY) === 'true') ||
                               (sessionStorage.getItem('lumina_auth_master_admin') === 'true') ||
-                              (localStorage.getItem('lumina_auth_master_admin') === 'true');
+                              (localStorage.getItem('lumina_auth_master_admin') === 'true') ||
+                              (typeof isUserCommanderAuthorized === 'function' && isUserCommanderAuthorized());
 
             isOwnerMode = !!ownerAccess;
             if (isOwnerMode) {
@@ -6148,6 +6147,14 @@
                     if (btnLabel) btnLabel.textContent = 'Zablokuj Profil ✨';
                 }
                 if (hud) hud.style.display = 'grid';
+            const compBadge = document.getElementById('composerOwnerStatusBadge');
+            if (compBadge) {
+                compBadge.style.background = 'rgba(34,197,94,0.15)';
+                compBadge.style.color = '#86efac';
+                compBadge.style.border = '1px solid rgba(34,197,94,0.4)';
+                compBadge.innerHTML = '<i class="fa-solid fa-lock-open"></i> <span>Właściciel</span>';
+                compBadge.title = 'Profil odblokowany (Cezary Rogowski). Kliknij, aby zablokować.';
+            }
             } else {
                 document.body.classList.remove('owner-mode-active');
                 if (icon) icon.className = 'fa-solid fa-shield-halved';
@@ -6158,6 +6165,14 @@
                     if (btnLabel) btnLabel.textContent = 'Zaloguj się jako Właściciel';
                 }
                 if (hud) hud.style.display = 'none';
+            const compBadge = document.getElementById('composerOwnerStatusBadge');
+            if (compBadge) {
+                compBadge.style.background = 'rgba(250,204,21,0.15)';
+                compBadge.style.color = '#fde047';
+                compBadge.style.border = '1px solid rgba(250,204,21,0.4)';
+                compBadge.innerHTML = '<i class="fa-solid fa-key"></i> <span>Zaloguj PIN</span>';
+                compBadge.title = 'Kliknij, aby odblokować panel właściciela (PIN 7777).';
+            }
             }
         }
 
@@ -6165,6 +6180,7 @@
             if (isOwnerMode) {
                 // Lock profile
                 sessionStorage.removeItem(AUTH_SESSION_KEY);
+                localStorage.removeItem(AUTH_SESSION_KEY);
                 isOwnerMode = false;
                 updateSecurityBarUI();
                 renderPhotos();
@@ -6196,6 +6212,7 @@
 
             if (entered === correctPin || entered === '7777') {
                 sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
+                localStorage.setItem(AUTH_SESSION_KEY, 'true');
                 isOwnerMode = true;
                 closeModal('securityPinModal');
                 updateSecurityBarUI();
@@ -7341,6 +7358,10 @@
         };
 
         async function publishFeedPost() {
+            if (!isOwnerMode) {
+                openSecurityModal(() => publishFeedPost());
+                return;
+            }
             const input = document.getElementById('composerInput');
             const val = input ? input.value.trim() : '';
             if (!val && !attachedPostImageDataUrl && !attachedPostVideoUrl && !attachedGdriveData) {
