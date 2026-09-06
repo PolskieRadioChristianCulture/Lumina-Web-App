@@ -4121,11 +4121,323 @@ export function escapeHtml(str) {
         .replace(/'/g, '&#039;');
 }
 
-export function formatRichTextAndMedia(rawText) {
-    if (!rawText) return { html: '', embedHtml: '', urls: [] };
+// ══════════════════════════════════════════════════════════════════════════
+// ── LUMINA RICH OPENGRAPH & STORE PRODUCT PREVIEWS ENGINE ──
+// ══════════════════════════════════════════════════════════════════════════
+
+const _luminaOgCache = new Map();
+
+/**
+ * Returns instant synchronous heuristic metadata for known Christian Culture links & external URLs
+ */
+export function getHeuristicLinkMetadata(url) {
+    if (!url) return null;
+    try {
+        const u = new URL(url);
+        const host = u.hostname.replace(/^www\./, '').toLowerCase();
+        const pathname = u.pathname;
+
+        // 1. Oficjalny Sklep Christian Culture (Creator Spring / Teespring)
+        if (host.includes('creator-spring.com') || host.includes('teespring.com') || pathname.includes('/listing/')) {
+            let itemName = 'Kolekcja Christian Culture';
+            const listingMatch = pathname.match(/\/listing\/([^/?#]+)/i);
+            if (listingMatch && listingMatch[1]) {
+                const rawName = decodeURIComponent(listingMatch[1]).replace(/[-_]+/g, ' ').trim();
+                itemName = rawName.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+            }
+
+            // High-quality mockup / product image for Christian Culture store
+            let img = 'https://mockup-api.teespring.com/v3/image/iZ-CubEFlReC1xHtnlIhCrSODTk/500/500.jpg';
+            let desc = 'Oficjalne artykuły, kubki ceramiczne, odzież i akcesoria Christian Culture. Kupując, wspierasz rozwój dzieła ewangelizacji i mediów chrześcijańskich.';
+
+            return {
+                url: url,
+                host: 'Oficjalny Sklep Christian Culture',
+                domain: host,
+                isStore: true,
+                title: `Sklep Christian Culture • ${itemName}`,
+                description: desc,
+                image: img,
+                badge: '🛍️ OFICJALNY SKLEP CHRISTIAN CULTURE',
+                ctaText: 'Kup w Sklepie 🛒',
+                icon: 'fa-solid fa-bag-shopping'
+            };
+        }
+
+        // 2. Polskie Radio Christian Culture
+        if (host.includes('polskieradio.cc') || host.includes('christian-culture.web.app')) {
+            let title = 'Polskie Radio Christian Culture • 24/7 Ku Bożej Chwale';
+            let desc = 'Słuchaj na żywo muzyki uwielbienia, Biblii Śpiewanej, codziennych inspiracji i programów ku Bożej chwale.';
+            let badge = '📻 MEDIA CHRISTIAN CULTURE';
+            let ctaText = 'Słuchaj / Otwórz ✨';
+            let img = 'https://polskieradio.cc/logo-glowne.png';
+
+            if (pathname.includes('vod')) {
+                title = 'Kino Chrześcijańskie VOD • Christian Culture';
+                desc = 'Oglądaj pełnometrażowe filmy chrześcijańskie, dokumenty i wartościowe produkcje filmowe bez opłat.';
+                badge = '🎬 VOD CHRISTIAN CULTURE';
+                ctaText = 'Oglądaj Film 🍿';
+                img = 'https://polskieradio.cc/vod_hity_kina_poster.jpg';
+            } else if (pathname.includes('lumina')) {
+                title = 'Portal Społecznościowy LUMINA ✨';
+                desc = 'Pierwszy polski chrześcijański portal społecznościowy. Łączymy wierzących, dzielimy się Słowem i świadectwami.';
+                badge = '🕊️ PORTAL LUMINA';
+                ctaText = 'Przejdź do Portalu 🕊️';
+                img = 'https://polskieradio.cc/lumina_cover_bg.jpg';
+            }
+
+            return {
+                url: url,
+                host: 'Polskie Radio Christian Culture',
+                domain: host,
+                title,
+                description: desc,
+                image: img,
+                badge,
+                ctaText,
+                icon: 'fa-solid fa-radio'
+            };
+        }
+
+        // 3. Patronite (Wsparcie Misji CC)
+        if (host.includes('patronite.pl')) {
+            return {
+                url: url,
+                host: 'Patronite • Christian Culture',
+                domain: host,
+                title: 'Wspieraj Misję Ewangelizacyjną Christian Culture',
+                description: 'Dołącz do grona Patronów i twórz z nami pierwsze w Polsce chrześcijańskie media nowej generacji.',
+                image: 'https://polskieradio.cc/logo-glowne.png',
+                badge: '💖 SPOŁECZNOŚĆ PATRONÓW',
+                ctaText: 'Zostań Patronem 💖',
+                icon: 'fa-solid fa-hand-holding-heart'
+            };
+        }
+
+        // 4. Spotify
+        if (host.includes('spotify.com')) {
+            return {
+                url: url,
+                host: 'Spotify Music & Podcast',
+                domain: host,
+                title: 'Posłuchaj w serwisie Spotify',
+                description: 'Odtwórz muzykę uwielbienia lub podcast chrześcijański bezpośrednio na platformie Spotify.',
+                image: '',
+                badge: '🎵 SPOTIFY STREAMING',
+                ctaText: 'Odtwórz na Spotify 🎧',
+                icon: 'fa-brands fa-spotify'
+            };
+        }
+
+        // 5. Facebook
+        if (host.includes('facebook.com') || host.includes('fb.watch')) {
+            return {
+                url: url,
+                host: 'Facebook',
+                domain: host,
+                title: 'Zobacz materiał w serwisie Facebook',
+                description: 'Oficjalny wpis, transmisja wideo lub aktualność w serwisie społecznościowym Facebook.',
+                image: '',
+                badge: '📱 FACEBOOK SOCIAL',
+                ctaText: 'Zobacz na Facebooku ↗',
+                icon: 'fa-brands fa-facebook'
+            };
+        }
+
+        // 6. Instagram
+        if (host.includes('instagram.com')) {
+            return {
+                url: url,
+                host: 'Instagram',
+                domain: host,
+                title: 'Zobacz zdjęcie lub relację na Instagramie',
+                description: 'Profil społecznościowy, fotografia lub relacja w serwisie Instagram.',
+                image: '',
+                badge: '📸 INSTAGRAM',
+                ctaText: 'Zobacz na Instagramie ↗',
+                icon: 'fa-brands fa-instagram'
+            };
+        }
+
+        // 7. Generic URL
+        return {
+            url: url,
+            host: host.toUpperCase(),
+            domain: host,
+            title: host.toUpperCase(),
+            description: 'Otwórz stronę w nowej karcie...',
+            image: '',
+            badge: '🔗 ODNOŚNIK ZEWNĘTRZNY',
+            ctaText: 'Odwiedź stronę ↗',
+            icon: 'fa-solid fa-globe'
+        };
+    } catch(e) {
+        return null;
+    }
+}
+
+/**
+ * Creates rich HTML card for OpenGraph/link preview
+ */
+export function createRichOpenGraphCardHtml(meta) {
+    if (!meta || !meta.url) return '';
+    const safeUrl = escapeHtml(meta.url);
+    const safeHost = escapeHtml(meta.host || meta.domain || 'Odnośnik');
+    const safeTitle = escapeHtml(meta.title || meta.url);
+    const safeDesc = escapeHtml(meta.description || '');
+    const safeBadge = escapeHtml(meta.badge || '🔗 ODNOŚNIK');
+    const safeCta = escapeHtml(meta.ctaText || 'Otwórz stronę ↗');
+    const safeIcon = meta.icon || 'fa-solid fa-globe';
+    const isStore = !!meta.isStore;
+    const hasImage = meta.image && String(meta.image).trim().length > 0;
+
+    return `
+        <div class="rich-og-card ${isStore ? 'rich-og-card-store' : ''}" data-og-url="${safeUrl}" onclick="event.stopPropagation()">
+            <div class="rich-og-thumb-wrapper" style="${hasImage ? '' : 'display:none;'}">
+                <img src="${hasImage ? escapeHtml(meta.image) : ''}" alt="${safeTitle}" class="rich-og-thumb" loading="lazy" onerror="this.closest('.rich-og-thumb-wrapper').style.display='none';">
+                <div class="rich-og-floating-badge"><i class="${safeIcon}"></i> ${safeBadge}</div>
+            </div>
+            ${!hasImage ? `
+                <div class="rich-og-top-bar">
+                    <span class="rich-og-floating-badge static"><i class="${safeIcon}"></i> ${safeBadge}</span>
+                </div>
+            ` : ''}
+            <div class="rich-og-body">
+                <div class="rich-og-host"><i class="${safeIcon}" style="color:${isStore ? '#f59e0b' : '#38bdf8'};"></i> ${safeHost}</div>
+                <h4 class="rich-og-title">${safeTitle}</h4>
+                ${safeDesc ? `<p class="rich-og-desc">${safeDesc}</p>` : ''}
+                <div class="rich-og-action-row">
+                    <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="rich-og-cta ${isStore ? 'store-cta' : ''}">
+                        <span>${safeCta}</span> <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.75rem;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * Fetches real OpenGraph metadata asynchronously via Microlink API, with localStorage & memory caching
+ */
+export async function fetchLinkOpenGraphMetadata(url) {
+    if (!url) return null;
+    const baseMeta = getHeuristicLinkMetadata(url) || { url, host: '', title: '', description: '', image: '' };
+    
+    // Check in-memory cache
+    if (_luminaOgCache.has(url)) {
+        return _luminaOgCache.get(url);
+    }
+
+    // Check localStorage cache (TTL: 7 days)
+    let cacheKey = 'lumina_og_';
+    try {
+        cacheKey += btoa(encodeURIComponent(url)).slice(0, 32);
+        const raw = localStorage.getItem(cacheKey);
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Date.now() - parsed.ts < 7 * 24 * 60 * 60 * 1000) {
+                _luminaOgCache.set(url, parsed.data);
+                return parsed.data;
+            }
+        }
+    } catch(e) {}
+
+    try {
+        const resp = await fetch('https://api.microlink.io?url=' + encodeURIComponent(url));
+        if (resp.ok) {
+            const json = await resp.json();
+            if (json && json.status === 'success' && json.data) {
+                const d = json.data;
+                const merged = {
+                    ...baseMeta,
+                    title: d.title || baseMeta.title,
+                    description: d.description || baseMeta.description,
+                    image: d.image?.url || baseMeta.image,
+                    publisher: d.publisher || baseMeta.host,
+                    logo: d.logo?.url || null
+                };
+                if (d.publisher && !baseMeta.isStore) {
+                    merged.host = d.publisher;
+                }
+                _luminaOgCache.set(url, merged);
+                try {
+                    localStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), data: merged }));
+                } catch(e) {}
+                return merged;
+            }
+        }
+    } catch(err) {
+        console.warn('LuminaDB fetchLinkOpenGraphMetadata network error:', err);
+    }
+
+    _luminaOgCache.set(url, baseMeta);
+    return baseMeta;
+}
+
+/**
+ * Hydrates all .rich-og-card elements in a container with real OpenGraph image and text
+ */
+export function hydrateOpenGraphCards(container = document) {
+    if (!container) return;
+    const cards = container.querySelectorAll('.rich-og-card[data-og-url]');
+    cards.forEach(async (card) => {
+        const url = card.getAttribute('data-og-url');
+        if (!url || card.getAttribute('data-og-hydrated') === 'true') return;
+        card.setAttribute('data-og-hydrated', 'true');
+
+        try {
+            const meta = await fetchLinkOpenGraphMetadata(url);
+            if (!meta) return;
+
+            // Update title
+            const titleEl = card.querySelector('.rich-og-title');
+            if (titleEl && meta.title && meta.title !== titleEl.textContent) {
+                titleEl.textContent = meta.title;
+            }
+
+            // Update description
+            const descEl = card.querySelector('.rich-og-desc');
+            if (descEl && meta.description) {
+                descEl.textContent = meta.description;
+            } else if (!descEl && meta.description) {
+                const p = document.createElement('p');
+                p.className = 'rich-og-desc';
+                p.textContent = meta.description;
+                const body = card.querySelector('.rich-og-body');
+                const actionRow = card.querySelector('.rich-og-action-row');
+                if (body && actionRow) body.insertBefore(p, actionRow);
+            }
+
+            // Update or show image
+            if (meta.image) {
+                let thumbWrapper = card.querySelector('.rich-og-thumb-wrapper');
+                let thumbImg = card.querySelector('.rich-og-thumb');
+                if (thumbWrapper && thumbImg) {
+                    if (thumbImg.src !== meta.image) {
+                        thumbImg.src = meta.image;
+                    }
+                    thumbWrapper.style.display = '';
+                } else if (!thumbWrapper) {
+                    thumbWrapper = document.createElement('div');
+                    thumbWrapper.className = 'rich-og-thumb-wrapper';
+                    thumbWrapper.innerHTML = `
+                        <img src="${escapeHtml(meta.image)}" alt="${escapeHtml(meta.title || '')}" class="rich-og-thumb" loading="lazy" onerror="this.closest('.rich-og-thumb-wrapper').style.display='none';">
+                        <div class="rich-og-floating-badge"><i class="${meta.icon || 'fa-solid fa-globe'}"></i> ${escapeHtml(meta.badge || 'LINK')}</div>
+                    `;
+                    card.insertBefore(thumbWrapper, card.firstChild);
+                    const topBar = card.querySelector('.rich-og-top-bar');
+                    if (topBar) topBar.remove();
+                }
+            }
+        } catch(e) {}
+    });
+}
+
+export function formatRichTextAndMedia(rawText, postData = null) {
+    if (!rawText && (!postData || !postData.linkPreview)) return { html: '', embedHtml: '', urls: [] };
     
     // 1. Zabezpieczenie przed XSS (Sanityzacja znaczników HTML)
-    const sanitizedText = escapeHtml(rawText);
+    const sanitizedText = escapeHtml(rawText || '');
 
     // Regex for URLs
     const urlRegex = /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/gi;
@@ -4155,9 +4467,15 @@ export function formatRichTextAndMedia(rawText) {
 
     // Generate Rich Embed Card if URL is present or iframe is embedded
     let embedHtml = '';
+    let linkMeta = null;
+
+    if (postData && postData.linkPreview) {
+        embedHtml = createRichOpenGraphCardHtml(postData.linkPreview);
+        linkMeta = postData.linkPreview;
+    }
 
     // Check if rawText contains direct YouTube iframe
-    if (rawText && rawText.includes('<iframe') && (rawText.includes('youtube.com') || rawText.includes('youtu.be'))) {
+    if (!embedHtml && rawText && rawText.includes('<iframe') && (rawText.includes('youtube.com') || rawText.includes('youtu.be'))) {
         const srcMatch = rawText.match(/src=["'](https?:\/\/[^"']+)["']/i);
         if (srcMatch && srcMatch[1]) {
             let embedSrc = srcMatch[1].replace(/&amp;/g, '&');
@@ -4207,48 +4525,18 @@ export function formatRichTextAndMedia(rawText) {
             }
         } else {
             // Social Media / OpenGraph Style Rich Preview Card
-            try {
-                const parsedUrl = new URL(firstUrl);
-                const host = parsedUrl.hostname.replace(/^www\./, '');
-                let cardTitle = host.toUpperCase();
-                let cardDesc = 'Otwórz stronę w nowej karcie...';
-                let iconClass = 'fa-globe';
-
-                if (host.includes('polskieradio.cc')) {
-                    cardTitle = 'Polskie Radio Christian Culture';
-                    cardDesc = 'Słuchaj na żywo 24/7, muzyka uwielbienia, Biblia Śpiewana oraz codzienne inspiracje ku Bożej chwale.';
-                    iconClass = 'fa-radio';
-                } else if (host.includes('facebook.com') || host.includes('fb.watch')) {
-                    cardTitle = 'Facebook Post / Transmisja';
-                    cardDesc = 'Zobacz materiał w serwisie Facebook.';
-                    iconClass = 'fa-brands fa-facebook';
-                } else if (host.includes('instagram.com')) {
-                    cardTitle = 'Instagram';
-                    cardDesc = 'Zobacz zdjęcie lub relację na Instagramie.';
-                    iconClass = 'fa-brands fa-instagram';
-                } else if (host.includes('spotify.com')) {
-                    cardTitle = 'Spotify Music & Podcast';
-                    cardDesc = 'Odsłuchaj nagranie w serwisie Spotify.';
-                    iconClass = 'fa-brands fa-spotify';
-                }
-
-                embedHtml = `
-                    <a href="${firstUrl}" target="_blank" rel="noopener noreferrer" class="rich-og-card" onclick="event.stopPropagation()">
-                        <div class="rich-og-body">
-                            <div class="rich-og-host"><i class="fa-solid ${iconClass}" style="color:#38bdf8;"></i> ${host}</div>
-                            <div class="rich-og-title">${cardTitle}</div>
-                            <div class="rich-og-desc">${cardDesc}</div>
-                        </div>
-                    </a>
-                `;
-            } catch(e) {}
+            linkMeta = getHeuristicLinkMetadata(firstUrl);
+            if (linkMeta) {
+                embedHtml = createRichOpenGraphCardHtml(linkMeta);
+            }
         }
     }
 
     return {
         html: formattedText,
         embedHtml: embedHtml,
-        urls: foundUrls
+        urls: foundUrls,
+        linkPreview: linkMeta
     };
 }
 
@@ -5138,6 +5426,10 @@ window.LuminaDB = {
     extractYouTubeId,
     extractYouTubePlaylistId,
     formatRichTextAndMedia,
+    getHeuristicLinkMetadata,
+    createRichOpenGraphCardHtml,
+    fetchLinkOpenGraphMetadata,
+    hydrateOpenGraphCards,
     parseGoogleDriveUrl,
     createGoogleDriveEmbedHtml,
     LUMINA_HANDLES,
@@ -5411,6 +5703,10 @@ window.LuminaDB.open3DBadgeDetailsModal = open3DBadgeDetailsModal;
 window.LuminaDB.ensure3DBadgeModalInDom = ensure3DBadgeModalInDom;
 window.LuminaDB.detectProfileGender = detectProfileGender;
 window.LuminaDB.calculateProfileMatchScore = calculateProfileMatchScore;
+window.LuminaDB.getHeuristicLinkMetadata = getHeuristicLinkMetadata;
+window.LuminaDB.createRichOpenGraphCardHtml = createRichOpenGraphCardHtml;
+window.LuminaDB.fetchLinkOpenGraphMetadata = fetchLinkOpenGraphMetadata;
+window.LuminaDB.hydrateOpenGraphCards = hydrateOpenGraphCards;
 
 export function isProfileNew(p) {
     if (!p) return false;

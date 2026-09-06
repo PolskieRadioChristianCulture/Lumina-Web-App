@@ -516,6 +516,20 @@
         const resolvedAvatar = activeUser.avatar || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));
         const resolvedRole = activeUser.role || activeUser.job || (isCezary ? 'Założyciel Christian Culture ✨' : (isWioletta ? 'Współzałożycielka Christian Culture ✨' : 'Społeczność LUMINA ✨'));
 
+        // Wykrywanie linków w tekście i generowanie natychmiastowej bogatej karty produktu/odnośnika
+        let detectedLinkMeta = null;
+        if (!msgAttachedGdriveData && !msgAttachedYoutubeUrl && textVal) {
+            const urlMatch = textVal.match(/(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/i);
+            if (urlMatch && urlMatch[0]) {
+                const targetUrl = urlMatch[0];
+                if (!targetUrl.includes('youtube.com') && !targetUrl.includes('youtu.be') && !targetUrl.includes('drive.google.com')) {
+                    if (window.LuminaDB?.getHeuristicLinkMetadata) {
+                        detectedLinkMeta = window.LuminaDB.getHeuristicLinkMetadata(targetUrl);
+                    }
+                }
+            }
+        }
+
         const newPost = {
             id: 'post_' + Date.now(),
             author: authorName,
@@ -532,7 +546,10 @@
             youtubeUrl: msgAttachedYoutubeUrl || null,
             gdrive: msgAttachedGdriveData || null,
             gdriveEmbed: (msgAttachedGdriveData && msgAttachedGdriveData.mode === 'embed') ? msgAttachedGdriveData.previewEmbedUrl : null,
-            embedHtml: (msgAttachedGdriveData && msgAttachedGdriveData.mode === 'embed' && window.LuminaDB?.createGoogleDriveEmbedHtml) ? window.LuminaDB.createGoogleDriveEmbedHtml(msgAttachedGdriveData, { mode: 'embed' }) : null,
+            linkPreview: detectedLinkMeta || null,
+            embedHtml: (msgAttachedGdriveData && msgAttachedGdriveData.mode === 'embed' && window.LuminaDB?.createGoogleDriveEmbedHtml) 
+                ? window.LuminaDB.createGoogleDriveEmbedHtml(msgAttachedGdriveData, { mode: 'embed' }) 
+                : (detectedLinkMeta && window.LuminaDB?.createRichOpenGraphCardHtml ? window.LuminaDB.createRichOpenGraphCardHtml(detectedLinkMeta) : null),
             createdAtTimestamp: Date.now()
         };
 
@@ -579,6 +596,45 @@
             } catch(e) {
                 console.warn('LuminaDB universal publish error:', e);
             }
+        }
+
+        // Asynchroniczne doczytanie pełnego OpenGraph w tle (dla kart sklepów, produktów i stron WWW)
+        if (detectedLinkMeta && detectedLinkMeta.url && window.LuminaDB?.fetchLinkOpenGraphMetadata) {
+            window.LuminaDB.fetchLinkOpenGraphMetadata(detectedLinkMeta.url).then(async (enrichedMeta) => {
+                if (enrichedMeta && (enrichedMeta.image !== detectedLinkMeta.image || enrichedMeta.title !== detectedLinkMeta.title || enrichedMeta.description !== detectedLinkMeta.description)) {
+                    newPost.linkPreview = enrichedMeta;
+                    newPost.embedHtml = window.LuminaDB.createRichOpenGraphCardHtml(enrichedMeta);
+                    keysToUpdate.forEach(k => {
+                        try {
+                            const raw = localStorage.getItem(k);
+                            if (raw) {
+                                const prof = JSON.parse(raw);
+                                const pIdx = (prof.posts || []).findIndex(p => p.id === newPost.id);
+                                if (pIdx !== -1) {
+                                    prof.posts[pIdx].linkPreview = enrichedMeta;
+                                    prof.posts[pIdx].embedHtml = newPost.embedHtml;
+                                    localStorage.setItem(k, JSON.stringify(prof));
+                                }
+                            }
+                        } catch(e) {}
+                    });
+                    try {
+                        const rawCloud = localStorage.getItem('lumina_cloud_posts_cache');
+                        if (rawCloud) {
+                            const feedList = JSON.parse(rawCloud);
+                            const fIdx = feedList.findIndex(p => p.id === newPost.id);
+                            if (fIdx !== -1) {
+                                feedList[fIdx].linkPreview = enrichedMeta;
+                                feedList[fIdx].embedHtml = newPost.embedHtml;
+                                localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(feedList));
+                            }
+                        }
+                    } catch(e) {}
+                    if (window.LuminaDB?.publishUniversalPost) {
+                        try { await window.LuminaDB.publishUniversalPost(newPost); } catch(e){}
+                    }
+                }
+            }).catch(()=>{});
         }
 
         // 4. Jeśli jesteśmy na podstronie Cezarego, zapisz zaktualizowany profil w chmurze
