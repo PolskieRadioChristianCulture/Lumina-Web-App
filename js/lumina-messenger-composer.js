@@ -13,37 +13,31 @@
 
     // Helper: Resolve active logged-in user across Lumina ecosystem
     window.getLuminaActiveUser = function() {
-        if (window.LuminaDB?.getCurrentProfile) {
-            const p = window.LuminaDB.getCurrentProfile();
-            if (p && p.name) return p;
-        }
-        if (window.LuminaDB?.getCurrentUser) {
-            const u = window.LuminaDB.getCurrentUser();
-            if (u && (u.displayName || u.email)) {
-                return {
-                    name: u.displayName || u.name || 'Użytkownik LUMINA',
-                    slug: u.slug || (u.email ? u.email.split('@')[0].replace(/[^a-zA-Z0-9_-]/g, '') : 'user'),
-                    avatar: u.photoURL || u.avatar || 'lumina_icon.jpg',
-                    email: u.email || ''
-                };
-            }
-        }
-        try {
-            const myProf = localStorage.getItem('lumina_current_user_profile');
-            if (myProf) {
-                const parsed = JSON.parse(myProf);
-                if (parsed && parsed.name) return parsed;
-            }
-        } catch(e) {}
+        const path = (window.location.pathname || '').toLowerCase();
+        const isCezaryPage = path.includes('cezary') || typeof getCezaryAllPosts === 'function';
+        const isWiolettaPage = path.includes('wioletta');
 
-        if (typeof isOwnerMode !== 'undefined' && isOwnerMode) {
-            if (typeof getProfileData === 'function') {
-                const data = getProfileData();
-                if (data && data.name) return data;
-            }
+        // 1. Cezary Master / Owner Mode
+        if (isCezaryPage && typeof isOwnerMode !== 'undefined' && isOwnerMode) {
+            let avatar = 'avatar_cezary_official.jpg';
+            try {
+                if (typeof getProfileData === 'function') {
+                    const d = getProfileData();
+                    if (d && d.avatar) avatar = d.avatar;
+                }
+            } catch(e){}
+            return {
+                name: 'Cezary Rogowski',
+                slug: 'cezaryrgowski',
+                avatar: avatar,
+                role: 'Założyciel Christian Culture ✨'
+            };
         }
 
-        if (localStorage.getItem('lumina_auth_master_admin') === 'true' || sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') {
+        if (localStorage.getItem('lumina_auth_master_admin') === 'true' || 
+            sessionStorage.getItem('lumina_auth_master_admin') === 'true' || 
+            localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true' ||
+            sessionStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') {
             return {
                 name: 'Cezary Rogowski',
                 slug: 'cezaryrgowski',
@@ -52,6 +46,80 @@
             };
         }
 
+        // 2. Wioletta Owner Mode
+        if (isWiolettaPage && typeof isOwnerMode !== 'undefined' && isOwnerMode) {
+            let avatar = 'avatar_wioletta_official.jpg';
+            try {
+                if (typeof getProfileData === 'function') {
+                    const d = getProfileData();
+                    if (d && d.avatar) avatar = d.avatar;
+                }
+            } catch(e){}
+            return {
+                name: 'Wioletta Rogowska',
+                slug: 'wiolettarogowska',
+                avatar: avatar,
+                role: 'Współzałożycielka Christian Culture ✨'
+            };
+        }
+
+        if (localStorage.getItem('lumina_auth_owner_wiolettarogowska') === 'true' ||
+            sessionStorage.getItem('lumina_auth_owner_wiolettarogowska') === 'true') {
+            return {
+                name: 'Wioletta Rogowska',
+                slug: 'wiolettarogowska',
+                avatar: 'avatar_wioletta_official.jpg',
+                role: 'Współzałożycielka Christian Culture ✨'
+            };
+        }
+
+        // 3. LuminaDB Profile & Current User
+        if (window.LuminaDB?.getCurrentProfile) {
+            const p = window.LuminaDB.getCurrentProfile();
+            if (p && p.name) {
+                if (!p.slug) p.slug = p.name.toLowerCase().replace(/[^a-z0-9_-]/g, '');
+                return p;
+            }
+        }
+        if (window.LuminaDB?.getCurrentUser) {
+            const u = window.LuminaDB.getCurrentUser();
+            if (u && (u.displayName || u.email || u.name)) {
+                const name = u.displayName || u.name || (u.email ? u.email.split('@')[0] : 'Użytkownik LUMINA');
+                const slug = u.slug || (u.email ? u.email.split('@')[0].replace(/[^a-zA-Z0-9_-]/g, '') : name.toLowerCase().replace(/[^a-z0-9_-]/g, ''));
+                return {
+                    name: name,
+                    slug: slug,
+                    avatar: u.photoURL || u.avatar || 'lumina_icon.jpg',
+                    email: u.email || ''
+                };
+            }
+        }
+
+        // 4. Local Storage Profile
+        try {
+            const myProf = localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile');
+            if (myProf) {
+                const parsed = JSON.parse(myProf);
+                if (parsed && parsed.name) {
+                    if (!parsed.slug) parsed.slug = parsed.name.toLowerCase().replace(/[^a-z0-9_-]/g, '');
+                    return parsed;
+                }
+            }
+        } catch(e) {}
+
+        // 5. Universal Profile Owner Mode
+        if (typeof isOwnerMode !== 'undefined' && isOwnerMode && typeof getProfileData === 'function') {
+            const d = getProfileData();
+            if (d && d.name) {
+                if (!d.slug) {
+                    const params = new URLSearchParams(window.location.search);
+                    d.slug = params.get('u') || d.name.toLowerCase().replace(/[^a-z0-9_-]/g, '');
+                }
+                return d;
+            }
+        }
+
+        // 6. Saved slug/name in localStorage
         const savedSlug = localStorage.getItem('lumina_current_user_slug');
         const savedName = localStorage.getItem('lumina_current_user_name');
         if (savedSlug && savedName) {
@@ -369,24 +437,73 @@
         }
 
         const activeUser = window.getLuminaActiveUser() || { name: 'Użytkownik LUMINA', slug: 'user', avatar: 'lumina_icon.jpg' };
+        const authorName = activeUser.name || 'Użytkownik LUMINA';
+        const authorSlug = activeUser.slug || (activeUser.name ? activeUser.name.toLowerCase().replace(/[^a-z0-9_-]/g, '') : 'user');
+
+        const isCezary = authorSlug.includes('cezary') || authorName.toLowerCase().includes('cezary');
+        const isWioletta = authorSlug.includes('wioletta') || authorName.toLowerCase().includes('wioletta');
+
+        const resolvedSlug = isCezary ? 'cezaryrgowski' : (isWioletta ? 'wiolettarogowska' : authorSlug);
+        const resolvedAvatar = activeUser.avatar || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : 'lumina_icon.jpg'));
+        const resolvedRole = activeUser.role || activeUser.job || (isCezary ? 'Założyciel Christian Culture ✨' : (isWioletta ? 'Współzałożycielka Christian Culture ✨' : 'Społeczność LUMINA ✨'));
+
         const newPost = {
             id: 'post_' + Date.now(),
-            author: activeUser.name || 'Użytkownik LUMINA',
-            authorSlug: activeUser.slug || 'user',
-            authorAvatar: activeUser.avatar || 'lumina_icon.jpg',
-            authorRole: activeUser.role || activeUser.job || 'Społeczność LUMINA ✨',
+            author: authorName,
+            authorSlug: resolvedSlug,
+            authorAvatar: resolvedAvatar,
+            authorRole: resolvedRole,
             time: 'Przed chwilą • ✨ Nowy Wpis',
             text: textVal,
             likes: 1,
             amen: 0,
             image: (msgAttachedGdriveData && msgAttachedGdriveData.mode === 'image') ? msgAttachedGdriveData.directImgUrl : (msgAttachedImageDataUrl || null),
+            video: (msgAttachedGdriveData && msgAttachedGdriveData.mode === 'video') ? msgAttachedGdriveData.directVideoUrl : null,
+            videoUrl: msgAttachedYoutubeUrl || null,
             youtubeUrl: msgAttachedYoutubeUrl || null,
             gdrive: msgAttachedGdriveData || null,
             gdriveEmbed: (msgAttachedGdriveData && msgAttachedGdriveData.mode === 'embed') ? msgAttachedGdriveData.previewEmbedUrl : null,
+            embedHtml: (msgAttachedGdriveData && msgAttachedGdriveData.mode === 'embed' && window.LuminaDB?.createGoogleDriveEmbedHtml) ? window.LuminaDB.createGoogleDriveEmbedHtml(msgAttachedGdriveData, { mode: 'embed' }) : null,
             createdAtTimestamp: Date.now()
         };
 
-        // 1. Zapis w silniku LuminaDB (chmura & feed)
+        // 1. Zapis bezpośredni w profilach autora w localStorage
+        const keysToUpdate = [
+            `lumina_profile_${resolvedSlug}`,
+            isCezary ? 'lumina_profile_cezaryrgowski' : null,
+            isCezary ? 'lumina_main_user_profile' : null,
+            isCezary ? 'lumina_current_user_profile' : null,
+            isCezary ? 'lumina_my_profile' : null,
+            isWioletta ? 'lumina_profile_wiolettarogowska' : null,
+            isWioletta ? 'lumina_current_user_profile' : null,
+            isWioletta ? 'lumina_my_profile' : null
+        ].filter(Boolean);
+
+        keysToUpdate.forEach(k => {
+            try {
+                const raw = localStorage.getItem(k);
+                let prof = raw ? JSON.parse(raw) : { name: authorName, slug: resolvedSlug, posts: [] };
+                if (!Array.isArray(prof.posts)) prof.posts = [];
+                if (!prof.posts.some(p => p.id === newPost.id)) {
+                    prof.posts.unshift(newPost);
+                    localStorage.setItem(k, JSON.stringify(prof));
+                }
+            } catch(e) {
+                console.warn('Błąd zapisu w profilu:', k, e);
+            }
+        });
+
+        // 2. Zapis w pamięci podręcznej tablicy (lumina_cloud_posts_cache)
+        try {
+            const rawCloud = localStorage.getItem('lumina_cloud_posts_cache');
+            const feedList = rawCloud ? JSON.parse(rawCloud) : [];
+            if (!feedList.some(p => p.id === newPost.id)) {
+                feedList.unshift(newPost);
+                localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(feedList));
+            }
+        } catch(e) {}
+
+        // 3. Zapis w silniku LuminaDB (chmura Firestore & synchronizacja zdarzeń)
         if (window.LuminaDB?.publishUniversalPost) {
             try {
                 await window.LuminaDB.publishUniversalPost(newPost);
@@ -395,21 +512,30 @@
             }
         }
 
-        // 2. Jeśli jesteśmy na podstronie profilu pasującego autora, zaktualizuj lokalny profil
-        try {
-            const curProfileKey = 'lumina_profile_' + (activeUser.slug || '');
-            const raw = localStorage.getItem(curProfileKey);
-            if (raw) {
-                const parsed = JSON.parse(raw);
-                parsed.posts = parsed.posts || [];
-                parsed.posts.unshift(newPost);
-                localStorage.setItem(curProfileKey, JSON.stringify(parsed));
-            }
-        } catch(e) {}
+        // 4. Jeśli jesteśmy na podstronie Cezarego, zapisz zaktualizowany profil w chmurze
+        if (isCezary && window.LuminaDB?.saveProfileToCloud) {
+            try {
+                const rawC = localStorage.getItem('lumina_profile_cezaryrgowski');
+                if (rawC) await window.LuminaDB.saveProfileToCloud('cezaryrgowski', JSON.parse(rawC));
+            } catch(e){}
+        }
 
+        // 5. Natychmiastowe odświeżenie UI aktualnej podstrony (profil lub tablica)
         if (typeof renderPosts === 'function') {
             try { renderPosts(); } catch(e){}
         }
+        if (typeof renderFeed === 'function') {
+            try {
+                if (window.cloudFeedPosts && !window.cloudFeedPosts.some(p => p.id === newPost.id)) {
+                    window.cloudFeedPosts.unshift(newPost);
+                }
+                renderFeed();
+            } catch(e){}
+        }
+
+        // 6. Globalne zdarzenia powiadamiające inne komponenty i zakładki
+        window.dispatchEvent(new CustomEvent('lumina_post_published', { detail: newPost }));
+        window.dispatchEvent(new Event('storage'));
 
         // Reset composer
         if (input) input.value = '';
@@ -418,10 +544,10 @@
         window.removeMsgComposerYt();
 
         if (window.showToast) {
-            window.showToast('Twój post został pomyślnie opublikowany na Tablicy LUMINA i profilu! ✨');
+            window.showToast('Twój post został pomyślnie opublikowany na Tablicy LUMINA i w Twoim profilu! ✨');
         }
 
-        // Switch to public live chat
+        // Przełącz z powrotem na publiczny czat
         setTimeout(() => {
             window.switchMessengerMainTab('public');
         }, 800);

@@ -6990,7 +6990,7 @@
                     </div>
                     ${p.title ? `<h3 class="post-title" style="font-family:'Outfit',sans-serif; font-size:1.16rem; font-weight:800; color:#fff; margin:8px 0 14px; line-height:1.45; text-shadow:0 1px 3px rgba(0,0,0,0.5);">${p.title}</h3>` : ''}
                     <div class="post-content" style="white-space:normal; word-break:break-word;">${formatPostTextWithLinks(p.text || p.fullText || p.contentWeb || '')}</div>
-                    ${(p.video || p.videoUrl) ? renderVideoPlayerHtml(p.video || p.videoUrl) : ''}
+                    ${(p.video || p.videoUrl || p.youtubeUrl) ? renderVideoPlayerHtml(p.video || p.videoUrl || p.youtubeUrl) : ''}
                     ${p.gdrive ? (window.LuminaDB?.createGoogleDriveEmbedHtml ? window.LuminaDB.createGoogleDriveEmbedHtml(p.gdrive, { mode: p.gdrive.mode }) : '') : (p.gdriveEmbed ? `<div class="rich-gdrive-embed" style="margin-top:12px; border-radius:16px; overflow:hidden; border:1.5px solid rgba(52,168,83,0.35); background:rgba(15,23,42,0.85); box-shadow:0 8px 24px rgba(0,0,0,0.5);"><div style="position:relative; width:100%; aspect-ratio:16/9; min-height:240px; background:#000;"><iframe src="${p.gdriveEmbed}" title="Dysk Google" style="width:100%; height:100%; border:none; display:block;" allow="autoplay" loading="lazy"></iframe></div></div>` : '')}
                     ${(p.image && p.image.trim() !== '') ? `<div style="width:100%; max-height:480px; overflow:hidden; border-radius:16px; margin-top:12px; background:#070b14; border:1px solid rgba(255,255,255,0.08); box-shadow:0 8px 24px rgba(0,0,0,0.4);"><img loading="lazy" decoding="async" src="${p.image}" alt="Fotografia z rozważania" class="post-image" onclick="openPhotoLightbox(this.src, 'Fotografia z wpisu • LUMINA ✨')" style="cursor:pointer; width:100%; height:auto; max-height:480px; object-fit:contain; display:block; margin:0 auto;"></div>` : ''}
                     <div class="post-footer">
@@ -9433,6 +9433,20 @@
                 bar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         };
+
+        // ── Instant Re-render on Post Publish ──
+        window.addEventListener('lumina_post_published', function(e) {
+            if (typeof renderPosts === 'function') {
+                renderPosts();
+            }
+        });
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'lumina_profile_cezaryrgowski' || e.key === 'lumina_cloud_posts_cache' || e.key === 'lumina_main_user_profile') {
+                if (typeof renderPosts === 'function') {
+                    renderPosts();
+                }
+            }
+        });
         
     </script>
     <script src="lumina-scroll-top.js" defer></script>

@@ -1572,15 +1572,28 @@
             }
         }
 
+        // 0. Sprawdź czy to właściciel profilu (slug)
+        let isProfileOwner = false;
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('u') || (window.LuminaDB && typeof window.LuminaDB.getCurrentUserSlug === 'function' ? window.LuminaDB.getCurrentUserSlug() : null);
+            if (slug && (sessionStorage.getItem('lumina_auth_owner_' + slug) === 'true' || localStorage.getItem('lumina_auth_owner_' + slug) === 'true')) {
+                isProfileOwner = true;
+                isAuthenticated = true;
+            }
+        } catch(e) {}
+
         // 4. Aktualizacja klas na body
         if (isAuthenticated) {
             document.body.classList.add('user-is-authenticated');
             document.body.classList.remove('user-is-guest');
-            if (isMaster) document.body.classList.add('owner-mode-active');
+            if (isMaster || isProfileOwner) document.body.classList.add('owner-mode-active');
         } else {
             document.body.classList.remove('user-is-authenticated');
             document.body.classList.add('user-is-guest');
-            document.body.classList.remove('owner-mode-active');
+            if (!isProfileOwner && !isMaster) {
+                document.body.classList.remove('owner-mode-active');
+            }
         }
 
         // 5. Pasek mobilny

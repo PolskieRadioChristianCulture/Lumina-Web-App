@@ -4907,6 +4907,54 @@
                 });
             }
 
+            // 0.0A. Local Cache Cloud Posts (lumina_cloud_posts_cache)
+            try {
+                const rawCloudCache = localStorage.getItem('lumina_cloud_posts_cache');
+                if (rawCloudCache) {
+                    const parsedList = JSON.parse(rawCloudCache);
+                    if (Array.isArray(parsedList)) {
+                        parsedList.forEach(cp => {
+                            if (!cp || !cp.id || seenPostIds.has(cp.id)) return;
+                            seenPostIds.add(cp.id);
+
+                            const tsRaw = cp.createdAtTimestamp || cp.createdAtDateStr || cp.createdAt || cp.timestamp || cp.time;
+                            let sortTs = 0;
+                            if (tsRaw && typeof tsRaw === 'object' && tsRaw.seconds) sortTs = tsRaw.seconds * 1000;
+                            else if (typeof tsRaw === 'number') sortTs = tsRaw;
+                            else if (typeof tsRaw === 'string') {
+                                const p = Date.parse(tsRaw);
+                                if (!isNaN(p)) sortTs = p;
+                            }
+                            if (!sortTs) {
+                                sortTs = extractSortTs(cp);
+                            }
+
+                            posts.push({
+                                ...cp,
+                                id: cp.id,
+                                type: cp.type || 'post',
+                                category: cp.category || 'general',
+                                author: cp.author || cp.authorName || 'Użytkownik LUMINA',
+                                authorRole: cp.authorRole || 'Społeczność LUMINA ✨',
+                                authorAvatar: cp.authorAvatar || cp.avatar || 'lumina_icon.jpg',
+                                authorSlug: cp.authorSlug || '',
+                                time: cp.time || (formatPostTimestamp(sortTs, 'Przed chwilą') + ' • ✨ Społeczność'),
+                                title: cp.title || '',
+                                text: cp.text || cp.content || '',
+                                image: cp.image || cp.imageUrl || null,
+                                youtubeUrl: cp.youtubeUrl || '',
+                                embedHtml: cp.embedHtml || '',
+                                playlistUrl: cp.playlistUrl || '',
+                                likes: cp.likes || 1,
+                                amen: cp.amen || 0,
+                                createdAtTimestamp: cp.createdAtTimestamp || sortTs,
+                                _sortTs: sortTs || Date.now()
+                            });
+                        });
+                    }
+                }
+            } catch(e) {}
+
             // 0.0. NOWOŚĆ: CCTV24 INSTRUMENTAL WORSHIP (21 SIERPNIA 2026)
             posts.push({
                 id: 'post_cctv24_worship_nowosc_21_08',

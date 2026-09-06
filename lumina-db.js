@@ -1534,10 +1534,17 @@ export async function publishUniversalPost(postData) {
 
     // 1. Save to Author's Local Profile Posts
     try {
+        const isCezary = slug.includes('cezary') || authorName.toLowerCase().includes('cezary');
+        const isWioletta = slug.includes('wioletta') || authorName.toLowerCase().includes('wioletta');
         const storageKeys = [
             `lumina_profile_${slug}`,
-            slug.includes('cezary') ? 'lumina_profile_cezaryrgowski' : null,
-            slug.includes('wioletta') ? 'lumina_profile_wiolettarogowska' : null,
+            isCezary ? 'lumina_profile_cezaryrgowski' : null,
+            isCezary ? 'lumina_main_user_profile' : null,
+            isCezary ? 'lumina_current_user_profile' : null,
+            isCezary ? 'lumina_my_profile' : null,
+            isWioletta ? 'lumina_profile_wiolettarogowska' : null,
+            isWioletta ? 'lumina_current_user_profile' : null,
+            isWioletta ? 'lumina_my_profile' : null,
             (slug.includes('women') || slug.includes('ccwomen')) ? 'lumina_profile_u_ccwomen_9055' : null,
             (slug.includes('robert') || slug === 'u_robertukaszpio_5668') ? 'lumina_profile_u_robertukaszpio_5668' : null
         ].filter(Boolean);
@@ -1545,11 +1552,11 @@ export async function publishUniversalPost(postData) {
         storageKeys.forEach(k => {
             const raw = localStorage.getItem(k);
             let profile = raw ? JSON.parse(raw) : null;
-            if (!profile) profile = { name: authorName, posts: [] };
+            if (!profile) profile = { name: authorName, slug: slug, posts: [] };
             if (!Array.isArray(profile.posts)) profile.posts = [];
             
             // Check if already in array
-            const exists = profile.posts.some(p => p.id === normalizedPost.id || (p.text === normalizedPost.text && Math.abs((p.createdAtTimestamp || 0) - (normalizedPost.createdAtTimestamp || 0)) < 10000));
+            const exists = profile.posts.some(p => p.id === normalizedPost.id || (p.text && normalizedPost.text && p.text === normalizedPost.text && Math.abs((p.createdAtTimestamp || 0) - (normalizedPost.createdAtTimestamp || 0)) < 10000));
             if (!exists) {
                 profile.posts.unshift(normalizedPost);
                 localStorage.setItem(k, JSON.stringify(profile));
@@ -1782,7 +1789,7 @@ export function getAuthorPosts(authorSlug, authorName) {
     const seenTexts = new Set();
 
     function addIfMatch(p) {
-        if (!p || !p.text) return;
+        if (!p || (!p.text && !p.image && !p.gdrive && !p.gdriveEmbed && !p.video && !p.videoUrl && !p.youtubeUrl)) return;
         const pSlug = (p.authorSlug || p.authorId || '').toLowerCase();
         const pAuthor = (p.author || p.authorName || '').toLowerCase();
 
@@ -1800,10 +1807,9 @@ export function getAuthorPosts(authorSlug, authorName) {
         }
 
         if (isMatch) {
-            const key = p.id || p.text;
-            if (!seenIds.has(p.id) && !seenTexts.has(p.text)) {
-                if (p.id) seenIds.add(p.id);
-                seenTexts.add(p.text);
+            const key = p.id || ((p.text || '') + '_' + (p.image || '') + '_' + (p.createdAtTimestamp || ''));
+            if (!seenIds.has(key)) {
+                seenIds.add(key);
                 collected.push(p);
             }
         }
@@ -1812,8 +1818,8 @@ export function getAuthorPosts(authorSlug, authorName) {
     // A. From Local Profile storage
     try {
         const rawProfile = localStorage.getItem(`lumina_profile_${authorSlug}`) || 
-                           (cleanSlug.includes('cezary') ? localStorage.getItem('lumina_profile_cezaryrgowski') : null) ||
-                           (cleanSlug.includes('wioletta') ? localStorage.getItem('lumina_profile_wiolettarogowska') : null) ||
+                           (cleanSlug.includes('cezary') ? (localStorage.getItem('lumina_profile_cezaryrgowski') || localStorage.getItem('lumina_main_user_profile') || localStorage.getItem('lumina_current_user_profile')) : null) ||
+                           (cleanSlug.includes('wioletta') ? (localStorage.getItem('lumina_profile_wiolettarogowska') || localStorage.getItem('lumina_current_user_profile')) : null) ||
                            ((cleanSlug.includes('women') || cleanSlug.includes('ccwomen')) ? localStorage.getItem('lumina_profile_u_ccwomen_9055') : null) ||
                            ((cleanSlug.includes('men') || cleanSlug.includes('ccmen')) ? localStorage.getItem('lumina_profile_u_ccmen_8841') : null) ||
                            (cleanSlug.includes('thiel') ? localStorage.getItem('lumina_profile_andrzejthiel') : null);
