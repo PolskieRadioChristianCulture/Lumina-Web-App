@@ -3943,8 +3943,11 @@ export function resolveMentionHandle(handle) {
 
 export function parseGoogleDriveUrl(url) {
     if (!url) return null;
-    const cleanUrl = String(url).trim();
-
+    let cleanUrl = String(url).trim();
+    if (cleanUrl.includes('<iframe') && cleanUrl.includes('src=')) {
+        const m = cleanUrl.match(/src=["']([^"']+)["']/i);
+        if (m && m[1]) cleanUrl = m[1];
+    }
     let fileId = null;
     let type = 'file';
     let typeLabel = 'Plik z Dysku Google';
@@ -3952,6 +3955,7 @@ export function parseGoogleDriveUrl(url) {
 
     // Match patterns:
     // https://drive.google.com/file/d/FILE_ID/view...
+    // https://drive.google.com/file/d/FILE_ID/preview
     // https://drive.google.com/open?id=FILE_ID
     // https://docs.google.com/document/d/FILE_ID/...
     // https://docs.google.com/presentation/d/FILE_ID/...
@@ -3989,6 +3993,22 @@ export function parseGoogleDriveUrl(url) {
         type = 'folder';
         typeLabel = 'Katalog z Dysku Google';
         icon = 'fa-solid fa-folder-open';
+    } else if (cleanUrl.match(/\.(wav|mp3|m4a|ogg|aac|flac)/i) || cleanUrl.toLowerCase().includes('audio')) {
+        type = 'audio';
+        typeLabel = 'Audio / Muzyka (Dysk Google)';
+        icon = 'fa-solid fa-music';
+    } else if (cleanUrl.match(/\.(mp4|mov|avi|mkv|webm)/i) || cleanUrl.toLowerCase().includes('video')) {
+        type = 'video';
+        typeLabel = 'Wideo (Dysk Google)';
+        icon = 'fa-solid fa-film';
+    } else if (cleanUrl.match(/\.pdf/i)) {
+        type = 'pdf';
+        typeLabel = 'Dokument PDF (Dysk Google)';
+        icon = 'fa-solid fa-file-pdf';
+    } else if (cleanUrl.match(/\.(jpg|jpeg|png|webp|gif)/i)) {
+        type = 'image';
+        typeLabel = 'Grafika (Dysk Google)';
+        icon = 'fa-solid fa-image';
     }
 
     const previewEmbedUrl = type === 'document' 
@@ -4010,6 +4030,7 @@ export function parseGoogleDriveUrl(url) {
         icon: icon,
         directImgUrl: `https://drive.google.com/thumbnail?id=${fileId}&sz=w1200`,
         lh3ImgUrl: `https://lh3.googleusercontent.com/d/${fileId}`,
+        directDownloadUrl: `https://drive.google.com/uc?export=download&id=${fileId}`,
         previewEmbedUrl: previewEmbedUrl,
         viewUrl: `https://drive.google.com/file/d/${fileId}/view?usp=sharing`
     };
@@ -4044,7 +4065,7 @@ export function createGoogleDriveEmbedHtml(gdriveData, options = {}) {
                 <iframe src="${gdriveData.previewEmbedUrl}" 
                         title="Podgląd pliku z Dysku Google" 
                         style="width:100%; height:100%; border:none; display:block;" 
-                        allow="autoplay" 
+                        allow="autoplay; encrypted-media; fullscreen" 
                         loading="lazy"></iframe>
             </div>
         </div>

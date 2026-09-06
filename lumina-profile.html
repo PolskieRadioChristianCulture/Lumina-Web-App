@@ -3231,6 +3231,23 @@
                             <button type="button" onclick="removeAttachedPostImage()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.95); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.5);" title="Usuń dołączoną grafikę"><i class="fa-solid fa-xmark"></i></button>
                         </div>
 
+                        <!-- Google Drive Attachment Box in Composer -->
+                        <div id="composerGdriveAttachment" style="display:none; margin: 10px 0 6px; padding: 10px 14px; background: rgba(52, 168, 83, 0.12); border: 1.5px solid rgba(52, 168, 83, 0.4); border-radius: 14px; align-items: center; justify-content: space-between; gap: 12px;">
+                            <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                                <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(52, 168, 83, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i id="composerGdriveIcon" class="fa-brands fa-google-drive" style="color: #34a853; font-size: 1.15rem;"></i>
+                                </div>
+                                <div style="min-width: 0; overflow: hidden;">
+                                    <div id="composerGdriveTitle" style="font-size: 0.85rem; font-weight: 800; color: #fff; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Plik z Dysku Google</div>
+                                    <div id="composerGdriveSubtitle" style="font-size: 0.72rem; color: #86efac;">Tryb: Interaktywny podgląd / odtwarzacz</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 6px; align-items: center; flex-shrink: 0;">
+                                <button type="button" onclick="openGoogleDriveModal()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 5px 10px; border-radius: 8px; cursor: pointer;">Zmień</button>
+                                <button type="button" onclick="removeAttachedGoogleDrive()" style="background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.4); color: #fca5a5; font-size: 0.75rem; font-weight: 700; padding: 5px 10px; border-radius: 8px; cursor: pointer;"><i class="fa-solid fa-trash-can"></i></button>
+                            </div>
+                        </div>
+
                         <div class="composer-actions" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-top: 12px;">
                             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                                 <button type="button" id="composerBtnYoutube" class="composer-btn-attach" onclick="toggleComposerYoutubeBox()"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Wideo / Playlista YT</button>
@@ -6218,19 +6235,37 @@
             const ytInput = document.getElementById('composerYoutubeUrl');
             const rawYt = ytInput ? ytInput.value.trim() : '';
 
-            if (!val && !title && !rawYt && !attachedPostImageDataUrl) {
-                showToast('Wpisz treść, tytuł lub dołącz wideo/grafikę przed publikacją!');
+            // Check if user has Google Drive attached or pasted
+            let gdriveData = attachedGdriveData || null;
+            if (!gdriveData) {
+                const candidateUrl = (rawYt && (rawYt.includes('drive.google.com') || rawYt.includes('docs.google.com')))
+                    ? rawYt
+                    : ((val && (val.includes('drive.google.com') || val.includes('docs.google.com'))) ? val : null);
+                if (candidateUrl && window.LuminaDB?.parseGoogleDriveUrl) {
+                    gdriveData = window.LuminaDB.parseGoogleDriveUrl(candidateUrl);
+                    if (gdriveData) {
+                        gdriveData.mode = gdrivePublishMode || 'embed';
+                    }
+                }
+            }
+
+            if (!val && !title && !rawYt && !attachedPostImageDataUrl && !gdriveData) {
+                showToast('Wpisz treść, tytuł lub dołącz wideo/plik przed publikacją!');
                 return;
             }
             const slug = getRequestedUserSlug();
             const cur = getProfileData();
 
-            // Resolve YouTube Embed
+            // Resolve YouTube or Google Drive Embed
             let youtubeUrl = null;
             let embedHtml = null;
             let playlistUrl = null;
 
-            const embedInfo = parseYouTubeEmbedUrl(rawYt || val);
+            const isGdriveUrl = rawYt.includes('drive.google.com') || rawYt.includes('docs.google.com') || val.includes('drive.google.com') || val.includes('docs.google.com');
+            const embedInfo = (!isGdriveUrl)
+                ? parseYouTubeEmbedUrl(rawYt || val)
+                : (rawYt && !rawYt.includes('drive.google.com') ? parseYouTubeEmbedUrl(rawYt) : null);
+
             if (embedInfo) {
                 youtubeUrl = embedInfo.rawUrl;
                 embedHtml = `
@@ -6245,6 +6280,13 @@
                 if (embedInfo.type === 'Playlista') {
                     playlistUrl = embedInfo.rawUrl;
                 }
+            } else if (gdriveData && window.LuminaDB?.createGoogleDriveEmbedHtml) {
+                embedHtml = window.LuminaDB.createGoogleDriveEmbedHtml(gdriveData, { mode: gdriveData.mode });
+            }
+
+            let postImage = attachedPostImageDataUrl || null;
+            if (!postImage && gdriveData && gdriveData.mode === 'image') {
+                postImage = gdriveData.directImgUrl;
             }
 
             const newPost = {
@@ -6254,7 +6296,9 @@
                 youtubeUrl: youtubeUrl,
                 embedHtml: embedHtml,
                 playlistUrl: playlistUrl,
-                image: attachedPostImageDataUrl || null,
+                gdrive: gdriveData || null,
+                gdriveEmbed: (gdriveData && gdriveData.mode === 'embed') ? gdriveData.previewEmbedUrl : null,
+                image: postImage,
                 author: cur.name || 'Użytkownik LUMINA',
                 authorSlug: slug,
                 authorAvatar: cur.avatar || 'lumina_icon.jpg',
@@ -6293,6 +6337,7 @@
             if (input) input.value = '';
             closeComposerYoutubeBox();
             removeAttachedPostImage();
+            removeAttachedGoogleDrive();
             renderPosts();
             showToast('Twój wpis został pomyślnie opublikowany na profilu i tablicy społeczności! ✨✨');
         }
@@ -8732,6 +8777,7 @@
     <script src="lumina-story-card-generator.js" defer></script>
     <script src="lumina-smart-blessings.js" defer></script>
     <script src="js/lumina-groups-engine.js" defer></script>
+    <script src="js/lumina-messenger-composer.js" defer></script>
     <script src="js/lumina-events-engine.js" defer></script>
     <script src="js/lumina-background-mission-service.js" defer></script>
     <script src="lumina-bottom-nav.js?v=4.2.0_20260903" defer></script>
@@ -9034,7 +9080,7 @@
     // Prevents JS-applied inline styles from restoring text on small screens
     (function() {
         var MOBILE_BP = 640;
-        var TAB_IDS = ['tabBtnPublicChat','tabBtnCommanderChat','tabBtnPrivateChat','tabBtnGroupsChat'];
+        var TAB_IDS = ['tabBtnPublicChat','tabBtnCommanderChat','tabBtnPrivateChat','tabBtnGroupsChat','tabBtnCreatePost'];
         function enforceMobile() {
             if (window.innerWidth > MOBILE_BP) return;
             TAB_IDS.forEach(function(id) {

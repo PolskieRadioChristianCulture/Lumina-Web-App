@@ -9826,6 +9826,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     <script src="lumina-story-card-generator.js" defer></script>
     <script src="lumina-smart-blessings.js" defer></script>
     <script src="js/lumina-groups-engine.js" defer></script>
+    <script src="js/lumina-messenger-composer.js" defer></script>
     <script src="js/lumina-events-engine.js" defer></script>
     <script src="js/lumina-discovery-filters.js" defer></script>
     <script src="js/lumina-background-mission-service.js" defer></script>
@@ -10731,7 +10732,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     // Prevents JS-applied inline styles from restoring text on small screens
     (function() {
         var MOBILE_BP = 640;
-        var TAB_IDS = ['tabBtnPublicChat','tabBtnCommanderChat','tabBtnPrivateChat','tabBtnGroupsChat'];
+        var TAB_IDS = ['tabBtnPublicChat','tabBtnCommanderChat','tabBtnPrivateChat','tabBtnGroupsChat','tabBtnCreatePost'];
         function enforceMobile() {
             if (window.innerWidth > MOBILE_BP) return;
             TAB_IDS.forEach(function(id) {
@@ -10789,6 +10790,77 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         window.addEventListener('resize', enforceMobile);
     })();
     </script>
+
+<!-- Modal: Google Drive Integration -->
+<div id="googleDriveModal" class="lumina-modal-overlay" style="display:none; position:fixed; inset:0; z-index:100000; background:rgba(3,7,18,0.85); backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:16px;" onclick="closeGoogleDriveModal(event)">
+    <div class="lumina-modal-box" style="background:#0b1329; border:1.5px solid rgba(52,168,83,0.4); border-radius:24px; max-width:540px; width:100%; max-height:92vh; overflow-y:auto; padding:24px; box-shadow:0 20px 50px rgba(0,0,0,0.7); position:relative;" onclick="event.stopPropagation()">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <div style="width:42px; height:42px; border-radius:12px; background:rgba(52,168,83,0.2); border:1px solid rgba(52,168,83,0.4); display:flex; align-items:center; justify-content:center; color:#34a853; font-size:1.4rem;">
+                    <i class="fa-brands fa-google-drive"></i>
+                </div>
+                <div>
+                    <h3 style="font-size:1.15rem; font-weight:800; color:#fff; margin:0;">Dołącz z Dysku Google</h3>
+                    <div style="font-size:0.78rem; color:#94a3b8;">Wideo, Audio, Docs, PDF, Arkusze, Prezentacje, Grafiki</div>
+                </div>
+            </div>
+            <button type="button" onclick="closeGoogleDriveModalDirect()" style="background:rgba(255,255,255,0.06); border:none; color:#cbd5e1; width:36px; height:36px; border-radius:50%; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center;" title="Zamknij"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div style="background:rgba(52,168,83,0.08); border:1px solid rgba(52,168,83,0.25); border-radius:16px; padding:14px; margin-bottom:18px;">
+            <div style="font-size:0.82rem; font-weight:700; color:#86efac; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-circle-info"></i> Jak to działa?
+            </div>
+            <ol style="margin:0; padding-left:18px; font-size:0.78rem; color:#cbd5e1; line-height:1.6;">
+                <li>Otwórz swój <a href="https://drive.google.com" target="_blank" rel="noopener noreferrer" style="color:#60a5fa; text-decoration:underline; font-weight:700;">Dysk Google</a> i kliknij plik prawym przyciskiem myszy.</li>
+                <li>Wybierz <strong>Udostępnij &rarr; Skopiuj link</strong> (Upewnij się, że ustawione jest: <em>Każda osoba mająca link</em>).</li>
+                <li>Wklej link poniżej – LUMINA automatycznie rozpozna typ pliku i przygotuje interaktywny odtwarzacz lub podgląd!</li>
+            </ol>
+            <div style="margin-top:10px;">
+                <button type="button" onclick="openMyGoogleDriveExternal()" style="background:rgba(52,168,83,0.25); border:1px solid rgba(52,168,83,0.5); color:#fff; font-size:0.75rem; font-weight:700; padding:6px 12px; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz mój Dysk Google w nowym oknie
+                </button>
+            </div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <label for="gdriveUrlInput" style="display:block; font-size:0.85rem; font-weight:700; color:#e2e8f0; margin-bottom:6px;">Link do pliku z Dysku Google:</label>
+            <input type="text" id="gdriveUrlInput" placeholder="https://drive.google.com/file/d/.../view?usp=sharing" oninput="handleGoogleDriveUrlInput(this.value)" style="width:100%; box-sizing:border-box; background:#070b16; border:1.5px solid rgba(255,255,255,0.15); border-radius:12px; padding:12px 14px; font-size:0.9rem; color:#fff; outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='#34a853'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+        </div>
+
+        <!-- Detected file card / preview box -->
+        <div id="gdriveLivePreviewContainer" style="display:none; margin-bottom:18px; border-radius:16px; overflow:hidden; border:1px solid rgba(52,168,83,0.3); background:#060911;">
+            <div style="padding:10px 14px; background:rgba(52,168,83,0.15); border-bottom:1px solid rgba(52,168,83,0.2); display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:8px; font-size:0.82rem; font-weight:800; color:#fff;">
+                    <i id="gdrivePreviewIcon" class="fa-solid fa-file" style="color:#34a853;"></i>
+                    <span id="gdrivePreviewTypeLabel">Dokument</span>
+                </div>
+                <span style="font-size:0.7rem; color:#86efac; background:rgba(52,168,83,0.25); padding:2px 8px; border-radius:10px; font-weight:700;">Zweryfikowano link</span>
+            </div>
+            
+            <div style="position:relative; width:100%; aspect-ratio:16/9; max-height:220px; background:#000;">
+                <iframe id="gdrivePreviewIframe" src="" title="Podgląd pliku" style="width:100%; height:100%; border:none; display:none;"></iframe>
+                <img id="gdrivePreviewImg" src="" alt="Podgląd grafiki" style="width:100%; height:100%; object-fit:contain; display:none;">
+            </div>
+
+            <div style="padding:10px 14px; background:rgba(255,255,255,0.02); display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <span style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Styl wyświetlania:</span>
+                <label style="font-size:0.75rem; color:#e2e8f0; display:flex; align-items:center; gap:5px; cursor:pointer;">
+                    <input type="radio" name="gdriveModeRadio" value="embed" checked onchange="setGdrivePublishMode('embed')"> Interaktywny podgląd / odtwarzacz
+                </label>
+                <label style="font-size:0.75rem; color:#e2e8f0; display:flex; align-items:center; gap:5px; cursor:pointer;">
+                    <input type="radio" name="gdriveModeRadio" value="image" onchange="setGdrivePublishMode('image')"> Grafika w poście
+                </label>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px; justify-content:flex-end;">
+            <button type="button" onclick="closeGoogleDriveModalDirect()" style="background:rgba(255,255,255,0.08); border:none; color:#cbd5e1; font-weight:700; font-size:0.85rem; padding:10px 18px; border-radius:12px; cursor:pointer;">Anuluj</button>
+            <button type="button" id="btnConfirmAttachGdrive" onclick="confirmAttachGoogleDrive()" disabled style="background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-weight:800; font-size:0.85rem; padding:10px 22px; border-radius:12px; cursor:pointer; opacity:0.5; box-shadow:0 4px 14px rgba(16,185,129,0.3);">Dołącz do wpisu</button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
 

@@ -1,0 +1,570 @@
+/**
+ * ══════════════════════════════════════════════════════════════════════════
+ * LUMINA MESSENGER POST COMPOSER ENGINE (EVERYWHERE POSTING)
+ * Umożliwia pisanie i publikowanie postów na Tablicy i profilach
+ * bezpośrednio z okna Centrum Rozmów LUMINA dla każdego zalogowanego użytkownika.
+ * ══════════════════════════════════════════════════════════════════════════
+ */
+
+(function() {
+    let msgAttachedImageDataUrl = null;
+    let msgAttachedGdriveData = null;
+    let msgAttachedYoutubeUrl = null;
+
+    // Helper: Resolve active logged-in user across Lumina ecosystem
+    window.getLuminaActiveUser = function() {
+        if (window.LuminaDB?.getCurrentProfile) {
+            const p = window.LuminaDB.getCurrentProfile();
+            if (p && p.name) return p;
+        }
+        if (window.LuminaDB?.getCurrentUser) {
+            const u = window.LuminaDB.getCurrentUser();
+            if (u && (u.displayName || u.email)) {
+                return {
+                    name: u.displayName || u.name || 'Użytkownik LUMINA',
+                    slug: u.slug || (u.email ? u.email.split('@')[0].replace(/[^a-zA-Z0-9_-]/g, '') : 'user'),
+                    avatar: u.photoURL || u.avatar || 'lumina_icon.jpg',
+                    email: u.email || ''
+                };
+            }
+        }
+        try {
+            const myProf = localStorage.getItem('lumina_current_user_profile');
+            if (myProf) {
+                const parsed = JSON.parse(myProf);
+                if (parsed && parsed.name) return parsed;
+            }
+        } catch(e) {}
+
+        if (typeof isOwnerMode !== 'undefined' && isOwnerMode) {
+            if (typeof getProfileData === 'function') {
+                const data = getProfileData();
+                if (data && data.name) return data;
+            }
+        }
+
+        if (localStorage.getItem('lumina_auth_master_admin') === 'true' || sessionStorage.getItem('lumina_auth_master_admin') === 'true' || localStorage.getItem('lumina_auth_owner_cezaryrgowski') === 'true') {
+            return {
+                name: 'Cezary Rogowski',
+                slug: 'cezaryrgowski',
+                avatar: 'avatar_cezary_official.jpg',
+                role: 'Założyciel Christian Culture ✨'
+            };
+        }
+
+        const savedSlug = localStorage.getItem('lumina_current_user_slug');
+        const savedName = localStorage.getItem('lumina_current_user_name');
+        if (savedSlug && savedName) {
+            return {
+                name: savedName,
+                slug: savedSlug,
+                avatar: localStorage.getItem('lumina_current_user_avatar') || 'lumina_icon.jpg'
+            };
+        }
+
+        return null;
+    };
+
+    // Inject tab button and view into directMessagesModal if missing
+    function initMessengerComposerUI() {
+        const modal = document.getElementById('directMessagesModal');
+        if (!modal) return;
+
+        // 1. Locate tabs bar
+        const tabsBar = modal.querySelector('.chat-header-bar > div:last-child') || modal.querySelector('[style*="rgba(255,255,255,0.05)"]');
+        if (tabsBar && !document.getElementById('tabBtnCreatePost')) {
+            const postBtn = document.createElement('button');
+            postBtn.type = 'button';
+            postBtn.id = 'tabBtnCreatePost';
+            postBtn.onclick = () => window.switchMessengerMainTab('post');
+            postBtn.style.cssText = 'flex:1; min-height:44px; min-width:44px; padding:0; border-radius:10px; border:none; background:transparent; color:#94a3b8; font-weight:700; font-family:inherit; font-size:0.8rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px; transition:all 0.2s; touch-action:manipulation;';
+            postBtn.title = 'Napisz nowy post na Tablicy';
+            postBtn.innerHTML = '<i class="fa-solid fa-pen-to-square" style="color:#38bdf8;"></i><span class="tab-label"> Napisz Post</span>';
+            tabsBar.appendChild(postBtn);
+        }
+
+        // 2. Inject Post View if missing
+        if (!document.getElementById('messengerPostView')) {
+            const postView = document.createElement('div');
+            postView.id = 'messengerPostView';
+            postView.style.cssText = 'display:none; flex-direction:column; flex:1; min-height:0; overflow-y:auto; padding:16px; background:rgba(11,19,41,0.95);';
+            postView.innerHTML = `
+                <!-- State A: User is logged in -->
+                <div id="messengerPostLoggedInContent" style="display:flex; flex-direction:column; gap:12px;">
+                    
+                    <!-- Author Info Bar -->
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(255,255,255,0.04); border-radius:14px; border:1px solid rgba(255,255,255,0.08);">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <img id="msgComposerAuthorAvatar" src="lumina_icon.jpg" alt="Awatara" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1.5px solid #38bdf8;">
+                            <div>
+                                <div id="msgComposerAuthorName" style="font-size:0.88rem; font-weight:800; color:#fff;">Użytkownik LUMINA</div>
+                                <div style="font-size:0.72rem; color:#38bdf8; font-weight:700;">Publikujesz na Tablicy Społeczności i Profilu ✨</div>
+                            </div>
+                        </div>
+                        <span style="font-size:0.7rem; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.35); color:#7dd3fc; padding:3px 8px; border-radius:10px; font-weight:700;">Publiczny</span>
+                    </div>
+
+                    <!-- Post Content Textarea -->
+                    <div style="position:relative;">
+                        <textarea id="msgComposerInput" rows="4" placeholder="Podziel się słowem, wersetem, intencją modlitewną lub świadectwem..." style="width:100%; box-sizing:border-box; background:rgba(15,23,42,0.9); border:1.5px solid rgba(255,255,255,0.15); border-radius:14px; padding:12px 14px; font-size:0.9rem; color:#fff; font-family:inherit; resize:vertical; min-height:90px; outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='#38bdf8'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'"></textarea>
+                    </div>
+
+                    <!-- Quick Inspiration Bar (Verses & Themes) -->
+                    <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:4px;">
+                        <button type="button" onclick="window.insertMsgComposerVerse('„Pan jest moim pasterzem, nie brak mi niczego.” (Ps 23, 1)')" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#cbd5e1; font-size:0.72rem; font-weight:700; padding:4px 10px; border-radius:12px; cursor:pointer; white-space:nowrap;"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Ps 23, 1</button>
+                        <button type="button" onclick="window.insertMsgComposerVerse('„Wszystko mogę w Tym, który mnie umacnia.” (Flp 4, 13)')" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#cbd5e1; font-size:0.72rem; font-weight:700; padding:4px 10px; border-radius:12px; cursor:pointer; white-space:nowrap;"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> Flp 4, 13</button>
+                        <button type="button" onclick="window.insertMsgComposerVerse('„Bóg jest miłością: kto trwa w miłości, trwa w Bogu, a Bóg trwa w nim.” (1 J 4, 16)')" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#cbd5e1; font-size:0.72rem; font-weight:700; padding:4px 10px; border-radius:12px; cursor:pointer; white-space:nowrap;"><i class="fa-solid fa-quote-left" style="color:#facc15;"></i> 1 J 4, 16</button>
+                    </div>
+
+                    <!-- Attached Image Preview Box -->
+                    <div id="msgComposerImgPreviewBox" style="display:none; position:relative; border-radius:14px; overflow:hidden; background:#000; border:1px solid rgba(255,255,255,0.15); max-height:200px;">
+                        <img id="msgComposerAttachedImg" src="" alt="Załączona grafika" style="width:100%; height:180px; object-fit:cover; display:block;">
+                        <button type="button" onclick="window.removeMsgComposerImage()" style="position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(225,29,72,0.9); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center;" title="Usuń grafikę"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <!-- Attached Google Drive Preview Box -->
+                    <div id="msgComposerGdriveAttachment" style="display:none; padding:10px 14px; background:rgba(52,168,83,0.12); border:1.5px solid rgba(52,168,83,0.4); border-radius:14px; align-items:center; justify-content:space-between; gap:10px;">
+                        <div style="display:flex; align-items:center; gap:10px; min-width:0; overflow:hidden;">
+                            <div style="width:36px; height:36px; border-radius:10px; background:rgba(52,168,83,0.25); display:flex; align-items:center; justify-content:center; color:#34a853; font-size:1.2rem; flex-shrink:0;">
+                                <i id="msgComposerGdriveIcon" class="fa-brands fa-google-drive"></i>
+                            </div>
+                            <div style="min-width:0; overflow:hidden;">
+                                <div id="msgComposerGdriveTitle" style="font-size:0.86rem; font-weight:800; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Plik z Dysku Google</div>
+                                <div id="msgComposerGdriveSubtitle" style="font-size:0.72rem; color:#86efac; font-weight:600;">Dołączono do wpisu</div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="window.removeMsgComposerGdrive()" style="background:rgba(225,29,72,0.2); border:1px solid rgba(225,29,72,0.5); color:#f43f5e; font-size:0.75rem; width:28px; height:28px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;" title="Usuń plik z Dysku"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <!-- Attached YouTube Preview Box -->
+                    <div id="msgComposerYtPreviewBox" style="display:none; padding:10px 14px; background:rgba(239,68,68,0.12); border:1.5px solid rgba(239,68,68,0.4); border-radius:14px; align-items:center; justify-content:space-between; gap:10px;">
+                        <div style="display:flex; align-items:center; gap:10px; min-width:0; overflow:hidden;">
+                            <i class="fa-brands fa-youtube" style="color:#ef4444; font-size:1.4rem; flex-shrink:0;"></i>
+                            <div style="min-width:0; overflow:hidden;">
+                                <div id="msgComposerYtTitle" style="font-size:0.86rem; font-weight:800; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Wideo / Playlista YouTube</div>
+                                <div id="msgComposerYtUrl" style="font-size:0.72rem; color:#fca5a5; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="window.removeMsgComposerYt()" style="background:rgba(225,29,72,0.2); border:1px solid rgba(225,29,72,0.5); color:#f43f5e; font-size:0.75rem; width:28px; height:28px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;" title="Usuń wideo"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <!-- Composer Action Toolbar -->
+                    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between; margin-top:4px;">
+                        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                            <input type="file" id="msgComposerFileInput" accept="image/*" style="display:none;" onchange="window.handleMsgComposerImageSelect(event)">
+                            <button type="button" onclick="document.getElementById('msgComposerFileInput').click()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#e2e8f0; font-size:0.78rem; font-weight:700; padding:8px 12px; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                                <i class="fa-solid fa-image" style="color:#22c55e;"></i> <span>Grafika</span>
+                            </button>
+                            <button type="button" onclick="window.promptMsgComposerYoutube()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#e2e8f0; font-size:0.78rem; font-weight:700; padding:8px 12px; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                                <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> <span>YouTube</span>
+                            </button>
+                            <button type="button" onclick="window.openGoogleDriveModalForMessenger()" style="background:rgba(52,168,83,0.15); border:1px solid rgba(52,168,83,0.35); color:#86efac; font-size:0.78rem; font-weight:700; padding:8px 12px; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                                <i class="fa-brands fa-google-drive" style="color:#34a853;"></i> <span>Dysk Google</span>
+                            </button>
+                        </div>
+                        <button type="button" onclick="window.publishMsgComposerPost()" style="background:linear-gradient(135deg, #10b981, #059669); border:none; color:#fff; font-size:0.86rem; font-weight:800; padding:10px 20px; border-radius:12px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 14px rgba(16,185,129,0.35);">
+                            <span>Opublikuj Wpis</span> <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- State B: User is NOT logged in -->
+                <div id="messengerPostGuestPrompt" style="display:none; flex-direction:column; align-items:center; justify-content:center; padding:36px 20px; text-align:center; background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.15); border-radius:20px; margin:auto 0;">
+                    <div style="width:64px; height:64px; border-radius:20px; background:linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.2)); border:1.5px solid rgba(245,158,11,0.4); display:flex; align-items:center; justify-content:center; color:#facc15; font-size:1.8rem; margin-bottom:14px;">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h4 style="font-size:1.15rem; font-weight:800; color:#fff; margin:0 0 8px;">Funkcja Dostępna po Zalogowaniu</h4>
+                    <p style="font-size:0.85rem; color:#94a3b8; max-width:380px; line-height:1.6; margin:0 0 20px;">
+                        Publikowanie postów na Tablicy Społeczności LUMINA oraz w profilach jest dostępne dla wszystkich zarejestrowanych członków i właścicieli profili.
+                    </p>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+                        <button type="button" onclick="window.triggerLuminaLoginModal()" style="background:linear-gradient(135deg, #0284c7, #0369a1); border:none; color:#fff; font-size:0.86rem; font-weight:800; padding:11px 22px; border-radius:12px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 14px rgba(2,132,199,0.35);">
+                            <i class="fa-solid fa-right-to-bracket"></i> <span>Zaloguj się do LUMINA</span>
+                        </button>
+                        <button type="button" id="btnGuestOwnerPinPrompt" onclick="window.triggerOwnerPinModal()" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#fff; font-size:0.86rem; font-weight:700; padding:11px 18px; border-radius:12px; cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-key" style="color:#facc15;"></i> <span>Wpisz PIN Profilu (7777)</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+            const mBody = modal.querySelector('.modal-card') || modal;
+            mBody.appendChild(postView);
+        }
+    }
+
+    // Enhance switchMessengerMainTab
+    function patchSwitchMessengerTab() {
+        const originalSwitch = window.switchMessengerMainTab;
+
+        window.switchMessengerMainTab = function(tab) {
+            const btnPublic = document.getElementById('tabBtnPublicChat');
+            const btnPrivate = document.getElementById('tabBtnPrivateChat');
+            const btnCommander = document.getElementById('tabBtnCommanderChat');
+            const btnGroups = document.getElementById('tabBtnGroupsChat');
+            const btnPost = document.getElementById('tabBtnCreatePost');
+
+            const viewPublic = document.getElementById('messengerPublicView');
+            const viewPrivate = document.getElementById('messengerPrivateView');
+            const viewCommander = document.getElementById('messengerCommanderView');
+            const viewGroups = document.getElementById('messengerGroupsView');
+            const viewPost = document.getElementById('messengerPostView');
+
+            if (tab === 'post') {
+                // Inactivate others
+                [btnPublic, btnPrivate, btnCommander, btnGroups].forEach(btn => {
+                    if (btn) { btn.style.background = 'transparent'; btn.style.color = '#94a3b8'; btn.style.boxShadow = 'none'; }
+                });
+                if (btnPost) {
+                    btnPost.style.background = 'linear-gradient(135deg, #0284c7, #2563eb)';
+                    btnPost.style.color = '#fff';
+                    btnPost.style.boxShadow = '0 2px 10px rgba(2,132,199,0.35)';
+                }
+
+                [viewPublic, viewPrivate, viewCommander, viewGroups].forEach(v => {
+                    if (v) v.style.display = 'none';
+                });
+
+                if (viewPost) viewPost.style.display = 'flex';
+
+                // Check logged in state
+                const user = window.getLuminaActiveUser();
+                const loggedInBox = document.getElementById('messengerPostLoggedInContent');
+                const guestBox = document.getElementById('messengerPostGuestPrompt');
+
+                if (user) {
+                    if (loggedInBox) loggedInBox.style.display = 'flex';
+                    if (guestBox) guestBox.style.display = 'none';
+
+                    const av = document.getElementById('msgComposerAuthorAvatar');
+                    const nm = document.getElementById('msgComposerAuthorName');
+                    if (av) av.src = user.avatar || 'lumina_icon.jpg';
+                    if (nm) nm.textContent = user.name || 'Użytkownik LUMINA';
+
+                    const inp = document.getElementById('msgComposerInput');
+                    if (inp) setTimeout(() => inp.focus(), 150);
+                } else {
+                    if (loggedInBox) loggedInBox.style.display = 'none';
+                    if (guestBox) guestBox.style.display = 'flex';
+                }
+                return;
+            }
+
+            // If switching to another tab, deactivate post button and hide viewPost
+            if (btnPost) {
+                btnPost.style.background = 'transparent';
+                btnPost.style.color = '#94a3b8';
+                btnPost.style.boxShadow = 'none';
+            }
+            if (viewPost) viewPost.style.display = 'none';
+
+            if (typeof originalSwitch === 'function') {
+                originalSwitch(tab);
+            }
+        };
+    }
+
+    // Composer Actions
+    window.insertMsgComposerVerse = function(quote) {
+        const inp = document.getElementById('msgComposerInput');
+        if (!inp) return;
+        const current = inp.value.trim();
+        inp.value = current ? current + '\n\n' + quote : quote;
+        inp.focus();
+    };
+
+    window.handleMsgComposerImageSelect = function(e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            msgAttachedImageDataUrl = evt.target.result;
+            const previewBox = document.getElementById('msgComposerImgPreviewBox');
+            const previewImg = document.getElementById('msgComposerAttachedImg');
+            if (previewImg) previewImg.src = msgAttachedImageDataUrl;
+            if (previewBox) previewBox.style.display = 'block';
+            if (window.showToast) window.showToast('Dołączono grafikę do wpisu! 🖼️✨');
+        };
+        reader.readAsDataURL(file);
+    };
+
+    window.removeMsgComposerImage = function() {
+        msgAttachedImageDataUrl = null;
+        const previewBox = document.getElementById('msgComposerImgPreviewBox');
+        if (previewBox) previewBox.style.display = 'none';
+        const inp = document.getElementById('msgComposerFileInput');
+        if (inp) inp.value = '';
+    };
+
+    window.promptMsgComposerYoutube = function() {
+        const url = prompt('Wklej link do wideo lub playlisty YouTube (np. https://youtu.be/...):');
+        if (!url || !url.trim()) return;
+        const clean = url.trim();
+        msgAttachedYoutubeUrl = clean;
+        const box = document.getElementById('msgComposerYtPreviewBox');
+        const urlEl = document.getElementById('msgComposerYtUrl');
+        if (urlEl) urlEl.textContent = clean;
+        if (box) box.style.display = 'flex';
+        if (window.showToast) window.showToast('Dołączono materiał YouTube! 🎬');
+    };
+
+    window.removeMsgComposerYt = function() {
+        msgAttachedYoutubeUrl = null;
+        const box = document.getElementById('msgComposerYtPreviewBox');
+        if (box) box.style.display = 'none';
+    };
+
+    window.openGoogleDriveModalForMessenger = function() {
+        window._gdriveTarget = 'messenger';
+        if (typeof window.openGoogleDriveModal === 'function') {
+            window.openGoogleDriveModal();
+        } else {
+            const url = prompt('Wklej link do pliku z Dysku Google:');
+            if (!url) return;
+            const parsed = window.LuminaDB?.parseGoogleDriveUrl ? window.LuminaDB.parseGoogleDriveUrl(url) : null;
+            if (parsed) {
+                window.attachGdriveToMessenger(parsed);
+            }
+        }
+    };
+
+    window.attachGdriveToMessenger = function(gdriveData) {
+        msgAttachedGdriveData = Object.assign({}, gdriveData);
+        const box = document.getElementById('msgComposerGdriveAttachment');
+        const icon = document.getElementById('msgComposerGdriveIcon');
+        const title = document.getElementById('msgComposerGdriveTitle');
+        const sub = document.getElementById('msgComposerGdriveSubtitle');
+
+        if (box) box.style.display = 'flex';
+        if (icon) icon.className = msgAttachedGdriveData.icon || 'fa-brands fa-google-drive';
+        if (title) title.innerText = (msgAttachedGdriveData.typeLabel || 'Plik') + ' (Dysk Google)';
+        if (sub) sub.innerText = msgAttachedGdriveData.mode === 'image' ? 'Tryb: Grafika w poście' : 'Tryb: Interaktywny odtwarzacz / podgląd';
+        if (window.showToast) window.showToast('Dołączono zasób z Dysku Google! 📁✨');
+    };
+
+    window.removeMsgComposerGdrive = function() {
+        msgAttachedGdriveData = null;
+        const box = document.getElementById('msgComposerGdriveAttachment');
+        if (box) box.style.display = 'none';
+    };
+
+    // Hook existing confirmAttachGoogleDrive to support messenger
+    const origConfirmGdrive = window.confirmAttachGoogleDrive;
+    window.confirmAttachGoogleDrive = function() {
+        if (typeof origConfirmGdrive === 'function') {
+            try { origConfirmGdrive(); } catch(e){}
+        }
+        if (window._tempGdriveParsed) {
+            window.attachGdriveToMessenger(window._tempGdriveParsed);
+        }
+    };
+
+    window.publishMsgComposerPost = async function() {
+        const input = document.getElementById('msgComposerInput');
+        const textVal = input ? input.value.trim() : '';
+
+        if (!textVal && !msgAttachedImageDataUrl && !msgAttachedGdriveData && !msgAttachedYoutubeUrl) {
+            if (window.showToast) window.showToast('Napisz coś lub dołącz materiał przed publikacją!');
+            return;
+        }
+
+        const activeUser = window.getLuminaActiveUser() || { name: 'Użytkownik LUMINA', slug: 'user', avatar: 'lumina_icon.jpg' };
+        const newPost = {
+            id: 'post_' + Date.now(),
+            author: activeUser.name || 'Użytkownik LUMINA',
+            authorSlug: activeUser.slug || 'user',
+            authorAvatar: activeUser.avatar || 'lumina_icon.jpg',
+            authorRole: activeUser.role || activeUser.job || 'Społeczność LUMINA ✨',
+            time: 'Przed chwilą • ✨ Nowy Wpis',
+            text: textVal,
+            likes: 1,
+            amen: 0,
+            image: (msgAttachedGdriveData && msgAttachedGdriveData.mode === 'image') ? msgAttachedGdriveData.directImgUrl : (msgAttachedImageDataUrl || null),
+            youtubeUrl: msgAttachedYoutubeUrl || null,
+            gdrive: msgAttachedGdriveData || null,
+            gdriveEmbed: (msgAttachedGdriveData && msgAttachedGdriveData.mode === 'embed') ? msgAttachedGdriveData.previewEmbedUrl : null,
+            createdAtTimestamp: Date.now()
+        };
+
+        // 1. Zapis w silniku LuminaDB (chmura & feed)
+        if (window.LuminaDB?.publishUniversalPost) {
+            try {
+                await window.LuminaDB.publishUniversalPost(newPost);
+            } catch(e) {
+                console.warn('LuminaDB universal publish error:', e);
+            }
+        }
+
+        // 2. Jeśli jesteśmy na podstronie profilu pasującego autora, zaktualizuj lokalny profil
+        try {
+            const curProfileKey = 'lumina_profile_' + (activeUser.slug || '');
+            const raw = localStorage.getItem(curProfileKey);
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                parsed.posts = parsed.posts || [];
+                parsed.posts.unshift(newPost);
+                localStorage.setItem(curProfileKey, JSON.stringify(parsed));
+            }
+        } catch(e) {}
+
+        if (typeof renderPosts === 'function') {
+            try { renderPosts(); } catch(e){}
+        }
+
+        // Reset composer
+        if (input) input.value = '';
+        window.removeMsgComposerImage();
+        window.removeMsgComposerGdrive();
+        window.removeMsgComposerYt();
+
+        if (window.showToast) {
+            window.showToast('Twój post został pomyślnie opublikowany na Tablicy LUMINA i profilu! ✨');
+        }
+
+        // Switch to public live chat
+        setTimeout(() => {
+            window.switchMessengerMainTab('public');
+        }, 800);
+    };
+
+    window.triggerLuminaLoginModal = function() {
+        if (typeof openModal === 'function') {
+            openModal('loginModal');
+        } else {
+            window.location.href = 'lumina-login.html?redirect=' + encodeURIComponent(window.location.href);
+        }
+    };
+
+    window.triggerOwnerPinModal = function() {
+        if (typeof openSecurityModal === 'function') {
+            openSecurityModal(() => {
+                window.switchMessengerMainTab('post');
+            });
+        } else if (typeof openModal === 'function') {
+            openModal('securityPinModal');
+        } else {
+            const pin = prompt('Wpisz kod PIN profilu (7777):');
+            if (pin === '7777') {
+                localStorage.setItem('lumina_auth_owner_cezaryrgowski', 'true');
+                if (window.showToast) window.showToast('Odblokowano pomyślnie! ✨');
+                window.switchMessengerMainTab('post');
+            }
+        }
+    };
+
+    
+    // ── Universal Google Drive Modal Handlers ──
+    if (!window.openGoogleDriveModal) {
+        window.openGoogleDriveModal = function() {
+            const modal = document.getElementById('googleDriveModal');
+            if (!modal) return;
+            modal.style.display = 'flex';
+            const input = document.getElementById('gdriveUrlInput');
+            if (input) {
+                input.value = '';
+                setTimeout(() => input.focus(), 100);
+            }
+        };
+    }
+
+    if (!window.closeGoogleDriveModal) {
+        window.closeGoogleDriveModal = function(event) {
+            if (event && event.target && event.target.id === 'googleDriveModal') {
+                window.closeGoogleDriveModalDirect();
+            }
+        };
+    }
+
+    if (!window.closeGoogleDriveModalDirect) {
+        window.closeGoogleDriveModalDirect = function() {
+            const modal = document.getElementById('googleDriveModal');
+            if (modal) modal.style.display = 'none';
+        };
+    }
+
+    if (!window.openMyGoogleDriveExternal) {
+        window.openMyGoogleDriveExternal = function() {
+            window.open('https://drive.google.com', '_blank');
+        };
+    }
+
+    if (!window.handleGoogleDriveUrlInput) {
+        window.handleGoogleDriveUrlInput = function(val) {
+            const trimmed = String(val || '').trim();
+            const btn = document.getElementById('btnConfirmAttachGdrive');
+            const previewBox = document.getElementById('gdriveLivePreviewContainer');
+            const iframe = document.getElementById('gdrivePreviewIframe');
+            const img = document.getElementById('gdrivePreviewImg');
+            const typeLabel = document.getElementById('gdrivePreviewTypeLabel');
+            const icon = document.getElementById('gdrivePreviewIcon');
+
+            if (!trimmed) {
+                if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
+                if (previewBox) previewBox.style.display = 'none';
+                return;
+            }
+
+            const parsed = window.LuminaDB?.parseGoogleDriveUrl ? window.LuminaDB.parseGoogleDriveUrl(trimmed) : null;
+            if (parsed && parsed.fileId) {
+                parsed.originalUrl = trimmed;
+                parsed.mode = window._gdrivePublishMode || 'embed';
+                window._tempGdriveParsed = parsed;
+
+                if (typeLabel) typeLabel.innerText = parsed.typeLabel;
+                if (icon) icon.className = parsed.icon;
+
+                if (previewBox) previewBox.style.display = 'block';
+
+                if (parsed.mode === 'image') {
+                    if (iframe) { iframe.style.display = 'none'; iframe.src = ''; }
+                    if (img) { img.style.display = 'block'; img.src = parsed.directImgUrl; }
+                } else {
+                    if (img) { img.style.display = 'none'; img.src = ''; }
+                    if (iframe) { iframe.style.display = 'block'; iframe.src = parsed.previewEmbedUrl; }
+                }
+
+                if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+            } else {
+                if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
+                if (previewBox) previewBox.style.display = 'none';
+            }
+        };
+    }
+
+    if (!window.setGdrivePublishMode) {
+        window.setGdrivePublishMode = function(mode) {
+            window._gdrivePublishMode = mode;
+            if (window._tempGdriveParsed) {
+                window._tempGdriveParsed.mode = mode;
+                window.handleGoogleDriveUrlInput(window._tempGdriveParsed.originalUrl);
+            }
+        };
+    }
+
+    // Auto-initialize on load & DOM ready
+    function setup() {
+        initMessengerComposerUI();
+        patchSwitchMessengerTab();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setup);
+    } else {
+        setup();
+    }
+    window.addEventListener('load', setup);
+
+    // SMCC 44px Touch Target Mobile Enforcer hook
+    window.addEventListener('resize', function() {
+        if (window.innerWidth <= 640) {
+            const btn = document.getElementById('tabBtnCreatePost');
+            if (btn) {
+                btn.style.padding = '0';
+                btn.style.minHeight = '44px';
+                btn.style.minWidth = '44px';
+                btn.querySelectorAll('.tab-label').forEach(s => s.style.display = 'none');
+            }
+        }
+    });
+
+})();
