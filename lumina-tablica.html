@@ -4901,7 +4901,7 @@
                 const aCudaImg31 = localStorage.getItem('lumina_cuda_image_31') || 'cuda_kazdego_dnia_27_sierpnia_2026.jpg';
 
                 posts.push({
-                    id: 'post_andrzej_cuda_31_08_2026',
+                    id: 'post_andrzej_cuda_current',
                     type: 'post',
                     category: 'ckd',
                     isDevotion: true,
@@ -4910,13 +4910,13 @@
                     authorRole: 'Cuda Każdego Dnia ✨ • Sieradz',
                     authorAvatar: aAvatar,
                     authorSlug: 'andrzejthiel',
-                    time: '31 SIERPNIA 2026 • ✨ Cuda Każdego Dnia (Dzisiaj)',
-                    title: 'CUDA KAŻDEGO DNIA! 31 SIERPNIA 2026. ODKRYJ BOŻY POKÓJ W KAŻDYM DNIU!',
-                    text: 'Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nODKRYJ BOŻY POKÓJ W KAŻDYM DNIU!\n\nZamykając sierpień, dziękujemy Bogu za każdy cud i każdą wysłuchaną modlitwę. Niezależnie od wyzwań, które stoją przed tobą, pamiętaj, że Boży pokój przewyższa wszelki rozum. Kiedy oddajesz swoje troski w Jego ręce, On prowadzi cię przez najtrudniejsze chwile z niesamowitą miłością i troską.\n\nJezus mówi do Ciebie dzisiaj:\n„Pokój zostawiam wam, mój pokój daję wam; nie jak świat daje, Ja wam daję. Niech się nie trwoży serce wasze ani nie lęka!” (Jana 14,27).\n\nDziękuję, że jesteś!\n❤️',
-                    image: aCudaImg31,
-                    likes: 312,
-                    amen: 289,
-                    _sortTs: new Date(2026, 7, 31, 6, 0).getTime()
+                    time: '6 WRZEŚNIA 2026 • ✨ Cuda Każdego Dnia (Dzisiaj)',
+                    title: 'CUDA KAŻDEGO DNIA! 6 WRZEŚNIA 2026. ODPOWIEDZIALNOŚĆ AMBASADORA',
+                    text: "Przeczytaj i zobacz jak Bóg przemienia twoje życie.\n\nODPOWIEDZIALNOŚĆ AMBASADORA\n\nKiedy wybierany jest ambasador Polski, otrzymuje on listy uwierzytelniające od prezydenta. Składa je głowie państwa, w którym będzie pełnił swoją misję. To dokument potwierdzający, że przedstawiciel jest godny zaufania i stoi za nim cały autorytet rządu.\n\nJeśli pojednasz się z Bogiem, stajesz się obywatelem Jego Królestwa i otrzymujesz misję, by iść i pełnić swoje obowiązki jako ambasador Chrystusa w Jego mocy, w mocy Jego autorytetu.\n\nApostoł Paweł pisał: „Realizując zatem misję zleconą przez Chrystusa, jesteśmy przedstawicielami samego Boga, który przez nas wzywa wszystkich ludzi do pojednania ze sobą! Dlatego w imieniu Chrystusa błagamy: Pojednajcie się z Bogiem!” (2 Kor 5,20).  To jest największym Bożym pragnieniem i to ma być też w twoim, i moim sercu. Pamiętasz małego Jezusa, który zgubił się swoim rodzicom, a kiedy ci w końcu Go odnaleźli, powiedział do nich: „Czemuście mnie szukali? Czyż nie wiedzieliście, że w tym, co jest Ojca mego, Ja być muszę?” (Łk 2,49).\n\nCzy podobnie zatracasz się w Bożych sprawach? Koncentrujesz się na rozwijaniu Jego Królestwa? Czy wsłuchujesz się w słowa Chrystusa, by wiedzieć, co i jak mówić? Czytamy: „Niech żadne nieprzyzwoite słowo nie wychodzi z ust waszych, ale tylko dobre, które może budować, gdy zajdzie potrzeba, aby przyniosło błogosławieństwo tym, którzy go słuchają” (Ef 4,29).  Musisz też, mieć świadomość, że występując w imieniu Jezusa, będziesz pod stałą obserwacją. To głównie twoje życie, twoje codzienne decyzje, to, co robisz i czego nie robisz, mówią o tobie najwięcej. Czy Boża wszechmoc i majestat, które reprezentujesz, dodają ci odwagi, by stanąć po stronie tego, w co wierzysz, nie iść z tłumem? By umieć powiedzieć „nie” w szkole, w miejscu pracy?\n\nTen, który cię powołał, twój Pan i Król, zapewnia cię też, że da ci moc uzdalniającą do życia godnego niebiańskiego powołania.\n\nZacznij dzisiaj od opiewania wielkości Jego chwały słowami psalmisty Dawida:\n„Niech [wierni twoi] mówią o chwale królestwa Twego i niech opiewają potęgę Twoją, aby oznajmiać ludziom potęgę Twoją i wspaniałą chwałę królestwa Twego! Królestwo Twoje jest królestwem wiecznym, a panowanie Twoje trwa przez wszystkie pokolenia” (Ps 145,11-13).\n\n/opr. na podst. wiad. B.K./.\n\nDziękuję, że jesteś!\n❤️",
+                    image: 'cuda_kazdego_dnia_current.jpg',
+                    likes: 318,
+                    amen: 294,
+                    _sortTs: Date.now()
                 });
             } catch(e) {}
 
@@ -5519,7 +5519,7 @@
             });
 
             // 3. POZYCJA 3: Rozważanie z serii „Cuda Każdego Dnia” (Andrzej Thiel — zawsze najnowsze)
-            let topCkdPost = userPosts.find(p => p._isCkdDaily || p.id === 'post_andrzej_cuda_31_08_2026' || p.category === 'ckd' || (p.authorSlug === 'andrzejthiel' && p.title && p.title.includes('CUDA KAŻDEGO DNIA')));
+            let topCkdPost = userPosts.find(p => p._isCkdDaily || p.id === 'post_andrzej_cuda_current' || p.category === 'ckd' || (p.authorSlug === 'andrzejthiel' && p.title && p.title.includes('CUDA KAŻDEGO DNIA')));
             if (!topCkdPost) {
                 topCkdPost = userPosts.find(p => p.authorSlug === 'andrzejthiel');
             }
