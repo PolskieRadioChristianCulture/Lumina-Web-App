@@ -1666,6 +1666,34 @@
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
         }
 
+        
+        /* ── Desktop Expanded Centrum Rozmów (860px width & uncrowded tabs) ── */
+        @media (min-width: 769px) {
+            #directMessagesModal .modal-card {
+                max-width: 860px !important;
+                width: 95% !important;
+                height: 720px !important;
+                max-height: 88vh !important;
+                border-radius: 24px !important;
+            }
+            #directMessagesModal .chat-header-bar {
+                padding: 16px 20px 12px 20px !important;
+            }
+            #directMessagesModal .chat-header-bar > div:last-child {
+                display: flex !important;
+                gap: 8px !important;
+                overflow-x: auto !important;
+                scrollbar-width: none !important;
+            }
+            #directMessagesModal .chat-header-bar button {
+                white-space: nowrap !important;
+                padding: 9px 14px !important;
+                font-size: 0.82rem !important;
+                gap: 7px !important;
+                flex: 1 1 auto !important;
+            }
+        }
+
         /* ── Fullscreen Mobile Chat Messenger Modal ── */
         @media (max-width: 768px) {
             #directMessagesModal.modal-overlay {
@@ -3844,7 +3872,7 @@
 
     <!-- ══════════ REALTIME COMMUNITY & DIRECT MESSENGER MODAL (Etap 3) ══════════ -->
     <div class="modal-overlay" id="directMessagesModal">
-        <div class="modal-card" style="max-width: 500px; width: 94%; padding: 0; max-height: 90vh; height: 600px; display: flex; flex-direction: column; overflow: hidden; border-radius: 24px; background: #0b1120; border: 1.5px solid rgba(168,85,247,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.85);">
+        <div class="modal-card" style="max-width: 860px; width: 95%; padding: 0; max-height: 88vh; height: 720px; display: flex; flex-direction: column; overflow: hidden; border-radius: 24px; background: #0b1120; border: 1.5px solid rgba(168,85,247,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.85);">
             
             <!-- Top Header & Dual Tabs Bar -->
             <div class="chat-header-bar" style="padding: 14px 18px 10px 18px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.08);">
@@ -5891,25 +5919,26 @@
                     : { html: rawBody, embedHtml: '' };
 
                 let effectiveEmbedHtml = richResult.embedHtml || '';
-                if (!effectiveEmbedHtml && (item.embedHtml || item.youtubeUrl || item.playlistUrl)) {
-                    if (item.embedHtml) {
-                        effectiveEmbedHtml = item.embedHtml;
-                    } else {
-                        const targetYt = item.youtubeUrl || item.playlistUrl;
-                        const plId = window.LuminaDB?.extractYouTubePlaylistId ? window.LuminaDB.extractYouTubePlaylistId(targetYt) : null;
-                        if (plId) {
-                            effectiveEmbedHtml = `<div class="rich-youtube-embed"><iframe src="https://www.youtube.com/embed/videoseries?list=${plId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>`;
-                        } else {
-                            const ytId = window.LuminaDB?.extractYouTubeId ? window.LuminaDB.extractYouTubeId(targetYt) : null;
-                            if (ytId) {
-                                effectiveEmbedHtml = `<div class="rich-youtube-embed"><iframe src="https://www.youtube-nocookie.com/embed/${ytId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>`;
-                            }
-                if (!effectiveEmbedHtml && item.gdrive) {
-                    effectiveEmbedHtml = window.LuminaDB?.createGoogleDriveEmbedHtml ? window.LuminaDB.createGoogleDriveEmbedHtml(item.gdrive, { mode: item.gdrive.mode }) : '';
-                } else if (!effectiveEmbedHtml && item.gdriveEmbed) {
-                    effectiveEmbedHtml = window.LuminaDB?.createGoogleDriveEmbedHtml ? window.LuminaDB.createGoogleDriveEmbedHtml({ fileId: 'ext', previewEmbedUrl: item.gdriveEmbed, typeLabel: 'Plik z Dysku Google' }) : '';
+                if (!effectiveEmbedHtml && item.embedHtml) {
+                    effectiveEmbedHtml = item.embedHtml;
                 }
+                if (!effectiveEmbedHtml && (item.youtubeUrl || item.playlistUrl)) {
+                    const targetYt = item.youtubeUrl || item.playlistUrl;
+                    const plId = window.LuminaDB?.extractYouTubePlaylistId ? window.LuminaDB.extractYouTubePlaylistId(targetYt) : null;
+                    if (plId) {
+                        effectiveEmbedHtml = `<div class="rich-youtube-embed"><iframe src="https://www.youtube.com/embed/videoseries?list=${plId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>`;
+                    } else {
+                        const ytId = window.LuminaDB?.extractYouTubeId ? window.LuminaDB.extractYouTubeId(targetYt) : null;
+                        if (ytId) {
+                            effectiveEmbedHtml = `<div class="rich-youtube-embed"><iframe src="https://www.youtube-nocookie.com/embed/${ytId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>`;
                         }
+                    }
+                }
+                if (!effectiveEmbedHtml && (item.gdrive || item.gdriveEmbed)) {
+                    if (item.gdrive && window.LuminaDB?.createGoogleDriveEmbedHtml) {
+                        effectiveEmbedHtml = window.LuminaDB.createGoogleDriveEmbedHtml(item.gdrive, { mode: item.gdrive.mode });
+                    } else if (item.gdriveEmbed && window.LuminaDB?.createGoogleDriveEmbedHtml) {
+                        effectiveEmbedHtml = window.LuminaDB.createGoogleDriveEmbedHtml({ fileId: 'ext', previewEmbedUrl: item.gdriveEmbed, typeLabel: 'Plik z Dysku Google' });
                     }
                 }
 

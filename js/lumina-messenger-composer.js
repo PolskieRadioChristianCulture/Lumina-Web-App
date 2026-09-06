@@ -541,6 +541,42 @@
         };
     }
 
+    
+    // Inject Desktop Expanded Style for Centrum Rozmów (860px width & clean tab layout)
+    (function injectDesktopStyle() {
+        if (document.getElementById('lumina-messenger-desktop-style')) return;
+        const style = document.createElement('style');
+        style.id = 'lumina-messenger-desktop-style';
+        style.textContent = `
+            @media (min-width: 769px) {
+                #directMessagesModal .modal-card {
+                    max-width: 860px !important;
+                    width: 95% !important;
+                    height: 720px !important;
+                    max-height: 88vh !important;
+                    border-radius: 24px !important;
+                }
+                #directMessagesModal .chat-header-bar {
+                    padding: 16px 20px 12px 20px !important;
+                }
+                #directMessagesModal .chat-header-bar > div:last-child {
+                    display: flex !important;
+                    gap: 8px !important;
+                    overflow-x: auto !important;
+                    scrollbar-width: none !important;
+                }
+                #directMessagesModal .chat-header-bar button {
+                    white-space: nowrap !important;
+                    padding: 9px 14px !important;
+                    font-size: 0.82rem !important;
+                    gap: 7px !important;
+                    flex: 1 1 auto !important;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    })();
+
     // Auto-initialize on load & DOM ready
     function setup() {
         initMessengerComposerUI();
