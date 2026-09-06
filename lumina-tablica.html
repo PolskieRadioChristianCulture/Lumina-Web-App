@@ -4853,6 +4853,7 @@
                     if (cp.sourceSlug) seenSlugs.add(cp.sourceSlug);
 
                     posts.push({
+                        ...cp,
                         id: cp.id,
                         type: cp.type || 'post',
                         category: cp.category || (isCkd ? 'ckd' : 'general'),
@@ -4865,6 +4866,9 @@
                         title: cp.title || '',
                         text: cp.text || cp.content || '',
                         image: cp.image || cp.imageUrl || null,
+                        youtubeUrl: cp.youtubeUrl || '',
+                        embedHtml: cp.embedHtml || '',
+                        playlistUrl: cp.playlistUrl || '',
                         sourceUrl: cp.sourceUrl || '',
                         sourceSlug: cp.sourceSlug || '',
                         likes: cp.likes || 0,
