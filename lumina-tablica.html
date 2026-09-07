@@ -190,7 +190,7 @@
     <script type="module" src="lumina-i18n.js?v=4.1.0_20260830"></script>
     <script src="lumina-terms-modal.js?v=4.1.0_20260830"></script>
     <script src="lumina-sharing-suite.js?v=4.1.0_20260830"></script>
-    <script src="lumina-pwa-installer.js?v=4.1.0_20260830"></script>
+    <script src="lumina-pwa-installer.js?v=4.2.0_20260907"></script>
 
     <!-- Firebase SDK (Rozważanie Dnia) -->
     <script type="module">
@@ -350,7 +350,7 @@
             title: '☀️ Lato z Jezusem — Wielkie Pytania (Dzień 22)',
             fullTextHtml: LUMINA_DAY22_DEVOTIONAL_HTML,
             image: 'promo_dzj.jpg',
-            streamUrl: 'master-live.html?muted=1&noticker=1&embed=1',
+            streamUrl: 'cctv24-worship-live.html?muted=1&mute=1&in_mcr=1',
             isLiveBroadcastPost: true,
             likes: 215,
             amen: 192,
@@ -393,6 +393,7 @@
                             title: data.title || '☀️ Lato z Jezusem — Wielkie Pytania',
                             fullTextHtml: formattedContent,
                             image: data.imageUrl || 'promo_dzj.jpg',
+                            streamUrl: data.streamUrl || 'cctv24-worship-live.html?muted=1&mute=1&in_mcr=1',
                             likes: data.likes || 198,
                             amen: data.amen || 174,
                             _pinned: true,
@@ -429,6 +430,7 @@
                                     title: data.title || '☀️ Lato z Jezusem — Wielkie Pytania',
                                     fullTextHtml: formattedContent,
                                     image: data.imageUrl || 'promo_dzj.jpg',
+                                    streamUrl: data.streamUrl || 'cctv24-worship-live.html?muted=1&mute=1&in_mcr=1',
                                     likes: data.likes || 198,
                                     amen: data.amen || 174,
                                     _pinned: true,
@@ -6127,15 +6129,19 @@
 
                 // ── Specjalna karta rozważania "Dobrze, że jesteś / Cuda Każdego Dnia" (Zaraz pod Patronem) ──
                 if (item._isReflection) {
-                    const baseStreamUrl = item.streamUrl || 'master-live';
-                    const streamUrl = baseStreamUrl.includes('muted=1') ? baseStreamUrl : (baseStreamUrl + (baseStreamUrl.includes('?') ? '&' : '?') + 'muted=1&noticker=1&embed=1');
+                    const rawStreamUrl = item.streamUrl || 'cctv24-worship-live.html?muted=1&mute=1&in_mcr=1';
+                    let streamUrl = rawStreamUrl.replace(/^(master-live|master-live\.html)/, 'cctv24-worship-live.html');
+                    if (!streamUrl.includes('muted=1') && !streamUrl.includes('mute=1')) {
+                        streamUrl = streamUrl + (streamUrl.includes('?') ? '&' : '?') + 'muted=1&mute=1&in_mcr=1';
+                    }
                     const livePlayerHtml = `
-                        <div class="mission-live-player-wrapper" style="margin: 0 0 18px 0;">
+                        <div class="mission-live-player-wrapper" style="margin: 0 0 18px 0; background: #050508 url('promo_dzj.jpg') center/cover no-repeat; border-radius:16px; overflow:hidden; position:relative; min-height:220px;">
                             <iframe src="${streamUrl}" 
                                     title="Telewizja Christian Culture 24/7 — Transmisja na Żywo" 
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                                     allowfullscreen 
-                                    loading="eager"></iframe>
+                                    loading="eager"
+                                    style="width:100%; height:100%; border:none; display:block; aspect-ratio:16/9;"></iframe>
                             <div class="mission-live-player-overlay">
                                 <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
                                     <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
@@ -6293,17 +6299,18 @@
                                 <iframe src="${item.videoUrl}" style="width:100%; height:100%; border:none; display:block;" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             </div>
                         ` : (item.isLiveBroadcastPost && item.streamUrl ? `
-                            <div class="mission-live-player-wrapper" style="margin: 0 0 12px 0;">
-                                <iframe src="${item.streamUrl ? (item.streamUrl.includes('?') ? item.streamUrl + '&muted=1&mute=1&in_mcr=1' : item.streamUrl + '?muted=1&mute=1&in_mcr=1') : 'master-live?muted=1&noticker=1&embed=1'}" 
+                            <div class="mission-live-player-wrapper" style="margin: 0 0 12px 0; background: #050508 url('promo_dzj.jpg') center/cover no-repeat; border-radius:16px; overflow:hidden; position:relative; min-height:220px;">
+                                <iframe src="${item.streamUrl ? (item.streamUrl.replace(/^(master-live|master-live\.html)/, 'cctv24-worship-live.html').includes('?') ? item.streamUrl.replace(/^(master-live|master-live\.html)/, 'cctv24-worship-live.html') + '&muted=1&mute=1&in_mcr=1' : item.streamUrl.replace(/^(master-live|master-live\.html)/, 'cctv24-worship-live.html') + '?muted=1&mute=1&in_mcr=1') : 'cctv24-worship-live.html?muted=1&mute=1&in_mcr=1'}" 
                                         title="${item.title || 'Transmisja na Żywo'}" 
                                         allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share" 
                                         allowfullscreen 
-                                        loading="eager"></iframe>
+                                        loading="eager"
+                                        style="width:100%; height:100%; border:none; display:block; aspect-ratio:16/9;"></iframe>
                                 <div class="mission-live-player-overlay">
                                     <button type="button" class="btn-unmute-live" onclick="unmuteMissionIframe(this)" title="Włącz dźwięk transmisji">
                                         <i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>
                                     </button>
-                                    <a href="${item.streamUrl.split('?')[0]}" target="_blank" class="btn-expand-live" title="Otwórz pełny kanał TV w nowej karcie">
+                                    <a href="${(item.streamUrl || 'cctv24-worship-live.html').split('?')[0]}" target="_blank" class="btn-expand-live" title="Otwórz pełny kanał TV w nowej karcie">
                                         <i class="fa-solid fa-tv"></i> <span>Pełny Ekran TV</span>
                                     </a>
                                 </div>
@@ -6717,12 +6724,39 @@
             const isCurrentlyUnmuted = btn.dataset.unmuted === 'true';
 
             if (!isCurrentlyUnmuted) {
-                if (iframe && iframe.contentWindow) {
+                if (iframe) {
                     try {
-                        iframe.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*');
-                        iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-                        iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                        const innerDoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+                        if (innerDoc) {
+                            const innerAudio = innerDoc.getElementById('stream-audio') || innerDoc.querySelector('audio');
+                            if (innerAudio) {
+                                innerAudio.muted = false;
+                                innerAudio.volume = 1.0;
+                                innerAudio.play().catch(function(){});
+                            }
+                            const innerVideo = innerDoc.querySelector('video');
+                            if (innerVideo) {
+                                innerVideo.muted = false;
+                                innerVideo.volume = 1.0;
+                                innerVideo.play().catch(function(){});
+                            }
+                        }
+                        if (iframe.contentWindow) {
+                            iframe.contentWindow._worshipUserInteracted = true;
+                            if (typeof iframe.contentWindow.worshipSyncAndPlay === 'function') {
+                                iframe.contentWindow.worshipSyncAndPlay();
+                            }
+                        }
                     } catch(e) {}
+
+                    if (iframe.contentWindow) {
+                        try {
+                            iframe.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*');
+                            iframe.contentWindow.postMessage('UNMUTE_AUDIO', '*');
+                            iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                            iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                        } catch(e) {}
+                    }
                 }
                 btn.dataset.unmuted = 'true';
                 btn.innerHTML = '<i class="fa-solid fa-volume-high" style="color:#22c55e;"></i> <span>Wycisz Dźwięk 🔊</span>';
@@ -6730,11 +6764,24 @@
                 btn.style.borderColor = '#22c55e';
                 btn.style.color = '#86efac';
             } else {
-                if (iframe && iframe.contentWindow) {
+                if (iframe) {
                     try {
-                        iframe.contentWindow.postMessage({ type: 'MUTE_AUDIO' }, '*');
-                        iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                        const innerDoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+                        if (innerDoc) {
+                            const innerAudio = innerDoc.getElementById('stream-audio') || innerDoc.querySelector('audio');
+                            if (innerAudio) innerAudio.muted = true;
+                            const innerVideo = innerDoc.querySelector('video');
+                            if (innerVideo) innerVideo.muted = true;
+                        }
                     } catch(e) {}
+
+                    if (iframe.contentWindow) {
+                        try {
+                            iframe.contentWindow.postMessage({ type: 'MUTE_AUDIO' }, '*');
+                            iframe.contentWindow.postMessage('MUTE_AUDIO', '*');
+                            iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                        } catch(e) {}
+                    }
                 }
                 btn.dataset.unmuted = 'false';
                 btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>';

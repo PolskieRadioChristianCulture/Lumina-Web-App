@@ -634,44 +634,55 @@
         // 1. Karty postów (.feed-post-card, .post-card, .post-card-1x1, article, .mission-live-broadcast-card)
         const postCards = document.querySelectorAll('.feed-post-card, .post-card, .post-card-1x1, article, .mission-live-broadcast-card');
         postCards.forEach(card => {
-            // Przycisk w belce akcji posta
-            const actionsBar = card.querySelector('.post-actions-bar, .post-footer, .post-header-actions');
-            if (actionsBar && !actionsBar.querySelector('.btn-lumina-replace-action')) {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = 'post-action-btn btn-lumina-replace-action';
-                btn.title = 'Wymień grafikę/wideo na link z Dysku Google lub YouTube (Zero-Egress)';
-                btn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> <span>Wymień (Dysk/YT)</span>';
-                btn.onclick = (e) => {
-                    e.stopPropagation();
-                    openReplacerForElement(card, 'post');
-                };
-                actionsBar.appendChild(btn);
+            // ZASADA ZERO-DUPLIKACJI: Jeśli na karcie posta istnieje już jakikolwiek przycisk wymiany,
+            // lub jeśli karta posiada dedykowany player wideo / transmisję (który otrzymuje własny
+            // przycisk w kroku 2), BEZWZGLĘDNIE pomijamy tworzenie przycisku w nagłówku i stopce!
+            const hasDedicatedPlayer = card.querySelector('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box');
+            if (hasDedicatedPlayer) {
+                // Usuń ewentualne zdublowane przyciski z nagłówka lub stopki karty
+                card.querySelectorAll('.btn-lumina-replace-action').forEach(el => el.remove());
+                return;
             }
 
-            // Pływający przycisk na grafice / wideo posta
-            // (Jeśli post zawiera już dedykowany odtwarzacz wideo, obsłuży go krok 2 - nie dublujemy przycisku!)
-            const hasDedicatedPlayer = card.querySelector('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box');
-            if (!hasDedicatedPlayer) {
-                const artworkBox = card.querySelector('.media-container-1x1, .campaign-media-container, .broadcast-preview-wrap, .post-featured-artwork-box, .post-image-box, .post-media-box, .post-image, .post-body img, .post-content img');
-                if (artworkBox) {
-                    const targetWrapper = (artworkBox.tagName === 'IMG') ? (artworkBox.parentElement || artworkBox) : artworkBox;
-                    if (!targetWrapper.querySelector('.btn-lumina-replace-floating') && !artworkBox.classList.contains('btn-lumina-replace-floating')) {
-                        if (getComputedStyle(targetWrapper).position === 'static') {
-                            targetWrapper.style.position = 'relative';
-                        }
-                        const floatBtn = document.createElement('button');
-                        floatBtn.type = 'button';
-                        floatBtn.className = 'btn-lumina-replace-floating';
-                        floatBtn.title = 'Wymień ten plik/grafikę na link z Dysku Google lub YouTube';
-                        floatBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Wymień';
-                        floatBtn.onclick = (e) => {
-                            e.stopPropagation();
-                            const img = targetWrapper.querySelector('img') || (artworkBox.tagName === 'IMG' ? artworkBox : null);
-                            openReplacerForElement(img || card, 'image');
-                        };
-                        targetWrapper.appendChild(floatBtn);
+            if (card.querySelector('.btn-lumina-replace-floating, .btn-lumina-replace-action')) {
+                return;
+            }
+
+            // Sprawdzamy czy post ma grafikę
+            const artworkBox = card.querySelector('.media-container-1x1, .campaign-media-container, .broadcast-preview-wrap, .post-featured-artwork-box, .post-image-box, .post-media-box, .post-image, .post-body img, .post-content img');
+            if (artworkBox) {
+                const targetWrapper = (artworkBox.tagName === 'IMG') ? (artworkBox.parentElement || artworkBox) : artworkBox;
+                if (!targetWrapper.querySelector('.btn-lumina-replace-floating') && !artworkBox.classList.contains('btn-lumina-replace-floating')) {
+                    if (getComputedStyle(targetWrapper).position === 'static') {
+                        targetWrapper.style.position = 'relative';
                     }
+                    const floatBtn = document.createElement('button');
+                    floatBtn.type = 'button';
+                    floatBtn.className = 'btn-lumina-replace-floating';
+                    floatBtn.title = 'Wymień ten plik/grafikę na link z Dysku Google lub YouTube';
+                    floatBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Wymień';
+                    floatBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        const img = targetWrapper.querySelector('img') || (artworkBox.tagName === 'IMG' ? artworkBox : null);
+                        openReplacerForElement(img || card, 'image');
+                    };
+                    targetWrapper.appendChild(floatBtn);
+                }
+            } else {
+                // Tylko dla postów bez grafiki i bez wideo: dodaj przycisk do DOLNEJ belki akcji (.post-actions-bar, .post-footer)
+                // NIGDY NIE DODAWAMY DO .post-header-actions ani do nagłówka posta!
+                const actionsBar = card.querySelector('.post-actions-bar, .post-footer');
+                if (actionsBar && !actionsBar.querySelector('.btn-lumina-replace-action')) {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'post-action-btn btn-lumina-replace-action';
+                    btn.title = 'Wymień treść posta (Zero-Egress)';
+                    btn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> <span>Wymień (Dysk/YT)</span>';
+                    btn.onclick = (e) => {
+                        e.stopPropagation();
+                        openReplacerForElement(card, 'post');
+                    };
+                    actionsBar.appendChild(btn);
                 }
             }
         });
