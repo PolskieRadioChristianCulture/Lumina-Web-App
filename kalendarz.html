@@ -764,6 +764,117 @@
             return isFriday ? m.sunsetFri : m.sunsetSat;
         }
 
+        const missionaryBanners = [
+    {
+        tag: "Radio 24/7",
+        title: "Słuchaj 6 Chrześcijańskich Stacji Radiowych 24/7!",
+        cta: "Włącz bezpłatną muzykę uwielbienia, rozważania i audycje na żywo.",
+        url: "https://polskieradio.cc",
+        qrLabel: "Słuchaj Radia",
+        qrSub: "polskieradio.cc",
+        qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 27 27\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h27v27H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m2 0h1m2 0h1m3 0h1m1 0h7M1 2.5h1m5 0h1m5 0h1m1 0h3m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h3m4 0h1m2 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h3m2 0h3m2 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h3m2 0h1m2 0h1m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h1m1 0h3m2 0h1m2 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h2m4 0h1M1 9.5h1m1 0h5m3 0h1m2 0h4m1 0h5M1 10.5h1m1 0h1m5 0h1m1 0h4m2 0h1m2 0h1m3 0h1M2 11.5h3m2 0h1m2 0h2m1 0h6m3 0h1m1 0h2M1 12.5h1m6 0h3m1 0h1m2 0h4m6 0h1M1 13.5h4m1 0h2m2 0h1m1 0h3m1 0h1m1 0h4m1 0h3M1 14.5h2m2 0h2m2 0h2m3 0h1m2 0h1m2 0h1m1 0h1m1 0h1M1 15.5h1m3 0h1m1 0h3m1 0h8m1 0h3m1 0h2M1 16.5h1m2 0h3m2 0h2m1 0h1m3 0h1m2 0h3m3 0h1M1 17.5h1m1 0h2m1 0h3m1 0h3m1 0h2m1 0h5m1 0h1M9 18.5h3m1 0h1m2 0h2m3 0h2M1 19.5h7m3 0h1m2 0h1m2 0h1m1 0h1m1 0h1m1 0h3M1 20.5h1m5 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m3 0h2m1 0h1M1 21.5h1m1 0h3m1 0h1m1 0h2m2 0h9m1 0h3M1 22.5h1m1 0h3m1 0h1m1 0h1m1 0h1m5 0h3m1 0h5M1 23.5h1m1 0h3m1 0h1m1 0h1m1 0h4m1 0h3m3 0h2m1 0h1M1 24.5h1m5 0h1m4 0h1m2 0h3m1 0h4m2 0h1M1 25.5h7m1 0h2m1 0h2m4 0h1m1 0h6\"/></svg>"
+    },
+    {
+        tag: "Biblia Audio",
+        title: "Biblia Audio – Całe Pismo Święte w Twoim Telefonie!",
+        cta: "Słuchaj Słowa Bożego w drodze, podczas pracy i odpoczynku w domu.",
+        url: "https://polskieradio.cc#biblia",
+        qrLabel: "Słuchaj Biblii",
+        qrSub: "polskieradio.cc",
+        qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 31 31\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h31v31H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m1 0h1m1 0h6m2 0h3m1 0h7M1 2.5h1m5 0h1m1 0h4m1 0h1m2 0h1m5 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m3 0h1m5 0h1m1 0h1m3 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h2m3 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m2 0h3m2 0h1m1 0h2m1 0h1m2 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m2 0h3m1 0h1m1 0h3m1 0h1m2 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h3m1 0h1m2 0h5M1 9.5h1m1 0h2m1 0h3m2 0h1m2 0h1m1 0h1m1 0h2m3 0h1m2 0h1m1 0h2M3 10.5h1m1 0h1m3 0h2m3 0h3m2 0h2m1 0h4m3 0h1M6 11.5h7m1 0h1m2 0h1m5 0h1m1 0h1m1 0h2M1 12.5h4m3 0h3m2 0h1m3 0h1m3 0h2m6 0h1M2 13.5h1m1 0h5m1 0h1m4 0h2m1 0h1m1 0h1m3 0h1m1 0h2M2 14.5h1m2 0h2m1 0h1m2 0h1m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m3 0h3M1 15.5h1m2 0h2m1 0h1m1 0h1m4 0h1m1 0h2m2 0h2m5 0h3M1 16.5h4m1 0h1m1 0h2m5 0h1m1 0h1m6 0h1m3 0h1M4 17.5h1m2 0h1m1 0h2m1 0h2m1 0h3m1 0h4m1 0h3m1 0h1M2 18.5h1m2 0h2m1 0h1m1 0h4m1 0h1m1 0h1m3 0h1m2 0h1m1 0h3M1 19.5h1m1 0h2m2 0h3m3 0h7m4 0h1m2 0h1M3 20.5h2m4 0h1m3 0h3m2 0h1m3 0h1m2 0h1m1 0h1M2 21.5h4m1 0h3m1 0h5m1 0h11M9 22.5h2m1 0h1m3 0h4m1 0h1m3 0h5M1 23.5h7m1 0h2m4 0h2m1 0h4m1 0h1m1 0h2m1 0h1M1 24.5h1m5 0h1m1 0h2m1 0h5m4 0h1m3 0h2M1 25.5h1m1 0h3m1 0h1m2 0h3m5 0h1m2 0h5m1 0h1m1 0h1M1 26.5h1m1 0h3m1 0h1m1 0h5m6 0h3m1 0h3m1 0h1M1 27.5h1m1 0h3m1 0h1m1 0h2m2 0h2m5 0h1m1 0h1m1 0h1m2 0h1m1 0h1M1 28.5h1m5 0h1m2 0h1m1 0h1m1 0h3m4 0h2m2 0h2m1 0h1M1 29.5h7m1 0h2m4 0h1m3 0h3m1 0h2m1 0h1m1 0h1\"/></svg>"
+    },
+    {
+        tag: "Portal Społeczności",
+        title: "Dołącz do Chrześcijańskiej Społeczności LUMINA!",
+        cta: "Twórz profil, czytaj budujące świadectwa wiary i poznawaj ludzi Boga.",
+        url: "https://polskieradio.cc/lumina",
+        qrLabel: "Wejdź na Portal",
+        qrSub: "lumina.cc",
+        qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 31 31\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h31v31H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m3 0h6m2 0h3m1 0h7M1 2.5h1m5 0h1m3 0h1m1 0h7m1 0h1m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h3m2 0h1m1 0h1m3 0h1m2 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m2 0h1m2 0h2m1 0h2m3 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h1m2 0h1m3 0h6m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h1m1 0h2m5 0h1m4 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h4m2 0h1m1 0h1m2 0h2M1 9.5h1m1 0h5m3 0h1m1 0h1m3 0h2m1 0h1m2 0h5M2 10.5h1m1 0h1m1 0h1m2 0h1m4 0h3m1 0h3m1 0h4m3 0h1M1 11.5h2m1 0h1m1 0h3m2 0h1m2 0h4m3 0h4M1 12.5h1m1 0h1m1 0h2m1 0h1m2 0h2m1 0h1m1 0h1m2 0h3m1 0h1m1 0h2m1 0h1M2 13.5h1m1 0h1m1 0h2m2 0h1m1 0h2m1 0h2m1 0h1m1 0h1m3 0h1m1 0h2M2 14.5h5m2 0h1m2 0h2m2 0h2m2 0h6m3 0h1M1 15.5h2m1 0h5m4 0h1m7 0h3m1 0h3M1 16.5h1m1 0h1m1 0h2m2 0h1m1 0h1m3 0h1m1 0h1m6 0h1m3 0h1M4 17.5h1m2 0h1m1 0h1m1 0h1m1 0h1m3 0h2m1 0h1m5 0h2M1 18.5h1m1 0h4m2 0h3m1 0h4m1 0h8m1 0h1m1 0h1M1 19.5h1m2 0h2m1 0h1m3 0h2m1 0h4m6 0h1m2 0h1M1 20.5h1m2 0h1m4 0h1m1 0h1m2 0h1m1 0h1m4 0h1m2 0h1m3 0h1M1 21.5h1m1 0h2m2 0h2m2 0h1m1 0h1m1 0h2m1 0h1m2 0h5m1 0h3M9 22.5h2m2 0h1m2 0h4m1 0h1m3 0h5M1 23.5h7m4 0h1m6 0h3m1 0h1m1 0h3M1 24.5h1m5 0h1m1 0h4m2 0h1m1 0h1m2 0h2m3 0h1m2 0h2M1 25.5h1m1 0h3m1 0h1m1 0h1m1 0h1m6 0h1m2 0h5m1 0h1m1 0h1M1 26.5h1m1 0h3m1 0h1m1 0h8m1 0h3m5 0h2M1 27.5h1m1 0h3m1 0h1m1 0h1m2 0h1m1 0h1m1 0h3m4 0h6M1 28.5h1m5 0h1m4 0h1m2 0h2m2 0h1m1 0h2m2 0h2m1 0h1M1 29.5h7m1 0h1m1 0h1m3 0h2m1 0h1m1 0h1m1 0h2m1 0h3\"/></svg>"
+    },
+    {
+        tag: "Kino VOD",
+        title: "Kino Chrześcijańskie VOD – Wartościowe Filmy!",
+        cta: "Oglądaj poruszające filmy biblijne, dokumenty i animacje bez reklam.",
+        url: "https://polskieradio.cc/vod",
+        qrLabel: "Oglądaj Filmy",
+        qrSub: "polskieradio.cc/vod",
+        qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 31 31\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h31v31H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m3 0h2m3 0h2m1 0h3m1 0h7M1 2.5h1m5 0h1m2 0h2m1 0h1m4 0h2m1 0h1m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h3m3 0h1m1 0h1m2 0h1m2 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h4m4 0h3m3 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h2m2 0h4m1 0h4m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h2m1 0h1m1 0h5m4 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h3m1 0h2m1 0h1m3 0h2M1 9.5h1m1 0h5m2 0h2m1 0h1m1 0h2m1 0h1m1 0h1m2 0h5M4 10.5h1m3 0h1m1 0h2m4 0h2m2 0h1m1 0h4m3 0h1M4 11.5h1m1 0h2m1 0h3m1 0h1m4 0h1m2 0h4M3 12.5h3m2 0h2m2 0h1m2 0h1m1 0h1m1 0h3m1 0h1m1 0h2m1 0h1M1 13.5h3m2 0h5m2 0h1m3 0h2m1 0h1m3 0h1m1 0h2M1 14.5h2m2 0h1m2 0h5m1 0h3m1 0h8m3 0h1M2 15.5h3m2 0h3m1 0h1m1 0h6m2 0h3m1 0h3M3 16.5h3m2 0h1m2 0h4m1 0h1m7 0h1m3 0h1M1 17.5h2m4 0h1m2 0h3m2 0h2m1 0h1m1 0h1m5 0h2M1 18.5h1m4 0h1m2 0h1m1 0h3m2 0h2m1 0h7m1 0h1m1 0h1M1 19.5h1m1 0h1m2 0h2m2 0h2m12 0h1m2 0h1M1 20.5h1m1 0h1m1 0h1m2 0h1m1 0h1m2 0h1m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1m3 0h1M1 21.5h1m2 0h1m1 0h2m1 0h1m2 0h1m4 0h1m1 0h1m1 0h5m1 0h3M9 22.5h1m3 0h4m1 0h2m1 0h1m3 0h5M1 23.5h7m5 0h6m1 0h2m1 0h1m1 0h3M1 24.5h1m5 0h1m1 0h2m3 0h1m1 0h1m1 0h4m3 0h1m3 0h1M1 25.5h1m1 0h3m1 0h1m1 0h1m1 0h2m2 0h2m4 0h5m1 0h3M1 26.5h1m1 0h3m1 0h1m1 0h1m3 0h2m1 0h2m1 0h2m5 0h2M1 27.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m4 0h1m3 0h6M1 28.5h1m5 0h1m3 0h1m1 0h1m1 0h1m1 0h1m3 0h2m2 0h2m1 0h1M1 29.5h7m1 0h1m2 0h1m1 0h2m1 0h1m1 0h2m1 0h2m1 0h3\"/></svg>"
+    },
+    {
+        tag: "Telewizja CCTV24",
+        title: "Telewizja Uwielbienia CCTV24 – Pieśni Chwały 24/7!",
+        cta: "Wypełnij swój dom pieśniami uwielbienia i transmisją wideo na żywo.",
+        url: "https://polskieradio.cc/cctv24-worship.html",
+        qrLabel: "Włącz TV Live",
+        qrSub: "cctv24 worship",
+        qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 35 35\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h35v35H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m1 0h1m1 0h2m2 0h1m3 0h4m1 0h1m2 0h7M1 2.5h1m5 0h1m1 0h2m1 0h1m2 0h1m2 0h1m2 0h1m2 0h2m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m2 0h1m1 0h6m1 0h1m1 0h1m2 0h1m2 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h2m5 0h1m2 0h2m1 0h1m1 0h2m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m2 0h3m4 0h3m2 0h4m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m4 0h7m4 0h2m2 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h1m3 0h1m1 0h6m2 0h1m1 0h1M1 9.5h1m1 0h2m1 0h3m1 0h4m2 0h1m1 0h2m2 0h1m1 0h1m2 0h1m2 0h1m1 0h2M2 10.5h1m8 0h1m1 0h2m3 0h3m3 0h1m2 0h2m1 0h4M2 11.5h1m2 0h1m1 0h2m3 0h1m1 0h1m4 0h1m2 0h5m1 0h3m1 0h2M1 12.5h2m8 0h1m4 0h1m1 0h1m2 0h4m1 0h3m1 0h1m2 0h1M4 13.5h10m1 0h3m2 0h4m1 0h2m1 0h3m1 0h2M1 14.5h3m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h1m5 0h1m1 0h1M3 15.5h1m2 0h2m1 0h2m1 0h1m1 0h1m3 0h1m1 0h2m5 0h1m1 0h1m1 0h1M9 16.5h1m1 0h6m5 0h2m2 0h3m1 0h2M1 17.5h4m2 0h1m1 0h1m2 0h1m4 0h1m3 0h3m1 0h3m1 0h1m1 0h1M1 18.5h2m1 0h3m2 0h3m1 0h2m1 0h1m4 0h1m2 0h2m1 0h1m1 0h2m1 0h2M2 19.5h1m1 0h6m2 0h2m2 0h1m2 0h1m1 0h2m2 0h1m1 0h3m1 0h2M1 20.5h1m1 0h2m1 0h1m2 0h2m1 0h1m1 0h1m2 0h3m1 0h1m1 0h3m1 0h1m1 0h1m2 0h1M1 21.5h2m1 0h4m1 0h1m2 0h3m2 0h1m5 0h2m3 0h1m1 0h2M1 22.5h2m2 0h1m2 0h3m1 0h7m2 0h4m1 0h2m3 0h1m1 0h1M5 23.5h3m1 0h1m2 0h1m3 0h1m2 0h4m1 0h2m1 0h2m2 0h3M2 24.5h1m2 0h1m2 0h1m4 0h4m2 0h1m1 0h1m1 0h1m1 0h2m3 0h1m2 0h1M1 25.5h1m2 0h1m2 0h3m3 0h1m1 0h1m1 0h2m1 0h1m2 0h7m3 0h1M9 26.5h1m2 0h2m2 0h2m2 0h1m1 0h1m1 0h2m3 0h2m1 0h1M1 27.5h7m1 0h1m1 0h2m1 0h2m2 0h3m1 0h1m1 0h2m1 0h1m1 0h1M1 28.5h1m5 0h1m1 0h1m1 0h1m6 0h2m1 0h1m2 0h2m3 0h4M1 29.5h1m1 0h3m1 0h1m6 0h2m1 0h3m3 0h7m1 0h2M1 30.5h1m1 0h3m1 0h1m1 0h3m2 0h2m1 0h1m2 0h1m2 0h3m2 0h1m2 0h3M1 31.5h1m1 0h3m1 0h1m1 0h3m1 0h2m1 0h4m1 0h2m1 0h1m2 0h2m2 0h1M1 32.5h1m5 0h1m2 0h1m1 0h1m1 0h1m3 0h2m1 0h1m1 0h7m3 0h1M1 33.5h7m1 0h1m2 0h1m4 0h4m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1\"/></svg>"
+    },
+    {
+        tag: "Aplikacja Mobilna",
+        title: "Aplikacja „Dobrze, że jesteś” – Rozważania Każdego Dnia!",
+        cta: "Zainstaluj darmową aplikację i czerp siłę ze Słowa Bożego każdego poranka.",
+        url: "https://cuda-398c0.web.app",
+        qrLabel: "Pobierz App",
+        qrSub: "cuda każdego dnia",
+        qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 27 27\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h27v27H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m3 0h1m3 0h1m3 0h7M1 2.5h1m5 0h1m3 0h1m1 0h1m2 0h2m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h1m2 0h1m6 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1m2 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h2m2 0h2m2 0h1m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h1m2 0h5m2 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h3m1 0h1m2 0h1M1 9.5h1m1 0h5m4 0h4m1 0h1m1 0h5M1 10.5h2m1 0h3m8 0h1m2 0h1m1 0h1m3 0h1M1 11.5h3m3 0h2m5 0h9m1 0h2M1 12.5h1m2 0h2m2 0h1m1 0h4m1 0h2m1 0h2m5 0h1M2 13.5h4m1 0h2m4 0h3m1 0h3m1 0h1m1 0h3M1 14.5h6m2 0h1m1 0h1m1 0h1m6 0h1m1 0h1m1 0h1M1 15.5h1m2 0h8m1 0h1m1 0h8m1 0h2M1 16.5h1m1 0h3m3 0h3m1 0h1m1 0h1m3 0h3m3 0h1M1 17.5h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h8m1 0h1M9 18.5h2m1 0h1m4 0h1m3 0h2M1 19.5h7m5 0h2m2 0h1m1 0h1m1 0h1m1 0h3M1 20.5h1m5 0h1m1 0h1m1 0h1m1 0h1m2 0h2m3 0h2M1 21.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m1 0h6m1 0h1M1 22.5h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m3 0h2m1 0h5M1 23.5h1m1 0h3m1 0h1m1 0h1m4 0h2m1 0h1m4 0h2m1 0h1M1 24.5h1m5 0h1m2 0h1m2 0h1m2 0h2m1 0h4m2 0h1M1 25.5h7m1 0h1m1 0h1m1 0h4m1 0h8\"/></svg>"
+    },
+    {
+        tag: "Modlitwa Narodu",
+        title: "Zjednoczeni w Modlitwie – Stań w Wyłomie za Polskę!",
+        cta: "Dołącz do codziennej modlitwy wstawienniczej za rodziny i naszą Ojczyznę.",
+        url: "https://polskieradio.cc/modlitwa",
+        qrLabel: "Módl się z nami",
+        qrSub: "polskieradio.cc/modlitwa",
+        qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 31 31\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h31v31H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m2 0h3m1 0h3m2 0h3m1 0h7M1 2.5h1m5 0h1m6 0h6m1 0h1m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h1m1 0h4m1 0h1m3 0h1m2 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h2m1 0h1m2 0h2m1 0h2m3 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h3m4 0h6m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h5m4 0h1m4 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h5m1 0h1m1 0h1m2 0h2M1 9.5h1m1 0h5m2 0h2m5 0h2m1 0h1m2 0h5M2 10.5h1m3 0h1m1 0h1m1 0h1m2 0h4m1 0h3m1 0h4m3 0h1M2 11.5h1m1 0h4m2 0h2m2 0h4m3 0h4M1 12.5h1m3 0h2m2 0h3m2 0h1m1 0h1m3 0h2m1 0h1m1 0h2m1 0h1M2 13.5h3m2 0h3m1 0h1m1 0h1m1 0h2m1 0h1m1 0h1m3 0h1m1 0h2M1 14.5h1m1 0h3m7 0h1m2 0h10m3 0h1M1 15.5h1m5 0h4m2 0h1m4 0h1m2 0h3m1 0h3M1 16.5h1m1 0h1m5 0h2m4 0h1m1 0h1m6 0h1m3 0h1M2 17.5h1m2 0h3m2 0h1m2 0h1m4 0h1m1 0h1m5 0h2M1 18.5h1m3 0h2m1 0h1m4 0h4m2 0h7m1 0h1m1 0h1M1 19.5h1m2 0h1m2 0h3m1 0h1m2 0h4m6 0h1m2 0h1M1 20.5h1m1 0h2m1 0h1m3 0h2m1 0h2m1 0h1m2 0h1m1 0h1m2 0h1m3 0h1M1 21.5h1m2 0h5m4 0h1m1 0h2m1 0h1m2 0h5m1 0h3M9 22.5h3m1 0h1m3 0h3m1 0h1m3 0h5M1 23.5h7m2 0h1m2 0h1m2 0h2m2 0h2m1 0h1m1 0h3M1 24.5h1m5 0h1m1 0h1m1 0h3m1 0h1m1 0h1m1 0h3m3 0h1m2 0h1M1 25.5h1m1 0h3m1 0h1m1 0h3m1 0h1m2 0h3m2 0h5m1 0h2M1 26.5h1m1 0h3m1 0h1m1 0h2m1 0h4m1 0h4m5 0h4M1 27.5h1m1 0h3m1 0h1m1 0h1m1 0h3m1 0h2m2 0h1m3 0h6M1 28.5h1m5 0h1m5 0h5m3 0h2m2 0h2m1 0h1M1 29.5h7m1 0h4m3 0h3m1 0h1m1 0h2m1 0h3\"/></svg>"
+    },
+    {
+        tag: "Radio Dzieci",
+        title: "Radio Dziecięce CC – Bezpieczne Słuchowiska Biblijne!",
+        cta: "Włącz wartościowe opowieści biblijne i wesołe piosenki dla swoich pociech.",
+        url: "https://polskieradio.cc#radio-dzieci",
+        qrLabel: "Dla Najmłodszych",
+        qrSub: "polskieradio.cc",
+        qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 31 31\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h31v31H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m1 0h2m1 0h1m1 0h1m1 0h1m2 0h3m1 0h7M1 2.5h1m5 0h1m1 0h1m2 0h1m1 0h1m2 0h1m5 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m2 0h1m1 0h1m4 0h1m1 0h1m3 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m1 0h3m1 0h1m2 0h2m3 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m2 0h4m1 0h4m1 0h1m2 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m2 0h3m1 0h1m3 0h1m1 0h1m2 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h1m1 0h3m2 0h1m1 0h3M1 9.5h1m1 0h2m1 0h3m1 0h2m2 0h1m2 0h3m3 0h1m2 0h1m1 0h2M3 10.5h1m9 0h3m1 0h1m2 0h1m1 0h4m3 0h1M5 11.5h1m1 0h1m1 0h2m3 0h1m2 0h1m5 0h1m1 0h1m1 0h2M1 12.5h2m1 0h1m1 0h1m4 0h2m8 0h2m6 0h1M1 13.5h1m2 0h2m1 0h2m1 0h1m1 0h2m1 0h2m1 0h1m1 0h1m3 0h1m1 0h2M2 14.5h1m1 0h1m3 0h1m1 0h1m1 0h1m2 0h4m1 0h1m2 0h1m3 0h3M2 15.5h2m1 0h1m1 0h3m1 0h4m5 0h2m5 0h3M4 16.5h1m3 0h2m5 0h2m7 0h1m3 0h1M2 17.5h2m1 0h1m1 0h2m1 0h2m1 0h1m1 0h2m2 0h4m1 0h3m1 0h1M2 18.5h1m1 0h1m1 0h1m3 0h2m3 0h2m4 0h1m2 0h1m1 0h3M1 19.5h1m1 0h2m1 0h4m1 0h1m2 0h3m7 0h1m2 0h1M3 20.5h1m2 0h1m3 0h2m1 0h4m1 0h1m3 0h1m2 0h1m1 0h1M2 21.5h1m2 0h5m2 0h1m1 0h3m1 0h10M9 22.5h1m7 0h3m1 0h1m3 0h5M1 23.5h7m1 0h3m3 0h1m2 0h1m1 0h2m1 0h1m1 0h2m1 0h1M1 24.5h1m5 0h1m1 0h2m1 0h1m1 0h2m3 0h1m1 0h1m3 0h2m2 0h1M1 25.5h1m1 0h3m1 0h1m3 0h2m3 0h1m1 0h1m2 0h5m1 0h1M1 26.5h1m1 0h3m1 0h1m1 0h1m2 0h1m3 0h2m2 0h3m1 0h3m2 0h1M1 27.5h1m1 0h3m1 0h1m1 0h3m1 0h3m2 0h3m1 0h1m1 0h1m2 0h1m1 0h1M1 28.5h1m5 0h1m2 0h1m4 0h3m3 0h2m2 0h2m1 0h1M1 29.5h7m1 0h8m3 0h2m1 0h2m1 0h1m1 0h1\"/></svg>"
+    },
+    {
+        tag: "Pokój Serca",
+        title: "Kanał Spokój & Psalmy – Wyciszenie i Odpoczynek w Bogu!",
+        cta: "Zanurz się w kojącej muzyce instrumentalnej i psalmach po trudach dnia.",
+        url: "https://polskieradio.cc#radio-spokoj",
+        qrLabel: "Wycisz Serca",
+        qrSub: "polskieradio.cc",
+        qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 31 31\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h31v31H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m2 0h1m1 0h3m1 0h1m2 0h3m1 0h7M1 2.5h1m5 0h1m2 0h3m1 0h3m1 0h2m1 0h1m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h1m2 0h3m5 0h1m2 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m3 0h1m1 0h1m2 0h2m3 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h2m2 0h1m3 0h1m1 0h3m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h1m1 0h2m3 0h4m3 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h2m4 0h1m1 0h1m2 0h2M1 9.5h1m1 0h5m2 0h1m1 0h2m4 0h1m1 0h1m2 0h5M1 10.5h3m2 0h1m1 0h1m2 0h5m1 0h1m2 0h1m1 0h4m3 0h1M2 11.5h6m6 0h6m1 0h4M2 12.5h5m4 0h1m2 0h1m4 0h3m1 0h1m1 0h2m1 0h1M1 13.5h3m1 0h3m2 0h1m1 0h2m1 0h1m2 0h1m1 0h1m3 0h1m1 0h2M2 14.5h1m1 0h3m1 0h2m7 0h1m1 0h7m3 0h1M3 15.5h1m1 0h1m1 0h2m4 0h1m2 0h2m1 0h1m1 0h3m1 0h3M1 16.5h6m3 0h2m1 0h1m1 0h1m1 0h1m6 0h1m3 0h1M1 17.5h2m2 0h5m3 0h1m4 0h1m1 0h1m5 0h2M1 18.5h1m4 0h1m1 0h2m2 0h4m1 0h1m1 0h7m1 0h1m1 0h1M1 19.5h1m5 0h1m2 0h1m2 0h4m7 0h1m2 0h1M1 20.5h1m1 0h1m2 0h1m1 0h7m1 0h1m2 0h1m1 0h1m2 0h1m3 0h1M1 21.5h1m2 0h4m4 0h1m2 0h4m2 0h5m1 0h3M9 22.5h2m2 0h1m3 0h3m1 0h1m3 0h5M1 23.5h7m3 0h2m3 0h2m1 0h3m1 0h1m1 0h3M1 24.5h1m5 0h1m1 0h2m1 0h2m1 0h1m4 0h2m3 0h1m2 0h1M1 25.5h1m1 0h3m1 0h1m1 0h1m2 0h1m3 0h3m2 0h5m1 0h1M1 26.5h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h1m1 0h4m5 0h4M1 27.5h1m1 0h3m1 0h1m1 0h1m2 0h1m1 0h1m1 0h3m4 0h6M1 28.5h1m5 0h1m2 0h1m3 0h1m1 0h2m3 0h2m2 0h2m1 0h1M1 29.5h7m1 0h3m6 0h3m1 0h2m1 0h3\"/></svg>"
+    },
+    {
+        tag: "Gospel & Worship",
+        title: "Polska Muzyka Uwielbienia – Śpiewaj Panu Pieśń Nową!",
+        cta: "Odkryj najpiękniejsze polskie utwory gospel i wielbij Boga całym sercem.",
+        url: "https://polskieradio.cc#radio-worship",
+        qrLabel: "Polski Worship",
+        qrSub: "polskieradio.cc",
+        qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 31 31\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h31v31H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m1 0h1m2 0h1m2 0h1m1 0h1m1 0h3m1 0h7M1 2.5h1m5 0h1m1 0h1m1 0h2m2 0h1m1 0h1m5 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m2 0h1m1 0h1m1 0h1m2 0h1m1 0h1m3 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m1 0h3m4 0h2m3 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m3 0h2m1 0h5m1 0h1m2 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m4 0h2m1 0h1m1 0h2m1 0h1m2 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h4m1 0h2m2 0h3M1 9.5h1m1 0h2m1 0h3m4 0h7m3 0h1m2 0h1m1 0h2M1 10.5h1m3 0h1m3 0h1m1 0h2m4 0h1m2 0h1m1 0h4m3 0h1M1 11.5h2m1 0h1m2 0h1m1 0h1m5 0h1m1 0h1m5 0h1m1 0h1m1 0h2M2 12.5h1m2 0h1m3 0h4m1 0h4m3 0h2m6 0h1M3 13.5h1m3 0h1m1 0h1m2 0h1m3 0h3m1 0h1m3 0h1m1 0h2M1 14.5h1m2 0h3m2 0h1m3 0h2m1 0h3m1 0h1m2 0h1m3 0h3M2 15.5h6m2 0h1m2 0h1m1 0h1m1 0h1m2 0h2m5 0h3M1 16.5h6m1 0h3m1 0h3m9 0h1m3 0h1M1 17.5h1m1 0h1m1 0h1m1 0h1m2 0h1m1 0h2m3 0h1m1 0h4m1 0h3m1 0h1M4 18.5h2m3 0h3m2 0h1m1 0h1m4 0h1m2 0h1m1 0h3M1 19.5h1m2 0h4m2 0h2m4 0h2m6 0h1m2 0h1M3 20.5h1m4 0h4m4 0h3m3 0h1m2 0h1m1 0h1M2 21.5h8m4 0h1m1 0h12M9 22.5h7m1 0h3m1 0h1m3 0h5M1 23.5h7m1 0h2m2 0h2m2 0h2m1 0h2m1 0h1m1 0h2m1 0h1M1 24.5h1m5 0h1m1 0h2m1 0h2m2 0h1m2 0h1m1 0h1m3 0h2m1 0h2M1 25.5h1m1 0h3m1 0h1m2 0h4m1 0h4m2 0h5m1 0h1M1 26.5h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h3m2 0h3m1 0h3m2 0h1M1 27.5h1m1 0h3m1 0h1m1 0h1m4 0h1m3 0h3m1 0h1m1 0h1m2 0h1m1 0h1M1 28.5h1m5 0h1m4 0h2m2 0h2m3 0h2m2 0h2m1 0h1M1 29.5h7m1 0h1m1 0h6m3 0h2m1 0h2m1 0h1m1 0h1\"/></svg>"
+    },
+    {
+        tag: "Mecenat Ewangelii",
+        title: "Wesprzyj Dzieło Ewangelizacji – Zostań Patronem CC!",
+        cta: "Pomóż docierać z Ewangelią i Biblią Audio do tysięcy zagubionych serc.",
+        url: "https://patronite.pl/osobowoscplus",
+        qrLabel: "Zostań Patronem",
+        qrSub: "patronite.pl",
+        qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 31 31\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h31v31H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m2 0h3m1 0h3m3 0h2m1 0h7M1 2.5h1m5 0h1m2 0h2m2 0h6m1 0h1m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h6m1 0h1m3 0h2m1 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m2 0h1m2 0h2m1 0h1m1 0h1m2 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h1m3 0h1m2 0h6m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h1m1 0h3m4 0h1m2 0h1m1 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h1m5 0h1m1 0h1m2 0h2M1 9.5h1m1 0h5m2 0h1m7 0h1m1 0h1m2 0h5M4 10.5h2m3 0h1m1 0h1m1 0h4m2 0h2m1 0h4m3 0h1M3 11.5h7m2 0h8m3 0h1M1 12.5h1m1 0h4m2 0h1m1 0h2m1 0h1m4 0h1m1 0h1m1 0h1m1 0h2m1 0h1M1 13.5h3m2 0h2m1 0h1m2 0h2m1 0h4m1 0h1m3 0h1m1 0h2M1 14.5h1m1 0h1m1 0h1m2 0h4m5 0h9m3 0h1M3 15.5h2m1 0h5m2 0h1m2 0h3m4 0h1m1 0h3M6 16.5h1m1 0h4m1 0h1m1 0h3m4 0h4m2 0h1M6 17.5h2m1 0h1m1 0h1m4 0h3m2 0h1m2 0h1m1 0h2M1 18.5h1m1 0h3m2 0h1m1 0h1m3 0h2m1 0h1m2 0h6m1 0h1m1 0h1M1 19.5h1m3 0h1m1 0h1m1 0h2m2 0h4m1 0h1m3 0h4m1 0h1M1 20.5h1m1 0h1m6 0h3m1 0h1m1 0h2m2 0h2m3 0h1m2 0h1M1 21.5h1m3 0h1m1 0h1m5 0h1m1 0h1m2 0h1m1 0h6m1 0h3M9 22.5h3m1 0h1m3 0h3m1 0h1m3 0h5M1 23.5h7m8 0h1m1 0h1m1 0h2m1 0h1m1 0h3M1 24.5h1m5 0h1m1 0h2m4 0h2m4 0h1m3 0h1m2 0h2M1 25.5h1m1 0h3m1 0h1m1 0h1m2 0h1m3 0h3m2 0h5m1 0h2M1 26.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1m5 0h4M1 27.5h1m1 0h3m1 0h1m1 0h1m1 0h2m3 0h5m2 0h6M1 28.5h1m5 0h1m3 0h1m9 0h1m3 0h2m1 0h1M1 29.5h7m1 0h1m3 0h1m1 0h2m1 0h1m1 0h1m1 0h1m2 0h3\"/></svg>"
+    },
+    {
+        tag: "Dar Słowa",
+        title: "Darmowy Kreator Kalendarza – Podaruj Bliskim Boży Rok!",
+        cta: "Wyślij bezpłatny kalendarz ścienny A4 swojej rodzinie, parafii i przyjaciołom.",
+        url: "https://polskieradio.cc/kalendarz",
+        qrLabel: "Kreator A4",
+        qrSub: "polskieradio.cc/kalendarz",
+        qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 31 31\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h31v31H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m1 0h1m6 0h2m1 0h3m1 0h7M1 2.5h1m5 0h1m1 0h1m3 0h1m1 0h2m6 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m3 0h1m2 0h3m2 0h1m3 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m3 0h3m3 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m3 0h2m1 0h1m5 0h1m2 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m2 0h3m2 0h1m2 0h3m2 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h3m1 0h3m2 0h3M1 9.5h1m1 0h2m1 0h3m2 0h5m1 0h3m3 0h1m2 0h1m1 0h2M2 10.5h3m1 0h1m2 0h5m2 0h5m1 0h4m3 0h1M4 11.5h2m1 0h1m3 0h1m3 0h2m6 0h1m1 0h1m1 0h2M9 12.5h2m1 0h1m1 0h3m2 0h1m1 0h2m6 0h1M2 13.5h1m4 0h1m3 0h1m1 0h1m4 0h1m1 0h1m3 0h1m1 0h2M1 14.5h1m1 0h2m1 0h1m2 0h4m1 0h1m3 0h1m1 0h1m2 0h1m3 0h3M2 15.5h1m2 0h1m1 0h1m1 0h3m3 0h1m1 0h1m2 0h2m5 0h3M5 16.5h1m4 0h1m1 0h3m9 0h1m3 0h1M1 17.5h5m1 0h2m2 0h3m2 0h2m1 0h4m1 0h3m1 0h1M3 18.5h2m1 0h1m1 0h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h3M1 19.5h1m1 0h1m2 0h2m2 0h1m1 0h1m3 0h1m7 0h1m2 0h1M3 20.5h2m1 0h1m1 0h5m3 0h1m1 0h1m3 0h1m2 0h1m1 0h1M2 21.5h2m2 0h4m4 0h1m3 0h10M9 22.5h2m1 0h4m1 0h1m1 0h1m1 0h1m3 0h5M1 23.5h7m1 0h2m3 0h1m2 0h5m1 0h1m1 0h2m1 0h1M1 24.5h1m5 0h1m1 0h1m1 0h1m1 0h1m3 0h1m1 0h1m1 0h1m3 0h2m1 0h2M1 25.5h1m1 0h3m1 0h1m2 0h1m1 0h2m1 0h2m1 0h1m2 0h5m1 0h2M1 26.5h1m1 0h3m1 0h1m1 0h9m2 0h3m1 0h3m2 0h1M1 27.5h1m1 0h3m1 0h1m1 0h2m4 0h1m1 0h4m1 0h1m1 0h1m2 0h1m1 0h1M1 28.5h1m5 0h1m2 0h3m1 0h1m1 0h2m1 0h1m1 0h2m2 0h2m1 0h1M1 29.5h7m1 0h1m1 0h1m2 0h1m4 0h3m1 0h2m1 0h1m1 0h1\"/></svg>"
+    }
+];
+
         let coverImg = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop";
         let monthsMeta = JSON.parse(JSON.stringify(defaultMonthsMeta));
 
@@ -1058,10 +1169,18 @@
                         <div class="text-6xl md:text-8xl font-cinzel font-black text-gray-900 tracking-tighter">
                             ${year}
                         </div>
-                        <div class="mt-3 md:mt-4 inline-flex items-center gap-2.5 px-5 py-2 bg-amber-50 border border-amber-300/60 rounded-full shadow-sm">
+                        <div class="mt-2 md:mt-3 inline-flex items-center gap-2.5 px-5 py-2 bg-amber-50 border border-amber-300/60 rounded-full shadow-sm">
                             <div class="w-2.5 h-2.5 rounded-full gold-gradient"></div>
                             <span class="text-amber-900 text-[11px] md:text-sm font-bold tracking-wider font-cinzel uppercase">
                                 Wydanie Autorskie • PolskieRadio.cc
+                            </span>
+                        </div>
+                        <div class="mt-3 md:mt-4 max-w-lg mx-auto px-4 py-2.5 bg-amber-50/70 border border-amber-300/50 rounded-xl text-center">
+                            <span class="text-[9.5px] md:text-xs text-amber-950 font-medium italic block leading-relaxed">
+                                „Pamiętaj, abyś dzień sobotni święcił. Sześć dni robić będziesz i będziesz wykonywał wszystkie roboty twoje; ale dnia siódmego sabat Pana, Boga twego, jest... i dlatego pobłogosławił Pan dniowi sobotniemu i poświęcił go.”
+                            </span>
+                            <span class="text-[8.5px] md:text-[9.5px] text-amber-800 font-bold uppercase tracking-wider font-cinzel mt-1 block">
+                                — Dekalog w przekładzie ks. Jakuba Wujka (Wj 20,8-11 BJW)
                             </span>
                         </div>
                     </div>
@@ -1178,6 +1297,7 @@
                     `;
                 }
 
+                const banner = missionaryBanners[monthIndex] || missionaryBanners[0];
                 const monthCardHTML = `
                     <div class="calendar-page ${isCardVisible ? '' : 'hidden'}" id="page-card-${cardIdx}">
                         <div class="month-photo-container relative w-full h-[100mm] rounded-xl overflow-hidden shadow-md border border-gray-200 group flex-shrink-0">
@@ -1199,27 +1319,30 @@
                             </button>
                         </div>
 
-                        <div class="cc-banner my-2 md:my-2.5 px-3 md:px-4 py-2 md:py-2.5 rounded-xl bg-gradient-to-r from-amber-50/90 via-white to-amber-50/90 border border-amber-400/40 shadow-sm flex items-center justify-between">
-                            <div class="flex items-center gap-2.5 md:gap-3">
-                                <div class="w-7 h-7 md:w-9 md:h-9 rounded-lg md:rounded-xl gold-gradient flex items-center justify-center text-gray-950 font-black text-xs md:text-sm font-cinzel shadow-sm flex-shrink-0">
+                        <div class="cc-banner my-2 md:my-2.5 px-3 md:px-4 py-2 md:py-2.5 rounded-xl bg-gradient-to-r from-amber-50/90 via-white to-amber-50/90 border border-amber-400/40 shadow-sm flex items-center justify-between flex-shrink-0">
+                            <div class="flex items-center gap-2.5 md:gap-3 min-w-0 pr-2">
+                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl gold-gradient flex items-center justify-center text-gray-950 font-black text-xs md:text-sm font-cinzel shadow-sm flex-shrink-0">
                                     CC
                                 </div>
-                                <div>
-                                    <h4 class="text-[11px] md:text-sm font-bold text-gray-900 leading-tight font-cinzel">
-                                        Słuchaj Radia i oglądaj programy na żywo!
+                                <div class="min-w-0">
+                                    <div class="inline-flex items-center gap-1.5 mb-0.5">
+                                        <span class="px-1.5 py-0.5 bg-amber-500/20 text-amber-900 rounded text-[7.5px] md:text-[8.5px] font-bold uppercase tracking-wider font-cinzel">${banner.tag}</span>
+                                    </div>
+                                    <h4 class="text-[10.5px] md:text-xs font-bold text-gray-900 leading-tight font-cinzel truncate">
+                                        ${banner.title}
                                     </h4>
-                                    <p class="text-[8.5px] md:text-[10px] text-gray-600 font-medium leading-tight">
-                                        6 Stacji Radiowych 24/7 • Biblia Audio • Portal: <strong>polskieradio.cc</strong>
+                                    <p class="text-[8px] md:text-[9.5px] text-gray-600 font-medium leading-tight truncate mt-0.5">
+                                        ${banner.cta} • <span class="text-amber-800 font-semibold">${banner.url.replace('https://', '')}</span>
                                     </p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2 pl-2 border-l border-amber-300/50 flex-shrink-0">
                                 <div class="text-right hidden sm:block">
-                                    <span class="text-[8px] font-bold text-amber-800 uppercase tracking-wider block font-cinzel">Skanuj QR</span>
-                                    <span class="text-[7px] text-gray-500 block">Wejdź na radio</span>
+                                    <span class="text-[7.5px] font-bold text-amber-900 uppercase tracking-wider block font-cinzel leading-tight">${banner.qrLabel}</span>
+                                    <span class="text-[6.5px] text-gray-500 block leading-tight">${banner.qrSub}</span>
                                 </div>
-                                <div class="w-7 h-7 md:w-8 md:h-8 rounded p-0.5 bg-white border border-gray-200 shadow-sm flex-shrink-0">
-                                    ${qrCodeSvg}
+                                <div class="w-8 h-8 md:w-9 md:h-9 rounded p-0.5 bg-white border border-gray-200 shadow-sm flex-shrink-0 flex items-center justify-center" title="${banner.title}">
+                                    ${banner.qrSvg}
                                 </div>
                             </div>
                         </div>
@@ -1238,10 +1361,13 @@
                             ${daysHTML}
                         </div>
 
-                        <div class="mt-1.5 md:mt-2 pt-1.5 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between text-[7.5px] md:text-[9px] text-gray-600 gap-0.5">
-                            <span class="text-left font-medium">
-                                <strong>IV Przykazanie Boże (Wj 20,8-11 BJW):</strong> „Pamiętaj, abyś dzień sobotni święcił. Sześć dni robić będziesz... ale dnia siódmego sabat Pana, Boga twego, jest... pobłogosławił Pan dniowi sobotniemu i poświęcił go.”
-                            </span>
+                        <div class="mt-1.5 md:mt-2 pt-1.5 border-t border-gray-200 flex items-center justify-between text-[8px] md:text-[10px] text-gray-600">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-gray-900 font-cinzel tracking-wide">POLSKIERADIO.CC</span>
+                                <span>•</span>
+                                <span class="hidden sm:inline">Chrześcijański Ekosystem Medialny • 6 Stacji 24/7 & Biblia Audio</span>
+                                <span class="sm:hidden">Kalendarz Biblijny ${year}</span>
+                            </div>
                             <span class="text-amber-800 font-bold font-cinzel flex-shrink-0">Karta ${monthIndex + 2} z 13</span>
                         </div>
                     </div>
