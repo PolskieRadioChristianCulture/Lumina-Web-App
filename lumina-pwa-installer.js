@@ -38,14 +38,14 @@
                 try {
                     const registrations = await navigator.serviceWorker.getRegistrations();
                     for (const reg of registrations) {
-                        if (reg.active && !reg.active.scriptURL.includes('v=20260907_v420')) {
+                        if (reg.active && !reg.active.scriptURL.includes('v=20260907_v430')) {
                             console.log('[LUMINA PWA] Wyrejestrowywanie starego Service Workera:', reg.active.scriptURL);
                             await reg.unregister();
                         }
                     }
                 } catch (e) {}
 
-                navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260907_v420', { scope: './' })
+                navigator.serviceWorker.register('firebase-messaging-sw.js?v=20260907_v430', { scope: './' })
                     .then((reg) => {
                         swRegistration = reg;
                         console.log('[LUMINA PWA] Service Worker zarejestrowany pomyślnie. Scope:', reg.scope);

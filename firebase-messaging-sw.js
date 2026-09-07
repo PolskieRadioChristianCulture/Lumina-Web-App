@@ -100,7 +100,7 @@ try {
 // High-performance caching, stale-while-revalidate & offline navigation
 // ══════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'lumina-pwa-cache-v4.2.0-20260907';
+const CACHE_NAME = 'lumina-pwa-cache-v4.3.0-20260907';
 const APP_SHELL_ASSETS = [
     './',
     './lumina.html',
@@ -178,6 +178,11 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
+    // Allow native browser navigation for HTML pages - eliminates ERR_FAILED black screen flashes on reload
+    if (request.mode === 'navigate' || request.destination === 'document') {
+        return;
+    }
+
     // Static Assets (Images, Fonts, CSS) -> Stale-While-Revalidate (Instant load from Cache + background update)
     const isStaticAsset = /\.(png|jpg|jpeg|webp|svg|gif|woff2?|ttf|css)(\?.*)?$/i.test(url.pathname);
 
@@ -198,28 +203,6 @@ self.addEventListener('fetch', (event) => {
         );
         return;
     }
-
-    // HTML Navigation Pages -> Network First with Cache Fallback
-    event.respondWith(
-        fetch(request)
-            .then((networkResponse) => {
-                if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-                    const responseToCache = networkResponse.clone();
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(request, responseToCache).catch(() => {});
-                    }).catch(() => {});
-                }
-                return networkResponse;
-            })
-            .catch(() => {
-                return caches.match(request).then((cachedResponse) => {
-                    if (cachedResponse) return cachedResponse;
-                    if (request.headers.get('accept')?.includes('text/html')) {
-                        return caches.match('./lumina.html') || caches.match('./index.html');
-                    }
-                }).catch(() => {});
-            })
-    );
 });
 
 // ══════════════════════════════════════════════════════════════════════════
