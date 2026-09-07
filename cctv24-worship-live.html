@@ -3686,14 +3686,18 @@ window.addEventListener('message', function(e) {
             audio.muted = true;
         }
     } else if (type === 'UNMUTE_AUDIO' || type === 'unMute') {
+        window._worshipUserInteracted = true;
         if (audio) {
             audio.muted = false;
+            audio.volume = 1.0;
             if (audio.paused || !audio.src) {
                 if (typeof window.worshipSyncAndPlay === 'function') {
                     window.worshipSyncAndPlay();
                 } else {
                     audio.play().catch(function(){});
                 }
+            } else {
+                audio.play().catch(function(){});
             }
         }
     }

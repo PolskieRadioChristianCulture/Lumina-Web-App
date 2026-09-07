@@ -236,7 +236,7 @@
     <script type="module" src="lumina-i18n.js?v=4.1.0_20260830"></script>
     <script src="lumina-terms-modal.js?v=4.1.0_20260830"></script>
     <script src="lumina-sharing-suite.js?v=4.1.0_20260830"></script>
-    <script src="lumina-pwa-installer.js?v=4.1.0_20260830"></script>
+    <script src="lumina-pwa-installer.js?v=4.2.0_20260907"></script>
 
     <style>
         :root {
@@ -5904,12 +5904,39 @@
             const isCurrentlyUnmuted = btn.dataset.unmuted === 'true';
 
             if (!isCurrentlyUnmuted) {
-                if (iframe && iframe.contentWindow) {
+                if (iframe) {
                     try {
-                        iframe.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*');
-                        iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-                        iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                        const innerDoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+                        if (innerDoc) {
+                            const innerAudio = innerDoc.getElementById('stream-audio') || innerDoc.querySelector('audio');
+                            if (innerAudio) {
+                                innerAudio.muted = false;
+                                innerAudio.volume = 1.0;
+                                innerAudio.play().catch(function(){});
+                            }
+                            const innerVideo = innerDoc.querySelector('video');
+                            if (innerVideo) {
+                                innerVideo.muted = false;
+                                innerVideo.volume = 1.0;
+                                innerVideo.play().catch(function(){});
+                            }
+                        }
+                        if (iframe.contentWindow) {
+                            iframe.contentWindow._worshipUserInteracted = true;
+                            if (typeof iframe.contentWindow.worshipSyncAndPlay === 'function') {
+                                iframe.contentWindow.worshipSyncAndPlay();
+                            }
+                        }
                     } catch(e) {}
+
+                    if (iframe.contentWindow) {
+                        try {
+                            iframe.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*');
+                            iframe.contentWindow.postMessage('UNMUTE_AUDIO', '*');
+                            iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                            iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                        } catch(e) {}
+                    }
                 }
                 btn.dataset.unmuted = 'true';
                 btn.innerHTML = '<i class="fa-solid fa-volume-high" style="color:#22c55e;"></i> <span>Wycisz Dźwięk 🔊</span>';
@@ -5917,11 +5944,24 @@
                 btn.style.borderColor = '#22c55e';
                 btn.style.color = '#86efac';
             } else {
-                if (iframe && iframe.contentWindow) {
+                if (iframe) {
                     try {
-                        iframe.contentWindow.postMessage({ type: 'MUTE_AUDIO' }, '*');
-                        iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                        const innerDoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+                        if (innerDoc) {
+                            const innerAudio = innerDoc.getElementById('stream-audio') || innerDoc.querySelector('audio');
+                            if (innerAudio) innerAudio.muted = true;
+                            const innerVideo = innerDoc.querySelector('video');
+                            if (innerVideo) innerVideo.muted = true;
+                        }
                     } catch(e) {}
+
+                    if (iframe.contentWindow) {
+                        try {
+                            iframe.contentWindow.postMessage({ type: 'MUTE_AUDIO' }, '*');
+                            iframe.contentWindow.postMessage('MUTE_AUDIO', '*');
+                            iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                        } catch(e) {}
+                    }
                 }
                 btn.dataset.unmuted = 'false';
                 btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> <span>Włącz Dźwięk</span>';

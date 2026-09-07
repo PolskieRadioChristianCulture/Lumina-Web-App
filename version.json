@@ -1,13 +1,11 @@
 {
-  "version": "4.1.0",
-  "buildDate": "2026-08-30T19:30:00.000Z",
-  "releaseName": "LUMINA v4.1.0 – Szybkie Logowanie Google, Odznaki Wiary & Nowy Czat",
+  "version": "4.2.0",
+  "buildDate": "2026-09-07T04:45:00.000Z",
+  "releaseName": "LUMINA v4.2.0 – Naprawa Przełącznika Dźwięku i Autoodtwarzania TV Live",
   "changes": [
-    "✨ Nowa, dedykowana strona szybkiego logowania Google dla każdego: polskieradio.cc/login",
-    "⛪ 3 niezależne odznaki praktyk wiary: Sobotnie nabożeństwo, Niedzielne nabożeństwo, Msza Święta",
-    "💬 Precyzyjny system powiadomień i liczników czatu w czasie rzeczywistym",
-    "🔔 Pancerne obserwowanie profili (jednokierunkowy follow bez przypadkowego anulowania)",
-    "📱 Błyskawiczna synchronizacja i czyszczenie pamięci podręcznej na urządzeniach mobilnych"
+    "🔊 Pancerne włączanie i wyłączanie dźwięku w oknie TV Live na profilu i tablicy",
+    "🔇 Domyślne wyciszenie transmisji po wejściu na stronę z ergonomicznym przełącznikiem audio",
+    "✨ Błyskawiczna synchronizacja i odświeżenie pamięci podręcznej Service Workera"
   ],
-  "minAppVersion": "4.1.0"
+  "minAppVersion": "4.2.0"
 }
