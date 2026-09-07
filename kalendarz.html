@@ -440,6 +440,8 @@
             touch-action: manipulation;
         }
     </style>
+    <script src="/html2canvas.min.js"></script>
+    <script src="/jspdf.umd.min.js"></script>
     <script src="/html2pdf.bundle.min.js"></script>
     <script src="/js/cc-global-auth.js" defer></script>
 </head>
@@ -1320,69 +1322,55 @@
                     ? `Kalendarz_${year}_Christian_Culture_Pelny.pdf` 
                     : `Kalendarz_${year}_Christian_Culture_Karta_${activeCardIndex + 1}.pdf`;
 
-                let exportElement;
-                if (mode === 'all') {
-                    if (progressText) progressText.textContent = 'Przygotowywanie 13 stron do pobrania...';
-                    exportElement = document.createElement('div');
-                    exportElement.className = 'pdf-export-wrapper';
-                    exportElement.style.cssText = 'width:210mm;background:#ffffff;display:block;';
+                let hasJsPDF = (typeof window.jspdf !== 'undefined' && window.jspdf.jsPDF) || (typeof jsPDF !== 'undefined');
+                let hasHtml2Canvas = typeof html2canvas !== 'undefined';
 
-                    const pages = document.querySelectorAll('.calendar-page');
-                    pages.forEach((p, idx) => {
+                if (hasJsPDF && hasHtml2Canvas) {
+                    const jsPDFClass = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : jsPDF;
+                    const pdf = new jsPDFClass({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+
+                    let targets = [];
+                    if (mode === 'all') {
+                        targets = Array.from(document.querySelectorAll('.calendar-page'));
+                    } else {
+                        const cur = document.getElementById(`page-card-${activeCardIndex}`);
+                        if (cur) targets = [cur];
+                    }
+
+                    for (let i = 0; i < targets.length; i++) {
+                        if (progressText) progressText.textContent = `Generowanie strony ${i + 1} z ${targets.length}...`;
+
+                        const p = targets[i];
                         const clone = p.cloneNode(true);
                         clone.classList.remove('hidden');
                         clone.classList.add('original-size');
-                        clone.style.display = 'flex';
-                        clone.style.marginBottom = '0';
-                        clone.style.boxShadow = 'none';
-                        clone.style.borderRadius = '0';
-                        // Remove UI buttons (no-print)
+                        clone.style.cssText = 'width: 210mm; min-height: 297mm; height: 297mm; margin: 0; padding: 0 12mm 10mm 12mm; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; background: #ffffff; border-radius: 0; box-shadow: none;';
                         clone.querySelectorAll('.no-print').forEach(el => el.remove());
-                        // Strip contenteditable so html2canvas renders cleanly
                         clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
-                        if (idx < pages.length - 1) {
-                            clone.style.pageBreakAfter = 'always';
-                            clone.style.breakAfter = 'page';
-                        }
-                        exportElement.appendChild(clone);
-                    });
-                    document.body.appendChild(exportElement);
-                } else {
-                    if (progressText) progressText.textContent = 'Przygotowywanie arkusza bieżącej strony...';
-                    const activePage = document.getElementById(`page-card-${activeCardIndex}`);
-                    exportElement = activePage.cloneNode(true);
-                    exportElement.classList.remove('hidden');
-                    exportElement.classList.add('original-size');
-                    exportElement.style.width = '210mm';
-                    exportElement.style.display = 'flex';
-                    exportElement.style.boxShadow = 'none';
-                    exportElement.style.borderRadius = '0';
-                    // Remove UI buttons (no-print)
-                    exportElement.querySelectorAll('.no-print').forEach(el => el.remove());
-                    // Strip contenteditable
-                    exportElement.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
-                    document.body.appendChild(exportElement);
-                }
 
-                if (typeof html2pdf !== 'undefined') {
-                    if (progressText) progressText.textContent = 'Generowanie i zapisywanie pliku PDF na Twoim urządzeniu...';
-                    const opt = {
-                        margin: 0,
-                        filename: filename,
-                        image: { type: 'jpeg', quality: 0.98 },
-                        html2canvas: { 
-                            scale: 3,
-                            useCORS: true, 
+                        const container = document.createElement('div');
+                        container.style.cssText = 'position: fixed; left: 0; top: 0; width: 210mm; height: 297mm; z-index: -9999; overflow: hidden; background: #ffffff;';
+                        container.appendChild(clone);
+                        document.body.appendChild(container);
+
+                        const canvas = await html2canvas(clone, {
+                            scale: 2,
+                            useCORS: true,
                             allowTaint: true,
                             logging: false,
-                            letterRendering: true,
-                            imageTimeout: 0
-                        },
-                        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
-                        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-                    };
-                    await html2pdf().set(opt).from(exportElement).save();
-                    exportElement.remove();
+                            width: clone.offsetWidth,
+                            height: clone.offsetHeight
+                        });
+
+                        container.remove();
+
+                        const imgData = canvas.toDataURL('image/jpeg', 0.92);
+                        if (i > 0) pdf.addPage();
+                        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+                    }
+
+                    if (progressText) progressText.textContent = 'Zapisywanie pliku PDF na Twoim urządzeniu...';
+                    pdf.save(filename);
                     if (progressText) progressText.textContent = 'Plik PDF został pomyślnie pobrany!';
                     setTimeout(() => {
                         closePDFModal();
@@ -1391,7 +1379,6 @@
                         if (btnCurrent) btnCurrent.disabled = false;
                     }, 1200);
                 } else {
-                    exportElement.remove();
                     closePDFModal();
                     window.print();
                 }
