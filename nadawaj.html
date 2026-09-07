@@ -1297,23 +1297,21 @@
                 });
             }
 
-            // Dynamic fail-safe cleanup for Google Translate top banner (hides all non-YouTube iframes)
+            // Dynamic fail-safe cleanup for Google Translate top banner (only hides Google Translate bar, NEVER player iframes!)
             function cleanGoogleBanner() {
-                document.querySelectorAll('iframe').forEach(iframe => {
-                    if (!iframe.src.includes('youtube.com') && !iframe.src.includes('youtube-nocookie.com') && !iframe.classList.contains('allow-preview')) {
-                        iframe.style.setProperty('display', 'none', 'important');
-                        iframe.style.setProperty('visibility', 'hidden', 'important');
-                        iframe.style.setProperty('height', '0px', 'important');
-                        iframe.style.setProperty('width', '0px', 'important');
-                        iframe.style.setProperty('opacity', '0', 'important');
-                    }
+                document.querySelectorAll('iframe.goog-te-banner-frame, iframe[id*=":1.container"], .goog-te-banner-frame, iframe[src*="translate.google.com"], iframe[src*="translate.googleapis.com"]').forEach(iframe => {
+                    iframe.style.setProperty('display', 'none', 'important');
+                    iframe.style.setProperty('visibility', 'hidden', 'important');
+                    iframe.style.setProperty('height', '0px', 'important');
+                    iframe.style.setProperty('width', '0px', 'important');
+                    iframe.style.setProperty('opacity', '0', 'important');
                 });
                 document.body.style.setProperty('top', '0px', 'important');
                 document.body.style.setProperty('position', 'static', 'important');
                 document.documentElement.style.setProperty('margin-top', '0px', 'important');
             }
             cleanGoogleBanner();
-            setInterval(cleanGoogleBanner, 200);
+            setInterval(cleanGoogleBanner, 500);
 
             // ── PREMIUM EMBED MODAL & SHARE FUNCTIONS ──
             const embedModal = document.getElementById("embedModal");

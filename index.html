@@ -22,6 +22,38 @@
     <meta name="ai-agent" content="enabled, allow-citations, format=markdown, llms-doc=https://polskieradio.cc/llms.txt">
     <link rel="canonical" href="https://polskieradio.cc/">
 
+    <!-- ══════════ GWARANCJA JĘZYKA POLSKIEGO JAKO DOMYŚLNEGO (Christian Culture) ══════════ -->
+    <script>
+        (function() {
+            try {
+                // Jeśli użytkownik nie wybrał wyraźnie i świadomie języka angielskiego, ZAWSZE wymuś polski
+                var isExplicitEn = localStorage.getItem('lumina_lang') === 'en' && sessionStorage.getItem('lumina_explicit_en') === '1';
+                if (!isExplicitEn) {
+                    localStorage.setItem('lumina_lang', 'pl');
+                    sessionStorage.removeItem('lumina_explicit_en');
+                    
+                    // Skuteczne czyszczenie ciasteczek googtrans na wszystkich poziomach domen
+                    var host = window.location.hostname;
+                    var domains = ['', host, '.' + host];
+                    var parts = host.split('.');
+                    if (parts.length >= 2) {
+                        var rootDomain = parts.slice(-2).join('.');
+                        domains.push(rootDomain);
+                        domains.push('.' + rootDomain);
+                    }
+                    var paths = ['/', ''];
+                    domains.forEach(function(d) {
+                        paths.forEach(function(p) {
+                            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + p + (d ? '; domain=' + d : '');
+                            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + p;
+                        });
+                    });
+                    document.cookie = 'googtrans=/pl/pl; path=/;';
+                }
+            } catch(e) {}
+        })();
+    </script>
+
     <!-- ══════════ AI SEARCH ENGINE & LLM STRUCTURED DATA (JSON-LD SCHEMA.ORG — GEO / AIO) ══════════ -->
     <script type="application/ld+json">
     {
@@ -1134,9 +1166,9 @@
                         (function() {
                             window.playMasterLiveInline = function(event) {
                                 if (event) event.preventDefault();
-                                const box = document.querySelector('.hero-section .video-container');
+                                const box = document.querySelector('#liveStreamBox .video-container') || document.querySelector('.hero-section .video-container');
                                 if (box) {
-                                    box.innerHTML = '<iframe src="master-live.html?muted=0&autoplay=1&embed=1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px;" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; clipboard-write; clipboard-read; accelerometer; encrypted-media; gyroscope; web-share" allowfullscreen></iframe>';
+                                    box.innerHTML = '<iframe id="masterLiveFrame" class="live-player-embed" src="master-live.html?muted=0&autoplay=1&embed=1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px; z-index: 10; display: block;" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; clipboard-write; clipboard-read; accelerometer; encrypted-media; gyroscope; web-share" allowfullscreen></iframe>';
                                 } else {
                                     window.location.href = "master";
                                 }
@@ -2186,30 +2218,49 @@
 
     <!-- Scripts -->
     <script type="text/javascript">
-        // ── ENFORCE POLISH AS DEFAULT LANGUAGE ──
+        // ── ENFORCE POLISH AS DEFAULT LANGUAGE & CLEAN TRANSLATE ──
+        function purgeGoogleTransCookies() {
+            try {
+                var host = window.location.hostname;
+                var domains = ['', host, '.' + host];
+                var parts = host.split('.');
+                if (parts.length >= 2) {
+                    var rootDomain = parts.slice(-2).join('.');
+                    domains.push(rootDomain);
+                    domains.push('.' + rootDomain);
+                }
+                var paths = ['/', ''];
+                domains.forEach(function(d) {
+                    paths.forEach(function(p) {
+                        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + p + (d ? '; domain=' + d : '');
+                        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + p;
+                    });
+                });
+            } catch(e) {}
+        }
+
         (function() {
             try {
-                const savedLang = localStorage.getItem('lumina_lang');
-                if (!savedLang || savedLang === 'pl') {
+                var isExplicitEn = localStorage.getItem('lumina_lang') === 'en' && sessionStorage.getItem('lumina_explicit_en') === '1';
+                if (!isExplicitEn) {
                     localStorage.setItem('lumina_lang', 'pl');
-                    if (document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen')) {
-                        document.cookie = 'googtrans=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                        if (window.location.hostname.includes('.')) {
-                            document.cookie = 'googtrans=; Path=/; domain=' + window.location.hostname + '; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                        }
-                        document.cookie = 'googtrans=/pl/pl; Path=/;';
-                    }
+                    sessionStorage.removeItem('lumina_explicit_en');
+                    purgeGoogleTransCookies();
+                    document.cookie = 'googtrans=/pl/pl; path=/;';
                 }
             } catch(e) {}
         })();
 
         function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'pl',
-                includedLanguages: 'en,pl',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-            }, 'google_translate_element');
+            // Google Translate uruchamia się WYŁĄCZNIE gdy użytkownik świadomie wybrał język angielski
+            if (localStorage.getItem('lumina_lang') === 'en' && sessionStorage.getItem('lumina_explicit_en') === '1') {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'pl',
+                    includedLanguages: 'en,pl',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
+                }, 'google_translate_element');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -2218,8 +2269,7 @@
  
             // Function to check if translated to English
             function isEnglish() {
-                return localStorage.getItem('lumina_lang') === 'en' &&
-                       (document.cookie.includes('googtrans=/pl/en') || document.cookie.includes('googtrans=%2Fpl%2Fen'));
+                return localStorage.getItem('lumina_lang') === 'en' && sessionStorage.getItem('lumina_explicit_en') === '1';
             }
  
             // Sync button label on load
@@ -2241,17 +2291,16 @@
                     e.preventDefault();
                     if (isEnglish()) {
                         localStorage.setItem('lumina_lang', 'pl');
-                        document.cookie = 'googtrans=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                        if (window.location.hostname.includes('.')) {
-                            document.cookie = 'googtrans=; Path=/; domain=' + window.location.hostname + '; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-                        }
-                        document.cookie = 'googtrans=/pl/pl; Path=/;';
+                        sessionStorage.removeItem('lumina_explicit_en');
+                        purgeGoogleTransCookies();
+                        document.cookie = 'googtrans=/pl/pl; path=/;';
                         window.location.reload();
                     } else {
                         localStorage.setItem('lumina_lang', 'en');
-                        document.cookie = 'googtrans=/pl/en; Path=/;';
+                        sessionStorage.setItem('lumina_explicit_en', '1');
+                        document.cookie = 'googtrans=/pl/en; path=/;';
                         if (window.location.hostname.includes('.')) {
-                            document.cookie = 'googtrans=/pl/en; Path=/; domain=' + window.location.hostname + ';';
+                            document.cookie = 'googtrans=/pl/en; path=/; domain=' + window.location.hostname + ';';
                         }
                         window.location.reload();
                     }
@@ -2306,23 +2355,21 @@
             }
 
 
-            // Dynamic fail-safe cleanup for Google Translate top banner (hides all non-YouTube iframes)
+            // Dynamic fail-safe cleanup for Google Translate top banner (only hides Google Translate bar, NEVER video/audio player iframes!)
             function cleanGoogleBanner() {
-                document.querySelectorAll('iframe').forEach(iframe => {
-                    if (!iframe.src.includes('youtube.com') && !iframe.src.includes('youtube-nocookie.com')) {
-                        iframe.style.setProperty('display', 'none', 'important');
-                        iframe.style.setProperty('visibility', 'hidden', 'important');
-                        iframe.style.setProperty('height', '0px', 'important');
-                        iframe.style.setProperty('width', '0px', 'important');
-                        iframe.style.setProperty('opacity', '0', 'important');
-                    }
+                document.querySelectorAll('iframe.goog-te-banner-frame, iframe[id*=":1.container"], .goog-te-banner-frame, iframe[src*="translate.google.com"], iframe[src*="translate.googleapis.com"]').forEach(iframe => {
+                    iframe.style.setProperty('display', 'none', 'important');
+                    iframe.style.setProperty('visibility', 'hidden', 'important');
+                    iframe.style.setProperty('height', '0px', 'important');
+                    iframe.style.setProperty('width', '0px', 'important');
+                    iframe.style.setProperty('opacity', '0', 'important');
                 });
                 document.body.style.setProperty('top', '0px', 'important');
                 document.body.style.setProperty('position', 'static', 'important');
                 document.documentElement.style.setProperty('margin-top', '0px', 'important');
             }
             cleanGoogleBanner();
-            setInterval(cleanGoogleBanner, 200);
+            setInterval(cleanGoogleBanner, 500);
 
             // --- Real-time Header Schedule Updater ---
             function updateHeaderSchedule() {
