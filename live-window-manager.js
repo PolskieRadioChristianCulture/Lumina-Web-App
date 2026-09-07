@@ -140,9 +140,7 @@
             c = document.createElement('div');
             c.id = 'live-outer-controls';
             c.className = 'live-outer-controls';
-            if (IS_OBS) {
-                c.style.display = 'none'; // W OBS ukrywamy całkowicie
-            }
+            c.style.display = 'none'; // Trwale ukryte na wszystkich scenach transmisyjnych
             document.body.appendChild(c);
             updateOuterControlsPosition();
             window.addEventListener('resize', updateOuterControlsPosition);

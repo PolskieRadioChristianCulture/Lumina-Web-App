@@ -9,23 +9,11 @@
    w czarnym obszarze poza skalowanym 1920x1080 kontenerem.
    Niewidoczny dla widza podczas nadawania (poza obszarem OBS capture).
    ======================================================================== */
-.live-outer-controls {
-    position: fixed;      /* JS nadpisuje top/left przez updateOuterControlsPosition() */
-    z-index: 9999999;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    pointer-events: auto;
-    /* Subtelne oznaczenie obszaru operatora */
-    background: rgba(6, 8, 16, 0.7);
-    border: 1px solid rgba(212, 175, 55, 0.25);
-    border-radius: 16px;
-    padding: 10px;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.8);
-    max-width: 520px;
-    flex-wrap: wrap;
+.live-outer-controls, #live-outer-controls {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 /* Etykieta "OPERATOR" w rogu - widoczna tylko lokalnie */

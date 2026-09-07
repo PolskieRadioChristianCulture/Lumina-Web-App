@@ -459,7 +459,8 @@
             player = new YT.Player('yt-player', {
                 events: {
                     'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
+                    'onStateChange': onPlayerStateChange,
+                    'onError': onPlayerError
                 }
             });
         }
@@ -553,12 +554,18 @@
             if (overlay) overlay.style.display = "none";
 
             try {
+                if (player && typeof player.setLoop === 'function') {
+                    player.setLoop(true);
+                }
                 if (player && typeof player.loadPlaylist === 'function') {
                     player.loadPlaylist({
                         list: PLAYLIST_ID,
                         listType: 'playlist',
                         index: initialTrackIndex
                     });
+                }
+                if (player && typeof player.setLoop === 'function') {
+                    player.setLoop(true);
                 }
                 if (player && typeof player.setShuffle === 'function') {
                     player.setShuffle(true);
@@ -609,11 +616,65 @@
         window.addEventListener('touchstart', resetAutoFadeTimer);
         window.addEventListener('click', resetAutoFadeTimer);
 
+        function onPlayerError(event) {
+            console.warn("YouTube Player encountered error (" + (event ? event.data : 'unknown') + "). Skipping to next track...");
+            try {
+                if (player && typeof player.nextVideo === 'function') {
+                    player.nextVideo();
+                }
+            } catch(e) {}
+            setTimeout(() => {
+                try {
+                    if (player && typeof player.playVideo === 'function') {
+                        player.playVideo();
+                    }
+                } catch(e) {}
+            }, 1200);
+        }
+
         function onPlayerStateChange(event) {
             if (event.data === YT.PlayerState.PLAYING) {
                 updateTrackMetadata();
+            } else if (event.data === YT.PlayerState.ENDED) {
+                console.log("Track finished. Advancing automatically to next video in playlist...");
+                try {
+                    if (player && typeof player.nextVideo === 'function') {
+                        player.nextVideo();
+                    }
+                } catch(e) {
+                    console.error("Error invoking nextVideo:", e);
+                }
+                setTimeout(() => {
+                    try {
+                        if (player && typeof player.getPlayerState === 'function') {
+                            const state = player.getPlayerState();
+                            if (state !== YT.PlayerState.PLAYING && state !== YT.PlayerState.BUFFERING) {
+                                player.playVideo();
+                            }
+                        }
+                    } catch(e) {}
+                }, 1000);
             }
         }
+
+        // 24/7 Watchdog: Heartbeat to guarantee continuous live broadcast without halts
+        setInterval(() => {
+            try {
+                if (player && typeof player.getPlayerState === 'function') {
+                    const st = player.getPlayerState();
+                    // If video has ended and hasn't transitioned, force next video
+                    if (st === YT.PlayerState.ENDED) {
+                        console.log("Watchdog: Detected ENDED state. Forcing next video...");
+                        if (typeof player.nextVideo === 'function') player.nextVideo();
+                        setTimeout(() => { try { player.playVideo(); } catch(e){} }, 1000);
+                    } else if (st === YT.PlayerState.PAUSED) {
+                        // Unintended pause during live broadcast -> resume
+                        console.log("Watchdog: Detected PAUSED state during live. Resuming playback...");
+                        player.playVideo();
+                    }
+                }
+            } catch(e) {}
+        }, 5000);
 
         function resizeViewport() {
             const container = document.getElementById("app-container");
