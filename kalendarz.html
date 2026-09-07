@@ -716,7 +716,16 @@
         // ── KONTROLER MODALU PODGLĄDU W ORYGINALNYM WYMIARZE A4 (1:1) ──
         let modalZoom = 1.0;
 
-        function openOriginalSizeModal() {
+        function openOriginalSizeModal(targetIdx) {
+            if (typeof targetIdx === 'number') {
+                activeCardIndex = targetIdx;
+                renderMonthTabs();
+                const mode = document.getElementById('viewModeSelect').value;
+                if (mode === 'single') {
+                    renderCalendar();
+                }
+            }
+
             const modal = document.getElementById('originalSizeModal');
             const wrapper = document.getElementById('modalContentWrapper');
             const subtitle = document.getElementById('modalCardSubtitle');
@@ -870,13 +879,7 @@
                 <div class="calendar-page ${isCoverVisible ? '' : 'hidden'}" id="page-card-0">
                     <div class="month-photo-container relative w-full h-[62%] rounded-2xl overflow-hidden shadow-2xl border border-gray-100 group">
                         <img src="${coverImg}" class="w-full h-full object-cover">
-                        <button onclick="openOriginalSizeModal()" class="no-print absolute top-3 left-3 bg-black/70 hover:bg-black/90 active:scale-95 text-amber-300 text-[11px] px-3 py-1.5 rounded-full border border-amber-400/50 backdrop-blur-md flex items-center gap-1.5 shadow-lg transition" title="Podgląd w oryginalnym wymiarze A4">
-                            <i class="fa-solid fa-magnifying-glass-plus text-amber-400"></i> Podgląd 1:1
-                        </button>
-                        <button onclick="triggerPhotoUpload(0)" class="no-print absolute top-3 right-3 bg-black/70 hover:bg-black/90 active:scale-95 text-white text-[11px] px-3 py-1.5 rounded-full border border-amber-400/50 backdrop-blur-md flex items-center gap-1.5 shadow-lg transition" title="Wstaw własne zdjęcie z telefonu">
-                            <i class="fa-solid fa-camera text-amber-400"></i> Zmień zdjęcie
-                        </button>
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] via-black/35 to-transparent flex flex-col justify-end p-6 md:p-12 text-white">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] via-black/35 to-transparent flex flex-col justify-end p-6 md:p-12 text-white pointer-events-none">
                             <div class="inline-flex items-center gap-2 mb-1.5">
                                 <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_10px_#f59e0b]"></span>
                                 <span class="text-amber-300 uppercase tracking-widest text-[11px] md:text-sm font-bold font-cinzel">Christian Culture Ecosystem</span>
@@ -888,6 +891,12 @@
                                 Osobiste uświęcenie, Słowo Boże każdego dnia oraz kalendarium szabatu dla całej rodziny.
                             </p>
                         </div>
+                        <button type="button" onclick="openOriginalSizeModal(0)" class="no-print absolute top-3 left-3 z-30 pointer-events-auto cursor-pointer bg-black/75 hover:bg-black/95 active:scale-95 text-amber-300 text-[11px] px-3 py-1.5 rounded-full border border-amber-400/60 backdrop-blur-md flex items-center gap-1.5 shadow-lg transition" title="Podgląd w oryginalnym wymiarze A4">
+                            <i class="fa-solid fa-magnifying-glass-plus text-amber-400"></i> Podgląd 1:1
+                        </button>
+                        <button type="button" onclick="triggerPhotoUpload(0)" class="no-print absolute top-3 right-3 z-30 pointer-events-auto cursor-pointer bg-black/75 hover:bg-black/95 active:scale-95 text-white text-[11px] px-3 py-1.5 rounded-full border border-amber-400/60 backdrop-blur-md flex items-center gap-1.5 shadow-lg transition" title="Wstaw własne zdjęcie z telefonu">
+                            <i class="fa-solid fa-camera text-amber-400"></i> Zmień zdjęcie
+                        </button>
                     </div>
 
                     <div class="flex-grow flex flex-col justify-center items-center text-center py-4 md:py-6">
@@ -1016,13 +1025,7 @@
                     <div class="calendar-page ${isCardVisible ? '' : 'hidden'}" id="page-card-${cardIdx}">
                         <div class="month-photo-container relative w-full h-[45%] rounded-xl overflow-hidden shadow-md border border-gray-200 group">
                             <img src="${m.img}" class="w-full h-full object-cover">
-                            <button onclick="openOriginalSizeModal()" class="no-print absolute top-2.5 left-2.5 bg-black/70 hover:bg-black/90 active:scale-95 text-amber-300 text-[10px] md:text-xs px-2.5 py-1 rounded-full border border-amber-400/50 backdrop-blur-md flex items-center gap-1.5 shadow-md transition" title="Podgląd w oryginalnym wymiarze A4">
-                                <i class="fa-solid fa-magnifying-glass-plus text-amber-400"></i> Podgląd 1:1
-                            </button>
-                            <button onclick="triggerPhotoUpload(${cardIdx})" class="no-print absolute top-2.5 right-2.5 bg-black/70 hover:bg-black/90 active:scale-95 text-white text-[10px] md:text-xs px-2.5 py-1 rounded-full border border-amber-400/50 backdrop-blur-md flex items-center gap-1.5 shadow-md transition" title="Wstaw własne zdjęcie dla tego miesiąca">
-                                <i class="fa-solid fa-camera text-amber-400"></i> Zmień
-                            </button>
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-4 md:p-6 text-white">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-4 md:p-6 text-white pointer-events-none">
                                 <div class="w-6 md:w-8 h-1 bg-amber-400 rounded-full mb-1.5"></div>
                                 <p class="month-quote text-xs md:text-sm font-medium italic text-amber-100 leading-snug drop-shadow-md">
                                     ${m.quote}
@@ -1031,6 +1034,12 @@
                                     — ${m.ref}
                                 </span>
                             </div>
+                            <button type="button" onclick="openOriginalSizeModal(${cardIdx})" class="no-print absolute top-2.5 left-2.5 z-30 pointer-events-auto cursor-pointer bg-black/75 hover:bg-black/95 active:scale-95 text-amber-300 text-[10px] md:text-xs px-2.5 py-1 rounded-full border border-amber-400/60 backdrop-blur-md flex items-center gap-1.5 shadow-md transition" title="Podgląd w oryginalnym wymiarze A4">
+                                <i class="fa-solid fa-magnifying-glass-plus text-amber-400"></i> Podgląd 1:1
+                            </button>
+                            <button type="button" onclick="triggerPhotoUpload(${cardIdx})" class="no-print absolute top-2.5 right-2.5 z-30 pointer-events-auto cursor-pointer bg-black/75 hover:bg-black/95 active:scale-95 text-white text-[10px] md:text-xs px-2.5 py-1 rounded-full border border-amber-400/60 backdrop-blur-md flex items-center gap-1.5 shadow-md transition" title="Wstaw własne zdjęcie dla tego miesiąca">
+                                <i class="fa-solid fa-camera text-amber-400"></i> Zmień
+                            </button>
                         </div>
 
                         <div class="cc-banner my-2 md:my-2.5 px-3 md:px-4 py-2 md:py-2.5 rounded-xl bg-gradient-to-r from-amber-50/90 via-white to-amber-50/90 border border-amber-400/40 shadow-sm flex items-center justify-between">
