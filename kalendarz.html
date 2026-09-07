@@ -391,7 +391,39 @@
         .original-size .banner-subtitle {
             font-size: 8.5pt !important;
             font-weight: 500 !important;
-            line-height: 1.25 !important;
+            line-height: 1.35 !important;
+            word-spacing: 0.18em !important;
+            letter-spacing: 0.01em !important;
+        }
+        .view-original-size .calendar-page .banner-qr-text,
+        .original-size .banner-qr-text {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-end !important;
+            justify-content: center !important;
+            white-space: nowrap !important;
+            min-width: 95px !important;
+            max-width: 125px !important;
+            flex-shrink: 0 !important;
+            text-align: right !important;
+        }
+        .view-original-size .calendar-page .banner-qr-text span,
+        .original-size .banner-qr-text span {
+            white-space: nowrap !important;
+            display: block !important;
+            text-align: right !important;
+        }
+        .view-original-size .calendar-page .banner-qr-text span:first-child,
+        .original-size .banner-qr-text span:first-child {
+            font-size: 8.5pt !important;
+            font-weight: 800 !important;
+            color: #451a03 !important;
+        }
+        .view-original-size .calendar-page .banner-qr-text span:last-child,
+        .original-size .banner-qr-text span:last-child {
+            font-size: 7.5pt !important;
+            font-weight: 600 !important;
+            color: #4b5563 !important;
         }
         .view-original-size .calendar-page .day-header-cell,
         .original-size .day-header-cell {
@@ -410,18 +442,22 @@
         }
         .view-original-size .calendar-page .day-cell,
         .original-size .day-cell {
-            min-height: 44px !important;
+            min-height: 48px !important;
             padding: 5px 6px !important;
         }
         .view-original-size .calendar-page .day-number,
         .original-size .day-number {
-            font-size: 1.05rem !important;
-            font-weight: 800 !important;
+            font-size: 1.25rem !important;
+            font-weight: 900 !important;
+            line-height: 1 !important;
         }
         .view-original-size .calendar-page .sunset-tag,
         .original-size .sunset-tag {
-            font-size: 8pt !important;
-            font-weight: 800 !important;
+            font-size: 9.5pt !important;
+            font-weight: 900 !important;
+            line-height: 1.25 !important;
+            margin-top: 3px !important;
+            display: block !important;
         }
 
         /* ── DRUK A4 / ZAPIS DO PDF (GWARANCJA JAKOŚCI POLIGRAFICZNEJ) ── */
@@ -574,10 +610,10 @@
                 <div class="bg-[#172033] border border-gray-700/60 rounded-xl p-2 flex flex-col text-left">
                     <span class="text-[10px] uppercase font-bold text-gray-400 font-cinzel">Treść w oknach dni:</span>
                     <select id="cellContentSelect" onchange="renderCalendar()" class="bg-transparent text-gray-200 font-medium text-xs focus:outline-none cursor-pointer mt-1">
-                        <option value="both" selected class="bg-[#172033] text-white">Godziny szabatu + Imieniny</option>
-                        <option value="names" class="bg-[#172033] text-white">Imieniny</option>
-                        <option value="sunset" class="bg-[#172033] text-white">Godziny szabatu (zachód)</option>
-                        <option value="clean" class="bg-[#172033] text-white">Czysty (tylko numery)</option>
+                        <option value="sunset" selected class="bg-[#172033] text-white">Godziny szabatu (zalecane)</option>
+                        <option value="clean" class="bg-[#172033] text-white">Czysty (tylko numery dni)</option>
+                        <option value="both" class="bg-[#172033] text-white">Godziny szabatu + Imieniny</option>
+                        <option value="names" class="bg-[#172033] text-white">Tylko Imieniny</option>
                     </select>
                 </div>
 
@@ -1413,6 +1449,10 @@
                         container.appendChild(clone);
                         document.body.appendChild(container);
 
+                        if (document.fonts && document.fonts.ready) {
+                            await document.fonts.ready;
+                        }
+
                         const canvas = await html2canvas(clone, {
                             scale: 2.5,
                             useCORS: true,
@@ -1458,7 +1498,7 @@
         function renderCalendar() {
             const year = parseInt(document.getElementById('yearSelect').value, 10);
             const weekFormat = document.getElementById('weekFormatSelect').value;
-            const cellContentMode = document.getElementById('cellContentSelect') ? document.getElementById('cellContentSelect').value : 'both';
+            const cellContentMode = document.getElementById('cellContentSelect') ? document.getElementById('cellContentSelect').value : 'sunset';
             const showSunset = (cellContentMode === 'both' || cellContentMode === 'sunset');
             const showNames = (cellContentMode === 'both' || cellContentMode === 'names');
             const viewMode = document.getElementById('viewModeSelect').value;
@@ -1591,21 +1631,21 @@
 
                     if (isSaturday) {
                         // 7. Dzień tygodnia – Sabat / Szabat Pana Boga (Święty Sabat)
-                        cellBg = 'bg-amber-50/65 border-amber-300/90 shadow-sm';
+                        cellBg = 'bg-amber-50/70 border-amber-300 shadow-sm';
                         dayColor = 'text-amber-950 font-black';
                         const sunsetTime = getExactSunset(year, monthIndex, day, false, true);
                         if (showSunset) {
-                            badge = `<span class="sunset-tag text-[7px] md:text-[8px] leading-tight text-amber-950 font-extrabold block mt-0.5">Sabat: ${sunsetTime}</span>`;
+                            badge = `<span class="sunset-tag text-[8px] md:text-[9.5px] leading-tight text-amber-950 font-black block mt-1">Sabat: ${sunsetTime}</span>`;
                         } else {
-                            badge = `<span class="sunset-tag text-[7px] md:text-[8px] leading-tight text-amber-950 font-extrabold block mt-0.5">Święty Sabat</span>`;
+                            badge = `<span class="sunset-tag text-[8px] md:text-[9.5px] leading-tight text-amber-950 font-black block mt-1">Święty Sabat</span>`;
                         }
                     } else if (isFriday) {
                         // 6. Dzień tygodnia – Dzień Przygotowania przed Sabatem
-                        cellBg = 'bg-amber-50/25 border-amber-200/80';
+                        cellBg = 'bg-amber-50/30 border-amber-200/90';
                         dayColor = 'text-amber-900 font-extrabold';
                         const sunsetTime = getExactSunset(year, monthIndex, day, true, false);
                         if (showSunset) {
-                            badge = `<span class="sunset-tag text-[7px] md:text-[7.5px] leading-tight text-amber-800 font-bold block mt-0.5">Zachód: ${sunsetTime}</span>`;
+                            badge = `<span class="sunset-tag text-[7.5px] md:text-[9px] leading-tight text-amber-900 font-extrabold block mt-1">Zachód: ${sunsetTime}</span>`;
                         }
                     } else if (isSunday) {
                         // 1. Dzień tygodnia – Roboczy (Niedziela)
@@ -1632,6 +1672,12 @@
                 }
 
                 const banner = missionaryBanners[monthIndex] || missionaryBanners[0];
+                const formattedCta = (banner.cta || '')
+                    .replace(/\b([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ])\s+/g, '$1&nbsp;')
+                    .replace(/\s+i\s+/g, '&nbsp;i&nbsp;')
+                    .replace(/\s+w\s+/g, '&nbsp;w&nbsp;')
+                    .replace(/\s+z\s+/g, '&nbsp;z&nbsp;')
+                    .replace(/\s+na\s+/g, '&nbsp;na&nbsp;');
                 const monthCardHTML = `
                     <div class="calendar-page ${isCardVisible ? '' : 'hidden'}" id="page-card-${cardIdx}">
                         <div class="month-photo-container relative w-full h-[115mm] overflow-hidden group flex-shrink-0">
@@ -1682,14 +1728,14 @@
                                         ${banner.title}
                                     </h4>
                                     <p class="banner-subtitle text-[9px] md:text-[10px] text-gray-700 font-medium leading-tight mt-0.5">
-                                        ${banner.cta} • <span class="text-amber-800 font-bold">${banner.url.replace('https://', '')}</span>
+                                        ${formattedCta}&nbsp;•&nbsp;<span class="text-amber-800 font-bold whitespace-nowrap">${banner.url.replace('https://', '')}</span>
                                     </p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2.5 pl-3 border-l border-amber-300/60 flex-shrink-0">
-                                <div class="text-right hidden sm:block">
-                                    <span class="text-[8px] md:text-[9px] font-extrabold text-amber-950 uppercase tracking-wider block leading-tight">${banner.qrLabel}</span>
-                                    <span class="text-[7px] md:text-[7.5px] text-gray-600 font-semibold block leading-tight mt-0.5">${banner.qrSub}</span>
+                                <div class="banner-qr-text text-right hidden sm:flex flex-col items-end justify-center whitespace-nowrap min-w-[95px] flex-shrink-0">
+                                    <span class="text-[8px] md:text-[9.5px] font-extrabold text-amber-950 uppercase tracking-wider block leading-tight whitespace-nowrap">${banner.qrLabel}</span>
+                                    <span class="text-[7px] md:text-[8px] text-gray-600 font-semibold block leading-tight mt-0.5 whitespace-nowrap">${banner.qrSub}</span>
                                 </div>
                                 <div class="banner-qr-box w-12 h-12 md:w-14 md:h-14 rounded-lg p-1 bg-white border border-gray-300 shadow-sm flex-shrink-0 flex items-center justify-center" title="${banner.title}">
                                     ${banner.qrSvg}
