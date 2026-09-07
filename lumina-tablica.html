@@ -6294,7 +6294,7 @@
                             </div>
                         ` : (item.isLiveBroadcastPost && item.streamUrl ? `
                             <div class="mission-live-player-wrapper" style="margin: 0 0 12px 0;">
-                                <iframe src="${item.streamUrl}" 
+                                <iframe src="${item.streamUrl ? (item.streamUrl.includes('?') ? item.streamUrl + '&muted=1&mute=1&in_mcr=1' : item.streamUrl + '?muted=1&mute=1&in_mcr=1') : 'master-live?muted=1&noticker=1&embed=1'}" 
                                         title="${item.title || 'Transmisja na Żywo'}" 
                                         allow="accelerometer; autoplay; encrypted-media; picture-in-picture; web-share" 
                                         allowfullscreen 
@@ -6711,7 +6711,7 @@
         };
 
         window.unmuteMissionIframe = function(btn) {
-            const card = btn.closest('.post-card-1x1') || btn.closest('.post-card') || btn.parentElement.parentElement;
+            const card = btn.closest('.post-card-1x1') || btn.closest('.post-card') || btn.closest('.mission-live-player-wrapper') || btn.parentElement.parentElement;
             if (!card) return;
             const iframe = card.querySelector('iframe');
             const isCurrentlyUnmuted = btn.dataset.unmuted === 'true';

@@ -956,7 +956,7 @@
                 bumperOverlay.classList.add('show');
                 try {
                     bumperVideo.currentTime = 0;
-                    bumperVideo.muted = false;
+                    bumperVideo.muted = isMutedDefault;
                     const playPromise = bumperVideo.play();
                     if (playPromise !== undefined) {
                         playPromise.catch(err => {
@@ -987,12 +987,17 @@
                 const switchLeadTime = Math.max((durationSec - 0.5) * 1000, 3000);
 
                 setTimeout(() => {
-                    // Unmute incoming frame audio at exact moment of frame swap
+                    // Forward audio state to incoming frame at exact moment of frame swap
                     try {
                         if (inactiveFrame && inactiveFrame.contentWindow) {
-                            if (!isMutedDefault) { inactiveFrame.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*'); }
-                            inactiveFrame.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-                            inactiveFrame.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                            if (!isMutedDefault) {
+                                inactiveFrame.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*');
+                                inactiveFrame.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                                inactiveFrame.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                            } else {
+                                inactiveFrame.contentWindow.postMessage({ type: 'MUTE_AUDIO' }, '*');
+                                inactiveFrame.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                            }
                         }
                     } catch(e) {}
 
@@ -1032,20 +1037,43 @@
         }
         setTimeout(hideMasterBanner, 4000);
 
-        // Forward click/touch interaction to unmute nested iframe & video bumper
+        // Forward click/touch interaction to unmute nested iframes & video bumper
         function unmuteSubframe() {
             hideMasterBanner();
             try {
                 if (bumperVideo) {
                     bumperVideo.muted = false;
                 }
-                const frame = getActiveFrame();
-                if (frame && frame.contentWindow) {
-                    frame.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*');
-                    frame.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-                    frame.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
-                    frame.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                const frameA = document.getElementById('channel-frame-a');
+                const frameB = document.getElementById('channel-frame-b');
+                [frameA, frameB].forEach(f => {
+                    if (f && f.contentWindow) {
+                        try {
+                            f.contentWindow.postMessage({ type: 'UNMUTE_AUDIO' }, '*');
+                            f.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                            f.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                            f.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                        } catch(err) {}
+                    }
+                });
+            } catch(e) {}
+        }
+
+        function muteSubframe() {
+            try {
+                if (bumperVideo) {
+                    bumperVideo.muted = true;
                 }
+                const frameA = document.getElementById('channel-frame-a');
+                const frameB = document.getElementById('channel-frame-b');
+                [frameA, frameB].forEach(f => {
+                    if (f && f.contentWindow) {
+                        try {
+                            f.contentWindow.postMessage({ type: 'MUTE_AUDIO' }, '*');
+                            f.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                        } catch(err) {}
+                    }
+                });
             } catch(e) {}
         }
 
@@ -1061,21 +1089,28 @@
         // Listen for control & completion signals (from LUMINA feed parent or sub-channels)
         window.addEventListener('message', (event) => {
             if (!event || !event.data) return;
-            const type = event.data.type || event.data;
-            if (type === 'UNMUTE_AUDIO') {
+            let type = '';
+            if (typeof event.data === 'string') {
+                try {
+                    const parsed = JSON.parse(event.data);
+                    type = parsed.type || parsed.event || '';
+                    if (parsed.func === 'unMute') type = 'UNMUTE_AUDIO';
+                    if (parsed.func === 'mute') type = 'MUTE_AUDIO';
+                } catch(err) {
+                    type = event.data;
+                }
+            } else if (typeof event.data === 'object') {
+                type = event.data.type || '';
+            }
+
+            if (type === 'UNMUTE_AUDIO' || type === 'unMute') {
                 isMutedDefault = false;
                 unmuteSubframe();
                 return;
             }
-            if (type === 'MUTE_AUDIO') {
+            if (type === 'MUTE_AUDIO' || type === 'mute') {
                 isMutedDefault = true;
-                try {
-                    const frame = getActiveFrame();
-                    if (frame && frame.contentWindow) {
-                        frame.contentWindow.postMessage({ type: 'MUTE_AUDIO' }, '*');
-                        frame.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
-                    }
-                } catch(e) {}
+                muteSubframe();
                 return;
             }
             if (type === 'APOKALIPSA_FINISHED' || type === 'STUDIUM_FINISHED' || type === 'KSIEGA_NADZIEI_FINISHED' || type === 'PROGRAM_FINISHED') {

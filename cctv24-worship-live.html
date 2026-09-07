@@ -3653,8 +3653,8 @@ function getWeatherPreset(city) {
 <!-- MASTER STREAM AUTOPLAY BYPASS -->
 <script>
 window.addEventListener('DOMContentLoaded', function() {
-    var isMuted = new URLSearchParams(window.location.search).get('muted') === '1';
-    var audio = document.getElementById('worshipAudioPlayer') || document.querySelector('audio');
+    var isMuted = new URLSearchParams(window.location.search).get('muted') === '1' || (window.self !== window.top);
+    var audio = document.getElementById('stream-audio') || document.getElementById('worshipAudioPlayer') || document.querySelector('audio');
     if (isMuted && audio) {
         audio.muted = true;
     }
@@ -3666,17 +3666,35 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 window.addEventListener('message', function(e) {
     if (!e || !e.data) return;
-    var type = e.data.type || e.data;
-    var audio = document.getElementById('worshipAudioPlayer') || document.querySelector('audio');
+    var type = '';
+    if (typeof e.data === 'string') {
+        try {
+            var parsed = JSON.parse(e.data);
+            type = parsed.type || parsed.event || '';
+            if (parsed.func === 'unMute') type = 'UNMUTE_AUDIO';
+            if (parsed.func === 'mute') type = 'MUTE_AUDIO';
+        } catch(err) {
+            type = e.data;
+        }
+    } else if (typeof e.data === 'object') {
+        type = e.data.type || '';
+    }
+
+    var audio = document.getElementById('stream-audio') || document.getElementById('worshipAudioPlayer') || document.querySelector('audio');
     if (type === 'MUTE_AUDIO' || type === 'mute') {
         if (audio) {
             audio.muted = true;
-            audio.pause();
         }
     } else if (type === 'UNMUTE_AUDIO' || type === 'unMute') {
         if (audio) {
             audio.muted = false;
-            audio.play().catch(function(){});
+            if (audio.paused || !audio.src) {
+                if (typeof window.worshipSyncAndPlay === 'function') {
+                    window.worshipSyncAndPlay();
+                } else {
+                    audio.play().catch(function(){});
+                }
+            }
         }
     }
 });

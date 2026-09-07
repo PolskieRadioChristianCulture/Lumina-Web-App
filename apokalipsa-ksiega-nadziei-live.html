@@ -442,6 +442,9 @@
             // Multi-pass auto-unmute for MCR master-live.html & OBS Studio
             const isPreloadMuted = window.location.search.includes('muted=1');
             const isInIframe = (window.self !== window.top);
+            if (isPreloadMuted) {
+                try { event.target.mute(); } catch(e) {}
+            }
             if (!isPreloadMuted && (isInIframe || new URLSearchParams(window.location.search).get('autoplay') === '1')) {
                 const overlay = document.getElementById("startOverlay");
                 if (overlay) overlay.style.display = "none";
@@ -456,8 +459,25 @@
         }
 
         window.addEventListener('message', (e) => {
-            if (e.data && (e.data.type === 'UNMUTE_AUDIO' || e.data === 'UNMUTE_AUDIO')) {
+            if (!e || !e.data) return;
+            let type = '';
+            if (typeof e.data === 'string') {
+                try {
+                    const parsed = JSON.parse(e.data);
+                    type = parsed.type || parsed.event || '';
+                    if (parsed.func === 'unMute') type = 'UNMUTE_AUDIO';
+                    if (parsed.func === 'mute') type = 'MUTE_AUDIO';
+                } catch(err) {
+                    type = e.data;
+                }
+            } else if (typeof e.data === 'object') {
+                type = e.data.type || '';
+            }
+
+            if (type === 'UNMUTE_AUDIO' || type === 'unMute') {
                 enableAudio();
+            } else if (type === 'MUTE_AUDIO' || type === 'mute') {
+                disableAudio();
             }
         });
 
@@ -532,18 +552,40 @@
             const overlay = document.getElementById("startOverlay");
             if (overlay) overlay.style.display = "none";
 
-            if (player && typeof player.unMute === 'function') {
-                player.unMute();
-                player.setVolume(100);
-                player.playVideo();
-            } else {
+            try {
+                if (player && typeof player.unMute === 'function') {
+                    try { player.mute(); } catch(e) {}
+                    player.unMute();
+                    player.setVolume(100);
+                    if (typeof player.getPlayerState === 'function' && player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                        player.playVideo();
+                    }
+                }
+            } catch(e) {}
+
+            try {
                 const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
                 if (iframe && iframe.contentWindow) {
                     iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
                     iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
                     iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
                 }
-            }
+            } catch(e) {}
+        }
+
+        function disableAudio() {
+            try {
+                if (player && typeof player.mute === 'function') {
+                    player.mute();
+                }
+            } catch(e) {}
+
+            try {
+                const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+                }
+            } catch(e) {}
         }
 
         window.addEventListener('click', enableAudio);
