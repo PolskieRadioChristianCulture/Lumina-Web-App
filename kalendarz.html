@@ -220,9 +220,9 @@
 
         /* GWARANCJA IDENTYCZNYCH WYMIARÓW OKNA ZDJĘCIA DLA WSZYSTKICH 12 MIESIĘCY */
         .calendar-page:not(#page-card-0) .month-photo-container {
-            height: 115mm !important;
-            min-height: 115mm !important;
-            max-height: 115mm !important;
+            height: 110mm !important;
+            min-height: 110mm !important;
+            max-height: 110mm !important;
             flex-shrink: 0 !important;
             flex-grow: 0 !important;
         }
@@ -339,9 +339,9 @@
         }
         .view-original-size .calendar-page:not(#page-card-0) .month-photo-container,
         .original-size:not(#page-card-0) .month-photo-container {
-            height: 115mm !important;
-            min-height: 115mm !important;
-            max-height: 115mm !important;
+            height: 110mm !important;
+            min-height: 110mm !important;
+            max-height: 110mm !important;
             flex-shrink: 0 !important;
             flex-grow: 0 !important;
         }
@@ -495,8 +495,8 @@
         }
         .view-original-size .calendar-page .day-cell,
         .original-size .day-cell {
-            min-height: 55px !important;
-            padding: 4px 5px 3px 5px !important;
+            min-height: 54px !important;
+            padding: 5px 6px 7px 6px !important;
             overflow: visible !important;
             display: flex !important;
             flex-direction: column !important;
@@ -512,8 +512,9 @@
         .original-size .sunset-tag {
             font-size: 7.5pt !important;
             font-weight: 800 !important;
-            line-height: 1.15 !important;
+            line-height: 1.35 !important;
             margin-top: 2px !important;
+            margin-bottom: 2px !important;
             display: block !important;
             white-space: nowrap !important;
             letter-spacing: -0.01em !important;
@@ -561,9 +562,9 @@
                 box-shadow: none !important;
             }
             .calendar-page:not(#page-card-0) .month-photo-container {
-                height: 115mm !important;
-                min-height: 115mm !important;
-                max-height: 115mm !important;
+                height: 110mm !important;
+                min-height: 110mm !important;
+                max-height: 110mm !important;
                 flex-shrink: 0 !important;
                 flex-grow: 0 !important;
             }
@@ -1513,7 +1514,7 @@
                         }
 
                         const canvas = await html2canvas(clone, {
-                            scale: 2.5,
+                            scale: 3.125, // 300 DPI (96 * 3.125 = 300 DPI, format A4 2480 x 3508 px)
                             useCORS: true,
                             allowTaint: true,
                             logging: false,
@@ -1523,9 +1524,9 @@
 
                         container.remove();
 
-                        const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                        const imgData = canvas.toDataURL('image/jpeg', 0.98);
                         if (i > 0) pdf.addPage();
-                        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+                        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
                     }
 
                     if (progressText) progressText.textContent = 'Zapisywanie pliku PDF na Twoim urządzeniu...';
@@ -1577,8 +1578,8 @@
                         <img src="${coverImg}" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] via-black/35 to-transparent flex flex-col justify-end p-6 md:p-12 text-white pointer-events-none">
                             <div class="inline-flex items-center gap-2 mb-1.5">
-                                <img src="${officialLogoUrl}" alt="CC" class="h-4.5 w-auto md:h-5 md:w-auto object-contain flex-shrink-0" style="vertical-align: middle; margin-top: -1px;">
-                                <span class="text-amber-300 uppercase tracking-widest text-[11px] md:text-sm font-bold font-cinzel leading-none" style="vertical-align: middle;">Christian Culture Ecosystem</span>
+                                <img src="${officialLogoUrl}" alt="CC" class="h-4 w-auto md:h-4.5 md:w-auto object-contain flex-shrink-0" style="margin-top: -2px;">
+                                <span class="text-amber-300 uppercase tracking-widest text-[11px] md:text-sm font-bold font-cinzel leading-none">Christian Culture Ecosystem</span>
                             </div>
                             <h2 class="text-3xl md:text-6xl font-cinzel font-black text-white leading-tight">
                                 Kalendarz Ścienny <span class="gold-text">${year}</span>
@@ -1617,8 +1618,8 @@
 
                     <div class="pt-3 border-t border-gray-200 flex items-center justify-between text-[10px] md:text-xs text-gray-600">
                         <div class="flex items-center gap-2">
-                            <img src="${officialLogoUrl}" alt="CC" class="h-3.5 w-auto object-contain flex-shrink-0" style="vertical-align: middle; margin-top: -1px;">
-                            <span class="font-bold text-gray-900 font-cinzel leading-none" style="vertical-align: middle;">POLSKIERADIO.CC</span>
+                            <img src="${officialLogoUrl}" alt="CC" class="h-3.5 w-auto object-contain flex-shrink-0" style="margin-top: -2px;">
+                            <span class="font-bold text-gray-900 font-cinzel leading-none">POLSKIERADIO.CC</span>
                             <span>•</span>
                             <span class="hidden sm:inline" style="word-spacing: 0.18em;">6 Kanałów Radiowych 24/7 &amp;&nbsp;Biblia&nbsp;Audio</span>
                         </div>
@@ -1723,7 +1724,7 @@
                                 <span class="day-number text-xs md:text-sm ${dayColor}">${day}</span>
                                 ${isSaturday ? '<span class="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.9)]" title="Sabat Pana Boga (IV Przykazanie)"></span>' : ''}
                             </div>
-                            <div class="text-left overflow-visible">
+                            <div class="text-left overflow-visible pb-1">
                                 ${namesHTML}
                                 ${badge}
                             </div>
@@ -1818,8 +1819,8 @@
 
                         <div class="mt-1.5 md:mt-2 pt-1.5 border-t border-gray-200 flex items-center justify-between text-[8px] md:text-[10px] text-gray-600">
                             <div class="flex items-center gap-2">
-                                <img src="${officialLogoUrl}" alt="CC" class="h-3.5 w-auto object-contain flex-shrink-0" style="vertical-align: middle; margin-top: -1px;">
-                                <span class="font-bold text-gray-900 font-cinzel tracking-wide leading-none" style="vertical-align: middle;">POLSKIERADIO.CC</span>
+                                <img src="${officialLogoUrl}" alt="CC" class="h-3.5 w-auto object-contain flex-shrink-0" style="margin-top: -2px;">
+                                <span class="font-bold text-gray-900 font-cinzel tracking-wide leading-none">POLSKIERADIO.CC</span>
                                 <span>•</span>
                                 <span class="hidden sm:inline font-medium">Chrześcijański Ekosystem Medialny • 6 Stacji 24/7 & Biblia Audio</span>
                                 <span class="sm:hidden font-medium">Kalendarz Biblijny ${year}</span>
