@@ -637,17 +637,12 @@
                 const b2 = allButtons[j];
                 if (!b2.parentNode) continue;
 
-                const card1 = b1.closest('.post-card, .feed-post-card, .post-card-1x1, article, .sidebar-card, .card-916, .mission-live-player-wrapper, .media-container-1x1, .broadcast-preview-wrap');
-                const card2 = b2.closest('.post-card, .feed-post-card, .post-card-1x1, article, .sidebar-card, .card-916, .mission-live-player-wrapper, .media-container-1x1, .broadcast-preview-wrap');
+                const card1 = b1.closest('.post-card, .feed-post-card, .post-card-1x1, article, .sidebar-card, .card-916, .mission-live-player-wrapper');
+                const card2 = b2.closest('.post-card, .feed-post-card, .post-card-1x1, article, .sidebar-card, .card-916, .mission-live-player-wrapper');
 
-                const isSameCard = (card1 && card2 && (card1 === card2 || card1.contains(b2) || card2.contains(b1))) || (b1.parentElement === b2.parentElement);
+                const isSameCard = card1 && card2 && (card1 === card2 || card1.contains(b2) || card2.contains(b1));
 
-                const r1 = b1.getBoundingClientRect();
-                const r2 = b2.getBoundingClientRect();
-                const dist = (r1.width > 0 && r2.width > 0) ? Math.hypot(r1.left - r2.left, r1.top - r2.top) : 0;
-
-                if (isSameCard || (dist > 0 && dist < 120)) {
-                    // Jeśli jeden to 'Wideo', a drugi ogólny 'Wymień', bezwzględnie zachowaj 'Wideo' i usuń 'Wymień'
+                if (isSameCard) {
                     if (b1.innerText.includes('Wideo') && !b2.innerText.includes('Wideo')) {
                         b2.remove();
                     } else if (b2.innerText.includes('Wideo') && !b1.innerText.includes('Wideo')) {
@@ -666,14 +661,13 @@
         // 1. Karty postów (.feed-post-card, .post-card, .post-card-1x1, article, .mission-live-broadcast-card)
         const postCards = document.querySelectorAll('.feed-post-card, .post-card, .post-card-1x1, article, .mission-live-broadcast-card');
         postCards.forEach(card => {
-            // ZASADA ZERO-DUPLIKACJI: Jeśli na karcie posta istnieje jakikolwiek odtwarzacz wideo,
-            // iframe lub wideo, krok 2 przypisze dedykowany przycisk 'Wymień Wideo'.
-            // Usuwamy wszelkie przyciski pływające z samej karty, aby nie dublować z playerem!
-            const hasDedicatedPlayer = card.querySelector('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box, iframe, video');
-            if (hasDedicatedPlayer) {
+            // Jeśli na karcie posta istnieje dedykowany player na żywo / wideo,
+            // to player otrzymuje własny przycisk w kroku 2.
+            const dedicatedLiveWrapper = card.querySelector('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box');
+            if (dedicatedLiveWrapper) {
                 card.querySelectorAll('.btn-lumina-replace-action').forEach(el => el.remove());
                 card.querySelectorAll('.btn-lumina-replace-floating').forEach(el => {
-                    if (!hasDedicatedPlayer.contains(el) && el !== hasDedicatedPlayer) {
+                    if (!dedicatedLiveWrapper.contains(el)) {
                         el.remove();
                     }
                 });
@@ -684,10 +678,10 @@
                 return;
             }
 
-            // Sprawdzamy czy post ma grafikę
-            const artworkBox = card.querySelector('.media-container-1x1, .campaign-media-container, .broadcast-preview-wrap, .post-featured-artwork-box, .post-image-box, .post-media-box, .post-image, .post-body img, .post-content img');
+            // Sprawdzamy czy post ma grafikę lub wideo w kontenerze mediów
+            const artworkBox = card.querySelector('.media-container-1x1, .campaign-media-container, .broadcast-preview-wrap, .post-featured-artwork-box, .post-image-box, .post-media-box, .post-image, .post-body img, .post-content img, .post-details-box img');
             if (artworkBox) {
-                const targetWrapper = (artworkBox.tagName === 'IMG') ? (artworkBox.parentElement || artworkBox) : artworkBox;
+                const targetWrapper = (artworkBox.tagName === 'IMG' || artworkBox.tagName === 'VIDEO') ? (artworkBox.parentElement || artworkBox) : artworkBox;
                 if (!targetWrapper.querySelector('.btn-lumina-replace-floating') && !artworkBox.classList.contains('btn-lumina-replace-floating')) {
                     if (getComputedStyle(targetWrapper).position === 'static') {
                         targetWrapper.style.position = 'relative';
@@ -699,7 +693,7 @@
                     floatBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Wymień';
                     floatBtn.onclick = (e) => {
                         e.stopPropagation();
-                        const img = targetWrapper.querySelector('img') || (artworkBox.tagName === 'IMG' ? artworkBox : null);
+                        const img = targetWrapper.querySelector('img, video') || (artworkBox.tagName === 'IMG' || artworkBox.tagName === 'VIDEO' ? artworkBox : null);
                         openReplacerForElement(img || card, 'image');
                     };
                     targetWrapper.appendChild(floatBtn);
@@ -725,39 +719,38 @@
         // 2. Transmisje na żywo / Playery wideo / Ramki iframe
         const livePlayers = document.querySelectorAll('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box');
         livePlayers.forEach(player => {
+            if (player.querySelector('.btn-lumina-replace-floating')) return;
+
             // Wyczyść ewentualne przyciski pływające z kontenera nadrzędnego
             const parentCard = player.closest('.post-card, .feed-post-card, .post-card-1x1, article, .sidebar-card');
             if (parentCard) {
                 parentCard.querySelectorAll('.btn-lumina-replace-floating').forEach(b => {
-                    if (b.parentElement !== player) b.remove();
+                    if (!player.contains(b)) b.remove();
                 });
             }
 
-            if (!player.querySelector('.btn-lumina-replace-floating')) {
-                if (getComputedStyle(player).position === 'static') {
-                    player.style.position = 'relative';
-                }
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = 'btn-lumina-replace-floating';
-                btn.title = 'Wymień transmisję / wideo na strumień YouTube';
-                btn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Wymień Wideo';
-                btn.onclick = (e) => {
-                    e.stopPropagation();
-                    const iframe = player.querySelector('iframe');
-                    openReplacerForElement(iframe || player, 'video');
-                };
-                player.appendChild(btn);
+            if (getComputedStyle(player).position === 'static') {
+                player.style.position = 'relative';
             }
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn-lumina-replace-floating';
+            btn.title = 'Wymień transmisję / wideo na strumień YouTube';
+            btn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Wymień Wideo';
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                const iframe = player.querySelector('iframe');
+                openReplacerForElement(iframe || player, 'video');
+            };
+            player.appendChild(btn);
         });
 
         // 3. Samodzielne tagi AUDIO i VIDEO (poza playerami wideo i postami)
         const mediaTags = document.querySelectorAll('video, audio, .audio-player-container');
         mediaTags.forEach(media => {
-            // Ignoruj media wewnątrz gotowych wrapperów playerów (obsługiwanych w kroku 2)
-            if (media.closest('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box, .media-container-1x1')) return;
+            // Ignoruj media wewnątrz gotowych wrapperów playerów ORAZ kart postów i kampanii (obsługiwanych w kroku 1 i 2)
+            if (media.closest('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box, .media-container-1x1, .campaign-media-container, .post-card, .feed-post-card, .post-card-1x1, article, .sidebar-card, .card-916')) return;
             const parent = media.parentElement || media;
-            // Bezwzględny zakaz wstrzykiwania do document.body lub documentElement
             if (!parent || parent === document.body || parent === document.documentElement) return;
 
             if (!parent.querySelector('.btn-lumina-replace-floating') && !parent.closest('.btn-lumina-replace-floating')) {
@@ -1180,19 +1173,42 @@
 
     // ── 8. Obserwator zmian DOM (dla dynamicznie wczytywanych postów) ──
     let observerInitialized = false;
+    let isInternalScanning = false;
+
+    function safeScanAndAttachButtons() {
+        if (!isMasterAdmin() || isInternalScanning) return;
+        isInternalScanning = true;
+        try {
+            scanAndAttachButtons();
+        } finally {
+            setTimeout(() => { isInternalScanning = false; }, 400);
+        }
+    }
+
     function initObserver() {
         if (observerInitialized) return;
         observerInitialized = true;
 
         let debounceTimer = null;
-        const observer = new MutationObserver(() => {
+        const observer = new MutationObserver((mutations) => {
+            if (isInternalScanning) return;
+
+            // Ignoruj mutacje wywoływane przez elementy samego replacera
+            const isOnlyReplacer = mutations.every(m => {
+                const t = m.target;
+                if (t && (t.classList?.contains('btn-lumina-replace-floating') || t.classList?.contains('btn-lumina-replace-action') || t.closest?.('.btn-lumina-replace-floating, .btn-lumina-replace-action, #luminaMediaReplacerModal'))) {
+                    return true;
+                }
+                const allNodes = [...m.addedNodes, ...m.removedNodes];
+                return allNodes.length > 0 && allNodes.every(n => n.nodeType === 1 && (n.classList?.contains('btn-lumina-replace-floating') || n.classList?.contains('btn-lumina-replace-action') || n.id === 'luminaMediaReplacerModal'));
+            });
+            if (isOnlyReplacer) return;
+
             if (debounceTimer) clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
                 applySavedReplacements();
-                if (isMasterAdmin()) {
-                    scanAndAttachButtons();
-                }
-            }, 50);
+                safeScanAndAttachButtons();
+            }, 600);
         });
         observer.observe(document.body, { childList: true, subtree: true });
     }
@@ -1213,14 +1229,12 @@
             // Samoczynna inicjalizacja instancji Firestore w tle (dla profili i postów)
             getFirestoreInstance().catch(() => {});
             if (isMasterAdmin()) {
-                scanAndAttachButtons();
+                safeScanAndAttachButtons();
             }
-            // Cykliczne sprawdzanie uprawnień (gdy admin loguje się w trakcie przeglądania)
-            setInterval(() => {
-                if (isMasterAdmin()) {
-                    scanAndAttachButtons();
-                }
-            }, 1500);
+            // Zabezpieczenie na wypadek późniejszego załadowania konta admina
+            setTimeout(() => {
+                if (isMasterAdmin()) safeScanAndAttachButtons();
+            }, 2500);
         },
         openReplacerForElement,
         submitReplacement,
