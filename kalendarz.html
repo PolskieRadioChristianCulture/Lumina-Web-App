@@ -1325,8 +1325,7 @@
                     if (progressText) progressText.textContent = 'Przygotowywanie 13 stron do pobrania...';
                     exportElement = document.createElement('div');
                     exportElement.className = 'pdf-export-wrapper';
-                    exportElement.style.width = '210mm';
-                    exportElement.style.background = '#ffffff';
+                    exportElement.style.cssText = 'width:210mm;background:#ffffff;display:block;';
 
                     const pages = document.querySelectorAll('.calendar-page');
                     pages.forEach((p, idx) => {
@@ -1336,6 +1335,11 @@
                         clone.style.display = 'flex';
                         clone.style.marginBottom = '0';
                         clone.style.boxShadow = 'none';
+                        clone.style.borderRadius = '0';
+                        // Remove UI buttons (no-print)
+                        clone.querySelectorAll('.no-print').forEach(el => el.remove());
+                        // Strip contenteditable so html2canvas renders cleanly
+                        clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
                         if (idx < pages.length - 1) {
                             clone.style.pageBreakAfter = 'always';
                             clone.style.breakAfter = 'page';
@@ -1352,6 +1356,11 @@
                     exportElement.style.width = '210mm';
                     exportElement.style.display = 'flex';
                     exportElement.style.boxShadow = 'none';
+                    exportElement.style.borderRadius = '0';
+                    // Remove UI buttons (no-print)
+                    exportElement.querySelectorAll('.no-print').forEach(el => el.remove());
+                    // Strip contenteditable
+                    exportElement.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
                     document.body.appendChild(exportElement);
                 }
 
@@ -1360,9 +1369,17 @@
                     const opt = {
                         margin: 0,
                         filename: filename,
-                        image: { type: 'jpeg', quality: 0.95 },
-                        html2canvas: { scale: 2, useCORS: true, logging: false },
-                        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                        image: { type: 'jpeg', quality: 0.98 },
+                        html2canvas: { 
+                            scale: 3,
+                            useCORS: true, 
+                            allowTaint: true,
+                            logging: false,
+                            letterRendering: true,
+                            imageTimeout: 0
+                        },
+                        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
+                        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                     };
                     await html2pdf().set(opt).from(exportElement).save();
                     exportElement.remove();
