@@ -107,18 +107,31 @@ button {
 
 .header-container {
     width: 100%;
-    max-width: 1400px;
+    max-width: 1760px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 clamp(1.2rem, 2.5vw, 3rem);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1.5rem;
 }
 
-.header-left, .header-right {
+.header-left {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: clamp(1.5rem, 2vw, 2.4rem);
+    flex-shrink: 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.2rem, 1.8vw, 2.2rem);
+    flex-shrink: 0;
+}
+
+.header-right > * {
+    flex-shrink: 0;
 }
 
 /* --- Header Live Broadcast Schedule Widget (Desktop Only - Subtle Single Line) --- */
@@ -126,11 +139,12 @@ button {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(212, 175, 55, 0.2);
+    border: 1.5px solid rgba(212, 175, 55, 0.25);
     border-radius: 30px;
-    padding: 5px 18px;
+    padding: 6px 20px;
+    margin-left: clamp(0.5rem, 1.2vw, 1.5rem);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     font-family: 'Outfit', 'Montserrat', sans-serif;
@@ -138,6 +152,20 @@ button {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     max-width: none;
     white-space: nowrap;
+}
+
+.live-title-link, .next-title {
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Responsive safety: on screens <= 1420px, cleanly hide the 3rd item so elements never collide */
+@media (max-width: 1420px) {
+    .header-live-schedule .header-third-item {
+        display: none !important;
+    }
 }
 
 @media (max-width: 1120px) {
