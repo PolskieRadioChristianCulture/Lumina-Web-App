@@ -533,10 +533,11 @@
         }
 
         body.embedded-mode #masterUnmuteBanner,
-        body.no-ticker #masterUnmuteBanner,
-        html.no-ticker #masterUnmuteBanner,
         html.embedded-mode #masterUnmuteBanner {
-            display: none !important;
+            top: 12px !important;
+            padding: 8px 18px !important;
+            font-size: 0.8rem !important;
+            max-width: 90% !important;
         }
 
         #master-status {
@@ -685,7 +686,12 @@
         const urlParams = new URLSearchParams(window.location.search);
         const isEmbedMode = urlParams.has('embed') || urlParams.get('embed') === '1' || urlParams.has('noticker') || urlParams.get('ticker') === '0' || urlParams.get('muted') === '1' || (window.self !== window.top);
         const shouldHideTicker = isEmbedMode || urlParams.has('noticker') || urlParams.get('ticker') === '0';
-        let isMutedDefault = isEmbedMode || urlParams.get('muted') === '1';
+        let isMutedDefault = urlParams.get('muted') === '1' || (isEmbedMode && urlParams.get('muted') !== '0');
+
+        if (!isMutedDefault) {
+            const unmuteBanner = document.getElementById('masterUnmuteBanner');
+            if (unmuteBanner) unmuteBanner.style.display = 'none';
+        }
 
         if (shouldHideTicker) {
             document.documentElement.classList.add('no-ticker', 'embedded-mode');
@@ -1077,9 +1083,9 @@
             } catch(e) {}
         }
 
+        window.addEventListener('click', unmuteSubframe);
+        window.addEventListener('touchstart', unmuteSubframe);
         if (!isMutedDefault) {
-            window.addEventListener('click', unmuteSubframe);
-            window.addEventListener('touchstart', unmuteSubframe);
             // Automated audio unlock attempts for OBS Studio CEF and unattended players
             [800, 1500, 3000, 5000].forEach(delay => {
                 setTimeout(unmuteSubframe, delay);

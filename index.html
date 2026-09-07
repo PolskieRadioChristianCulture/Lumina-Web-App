@@ -1136,9 +1136,9 @@
                                 if (event) event.preventDefault();
                                 const box = document.querySelector('.hero-section .video-container');
                                 if (box) {
-                                    box.innerHTML = '<iframe src="master-live.html?muted=0&autoplay=1&embed=1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                                    box.innerHTML = '<iframe src="master-live.html?muted=0&autoplay=1&embed=1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px;" allow="autoplay; camera; microphone; fullscreen; picture-in-picture; display-capture; clipboard-write; clipboard-read; accelerometer; encrypted-media; gyroscope; web-share" allowfullscreen></iframe>';
                                 } else {
-                                    window.location.href = "master-live.html";
+                                    window.location.href = "master";
                                 }
                             };
 
@@ -2331,115 +2331,115 @@
                 const min = now.getMinutes();
                 const timeInMinutes = hour * 60 + min;
 
-                let current = { title: "Instrumental Worship & Nocne Czuwanie", url: "master-live.html" };
+                let current = { title: "Instrumental Worship & Nocne Czuwanie", url: "master" };
                 let next = { time: "06:00", title: "Zjednoczeni za Polskę" };
                 let third = { time: "09:00", title: "Apokalipsa dzień po dniu" };
 
                 // 08:00 - 08:52 (Studium Telewizyjne Pisma Świętego Poranek)
                 if (timeInMinutes >= 8 * 60 && timeInMinutes < 8 * 60 + 52) {
-                    current = { title: "Studium Telewizyjne Pisma Świętego", url: "studium-live.html" };
+                    current = { title: "Studium Telewizyjne Pisma Świętego", url: "master" };
                     next = { time: "09:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
                     third = { time: "10:00", title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)" };
                 }
                 // 06:00 - 08:00 (Zjednoczeni za Polskę Poranek)
                 else if (timeInMinutes >= 6 * 60 && timeInMinutes < 8 * 60) {
-                    current = { title: "Zjednoczeni za Polskę (Wydanie Poranne)", url: "master-live.html" };
+                    current = { title: "Zjednoczeni za Polskę (Wydanie Poranne)", url: "master" };
                     next = { time: "08:00", title: "Studium Telewizyjne Pisma Świętego" };
                     third = { time: "09:00", title: "Apokalipsa dzień po dniu" };
                 }
                 // 08:52 - 09:00 (Zjednoczeni za Polskę Przedpołudnie)
                 else if (timeInMinutes >= 8 * 60 + 52 && timeInMinutes < 9 * 60) {
-                    current = { title: "Zjednoczeni za Polskę (Przedpołudnie)", url: "master-live.html" };
+                    current = { title: "Zjednoczeni za Polskę (Przedpołudnie)", url: "master" };
                     next = { time: "09:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
                     third = { time: "10:00", title: "Apokalipsa: Księga Nadziei" };
                 }
                 // 09:00 - 09:06 (Apokalipsa Dzień po Dniu)
                 else if (timeInMinutes >= 9 * 60 && timeInMinutes < 9 * 60 + 6) {
-                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "apokalipsa-live.html" };
+                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "master" };
                     next = { time: "09:06", title: "Zjednoczeni za Polskę" };
                     third = { time: "10:00", title: "Apokalipsa: Księga Nadziei" };
                 }
                 // 09:06 - 10:00 (Zjednoczeni za Polskę Przedpołudnie)
                 else if (timeInMinutes >= 9 * 60 + 6 && timeInMinutes < 10 * 60) {
-                    current = { title: "Zjednoczeni za Polskę (Przedpołudnie)", url: "master-live.html" };
+                    current = { title: "Zjednoczeni za Polskę (Przedpołudnie)", url: "master" };
                     next = { time: "10:00", title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)" };
                     third = { time: "12:00", title: "Biblia Śpiewana" };
                 }
                 // 10:00 - 10:55 (Apokalipsa: Księga Nadziei)
                 else if (timeInMinutes >= 10 * 60 && timeInMinutes < 10 * 60 + 55) {
-                    current = { title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)", url: "apokalipsa-ksiega-nadziei-live.html" };
+                    current = { title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)", url: "master" };
                     next = { time: "12:00", title: "Biblia Śpiewana" };
                     third = { time: "15:00", title: "Apokalipsa dzień po dniu" };
                 }
                 // 10:55 - 12:00 (Zjednoczeni za Polskę Pasmo Południowe)
                 else if (timeInMinutes >= 10 * 60 + 55 && timeInMinutes < 12 * 60) {
-                    current = { title: "Zjednoczeni za Polskę (Pasmo Południowe)", url: "master-live.html" };
+                    current = { title: "Zjednoczeni za Polskę (Pasmo Południowe)", url: "master" };
                     next = { time: "12:00", title: "Biblia Śpiewana" };
                     third = { time: "15:00", title: "Apokalipsa dzień po dniu" };
                 }
                 // 12:00 - 15:00 (Biblia Śpiewana Popołudnie)
                 else if (timeInMinutes >= 12 * 60 && timeInMinutes < 15 * 60) {
-                    current = { title: "Biblia Śpiewana (Wydanie Popołudniowe)", url: "master-live.html" };
+                    current = { title: "Biblia Śpiewana (Wydanie Popołudniowe)", url: "master" };
                     next = { time: "15:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
                     third = { time: "15:06", title: "Biblia Śpiewana" };
                 }
                 // 15:00 - 15:06 (Apokalipsa Dzień po Dniu)
                 else if (timeInMinutes >= 15 * 60 && timeInMinutes < 15 * 60 + 6) {
-                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "apokalipsa-live.html" };
+                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "master" };
                     next = { time: "15:06", title: "Biblia Śpiewana" };
                     third = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
                 }
                 // 15:06 - 16:00 (Biblia Śpiewana Popołudnie)
                 else if (timeInMinutes >= 15 * 60 + 6 && timeInMinutes < 16 * 60) {
-                    current = { title: "Biblia Śpiewana (Wydanie Popołudniowe)", url: "master-live.html" };
+                    current = { title: "Biblia Śpiewana (Wydanie Popołudniowe)", url: "master" };
                     next = { time: "16:00", title: "Codzienne Uwielbienie (Blok Muzyczny)" };
                     third = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
                 }
                 // 16:00 - 18:00 (Codzienne Uwielbienie — Blok Muzyczny 2h)
                 else if (timeInMinutes >= 16 * 60 && timeInMinutes < 18 * 60) {
-                    current = { title: "Codzienne Uwielbienie (Blok Muzyczny 24/7)", url: "spiewajmy-panu-live.html" };
+                    current = { title: "Codzienne Uwielbienie (Blok Muzyczny 24/7)", url: "master" };
                     next = { time: "18:00", title: "Totalny Atak — Wykłady" };
                     third = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
                 }
                 // 18:00 - 20:00 (Totalny Atak — codziennie)
                 else if (timeInMinutes >= 18 * 60 && timeInMinutes < 20 * 60) {
-                    current = { title: "Totalny Atak — Wykłady Biblijne", url: "totalny-atak-live.html" };
+                    current = { title: "Totalny Atak — Wykłady Biblijne", url: "master" };
                     next = { time: "20:00", title: "Studium Telewizyjne Pisma Świętego" };
                     third = { time: "21:00", title: "Apokalipsa dzień po dniu" };
                 }
                 // 20:00 - 20:52 (Studium Telewizyjne Pisma Świętego Wieczór)
                 else if (timeInMinutes >= 20 * 60 && timeInMinutes < 20 * 60 + 52) {
-                    current = { title: "Studium Telewizyjne Pisma Świętego", url: "studium-live.html" };
+                    current = { title: "Studium Telewizyjne Pisma Świętego", url: "master" };
                     next = { time: "21:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
                     third = { time: "22:00", title: "Apokalipsa: Księga Nadziei" };
                 }
                 // 20:52 - 21:00 (Biblia Śpiewana)
                 else if (timeInMinutes >= 20 * 60 + 52 && timeInMinutes < 21 * 60) {
-                    current = { title: "Biblia Śpiewana", url: "master-live.html" };
+                    current = { title: "Biblia Śpiewana", url: "master" };
                     next = { time: "21:00", title: "Apokalipsa dzień po dniu (Komentarz Dnia)" };
                     third = { time: "22:00", title: "Apokalipsa: Księga Nadziei" };
                 }
                 // 21:00 - 21:06 (Apokalipsa Dzień po Dniu)
                 else if (timeInMinutes >= 21 * 60 && timeInMinutes < 21 * 60 + 6) {
-                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "apokalipsa-live.html" };
+                    current = { title: "Apokalipsa dzień po dniu (Komentarz Dnia)", url: "master" };
                     next = { time: "21:06", title: "Biblia Śpiewana" };
                     third = { time: "22:00", title: "Apokalipsa: Księga Nadziei" };
                 }
                 // 21:06 - 22:00 (Biblia Śpiewana Finał Dnia)
                 else if (timeInMinutes >= 21 * 60 + 6 && timeInMinutes < 22 * 60) {
-                    current = { title: "Biblia Śpiewana (Finał Dnia)", url: "master-live.html" };
+                    current = { title: "Biblia Śpiewana (Finał Dnia)", url: "master" };
                     next = { time: "22:00", title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)" };
                     third = { time: "22:55", title: "Instrumental Worship" };
                 }
                 // 22:00 - 22:55 (Apokalipsa: Księga Nadziei)
                 else if (timeInMinutes >= 22 * 60 && timeInMinutes < 22 * 60 + 55) {
-                    current = { title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)", url: "apokalipsa-ksiega-nadziei-live.html" };
+                    current = { title: "Apokalipsa: Księga Nadziei (Kurs Biblijny)", url: "master" };
                     next = { time: "22:55", title: "Instrumental Worship & Nocne Czuwanie" };
                     third = { time: "06:00", title: "Zjednoczeni za Polskę" };
                 }
                 // 22:55 - 24:00 or 00:00 - 06:00 (Nocne Czuwanie)
                 else {
-                    current = { title: "Instrumental Worship & Nocne Czuwanie", url: "master-live.html" };
+                    current = { title: "Instrumental Worship & Nocne Czuwanie", url: "master" };
                     next = { time: "06:00", title: "Zjednoczeni za Polskę" };
                     third = { time: "08:00", title: "Studium Telewizyjne Pisma Świętego" };
                 }
