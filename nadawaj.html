@@ -207,6 +207,9 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             position: relative;
             flex-shrink: 0;
+            display: block;
+            text-decoration: none;
+            cursor: pointer;
         }
 
         .card-img-wrapper img {
@@ -214,11 +217,108 @@
             height: 100%;
             object-fit: cover;
             object-position: center;
-            transition: transform 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: block;
         }
 
         .broadcast-card:hover .card-img-wrapper img {
-            transform: scale(1.05);
+            transform: scale(1.06);
+        }
+
+        /* Play overlay on hover */
+        .card-play-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            z-index: 2;
+        }
+
+        .broadcast-card:hover .card-play-overlay,
+        .card-img-wrapper:focus .card-play-overlay {
+            opacity: 1;
+        }
+
+        .card-play-btn-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-primary, #d4af37) 0%, #aa820a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 1.3rem;
+            padding-left: 3px;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6), 0 4px 15px rgba(0,0,0,0.5);
+            transform: scale(0.85);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .broadcast-card:hover .card-play-btn-circle {
+            transform: scale(1);
+        }
+
+        .card-play-text {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.75);
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            transform: translateY(6px);
+            transition: transform 0.3s ease;
+        }
+
+        .broadcast-card:hover .card-play-text {
+            transform: translateY(0);
+        }
+
+        /* Subtle permanent play pill in bottom-right corner for touchscreens & instant clarity */
+        .card-live-indicator {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: var(--gold-light, #f3e5ab);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(6px);
+            z-index: 1;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+        }
+
+        .broadcast-card:hover .card-live-indicator {
+            opacity: 0;
+        }
+
+        .card-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .card-title a:hover {
+            color: var(--gold-primary, #d4af37);
         }
 
         .card-body {
@@ -478,20 +578,27 @@
                     
                     <!-- Card 1: Master Live 24/7 (MCR Główny Kanał Nadawczy) -->
                     <div class="broadcast-card" style="border: 2px solid var(--gold-primary, #d4af37); box-shadow: 0 8px 30px rgba(212, 175, 55, 0.25); background: rgba(212, 175, 55, 0.03);">
-                        <div class="card-img-wrapper" style="position: relative;">
+                        <a href="master-live.html" target="_blank" rel="noopener" class="card-img-wrapper" style="position: relative;" title="Oglądaj na żywo: Telewizja Christian Culture 24/7 (Master Live)">
                             <picture>
                                 <source srcset="tv24_master_live.webp" type="image/webp">
                                 <img src="tv24_master_live.png" alt="Telewizja Christian Culture 24/7 (Master Live)">
                             </picture>
-                            <div style="position: absolute; top: 12px; left: 12px; background: rgba(0, 0, 0, 0.85); border: 1.5px solid var(--gold-primary, #d4af37); padding: 5px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; color: #ffd700; display: flex; align-items: center; gap: 7px; backdrop-filter: blur(8px);">
+                            <div style="position: absolute; top: 12px; left: 12px; background: rgba(0, 0, 0, 0.85); border: 1.5px solid var(--gold-primary, #d4af37); padding: 5px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; color: #ffd700; display: flex; align-items: center; gap: 7px; backdrop-filter: blur(8px); z-index: 3;">
                                 <span style="width: 9px; height: 9px; background: #ff0000; border-radius: 50%; box-shadow: 0 0 10px #ff0000; animation: broadcast-glow 1.6s infinite ease-in-out;"></span>
                                 <span>GŁÓWNY KANAŁ NADAWCZY 24/7</span>
                             </div>
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: linear-gradient(135deg, #ffd700, #d4af37); color: #000; font-weight: 900; letter-spacing: 1px;">👑 MCR • Auto-Switch 24/7</span>
-                                <h4 class="card-title">Telewizja Christian Culture 24/7 (Master Live 16:9)</h4>
+                                <h4 class="card-title"><a href="master-live.html" target="_blank" rel="noopener">Telewizja Christian Culture 24/7 (Master Live 16:9)</a></h4>
                                 <p class="card-desc">Oficjalny, całodobowy kanał telewizyjny Christian Culture. Automatyczne bezszwowe przełączanie pasm 24/7: Zjednoczeni za Polskę, Studium Biblijne, Apokalipsa, Uwielbienie, Totalny Atak oraz Nocne Czuwanie.</p>
                             </div>
                             <div class="card-actions">
@@ -504,13 +611,20 @@
 
                     <!-- Card 2: Zjednoczeni za Polskę -->
                     <div class="broadcast-card" style="border-left: 4px solid var(--red-national, #dc143c);">
-                        <div class="card-img-wrapper">
+                        <a href="zapolske-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Zjednoczeni za Polskę (16:9)">
                             <img src="POLAND.jpg" alt="Zjednoczeni za Polskę">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: #dc143c; color: #fff;">Wydanie Specjalne</span>
-                                <h4 class="card-title">Zjednoczeni za Polskę (16:9)</h4>
+                                <h4 class="card-title"><a href="zapolske-live.html" target="_blank" rel="noopener">Zjednoczeni za Polskę (16:9)</a></h4>
                                 <p class="card-desc">Dedykowany strumień modlitewny za Ojczyznę. Modlitwy poranne, intencje widzów wyświetlane automatycznie na żywo.</p>
                             </div>
                             <div class="card-actions">
@@ -523,13 +637,20 @@
 
                     <!-- Card 3: Apokalipsa: Księga Nadziei -->
                     <div class="broadcast-card">
-                        <div class="card-img-wrapper">
+                        <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Apokalipsa: Księga Nadziei (16:9)">
                             <img src="tlo_ksiega_nadziei.png" alt="Apokalipsa: Księga Nadziei">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: rgba(255, 193, 7, 0.2); color: #ffc107;">Kurs Biblijny • 10:00 & 22:00</span>
-                                <h4 class="card-title">Apokalipsa: Księga Nadziei (16:9)</h4>
+                                <h4 class="card-title"><a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" rel="noopener">Apokalipsa: Księga Nadziei (16:9)</a></h4>
                                 <p class="card-desc">24-lekcyjny kompletny kurs biblijny o proroctwach Księgi Objawienia. Zegar cyklu i obsługa wygaszania.</p>
                             </div>
                             <div class="card-actions">
@@ -542,13 +663,20 @@
 
                     <!-- Card 4: Studium Telewizyjne Pisma Świętego -->
                     <div class="broadcast-card">
-                        <div class="card-img-wrapper">
+                        <a href="studium-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Studium Telewizyjne Pisma Świętego">
                             <img src="tlo_studium.png" alt="Studium Telewizyjne Pisma Świętego">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: rgba(255, 42, 85, 0.2); color: #ff5e7e;">Studium Biblijne • 08:00 & 20:00</span>
-                                <h4 class="card-title">Studium Telewizyjne Pisma Świętego</h4>
+                                <h4 class="card-title"><a href="studium-live.html" target="_blank" rel="noopener">Studium Telewizyjne Pisma Świętego</a></h4>
                                 <p class="card-desc">572-odcinkowy cykl wykładów werset po wersecie. Systematyczny rozwój wiedzy biblijnej bez opóźnień.</p>
                             </div>
                             <div class="card-actions">
@@ -561,13 +689,20 @@
 
                     <!-- Card: Totalny Atak — Wykłady Biblijne -->
                     <div class="broadcast-card" style="border-left: 4px solid #d4af37;">
-                        <div class="card-img-wrapper">
+                        <a href="totalny-atak-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Totalny Atak — Prof. Walter Veith">
                             <img src="walter_veith.png" alt="Totalny Atak — Prof. Walter Veith">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: rgba(212, 175, 55, 0.2); color: var(--gold-light, #f3e5ab);">Wykłady Apologetyczne • Pn–Pt 18:00</span>
-                                <h4 class="card-title">Totalny Atak — Prof. Walter Veith</h4>
+                                <h4 class="card-title"><a href="totalny-atak-live.html" target="_blank" rel="noopener">Totalny Atak — Prof. Walter Veith</a></h4>
                                 <p class="card-desc">Seria wykładów biblijnych, apologetycznych i profetycznych. Proroctwa, historia świata i walka dobra ze złem według Pisma Świętego.</p>
                             </div>
                             <div class="card-actions">
@@ -580,13 +715,20 @@
 
                     <!-- Card: Chrześcijański Blok Filmowy -->
                     <div class="broadcast-card">
-                        <div class="card-img-wrapper">
+                        <a href="kino-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Chrześcijański Blok Filmowy (16:9)">
                             <img src="tlo_ksiega_nadziei.png" alt="Chrześcijański Blok Filmowy">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: rgba(212, 175, 55, 0.2); color: var(--gold-light, #f3e5ab);">Kino & Dokumenty • Weekendy 18:00</span>
-                                <h4 class="card-title">Chrześcijański Blok Filmowy (16:9)</h4>
+                                <h4 class="card-title"><a href="kino-live.html" target="_blank" rel="noopener">Chrześcijański Blok Filmowy (16:9)</a></h4>
                                 <p class="card-desc">Seanse filmowe i dokumentalne z przesłaniem. Emisja w weekendy od 18:00 oraz stały dostęp na życzenie.</p>
                             </div>
                             <div class="card-actions">
@@ -609,13 +751,20 @@
                     
                     <!-- Card 5: Codzienne Uwielbienie -->
                     <div class="broadcast-card">
-                        <div class="card-img-wrapper">
+                        <a href="spiewajmy-panu-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Codzienne Uwielbienie (16:9)">
                             <img src="spiewajmy-panu-thumb.png" alt="Codzienne Uwielbienie">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: var(--gold-primary, #d4af37); color: #000;">Blok Muzyczny • 16:00</span>
-                                <h4 class="card-title">Codzienne Uwielbienie (16:9)</h4>
+                                <h4 class="card-title"><a href="spiewajmy-panu-live.html" target="_blank" rel="noopener">Codzienne Uwielbienie (16:9)</a></h4>
                                 <p class="card-desc">Codzienny dwugodzinny blok muzyczny. Utwory uwielbienia, pieśni chwały i nowości muzyczne Christian Culture Music.</p>
                             </div>
                             <div class="card-actions">
@@ -628,13 +777,20 @@
 
                     <!-- Card: Świadectwa — Historie Wiary -->
                     <div class="broadcast-card">
-                        <div class="card-img-wrapper">
+                        <a href="swiadectwa-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Świadectwa — Historie Wiary (16:9)">
                             <img src="tlo_tv_live2.png" alt="Świadectwa — Historie Wiary">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: rgba(220, 20, 60, 0.2); color: #ff5e7e;">Niedziela • 18:00 - 20:00</span>
-                                <h4 class="card-title">Świadectwa — Historie Wiary (16:9)</h4>
+                                <h4 class="card-title"><a href="swiadectwa-live.html" target="_blank" rel="noopener">Świadectwa — Historie Wiary (16:9)</a></h4>
                                 <p class="card-desc">Poruszające historie nawróceń, uzdrowień i uwolnień. 11 wyselekcjonowanych filmów w rotacji na niedzielne wieczory.</p>
                             </div>
                             <div class="card-actions">
@@ -647,13 +803,20 @@
 
                     <!-- Card 6: Muzyka Instrumentalna & Nocne Czuwanie -->
                     <div class="broadcast-card">
-                        <div class="card-img-wrapper">
+                        <a href="nocne-czuwanie-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Muzyka Instrumentalna & Nocne Czuwanie">
                             <img src="tlo_tv_nocna.jpg" alt="Muzyka Instrumentalna & Nocne Czuwanie">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: rgba(159, 77, 255, 0.2); color: #d19eff;">23 Filmy w Rotacji • 00:00 - 06:00</span>
-                                <h4 class="card-title">Muzyka Instrumentalna & Nocne Czuwanie</h4>
+                                <h4 class="card-title"><a href="nocne-czuwanie-live.html" target="_blank" rel="noopener">Muzyka Instrumentalna & Nocne Czuwanie</a></h4>
                                 <p class="card-desc">Głębokie wyciszenie, 1 unikalny film relaksacyjny z cyklu 23 pozycji na dobę. Przestrzeń modlitwy, kontemplacji i snu.</p>
                             </div>
                             <div class="card-actions">
@@ -666,13 +829,20 @@
 
                     <!-- Card 7: Biblia Śpiewana 16:9 -->
                     <div class="broadcast-card">
-                        <div class="card-img-wrapper">
+                        <a href="biblia-spiewana-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Biblia Śpiewana (16:9)">
                             <img src="Logo_Biblia_Spiewana.jpg" alt="Biblia Śpiewana">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: #D4AF37; color: #000;">Muzyka & Słowo</span>
-                                <h4 class="card-title">Biblia Śpiewana (16:9)</h4>
+                                <h4 class="card-title"><a href="biblia-spiewana-live.html" target="_blank" rel="noopener">Biblia Śpiewana (16:9)</a></h4>
                                 <p class="card-desc">Pozioma scena nadawcza dla programu Biblia Śpiewana (Śpiewane Przypowieści Salomona). Wyjątkowa oprawa muzyczna.</p>
                             </div>
                             <div class="card-actions">
@@ -685,13 +855,20 @@
 
                     <!-- Card: Instrumental Worship Music CC -->
                     <div class="broadcast-card" style="border-left: 4px solid #8E2DE2;">
-                        <div class="card-img-wrapper">
+                        <a href="cctv24-worship.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Instrumental Worship Music CC (16:9)">
                             <img src="worship_logo_thumb.jpg" alt="Instrumental Worship Music CC">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: #c084fc;"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle" style="background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%); color: #fff;"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text" style="border-color: rgba(142, 45, 226, 0.5);">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: rgba(142, 45, 226, 0.2); color: #c084fc;">Muzyka Instrumentalna • 24/7</span>
-                                <h4 class="card-title">Instrumental Worship Music CC (16:9)</h4>
+                                <h4 class="card-title"><a href="cctv24-worship.html" target="_blank" rel="noopener">Instrumental Worship Music CC (16:9)</a></h4>
                                 <p class="card-desc">Nieprzerwany strumień muzyki instrumentalnej uwielbienia. Rotacja 31 wyselekcjonowanych kompozycji – idealna do modlitwy, kontemplacji i pracy.</p>
                             </div>
                             <div class="card-actions">
@@ -714,13 +891,20 @@
                     
                     <!-- Card 8: Radio Biblia Audio 16:9 -->
                     <div class="broadcast-card">
-                        <div class="card-img-wrapper">
+                        <a href="stream-scene.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Radio Biblia Audio (16:9)">
                             <img src="Logo Biblia Audio CC.jpg" alt="Radio Biblia Audio Poziomo">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: rgba(255,255,255,0.1); color: #fff;">Radio Internetowe PL</span>
-                                <h4 class="card-title">Radio Biblia Audio (16:9)</h4>
+                                <h4 class="card-title"><a href="stream-scene.html" target="_blank" rel="noopener">Radio Biblia Audio (16:9)</a></h4>
                                 <p class="card-desc">Pozioma scena zintegrowana ze strumieniem audio radia Zeno.fm. Wizualizacja fal dźwiękowych, zegar z datownikiem i werset dnia.</p>
                             </div>
                             <div class="card-actions">
@@ -733,13 +917,20 @@
 
                     <!-- Card 9: Radio Biblia Audio 9:16 -->
                     <div class="broadcast-card">
-                        <div class="card-img-wrapper">
+                        <a href="stream-scene-vertical.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Radio Biblia Audio (9:16)">
                             <img src="Logo Globalna Biblia Audio.jpg" alt="Radio Biblia Audio Pionowo">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: rgba(255,255,255,0.1); color: #fff;">Format Mobilny</span>
-                                <h4 class="card-title">Radio Biblia Audio (9:16)</h4>
+                                <h4 class="card-title"><a href="stream-scene-vertical.html" target="_blank" rel="noopener">Radio Biblia Audio (9:16)</a></h4>
                                 <p class="card-desc">Pionowa scena stworzona specjalnie dla formatów mobilnych na TikTok Live, YouTube Shorts i Instagram Reels.</p>
                             </div>
                             <div class="card-actions">
@@ -752,13 +943,20 @@
 
                     <!-- Card 10: Dobrze że jesteś 9:16 -->
                     <div class="broadcast-card">
-                        <div class="card-img-wrapper">
+                        <a href="dzj-vertical-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Dobrze, że jesteś (9:16)">
                             <img src="dzj-916-thumb.png" alt="Dobrze, że jesteś Pionowo">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: rgba(255,255,255,0.1); color: #fff;">Format Mobilny</span>
-                                <h4 class="card-title">Dobrze, że jesteś (9:16)</h4>
+                                <h4 class="card-title"><a href="dzj-vertical-live.html" target="_blank" rel="noopener">Dobrze, że jesteś (9:16)</a></h4>
                                 <p class="card-desc">Pionowy wariant popularnego programu śniadaniowego zoptymalizowany dla urządzeń mobilnych i relacji.</p>
                             </div>
                             <div class="card-actions">
@@ -771,13 +969,20 @@
 
                     <!-- Card 11: Biblia Śpiewana 9:16 -->
                     <div class="broadcast-card">
-                        <div class="card-img-wrapper">
+                        <a href="biblia-spiewana-vertical.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Biblia Śpiewana (9:16)">
                             <img src="Logo_Biblia_Spiewana.jpg" alt="Biblia Śpiewana Pionowo">
-                        </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: #D4AF37; color: #000;">Format Mobilny</span>
-                                <h4 class="card-title">Biblia Śpiewana (9:16)</h4>
+                                <h4 class="card-title"><a href="biblia-spiewana-vertical.html" target="_blank" rel="noopener">Biblia Śpiewana (9:16)</a></h4>
                                 <p class="card-desc">Pionowy szablon nadawczy Biblia Śpiewana dla widzów na YouTube Shorts, TikTok Live lub Instagram Reels.</p>
                             </div>
                             <div class="card-actions">
@@ -800,13 +1005,20 @@
                     
                     <!-- Card 12: Good to have you Global 16:9 -->
                     <div class="broadcast-card" style="border-left: 4px solid #00a2ff;">
-                        <div class="card-img-wrapper">
+                        <a href="cctv24-global.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Watch Live: Good to have you Global (16:9)">
                             <img src="GLOBAL.jpg" alt="Good to have you Global">
-                        </div>
+                            <div class="card-live-indicator" style="border-color: rgba(0, 162, 255, 0.4); color: #80c2ff;">
+                                <i class="fa-solid fa-play" style="color: #00a2ff;"></i> WATCH LIVE
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle" style="background: linear-gradient(135deg, #00a2ff 0%, #0056b3 100%); color: #fff;"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text" style="border-color: rgba(0, 162, 255, 0.4);">WATCH LIVE</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: #00a2ff; color: #000;">Global TV 24/7</span>
-                                <h4 class="card-title">Good to have you Global (16:9)</h4>
+                                <h4 class="card-title"><a href="cctv24-global.html" target="_blank" rel="noopener">Good to have you Global (16:9)</a></h4>
                                 <p class="card-desc">Global English version of the breakfast show. Blue-navy themed styling, Christian Culture Global radio signal.</p>
                             </div>
                             <div class="card-actions">
@@ -819,13 +1031,20 @@
 
                     <!-- Card 13: Bible Audio Global 16:9 -->
                     <div class="broadcast-card" style="border-left: 4px solid #00a2ff;">
-                        <div class="card-img-wrapper">
+                        <a href="bibleaudio-global.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Watch Live: Bible Audio Global (16:9)">
                             <img src="Logo Globalna Biblia Audio.jpg" alt="Bible Audio Global">
-                        </div>
+                            <div class="card-live-indicator" style="border-color: rgba(0, 162, 255, 0.4); color: #80c2ff;">
+                                <i class="fa-solid fa-play" style="color: #00a2ff;"></i> WATCH LIVE
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle" style="background: linear-gradient(135deg, #00a2ff 0%, #0056b3 100%); color: #fff;"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text" style="border-color: rgba(0, 162, 255, 0.4);">WATCH LIVE</span>
+                            </div>
+                        </a>
                         <div class="card-body">
                             <div>
                                 <span class="card-badge" style="background: #00a2ff; color: #000;">English Edition</span>
-                                <h4 class="card-title">Bible Audio Global (16:9)</h4>
+                                <h4 class="card-title"><a href="bibleaudio-global.html" target="_blank" rel="noopener">Bible Audio Global (16:9)</a></h4>
                                 <p class="card-desc">Anglojęzyczny wirtualny stream modlitewny ze zsynchronizowanym sygnałem Bible Audio Global oraz intencjami widzów.</p>
                             </div>
                             <div class="card-actions">
