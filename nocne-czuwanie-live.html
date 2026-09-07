@@ -390,7 +390,9 @@
             display: none !important;
         }
 
-        /* HIDE LOCAL TICKER WHEN EMBEDDED IN MASTER CONTROL ROOM (MASTER-LIVE) */
+        /* HIDE LOCAL TICKER AND UNMUTE OVERLAY WHEN EMBEDDED IN MASTER CONTROL ROOM (MASTER-LIVE) */
+        body.inside-iframe #unmute-overlay,
+        html.inside-iframe #unmute-overlay,
         body.inside-iframe .bottom-ticker-bar,
         html.inside-iframe .bottom-ticker-bar {
             display: none !important;
@@ -604,8 +606,14 @@
         let player = null;
         const playerIframe = document.getElementById("yt-player");
         if (playerIframe) {
-            const muteParam = isPreloadMuted ? '&mute=1' : '';
-            playerIframe.src = `https://www.youtube.com/embed/${currentMovie.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1&loop=1${muteParam}`;
+            const originParam = window.location.origin ? `&origin=${encodeURIComponent(window.location.origin)}` : '';
+            playerIframe.src = `https://www.youtube.com/embed/${currentMovie.id}?autoplay=1&enablejsapi=1&controls=0&rel=0&modestbranding=1&loop=1&mute=1${originParam}`;
+        }
+
+        if (!isPreloadMuted) {
+            [400, 1000, 2000, 3500, 5000].forEach(delay => {
+                setTimeout(handleUserUnmute, delay);
+            });
         }
 
         window.addEventListener('message', (e) => {
