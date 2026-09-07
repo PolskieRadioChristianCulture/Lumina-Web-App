@@ -317,8 +317,8 @@
     </nav>
 
     <!-- ── 2. MOBILNA PRZEWIJANA LISTA MIESIĘCY (NO-PRINT) ── -->
-    <div class="w-full bg-[#101626] border-b border-gray-800/80 py-2 px-3 no-print sticky top-[53px] z-40">
-        <div class="max-w-4xl mx-auto flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth" id="monthTabsContainer">
+    <div class="w-full bg-[#101626] border-b border-gray-800/80 py-2 px-3 no-print sticky top-[53px] z-40 flex justify-center">
+        <div class="max-w-5xl mx-auto flex items-center justify-start sm:justify-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth w-full" id="monthTabsContainer" style="justify-content: safe center;">
             <!-- Wygenerowane dynamicznie zakładki -->
         </div>
     </div>
@@ -604,6 +604,12 @@
             renderMonthTabs();
             updateLabels();
             renderCalendar();
+            try {
+                const container = document.getElementById('monthTabsContainer');
+                if (container && container.children[index]) {
+                    container.children[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            } catch(e) {}
         }
 
         function prevCard() {
