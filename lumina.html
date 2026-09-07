@@ -5477,6 +5477,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 }
 
                 const res = await authFn();
+                if (!res) {
+                    setAuthStatusMsg('ℹ️ Okno logowania zostało zamknięte.', false);
+                    return;
+                }
                 if (res && res.isRedirecting) {
                     setAuthStatusMsg('✨ Przekierowanie do strony logowania Google...', false);
                     return;

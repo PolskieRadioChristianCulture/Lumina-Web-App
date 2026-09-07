@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -280,6 +280,16 @@
 
             try {
                 const res = await loginWithGoogle();
+                if (!res) {
+                    if (btn) btn.disabled = false;
+                    if (iconSvg) iconSvg.style.display = 'block';
+                    if (textEl) textEl.textContent = 'Zaloguj się z Google';
+                    if (statusEl) {
+                        statusEl.className = 'status-msg';
+                        statusEl.textContent = 'Wybierz konto Google, aby się zalogować.';
+                    }
+                    return;
+                }
                 if (res && res.isRedirecting) {
                     if (statusEl) statusEl.textContent = 'Przekierowywanie do Google...';
                     return;

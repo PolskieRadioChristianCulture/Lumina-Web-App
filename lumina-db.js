@@ -42,9 +42,18 @@ import { getAnalytics, isSupported as isAnalyticsSupported } from 'https://www.g
 import { getMessaging, getToken, onMessage, isSupported as isMessagingSupported } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
 
 // ── Oficjalna Produkcyjna Konfiguracja Firebase (lumina-cc) ──
+// Standard Same-Origin Auth: na domenach polskieradio.cc / polskieradio.pages.dev używamy lokalnego proxy
+// /__/auth/*, co eliminuje błąd "missing initial state" spowodowany Storage Partitioning w przeglądarkach mobilnych.
+const isCustomAuthDomain = typeof window !== 'undefined' && window.location && window.location.hostname && (
+    window.location.hostname.includes('polskieradio') || 
+    window.location.hostname.includes('localhost') || 
+    window.location.hostname === '127.0.0.1'
+);
+const LUMINA_AUTH_DOMAIN = isCustomAuthDomain ? window.location.hostname : "lumina-cc.firebaseapp.com";
+
 const LUMINA_FIREBASE_CONFIG = {
     apiKey: "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M",
-    authDomain: "lumina-cc.firebaseapp.com",
+    authDomain: LUMINA_AUTH_DOMAIN,
     databaseURL: "https://lumina-cc-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "lumina-cc",
     storageBucket: "lumina-cc.firebasestorage.app",
@@ -659,24 +668,38 @@ export function ensureDbReady() {
 
 export async function loginWithGoogle() {
     try {
-        const { auth: activeAuth, db: activeDb } = await ensureDbReady();
+        let activeAuth = auth;
+        let activeDb = db;
+        if (!activeAuth || !activeDb) {
+            const ready = await ensureDbReady();
+            activeAuth = ready.auth;
+            activeDb = ready.db;
+        }
         if (!activeAuth) {
             throw new Error("Nie udało się połączyć z usługą Firebase Auth. Odśwież stronę.");
         }
 
-        let result;
+        let result = null;
         try {
             result = await signInWithPopup(activeAuth, googleProvider);
         } catch(popupErr) {
-            console.warn('Popup zablokowany (Incognito?), próba Redirect...', popupErr.code, popupErr.message);
-            if (popupErr.code === 'auth/popup-blocked' || popupErr.code === 'auth/cancelled-popup-request' || popupErr.code === 'auth/popup-closed-by-user') {
+            console.warn('Google Auth popup notice:', popupErr.code, popupErr.message);
+            // Jeśli użytkownik sam zamknął okienko popupu — NIE robimy błędu ani redirectu!
+            if (popupErr.code === 'auth/popup-closed-by-user') {
+                return null;
+            }
+            // Tylko gdy popup został fizycznie zablokowany przez przeglądarkę (np. restrykcyjne blokowanie wyskakujących okienek)
+            if (popupErr.code === 'auth/popup-blocked' || popupErr.code === 'auth/cancelled-popup-request') {
+                console.log('Popup zablokowany, próba Same-Origin Redirect...');
                 await signInWithRedirect(activeAuth, googleProvider);
                 return { isRedirecting: true };
             }
             throw popupErr;
         }
 
-        const user = result.user;
+        if (!result || !result.user) {
+            return null;
+        }
         let existingProfile = null;
         const isRadioCC = (user.email && (user.email.toLowerCase() === 'radiochristianculture@gmail.com' || user.email.toLowerCase().startsWith('radiochristianculture') || user.email.includes('bibliaaudio'))) || (user.displayName && (user.displayName.toLowerCase() === 'christian culture' || user.displayName.toLowerCase().includes('biblia audio') || user.displayName.toLowerCase().includes('polskie radio cc')));
         
