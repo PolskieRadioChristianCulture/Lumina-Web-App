@@ -628,19 +628,55 @@
     }
 
     // ── 6. Skaner elementów i dołączanie przycisków "Wymień" ──
+    function cleanupDuplicateButtons() {
+        const allButtons = Array.from(document.querySelectorAll('.btn-lumina-replace-floating'));
+        for (let i = 0; i < allButtons.length; i++) {
+            const b1 = allButtons[i];
+            if (!b1.parentNode) continue;
+            for (let j = i + 1; j < allButtons.length; j++) {
+                const b2 = allButtons[j];
+                if (!b2.parentNode) continue;
+
+                const card1 = b1.closest('.post-card, .feed-post-card, .post-card-1x1, article, .sidebar-card, .card-916, .mission-live-player-wrapper, .media-container-1x1, .broadcast-preview-wrap');
+                const card2 = b2.closest('.post-card, .feed-post-card, .post-card-1x1, article, .sidebar-card, .card-916, .mission-live-player-wrapper, .media-container-1x1, .broadcast-preview-wrap');
+
+                const isSameCard = (card1 && card2 && (card1 === card2 || card1.contains(b2) || card2.contains(b1))) || (b1.parentElement === b2.parentElement);
+
+                const r1 = b1.getBoundingClientRect();
+                const r2 = b2.getBoundingClientRect();
+                const dist = (r1.width > 0 && r2.width > 0) ? Math.hypot(r1.left - r2.left, r1.top - r2.top) : 0;
+
+                if (isSameCard || (dist > 0 && dist < 120)) {
+                    // Jeśli jeden to 'Wideo', a drugi ogólny 'Wymień', bezwzględnie zachowaj 'Wideo' i usuń 'Wymień'
+                    if (b1.innerText.includes('Wideo') && !b2.innerText.includes('Wideo')) {
+                        b2.remove();
+                    } else if (b2.innerText.includes('Wideo') && !b1.innerText.includes('Wideo')) {
+                        b1.remove();
+                    } else {
+                        b2.remove();
+                    }
+                }
+            }
+        }
+    }
+
     function scanAndAttachButtons() {
         if (!isMasterAdmin()) return;
 
         // 1. Karty postów (.feed-post-card, .post-card, .post-card-1x1, article, .mission-live-broadcast-card)
         const postCards = document.querySelectorAll('.feed-post-card, .post-card, .post-card-1x1, article, .mission-live-broadcast-card');
         postCards.forEach(card => {
-            // ZASADA ZERO-DUPLIKACJI: Jeśli na karcie posta istnieje już jakikolwiek przycisk wymiany,
-            // lub jeśli karta posiada dedykowany player wideo / transmisję (który otrzymuje własny
-            // przycisk w kroku 2), BEZWZGLĘDNIE pomijamy tworzenie przycisku w nagłówku i stopce!
-            const hasDedicatedPlayer = card.querySelector('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box');
+            // ZASADA ZERO-DUPLIKACJI: Jeśli na karcie posta istnieje jakikolwiek odtwarzacz wideo,
+            // iframe lub wideo, krok 2 przypisze dedykowany przycisk 'Wymień Wideo'.
+            // Usuwamy wszelkie przyciski pływające z samej karty, aby nie dublować z playerem!
+            const hasDedicatedPlayer = card.querySelector('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box, iframe, video');
             if (hasDedicatedPlayer) {
-                // Usuń ewentualne zdublowane przyciski z nagłówka lub stopki karty
                 card.querySelectorAll('.btn-lumina-replace-action').forEach(el => el.remove());
+                card.querySelectorAll('.btn-lumina-replace-floating').forEach(el => {
+                    if (!hasDedicatedPlayer.contains(el) && el !== hasDedicatedPlayer) {
+                        el.remove();
+                    }
+                });
                 return;
             }
 
@@ -670,7 +706,6 @@
                 }
             } else {
                 // Tylko dla postów bez grafiki i bez wideo: dodaj przycisk do DOLNEJ belki akcji (.post-actions-bar, .post-footer)
-                // NIGDY NIE DODAWAMY DO .post-header-actions ani do nagłówka posta!
                 const actionsBar = card.querySelector('.post-actions-bar, .post-footer');
                 if (actionsBar && !actionsBar.querySelector('.btn-lumina-replace-action')) {
                     const btn = document.createElement('button');
@@ -690,6 +725,14 @@
         // 2. Transmisje na żywo / Playery wideo / Ramki iframe
         const livePlayers = document.querySelectorAll('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box');
         livePlayers.forEach(player => {
+            // Wyczyść ewentualne przyciski pływające z kontenera nadrzędnego
+            const parentCard = player.closest('.post-card, .feed-post-card, .post-card-1x1, article, .sidebar-card');
+            if (parentCard) {
+                parentCard.querySelectorAll('.btn-lumina-replace-floating').forEach(b => {
+                    if (b.parentElement !== player) b.remove();
+                });
+            }
+
             if (!player.querySelector('.btn-lumina-replace-floating')) {
                 if (getComputedStyle(player).position === 'static') {
                     player.style.position = 'relative';
@@ -712,7 +755,7 @@
         const mediaTags = document.querySelectorAll('video, audio, .audio-player-container');
         mediaTags.forEach(media => {
             // Ignoruj media wewnątrz gotowych wrapperów playerów (obsługiwanych w kroku 2)
-            if (media.closest('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box')) return;
+            if (media.closest('.mission-live-player-wrapper, .live-player-container, .video-container, .stream-player-box, .media-container-1x1')) return;
             const parent = media.parentElement || media;
             // Bezwzględny zakaz wstrzykiwania do document.body lub documentElement
             if (!parent || parent === document.body || parent === document.documentElement) return;
@@ -733,6 +776,9 @@
                 parent.appendChild(btn);
             }
         });
+
+        // Końcowy automatyczny audyt i eliminacja wszelkich kolizji
+        cleanupDuplicateButtons();
 
         // 4. Przyciski i linki pobierania plików (zip, wav, mp3, pdf, docx itp.)
         const downloadLinks = document.querySelectorAll('a[download], a[href*=".zip"], a[href*=".pdf"], a[href*=".wav"], a[href*=".mp3"], .btn-download, .file-attachment-link');

@@ -1252,7 +1252,7 @@
         ensureMediaReplacerLoaded: function() {
             if (!window.LuminaMediaReplacer && !document.querySelector('script[src*="lumina-admin-media-replacer"]')) {
                 const s = document.createElement('script');
-                s.src = 'js/lumina-admin-media-replacer.js?v=20260906_replacer_v2';
+                s.src = 'js/lumina-admin-media-replacer.js?v=20260907_nodupes_v7';
                 s.onload = () => {
                     if (isUserMasterAdmin() && window.LuminaMediaReplacer) {
                         window.LuminaMediaReplacer.scanAndAttachButtons();
