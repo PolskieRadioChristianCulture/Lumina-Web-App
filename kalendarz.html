@@ -197,6 +197,25 @@
             transition: all 0.25s ease;
         }
 
+        /* ── GWARANCJA IDENTYCZNYCH WYMIARÓW OKNA ZDJĘCIA DLA WSZYSTKICH 12 MIESIĘCY ── */
+        .calendar-page:not(#page-card-0) .month-photo-container {
+            width: 100% !important;
+            height: 100mm !important;
+            min-height: 100mm !important;
+            max-height: 100mm !important;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
+        }
+
+        .calendar-page#page-card-0 .month-photo-container {
+            width: 100% !important;
+            height: 160mm !important;
+            min-height: 160mm !important;
+            max-height: 160mm !important;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
+        }
+
         /* ── ADAPTACJA MOBILNA NA SMARTFONY (EKRAN < 768px) ── */
         @media screen and (max-width: 768px) {
             .calendar-page {
@@ -209,8 +228,23 @@
                 border-radius: 14px !important;
                 box-shadow: 0 10px 30px rgba(0,0,0,0.6) !important;
             }
-            .calendar-page .month-photo-container {
-                height: 42% !important;
+            .calendar-page:not(#page-card-0) .month-photo-container {
+                width: 100% !important;
+                height: auto !important;
+                min-height: unset !important;
+                max-height: unset !important;
+                aspect-ratio: 16 / 9.5 !important;
+                flex-shrink: 0 !important;
+                flex-grow: 0 !important;
+            }
+            .calendar-page#page-card-0 .month-photo-container {
+                width: 100% !important;
+                height: auto !important;
+                min-height: unset !important;
+                max-height: unset !important;
+                aspect-ratio: 16 / 11 !important;
+                flex-shrink: 0 !important;
+                flex-grow: 0 !important;
             }
             .calendar-page .month-quote {
                 font-size: 0.72rem !important;
@@ -267,9 +301,23 @@
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(212, 175, 55, 0.25) !important;
             margin: 0 auto 30px auto !important;
         }
-        .view-original-size .calendar-page .month-photo-container,
-        .original-size .month-photo-container {
-            height: 45% !important;
+        .view-original-size .calendar-page:not(#page-card-0) .month-photo-container,
+        .original-size:not(#page-card-0) .month-photo-container {
+            width: 100% !important;
+            height: 100mm !important;
+            min-height: 100mm !important;
+            max-height: 100mm !important;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
+        }
+        .view-original-size .calendar-page#page-card-0 .month-photo-container,
+        .original-size#page-card-0 .month-photo-container {
+            width: 100% !important;
+            height: 160mm !important;
+            min-height: 160mm !important;
+            max-height: 160mm !important;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
         }
         .view-original-size .calendar-page .month-quote,
         .original-size .month-quote {
@@ -330,6 +378,22 @@
                 break-after: page !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
+            }
+            .calendar-page:not(#page-card-0) .month-photo-container {
+                width: 100% !important;
+                height: 100mm !important;
+                min-height: 100mm !important;
+                max-height: 100mm !important;
+                flex-shrink: 0 !important;
+                flex-grow: 0 !important;
+            }
+            .calendar-page#page-card-0 .month-photo-container {
+                width: 100% !important;
+                height: 160mm !important;
+                min-height: 160mm !important;
+                max-height: 160mm !important;
+                flex-shrink: 0 !important;
+                flex-grow: 0 !important;
             }
             .calendar-page:last-child {
                 page-break-after: avoid !important;
@@ -595,19 +659,110 @@
     <!-- ── 9. SKRYPT SILNIKA KALENDARZA (Z AUTOMATYCZNYM ODCZYTEM URL DLA SEO) ── -->
     <script>
         const defaultMonthsMeta = [
-            { name: "Styczeń", quote: "„Światłość w ciemności świeci i ciemność jej nie przemogła.”", ref: "Ewangelia Jana 1,5", img: "https://images.unsplash.com/photo-1517824806704-9040b037703b?q=80&w=1200&auto=format&fit=crop", sunsetFri: "15:45", sunsetSat: "15:47" },
-            { name: "Luty", quote: "„Pan jest moją mocą i tarczą; w nim zaufało serce moje i doznałem pomocy.”", ref: "Psalm 28,7", img: "https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?q=80&w=1200&auto=format&fit=crop", sunsetFri: "16:25", sunsetSat: "16:27" },
-            { name: "Marzec", quote: "„Oto czynię rzecz nową; teraz powstanie, czy jej nie poznacie? Zaiste utoruję drogę na pustyni.”", ref: "Księga Izajasza 43,19", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop", sunsetFri: "17:15", sunsetSat: "17:17" },
-            { name: "Kwiecień", quote: "„Góry mogą ustąpić i pagórki się zachwiać, ale miłość moja nie odstąpi od ciebie.”", ref: "Księga Izajasza 54,10", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop", sunsetFri: "19:10", sunsetSat: "19:12" },
-            { name: "Maj", quote: "„Bóg jest miłością, a kto trwa w miłości, trwa w Bogu, a Bóg w nim.”", ref: "1 List Jana 4,16", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop", sunsetFri: "20:00", sunsetSat: "20:02" },
-            { name: "Czerwiec", quote: "„Nie bój się, bom Ja z tobą, nie lękaj się, bom Ja twoim Bogiem! Wzmocnię cię, a dam ci pomoc.”", ref: "Księga Izajasza 41,10", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop", sunsetFri: "21:00", sunsetSat: "21:02" },
-            { name: "Lipiec", quote: "„Słowo Twoje jest pochodnią nogom moim i światłością ścieżkom moim.”", ref: "Psalm 119,105", img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop", sunsetFri: "20:50", sunsetSat: "20:48" },
-            { name: "Sierpień", quote: "„Pan jest pasterzem moim, niczego mi nie braknie. Na niwach zielonych pasie mnie.”", ref: "Psalm 23,1-2", img: "https://images.unsplash.com/photo-1426604966848-d7adacbd02bff?q=80&w=1200&auto=format&fit=crop", sunsetFri: "19:50", sunsetSat: "19:48" },
-            { name: "Wrzesień", quote: "„Wszystko mogę w tym, który mnie wzmacnia, w Chrystusie.”", ref: "List do Filipian 4,13", img: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?q=80&w=1200&auto=format&fit=crop", sunsetFri: "18:40", sunsetSat: "18:38" },
-            { name: "Październik", quote: "„Tylko On jest opoką moją i zbawieniem moim, twierdzą moją, przeto się nie zachwieję.”", ref: "Psalm 62,2", img: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop", sunsetFri: "17:30", sunsetSat: "17:28" },
-            { name: "Listopad", quote: "„W Bogu pokładam nadzieję, nie boję się; cóż może mi uczynić człowiek?”", ref: "Psalm 56,5", img: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop", sunsetFri: "15:55", sunsetSat: "15:53" },
-            { name: "Grudzień", quote: "„Oto panna pocznie i porodzi syna, i nazwą imię jego Emanuel, to znaczy: Bóg z nami.”", ref: "Ewangelia Mateusza 1,23", img: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?q=80&w=1200&auto=format&fit=crop", sunsetFri: "15:35", sunsetSat: "15:37" }
+            { name: "Styczeń", quote: "„Światłość w ciemności świeci i ciemność jej nie przemogła.”", ref: "Ewangelia Jana 1,5", img: "https://images.unsplash.com/photo-1517824806704-9040b037703b?q=80&w=1200&auto=format&fit=crop", sunsetFri: "15:34", sunsetSat: "15:36" },
+            { name: "Luty", quote: "„Pan jest moją mocą i tarczą; w nim zaufało serce moje i doznałem pomocy.”", ref: "Psalm 28,7", img: "https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?q=80&w=1200&auto=format&fit=crop", sunsetFri: "16:30", sunsetSat: "16:32" },
+            { name: "Marzec", quote: "„Oto czynię rzecz nową; teraz powstanie, czy jej nie poznacie? Zaiste utoruję drogę na pustyni.”", ref: "Księga Izajasza 43,19", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop", sunsetFri: "17:22", sunsetSat: "17:24" },
+            { name: "Kwiecień", quote: "„Góry mogą ustąpić i pagórki się zachwiać, ale miłość moja nie odstąpi od ciebie.”", ref: "Księga Izajasza 54,10", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop", sunsetFri: "19:11", sunsetSat: "19:13" },
+            { name: "Maj", quote: "„Bóg jest miłością, a kto trwa w miłości, trwa w Bogu, a Bóg w nim.”", ref: "1 List Jana 4,16", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop", sunsetFri: "20:11", sunsetSat: "20:04" },
+            { name: "Czerwiec", quote: "„Nie bój się, bom Ja z tobą, nie lękaj się, bom Ja twoim Bogiem! Wzmocnię cię, a dam ci pomoc.”", ref: "Księga Izajasza 41,10", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop", sunsetFri: "20:50", sunsetSat: "20:51" },
+            { name: "Lipiec", quote: "„Słowo Twoje jest pochodnią nogom moim i światłością ścieżkom moim.”", ref: "Psalm 119,105", img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop", sunsetFri: "21:00", sunsetSat: "21:00" },
+            { name: "Sierpień", quote: "„Pan jest pasterzem moim, niczego mi nie braknie. Na niwach zielonych pasie mnie.”", ref: "Psalm 23,1-2", img: "https://images.unsplash.com/photo-1426604966848-d7adacbd02bff?q=80&w=1200&auto=format&fit=crop", sunsetFri: "20:19", sunsetSat: "20:17" },
+            { name: "Wrzesień", quote: "„Wszystko mogę w tym, który mnie wzmacnia, w Chrystusie.”", ref: "List do Filipian 4,13", img: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?q=80&w=1200&auto=format&fit=crop", sunsetFri: "19:20", sunsetSat: "19:18" },
+            { name: "Październik", quote: "„Tylko On jest opoką moją i zbawieniem moim, twierdzą moją, przeto się nie zachwieję.”", ref: "Psalm 62,2", img: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop", sunsetFri: "18:14", sunsetSat: "18:12" },
+            { name: "Listopad", quote: "„W Bogu pokładam nadzieję, nie boję się; cóż może mi uczynić człowiek?”", ref: "Psalm 56,5", img: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop", sunsetFri: "16:00", sunsetSat: "15:59" },
+            { name: "Grudzień", quote: "„Oto panna pocznie i porodzi syna, i nazwą imię jego Emanuel, to znaczy: Bóg z nami.”", ref: "Ewangelia Mateusza 1,23", img: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?q=80&w=1200&auto=format&fit=crop", sunsetFri: "15:26", sunsetSat: "15:25" }
         ];
+
+        // RZECZYWISTE DOKŁADNE ASTRONOMICZNE GODZINY ZACHODU SŁOŃCA W POLSCE NA ROK 2027
+        // Klucz: `${monthIndex}_${day}` (miesiące 0-11, dni 1-31)
+        const SUNSET_TIMES_2027 = {
+            // Styczeń 2027
+            "0_1": "15:34", "0_2": "15:36",
+            "0_8": "15:42", "0_9": "15:44",
+            "0_15": "15:53", "0_16": "15:54",
+            "0_22": "16:04", "0_23": "16:06",
+            "0_29": "16:17", "0_30": "16:19",
+
+            // Luty 2027
+            "1_5": "16:30", "1_6": "16:32",
+            "1_12": "16:43", "1_13": "16:45",
+            "1_19": "16:56", "1_20": "16:58",
+            "1_26": "17:09", "1_27": "17:11",
+
+            // Marzec 2027 (W nocy z 27 na 28 marca następuje zmiana czasu na letni)
+            "2_5": "17:22", "2_6": "17:24",
+            "2_12": "17:34", "2_13": "17:36",
+            "2_19": "17:47", "2_20": "17:48",
+            "2_26": "17:59", "2_27": "18:01",
+
+            // Kwiecień 2027
+            "3_2": "19:11", "3_3": "19:13",
+            "3_9": "19:23", "3_10": "19:25",
+            "3_16": "19:35", "3_17": "19:37",
+            "3_23": "19:47", "3_24": "19:49",
+            "3_30": "19:59",
+
+            // Maj 2027 (1 maja to Sobota!)
+            "4_1": "20:04",
+            "4_7": "20:11", "4_8": "20:12",
+            "4_14": "20:22", "4_15": "20:24",
+            "4_21": "20:33", "4_22": "20:34",
+            "4_28": "20:42", "4_29": "20:43",
+
+            // Czerwiec 2027
+            "5_4": "20:50", "5_5": "20:51",
+            "5_11": "20:56", "5_12": "20:57",
+            "5_18": "21:00", "5_19": "21:00",
+            "5_25": "21:01", "5_26": "21:01",
+
+            // Lipiec 2027
+            "6_2": "21:00", "6_3": "21:00",
+            "6_9": "20:56", "6_10": "20:55",
+            "6_16": "20:50", "6_17": "20:49",
+            "6_23": "20:41", "6_24": "20:40",
+            "6_30": "20:31", "6_31": "20:29",
+
+            // Sierpień 2027
+            "7_6": "20:19", "7_7": "20:17",
+            "7_13": "20:05", "7_14": "20:03",
+            "7_20": "19:51", "7_21": "19:49",
+            "7_27": "19:36", "7_28": "19:34",
+
+            // Wrzesień 2027
+            "8_3": "19:20", "8_4": "19:18",
+            "8_10": "19:04", "8_11": "19:01",
+            "8_17": "18:47", "8_18": "18:45",
+            "8_24": "18:31", "8_25": "18:28",
+
+            // Październik 2027 (W nocy z 30 na 31 października następuje zmiana czasu na zimowy)
+            "9_1": "18:14", "9_2": "18:12",
+            "9_8": "17:58", "9_9": "17:56",
+            "9_15": "17:43", "9_16": "17:40",
+            "9_22": "17:27", "9_23": "17:25",
+            "9_29": "17:13", "9_30": "17:11",
+
+            // Listopad 2027
+            "10_5": "16:00", "10_6": "15:59",
+            "10_12": "15:49", "10_13": "15:47",
+            "10_19": "15:39", "10_20": "15:38",
+            "10_26": "15:31", "10_27": "15:30",
+
+            // Grudzień 2027
+            "11_3": "15:26", "11_4": "15:25",
+            "11_10": "15:23", "11_11": "15:23",
+            "11_17": "15:24", "11_18": "15:24",
+            "11_24": "15:27", "11_25": "15:27",
+            "11_31": "15:32"
+        };
+
+        function getExactSunset(year, monthIndex, day, isFriday, isSaturday) {
+            if (year === 2027) {
+                const key = `${monthIndex}_${day}`;
+                if (SUNSET_TIMES_2027[key]) return SUNSET_TIMES_2027[key];
+            }
+            const m = monthsMeta[monthIndex];
+            return isFriday ? m.sunsetFri : m.sunsetSat;
+        }
 
         let coverImg = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop";
         let monthsMeta = JSON.parse(JSON.stringify(defaultMonthsMeta));
@@ -877,7 +1032,7 @@
             const isCoverVisible = (viewMode === 'all' || activeCardIndex === 0);
             const coverHTML = `
                 <div class="calendar-page ${isCoverVisible ? '' : 'hidden'}" id="page-card-0">
-                    <div class="month-photo-container relative w-full h-[62%] rounded-2xl overflow-hidden shadow-2xl border border-gray-100 group">
+                    <div class="month-photo-container relative w-full h-[160mm] rounded-2xl overflow-hidden shadow-2xl border border-gray-100 group flex-shrink-0">
                         <img src="${coverImg}" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] via-black/35 to-transparent flex flex-col justify-end p-6 md:p-12 text-white pointer-events-none">
                             <div class="inline-flex items-center gap-2 mb-1.5">
@@ -985,8 +1140,9 @@
                         // 7. Dzień tygodnia – Sabat / Szabat Pana Boga (Święty Sabat)
                         cellBg = 'bg-amber-50/50 border-amber-400/90 shadow-sm';
                         dayColor = 'text-amber-950 font-black';
+                        const sunsetTime = getExactSunset(year, monthIndex, day, false, true);
                         if (showSunset) {
-                            badge = `<span class="sunset-tag text-[6.5px] md:text-[7.5px] leading-tight text-amber-900 font-bold block mt-0.5">Sabat • ${m.sunsetSat}</span>`;
+                            badge = `<span class="sunset-tag text-[6.5px] md:text-[7.5px] leading-tight text-amber-900 font-bold block mt-0.5">Sabat • ${sunsetTime}</span>`;
                         } else {
                             badge = `<span class="sunset-tag text-[6.5px] md:text-[7.5px] leading-tight text-amber-900 font-bold block mt-0.5">Sabat Pana</span>`;
                         }
@@ -994,8 +1150,9 @@
                         // 6. Dzień tygodnia – Dzień Przygotowania przed Sabatem
                         cellBg = 'bg-amber-50/20 border-amber-200/80';
                         dayColor = 'text-amber-900 font-semibold';
+                        const sunsetTime = getExactSunset(year, monthIndex, day, true, false);
                         if (showSunset) {
-                            badge = `<span class="sunset-tag text-[6.5px] md:text-[7.5px] leading-tight text-amber-800 font-semibold block mt-0.5">Zachód: ${m.sunsetFri}</span>`;
+                            badge = `<span class="sunset-tag text-[6.5px] md:text-[7.5px] leading-tight text-amber-800 font-semibold block mt-0.5">Zachód: ${sunsetTime}</span>`;
                         }
                     } else if (isSunday) {
                         // 1. Dzień tygodnia – Roboczy (Niedziela)
@@ -1023,7 +1180,7 @@
 
                 const monthCardHTML = `
                     <div class="calendar-page ${isCardVisible ? '' : 'hidden'}" id="page-card-${cardIdx}">
-                        <div class="month-photo-container relative w-full h-[45%] rounded-xl overflow-hidden shadow-md border border-gray-200 group">
+                        <div class="month-photo-container relative w-full h-[100mm] rounded-xl overflow-hidden shadow-md border border-gray-200 group flex-shrink-0">
                             <img src="${m.img}" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-4 md:p-6 text-white pointer-events-none">
                                 <div class="w-6 md:w-8 h-1 bg-amber-400 rounded-full mb-1.5"></div>
