@@ -354,21 +354,64 @@
         }
         .view-original-size .calendar-page .cc-banner,
         .original-size .cc-banner {
-            padding: 8px 12px !important;
-            margin: 8px 0 !important;
+            padding: 6px 12px !important;
+            margin: 6px 0 !important;
+        }
+        .view-original-size .calendar-page .banner-logo-box,
+        .original-size .banner-logo-box {
+            width: 13mm !important;
+            height: 13mm !important;
+            padding: 1.5mm !important;
+            border-radius: 3mm !important;
+        }
+        .view-original-size .calendar-page .banner-qr-box,
+        .original-size .banner-qr-box {
+            width: 20mm !important;
+            height: 20mm !important;
+            padding: 1.5mm !important;
+            border-radius: 3.5mm !important;
+        }
+        .view-original-size .calendar-page .banner-title,
+        .original-size .banner-title {
+            font-size: 10.5pt !important;
+            font-weight: 800 !important;
+            line-height: 1.2 !important;
+        }
+        .view-original-size .calendar-page .banner-subtitle,
+        .original-size .banner-subtitle {
+            font-size: 8.5pt !important;
+            font-weight: 500 !important;
+            line-height: 1.25 !important;
+        }
+        .view-original-size .calendar-page .day-header-cell,
+        .original-size .day-header-cell {
+            min-height: 38px !important;
+            padding: 3px 2px !important;
+        }
+        .view-original-size .calendar-page .day-header-cell span:first-child,
+        .original-size .day-header-cell span:first-child {
+            font-size: 8.5pt !important;
+            font-weight: 800 !important;
+        }
+        .view-original-size .calendar-page .day-header-cell span:last-child,
+        .original-size .day-header-cell span:last-child {
+            font-size: 6.5pt !important;
+            font-weight: 700 !important;
         }
         .view-original-size .calendar-page .day-cell,
         .original-size .day-cell {
             min-height: 44px !important;
-            padding: 6px !important;
+            padding: 5px 6px !important;
         }
         .view-original-size .calendar-page .day-number,
         .original-size .day-number {
-            font-size: 0.875rem !important;
+            font-size: 1.05rem !important;
+            font-weight: 800 !important;
         }
         .view-original-size .calendar-page .sunset-tag,
         .original-size .sunset-tag {
-            font-size: 7.5px !important;
+            font-size: 8pt !important;
+            font-weight: 800 !important;
         }
 
         /* ── DRUK A4 / ZAPIS DO PDF (GWARANCJA JAKOŚCI POLIGRAFICZNEJ) ── */
@@ -729,85 +772,85 @@
             { name: "Grudzień", quote: "„Oto panna pocznie i porodzi syna, i nazwą imię jego Emanuel, to znaczy: Bóg z nami.”", ref: "Ewangelia Mateusza 1,23", img: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?q=80&w=1200&auto=format&fit=crop", sunsetFri: "15:26", sunsetSat: "15:25" }
         ];
 
-        // RZECZYWISTE DOKŁADNE ASTRONOMICZNE GODZINY ZACHODU SŁOŃCA W POLSCE NA ROK 2027
+        // RZECZYWISTE DOKŁADNE ASTRONOMICZNE GODZINY ZACHODU SŁOŃCA W POLSCE NA ROK 2027 (NOAA / Warszawa 52°13'N, 21°00'E)
         // Klucz: `${monthIndex}_${day}` (miesiące 0-11, dni 1-31)
         const SUNSET_TIMES_2027 = {
             // Styczeń 2027
-            "0_1": "15:34", "0_2": "15:36",
-            "0_8": "15:42", "0_9": "15:44",
-            "0_15": "15:53", "0_16": "15:54",
-            "0_22": "16:04", "0_23": "16:06",
-            "0_29": "16:17", "0_30": "16:19",
+            "0_1": "15:33", "0_2": "15:34",
+            "0_8": "15:41", "0_9": "15:42",
+            "0_15": "15:51", "0_16": "15:52",
+            "0_22": "16:02", "0_23": "16:04",
+            "0_29": "16:15", "0_30": "16:17",
 
             // Luty 2027
-            "1_5": "16:30", "1_6": "16:32",
-            "1_12": "16:43", "1_13": "16:45",
-            "1_19": "16:56", "1_20": "16:58",
-            "1_26": "17:09", "1_27": "17:11",
+            "1_5": "16:28", "1_6": "16:30",
+            "1_12": "16:41", "1_13": "16:43",
+            "1_19": "16:55", "1_20": "16:56",
+            "1_26": "17:08", "1_27": "17:10",
 
-            // Marzec 2027 (W nocy z 27 na 28 marca następuje zmiana czasu na letni)
-            "2_5": "17:22", "2_6": "17:24",
-            "2_12": "17:34", "2_13": "17:36",
-            "2_19": "17:47", "2_20": "17:48",
-            "2_26": "17:59", "2_27": "18:01",
+            // Marzec 2027 (W nocy z 27 na 28 marca następuje zmiana czasu na letni UTC+2)
+            "2_5": "17:21", "2_6": "17:22",
+            "2_12": "17:33", "2_13": "17:35",
+            "2_19": "17:45", "2_20": "17:47",
+            "2_26": "17:58", "2_27": "17:59",
 
             // Kwiecień 2027
-            "3_2": "19:11", "3_3": "19:13",
-            "3_9": "19:23", "3_10": "19:25",
-            "3_16": "19:35", "3_17": "19:37",
-            "3_23": "19:47", "3_24": "19:49",
-            "3_30": "19:59",
+            "3_2": "19:08", "3_3": "19:10",
+            "3_9": "19:20", "3_10": "19:21",
+            "3_16": "19:32", "3_17": "19:33",
+            "3_23": "19:44", "3_24": "19:45",
+            "3_30": "19:56",
 
             // Maj 2027 (1 maja to Sobota!)
-            "4_1": "20:04",
-            "4_7": "20:11", "4_8": "20:12",
-            "4_14": "20:22", "4_15": "20:24",
-            "4_21": "20:33", "4_22": "20:34",
-            "4_28": "20:42", "4_29": "20:43",
+            "4_1": "19:57",
+            "4_7": "20:07", "4_8": "20:09",
+            "4_14": "20:19", "4_15": "20:20",
+            "4_21": "20:30", "4_22": "20:31",
+            "4_28": "20:39", "4_29": "20:41",
 
-            // Czerwiec 2027
-            "5_4": "20:50", "5_5": "20:51",
-            "5_11": "20:56", "5_12": "20:57",
-            "5_18": "21:00", "5_19": "21:00",
+            // Czerwiec 2027 (Przesilenie letnie)
+            "5_4": "20:48", "5_5": "20:49",
+            "5_11": "20:55", "5_12": "20:55",
+            "5_18": "20:59", "5_19": "21:00",
             "5_25": "21:01", "5_26": "21:01",
 
             // Lipiec 2027
-            "6_2": "21:00", "6_3": "21:00",
-            "6_9": "20:56", "6_10": "20:55",
-            "6_16": "20:50", "6_17": "20:49",
-            "6_23": "20:41", "6_24": "20:40",
-            "6_30": "20:31", "6_31": "20:29",
+            "6_2": "21:01", "6_3": "21:00",
+            "6_9": "20:58", "6_10": "20:57",
+            "6_16": "20:52", "6_17": "20:51",
+            "6_23": "20:44", "6_24": "20:43",
+            "6_30": "20:34", "6_31": "20:33",
 
             // Sierpień 2027
-            "7_6": "20:19", "7_7": "20:17",
-            "7_13": "20:05", "7_14": "20:03",
-            "7_20": "19:51", "7_21": "19:49",
-            "7_27": "19:36", "7_28": "19:34",
+            "7_6": "20:23", "7_7": "20:21",
+            "7_13": "20:10", "7_14": "20:08",
+            "7_20": "19:55", "7_21": "19:53",
+            "7_27": "19:40", "7_28": "19:38",
 
             // Wrzesień 2027
-            "8_3": "19:20", "8_4": "19:18",
-            "8_10": "19:04", "8_11": "19:01",
-            "8_17": "18:47", "8_18": "18:45",
-            "8_24": "18:31", "8_25": "18:28",
+            "8_3": "19:25", "8_4": "19:22",
+            "8_10": "19:08", "8_11": "19:06",
+            "8_17": "18:52", "8_18": "18:49",
+            "8_24": "18:35", "8_25": "18:33",
 
-            // Październik 2027 (W nocy z 30 na 31 października następuje zmiana czasu na zimowy)
-            "9_1": "18:14", "9_2": "18:12",
-            "9_8": "17:58", "9_9": "17:56",
-            "9_15": "17:43", "9_16": "17:40",
-            "9_22": "17:27", "9_23": "17:25",
-            "9_29": "17:13", "9_30": "17:11",
+            // Październik 2027 (W nocy z 30 na 31 października następuje zmiana czasu na zimowy UTC+1)
+            "9_1": "18:18", "9_2": "18:16",
+            "9_8": "18:02", "9_9": "18:00",
+            "9_15": "17:46", "9_16": "17:44",
+            "9_22": "17:31", "9_23": "17:29",
+            "9_29": "17:17", "9_30": "17:15",
 
             // Listopad 2027
-            "10_5": "16:00", "10_6": "15:59",
-            "10_12": "15:49", "10_13": "15:47",
-            "10_19": "15:39", "10_20": "15:38",
-            "10_26": "15:31", "10_27": "15:30",
+            "10_5": "16:02", "10_6": "16:00",
+            "10_12": "15:50", "10_13": "15:49",
+            "10_19": "15:41", "10_20": "15:39",
+            "10_26": "15:33", "10_27": "15:32",
 
-            // Grudzień 2027
-            "11_3": "15:26", "11_4": "15:25",
-            "11_10": "15:23", "11_11": "15:23",
+            // Grudzień 2027 (Przesilenie zimowe)
+            "11_3": "15:27", "11_4": "15:27",
+            "11_10": "15:24", "11_11": "15:24",
             "11_17": "15:24", "11_18": "15:24",
-            "11_24": "15:27", "11_25": "15:27",
+            "11_24": "15:26", "11_25": "15:27",
             "11_31": "15:32"
         };
 
@@ -861,9 +904,9 @@
         tag: "Telewizja CCTV24",
         title: "Telewizja Uwielbienia CCTV24 – Pieśni Chwały 24/7!",
         cta: "Wypełnij swój dom pieśniami uwielbienia i transmisją wideo na żywo.",
-        url: "https://polskieradio.cc/cctv24-worship.html",
+        url: "https://polskieradio.cc/cctv24",
         qrLabel: "Włącz TV Live",
-        qrSub: "cctv24 worship",
+        qrSub: "polskieradio.cc/cctv24",
         qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 35 35\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h35v35H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m1 0h1m1 0h2m2 0h1m3 0h4m1 0h1m2 0h7M1 2.5h1m5 0h1m1 0h2m1 0h1m2 0h1m2 0h1m2 0h1m2 0h2m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m2 0h1m1 0h6m1 0h1m1 0h1m2 0h1m2 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h2m5 0h1m2 0h2m1 0h1m1 0h2m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m2 0h3m4 0h3m2 0h4m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m4 0h7m4 0h2m2 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h1m3 0h1m1 0h6m2 0h1m1 0h1M1 9.5h1m1 0h2m1 0h3m1 0h4m2 0h1m1 0h2m2 0h1m1 0h1m2 0h1m2 0h1m1 0h2M2 10.5h1m8 0h1m1 0h2m3 0h3m3 0h1m2 0h2m1 0h4M2 11.5h1m2 0h1m1 0h2m3 0h1m1 0h1m4 0h1m2 0h5m1 0h3m1 0h2M1 12.5h2m8 0h1m4 0h1m1 0h1m2 0h4m1 0h3m1 0h1m2 0h1M4 13.5h10m1 0h3m2 0h4m1 0h2m1 0h3m1 0h2M1 14.5h3m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h1m5 0h1m1 0h1M3 15.5h1m2 0h2m1 0h2m1 0h1m1 0h1m3 0h1m1 0h2m5 0h1m1 0h1m1 0h1M9 16.5h1m1 0h6m5 0h2m2 0h3m1 0h2M1 17.5h4m2 0h1m1 0h1m2 0h1m4 0h1m3 0h3m1 0h3m1 0h1m1 0h1M1 18.5h2m1 0h3m2 0h3m1 0h2m1 0h1m4 0h1m2 0h2m1 0h1m1 0h2m1 0h2M2 19.5h1m1 0h6m2 0h2m2 0h1m2 0h1m1 0h2m2 0h1m1 0h3m1 0h2M1 20.5h1m1 0h2m1 0h1m2 0h2m1 0h1m1 0h1m2 0h3m1 0h1m1 0h3m1 0h1m1 0h1m2 0h1M1 21.5h2m1 0h4m1 0h1m2 0h3m2 0h1m5 0h2m3 0h1m1 0h2M1 22.5h2m2 0h1m2 0h3m1 0h7m2 0h4m1 0h2m3 0h1m1 0h1M5 23.5h3m1 0h1m2 0h1m3 0h1m2 0h4m1 0h2m1 0h2m2 0h3M2 24.5h1m2 0h1m2 0h1m4 0h4m2 0h1m1 0h1m1 0h1m1 0h2m3 0h1m2 0h1M1 25.5h1m2 0h1m2 0h3m3 0h1m1 0h1m1 0h2m1 0h1m2 0h7m3 0h1M9 26.5h1m2 0h2m2 0h2m2 0h1m1 0h1m1 0h2m3 0h2m1 0h1M1 27.5h7m1 0h1m1 0h2m1 0h2m2 0h3m1 0h1m1 0h2m1 0h1m1 0h1M1 28.5h1m5 0h1m1 0h1m1 0h1m6 0h2m1 0h1m2 0h2m3 0h4M1 29.5h1m1 0h3m1 0h1m6 0h2m1 0h3m3 0h7m1 0h2M1 30.5h1m1 0h3m1 0h1m1 0h3m2 0h2m1 0h1m2 0h1m2 0h3m2 0h1m2 0h3M1 31.5h1m1 0h3m1 0h1m1 0h3m1 0h2m1 0h4m1 0h2m1 0h1m2 0h2m2 0h1M1 32.5h1m5 0h1m2 0h1m1 0h1m1 0h1m3 0h2m1 0h1m1 0h7m3 0h1M1 33.5h7m1 0h1m2 0h1m4 0h4m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1\"/></svg>"
     },
     {
@@ -872,7 +915,7 @@
         cta: "Zainstaluj darmową aplikację i czerp siłę ze Słowa Bożego każdego poranka.",
         url: "https://cuda-398c0.web.app",
         qrLabel: "Pobierz App",
-        qrSub: "cuda każdego dnia",
+        qrSub: "cuda-398c0.web.app",
         qrSvg: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 27 27\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h27v27H0z\"/><path stroke=\"#000000\" d=\"M1 1.5h7m3 0h1m3 0h1m3 0h7M1 2.5h1m5 0h1m3 0h1m1 0h1m2 0h2m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h1m2 0h1m6 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1m2 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h2m2 0h2m2 0h1m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h1m2 0h5m2 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h3m1 0h1m2 0h1M1 9.5h1m1 0h5m4 0h4m1 0h1m1 0h5M1 10.5h2m1 0h3m8 0h1m2 0h1m1 0h1m3 0h1M1 11.5h3m3 0h2m5 0h9m1 0h2M1 12.5h1m2 0h2m2 0h1m1 0h4m1 0h2m1 0h2m5 0h1M2 13.5h4m1 0h2m4 0h3m1 0h3m1 0h1m1 0h3M1 14.5h6m2 0h1m1 0h1m1 0h1m6 0h1m1 0h1m1 0h1M1 15.5h1m2 0h8m1 0h1m1 0h8m1 0h2M1 16.5h1m1 0h3m3 0h3m1 0h1m1 0h1m3 0h3m3 0h1M1 17.5h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h8m1 0h1M9 18.5h2m1 0h1m4 0h1m3 0h2M1 19.5h7m5 0h2m2 0h1m1 0h1m1 0h1m1 0h3M1 20.5h1m5 0h1m1 0h1m1 0h1m1 0h1m2 0h2m3 0h2M1 21.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m1 0h6m1 0h1M1 22.5h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m3 0h2m1 0h5M1 23.5h1m1 0h3m1 0h1m1 0h1m4 0h2m1 0h1m4 0h2m1 0h1M1 24.5h1m5 0h1m2 0h1m2 0h1m2 0h2m1 0h4m2 0h1M1 25.5h7m1 0h1m1 0h1m1 0h4m1 0h8\"/></svg>"
     },
     {
@@ -1354,7 +1397,7 @@
                         document.body.appendChild(container);
 
                         const canvas = await html2canvas(clone, {
-                            scale: 2,
+                            scale: 2.5,
                             useCORS: true,
                             allowTaint: true,
                             logging: false,
@@ -1364,7 +1407,7 @@
 
                         container.remove();
 
-                        const imgData = canvas.toDataURL('image/jpeg', 0.92);
+                        const imgData = canvas.toDataURL('image/jpeg', 0.95);
                         if (i > 0) pdf.addPage();
                         pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
                     }
@@ -1482,31 +1525,31 @@
                 let headers = [];
                 if (weekFormat === 'biblical') {
                     headers = [
-                        { label: 'NIEDZIELA', short: 'ND', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'PONIEDZIAŁEK', short: 'PN', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'WTOREK', short: 'WT', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'ŚRODA', short: 'ŚR', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'CZWARTEK', short: 'CZ', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'PIĄTEK (PRZYG.)', short: 'PT', color: 'text-amber-900 bg-amber-50/90 border-amber-300 font-semibold' },
-                        { label: 'SOBOTA — SABAT', short: 'SOB', color: 'text-amber-950 bg-gradient-to-r from-amber-100/90 via-amber-50 to-amber-100/90 border-amber-400 font-black shadow-sm' }
+                        { label: 'NIEDZIELA', sub: '1. DZIEŃ', short: 'ND', color: 'text-gray-800 bg-gray-50/90 border-gray-200' },
+                        { label: 'PONIEDZIAŁEK', sub: '2. DZIEŃ', short: 'PN', color: 'text-gray-800 bg-gray-50/90 border-gray-200' },
+                        { label: 'WTOREK', sub: '3. DZIEŃ', short: 'WT', color: 'text-gray-800 bg-gray-50/90 border-gray-200' },
+                        { label: 'ŚRODA', sub: '4. DZIEŃ', short: 'ŚR', color: 'text-gray-800 bg-gray-50/90 border-gray-200' },
+                        { label: 'CZWARTEK', sub: '5. DZIEŃ', short: 'CZ', color: 'text-gray-800 bg-gray-50/90 border-gray-200' },
+                        { label: 'PIĄTEK', sub: 'PRZYGOTOWANIE', short: 'PT', color: 'text-amber-900 bg-amber-50/80 border-amber-300 font-bold' },
+                        { label: 'SOBOTA', sub: 'ŚWIĘTY SABAT', short: 'SOB', color: 'text-amber-950 bg-gradient-to-b from-amber-100 via-amber-50 to-amber-100 border-amber-400 font-black shadow-sm' }
                     ];
                 } else {
                     headers = [
-                        { label: 'PONIEDZIAŁEK', short: 'PN', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'WTOREK', short: 'WT', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'ŚRODA', short: 'ŚR', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'CZWARTEK', short: 'CZ', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'PIĄTEK (PRZYG.)', short: 'PT', color: 'text-amber-900 bg-amber-50/90 border-amber-300 font-semibold' },
-                        { label: 'SOBOTA — SABAT', short: 'SOB', color: 'text-amber-950 bg-gradient-to-r from-amber-100/90 via-amber-50 to-amber-100/90 border-amber-400 font-black shadow-sm' },
-                        { label: 'NIEDZIELA', short: 'ND', color: 'text-gray-700 bg-gray-50 border-gray-200' }
+                        { label: 'PONIEDZIAŁEK', sub: '1. DZIEŃ', short: 'PN', color: 'text-gray-800 bg-gray-50/90 border-gray-200' },
+                        { label: 'WTOREK', sub: '2. DZIEŃ', short: 'WT', color: 'text-gray-800 bg-gray-50/90 border-gray-200' },
+                        { label: 'ŚRODA', sub: '3. DZIEŃ', short: 'ŚR', color: 'text-gray-800 bg-gray-50/90 border-gray-200' },
+                        { label: 'CZWARTEK', sub: '4. DZIEŃ', short: 'CZ', color: 'text-gray-800 bg-gray-50/90 border-gray-200' },
+                        { label: 'PIĄTEK', sub: 'PRZYGOTOWANIE', short: 'PT', color: 'text-amber-900 bg-amber-50/80 border-amber-300 font-bold' },
+                        { label: 'SOBOTA', sub: 'ŚWIĘTY SABAT', short: 'SOB', color: 'text-amber-950 bg-gradient-to-b from-amber-100 via-amber-50 to-amber-100 border-amber-400 font-black shadow-sm' },
+                        { label: 'NIEDZIELA', sub: '7. DZIEŃ', short: 'ND', color: 'text-gray-800 bg-gray-50/90 border-gray-200' }
                     ];
                 }
 
                 headers.forEach(h => {
                     daysHTML += `
-                        <div class="day-header-cell text-center font-bold text-[8.5px] sm:text-[9.5px] md:text-[10px] py-1 px-0.5 rounded border ${h.color} font-cinzel flex items-center justify-center min-h-[32px] md:min-h-[38px] overflow-hidden leading-tight">
-                            <span class="hidden sm:inline break-words">${h.label}</span>
-                            <span class="sm:hidden font-black text-[9px]">${h.short}</span>
+                        <div class="day-header-cell text-center font-bold py-1 px-0.5 rounded border ${h.color} flex flex-col items-center justify-center min-h-[34px] md:min-h-[40px] leading-tight">
+                            <span class="font-extrabold text-[8.5px] sm:text-[9.5px] md:text-[10.5px] uppercase tracking-wide">${h.label}</span>
+                            ${h.sub ? `<span class="text-[6.5px] sm:text-[7px] md:text-[7.5px] font-semibold tracking-wider block opacity-90">${h.sub}</span>` : ''}
                         </div>
                     `;
                 });
@@ -1523,42 +1566,42 @@
                     const isSaturday = (dayOfWeek === 6);
 
                     let cellBg = 'bg-white border-gray-200';
-                    let dayColor = 'text-gray-900';
+                    let dayColor = 'text-gray-900 font-bold';
                     let badge = '';
 
                     const nameDay = (polishNameDays[monthIndex] && polishNameDays[monthIndex][day - 1]) || '';
-                    const namesHTML = (showNames && nameDay) ? `<span class="day-names text-[6px] md:text-[6.8px] text-gray-500 font-medium block truncate leading-tight mt-0.5" title="${nameDay}">${nameDay}</span>` : '';
+                    const namesHTML = (showNames && nameDay) ? `<span class="day-names text-[6px] md:text-[7px] text-gray-500 font-medium block truncate leading-tight mt-0.5" title="${nameDay}">${nameDay}</span>` : '';
 
                     if (isSaturday) {
                         // 7. Dzień tygodnia – Sabat / Szabat Pana Boga (Święty Sabat)
-                        cellBg = 'bg-amber-50/50 border-amber-400/90 shadow-sm';
+                        cellBg = 'bg-amber-50/65 border-amber-300/90 shadow-sm';
                         dayColor = 'text-amber-950 font-black';
                         const sunsetTime = getExactSunset(year, monthIndex, day, false, true);
                         if (showSunset) {
-                            badge = `<span class="sunset-tag text-[6.5px] md:text-[7.5px] leading-tight text-amber-900 font-bold block mt-0.5">Sabat • ${sunsetTime}</span>`;
+                            badge = `<span class="sunset-tag text-[7px] md:text-[8px] leading-tight text-amber-950 font-extrabold block mt-0.5">Sabat: ${sunsetTime}</span>`;
                         } else {
-                            badge = `<span class="sunset-tag text-[6.5px] md:text-[7.5px] leading-tight text-amber-900 font-bold block mt-0.5">Sabat Pana</span>`;
+                            badge = `<span class="sunset-tag text-[7px] md:text-[8px] leading-tight text-amber-950 font-extrabold block mt-0.5">Święty Sabat</span>`;
                         }
                     } else if (isFriday) {
                         // 6. Dzień tygodnia – Dzień Przygotowania przed Sabatem
-                        cellBg = 'bg-amber-50/20 border-amber-200/80';
-                        dayColor = 'text-amber-900 font-semibold';
+                        cellBg = 'bg-amber-50/25 border-amber-200/80';
+                        dayColor = 'text-amber-900 font-extrabold';
                         const sunsetTime = getExactSunset(year, monthIndex, day, true, false);
                         if (showSunset) {
-                            badge = `<span class="sunset-tag text-[6.5px] md:text-[7.5px] leading-tight text-amber-800 font-semibold block mt-0.5">Zachód: ${sunsetTime}</span>`;
+                            badge = `<span class="sunset-tag text-[7px] md:text-[7.5px] leading-tight text-amber-800 font-bold block mt-0.5">Zachód: ${sunsetTime}</span>`;
                         }
                     } else if (isSunday) {
                         // 1. Dzień tygodnia – Roboczy (Niedziela)
                         cellBg = 'bg-white border-gray-200';
-                        dayColor = 'text-gray-900 font-semibold';
+                        dayColor = 'text-gray-900 font-extrabold';
                     } else {
                         // Pozostałe dni powszednie robocze (Pn, Wt, Śr, Czw)
                         cellBg = 'bg-white border-gray-200';
-                        dayColor = 'text-gray-800 font-medium';
+                        dayColor = 'text-gray-900 font-bold';
                     }
 
                     daysHTML += `
-                        <div class="day-cell border ${cellBg} rounded p-1 md:p-1.5 flex flex-col justify-between min-h-[36px] md:min-h-[46px] overflow-hidden">
+                        <div class="day-cell border ${cellBg} rounded p-1 md:p-1.5 flex flex-col justify-between min-h-[38px] md:min-h-[48px] overflow-hidden">
                             <div class="flex items-center justify-between">
                                 <span class="day-number text-xs md:text-sm ${dayColor}">${day}</span>
                                 ${isSaturday ? '<span class="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.9)]" title="Sabat Pana Boga (IV Przykazanie)"></span>' : ''}
@@ -1601,7 +1644,7 @@
                             </button>
                             <div class="no-print absolute top-2.5 right-2.5 z-30 flex items-center gap-1.5">
                                 <button type="button" onclick="openQuoteEditModal(${monthIndex})" class="pointer-events-auto cursor-pointer bg-black/75 hover:bg-black/95 active:scale-95 text-amber-300 text-[10px] md:text-xs px-2.5 py-1 rounded-full border border-amber-400/60 backdrop-blur-md flex items-center gap-1.5 shadow-md transition" title="Edytuj werset biblijny dla tego miesiąca">
-                                    <i class="fa-solid fa-pen-to-square text-amber-400"></i> <span class="hidden sm:inline">Edytuj werset</span>
+                                <i class="fa-solid fa-pen-to-square text-amber-400"></i> <span class="hidden sm:inline">Edytuj werset</span>
                                 </button>
                                 <button type="button" onclick="triggerPhotoUpload(${cardIdx})" class="pointer-events-auto cursor-pointer bg-black/75 hover:bg-black/95 active:scale-95 text-white text-[10px] md:text-xs px-2.5 py-1 rounded-full border border-amber-400/60 backdrop-blur-md flex items-center gap-1.5 shadow-md transition" title="Wstaw własne zdjęcie dla tego miesiąca">
                                     <i class="fa-solid fa-camera text-amber-400"></i> Zmień
@@ -1609,29 +1652,29 @@
                             </div>
                         </div>
 
-                        <div class="cc-banner my-2 md:my-2.5 px-3 md:px-4 py-2 md:py-2.5 rounded-xl bg-gradient-to-r from-amber-50/90 via-white to-amber-50/90 border border-amber-400/40 shadow-sm flex items-center justify-between flex-shrink-0">
-                            <div class="flex items-center gap-2.5 md:gap-3 min-w-0 pr-2">
-                                <div class="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#0b0f19] border border-amber-400/50 flex items-center justify-center flex-shrink-0 p-1.5 shadow-sm">
+                        <div class="cc-banner my-2 md:my-2.5 px-3 md:px-4 py-2 md:py-2.5 rounded-xl bg-gradient-to-r from-amber-50/90 via-white to-amber-50/90 border border-amber-400/50 shadow-sm flex items-center justify-between flex-shrink-0">
+                            <div class="flex items-center gap-3 min-w-0 pr-2">
+                                <div class="banner-logo-box w-10 h-10 md:w-11 md:h-11 rounded-xl bg-[#0b0f19] border border-amber-400/60 flex items-center justify-center flex-shrink-0 p-1.5 shadow-sm">
                                     <img src="${officialLogoUrl}" alt="Christian Culture" class="w-full h-full object-contain filter drop-shadow">
                                 </div>
                                 <div class="min-w-0">
                                     <div class="inline-flex items-center gap-1.5 mb-0.5">
-                                        <span class="px-1.5 py-0.5 bg-amber-500/20 text-amber-900 rounded text-[7.5px] md:text-[8.5px] font-bold uppercase tracking-wider font-cinzel">${banner.tag}</span>
+                                        <span class="px-2 py-0.5 bg-amber-500/20 text-amber-950 rounded text-[8px] md:text-[9px] font-extrabold uppercase tracking-wider">${banner.tag}</span>
                                     </div>
-                                    <h4 class="text-[10.5px] md:text-xs font-bold text-gray-900 leading-tight font-cinzel truncate">
+                                    <h4 class="banner-title text-xs md:text-[13px] font-extrabold text-gray-950 leading-tight">
                                         ${banner.title}
                                     </h4>
-                                    <p class="text-[8px] md:text-[9.5px] text-gray-600 font-medium leading-tight truncate mt-0.5">
-                                        ${banner.cta} • <span class="text-amber-800 font-semibold">${banner.url.replace('https://', '')}</span>
+                                    <p class="banner-subtitle text-[9px] md:text-[10px] text-gray-700 font-medium leading-tight mt-0.5">
+                                        ${banner.cta} • <span class="text-amber-800 font-bold">${banner.url.replace('https://', '')}</span>
                                     </p>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-2 pl-2 border-l border-amber-300/50 flex-shrink-0">
+                            <div class="flex items-center gap-2.5 pl-3 border-l border-amber-300/60 flex-shrink-0">
                                 <div class="text-right hidden sm:block">
-                                    <span class="text-[7.5px] font-bold text-amber-900 uppercase tracking-wider block font-cinzel leading-tight">${banner.qrLabel}</span>
-                                    <span class="text-[6.5px] text-gray-500 block leading-tight">${banner.qrSub}</span>
+                                    <span class="text-[8px] md:text-[9px] font-extrabold text-amber-950 uppercase tracking-wider block leading-tight">${banner.qrLabel}</span>
+                                    <span class="text-[7px] md:text-[7.5px] text-gray-600 font-semibold block leading-tight mt-0.5">${banner.qrSub}</span>
                                 </div>
-                                <div class="w-8 h-8 md:w-9 md:h-9 rounded p-0.5 bg-white border border-gray-200 shadow-sm flex-shrink-0 flex items-center justify-center" title="${banner.title}">
+                                <div class="banner-qr-box w-12 h-12 md:w-14 md:h-14 rounded-lg p-1 bg-white border border-gray-300 shadow-sm flex-shrink-0 flex items-center justify-center" title="${banner.title}">
                                     ${banner.qrSvg}
                                 </div>
                             </div>
@@ -1642,7 +1685,6 @@
                                 ${m.name}
                             </h3>
                             <div class="flex items-center gap-2">
-                                
                                 <span class="text-lg md:text-2xl font-cinzel font-bold text-amber-700">${year}</span>
                             </div>
                         </div>
@@ -1656,10 +1698,12 @@
                                 <img src="${officialLogoUrl}" alt="CC" class="w-3.5 h-3.5 object-contain">
                                 <span class="font-bold text-gray-900 font-cinzel tracking-wide">POLSKIERADIO.CC</span>
                                 <span>•</span>
-                                <span class="hidden sm:inline">Chrześcijański Ekosystem Medialny • 6 Stacji 24/7 & Biblia Audio</span>
-                                <span class="sm:hidden">Kalendarz Biblijny ${year}</span>
+                                <span class="hidden sm:inline font-medium">Chrześcijański Ekosystem Medialny • 6 Stacji 24/7 & Biblia Audio</span>
+                                <span class="sm:hidden font-medium">Kalendarz Biblijny ${year}</span>
                             </div>
-                            <span class="text-amber-800 font-bold font-cinzel flex-shrink-0">Karta ${monthIndex + 2} z 13</span>
+                            <div class="font-semibold text-amber-800 font-cinzel text-[8.5px] md:text-[10px] flex-shrink-0">
+                                Soli Deo Gloria ✝
+                            </div>
                         </div>
                     </div>
                 `;
