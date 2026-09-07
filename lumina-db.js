@@ -42,18 +42,9 @@ import { getAnalytics, isSupported as isAnalyticsSupported } from 'https://www.g
 import { getMessaging, getToken, onMessage, isSupported as isMessagingSupported } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
 
 // ── Oficjalna Produkcyjna Konfiguracja Firebase (lumina-cc) ──
-// Standard Same-Origin Auth: na domenach polskieradio.cc / polskieradio.pages.dev używamy lokalnego proxy
-// /__/auth/*, co eliminuje błąd "missing initial state" spowodowany Storage Partitioning w przeglądarkach mobilnych.
-const isCustomAuthDomain = typeof window !== 'undefined' && window.location && window.location.hostname && (
-    window.location.hostname.includes('polskieradio') || 
-    window.location.hostname.includes('localhost') || 
-    window.location.hostname === '127.0.0.1'
-);
-const LUMINA_AUTH_DOMAIN = isCustomAuthDomain ? window.location.hostname : "lumina-cc.firebaseapp.com";
-
 const LUMINA_FIREBASE_CONFIG = {
     apiKey: "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M",
-    authDomain: LUMINA_AUTH_DOMAIN,
+    authDomain: "lumina-cc.firebaseapp.com",
     databaseURL: "https://lumina-cc-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "lumina-cc",
     storageBucket: "lumina-cc.firebasestorage.app",
@@ -688,11 +679,11 @@ export async function loginWithGoogle() {
             if (popupErr.code === 'auth/popup-closed-by-user') {
                 return null;
             }
-            // Tylko gdy popup został fizycznie zablokowany przez przeglądarkę (np. restrykcyjne blokowanie wyskakujących okienek)
+            // Gdy popup został zablokowany przez blokadę wyskakujących okienek w przeglądarce mobilnej
             if (popupErr.code === 'auth/popup-blocked' || popupErr.code === 'auth/cancelled-popup-request') {
-                console.log('Popup zablokowany, próba Same-Origin Redirect...');
-                await signInWithRedirect(activeAuth, googleProvider);
-                return { isRedirecting: true };
+                const blockedErr = new Error("Twoja przeglądarka zablokowała okno logowania Google. Zezwól na wyskakujące okienka na tej stronie lub spróbuj zalogować się adresem e-mail.");
+                blockedErr.code = 'auth/popup-blocked';
+                throw blockedErr;
             }
             throw popupErr;
         }

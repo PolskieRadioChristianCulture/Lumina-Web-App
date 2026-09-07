@@ -5495,6 +5495,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 console.error("Google Auth error:", error);
                 if (error.code === 'auth/popup-closed-by-user') {
                     setAuthStatusMsg('ℹ️ Okno logowania zostało zamknięte.', true);
+                } else if (error.code === 'auth/popup-blocked') {
+                    setAuthStatusMsg('⚠️ Twoja przeglądarka zablokowała okienko logowania. Zezwól na wyskakujące okienka lub zaloguj się e-mailem.', true);
                 } else if (error.code === 'auth/operation-not-allowed') {
                     setAuthStatusMsg('⚠️ Włącz metodę logowania Google w Firebase Console.', true);
                 } else {

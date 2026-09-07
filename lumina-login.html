@@ -313,10 +313,12 @@
                     statusEl.className = 'status-msg error';
                     if (err.code === 'auth/popup-closed-by-user') {
                         statusEl.textContent = 'Okno logowania zostało zamknięte. Spróbuj ponownie.';
+                    } else if (err.code === 'auth/popup-blocked') {
+                        statusEl.textContent = 'Twoja przeglądarka zablokowała okno logowania. Zezwól na wyskakujące okienka lub zaloguj się e-mailem poniżej.';
                     } else if (err.code === 'auth/network-request-failed') {
                         statusEl.textContent = 'Błąd połączenia. Sprawdź internet i spróbuj ponownie.';
                     } else {
-                        statusEl.textContent = 'Nie udało się zalogować. Spróbuj ponownie.';
+                        statusEl.textContent = err.message || 'Nie udało się zalogować. Spróbuj ponownie.';
                     }
                 }
             }
