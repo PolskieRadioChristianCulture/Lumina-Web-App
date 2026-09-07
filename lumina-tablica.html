@@ -6152,17 +6152,26 @@
                             </div>
                         </div>`;
                     const refAvatar = resolveLuminaAuthorAvatar(item);
+                    const isRefCezary = (item.authorSlug === 'cezaryrgowski' || item.authorSlug === 'cezary' || (item.author && item.author.toLowerCase().includes('cezary')) || !item.authorSlug);
+                    const refLink = isRefCezary 
+                        ? 'lumina.cezaryrgowski.html' 
+                        : (item.authorSlug === 'wiolettarogowska' 
+                            ? 'lumina.wiolettarogowska.html' 
+                            : (item.authorSlug === 'andrzejthiel' 
+                                ? 'lumina.andrzejthiel.html' 
+                                : `lumina-profile.html?u=${encodeURIComponent(item.authorSlug)}`));
+
                     return `
                         <article class="post-card-1x1" id="${item.id}" style="width: 100%;">
                             <!-- Top Header -->
                             <div class="post-top-header">
-                                <div class="post-author-box">
+                                <a href="${refLink}" class="post-author-box" style="text-decoration:none; color:inherit; cursor:pointer;" title="Przejdź do profilu: ${item.author || 'Cezary Rogowski'}">
                                     <img loading="lazy" decoding="async" src="${refAvatar}" alt="${item.author || 'Portal LUMINA'}" class="post-author-img" style="border-radius:50%; background:#1e1b4b; border:1.5px solid rgba(250,204,21,0.6); object-fit:cover;" onerror="this.onerror=null; this.src='lumina_logo_portal.jpg';">
                                     <div style="min-width:0; overflow:hidden;">
                                         <div class="post-author-name">${item.author || 'Portal LUMINA'} <i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.75rem; flex-shrink:0;" title="Oficjalny Profil Portalu LUMINA"></i></div>
                                         <div class="post-author-role">${item.authorRole || item.time}</div>
                                     </div>
-                                </div>
+                                </a>
                                 <div class="post-header-actions" style="display:flex; align-items:center; gap:6px;">
                                     <span class="badge-type-tag" style="background:rgba(239,68,68,0.2); border-color:#ef4444; color:#fca5a5; font-weight:800;" title="Transmisja Telewizyjna Na Żywo"><i class="fa-solid fa-circle" style="color:#ef4444; font-size:0.5rem; margin-right:2px;"></i> NA ŻYWO</span>
                                     <span class="badge-type-tag" style="background:linear-gradient(90deg,rgba(245,158,11,0.25),rgba(250,204,21,0.15));border-color:rgba(245,158,11,0.6);color:#fbbf24; font-weight:800;" title="Rozważanie: Dobrze, że jesteś"><i class="fa-solid fa-sun" style="color:#f59e0b;"></i> <span class="badge-type-tag-text">Dobrze, że jesteś</span></span>
@@ -6204,7 +6213,25 @@
                 else if (item.type === 'event') badgeHtml = '<span class="badge-type-tag badge-type-event" title="Wydarzenie"><i class="fa-solid fa-calendar-check"></i> <span class="badge-type-tag-text">Wydarzenie</span></span>';
                 else badgeHtml = '<span class="badge-type-tag badge-type-post" title="Społeczność"><i class="fa-solid fa-wand-magic-sparkles"></i> <span class="badge-type-tag-text">Społeczność</span></span>';
 
-                const authorLink = item.authorSlug ? (item.authorSlug === 'cezaryrgowski' ? 'lumina.cezaryrgowski.html' : (item.authorSlug === 'wiolettarogowska' ? 'lumina.wiolettarogowska.html' : (item.authorSlug === 'jolawojcik' ? 'lumina.jolawojcik.html' : (item.authorSlug === 'andrzejthiel' ? 'lumina.andrzejthiel.html' : (item.authorSlug === 'magdalena' ? 'lumina.magdalena.html' : `lumina-profile.html?u=${item.authorSlug}`))))) : '#';
+                const isAuthorCezary = (item.authorSlug === 'cezaryrgowski' || item.authorSlug === 'cezary' || (item.author && item.author.toLowerCase().includes('cezary')));
+                const isAuthorWioletta = (item.authorSlug === 'wiolettarogowska' || item.authorSlug === 'wioletta' || (item.author && item.author.toLowerCase().includes('wioletta')));
+                const isAuthorAndrzej = (item.authorSlug === 'andrzejthiel' || (item.author && item.author.toLowerCase().includes('andrzej thiel')));
+                const isAuthorJola = (item.authorSlug === 'jolawojcik' || (item.author && item.author.toLowerCase().includes('jola')));
+
+                let authorLink = '#';
+                if (isAuthorCezary) {
+                    authorLink = 'lumina.cezaryrgowski.html';
+                } else if (isAuthorWioletta) {
+                    authorLink = 'lumina.wiolettarogowska.html';
+                } else if (isAuthorAndrzej) {
+                    authorLink = 'lumina.andrzejthiel.html';
+                } else if (isAuthorJola) {
+                    authorLink = 'lumina.jolawojcik.html';
+                } else if (item.authorSlug) {
+                    authorLink = `lumina-profile.html?u=${encodeURIComponent(item.authorSlug)}`;
+                } else {
+                    authorLink = 'lumina.cezaryrgowski.html';
+                }
 
                 const authorAvatarSrc = resolveLuminaAuthorAvatar(item);
                 const cardImgSrc = (item.image && item.image.trim() !== '') ? item.image : authorAvatarSrc;
@@ -6699,9 +6726,12 @@
             // Route to user's personalized profile
             const email = (user && user.email) || (profile && profile.email) || '';
             const name = (user && (user.displayName || user.name)) || (profile && profile.name) || '';
-            const slug = (profile && (profile.slug || profile.id)) || (user && (user.slug || user.uid)) || '';
+            const slug = (profile && (profile.slug || profile.id)) || (user && (user.slug || user.uid || user.id)) || '';
+            const isAdmin = localStorage.getItem('lumina_auth_master_admin') === 'true' 
+                || sessionStorage.getItem('lumina_auth_master_admin') === 'true'
+                || (user && (user.isAdmin || user.role === 'master_admin'));
 
-            const isCezary = slug === 'cezaryrgowski' || slug === 'cezary' || email.toLowerCase() === 'nazirczarkes@gmail.com' || email.includes('christianculture') || email.includes('czarkes') || name.toLowerCase().includes('cezary');
+            const isCezary = isAdmin || slug === 'cezaryrgowski' || slug === 'cezary' || slug === 'admin_cezary' || email.toLowerCase() === 'nazirczarkes@gmail.com' || email.includes('christianculture') || email.includes('czarkes') || name.toLowerCase().includes('cezary');
             const isWioletta = slug === 'wiolettarogowska' || slug === 'wioletta' || name.toLowerCase().includes('wioletta');
 
             if (isCezary) {

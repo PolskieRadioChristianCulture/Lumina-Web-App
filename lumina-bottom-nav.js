@@ -783,19 +783,25 @@
     // Dynamiczny link do Mojego Profilu (inteligentne rozpoznawanie zalogowanego użytkownika)
     let myProfileHref = 'lumina.cezaryrgowski.html';
     try {
-        const isAdmin = localStorage.getItem('lumina_auth_master_admin') === 'true' || sessionStorage.getItem('lumina_auth_master_admin') === 'true';
+        let curUser = null;
+        try { curUser = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
+        const isAdmin = localStorage.getItem('lumina_auth_master_admin') === 'true' 
+            || sessionStorage.getItem('lumina_auth_master_admin') === 'true'
+            || (curUser && (curUser.isAdmin || curUser.role === 'master_admin' || (curUser.email && curUser.email.includes('nazirczarkes')) || (curUser.displayName && curUser.displayName.includes('Cezary'))));
         const curProf = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null');
         
-        if (curProf && (curProf.slug || curProf.uid)) {
+        if (isAdmin) {
+            myProfileHref = 'lumina.cezaryrgowski.html';
+        } else if (curProf && (curProf.slug || curProf.uid)) {
             const s = (curProf.slug || curProf.uid).toLowerCase();
             if (s === 'wiolettarogowska' || s.includes('wioletta')) {
                 myProfileHref = 'lumina.wiolettarogowska.html';
-            } else if (s === 'cezaryrgowski' || s.includes('cezary') || isAdmin) {
+            } else if (s === 'cezaryrgowski' || s.includes('cezary')) {
                 myProfileHref = 'lumina.cezaryrgowski.html';
             } else {
                 myProfileHref = `lumina-profile.html?u=${s}`;
             }
-        } else if (!isAdmin) {
+        } else {
             // Domyślny profil dla niezalogowanego gościa / nowy profil
             myProfileHref = 'lumina-profile.html?u=moj_profil';
         }
@@ -1357,15 +1363,19 @@
 
     window.handleBottomNavProfileClick = function(event) {
         if (event) event.preventDefault();
-        const isAdmin = localStorage.getItem('lumina_auth_master_admin') === 'true' || sessionStorage.getItem('lumina_auth_master_admin') === 'true';
+        let curUser = null;
+        try { curUser = JSON.parse(localStorage.getItem('lumina_current_user') || 'null'); } catch(e) {}
+        const isAdmin = localStorage.getItem('lumina_auth_master_admin') === 'true' 
+            || sessionStorage.getItem('lumina_auth_master_admin') === 'true'
+            || (curUser && (curUser.isAdmin || curUser.role === 'master_admin' || (curUser.email && curUser.email.includes('nazirczarkes')) || (curUser.displayName && curUser.displayName.includes('Cezary'))));
         let curProf = null;
         try {
             curProf = JSON.parse(localStorage.getItem('lumina_current_user_profile') || localStorage.getItem('lumina_my_profile') || 'null');
         } catch(e) {}
         
-        const hasSession = (localStorage.getItem('lumina_user_session') === 'active') || (curProf && (curProf.slug || curProf.uid));
+        const hasSession = (localStorage.getItem('lumina_user_session') === 'active') || (curProf && (curProf.slug || curProf.uid)) || !!curUser;
 
-        if (isAdmin) {
+        if (isAdmin || (curUser && (curUser.displayName === 'Cezary Rogowski' || (curUser.id && curUser.id.includes('cezary'))))) {
             window.location.href = 'lumina.cezaryrgowski.html';
             return;
         }
