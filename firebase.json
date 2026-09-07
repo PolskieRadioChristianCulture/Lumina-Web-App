@@ -570,6 +570,18 @@
           "destination": "/vod.html"
         },
         {
+          "source": "/login",
+          "destination": "/lumina-login.html"
+        },
+        {
+          "source": "/zaloguj",
+          "destination": "/lumina-login.html"
+        },
+        {
+          "source": "/lumina-login",
+          "destination": "/lumina-login.html"
+        },
+        {
           "source": "/lumina",
           "destination": "/lumina.html"
         },

@@ -691,6 +691,7 @@ export async function loginWithGoogle() {
         if (!result || !result.user) {
             return null;
         }
+        const user = result.user;
         let existingProfile = null;
         const isRadioCC = (user.email && (user.email.toLowerCase() === 'radiochristianculture@gmail.com' || user.email.toLowerCase().startsWith('radiochristianculture') || user.email.includes('bibliaaudio'))) || (user.displayName && (user.displayName.toLowerCase() === 'christian culture' || user.displayName.toLowerCase().includes('biblia audio') || user.displayName.toLowerCase().includes('polskie radio cc')));
         
@@ -934,6 +935,26 @@ export async function logoutUser() {
         if (founderHub) founderHub.classList.remove('admin-active');
     }
 }
+
+// Global window exposure for Christian Culture unified Google Auth ecosystem
+window.logoutUser = logoutUser;
+window.loginWithGoogle = loginWithGoogle;
+window.loginWithEmail = loginWithEmail;
+window.registerWithEmail = registerWithEmail;
+window.getCurrentUser = getCurrentUser;
+window.getCurrentProfile = getCurrentProfile;
+window.ensureDbReady = ensureDbReady;
+window.onAuthChange = onAuthChange;
+
+window.LuminaDB = window.LuminaDB || {};
+window.LuminaDB.loginWithGoogle = loginWithGoogle;
+window.LuminaDB.logoutUser = logoutUser;
+window.LuminaDB.loginWithEmail = loginWithEmail;
+window.LuminaDB.registerWithEmail = registerWithEmail;
+window.LuminaDB.getCurrentUser = getCurrentUser;
+window.LuminaDB.getCurrentProfile = getCurrentProfile;
+window.LuminaDB.ensureDbReady = ensureDbReady;
+window.LuminaDB.onAuthChange = onAuthChange;
 
 // ── Phone (SMS OTP) Authentication ──
 export function setupPhoneRecaptcha(containerId = 'recaptcha-container') {
