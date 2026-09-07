@@ -69,7 +69,7 @@
               "@type": "HowToStep",
               "position": 2,
               "name": "Dostosuj układ kalendarium",
-              "text": "Wybierz układ biblijny (Niedziela ➔ Sobota Szabat) lub tradycyjny oraz zdecyduj czy chcesz wyświetlać godziny zachodu słońca."
+              "text": "Wybierz układ biblijny (Niedziela jako 1. dzień roboczy ➔ Sobota jako 7. Dzień Sabat Pana wg IV Przykazania Dekalogu BJW) oraz włącz godziny szabatu."
             },
             {
               "@type": "HowToStep",
@@ -90,18 +90,18 @@
           "mainEntity": [
             {
               "@type": "Question",
-              "name": "Czy korzystanie z kreatora kalendarza jest w 100% bezpłatne?",
+              "name": "Dlaczego Sabat (Szabat) to Sobota, a nie Niedziela?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Tak, kreator kalendarza na polskieradio.cc jest całkowicie bezpłatny. Nie wymaga rejestracji ani opłat. Każda karta zawiera jedynie estetyczny baner promujący chrześcijańską misję medialną Christian Culture."
+                "text": "W Piśmie Świętym Sabat (Szabat) to wyłącznie Sobota – siódmy dzień tygodnia, pamiątka Stworzenia. Niedziela jest pierwszym dniem tygodnia (dniem roboczym). IV Przykazanie Dekalogu w przekładzie ks. Jakuba Wujka (Wj 20,8-11) brzmi: 'IV. Pamiętaj, abyś dzień sobotni święcił. Sześć dni robić będziesz i będziesz wykonywał wszystkie roboty twoje; ale dnia siódmego sabat Pana, Boga twego, jest: nie będziesz wykonywał weń żadnej roboty... i dlatego pobłogosławił Pan dniowi sobotniemu i poświęcił go'."
               }
             },
             {
               "@type": "Question",
-              "name": "Czym różni się kalendarz szabatowy (sobotni) od standardowego?",
+              "name": "Czy korzystanie z kreatora kalendarza jest w 100% bezpłatne?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Kalendarz biblijny i szabatowy rozpoczyna tydzień od Niedzieli (pierwszego dnia tygodnia według Biblii), oznacza Piątek jako dzień przygotowania z orientacyjną godziną zachodu słońca, a Sobotę wyróżnia jako siódmy dzień odpoczynku – biblijny Szabat."
+                "text": "Tak, kreator kalendarza na polskieradio.cc jest całkowicie bezpłatny. Nie wymaga rejestracji ani opłat. Każda karta zawiera jedynie estetyczny baner promujący chrześcijańską misję medialną Christian Culture."
               }
             },
             {
@@ -355,8 +355,8 @@
                 <div class="bg-[#172033] border border-gray-700/60 rounded-xl p-2 flex flex-col text-left">
                     <span class="text-[10px] uppercase font-bold text-gray-400 font-cinzel">Układ Tygodnia:</span>
                     <select id="weekFormatSelect" onchange="renderCalendar()" class="bg-transparent text-gray-200 font-medium text-xs focus:outline-none cursor-pointer mt-1">
-                        <option value="biblical" selected class="bg-[#172033] text-white">Nd ➔ Sobota (Szabat)</option>
-                        <option value="standard" class="bg-[#172033] text-white">Pn ➔ Niedziela</option>
+                        <option value="biblical" selected class="bg-[#172033] text-white">Układ biblijny: Nd (1. roboczy) ➔ Sobota (7. Sabat)</option>
+                        <option value="standard" class="bg-[#172033] text-white">Układ tradycyjny: Pn ➔ Sobota (Sabat) ➔ Nd (1. Dzień)</option>
                     </select>
                 </div>
 
@@ -408,11 +408,15 @@
                 Często Zadawane Pytania (FAQ) & Informacje
             </h2>
             <div class="space-y-4 text-xs md:text-sm text-gray-300">
-                <div class="border-b border-gray-800 pb-3">
-                    <h3 class="font-bold text-amber-400 font-cinzel mb-1">Czym jest Kalendarz Szabatowy (Sobotni)?</h3>
-                    <p class="text-gray-300 leading-relaxed">
-                        Kalendarz szabatowy to tradycyjne kalendarium biblijne, w którym tydzień rozpoczyna się od Niedzieli (pierwszego dnia po stworzeniu), w Piątek zaznaczony jest czas przygotowania z godziną zachodu słońca, a Sobota jest wyróżniona jako biblijny Szabat – święty dzień odpoczynku ustanowiony przez Boga (Księga Wyjścia 20,8-11).
+                <div class="border-b border-gray-800 pb-4">
+                    <h3 class="font-bold text-amber-300 font-cinzel mb-1 text-sm md:text-base">Dlaczego Sabat / Szabat to Sobota, a nie Niedziela?</h3>
+                    <p class="text-gray-300 leading-relaxed mb-2.5">
+                        W Piśmie Świętym <strong>Sabat (Szabat) to bezwzględnie i wyłącznie Sobota – siódmy dzień tygodnia</strong>, ustanowiony przez Boga na pamiątkę Stworzenia. <strong>Niedziela jest pierwszym dniem tygodnia</strong> – pierwszym z sześciu dni roboczych. Tych dwóch dni pod żadnym pozorem nie wolno ze sobą mylić.
                     </p>
+                    <div class="p-3.5 rounded-xl bg-[#0b0f19]/90 border border-amber-500/40 text-amber-200/95 text-xs leading-relaxed font-serif shadow-inner">
+                        <span class="font-bold text-amber-300 font-cinzel block mb-1">IV Przykazanie Boże – Dekalog w przekładzie ks. Jakuba Wujka (BJW, Wj 20,8-11):</span>
+                        „IV. Pamiętaj, abyś dzień sobotni święcił. Sześć dni robić będziesz i będziesz wykonywał wszystkie roboty twoje; ale dnia siódmego sabat Pana, Boga twego, jest: nie będziesz wykonywał weń żadnej roboty, ty i syn twój, i córka twoja, sługa twój i służebnica twoja, bydlę twoje i gość, który jest między bramami twymi. Przez sześć dni bowiem czynił Pan niebo i ziemię, i morze, i wszystko, co w nich jest, a odpoczął dnia siódmego; i dlatego pobłogosławił Pan dniowi sobotniemu i poświęcił go.”
+                    </div>
                 </div>
                 <div class="border-b border-gray-800 pb-3">
                     <h3 class="font-bold text-amber-400 font-cinzel mb-1">Czy kreator kalendarza jest w 100% bezpłatny?</h3>
@@ -733,13 +737,13 @@
                 let headers = [];
                 if (weekFormat === 'biblical') {
                     headers = [
-                        { label: 'NIEDZIELA', short: 'ND', color: 'text-rose-700 bg-rose-50/70 border-rose-200' },
-                        { label: 'PONIEDZIAŁEK', short: 'PN', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'WTOREK', short: 'WT', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'ŚRODA', short: 'ŚR', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'CZWARTEK', short: 'CZ', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'PIĄTEK', short: 'PT', color: 'text-amber-800 bg-amber-50/80 border-amber-200' },
-                        { label: 'SOBOTA SZABAT', short: 'SOB', color: 'text-indigo-900 bg-indigo-50/90 border-indigo-300 font-black' }
+                        { label: '1. NIEDZIELA', short: '1. ND', color: 'text-gray-700 bg-gray-50 border-gray-200' },
+                        { label: '2. PONIEDZIAŁEK', short: '2. PN', color: 'text-gray-700 bg-gray-50 border-gray-200' },
+                        { label: '3. WTOREK', short: '3. WT', color: 'text-gray-700 bg-gray-50 border-gray-200' },
+                        { label: '4. ŚRODA', short: '4. ŚR', color: 'text-gray-700 bg-gray-50 border-gray-200' },
+                        { label: '5. CZWARTEK', short: '5. CZ', color: 'text-gray-700 bg-gray-50 border-gray-200' },
+                        { label: '6. PIĄTEK (PRZYG.)', short: '6. PT', color: 'text-amber-900 bg-amber-50/90 border-amber-300 font-semibold' },
+                        { label: '7. SOBOTA — SABAT', short: '7. SOB', color: 'text-amber-950 bg-gradient-to-r from-amber-100/90 via-amber-50 to-amber-100/90 border-amber-400 font-black shadow-sm' }
                     ];
                 } else {
                     headers = [
@@ -747,9 +751,9 @@
                         { label: 'WTOREK', short: 'WT', color: 'text-gray-700 bg-gray-50 border-gray-200' },
                         { label: 'ŚRODA', short: 'ŚR', color: 'text-gray-700 bg-gray-50 border-gray-200' },
                         { label: 'CZWARTEK', short: 'CZ', color: 'text-gray-700 bg-gray-50 border-gray-200' },
-                        { label: 'PIĄTEK', short: 'PT', color: 'text-amber-800 bg-amber-50/80 border-amber-200' },
-                        { label: 'SOBOTA SZABAT', short: 'SOB', color: 'text-indigo-900 bg-indigo-50/90 border-indigo-300 font-black' },
-                        { label: 'NIEDZIELA', short: 'ND', color: 'text-rose-700 bg-rose-50/70 border-rose-200' }
+                        { label: 'PIĄTEK (PRZYG.)', short: 'PT', color: 'text-amber-900 bg-amber-50/90 border-amber-300 font-semibold' },
+                        { label: 'SOBOTA — SABAT', short: 'SOB', color: 'text-amber-950 bg-gradient-to-r from-amber-100/90 via-amber-50 to-amber-100/90 border-amber-400 font-black shadow-sm' },
+                        { label: 'NIEDZIELA (1. DZIEŃ)', short: 'ND', color: 'text-gray-700 bg-gray-50 border-gray-200' }
                     ];
                 }
 
@@ -777,31 +781,38 @@
                     let dayColor = 'text-gray-900';
                     let badge = '';
 
-                    if (isSunday) {
-                        cellBg = 'bg-rose-50/35 border-rose-200/80';
-                        dayColor = 'text-rose-600 font-black';
-                    } else if (isFriday) {
-                        cellBg = 'bg-amber-50/50 border-amber-300/80';
-                        dayColor = 'text-amber-950 font-bold';
+                    if (isSaturday) {
+                        // 7. Dzień tygodnia – Sabat / Szabat Pana Boga (Święty Sabat)
+                        cellBg = 'bg-amber-50/50 border-amber-400/90 shadow-sm';
+                        dayColor = 'text-amber-950 font-black';
                         if (showSunset) {
-                            badge = `<span class="sunset-tag text-[7px] md:text-[7.5px] leading-tight text-amber-800 font-semibold block mt-0.5">Zachód: ${m.sunsetFri}</span>`;
-                        }
-                    } else if (isSaturday) {
-                        cellBg = 'bg-indigo-50/60 border-indigo-300 shadow-sm';
-                        dayColor = 'text-indigo-950 font-black';
-                        if (showSunset) {
-                            badge = `<span class="sunset-tag text-[7px] md:text-[7.5px] leading-tight text-indigo-800 font-bold block mt-0.5">Szabat • ${m.sunsetSat}</span>`;
+                            badge = `<span class="sunset-tag text-[6.5px] md:text-[7.5px] leading-tight text-amber-900 font-bold block mt-0.5">Sabat • ${m.sunsetSat}</span>`;
                         } else {
-                            badge = `<span class="sunset-tag text-[7px] md:text-[7.5px] leading-tight text-indigo-700 font-bold block mt-0.5">Szabat</span>`;
+                            badge = `<span class="sunset-tag text-[6.5px] md:text-[7.5px] leading-tight text-amber-900 font-bold block mt-0.5">Sabat Pana</span>`;
                         }
+                    } else if (isFriday) {
+                        // 6. Dzień tygodnia – Dzień Przygotowania przed Sabatem
+                        cellBg = 'bg-amber-50/20 border-amber-200/80';
+                        dayColor = 'text-amber-900 font-semibold';
+                        if (showSunset) {
+                            badge = `<span class="sunset-tag text-[6.5px] md:text-[7.5px] leading-tight text-amber-800 font-semibold block mt-0.5">Zachód: ${m.sunsetFri}</span>`;
+                        }
+                    } else if (isSunday) {
+                        // 1. Dzień tygodnia – Roboczy (Niedziela)
+                        cellBg = 'bg-white border-gray-200';
+                        dayColor = 'text-gray-900 font-semibold';
+                        badge = `<span class="text-[6.5px] text-gray-400 block mt-0.5">1. Dzień</span>`;
+                    } else {
+                        // Pozostałe dni powszednie robocze (Pn, Wt, Śr, Czw)
+                        cellBg = 'bg-white border-gray-200';
+                        dayColor = 'text-gray-800 font-medium';
                     }
 
                     daysHTML += `
                         <div class="day-cell border ${cellBg} rounded p-1 md:p-1.5 flex flex-col justify-between min-h-[34px] md:min-h-[44px]">
                             <div class="flex items-center justify-between">
                                 <span class="day-number text-xs md:text-sm ${dayColor}">${day}</span>
-                                ${isSaturday ? '<span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>' : ''}
-                                ${isSunday ? '<span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>' : ''}
+                                ${isSaturday ? '<span class="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.9)]" title="Sabat Pana Boga (IV Przykazanie)"></span>' : ''}
                             </div>
                             <div class="text-left overflow-hidden">
                                 ${badge}
@@ -867,10 +878,11 @@
                             ${daysHTML}
                         </div>
 
-                        <div class="mt-1.5 md:mt-2 pt-1.5 border-t border-gray-100 flex items-center justify-between text-[8px] md:text-[9px] text-gray-400">
-                            <span>Drukuj: <strong>polskieradio.cc/kalendarz</strong></span>
-                            <span class="hidden sm:inline">Szabat: pamiątka Stworzenia i Odkupienia (Wj 20,8-11)</span>
-                            <span>Karta ${monthIndex + 2} z 13</span>
+                        <div class="mt-1.5 md:mt-2 pt-1.5 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between text-[7.5px] md:text-[9px] text-gray-600 gap-0.5">
+                            <span class="text-left font-medium">
+                                <strong>IV Przykazanie Boże (Wj 20,8-11 BJW):</strong> „Pamiętaj, abyś dzień sobotni święcił. Sześć dni robić będziesz... ale dnia siódmego sabat Pana, Boga twego, jest... pobłogosławił Pan dniowi sobotniemu i poświęcił go.”
+                            </span>
+                            <span class="text-amber-800 font-bold font-cinzel flex-shrink-0">Karta ${monthIndex + 2} z 13</span>
                         </div>
                     </div>
                 `;
