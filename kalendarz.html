@@ -169,9 +169,19 @@
         }
 
         .gold-text {
+            color: #d97706;
             background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .original-size .gold-text,
+        .view-original-size .gold-text {
+            background: none !important;
+            -webkit-background-clip: unset !important;
+            -webkit-text-fill-color: #f59e0b !important;
+            color: #f59e0b !important;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) !important;
         }
 
         /* ── STRONA KALENDARZA (EKRAN KOMPUTERA / TABLETU) ── */
@@ -1390,6 +1400,13 @@
                         clone.style.cssText = 'width: 210mm; min-height: 297mm; height: 297mm; margin: 0; padding: 0 12mm 10mm 12mm; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; background: #ffffff; border-radius: 0; box-shadow: none;';
                         clone.querySelectorAll('.no-print').forEach(el => el.remove());
                         clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+                        clone.querySelectorAll('.gold-text').forEach(el => {
+                            el.style.background = 'none';
+                            el.style.webkitBackgroundClip = 'unset';
+                            el.style.webkitTextFillColor = '#f59e0b';
+                            el.style.color = '#f59e0b';
+                            el.style.textShadow = '0 2px 8px rgba(0, 0, 0, 0.6)';
+                        });
 
                         const container = document.createElement('div');
                         container.style.cssText = 'position: fixed; left: 0; top: 0; width: 210mm; height: 297mm; z-index: -9999; overflow: hidden; background: #ffffff;';
