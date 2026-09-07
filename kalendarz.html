@@ -1230,6 +1230,56 @@
             }
         });
 
+        
+        let editingMonthIndex = null;
+
+        function updateMonthQuote(mIdx, text) {
+            if (monthsMeta[mIdx]) {
+                monthsMeta[mIdx].quote = text;
+            }
+        }
+
+        function updateMonthRef(mIdx, ref) {
+            if (monthsMeta[mIdx]) {
+                monthsMeta[mIdx].ref = ref;
+            }
+        }
+
+        function openQuoteEditModal(mIdx) {
+            editingMonthIndex = mIdx;
+            const m = monthsMeta[mIdx];
+            if (!m) return;
+            const nameEl = document.getElementById('editQuoteMonthName');
+            const textEl = document.getElementById('editQuoteTextInput');
+            const refEl = document.getElementById('editQuoteRefInput');
+            if (nameEl) nameEl.textContent = m.name;
+            if (textEl) textEl.value = m.quote.replace(/^„|”$/g, '');
+            if (refEl) refEl.value = m.ref;
+            const modal = document.getElementById('editQuoteModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeQuoteEditModal() {
+            const modal = document.getElementById('editQuoteModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function saveCustomQuote() {
+            if (editingMonthIndex === null || !monthsMeta[editingMonthIndex]) return;
+            const textEl = document.getElementById('editQuoteTextInput');
+            const refEl = document.getElementById('editQuoteRefInput');
+            const text = textEl ? textEl.value.trim() : '';
+            const ref = refEl ? refEl.value.trim() : '';
+            if (text) {
+                monthsMeta[editingMonthIndex].quote = text.startsWith('„') ? text : `„${text}”`;
+            }
+            if (ref) {
+                monthsMeta[editingMonthIndex].ref = ref;
+            }
+            closeQuoteEditModal();
+            renderCalendar();
+        }
+
         function openPDFModal() {
             if (!isUserLoggedIn()) {
                 openAuthRequiredModal();
@@ -1524,19 +1574,35 @@
                             <img src="${m.img}" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-4 md:p-6 text-white pointer-events-none">
                                 <div class="w-6 md:w-8 h-1 bg-amber-400 rounded-full mb-1.5"></div>
-                                <p class="month-quote text-xs md:text-sm font-medium italic text-amber-100 leading-snug drop-shadow-md">
-                                    ${m.quote}
-                                </p>
-                                <span class="text-[9.5px] md:text-xs font-bold text-amber-300 mt-1 font-cinzel tracking-wider uppercase drop-shadow">
-                                    — ${m.ref}
-                                </span>
+                                <div class="relative z-20 pointer-events-auto group/quote">
+                                    <p contenteditable="true" 
+                                       oninput="updateMonthQuote(${monthIndex}, this.innerText)" 
+                                       class="month-quote text-xs md:text-sm font-medium italic text-amber-100 leading-snug drop-shadow-md hover:bg-black/35 focus:bg-black/60 p-1 rounded transition outline-none focus:ring-1 focus:ring-amber-400/70 cursor-text" 
+                                       title="Kliknij w tekst, aby edytować treść wersetu">
+                                        ${m.quote}
+                                    </p>
+                                    <div class="flex items-center gap-1.5 mt-0.5">
+                                        <span class="text-amber-300 text-[9.5px] md:text-xs font-bold drop-shadow">—</span>
+                                        <span contenteditable="true" 
+                                              oninput="updateMonthRef(${monthIndex}, this.innerText)" 
+                                              class="text-[9.5px] md:text-xs font-bold text-amber-300 font-cinzel tracking-wider uppercase drop-shadow hover:bg-black/35 focus:bg-black/60 p-0.5 px-1 rounded transition outline-none focus:ring-1 focus:ring-amber-400/70 cursor-text" 
+                                              title="Kliknij, aby edytować siglum / źródło wersetu">
+                                            ${m.ref}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                             <button type="button" onclick="openOriginalSizeModal(${cardIdx})" class="no-print absolute top-2.5 left-2.5 z-30 pointer-events-auto cursor-pointer bg-black/75 hover:bg-black/95 active:scale-95 text-amber-300 text-[10px] md:text-xs px-2.5 py-1 rounded-full border border-amber-400/60 backdrop-blur-md flex items-center gap-1.5 shadow-md transition" title="Podgląd w oryginalnym wymiarze A4">
                                 <i class="fa-solid fa-magnifying-glass-plus text-amber-400"></i> Podgląd 1:1
                             </button>
-                            <button type="button" onclick="triggerPhotoUpload(${cardIdx})" class="no-print absolute top-2.5 right-2.5 z-30 pointer-events-auto cursor-pointer bg-black/75 hover:bg-black/95 active:scale-95 text-white text-[10px] md:text-xs px-2.5 py-1 rounded-full border border-amber-400/60 backdrop-blur-md flex items-center gap-1.5 shadow-md transition" title="Wstaw własne zdjęcie dla tego miesiąca">
-                                <i class="fa-solid fa-camera text-amber-400"></i> Zmień
-                            </button>
+                            <div class="no-print absolute top-2.5 right-2.5 z-30 flex items-center gap-1.5">
+                                <button type="button" onclick="openQuoteEditModal(${monthIndex})" class="pointer-events-auto cursor-pointer bg-black/75 hover:bg-black/95 active:scale-95 text-amber-300 text-[10px] md:text-xs px-2.5 py-1 rounded-full border border-amber-400/60 backdrop-blur-md flex items-center gap-1.5 shadow-md transition" title="Edytuj werset biblijny dla tego miesiąca">
+                                    <i class="fa-solid fa-pen-to-square text-amber-400"></i> <span class="hidden sm:inline">Edytuj werset</span>
+                                </button>
+                                <button type="button" onclick="triggerPhotoUpload(${cardIdx})" class="pointer-events-auto cursor-pointer bg-black/75 hover:bg-black/95 active:scale-95 text-white text-[10px] md:text-xs px-2.5 py-1 rounded-full border border-amber-400/60 backdrop-blur-md flex items-center gap-1.5 shadow-md transition" title="Wstaw własne zdjęcie dla tego miesiąca">
+                                    <i class="fa-solid fa-camera text-amber-400"></i> Zmień
+                                </button>
+                            </div>
                         </div>
 
                         <div class="cc-banner my-2 md:my-2.5 px-3 md:px-4 py-2 md:py-2.5 rounded-xl bg-gradient-to-r from-amber-50/90 via-white to-amber-50/90 border border-amber-400/40 shadow-sm flex items-center justify-between flex-shrink-0">
@@ -1572,7 +1638,7 @@
                                 ${m.name}
                             </h3>
                             <div class="flex items-center gap-2">
-                                <span class="text-[10px] md:text-xs font-bold text-gray-500 font-cinzel uppercase tracking-widest hidden sm:inline">Miesiąc ${monthIndex + 1} / 12</span>
+                                
                                 <span class="text-lg md:text-2xl font-cinzel font-bold text-amber-700">${year}</span>
                             </div>
                         </div>
@@ -1709,6 +1775,49 @@
             <p class="text-[10px] text-gray-400 mt-3">
                 Logowanie jest w 100% bezpłatne i bezpieczne.
             </p>
+        </div>
+    </div>
+
+
+    <!-- ── MODAL EDYCJI WERSETU BIBLIJNEGO (NO-PRINT) ── -->
+    <div id="editQuoteModal" class="fixed inset-0 z-[115] bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 no-print" onclick="if(event.target === this) closeQuoteEditModal()">
+        <div class="bg-[#101628] border border-amber-500/50 rounded-3xl max-w-lg w-full p-6 shadow-2xl text-white relative animate-in fade-in zoom-in-95 duration-200">
+            <button type="button" onclick="closeQuoteEditModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center transition cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="inline-flex items-center gap-2 mb-2 text-amber-400 text-xs font-bold font-cinzel uppercase tracking-wider">
+                <i class="fa-solid fa-book-bible text-amber-400"></i>
+                <span>Edycja Wersetu • </span><span id="editQuoteMonthName" class="text-amber-200">Miesiąc</span>
+            </div>
+
+            <h3 class="text-xl font-cinzel font-bold text-amber-100 mb-1">
+                Wpisz własny werset biblijny
+            </h3>
+            <p class="text-xs text-gray-300 mb-4 leading-relaxed">
+                Wpisz dowolne Słowo Boże oraz siglum, które będą widoczne na karcie tego miesiąca oraz w generowanym pliku PDF:
+            </p>
+
+            <div class="space-y-3 text-left">
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-400 font-cinzel uppercase mb-1">Treść Wersetu:</label>
+                    <textarea id="editQuoteTextInput" rows="3" class="w-full bg-[#182238] border border-amber-400/40 rounded-xl p-3 text-xs sm:text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-amber-400 transition resize-none" placeholder="Wpisz treść wersetu..."></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-400 font-cinzel uppercase mb-1">Księga i Siglum (np. Ewangelia Jana 1,5):</label>
+                    <input type="text" id="editQuoteRefInput" class="w-full bg-[#182238] border border-amber-400/40 rounded-xl p-2.5 text-xs sm:text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-amber-400 transition" placeholder="np. Psalm 23,1">
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-2.5 mt-5">
+                <button type="button" onclick="closeQuoteEditModal()" class="px-4 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-300 transition cursor-pointer">
+                    Anuluj
+                </button>
+                <button type="button" onclick="saveCustomQuote()" class="px-5 py-2 rounded-xl gold-gradient text-gray-950 font-bold text-xs shadow-md hover:opacity-95 transition cursor-pointer active:scale-95">
+                    <i class="fa-solid fa-check mr-1"></i> Zapisz werset
+                </button>
+            </div>
         </div>
     </div>
 
