@@ -2580,6 +2580,7 @@ function getWeatherPreset(city) {
                         "KATOWICE": "☀️ 26°C / Słonecznie",
                         "RZESZÓW": "☀️ 27°C / Słonecznie"
                     };
+                    return dayPresets[city] || "☀️ 25°C / Słonecznie";
                 } else if (hour >= 18 && hour < 22) {
                     const eveningPresets = {
                         "WARSZAWA": "🌇 22°C / Ciepły Wieczór",
@@ -2597,6 +2598,7 @@ function getWeatherPreset(city) {
                         "KATOWICE": "🌇 22°C / Pogodny Wieczór",
                         "RZESZÓW": "🌇 23°C / Pogodny Wieczór"
                     };
+                    return eveningPresets[city] || "🌇 22°C / Spokojny Wieczór";
                 } else {
                     const nightPresets = {
                         "WARSZAWA": "🌙 18°C / Gwieździsta Noc",
@@ -2690,7 +2692,7 @@ function getWeatherPreset(city) {
                 const weatherBox = document.getElementById("weatherBox");
                 const weatherIcon = document.querySelector(".weather-icon");
                 if (weatherBox) {
-                    const desc = getDynamicWeatherForCity(cityName);
+                    const desc = (getDynamicWeatherForCity(cityName) || "☀️ 24°C / Słonecznie").toString();
                     weatherBox.innerHTML = `
                         <span class="weather-city">${cityName}</span>
                         <span class="weather-temp-desc">${desc}</span>
@@ -2698,13 +2700,13 @@ function getWeatherPreset(city) {
                     
                     if (weatherIcon) {
                         weatherIcon.className = "fa-solid weather-icon"; // Reset
-                        if (desc.includes("☀️")) {
+                        if (desc && desc.includes("☀️")) {
                             weatherIcon.classList.add("fa-sun");
-                        } else if (desc.includes("🌤️") || desc.includes("☁️")) {
+                        } else if (desc && (desc.includes("🌤️") || desc.includes("☁️"))) {
                             weatherIcon.classList.add("fa-cloud-sun");
-                        } else if (desc.includes("🌇") || desc.includes("🌊")) {
+                        } else if (desc && (desc.includes("🌇") || desc.includes("🌊"))) {
                             weatherIcon.classList.add("fa-mountain-sun");
-                        } else if (desc.includes("🌙")) {
+                        } else if (desc && desc.includes("🌙")) {
                             weatherIcon.classList.add("fa-moon");
                         } else {
                             weatherIcon.classList.add("fa-cloud");

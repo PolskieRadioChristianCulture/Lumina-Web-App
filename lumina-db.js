@@ -242,12 +242,58 @@ export const CEZARY_ADMIN_PROFILE = {
     ]
 };
 
+export function getStorageSafeProfile(profile, keyHint = '') {
+    if (!profile || typeof profile !== 'object') return profile;
+    const safe = { ...profile };
+    const hint = safe.slug || safe.uid || keyHint || 'user';
+    if (typeof safe.avatar === 'string' && safe.avatar.length > 50000) {
+        if (typeof window !== 'undefined' && window.LuminaMediaStore) {
+            window.LuminaMediaStore.setItem(`lumina_avatar_${hint}`, safe.avatar);
+        }
+        safe.avatar = `indexeddb:lumina_avatar_${hint}`;
+    }
+    if (typeof safe.cover === 'string' && safe.cover.length > 50000) {
+        if (typeof window !== 'undefined' && window.LuminaMediaStore) {
+            window.LuminaMediaStore.setItem(`lumina_cover_${hint}`, safe.cover);
+        }
+        safe.cover = `indexeddb:lumina_cover_${hint}`;
+    }
+    if (Array.isArray(safe.photos)) {
+        safe.photos = safe.photos.map((p, i) => {
+            if (typeof p === 'string' && p.length > 50000) {
+                if (typeof window !== 'undefined' && window.LuminaMediaStore) {
+                    window.LuminaMediaStore.setItem(`lumina_photos_${hint}_${i}`, p);
+                }
+                return `indexeddb:lumina_photos_${hint}_${i}`;
+            }
+            return p;
+        });
+    }
+    if (Array.isArray(safe.gallery)) {
+        safe.gallery = safe.gallery.map((g, i) => {
+            if (typeof g === 'string' && g.length > 50000) {
+                if (typeof window !== 'undefined' && window.LuminaMediaStore) {
+                    window.LuminaMediaStore.setItem(`lumina_gallery_${hint}_${i}`, g);
+                }
+                return `indexeddb:lumina_gallery_${hint}_${i}`;
+            }
+            return g;
+        });
+    }
+    if (Array.isArray(safe.posts) && safe.posts.length > 10) {
+        safe.posts = safe.posts.slice(0, 10);
+    }
+    return safe;
+}
+
 export function setupAdminCezarySession() {
     try {
+        const safeProfile = getStorageSafeProfile(CEZARY_ADMIN_PROFILE, 'cezaryrgowski');
+        const serializedProfile = JSON.stringify(safeProfile);
         localStorage.setItem('lumina_current_user', JSON.stringify(CEZARY_ADMIN_USER));
-        localStorage.setItem('lumina_current_user_profile', JSON.stringify(CEZARY_ADMIN_PROFILE));
-        localStorage.setItem('lumina_my_profile', JSON.stringify(CEZARY_ADMIN_PROFILE));
-        localStorage.setItem('lumina_profile_cezaryrgowski', JSON.stringify(CEZARY_ADMIN_PROFILE));
+        localStorage.setItem('lumina_current_user_profile', serializedProfile);
+        localStorage.setItem('lumina_my_profile', serializedProfile);
+        localStorage.setItem('lumina_profile_cezaryrgowski', serializedProfile);
         localStorage.setItem('lumina_user_session', 'active');
         localStorage.setItem('lumina_user_email', 'nazirczarkes@gmail.com');
         localStorage.setItem('lumina_current_user_slug', 'cezaryrgowski');
@@ -489,10 +535,12 @@ if (auth) {
                     }
 
                     try {
-                        localStorage.setItem('lumina_current_user_profile', JSON.stringify(currentProfileState));
-                        localStorage.setItem('lumina_my_profile', JSON.stringify(currentProfileState));
+                        const safeProfile = getStorageSafeProfile(currentProfileState, user.uid);
+                        const serialized = JSON.stringify(safeProfile);
+                        localStorage.setItem('lumina_current_user_profile', serialized);
+                        localStorage.setItem('lumina_my_profile', serialized);
                         if (currentProfileState.slug) {
-                            localStorage.setItem('lumina_profile_' + currentProfileState.slug, JSON.stringify(currentProfileState));
+                            localStorage.setItem('lumina_profile_' + currentProfileState.slug, serialized);
                             sessionStorage.setItem('lumina_auth_owner_' + currentProfileState.slug, 'true');
                         }
                     } catch(e) {}
@@ -567,10 +615,12 @@ if (auth) {
                     }
 
                     try {
-                        localStorage.setItem('lumina_current_user_profile', JSON.stringify(currentProfileState));
-                        localStorage.setItem('lumina_my_profile', JSON.stringify(currentProfileState));
-                        localStorage.setItem('lumina_profile_' + user.uid, JSON.stringify(currentProfileState));
-                        if (cleanSlug) localStorage.setItem('lumina_profile_' + cleanSlug, JSON.stringify(currentProfileState));
+                        const safeProfile = getStorageSafeProfile(currentProfileState, cleanSlug || user.uid);
+                        const serialized = JSON.stringify(safeProfile);
+                        localStorage.setItem('lumina_current_user_profile', serialized);
+                        localStorage.setItem('lumina_my_profile', serialized);
+                        localStorage.setItem('lumina_profile_' + user.uid, serialized);
+                        if (cleanSlug) localStorage.setItem('lumina_profile_' + cleanSlug, serialized);
                         sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
                         if (cleanSlug) sessionStorage.setItem('lumina_auth_owner_' + cleanSlug, 'true');
                     } catch(e) {}
@@ -820,10 +870,12 @@ export async function loginWithGoogle() {
             };
             localStorage.setItem('lumina_current_user', JSON.stringify(uData));
             localStorage.setItem('lumina_user_session', 'active');
-            localStorage.setItem('lumina_profile_' + user.uid, JSON.stringify(existingProfile));
-            if (existingProfile.slug) localStorage.setItem('lumina_profile_' + existingProfile.slug, JSON.stringify(existingProfile));
-            localStorage.setItem('lumina_current_user_profile', JSON.stringify(existingProfile));
-            localStorage.setItem('lumina_my_profile', JSON.stringify(existingProfile));
+            const safeProfile = getStorageSafeProfile(existingProfile, existingProfile.slug || user.uid);
+            const serialized = JSON.stringify(safeProfile);
+            localStorage.setItem('lumina_profile_' + user.uid, serialized);
+            if (existingProfile.slug) localStorage.setItem('lumina_profile_' + existingProfile.slug, serialized);
+            localStorage.setItem('lumina_current_user_profile', serialized);
+            localStorage.setItem('lumina_my_profile', serialized);
             sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
             if (existingProfile.slug) sessionStorage.setItem('lumina_auth_owner_' + existingProfile.slug, 'true');
         } catch(e) {}
@@ -1304,11 +1356,13 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
         profileData.cover = 'lumina_default_cover.jpg';
     }
 
-    // Save to localStorage under all relevant keys
+    // Save to localStorage under all relevant keys using safe lean profile
     try {
-        localStorage.setItem(`lumina_profile_${slugOrUid}`, JSON.stringify(profileData));
-        if (profileData.slug) localStorage.setItem(`lumina_profile_${profileData.slug}`, JSON.stringify(profileData));
-        if (profileData.uid) localStorage.setItem(`lumina_profile_${profileData.uid}`, JSON.stringify(profileData));
+        const safeProfile = getStorageSafeProfile(profileData, slugOrUid);
+        const serialized = JSON.stringify(safeProfile);
+        localStorage.setItem(`lumina_profile_${slugOrUid}`, serialized);
+        if (profileData.slug) localStorage.setItem(`lumina_profile_${profileData.slug}`, serialized);
+        if (profileData.uid) localStorage.setItem(`lumina_profile_${profileData.uid}`, serialized);
         
         const curUserRaw = localStorage.getItem('lumina_current_user_profile');
         let isCurrent = false;
@@ -1323,7 +1377,7 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
             isCurrent = true;
         }
         if (isCurrent) {
-            localStorage.setItem('lumina_current_user_profile', JSON.stringify(profileData));
+            localStorage.setItem('lumina_current_user_profile', serialized);
         }
         sessionStorage.setItem(`lumina_auth_owner_${slugOrUid}`, 'true');
         if (profileData.slug) sessionStorage.setItem(`lumina_auth_owner_${profileData.slug}`, 'true');

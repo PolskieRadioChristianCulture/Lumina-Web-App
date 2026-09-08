@@ -2456,6 +2456,7 @@ function getWeatherPreset(city) {
                         "KATOWICE": "☀️ 26°C / Słonecznie",
                         "RZESZÓW": "☀️ 27°C / Słonecznie"
                     };
+                    return dayPresets[city] || "☀️ 25°C / Słonecznie";
                 } else if (hour >= 18 && hour < 22) {
                     const eveningPresets = {
                         "WARSZAWA": "🌇 22°C / Ciepły Wieczór",
@@ -2473,6 +2474,7 @@ function getWeatherPreset(city) {
                         "KATOWICE": "🌇 22°C / Pogodny Wieczór",
                         "RZESZÓW": "🌇 23°C / Pogodny Wieczór"
                     };
+                    return eveningPresets[city] || "🌇 22°C / Spokojny Wieczór";
                 } else {
                     const nightPresets = {
                         "WARSZAWA": "🌙 18°C / Gwieździsta Noc",
@@ -2499,22 +2501,14 @@ function getWeatherPreset(city) {
                 const marqueeTextEl = document.getElementById("marqueeText");
                 if (!marqueeTextEl) return;
                 
-                const greetingsText = `<span class="ticker-announcement">ZA CHWILĘ: GŁOS WIDZÓW 📺</span> <span class="ticker-highlight-msg">💬 Pozdrawiamy wszystkich uczestników wspólnej modlitwy! Niech ten dzień przyniesie Wam Boży pokój ~Redakcja CC &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 💬 Dziękujemy za Wasze wiadomości i codzienne wsparcie naszej misji. Jesteście wspaniali! ~Zespół Christian Culture</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
-
-                const specialRds = window.mcSpecialRdsMessage || "";
                 const defaultMissionText = `
-                    ${specialRds}
-                    ${greetingsText}
-                     <span style="background: #dc143c; color: #ffffff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">🇵🇱 PILNE WEZWANIE DO MODLITWY 🙏🔥</span> 
+                     <span style="background: #dc143c; color: #ffffff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">🇵🇱 BIBLIA ŚPIEWANA CC LIVE 🙏🔥</span> 
                     <span style="background: #FFCC00; color: #000000; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">WWW.POLSKIERADIO.CC | CCLITE.PL</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                    <span style="background: linear-gradient(135deg, #00C6FF, #0072FF); color: #ffffff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block; box-shadow: 0 0 10px rgba(0,198,255,0.5);">📱 APLIKACJA WEBOWA CHRISTIAN CULTURE: CHRISTIAN-CULTURE.WEB.APP</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     📧 NAPISZ DO NAS: <strong>polskiercctv@gmail.com</strong> | <strong>radiochristianculture@gmail.com</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     📖 BEZPŁATNA BIBLIA DLA KAŻDEGO — wyślij SMS o treści: <strong>BIBLIA</strong> pod numer <strong>507 821 789</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     📱 DOŁĄCZ NA WHATSAPP — szczegóły w bocznej ramce &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     💳 WESPRZYJ MISJĘ — Patronite: patronite.pl/osobowoscplus &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     🙏 Dziękujemy za każde wsparcie i modlitwę! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    ${greetingsText}
-                     <span style="background: #dc143c; color: #ffffff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-family: 'Montserrat', sans-serif; margin-right: 15px; display: inline-block;">🇵🇱 PILNE WEZWANIE DO MODLITWY 🙏🔥</span> 
                 `;
                 
                 try {
@@ -2569,7 +2563,7 @@ function getWeatherPreset(city) {
                 const weatherBox = document.getElementById("weatherBox");
                 const weatherIcon = document.querySelector(".weather-icon");
                 if (weatherBox) {
-                    const desc = getDynamicWeatherForCity(cityName);
+                    const desc = (getDynamicWeatherForCity(cityName) || "☀️ 24°C / Słonecznie").toString();
                     weatherBox.innerHTML = `
                         <span class="weather-city">${cityName}</span>
                         <span class="weather-temp-desc">${desc}</span>
@@ -2577,13 +2571,13 @@ function getWeatherPreset(city) {
                     
                     if (weatherIcon) {
                         weatherIcon.className = "fa-solid weather-icon"; // Reset
-                        if (desc.includes("☀️")) {
+                        if (desc && desc.includes("☀️")) {
                             weatherIcon.classList.add("fa-sun");
-                        } else if (desc.includes("🌤️") || desc.includes("☁️")) {
+                        } else if (desc && (desc.includes("🌤️") || desc.includes("☁️"))) {
                             weatherIcon.classList.add("fa-cloud-sun");
-                        } else if (desc.includes("🌇") || desc.includes("🌊")) {
+                        } else if (desc && (desc.includes("🌇") || desc.includes("🌊"))) {
                             weatherIcon.classList.add("fa-mountain-sun");
-                        } else if (desc.includes("🌙")) {
+                        } else if (desc && desc.includes("🌙")) {
                             weatherIcon.classList.add("fa-moon");
                         } else {
                             weatherIcon.classList.add("fa-cloud");

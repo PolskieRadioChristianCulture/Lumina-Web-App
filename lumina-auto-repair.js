@@ -194,7 +194,7 @@
                             origSetItem.call(this, key, value);
                             return;
                         } catch (retryErr) {
-                            // Jeśli wartość to tablica JSON, przytnij ją do najnowszych pozycji
+                            // 1. Jeśli wartość to tablica JSON, przytnij ją do najnowszych pozycji
                             if (typeof value === 'string' && value.trim().startsWith('[')) {
                                 try {
                                     const parsed = JSON.parse(value);
@@ -206,7 +206,62 @@
                                     }
                                 } catch (e) {}
                             }
-                            console.warn('[LUMINA MemoryGuard] ⚠️ Storage limit reached on device for key:', key);
+
+                            // 2. Jeśli wartość to obiekt JSON (np. lumina_profile_...), odchudź go:
+                            if (typeof value === 'string' && value.trim().startsWith('{')) {
+                                try {
+                                    const parsed = JSON.parse(value);
+                                    let modified = false;
+
+                                    // Przytnij posty profilu do maksymalnie 5 najświeższych
+                                    if (Array.isArray(parsed.posts) && parsed.posts.length > 5) {
+                                        parsed.posts = parsed.posts.slice(0, 5);
+                                        modified = true;
+                                    }
+
+                                    // Przenieś duże zdjęcia Base64 (>50KB) do IndexedDB (LuminaMediaStore)
+                                    ['avatar', 'cover'].forEach(prop => {
+                                        if (typeof parsed[prop] === 'string' && parsed[prop].length > 50000) {
+                                            if (window.LuminaMediaStore) {
+                                                window.LuminaMediaStore.setItem(`lumina_${prop}_${parsed.slug || key}`, parsed[prop]);
+                                            }
+                                            parsed[prop] = `indexeddb:lumina_${prop}_${parsed.slug || key}`;
+                                            modified = true;
+                                        }
+                                    });
+
+                                    ['photos', 'gallery'].forEach(arrProp => {
+                                        if (Array.isArray(parsed[arrProp])) {
+                                            parsed[arrProp] = parsed[arrProp].map((img, idx) => {
+                                                if (typeof img === 'string' && img.length > 50000) {
+                                                    const idbKey = `lumina_${arrProp}_${parsed.slug || key}_${idx}`;
+                                                    if (window.LuminaMediaStore) {
+                                                        window.LuminaMediaStore.setItem(idbKey, img);
+                                                    }
+                                                    modified = true;
+                                                    return `indexeddb:${idbKey}`;
+                                                }
+                                                return img;
+                                            });
+                                        }
+                                    });
+
+                                    if (modified) {
+                                        origSetItem.call(this, key, JSON.stringify(parsed));
+                                        self._logHealing('STORAGE_OBJECT_SLIMMED_FOR_QUOTA', { key });
+                                        return;
+                                    }
+                                } catch (objErr) {}
+                            }
+
+                            // 3. Ostateczne głębokie czyszczenie i ponowna próba
+                            self.deepPruneStorage();
+                            try {
+                                origSetItem.call(this, key, value);
+                                return;
+                            } catch (finalErr) {
+                                console.warn('[LUMINA MemoryGuard] ⚠️ Storage limit reached on device for key:', key);
+                            }
                         }
                     } else {
                         throw err;
@@ -284,14 +339,12 @@
             this._logHealing('STORAGE_QUOTA_CLEANUP', 'Czyszczenie tymczasowej pamięci podręcznej i buforów', 'warn');
             try {
                 const keysToRemove = [];
-                const maxCacheAgeMs = 7 * 24 * 3600 * 1000; // 7 dni
-                const now = Date.now();
 
                 for (let i = 0; i < localStorage.length; i++) {
                     const k = localStorage.key(i);
                     if (!k) continue;
 
-                    // Usuwanie tymczasowych kopii zapasowych, śmieci i uszkodzonych kluczy
+                    // Usuwanie tymczasowych kopii zapasowych, śmieci i testów
                     if (k.includes('_temp_') || k.includes('_cache_feed_') || k.startsWith('_bak_corrupt_') || k.includes('__quota_test__')) {
                         keysToRemove.push(k);
                     } else if (k.startsWith('lumina_chat_') || k.startsWith('lumina_feed_')) {
@@ -305,10 +358,57 @@
                                 }
                             }
                         } catch(e) {}
+                    } else if (k.startsWith('lumina_avatar_') || k.startsWith('lumina_cover_')) {
+                        // Jeśli w localStorage leży wielkie zdjęcie Base64, przenieś do IndexedDB i zwolnij localStorage
+                        try {
+                            const val = localStorage.getItem(k);
+                            if (val && val.length > 80000) {
+                                if (window.LuminaMediaStore) {
+                                    window.LuminaMediaStore.setItem(k, val);
+                                }
+                                keysToRemove.push(k);
+                            }
+                        } catch(e) {}
                     }
                 }
 
                 keysToRemove.forEach(k => {
+                    try { localStorage.removeItem(k); } catch(e){}
+                });
+            } catch(e) {}
+        }
+
+        /**
+         * Agresywne czyszczenie pamięci podręcznej w razie krytycznego wyczerpania limitu (Storage Quota)
+         */
+        deepPruneStorage() {
+            this._logHealing('STORAGE_DEEP_PRUNE', 'Awaryjne odzyskiwanie limitu pamięci przeglądarki', 'warn');
+            try {
+                const toRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const k = localStorage.key(i);
+                    if (!k) continue;
+
+                    // Usuń zduplikowane, archiwalne kopie i dane pomocnicze
+                    if (k.startsWith('lumina_cache_') || k.startsWith('lumina_draft_') || k.includes('_backup_')) {
+                        toRemove.push(k);
+                    } else {
+                        // Przenieś wszelkie duże wpisy > 50KB do IndexedDB
+                        try {
+                            const val = localStorage.getItem(k);
+                            if (val && val.length > 50000) {
+                                if (window.LuminaMediaStore) {
+                                    window.LuminaMediaStore.setItem('idb_' + k, val);
+                                }
+                                if (k.startsWith('lumina_avatar_') || k.startsWith('lumina_cover_')) {
+                                    toRemove.push(k);
+                                }
+                            }
+                        } catch(e) {}
+                    }
+                }
+
+                toRemove.forEach(k => {
                     try { localStorage.removeItem(k); } catch(e){}
                 });
             } catch(e) {}

@@ -2566,11 +2566,23 @@
             const targetSlug = (this.currentEditingSlug || this.slug || 'profile_default').toLowerCase();
 
             this.compressAndProcessImage(file, 800, 0.85, async (dataUrl) => {
-                // Update local storage
-                localStorage.setItem('lumina_avatar_' + targetSlug, dataUrl);
+                // Offload to IndexedDB
+                if (window.LuminaMediaStore) {
+                    await window.LuminaMediaStore.setItem('lumina_avatar_' + targetSlug, dataUrl);
+                }
+                try {
+                    if (dataUrl.length < 100000) {
+                        localStorage.setItem('lumina_avatar_' + targetSlug, dataUrl);
+                    }
+                } catch(e) {}
+
                 const cur = this.getCurrentData(targetSlug);
                 const updated = { ...cur, avatar: dataUrl, slug: targetSlug };
-                localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(updated));
+                try {
+                    const safeUpdated = { ...updated };
+                    if (dataUrl.length > 200000) safeUpdated.avatar = 'indexeddb:lumina_avatar_' + targetSlug;
+                    localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(safeUpdated));
+                } catch(err) {}
 
                 // Save to Firestore Cloud
                 if (window.LuminaDB?.saveProfileToCloud) {
@@ -2650,7 +2662,19 @@
                 const gallery = cur.gallery || [];
                 gallery.push(dataUrl);
                 const updated = { ...cur, gallery: gallery, slug: targetSlug };
-                localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(updated));
+                try {
+                    const safeUpdated = { ...updated };
+                    if (Array.isArray(safeUpdated.gallery)) {
+                        safeUpdated.gallery = safeUpdated.gallery.map((g, idx) => {
+                            if (typeof g === 'string' && g.length > 200000) {
+                                if (window.LuminaMediaStore) window.LuminaMediaStore.setItem(`lumina_gallery_${targetSlug}_${idx}`, g);
+                                return `indexeddb:lumina_gallery_${targetSlug}_${idx}`;
+                            }
+                            return g;
+                        });
+                    }
+                    localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(safeUpdated));
+                } catch(err) {}
 
                 if (window.LuminaDB?.saveProfileToCloud) {
                     await window.LuminaDB.saveProfileToCloud(targetSlug, updated);
