@@ -55,7 +55,11 @@ let STATIONS = {
     global_biblia: {
         id: "global_biblia",
         name: "GLOBAL BIBLIA",
-        streamUrl: "https://stream.zeno.fm/gn3uhltrrytuv",
+        lang: "en",
+        isPlaylist: true,
+        useZeno: false,
+        playlistUrl: "./playlist.json",
+        baseAudioUrl: "https://ebible.org/eng-web/mp3/",
         accentColors: ["#D4AF37", "#FFDF7A"], // Gold Premium to Gold Glow
         logo: "./Logo Globalna Biblia Audio.jpg",
         tracks: [
@@ -1000,8 +1004,32 @@ function playRadio() {
             targetUrl = "./audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3";
             playerTrackTitle.textContent = "Biblia Audio — Śpiewane Przypowieści Salomona";
         }
+    } else if (activeStation.id === 'global_biblia') {
+        if (globalPlaylist && globalPlaylist.length > 0) {
+            const totalDur = totalDuration || globalPlaylist.reduce((acc, t) => acc + (t.duration || 240), 0);
+            const epochSeconds = Math.floor(Date.now() / 1000);
+            let remaining = epochSeconds % (totalDur || 50000);
+            let targetIndex = 0;
+            let seekSeconds = 0;
+            for (let i = 0; i < globalPlaylist.length; i++) {
+                const dur = globalPlaylist[i].duration || 240;
+                if (remaining < dur) {
+                    targetIndex = i;
+                    seekSeconds = remaining;
+                    break;
+                }
+                remaining -= dur;
+            }
+            const currentTrack = globalPlaylist[targetIndex];
+            targetUrl = currentTrack.url;
+            seekOffset = seekSeconds;
+            playerTrackTitle.textContent = `${currentTrack.bookName} — Chapter ${currentTrack.chapter}`;
+        } else {
+            targetUrl = "https://ebible.org/eng-web/mp3/01_01_Matthew.mp3";
+            playerTrackTitle.textContent = "Global Bible (English WEB) — Matthew 1";
+        }
     } else {
-        // Live radio streams (Radio PL, Radio Global, Globalna Biblia)
+        // Live radio streams (Radio PL, Radio Global, etc.)
         targetUrl = activeStation.streamUrl;
     }
     
@@ -1009,6 +1037,9 @@ function playRadio() {
         if (currentAudioUrl !== targetUrl || !audio.src) {
             audio.src = targetUrl;
             currentAudioUrl = targetUrl;
+        }
+        if (seekOffset > 0) {
+            try { audio.currentTime = seekOffset; } catch(e) {}
         }
     }
     
@@ -1254,6 +1285,13 @@ function connectStationMetadata(stationId) {
         } else {
             playerTrackTitle.textContent = "Biblia Śpiewana — Śpiewane Przypowieści Salomona";
         }
+        return;
+    }
+
+    if (stationId === "global_biblia") {
+        if (globalBibleTimer) clearInterval(globalBibleTimer);
+        updateGlobalBibleRadioState();
+        globalBibleTimer = setInterval(updateGlobalBibleRadioState, 5000);
         return;
     }
     

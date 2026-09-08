@@ -2084,9 +2084,9 @@
                     }
                 }, 10000);
             } else {
-                // Fallback: Zeno.fm stream if playlist fails
+                // Fallback: Direct eBible audio track (no Zeno for English Bible)
                 if (bibleAudioEl) {
-                    bibleAudioEl.src = 'https://stream.zeno.fm/gn3uhltrrytuv';
+                    bibleAudioEl.src = 'https://ebible.org/eng-web/mp3/01_01_Matthew.mp3';
                     bibleAudioEl.play().catch(e => console.warn('Fallback stream error:', e));
                 }
             }
