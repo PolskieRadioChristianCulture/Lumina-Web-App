@@ -1119,6 +1119,12 @@
                     <a href="https://www.facebook.com/profile.php?id=100018961423282&locale=pl_PL" target="_blank" rel="noopener noreferrer" class="btn-action-secondary" title="Zobacz oficjalny profil na Facebooku">
                         <i class="fa-brands fa-facebook" style="color:#1877f2;"></i> Facebook
                     </a>
+                    <button type="button" id="btnUnlockOwner" class="btn-action-secondary" onclick="openSecurityModal()" style="display:inline-flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-user-shield" style="color:var(--gold-accent);"></i> Autoryzacja Autora
+                    </button>
+                    <div id="ownerModeIndicator" style="display:none; align-items:center; gap:6px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; padding:8px 14px; border-radius:14px; font-size:0.82rem; font-weight:800;">
+                        <i class="fa-solid fa-circle-check"></i> Autor: Zbyszek Gieroń 🔓
+                    </div>
                 </div>
             </div>
         </section>
@@ -1182,8 +1188,16 @@
                      ══════════════════════════════════════════════════ -->
                 <div id="tabPaneFeed" class="tab-pane-content">
 
-                    <!-- Kompozytor Postów z Obsługą Dysku Google -->
+                    <!-- Kompozytor Postów z Obsługą Dysku Google & Chmury LUMINA -->
                     <div class="feed-composer-card">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.08); font-size:0.80rem;">
+                            <span style="display:inline-flex; align-items:center; gap:6px; color:#10b981; font-weight:700;">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Synchronizacja: Profil & Tablica LUMINA
+                            </span>
+                            <span id="composerAuthBadge" style="color:var(--gold-accent); font-weight:700; cursor:pointer;" onclick="if(!isOwnerMode) openSecurityModal();">
+                                <i class="fa-solid fa-shield-halved"></i> Panel Autora
+                            </span>
+                        </div>
                         <div class="composer-top">
                             <img src="avatar_zbyszek_gieron.jpg" alt="Zbyszek Gieroń" class="composer-avatar" onerror="this.src='lumina_icon.jpg'">
                             <div class="composer-input-wrap">
@@ -1635,18 +1649,31 @@
         </div>
     </div>
 
-    <!-- ══════════ MODAL: PIN SECURITY / ODPOWIEDŹ / WIADOMOŚĆ ══════════ -->
+    <!-- ══════════ MODAL: PIN SECURITY / AUTORYZACJA AUTORA ══════════ -->
     <div id="securityPinModal" class="modal-overlay" onclick="if(event.target===this) closeSecurityModal();">
-        <div class="modal-content-box" style="max-width:400px; text-align:center;">
-            <div style="width:50px; height:50px; border-radius:50%; background:rgba(245,158,11,0.15); border:1px solid var(--gold-accent); color:var(--gold-accent); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:1.4rem;">
-                <i class="fa-solid fa-lock"></i>
+        <div class="modal-content-box" style="max-width:440px; text-align:center;">
+            <div style="width:54px; height:54px; border-radius:50%; background:rgba(245,158,11,0.15); border:1px solid var(--gold-accent); color:var(--gold-accent); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:1.5rem;">
+                <i class="fa-solid fa-user-shield"></i>
             </div>
-            <h3 style="font-size:1.2rem; font-weight:800; color:#fff; margin-bottom:8px;">Autoryzacja Właściciela</h3>
-            <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:18px;">Wprowadź kod PIN profilu, aby opublikować post:</p>
-            <input type="password" id="ownerPinInput" maxlength="6" placeholder="Wpisz PIN (np. 7777)" style="width:100%; box-sizing:border-box; text-align:center; letter-spacing:4px; font-size:1.2rem; padding:12px; border-radius:12px; background:#060911; border:1.5px solid rgba(255,255,255,0.2); color:#fff; outline:none; margin-bottom:18px;" onkeydown="if(event.key==='Enter') verifyOwnerPin();">
+            <h3 style="font-size:1.2rem; font-weight:800; color:#fff; margin-bottom:8px;">Autoryzacja Autora (Zbyszek Gieroń)</h3>
+            <p style="font-size:0.86rem; color:#94a3b8; margin-bottom:18px;">
+                Zaloguj się swoim kontem Google lub podaj kod PIN autora (7777):
+            </p>
+
+            <button type="button" class="btn-action-primary" onclick="loginOwnerWithGoogle()" style="width:100%; justify-content:center; margin-bottom:16px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border:none; padding:12px; font-size:0.95rem; font-weight:700; cursor:pointer;">
+                <i class="fa-brands fa-google"></i> Zaloguj przez Google (Zbyszek Gieroń)
+            </button>
+
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+                <div style="flex:1; height:1px; background:rgba(255,255,255,0.15);"></div>
+                <span style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase; font-weight:700;">lub wpisz kod PIN</span>
+                <div style="flex:1; height:1px; background:rgba(255,255,255,0.15);"></div>
+            </div>
+
+            <input type="password" id="ownerPinInput" maxlength="6" placeholder="Wpisz PIN (7777)" style="width:100%; box-sizing:border-box; text-align:center; letter-spacing:6px; font-size:1.25rem; font-weight:700; padding:12px; border-radius:12px; background:#060911; border:1.5px solid rgba(255,255,255,0.2); color:#fff; outline:none; margin-bottom:18px;" onkeydown="if(event.key==='Enter') verifyOwnerPin();">
             <div style="display:flex; gap:10px; justify-content:center;">
                 <button type="button" class="btn-action-secondary" onclick="closeSecurityModal()">Anuluj</button>
-                <button type="button" class="btn-action-primary" onclick="verifyOwnerPin()">Potwierdź</button>
+                <button type="button" class="btn-action-primary" onclick="verifyOwnerPin()">Odblokuj PIN-em</button>
             </div>
         </div>
     </div>
@@ -1899,6 +1926,215 @@
             studioGdriveParsed = null;
         }
 
+        // ── Check & Manage Owner Mode for Zbyszek Gieroń ──
+        function checkZbyszekOwner() {
+            if (isOwnerMode) return true;
+
+            // 1. Session or persistent unlock
+            if (sessionStorage.getItem('zbyszek_owner_unlocked') === '1' || localStorage.getItem('zbyszek_owner_unlocked') === '1') {
+                isOwnerMode = true;
+                updateOwnerUI();
+                return true;
+            }
+
+            // 2. Admin mode
+            if (localStorage.getItem('lumina_admin') === '1') {
+                isOwnerMode = true;
+                updateOwnerUI();
+                return true;
+            }
+
+            // 3. Stored profile or auth data
+            try {
+                const storedAuth = JSON.parse(localStorage.getItem('lumina_auth_user') || 'null');
+                const storedProfile = JSON.parse(localStorage.getItem('lumina_current_user_profile') || 'null') || JSON.parse(localStorage.getItem('lumina_profile_zbyszekgieron') || 'null');
+                const user = storedAuth || (window.LuminaDB?.getCurrentUser && window.LuminaDB.getCurrentUser());
+                const profile = storedProfile || (window.LuminaDB?.getCurrentProfile && window.LuminaDB.getCurrentProfile());
+
+                const email = (user?.email || '').toLowerCase();
+                const name = (profile?.name || user?.displayName || '').toLowerCase();
+                const slug = profile?.slug || '';
+
+                if (slug === 'zbyszekgieron' || email.includes('zbyszek') || email.includes('gieron') || name.includes('zbyszek') || name.includes('zbigniew') || (email.includes('czarkes') || email.includes('christianculture'))) {
+                    isOwnerMode = true;
+                    sessionStorage.setItem('zbyszek_owner_unlocked', '1');
+                    updateOwnerUI();
+                    return true;
+                }
+            } catch(e) {}
+
+            return false;
+        }
+
+        function updateOwnerUI() {
+            const indicator = document.getElementById('ownerModeIndicator');
+            const unlockBtn = document.getElementById('btnUnlockOwner');
+            const composerAuthBadge = document.getElementById('composerAuthBadge');
+
+            if (isOwnerMode) {
+                if (indicator) indicator.style.display = 'inline-flex';
+                if (unlockBtn) unlockBtn.style.display = 'none';
+                if (composerAuthBadge) {
+                    composerAuthBadge.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Zbyszek Gieroń (Aktywny)';
+                    composerAuthBadge.style.color = '#6ee7b7';
+                }
+            } else {
+                if (indicator) indicator.style.display = 'none';
+                if (unlockBtn) unlockBtn.style.display = 'inline-flex';
+                if (composerAuthBadge) {
+                    composerAuthBadge.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Panel Autora';
+                    composerAuthBadge.style.color = 'var(--gold-accent)';
+                }
+            }
+        }
+
+        // ── Security & Authentication Modal ──
+        function openSecurityModal(cb) {
+            if (checkZbyszekOwner()) {
+                if (typeof cb === 'function') cb();
+                return;
+            }
+            pendingPublishCallback = cb;
+            const modal = document.getElementById('securityPinModal');
+            const pinInput = document.getElementById('ownerPinInput');
+            if (modal) modal.style.display = 'flex';
+            if (pinInput) { pinInput.value = ''; pinInput.focus(); }
+        }
+
+        function closeSecurityModal() {
+            const modal = document.getElementById('securityPinModal');
+            if (modal) modal.style.display = 'none';
+            pendingPublishCallback = null;
+        }
+
+        async function loginOwnerWithGoogle() {
+            try {
+                if (window.LuminaDB && typeof window.LuminaDB.loginWithGoogle === 'function') {
+                    const user = await window.LuminaDB.loginWithGoogle();
+                    if (user) {
+                        isOwnerMode = true;
+                        sessionStorage.setItem('zbyszek_owner_unlocked', '1');
+                        localStorage.setItem('zbyszek_owner_unlocked', '1');
+                        closeSecurityModal();
+                        updateOwnerUI();
+                        showToast('🔓 Zalogowano pomyślnie jako Zbyszek Gieroń!');
+                        if (typeof pendingPublishCallback === 'function') {
+                            const cb = pendingPublishCallback;
+                            pendingPublishCallback = null;
+                            cb();
+                        }
+                    }
+                } else if (typeof window.loginWithGoogle === 'function') {
+                    await window.loginWithGoogle();
+                }
+            } catch(err) {
+                console.warn('Google login error:', err);
+                showToast('Błąd logowania Google: ' + (err.message || err));
+            }
+        }
+
+        function verifyOwnerPin() {
+            const pinInput = document.getElementById('ownerPinInput');
+            const val = pinInput ? pinInput.value.trim() : '';
+
+            // PIN profilu: 7777 lub 1234
+            if (val === '7777' || val === '1234') {
+                isOwnerMode = true;
+                sessionStorage.setItem('zbyszek_owner_unlocked', '1');
+                localStorage.setItem('zbyszek_owner_unlocked', '1');
+                closeSecurityModal();
+                updateOwnerUI();
+                showToast('🔓 Tryb autora Zbyszka Gieronia odblokowany pomyślnie!');
+                if (typeof pendingPublishCallback === 'function') {
+                    const cb = pendingPublishCallback;
+                    pendingPublishCallback = null;
+                    cb();
+                }
+            } else {
+                alert('Nieprawidłowy kod PIN. Spróbuj ponownie lub zaloguj się przez Google.');
+                if (pinInput) pinInput.focus();
+            }
+        }
+
+        // ── Unified Cloud & Local Publishing Engine ──
+        async function publishPostToCloudAndLocal(newPost) {
+            // 1. Zapis natychmiastowy lokalny
+            saveAndRenderLocalPost(newPost);
+
+            // 2. Publikacja w LuminaDB (kolekcja Firestore lumina_posts -> Tablica portalu LUMINA)
+            let publishedInCloud = false;
+            try {
+                if (window.LuminaDB && typeof window.LuminaDB.publishUniversalPost === 'function') {
+                    await window.LuminaDB.publishUniversalPost(newPost);
+                    publishedInCloud = true;
+                    console.log('✅ [Lumina Zbyszek] Opublikowano przez LuminaDB.publishUniversalPost');
+                } else if (window.luminaDb) {
+                    const { collection, addDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+                    await addDoc(collection(window.luminaDb, 'lumina_posts'), {
+                        ...newPost,
+                        createdAtTimestamp: serverTimestamp()
+                    });
+                    publishedInCloud = true;
+                    console.log('✅ [Lumina Zbyszek] Opublikowano bezpośrednio w Firestore lumina_posts');
+                }
+            } catch(cloudErr) {
+                console.warn('Lumina Cloud direct publish note:', cloudErr);
+            }
+
+            // 3. Fallback przez bezpośrednie REST API do Firestore
+            if (!publishedInCloud) {
+                try {
+                    const API_KEY = "AIzaSyAkX7XDMWjeUPeaIk0WdvoY4d9VhIPyD7M";
+                    const PROJECT_ID = "lumina-cc";
+                    const DATABASE_ID = "(default)";
+                    const restUrl = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/${DATABASE_ID}/documents/lumina_posts?key=${API_KEY}`;
+
+                    const fields = {
+                        author: { stringValue: newPost.author },
+                        authorSlug: { stringValue: newPost.authorSlug },
+                        authorAvatar: { stringValue: newPost.authorAvatar },
+                        authorRole: { stringValue: newPost.authorRole },
+                        time: { stringValue: newPost.time },
+                        title: { stringValue: newPost.title || 'Nowy Wpis' },
+                        text: { stringValue: newPost.text || '' },
+                        likes: { integerValue: String(newPost.likes || 1) },
+                        amen: { integerValue: String(newPost.amen || 1) },
+                        category: { stringValue: newPost.category || 'general' },
+                        createdAtTimestamp: { timestampValue: new Date().toISOString() },
+                        createdAtDateStr: { stringValue: newPost.createdAtDateStr || new Date().toISOString() }
+                    };
+                    if (newPost.image) fields.image = { stringValue: newPost.image };
+                    if (newPost.videoUrl) fields.videoUrl = { stringValue: newPost.videoUrl };
+                    if (newPost.gdriveEmbed) fields.gdriveEmbed = { stringValue: newPost.gdriveEmbed };
+
+                    const res = await fetch(restUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ fields })
+                    });
+                    if (res.ok) {
+                        publishedInCloud = true;
+                        console.log('✅ [Lumina Zbyszek] Opublikowano przez REST API fallback');
+                    }
+                } catch(restErr) {
+                    console.warn('Firestore REST fallback note:', restErr);
+                }
+            }
+
+            // 4. Aktualizacja pamięci podręcznej Tablicy portalu LUMINA
+            try {
+                const rawFeed = localStorage.getItem('lumina_cloud_posts_cache');
+                const feedList = rawFeed ? JSON.parse(rawFeed) : [];
+                if (!feedList.some(p => p.id === newPost.id)) {
+                    feedList.unshift(newPost);
+                    localStorage.setItem('lumina_cloud_posts_cache', JSON.stringify(feedList));
+                }
+                window.dispatchEvent(new CustomEvent('lumina_post_published', { detail: newPost }));
+                window.dispatchEvent(new Event('storage'));
+            } catch(e) {}
+        }
+
+        // ── Studio Tab Google Drive Publish ──
         function publishFromStudio() {
             if (!studioGdriveParsed) {
                 showToast('Wklej najpierw poprawny link do pliku z Dysku Google!');
@@ -1908,7 +2144,7 @@
             const descInput = document.getElementById('studioGdriveDescInput');
             const text = descInput ? descInput.value.trim() : '';
 
-            const executePublish = () => {
+            const executePublish = async () => {
                 const newPost = {
                     id: 'post_zg_' + Date.now(),
                     author: 'Zbyszek Gieroń',
@@ -1916,19 +2152,26 @@
                     authorAvatar: 'avatar_zbyszek_gieron.jpg',
                     authorRole: 'Profil Misyjny 🕊️✨',
                     time: 'Przed chwilą • 📁 Publikacja Google Drive',
+                    title: 'Materiał z Dysku Google • Zbyszek Gieroń',
                     text: text || 'Nowy materiał z Dysku Google opublikowany na profilu.',
+                    gdrive: studioGdriveParsed,
                     gdriveData: studioGdriveParsed,
+                    gdriveEmbed: (studioGdriveParsed && studioGdriveParsed.mode === 'embed') ? (studioGdriveParsed.previewEmbedUrl || studioGdriveParsed.directImgUrl) : null,
+                    image: (studioGdriveParsed && studioGdriveParsed.mode === 'image') ? studioGdriveParsed.directImgUrl : null,
                     likes: 1,
-                    amen: 1
+                    amen: 1,
+                    category: 'general',
+                    createdAtTimestamp: Date.now(),
+                    createdAtDateStr: new Date().toISOString()
                 };
 
-                saveAndRenderLocalPost(newPost);
+                await publishPostToCloudAndLocal(newPost);
                 resetStudioForm();
                 switchProfileTab('feed');
-                showToast('🎉 Opublikowano materiał z Dysku Google na profilu!');
+                showToast('🎉 Opublikowano materiał na profilu i Tablicy LUMINA!');
             };
 
-            if (!isOwnerMode) {
+            if (!checkZbyszekOwner()) {
                 openSecurityModal(executePublish);
             } else {
                 executePublish();
@@ -1954,7 +2197,7 @@
                 return;
             }
 
-            const executePublish = () => {
+            const executePublish = async () => {
                 const newPost = {
                     id: 'post_zg_' + Date.now(),
                     author: 'Zbyszek Gieroń',
@@ -1962,19 +2205,26 @@
                     authorAvatar: 'avatar_zbyszek_gieron.jpg',
                     authorRole: 'Profil Misyjny 🕊️✨',
                     time: 'Przed chwilą • 🕊️ Nowy Wpis',
+                    title: 'Nowy Wpis • Zbyszek Gieroń',
                     text: rawVal || (attachedGdriveData ? `Dołączono plik: ${attachedGdriveData.typeLabel}` : ''),
-                    gdriveData: attachedGdriveData,
+                    gdrive: attachedGdriveData || null,
+                    gdriveData: attachedGdriveData || null,
+                    gdriveEmbed: (attachedGdriveData && attachedGdriveData.mode === 'embed') ? (attachedGdriveData.previewEmbedUrl || attachedGdriveData.directImgUrl) : null,
+                    image: (attachedGdriveData && attachedGdriveData.mode === 'image') ? attachedGdriveData.directImgUrl : null,
                     likes: 1,
-                    amen: 1
+                    amen: 1,
+                    category: 'general',
+                    createdAtTimestamp: Date.now(),
+                    createdAtDateStr: new Date().toISOString()
                 };
 
-                saveAndRenderLocalPost(newPost);
+                await publishPostToCloudAndLocal(newPost);
                 if (input) input.value = '';
                 removeAttachedGoogleDrive();
-                showToast('✨ Opublikowano nowy wpis na profilu!');
+                showToast('✨ Opublikowano nowy wpis na profilu i Tablicy LUMINA!');
             };
 
-            if (!isOwnerMode) {
+            if (!checkZbyszekOwner()) {
                 openSecurityModal(executePublish);
             } else {
                 executePublish();
@@ -1997,7 +2247,7 @@
             showToast('Dodano link do wideo');
         }
 
-        // ── LocalStorage Post Management ──
+        // ── Post Storage & Realtime Rendering ──
         function saveAndRenderLocalPost(post) {
             try {
                 let posts = JSON.parse(localStorage.getItem('lumina_posts_zbyszekgieron') || '[]');
@@ -2014,61 +2264,146 @@
             } catch(e) {}
         }
 
+        // ── Realtime Stream from Firestore Cloud (lumina_posts) ──
+        async function startZbyszekCloudFeed() {
+            loadLocalPosts();
+
+            let attempts = 0;
+            const initFirestore = async () => {
+                const dbInstance = window.luminaDb || (window.LuminaDB && window.LuminaDB.ensureDbReady ? await window.LuminaDB.ensureDbReady() : null);
+                if (!dbInstance) {
+                    attempts++;
+                    if (attempts < 20) setTimeout(initFirestore, 250);
+                    return;
+                }
+
+                try {
+                    const { collection, query, where, onSnapshot } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+                    const q = query(
+                        collection(dbInstance, 'lumina_posts'),
+                        where('authorSlug', '==', 'zbyszekgieron')
+                    );
+
+                    onSnapshot(q, (snap) => {
+                        if (snap.empty) return;
+                        const cloudPosts = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                        function getPostTs(d) {
+                            if (d.publishedAt) {
+                                const t = new Date(d.publishedAt).getTime();
+                                if (!isNaN(t) && t > 0) return t;
+                            }
+                            if (d.createdAtTimestamp) {
+                                if (typeof d.createdAtTimestamp.toMillis === 'function') return d.createdAtTimestamp.toMillis();
+                                if (typeof d.createdAtTimestamp.toDate === 'function') return d.createdAtTimestamp.toDate().getTime();
+                                const num = Number(d.createdAtTimestamp);
+                                if (!isNaN(num) && num > 0) return num;
+                                const t = new Date(d.createdAtTimestamp).getTime();
+                                if (!isNaN(t) && t > 0) return t;
+                            }
+                            if (d.createdAtDateStr) {
+                                const t = new Date(d.createdAtDateStr).getTime();
+                                if (!isNaN(t) && t > 0) return t;
+                            }
+                            return 0;
+                        }
+
+                        cloudPosts.sort((a, b) => getPostTs(b) - getPostTs(a));
+
+                        const stream = document.getElementById('localPostsStream');
+                        if (stream) {
+                            stream.innerHTML = '';
+                            cloudPosts.forEach(p => renderPostCard(p, false));
+                        }
+                    }, (err) => {
+                        console.warn('[Zbyszek Cloud Feed] Sync note:', err.message);
+                    });
+                } catch(err) {
+                    console.warn('[Zbyszek Cloud Feed] Error:', err);
+                }
+            };
+
+            initFirestore();
+        }
+
         function renderPostCard(p, prepend = false) {
             const stream = document.getElementById('localPostsStream');
             if (!stream) return;
+
+            // Avoid duplicates
+            if (document.getElementById(p.id)) return;
 
             const card = document.createElement('article');
             card.className = 'feed-post-card';
             card.id = p.id;
 
             let mediaHtml = '';
-            if (p.gdriveData) {
-                const gd = p.gdriveData;
-                if (gd.mode === 'image') {
+            if (p.gdriveData || p.gdrive || p.gdriveEmbed) {
+                const gd = p.gdriveData || p.gdrive || {};
+                const embedUrl = p.gdriveEmbed || gd.previewEmbedUrl || (gd.fileId ? `https://drive.google.com/file/d/${gd.fileId}/preview` : '');
+                const imgUrl = gd.directImgUrl || (gd.fileId ? `https://drive.google.com/thumbnail?id=${gd.fileId}&sz=w1200` : '');
+                const viewUrl = gd.viewUrl || embedUrl;
+                const isImageMode = gd.mode === 'image' || (!embedUrl && imgUrl);
+
+                if (isImageMode && imgUrl) {
                     mediaHtml = `
                         <div class="gdrive-post-wrapper">
                             <div class="gdrive-post-header">
                                 <div style="display:flex; align-items:center; gap:8px; color:#86efac; font-size:0.84rem; font-weight:700;">
                                     <i class="${gd.icon || 'fa-brands fa-google-drive'}"></i> ${gd.typeLabel || 'Grafika z Dysku Google'}
                                 </div>
-                                <a href="${gd.viewUrl || gd.previewEmbedUrl}" target="_blank" rel="noopener" style="font-size:0.75rem; color:#60a5fa; text-decoration:none;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz w Dysku</a>
+                                <a href="${viewUrl}" target="_blank" rel="noopener" style="font-size:0.75rem; color:#60a5fa; text-decoration:none;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz w Dysku</a>
                             </div>
                             <div class="gdrive-post-content">
-                                <img src="${gd.directImgUrl}" alt="Grafika" onerror="this.src='lumina_default_cover.jpg'">
+                                <img src="${imgUrl}" alt="Grafika" onerror="this.src='lumina_default_cover.jpg'">
                             </div>
                         </div>
                     `;
-                } else {
+                } else if (embedUrl) {
                     mediaHtml = `
                         <div class="gdrive-post-wrapper">
                             <div class="gdrive-post-header">
                                 <div style="display:flex; align-items:center; gap:8px; color:#86efac; font-size:0.84rem; font-weight:700;">
                                     <i class="${gd.icon || 'fa-brands fa-google-drive'}"></i> ${gd.typeLabel || 'Materiał z Dysku Google'}
                                 </div>
-                                <a href="${gd.viewUrl || gd.previewEmbedUrl}" target="_blank" rel="noopener" style="font-size:0.75rem; color:#60a5fa; text-decoration:none;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz w Dysku</a>
+                                <a href="${viewUrl}" target="_blank" rel="noopener" style="font-size:0.75rem; color:#60a5fa; text-decoration:none;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Otwórz w Dysku</a>
                             </div>
                             <div class="gdrive-post-content">
-                                <iframe src="${gd.previewEmbedUrl}" allow="autoplay" allowfullscreen></iframe>
+                                <iframe src="${embedUrl}" allow="autoplay" allowfullscreen></iframe>
                             </div>
                         </div>
                     `;
                 }
+            } else if (p.image) {
+                mediaHtml = `
+                    <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
+                        <img src="${escapeHtml(p.image)}" alt="Grafika" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" onerror="this.src='lumina_default_cover.jpg'">
+                    </div>
+                `;
+            } else if (p.videoUrl) {
+                let vSrc = p.videoUrl;
+                if (vSrc.includes('youtube.com/watch?v=')) vSrc = vSrc.replace('watch?v=', 'embed/');
+                else if (vSrc.includes('youtu.be/')) vSrc = vSrc.replace('youtu.be/', 'www.youtube.com/embed/');
+                mediaHtml = `
+                    <div class="post-featured-artwork-box" style="position:relative; margin:16px 0 20px; border-radius:18px; overflow:hidden; border:1.5px solid rgba(245,158,11,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.65); background:#0b1428;">
+                        <iframe src="${escapeHtml(vSrc)}" style="width:100%; aspect-ratio:16/9; border:none; display:block;" allowfullscreen></iframe>
+                    </div>
+                `;
             }
 
             card.innerHTML = `
                 <div class="post-top-header">
                     <div class="post-author-box">
-                        <img src="${p.authorAvatar || 'avatar_zbyszek_gieron.jpg'}" alt="${p.author}" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
+                        <img src="${p.authorAvatar || 'avatar_zbyszek_gieron.jpg'}" alt="${p.author || 'Zbyszek Gieroń'}" class="post-author-img" onerror="this.src='lumina_icon.jpg'">
                         <div>
                             <div class="post-author-name">
-                                ${p.author} <span class="post-badge-role">${p.authorRole || 'Profil Misyjny 🕊️'}</span>
+                                ${p.author || 'Zbyszek Gieroń'} <span class="post-badge-role">${p.authorRole || 'Profil Misyjny 🕊️'}</span>
                             </div>
-                            <span class="post-time">${p.time}</span>
+                            <span class="post-time">${p.time || 'Przed chwilą • 🌍 Publiczny'}</span>
                         </div>
                     </div>
                 </div>
-                <div class="post-body">${escapeHtml(p.text)}</div>
+                <div class="post-body">${escapeHtml(p.text || '')}</div>
                 ${mediaHtml}
                 <div class="post-actions-bar">
                     <button type="button" class="post-act-btn active-heart" onclick="toggleLike(this, 'like_${p.id}')">
@@ -2097,41 +2432,6 @@
             const div = document.createElement('div');
             div.innerText = text || '';
             return div.innerHTML;
-        }
-
-        // ── Security PIN Modal ──
-        function openSecurityModal(cb) {
-            pendingPublishCallback = cb;
-            const modal = document.getElementById('securityPinModal');
-            const pinInput = document.getElementById('ownerPinInput');
-            if (modal) modal.style.display = 'flex';
-            if (pinInput) { pinInput.value = ''; pinInput.focus(); }
-        }
-
-        function closeSecurityModal() {
-            const modal = document.getElementById('securityPinModal');
-            if (modal) modal.style.display = 'none';
-            pendingPublishCallback = null;
-        }
-
-        function verifyOwnerPin() {
-            const pinInput = document.getElementById('ownerPinInput');
-            const val = pinInput ? pinInput.value.trim() : '';
-
-            // PIN profilu: 7777 lub 1234
-            if (val === '7777' || val === '1234') {
-                isOwnerMode = true;
-                closeSecurityModal();
-                showToast('🔓 Tryb właściciela odblokowany pomyślnie!');
-                if (typeof pendingPublishCallback === 'function') {
-                    const cb = pendingPublishCallback;
-                    pendingPublishCallback = null;
-                    cb();
-                }
-            } else {
-                alert('Nieprawidłowy kod PIN. Spróbuj ponownie.');
-                if (pinInput) pinInput.focus();
-            }
         }
 
         // ── Engagement Actions ──
@@ -2223,7 +2523,15 @@
 
         // ── Initialization ──
         window.addEventListener('DOMContentLoaded', () => {
-            loadLocalPosts();
+            checkZbyszekOwner();
+            startZbyszekCloudFeed();
+        });
+        window.addEventListener('lumina:authChange', () => {
+            checkZbyszekOwner();
+            startZbyszekCloudFeed();
+        });
+        window.addEventListener('lumina:dbReady', () => {
+            startZbyszekCloudFeed();
         });
     </script>
 

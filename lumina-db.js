@@ -1649,6 +1649,7 @@ export async function publishUniversalPost(postData) {
     try {
         const isCezary = slug.includes('cezary') || authorName.toLowerCase().includes('cezary');
         const isWioletta = slug.includes('wioletta') || authorName.toLowerCase().includes('wioletta');
+        const isZbyszek = slug.includes('zbyszek') || authorName.toLowerCase().includes('zbyszek') || slug.includes('gieron');
         const storageKeys = [
             `lumina_profile_${slug}`,
             isCezary ? 'lumina_profile_cezaryrgowski' : null,
@@ -1658,6 +1659,7 @@ export async function publishUniversalPost(postData) {
             isWioletta ? 'lumina_profile_wiolettarogowska' : null,
             isWioletta ? 'lumina_current_user_profile' : null,
             isWioletta ? 'lumina_my_profile' : null,
+            isZbyszek ? 'lumina_profile_zbyszekgieron' : null,
             (slug.includes('women') || slug.includes('ccwomen')) ? 'lumina_profile_u_ccwomen_9055' : null,
             (slug.includes('robert') || slug === 'u_robertukaszpio_5668') ? 'lumina_profile_u_robertukaszpio_5668' : null
         ].filter(Boolean);
@@ -1675,6 +1677,16 @@ export async function publishUniversalPost(postData) {
                 localStorage.setItem(k, JSON.stringify(profile));
             }
         });
+
+        if (isZbyszek) {
+            try {
+                let zPosts = JSON.parse(localStorage.getItem('lumina_posts_zbyszekgieron') || '[]');
+                if (!zPosts.some(p => p.id === normalizedPost.id)) {
+                    zPosts.unshift(normalizedPost);
+                    localStorage.setItem('lumina_posts_zbyszekgieron', JSON.stringify(zPosts));
+                }
+            } catch(e) {}
+        }
     } catch(e) {
         console.warn('Lumina: Błąd zapisu posta w profilu autora:', e);
     }
