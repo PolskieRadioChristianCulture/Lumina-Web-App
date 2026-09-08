@@ -904,17 +904,28 @@
 
         <div class="nav-center-links">
             <a href="tablica" class="nav-link-btn" title="Tablica Społeczności">
-                <i class="fa-solid fa-earth-europe"></i> <span class="btn-text">Tablica Społeczności</span>
+                <i class="fa-solid fa-earth-europe"></i> <span class="btn-text" data-i18n="nav.communityFeed">Tablica Społeczności</span>
             </a>
             <button class="nav-link-btn" onclick="openShareAndrzejModal()" title="Poleć profil Andrzeja">
-                <i class="fa-solid fa-share-nodes"></i> <span class="btn-text">Polecaj</span>
+                <i class="fa-solid fa-share-nodes"></i> <span class="btn-text" data-i18n="nav.recommendPortal">Polecaj</span>
             </button>
         </div>
 
         <div style="display:flex; align-items:center; gap:8px;">
-            
+            <!-- Przełącznik Języka CCG / Language Switcher (PL / EN) - Standard @SMCC 44x44px -->
+            <button type="button" 
+                    class="nav-circle-btn lumina-lang-btn" 
+                    id="luminaGlobalLangBtn" 
+                    data-i18n-title="nav.langSwitcher"
+                    title="Przełącz język / Switch Language (PL / EN)" 
+                    aria-label="Przełącz język / Switch language"
+                    style="min-width:44px; min-height:44px; border-radius:12px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); color:#f8fafc; font-weight:800; font-size:0.80rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:5px; padding:0 10px; transition:all 0.2s; touch-action:manipulation;">
+                <i class="fa-solid fa-globe" style="color:#38bdf8; font-size:0.88rem;"></i>
+                <span class="lumina-lang-code" style="letter-spacing:0.5px; font-weight:800;">PL</span>
+            </button>
+
             <a href="lumina" class="btn-nav-back">
-                <i class="fa-solid fa-arrow-left"></i> Wróć do LUMINA
+                <i class="fa-solid fa-arrow-left"></i> <span data-i18n="nav.backToLumina">Wróć do LUMINA</span>
             </a>
         </div>
     </nav>
