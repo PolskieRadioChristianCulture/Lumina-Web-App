@@ -1306,13 +1306,14 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
     if (!profileData.city || profileData.city.trim() === '') {
         if (cleanSlug.includes('cezary') || cleanSlug.includes('wioletta')) profileData.city = 'Ostrowiec Świętokrzyski, Polska';
         else if (cleanSlug.includes('andrzej')) profileData.city = 'Sieradz, Polska';
-        else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.city = 'Warszawa, Polska';
+        else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.city = 'Żywiec, Polska';
     }
 
     if (!profileData.avatar || profileData.avatar === 'null' || profileData.avatar === 'undefined' || profileData.avatar.trim() === '') {
         if (cleanSlug.includes('cezary')) profileData.avatar = 'avatar_cezary_official.jpg';
         else if (cleanSlug.includes('wioletta')) profileData.avatar = 'avatar_wioletta_official.jpg';
         else if (cleanSlug.includes('andrzej')) profileData.avatar = 'avatar_andrzej_thiel.jpg';
+        else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.avatar = 'avatar_pawel_murawski.jpg';
         else profileData.avatar = 'lumina_icon.jpg';
     }
     if (!profileData.cover || profileData.cover === 'null' || profileData.cover === 'undefined' || profileData.cover.trim() === '') {
@@ -1521,18 +1522,26 @@ export function subscribeToAllCommunityProfiles(onUpdate) {
                     p.profileUrl = 'lumina.andrzejthiel.html';
                 }
 
-                // Żelazne wymuszenie i samonaprawa danych Pawła Murawskiego (49 lat, Warszawa)
+                // Żelazne wymuszenie i samonaprawa danych Pawła Murawskiego (49 lat, Żywiec, Protestanckie, Nabożeństwa Sobotnie)
                 if (slugLower === 'u_yciezywymbogiem_4231' || d.id === 'NHjYeuO4nxM8fIfEJPHmi9rTQV12' || (p.email && p.email.toLowerCase() === 'bozenowezycie@gmail.com') || nameLower.includes('murawski')) {
                     p.name = 'Paweł Murawski';
                     p.age = 49;
                     p.gender = 'mezczyzna';
                     p.lookingFor = 'kobieta';
                     p.status = 'Kawaler';
+                    p.city = 'Żywiec, Polska';
+                    p.denom = 'Protestanckie';
+                    p.church = 'Nabożeństwa Sobotnie';
+                    p.worshipDay = 'Sobotnie nabożeństwo';
                     p.profileCompleted = true;
                     p.needsProfileCompletion = false;
                     p.slug = 'u_yciezywymbogiem_4231';
                     p.uid = 'NHjYeuO4nxM8fIfEJPHmi9rTQV12';
-                    if (data.age !== 49 || data.name !== 'Paweł Murawski') {
+                    p.avatar = 'avatar_pawel_murawski.jpg';
+                    p.photos = ['avatar_pawel_murawski.jpg', 'lumina_default_cover.jpg'];
+                    p.carouselMediaUrl = 'avatar_pawel_murawski.jpg';
+                    p.hasRealPhoto = true;
+                    if (data.age !== 49 || data.name !== 'Paweł Murawski' || data.avatar !== 'avatar_pawel_murawski.jpg' || data.city !== 'Żywiec, Polska' || data.denom !== 'Protestanckie' || data.church !== 'Nabożeństwa Sobotnie') {
                         try {
                             setDoc(doc(db, 'lumina_profiles', d.id), {
                                 name: 'Paweł Murawski',
@@ -1540,6 +1549,14 @@ export function subscribeToAllCommunityProfiles(onUpdate) {
                                 gender: 'mezczyzna',
                                 lookingFor: 'kobieta',
                                 status: 'Kawaler',
+                                city: 'Żywiec, Polska',
+                                denom: 'Protestanckie',
+                                church: 'Nabożeństwa Sobotnie',
+                                worshipDay: 'Sobotnie nabożeństwo',
+                                avatar: 'avatar_pawel_murawski.jpg',
+                                photos: ['avatar_pawel_murawski.jpg', 'lumina_default_cover.jpg'],
+                                carouselMediaUrl: 'avatar_pawel_murawski.jpg',
+                                hasRealPhoto: true,
                                 profileCompleted: true,
                                 needsProfileCompletion: false,
                                 updatedAt: serverTimestamp()
@@ -4050,9 +4067,9 @@ export function extractYouTubePlaylistId(url) {
 }
 
 export const LUMINA_HANDLES = {
-    'pawel': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'lumina-profile.html?u=u_yciezywymbogiem_4231', avatar: 'https://lh3.googleusercontent.com/a/ACg8ocLiLlUx0vVCauc43_m5akErxVaNJ5uRgtZSwel4SzIR1AI57zQp=s96-c', badge: '✨ Społeczność LUMINA' },
-    'pawelmurawski': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'lumina-profile.html?u=u_yciezywymbogiem_4231', avatar: 'https://lh3.googleusercontent.com/a/ACg8ocLiLlUx0vVCauc43_m5akErxVaNJ5uRgtZSwel4SzIR1AI57zQp=s96-c', badge: '✨ Społeczność LUMINA' },
-    'u_yciezywymbogiem_4231': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'lumina-profile.html?u=u_yciezywymbogiem_4231', avatar: 'https://lh3.googleusercontent.com/a/ACg8ocLiLlUx0vVCauc43_m5akErxVaNJ5uRgtZSwel4SzIR1AI57zQp=s96-c', badge: '✨ Społeczność LUMINA' },
+    'pawel': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'lumina-profile.html?u=u_yciezywymbogiem_4231', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
+    'pawelmurawski': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'lumina-profile.html?u=u_yciezywymbogiem_4231', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
+    'u_yciezywymbogiem_4231': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'lumina-profile.html?u=u_yciezywymbogiem_4231', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
     'robert': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
     'bratrobert': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
     'robertlukaszpio': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
