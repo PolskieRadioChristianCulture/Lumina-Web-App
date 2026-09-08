@@ -681,15 +681,15 @@
                 <div class="bg-[#172033] border border-gray-700/60 rounded-xl p-2 flex flex-col text-left">
                     <span class="text-[10px] uppercase font-bold text-gray-400 font-cinzel">Widok na Ekranie:</span>
                     <select id="viewModeSelect" onchange="onViewModeChange()" class="bg-transparent text-amber-300 font-bold text-xs focus:outline-none cursor-pointer mt-1">
-                        <option value="single" selected class="bg-[#172033] text-white">1 Karta (Dopasowana)</option>
+                        <option value="all" selected class="bg-[#172033] text-white">Wszystkie 13 stron</option>
+                        <option value="single" class="bg-[#172033] text-white">1 Karta (Dopasowana)</option>
                         <option value="original" class="bg-[#172033] text-white">Oryginalny Wymiar A4 (1:1)</option>
-                        <option value="all" class="bg-[#172033] text-white">Wszystkie 13 stron</option>
                     </select>
                 </div>
             </div>
 
             <!-- Przełącznik karty na telefonie -->
-            <div id="mobilePagerBar" class="flex items-center justify-between pt-1">
+            <div id="mobilePagerBar" style="display: none;" class="flex items-center justify-between pt-1">
                 <button onclick="prevCard()" class="touch-btn px-3 py-1.5 bg-[#172033] hover:bg-[#202c46] active:scale-95 border border-gray-700/70 rounded-xl text-xs font-semibold text-gray-200 gap-1.5 transition">
                     <i class="fa-solid fa-chevron-left text-amber-400"></i> Poprzednia
                 </button>
@@ -704,13 +704,8 @@
         </div>
     </header>
 
-    <!-- ── 4. KONTENER GŁÓWNY KALENDARZA ── -->
-    <main class="w-full max-w-[215mm] flex flex-col items-center px-3" id="calendarContainer">
-        <!-- Renderowane przez JavaScript -->
-    </main>
-
-    <!-- ── 4.4. BANER REKLAMY — APOKALIPSA: KSIĘGA NADZIEI (NO-PRINT) ── -->
-    <aside class="w-full max-w-[215mm] px-3 mt-6 no-print">
+    <!-- ── 4. BANER REKLAMY — APOKALIPSA: KSIĘGA NADZIEI (NO-PRINT, NAD PIERWSZĄ STRONĄ KALENDARZA) ── -->
+    <aside class="w-full max-w-[215mm] px-3 my-4 md:my-6 no-print">
         <a href="https://youtube.com/playlist?list=PLDA6geI28g8QBRVh8GU5zsWEMTaJjrEQk&si=_2yKX9qea0e18dL8"
            target="_blank" rel="noopener noreferrer"
            class="group block relative overflow-hidden rounded-2xl md:rounded-3xl border border-amber-500/40 bg-[#0b0f19] shadow-2xl transition-all duration-300 hover:border-amber-400 hover:shadow-[0_0_35px_rgba(245,158,11,0.3)] hover:-translate-y-0.5"
@@ -724,6 +719,11 @@
             </div>
         </a>
     </aside>
+
+    <!-- ── 4.1. KONTENER GŁÓWNY KALENDARZA ── -->
+    <main class="w-full max-w-[215mm] flex flex-col items-center px-3" id="calendarContainer">
+        <!-- Renderowane przez JavaScript -->
+    </main>
 
     <!-- ── 4.5. BANER WSPARCIA MISJI REVOLUT (NO-PRINT) ── -->
     <aside class="w-full max-w-[215mm] px-3 my-6 md:my-10 no-print">
@@ -1164,6 +1164,13 @@
                 if (weekFormatSelect) weekFormatSelect.value = 'biblical';
                 if (sunsetToggle) sunsetToggle.value = 'yes';
             }
+
+            // Opcjonalny parametr widoku w URL (?widok=all / ?widok=single / ?widok=original)
+            const widokParam = urlParams.get('widok') || urlParams.get('view');
+            const viewModeSelect = document.getElementById('viewModeSelect');
+            if (widokParam && viewModeSelect && ['all', 'single', 'original'].includes(widokParam)) {
+                viewModeSelect.value = widokParam;
+            }
         }
 
         function renderMonthTabs() {
@@ -1285,7 +1292,15 @@
             activeCardIndex = index;
             renderMonthTabs();
             updateLabels();
-            renderCalendar();
+            const mode = document.getElementById('viewModeSelect') ? document.getElementById('viewModeSelect').value : 'all';
+            if (mode === 'all') {
+                const targetCard = document.getElementById(`page-card-${index}`);
+                if (targetCard) {
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            } else {
+                renderCalendar();
+            }
             try {
                 const container = document.getElementById('monthTabsContainer');
                 if (container && container.children[index]) {
@@ -1852,7 +1867,7 @@
             initFromUrl();
             renderMonthTabs();
             updateLabels();
-            renderCalendar();
+            onViewModeChange();
         });
     </script>
 
