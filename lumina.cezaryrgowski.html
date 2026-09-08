@@ -3502,18 +3502,6 @@
         </a>
 
         <div class="lumina-nav-actions" style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
-            <!-- 0. Przełącznik Języka CCG / Language Switcher (PL / EN) - Standard @SMCC 44x44px -->
-            <button type="button" 
-                    class="nav-lang-btn" 
-                    id="luminaGlobalLangBtn" 
-                    onclick="toggleLanguage()" 
-                    data-i18n-title="nav_lang_toggle" 
-                    title="Zmień język (PL / EN)" 
-                    aria-label="Przełącz język / Switch language">
-                <i class="fa-solid fa-globe" style="color:#f59e0b; font-size:1rem;"></i>
-                <span class="nav-lang-badge" id="navLangBadgeText">PL</span>
-            </button>
-
             <!-- 1. Mini Radio Player -->
             <button type="button" class="nav-circle-btn nav-radio-btn" id="radioWidget" onclick="toggleRadio()" data-i18n-title="nav.radioTitle" title="Włącz / Wyłącz Radio Christian Culture" style="width:38px; height:38px; border-radius:50%; background:rgba(11,24,56,0.90); border:1.5px solid rgba(250,204,21,0.8); color:#facc15; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s;">
                 <i class="fa-solid fa-play" id="radioPlayIcon" style="margin-left:2px; font-size:0.95rem;"></i>
@@ -3534,6 +3522,30 @@
 
                 <!-- Wysuwany panel nawigacji (Glassmorphism Drawer) -->
                 <div class="top-nav-drawer" id="topNavDrawer" style="display:none; position:absolute; top:calc(100% + 10px); right:0; width:260px; background:rgba(11,17,32,0.96); border:1.5px solid rgba(168,85,247,0.45); border-radius:20px; box-shadow:0 20px 50px rgba(0,0,0,0.85); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); padding:10px; z-index:10002; flex-direction:column; gap:4px;">
+                    <!-- 🌐 Wybór Języka w Menu LUMINA (Standard @SMCC 44x44px) -->
+                    <div class="drawer-lang-selector" id="drawerLangSelector" style="display:flex; flex-direction:column; gap:8px; padding:10px 12px; margin-bottom:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(168,85,247,0.35); border-radius:14px;">
+                        <div class="drawer-lang-header" style="display:flex; align-items:center; justify-content:space-between; font-size:0.82rem; font-weight:700; color:#f8fafc;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <i class="fa-solid fa-globe" style="color:#f59e0b; font-size:1.05rem;"></i>
+                                <span data-i18n="nav.languageSelect">Język</span>
+                            </div>
+                            <button type="button" 
+                                    class="nav-lang-badge" 
+                                    id="luminaGlobalLangBtn" 
+                                    onclick="toggleLanguage()"
+                                    data-i18n-title="nav_lang_toggle" 
+                                    title="Zmień język (PL / EN / ES / FR)"
+                                    style="font-size:0.75rem; font-weight:800; color:#facc15; background:rgba(250,204,21,0.15); padding:3px 8px; border-radius:8px; border:1px solid rgba(250,204,21,0.35); cursor:pointer; touch-action:manipulation;">
+                                <span id="navLangBadgeText">PL</span> ↻
+                            </button>
+                        </div>
+                        <div class="drawer-lang-pills" style="display:flex; gap:5px;">
+                            <button type="button" class="drawer-lang-pill active" data-lang="pl" onclick="setLuminaLanguage('pl')" title="Polski" style="flex:1; min-height:44px; min-width:44px; border-radius:10px; border:1.5px solid #f59e0b; background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff; font-weight:800; font-size:0.80rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; touch-action:manipulation;">PL</button>
+                            <button type="button" class="drawer-lang-pill" data-lang="en" onclick="setLuminaLanguage('en')" title="English" style="flex:1; min-height:44px; min-width:44px; border-radius:10px; border:1.5px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.06); color:#cbd5e1; font-weight:800; font-size:0.80rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; touch-action:manipulation;">EN</button>
+                            <button type="button" class="drawer-lang-pill" data-lang="es" onclick="setLuminaLanguage('es')" title="Español" style="flex:1; min-height:44px; min-width:44px; border-radius:10px; border:1.5px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.06); color:#cbd5e1; font-weight:800; font-size:0.80rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; touch-action:manipulation;">ES</button>
+                            <button type="button" class="drawer-lang-pill" data-lang="fr" onclick="setLuminaLanguage('fr')" title="Français" style="flex:1; min-height:44px; min-width:44px; border-radius:10px; border:1.5px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.06); color:#cbd5e1; font-weight:800; font-size:0.80rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; touch-action:manipulation;">FR</button>
+                        </div>
+                    </div>
                     <a href="index.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-house" style="color:#38bdf8;"></i> <span data-i18n="nav.radioHome">Strona Główna Radia</span></a>
                     <a href="lumina" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-wand-magic-sparkles" style="color:#ec4899;"></i> <span data-i18n="nav.luminaPortal">Portal LUMINA</span></a>
                     <a href="tablica" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-rectangle-list" style="color:#facc15;"></i> <span data-i18n="nav.communityFeed">Tablica Społeczności</span></a>

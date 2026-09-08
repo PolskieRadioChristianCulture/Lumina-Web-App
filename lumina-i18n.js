@@ -21,7 +21,8 @@ export const LUMINA_TRANSLATIONS = {
         nav_menu_title: "Menu Nawigacji LUMINA",
         nav_back_to_lumina: "Wróć do LUMINA",
         nav_radio_title: "Włącz / Wyłącz Radio Christian Culture",
-        nav_lang_toggle: "Zmień język (PL / EN)",
+        nav_lang_toggle: "Zmień język (PL / EN / ES / FR)",
+        nav_lang_select: "Język",
         nav_radio_now_playing: "Polskie Radio Christian Culture • Na Żywo",
 
         // ── Codzienne Rozważania (Cuda Każdego Dnia / Dobrze, że jesteś) ──
@@ -104,7 +105,8 @@ export const LUMINA_TRANSLATIONS = {
         nav_menu_title: "LUMINA Navigation Menu",
         nav_back_to_lumina: "Back to LUMINA",
         nav_radio_title: "Toggle Christian Culture Radio",
-        nav_lang_toggle: "Switch Language (PL / EN)",
+        nav_lang_toggle: "Switch language (PL / EN / ES / FR)",
+        nav_lang_select: "Language",
         nav_radio_now_playing: "Christian Culture Radio • Live Stream",
 
         // ── Daily Devotions (Daily Miracles / Good You're Here) ──
@@ -187,7 +189,8 @@ export const LUMINA_TRANSLATIONS = {
         nav_menu_title: "Menú de Navegación LUMINA",
         nav_back_to_lumina: "Volver a LUMINA",
         nav_radio_title: "Encender / Apagar Radio Christian Culture",
-        nav_lang_toggle: "Cambiar idioma (PL / EN / ES)",
+        nav_lang_toggle: "Cambiar idioma (PL / EN / ES / FR)",
+        nav_lang_select: "Idioma",
         nav_radio_now_playing: "Polskie Radio Christian Culture • En Vivo",
 
         // ── Devocionales Diarios (Cuda Każdego Dnia / Dobrze, że jesteś) ──
@@ -251,6 +254,90 @@ export const LUMINA_TRANSLATIONS = {
         btn_support_modal_title: "Apoya la Misión Christian Culture",
         btn_support_cta: "Donar Ahora",
         donorbox_note: "Tu apoyo permite difundir el Evangelio y desarrollar la radio sin anuncios comerciales."
+    },
+
+    fr: {
+        // ── Navigation & Barre Principale ──
+        nav_home: "Accueil Radio",
+        nav_lumina: "Portail LUMINA",
+        nav_board: "Mur Communautaire",
+        nav_explore: "Découvrir Profils",
+        nav_messages: "Messages & Chat",
+        nav_share: "Partager le Portail",
+        nav_my_profile: "Mon Profil",
+        nav_login: "Connexion / Inscription",
+        nav_logout: "Déconnexion",
+        nav_support: "Soutenir",
+        nav_support_title: "Soutenir la Mission LUMINA",
+        nav_menu: "Menu",
+        nav_menu_title: "Menu de Navigation LUMINA",
+        nav_back_to_lumina: "Retour à LUMINA",
+        nav_radio_title: "Allumer / Éteindre Radio Christian Culture",
+        nav_lang_toggle: "Changer de langue (PL / EN / ES / FR)",
+        nav_lang_select: "Langue",
+        nav_radio_now_playing: "Radio Christian Culture • En Direct",
+
+        // ── Méditations Quotidiennes (Cuda Każdego Dnia / Dobrze, że jesteś) ──
+        daily_reflection: "Méditation du Jour",
+        cycle_dzj: "Série : C'est bon que tu sois là",
+        founder_role: "Fondateur de Christian Culture",
+        prayer_highlight: "Prière du Jour",
+        thank_you: "Merci d'être là ! ❤️",
+        read_and_see: "Lisez et voyez comment Dieu transforme votre vie.",
+        btn_amen: "Amen",
+        btn_like: "J'aime",
+        btn_share_reflection: "Partager la Méditation",
+        share_modal_title: "Recommander la Méditation et le Profil",
+        share_modal_subtitle: "Partagez les méditations quotidiennes avec vos proches et amis :",
+
+        // ── Mur Communautaire & Publications ──
+        feed_title: "Mur Communautaire",
+        filter_all: "Tous",
+        filter_ckd: "Miracles Quotidiens",
+        filter_reflections: "Méditations",
+        filter_live: "En Direct",
+        filter_music: "Musique & Louange",
+        post_input_placeholder: "Écrivez un mot d'encouragement, un témoignage ou une prière...",
+        post_publish: "Publier",
+        btn_replace_media: "Remplacer (Drive/YT)",
+        btn_replace_media_title: "Remplacer ce fichier par un lien Google Drive ou YouTube (Zero-Egress)",
+        post_comments: "Commentaires",
+        post_comments_count: "commentaires",
+        comment_input_placeholder: "Écrivez un commentaire bienveillant...",
+        comment_send: "Envoyer",
+
+        // ── Profils & Communauté ──
+        profile_follow: "Suivre",
+        profile_following: "Abonné",
+        profile_message: "Message",
+        profile_badges: "Badges et Mérites",
+        profile_community: "Communauté",
+        active_now: "En ligne",
+        active_users: "Croyants connectés",
+        profile_about: "À propos",
+        profile_posts: "Publications",
+        profile_photos: "Photos",
+        profile_videos: "Vidéos",
+
+        // ── Médias & Lecteurs ──
+        radio_live_badge: "EN DIRECT",
+        radio_now_playing_label: "En cours de lecture :",
+        radio_station_name: "Radio Christian Culture",
+        radio_tagline: "Parole de Dieu, louange et diffusions 24/7",
+        video_play: "Lire la vidéo",
+        audio_unmute: "Activer le son",
+        audio_muted: "Son coupé",
+
+        // ── Boutons Communs & Notifications ──
+        btn_close: "Fermer",
+        btn_save: "Enregistrer",
+        btn_cancel: "Annuler",
+        btn_copy_link: "Copier le Lien",
+        toast_copied: "✨ Lien copié dans le presse-papiers !",
+        toast_lang_switched: "Passé en Français 🇫🇷",
+        btn_support_modal_title: "Soutenez la Mission Christian Culture",
+        btn_support_cta: "Faire un Don",
+        donorbox_note: "Votre soutien permet de propager l'Évangile et de développer la radio sans publicité."
     }
 };
 
@@ -259,12 +346,12 @@ export const LUMINA_TRANSLATIONS = {
 
     // ── 1. Wykrywanie i zapamiętywanie wybranego języka ──
     function detectInitialLanguage() {
-        // 1. Parametr URL ?lang=es / ?lang=en / ?lang=pl
+        // 1. Parametr URL ?lang=fr / ?lang=es / ?lang=en / ?lang=pl
         try {
             if (window.location && window.location.search) {
                 const params = new URLSearchParams(window.location.search);
                 const qLang = (params.get('lang') || '').toLowerCase();
-                if (qLang === 'es' || qLang === 'en' || qLang === 'pl') {
+                if (qLang === 'fr' || qLang === 'es' || qLang === 'en' || qLang === 'pl') {
                     localStorage.setItem('lumina_lang', qLang);
                     localStorage.setItem('cc_lang', qLang);
                     return qLang;
@@ -275,12 +362,13 @@ export const LUMINA_TRANSLATIONS = {
         // 2. LocalStorage
         try {
             const saved = localStorage.getItem('lumina_lang') || localStorage.getItem('cc_lang');
-            if (saved === 'es' || saved === 'en' || saved === 'pl') return saved;
+            if (saved === 'fr' || saved === 'es' || saved === 'en' || saved === 'pl') return saved;
         } catch(e) {}
 
         // 3. Język przeglądarki użytkownika
         try {
             const browserLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+            if (browserLang.startsWith('fr')) return 'fr';
             if (browserLang.startsWith('es')) return 'es';
             if (browserLang.startsWith('en')) return 'en';
         } catch(e) {}
@@ -291,7 +379,7 @@ export const LUMINA_TRANSLATIONS = {
     let currentLang = detectInitialLanguage();
 
     function setLanguage(lang) {
-        if (lang !== 'es' && lang !== 'en' && lang !== 'pl') lang = 'pl';
+        if (lang !== 'fr' && lang !== 'es' && lang !== 'en' && lang !== 'pl') lang = 'pl';
         currentLang = lang;
 
         try {
@@ -323,6 +411,7 @@ export const LUMINA_TRANSLATIONS = {
         let nextLang = 'pl';
         if (currentLang === 'pl') nextLang = 'en';
         else if (currentLang === 'en') nextLang = 'es';
+        else if (currentLang === 'es') nextLang = 'fr';
         else nextLang = 'pl';
         setLanguage(nextLang);
     }
@@ -332,6 +421,7 @@ export const LUMINA_TRANSLATIONS = {
         'nav.menuTitle': 'nav_menu_title',
         'nav.radioTitle': 'nav_radio_title',
         'nav.langSwitcher': 'nav_lang_toggle',
+        'nav.languageSelect': 'nav_lang_select',
         'nav.radioHome': 'nav_home',
         'nav.luminaPortal': 'nav_lumina',
         'nav.communityFeed': 'nav_board',
@@ -454,38 +544,56 @@ export const LUMINA_TRANSLATIONS = {
                 -webkit-backdrop-filter: blur(12px);
                 transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
                 flex-shrink: 0;
-                box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 10px rgba(245, 158, 11, 0.2);
             }
-            .nav-lang-btn:hover {
-                background: #f59e0b;
-                color: #0f172a;
-                border-color: #f59e0b;
+            .drawer-lang-selector {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                padding: 10px 12px;
+                margin-bottom: 8px;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(168, 85, 247, 0.35);
+                border-radius: 14px;
+            }
+            .drawer-lang-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: 0.82rem;
+                font-weight: 700;
+                color: #f8fafc;
+            }
+            .drawer-lang-pills {
+                display: flex;
+                gap: 5px;
+            }
+            .drawer-lang-pill {
+                flex: 1;
+                min-height: 44px;
+                min-width: 44px;
+                border-radius: 10px;
+                border: 1.5px solid rgba(255, 255, 255, 0.14);
+                background: rgba(255, 255, 255, 0.06);
+                color: #cbd5e1;
+                font-weight: 800;
+                font-size: 0.80rem;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                touch-action: manipulation;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .drawer-lang-pill:hover {
+                background: rgba(255, 255, 255, 0.12);
+                color: #fff;
                 transform: translateY(-1px);
-                box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
             }
-            .nav-lang-btn:active {
-                transform: scale(0.96);
-            }
-            .nav-lang-badge {
-                background: rgba(245, 158, 11, 0.25);
-                border-radius: 6px;
-                padding: 2px 6px;
-                font-size: 0.74rem;
-                letter-spacing: 0.5px;
-                font-weight: 900;
-            }
-            .nav-lang-btn:hover .nav-lang-badge {
-                background: #0f172a;
-                color: #fef08a;
-            }
-
-            @media (max-width: 640px) {
-                .nav-lang-btn {
-                    padding: 0 10px;
-                }
-                .nav-lang-btn .nav-lang-text {
-                    display: none;
-                }
+            .drawer-lang-pill.active {
+                border-color: #f59e0b !important;
+                background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+                color: #fff !important;
+                box-shadow: 0 2px 10px rgba(245, 158, 11, 0.4);
             }
         `;
         document.head.appendChild(style);
@@ -494,60 +602,76 @@ export const LUMINA_TRANSLATIONS = {
     function ensureLanguageSwitcher() {
         injectSwitcherStyles();
 
-        // Sprawdzamy czy przycisk już istnieje
-        if (document.getElementById('luminaGlobalLangBtn')) {
-            updateSwitcherUI();
-            return;
+        // 1. Usuń przycisk z głównego paska nawigacji (.lumina-nav-actions), aby pasek był czysty
+        const outerNavActions = document.querySelector('.lumina-nav-actions');
+        if (outerNavActions) {
+            const outerBtn = outerNavActions.querySelector(':scope > #luminaGlobalLangBtn, :scope > .nav-lang-btn');
+            if (outerBtn) {
+                outerBtn.remove();
+            }
         }
 
-        // Szukamy kontenera nawigacji
-        const navActions = document.querySelector('.lumina-nav-actions, .nav-links, .nav-actions, .header-actions, .top-nav-actions');
-        if (!navActions) return;
+        // 2. Znajdź wysuwane menu (Drawer)
+        const drawer = document.getElementById('topNavDrawer') || 
+                       document.querySelector('.top-nav-drawer') || 
+                       document.querySelector('.drawer-nav, .nav-menu-drawer');
+        if (!drawer) return;
 
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.id = 'luminaGlobalLangBtn';
-        btn.className = 'nav-lang-btn';
-        btn.setAttribute('data-i18n-title', 'nav_lang_toggle');
-        btn.title = translateKey('nav_lang_toggle');
-        btn.onclick = (e) => {
-            e.stopPropagation();
-            toggleLanguage();
-        };
-
-        btn.innerHTML = `
-            <i class="fa-solid fa-globe" style="color:#f59e0b; font-size:1rem;"></i>
-            <span class="nav-lang-badge" id="navLangBadgeText">${currentLang.toUpperCase()}</span>
-        `;
-
-        // Wstaw przed menu lub przyciskami profilu
-        const insertBeforeTarget = navActions.querySelector('.btn-nav-support, .nav-menu-wrapper, .user-profile-btn, #topNavMenuBtn');
-        if (insertBeforeTarget) {
-            navActions.insertBefore(btn, insertBeforeTarget);
-        } else {
-            navActions.appendChild(btn);
+        // 3. Sprawdź czy selektor języków w menu już istnieje
+        let langSection = drawer.querySelector('#drawerLangSelector, .drawer-lang-selector');
+        if (!langSection) {
+            langSection = document.createElement('div');
+            langSection.id = 'drawerLangSelector';
+            langSection.className = 'drawer-lang-selector';
+            langSection.innerHTML = `
+                <div class="drawer-lang-header">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-globe" style="color:#f59e0b; font-size:1.05rem;"></i>
+                        <span data-i18n="nav.languageSelect">${translateKey('nav.languageSelect', 'Język')}</span>
+                    </div>
+                    <button type="button" 
+                            class="nav-lang-badge" 
+                            id="luminaGlobalLangBtn" 
+                            onclick="toggleLanguage()"
+                            data-i18n-title="nav_lang_toggle" 
+                            title="${translateKey('nav_lang_toggle', 'Zmień język')}"
+                            style="font-size:0.75rem; font-weight:800; color:#facc15; background:rgba(250,204,21,0.15); padding:3px 8px; border-radius:8px; border:1px solid rgba(250,204,21,0.35); cursor:pointer; touch-action:manipulation;">
+                        <span id="navLangBadgeText">${currentLang.toUpperCase()}</span> ↻
+                    </button>
+                </div>
+                <div class="drawer-lang-pills">
+                    <button type="button" class="drawer-lang-pill ${currentLang === 'pl' ? 'active' : ''}" data-lang="pl" onclick="setLuminaLanguage('pl')" title="Polski">PL</button>
+                    <button type="button" class="drawer-lang-pill ${currentLang === 'en' ? 'active' : ''}" data-lang="en" onclick="setLuminaLanguage('en')" title="English">EN</button>
+                    <button type="button" class="drawer-lang-pill ${currentLang === 'es' ? 'active' : ''}" data-lang="es" onclick="setLuminaLanguage('es')" title="Español">ES</button>
+                    <button type="button" class="drawer-lang-pill ${currentLang === 'fr' ? 'active' : ''}" data-lang="fr" onclick="setLuminaLanguage('fr')" title="Français">FR</button>
+                </div>
+            `;
+            drawer.insertBefore(langSection, drawer.firstChild);
         }
 
         updateSwitcherUI();
     }
 
     function updateSwitcherUI() {
-        const badge = document.getElementById('navLangBadgeText') || 
-                      document.querySelector('#luminaGlobalLangBtn .lumina-lang-code') || 
-                      document.querySelector('#luminaGlobalLangBtn .nav-lang-badge');
+        const badge = document.getElementById('navLangBadgeText');
         if (badge) {
             badge.textContent = currentLang.toUpperCase();
         }
+
+        const pills = document.querySelectorAll('.drawer-lang-pill');
+        pills.forEach(pill => {
+            const lang = pill.getAttribute('data-lang');
+            if (lang === currentLang) {
+                pill.classList.add('active');
+            } else {
+                pill.classList.remove('active');
+            }
+        });
+
         const btn = document.getElementById('luminaGlobalLangBtn');
         if (btn) {
             btn.title = translateKey('nav_lang_toggle');
             btn.setAttribute('data-current-lang', currentLang);
-            if (!btn.onclick) {
-                btn.onclick = (e) => {
-                    e.stopPropagation();
-                    toggleLanguage();
-                };
-            }
         }
     }
 
