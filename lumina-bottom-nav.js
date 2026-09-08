@@ -1389,12 +1389,33 @@
             return;
         }
 
+        if (curUser) {
+            const dName = (curUser.displayName || '').toLowerCase();
+            const mail = (curUser.email || '').toLowerCase();
+            if (dName.includes('zbyszek') || mail.includes('zbyszek') || mail.includes('gieron')) {
+                window.location.href = 'lumina.zbyszekgieron.html';
+                return;
+            }
+            if (dName.includes('zofia') || mail.includes('zofia') || mail.includes('dudek')) {
+                window.location.href = 'lumina.zofiadudek.html';
+                return;
+            }
+        }
+
         if (hasSession && curProf && (curProf.slug || curProf.uid)) {
             const s = (curProf.slug || curProf.uid).toLowerCase();
             if (s === 'wiolettarogowska' || s.includes('wioletta')) {
                 window.location.href = 'lumina.wiolettarogowska.html';
             } else if (s === 'cezaryrgowski' || s.includes('cezary')) {
                 window.location.href = 'lumina.cezaryrgowski.html';
+            } else if (s === 'zbyszekgieron' || s.includes('zbyszek') || s.includes('gieron')) {
+                window.location.href = 'lumina.zbyszekgieron.html';
+            } else if (s === 'zofiadudek' || s.includes('zofia') || s.includes('dudek')) {
+                window.location.href = 'lumina.zofiadudek.html';
+            } else if (s === 'jolawojcik' || s.includes('jola')) {
+                window.location.href = 'lumina.jolawojcik.html';
+            } else if (s === 'andrzejthiel' || s.includes('thiel')) {
+                window.location.href = 'lumina.andrzejthiel.html';
             } else {
                 window.location.href = `lumina-profile.html?u=${s}`;
             }

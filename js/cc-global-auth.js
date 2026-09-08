@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ══════════════════════════════════════════════════════════════════════════
  * CHRISTIAN CULTURE & LUMINA UNIVERSAL GOOGLE AUTH CONNECTOR
  * Plik: js/cc-global-auth.js
@@ -441,9 +441,23 @@
                 const user = data.user;
                 const profile = data.profile || {};
                 const name = profile.name || user.displayName || 'Członek LUMINA';
-                const avatar = profile.avatar || user.photoURL || 'avatar_cezary_official.jpg';
                 const isCezary = (user.email && user.email.toLowerCase().includes('czarkes')) || profile.slug === 'cezaryrgowski';
-                const profileHref = isCezary ? 'lumina.cezaryrgowski.html' : (profile.slug ? `lumina-profile.html?u=${profile.slug}` : 'lumina-profile.html');
+                const isWioletta = (user.email && user.email.includes('wioletta1240')) || profile.slug === 'wiolettarogowska';
+                const isZbyszek = profile.slug === 'zbyszekgieron' || (name && (name.toLowerCase().includes('zbyszek') || name.toLowerCase().includes('zbigniew')) && name.toLowerCase().includes('giero')) || (user.email && (user.email.toLowerCase().includes('zbyszek') || user.email.toLowerCase().includes('gieron')));
+                const isZofia = profile.slug === 'zofiadudek' || (name && name.toLowerCase().includes('zofia') && name.toLowerCase().includes('dudek')) || (user.email && (user.email.toLowerCase().includes('zofia') && user.email.toLowerCase().includes('dudek')));
+
+                let avatar = profile.avatar || user.photoURL || 'lumina_icon.jpg';
+                if (isCezary && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = 'avatar_cezary_official.jpg';
+                else if (isWioletta && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = 'avatar_wioletta_official.jpg';
+                else if (isZbyszek && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = 'avatar_zbyszek_gieron.jpg';
+                else if (isZofia && (!profile.avatar || profile.avatar.includes('lumina_icon'))) avatar = 'avatar_zofia_dudek.jpg';
+
+                let profileHref = 'lumina-profile.html';
+                if (isCezary) profileHref = 'lumina.cezaryrgowski.html';
+                else if (isWioletta) profileHref = 'lumina.wiolettarogowska.html';
+                else if (isZbyszek) profileHref = 'lumina.zbyszekgieron.html';
+                else if (isZofia) profileHref = 'lumina.zofiadudek.html';
+                else if (profile.slug) profileHref = `lumina-profile.html?u=${profile.slug}`;
 
                 container.innerHTML = `
                     <div class="cc-auth-user-pill" onclick="window.toggleCcUserDropdown(event)" title="Twoje Konto LUMINA">

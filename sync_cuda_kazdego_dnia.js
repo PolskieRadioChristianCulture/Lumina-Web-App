@@ -305,6 +305,8 @@ async function createFirestorePost(devotion) {
       sourceSlug: { stringValue: devotion.slug || '' },
       likes: { integerValue: '0' },
       amen: { integerValue: '0' },
+      publishedAt: { stringValue: new Date().toISOString() },
+      createdAtTimestamp: { integerValue: String(Date.now()) }
     }
   };
 

@@ -694,6 +694,8 @@ export async function loginWithGoogle() {
         const user = result.user;
         let existingProfile = null;
         const isRadioCC = (user.email && (user.email.toLowerCase() === 'radiochristianculture@gmail.com' || user.email.toLowerCase().startsWith('radiochristianculture') || user.email.includes('bibliaaudio'))) || (user.displayName && (user.displayName.toLowerCase() === 'christian culture' || user.displayName.toLowerCase().includes('biblia audio') || user.displayName.toLowerCase().includes('polskie radio cc')));
+        const isZbyszek = (user.displayName && (user.displayName.toLowerCase().includes('zbyszek') || user.displayName.toLowerCase().includes('zbigniew')) && (user.displayName.toLowerCase().includes('giero') || user.displayName.toLowerCase().includes('gieron'))) || (user.email && (user.email.toLowerCase().includes('zbyszek') || user.email.toLowerCase().includes('gieron')));
+        const isZofia = (user.displayName && user.displayName.toLowerCase().includes('zofia') && user.displayName.toLowerCase().includes('dudek')) || (user.email && (user.email.toLowerCase().includes('zofia') && user.email.toLowerCase().includes('dudek')));
         
         try {
             const docSnap = await getDoc(doc(activeDb, 'lumina_profiles', user.uid));
@@ -712,6 +714,25 @@ export async function loginWithGoogle() {
                     try {
                         await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
                     } catch(e) {}
+                } else if (isZbyszek && existingProfile.slug !== 'zbyszekgieron') {
+                    existingProfile.slug = 'zbyszekgieron';
+                    existingProfile.name = existingProfile.name || 'Zbyszek Gieroń';
+                    existingProfile.avatar = 'avatar_zbyszek_gieron.jpg';
+                    existingProfile.job = 'Profil Misyjny • Świadectwo & Wiara';
+                    existingProfile.role = 'Profil Misyjny 🕊️✨';
+                    existingProfile.isMissionAccount = true;
+                    try {
+                        await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
+                    } catch(e) {}
+                } else if (isZofia && existingProfile.slug !== 'zofiadudek') {
+                    existingProfile.slug = 'zofiadudek';
+                    existingProfile.name = existingProfile.name || 'Zofia Dudek';
+                    existingProfile.avatar = 'avatar_zofia_dudek.jpg';
+                    existingProfile.job = 'Członkini Społeczności LUMINA • Modlitwa & Wiara 🌸';
+                    existingProfile.role = 'Wspólnota Wiary 🌸🕊️';
+                    try {
+                        await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
+                    } catch(e) {}
                 }
             }
         } catch(e) {}
@@ -724,34 +745,36 @@ export async function loginWithGoogle() {
             if (isRadioCC) cleanSlug = 'radiocc';
             else if (isCezary) cleanSlug = 'cezaryrgowski';
             else if (isWioletta) cleanSlug = 'wiolettarogowska';
+            else if (isZbyszek) cleanSlug = 'zbyszekgieron';
+            else if (isZofia) cleanSlug = 'zofiadudek';
             else cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + user.uid.substring(0, 4).toLowerCase();
             
-            const isMission = isRadioCC || (user.displayName && user.displayName.toLowerCase().includes('lumina')) || (cleanSlug.includes('lumina') && !cleanSlug.startsWith('u_'));
+            const isMission = isRadioCC || isZbyszek || (user.displayName && user.displayName.toLowerCase().includes('lumina')) || (cleanSlug.includes('lumina') && !cleanSlug.startsWith('u_'));
             const isLetterAvatar = !user.photoURL || user.photoURL.includes('googleusercontent.com/a/');
-            const userAvatar = (isLetterAvatar ? null : user.photoURL) || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : (isRadioCC ? 'logo_radio_cc.jpg' : 'lumina_icon.jpg')));
-            const hasRealFace = isCezary || isWioletta || (!isLetterAvatar && typeof isLuminaRealPhoto === 'function' && isLuminaRealPhoto(userAvatar));
-            const isProfileDone = hasRealFace && (isCezary || isWioletta);
+            const userAvatar = (isLetterAvatar ? null : user.photoURL) || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : (isZbyszek ? 'avatar_zbyszek_gieron.jpg' : (isZofia ? 'avatar_zofia_dudek.jpg' : (isRadioCC ? 'logo_radio_cc.jpg' : 'lumina_icon.jpg')))));
+            const hasRealFace = isCezary || isWioletta || isZbyszek || isZofia || (!isLetterAvatar && typeof isLuminaRealPhoto === 'function' && isLuminaRealPhoto(userAvatar));
+            const isProfileDone = hasRealFace && (isCezary || isWioletta || isZbyszek || isZofia);
             
             existingProfile = {
                 uid: user.uid,
                 slug: cleanSlug,
-                name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
+                name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : (isZbyszek ? 'Zbyszek Gieroń' : (isZofia ? 'Zofia Dudek' : 'Użytkownik LUMINA'))))),
                 email: user.email || '',
-                age: (isRadioCC || isMission) ? null : (isCezary ? 51 : (isWioletta ? 50 : null)),
-                city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska'),
-                gender: isWioletta ? 'kobieta' : (isCezary ? 'mezczyzna' : 'kobieta'),
-                lookingFor: isWioletta ? 'mezczyzna' : 'kobieta',
+                age: (isRadioCC || isMission) ? null : (isCezary ? 51 : (isWioletta ? 50 : (isZofia ? 62 : null))),
+                city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Polska'),
+                gender: (isWioletta || isZofia) ? 'kobieta' : 'mezczyzna',
+                lookingFor: (isWioletta || isZofia) ? 'mezczyzna' : 'kobieta',
                 denom: 'Rzymskokatolickie',
                 church: isRadioCC ? 'Christian Culture' : 'Wspólnota Chrześcijańska',
-                job: isRadioCC ? 'Misja & Radio Christian Culture' : (isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Społeczność LUMINA ✨')),
-                status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler')),
+                job: isRadioCC ? 'Misja & Radio Christian Culture' : (isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : (isZbyszek ? 'Profil Misyjny • Świadectwo & Wiara' : (isZofia ? 'Członkini Społeczności LUMINA • Modlitwa & Wiara 🌸' : 'Społeczność LUMINA ✨')))),
+                status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Chrześcijanin')),
                 isMissionAccount: isRadioCC || isMission || false,
                 hasRealPhoto: hasRealFace,
                 profileCompleted: isProfileDone,
                 needsProfileCompletion: !isProfileDone && !isRadioCC && !isMission,
-                verse: isRadioCC ? '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”' : (isCezary ? '„Ja i mój dom służyć będziemy Panu.”' : '„Wszystko mogę w Tym, który mnie umacnia”'),
-                verseRef: isRadioCC ? '— Ewangelia wg św. Marka 16, 15' : (isCezary ? '— Księga Jozuego 24, 15' : 'Flp 4, 13'),
-                bio: isRadioCC ? 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.' : (isCezary ? 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture.' : (isWioletta ? 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej rodziny zakorzenionej w Bogu.' : 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.')),
+                verse: isRadioCC ? '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”' : (isCezary ? '„Ja i mój dom służyć będziemy Panu.”' : (isZbyszek ? '„Nasza bowiem ojczyzna jest w niebie, skąd też jako Zbawiciela wyczekujemy Pana naszego Jezusa Chrystusa.”' : (isZofia ? '„Pan jest pasterzem moim, niczego mi nie braknie.”' : '„Wszystko mogę w Tym, który mnie umacnia”'))),
+                verseRef: isRadioCC ? '— Ewangelia wg św. Marka 16, 15' : (isCezary ? '— Księga Jozuego 24, 15' : (isZbyszek ? '— List do Filipian 3, 20' : (isZofia ? '— Psalm 23, 1' : 'Flp 4, 13'))),
+                bio: isRadioCC ? 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.' : (isCezary ? 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture.' : (isWioletta ? 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej rodziny zakorzenionej w Bogu.' : (isZbyszek ? 'Chrześcijanin oczekujący na powtórne przyjście Jezusa Chrystusa - bo ten świat nie jest domem mym! :) Dzielę się świadectwem, Słowem Bożym i materiałami z Dysku Google.' : (isZofia ? 'Cieszę się obecnością w chrześcijańskiej społeczności LUMINA. Moim fundamentem jest codzienna modlitwa, zaufanie Bogu i życie w Bożej miłości.' : 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA.')))),
                 avatar: userAvatar,
                 cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',

@@ -369,6 +369,48 @@ export const PROFILES_DB = {
         ]
     },
 
+    'zofiadudek': {
+        uid: 'zofiadudek',
+        slug: 'zofiadudek',
+        name: 'Zofia Dudek',
+        age: '',
+        isMissionAccount: false,
+        city: 'Polska',
+        avatar: 'avatar_zofia_dudek.jpg',
+        cover: 'lumina_default_cover.jpg',
+        coverPosY: '50%',
+        job: 'Członkini Społeczności • Modlitwa & Wiara',
+        role: 'Modlitwa & Wiara 🌸🕊️',
+        facebookUrl: 'https://www.facebook.com/zofia.dudek.79?locale=pl_PL',
+        church: 'Wspólnota Chrześcijańska',
+        denom: 'Chrześcijanka',
+        status: 'Chrześcijanka',
+        pin: '7777',
+        visibility: 'public',
+        match: '96%',
+        matchScore: '96%',
+        stats: { friends: '1.2k', posts: '1', likes: '185' },
+        verse: '„Pan jest pasterzem moim, niczego mi nie braknie.”',
+        verseRef: '— Psalm 23, 1',
+        bio: 'Cieszę się obecnością w chrześcijańskiej społeczności LUMINA. Moim fundamentem jest codzienna modlitwa, zaufanie Bogu i życie w Bożej miłości.',
+        tags: ['Modlitwa', 'Wiara', 'Świadectwo', 'Pokój Boży', 'Społeczność'],
+        photos: ['avatar_zofia_dudek.jpg', 'lumina_default_cover.jpg'],
+        posts: [
+            {
+                id: 'post_zd_1',
+                author: 'Zofia Dudek',
+                authorSlug: 'zofiadudek',
+                authorAvatar: 'avatar_zofia_dudek.jpg',
+                authorRole: 'Modlitwa & Wiara 🌸🕊️',
+                time: 'Dzisiaj • 🌸 Modlitwa & Pokój',
+                text: 'Serdecznie witam całą społeczność LUMINA! Niech Boży pokój i łaska Pana Jezusa towarzyszą każdemu z Was w każdym dniu.',
+                likes: 38,
+                amen: 45,
+                image: null
+            }
+        ]
+    },
+
     'tomek': {
         uid: 'tomek',
         slug: 'tomek',

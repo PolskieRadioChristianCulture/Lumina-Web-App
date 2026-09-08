@@ -6242,6 +6242,8 @@
                 const isAuthorWioletta = (item.authorSlug === 'wiolettarogowska' || item.authorSlug === 'wioletta' || (item.author && item.author.toLowerCase().includes('wioletta')));
                 const isAuthorAndrzej = (item.authorSlug === 'andrzejthiel' || (item.author && item.author.toLowerCase().includes('andrzej thiel')));
                 const isAuthorJola = (item.authorSlug === 'jolawojcik' || (item.author && item.author.toLowerCase().includes('jola')));
+                const isAuthorZbyszek = (item.authorSlug === 'zbyszekgieron' || (item.author && item.author.toLowerCase().includes('zbyszek')));
+                const isAuthorZofia = (item.authorSlug === 'zofiadudek' || (item.author && item.author.toLowerCase().includes('zofia dudek')));
 
                 let authorLink = '#';
                 if (isAuthorCezary) {
@@ -6252,6 +6254,10 @@
                     authorLink = 'lumina.andrzejthiel.html';
                 } else if (isAuthorJola) {
                     authorLink = 'lumina.jolawojcik.html';
+                } else if (isAuthorZbyszek) {
+                    authorLink = 'lumina.zbyszekgieron.html';
+                } else if (isAuthorZofia) {
+                    authorLink = 'lumina.zofiadudek.html';
                 } else if (item.authorSlug) {
                     authorLink = `lumina-profile.html?u=${encodeURIComponent(item.authorSlug)}`;
                 } else {
@@ -6758,11 +6764,17 @@
 
             const isCezary = isAdmin || slug === 'cezaryrgowski' || slug === 'cezary' || slug === 'admin_cezary' || email.toLowerCase() === 'nazirczarkes@gmail.com' || email.includes('christianculture') || email.includes('czarkes') || name.toLowerCase().includes('cezary');
             const isWioletta = slug === 'wiolettarogowska' || slug === 'wioletta' || name.toLowerCase().includes('wioletta');
+            const isZbyszek = slug === 'zbyszekgieron' || slug === 'zbyszek' || name.toLowerCase().includes('zbyszek');
+            const isZofia = slug === 'zofiadudek' || slug === 'zofia' || name.toLowerCase().includes('zofia dudek');
 
             if (isCezary) {
                 window.location.href = 'lumina.cezaryrgowski.html';
             } else if (isWioletta) {
                 window.location.href = 'lumina.wiolettarogowska.html';
+            } else if (isZbyszek) {
+                window.location.href = 'lumina.zbyszekgieron.html';
+            } else if (isZofia) {
+                window.location.href = 'lumina.zofiadudek.html';
             } else if (slug) {
                 window.location.href = 'lumina-profile.html?u=' + encodeURIComponent(slug);
             } else if (user && user.uid) {
@@ -7672,6 +7684,8 @@
             { slug: 'radiocc', name: 'Misja & Radio Christian Culture', job: 'Oficjalny Nadawca Radiowy & Ewangelizacja 📻', city: 'Polska', avatar: 'avatar_cezary_official.jpg', badge: '🕊️ Misja CC', isMission: true },
             { slug: 'andrzejthiel', name: 'Andrzej Thiel', job: 'Autor rozważań Cuda Każdego Dnia 📖', city: 'Sieradz, Polska', avatar: 'avatar_andrzej_thiel.jpg', badge: '📖 Autor CKD', isMission: true },
             { slug: 'jolawojcik', name: 'Jola Wójcik', job: 'Biblijny Czas Modlitwy • Polskie Radio CC 🕊️🌸', city: 'Polska', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Pasmo Modlitwy', isMission: true },
+            { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', job: 'Profil Misyjny • Świadectwo & Wiara 🕊️✨', city: 'Polska', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Misja & Świadectwo', isMission: true },
+            { slug: 'zofiadudek', name: 'Zofia Dudek', job: 'Członkini Społeczności • Modlitwa & Wiara 🌸🕊️', city: 'Polska', avatar: 'avatar_zofia_dudek.jpg', badge: '🌸 Modlitwa & Wiara', isMission: false },
             { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', job: 'Oficjalny Kanał Audio & Wideo 🎙️', city: 'Polska', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎙️ Studio CC', isMission: true },
             { slug: 'osobowoscplus', name: 'Osobowość Plus', job: 'Formacja Chrześcijańska & Psychologia 🕊️', city: 'Polska', avatar: 'logo_osobowosc_plus.jpg', badge: '🕊️ Formacja', isMission: true },
             { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
@@ -7692,8 +7706,8 @@
                     const job = p.job || 'Członek Społeczności LUMINA ✨';
                     const city = p.city || 'Polska';
                     const avatar = p.avatar || 'lumina_icon.jpg';
-                    const isMission = (slug === 'cezaryrgowski' || slug === 'wiolettarogowska' || slug === 'radiocc' || slug === 'andrzejthiel' || slug === 'studiodobregoslowa' || slug === 'osobowoscplus');
-                    const badge = isMission ? (slug === 'cezaryrgowski' ? '👑 Założyciel' : (slug === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Misja CC')) : '✨ Społeczność';
+                    const isMission = (slug === 'cezaryrgowski' || slug === 'wiolettarogowska' || slug === 'radiocc' || slug === 'andrzejthiel' || slug === 'zbyszekgieron' || slug === 'studiodobregoslowa' || slug === 'osobowoscplus');
+                    const badge = isMission ? (slug === 'cezaryrgowski' ? '👑 Założyciel' : (slug === 'wiolettarogowska' ? '🌸 Liderka CC' : (slug === 'zbyszekgieron' ? '🕊️ Misja CC' : '🕊️ Misja CC'))) : '✨ Społeczność';
                     map.set(slug, { slug, name, job, city, avatar, badge, isMission, uid: p.uid });
                 });
             }
@@ -7712,8 +7726,8 @@
                             const job = f.job?.stringValue || 'Członek Społeczności LUMINA ✨';
                             const city = f.city?.stringValue || 'Polska';
                             const avatar = f.avatar?.stringValue || f.carouselMediaUrl?.stringValue || 'lumina_icon.jpg';
-                            const isMission = (slug === 'cezaryrgowski' || slug === 'wiolettarogowska' || slug === 'radiocc' || slug === 'andrzejthiel' || slug === 'studiodobregoslowa' || slug === 'osobowoscplus');
-                            const badge = isMission ? (slug === 'cezaryrgowski' ? '👑 Założyciel' : (slug === 'wiolettarogowska' ? '🌸 Liderka CC' : '🕊️ Misja CC')) : '✨ Społeczność';
+                            const isMission = (slug === 'cezaryrgowski' || slug === 'wiolettarogowska' || slug === 'radiocc' || slug === 'andrzejthiel' || slug === 'zbyszekgieron' || slug === 'studiodobregoslowa' || slug === 'osobowoscplus');
+                            const badge = isMission ? (slug === 'cezaryrgowski' ? '👑 Założyciel' : (slug === 'wiolettarogowska' ? '🌸 Liderka CC' : (slug === 'zbyszekgieron' ? '🕊️ Misja CC' : '🕊️ Misja CC'))) : '✨ Społeczność';
 
                             map.set(slug, { slug, name, job, city, avatar, badge, isMission });
                         });
@@ -8230,6 +8244,8 @@
             { query: '@tomasz @tomek tomasz góry', name: 'Tomasz (29)', handle: '@tomek', role: 'Wędrówki górskie i uwielbienie ✨”', avatar: 'avatar_widget_tomek.jpg', url: 'lumina-profile.html?u=tomek', type: 'user' },
             { query: '@weronika weronika krakow', name: 'Weronika (24)', handle: '@weronika', role: 'Muzyka chrześcijańska i śpiew ✨', avatar: 'avatar_weronika.jpg', url: 'lumina-profile.html?u=weronika', type: 'user' },
             { query: '@jola @jolawojcik jola wojcik biblijny czas modlitwy', name: 'Jola Wójcik', handle: '@jolawojcik', role: 'Biblijny Czas Modlitwy • Polskie Radio CC 🕊️🌸', avatar: 'avatar_jolawojcik.jpg', url: 'lumina.jolawojcik.html', type: 'user' },
+            { query: '@zbyszek @zbyszekgieron zbyszek gieron gieroń', name: 'Zbyszek Gieroń', handle: '@zbyszekgieron', role: 'Profil Misyjny • Świadectwo & Wiara 🕊️✨', avatar: 'avatar_zbyszek_gieron.jpg', url: 'lumina.zbyszekgieron.html', type: 'user' },
+            { query: '@zofia @zofiadudek zofia dudek', name: 'Zofia Dudek', handle: '@zofiadudek', role: 'Członkini Społeczności • Modlitwa & Wiara 🌸🕊️', avatar: 'avatar_zofia_dudek.jpg', url: 'lumina.zofiadudek.html', type: 'user' },
             { query: '#modlitwa modlitwa intencje', name: '#modlitwa', handle: '#modlitwa', role: 'Wpisy modlitewne na Tablicy ✨', avatar: 'lumina_icon.jpg', url: 'lumina-tablica.html?q=%23modlitwa', type: 'tag' },
             { query: '#uwielbienie uwielbienie muzyka', name: '#uwielbienie', handle: '#uwielbienie', role: 'Pieśni i muzyka chwały ✨', avatar: 'lumina_icon.jpg', url: 'lumina-tablica.html?q=%23uwielbienie', type: 'tag' },
             { query: '#ccwomen kobiety wiary', name: '#ccwomen', handle: '#ccwomen', role: 'Społeczność i wpisy CC Women 🌸', avatar: 'logo_cc_women.jpg', url: 'lumina-tablica.html?q=%23ccwomen', type: 'tag' }
@@ -9441,6 +9457,8 @@
                 else if (slug === 'wiolettarogowska') window.location.href = 'lumina.wiolettarogowska.html';
                 else if (slug === 'jolawojcik' || slug === 'jola') window.location.href = 'lumina.jolawojcik.html';
                 else if (slug === 'andrzejthiel' || slug === 'andrzej') window.location.href = 'lumina.andrzejthiel.html';
+                else if (slug === 'zbyszekgieron' || slug === 'zbyszek') window.location.href = 'lumina.zbyszekgieron.html';
+                else if (slug === 'zofiadudek' || slug === 'zofia') window.location.href = 'lumina.zofiadudek.html';
                 else if (slug === 'magdalena') window.location.href = 'lumina.magdalena.html';
                 else window.location.href = 'lumina-profile.html?u=' + slug;
             }
