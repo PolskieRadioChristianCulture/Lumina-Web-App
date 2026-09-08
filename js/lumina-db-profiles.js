@@ -620,6 +620,62 @@ export const PROFILES_DB = {
                 isPinned: true
             }
         ]
+    },
+
+    'u_yciezywymbogiem_4231': {
+        uid: 'NHjYeuO4nxM8fIfEJPHmi9rTQV12',
+        slug: 'u_yciezywymbogiem_4231',
+        name: 'Paweł Murawski',
+        age: 49,
+        gender: 'mezczyzna',
+        lookingFor: 'kobieta',
+        city: 'Warszawa, Polska',
+        avatar: 'https://lh3.googleusercontent.com/a/ACg8ocLiLlUx0vVCauc43_m5akErxVaNJ5uRgtZSwel4SzIR1AI57zQp=s96-c',
+        cover: 'lumina_default_cover.jpg',
+        coverPosY: '50%',
+        job: 'Społeczność LUMINA ✨',
+        role: 'Społeczność LUMINA ✨',
+        church: 'Wspólnota Chrześcijańska',
+        denom: 'Rzymskokatolickie',
+        status: 'Kawaler',
+        pin: '7777',
+        visibility: 'public',
+        match: '98%',
+        matchScore: '98%',
+        stats: { friends: '48', posts: '0', likes: '96' },
+        verse: '„Wszystko mogę w Tym, który mnie umacnia”',
+        verseRef: '— Flp 4, 13',
+        bio: 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
+        tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+        photos: ['https://lh3.googleusercontent.com/a/ACg8ocLiLlUx0vVCauc43_m5akErxVaNJ5uRgtZSwel4SzIR1AI57zQp=s96-c', 'lumina_default_cover.jpg'],
+        posts: []
+    },
+
+    'pawelmurawski': {
+        uid: 'NHjYeuO4nxM8fIfEJPHmi9rTQV12',
+        slug: 'u_yciezywymbogiem_4231',
+        name: 'Paweł Murawski',
+        age: 49,
+        city: 'Warszawa, Polska',
+        avatar: 'https://lh3.googleusercontent.com/a/ACg8ocLiLlUx0vVCauc43_m5akErxVaNJ5uRgtZSwel4SzIR1AI57zQp=s96-c',
+        cover: 'lumina_default_cover.jpg',
+        coverPosY: '50%',
+        job: 'Społeczność LUMINA ✨',
+        role: 'Społeczność LUMINA ✨',
+        church: 'Wspólnota Chrześcijańska',
+        denom: 'Rzymskokatolickie',
+        status: 'Kawaler',
+        pin: '7777',
+        visibility: 'public',
+        match: '98%',
+        matchScore: '98%',
+        stats: { friends: '48', posts: '0', likes: '96' },
+        verse: '„Wszystko mogę w Tym, który mnie umacnia”',
+        verseRef: '— Flp 4, 13',
+        bio: 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
+        tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+        photos: ['https://lh3.googleusercontent.com/a/ACg8ocLiLlUx0vVCauc43_m5akErxVaNJ5uRgtZSwel4SzIR1AI57zQp=s96-c', 'lumina_default_cover.jpg'],
+        posts: []
     }
 };
 

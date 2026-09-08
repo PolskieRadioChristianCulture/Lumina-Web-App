@@ -1295,15 +1295,18 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
         if (cleanSlug.includes('cezary') || cleanName.includes('cezary')) profileData.name = 'Cezary Rogowski';
         else if (cleanSlug.includes('wioletta') || cleanName.includes('wioletta')) profileData.name = 'Wioletta Rogowska';
         else if (cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) profileData.name = 'Andrzej Thiel';
+        else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.name = 'Paweł Murawski';
     }
     if (!profileData.age) {
         if (cleanSlug.includes('cezary') || cleanName.includes('cezary')) profileData.age = 51;
         else if (cleanSlug.includes('wioletta') || cleanName.includes('wioletta')) profileData.age = 50;
         else if (cleanSlug.includes('andrzej') || cleanName.includes('andrzej')) profileData.age = 70;
+        else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.age = 49;
     }
     if (!profileData.city || profileData.city.trim() === '') {
         if (cleanSlug.includes('cezary') || cleanSlug.includes('wioletta')) profileData.city = 'Ostrowiec Świętokrzyski, Polska';
         else if (cleanSlug.includes('andrzej')) profileData.city = 'Sieradz, Polska';
+        else if (cleanSlug === 'u_yciezywymbogiem_4231' || cleanSlug.includes('murawski')) profileData.city = 'Warszawa, Polska';
     }
 
     if (!profileData.avatar || profileData.avatar === 'null' || profileData.avatar === 'undefined' || profileData.avatar.trim() === '') {
@@ -1516,6 +1519,33 @@ export function subscribeToAllCommunityProfiles(onUpdate) {
                     p.status = 'Chrześcijanin';
                     p.job = 'Cuda Każdego Dnia 📖✨';
                     p.profileUrl = 'lumina.andrzejthiel.html';
+                }
+
+                // Żelazne wymuszenie i samonaprawa danych Pawła Murawskiego (49 lat, Warszawa)
+                if (slugLower === 'u_yciezywymbogiem_4231' || d.id === 'NHjYeuO4nxM8fIfEJPHmi9rTQV12' || (p.email && p.email.toLowerCase() === 'bozenowezycie@gmail.com') || nameLower.includes('murawski')) {
+                    p.name = 'Paweł Murawski';
+                    p.age = 49;
+                    p.gender = 'mezczyzna';
+                    p.lookingFor = 'kobieta';
+                    p.status = 'Kawaler';
+                    p.profileCompleted = true;
+                    p.needsProfileCompletion = false;
+                    p.slug = 'u_yciezywymbogiem_4231';
+                    p.uid = 'NHjYeuO4nxM8fIfEJPHmi9rTQV12';
+                    if (data.age !== 49 || data.name !== 'Paweł Murawski') {
+                        try {
+                            setDoc(doc(db, 'lumina_profiles', d.id), {
+                                name: 'Paweł Murawski',
+                                age: 49,
+                                gender: 'mezczyzna',
+                                lookingFor: 'kobieta',
+                                status: 'Kawaler',
+                                profileCompleted: true,
+                                needsProfileCompletion: false,
+                                updatedAt: serverTimestamp()
+                            }, { merge: true }).catch(() => {});
+                        } catch(err) {}
+                    }
                 }
 
 
@@ -4020,6 +4050,9 @@ export function extractYouTubePlaylistId(url) {
 }
 
 export const LUMINA_HANDLES = {
+    'pawel': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'lumina-profile.html?u=u_yciezywymbogiem_4231', avatar: 'https://lh3.googleusercontent.com/a/ACg8ocLiLlUx0vVCauc43_m5akErxVaNJ5uRgtZSwel4SzIR1AI57zQp=s96-c', badge: '✨ Społeczność LUMINA' },
+    'pawelmurawski': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'lumina-profile.html?u=u_yciezywymbogiem_4231', avatar: 'https://lh3.googleusercontent.com/a/ACg8ocLiLlUx0vVCauc43_m5akErxVaNJ5uRgtZSwel4SzIR1AI57zQp=s96-c', badge: '✨ Społeczność LUMINA' },
+    'u_yciezywymbogiem_4231': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'lumina-profile.html?u=u_yciezywymbogiem_4231', avatar: 'https://lh3.googleusercontent.com/a/ACg8ocLiLlUx0vVCauc43_m5akErxVaNJ5uRgtZSwel4SzIR1AI57zQp=s96-c', badge: '✨ Społeczność LUMINA' },
     'robert': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
     'bratrobert': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
     'robertlukaszpio': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },

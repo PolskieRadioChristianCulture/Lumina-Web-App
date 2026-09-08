@@ -320,6 +320,28 @@ export const OMNI_BASE_PROFILES = [
         url: 'lumina-profile.html?u=u_robertukaszpio_5668',
         type: 'user',
         badge: '✨ Społeczność'
+    },
+    {
+        id: 'u_yciezywymbogiem_4231',
+        slug: 'u_yciezywymbogiem_4231',
+        name: 'Paweł Murawski',
+        handle: '@pawel',
+        aliases: ['pawel', 'pawelmurawski', 'paweł murawski', 'pawel murawski', 'u_yciezywymbogiem_4231', 'bozenowezycie'],
+        age: 49,
+        city: 'Warszawa, Polska',
+        status: 'Kawaler',
+        gender: 'mezczyzna',
+        lookingFor: 'kobieta',
+        job: 'Społeczność LUMINA ✨',
+        bio: 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.',
+        verse: '„Wszystko mogę w Tym, który mnie umacnia” (Flp 4, 13)',
+        church: 'Wspólnota Chrześcijańska',
+        denom: 'Rzymskokatolickie',
+        tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo'],
+        avatar: 'https://lh3.googleusercontent.com/a/ACg8ocLiLlUx0vVCauc43_m5akErxVaNJ5uRgtZSwel4SzIR1AI57zQp=s96-c',
+        url: 'lumina-profile.html?u=u_yciezywymbogiem_4231',
+        type: 'user',
+        badge: '✨ Społeczność'
     }
 ];
 
