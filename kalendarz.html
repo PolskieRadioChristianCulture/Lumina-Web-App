@@ -704,23 +704,7 @@
         </div>
     </header>
 
-    <!-- ── 4. BANER REKLAMY — APOKALIPSA: KSIĘGA NADZIEI (NO-PRINT, NAD PIERWSZĄ STRONĄ KALENDARZA) ── -->
-    <aside class="w-full max-w-[215mm] px-3 my-4 md:my-6 no-print">
-        <a href="https://youtube.com/playlist?list=PLDA6geI28g8QBRVh8GU5zsWEMTaJjrEQk&si=_2yKX9qea0e18dL8"
-           target="_blank" rel="noopener noreferrer"
-           class="group block relative overflow-hidden rounded-2xl md:rounded-3xl border border-amber-500/40 bg-[#0b0f19] shadow-2xl transition-all duration-300 hover:border-amber-400 hover:shadow-[0_0_35px_rgba(245,158,11,0.3)] hover:-translate-y-0.5"
-           title="Apokalipsa: Księga Nadziei — obejrzyj cały kurs biblijny na YouTube">
-            <img src="/baner-wsparcie-misji-dar.jpg"
-                 alt="Apokalipsa: Księga Nadziei — Studio Dobrego Słowa"
-                 class="w-full h-auto object-cover block transition duration-500 group-hover:brightness-105"
-                 loading="lazy">
-            <div class="hidden sm:inline-flex absolute top-3 right-3 md:top-4 md:right-4 items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-amber-400/50 text-amber-300 text-xs font-semibold shadow-lg transition-transform duration-300 group-hover:scale-105">
-                <i class="fa-brands fa-youtube text-red-400"></i> Oglądaj na YouTube <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
-            </div>
-        </a>
-    </aside>
-
-    <!-- ── 4.1. KONTENER GŁÓWNY KALENDARZA ── -->
+    <!-- ── 4. KONTENER GŁÓWNY KALENDARZA ── -->
     <main class="w-full max-w-[215mm] flex flex-col items-center px-3" id="calendarContainer">
         <!-- Renderowane przez JavaScript -->
     </main>
@@ -1659,6 +1643,26 @@
                 </div>
             `;
             container.innerHTML += coverHTML;
+
+            // ── BANER REKLAMY APOKALIPSY: POMIĘDZY STRONĄ STARTOWĄ A STYCZNIEM (NO-PRINT) ──
+            const isAdVisible = (viewMode === 'all' || activeCardIndex === 0);
+            const adBannerHTML = `
+                <aside class="w-full max-w-[210mm] my-6 md:my-8 px-1 no-print ${isAdVisible ? '' : 'hidden'}" id="ad-banner-apokalipsa">
+                    <a href="https://youtube.com/playlist?list=PLDA6geI28g8QBRVh8GU5zsWEMTaJjrEQk&si=_2yKX9qea0e18dL8"
+                       target="_blank" rel="noopener noreferrer"
+                       class="group block relative overflow-hidden rounded-2xl md:rounded-3xl border border-amber-500/40 bg-[#0b0f19] shadow-2xl transition-all duration-300 hover:border-amber-400 hover:shadow-[0_0_35px_rgba(245,158,11,0.3)] hover:-translate-y-0.5"
+                       title="Apokalipsa: Księga Nadziei — obejrzyj cały kurs biblijny na YouTube">
+                        <img src="/baner-wsparcie-misji-dar.jpg"
+                             alt="Apokalipsa: Księga Nadziei — Studio Dobrego Słowa"
+                             class="w-full h-auto object-cover block transition duration-500 group-hover:brightness-105"
+                             loading="lazy">
+                        <div class="hidden sm:inline-flex absolute top-3 right-3 md:top-4 md:right-4 items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-amber-400/50 text-amber-300 text-xs font-semibold shadow-lg transition-transform duration-300 group-hover:scale-105">
+                            <i class="fa-brands fa-youtube text-red-400"></i> Oglądaj na YouTube <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+                        </div>
+                    </a>
+                </aside>
+            `;
+            container.innerHTML += adBannerHTML;
 
             monthsMeta.forEach((m, monthIndex) => {
                 const cardIdx = monthIndex + 1;
