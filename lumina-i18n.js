@@ -569,19 +569,28 @@ export const LUMINA_TRANSLATIONS = {
                 // Jeśli element ma ikony wewnętrzne, szukamy tekstu lub zastępujemy span
                 const labelSpan = el.querySelector('.nav-btn-text, .btn-nav-cta-text, .tab-label, span.i18n-label, span:not(.fa-solid):not(.fa-brands)');
                 if (labelSpan) {
-                    labelSpan.textContent = text;
+                    if (labelSpan.textContent !== text) {
+                        labelSpan.textContent = text;
+                    }
                 } else if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
-                    el.textContent = text;
+                    if (el.textContent !== text) {
+                        el.textContent = text;
+                    }
                 } else {
                     // Sprawdzamy czy element zawiera ikony font-awesome
                     const icon = el.querySelector('i');
                     if (icon) {
-                        const cloneIcon = icon.cloneNode(true);
-                        el.innerHTML = '';
-                        el.appendChild(cloneIcon);
-                        el.appendChild(document.createTextNode(' ' + text));
+                        const currentText = el.textContent.trim();
+                        if (currentText !== text.trim()) {
+                            const cloneIcon = icon.cloneNode(true);
+                            el.innerHTML = '';
+                            el.appendChild(cloneIcon);
+                            el.appendChild(document.createTextNode(' ' + text));
+                        }
                     } else {
-                        el.textContent = text;
+                        if (el.textContent !== text) {
+                            el.textContent = text;
+                        }
                     }
                 }
             }
@@ -593,7 +602,7 @@ export const LUMINA_TRANSLATIONS = {
             const key = el.getAttribute('data-i18n-title');
             if (!key) return;
             const text = translateKey(key);
-            if (text) el.setAttribute('title', text);
+            if (text && el.getAttribute('title') !== text) el.setAttribute('title', text);
         });
 
         // Placeholdery formularzy: [data-i18n-placeholder]
@@ -602,7 +611,7 @@ export const LUMINA_TRANSLATIONS = {
             const key = el.getAttribute('data-i18n-placeholder');
             if (!key) return;
             const text = translateKey(key);
-            if (text) el.setAttribute('placeholder', text);
+            if (text && el.getAttribute('placeholder') !== text) el.setAttribute('placeholder', text);
         });
 
         // Etykiety dostępności: [data-i18n-aria-label]
@@ -611,7 +620,7 @@ export const LUMINA_TRANSLATIONS = {
             const key = el.getAttribute('data-i18n-aria-label');
             if (!key) return;
             const text = translateKey(key);
-            if (text) el.setAttribute('aria-label', text);
+            if (text && el.getAttribute('aria-label') !== text) el.setAttribute('aria-label', text);
         });
     }
 
@@ -779,44 +788,80 @@ export const LUMINA_TRANSLATIONS = {
 
     function updateSwitcherUI() {
         const badge = document.getElementById('navLangBadgeText');
-        if (badge) {
-            badge.textContent = currentLang.toUpperCase();
+        const upper = currentLang.toUpperCase();
+        if (badge && badge.textContent !== upper) {
+            badge.textContent = upper;
         }
 
         const pills = document.querySelectorAll('.drawer-lang-pill');
         pills.forEach(pill => {
             const lang = pill.getAttribute('data-lang');
             if (lang === currentLang) {
-                pill.classList.add('active');
-                pill.style.setProperty('border', '1.5px solid #f59e0b', 'important');
-                pill.style.setProperty('background', 'linear-gradient(135deg, #f59e0b, #d97706)', 'important');
-                pill.style.setProperty('color', '#ffffff', 'important');
-                pill.style.setProperty('box-shadow', '0 2px 10px rgba(245, 158, 11, 0.4)', 'important');
+                if (!pill.classList.contains('active')) {
+                    pill.classList.add('active');
+                    pill.style.setProperty('border', '1.5px solid #f59e0b', 'important');
+                    pill.style.setProperty('background', 'linear-gradient(135deg, #f59e0b, #d97706)', 'important');
+                    pill.style.setProperty('color', '#ffffff', 'important');
+                    pill.style.setProperty('box-shadow', '0 2px 10px rgba(245, 158, 11, 0.4)', 'important');
+                }
             } else {
-                pill.classList.remove('active');
-                pill.style.setProperty('border', '1.5px solid rgba(255, 255, 255, 0.14)', 'important');
-                pill.style.setProperty('background', 'rgba(255, 255, 255, 0.06)', 'important');
-                pill.style.setProperty('color', '#cbd5e1', 'important');
-                pill.style.setProperty('box-shadow', 'none', 'important');
+                if (pill.classList.contains('active')) {
+                    pill.classList.remove('active');
+                    pill.style.setProperty('border', '1.5px solid rgba(255, 255, 255, 0.14)', 'important');
+                    pill.style.setProperty('background', 'rgba(255, 255, 255, 0.06)', 'important');
+                    pill.style.setProperty('color', '#cbd5e1', 'important');
+                    pill.style.setProperty('box-shadow', 'none', 'important');
+                }
             }
         });
 
         const btn = document.getElementById('luminaGlobalLangBtn');
         if (btn) {
-            btn.title = translateKey('nav_lang_toggle');
-            btn.setAttribute('data-current-lang', currentLang);
+            const expectedTitle = translateKey('nav_lang_toggle');
+            if (btn.getAttribute('title') !== expectedTitle) btn.title = expectedTitle;
+            if (btn.getAttribute('data-current-lang') !== currentLang) btn.setAttribute('data-current-lang', currentLang);
         }
     }
 
     // ── 4. Obserwator dynamicznie dołączanych elementów DOM ──
+    let isInternalTranslating = false;
     function initObserver() {
         let debounceTimer = null;
-        const observer = new MutationObserver(() => {
+        const observer = new MutationObserver((mutations) => {
+            if (isInternalTranslating) return;
+
+            // Sprawdź czy jakikolwiek dodany węzeł ma atrybut data-i18n
+            let hasRelevantNodes = false;
+            for (let i = 0; i < mutations.length; i++) {
+                const m = mutations[i];
+                if (m.addedNodes && m.addedNodes.length > 0) {
+                    for (let j = 0; j < m.addedNodes.length; j++) {
+                        const n = m.addedNodes[j];
+                        if (n.nodeType === 1) {
+                            if (n.id === 'drawerLangSelector' || n.classList?.contains('drawer-lang-selector') || n.closest?.('.drawer-lang-selector')) {
+                                continue;
+                            }
+                            if (n.hasAttribute?.('data-i18n') || n.querySelector?.('[data-i18n], [data-i18n-title]')) {
+                                hasRelevantNodes = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (hasRelevantNodes) break;
+            }
+            if (!hasRelevantNodes) return;
+
             if (debounceTimer) clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
-                applyTranslations();
-                ensureLanguageSwitcher();
-            }, 80);
+                isInternalTranslating = true;
+                try {
+                    applyTranslations();
+                    ensureLanguageSwitcher();
+                } finally {
+                    setTimeout(() => { isInternalTranslating = false; }, 60);
+                }
+            }, 120);
         });
 
         if (document.body) {
