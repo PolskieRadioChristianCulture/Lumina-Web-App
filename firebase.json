@@ -56,6 +56,14 @@
       ],
       "rewrites": [
         {
+          "source": "/mojabiblia",
+          "destination": "/mojabiblia.html"
+        },
+        {
+          "source": "/biblia",
+          "destination": "/mojabiblia.html"
+        },
+        {
           "source": "/vod",
           "destination": "/vod.html"
         },

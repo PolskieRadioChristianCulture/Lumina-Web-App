@@ -85,6 +85,7 @@
       this.currentVerse = null;
       this.currentMode = 'interlinear'; // 'interlinear' | 'parallel' | 'reader'
       this.activeTranslations = ['UBG', 'BW', 'BT', 'BG'];
+      this.reverseInterlinear = true;
       this.currentChapterData = null;
       this.fontSizeDelta = 0;
       this.bookmarks = [];
@@ -109,6 +110,10 @@
       try {
         const savedMode = localStorage.getItem('mb_mode');
         if (savedMode) this.currentMode = savedMode;
+        const savedRev = localStorage.getItem('mb_reverse_interlinear');
+        if (savedRev !== null) this.reverseInterlinear = savedRev === 'true';
+        const savedTrans = localStorage.getItem('mb_active_trans');
+        if (savedTrans) this.activeTranslations = JSON.parse(savedTrans);
         const savedBookmarks = localStorage.getItem('mb_bookmarks');
         if (savedBookmarks) this.bookmarks = JSON.parse(savedBookmarks);
         const savedNotes = localStorage.getItem('mb_notes');
@@ -121,6 +126,8 @@
     savePreferences() {
       try {
         localStorage.setItem('mb_mode', this.currentMode);
+        localStorage.setItem('mb_reverse_interlinear', this.reverseInterlinear ? 'true' : 'false');
+        localStorage.setItem('mb_active_trans', JSON.stringify(this.activeTranslations));
         localStorage.setItem('mb_bookmarks', JSON.stringify(this.bookmarks));
         localStorage.setItem('mb_notes', JSON.stringify(this.notes));
         if (window.LuminaStorage && typeof window.LuminaStorage.set === 'function') {
@@ -139,6 +146,11 @@
       this.navTitle = document.getElementById('mbNavTitle');
       this.chapterTitle = document.getElementById('mbChapterTitle');
       this.chapterSub = document.getElementById('mbChapterSubtitle');
+      this.bookDrawerModal = document.getElementById('mbBookDrawerModal');
+      this.wordPopover = document.getElementById('mbWordPopover');
+      this.transFilterBar = document.getElementById('mbTransFilterBar');
+      this.revToggleBtn = document.getElementById('mbRevToggleBtn');
+      this.bookDrawerLabel = document.getElementById('mbBookDrawerLabel');
     }
 
     parseUrlParams() {
@@ -429,22 +441,38 @@
               </div>
             </div>
             <div class="mb-parallel-grid">
-              <div class="mb-trans-card">
-                <div class="mb-trans-badge ubg-badge">UBG (Gdańska Nowa)</div>
-                <div class="mb-trans-text">${v.text.UBG || '—'}</div>
-              </div>
-              <div class="mb-trans-card">
-                <div class="mb-trans-badge bw-badge">BW (Warszawska)</div>
-                <div class="mb-trans-text">${v.text.BW || '—'}</div>
-              </div>
-              <div class="mb-trans-card">
-                <div class="mb-trans-badge bt-badge">BT (Tysiąclecia)</div>
-                <div class="mb-trans-text">${v.text.BT || '—'}</div>
-              </div>
-              <div class="mb-trans-card">
-                <div class="mb-trans-badge bg-badge">BG (Gdańska 1632)</div>
-                <div class="mb-trans-text">${v.text.BG || '—'}</div>
-              </div>
+        `;
+
+        if (this.activeTranslations.includes('UBG')) {
+          html += `
+            <div class="mb-trans-card">
+              <div class="mb-trans-badge ubg-badge">UBG (Gdańska Nowa)</div>
+              <div class="mb-trans-text">${v.text.UBG || '—'}</div>
+            </div>`;
+        }
+        if (this.activeTranslations.includes('BW')) {
+          html += `
+            <div class="mb-trans-card">
+              <div class="mb-trans-badge bw-badge">BW (Warszawska)</div>
+              <div class="mb-trans-text">${v.text.BW || '—'}</div>
+            </div>`;
+        }
+        if (this.activeTranslations.includes('BT')) {
+          html += `
+            <div class="mb-trans-card">
+              <div class="mb-trans-badge bt-badge">BT (Tysiąclecia)</div>
+              <div class="mb-trans-text">${v.text.BT || '—'}</div>
+            </div>`;
+        }
+        if (this.activeTranslations.includes('BG')) {
+          html += `
+            <div class="mb-trans-card">
+              <div class="mb-trans-badge bg-badge">BG (Gdańska 1632)</div>
+              <div class="mb-trans-text">${v.text.BG || '—'}</div>
+            </div>`;
+        }
+
+        html += `
             </div>
           </div>
         `;
@@ -454,9 +482,10 @@
       this.contentContainer.innerHTML = html;
     }
 
-    // ── 3. WIDOK CZYTNIKA KONTEMPLACYJNEGO (Immersive Reader) ──
+    // ── 3. WIDOK CZYTNIKA KONTEMPLACYJNEGO (Immersive Reader) Z REWERSEM INTERLINEARNYM ──
     renderReaderView() {
       const data = this.currentChapterData;
+      const isReverse = this.reverseInterlinear;
       let html = `
         <div class="mb-reader-wrapper">
           <div class="mb-reader-article">
@@ -465,10 +494,24 @@
       `;
 
       data.verses.forEach(v => {
+        let verseHtml = '';
+        if (isReverse && v.interlinear && v.interlinear.length > 0) {
+          verseHtml = v.interlinear.map(w => {
+            const safeOrig = this.escapeHtml(w.original);
+            const safeTranslit = this.escapeHtml(w.translit);
+            const safeGloss = this.escapeHtml(w.gloss);
+            const safeMorph = this.escapeHtml(w.morph);
+            const safeStrong = this.escapeHtml(w.strong);
+            return `<span class="mb-rev-word" data-strong="${safeStrong}" data-orig="${safeOrig}" data-translit="${safeTranslit}" data-gloss="${safeGloss}" data-morph="${safeMorph}" onclick="window.mbApp.handleWordClick(event, this)">${safeGloss || safeOrig}</span>`;
+          }).join(' ');
+        } else {
+          verseHtml = v.text.UBG;
+        }
+
         html += `
           <span class="mb-reader-verse" id="verse-${v.verse}">
             <sup class="mb-reader-num">${v.verse}</sup>
-            ${v.text.UBG}&nbsp;
+            ${verseHtml}&nbsp;
           </span>
         `;
       });
@@ -479,6 +522,182 @@
         </div>
       `;
       this.contentContainer.innerHTML = html;
+    }
+
+    handleWordClick(e, el) {
+      e.stopPropagation();
+      const strong = el.dataset.strong;
+      const orig = el.dataset.orig;
+      const translit = el.dataset.translit;
+      const gloss = el.dataset.gloss;
+      const morph = el.dataset.morph;
+      const morphDesc = this.translateMorphology(morph);
+
+      if (!this.wordPopover) return;
+      this.wordPopover.innerHTML = `
+        <div class="mb-popover-orig">${orig}</div>
+        <div class="mb-popover-translit">${translit}</div>
+        <div>
+          <span class="mb-popover-strong">${strong}</span>
+          <span class="mb-popover-morph" title="${morphDesc}">${morph}</span>
+        </div>
+        <div class="mb-popover-gloss"><strong>Znaczenie:</strong> ${gloss}</div>
+        <button class="mb-popover-btn" onclick="window.mbApp.openStrongModal('${strong}', '${this.escapeHtml(orig)}', '${this.escapeHtml(translit)}')">
+          <i class="fa-solid fa-book-bible"></i> Pełne hasło w Leksykonie Stronga
+        </button>
+      `;
+
+      const rect = el.getBoundingClientRect();
+      const top = rect.bottom + window.scrollY + 6;
+      const left = Math.max(10, Math.min(window.innerWidth - 320, rect.left + window.scrollX - 40));
+      this.wordPopover.style.top = `${top}px`;
+      this.wordPopover.style.left = `${left}px`;
+      this.wordPopover.style.display = 'block';
+
+      const closeHandler = () => {
+        if (this.wordPopover) this.wordPopover.style.display = 'none';
+        document.removeEventListener('click', closeHandler);
+      };
+      setTimeout(() => document.addEventListener('click', closeHandler), 50);
+    }
+
+    toggleReverseInterlinear() {
+      this.reverseInterlinear = !this.reverseInterlinear;
+      if (this.revToggleBtn) {
+        this.revToggleBtn.classList.toggle('active', this.reverseInterlinear);
+      }
+      this.showToast(this.reverseInterlinear ? 'Włączono Rewers Interlinearny (klikaj słowa w tekście)' : 'Wyłączono Rewers Interlinearny');
+      this.savePreferences();
+      if (this.currentMode === 'reader') {
+        this.renderReaderView();
+      }
+    }
+
+    toggleTransFilter(trans) {
+      const idx = this.activeTranslations.indexOf(trans);
+      if (idx > -1) {
+        if (this.activeTranslations.length === 1) {
+          this.showToast('Przynajmniej jeden przekład musi pozostać aktywny!');
+          return;
+        }
+        this.activeTranslations.splice(idx, 1);
+      } else {
+        this.activeTranslations.push(trans);
+      }
+      document.querySelectorAll('.mb-trans-filter').forEach(btn => {
+        btn.classList.toggle('active', this.activeTranslations.includes(btn.dataset.trans));
+      });
+      this.savePreferences();
+      if (this.currentMode === 'parallel') {
+        this.renderParallelView();
+      }
+    }
+
+    // ── BOOK DRAWER (Kanon 66 Ksiąg) ──
+    openBookDrawer() {
+      if (!this.bookDrawerModal) return;
+
+      const categories = [
+        {
+          testament: 'STARY TESTAMENT (39 KSIĄG)',
+          groups: [
+            { name: 'Tora (Prawo Mojżeszowe)', ids: ['GEN', 'EXO', 'LEV', 'NUM', 'DEU'] },
+            { name: 'Księgi Historyczne', ids: ['JOS', 'JDG', 'RUT', '1SA', '2SA', '1KI', '2KI', '1CH', '2CH', 'EZR', 'NEH', 'EST'] },
+            { name: 'Poezja i Mądrość', ids: ['JOB', 'PSA', 'PRO', 'ECC', 'SNG'] },
+            { name: 'Prorocy Więksi', ids: ['ISA', 'JER', 'LAM', 'EZK', 'DAN'] },
+            { name: 'Prorocy Mniejsi', ids: ['HOS', 'JOL', 'AMO', 'OBA', 'JON', 'MIC', 'NAM', 'HAB', 'ZEP', 'HAG', 'ZEC', 'MAL'] }
+          ]
+        },
+        {
+          testament: 'NOWY TESTAMENT (27 KSIĄG)',
+          groups: [
+            { name: 'Cztery Ewangelie', ids: ['MAT', 'MRK', 'LUK', 'JHN'] },
+            { name: 'Dzieje Apostolskie', ids: ['ACT'] },
+            { name: 'Listy Apostoła Pawła', ids: ['ROM', '1CO', '2CO', 'GAL', 'EPH', 'PHP', 'COL', '1TH', '2TH', '1TI', '2TI', 'TIT', 'PHM', 'HEB'] },
+            { name: 'Listy Powszechne', ids: ['JAS', '1PE', '2PE', '1JN', '2JN', '3JN', 'JUD'] },
+            { name: 'Księga Prorocza', ids: ['REV'] }
+          ]
+        }
+      ];
+
+      let drawerHtml = `
+        <div class="mb-drawer-card" onclick="event.stopPropagation()">
+          <div class="mb-drawer-header">
+            <div class="mb-drawer-title"><i class="fa-solid fa-book-bible"></i> Kanon Pisma Świętego (66 Ksiąg)</div>
+            <button class="mb-modal-close" onclick="window.mbApp.closeBookDrawer()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div class="mb-drawer-body">
+      `;
+
+      categories.forEach(cat => {
+        drawerHtml += `<div class="mb-testament-block"><h3>${cat.testament}</h3>`;
+        cat.groups.forEach(g => {
+          drawerHtml += `<div class="mb-category-group"><div class="mb-category-name">${g.name}</div><div class="mb-books-grid">`;
+          g.ids.forEach(bookId => {
+            const b = this.books.find(x => x.id === bookId) || { id: bookId, namePl: bookId, shortPl: bookId, chapters: 1 };
+            const isActive = b.id === this.currentBookId;
+            drawerHtml += `
+              <div class="mb-book-tile ${isActive ? 'active' : ''}" onclick="window.mbApp.selectBookInDrawer('${b.id}', event)">
+                <div class="mb-book-tile-name">${b.namePl}</div>
+                <div class="mb-book-tile-sub">${b.shortPl} • ${b.chapters} rozdz.</div>
+              </div>
+            `;
+          });
+          drawerHtml += `</div></div>`;
+        });
+        drawerHtml += `</div>`;
+      });
+
+      drawerHtml += `
+          </div>
+        </div>
+      `;
+
+      this.bookDrawerModal.innerHTML = drawerHtml;
+      this.bookDrawerModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    closeBookDrawer() {
+      if (!this.bookDrawerModal) return;
+      this.bookDrawerModal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    selectBookInDrawer(bookId, event) {
+      const b = this.books.find(x => x.id === bookId);
+      if (!b) return;
+
+      const existingSubgrid = document.getElementById('mbDrawerChaptersSubgrid');
+      if (existingSubgrid) existingSubgrid.remove();
+
+      const tile = event ? event.currentTarget : document.querySelector(`.mb-book-tile[data-id="${bookId}"]`);
+      if (!tile) return;
+
+      const subgrid = document.createElement('div');
+      subgrid.id = 'mbDrawerChaptersSubgrid';
+      subgrid.className = 'mb-chapters-subgrid';
+
+      let chHtml = `<div style="width:100%; font-size:0.82rem; font-weight:700; color:var(--gold-bright); margin-bottom:8px;">Wybierz rozdział księgi: ${b.namePl} (${b.chapters} rozdz.)</div>`;
+      for (let i = 1; i <= b.chapters; i++) {
+        chHtml += `<button class="mb-ch-btn" onclick="window.mbApp.chooseChapterFromDrawer('${bookId}', ${i})">${i}</button>`;
+      }
+      subgrid.innerHTML = chHtml;
+      tile.parentNode.insertBefore(subgrid, tile.nextSibling);
+    }
+
+    chooseChapterFromDrawer(bookId, ch) {
+      this.closeBookDrawer();
+      this.currentBookId = bookId;
+      this.currentChapter = ch;
+      this.currentVerse = null;
+      if (this.bookSelect) this.bookSelect.value = bookId;
+      this.updateChapterOptions();
+      if (this.chapterSelect) this.chapterSelect.value = ch;
+      if (this.bookDrawerLabel) {
+        this.bookDrawerLabel.textContent = this.getBookName(bookId);
+      }
+      this.loadChapter(bookId, ch);
     }
 
     // ── TŁUMACZENIE MORFOLOGII ──
@@ -492,9 +711,23 @@
       return translated.join(' • ');
     }
 
-    // ── KARTA LEKSYKONU STRONGA (MODAL INSPEKTOR) ──
-    openStrongModal(strongCode, fallbackOriginal, fallbackTranslit) {
+    // ── KARTA LEKSYKONU STRONGA (MODAL INSPEKTOR Z LAZY-LOADINGIEM) ──
+    async openStrongModal(strongCode, fallbackOriginal, fallbackTranslit) {
       if (!this.strongModal) return;
+      const prefix = strongCode.charAt(0).toUpperCase();
+
+      // Lazy-loading leksykonu jeśli brak hasła
+      if (!this.lexicon[strongCode] && (prefix === 'G' || prefix === 'H')) {
+        try {
+          const chunkRes = await fetch(`data/bible/lexicon/${prefix}.json`);
+          if (chunkRes.ok) {
+            const chunkData = await chunkRes.json();
+            Object.assign(this.lexicon, chunkData);
+          }
+        } catch (e) {
+          console.warn('[MojaBiblia] Błąd ładowania chunka leksykonu:', e);
+        }
+      }
 
       const info = this.lexicon[strongCode] || {
         strong: strongCode,
@@ -636,6 +869,13 @@
 
     setMode(newMode) {
       this.currentMode = newMode;
+      if (this.transFilterBar) {
+        this.transFilterBar.style.display = newMode === 'parallel' ? 'flex' : 'none';
+      }
+      if (this.revToggleBtn) {
+        this.revToggleBtn.style.display = newMode === 'reader' ? 'inline-flex' : 'none';
+        this.revToggleBtn.classList.toggle('active', this.reverseInterlinear);
+      }
       this.savePreferences();
       this.updateUrl();
       this.renderCurrentView();
@@ -762,7 +1002,7 @@
       }
     }
 
-    // ── SZYBKIE WYSZUKIWANIE (Werset lub Kod Stronga) ──
+    // ── SZYBKIE WYSZUKIWANIE (Werset, Słowo Oryginału lub Kod Stronga) ──
     handleSearch(query) {
       if (!query) return;
       const q = query.trim();
@@ -775,17 +1015,18 @@
         return;
       }
 
-      // Wyszukiwanie wersetu (np. Jan 1:1, Rdz 1:1, Ps 23:1, Rz 8:28)
-      const refMatch = q.match(/^([A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ\d\s]+)\s+(\d+)(?:[:.](\d+))?$/);
+      // Wyszukiwanie wersetu (np. Jan 1:1, Rdz 1:1, Ps 23:1, Rz 8:28, 1Kor 13)
+      const refMatch = q.match(/^([1-3]?\s*[A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ\d\s]+)\s+(\d+)(?:[:.](\d+))?$/);
       if (refMatch) {
-        const bookQuery = refMatch[1].trim().toLowerCase();
+        const rawBook = refMatch[1].replace(/\s+/g, ' ').trim().toLowerCase();
         const ch = parseInt(refMatch[2], 10);
         const v = refMatch[3] ? parseInt(refMatch[3], 10) : null;
 
         const foundBook = this.books.find(b =>
-          b.namePl.toLowerCase().includes(bookQuery) ||
-          b.shortPl.toLowerCase() === bookQuery ||
-          b.id.toLowerCase() === bookQuery
+          b.namePl.toLowerCase().includes(rawBook) ||
+          b.shortPl.toLowerCase() === rawBook ||
+          b.id.toLowerCase() === rawBook ||
+          b.namePl.toLowerCase().replace(/\s+/g, '').includes(rawBook.replace(/\s+/g, ''))
         );
 
         if (foundBook) {
@@ -795,7 +1036,19 @@
         }
       }
 
-      this.showToast(`Wpisz np. "Jan 1:1", "Rdz 1:1", "Ps 23" lub kod Stronga "G3056"`);
+      // Wyszukiwanie słowa greckiego lub hebrajskiego w załadowanym leksykonie
+      const lowerQ = q.toLowerCase();
+      const foundInLexicon = Object.values(this.lexicon).find(item => 
+        (item.translit && item.translit.toLowerCase() === lowerQ) ||
+        (item.original && item.original === q) ||
+        (item.kjvDef && item.kjvDef.toLowerCase() === lowerQ)
+      );
+      if (foundInLexicon) {
+        this.openStrongModal(foundInLexicon.strong, foundInLexicon.original, foundInLexicon.translit);
+        return;
+      }
+
+      this.showToast(`Wpisz np. "Jan 1:1", "Rdz 1:1", "Ps 23", kod "G3056" lub słowo np. "logos"`);
     }
 
     escapeHtml(str) {

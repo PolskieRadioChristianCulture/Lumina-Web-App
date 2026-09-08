@@ -1033,6 +1033,337 @@
       cursor: pointer;
     }
 
+    /* ══════════ BOOK DRAWER & SELEKTOR KSIĄG ══════════ */
+    .mb-drawer-toggle-btn {
+      min-height: 44px;
+      padding: 0 16px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(120, 53, 15, 0.3));
+      border: 1px solid var(--gold-bright);
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .mb-drawer-toggle-btn:hover {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.35), rgba(120, 53, 15, 0.5));
+      box-shadow: 0 0 14px var(--gold-glow);
+    }
+
+    .mb-book-drawer-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(5, 8, 18, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px 12px;
+      overflow-y: auto;
+    }
+
+    .mb-drawer-card {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-color);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 960px;
+      margin: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px var(--gold-glow);
+      overflow: hidden;
+      animation: modalSlide 0.25s ease-out;
+    }
+
+    .mb-drawer-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(8, 14, 28, 0.9);
+    }
+
+    .mb-drawer-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mb-drawer-body {
+      padding: 20px;
+      max-height: 80vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .mb-testament-block h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--gold-primary);
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+      padding-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .mb-category-group {
+      margin-bottom: 14px;
+    }
+
+    .mb-category-name {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .mb-books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+      gap: 8px;
+    }
+
+    .mb-book-tile {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .mb-book-tile:hover, .mb-book-tile.active {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--gold-bright);
+      transform: translateY(-2px);
+    }
+
+    .mb-book-tile-name {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .mb-book-tile-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .mb-chapters-subgrid {
+      grid-column: 1 / -1;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .mb-ch-btn {
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .mb-ch-btn:hover {
+      background: var(--gold-primary);
+      color: #000;
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 10px var(--gold-glow);
+    }
+
+    /* ══════════ REVERSE INTERLINEAR W CZYTNIKU ══════════ */
+    .mb-rev-toggle-btn {
+      min-height: 44px;
+      padding: 0 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .mb-rev-toggle-btn.active {
+      background: rgba(245, 158, 11, 0.18);
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+      box-shadow: 0 0 12px var(--gold-glow);
+    }
+
+    .mb-rev-word {
+      position: relative;
+      cursor: pointer;
+      border-bottom: 1.5px dotted rgba(245, 158, 11, 0.6);
+      transition: all 0.2s ease;
+      padding: 1px 2px;
+      border-radius: 3px;
+    }
+
+    .mb-rev-word:hover {
+      background: rgba(245, 158, 11, 0.2);
+      border-bottom-color: var(--gold-bright);
+      color: #fff;
+    }
+
+    /* Floating Popover */
+    .mb-word-popover {
+      position: absolute;
+      z-index: 10000;
+      background: rgba(14, 22, 42, 0.98);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid var(--gold-bright);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8), 0 0 20px var(--gold-glow);
+      border-radius: 14px;
+      padding: 14px 16px;
+      min-width: 240px;
+      max-width: 320px;
+      animation: popoverFade 0.2s ease;
+    }
+
+    @keyframes popoverFade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .mb-popover-orig {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      line-height: 1.2;
+    }
+
+    .mb-popover-translit {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 6px;
+    }
+
+    .mb-popover-strong {
+      display: inline-block;
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--accent-strong);
+      background: rgba(250, 204, 21, 0.14);
+      padding: 2px 6px;
+      border-radius: 6px;
+      margin-right: 6px;
+    }
+
+    .mb-popover-morph {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--accent-morph);
+      background: rgba(167, 139, 250, 0.12);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    .mb-popover-gloss {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+      margin: 8px 0;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      padding-top: 6px;
+    }
+
+    .mb-popover-btn {
+      width: 100%;
+      height: 36px;
+      background: linear-gradient(135deg, #d97706, #b45309);
+      border: 1px solid var(--gold-bright);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    /* ══════════ FILTRY W PORÓWNYWARCE PRZEKŁADÓW ══════════ */
+    .mb-trans-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(10, 16, 32, 0.7);
+      border-bottom: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+    }
+
+    .mb-filter-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .mb-trans-filter {
+      min-height: 44px;
+      padding: 0 14px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mb-trans-filter.active {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+    }
+
     /* ══════════ TOAST NOTYFIKACJA ══════════ */
     .mb-toast {
       position: fixed;
@@ -1156,6 +1487,10 @@
   <!-- ══════════ PASEK NAWIGACJI BIBLIJNEJ ══════════ -->
   <nav class="mb-toolbar">
     <div class="mb-selector-group">
+      <button class="mb-drawer-toggle-btn" onclick="window.mbApp.openBookDrawer()" title="Biblioteka 66 Ksiąg (Stary i Nowy Testament)">
+        <i class="fa-solid fa-layer-group"></i> <span id="mbBookDrawerLabel">Księgi</span>
+      </button>
+
       <select id="mbBookSelect" class="mb-select" onchange="window.mbApp.currentBookId = this.value; window.mbApp.updateChapterOptions(); window.mbApp.loadChapter(this.value, 1);" aria-label="Wybierz Księgę">
         <!-- Generowane z bible_books_metadata.json -->
       </select>
@@ -1178,12 +1513,26 @@
       </button>
     </div>
 
+    <!-- Rewers Interlinearny (dla czytnika) -->
+    <button class="mb-rev-toggle-btn" id="mbRevToggleBtn" onclick="window.mbApp.toggleReverseInterlinear()" title="Przełącz Rewers Interlinearny (klikaj słowa w tekście, by badać grekę i hebrajski)">
+      <i class="fa-solid fa-highlighter"></i> <span>Rewers</span>
+    </button>
+
     <!-- Rozmiar czcionki -->
     <div class="mb-font-controls">
       <button class="mb-icon-btn" onclick="window.mbApp.changeFontSize(-1)" title="Zmniejsz czcionkę"><i class="fa-solid fa-font"></i><sub style="font-size:0.6rem;">-</sub></button>
       <button class="mb-icon-btn" onclick="window.mbApp.changeFontSize(1)" title="Zwiększ czcionkę"><i class="fa-solid fa-font"></i><sup style="font-size:0.6rem;">+</sup></button>
     </div>
   </nav>
+
+  <!-- Pasek filtrów przekładów (Widok Porównywarki) -->
+  <div class="mb-trans-filter-bar" id="mbTransFilterBar" style="display:none;">
+    <span class="mb-filter-title">Przekłady:</span>
+    <button class="mb-trans-filter active" data-trans="UBG" onclick="window.mbApp.toggleTransFilter('UBG')">UBG</button>
+    <button class="mb-trans-filter active" data-trans="BW" onclick="window.mbApp.toggleTransFilter('BW')">BW</button>
+    <button class="mb-trans-filter active" data-trans="BT" onclick="window.mbApp.toggleTransFilter('BT')">BT</button>
+    <button class="mb-trans-filter active" data-trans="BG" onclick="window.mbApp.toggleTransFilter('BG')">BG</button>
+  </div>
 
   <!-- ══════════ GŁÓWNA ZAWARTOŚĆ ══════════ -->
   <main class="mb-main-container">
@@ -1195,6 +1544,12 @@
     <!-- Kontener dynamiczny -->
     <div id="mbContentArea"></div>
   </main>
+
+  <!-- ══════════ FLOATING WORD POPOVER (REVERSE INTERLINEAR) ══════════ -->
+  <div id="mbWordPopover" class="mb-word-popover" style="display:none;"></div>
+
+  <!-- ══════════ MODAL BIBLIOTEKI KSIĄG (BOOK DRAWER) ══════════ -->
+  <div id="mbBookDrawerModal" class="mb-book-drawer-modal" style="display:none;"></div>
 
   <!-- ══════════ MODAL INSPEKTORA STRONGA ══════════ -->
   <div id="mbStrongModal" style="display:none;"></div>
