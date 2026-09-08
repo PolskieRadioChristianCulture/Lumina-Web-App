@@ -4200,8 +4200,8 @@
                     </div>
                 </div>
 
-                <!-- 11b-3. Paweł Murawski (Członek Społeczności • Warszawa) -->
-                <div class="profile-card" id="card_profile_u_yciezywymbogiem_4231" data-profile-slug="u_yciezywymbogiem_4231" onclick="openCommunityProfile('u_yciezywymbogiem_4231')" data-category="mezczyzna spolecznosc" style="cursor:pointer;">
+                <!-- 11b-3. Paweł Murawski (Członek Społeczności • Żywiec) -->
+                <div class="profile-card" id="card_profile_u_yciezywymbogiem_4231" data-profile-slug="pawelmurawski" onclick="openCommunityProfile('pawelmurawski')" data-category="mezczyzna spolecznosc" style="cursor:pointer;">
                     <div class="card-photo" style="position:relative;">
                         <div class="card-new-badge">
                             <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> SPOŁECZNOŚĆ
@@ -7252,6 +7252,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             else if (lower.includes('andrzej') || lower.includes('thiel')) slug = 'andrzejthiel';
             else if (lower.includes('zbyszek') || lower.includes('gieron')) slug = 'zbyszekgieron';
             else if (lower.includes('zofia') || lower.includes('dudek')) slug = 'zofiadudek';
+            else if (lower.includes('paweł') || lower.includes('pawel') || lower.includes('murawski')) slug = 'pawelmurawski';
             else if (lower.includes('cezary')) slug = 'cezaryrgowski';
             else slug = lower.replace(/\s+/g, '');
 
@@ -7267,6 +7268,7 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             else if (slug === 'andrzejthiel' || slug === 'andrzej') window.location.href = 'lumina.andrzejthiel.html';
             else if (slug === 'zbyszekgieron' || slug === 'zbyszek') window.location.href = 'lumina.zbyszekgieron.html';
             else if (slug === 'zofiadudek' || slug === 'zofia') window.location.href = 'lumina.zofiadudek.html';
+            else if (slug === 'pawelmurawski' || slug === 'pawel' || slug === 'u_yciezywymbogiem_4231' || slug.includes('murawski')) window.location.href = 'pawelmurawski';
             else if (slug === 'magdalena') window.location.href = 'lumina.magdalena.html';
             else if (slug === 'jolawojcik' || slug === 'jola') window.location.href = 'lumina.jolawojcik.html';
             else if (slug === 'studiodobregoslowa') window.location.href = 'lumina.studiodobregoslowa.html';

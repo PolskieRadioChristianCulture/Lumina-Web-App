@@ -4067,9 +4067,9 @@ export function extractYouTubePlaylistId(url) {
 }
 
 export const LUMINA_HANDLES = {
-    'pawel': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'lumina-profile.html?u=u_yciezywymbogiem_4231', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
-    'pawelmurawski': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'lumina-profile.html?u=u_yciezywymbogiem_4231', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
-    'u_yciezywymbogiem_4231': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'lumina-profile.html?u=u_yciezywymbogiem_4231', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
+    'pawel': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'pawelmurawski', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
+    'pawelmurawski': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'pawelmurawski', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
+    'u_yciezywymbogiem_4231': { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', url: 'pawelmurawski', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność LUMINA' },
     'robert': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
     'bratrobert': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },
     'robertlukaszpio': { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', url: 'lumina-profile.html?u=u_robertukaszpio_5668', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność LUMINA' },

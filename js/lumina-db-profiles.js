@@ -625,6 +625,7 @@ export const PROFILES_DB = {
     'u_yciezywymbogiem_4231': {
         uid: 'NHjYeuO4nxM8fIfEJPHmi9rTQV12',
         slug: 'u_yciezywymbogiem_4231',
+        profileUrl: 'pawelmurawski',
         name: 'Paweł Murawski',
         age: 49,
         gender: 'mezczyzna',
@@ -655,6 +656,7 @@ export const PROFILES_DB = {
     'pawelmurawski': {
         uid: 'NHjYeuO4nxM8fIfEJPHmi9rTQV12',
         slug: 'u_yciezywymbogiem_4231',
+        profileUrl: 'pawelmurawski',
         name: 'Paweł Murawski',
         age: 49,
         city: 'Żywiec, Polska',

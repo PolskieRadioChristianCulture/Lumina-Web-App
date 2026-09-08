@@ -4905,6 +4905,10 @@
                 window.location.replace('lumina.cezaryrgowski.html');
                 if (true) return 'cezaryrgowski';
             }
+            if (slug === 'u_yciezywymbogiem_4231' || slug === 'pawelmurawski' || slug === 'pawel-murawski' || slug === 'pawel' || slug.includes('murawski')) {
+                window.location.replace('pawelmurawski');
+                return 'pawelmurawski';
+            }
             return slug;
         }
 
@@ -4912,6 +4916,21 @@
             const slug = getRequestedUserSlug();
             window._currentProfileSlug = slug; // dla wspólnego window.toggleProfileFollow w lumina-db.js
             if (slug.includes('magdalena') || slug === 'magda') { window.location.replace('lumina.magdalena.html'); return; }
+            if (slug === 'u_yciezywymbogiem_4231' || slug === 'pawelmurawski' || slug === 'pawel-murawski' || slug === 'pawel' || slug.includes('murawski')) {
+                return {
+                    name: 'Paweł Murawski',
+                    age: 49,
+                    city: 'Żywiec, Polska',
+                    denom: 'Protestanckie',
+                    church: 'Nabożeństwa Sobotnie',
+                    worshipDay: 'Sobotnie nabożeństwo',
+                    avatar: 'avatar_pawel_murawski.jpg',
+                    cover: 'lumina_default_cover.jpg',
+                    verified: true,
+                    isMissionAccount: false,
+                    photos: ['avatar_pawel_murawski.jpg']
+                };
+            }
             
             // Twarde zabezpieczenie kanału CC Women
             if (slug.includes('ccwomen') || slug.includes('women') || slug === 'u_ccwomen_9055') {

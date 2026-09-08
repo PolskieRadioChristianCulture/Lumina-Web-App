@@ -340,7 +340,7 @@ export const OMNI_BASE_PROFILES = [
         worshipDay: 'Sobotnie nabożeństwo',
         tags: ['Modlitwa', 'Wierność', 'Wartości', 'Chrześcijaństwo', 'Żywiec', 'Nabożeństwa Sobotnie'],
         avatar: 'avatar_pawel_murawski.jpg',
-        url: 'lumina-profile.html?u=u_yciezywymbogiem_4231',
+        url: 'pawelmurawski',
         type: 'user',
         badge: '✨ Społeczność'
     }
