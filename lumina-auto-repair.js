@@ -10,6 +10,214 @@
 (function(window, document) {
     'use strict';
 
+    // ══════════════════════════════════════════════════════════════════════════
+    // LUMINA INDEXEDDB STORAGE ENGINE (LuminaStorage & LuminaMediaStore)
+    // ══════════════════════════════════════════════════════════════════════════
+    const LuminaStorage = {
+        dbName: 'LuminaStorage',
+        dbVersion: 2,
+        dbPromise: null,
+        memoryFallback: new Map(),
+
+        getDB() {
+            if (!this.dbPromise) {
+                this.dbPromise = new Promise((resolve) => {
+                    if (typeof window === 'undefined' || !window.indexedDB) {
+                        return resolve(null);
+                    }
+                    try {
+                        const req = indexedDB.open(this.dbName, this.dbVersion);
+                        req.onupgradeneeded = (e) => {
+                            const db = e.target.result;
+                            if (!db.objectStoreNames.contains('profiles')) {
+                                db.createObjectStore('profiles');
+                            }
+                            if (!db.objectStoreNames.contains('media')) {
+                                db.createObjectStore('media');
+                            }
+                            if (!db.objectStoreNames.contains('cache')) {
+                                db.createObjectStore('cache');
+                            }
+                        };
+                        req.onsuccess = (e) => resolve(e.target.result);
+                        req.onerror = () => resolve(null);
+                        req.onblocked = () => resolve(null);
+                    } catch (e) {
+                        resolve(null);
+                    }
+                });
+            }
+            return this.dbPromise;
+        },
+
+        async set(storeName, key, value) {
+            if (!key) return false;
+            try {
+                const db = await this.getDB();
+                if (!db) {
+                    this.memoryFallback.set(`${storeName}:${key}`, value);
+                    return true;
+                }
+                return new Promise((resolve) => {
+                    try {
+                        const tx = db.transaction(storeName, 'readwrite');
+                        const store = tx.objectStore(storeName);
+                        const req = store.put(value, key);
+                        req.onsuccess = () => resolve(true);
+                        req.onerror = () => {
+                            this.memoryFallback.set(`${storeName}:${key}`, value);
+                            resolve(false);
+                        };
+                    } catch (e) {
+                        this.memoryFallback.set(`${storeName}:${key}`, value);
+                        resolve(false);
+                    }
+                });
+            } catch (e) {
+                this.memoryFallback.set(`${storeName}:${key}`, value);
+                return false;
+            }
+        },
+
+        async get(storeName, key) {
+            if (!key) return null;
+            try {
+                const db = await this.getDB();
+                if (!db) {
+                    return this.memoryFallback.get(`${storeName}:${key}`) || null;
+                }
+                return new Promise((resolve) => {
+                    try {
+                        const tx = db.transaction(storeName, 'readonly');
+                        const store = tx.objectStore(storeName);
+                        const req = store.get(key);
+                        req.onsuccess = () => resolve(req.result !== undefined ? req.result : (this.memoryFallback.get(`${storeName}:${key}`) || null));
+                        req.onerror = () => resolve(this.memoryFallback.get(`${storeName}:${key}`) || null);
+                    } catch (e) {
+                        resolve(this.memoryFallback.get(`${storeName}:${key}`) || null);
+                    }
+                });
+            } catch (e) {
+                return this.memoryFallback.get(`${storeName}:${key}`) || null;
+            }
+        },
+
+        async remove(storeName, key) {
+            if (!key) return false;
+            this.memoryFallback.delete(`${storeName}:${key}`);
+            try {
+                const db = await this.getDB();
+                if (!db) return true;
+                return new Promise((resolve) => {
+                    try {
+                        const tx = db.transaction(storeName, 'readwrite');
+                        const store = tx.objectStore(storeName);
+                        const req = store.delete(key);
+                        req.onsuccess = () => resolve(true);
+                        req.onerror = () => resolve(false);
+                    } catch (e) {
+                        resolve(false);
+                    }
+                });
+            } catch (e) {
+                return false;
+            }
+        },
+
+        // Helper dla pełnych profili
+        async saveProfile(slugOrUid, profileData) {
+            if (!slugOrUid || !profileData) return false;
+            const norm = String(slugOrUid).trim().toLowerCase();
+            await this.set('profiles', norm, profileData);
+            if (profileData.slug && profileData.slug.toLowerCase() !== norm) {
+                await this.set('profiles', profileData.slug.toLowerCase(), profileData);
+            }
+            if (profileData.uid && profileData.uid.toLowerCase() !== norm) {
+                await this.set('profiles', profileData.uid.toLowerCase(), profileData);
+            }
+            return true;
+        },
+
+        async getProfile(slugOrUid) {
+            if (!slugOrUid) return null;
+            const norm = String(slugOrUid).trim().toLowerCase();
+            let p = await this.get('profiles', norm);
+            if (!p && slugOrUid.includes('_')) {
+                const parts = slugOrUid.split('_');
+                p = await this.get('profiles', parts[parts.length - 1]);
+            }
+            return p;
+        }
+    };
+
+    // Globalne udostępnienie IndexedDB dla całego ekosystemu LUMINA
+    window.LuminaStorage = LuminaStorage;
+    window.LuminaMediaStore = {
+        getDB: () => LuminaStorage.getDB(),
+        setItem: (key, data) => LuminaStorage.set('media', key, data),
+        getItem: (key) => LuminaStorage.get('media', key),
+        removeItem: (key) => LuminaStorage.remove('media', key)
+    };
+    window.__luminaMemoryFallbackStorage = LuminaStorage.memoryFallback;
+
+    // Funkcja sanityzacji profilu dla LocalStorage (usuwa Base64 i wielkie tablice)
+    function sanitizeProfileForLocalStorage(key, profile) {
+        if (!profile || typeof profile !== 'object') return profile;
+        const copy = { ...profile };
+        const slug = (copy.slug || copy.uid || key || '').replace('lumina_profile_', '').toLowerCase();
+
+        // 1. Awatar w Base64 -> IndexedDB
+        if (copy.avatar && typeof copy.avatar === 'string' && (copy.avatar.startsWith('data:image/') || copy.avatar.length > 500)) {
+            LuminaStorage.set('media', `avatar_${slug}`, copy.avatar);
+            if (slug.includes('cezary')) copy.avatar = 'avatar_cezary_official.jpg';
+            else if (slug.includes('wioletta')) copy.avatar = 'avatar_wioletta_official.jpg';
+            else if (slug.includes('andrzej')) copy.avatar = 'avatar_andrzej_thiel.jpg';
+            else copy.avatar = 'lumina_icon.jpg';
+        }
+
+        // 2. Tło profilu (cover) w Base64 -> IndexedDB
+        if (copy.cover && typeof copy.cover === 'string' && (copy.cover.startsWith('data:image/') || copy.cover.length > 500)) {
+            LuminaStorage.set('media', `cover_${slug}`, copy.cover);
+            copy.cover = 'lumina_default_cover.jpg';
+        }
+
+        // 3. Tablica photos
+        if (Array.isArray(copy.photos)) {
+            copy.photos = copy.photos.map((p, idx) => {
+                if (typeof p === 'string' && (p.startsWith('data:image/') || p.length > 500)) {
+                    LuminaStorage.set('media', `photo_${slug}_${idx}`, p);
+                    return 'lumina_default_cover.jpg';
+                }
+                return p;
+            });
+        }
+
+        // 4. Tablica gallery
+        if (Array.isArray(copy.gallery)) {
+            copy.gallery = copy.gallery.map((g, idx) => {
+                if (typeof g === 'string' && (g.startsWith('data:image/') || g.length > 500)) {
+                    LuminaStorage.set('media', `gallery_${slug}_${idx}`, g);
+                    return 'lumina_default_cover.jpg';
+                }
+                return g;
+            });
+        }
+
+        // 5. Posty: ograniczenie do 5 ostatnich, bez osadzonych gigantycznych dataUrl
+        if (Array.isArray(copy.posts) && copy.posts.length > 5) {
+            copy.posts = copy.posts.slice(0, 5).map(post => {
+                const postCopy = { ...post };
+                if (postCopy.image && typeof postCopy.image === 'string' && (postCopy.image.startsWith('data:image/') || postCopy.image.length > 500)) {
+                    postCopy.image = 'lumina_default_cover.jpg';
+                }
+                return postCopy;
+            });
+        }
+
+        return copy;
+    }
+    window.sanitizeProfileForLocalStorage = sanitizeProfileForLocalStorage;
+
     class LuminaAutoRepairEngine {
         constructor() {
             this.version = '1.0.0-enterprise';
@@ -95,8 +303,6 @@
                     return;
                 }
 
-                this.errorCount++;
-
                 const errorMsg = event.message || '';
                 const filename = event.filename || '';
 
@@ -109,12 +315,16 @@
                     errorMsg.includes('has no supported sources') ||
                     errorMsg.includes('Audio player error') ||
                     errorMsg.includes('message channel closed') ||
+                    errorMsg.includes('Audio fingerprint') ||
+                    errorMsg.includes('fingerprint') ||
                     filename.includes('chrome-extension://') ||
                     filename.includes('moz-extension://') ||
                     filename.includes('fingerprint')
                 ) {
                     return;
                 }
+
+                this.errorCount++;
 
                 this._logHealing('INTERCEPTED_RUNTIME_ERROR', {
                     message: errorMsg,
@@ -129,21 +339,24 @@
 
             // Przechwytywanie nieobsłużonych Promise Rejections (np. błędy sieciowe Firestore, odrzucone JSON.parse)
             window.addEventListener('unhandledrejection', (event) => {
-                this.errorCount++;
                 const reason = event.reason || {};
                 const reasonMsg = reason.message || (typeof reason === 'string' ? reason : 'Unknown Promise Rejection');
 
-                // Filtrowanie standardowych anulowanych zapytań (AbortError) oraz błędów brakującego źródła audio
+                // Filtrowanie standardowych anulowanych zapytań (AbortError) oraz błędów brakującego źródła audio / fingerprint
                 if (
                     reasonMsg.includes('AbortError') || 
                     reasonMsg.includes('The play() request was interrupted') ||
                     reasonMsg.includes('no supported source') ||
                     reasonMsg.includes('has no supported sources') ||
-                    reasonMsg.includes('NotSupportedError')
+                    reasonMsg.includes('NotSupportedError') ||
+                    reasonMsg.includes('Audio fingerprint') ||
+                    reasonMsg.includes('fingerprint')
                 ) {
                     event.preventDefault();
                     return;
                 }
+
+                this.errorCount++;
 
                 this._logHealing('INTERCEPTED_PROMISE_REJECTION', {
                     message: reasonMsg,
@@ -156,7 +369,7 @@
         }
 
         // ══════════════════════════════════════════════════════════════════════════
-        // 2. STORAGE CORRUPTION & MEMORY QUOTA SELF-HEALING
+        // 2. STORAGE CORRUPTION & MEMORY QUOTA SELF-HEALING (IndexedDB Hybrid)
         // ══════════════════════════════════════════════════════════════════════════
         _installStorageSelfHealing() {
             // Bezpieczny interceptor Storage.prototype.setItem zabezpieczający przed QuotaExceededError
@@ -173,8 +386,33 @@
             const origSetItem = Storage.prototype.setItem;
 
             Storage.prototype.setItem = function(key, value) {
+                let processedValue = value;
+
+                // 1. Proaktywna sanityzacja profili i dużych grafik przed zapisem w localStorage
+                if (this === window.localStorage && typeof key === 'string' && typeof value === 'string') {
+                    const isProfileKey = key.startsWith('lumina_profile_') || key === 'lumina_current_user_profile' || key === 'lumina_my_profile';
+                    const isMediaKey = key.startsWith('lumina_avatar_') || key.startsWith('lumina_cover_');
+
+                    if (isProfileKey && (value.includes('data:image/') || value.length > 25000)) {
+                        try {
+                            const parsed = JSON.parse(value);
+                            const slug = parsed.slug || parsed.uid || key.replace('lumina_profile_', '');
+                            // Pełna kopia natychmiast trafia bezpiecznie do IndexedDB
+                            LuminaStorage.saveProfile(slug, parsed);
+                            // Wersja lekka do localStorage
+                            const sanitized = sanitizeProfileForLocalStorage(key, parsed);
+                            processedValue = JSON.stringify(sanitized);
+                        } catch(e) {}
+                    } else if (isMediaKey && (value.startsWith('data:image/') || value.length > 30000)) {
+                        // Ciężkie grafiki bezpośrednio do IndexedDB
+                        LuminaStorage.set('media', key, value);
+                        // Do localStorage zapisujemy wyłącznie znacznik, by nie przeciążać limitu 5MB
+                        processedValue = 'indexeddb:' + key;
+                    }
+                }
+
                 try {
-                    origSetItem.call(this, key, value);
+                    origSetItem.call(this, key, processedValue);
                 } catch (err) {
                     const isQuotaError = err && (
                         err.name === 'QuotaExceededError' ||
@@ -187,19 +425,40 @@
                     if (isQuotaError) {
                         self._logHealing('STORAGE_QUOTA_INTERCEPTED', { key, error: err.message }, 'warn');
                         
-                        // Uruchom natychmiastowe czyszczenie pamiątek i buforów
-                        self.pruneStorageCache();
+                        // Uruchom agresywne czyszczenie pamiątek, starych buforów i migrację profili
+                        self.pruneStorageCache(true);
 
+                        // Ponowna próba zapisu
                         try {
-                            origSetItem.call(this, key, value);
+                            origSetItem.call(this, key, processedValue);
                             return;
                         } catch (retryErr) {
-                            // 1. Jeśli wartość to tablica JSON, przytnij ją do najnowszych pozycji
-                            if (typeof value === 'string' && value.trim().startsWith('[')) {
+                            // Jeśli to profil, jeszcze agresywniej zredukuj do absolutnego minimum
+                            if (typeof processedValue === 'string' && processedValue.startsWith('{')) {
                                 try {
-                                    const parsed = JSON.parse(value);
-                                    if (Array.isArray(parsed) && parsed.length > 10) {
-                                        const trimmed = parsed.slice(0, Math.max(10, Math.floor(parsed.length / 2)));
+                                    const p = JSON.parse(processedValue);
+                                    const minimal = {
+                                        uid: p.uid || '',
+                                        slug: p.slug || '',
+                                        name: p.name || 'Użytkownik',
+                                        avatar: p.avatar && !p.avatar.startsWith('data:') ? p.avatar : 'avatar_cezary_official.jpg',
+                                        cover: 'lumina_default_cover.jpg',
+                                        status: p.status || '',
+                                        role: p.role || '',
+                                        job: p.job || ''
+                                    };
+                                    origSetItem.call(this, key, JSON.stringify(minimal));
+                                    self._logHealing('STORAGE_PROFILE_MINIMIZED_FOR_QUOTA', { key });
+                                    return;
+                                } catch(e) {}
+                            }
+
+                            // Jeśli wartość to tablica JSON, przytnij ją do najnowszych pozycji
+                            if (typeof processedValue === 'string' && processedValue.trim().startsWith('[')) {
+                                try {
+                                    const parsed = JSON.parse(processedValue);
+                                    if (Array.isArray(parsed) && parsed.length > 5) {
+                                        const trimmed = parsed.slice(0, 5);
                                         origSetItem.call(this, key, JSON.stringify(trimmed));
                                         self._logHealing('STORAGE_ARRAY_TRIMMED_FOR_QUOTA', { key, originalLength: parsed.length, newLength: trimmed.length });
                                         return;
@@ -207,61 +466,10 @@
                                 } catch (e) {}
                             }
 
-                            // 2. Jeśli wartość to obiekt JSON (np. lumina_profile_...), odchudź go:
-                            if (typeof value === 'string' && value.trim().startsWith('{')) {
-                                try {
-                                    const parsed = JSON.parse(value);
-                                    let modified = false;
-
-                                    // Przytnij posty profilu do maksymalnie 5 najświeższych
-                                    if (Array.isArray(parsed.posts) && parsed.posts.length > 5) {
-                                        parsed.posts = parsed.posts.slice(0, 5);
-                                        modified = true;
-                                    }
-
-                                    // Przenieś duże zdjęcia Base64 (>50KB) do IndexedDB (LuminaMediaStore)
-                                    ['avatar', 'cover'].forEach(prop => {
-                                        if (typeof parsed[prop] === 'string' && parsed[prop].length > 50000) {
-                                            if (window.LuminaMediaStore) {
-                                                window.LuminaMediaStore.setItem(`lumina_${prop}_${parsed.slug || key}`, parsed[prop]);
-                                            }
-                                            parsed[prop] = `indexeddb:lumina_${prop}_${parsed.slug || key}`;
-                                            modified = true;
-                                        }
-                                    });
-
-                                    ['photos', 'gallery'].forEach(arrProp => {
-                                        if (Array.isArray(parsed[arrProp])) {
-                                            parsed[arrProp] = parsed[arrProp].map((img, idx) => {
-                                                if (typeof img === 'string' && img.length > 50000) {
-                                                    const idbKey = `lumina_${arrProp}_${parsed.slug || key}_${idx}`;
-                                                    if (window.LuminaMediaStore) {
-                                                        window.LuminaMediaStore.setItem(idbKey, img);
-                                                    }
-                                                    modified = true;
-                                                    return `indexeddb:${idbKey}`;
-                                                }
-                                                return img;
-                                            });
-                                        }
-                                    });
-
-                                    if (modified) {
-                                        origSetItem.call(this, key, JSON.stringify(parsed));
-                                        self._logHealing('STORAGE_OBJECT_SLIMMED_FOR_QUOTA', { key });
-                                        return;
-                                    }
-                                } catch (objErr) {}
-                            }
-
-                            // 3. Ostateczne głębokie czyszczenie i ponowna próba
-                            self.deepPruneStorage();
-                            try {
-                                origSetItem.call(this, key, value);
-                                return;
-                            } catch (finalErr) {
-                                console.warn('[LUMINA MemoryGuard] ⚠️ Storage limit reached on device for key:', key);
-                            }
+                            // Ostateczny bezpieczny fallback: IndexedDB + pamięć RAM bez rzucania błędu do konsoli
+                            window.__luminaMemoryFallbackStorage.set(key, value);
+                            LuminaStorage.set('cache', key, value);
+                            // Ciche zabezpieczenie zapobiega nieskończonej pętli błędów w Auth State
                         }
                     } else {
                         throw err;
@@ -297,7 +505,28 @@
                         const rawVal = ref.getItem(key);
                         if (!rawVal) return;
 
-                        // Jeśli wartość wygląda na JSON (zaczyna się od { lub [), sprawdź integralność
+                        // 1. Wykrywanie i naprawa nasycenia pamięci przez ciężkie profile (np. lumina_profile_cezaryrgowski)
+                        if (name === 'localStorage') {
+                            const isProfile = key.startsWith('lumina_profile_') || key === 'lumina_current_user_profile' || key === 'lumina_my_profile';
+                            const isMedia = key.startsWith('lumina_avatar_') || key.startsWith('lumina_cover_');
+
+                            if (isProfile && (rawVal.length > 25000 || rawVal.includes('data:image/'))) {
+                                try {
+                                    const parsed = JSON.parse(rawVal);
+                                    const slug = parsed.slug || parsed.uid || key.replace('lumina_profile_', '');
+                                    LuminaStorage.saveProfile(slug, parsed);
+                                    const sanitized = sanitizeProfileForLocalStorage(key, parsed);
+                                    ref.setItem(key, JSON.stringify(sanitized));
+                                    this._logHealing('OVERSIZED_PROFILE_MIGRATED_TO_INDEXEDDB', { key, size: rawVal.length }, 'info');
+                                } catch(e) {}
+                            } else if (isMedia && (rawVal.startsWith('data:image/') || rawVal.length > 30000)) {
+                                LuminaStorage.set('media', key, rawVal);
+                                ref.removeItem(key);
+                                this._logHealing('OVERSIZED_MEDIA_MIGRATED_TO_INDEXEDDB', { key, size: rawVal.length }, 'info');
+                            }
+                        }
+
+                        // 2. Weryfikacja integralności struktury JSON
                         const trimmed = rawVal.trim();
                         if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
                             try {
@@ -328,15 +557,15 @@
                 localStorage.setItem(testKey, '1');
                 localStorage.removeItem(testKey);
             } catch(quotaErr) {
-                this.pruneStorageCache();
+                this.pruneStorageCache(true);
             }
         }
 
         /**
          * Bezpieczne czyszczenie zbędnego cache i przedawnionych wpisów przy braku miejsca
          */
-        pruneStorageCache() {
-            this._logHealing('STORAGE_QUOTA_CLEANUP', 'Czyszczenie tymczasowej pamięci podręcznej i buforów', 'warn');
+        pruneStorageCache(aggressive = false) {
+            this._logHealing('STORAGE_QUOTA_CLEANUP', `Czyszczenie pamięci podręcznej (aggressive: ${aggressive})`, 'warn');
             try {
                 const keysToRemove = [];
 
@@ -344,71 +573,46 @@
                     const k = localStorage.key(i);
                     if (!k) continue;
 
-                    // Usuwanie tymczasowych kopii zapasowych, śmieci i testów
+                    // Usuwanie tymczasowych kopii zapasowych, śmieci i uszkodzonych kluczy
                     if (k.includes('_temp_') || k.includes('_cache_feed_') || k.startsWith('_bak_corrupt_') || k.includes('__quota_test__')) {
                         keysToRemove.push(k);
+                    } else if (k.startsWith('lumina_avatar_') || k.startsWith('lumina_cover_')) {
+                        // Zabezpieczenie w IndexedDB i usunięcie z localStorage
+                        try {
+                            const val = localStorage.getItem(k);
+                            if (val && (val.startsWith('data:image/') || val.length > 20000)) {
+                                LuminaStorage.set('media', k, val);
+                                keysToRemove.push(k);
+                            }
+                        } catch(e) {}
                     } else if (k.startsWith('lumina_chat_') || k.startsWith('lumina_feed_')) {
                         // Przytnij zbyt obszerne wpisy czatu / feedu
                         try {
                             const val = localStorage.getItem(k);
-                            if (val && val.length > 100000) { // > ~100KB
+                            if (val && val.length > (aggressive ? 30000 : 80000)) {
                                 const parsed = JSON.parse(val);
-                                if (Array.isArray(parsed) && parsed.length > 20) {
-                                    localStorage.setItem(k, JSON.stringify(parsed.slice(0, 20)));
+                                if (Array.isArray(parsed) && parsed.length > 10) {
+                                    localStorage.setItem(k, JSON.stringify(parsed.slice(0, 10)));
+                                } else if (aggressive) {
+                                    keysToRemove.push(k);
                                 }
                             }
                         } catch(e) {}
-                    } else if (k.startsWith('lumina_avatar_') || k.startsWith('lumina_cover_')) {
-                        // Jeśli w localStorage leży wielkie zdjęcie Base64, przenieś do IndexedDB i zwolnij localStorage
+                    } else if (aggressive && (k.startsWith('lumina_profile_') || k === 'lumina_current_user_profile' || k === 'lumina_my_profile')) {
                         try {
                             const val = localStorage.getItem(k);
-                            if (val && val.length > 80000) {
-                                if (window.LuminaMediaStore) {
-                                    window.LuminaMediaStore.setItem(k, val);
-                                }
-                                keysToRemove.push(k);
+                            if (val && (val.length > 20000 || val.includes('data:image/'))) {
+                                const parsed = JSON.parse(val);
+                                const slug = parsed.slug || parsed.uid || k.replace('lumina_profile_', '');
+                                LuminaStorage.saveProfile(slug, parsed);
+                                const sanitized = sanitizeProfileForLocalStorage(k, parsed);
+                                localStorage.setItem(k, JSON.stringify(sanitized));
                             }
                         } catch(e) {}
                     }
                 }
 
                 keysToRemove.forEach(k => {
-                    try { localStorage.removeItem(k); } catch(e){}
-                });
-            } catch(e) {}
-        }
-
-        /**
-         * Agresywne czyszczenie pamięci podręcznej w razie krytycznego wyczerpania limitu (Storage Quota)
-         */
-        deepPruneStorage() {
-            this._logHealing('STORAGE_DEEP_PRUNE', 'Awaryjne odzyskiwanie limitu pamięci przeglądarki', 'warn');
-            try {
-                const toRemove = [];
-                for (let i = 0; i < localStorage.length; i++) {
-                    const k = localStorage.key(i);
-                    if (!k) continue;
-
-                    // Usuń zduplikowane, archiwalne kopie i dane pomocnicze
-                    if (k.startsWith('lumina_cache_') || k.startsWith('lumina_draft_') || k.includes('_backup_')) {
-                        toRemove.push(k);
-                    } else {
-                        // Przenieś wszelkie duże wpisy > 50KB do IndexedDB
-                        try {
-                            const val = localStorage.getItem(k);
-                            if (val && val.length > 50000) {
-                                if (window.LuminaMediaStore) {
-                                    window.LuminaMediaStore.setItem('idb_' + k, val);
-                                }
-                                if (k.startsWith('lumina_avatar_') || k.startsWith('lumina_cover_')) {
-                                    toRemove.push(k);
-                                }
-                            }
-                        } catch(e) {}
-                    }
-                }
-
-                toRemove.forEach(k => {
                     try { localStorage.removeItem(k); } catch(e){}
                 });
             } catch(e) {}
@@ -696,8 +900,11 @@
             const startTime = performance.now();
             let repairedItemsCount = 0;
 
-            // 1. Naprawa pamięci podręcznej i uszkodzonych JSON
+            // 1. Naprawa pamięci podręcznej i uszkodzonych JSON oraz agresywna migracja do IndexedDB
             this.healStorage();
+            if (showToastAlert) {
+                this.pruneStorageCache(true);
+            }
             repairedItemsCount++;
 
             // 2. Naprawa zablokowanego scrolla i osieroconych warstw
@@ -902,7 +1109,9 @@
 
     // Utworzenie globalnych singletonów
     window.LuminaAutoRepair = new LuminaAutoRepairEngine();
-    window.LuminaSelfHeal = window.LuminaAutoRepair; // Alias ułatwiający dostęp
+    window.luminaAutoRepair = window.LuminaAutoRepair; // Alias ułatwiający dostęp
+    window.LuminaSelfHeal = window.LuminaAutoRepair;
+    window.repairAll = (showToast = true) => window.LuminaAutoRepair.repairAll(showToast);
     window.LuminaMemoryGuard = new LuminaMemoryGuardEngine(window.LuminaAutoRepair);
     window.safeCall = (fn, fallback, ctx) => window.LuminaAutoRepair.safe(fn, fallback, ctx);
 

@@ -2566,23 +2566,31 @@
             const targetSlug = (this.currentEditingSlug || this.slug || 'profile_default').toLowerCase();
 
             this.compressAndProcessImage(file, 800, 0.85, async (dataUrl) => {
-                // Offload to IndexedDB
-                if (window.LuminaMediaStore) {
+                // Save heavy media to IndexedDB
+                if (window.LuminaStorage) {
+                    await window.LuminaStorage.set('media', 'lumina_avatar_' + targetSlug, dataUrl);
+                } else if (window.LuminaMediaStore) {
                     await window.LuminaMediaStore.setItem('lumina_avatar_' + targetSlug, dataUrl);
                 }
                 try {
-                    if (dataUrl.length < 100000) {
-                        localStorage.setItem('lumina_avatar_' + targetSlug, dataUrl);
-                    }
+                    localStorage.setItem('lumina_avatar_' + targetSlug, 'indexeddb:lumina_avatar_' + targetSlug);
                 } catch(e) {}
 
                 const cur = this.getCurrentData(targetSlug);
                 const updated = { ...cur, avatar: dataUrl, slug: targetSlug };
+
+                // Full profile to IndexedDB
+                if (window.LuminaStorage) {
+                    await window.LuminaStorage.saveProfile(targetSlug, updated);
+                }
+
+                // Sanitized profile to localStorage
                 try {
-                    const safeUpdated = { ...updated };
-                    if (dataUrl.length > 200000) safeUpdated.avatar = 'indexeddb:lumina_avatar_' + targetSlug;
+                    const safeUpdated = typeof window.sanitizeProfileForLocalStorage === 'function'
+                        ? window.sanitizeProfileForLocalStorage(targetSlug, updated)
+                        : updated;
                     localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(safeUpdated));
-                } catch(err) {}
+                } catch(e) {}
 
                 // Save to Firestore Cloud
                 if (window.LuminaDB?.saveProfileToCloud) {
@@ -2621,18 +2629,27 @@
             const targetSlug = (this.currentEditingSlug || this.slug || 'profile_default').toLowerCase();
 
             this.compressAndProcessImage(file, 1400, 0.85, async (dataUrl) => {
-                if (window.LuminaMediaStore) {
+                if (window.LuminaStorage) {
+                    await window.LuminaStorage.set('media', 'lumina_cover_' + targetSlug, dataUrl);
+                } else if (window.LuminaMediaStore) {
                     await window.LuminaMediaStore.setItem('lumina_cover_' + targetSlug, dataUrl);
                 }
                 try {
-                    localStorage.setItem('lumina_cover_' + targetSlug, dataUrl);
+                    localStorage.setItem('lumina_cover_' + targetSlug, 'indexeddb:lumina_cover_' + targetSlug);
                 } catch(err) {}
 
                 const cur = this.getCurrentData(targetSlug);
                 const updated = { ...cur, cover: dataUrl, slug: targetSlug };
+
+                // Full profile to IndexedDB
+                if (window.LuminaStorage) {
+                    await window.LuminaStorage.saveProfile(targetSlug, updated);
+                }
+
                 try {
-                    const safeUpdated = { ...updated };
-                    if (dataUrl.length > 500000) safeUpdated.cover = 'indexeddb:lumina_cover_' + targetSlug;
+                    const safeUpdated = typeof window.sanitizeProfileForLocalStorage === 'function'
+                        ? window.sanitizeProfileForLocalStorage(targetSlug, updated)
+                        : updated;
                     localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(safeUpdated));
                 } catch(err) {}
 
@@ -2662,19 +2679,17 @@
                 const gallery = cur.gallery || [];
                 gallery.push(dataUrl);
                 const updated = { ...cur, gallery: gallery, slug: targetSlug };
+
+                if (window.LuminaStorage) {
+                    await window.LuminaStorage.saveProfile(targetSlug, updated);
+                }
+
                 try {
-                    const safeUpdated = { ...updated };
-                    if (Array.isArray(safeUpdated.gallery)) {
-                        safeUpdated.gallery = safeUpdated.gallery.map((g, idx) => {
-                            if (typeof g === 'string' && g.length > 200000) {
-                                if (window.LuminaMediaStore) window.LuminaMediaStore.setItem(`lumina_gallery_${targetSlug}_${idx}`, g);
-                                return `indexeddb:lumina_gallery_${targetSlug}_${idx}`;
-                            }
-                            return g;
-                        });
-                    }
+                    const safeUpdated = typeof window.sanitizeProfileForLocalStorage === 'function'
+                        ? window.sanitizeProfileForLocalStorage(targetSlug, updated)
+                        : updated;
                     localStorage.setItem('lumina_profile_' + targetSlug, JSON.stringify(safeUpdated));
-                } catch(err) {}
+                } catch(e) {}
 
                 if (window.LuminaDB?.saveProfileToCloud) {
                     await window.LuminaDB.saveProfileToCloud(targetSlug, updated);

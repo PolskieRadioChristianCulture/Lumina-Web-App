@@ -242,58 +242,12 @@ export const CEZARY_ADMIN_PROFILE = {
     ]
 };
 
-export function getStorageSafeProfile(profile, keyHint = '') {
-    if (!profile || typeof profile !== 'object') return profile;
-    const safe = { ...profile };
-    const hint = safe.slug || safe.uid || keyHint || 'user';
-    if (typeof safe.avatar === 'string' && safe.avatar.length > 50000) {
-        if (typeof window !== 'undefined' && window.LuminaMediaStore) {
-            window.LuminaMediaStore.setItem(`lumina_avatar_${hint}`, safe.avatar);
-        }
-        safe.avatar = `indexeddb:lumina_avatar_${hint}`;
-    }
-    if (typeof safe.cover === 'string' && safe.cover.length > 50000) {
-        if (typeof window !== 'undefined' && window.LuminaMediaStore) {
-            window.LuminaMediaStore.setItem(`lumina_cover_${hint}`, safe.cover);
-        }
-        safe.cover = `indexeddb:lumina_cover_${hint}`;
-    }
-    if (Array.isArray(safe.photos)) {
-        safe.photos = safe.photos.map((p, i) => {
-            if (typeof p === 'string' && p.length > 50000) {
-                if (typeof window !== 'undefined' && window.LuminaMediaStore) {
-                    window.LuminaMediaStore.setItem(`lumina_photos_${hint}_${i}`, p);
-                }
-                return `indexeddb:lumina_photos_${hint}_${i}`;
-            }
-            return p;
-        });
-    }
-    if (Array.isArray(safe.gallery)) {
-        safe.gallery = safe.gallery.map((g, i) => {
-            if (typeof g === 'string' && g.length > 50000) {
-                if (typeof window !== 'undefined' && window.LuminaMediaStore) {
-                    window.LuminaMediaStore.setItem(`lumina_gallery_${hint}_${i}`, g);
-                }
-                return `indexeddb:lumina_gallery_${hint}_${i}`;
-            }
-            return g;
-        });
-    }
-    if (Array.isArray(safe.posts) && safe.posts.length > 10) {
-        safe.posts = safe.posts.slice(0, 10);
-    }
-    return safe;
-}
-
 export function setupAdminCezarySession() {
     try {
-        const safeProfile = getStorageSafeProfile(CEZARY_ADMIN_PROFILE, 'cezaryrgowski');
-        const serializedProfile = JSON.stringify(safeProfile);
         localStorage.setItem('lumina_current_user', JSON.stringify(CEZARY_ADMIN_USER));
-        localStorage.setItem('lumina_current_user_profile', serializedProfile);
-        localStorage.setItem('lumina_my_profile', serializedProfile);
-        localStorage.setItem('lumina_profile_cezaryrgowski', serializedProfile);
+        localStorage.setItem('lumina_current_user_profile', JSON.stringify(CEZARY_ADMIN_PROFILE));
+        localStorage.setItem('lumina_my_profile', JSON.stringify(CEZARY_ADMIN_PROFILE));
+        localStorage.setItem('lumina_profile_cezaryrgowski', JSON.stringify(CEZARY_ADMIN_PROFILE));
         localStorage.setItem('lumina_user_session', 'active');
         localStorage.setItem('lumina_user_email', 'nazirczarkes@gmail.com');
         localStorage.setItem('lumina_current_user_slug', 'cezaryrgowski');
@@ -535,12 +489,18 @@ if (auth) {
                     }
 
                     try {
-                        const safeProfile = getStorageSafeProfile(currentProfileState, user.uid);
-                        const serialized = JSON.stringify(safeProfile);
-                        localStorage.setItem('lumina_current_user_profile', serialized);
-                        localStorage.setItem('lumina_my_profile', serialized);
+                        if (window.LuminaStorage && currentProfileState.slug) {
+                            window.LuminaStorage.saveProfile(currentProfileState.slug, currentProfileState);
+                        }
+                        const safeProfile = typeof window.sanitizeProfileForLocalStorage === 'function'
+                            ? window.sanitizeProfileForLocalStorage(currentProfileState.slug, currentProfileState)
+                            : currentProfileState;
+                        const safeJson = JSON.stringify(safeProfile);
+
+                        localStorage.setItem('lumina_current_user_profile', safeJson);
+                        localStorage.setItem('lumina_my_profile', safeJson);
                         if (currentProfileState.slug) {
-                            localStorage.setItem('lumina_profile_' + currentProfileState.slug, serialized);
+                            localStorage.setItem('lumina_profile_' + currentProfileState.slug, safeJson);
                             sessionStorage.setItem('lumina_auth_owner_' + currentProfileState.slug, 'true');
                         }
                     } catch(e) {}
@@ -615,12 +575,18 @@ if (auth) {
                     }
 
                     try {
-                        const safeProfile = getStorageSafeProfile(currentProfileState, cleanSlug || user.uid);
-                        const serialized = JSON.stringify(safeProfile);
-                        localStorage.setItem('lumina_current_user_profile', serialized);
-                        localStorage.setItem('lumina_my_profile', serialized);
-                        localStorage.setItem('lumina_profile_' + user.uid, serialized);
-                        if (cleanSlug) localStorage.setItem('lumina_profile_' + cleanSlug, serialized);
+                        if (window.LuminaStorage) {
+                            window.LuminaStorage.saveProfile(cleanSlug || user.uid, currentProfileState);
+                        }
+                        const safeProfile = typeof window.sanitizeProfileForLocalStorage === 'function'
+                            ? window.sanitizeProfileForLocalStorage(cleanSlug || user.uid, currentProfileState)
+                            : currentProfileState;
+                        const safeJson = JSON.stringify(safeProfile);
+
+                        localStorage.setItem('lumina_current_user_profile', safeJson);
+                        localStorage.setItem('lumina_my_profile', safeJson);
+                        localStorage.setItem('lumina_profile_' + user.uid, safeJson);
+                        if (cleanSlug) localStorage.setItem('lumina_profile_' + cleanSlug, safeJson);
                         sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
                         if (cleanSlug) sessionStorage.setItem('lumina_auth_owner_' + cleanSlug, 'true');
                     } catch(e) {}
@@ -744,8 +710,6 @@ export async function loginWithGoogle() {
         const user = result.user;
         let existingProfile = null;
         const isRadioCC = (user.email && (user.email.toLowerCase() === 'radiochristianculture@gmail.com' || user.email.toLowerCase().startsWith('radiochristianculture') || user.email.includes('bibliaaudio'))) || (user.displayName && (user.displayName.toLowerCase() === 'christian culture' || user.displayName.toLowerCase().includes('biblia audio') || user.displayName.toLowerCase().includes('polskie radio cc')));
-        const isZbyszek = (user.displayName && (user.displayName.toLowerCase().includes('zbyszek') || user.displayName.toLowerCase().includes('zbigniew')) && (user.displayName.toLowerCase().includes('giero') || user.displayName.toLowerCase().includes('gieron'))) || (user.email && (user.email.toLowerCase().includes('zbyszek') || user.email.toLowerCase().includes('gieron')));
-        const isZofia = (user.displayName && user.displayName.toLowerCase().includes('zofia') && user.displayName.toLowerCase().includes('dudek')) || (user.email && (user.email.toLowerCase().includes('zofia') && user.email.toLowerCase().includes('dudek')));
         
         try {
             const docSnap = await getDoc(doc(activeDb, 'lumina_profiles', user.uid));
@@ -764,25 +728,6 @@ export async function loginWithGoogle() {
                     try {
                         await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
                     } catch(e) {}
-                } else if (isZbyszek && existingProfile.slug !== 'zbyszekgieron') {
-                    existingProfile.slug = 'zbyszekgieron';
-                    existingProfile.name = existingProfile.name || 'Zbyszek Gieroń';
-                    existingProfile.avatar = 'avatar_zbyszek_gieron.jpg';
-                    existingProfile.job = 'Profil Misyjny • Świadectwo & Wiara';
-                    existingProfile.role = 'Profil Misyjny 🕊️✨';
-                    existingProfile.isMissionAccount = true;
-                    try {
-                        await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
-                    } catch(e) {}
-                } else if (isZofia && existingProfile.slug !== 'zofiadudek') {
-                    existingProfile.slug = 'zofiadudek';
-                    existingProfile.name = existingProfile.name || 'Zofia Dudek';
-                    existingProfile.avatar = 'avatar_zofia_dudek.jpg';
-                    existingProfile.job = 'Członkini Społeczności LUMINA • Modlitwa & Wiara 🌸';
-                    existingProfile.role = 'Wspólnota Wiary 🌸🕊️';
-                    try {
-                        await setDoc(doc(activeDb, 'lumina_profiles', user.uid), existingProfile, { merge: true });
-                    } catch(e) {}
                 }
             }
         } catch(e) {}
@@ -795,36 +740,34 @@ export async function loginWithGoogle() {
             if (isRadioCC) cleanSlug = 'radiocc';
             else if (isCezary) cleanSlug = 'cezaryrgowski';
             else if (isWioletta) cleanSlug = 'wiolettarogowska';
-            else if (isZbyszek) cleanSlug = 'zbyszekgieron';
-            else if (isZofia) cleanSlug = 'zofiadudek';
             else cleanSlug = 'u_' + (user.displayName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + user.uid.substring(0, 4).toLowerCase();
             
-            const isMission = isRadioCC || isZbyszek || (user.displayName && user.displayName.toLowerCase().includes('lumina')) || (cleanSlug.includes('lumina') && !cleanSlug.startsWith('u_'));
+            const isMission = isRadioCC || (user.displayName && user.displayName.toLowerCase().includes('lumina')) || (cleanSlug.includes('lumina') && !cleanSlug.startsWith('u_'));
             const isLetterAvatar = !user.photoURL || user.photoURL.includes('googleusercontent.com/a/');
-            const userAvatar = (isLetterAvatar ? null : user.photoURL) || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : (isZbyszek ? 'avatar_zbyszek_gieron.jpg' : (isZofia ? 'avatar_zofia_dudek.jpg' : (isRadioCC ? 'logo_radio_cc.jpg' : 'lumina_icon.jpg')))));
-            const hasRealFace = isCezary || isWioletta || isZbyszek || isZofia || (!isLetterAvatar && typeof isLuminaRealPhoto === 'function' && isLuminaRealPhoto(userAvatar));
-            const isProfileDone = hasRealFace && (isCezary || isWioletta || isZbyszek || isZofia);
+            const userAvatar = (isLetterAvatar ? null : user.photoURL) || (isCezary ? 'avatar_cezary_official.jpg' : (isWioletta ? 'avatar_wioletta_official.jpg' : (isRadioCC ? 'logo_radio_cc.jpg' : 'lumina_icon.jpg')));
+            const hasRealFace = isCezary || isWioletta || (!isLetterAvatar && typeof isLuminaRealPhoto === 'function' && isLuminaRealPhoto(userAvatar));
+            const isProfileDone = hasRealFace && (isCezary || isWioletta);
             
             existingProfile = {
                 uid: user.uid,
                 slug: cleanSlug,
-                name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : (isZbyszek ? 'Zbyszek Gieroń' : (isZofia ? 'Zofia Dudek' : 'Użytkownik LUMINA'))))),
+                name: user.displayName || (isRadioCC ? 'Christian Culture' : (isCezary ? 'Cezary Rogowski' : (isWioletta ? 'Wioletta Rogowska' : 'Użytkownik LUMINA'))),
                 email: user.email || '',
-                age: (isRadioCC || isMission) ? null : (isCezary ? 51 : (isWioletta ? 50 : (isZofia ? 62 : null))),
-                city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Polska'),
-                gender: (isWioletta || isZofia) ? 'kobieta' : 'mezczyzna',
-                lookingFor: (isWioletta || isZofia) ? 'mezczyzna' : 'kobieta',
+                age: (isRadioCC || isMission) ? null : (isCezary ? 51 : (isWioletta ? 50 : null)),
+                city: isRadioCC ? 'Polska' : ((isCezary || isWioletta) ? 'Ostrowiec Świętokrzyski, Polska' : 'Warszawa, Polska'),
+                gender: isWioletta ? 'kobieta' : (isCezary ? 'mezczyzna' : 'kobieta'),
+                lookingFor: isWioletta ? 'mezczyzna' : 'kobieta',
                 denom: 'Rzymskokatolickie',
                 church: isRadioCC ? 'Christian Culture' : 'Wspólnota Chrześcijańska',
-                job: isRadioCC ? 'Misja & Radio Christian Culture' : (isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : (isZbyszek ? 'Profil Misyjny • Świadectwo & Wiara' : (isZofia ? 'Członkini Społeczności LUMINA • Modlitwa & Wiara 🌸' : 'Społeczność LUMINA ✨')))),
-                status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Chrześcijanin')),
+                job: isRadioCC ? 'Misja & Radio Christian Culture' : (isCezary ? 'Założyciel Christian Culture' : (isWioletta ? 'Współzałożycielka Christian Culture' : 'Społeczność LUMINA ✨')),
+                status: isRadioCC ? 'Oficjalne Konto' : (isCezary ? 'Żonaty' : (isWioletta ? 'Mężatka' : 'Panna/Kawaler')),
                 isMissionAccount: isRadioCC || isMission || false,
                 hasRealPhoto: hasRealFace,
                 profileCompleted: isProfileDone,
                 needsProfileCompletion: !isProfileDone && !isRadioCC && !isMission,
-                verse: isRadioCC ? '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”' : (isCezary ? '„Ja i mój dom służyć będziemy Panu.”' : (isZbyszek ? '„Nasza bowiem ojczyzna jest w niebie, skąd też jako Zbawiciela wyczekujemy Pana naszego Jezusa Chrystusa.”' : (isZofia ? '„Pan jest pasterzem moim, niczego mi nie braknie.”' : '„Wszystko mogę w Tym, który mnie umacnia”'))),
-                verseRef: isRadioCC ? '— Ewangelia wg św. Marka 16, 15' : (isCezary ? '— Księga Jozuego 24, 15' : (isZbyszek ? '— List do Filipian 3, 20' : (isZofia ? '— Psalm 23, 1' : 'Flp 4, 13'))),
-                bio: isRadioCC ? 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.' : (isCezary ? 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture.' : (isWioletta ? 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej rodziny zakorzenionej w Bogu.' : (isZbyszek ? 'Chrześcijanin oczekujący na powtórne przyjście Jezusa Chrystusa - bo ten świat nie jest domem mym! :) Dzielę się świadectwem, Słowem Bożym i materiałami z Dysku Google.' : (isZofia ? 'Cieszę się obecnością w chrześcijańskiej społeczności LUMINA. Moim fundamentem jest codzienna modlitwa, zaufanie Bogu i życie w Bożej miłości.' : 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA.')))),
+                verse: isRadioCC ? '„Idźcie na cały świat i głoście Ewangelię wszelkiemu stworzeniu!”' : (isCezary ? '„Ja i mój dom służyć będziemy Panu.”' : '„Wszystko mogę w Tym, który mnie umacnia”'),
+                verseRef: isRadioCC ? '— Ewangelia wg św. Marka 16, 15' : (isCezary ? '— Księga Jozuego 24, 15' : 'Flp 4, 13'),
+                bio: isRadioCC ? 'Oficjalny profil Misji i Radia Christian Culture w portalu LUMINA. Budujemy Królestwo Boże poprzez muzykę chwały, Słowo Boże i wartościowe relacje.' : (isCezary ? 'Moja relacja z Bogiem to fundament każdego dnia. Razem z moją ukochaną żoną Wiolettą tworzymy i rozwijamy misję Christian Culture oraz Radio Christian Culture.' : (isWioletta ? 'Współtworzę z moim mężem Cezarym dzieło Christian Culture i Radio CC. Moje serce bije dla budowania silnej rodziny zakorzenionej w Bogu.' : 'Szczęść Boże! Cieszę się, że dołączam do społeczności LUMINA. Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie.')),
                 avatar: userAvatar,
                 cover: 'lumina_default_cover.jpg',
                 coverPosY: '50%',
@@ -870,12 +813,10 @@ export async function loginWithGoogle() {
             };
             localStorage.setItem('lumina_current_user', JSON.stringify(uData));
             localStorage.setItem('lumina_user_session', 'active');
-            const safeProfile = getStorageSafeProfile(existingProfile, existingProfile.slug || user.uid);
-            const serialized = JSON.stringify(safeProfile);
-            localStorage.setItem('lumina_profile_' + user.uid, serialized);
-            if (existingProfile.slug) localStorage.setItem('lumina_profile_' + existingProfile.slug, serialized);
-            localStorage.setItem('lumina_current_user_profile', serialized);
-            localStorage.setItem('lumina_my_profile', serialized);
+            localStorage.setItem('lumina_profile_' + user.uid, JSON.stringify(existingProfile));
+            if (existingProfile.slug) localStorage.setItem('lumina_profile_' + existingProfile.slug, JSON.stringify(existingProfile));
+            localStorage.setItem('lumina_current_user_profile', JSON.stringify(existingProfile));
+            localStorage.setItem('lumina_my_profile', JSON.stringify(existingProfile));
             sessionStorage.setItem('lumina_auth_owner_' + user.uid, 'true');
             if (existingProfile.slug) sessionStorage.setItem('lumina_auth_owner_' + existingProfile.slug, 'true');
         } catch(e) {}
@@ -1299,8 +1240,14 @@ export async function getProfileFromCloud(slugOrUid) {
             const querySnap = await getDocs(q);
             if (!querySnap.empty) {
                 const cloudProfile = querySnap.docs[0].data();
+                if (window.LuminaStorage) {
+                    window.LuminaStorage.saveProfile(slugOrUid, cloudProfile);
+                }
                 try {
-                    localStorage.setItem(localKey, JSON.stringify(cloudProfile));
+                    const safe = typeof window.sanitizeProfileForLocalStorage === 'function'
+                        ? window.sanitizeProfileForLocalStorage(localKey, cloudProfile)
+                        : cloudProfile;
+                    localStorage.setItem(localKey, JSON.stringify(safe));
                 } catch(e) {}
                 return cloudProfile;
             }
@@ -1309,13 +1256,26 @@ export async function getProfileFromCloud(slugOrUid) {
             const docSnap = await getDoc(doc(db, 'lumina_profiles', slugOrUid));
             if (docSnap.exists()) {
                 const cloudProfile = docSnap.data();
+                if (window.LuminaStorage) {
+                    window.LuminaStorage.saveProfile(slugOrUid, cloudProfile);
+                }
                 try {
-                    localStorage.setItem(localKey, JSON.stringify(cloudProfile));
+                    const safe = typeof window.sanitizeProfileForLocalStorage === 'function'
+                        ? window.sanitizeProfileForLocalStorage(localKey, cloudProfile)
+                        : cloudProfile;
+                    localStorage.setItem(localKey, JSON.stringify(safe));
                 } catch(e) {}
                 return cloudProfile;
             }
         }
-        return localData ? JSON.parse(localData) : null;
+        if (localData) {
+            try { return JSON.parse(localData); } catch(e) {}
+        }
+        if (window.LuminaStorage) {
+            const idbProf = await window.LuminaStorage.getProfile(slugOrUid);
+            if (idbProf) return idbProf;
+        }
+        return null;
     } catch(err) {
         console.warn(`Lumina getProfileFromCloud [${slugOrUid}] error:`, err.message);
         return null;
@@ -1356,13 +1316,21 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
         profileData.cover = 'lumina_default_cover.jpg';
     }
 
-    // Save to localStorage under all relevant keys using safe lean profile
+    // Save full profile to IndexedDB (unlimited storage)
+    if (window.LuminaStorage) {
+        window.LuminaStorage.saveProfile(slugOrUid, profileData);
+    }
+
+    // Save sanitized lightweight version to localStorage (< 3KB)
     try {
-        const safeProfile = getStorageSafeProfile(profileData, slugOrUid);
-        const serialized = JSON.stringify(safeProfile);
-        localStorage.setItem(`lumina_profile_${slugOrUid}`, serialized);
-        if (profileData.slug) localStorage.setItem(`lumina_profile_${profileData.slug}`, serialized);
-        if (profileData.uid) localStorage.setItem(`lumina_profile_${profileData.uid}`, serialized);
+        const safeProfile = typeof window.sanitizeProfileForLocalStorage === 'function'
+            ? window.sanitizeProfileForLocalStorage(slugOrUid, profileData)
+            : profileData;
+        const safeJson = JSON.stringify(safeProfile);
+
+        localStorage.setItem(`lumina_profile_${slugOrUid}`, safeJson);
+        if (profileData.slug && profileData.slug !== slugOrUid) localStorage.setItem(`lumina_profile_${profileData.slug}`, safeJson);
+        if (profileData.uid && profileData.uid !== slugOrUid) localStorage.setItem(`lumina_profile_${profileData.uid}`, safeJson);
         
         const curUserRaw = localStorage.getItem('lumina_current_user_profile');
         let isCurrent = false;
@@ -1377,7 +1345,7 @@ export async function saveProfileToCloud(slugOrUid, profileData) {
             isCurrent = true;
         }
         if (isCurrent) {
-            localStorage.setItem('lumina_current_user_profile', serialized);
+            localStorage.setItem('lumina_current_user_profile', safeJson);
         }
         sessionStorage.setItem(`lumina_auth_owner_${slugOrUid}`, 'true');
         if (profileData.slug) sessionStorage.setItem(`lumina_auth_owner_${profileData.slug}`, 'true');
