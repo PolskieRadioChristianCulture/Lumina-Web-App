@@ -2690,8 +2690,18 @@ A może w swoim zabieganiu nie znajdujesz czasu na modlitwę? Może nawet myśli
                     const posts = snap.docs.map(d => ({ id: d.id, data: d.data() }));
                     
                     function getPostTimeValue(d) {
-                        if (d.createdAtTimestamp) return Number(d.createdAtTimestamp);
-                        if (d.publishedAt) return new Date(d.publishedAt).getTime();
+                        if (d.publishedAt) {
+                            const t = new Date(d.publishedAt).getTime();
+                            if (!isNaN(t) && t > 0) return t;
+                        }
+                        if (d.createdAtTimestamp) {
+                            if (typeof d.createdAtTimestamp.toMillis === 'function') return d.createdAtTimestamp.toMillis();
+                            if (typeof d.createdAtTimestamp.toDate === 'function') return d.createdAtTimestamp.toDate().getTime();
+                            const num = Number(d.createdAtTimestamp);
+                            if (!isNaN(num) && num > 0) return num;
+                            const t = new Date(d.createdAtTimestamp).getTime();
+                            if (!isNaN(t) && t > 0) return t;
+                        }
                         if (d.time) {
                             const match = d.time.match(/(\d{1,2})\s+([A-ZĄĆĘŁŃÓŚŹŻ]+)\s+(\d{4})/i);
                             if (match) {
