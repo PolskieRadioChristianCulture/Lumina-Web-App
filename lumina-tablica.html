@@ -187,7 +187,7 @@
     <script type="module" src="lumina-core.js?v=4.1.0_20260830"></script>
     <script type="module" src="lumina-security.js?v=4.1.0_20260830"></script>
     <script type="module" src="lumina-tablica.js?v=4.1.0_20260830"></script>
-    <script type="module" src="lumina-i18n.js?v=4.1.0_20260830"></script>
+    <script type="module" src="lumina-i18n.js?v=4.3.0_20260908_CCG_FIX"></script>
     <script src="lumina-terms-modal.js?v=4.1.0_20260830"></script>
     <script src="lumina-sharing-suite.js?v=4.1.0_20260830"></script>
     <script src="lumina-pwa-installer.js?v=4.2.0_20260907"></script>
@@ -3418,10 +3418,10 @@
                             </button>
                         </div>
                         <div class="drawer-lang-pills" style="display:flex; gap:5px;">
-                            <button type="button" class="drawer-lang-pill active" data-lang="pl" onclick="setLuminaLanguage('pl')" title="Polski" style="flex:1; min-height:44px; min-width:44px; border-radius:10px; border:1.5px solid #f59e0b; background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff; font-weight:800; font-size:0.80rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; touch-action:manipulation;">PL</button>
-                            <button type="button" class="drawer-lang-pill" data-lang="en" onclick="setLuminaLanguage('en')" title="English" style="flex:1; min-height:44px; min-width:44px; border-radius:10px; border:1.5px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.06); color:#cbd5e1; font-weight:800; font-size:0.80rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; touch-action:manipulation;">EN</button>
-                            <button type="button" class="drawer-lang-pill" data-lang="es" onclick="setLuminaLanguage('es')" title="Español" style="flex:1; min-height:44px; min-width:44px; border-radius:10px; border:1.5px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.06); color:#cbd5e1; font-weight:800; font-size:0.80rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; touch-action:manipulation;">ES</button>
-                            <button type="button" class="drawer-lang-pill" data-lang="fr" onclick="setLuminaLanguage('fr')" title="Français" style="flex:1; min-height:44px; min-width:44px; border-radius:10px; border:1.5px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.06); color:#cbd5e1; font-weight:800; font-size:0.80rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; touch-action:manipulation;">FR</button>
+                            <button type="button" class="drawer-lang-pill" data-lang="pl" title="Polski">PL</button>
+                            <button type="button" class="drawer-lang-pill" data-lang="en" title="English">EN</button>
+                            <button type="button" class="drawer-lang-pill" data-lang="es" title="Español">ES</button>
+                            <button type="button" class="drawer-lang-pill" data-lang="fr" title="Français">FR</button>
                         </div>
                     </div>
                     <a href="index.html" class="drawer-nav-item" onclick="closeTopNavDrawer()"><i class="fa-solid fa-house" style="color:#38bdf8;"></i> <span data-i18n="nav_home">Strona Główna Radia</span></a>
@@ -3466,7 +3466,7 @@
             <!-- 1. Karta Główna: Patronat Misyjny CC & Zrzutka.pl (Format 9:16) -->
             <div class="card-916 patron-card-916">
                 <div class="card-916-header">
-                    <span class="badge-patron" style="color:#f43f5e;"><i class="fa-solid fa-heart"></i> Patronat Misyjny CC</span>
+                    <span class="badge-patron" style="color:#f43f5e;"><i class="fa-solid fa-heart"></i> <span data-i18n="patron_badge">Patronat Misyjny CC</span></span>
                 </div>
                 <div class="card-916-media-wrap">
                     <img src="patronat_misyjny_916.jpg" alt="Patronat Misyjny Christian Culture" class="card-916-img" loading="lazy" decoding="async">
@@ -3475,14 +3475,14 @@
                             <img loading="lazy" decoding="async" src="avatar_cezary_official.jpg" alt="Cezary Rogowski" class="mini-patron-avatar" style="margin-right:-8px; z-index:2; width:34px; height:34px; border:2px solid #facc15; border-radius:50%;">
                             <img loading="lazy" decoding="async" src="avatar_wioletta_official.jpg" alt="Wioletta Rogowska" class="mini-patron-avatar" style="z-index:1; width:34px; height:34px; border:2px solid #ec4899; border-radius:50%;">
                         </div>
-                        <div class="card-916-title">Wspieraj Dzieło Boże</div>
-                        <div class="card-916-sub">Twoje wsparcie pozwala nam nadawać Radio CC 24/7, nagrywać rozważania i rozwijać portal bez reklam.</div>
+                        <div class="card-916-title" data-i18n="support_gods_work">Wspieraj Dzieło Boże</div>
+                        <div class="card-916-sub" data-i18n="patron_desc">Twoje wsparcie pozwala nam nadawać Radio CC 24/7, nagrywać rozważania i rozwijać portal bez reklam.</div>
                         <div style="display:flex; flex-direction:column; gap:6px; width:100%;">
                             <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" class="btn-916-action" style="background:linear-gradient(135deg, #e11d48, #be123c); text-decoration:none;">
-                                <i class="fa-solid fa-heart" style="margin-right:6px;"></i> Zostań Patronem (Patronite)
+                                <i class="fa-solid fa-heart" style="margin-right:6px;"></i> <span data-i18n="btn_patronite">Zostań Patronem (Patronite)</span>
                             </a>
                             <a href="https://zrzutka.pl/3bbxzn" target="_blank" rel="noopener noreferrer" class="btn-916-action" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); text-decoration:none;">
-                                <i class="fa-solid fa-hand-holding-dollar" style="color:#facc15; margin-right:6px;"></i> Złóż Darowiznę (Zrzutka.pl)
+                                <i class="fa-solid fa-hand-holding-dollar" style="color:#facc15; margin-right:6px;"></i> <span data-i18n="btn_zrzutka">Złóż Darowiznę (Zrzutka.pl)</span>
                             </a>
                         </div>
                     </div>
@@ -3651,7 +3651,7 @@
             <!-- Header Banner -->
             <header class="board-header" id="boardHeader">
                 <h1 class="board-title" onclick="toggleBoardHeader()" title="Rozwiń / Zwiń" style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
-                    Tablica Portalu LUMINA 
+                    <span data-i18n="board_main_title">Tablica Portalu LUMINA</span> 
                     <i class="fa-solid fa-chevron-down" id="boardHeaderChevron" style="font-size:0.8rem; opacity:0; transition:all 0.3s;"></i>
                 </h1>
                 
@@ -3709,7 +3709,7 @@
                             <span id="daypartTimeBadge" style="font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:10px; background:rgba(250,204,21,0.15); color:#facc15; border:1px solid rgba(250,204,21,0.3);"></span>
                         </div>
                         <div class="daypart-info-title" id="daypartTitle">
-                            <i class="fa-solid fa-sun" style="color:#f59e0b;" id="daypartIcon"></i> <span id="daypartName">Pasmo Poranne & Śniadaniowa na Żywo</span>
+                            <i class="fa-solid fa-sun" style="color:#f59e0b;" id="daypartIcon"></i> <span id="daypartName" data-i18n="morning_live_stream_title">Pasmo Poranne & Śniadaniowa na Żywo</span>
                         </div>
                         <div class="daypart-info-sub" id="daypartDesc">
                             Trwa transmisja: Śniadaniowa na Żywo • Rozważanie Cezarego Rogowskiego „Dobrze, że jesteś”
@@ -3718,10 +3718,10 @@
                 </div>
                 <div class="daypart-actions">
                     <button type="button" class="btn-daypart-radio" onclick="if (typeof toggleRadio === 'function') toggleRadio(); else if (typeof LuminaRadio !== 'undefined') LuminaRadio.toggle();" title="Słuchaj Radia CC na Żywo">
-                        <i class="fa-solid fa-radio"></i> <span id="daypartRadioBtnText">Radio CC Live</span>
+                        <i class="fa-solid fa-radio"></i> <span id="daypartRadioBtnText" data-i18n="radio_live_btn">Radio CC Live</span>
                     </button>
                     <a href="cctv24-pl.html" target="_blank" rel="noopener noreferrer" class="btn-daypart-radio" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; box-shadow:none; text-decoration:none;" title="Otwórz Program Telewizyjny">
-                        <i class="fa-solid fa-tv"></i> Program TV
+                        <i class="fa-solid fa-tv"></i> <span data-i18n="tv_program_btn">Program TV</span>
                     </a>
                 </div>
             </div>
@@ -3735,10 +3735,10 @@
                 </div>
                 <div class="sort-tabs-group">
                     <button type="button" class="sort-tab-btn active" id="sortBtnSmart" onclick="setFeedSortMode('smart_daypart', this)" title="Inteligentne dopasowanie postów do pory dnia i ramówki">
-                        <i class="fa-solid fa-wand-magic-sparkles" style="color:#facc15;"></i> Dopasowane do Ramówki <span class="sort-smart-badge">SMART</span>
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color:#facc15;"></i> <span data-i18n="sort_smart">Dopasowane do Ramówki</span> <span class="sort-smart-badge">SMART</span>
                     </button>
                     <button type="button" class="sort-tab-btn" id="sortBtnNewest" onclick="setFeedSortMode('newest', this)" title="Najnowsze wpisy chronologicznie">
-                        <i class="fa-solid fa-clock"></i> Najnowsze
+                        <i class="fa-solid fa-clock"></i> <span data-i18n="sort_newest">Najnowsze</span>
                     </button>
                     <button type="button" class="sort-tab-btn" id="sortBtnPopular" onclick="setFeedSortMode('popular', this)" title="Najpopularniejsze wpisy (najwięcej Amen i serc)">
                         <i class="fa-solid fa-fire" style="color:#f43f5e;"></i> Popularne

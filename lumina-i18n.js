@@ -76,6 +76,29 @@ export const LUMINA_TRANSLATIONS = {
         audio_unmute: "Włącz dźwięk",
         audio_muted: "Wyciszono",
 
+        // ── Sekcje Hero i Tablicy ──
+        hero_badge: "Chrześcijańska Społeczność Relacji & Wartości",
+        hero_title: "LUMINA • Chrześcijańska Sieć Relacji",
+        hero_subtitle: "Poznaj ludzi, którzy chcą budować relacje oparte na wierze i wartościach. Głębokie rozmowy • Świadectwa • Modlitwa • Małżeństwo",
+        search_placeholder: "Szukaj po imieniu, nazwisku, mieście, powołaniu...",
+        word_of_the_day: "SŁOWO DNIA",
+        btn_read_devotion: "Czytaj Rozważanie",
+        btn_board: "Tablica",
+        board_main_title: "Tablica Portalu LUMINA",
+        patron_badge: "Patronat Misyjny CC",
+        support_gods_work: "Wspieraj Dzieło Boże",
+        patron_desc: "Twoje wsparcie pozwala nam nadawać Radio CC 24/7, nagrywać rozważania i rozwijać portal bez reklam.",
+        btn_patronite: "Zostań Patronem (Patronite)",
+        btn_zrzutka: "Złóż Darowiznę (Zrzutka.pl)",
+        shop_header: "SKLEP CC • KOLEKCJA ALLELUJA",
+        sort_smart: "Dopasowane do Ramówki SMART",
+        sort_newest: "Najnowsze",
+        sort_gdrive: "Z Dysku Google",
+        sort_video: "Tylko Wideo",
+        morning_live_stream_title: "Pasmo Poranne & Śniadaniowa na Żywo",
+        radio_live_btn: "Radio CC Live",
+        tv_program_btn: "ProgramTV",
+
         // ── Wspólne Przyciski & Powiadomienia ──
         btn_close: "Zamknij",
         btn_save: "Zapisz",
@@ -159,6 +182,29 @@ export const LUMINA_TRANSLATIONS = {
         video_play: "Play video",
         audio_unmute: "Unmute Audio",
         audio_muted: "Muted",
+
+        // ── Hero & Board Sections ──
+        hero_badge: "Christian Community of Relationships & Values",
+        hero_title: "LUMINA • Christian Relationship Network",
+        hero_subtitle: "Meet people who want to build relationships based on faith and values. Deep conversations • Testimonies • Prayer • Marriage",
+        search_placeholder: "Search by name, city, calling, values...",
+        word_of_the_day: "WORD OF THE DAY",
+        btn_read_devotion: "Read Reflection",
+        btn_board: "Board",
+        board_main_title: "LUMINA Community Board",
+        patron_badge: "CC Mission Patronage",
+        support_gods_work: "Support God's Work",
+        patron_desc: "Your support allows us to broadcast Radio CC 24/7, record reflections and develop the portal ad-free.",
+        btn_patronite: "Become a Patron (Patronite)",
+        btn_zrzutka: "Make a Donation (Zrzutka.pl)",
+        shop_header: "CC STORE • ALLELUIA COLLECTION",
+        sort_smart: "Matched to Schedule SMART",
+        sort_newest: "Newest",
+        sort_gdrive: "From Google Drive",
+        sort_video: "Video Only",
+        morning_live_stream_title: "Morning Stream & Breakfast Live",
+        radio_live_btn: "Radio CC Live",
+        tv_program_btn: "TV Schedule",
 
         // ── Common Buttons & Notifications ──
         btn_close: "Close",
@@ -244,6 +290,29 @@ export const LUMINA_TRANSLATIONS = {
         audio_unmute: "Activar Sonido",
         audio_muted: "Silenciado",
 
+        // ── Secciones Hero y Muro ──
+        hero_badge: "Comunidad Cristiana de Relaciones y Valores",
+        hero_title: "LUMINA • Red Cristiana de Relaciones",
+        hero_subtitle: "Conoce personas que desean construir relaciones basadas en la fe y los valores. Conversaciones profundas • Testimonios • Oración • Matrimonio",
+        search_placeholder: "Buscar por nombre, ciudad, vocación, valores...",
+        word_of_the_day: "PALABRA DEL DÍA",
+        btn_read_devotion: "Leer Reflexión",
+        btn_board: "Muro",
+        board_main_title: "Muro del Portal LUMINA",
+        patron_badge: "Patronato Misionero CC",
+        support_gods_work: "Apoya la Obra de Dios",
+        patron_desc: "Tu apoyo nos permite transmitir Radio CC 24/7, grabar reflexiones y desarrollar el portal sin publicidad.",
+        btn_patronite: "Conviértete en Patrocinador (Patronite)",
+        btn_zrzutka: "Hacer una Donación (Zrzutka.pl)",
+        shop_header: "TIENDA CC • COLECCIÓN ALELUYA",
+        sort_smart: "Ajustado a la Programación SMART",
+        sort_newest: "Más recientes",
+        sort_gdrive: "Desde Google Drive",
+        sort_video: "Solo Video",
+        morning_live_stream_title: "Bloque Matutino y Desayuno En Vivo",
+        radio_live_btn: "Radio CC En Vivo",
+        tv_program_btn: "Guía TV",
+
         // ── Botones Comunes y Notificaciones ──
         btn_close: "Cerrar",
         btn_save: "Guardar",
@@ -327,6 +396,29 @@ export const LUMINA_TRANSLATIONS = {
         video_play: "Lire la vidéo",
         audio_unmute: "Activer le son",
         audio_muted: "Son coupé",
+
+        // ── Sections Hero et Mur ──
+        hero_badge: "Communauté Chrétienne de Relations et Valeurs",
+        hero_title: "LUMINA • Réseau Chrétien de Relations",
+        hero_subtitle: "Rencontrez des personnes qui souhaitent bâtir des relations fondées sur la foi et les valeurs. Conversations profondes • Témoignages • Prière • Mariage",
+        search_placeholder: "Rechercher par nom, ville, vocation, valeurs...",
+        word_of_the_day: "PAROLE DU JOUR",
+        btn_read_devotion: "Lire la Méditation",
+        btn_board: "Mur",
+        board_main_title: "Mur du Portail LUMINA",
+        patron_badge: "Parrainage Missionnaire CC",
+        support_gods_work: "Soutenez l'Œuvre de Dieu",
+        patron_desc: "Votre soutien nous permet de diffuser Radio CC 24/7, d'enregistrer des méditations et de développer le portail sans publicité.",
+        btn_patronite: "Devenez Parrain (Patronite)",
+        btn_zrzutka: "Faire un Don (Zrzutka.pl)",
+        shop_header: "BOUTIQUE CC • COLLECTION ALLÉLUIA",
+        sort_smart: "Adapté à la Grille SMART",
+        sort_newest: "Plus récents",
+        sort_gdrive: "Depuis Google Drive",
+        sort_video: "Vidéo Uniquement",
+        morning_live_stream_title: "Matinée & Petit-Déjeuner En Direct",
+        radio_live_btn: "Radio CC En Direct",
+        tv_program_btn: "Programme TV",
 
         // ── Boutons Communs & Notifications ──
         btn_close: "Fermer",
@@ -432,7 +524,16 @@ export const LUMINA_TRANSLATIONS = {
         'nav.authLogin': 'nav_login',
         'nav.support': 'nav_support',
         'nav.supportTitle': 'nav_support_title',
-        'nav.backToLumina': 'nav_back_to_lumina'
+        'nav.backToLumina': 'nav_back_to_lumina',
+        'board.mainTitle': 'board_main_title',
+        'board.sortSmart': 'sort_smart',
+        'board.sortNewest': 'sort_newest',
+        'board.sortGDrive': 'sort_gdrive',
+        'board.sortVideo': 'sort_video',
+        'hero.title': 'hero_title',
+        'hero.subtitle': 'hero_subtitle',
+        'hero.badge': 'hero_badge',
+        'search.placeholder': 'search_placeholder'
     };
 
     function translateKey(key, fallback = '') {
@@ -486,6 +587,15 @@ export const LUMINA_TRANSLATIONS = {
             }
         });
 
+        // Tytuły i podpowiedzi: [data-i18n-title]
+        const titleElements = rootEl.querySelectorAll('[data-i18n-title]');
+        titleElements.forEach(el => {
+            const key = el.getAttribute('data-i18n-title');
+            if (!key) return;
+            const text = translateKey(key);
+            if (text) el.setAttribute('title', text);
+        });
+
         // Placeholdery formularzy: [data-i18n-placeholder]
         const placeholderElements = rootEl.querySelectorAll('[data-i18n-placeholder]');
         placeholderElements.forEach(el => {
@@ -493,15 +603,6 @@ export const LUMINA_TRANSLATIONS = {
             if (!key) return;
             const text = translateKey(key);
             if (text) el.setAttribute('placeholder', text);
-        });
-
-        // Tytuły (tooltips): [data-i18n-title]
-        const titleElements = rootEl.querySelectorAll('[data-i18n-title]');
-        titleElements.forEach(el => {
-            const key = el.getAttribute('data-i18n-title');
-            if (!key) return;
-            const text = translateKey(key);
-            if (text) el.setAttribute('title', text);
         });
 
         // Etykiety dostępności: [data-i18n-aria-label]
@@ -632,7 +733,6 @@ export const LUMINA_TRANSLATIONS = {
                     <button type="button" 
                             class="nav-lang-badge" 
                             id="luminaGlobalLangBtn" 
-                            onclick="toggleLanguage()"
                             data-i18n-title="nav_lang_toggle" 
                             title="${translateKey('nav_lang_toggle', 'Zmień język')}"
                             style="font-size:0.75rem; font-weight:800; color:#facc15; background:rgba(250,204,21,0.15); padding:3px 8px; border-radius:8px; border:1px solid rgba(250,204,21,0.35); cursor:pointer; touch-action:manipulation;">
@@ -640,13 +740,38 @@ export const LUMINA_TRANSLATIONS = {
                     </button>
                 </div>
                 <div class="drawer-lang-pills">
-                    <button type="button" class="drawer-lang-pill ${currentLang === 'pl' ? 'active' : ''}" data-lang="pl" onclick="setLuminaLanguage('pl')" title="Polski">PL</button>
-                    <button type="button" class="drawer-lang-pill ${currentLang === 'en' ? 'active' : ''}" data-lang="en" onclick="setLuminaLanguage('en')" title="English">EN</button>
-                    <button type="button" class="drawer-lang-pill ${currentLang === 'es' ? 'active' : ''}" data-lang="es" onclick="setLuminaLanguage('es')" title="Español">ES</button>
-                    <button type="button" class="drawer-lang-pill ${currentLang === 'fr' ? 'active' : ''}" data-lang="fr" onclick="setLuminaLanguage('fr')" title="Français">FR</button>
+                    <button type="button" class="drawer-lang-pill" data-lang="pl" title="Polski">PL</button>
+                    <button type="button" class="drawer-lang-pill" data-lang="en" title="English">EN</button>
+                    <button type="button" class="drawer-lang-pill" data-lang="es" title="Español">ES</button>
+                    <button type="button" class="drawer-lang-pill" data-lang="fr" title="Français">FR</button>
                 </div>
             `;
             drawer.insertBefore(langSection, drawer.firstChild);
+        }
+
+        // Pancerne powiązanie zdarzeń dla każdego urządzenia
+        const allPills = drawer.querySelectorAll('.drawer-lang-pill');
+        allPills.forEach(pill => {
+            const lang = pill.getAttribute('data-lang');
+            if (!lang) return;
+            pill.onclick = function(e) {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                setLanguage(lang);
+            };
+        });
+
+        const badgeBtn = drawer.querySelector('#luminaGlobalLangBtn');
+        if (badgeBtn) {
+            badgeBtn.onclick = function(e) {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                toggleLanguage();
+            };
         }
 
         updateSwitcherUI();
@@ -663,8 +788,16 @@ export const LUMINA_TRANSLATIONS = {
             const lang = pill.getAttribute('data-lang');
             if (lang === currentLang) {
                 pill.classList.add('active');
+                pill.style.setProperty('border', '1.5px solid #f59e0b', 'important');
+                pill.style.setProperty('background', 'linear-gradient(135deg, #f59e0b, #d97706)', 'important');
+                pill.style.setProperty('color', '#ffffff', 'important');
+                pill.style.setProperty('box-shadow', '0 2px 10px rgba(245, 158, 11, 0.4)', 'important');
             } else {
                 pill.classList.remove('active');
+                pill.style.setProperty('border', '1.5px solid rgba(255, 255, 255, 0.14)', 'important');
+                pill.style.setProperty('background', 'rgba(255, 255, 255, 0.06)', 'important');
+                pill.style.setProperty('color', '#cbd5e1', 'important');
+                pill.style.setProperty('box-shadow', 'none', 'important');
             }
         });
 
@@ -717,6 +850,8 @@ export const LUMINA_TRANSLATIONS = {
     // Aliasy dla wstecznej kompatybilności
     global.toggleLanguage = toggleLanguage;
     global.setLuminaLanguage = setLanguage;
+    global.setLanguage = setLanguage;
+    global.changeLanguage = setLanguage;
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
