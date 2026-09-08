@@ -360,11 +360,12 @@ export const PROFILES_DB = {
                 authorAvatar: 'avatar_zbyszek_gieron.jpg',
                 authorRole: 'Profil Misyjny 🕊️✨',
                 time: 'Dzisiaj • 🕊️ Misja & Świadectwo',
-                text: 'Chrześcijanin oczekujący na powtórne przyjście Jezusa Chrystusa - bo ten świat nie jest domem mym! :) Zapraszam do mojego pierwszego wpisu z Facebooka oraz do śledzenia publikacji formacyjnych.',
-                fbIframe: 'https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fpermalink.php%3Fstory_fbid%3Dpfbid0wrgmawnCGcCx2ojZbJPfEPVGn3kaeAjaA1XgVDZj7AALHDpWtWAsovzpNw5xJC4Ql%26id%3D100018961423282&show_text=true&width=500',
+                text: '<12> ➖ Czy znasz brakujące SŁOWO ? ❓\n\n✝️ Źródło cytatu 👉 HiperBiblia\nWpisz do wyszukiwarki słowo: HiperBiblia 👉 poznaj narzędzie do studiowania Pisma.\n\n💎 Główne funkcje strony HiperBiblia:\n• Porównywarka przekładów\n• Przypisy i komentarze\n• Czytnik\n• Wyszukiwarka\n• Interlinia\n• Leksykony\n• Kody Stronga\n• Zapytaj AI\n• Audio 💎',
+                fbIframe: null,
+                fbUrl: 'https://www.facebook.com/permalink.php?story_fbid=pfbid0wrgmawnCGcCx2ojZbJPfEPVGn3kaeAjaA1XgVDZj7AALHDpWtWAsovzpNw5xJC4Ql&id=100018961423282',
                 likes: 52,
                 amen: 64,
-                image: null
+                image: 'post_zbyszek_hiperbiblia.jpg'
             }
         ]
     },
