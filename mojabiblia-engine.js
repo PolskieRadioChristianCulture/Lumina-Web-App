@@ -390,8 +390,8 @@
             <!-- Przekład gładki (UBG) -->
             <div class="mb-verse-smooth-text">${v.text.UBG}</div>
 
-            <!-- Bloki wyrazowe interlinearne -->
-            <div class="mb-words-container ${data.originalLang === 'Hebrew' ? 'is-hebrew' : 'is-greek'}">
+            <!-- Bloki wyrazowe interlinearne (Hebrajski RTL / Greka LTR) -->
+            <div class="mb-words-container ${(data.originalLang && data.originalLang.toLowerCase().includes('hebrew')) ? 'is-hebrew' : 'is-greek'}">
         `;
 
         if (v.interlinear && v.interlinear.length > 0) {

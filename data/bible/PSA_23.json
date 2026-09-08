@@ -1,68 +1,78 @@
 {
   "bookId": "PSA",
-  "bookName": "Księga Psalmów",
+  "bookName": "Psalmy",
   "shortPl": "Ps",
   "chapter": 23,
   "originalLang": "Hebrew",
-  "totalVerses": 6,
-  "audioZenoStream": "https://stream.zeno.fm/imo45hqnshyuv",
-  "commentaryTitle": "Psalm Dawidowy: Pan Dobrym Pasterzem (Pieśń Ufności)",
+  "totalVerses": 7,
+  "commentaryTitle": "Psalm Pasterski – Bóg moim Pasterzem",
   "verses": [
     {
-      "verse": 1,
+      "verse": 0,
       "text": {
-        "UBG": "PAN jest moim pasterzem, niczego mi nie zabraknie.",
-        "BW": "Pan jest pasterzem moim, niczego mi nie braknie.",
-        "BT": "Pan jest moim pasterzem, nie brak mi niczego.",
-        "BG": "Pan jest pasterzem moim, na niczem mi nie zejdzie."
+        "UBG": "Nagłówek masorecki: Dawida.",
+        "BW": "Nagłówek masorecki: Dawida.",
+        "BT": "Nagłówek masorecki: Dawida.",
+        "BG": "Nagłówek masorecki: Dawida."
       },
       "interlinear": [
         {
           "original": "מִזְמ֥וֹר",
-          "translit": "mizmôr",
+          "translit": "miz.Mor",
           "strong": "H4210",
-          "morph": "N-ms",
-          "gloss": "Psalm",
+          "morph": "HNcmsa",
+          "gloss": "a psalm",
           "lemma": "מִזְמוֹר"
         },
         {
           "original": "לְדָוִ֑ד",
-          "translit": "ləDāwid",
+          "translit": "le.da.Vid",
           "strong": "H1732",
-          "morph": "Prep-l | N-pr-m",
-          "gloss": "Dawidowy.",
-          "lemma": "דָּוִד"
-        },
+          "morph": "Npm",
+          "gloss": "of",
+          "lemma": "ל"
+        }
+      ]
+    },
+    {
+      "verse": 1,
+      "text": {
+        "UBG": "Pan jest moim pasterzem, niczego mi nie zabraknie.",
+        "BW": "Pan jest moim pasterzem, niczego mi nie zabraknie.",
+        "BT": "Pan jest moim pasterzem, niczego mi nie zabraknie.",
+        "BG": "Pan jest moim pasterzem, niczego mi nie zabraknie."
+      },
+      "interlinear": [
         {
           "original": "יְהוָ֥ה",
-          "translit": "Yahweh",
+          "translit": "Yah.weh",
           "strong": "H3068",
-          "morph": "N-pr-dei",
-          "gloss": "PAN",
-          "lemma": "יְהוָה"
+          "morph": "HNpt",
+          "gloss": "Yahweh",
+          "lemma": "יהוה"
         },
         {
           "original": "רֹ֝עִ֗י",
-          "translit": "rō‘î",
+          "translit": "ro.'I",
           "strong": "H7462",
-          "morph": "V-Qal-Ptcp-msc | Pro-1cs",
-          "gloss": "Pasterzem moim,",
+          "morph": "Sp1bs",
+          "gloss": "is shepherd",
           "lemma": "רָעָה"
         },
         {
           "original": "לֹ֣א",
-          "translit": "lō’",
+          "translit": "lo'",
           "strong": "H3808",
-          "morph": "Adv-Neg",
-          "gloss": "nie",
+          "morph": "HTn",
+          "gloss": "not",
           "lemma": "לֹא"
         },
         {
           "original": "אֶחְסָֽר",
-          "translit": "’eḥsār",
+          "translit": "'ech.Sar",
           "strong": "H2637",
-          "morph": "V-Qal-Imperf-1cs",
-          "gloss": "zabraknie mi.",
+          "morph": "HVqi1cs",
+          "gloss": "I lack",
           "lemma": "חָסֵר"
         }
       ]
@@ -70,58 +80,66 @@
     {
       "verse": 2,
       "text": {
-        "UBG": "Daje mi leżeć na zielonych pastwiskach, prowadzi mnie nad spokojne wody.",
-        "BW": "Na niwach zielonych pasie mnie, Nad wody spokojne prowadzi mnie.",
-        "BT": "Pozwala mi leżeć na zielonych pastwiskach. Prowadzi mnie nad wody, gdzie mogę odpocząć:",
-        "BG": "Na paszach zielonych pasie mię; do wód cichych prowadzi mię."
+        "UBG": "Sprawia, że kładę się na zielonych pastwiskach, prowadzi mnie nad spokojne wody.",
+        "BW": "Sprawia, że kładę się na zielonych pastwiskach, prowadzi mnie nad spokojne wody.",
+        "BT": "Sprawia, że kładę się na zielonych pastwiskach, prowadzi mnie nad spokojne wody.",
+        "BG": "Sprawia, że kładę się na zielonych pastwiskach, prowadzi mnie nad spokojne wody."
       },
       "interlinear": [
         {
-          "original": "בִּנְא֣וֹת",
-          "translit": "bin’ôt",
+          "original": "בִּנְא֣וֹת",
+          "translit": "bin.'ot",
           "strong": "H4999",
-          "morph": "Prep-b | N-fpc",
-          "gloss": "Na pastwiskach",
-          "lemma": "נָאָה"
+          "morph": "Ncfpc",
+          "gloss": "w",
+          "lemma": "ב"
         },
         {
-          "original": "דֶּ֭שֶׁא",
-          "translit": "deše’",
+          "original": "דֶּ֭שֶׁא",
+          "translit": "De.she'",
           "strong": "H1877",
-          "morph": "N-ms",
-          "gloss": "zielonych",
-          "lemma": "דֶּשֶׁא"
+          "morph": "HNcmsa",
+          "gloss": "grass",
+          "lemma": "דֶּ֫שֶׁא"
         },
         {
-          "original": "יַרְבִּיצֵ֑נִי",
-          "translit": "yarbîṣēnî",
+          "original": "יַרְבִּיצֵ֑נִי",
+          "translit": "yar.bi.Tze.ni",
           "strong": "H7257",
-          "morph": "V-Hiph-Imperf-3ms | Pro-1cs",
-          "gloss": "daje mi spocząć,",
+          "morph": "Sp1bs",
+          "gloss": "he makes lie down",
           "lemma": "רָבַץ"
         },
         {
-          "original": "עַל־מֵ֖י",
-          "translit": "‘al-mê",
+          "original": "עַל־",
+          "translit": "'al-",
+          "strong": "H5921",
+          "morph": "HR",
+          "gloss": "at",
+          "lemma": "עַל"
+        },
+        {
+          "original": "מֵ֖י",
+          "translit": "mei",
           "strong": "H4325",
-          "morph": "Prep | N-mpc",
-          "gloss": "nad wody",
-          "lemma": "מַיִם"
+          "morph": "HNcmpc",
+          "gloss": "waters of",
+          "lemma": "מַי"
         },
         {
           "original": "מְנֻח֣וֹת",
-          "translit": "mənuḥôt",
+          "translit": "me.nu.Chot",
           "strong": "H4496",
-          "morph": "N-fpc",
-          "gloss": "ciche",
+          "morph": "HNcfpa",
+          "gloss": "rests",
           "lemma": "מְנוּחָה"
         },
         {
           "original": "יְנַהֲלֵֽנִי",
-          "translit": "yənahălēnî",
+          "translit": "ye.na.ha.Le.ni",
           "strong": "H5095",
-          "morph": "V-Piel-Imperf-3ms | Pro-1cs",
-          "gloss": "prowadzi mnie.",
+          "morph": "Sp1bs",
+          "gloss": "he leads",
           "lemma": "נָהַל"
         }
       ]
@@ -129,165 +147,197 @@
     {
       "verse": 3,
       "text": {
-        "UBG": "Pokrzepia moją duszę, prowadzi mnie ścieżkami sprawiedliwości ze względu na swoje imię.",
-        "BW": "Duszę moją pokrzepia. Prowadzi mnie ścieżkami sprawiedliwości Ze względu na imię swoje.",
-        "BT": "orzeźwia moją duszę. Wiedzie mnie po właściwych ścieżkach przez wzgląd na swoje imię.",
-        "BG": "Duszę moję ochładza; prowadzi mię ścieżkami sprawiedliwości dla imienia swego."
+        "UBG": "Posila moją duszę, prowadzi mnie ścieżkami sprawiedliwości ze względu na swoje imię.",
+        "BW": "Posila moją duszę, prowadzi mnie ścieżkami sprawiedliwości ze względu na swoje imię.",
+        "BT": "Posila moją duszę, prowadzi mnie ścieżkami sprawiedliwości ze względu na swoje imię.",
+        "BG": "Posila moją duszę, prowadzi mnie ścieżkami sprawiedliwości ze względu na swoje imię."
       },
       "interlinear": [
         {
-          "original": "נַפְשִׁ֥י",
-          "translit": "napšî",
+          "original": "נַפְשִׁ֥י",
+          "translit": "naf.Shi",
           "strong": "H5315",
-          "morph": "N-fsc | Pro-1cs",
-          "gloss": "Duszę moją",
-          "lemma": "נֶפֶשׁ"
+          "morph": "Sp1bs",
+          "gloss": "self",
+          "lemma": "נֶ֫פֶשׁ"
         },
         {
           "original": "יְשׁוֹבֵ֑ב",
-          "translit": "yəšôbēb",
+          "translit": "ye.sho.Vev",
           "strong": "H7725",
-          "morph": "V-Polel-Imperf-3ms",
-          "gloss": "pokrzepia / odnawia,",
+          "morph": "HVpi3ms",
+          "gloss": "he restores",
           "lemma": "שׁוּב"
         },
         {
-          "original": "יַנְחֵ֥נִי",
-          "translit": "yanḥēnî",
+          "original": "יַֽנְחֵ֥נִי",
+          "translit": "yan.Che.ni",
           "strong": "H5148",
-          "morph": "V-Hiph-Imperf-3ms | Pro-1cs",
-          "gloss": "prowadzi mnie",
+          "morph": "Sp1bs",
+          "gloss": "he guides",
           "lemma": "נָחָה"
         },
         {
-          "original": "בְמַעְגְּלֵי־צֶ֝֗דֶק",
-          "translit": "bəma‘gəlê-ṣedeq",
+          "original": "בְמַעְגְּלֵי־",
+          "translit": "ve.ma'.ge.lei-",
           "strong": "H4570",
-          "morph": "Prep-b | N-mpc | N-ms",
-          "gloss": "ścieżkami sprawiedliwości",
-          "lemma": "מַעְגָּל"
+          "morph": "Ncmpc",
+          "gloss": "w",
+          "lemma": "ב"
+        },
+        {
+          "original": "צֶ֝֗דֶק",
+          "translit": "Tze.dek",
+          "strong": "H6664",
+          "morph": "HNcmsa",
+          "gloss": "righteousness",
+          "lemma": "צֶ֫דֶק"
         },
         {
           "original": "לְמַ֣עַן",
-          "translit": "ləma‘an",
+          "translit": "le.Ma.'an",
           "strong": "H4616",
-          "morph": "Prep",
-          "gloss": "ze względu na",
-          "lemma": "לְמַעַן"
+          "morph": "HTc",
+          "gloss": "for the sake of",
+          "lemma": "מַ֫עַן"
         },
         {
-          "original": "שְׁמֽוֹ",
-          "translit": "šəmô",
+          "original": "שְׁמֽוֹ",
+          "translit": "she.Mo",
           "strong": "H8034",
-          "morph": "N-msc | Pro-3ms",
-          "gloss": "Imię swoje.",
-          "lemma": "שֵׁם"
+          "morph": "Sp3ms",
+          "gloss": "imię",
+          "lemma": "שֵׁם"
         }
       ]
     },
     {
       "verse": 4,
       "text": {
-        "UBG": "Choćbym nawet chodził doliną cienia śmierci, zła się nie ulęknę, bo ty jesteś ze mną; twoja laska i twój kij mnie pocieszają.",
-        "BW": "Choćbym nawet szedł ciemną doliną, Zła się nie ulęknę, boś Ty ze mną, Laska twoja i kij twój mnie pocieszają.",
-        "BT": "Chociażbym chodził ciemną doliną, zła się nie ulęknę, bo Ty jesteś ze mną: Twój kij i Twoja laska są tym, co mnie pociesza.",
-        "BG": "Choćbym też chodził w dolinie cienia śmierci, nie będę się bał złego, albowiemeś ty ze mną; laska twoja i kij twój, te mię cieszą."
+        "UBG": "Choćbym nawet chodził doliną cienia śmierci, zła się nie ulęknę, bo ty jesteś ze mną; twoja laska i kij pocieszają mnie.",
+        "BW": "Choćbym nawet chodził doliną cienia śmierci, zła się nie ulęknę, bo ty jesteś ze mną; twoja laska i kij pocieszają mnie.",
+        "BT": "Choćbym nawet chodził doliną cienia śmierci, zła się nie ulęknę, bo ty jesteś ze mną; twoja laska i kij pocieszają mnie.",
+        "BG": "Choćbym nawet chodził doliną cienia śmierci, zła się nie ulęknę, bo ty jesteś ze mną; twoja laska i kij pocieszają mnie."
       },
       "interlinear": [
         {
-          "original": "גַּ֤ם",
+          "original": "גַּ֤ם",
           "translit": "gam",
           "strong": "H1571",
-          "morph": "Adv",
-          "gloss": "Nawet",
-          "lemma": "גַּם"
+          "morph": "HD",
+          "gloss": "also",
+          "lemma": "גַּם"
         },
         {
-          "original": "כִּֽי־אֵלֵ֨ךְ",
-          "translit": "kî-’ēlēḵ",
+          "original": "כִּֽי־",
+          "translit": "ki-",
+          "strong": "H3588",
+          "morph": "HTc",
+          "gloss": "for",
+          "lemma": "כִּי"
+        },
+        {
+          "original": "אֵלֵ֨ךְ",
+          "translit": "'e.Lekh",
           "strong": "H1980",
-          "morph": "Conj | V-Qal-Imperf-1cs",
-          "gloss": "gdybym chodził",
+          "morph": "HVqi1cs",
+          "gloss": "I will go",
           "lemma": "הָלַךְ"
         },
         {
-          "original": "בְּגֵ֪יא",
-          "translit": "bəgê’",
+          "original": "בְּגֵ֪יא",
+          "translit": "be.Gei'",
           "strong": "H1516",
-          "morph": "Prep-b | N-csc",
-          "gloss": "w dolinie",
-          "lemma": "גַּיְא"
+          "morph": "Ncbsc",
+          "gloss": "w",
+          "lemma": "ב"
         },
         {
           "original": "צַלְמָ֡וֶת",
-          "translit": "ṣalmāwet",
+          "translit": "tzal.Ma.vet",
           "strong": "H6757",
-          "morph": "N-ms",
-          "gloss": "cienia śmierci,",
-          "lemma": "צַלְמָוֶת"
+          "morph": "HNcmsa",
+          "gloss": "deep darkness",
+          "lemma": "צַלְמָ֫וֶת"
         },
         {
-          "original": "לֹא־אִ֘ירָ֤א",
-          "translit": "lō’-’îrā’",
+          "original": "לֹא־",
+          "translit": "lo'-",
+          "strong": "H3808",
+          "morph": "HTn",
+          "gloss": "not",
+          "lemma": "לֹא"
+        },
+        {
+          "original": "אִ֘ירָ֤א",
+          "translit": "'i.Ra'",
           "strong": "H3372",
-          "morph": "Adv-Neg | V-Qal-Imperf-1cs",
-          "gloss": "nie ulęknę się",
+          "morph": "HVqi1cs",
+          "gloss": "I will fear",
           "lemma": "יָרֵא"
         },
         {
           "original": "רָ֗ע",
-          "translit": "rā‘",
+          "translit": "Ra'",
           "strong": "H7451",
-          "morph": "A-ms",
-          "gloss": "zła,",
+          "morph": "HAamsa",
+          "gloss": "harm",
           "lemma": "רַע"
         },
         {
-          "original": "כִּי־אַתָּ֥ה",
-          "translit": "kî-’attâ",
+          "original": "כִּי־",
+          "translit": "ki-",
+          "strong": "H3588",
+          "morph": "HTc",
+          "gloss": "for",
+          "lemma": "כִּי"
+        },
+        {
+          "original": "אַתָּ֥ה",
+          "translit": "'a.Tah",
           "strong": "H0859",
-          "morph": "Conj | Pro-2ms",
-          "gloss": "bo Ty",
-          "lemma": "אַתָּה"
+          "morph": "HPp2ms",
+          "gloss": "you",
+          "lemma": "אַתָּ֫ה"
         },
         {
-          "original": "עִמָּדִ֑י",
-          "translit": "‘immādî",
+          "original": "עִמָּדִ֑י",
+          "translit": "'i.ma.Di",
           "strong": "H5978",
-          "morph": "Prep | Pro-1cs",
-          "gloss": "jesteś ze mną;",
-          "lemma": "עִמָּד"
+          "morph": "Sp1bs",
+          "gloss": "are with",
+          "lemma": "עִמָּדִי"
         },
         {
-          "original": "שִׁבְטְךָ֥",
-          "translit": "šibṭəḵā",
+          "original": "שִׁבְטְךָ֥",
+          "translit": "shiv.te.Kha",
           "strong": "H7626",
-          "morph": "N-msc | Pro-2ms",
-          "gloss": "laska Twoja",
-          "lemma": "שֵׁבֶט"
+          "morph": "Sp2ms",
+          "gloss": "rod",
+          "lemma": "שֵׁ֫בֶט"
         },
         {
-          "original": "וּ֝מִשְׁעַנְתֶּ֗ךָ",
-          "translit": "ûmiš‘anteḵā",
+          "original": "וּ֝מִשְׁעַנְתֶּ֗ךָ",
+          "translit": "u.mish.'an.Te.kha",
           "strong": "H4938",
-          "morph": "Conj-w | N-fsc | Pro-2ms",
-          "gloss": "i kij Twój,",
-          "lemma": "מִשְׁעֶנֶת"
+          "morph": "Sp2ms",
+          "gloss": "staff",
+          "lemma": "ו"
         },
         {
-          "original": "הֵ֣מָּה",
-          "translit": "hēmmâ",
+          "original": "הֵ֣מָּה",
+          "translit": "He.mah",
           "strong": "H1992",
-          "morph": "Pro-3mp",
-          "gloss": "one",
-          "lemma": "הֵמָּה"
+          "morph": "HPp3mp",
+          "gloss": "they",
+          "lemma": "הֵ֫מָּה"
         },
         {
           "original": "יְנַֽחֲמֻֽנִי",
-          "translit": "yənaḥamunî",
+          "translit": "ye.Na.cha.Mu.ni",
           "strong": "H5162",
-          "morph": "V-Piel-Imperf-3mp | Pro-1cs",
-          "gloss": "mnie pocieszają.",
+          "morph": "Sp1bs",
+          "gloss": "they comfort",
           "lemma": "נָחַם"
         }
       ]
@@ -295,90 +345,90 @@
     {
       "verse": 5,
       "text": {
-        "UBG": "Zastawiasz przede mną stół na oczach moich wrogów, namaszczasz mi głowę olejkiem, mój kielich przelewa się.",
-        "BW": "Zastawiasz obficie stół mój na oczach wrogów moich, Namaszczasz oliwą głowę moją, kielich mój przelewa się.",
-        "BT": "Stół dla mnie zastawiasz wobec mych przeciwników; namaszczasz mi głowę olejkiem; mój kielich jest przeobfity.",
-        "BG": "Przed obliczem mojem gotujesz stół przeciwko nieprzyjaciołom moim; pomazałeś olejkiem głowę moję, kielich mój jest opływający."
+        "UBG": "Zastawiasz przede mną stół wobec moich wrogów, namaszczasz mi głowę olejkiem, mój kielich przelewa się.",
+        "BW": "Zastawiasz przede mną stół wobec moich wrogów, namaszczasz mi głowę olejkiem, mój kielich przelewa się.",
+        "BT": "Zastawiasz przede mną stół wobec moich wrogów, namaszczasz mi głowę olejkiem, mój kielich przelewa się.",
+        "BG": "Zastawiasz przede mną stół wobec moich wrogów, namaszczasz mi głowę olejkiem, mój kielich przelewa się."
       },
       "interlinear": [
         {
-          "original": "תַּעֲרֹ֬ךְ",
-          "translit": "ta‘ărōḵ",
+          "original": "תַּעֲרֹ֬ךְ",
+          "translit": "ta.'a.Rokh",
           "strong": "H6186",
-          "morph": "V-Qal-Imperf-2ms",
-          "gloss": "Zastawiasz",
+          "morph": "HVqi2ms",
+          "gloss": "you arrange",
           "lemma": "עָרַךְ"
         },
         {
-          "original": "לְפָנַ֨י",
-          "translit": "ləpānay",
+          "original": "לְפָנַ֨י׀",
+          "translit": "le.fa.Nai",
           "strong": "H6440",
-          "morph": "Prep-l | N-cpc | Pro-1cs",
-          "gloss": "przede mną",
-          "lemma": "פָּנִים"
+          "morph": "Sp1bs",
+          "gloss": "to",
+          "lemma": "ל"
         },
         {
-          "original": "שֻׁלְחָ֗ן",
-          "translit": "šulḥān",
+          "original": "שֻׁלְחָ֗ן",
+          "translit": "shul.Chan",
           "strong": "H7979",
-          "morph": "N-ms",
-          "gloss": "stół",
-          "lemma": "שֻׁלְחָן"
+          "morph": "HNcmsa",
+          "gloss": "a table",
+          "lemma": "שֻׁלְחָן"
         },
         {
-          "original": "נֶ֭גֶד",
-          "translit": "neḡeḏ",
+          "original": "נֶ֥גֶד",
+          "translit": "Ne.ged",
           "strong": "H5048",
-          "morph": "Prep",
-          "gloss": "wobec",
-          "lemma": "נֶגֶד"
+          "morph": "HAcmsc",
+          "gloss": "before",
+          "lemma": "נֶ֫גֶד"
         },
         {
           "original": "צֹרְרָ֑י",
-          "translit": "ṣōrərāy",
+          "translit": "tzo.re.Rai",
           "strong": "H6887",
-          "morph": "V-Qal-Ptcp-mpc | Pro-1cs",
-          "gloss": "wrogów moich;",
+          "morph": "Sp1bs",
+          "gloss": "opposers",
           "lemma": "צָרַר"
         },
         {
-          "original": "דִּשַּׁ֥נְתָּ",
-          "translit": "diššantā",
+          "original": "דִּשַּׁ֖נְתָּ",
+          "translit": "di.Shan.ta",
           "strong": "H1878",
-          "morph": "V-Piel-Perf-2ms",
-          "gloss": "namaściłeś",
-          "lemma": "דָּשֵׁן"
+          "morph": "HVpp2ms",
+          "gloss": "you have refreshed",
+          "lemma": "דָּשֵׁן"
         },
         {
-          "original": "בַשֶּׁ֥מֶן",
-          "translit": "baššemen",
+          "original": "בַשֶּׁ֥מֶן",
+          "translit": "va.She.men",
           "strong": "H8081",
-          "morph": "Prep-b, Art | N-ms",
-          "gloss": "olejkiem",
-          "lemma": "שֶׁמֶן"
+          "morph": "Ncmsa",
+          "gloss": "with the",
+          "lemma": "ב"
         },
         {
-          "original": "רֹ֝אשִׁ֗י",
-          "translit": "rō’šî",
+          "original": "רֹ֝אשִׁ֗י",
+          "translit": "ro.Shi",
           "strong": "H7218",
-          "morph": "N-msc | Pro-1cs",
-          "gloss": "głowicę moją,",
+          "morph": "Sp1bs",
+          "gloss": "głowa",
           "lemma": "רֹאשׁ"
         },
         {
           "original": "כּוֹסִ֥י",
-          "translit": "kôsî",
+          "translit": "ko.Si",
           "strong": "H3563",
-          "morph": "N-fsc | Pro-1cs",
-          "gloss": "kielich mój",
+          "morph": "Sp1bs",
+          "gloss": "cup",
           "lemma": "כּוֹס"
         },
         {
           "original": "רְוָיָֽה",
-          "translit": "rəwāyâ",
+          "translit": "re.va.Yah",
           "strong": "H7310",
-          "morph": "N-fs",
-          "gloss": "przelewa się.",
+          "morph": "HNcfsa",
+          "gloss": "is saturation",
           "lemma": "רְוָיָה"
         }
       ]
@@ -386,90 +436,106 @@
     {
       "verse": 6,
       "text": {
-        "UBG": "Zaprawdę dobroć i miłosierdzie pójdą za mną po wszystkie dni mego życia i będę mieszkał w domu PANA przez długie dni.",
-        "BW": "Dobroć i łaska towarzyszyć mi będą Przez wszystkie dni życia mego. I zamieszkam w domu Pana Przez długie dni.",
-        "BT": "Tak, dobroć i łaska pójdą w ślad za mną przez wszystkie dni mego życia i zamieszkam w domu Pańskim po najdłuższe czasy.",
-        "BG": "Tylko dobroć i miłosierdzie pójdą za mną po wszystkie dni żywota mego, a będę mieszkał w domu Pańskim na długie czasy."
+        "UBG": "Zaprawdę dobroć i miłosierdzie pójdą w ślad za mną po wszystkie dni mego życia i będę mieszkał w domu Pana przez długie czasy.",
+        "BW": "Zaprawdę dobroć i miłosierdzie pójdą w ślad za mną po wszystkie dni mego życia i będę mieszkał w domu Pana przez długie czasy.",
+        "BT": "Zaprawdę dobroć i miłosierdzie pójdą w ślad za mną po wszystkie dni mego życia i będę mieszkał w domu Pana przez długie czasy.",
+        "BG": "Zaprawdę dobroć i miłosierdzie pójdą w ślad za mną po wszystkie dni mego życia i będę mieszkał w domu Pana przez długie czasy."
       },
       "interlinear": [
         {
-          "original": "אַ֤ךְ",
-          "translit": "’aḵ",
+          "original": "אַ֤ךְ׀",
+          "translit": "'akh",
           "strong": "H0389",
-          "morph": "Adv",
-          "gloss": "Zaprawdę / Tylko",
+          "morph": "HD",
+          "gloss": "surely",
           "lemma": "אַךְ"
         },
         {
-          "original": "ט֘וֹב",
-          "translit": "ṭôḇ",
+          "original": "ט֤וֹב",
+          "translit": "Tov",
           "strong": "H2896",
-          "morph": "A-ms",
-          "gloss": "dobroć",
+          "morph": "HAamsa",
+          "gloss": "dobry",
           "lemma": "טוֹב"
         },
         {
           "original": "וָחֶ֣סֶד",
-          "translit": "wāḥeseḏ",
+          "translit": "va.Che.sed",
           "strong": "H2617",
-          "morph": "Conj-w | N-ms",
-          "gloss": "i miłosierdzie (chesed)",
-          "lemma": "חֶסֶד"
+          "morph": "Ncmsa",
+          "gloss": "covenant loyalty",
+          "lemma": "ו"
         },
         {
-          "original": "יִ֭רְדְּפוּנִי",
-          "translit": "yirdəpûnî",
+          "original": "יִ֭רְדְּפוּנִי",
+          "translit": "Yir.de.fu.ni",
           "strong": "H7291",
-          "morph": "V-Qal-Imperf-3mp | Pro-1cs",
-          "gloss": "będą towarzyszyć mi",
+          "morph": "Sp1bs",
+          "gloss": "they will pursue",
           "lemma": "רָדַף"
         },
         {
-          "original": "כָּל־יְמֵ֣י",
-          "translit": "kāl-yəmê",
+          "original": "כָּל־",
+          "translit": "kol-",
+          "strong": "H3605",
+          "morph": "HNcmsc",
+          "gloss": "all",
+          "lemma": "כֹּל"
+        },
+        {
+          "original": "יְמֵ֣י",
+          "translit": "ye.Mei",
           "strong": "H3117",
-          "morph": "N-msc | N-mpc",
-          "gloss": "po wszystkie dni",
+          "morph": "HNcmpc",
+          "gloss": "the days of",
           "lemma": "יוֹם"
         },
         {
-          "original": "חַיָּ֑י",
-          "translit": "ḥayyāy",
+          "original": "חַיָּ֑י",
+          "translit": "chai.Yai",
           "strong": "H2416",
-          "morph": "N-mpc | Pro-1cs",
-          "gloss": "życia mego,",
-          "lemma": "חַיִּים"
+          "morph": "Sp1bs",
+          "gloss": "życie",
+          "lemma": "חַיִּים"
         },
         {
-          "original": "וְשַׁבְתִּ֥י",
-          "translit": "wəšaḇtî",
-          "strong": "H3427",
-          "morph": "Conj-w | V-Qal-Perf-1cs",
-          "gloss": "i zamieszkam",
-          "lemma": "יָשַׁב"
+          "original": "וְשַׁבְתִּ֥י",
+          "translit": "ve.shav.Ti",
+          "strong": "H7725",
+          "morph": "Vqq1cs",
+          "gloss": "I will return",
+          "lemma": "ו"
         },
         {
-          "original": "בְּבֵית־יְ֝הוָ֗ה",
-          "translit": "bəḇêt-Yahweh",
+          "original": "בְּבֵית־",
+          "translit": "be.veit-",
           "strong": "H1004",
-          "morph": "Prep-b | N-msc | N-pr-dei",
-          "gloss": "w domu PANA (JAHWE)",
-          "lemma": "בַּיִת"
+          "morph": "Ncmsc",
+          "gloss": "w",
+          "lemma": "ב"
+        },
+        {
+          "original": "יְ֝הוָ֗ה",
+          "translit": "Yah.weh",
+          "strong": "H3068",
+          "morph": "HNpt",
+          "gloss": "Yahweh",
+          "lemma": "יהוה"
         },
         {
           "original": "לְאֹ֣רֶךְ",
-          "translit": "lə’ōreḵ",
+          "translit": "le.'O.rekh",
           "strong": "H0753",
-          "morph": "Prep-l | N-msc",
-          "gloss": "na długość",
-          "lemma": "אֹרֶךְ"
+          "morph": "Ncmsc",
+          "gloss": "for",
+          "lemma": "ל"
         },
         {
           "original": "יָמִֽים",
-          "translit": "yāmîm",
+          "translit": "ya.Mim",
           "strong": "H3117",
-          "morph": "N-mp",
-          "gloss": "dni.",
+          "morph": "HNcmpa",
+          "gloss": "days",
           "lemma": "יוֹם"
         }
       ]
