@@ -1389,6 +1389,8 @@
                 align-items: center !important;
                 text-align: center !important;
                 width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
                 gap: 10px !important;
                 border-bottom: none !important;
                 padding-bottom: 0 !important;
@@ -1400,6 +1402,9 @@
                 align-items: center !important;
                 text-align: center !important;
                 width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                flex: 0 0 auto !important;
                 gap: 8px !important;
             }
 
@@ -1429,6 +1434,9 @@
             .head-user-details {
                 width: 100% !important;
                 min-width: 0 !important;
+                height: auto !important;
+                min-height: 0 !important;
+                flex: 0 0 auto !important;
                 margin-top: 2px !important;
                 text-align: center !important;
             }
@@ -1591,10 +1599,31 @@
                 align-items: center !important;
                 justify-content: flex-start !important;
                 width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
                 gap: 10px !important;
                 border-bottom: none !important;
                 padding-bottom: 0 !important;
                 margin-bottom: 0 !important;
+            }
+            .profile-head-card .profile-head-main {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                flex: 0 0 auto !important;
+                gap: 8px !important;
+            }
+            .profile-head-card .head-user-details {
+                width: 100% !important;
+                min-width: 0 !important;
+                height: auto !important;
+                min-height: 0 !important;
+                flex: 0 0 auto !important;
+                margin-top: 2px !important;
+                text-align: center !important;
             }
             .profile-head-card .head-actions {
                 display: flex !important;
@@ -2641,12 +2670,14 @@
         }
     
     /* ══════════ PERFECT PILL & INTERACTIVE BUTTONS ══════════ */
-        .profile-head-top {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            width: 100% !important;
-            gap: 14px !important;
+        @media (min-width: 861px) {
+            .profile-head-top {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: flex-end !important;
+                width: 100% !important;
+                gap: 14px !important;
+            }
         }
         /* NAPRAWA: ta reguła (bez @media, więc obowiązująca ZAWSZE) wymuszała
            flex-wrap: nowrap + przewijanie w poziomie — sprzeczne z poprawką
