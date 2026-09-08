@@ -326,6 +326,49 @@ export const PROFILES_DB = {
         ]
     },
 
+    'zbyszekgieron': {
+        uid: 'zbyszekgieron',
+        slug: 'zbyszekgieron',
+        name: 'Zbyszek Gieroń',
+        age: '',
+        isMissionAccount: true,
+        city: 'Polska',
+        avatar: 'avatar_zbyszek_gieron.jpg',
+        cover: 'lumina_default_cover.jpg',
+        coverPosY: '50%',
+        job: 'Profil Misyjny • Świadectwo & Wiara',
+        role: 'Profil Misyjny 🕊️✨',
+        facebookUrl: 'https://www.facebook.com/profile.php?id=100018961423282&locale=pl_PL',
+        church: 'Wspólnota Chrześcijańska',
+        denom: 'Chrześcijanin',
+        status: 'Chrześcijanin',
+        pin: '7777',
+        visibility: 'public',
+        match: '98%',
+        matchScore: '98%',
+        stats: { friends: '5.7k', posts: '1', likes: '340' },
+        verse: '„Nasza bowiem ojczyzna jest w niebie, skąd też jako Zbawiciela wyczekujemy Pana naszego Jezusa Chrystusa.”',
+        verseRef: '— List do Filipian 3, 20',
+        bio: 'Chrześcijanin oczekujący na powtórne przyjście Jezusa Chrystusa - bo ten świat nie jest domem mym! :) Dzielę się świadectwem, Słowem Bożym i publikuję materiały formacyjne z Dysku Google.',
+        tags: ['Świadectwo', 'Wiara', 'Słowo Boże', 'Dysk Google', 'Ewangelizacja', 'Powtórne Przyjście'],
+        photos: ['avatar_zbyszek_gieron.jpg', 'lumina_default_cover.jpg'],
+        posts: [
+            {
+                id: 'post_zg_1',
+                author: 'Zbyszek Gieroń',
+                authorSlug: 'zbyszekgieron',
+                authorAvatar: 'avatar_zbyszek_gieron.jpg',
+                authorRole: 'Profil Misyjny 🕊️✨',
+                time: 'Dzisiaj • 🕊️ Misja & Świadectwo',
+                text: 'Chrześcijanin oczekujący na powtórne przyjście Jezusa Chrystusa - bo ten świat nie jest domem mym! :) Zapraszam do mojego pierwszego wpisu z Facebooka oraz do śledzenia publikacji formacyjnych.',
+                fbIframe: 'https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fpermalink.php%3Fstory_fbid%3Dpfbid0wrgmawnCGcCx2ojZbJPfEPVGn3kaeAjaA1XgVDZj7AALHDpWtWAsovzpNw5xJC4Ql%26id%3D100018961423282&show_text=true&width=500',
+                likes: 52,
+                amen: 64,
+                image: null
+            }
+        ]
+    },
+
     'tomek': {
         uid: 'tomek',
         slug: 'tomek',
