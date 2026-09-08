@@ -4,9 +4,9 @@
   "shortPl": "J",
   "chapter": 1,
   "originalLang": "Greek",
-  "totalVerses": 18,
+  "totalVerses": 51,
   "audioZenoStream": "https://stream.zeno.fm/imo45hqnshyuv",
-  "commentaryTitle": "Prolog o Wcieleniu Odwiecznego Słowa (Logosu)",
+  "commentaryTitle": "Prolog o Odwiecznym Słowie, Świadectwo Jana i Powołanie Pierwszych Uczniów",
   "verses": [
     {
       "verse": 1,
@@ -22,7 +22,7 @@
           "translit": "En",
           "strong": "G1722",
           "morph": "PREP",
-          "gloss": "W / Na",
+          "gloss": "Na / W",
           "lemma": "ἐν"
         },
         {
@@ -201,7 +201,7 @@
           "translit": "pros",
           "strong": "G4314",
           "morph": "PREP",
-          "gloss": "u / twarzą w twarz z",
+          "gloss": "u",
           "lemma": "πρός"
         },
         {
@@ -209,7 +209,7 @@
           "translit": "ton",
           "strong": "G3588",
           "morph": "T-ASM",
-          "gloss": "tym",
+          "gloss": "tego",
           "lemma": "ὁ"
         },
         {
@@ -217,7 +217,7 @@
           "translit": "theon",
           "strong": "G2316",
           "morph": "N-ASM",
-          "gloss": "Bogiem.",
+          "gloss": "Boga.",
           "lemma": "θεός"
         }
       ]
@@ -260,7 +260,7 @@
           "translit": "egeneto",
           "strong": "G1096",
           "morph": "V-2ADI-3S",
-          "gloss": "stało się / powstało,",
+          "gloss": "powstało,",
           "lemma": "γίνομαι"
         },
         {
@@ -293,7 +293,7 @@
           "strong": "G1096",
           "morph": "V-2ADI-3S",
           "gloss": "nie powstało",
-          "lemma": "γíνομαι"
+          "lemma": "γίνομαι"
         },
         {
           "original": "οὐδὲ",
@@ -308,7 +308,7 @@
           "translit": "hen",
           "strong": "G1520",
           "morph": "A-NSN",
-          "gloss": "jedno [stworzenie],",
+          "gloss": "jedno,",
           "lemma": "εἷς"
         },
         {
@@ -316,7 +316,7 @@
           "translit": "ho",
           "strong": "G3739",
           "morph": "R-NSN",
-          "gloss": "które",
+          "gloss": "co",
           "lemma": "ὅς"
         },
         {
@@ -325,7 +325,7 @@
           "strong": "G1096",
           "morph": "V-2RAI-3S",
           "gloss": "zaistniało.",
-          "lemma": "γíνομαι"
+          "lemma": "γίνομαι"
         }
       ]
     },
@@ -530,7 +530,7 @@
           "translit": "auto",
           "strong": "G0846",
           "morph": "P-ASN",
-          "gloss": "jego",
+          "gloss": "jej",
           "lemma": "αὐτός"
         },
         {
@@ -546,8 +546,928 @@
           "translit": "katelaben",
           "strong": "G2638",
           "morph": "V-2AAI-3S",
-          "gloss": "przemogła / ogarnęła.",
+          "gloss": "przemogła.",
           "lemma": "καταλαμβάνω"
+        }
+      ]
+    },
+    {
+      "verse": 6,
+      "text": {
+        "UBG": "Był człowiek posłany od Boga, któremu na imię było Jan.",
+        "BW": "Pojawił się człowiek posłany przez Boga, któremu na imię było Jan.",
+        "BT": "Pojawił się człowiek posłany przez Boga - Jan mu było na imię.",
+        "BG": "Był człowiek posłany od Boga, któremu imię było Jan."
+      },
+      "interlinear": [
+        {
+          "original": "Ἐγένετο",
+          "translit": "Egeneto",
+          "strong": "G1096",
+          "morph": "V-2ADI-3S",
+          "gloss": "Pojawił się / Był",
+          "lemma": "γίνομαι"
+        },
+        {
+          "original": "ἄνθρωπος",
+          "translit": "anthrōpos",
+          "strong": "G0444",
+          "morph": "N-NSM",
+          "gloss": "człowiek",
+          "lemma": "ἄνθρωπος"
+        },
+        {
+          "original": "ἀπεσταλμένος",
+          "translit": "apestalmenos",
+          "strong": "G0649",
+          "morph": "V-RPP-NSM",
+          "gloss": "posłany",
+          "lemma": "ἀποστέλλω"
+        },
+        {
+          "original": "παρὰ",
+          "translit": "para",
+          "strong": "G3844",
+          "morph": "PREP",
+          "gloss": "od",
+          "lemma": "παρά"
+        },
+        {
+          "original": "θεοῦ",
+          "translit": "theou",
+          "strong": "G2316",
+          "morph": "N-GSM",
+          "gloss": "Boga,",
+          "lemma": "θεός"
+        },
+        {
+          "original": "ὄνομα",
+          "translit": "onoma",
+          "strong": "G3686",
+          "morph": "N-NSN",
+          "gloss": "imię",
+          "lemma": "ὄνομα"
+        },
+        {
+          "original": "αὐτῷ",
+          "translit": "autō",
+          "strong": "G0846",
+          "morph": "P-DSM",
+          "gloss": "jego",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "Ἰωάννης",
+          "translit": "Iōannēs",
+          "strong": "G2491",
+          "morph": "N-NSM-P",
+          "gloss": "Jan.",
+          "lemma": "Ἰωάννης"
+        }
+      ]
+    },
+    {
+      "verse": 7,
+      "text": {
+        "UBG": "Przyszedł on na świadectwo, aby świadczyć o tej światłości, by wszyscy przez niego uwierzyli.",
+        "BW": "Ten przyszedł na świadectwo, aby zaświadczyć o światłości, by wszyscy przezeń uwierzyli.",
+        "BT": "Przyszedł on na świadectwo, aby zaświadczyć o światłości, by wszyscy uwierzyli przez niego.",
+        "BG": "Ten przyszedł na świadectwo, aby świadczył o onej światłości, aby wszyscy przezeń uwierzyli."
+      },
+      "interlinear": [
+        {
+          "original": "οὗτος",
+          "translit": "houtos",
+          "strong": "G3778",
+          "morph": "D-NSM",
+          "gloss": "Ten",
+          "lemma": "οὗτος"
+        },
+        {
+          "original": "ἦλθεν",
+          "translit": "ēlthen",
+          "strong": "G2064",
+          "morph": "V-2AAI-3S",
+          "gloss": "przyszedł",
+          "lemma": "ἔρχομαι"
+        },
+        {
+          "original": "εἰς",
+          "translit": "eis",
+          "strong": "G1519",
+          "morph": "PREP",
+          "gloss": "na",
+          "lemma": "εἰς"
+        },
+        {
+          "original": "μαρτυρίαν",
+          "translit": "martyrian",
+          "strong": "G3141",
+          "morph": "N-ASF",
+          "gloss": "świadectwo,",
+          "lemma": "μαρτυρία"
+        },
+        {
+          "original": "ἵνα",
+          "translit": "hina",
+          "strong": "G2443",
+          "morph": "CONJ",
+          "gloss": "aby",
+          "lemma": "ἵνα"
+        },
+        {
+          "original": "μαρτυρήσῃ",
+          "translit": "martyrēsē",
+          "strong": "G3140",
+          "morph": "V-AAS-3S",
+          "gloss": "świadczył",
+          "lemma": "μαρτυρέω"
+        },
+        {
+          "original": "περὶ",
+          "translit": "peri",
+          "strong": "G4012",
+          "morph": "PREP",
+          "gloss": "o",
+          "lemma": "περί"
+        },
+        {
+          "original": "τοῦ",
+          "translit": "tou",
+          "strong": "G3588",
+          "morph": "T-GSN",
+          "gloss": "tym",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "φωτός",
+          "translit": "phōtos",
+          "strong": "G5457",
+          "morph": "N-GSN",
+          "gloss": "świetle,",
+          "lemma": "φῶς"
+        },
+        {
+          "original": "ἵνα",
+          "translit": "hina",
+          "strong": "G2443",
+          "morph": "CONJ",
+          "gloss": "aby",
+          "lemma": "ἵνα"
+        },
+        {
+          "original": "πάντες",
+          "translit": "pantes",
+          "strong": "G3956",
+          "morph": "A-NPM",
+          "gloss": "wszyscy",
+          "lemma": "πᾶς"
+        },
+        {
+          "original": "πιστεύσωσιν",
+          "translit": "pisteusōsin",
+          "strong": "G4100",
+          "morph": "V-AAS-3P",
+          "gloss": "uwierzyli",
+          "lemma": "πιστεύω"
+        },
+        {
+          "original": "δι’",
+          "translit": "di’",
+          "strong": "G1223",
+          "morph": "PREP",
+          "gloss": "przez",
+          "lemma": "διά"
+        },
+        {
+          "original": "αὐτοῦ",
+          "translit": "autou",
+          "strong": "G0846",
+          "morph": "P-GSM",
+          "gloss": "niego.",
+          "lemma": "αὐτός"
+        }
+      ]
+    },
+    {
+      "verse": 8,
+      "text": {
+        "UBG": "Nie był on tą światłością, ale został posłany, aby świadczyć o tej światłości.",
+        "BW": "Nie był on światłością, lecz miał zaświadczyć o światłości.",
+        "BT": "Nie był on światłością, lecz [posłanym], aby zaświadczyć o światłości.",
+        "BG": "Nie był on ci oną światłością, ale przyszedł, aby świadczył o onej światłości."
+      },
+      "interlinear": [
+        {
+          "original": "οὐκ",
+          "translit": "ouk",
+          "strong": "G3756",
+          "morph": "PRT-N",
+          "gloss": "Nie",
+          "lemma": "οὐ"
+        },
+        {
+          "original": "ἦν",
+          "translit": "ēn",
+          "strong": "G2258",
+          "morph": "V-IAI-3S",
+          "gloss": "był",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "ἐκεῖνος",
+          "translit": "ekeinos",
+          "strong": "G1565",
+          "morph": "D-NSM",
+          "gloss": "on",
+          "lemma": "ἐκεῖνος"
+        },
+        {
+          "original": "τὸ",
+          "translit": "to",
+          "strong": "G3588",
+          "morph": "T-NSN",
+          "gloss": "tą",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "φῶς",
+          "translit": "phōs",
+          "strong": "G5457",
+          "morph": "N-NSN",
+          "gloss": "światłością,",
+          "lemma": "φῶς"
+        },
+        {
+          "original": "ἀλλ’",
+          "translit": "all’",
+          "strong": "G0235",
+          "morph": "CONJ",
+          "gloss": "lecz",
+          "lemma": "ἀλλά"
+        },
+        {
+          "original": "ἵνα",
+          "translit": "hina",
+          "strong": "G2443",
+          "morph": "CONJ",
+          "gloss": "aby",
+          "lemma": "ἵνα"
+        },
+        {
+          "original": "μαρτυρήσῃ",
+          "translit": "martyrēsē",
+          "strong": "G3140",
+          "morph": "V-AAS-3S",
+          "gloss": "świadczył",
+          "lemma": "μαρτυρέω"
+        },
+        {
+          "original": "περὶ",
+          "translit": "peri",
+          "strong": "G4012",
+          "morph": "PREP",
+          "gloss": "o",
+          "lemma": "περί"
+        },
+        {
+          "original": "τοῦ",
+          "translit": "tou",
+          "strong": "G3588",
+          "morph": "T-GSN",
+          "gloss": "tym",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "φωτός",
+          "translit": "phōtos",
+          "strong": "G5457",
+          "morph": "N-GSN",
+          "gloss": "świetle.",
+          "lemma": "φῶς"
+        }
+      ]
+    },
+    {
+      "verse": 9,
+      "text": {
+        "UBG": "Ten był tą prawdziwą światłością, która oświeca każdego człowieka przychodzącego na świat.",
+        "BW": "Prawdziwa światłość, która oświeca każdego człowieka, przyszła na świat.",
+        "BT": "Była światłość prawdziwa, która oświeca każdego człowieka, gdy na świat przychodzi.",
+        "BG": "Ten ci był oną prawdziwą światłością, która oświeca każdego człowieka, przychodzącego na ten świat."
+      },
+      "interlinear": [
+        {
+          "original": "Ἦν",
+          "translit": "Ēn",
+          "strong": "G2258",
+          "morph": "V-IAI-3S",
+          "gloss": "Była",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "τὸ",
+          "translit": "to",
+          "strong": "G3588",
+          "morph": "T-NSN",
+          "gloss": "ta",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "φῶς",
+          "translit": "phōs",
+          "strong": "G5457",
+          "morph": "N-NSN",
+          "gloss": "światłość",
+          "lemma": "φῶς"
+        },
+        {
+          "original": "τὸ",
+          "translit": "to",
+          "strong": "G3588",
+          "morph": "T-NSN",
+          "gloss": "ta",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἀληθινόν",
+          "translit": "alēthinon",
+          "strong": "G0228",
+          "morph": "A-NSN",
+          "gloss": "prawdziwa,",
+          "lemma": "ἀληθινός"
+        },
+        {
+          "original": "ὃ",
+          "translit": "ho",
+          "strong": "G3739",
+          "morph": "R-NSN",
+          "gloss": "która",
+          "lemma": "ὅς"
+        },
+        {
+          "original": "φωτίζει",
+          "translit": "phōtizei",
+          "strong": "G5461",
+          "morph": "V-PAI-3S",
+          "gloss": "oświeca",
+          "lemma": "φωτίζω"
+        },
+        {
+          "original": "πάντα",
+          "translit": "panta",
+          "strong": "G3956",
+          "morph": "A-ASM",
+          "gloss": "każdego",
+          "lemma": "πᾶς"
+        },
+        {
+          "original": "ἄνθρωπον",
+          "translit": "anthrōpon",
+          "strong": "G0444",
+          "morph": "N-ASM",
+          "gloss": "człowieka",
+          "lemma": "ἄνθρωπος"
+        },
+        {
+          "original": "ἐρχόμενον",
+          "translit": "erchomenon",
+          "strong": "G2064",
+          "morph": "V-PNP-ASM",
+          "gloss": "przychodzącego",
+          "lemma": "ἔρχομαι"
+        },
+        {
+          "original": "εἰς",
+          "translit": "eis",
+          "strong": "G1519",
+          "morph": "PREP",
+          "gloss": "na",
+          "lemma": "εἰς"
+        },
+        {
+          "original": "τὸν",
+          "translit": "ton",
+          "strong": "G3588",
+          "morph": "T-ASM",
+          "gloss": "ten",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "κόσμον",
+          "translit": "kosmon",
+          "strong": "G2889",
+          "morph": "N-ASM",
+          "gloss": "świat.",
+          "lemma": "κόσμος"
+        }
+      ]
+    },
+    {
+      "verse": 10,
+      "text": {
+        "UBG": "Był na świecie, a świat przez niego powstał, ale świat go nie poznał.",
+        "BW": "Na świecie był i świat przezeń powstał, lecz świat go nie poznał.",
+        "BT": "Na świecie było [Słowo], a świat stał się przez Nie, lecz świat Go nie poznał.",
+        "BG": "Na świecie był, a świat przezeń uczyniony jest; ale go świat nie poznał."
+      },
+      "interlinear": [
+        {
+          "original": "ἐν",
+          "translit": "en",
+          "strong": "G1722",
+          "morph": "PREP",
+          "gloss": "Na",
+          "lemma": "ἐν"
+        },
+        {
+          "original": "τῷ",
+          "translit": "tō",
+          "strong": "G3588",
+          "morph": "T-DSM",
+          "gloss": "tym",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "κόσμῳ",
+          "translit": "kosmō",
+          "strong": "G2889",
+          "morph": "N-DSM",
+          "gloss": "świecie",
+          "lemma": "κόσμος"
+        },
+        {
+          "original": "ἦν",
+          "translit": "ēn",
+          "strong": "G2258",
+          "morph": "V-IAI-3S",
+          "gloss": "był,",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "a",
+          "lemma": "καί"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "ten",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "κόσμος",
+          "translit": "kosmos",
+          "strong": "G2889",
+          "morph": "N-NSM",
+          "gloss": "świat",
+          "lemma": "κόσμος"
+        },
+        {
+          "original": "δι’",
+          "translit": "di’",
+          "strong": "G1223",
+          "morph": "PREP",
+          "gloss": "przez",
+          "lemma": "διά"
+        },
+        {
+          "original": "αὐτοῦ",
+          "translit": "autou",
+          "strong": "G0846",
+          "morph": "P-GSM",
+          "gloss": "Niego",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "ἐγένετο",
+          "translit": "egeneto",
+          "strong": "G1096",
+          "morph": "V-2ADI-3S",
+          "gloss": "powstał,",
+          "lemma": "γίνομαι"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "lecz",
+          "lemma": "καί"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "ten",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "κόσμος",
+          "translit": "kosmos",
+          "strong": "G2889",
+          "morph": "N-NSM",
+          "gloss": "świat",
+          "lemma": "κόσμος"
+        },
+        {
+          "original": "αὐτὸν",
+          "translit": "auton",
+          "strong": "G0846",
+          "morph": "P-ASM",
+          "gloss": "Go",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "οὐκ",
+          "translit": "ouk",
+          "strong": "G3756",
+          "morph": "PRT-N",
+          "gloss": "nie",
+          "lemma": "οὐ"
+        },
+        {
+          "original": "ἔγνω",
+          "translit": "egnō",
+          "strong": "G1097",
+          "morph": "V-2AAI-3S",
+          "gloss": "poznał.",
+          "lemma": "γινώσκω"
+        }
+      ]
+    },
+    {
+      "verse": 11,
+      "text": {
+        "UBG": "Do swego przyszedł, a swoi go nie przyjęli.",
+        "BW": "Do swej własności przyszedł, ale swoi go nie przyjęli.",
+        "BT": "Przyszło do swojej własności, a swoi Go nie przyjęli.",
+        "BG": "Do swego przyszedł, ale go swoi nie przyjęli."
+      },
+      "interlinear": [
+        {
+          "original": "εἰς",
+          "translit": "eis",
+          "strong": "G1519",
+          "morph": "PREP",
+          "gloss": "Do",
+          "lemma": "εἰς"
+        },
+        {
+          "original": "τὰ",
+          "translit": "ta",
+          "strong": "G3588",
+          "morph": "T-APN",
+          "gloss": "swej",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἴδια",
+          "translit": "idia",
+          "strong": "G2398",
+          "morph": "A-APN",
+          "gloss": "własności",
+          "lemma": "ἴδιος"
+        },
+        {
+          "original": "ἦλθεν",
+          "translit": "ēlthen",
+          "strong": "G2064",
+          "morph": "V-2AAI-3S",
+          "gloss": "przyszedł,",
+          "lemma": "ἔρχομαι"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "a",
+          "lemma": "καί"
+        },
+        {
+          "original": "οἱ",
+          "translit": "hoi",
+          "strong": "G3588",
+          "morph": "T-NPM",
+          "gloss": "jego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἴδιοι",
+          "translit": "idioi",
+          "strong": "G2398",
+          "morph": "A-NPM",
+          "gloss": "swoi",
+          "lemma": "ἴδιος"
+        },
+        {
+          "original": "αὐτὸν",
+          "translit": "auton",
+          "strong": "G0846",
+          "morph": "P-ASM",
+          "gloss": "Go",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "οὐ",
+          "translit": "ou",
+          "strong": "G3756",
+          "morph": "PRT-N",
+          "gloss": "nie",
+          "lemma": "οὐ"
+        },
+        {
+          "original": "παρέλαβον",
+          "translit": "parelabon",
+          "strong": "G3880",
+          "morph": "V-2AAI-3P",
+          "gloss": "przyjęli.",
+          "lemma": "παραλαμβάνω"
+        }
+      ]
+    },
+    {
+      "verse": 12,
+      "text": {
+        "UBG": "Lecz wszystkim tym, którzy go przyjęli, dał moc, aby się stali synami Bożymi, to jest tym, którzy wierzą w jego imię;",
+        "BW": "Tym zaś, którzy go przyjęli, dał prawo stać się dziećmi Bożymi, tym, którzy wierzą w imię jego,",
+        "BT": "Wszystkim tym jednak, którzy Je przyjęli, dało moc, aby się stali dziećmi Bożymi, tym, którzy wierzą w imię Jego -",
+        "BG": "Lecz ile ich go przyjęło, dał im tę moc, aby się stali synami Bożymi, to jest tym, którzy wierzą w imię jego."
+      },
+      "interlinear": [
+        {
+          "original": "ὅσοι",
+          "translit": "hosoi",
+          "strong": "G3745",
+          "morph": "K-NPM",
+          "gloss": "Wszystkim zaś, którzy",
+          "lemma": "ὅσος"
+        },
+        {
+          "original": "δὲ",
+          "translit": "de",
+          "strong": "G1161",
+          "morph": "CONJ",
+          "gloss": "zaś",
+          "lemma": "δέ"
+        },
+        {
+          "original": "ἔλαβον",
+          "translit": "elabon",
+          "strong": "G2983",
+          "morph": "V-2AAI-3P",
+          "gloss": "przyjęli",
+          "lemma": "λαμβάνω"
+        },
+        {
+          "original": "αὐτόν",
+          "translit": "auton",
+          "strong": "G0846",
+          "morph": "P-ASM",
+          "gloss": "Go,",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "ἔδωκεν",
+          "translit": "edōken",
+          "strong": "G1325",
+          "morph": "V-AAI-3S",
+          "gloss": "dał",
+          "lemma": "δίδωμι"
+        },
+        {
+          "original": "αὐτοῖς",
+          "translit": "autois",
+          "strong": "G0846",
+          "morph": "P-DPM",
+          "gloss": "im",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "ἐξουσίαν",
+          "translit": "exousian",
+          "strong": "G1849",
+          "morph": "N-ASF",
+          "gloss": "moc / prawo,",
+          "lemma": "ἐξουσία"
+        },
+        {
+          "original": "τέκνα",
+          "translit": "tekna",
+          "strong": "G5043",
+          "morph": "N-NPN",
+          "gloss": "dziećmi",
+          "lemma": "τέκνον"
+        },
+        {
+          "original": "θεοῦ",
+          "translit": "theou",
+          "strong": "G2316",
+          "morph": "N-GSM",
+          "gloss": "Bożymi",
+          "lemma": "θεός"
+        },
+        {
+          "original": "γενέσθαι",
+          "translit": "genesthai",
+          "strong": "G1096",
+          "morph": "V-2ADN",
+          "gloss": "stać się,",
+          "lemma": "γίνομαι"
+        },
+        {
+          "original": "τοῖς",
+          "translit": "tois",
+          "strong": "G3588",
+          "morph": "T-DPM",
+          "gloss": "tym",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "πιστεύουσιν",
+          "translit": "pisteuousin",
+          "strong": "G4100",
+          "morph": "V-PAP-DPM",
+          "gloss": "wierzącym",
+          "lemma": "πιστεύω"
+        },
+        {
+          "original": "εἰς",
+          "translit": "eis",
+          "strong": "G1519",
+          "morph": "PREP",
+          "gloss": "w",
+          "lemma": "εἰς"
+        },
+        {
+          "original": "τὸ",
+          "translit": "to",
+          "strong": "G3588",
+          "morph": "T-ASN",
+          "gloss": "to",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ὄνομα",
+          "translit": "onoma",
+          "strong": "G3686",
+          "morph": "N-ASN",
+          "gloss": "imię",
+          "lemma": "ὄνομα"
+        },
+        {
+          "original": "αὐτοῦ",
+          "translit": "autou",
+          "strong": "G0846",
+          "morph": "P-GSM",
+          "gloss": "Jego;",
+          "lemma": "αὐτός"
+        }
+      ]
+    },
+    {
+      "verse": 13,
+      "text": {
+        "UBG": "Którzy są narodzeni nie z krwi ani z woli ciała, ani z woli mężczyzny, ale z Boga.",
+        "BW": "Którzy się narodzili nie z krwi ani z woli ciała, ani z woli męża, lecz z Boga.",
+        "BT": "którzy ani z krwi, ani z żądzy ciała, ani z woli męża, ale z Boga się narodzili.",
+        "BG": "Którzy nie ze krwi, ani z woli ciała, ani z woli męża, ale z Boga narodzeni są."
+      },
+      "interlinear": [
+        {
+          "original": "οἳ",
+          "translit": "hoi",
+          "strong": "G3739",
+          "morph": "R-NPM",
+          "gloss": "którzy",
+          "lemma": "ὅς"
+        },
+        {
+          "original": "οὐκ",
+          "translit": "ouk",
+          "strong": "G3756",
+          "morph": "PRT-N",
+          "gloss": "nie",
+          "lemma": "οὐ"
+        },
+        {
+          "original": "ἐξ",
+          "translit": "ex",
+          "strong": "G1537",
+          "morph": "PREP",
+          "gloss": "z",
+          "lemma": "ἐκ"
+        },
+        {
+          "original": "αἱμάτων",
+          "translit": "haimatōn",
+          "strong": "G0129",
+          "morph": "N-GPN",
+          "gloss": "krwi,",
+          "lemma": "αἷμα"
+        },
+        {
+          "original": "οὐδὲ",
+          "translit": "oude",
+          "strong": "G3761",
+          "morph": "CONJ-N",
+          "gloss": "ani",
+          "lemma": "οὐδέ"
+        },
+        {
+          "original": "ἐκ",
+          "translit": "ek",
+          "strong": "G1537",
+          "morph": "PREP",
+          "gloss": "z",
+          "lemma": "ἐκ"
+        },
+        {
+          "original": "θελήματος",
+          "translit": "thelēmatos",
+          "strong": "G2307",
+          "morph": "N-GSN",
+          "gloss": "woli",
+          "lemma": "θέλημα"
+        },
+        {
+          "original": "σαρκὸς",
+          "translit": "sarkos",
+          "strong": "G4561",
+          "morph": "N-GSF",
+          "gloss": "ciała,",
+          "lemma": "σάρξ"
+        },
+        {
+          "original": "οὐδὲ",
+          "translit": "oude",
+          "strong": "G3761",
+          "morph": "CONJ-N",
+          "gloss": "ani",
+          "lemma": "οὐδέ"
+        },
+        {
+          "original": "ἐκ",
+          "translit": "ek",
+          "strong": "G1537",
+          "morph": "PREP",
+          "gloss": "z",
+          "lemma": "ἐκ"
+        },
+        {
+          "original": "θελήματος",
+          "translit": "thelēmatos",
+          "strong": "G2307",
+          "morph": "N-GSN",
+          "gloss": "woli",
+          "lemma": "θέλημα"
+        },
+        {
+          "original": "ἀνδρός",
+          "translit": "andros",
+          "strong": "G0435",
+          "morph": "N-GSM",
+          "gloss": "męża,",
+          "lemma": "ἀνήρ"
+        },
+        {
+          "original": "ἀλλ’",
+          "translit": "all’",
+          "strong": "G0235",
+          "morph": "CONJ",
+          "gloss": "lecz",
+          "lemma": "ἀλλά"
+        },
+        {
+          "original": "ἐκ",
+          "translit": "ek",
+          "strong": "G1537",
+          "morph": "PREP",
+          "gloss": "z",
+          "lemma": "ἐκ"
+        },
+        {
+          "original": "θεοῦ",
+          "translit": "theou",
+          "strong": "G2316",
+          "morph": "N-GSM",
+          "gloss": "Boga",
+          "lemma": "θεός"
+        },
+        {
+          "original": "ἐγεννήθησαν",
+          "translit": "egennēthēsan",
+          "strong": "G1080",
+          "morph": "V-API-3P",
+          "gloss": "zostali zrodzeni.",
+          "lemma": "γεννάω"
         }
       ]
     },
@@ -703,6 +1623,193 @@
           "morph": "N-GSF",
           "gloss": "prawdy.",
           "lemma": "ἀλήθεια"
+        }
+      ]
+    },
+    {
+      "verse": 15,
+      "text": {
+        "UBG": "Jan świadczył o nim i wołał: To był ten, o którym mówiłem: Ten, który za mną idzie, uprzedził mnie, bo wcześniej był niż ja.",
+        "BW": "Jan świadczył o nim i głośno wołał: Ten to był, o którym powiedziałem: Ten, który za mną idzie, był przede mną, bo pierwej był niż ja.",
+        "BT": "Jan daje o Nim świadectwo i głośno woła: «Ten był, o którym powiedziałem: Ten, który po mnie przychodzi, przewyższył mnie godnością, gdyż był wcześniej ode mnie».",
+        "BG": "Jan świadczył o nim i wołał, mówiąc: Tenci był, o którymem powiadał: Który po mnie idzie, przede mną stał się, bo pierwej był niż ja."
+      },
+      "interlinear": [
+        {
+          "original": "Ἰωάννης",
+          "translit": "Iōannēs",
+          "strong": "G2491",
+          "morph": "N-NSM-P",
+          "gloss": "Jan",
+          "lemma": "Ἰωάννης"
+        },
+        {
+          "original": "μαρτυρεῖ",
+          "translit": "martyrei",
+          "strong": "G3140",
+          "morph": "V-PAI-3S",
+          "gloss": "świadczy",
+          "lemma": "μαρτυρέω"
+        },
+        {
+          "original": "περὶ",
+          "translit": "peri",
+          "strong": "G4012",
+          "morph": "PREP",
+          "gloss": "o",
+          "lemma": "περί"
+        },
+        {
+          "original": "αὐτοῦ",
+          "translit": "autou",
+          "strong": "G0846",
+          "morph": "P-GSM",
+          "gloss": "Nim",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "i",
+          "lemma": "καί"
+        },
+        {
+          "original": "κέκραγεν",
+          "translit": "kekragen",
+          "strong": "G2896",
+          "morph": "V-RAI-3S",
+          "gloss": "woła:",
+          "lemma": "κράζω"
+        },
+        {
+          "original": "λέγων",
+          "translit": "legōn",
+          "strong": "G3004",
+          "morph": "V-PAP-NSM",
+          "gloss": "mówiąc:",
+          "lemma": "λέγω"
+        },
+        {
+          "original": "Οὗτος",
+          "translit": "Houtos",
+          "strong": "G3778",
+          "morph": "D-NSM",
+          "gloss": "Ten",
+          "lemma": "οὗτος"
+        },
+        {
+          "original": "ἦν",
+          "translit": "ēn",
+          "strong": "G2258",
+          "morph": "V-IAI-3S",
+          "gloss": "był,",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "ὃν",
+          "translit": "hon",
+          "strong": "G3739",
+          "morph": "R-ASM",
+          "gloss": "o którym",
+          "lemma": "ὅς"
+        },
+        {
+          "original": "εἶπον",
+          "translit": "eipon",
+          "strong": "G2036",
+          "morph": "V-2AAI-1S",
+          "gloss": "powiedziałem:",
+          "lemma": "ἔπω"
+        },
+        {
+          "original": "Ὁ",
+          "translit": "Ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "Ten",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ὀπίσω",
+          "translit": "opisō",
+          "strong": "G3694",
+          "morph": "ADV",
+          "gloss": "za",
+          "lemma": "ὀπίσω"
+        },
+        {
+          "original": "μου",
+          "translit": "mou",
+          "strong": "G3450",
+          "morph": "P-1GS",
+          "gloss": "mną",
+          "lemma": "ἐγώ"
+        },
+        {
+          "original": "ἐρχόμενος",
+          "translit": "erchomenos",
+          "strong": "G2064",
+          "morph": "V-PNP-NSM",
+          "gloss": "idący",
+          "lemma": "ἔρχομαι"
+        },
+        {
+          "original": "ἔμπροσθέν",
+          "translit": "emprosthen",
+          "strong": "G1715",
+          "morph": "ADV",
+          "gloss": "przede",
+          "lemma": "ἔμπροσθεν"
+        },
+        {
+          "original": "μου",
+          "translit": "mou",
+          "strong": "G3450",
+          "morph": "P-1GS",
+          "gloss": "mną",
+          "lemma": "ἐγώ"
+        },
+        {
+          "original": "γέγονεν",
+          "translit": "gegonen",
+          "strong": "G1096",
+          "morph": "V-2RAI-3S",
+          "gloss": "stał się,",
+          "lemma": "γíνομαι"
+        },
+        {
+          "original": "ὅτι",
+          "translit": "hoti",
+          "strong": "G3754",
+          "morph": "CONJ",
+          "gloss": "gdyż",
+          "lemma": "ὅτι"
+        },
+        {
+          "original": "πρῶτός",
+          "translit": "prōtos",
+          "strong": "G4413",
+          "morph": "A-NSM-S",
+          "gloss": "wcześniejszy",
+          "lemma": "πρῶτος"
+        },
+        {
+          "original": "μου",
+          "translit": "mou",
+          "strong": "G3450",
+          "morph": "P-1GS",
+          "gloss": "ode mnie",
+          "lemma": "ἐγώ"
+        },
+        {
+          "original": "ἦν",
+          "translit": "ēn",
+          "strong": "G2258",
+          "morph": "V-IAI-3S",
+          "gloss": "był.",
+          "lemma": "εἰμί"
         }
       ]
     },
@@ -1070,8 +2177,2795 @@
           "translit": "exēgēsato",
           "strong": "G1834",
           "morph": "V-ADI-3S",
-          "gloss": "objawił / zinterpretował.",
+          "gloss": "objawił.",
           "lemma": "ἐξηγέομαι"
+        }
+      ]
+    },
+    {
+      "verse": 19,
+      "text": {
+        "UBG": "A takie jest świadectwo Jana, gdy Żydzi posłali z Jerozolimy kapłanów i lewitów, aby go zapytali: Kim ty jesteś?",
+        "BW": "A takie jest świadectwo Jana, gdy Żydzi z Jerozolimy posłali do niego kapłanów i lewitów, aby go zapytali: Kto ty jesteś?",
+        "BT": "Takie jest świadectwo Jana. Gdy Żydzi wysłali do niego z Jerozolimy kapłanów i lewitów z zapytaniem: «Kto ty jesteś?»,",
+        "BG": "A toć jest świadectwo Janowe, gdy posłali Żydowie z Jeruzalemu kapłany i Lewity, aby go pytali: Ty ktoś jest?"
+      },
+      "interlinear": [
+        {
+          "original": "Καὶ",
+          "translit": "Kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "I",
+          "lemma": "καί"
+        },
+        {
+          "original": "αὕτη",
+          "translit": "hautē",
+          "strong": "G3778",
+          "morph": "D-NSF",
+          "gloss": "takie",
+          "lemma": "οὗτος"
+        },
+        {
+          "original": "ἐστὶν",
+          "translit": "estin",
+          "strong": "G2076",
+          "morph": "V-PAI-3S",
+          "gloss": "jest",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "ἡ",
+          "translit": "hē",
+          "strong": "G3588",
+          "morph": "T-NSF",
+          "gloss": "to",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "μαρτυρία",
+          "translit": "martyria",
+          "strong": "G3141",
+          "morph": "N-NSF",
+          "gloss": "świadectwo",
+          "lemma": "μαρτυρία"
+        },
+        {
+          "original": "τοῦ",
+          "translit": "tou",
+          "strong": "G3588",
+          "morph": "T-GSM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Ἰωάννου",
+          "translit": "Iōannou",
+          "strong": "G2491",
+          "morph": "N-GSM-P",
+          "gloss": "Jana.",
+          "lemma": "Ἰωάννης"
+        }
+      ]
+    },
+    {
+      "verse": 20,
+      "text": {
+        "UBG": "I wyznał, a nie zaparł się, ale wyznał: Ja nie jestem Chrystusem.",
+        "BW": "I wyznał, a nie zaprzeczył, i wyznał: Ja nie jestem Chrystusem.",
+        "BT": "on wyznał, a nie zaprzeczył, oświadczając: «Ja nie jestem Mesjaszem».",
+        "BG": "I wyznał, a nie zaprzał się; i wyznał: Żem ja nie jest Chrystus."
+      },
+      "interlinear": [
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "I",
+          "lemma": "καί"
+        },
+        {
+          "original": "ὡμολόγησεν",
+          "translit": "hōmologēsen",
+          "strong": "G3670",
+          "morph": "V-AAI-3S",
+          "gloss": "wyznał,",
+          "lemma": "ὁμολογέω"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "a",
+          "lemma": "καί"
+        },
+        {
+          "original": "οὐκ",
+          "translit": "ouk",
+          "strong": "G3756",
+          "morph": "PRT-N",
+          "gloss": "nie",
+          "lemma": "οὐ"
+        },
+        {
+          "original": "ἠρνήσατο",
+          "translit": "ērnēsato",
+          "strong": "G0720",
+          "morph": "V-ADI-3S",
+          "gloss": "zaparł się:",
+          "lemma": "ἀρνέομαι"
+        },
+        {
+          "original": "Ἐγὼ",
+          "translit": "Egō",
+          "strong": "G1473",
+          "morph": "P-1NS",
+          "gloss": "Ja",
+          "lemma": "ἐγώ"
+        },
+        {
+          "original": "οὐκ",
+          "translit": "ouk",
+          "strong": "G3756",
+          "morph": "PRT-N",
+          "gloss": "nie",
+          "lemma": "οὐ"
+        },
+        {
+          "original": "εἰμὶ",
+          "translit": "eimi",
+          "strong": "G1510",
+          "morph": "V-PAI-1S",
+          "gloss": "jestem",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "tym",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Χριστός",
+          "translit": "Christos",
+          "strong": "G5547",
+          "morph": "N-NSM-T",
+          "gloss": "Chrystusem.",
+          "lemma": "Χριστός"
+        }
+      ]
+    },
+    {
+      "verse": 21,
+      "text": {
+        "UBG": "I zapytali go: Cóż więc? Jesteś Eliaszem? A on odpowiedział: Nie jestem. Jesteś tym prorokiem? I odpowiedział: Nie.",
+        "BW": "I zapytali go: Czym więc? Eliaszem jesteś? A on rzekł: Nie jestem. Prorokiem jesteś? I odpowiedział: Nie.",
+        "BT": "Zapytali go: «Cóż więc? Czy jesteś Eliaszem?» Odrzekł: «Nie jestem». «Czy ty jesteś prorokiem?» Odpowiedział: «Nie».",
+        "BG": "I pytali go: Cóż tedy? Elijaszemżeś ty? I rzekł: Nie jestem. Jesteśżeś ty prorokiem? I odpowiedział: Nie."
+      },
+      "interlinear": [
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "I",
+          "lemma": "καί"
+        },
+        {
+          "original": "ἠρώτησαν",
+          "translit": "ērōtēsan",
+          "strong": "G2065",
+          "morph": "V-AAI-3P",
+          "gloss": "zapytali",
+          "lemma": "ἐρωτάω"
+        },
+        {
+          "original": "αὐτόν",
+          "translit": "auton",
+          "strong": "G0846",
+          "morph": "P-ASM",
+          "gloss": "go:",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "Τί",
+          "translit": "Ti",
+          "strong": "G5101",
+          "morph": "I-NSN",
+          "gloss": "Cóż",
+          "lemma": "τίς"
+        },
+        {
+          "original": "οὖν",
+          "translit": "oun",
+          "strong": "G3767",
+          "morph": "CONJ",
+          "gloss": "zatem?",
+          "lemma": "οὖν"
+        },
+        {
+          "original": "Ἠλίας",
+          "translit": "Ēlias",
+          "strong": "G2243",
+          "morph": "N-NSM-P",
+          "gloss": "Eliaszem",
+          "lemma": "Ἠλίας"
+        },
+        {
+          "original": "εἶ",
+          "translit": "ei",
+          "strong": "G1488",
+          "morph": "V-PAI-2S",
+          "gloss": "jesteś?",
+          "lemma": "εἰμί"
+        }
+      ]
+    },
+    {
+      "verse": 22,
+      "text": {
+        "UBG": "Powiedzieli mu więc: Kim jesteś, abyśmy mogli dać odpowiedź tym, którzy nas posłali? Co mówisz o samym sobie?",
+        "BW": "Rzekli mu więc: Ktoś ty jest? Musimy przecież dać odpowiedź tym, którzy nas posłali. Cóż mówisz sam o sobie?",
+        "BT": "Powiedzieli mu więc: «Kim jesteś, abyśmy mogli dać odpowiedź tym, którzy nas posłali? Co mówisz sam o sobie?»",
+        "BG": "Rzekli mu tedy: Ktoś jest, abyśmy odpowiedź dali tym, którzy nas posłali? Cóż powiadasz sam o sobie?"
+      },
+      "interlinear": [
+        {
+          "original": "εἶπον",
+          "translit": "eipon",
+          "strong": "G2036",
+          "morph": "V-2AAI-3P",
+          "gloss": "Rzekli",
+          "lemma": "ἔπω"
+        },
+        {
+          "original": "οὖν",
+          "translit": "oun",
+          "strong": "G3767",
+          "morph": "CONJ",
+          "gloss": "mu więc:",
+          "lemma": "οὖν"
+        },
+        {
+          "original": "αὐτῷ",
+          "translit": "autō",
+          "strong": "G0846",
+          "morph": "P-DSM",
+          "gloss": "mu:",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "Τίς",
+          "translit": "Tis",
+          "strong": "G5101",
+          "morph": "I-NSM",
+          "gloss": "Kim",
+          "lemma": "τίς"
+        },
+        {
+          "original": "εἶ",
+          "translit": "ei",
+          "strong": "G1488",
+          "morph": "V-PAI-2S",
+          "gloss": "jesteś?",
+          "lemma": "εἰμί"
+        }
+      ]
+    },
+    {
+      "verse": 23,
+      "text": {
+        "UBG": "Odpowiedział: Ja jestem głosem wołającego na pustyni: Prostujcie drogę Pana, jak powiedział prorok Izajasz.",
+        "BW": "Rzekł: Ja jestem głosem wołającego na pustyni: Prostujcie drogę Pańską, jak powiedział prorok Izajasz.",
+        "BT": "Odrzekł: «Jam głos wołającego na pustyni: Wyrównajcie drogę Pańską, jak powiedział prorok Izajasz».",
+        "BG": "Rzekł: Jam głos wołającego na puszczy: Prostujcie drogę Pańską, jako powiedział Izajasz prorok."
+      },
+      "interlinear": [
+        {
+          "original": "ἔφη",
+          "translit": "ephē",
+          "strong": "G5346",
+          "morph": "V-IAI-3S",
+          "gloss": "Rzekł:",
+          "lemma": "φημί"
+        },
+        {
+          "original": "Ἐγὼ",
+          "translit": "Egō",
+          "strong": "G1473",
+          "morph": "P-1NS",
+          "gloss": "Ja jestem",
+          "lemma": "ἐγώ"
+        },
+        {
+          "original": "φωνὴ",
+          "translit": "phōnē",
+          "strong": "G5456",
+          "morph": "N-NSF",
+          "gloss": "głosem",
+          "lemma": "φωνή"
+        },
+        {
+          "original": "βοῶντος",
+          "translit": "boōntos",
+          "strong": "G0994",
+          "morph": "V-PAP-GSM",
+          "gloss": "wołającego",
+          "lemma": "βοάω"
+        },
+        {
+          "original": "ἐν",
+          "translit": "en",
+          "strong": "G1722",
+          "morph": "PREP",
+          "gloss": "na",
+          "lemma": "ἐν"
+        },
+        {
+          "original": "τῇ",
+          "translit": "tē",
+          "strong": "G3588",
+          "morph": "T-DSF",
+          "gloss": "tej",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἐρήμῳ",
+          "translit": "erēmō",
+          "strong": "G2048",
+          "morph": "A-DSF",
+          "gloss": "pustyni:",
+          "lemma": "ἔρημος"
+        },
+        {
+          "original": "Εὐθύνατε",
+          "translit": "Euthynate",
+          "strong": "G2115",
+          "morph": "V-AAM-2P",
+          "gloss": "Prostujcie",
+          "lemma": "εὐθύνω"
+        },
+        {
+          "original": "τὴν",
+          "translit": "tēn",
+          "strong": "G3588",
+          "morph": "T-ASF",
+          "gloss": "tę",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ὁδὸν",
+          "translit": "hodon",
+          "strong": "G3598",
+          "morph": "N-ASF",
+          "gloss": "drogę",
+          "lemma": "ὁδός"
+        },
+        {
+          "original": "Κυρίου",
+          "translit": "Kyriou",
+          "strong": "G2962",
+          "morph": "N-GSM-T",
+          "gloss": "Pańską!",
+          "lemma": "κύριος"
+        }
+      ]
+    },
+    {
+      "verse": 24,
+      "text": {
+        "UBG": "A ci, którzy byli posłani, byli z faryzeuszy.",
+        "BW": "A wysłańcy byli spośród faryzeuszów.",
+        "BT": "A wysłannicy byli spośród faryzeuszów.",
+        "BG": "A ci, którzy byli posłani, byli z Faryzeuszów."
+      },
+      "interlinear": [
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "A",
+          "lemma": "καί"
+        },
+        {
+          "original": "ἀπεσταλμένοι",
+          "translit": "apestalmenoi",
+          "strong": "G0649",
+          "morph": "V-RPP-NPM",
+          "gloss": "posłani",
+          "lemma": "ἀποστέλλω"
+        },
+        {
+          "original": "ἦσαν",
+          "translit": "ēsan",
+          "strong": "G2258",
+          "morph": "V-IAI-3P",
+          "gloss": "byli",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "ἐκ",
+          "translit": "ek",
+          "strong": "G1537",
+          "morph": "PREP",
+          "gloss": "z",
+          "lemma": "ἐκ"
+        },
+        {
+          "original": "τῶν",
+          "translit": "tōn",
+          "strong": "G3588",
+          "morph": "T-GPM",
+          "gloss": "grona",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Φαρισαίων",
+          "translit": "Pharisaiōn",
+          "strong": "G5330",
+          "morph": "N-GPM-T",
+          "gloss": "faryzeuszy.",
+          "lemma": "Φαρισαῖος"
+        }
+      ]
+    },
+    {
+      "verse": 25,
+      "text": {
+        "UBG": "I zapytali go: Dlaczego więc chrzcisz, jeśli nie jesteś Chrystusem ani Eliaszem, ani tym prorokiem?",
+        "BW": "I pytali go, mówiąc mu: Czemu więc chrzcisz, jeśli nie jesteś Chrystusem ani Eliaszem, ani prorokiem?",
+        "BT": "I zadali mu pytanie: «Czemu zatem chrzcisz, skoro nie jesteś ani Mesjaszem, ani Eliaszem, ani prorokiem?»",
+        "BG": "I pytali go, i rzekli mu: Przeczże tedy chrzcisz, jeśliżeś ty nie jest Chrystus, ani Elijasz, ani prorok?"
+      },
+      "interlinear": [
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "I",
+          "lemma": "καί"
+        },
+        {
+          "original": "ἠρώτησαν",
+          "translit": "ērōtēsan",
+          "strong": "G2065",
+          "morph": "V-AAI-3P",
+          "gloss": "zapytali",
+          "lemma": "ἐρωτάω"
+        },
+        {
+          "original": "αὐτόν",
+          "translit": "auton",
+          "strong": "G0846",
+          "morph": "P-ASM",
+          "gloss": "go:",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "Τί",
+          "translit": "Ti",
+          "strong": "G5101",
+          "morph": "I-ASN",
+          "gloss": "Dlaczego",
+          "lemma": "τίς"
+        },
+        {
+          "original": "οὖν",
+          "translit": "oun",
+          "strong": "G3767",
+          "morph": "CONJ",
+          "gloss": "więc",
+          "lemma": "οὖν"
+        },
+        {
+          "original": "βαπτίζεις",
+          "translit": "baptizeis",
+          "strong": "G0907",
+          "morph": "V-PAI-2S",
+          "gloss": "chrzcisz?",
+          "lemma": "βαπτίζω"
+        }
+      ]
+    },
+    {
+      "verse": 26,
+      "text": {
+        "UBG": "Odpowiedział im Jan: Ja chrzczę wodą, ale pośród was stoi ten, którego wy nie znacie.",
+        "BW": "Odpowiedział im Jan, mówiąc: Ja chrzczę wodą, ale pośród was stoi Ten, którego wy nie znacie.",
+        "BT": "Jan im tak odpowiedział: «Ja chrzczę wodą. Pośród was stoi Ten, którego wy nie znacie,",
+        "BG": "Odpowiedział im Jan, mówiąc: Ja chrzczę wodą; ale w pośród was stoi, którego wy nie znacie."
+      },
+      "interlinear": [
+        {
+          "original": "ἀπεκρίθη",
+          "translit": "apekrithē",
+          "strong": "G0611",
+          "morph": "V-ADI-3S",
+          "gloss": "Odpowiedział",
+          "lemma": "ἀποκρίνομαι"
+        },
+        {
+          "original": "αὐτοῖς",
+          "translit": "autois",
+          "strong": "G0846",
+          "morph": "P-DPM",
+          "gloss": "im",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "ten",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Ἰωάννης",
+          "translit": "Iōannēs",
+          "strong": "G2491",
+          "morph": "N-NSM-P",
+          "gloss": "Jan:",
+          "lemma": "Ἰωάννης"
+        },
+        {
+          "original": "Ἐγὼ",
+          "translit": "Egō",
+          "strong": "G1473",
+          "morph": "P-1NS",
+          "gloss": "Ja",
+          "lemma": "ἐγώ"
+        },
+        {
+          "original": "βαπτίζω",
+          "translit": "baptizō",
+          "strong": "G0907",
+          "morph": "V-PAI-1S",
+          "gloss": "chrzczę",
+          "lemma": "βαπτίζω"
+        },
+        {
+          "original": "ἐν",
+          "translit": "en",
+          "strong": "G1722",
+          "morph": "PREP",
+          "gloss": "w",
+          "lemma": "ἐν"
+        },
+        {
+          "original": "ὕδατι",
+          "translit": "hydati",
+          "strong": "G5204",
+          "morph": "N-DSN",
+          "gloss": "wodzie,",
+          "lemma": "ὕdwρ"
+        }
+      ]
+    },
+    {
+      "verse": 27,
+      "text": {
+        "UBG": "To jest ten, który idąc za mną, uprzedził mnie, któremu ja nie jestem godny rozwiązać rzemyka u jego sandała.",
+        "BW": "To Ten, który idzie za mną, któremu nie jestem godzien rozwiązać rzemyka u sandałów jego.",
+        "BT": "który po mnie przychodzi, a któremu ja nie jestem godzien odwiązać rzemyka u Jego sandała».",
+        "BG": "Tenci jest, który po mnie idzie, który przede mną stał się, któregom ja nie jest godzien, abym rozwiązał rzemyk u obuwia jego."
+      },
+      "interlinear": [
+        {
+          "original": "αὐτός",
+          "translit": "autos",
+          "strong": "G0846",
+          "morph": "P-NSM",
+          "gloss": "On",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "ἐστιν",
+          "translit": "estin",
+          "strong": "G2076",
+          "morph": "V-PAI-3S",
+          "gloss": "jest",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "tym,",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ὀπίσω",
+          "translit": "opisō",
+          "strong": "G3694",
+          "morph": "ADV",
+          "gloss": "za",
+          "lemma": "ὀπίσω"
+        },
+        {
+          "original": "μου",
+          "translit": "mou",
+          "strong": "G3450",
+          "morph": "P-1GS",
+          "gloss": "mną",
+          "lemma": "ἐγώ"
+        },
+        {
+          "original": "ἐρχόμενος",
+          "translit": "erchomenos",
+          "strong": "G2064",
+          "morph": "V-PNP-NSM",
+          "gloss": "idącym.",
+          "lemma": "ἔρχομαι"
+        }
+      ]
+    },
+    {
+      "verse": 28,
+      "text": {
+        "UBG": "Działo się to w Betabarze za Jordanem, gdzie Jan chrzcił.",
+        "BW": "To się działo w Betanii za Jordanem, gdzie Jan chrzcił.",
+        "BT": "Działo się to w Betanii po drugiej stronie Jordanu, gdzie Jan chrzcił.",
+        "BG": "To się działo w Betabarze za Jordanem, kędy Jan chrzcił."
+      },
+      "interlinear": [
+        {
+          "original": "Ταῦτα",
+          "translit": "Tauta",
+          "strong": "G3778",
+          "morph": "D-NPN",
+          "gloss": "To",
+          "lemma": "οὗτος"
+        },
+        {
+          "original": "ἐν",
+          "translit": "en",
+          "strong": "G1722",
+          "morph": "PREP",
+          "gloss": "w",
+          "lemma": "ἐν"
+        },
+        {
+          "original": "Βηθανίᾳ",
+          "translit": "Bēthania",
+          "strong": "G0963",
+          "morph": "N-DSF-L",
+          "gloss": "Betanii (Betabarze)",
+          "lemma": "Βηθανία"
+        },
+        {
+          "original": "ἐγένετο",
+          "translit": "egeneto",
+          "strong": "G1096",
+          "morph": "V-2ADI-3S",
+          "gloss": "działo się",
+          "lemma": "γíνομαι"
+        },
+        {
+          "original": "πέραν",
+          "translit": "peran",
+          "strong": "G4008",
+          "morph": "ADV",
+          "gloss": "za",
+          "lemma": "πέραν"
+        },
+        {
+          "original": "τοῦ",
+          "translit": "tou",
+          "strong": "G3588",
+          "morph": "T-GSM",
+          "gloss": "tym",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Ἰορδάνου",
+          "translit": "Iordanou",
+          "strong": "G2446",
+          "morph": "N-GSM-L",
+          "gloss": "Jordanem.",
+          "lemma": "Ἰορδάνης"
+        }
+      ]
+    },
+    {
+      "verse": 29,
+      "text": {
+        "UBG": "Nazajutrz Jan zobaczył Jezusa przychodzącego do niego i powiedział: Oto Baranek Boży, który gładzi grzech świata!",
+        "BW": "Nazajutrz ujrzał Jezusa idącego do niego i rzekł: Oto Baranek Boży, który gładzi grzech świata.",
+        "BT": "Nazajutrz zobaczył Jezusa, nadchodzącego ku niemu, i rzekł: «Oto Baranek Boży, który gładzi grzech świata.",
+        "BG": "Nazajutrz ujrzał Jan Jezusa idącego do siebie, i rzekł: Oto Baranek Boży, który gładzi grzech świata!"
+      },
+      "interlinear": [
+        {
+          "original": "Τῇ",
+          "translit": "Tē",
+          "strong": "G3588",
+          "morph": "T-DSF",
+          "gloss": "W",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἐπαύριον",
+          "translit": "epaurion",
+          "strong": "G1887",
+          "morph": "ADV",
+          "gloss": "następny dzień",
+          "lemma": "ἐπαύριον"
+        },
+        {
+          "original": "βλέπει",
+          "translit": "blepei",
+          "strong": "G0991",
+          "morph": "V-PAI-3S",
+          "gloss": "widzi",
+          "lemma": "βλέπω"
+        },
+        {
+          "original": "τὸν",
+          "translit": "ton",
+          "strong": "G3588",
+          "morph": "T-ASM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Ἰησοῦν",
+          "translit": "Iēsoun",
+          "strong": "G2424",
+          "morph": "N-ASM-P",
+          "gloss": "Jezusa,",
+          "lemma": "Ἰησοῦς"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "i",
+          "lemma": "καί"
+        },
+        {
+          "original": "λέγει",
+          "translit": "legei",
+          "strong": "G3004",
+          "morph": "V-PAI-3S",
+          "gloss": "mówi:",
+          "lemma": "λέγω"
+        },
+        {
+          "original": "Ἴδε",
+          "translit": "Ide",
+          "strong": "G2396",
+          "morph": "INJ",
+          "gloss": "Oto",
+          "lemma": "ἴδε"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "ten",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἀμνὸς",
+          "translit": "amnos",
+          "strong": "G0286",
+          "morph": "N-NSM",
+          "gloss": "Baranek",
+          "lemma": "ἀμνός"
+        },
+        {
+          "original": "τοῦ",
+          "translit": "tou",
+          "strong": "G3588",
+          "morph": "T-GSM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "θεοῦ",
+          "translit": "theou",
+          "strong": "G2316",
+          "morph": "N-GSM",
+          "gloss": "Boga,",
+          "lemma": "θεός"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "który",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "αἴρων",
+          "translit": "airōn",
+          "strong": "G0142",
+          "morph": "V-PAP-NSM",
+          "gloss": "gładzi (bierze na siebie)",
+          "lemma": "αἴρω"
+        },
+        {
+          "original": "τὴν",
+          "translit": "tēn",
+          "strong": "G3588",
+          "morph": "T-ASF",
+          "gloss": "ten",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἁμαρτίαν",
+          "translit": "hamartian",
+          "strong": "G0266",
+          "morph": "N-ASF",
+          "gloss": "grzech",
+          "lemma": "ἁμαρτία"
+        },
+        {
+          "original": "τοῦ",
+          "translit": "tou",
+          "strong": "G3588",
+          "morph": "T-GSM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "κόσμου",
+          "translit": "kosmou",
+          "strong": "G2889",
+          "morph": "N-GSM",
+          "gloss": "świata!",
+          "lemma": "κόσμος"
+        }
+      ]
+    },
+    {
+      "verse": 30,
+      "text": {
+        "UBG": "To jest ten, o którym mówiłem: Za mną idzie mężczyzna, który mnie uprzedził, bo wcześniej był niż ja.",
+        "BW": "To jest Ten, o którym powiedziałem: Za mną idzie mąż, który był przede mną, bo pierwej był niż ja.",
+        "BT": "To jest Ten, o którym powiedziałem: Po mnie przychodzi Mąż, który przewyższył mnie godnością, gdyż był wcześniej ode mnie.",
+        "BG": "Tenci jest, o którymem ja mówił: Za mną idzie mąż, który przede mną stał się, bo pierwej był niż ja."
+      },
+      "interlinear": [
+        {
+          "original": "οὗτός",
+          "translit": "houtos",
+          "strong": "G3778",
+          "morph": "D-NSM",
+          "gloss": "Ten",
+          "lemma": "οὗτος"
+        },
+        {
+          "original": "ἐστιν",
+          "translit": "estin",
+          "strong": "G2076",
+          "morph": "V-PAI-3S",
+          "gloss": "jest,",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "περὶ",
+          "translit": "peri",
+          "strong": "G4012",
+          "morph": "PREP",
+          "gloss": "o",
+          "lemma": "περί"
+        },
+        {
+          "original": "οὗ",
+          "translit": "hou",
+          "strong": "G3739",
+          "morph": "R-GSM",
+          "gloss": "którym",
+          "lemma": "ὅς"
+        },
+        {
+          "original": "ἐγὼ",
+          "translit": "egō",
+          "strong": "G1473",
+          "morph": "P-1NS",
+          "gloss": "ja",
+          "lemma": "ἐγώ"
+        },
+        {
+          "original": "εἶπον",
+          "translit": "eipon",
+          "strong": "G2036",
+          "morph": "V-2AAI-1S",
+          "gloss": "powiedziałem.",
+          "lemma": "ἔπω"
+        }
+      ]
+    },
+    {
+      "verse": 31,
+      "text": {
+        "UBG": "I ja go nie znałem, ale dlatego przyszedłem, chrzcząc wodą, aby został objawiony Izraelowi.",
+        "BW": "I ja go nie znałem; lecz dlatego przyszedłem, chrzcząc wodą, aby był objawiony Izraelowi.",
+        "BT": "Ja Go przedtem nie znałem, ale przyszedłem chrzcić wodą w tym celu, aby On objawił się Izraelowi».",
+        "BG": "A jam go nie znał; ale aby był objawiony Izraelowi, dlategom ja przyszedł, chrzcząc wodą."
+      },
+      "interlinear": [
+        {
+          "original": "κἀγὼ",
+          "translit": "kagō",
+          "strong": "G2504",
+          "morph": "P-1NS-C",
+          "gloss": "I ja",
+          "lemma": "κἀγώ"
+        },
+        {
+          "original": "οὐκ",
+          "translit": "ouk",
+          "strong": "G3756",
+          "morph": "PRT-N",
+          "gloss": "nie",
+          "lemma": "οὐ"
+        },
+        {
+          "original": "ᾔδειν",
+          "translit": "ēdein",
+          "strong": "G1492",
+          "morph": "V-YAI-1S",
+          "gloss": "znałem",
+          "lemma": "εἴδω"
+        },
+        {
+          "original": "αὐτόν",
+          "translit": "auton",
+          "strong": "G0846",
+          "morph": "P-ASM",
+          "gloss": "Go.",
+          "lemma": "αὐτός"
+        }
+      ]
+    },
+    {
+      "verse": 32,
+      "text": {
+        "UBG": "Świadczył też Jan, mówiąc: Widziałem Ducha zstępującego z nieba jak gołębica i spoczął na nim.",
+        "BW": "I świadczył Jan, mówiąc: Widziałem Ducha, zstępującego z nieba jakby gołębica; i spoczął na nim.",
+        "BT": "Jan zaświadczył, mówiąc: «Ujrzałem Ducha, który zstępował z nieba jak gołębica i spoczął na Nim.",
+        "BG": "I świadczył Jan, mówiąc: Widziałem Ducha zstępującego jako gołębicę z nieba, i został na nim."
+      },
+      "interlinear": [
+        {
+          "original": "Καὶ",
+          "translit": "Kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "I",
+          "lemma": "καί"
+        },
+        {
+          "original": "ἐμαρτύρησεν",
+          "translit": "emartyrēsen",
+          "strong": "G3140",
+          "morph": "V-AAI-3S",
+          "gloss": "zaświadczył",
+          "lemma": "μαρτυρέω"
+        },
+        {
+          "original": "Ἰωάννης",
+          "translit": "Iōannēs",
+          "strong": "G2491",
+          "morph": "N-NSM-P",
+          "gloss": "Jan,",
+          "lemma": "Ἰωάννης"
+        },
+        {
+          "original": "λέγων",
+          "translit": "legōn",
+          "strong": "G3004",
+          "morph": "V-PAP-NSM",
+          "gloss": "mówiąc:",
+          "lemma": "λέγω"
+        },
+        {
+          "original": "Τεθέαμαι",
+          "translit": "Tetheamai",
+          "strong": "G2300",
+          "morph": "V-RDI-1S",
+          "gloss": "Ujrzałem",
+          "lemma": "θεάομαι"
+        },
+        {
+          "original": "τὸ",
+          "translit": "to",
+          "strong": "G3588",
+          "morph": "T-ASN",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "πνεῦμα",
+          "translit": "pneuma",
+          "strong": "G4151",
+          "morph": "N-ASN",
+          "gloss": "Ducha",
+          "lemma": "πνεῦμα"
+        },
+        {
+          "original": "καταβαῖνον",
+          "translit": "katabainon",
+          "strong": "G2597",
+          "morph": "V-PAP-ASN",
+          "gloss": "zstępującego",
+          "lemma": "καταβαίνω"
+        },
+        {
+          "original": "ὡς",
+          "translit": "hōs",
+          "strong": "G5613",
+          "morph": "ADV",
+          "gloss": "jak",
+          "lemma": "ὡς"
+        },
+        {
+          "original": "περιστερὰν",
+          "translit": "peristeran",
+          "strong": "G4058",
+          "morph": "N-ASF",
+          "gloss": "gołębicę.",
+          "lemma": "περιστερά"
+        }
+      ]
+    },
+    {
+      "verse": 33,
+      "text": {
+        "UBG": "A ja go nie znałem, ale ten, który mnie posłał, abym chrzcił wodą, powiedział do mnie: Na kogo ujrzysz Ducha zstępującego i spoczywającego na nim, to jest ten, który chrzci Duchem Świętym.",
+        "BW": "I ja go nie znałem, lecz Ten, który mnie posłał, abym chrzcił wodą, rzekł do mnie: Ten, nad którym ujrzysz Ducha zstępującego i spoczywającego na nim, to Ten, który chrzci Duchem Świętym.",
+        "BT": "Ja Go przedtem nie znałem, ale Ten, który mnie posłał, abym chrzcił wodą, powiedział do mnie: Ten, nad którym ujrzysz Ducha zstępującego i spoczywającego na Nim, jest Tym, który chrzci Duchem Świętym.",
+        "BG": "A jam go nie znał; ale ten, który mię posłał, abym chrzcił wodą, ten mi ci rzekł: Na kogo ujrzysz Ducha zstępującego i na nim zostającego, tenci jest, który chrzci Duchem Świętym."
+      },
+      "interlinear": [
+        {
+          "original": "κἀγὼ",
+          "translit": "kagō",
+          "strong": "G2504",
+          "morph": "P-1NS-C",
+          "gloss": "I ja",
+          "lemma": "κἀγώ"
+        },
+        {
+          "original": "οὐκ",
+          "translit": "ouk",
+          "strong": "G3756",
+          "morph": "PRT-N",
+          "gloss": "nie",
+          "lemma": "οὐ"
+        },
+        {
+          "original": "ᾔδειν",
+          "translit": "ēdein",
+          "strong": "G1492",
+          "morph": "V-YAI-1S",
+          "gloss": "znałem",
+          "lemma": "εἴδω"
+        },
+        {
+          "original": "αὐτόν",
+          "translit": "auton",
+          "strong": "G0846",
+          "morph": "P-ASM",
+          "gloss": "Go,",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "ἀλλ’",
+          "translit": "all’",
+          "strong": "G0235",
+          "morph": "CONJ",
+          "gloss": "lecz",
+          "lemma": "ἀλλά"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "Ten, który",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "πέμψας",
+          "translit": "pempsas",
+          "strong": "G3992",
+          "morph": "V-AAP-NSM",
+          "gloss": "posłał",
+          "lemma": "πέμπω"
+        },
+        {
+          "original": "με",
+          "translit": "me",
+          "strong": "G3165",
+          "morph": "P-1AS",
+          "gloss": "mnie.",
+          "lemma": "ἐγώ"
+        }
+      ]
+    },
+    {
+      "verse": 34,
+      "text": {
+        "UBG": "A ja widziałem to i świadczyłem, że on jest Synem Bożym.",
+        "BW": "A ja widziałem to i świadczyłem, że ten jest Synem Bożym.",
+        "BT": "Ja to ujrzałem i dałem świadectwo, że On jest Synem Bożym».",
+        "BG": "A jam widział i świadczył, że tenci jest Syn Boży."
+      },
+      "interlinear": [
+        {
+          "original": "κἀγὼ",
+          "translit": "kagō",
+          "strong": "G2504",
+          "morph": "P-1NS-C",
+          "gloss": "I ja",
+          "lemma": "κἀγώ"
+        },
+        {
+          "original": "ἑώρακα",
+          "translit": "heōraka",
+          "strong": "G3708",
+          "morph": "V-RAI-1S",
+          "gloss": "widziałem",
+          "lemma": "ὁράω"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "i",
+          "lemma": "καί"
+        },
+        {
+          "original": "μεμαρτύρηκα",
+          "translit": "memartyrēka",
+          "strong": "G3140",
+          "morph": "V-RAI-1S",
+          "gloss": "dałem świadectwo,",
+          "lemma": "μαρτυρέω"
+        },
+        {
+          "original": "ὅτι",
+          "translit": "hoti",
+          "strong": "G3754",
+          "morph": "CONJ",
+          "gloss": "że",
+          "lemma": "ὅτι"
+        },
+        {
+          "original": "οὗτός",
+          "translit": "houtos",
+          "strong": "G3778",
+          "morph": "D-NSM",
+          "gloss": "Ten",
+          "lemma": "οὗτος"
+        },
+        {
+          "original": "ἐστιν",
+          "translit": "estin",
+          "strong": "G2076",
+          "morph": "V-PAI-3S",
+          "gloss": "jest",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "tym",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "υἱὸς",
+          "translit": "huios",
+          "strong": "G5207",
+          "morph": "N-NSM",
+          "gloss": "Synem",
+          "lemma": "υἱός"
+        },
+        {
+          "original": "τοῦ",
+          "translit": "tou",
+          "strong": "G3588",
+          "morph": "T-GSM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "θεοῦ",
+          "translit": "theou",
+          "strong": "G2316",
+          "morph": "N-GSM",
+          "gloss": "Boga.",
+          "lemma": "θεός"
+        }
+      ]
+    },
+    {
+      "verse": 35,
+      "text": {
+        "UBG": "Nazajutrz znowu stał Jan i dwaj z jego uczniów.",
+        "BW": "Nazajutrz znowu stał Jan z dwoma ze swoich uczniów",
+        "BT": "Nazajutrz Jan znowu stał w tym miejscu wraz z dwoma swoimi uczniami",
+        "BG": "Nazajutrz zasię stał Jan i z uczniów jego dwaj."
+      },
+      "interlinear": [
+        {
+          "original": "Τῇ",
+          "translit": "Tē",
+          "strong": "G3588",
+          "morph": "T-DSF",
+          "gloss": "W",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἐπαύριον",
+          "translit": "epaurion",
+          "strong": "G1887",
+          "morph": "ADV",
+          "gloss": "następny dzień",
+          "lemma": "ἐπαύριον"
+        },
+        {
+          "original": "πάλιν",
+          "translit": "palin",
+          "strong": "G3825",
+          "morph": "ADV",
+          "gloss": "znowu",
+          "lemma": "πάλιν"
+        },
+        {
+          "original": "εἱστήκει",
+          "translit": "heistēkei",
+          "strong": "G2476",
+          "morph": "V-YAI-3S",
+          "gloss": "stał",
+          "lemma": "ἵστημι"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "ten",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Ἰωάννης",
+          "translit": "Iōannēs",
+          "strong": "G2491",
+          "morph": "N-NSM-P",
+          "gloss": "Jan.",
+          "lemma": "Ἰωάννης"
+        }
+      ]
+    },
+    {
+      "verse": 36,
+      "text": {
+        "UBG": "I spojrzawszy na Jezusa przechodzącego, powiedział: Oto Baranek Boży!",
+        "BW": "I utkwiwszy wzrok w Jezusie, który przechodził, rzekł: Oto Baranek Boży.",
+        "BT": "i gdy spojrzał na Jezusa, który przechodził, rzekł: «Oto Baranek Boży».",
+        "BG": "A wejrzawszy na Jezusa przechodzącego, rzekł: Oto Baranek Boży!"
+      },
+      "interlinear": [
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "I",
+          "lemma": "καί"
+        },
+        {
+          "original": "ἐμβλέψας",
+          "translit": "emblepsas",
+          "strong": "G1689",
+          "morph": "V-AAP-NSM",
+          "gloss": "spojrzawszy",
+          "lemma": "ἐμβλέπω"
+        },
+        {
+          "original": "τῷ",
+          "translit": "tō",
+          "strong": "G3588",
+          "morph": "T-DSM",
+          "gloss": "na",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Ἰησοῦ",
+          "translit": "Iēsou",
+          "strong": "G2424",
+          "morph": "N-DSM-P",
+          "gloss": "Jezusa",
+          "lemma": "Ἰησοῦς"
+        },
+        {
+          "original": "περιπατοῦντι",
+          "translit": "peripatounti",
+          "strong": "G4043",
+          "morph": "V-PAP-DSM",
+          "gloss": "przechodzącego,",
+          "lemma": "περιπατέω"
+        },
+        {
+          "original": "λέγει",
+          "translit": "legei",
+          "strong": "G3004",
+          "morph": "V-PAI-3S",
+          "gloss": "mówi:",
+          "lemma": "λέγω"
+        },
+        {
+          "original": "Ἴδε",
+          "translit": "Ide",
+          "strong": "G2396",
+          "morph": "INJ",
+          "gloss": "Oto",
+          "lemma": "ἴδε"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "ten",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἀμνὸς",
+          "translit": "amnos",
+          "strong": "G0286",
+          "morph": "N-NSM",
+          "gloss": "Baranek",
+          "lemma": "ἀμνός"
+        },
+        {
+          "original": "τοῦ",
+          "translit": "tou",
+          "strong": "G3588",
+          "morph": "T-GSM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "θεοῦ",
+          "translit": "theou",
+          "strong": "G2316",
+          "morph": "N-GSM",
+          "gloss": "Boga!",
+          "lemma": "θεός"
+        }
+      ]
+    },
+    {
+      "verse": 37,
+      "text": {
+        "UBG": "A dwaj uczniowie usłyszeli, jak mówił, i poszli za Jezusem.",
+        "BW": "I słyszeli dwaj uczniowie, co mówił, i poszli za Jezusem.",
+        "BT": "Dwaj uczniowie usłyszeli, jak mówił, i poszli za Jezusem.",
+        "BG": "I słyszeli go oni dwaj uczniowie mówiącego, i szli za Jezusem."
+      },
+      "interlinear": [
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "I",
+          "lemma": "καί"
+        },
+        {
+          "original": "ἤκουσαν",
+          "translit": "ēkousan",
+          "strong": "G0191",
+          "morph": "V-AAI-3P",
+          "gloss": "usłyszeli",
+          "lemma": "ἀκούω"
+        },
+        {
+          "original": "αὐτοῦ",
+          "translit": "autou",
+          "strong": "G0846",
+          "morph": "P-GSM",
+          "gloss": "go",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "οἱ",
+          "translit": "hoi",
+          "strong": "G3588",
+          "morph": "T-NPM",
+          "gloss": "ci",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "δύο",
+          "translit": "dyo",
+          "strong": "G1417",
+          "morph": "A-NUI",
+          "gloss": "dwaj",
+          "lemma": "δύο"
+        },
+        {
+          "original": "μαθηταὶ",
+          "translit": "mathētai",
+          "strong": "G3101",
+          "morph": "N-NPM",
+          "gloss": "uczniowie.",
+          "lemma": "μαθητής"
+        }
+      ]
+    },
+    {
+      "verse": 38,
+      "text": {
+        "UBG": "Jezus zaś odwrócił się i widząc, że idą za nim, zapytał ich: Czego szukacie? Oni odpowiedzieli mu: Rabbi! (co się tłumaczy: Nauczycielu), gdzie mieszkasz?",
+        "BW": "A gdy Jezus obrócił się i ujrzał, że idą za nim, rzekł do nich: Czego szukacie? A oni rzekli do niego: Rabbi! (to znaczy: Nauczycielu), gdzie mieszkasz?",
+        "BT": "Jezus zaś odwróciwszy się i ujrzawszy, że oni idą za Nim, rzekł do nich: «Czego szukacie?» Oni odpowiedzieli Mu: «Rabbi! - to znaczy: Nauczycielu - gdzie mieszkasz?»",
+        "BG": "A obróciwszy się Jezus i ujrzawszy je idące za sobą, rzekł im: Czego szukacie? A oni mu rzekli: Rabbi! (co się wykłada: Nauczycielu!) gdzie mieszkasz?"
+      },
+      "interlinear": [
+        {
+          "original": "στραφεὶς",
+          "translit": "strapheis",
+          "strong": "G4762",
+          "morph": "V-2APP-NSM",
+          "gloss": "Odwróciwszy się",
+          "lemma": "στρέφω"
+        },
+        {
+          "original": "δὲ",
+          "translit": "de",
+          "strong": "G1161",
+          "morph": "CONJ",
+          "gloss": "zaś",
+          "lemma": "δέ"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "ten",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Ἰησοῦς",
+          "translit": "Iēsous",
+          "strong": "G2424",
+          "morph": "N-NSM-P",
+          "gloss": "Jezus,",
+          "lemma": "Ἰησοῦς"
+        },
+        {
+          "original": "λέγει",
+          "translit": "legei",
+          "strong": "G3004",
+          "morph": "V-PAI-3S",
+          "gloss": "mówi",
+          "lemma": "λέγω"
+        },
+        {
+          "original": "αὐτοῖς",
+          "translit": "autois",
+          "strong": "G0846",
+          "morph": "P-DPM",
+          "gloss": "im:",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "Τί",
+          "translit": "Ti",
+          "strong": "G5101",
+          "morph": "I-ASN",
+          "gloss": "Czego",
+          "lemma": "τίς"
+        },
+        {
+          "original": "ζητεῖτε",
+          "translit": "zēteite",
+          "strong": "G2212",
+          "morph": "V-PAI-2P",
+          "gloss": "szukacie?",
+          "lemma": "ζητέω"
+        }
+      ]
+    },
+    {
+      "verse": 39,
+      "text": {
+        "UBG": "Odpowiedział im: Chodźcie i zobaczcie. Poszli więc i zobaczyli, gdzie mieszka, i zostali u niego w tym dniu. A było około godziny dziesiątej.",
+        "BW": "Rzekł im: Pójdźcie, a zobaczycie! Poszli więc i zobaczyli, gdzie mieszka, i pozostali u niego w tym dniu; a było to około dziesiątej godziny.",
+        "BT": "Odpowiedział im: «Chodźcie, a zobaczycie». Poszli więc i zobaczyli, gdzie mieszka, i tego dnia pozostali u Niego. Było to około godziny dziesiątej.",
+        "BG": "Rzekł im: Pójdźcie a oglądajcie. Poszli tedy i oglądali, gdzie mieszkał; i mieszkali u niego dnia onego; a było około dziesiątej godziny."
+      },
+      "interlinear": [
+        {
+          "original": "λέγει",
+          "translit": "legei",
+          "strong": "G3004",
+          "morph": "V-PAI-3S",
+          "gloss": "Mówi",
+          "lemma": "λέγω"
+        },
+        {
+          "original": "αὐτοῖς",
+          "translit": "autois",
+          "strong": "G0846",
+          "morph": "P-DPM",
+          "gloss": "im:",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "Ἔρχεσθε",
+          "translit": "Erchesthe",
+          "strong": "G2064",
+          "morph": "V-PNM-2P",
+          "gloss": "Chodźcie",
+          "lemma": "ἔρχομαι"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "i",
+          "lemma": "καί"
+        },
+        {
+          "original": "ἴδετε",
+          "translit": "idete",
+          "strong": "G1492",
+          "morph": "V-2AAM-2P",
+          "gloss": "zobaczcie!",
+          "lemma": "εἴδω"
+        }
+      ]
+    },
+    {
+      "verse": 40,
+      "text": {
+        "UBG": "A jednym z tych dwóch, którzy to usłyszeli od Jana i poszli za nim, był Andrzej, brat Szymona Piotra.",
+        "BW": "Jednym z tych dwóch, którzy to usłyszeli od Jana i poszli za nim, był Andrzej, brat Szymona Piotra.",
+        "BT": "Jednym z dwóch, którzy to usłyszeli od Jana i poszli za Nim, był Andrzej, brat Szymona Piotra.",
+        "BG": "Byłci Andrzej, brat Szymona Piotra, jeden ze dwóch, którzy byli słyszeli od Jana i poszli byli za nim."
+      },
+      "interlinear": [
+        {
+          "original": "ἦν",
+          "translit": "ēn",
+          "strong": "G2258",
+          "morph": "V-IAI-3S",
+          "gloss": "Był",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "Ἀνδρέας",
+          "translit": "Andreas",
+          "strong": "G0421",
+          "morph": "N-NSM-P",
+          "gloss": "Andrzej,",
+          "lemma": "Ἀνδρέας"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "ten",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἀδελφὸς",
+          "translit": "adelphos",
+          "strong": "G0080",
+          "morph": "N-NSM",
+          "gloss": "brat",
+          "lemma": "ἀδελφός"
+        },
+        {
+          "original": "Σίμωνος",
+          "translit": "Simōnos",
+          "strong": "G4613",
+          "morph": "N-GSM-P",
+          "gloss": "Szymona",
+          "lemma": "Σίμων"
+        },
+        {
+          "original": "Πέτρου",
+          "translit": "Petrou",
+          "strong": "G4074",
+          "morph": "N-GSM-P",
+          "gloss": "Piotra.",
+          "lemma": "Πέτρος"
+        }
+      ]
+    },
+    {
+      "verse": 41,
+      "text": {
+        "UBG": "On najpierw znalazł swego brata Szymona i powiedział do niego: Znaleźliśmy Mesjasza (co się tłumaczy: Chrystusa).",
+        "BW": "Ten znalazł najpierw swego rodzonego brata Szymona i rzekł do niego: Znaleźliśmy Mesjasza (to znaczy: Chrystusa).",
+        "BT": "Ten spotkał najpierw swego brata i rzekł do niego: «Znaleźliśmy Mesjasza» - to znaczy: Chrystusa.",
+        "BG": "Ten znalazł najpierwej brata swego własnego, Szymona, i rzekł mu: Znaleźliśmy Mesyjasza, (co się wykłada Chrystus)."
+      },
+      "interlinear": [
+        {
+          "original": "εὑρίσκει",
+          "translit": "heuriskei",
+          "strong": "G2147",
+          "morph": "V-PAI-3S",
+          "gloss": "Znajduje",
+          "lemma": "εὑρίσκω"
+        },
+        {
+          "original": "οὗτος",
+          "translit": "houtos",
+          "strong": "G3778",
+          "morph": "D-NSM",
+          "gloss": "ten",
+          "lemma": "οὗτος"
+        },
+        {
+          "original": "πρῶτον",
+          "translit": "prōton",
+          "strong": "G4412",
+          "morph": "ADV",
+          "gloss": "najpierw",
+          "lemma": "πρῶτον"
+        },
+        {
+          "original": "τὸν",
+          "translit": "ton",
+          "strong": "G3588",
+          "morph": "T-ASM",
+          "gloss": "swego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἀδελφὸν",
+          "translit": "adelphon",
+          "strong": "G0080",
+          "morph": "N-ASM",
+          "gloss": "brata",
+          "lemma": "ἀδελφός"
+        },
+        {
+          "original": "Σίμωνα",
+          "translit": "Simōna",
+          "strong": "G4613",
+          "morph": "N-ASM-P",
+          "gloss": "Szymona,",
+          "lemma": "Σίμων"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "i",
+          "lemma": "καί"
+        },
+        {
+          "original": "λέγει",
+          "translit": "legei",
+          "strong": "G3004",
+          "morph": "V-PAI-3S",
+          "gloss": "mówi:",
+          "lemma": "λέγω"
+        },
+        {
+          "original": "Εὑρήκαμεν",
+          "translit": "Heurēkamen",
+          "strong": "G2147",
+          "morph": "V-RAI-1P",
+          "gloss": "Znaleźliśmy",
+          "lemma": "εὑρίσκω"
+        },
+        {
+          "original": "τὸν",
+          "translit": "ton",
+          "strong": "G3588",
+          "morph": "T-ASM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Μεσσίαν",
+          "translit": "Messian",
+          "strong": "G3323",
+          "morph": "N-ASM-T",
+          "gloss": "Mesjasza!",
+          "lemma": "Μεσσίας"
+        }
+      ]
+    },
+    {
+      "verse": 42,
+      "text": {
+        "UBG": "I przyprowadził go do Jezusa. A Jezus, spojrzawszy na niego, powiedział: Ty jesteś Szymon, syn Jonasza. Ty będziesz nazwany Kefas (co się tłumaczy: Piotr).",
+        "BW": "I przyprowadził go do Jezusa. Jezus, spojrzawszy nań, rzekł: Ty jesteś Szymon, syn Jana; ty będziesz nazwany Kefa (to znaczy: Piotr).",
+        "BT": "I przyprowadził go do Jezusa. A Jezus wejrzawszy na niego rzekł: «Ty jesteś Szymon, syn Jana, ty będziesz nazywał się Kefas» - to znaczy: Piotr.",
+        "BG": "I przywiódł go do Jezusa. A wejrzawszy nań Jezus, rzekł: Tyś jest Szymon, syn Jonaszowy; ty będziesz nazwany Kefa, co się wykłada Piotr."
+      },
+      "interlinear": [
+        {
+          "original": "ἤγαγεν",
+          "translit": "ēgagen",
+          "strong": "G0071",
+          "morph": "V-2AAI-3S",
+          "gloss": "Przyprowadził",
+          "lemma": "ἄγω"
+        },
+        {
+          "original": "αὐτὸν",
+          "translit": "auton",
+          "strong": "G0846",
+          "morph": "P-ASM",
+          "gloss": "go",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "πρὸς",
+          "translit": "pros",
+          "strong": "G4314",
+          "morph": "PREP",
+          "gloss": "do",
+          "lemma": "πρός"
+        },
+        {
+          "original": "τὸν",
+          "translit": "ton",
+          "strong": "G3588",
+          "morph": "T-ASM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Ἰησοῦν",
+          "translit": "Iēsoun",
+          "strong": "G2424",
+          "morph": "N-ASM-P",
+          "gloss": "Jezusa.",
+          "lemma": "Ἰησοῦς"
+        },
+        {
+          "original": "Σὺ",
+          "translit": "Sy",
+          "strong": "G4771",
+          "morph": "P-2NS",
+          "gloss": "Ty",
+          "lemma": "σύ"
+        },
+        {
+          "original": "εἶ",
+          "translit": "ei",
+          "strong": "G1488",
+          "morph": "V-PAI-2S",
+          "gloss": "jesteś",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "Σίμων",
+          "translit": "Simōn",
+          "strong": "G4613",
+          "morph": "N-NSM-P",
+          "gloss": "Szymon,",
+          "lemma": "Σίμων"
+        },
+        {
+          "original": "σὺ",
+          "translit": "sy",
+          "strong": "G4771",
+          "morph": "P-2NS",
+          "gloss": "ty",
+          "lemma": "σύ"
+        },
+        {
+          "original": "κληθήσῃ",
+          "translit": "klēthēsē",
+          "strong": "G2564",
+          "morph": "V-FPI-2S",
+          "gloss": "będziesz nazwany",
+          "lemma": "καλέω"
+        },
+        {
+          "original": "Κηφᾶς",
+          "translit": "Kēphas",
+          "strong": "G2786",
+          "morph": "N-NSM-P",
+          "gloss": "Kefas.",
+          "lemma": "Κηφᾶς"
+        }
+      ]
+    },
+    {
+      "verse": 43,
+      "text": {
+        "UBG": "Nazajutrz Jezus chciał iść do Galilei. I znalazł Filipa, i powiedział do niego: Pójdź za mną!",
+        "BW": "Nazajutrz chciał udać się do Galilei; i spotkał Filipa, i rzekł do niego: Pójdź za mną!",
+        "BT": "Nazajutrz [Jezus] postanowił udać się do Galilei. I spotkał Filipa. Jezus powiedział do niego: «Pójdź za Mną!»",
+        "BG": "Nazajutrz chciał Jezus wyjść do Galilei; i znalazł Filipa, i rzekł mu: Pójdź za mną."
+      },
+      "interlinear": [
+        {
+          "original": "Τῇ",
+          "translit": "Tē",
+          "strong": "G3588",
+          "morph": "T-DSF",
+          "gloss": "W",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἐπαύριον",
+          "translit": "epaurion",
+          "strong": "G1887",
+          "morph": "ADV",
+          "gloss": "następny dzień",
+          "lemma": "ἐπαύριον"
+        },
+        {
+          "original": "ἠθέλησεν",
+          "translit": "ēthelēsen",
+          "strong": "G2309",
+          "morph": "V-AAI-3S",
+          "gloss": "postanowił",
+          "lemma": "θέλω"
+        },
+        {
+          "original": "ἐξελθεῖν",
+          "translit": "exelthein",
+          "strong": "G1831",
+          "morph": "V-2AAN",
+          "gloss": "wyruszyć",
+          "lemma": "ἐξέρχομαι"
+        },
+        {
+          "original": "εἰς",
+          "translit": "eis",
+          "strong": "G1519",
+          "morph": "PREP",
+          "gloss": "do",
+          "lemma": "εἰς"
+        },
+        {
+          "original": "τὴν",
+          "translit": "tēn",
+          "strong": "G3588",
+          "morph": "T-ASF",
+          "gloss": "tej",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Γαλιλαίαν",
+          "translit": "Galilaian",
+          "strong": "G1056",
+          "morph": "N-ASF-L",
+          "gloss": "Galilei;",
+          "lemma": "Γαλιλαία"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "i",
+          "lemma": "καί"
+        },
+        {
+          "original": "λέγει",
+          "translit": "legei",
+          "strong": "G3004",
+          "morph": "V-PAI-3S",
+          "gloss": "mówi:",
+          "lemma": "λέγω"
+        },
+        {
+          "original": "Ἀκολούθει",
+          "translit": "Akolouthei",
+          "strong": "G0190",
+          "morph": "V-PAM-2S",
+          "gloss": "Pójdź",
+          "lemma": "ἀκολουθέω"
+        },
+        {
+          "original": "μοι",
+          "translit": "moi",
+          "strong": "G3427",
+          "morph": "P-1DS",
+          "gloss": "za Mną!",
+          "lemma": "ἐγώ"
+        }
+      ]
+    },
+    {
+      "verse": 44,
+      "text": {
+        "UBG": "A Filip był z Betsaidy, z miasta Andrzeja i Piotra.",
+        "BW": "A Filip był z Betsaidy, miasta Andrzeja i Piotra.",
+        "BT": "Filip zaś pochodził z Betsaidy, z miasta Andrzeja i Piotra.",
+        "BG": "A był Filip z Betsaidy, z miasta Andrzejowego i Piotrowego."
+      },
+      "interlinear": [
+        {
+          "original": "ἦν",
+          "translit": "ēn",
+          "strong": "G2258",
+          "morph": "V-IAI-3S",
+          "gloss": "Był",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "δὲ",
+          "translit": "de",
+          "strong": "G1161",
+          "morph": "CONJ",
+          "gloss": "zaś",
+          "lemma": "δέ"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "ten",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Φίλιππος",
+          "translit": "Philippos",
+          "strong": "G5376",
+          "morph": "N-NSM-P",
+          "gloss": "Filip",
+          "lemma": "Φίλιππος"
+        },
+        {
+          "original": "ἀπὸ",
+          "translit": "apo",
+          "strong": "G0575",
+          "morph": "PREP",
+          "gloss": "z",
+          "lemma": "ἀπό"
+        },
+        {
+          "original": "Βηθσαϊδά",
+          "translit": "Bēthsaida",
+          "strong": "G0966",
+          "morph": "N-PRI-L",
+          "gloss": "Betsaidy.",
+          "lemma": "Βηθσαϊδά"
+        }
+      ]
+    },
+    {
+      "verse": 45,
+      "text": {
+        "UBG": "Filip znalazł Natanaela i powiedział do niego: Znaleźliśmy tego, o którym pisał Mojżesz w Prawie i prorocy – Jezusa, syna Józefa z Nazaretu.",
+        "BW": "Filip spotkał Natanaela i rzekł do niego: Znaleźliśmy tego, o którym pisał Mojżesz w zakonie i prorocy: Jezusa, syna Józefa, z Nazaretu.",
+        "BT": "Filip spotkał Natanaela i powiedział do niego: «Znaleźliśmy Tego, o którym pisał Mojżesz w Prawie i Prorocy - Jezusa, syna Józefa z Nazaretu».",
+        "BG": "Znalazł Filip Natanaela, i rzekł mu: Znaleźliśmy tego, o którym pisał Mojżesz w zakonie i prorocy, Jezusa, syna Józefowego z Nazaretu."
+      },
+      "interlinear": [
+        {
+          "original": "εὑρίσκει",
+          "translit": "heuriskei",
+          "strong": "G2147",
+          "morph": "V-PAI-3S",
+          "gloss": "Znajduje",
+          "lemma": "εὑρίσκω"
+        },
+        {
+          "original": "Φίλιππος",
+          "translit": "Philippos",
+          "strong": "G5376",
+          "morph": "N-NSM-P",
+          "gloss": "Filip",
+          "lemma": "Φίλιππος"
+        },
+        {
+          "original": "τὸν",
+          "translit": "ton",
+          "strong": "G3588",
+          "morph": "T-ASM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Ναθαναὴλ",
+          "translit": "Nathanaēl",
+          "strong": "G3482",
+          "morph": "N-PRI-P",
+          "gloss": "Natanaela",
+          "lemma": "Ναθαναήλ"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "i",
+          "lemma": "καί"
+        },
+        {
+          "original": "λέγει",
+          "translit": "legei",
+          "strong": "G3004",
+          "morph": "V-PAI-3S",
+          "gloss": "mówi:",
+          "lemma": "λέγω"
+        },
+        {
+          "original": "Εὑρήκαμεν",
+          "translit": "Heurēkamen",
+          "strong": "G2147",
+          "morph": "V-RAI-1P",
+          "gloss": "Znaleźliśmy",
+          "lemma": "εὑρίσκω"
+        }
+      ]
+    },
+    {
+      "verse": 46,
+      "text": {
+        "UBG": "I zapytał go Natanael: Czy z Nazaretu może być coś dobrego? Odpowiedział mu Filip: Chodź i zobacz!",
+        "BW": "I rzekł do niego Natanael: Czy z Nazaretu może być coś dobrego? Filip na to: Pójdź i zobacz!",
+        "BT": "Rzekł do niego Natanael: «Czyż może być co dobrego z Nazaretu?» Odpowiedział mu Filip: «Chodź i zobacz!»",
+        "BG": "I rzekł mu Natanael: Z Nazaretu możeż być co dobrego? Rzekł mu Filip: Pójdź a oglądaj."
+      },
+      "interlinear": [
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "I",
+          "lemma": "καί"
+        },
+        {
+          "original": "εἶπεν",
+          "translit": "eipen",
+          "strong": "G2036",
+          "morph": "V-2AAI-3S",
+          "gloss": "rzekł",
+          "lemma": "ἔπω"
+        },
+        {
+          "original": "αὐτῷ",
+          "translit": "autō",
+          "strong": "G0846",
+          "morph": "P-DSM",
+          "gloss": "mu",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "Ναθαναήλ",
+          "translit": "Nathanaēl",
+          "strong": "G3482",
+          "morph": "N-PRI-P",
+          "gloss": "Natanael:",
+          "lemma": "Ναθαναήλ"
+        },
+        {
+          "original": "Ἐκ",
+          "translit": "Ek",
+          "strong": "G1537",
+          "morph": "PREP",
+          "gloss": "Z",
+          "lemma": "ἐκ"
+        },
+        {
+          "original": "Ναζαρὲτ",
+          "translit": "Nazaret",
+          "strong": "G3478",
+          "morph": "N-PRI-L",
+          "gloss": "Nazaretu",
+          "lemma": "Ναζαρέτ"
+        },
+        {
+          "original": "δύnataí",
+          "translit": "dynatai",
+          "strong": "G1410",
+          "morph": "V-PNI-3S",
+          "gloss": "może",
+          "lemma": "δύναμαι"
+        },
+        {
+          "original": "τι",
+          "translit": "ti",
+          "strong": "G5100",
+          "morph": "X-NSN",
+          "gloss": "coś",
+          "lemma": "τις"
+        },
+        {
+          "original": "ἀγαθὸν",
+          "translit": "agathon",
+          "strong": "G0018",
+          "morph": "A-NSN",
+          "gloss": "dobrego",
+          "lemma": "ἀγαθός"
+        },
+        {
+          "original": "εἶναι",
+          "translit": "einai",
+          "strong": "G1511",
+          "morph": "V-PAN",
+          "gloss": "być?",
+          "lemma": "εἰμί"
+        }
+      ]
+    },
+    {
+      "verse": 47,
+      "text": {
+        "UBG": "A gdy Jezus zobaczył Natanaela idącego do niego, powiedział o nim: Oto prawdziwy Izraelita, w którym nie ma podstępu.",
+        "BW": "A gdy Jezus ujrzał Natanaela, idącego do niego, rzekł o nim: Oto prawdziwy Izraelita, w którym nie ma fałszu.",
+        "BT": "Jezus ujrzał, jak Natanael zbliżał się do Niego, i powiedział o nim: «Patrz, to prawdziwy Izraelita, w którym nie ma podstępu».",
+        "BG": "Ujrzawszy Jezus Natanaela idącego do siebie, rzekł o nim: Oto prawdziwie Izraelczyk, w którym nie masz zdrady."
+      },
+      "interlinear": [
+        {
+          "original": "εἶδεν",
+          "translit": "eiden",
+          "strong": "G1492",
+          "morph": "V-2AAI-3S",
+          "gloss": "Ujrzał",
+          "lemma": "εἴδω"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "ten",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Ἰησοῦς",
+          "translit": "Iēsous",
+          "strong": "G2424",
+          "morph": "N-NSM-P",
+          "gloss": "Jezus",
+          "lemma": "Ἰησοῦς"
+        },
+        {
+          "original": "τὸν",
+          "translit": "ton",
+          "strong": "G3588",
+          "morph": "T-ASM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Ναθαναὴλ",
+          "translit": "Nathanaēl",
+          "strong": "G3482",
+          "morph": "N-PRI-P",
+          "gloss": "Natanaela,",
+          "lemma": "Ναθαναήλ"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "i",
+          "lemma": "καί"
+        },
+        {
+          "original": "λέγει",
+          "translit": "legei",
+          "strong": "G3004",
+          "morph": "V-PAI-3S",
+          "gloss": "mówi:",
+          "lemma": "λέγω"
+        },
+        {
+          "original": "Ἴδε",
+          "translit": "Ide",
+          "strong": "G2396",
+          "morph": "INJ",
+          "gloss": "Oto",
+          "lemma": "ἴδε"
+        },
+        {
+          "original": "ἀληθῶς",
+          "translit": "alēthōs",
+          "strong": "G0230",
+          "morph": "ADV",
+          "gloss": "prawdziwy",
+          "lemma": "ἀληθῶς"
+        },
+        {
+          "original": "Ἰσραηλίτης",
+          "translit": "Israēlitēs",
+          "strong": "G2475",
+          "morph": "N-NSM-T",
+          "gloss": "Izraelita!",
+          "lemma": "Ἰσραηλίτης"
+        }
+      ]
+    },
+    {
+      "verse": 48,
+      "text": {
+        "UBG": "Zapytał go Natanael: Skąd mnie znasz? Odpowiedział mu Jezus: Zanim cię Filip zawołał, gdy byłeś pod drzewem figowym, widziałem cię.",
+        "BW": "Rzekł mu Natanael: Skąd mnie znasz? Odpowiedział mu Jezus i rzekł: Pierwej, zanim cię zawołał Filip, gdy byłeś pod drzewem figowym, widziałem cię.",
+        "BT": "Powiedział do Niego Natanael: «Skąd mnie znasz?» Odrzekł mu Jezus: «Widziałem cię, zanim cię zawołał Filip, gdy byłeś pod drzewem figowym».",
+        "BG": "Rzekł mu Natanael: Skąd mię znasz? Odpowiedział Jezus i rzekł mu: Pierwej niż cię Filip zawołał, gdyś był pod figowem drzewem, widziałem cię."
+      },
+      "interlinear": [
+        {
+          "original": "λέγει",
+          "translit": "legei",
+          "strong": "G3004",
+          "morph": "V-PAI-3S",
+          "gloss": "Mówi",
+          "lemma": "λέγω"
+        },
+        {
+          "original": "αὐτῷ",
+          "translit": "autō",
+          "strong": "G0846",
+          "morph": "P-DSM",
+          "gloss": "Mu",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "Ναθαναήλ",
+          "translit": "Nathanaēl",
+          "strong": "G3482",
+          "morph": "N-PRI-P",
+          "gloss": "Natanael:",
+          "lemma": "Ναθαναήλ"
+        },
+        {
+          "original": "Πόθεν",
+          "translit": "Pothen",
+          "strong": "G4159",
+          "morph": "ADV-I",
+          "gloss": "Skąd",
+          "lemma": "πόθεν"
+        },
+        {
+          "original": "με",
+          "translit": "me",
+          "strong": "G3165",
+          "morph": "P-1AS",
+          "gloss": "mnie",
+          "lemma": "ἐγώ"
+        },
+        {
+          "original": "γινώσκεις",
+          "translit": "ginōskeis",
+          "strong": "G1097",
+          "morph": "V-PAI-2S",
+          "gloss": "znasz?",
+          "lemma": "γινώσκω"
+        },
+        {
+          "original": "ἀπεκρίθη",
+          "translit": "apekrithē",
+          "strong": "G0611",
+          "morph": "V-ADI-3S",
+          "gloss": "Odpowiedział",
+          "lemma": "ἀποκρίνομαι"
+        },
+        {
+          "original": "Ἰησοῦς",
+          "translit": "Iēsous",
+          "strong": "G2424",
+          "morph": "N-NSM-P",
+          "gloss": "Jezus:",
+          "lemma": "Ἰησοῦς"
+        },
+        {
+          "original": "Πρὸ",
+          "translit": "Pro",
+          "strong": "G4253",
+          "morph": "PREP",
+          "gloss": "Zanim",
+          "lemma": "πρό"
+        },
+        {
+          "original": "τοῦ",
+          "translit": "tou",
+          "strong": "G3588",
+          "morph": "T-GSN",
+          "gloss": "cię",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "σε",
+          "translit": "se",
+          "strong": "G4571",
+          "morph": "P-2AS",
+          "gloss": "cię",
+          "lemma": "σύ"
+        },
+        {
+          "original": "Φίλιππον",
+          "translit": "Philippon",
+          "strong": "G5376",
+          "morph": "N-ASM-P",
+          "gloss": "Filip",
+          "lemma": "Φίλιππος"
+        },
+        {
+          "original": "φωνῆσαι",
+          "translit": "phōnēsai",
+          "strong": "G5455",
+          "morph": "V-AAN",
+          "gloss": "zawołał,",
+          "lemma": "φωνέω"
+        },
+        {
+          "original": "ὄντα",
+          "translit": "onta",
+          "strong": "G5607",
+          "morph": "V-PAP-ASM",
+          "gloss": "gdy byłeś",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "ὑπὸ",
+          "translit": "hypo",
+          "strong": "G5259",
+          "morph": "PREP",
+          "gloss": "pod",
+          "lemma": "ὑπό"
+        },
+        {
+          "original": "τὴν",
+          "translit": "tēn",
+          "strong": "G3588",
+          "morph": "T-ASF",
+          "gloss": "tym",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "συκῆν",
+          "translit": "sykēn",
+          "strong": "G4808",
+          "morph": "N-ASF",
+          "gloss": "figowcem,",
+          "lemma": "συκῆ"
+        },
+        {
+          "original": "εἶδόν",
+          "translit": "eidon",
+          "strong": "G1492",
+          "morph": "V-2AAI-1S",
+          "gloss": "widziałem",
+          "lemma": "εἴδω"
+        },
+        {
+          "original": "σε",
+          "translit": "se",
+          "strong": "G4571",
+          "morph": "P-2AS",
+          "gloss": "cię.",
+          "lemma": "σύ"
+        }
+      ]
+    },
+    {
+      "verse": 49,
+      "text": {
+        "UBG": "Odpowiedział mu Natanael: Rabbi! Ty jesteś Synem Bożym, ty jesteś królem Izraela.",
+        "BW": "Odpowiedział mu Natanael: Mistrzu! Ty jesteś Synem Bożym, Ty jesteś królem Izraela.",
+        "BT": "Odpowiedział Mu Natanael: «Rabbi, Ty jesteś Synem Bożym, Ty jesteś Królem Izraela!»",
+        "BG": "Odpowiedział Natanael i rzekł mu: Nauczycielu! tyś jest Syn Boży, tyś jest on król Izraelski."
+      },
+      "interlinear": [
+        {
+          "original": "ἀπεκρίθη",
+          "translit": "apekrithē",
+          "strong": "G0611",
+          "morph": "V-ADI-3S",
+          "gloss": "Odpowiedział",
+          "lemma": "ἀποκρίνομαι"
+        },
+        {
+          "original": "Ναθαναὴλ",
+          "translit": "Nathanaēl",
+          "strong": "G3482",
+          "morph": "N-PRI-P",
+          "gloss": "Natanael:",
+          "lemma": "Ναθαναήλ"
+        },
+        {
+          "original": "Ῥαββί",
+          "translit": "Rhabbi",
+          "strong": "G4461",
+          "morph": "N-PRI-T",
+          "gloss": "Rabbi!",
+          "lemma": "ῥαββί"
+        },
+        {
+          "original": "σὺ",
+          "translit": "sy",
+          "strong": "G4771",
+          "morph": "P-2NS",
+          "gloss": "Ty",
+          "lemma": "σύ"
+        },
+        {
+          "original": "εἶ",
+          "translit": "ei",
+          "strong": "G1488",
+          "morph": "V-PAI-2S",
+          "gloss": "jesteś",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "ὁ",
+          "translit": "ho",
+          "strong": "G3588",
+          "morph": "T-NSM",
+          "gloss": "tym",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "υἱὸς",
+          "translit": "huios",
+          "strong": "G5207",
+          "morph": "N-NSM",
+          "gloss": "Synem",
+          "lemma": "υἱός"
+        },
+        {
+          "original": "τοῦ",
+          "translit": "tou",
+          "strong": "G3588",
+          "morph": "T-GSM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "θεοῦ",
+          "translit": "theou",
+          "strong": "G2316",
+          "morph": "N-GSM",
+          "gloss": "Boga,",
+          "lemma": "θεός"
+        },
+        {
+          "original": "σὺ",
+          "translit": "sy",
+          "strong": "G4771",
+          "morph": "P-2NS",
+          "gloss": "Ty",
+          "lemma": "σύ"
+        },
+        {
+          "original": "βασιλεὺς",
+          "translit": "basileus",
+          "strong": "G0935",
+          "morph": "N-NSM",
+          "gloss": "Królem",
+          "lemma": "βασιλεύς"
+        },
+        {
+          "original": "εἶ",
+          "translit": "ei",
+          "strong": "G1488",
+          "morph": "V-PAI-2S",
+          "gloss": "jesteś",
+          "lemma": "εἰμί"
+        },
+        {
+          "original": "τοῦ",
+          "translit": "tou",
+          "strong": "G3588",
+          "morph": "T-GSM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "Ἰσραήλ",
+          "translit": "Israēl",
+          "strong": "G2474",
+          "morph": "N-PRI-T",
+          "gloss": "Izraela!",
+          "lemma": "Ἰσραήλ"
+        }
+      ]
+    },
+    {
+      "verse": 50,
+      "text": {
+        "UBG": "A Jezus mu odpowiedział: Czy wierzysz dlatego, że ci powiedziałem: Widziałem cię pod drzewem figowym? Zobaczysz większe rzeczy niż te.",
+        "BW": "Jezus odpowiedział i rzekł mu: Czy dlatego wierzysz, że ci powiedziałem, iż cię widziałem pod drzewem figowym? Ujrzysz większe rzeczy niż te.",
+        "BT": "Odrzekł mu Jezus: «Czy dlatego wierzysz, że powiedziałem ci: Widziałem cię pod drzewem figowym? Zobaczysz jeszcze więcej niż to».",
+        "BG": "Odpowiedział Jezus i rzekł mu: Iżem ci rzekł: Widziałem cię pod figowem drzewem, wierzysz? Większe rzeczy nad te ujrzysz."
+      },
+      "interlinear": [
+        {
+          "original": "ἀπεκρίθη",
+          "translit": "apekrithē",
+          "strong": "G0611",
+          "morph": "V-ADI-3S",
+          "gloss": "Odpowiedział",
+          "lemma": "ἀποκρίνομαι"
+        },
+        {
+          "original": "Ἰησοῦς",
+          "translit": "Iēsous",
+          "strong": "G2424",
+          "morph": "N-NSM-P",
+          "gloss": "Jezus",
+          "lemma": "Ἰησοῦς"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "i",
+          "lemma": "καί"
+        },
+        {
+          "original": "εἶπεν",
+          "translit": "eipen",
+          "strong": "G2036",
+          "morph": "V-2AAI-3S",
+          "gloss": "rzekł",
+          "lemma": "ἔπω"
+        },
+        {
+          "original": "αὐτῷ",
+          "translit": "autō",
+          "strong": "G0846",
+          "morph": "P-DSM",
+          "gloss": "mu:",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "Μείζω",
+          "translit": "Meizō",
+          "strong": "G3173",
+          "morph": "A-APN-C",
+          "gloss": "Większe rzeczy",
+          "lemma": "μέγας"
+        },
+        {
+          "original": "τούτων",
+          "translit": "toutōn",
+          "strong": "G3778",
+          "morph": "D-GPN",
+          "gloss": "nad te",
+          "lemma": "οὗτος"
+        },
+        {
+          "original": "ὄψῃ",
+          "translit": "opsē",
+          "strong": "G3700",
+          "morph": "V-FDI-2S",
+          "gloss": "zobaczysz!",
+          "lemma": "ὄπτομαι"
+        }
+      ]
+    },
+    {
+      "verse": 51,
+      "text": {
+        "UBG": "I powiedział do niego: Zaprawdę, zaprawdę powiadam wam: Odtąd ujrzycie niebo otwarte i aniołów Bożych wstępujących i zstępujących na Syna Człowieczego.",
+        "BW": "I rzekł do niego: Zaprawdę, zaprawdę powiadam wam, ujrzycie niebo otwarte i aniołów Bożych wstępujących i zstępujących na Syna Człowieczego.",
+        "BT": "Potem powiedział do niego: «Zaprawdę, zaprawdę, powiadam wam: Ujrzycie niebiosa otwarte i aniołów Bożych wstępujących i zstępujących na Syna Człowieczego».",
+        "BG": "I rzekł mu: Zaprawdę, zaprawdę powiadam wam: Od tego czasu ujrzycie niebo otworzone, i Anioły Boże wstępujące i zstępujące na Syna człowieczego."
+      },
+      "interlinear": [
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "I",
+          "lemma": "καί"
+        },
+        {
+          "original": "λέγει",
+          "translit": "legei",
+          "strong": "G3004",
+          "morph": "V-PAI-3S",
+          "gloss": "mówi",
+          "lemma": "λέγω"
+        },
+        {
+          "original": "αὐτῷ",
+          "translit": "autō",
+          "strong": "G0846",
+          "morph": "P-DSM",
+          "gloss": "mu:",
+          "lemma": "αὐτός"
+        },
+        {
+          "original": "Ἀμὴν",
+          "translit": "Amēn",
+          "strong": "G0281",
+          "morph": "HEB",
+          "gloss": "Zaprawdę,",
+          "lemma": "ἀμήν"
+        },
+        {
+          "original": "ἀμὴν",
+          "translit": "amēn",
+          "strong": "G0281",
+          "morph": "HEB",
+          "gloss": "zaprawdę",
+          "lemma": "ἀμήν"
+        },
+        {
+          "original": "λέγω",
+          "translit": "legō",
+          "strong": "G3004",
+          "morph": "V-PAI-1S",
+          "gloss": "powiadam",
+          "lemma": "λέγω"
+        },
+        {
+          "original": "ὑμῖν",
+          "translit": "hymin",
+          "strong": "G5213",
+          "morph": "P-2DP",
+          "gloss": "wam:",
+          "lemma": "σύ"
+        },
+        {
+          "original": "ὄψεσθε",
+          "translit": "opsesthe",
+          "strong": "G3700",
+          "morph": "V-FDI-2P",
+          "gloss": "Ujrzycie",
+          "lemma": "ὄπτομαι"
+        },
+        {
+          "original": "τὸν",
+          "translit": "ton",
+          "strong": "G3588",
+          "morph": "T-ASM",
+          "gloss": "to",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "οὐρανὸν",
+          "translit": "ouranon",
+          "strong": "G3772",
+          "morph": "N-ASM",
+          "gloss": "niebo",
+          "lemma": "οὐρανός"
+        },
+        {
+          "original": "ἀνεῳγότα",
+          "translit": "aneōgota",
+          "strong": "G0455",
+          "morph": "V-RPP-ASM",
+          "gloss": "otwarte",
+          "lemma": "ἀνοίγω"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "i",
+          "lemma": "καί"
+        },
+        {
+          "original": "τοὺς",
+          "translit": "tous",
+          "strong": "G3588",
+          "morph": "T-APM",
+          "gloss": "tych",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἀγγέλους",
+          "translit": "angelous",
+          "strong": "G0032",
+          "morph": "N-APM",
+          "gloss": "aniołów",
+          "lemma": "ἄγγελος"
+        },
+        {
+          "original": "τοῦ",
+          "translit": "tou",
+          "strong": "G3588",
+          "morph": "T-GSM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "θεοῦ",
+          "translit": "theou",
+          "strong": "G2316",
+          "morph": "N-GSM",
+          "gloss": "Boga",
+          "lemma": "θεός"
+        },
+        {
+          "original": "ἀναβαίνοντας",
+          "translit": "anabainontas",
+          "strong": "G0305",
+          "morph": "V-PAP-APM",
+          "gloss": "wstępujących",
+          "lemma": "ἀναβαίνω"
+        },
+        {
+          "original": "καὶ",
+          "translit": "kai",
+          "strong": "G2532",
+          "morph": "CONJ",
+          "gloss": "i",
+          "lemma": "καí"
+        },
+        {
+          "original": "καταβαίνοντας",
+          "translit": "katabainontas",
+          "strong": "G2597",
+          "morph": "V-PAP-APM",
+          "gloss": "zstępujących",
+          "lemma": "καταβαίνω"
+        },
+        {
+          "original": "ἐπὶ",
+          "translit": "epi",
+          "strong": "G1909",
+          "morph": "PREP",
+          "gloss": "na",
+          "lemma": "ἐπί"
+        },
+        {
+          "original": "τὸν",
+          "translit": "ton",
+          "strong": "G3588",
+          "morph": "T-ASM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "υἱὸν",
+          "translit": "huion",
+          "strong": "G5207",
+          "morph": "N-ASM",
+          "gloss": "Syna",
+          "lemma": "υἱός"
+        },
+        {
+          "original": "τοῦ",
+          "translit": "tou",
+          "strong": "G3588",
+          "morph": "T-GSM",
+          "gloss": "tego",
+          "lemma": "ὁ"
+        },
+        {
+          "original": "ἀνθρώπου",
+          "translit": "anthrōpou",
+          "strong": "G0444",
+          "morph": "N-GSM",
+          "gloss": "Człowieczego.",
+          "lemma": "ἄνθρωπος"
         }
       ]
     }
