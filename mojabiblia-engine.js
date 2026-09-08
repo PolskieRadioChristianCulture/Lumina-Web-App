@@ -315,6 +315,10 @@
         this.chapterSub.textContent = this.currentChapterData.commentaryTitle || `Oryginał: ${this.currentChapterData.originalLang === 'Greek' ? 'Greka Nowotestamentowa (Koine)' : 'Hebrajski Masorecki'}`;
       }
 
+      // Synchronizacja SEO i URL dla wyszukiwarek i AI
+      this.updateSEO();
+      this.updateUrl();
+
       // Update mode switcher buttons
       document.querySelectorAll('.mb-mode-btn').forEach(btn => {
         if (btn.dataset.mode === this.currentMode) {
@@ -650,11 +654,74 @@
     }
 
     updateUrl() {
-      const url = new URL(window.location);
-      url.searchParams.set('book', this.currentBookId);
-      url.searchParams.set('ch', this.currentChapter);
-      url.searchParams.set('mode', this.currentMode);
-      window.history.replaceState({}, '', url);
+      try {
+        const url = new URL(window.location);
+        url.searchParams.set('book', this.currentBookId);
+        url.searchParams.set('ch', this.currentChapter);
+        url.searchParams.set('mode', this.currentMode);
+        if (this.currentVerse) {
+          url.searchParams.set('v', this.currentVerse);
+        } else {
+          url.searchParams.delete('v');
+        }
+        window.history.replaceState({ book: this.currentBookId, ch: this.currentChapter, mode: this.currentMode, v: this.currentVerse }, '', url);
+      } catch (e) {
+        console.warn('[MojaBiblia] Błąd aktualizacji adresu URL:', e);
+      }
+    }
+
+    // ── DYNAMICZNA OPTYMALIZACJA SEO & META-TAGÓW (AIO / LLMs / Social OpenGraph) ──
+    updateSEO() {
+      try {
+        const bookName = this.currentChapterData?.bookName || this.getBookName(this.currentBookId);
+        const ch = this.currentChapter;
+        const v = this.currentVerse;
+        const modeLabels = {
+          interlinear: 'Interlinia i Kody Stronga',
+          parallel: 'Porównanie Przekładów UBG / BW / BT / BG',
+          reader: 'Czytnik Biblijny'
+        };
+        const currentModeName = modeLabels[this.currentMode] || 'Biblia Badawcza';
+
+        const pageTitle = v
+          ? `${bookName} ${ch}:${v} – ${currentModeName} | MojaBiblia CC`
+          : `${bookName} ${ch} – ${currentModeName} | MojaBiblia CC`;
+
+        document.title = pageTitle;
+
+        const isNT = (this.currentChapterData?.originalLang === 'Greek' || !this.books.find(b => b.id === this.currentBookId)?.testament || this.books.find(b => b.id === this.currentBookId)?.testament === 'NT');
+        const origLangStr = isNT ? 'greka Koine (Textus Receptus / NA28)' : 'hebrajski biblijny (Tekst Masorecki)';
+
+        const metaDescContent = `Badaj ${bookName} rozdział ${ch}${v ? ', werset ' + v : ''} w serwisie MojaBiblia Christian Culture. Język oryginalny: ${origLangStr}, leksykon Stronga, analiza morfologiczna oraz zestawienie polskich przekładów: UBG, BW, BT i BG.`;
+        const canonicalUrl = `https://polskieradio.cc/mojabiblia?book=${this.currentBookId}&ch=${ch}${v ? '&v=' + v : ''}&mode=${this.currentMode}`;
+
+        const setMeta = (selector, attr, val) => {
+          const el = document.querySelector(selector);
+          if (el) el.setAttribute(attr, val);
+        };
+
+        setMeta('meta[name="description"]', 'content', metaDescContent);
+        setMeta('meta[property="og:title"]', 'content', pageTitle);
+        setMeta('meta[property="og:description"]', 'content', metaDescContent);
+        setMeta('meta[property="og:url"]', 'content', canonicalUrl);
+        setMeta('meta[name="twitter:title"]', 'content', pageTitle);
+        setMeta('meta[name="twitter:description"]', 'content', metaDescContent);
+        setMeta('link[rel="canonical"]', 'href', canonicalUrl);
+
+        // Opcjonalna ekspozycja danych dla parserów AI / WebScraperów
+        window.__MOJABIBLIA_CURRENT_CONTEXT__ = {
+          bookId: this.currentBookId,
+          bookName: bookName,
+          chapter: ch,
+          verse: v,
+          mode: this.currentMode,
+          originalLanguage: origLangStr,
+          canonicalUrl: canonicalUrl,
+          totalVerses: this.currentChapterData?.verses?.length || 0
+        };
+      } catch (err) {
+        console.warn('[MojaBiblia] Błąd aktualizacji metadanych SEO:', err);
+      }
     }
 
     // ── INTEGRACJA AUDIO (Radio Biblia Audio CC) ──
