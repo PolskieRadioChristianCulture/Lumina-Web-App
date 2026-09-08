@@ -41,15 +41,15 @@ let STATIONS = {
     biblia_audio: {
         id: "biblia_audio",
         name: "RADIO BIBLIA",
-        streamUrl: "./audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3",
-        playlistUrl: "./biblia_spiewana_playlist.json",
-        isDrivePlaylist: true,
-        accentColors: ["#FFB300", "#9F4DFF"],
+        streamUrl: "https://stream.zeno.fm/imo45hqnshyuv",
+        accentColors: ["#FFB300", "#9F4DFF"], // Amber-Gold to Purple
         logo: "./Logo Biblia Audio CC.jpg",
         tracks: [
-            "Śpiewane Przypowieści Salomona - Rozdział 1",
-            "Śpiewane Przypowieści Salomona - Rozdział 2",
-            "Śpiewane Przypowieści Salomona - Rozdział 3"
+            "Księga Rodzaju - Stworzenie Świata (Audio)",
+            "Ewangelia wg św. Jana - Słowo Przedwieczne",
+            "Księga Psalmów - Pieśń Zachwytu i Chwały",
+            "List do Rzymian - Łaska i Wiara",
+            "Apokalipsa św. Jana - Końcowe Zwycięstwo"
         ]
     },
     global_biblia: {
@@ -673,14 +673,41 @@ loadPlaylistsImmediate();
 const audio = new Audio();
 audio.volume = 0.8;
 
-// Global Audio Ended Handler: Automatic loop for Worship Music, Biblia Śpiewana and Biblia Audio
+// Global Audio Ended Handler: Automatic loop for Worship Music, Biblia Śpiewana and Global Biblia
 audio.addEventListener('ended', () => {
     if (activeStation && activeStation.id === 'instrumental_worship') {
         playNextWorshipTrack();
-    } else if (activeStation && (activeStation.id === 'biblia_spiewana' || activeStation.id === 'biblia_audio')) {
+    } else if (activeStation && activeStation.id === 'biblia_spiewana') {
         playNextBibliaSpiewanaTrack();
+    } else if (activeStation && activeStation.id === 'global_biblia') {
+        playNextGlobalBibleTrack();
     }
 });
+
+let globalBibleTrackIndex = 0;
+
+function playNextGlobalBibleTrack() {
+    if (!globalPlaylist || globalPlaylist.length === 0) return;
+    globalBibleTrackIndex = (globalBibleTrackIndex + 1) % globalPlaylist.length;
+    const nextTrack = globalPlaylist[globalBibleTrackIndex];
+    audio.src = nextTrack.url;
+    currentAudioUrl = nextTrack.url;
+    playerTrackTitle.textContent = `${nextTrack.bookName} — Chapter ${nextTrack.chapter}`;
+    
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            isPlaying = true;
+            updatePlayerUI(true);
+            playerStatusText.textContent = "Odtwarza";
+        }).catch(err => {
+            console.error('Global Bible next track error:', err);
+            isPlaying = false;
+            updatePlayerUI(false);
+        });
+    }
+}
+
 
 function playNextBibliaSpiewanaTrack() {
     if (!bibliaSpiewanaPlaylist || bibliaSpiewanaPlaylist.length === 0) return;
@@ -979,7 +1006,7 @@ function playRadio() {
             targetUrl = "./audio/worship/CCM%20(1).mp3";
             playerTrackTitle.textContent = "Instrumental Worship — Christian Culture";
         }
-    } else if (activeStation.id === 'biblia_spiewana' || activeStation.id === 'biblia_audio') {
+    } else if (activeStation.id === 'biblia_spiewana') {
         if (bibliaSpiewanaPlaylist && bibliaSpiewanaPlaylist.length > 0) {
             const totalDur = bibliaSpiewanaPlaylist.reduce((acc, t) => acc + (t.duration || 240), 0);
             const epochSeconds = Math.floor(Date.now() / 1000);
@@ -1002,7 +1029,7 @@ function playRadio() {
             playerTrackTitle.textContent = `${currentTrack.title} — ${currentTrack.artist || 'Christian Culture'}`;
         } else {
             targetUrl = "./audio/biblia_spiewana/%C5%9Apiewane%20Przypowie%C5%9Bci%20Salomona%201.mp3";
-            playerTrackTitle.textContent = "Biblia Audio — Śpiewane Przypowieści Salomona";
+            playerTrackTitle.textContent = "Biblia Śpiewana — Śpiewane Przypowieści Salomona";
         }
     } else if (activeStation.id === 'global_biblia') {
         if (globalPlaylist && globalPlaylist.length > 0) {
@@ -1020,6 +1047,7 @@ function playRadio() {
                 }
                 remaining -= dur;
             }
+            globalBibleTrackIndex = targetIndex;
             const currentTrack = globalPlaylist[targetIndex];
             targetUrl = currentTrack.url;
             seekOffset = seekSeconds;
@@ -1029,7 +1057,7 @@ function playRadio() {
             playerTrackTitle.textContent = "Global Bible (English WEB) — Matthew 1";
         }
     } else {
-        // Live radio streams (Radio PL, Radio Global, etc.)
+        // Live radio streams (Radio PL, Radio Global, Radio Biblia)
         targetUrl = activeStation.streamUrl;
     }
     
@@ -1084,7 +1112,7 @@ function pauseRadio() {
     audio.volume = previousVolume;
     
     // Clear audio source on pause only for live streams so they don't buffer outdated content
-    if (activeStation && activeStation.id !== "instrumental_worship" && activeStation.id !== "biblia_spiewana" && activeStation.id !== "biblia_audio") {
+    if (activeStation && activeStation.id !== "instrumental_worship" && activeStation.id !== "biblia_spiewana" && activeStation.id !== "global_biblia") {
         audio.src = "";
         currentAudioUrl = "";
     }
@@ -1225,34 +1253,10 @@ async function loadGlobalPlaylist() {
 async function updateGlobalBibleRadioState() {
     await loadGlobalPlaylist();
     if (globalPlaylist.length === 0) return;
-    
-    const epochSeconds = Math.floor(Date.now() / 1000);
-    let remaining = epochSeconds % totalDuration;
-    let targetIndex = 0;
-    let seekSeconds = 0;
-    for (let i = 0; i < globalPlaylist.length; i++) {
-        if (remaining < globalPlaylist[i].duration) {
-            targetIndex = i;
-            seekSeconds = remaining;
-            break;
-        }
-        remaining -= globalPlaylist[i].duration;
-    }
-    const currentTrack = globalPlaylist[targetIndex];
-    
-    const expectedTitle = `${currentTrack.bookName} - Chapter ${currentTrack.chapter}`;
+    const currentTrack = globalPlaylist[globalBibleTrackIndex] || globalPlaylist[0];
+    const expectedTitle = `${currentTrack.bookName} — Chapter ${currentTrack.chapter}`;
     if (playerTrackTitle.textContent !== expectedTitle) {
         playerTrackTitle.textContent = expectedTitle;
-    }
-    
-    if (isPlaying && activeStation.id === "global_biblia") {
-        if (!audio.src.includes(currentTrack.name)) {
-            console.log("Switching to next chapter:", currentTrack.name);
-            audio.src = currentTrack.url;
-            audio.load();
-            audio.currentTime = seekSeconds;
-            audio.play().catch(e => console.error(e));
-        }
     }
 }
 
@@ -1289,9 +1293,12 @@ function connectStationMetadata(stationId) {
     }
 
     if (stationId === "global_biblia") {
-        if (globalBibleTimer) clearInterval(globalBibleTimer);
-        updateGlobalBibleRadioState();
-        globalBibleTimer = setInterval(updateGlobalBibleRadioState, 5000);
+        if (globalPlaylist.length > 0) {
+            const tr = globalPlaylist[globalBibleTrackIndex] || globalPlaylist[0];
+            playerTrackTitle.textContent = `${tr.bookName} — Chapter ${tr.chapter}`;
+        } else {
+            playerTrackTitle.textContent = "Global Bible (English WEB) — Matthew 1";
+        }
         return;
     }
     
