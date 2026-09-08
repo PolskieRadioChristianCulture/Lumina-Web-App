@@ -778,25 +778,29 @@
         }
 
         .post-body {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: #e2e8f0;
+            font-size: 0.98rem;
+            line-height: 1.75;
+            color: #ffffff !important;
             margin-bottom: 18px;
-            white-space: pre-line;
         }
 
-        /* ── Facebook Embed Container (Mobile-First Responsive) ── */
+        .post-body p, .post-body span, .post-body div, .post-body li {
+            color: #ffffff !important;
+        }
+
+        /* ── Facebook Embed Container (Light Background Fallback) ── */
         .fb-post-wrapper {
             width: 100%;
             max-width: 500px;
             margin: 16px auto;
             border-radius: 16px;
             overflow: hidden;
-            background: rgba(0, 0, 0, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             display: flex;
             justify-content: center;
+            padding: 8px;
         }
 
         .fb-post-wrapper iframe {
@@ -1242,23 +1246,51 @@
                         </div>
 
                         <div class="post-body">
-                            Chrześcijanin oczekujący na powtórne przyjście Jezusa Chrystusa - bo ten świat nie jest domem mym! :)
+                            <p style="color:#ffffff !important; font-size:1rem; line-height:1.7; margin-bottom:14px;">
+                                Chrześcijanin oczekujący na powtórne przyjście Jezusa Chrystusa - bo ten świat nie jest domem mym! :)
+                            </p>
                             
-                            Drodzy Bracia i Siostry w Chrystusie! Dzielę się z Wami moim pierwszym postem z Facebooka. W portalu LUMINA będę publikował treści formacyjne, rozważania oraz materiały wideo i dokumenty bezpośrednio z mojego Dysku Google. Bądźcie błogosławieni! ✨
-                        </div>
+                            <div style="font-size:1.15rem; font-weight:800; color:#ffffff !important; margin: 16px 0 12px 0; display:flex; align-items:center; gap:8px;">
+                                <span>&lt;12&gt; ➖ Czy znasz brakujące SŁOWO ?</span> <span style="color:#ef4444; font-size:1.3rem;">❓</span>
+                            </div>
 
-                        <!-- Osadzenie Iframe z Facebooka przekazanego przez Dowódcę -->
-                        <div class="fb-post-wrapper">
-                            <iframe 
-                                src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fpermalink.php%3Fstory_fbid%3Dpfbid0wrgmawnCGcCx2ojZbJPfEPVGn3kaeAjaA1XgVDZj7AALHDpWtWAsovzpNw5xJC4Ql%26id%3D100018961423282&show_text=true&width=500" 
-                                width="500" 
-                                height="725" 
-                                style="border:none;overflow:hidden;max-width:100%;width:100%;min-height:725px;" 
-                                scrolling="no" 
-                                frameborder="0" 
-                                allowfullscreen="true" 
-                                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
-                            </iframe>
+                            <!-- Grafika posta w wysokiej rozdzielczości -->
+                            <div style="text-align:center; margin:16px auto; max-width:480px;">
+                                <img src="post_zbyszek_hiperbiblia.jpg" alt="Podaj brakujące słowo - Mt 5:3 BW" style="width:100%; border-radius:14px; border:1px solid rgba(255,255,255,0.2); box-shadow:0 8px 24px rgba(0,0,0,0.5); display:block;">
+                            </div>
+
+                            <div style="color:#ffffff !important; font-size:1rem; line-height:1.8; margin-bottom:14px;">
+                                <p style="color:#ffffff !important; margin-bottom:8px; font-weight:700;">
+                                    ✝️ Źródło cytatu 👉 HiperBiblia
+                                </p>
+                                <p style="color:#ffffff !important; margin-bottom:14px;">
+                                    Wpisz do wyszukiwarki słowo: <strong>HiperBiblia</strong> 👉 poznaj narzędzie do studiowania Pisma.
+                                </p>
+                            </div>
+
+                            <!-- Główne funkcje strony HiperBiblia -->
+                            <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); border-radius:14px; padding:16px; margin-bottom:18px;">
+                                <div style="font-weight:700; color:#ffffff !important; font-size:1rem; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                                    <span>💎 Główne funkcje strony HiperBiblia:</span>
+                                </div>
+                                <ul style="color:#ffffff !important; list-style-type:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:10px; font-size:0.95rem;">
+                                    <li style="display:flex; align-items:center; gap:8px; color:#ffffff !important;"><i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.85rem;"></i> Porównywarka przekładów</li>
+                                    <li style="display:flex; align-items:center; gap:8px; color:#ffffff !important;"><i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.85rem;"></i> Przypisy i komentarze</li>
+                                    <li style="display:flex; align-items:center; gap:8px; color:#ffffff !important;"><i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.85rem;"></i> Czytnik</li>
+                                    <li style="display:flex; align-items:center; gap:8px; color:#ffffff !important;"><i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.85rem;"></i> Wyszukiwarka</li>
+                                    <li style="display:flex; align-items:center; gap:8px; color:#ffffff !important;"><i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.85rem;"></i> Interlinia</li>
+                                    <li style="display:flex; align-items:center; gap:8px; color:#ffffff !important;"><i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.85rem;"></i> Leksykony</li>
+                                    <li style="display:flex; align-items:center; gap:8px; color:#ffffff !important;"><i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.85rem;"></i> Kody Stronga</li>
+                                    <li style="display:flex; align-items:center; gap:8px; color:#ffffff !important;"><i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.85rem;"></i> Zapytaj AI</li>
+                                    <li style="display:flex; align-items:center; gap:8px; color:#ffffff !important;"><i class="fa-solid fa-circle-check" style="color:#38bdf8; font-size:0.85rem;"></i> Audio 💎</li>
+                                </ul>
+                            </div>
+
+                            <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:14px;">
+                                <a href="https://www.facebook.com/permalink.php?story_fbid=pfbid0wrgmawnCGcCx2ojZbJPfEPVGn3kaeAjaA1XgVDZj7AALHDpWtWAsovzpNw5xJC4Ql&id=100018961423282" target="_blank" rel="noopener noreferrer" style="text-decoration:none; padding:10px 18px; border-radius:12px; font-weight:700; font-size:0.9rem; color:#ffffff !important; background:rgba(24,119,242,0.3); border:1px solid #1877f2; display:inline-flex; align-items:center; gap:8px; transition:0.2s;">
+                                    <i class="fa-brands fa-facebook" style="color:#1877f2; font-size:1.15rem;"></i> Otwórz oryginalny post na Facebooku
+                                </a>
+                            </div>
                         </div>
 
                         <div class="post-actions-bar">
