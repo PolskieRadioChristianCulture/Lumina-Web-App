@@ -168,6 +168,89 @@ export const LUMINA_TRANSLATIONS = {
         btn_support_modal_title: "Support Christian Culture Mission",
         btn_support_cta: "Donate Now",
         donorbox_note: "Your support enables spreading the Gospel and running the radio ad-free."
+    },
+
+    es: {
+        // ── Navegación y Barra Principal ──
+        nav_home: "Inicio Radio",
+        nav_lumina: "Portal LUMINA",
+        nav_board: "Muro de la Comunidad",
+        nav_explore: "Explorar Perfiles",
+        nav_messages: "Mensajes y Chat",
+        nav_share: "Recomendar Portal",
+        nav_my_profile: "Mi Perfil",
+        nav_login: "Iniciar Sesión / Registro",
+        nav_logout: "Cerrar Sesión",
+        nav_support: "Apoyar",
+        nav_support_title: "Apoyar la Misión LUMINA",
+        nav_menu: "Menú",
+        nav_menu_title: "Menú de Navegación LUMINA",
+        nav_back_to_lumina: "Volver a LUMINA",
+        nav_radio_title: "Encender / Apagar Radio Christian Culture",
+        nav_lang_toggle: "Cambiar idioma (PL / EN / ES)",
+        nav_radio_now_playing: "Polskie Radio Christian Culture • En Vivo",
+
+        // ── Devocionales Diarios (Cuda Każdego Dnia / Dobrze, że jesteś) ──
+        daily_reflection: "Reflexión de Hoy",
+        cycle_dzj: "Serie: Qué bueno que estés aquí",
+        founder_role: "Fundador de Christian Culture",
+        prayer_highlight: "Oración del Día",
+        thank_you: "¡Gracias por estar aquí! ❤️",
+        read_and_see: "Lee y mira cómo Dios transforma tu vida.",
+        btn_amen: "Amén",
+        btn_like: "Me gusta",
+        btn_share_reflection: "Compartir Reflexión",
+        share_modal_title: "Recomendar Reflexión y Perfil",
+        share_modal_subtitle: "Comparte reflexiones diarias con tus seres queridos y amigos:",
+
+        // ── Muro de la Comunidad y Publicaciones ──
+        feed_title: "Muro de la Comunidad",
+        filter_all: "Todos",
+        filter_ckd: "Milagros Cada Día",
+        filter_reflections: "Reflexiones",
+        filter_live: "En Vivo",
+        filter_music: "Música y Adoración",
+        post_input_placeholder: "Escribe una palabra de aliento, testimonio o petición de oración...",
+        post_publish: "Publicar",
+        btn_replace_media: "Reemplazar (Drive/YT)",
+        btn_replace_media_title: "Reemplaza este archivo por un enlace de Google Drive o YouTube (Zero-Egress)",
+        post_comments: "Comentarios",
+        post_comments_count: "comentarios",
+        comment_input_placeholder: "Escribe un comentario edificante...",
+        comment_send: "Enviar",
+
+        // ── Perfiles y Comunidad ──
+        profile_follow: "Seguir",
+        profile_following: "Siguiendo",
+        profile_message: "Mensaje",
+        profile_badges: "Insignias y Méritos",
+        profile_community: "Comunidad",
+        active_now: "Activo ahora",
+        active_users: "Creyentes en línea",
+        profile_about: "Sobre mí",
+        profile_posts: "Publicaciones",
+        profile_photos: "Fotos",
+        profile_videos: "Videos",
+
+        // ── Medios y Reproductores ──
+        radio_live_badge: "EN VIVO",
+        radio_now_playing_label: "Reproduciendo ahora:",
+        radio_station_name: "Radio Christian Culture",
+        radio_tagline: "Palabra de Dios, alabanza y transmisiones 24/7",
+        video_play: "Reproducir video",
+        audio_unmute: "Activar Sonido",
+        audio_muted: "Silenciado",
+
+        // ── Botones Comunes y Notificaciones ──
+        btn_close: "Cerrar",
+        btn_save: "Guardar",
+        btn_cancel: "Cancelar",
+        btn_copy_link: "Copiar Enlace",
+        toast_copied: "✨ ¡Enlace copiado al portapapeles!",
+        toast_lang_switched: "Cambiado a Español 🇪🇸",
+        btn_support_modal_title: "Apoya la Misión Christian Culture",
+        btn_support_cta: "Donar Ahora",
+        donorbox_note: "Tu apoyo permite difundir el Evangelio y desarrollar la radio sin anuncios comerciales."
     }
 };
 
@@ -176,12 +259,12 @@ export const LUMINA_TRANSLATIONS = {
 
     // ── 1. Wykrywanie i zapamiętywanie wybranego języka ──
     function detectInitialLanguage() {
-        // 1. Parametr URL ?lang=en lub ?lang=pl
+        // 1. Parametr URL ?lang=es / ?lang=en / ?lang=pl
         try {
             if (window.location && window.location.search) {
                 const params = new URLSearchParams(window.location.search);
                 const qLang = (params.get('lang') || '').toLowerCase();
-                if (qLang === 'en' || qLang === 'pl') {
+                if (qLang === 'es' || qLang === 'en' || qLang === 'pl') {
                     localStorage.setItem('lumina_lang', qLang);
                     localStorage.setItem('cc_lang', qLang);
                     return qLang;
@@ -192,15 +275,14 @@ export const LUMINA_TRANSLATIONS = {
         // 2. LocalStorage
         try {
             const saved = localStorage.getItem('lumina_lang') || localStorage.getItem('cc_lang');
-            if (saved === 'en' || saved === 'pl') return saved;
+            if (saved === 'es' || saved === 'en' || saved === 'pl') return saved;
         } catch(e) {}
 
         // 3. Język przeglądarki użytkownika
         try {
             const browserLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
-            if (browserLang.startsWith('en')) {
-                return 'en';
-            }
+            if (browserLang.startsWith('es')) return 'es';
+            if (browserLang.startsWith('en')) return 'en';
         } catch(e) {}
 
         return 'pl';
@@ -209,7 +291,7 @@ export const LUMINA_TRANSLATIONS = {
     let currentLang = detectInitialLanguage();
 
     function setLanguage(lang) {
-        if (lang !== 'en' && lang !== 'pl') lang = 'pl';
+        if (lang !== 'es' && lang !== 'en' && lang !== 'pl') lang = 'pl';
         currentLang = lang;
 
         try {
@@ -230,14 +312,18 @@ export const LUMINA_TRANSLATIONS = {
         } catch(e) {}
 
         // Notyfikacja Toast
-        const toastMsg = currentLang === 'en' ? LUMINA_TRANSLATIONS.en.toast_lang_switched : LUMINA_TRANSLATIONS.pl.toast_lang_switched;
+        const currentDict = LUMINA_TRANSLATIONS[currentLang] || LUMINA_TRANSLATIONS.pl;
+        const toastMsg = currentDict.toast_lang_switched || 'Language changed';
         if (typeof window.showToast === 'function') {
             window.showToast(toastMsg);
         }
     }
 
     function toggleLanguage() {
-        const nextLang = currentLang === 'pl' ? 'en' : 'pl';
+        let nextLang = 'pl';
+        if (currentLang === 'pl') nextLang = 'en';
+        else if (currentLang === 'en') nextLang = 'es';
+        else nextLang = 'pl';
         setLanguage(nextLang);
     }
 
