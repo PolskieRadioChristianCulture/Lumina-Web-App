@@ -185,6 +185,8 @@
 
   <!-- LUMINA Storage & Auto-Repair Shield -->
   <script src="lumina-auto-repair.js"></script>
+  <!-- LUMINA Core Database & Google Community Auth -->
+  <script type="module" src="lumina-db.js?v=4.1.0_20260830"></script>
 
   <style>
     :root {
@@ -1442,6 +1444,379 @@
       color: var(--gold-bright);
     }
 
+    /* ══════════ PRZYCISKI I MODAL ZGŁOŚ PROBLEM ══════════ */
+    .mb-report-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 14px;
+      min-height: 44px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1.5px solid rgba(245, 158, 11, 0.35);
+      border-radius: 12px;
+      color: var(--gold-bright);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+    .mb-report-btn:hover {
+      background: rgba(245, 158, 11, 0.25);
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 14px var(--gold-glow);
+      transform: translateY(-1px);
+    }
+    @media (max-width: 680px) {
+      .mb-report-btn span { display: none; }
+      .mb-report-btn { padding: 7px 12px; }
+    }
+
+    /* Pływający FAB Zgłoś Problem */
+    .mb-fab-report {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 18px;
+      min-height: 48px;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 1.5px solid var(--gold-primary);
+      border-radius: 50px;
+      color: #fff;
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 18px var(--gold-glow);
+      transition: all 0.25s ease;
+    }
+    .mb-fab-report i {
+      color: var(--gold-bright);
+      font-size: 1.1rem;
+    }
+    .mb-fab-report:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 24px var(--gold-glow);
+      border-color: var(--gold-bright);
+    }
+    @media (max-width: 600px) {
+      .mb-fab-report {
+        bottom: 18px;
+        right: 18px;
+        padding: 10px 14px;
+      }
+      .mb-fab-label { display: none; }
+    }
+
+    /* Karta misyjna Biblia Audio */
+    .mb-report-missionary-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .mb-report-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .mb-report-missionary-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--gold-primary);
+      box-shadow: 0 0 12px var(--gold-glow);
+    }
+    .mb-report-online-badge {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #22c55e;
+      border: 2px solid #0d1424;
+      box-shadow: 0 0 8px #22c55e;
+    }
+    .mb-report-missionary-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .mb-report-missionary-title {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 3px;
+    }
+    .mb-report-missionary-title h3 {
+      font-size: 0.98rem;
+      color: #fff;
+      font-weight: 800;
+    }
+    .mb-verified-badge {
+      font-size: 0.70rem;
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--gold-bright);
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .mb-report-missionary-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Bramka Logowania Google (Community Growth Gate) */
+    .mb-report-auth-gate {
+      text-align: center;
+      padding: 16px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .mb-auth-gate-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1.5px solid var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      box-shadow: 0 0 20px var(--gold-glow);
+    }
+    .mb-report-auth-gate h4 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .mb-auth-gate-text {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      max-width: 440px;
+      line-height: 1.5;
+    }
+    .mb-auth-gate-benefits {
+      text-align: left;
+      background: rgba(14, 22, 40, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 12px 16px;
+      max-width: 440px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.80rem;
+      color: #cbd5e1;
+    }
+    .mb-benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .mb-btn-google-login {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 10px 24px;
+      background: #ffffff;
+      color: #1f2937;
+      font-size: 0.95rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+      transition: all 0.25s ease;
+      width: 100%;
+      max-width: 420px;
+    }
+    .mb-btn-google-login:hover {
+      background: #f8fafc;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25);
+    }
+    .mb-auth-gate-subtext {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    /* Formularz zgłoszenia */
+    .mb-report-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .mb-report-user-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+    .mb-report-user-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid #38bdf8;
+    }
+    .mb-badge-community {
+      margin-left: auto;
+      font-size: 0.70rem;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+    .mb-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .mb-form-group label {
+      font-size: 0.80rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .mb-input-select, .mb-input-text, .mb-input-textarea {
+      background: rgba(10, 16, 32, 0.9);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.88rem;
+      transition: all 0.2s;
+    }
+    .mb-input-select:focus, .mb-input-text:focus, .mb-input-textarea:focus {
+      outline: none;
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 12px var(--gold-glow);
+    }
+    .mb-report-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .mb-btn-cancel {
+      min-height: 44px;
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .mb-btn-submit-report {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 22px;
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-bright));
+      border: none;
+      border-radius: 10px;
+      color: #000;
+      font-weight: 800;
+      font-size: 0.88rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px var(--gold-glow);
+      transition: all 0.2s;
+    }
+    .mb-btn-submit-report:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px var(--gold-glow);
+    }
+
+    /* Sukces */
+    .mb-report-success-view {
+      text-align: center;
+      padding: 24px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .mb-success-icon {
+      font-size: 3rem;
+      color: #22c55e;
+      text-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+    }
+    .mb-report-success-view h3 {
+      font-size: 1.25rem;
+      color: #fff;
+      font-weight: 800;
+    }
+    .mb-report-success-view p {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      max-width: 420px;
+      line-height: 1.5;
+    }
+    .mb-success-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 360px;
+      margin-top: 10px;
+    }
+    .mb-btn-open-chat {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #a855f7, #06b6d4);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      box-shadow: 0 4px 15px rgba(168, 85, 247, 0.35);
+      transition: all 0.2s;
+    }
+    .mb-btn-open-chat:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5);
+    }
+    .mb-btn-close-success {
+      min-height: 44px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      color: #cbd5e1;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
     /* Ukryte audio */
     #mbRadioAudio {
       display: none;
@@ -1482,6 +1857,10 @@
       <a href="lumina" class="mb-nav-link-btn" title="Portal LUMINA">
         <i class="fa-solid fa-wand-magic-sparkles" style="color:#c084fc;"></i>
       </a>
+      <button class="mb-report-btn" id="mbHeaderReportBtn" onclick="window.mbApp.openReportProblemModal()" title="Zgłoś Problem / Kontakt z misją Biblia Audio CC">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Zgłoś Problem</span>
+      </button>
     </div>
   </header>
 
@@ -1554,6 +1933,26 @@
 
   <!-- ══════════ MODAL INSPEKTORA STRONGA ══════════ -->
   <div id="mbStrongModal" style="display:none;"></div>
+
+  <!-- ══════════ PŁYWAJĄCY PRZYCISK ZGŁOŚ PROBLEM (FAB) ══════════ -->
+  <button class="mb-fab-report" id="mbFabReportBtn" onclick="window.mbApp.openReportProblemModal()" title="Zgłoś problem lub skontaktuj się z zespołem Biblia Audio CC">
+    <i class="fa-solid fa-comment-dots"></i>
+    <span class="mb-fab-label">Zgłoś Problem</span>
+  </button>
+
+  <!-- ══════════ MODAL ZGŁOŚ PROBLEM (GROWTH LOOP SPOŁECZNOŚCI LUMINA & CZAT BIBLIA AUDIO) ══════════ -->
+  <div id="mbReportProblemModal" class="mb-modal-overlay" style="display:none;" onclick="if(event.target===this) window.mbApp.closeReportProblemModal()">
+    <div class="mb-modal-card" style="max-width: 540px;" onclick="event.stopPropagation()">
+      <div class="mb-modal-header">
+        <div class="mb-modal-tag-badge"><i class="fa-solid fa-triangle-exclamation" style="color:var(--gold-bright); margin-right:4px;"></i> Zgłoś Problem • Kontakt z Misją</div>
+        <button class="mb-modal-close" onclick="window.mbApp.closeReportProblemModal()" title="Zamknij (Esc)"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div id="mbReportModalBody" style="padding: 16px 20px 24px;">
+        <!-- Renderowane dynamicznie przez window.mbApp.renderReportModalContent() -->
+      </div>
+    </div>
+  </div>
 
   <!-- ══════════ STOPKA & LICENCJA STEPBIBLE ══════════ -->
   <footer class="mb-footer">

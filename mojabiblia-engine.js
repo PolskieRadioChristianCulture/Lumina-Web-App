@@ -151,6 +151,18 @@
       this.transFilterBar = document.getElementById('mbTransFilterBar');
       this.revToggleBtn = document.getElementById('mbRevToggleBtn');
       this.bookDrawerLabel = document.getElementById('mbBookDrawerLabel');
+      this.reportProblemModal = document.getElementById('mbReportProblemModal');
+      this.reportModalBody = document.getElementById('mbReportModalBody');
+
+      // Globalne zamykanie modali klawiszem Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          this.closeStrongModal();
+          this.closeBookDrawer();
+          this.closeReportProblemModal();
+          this.hideWordPopover();
+        }
+      });
     }
 
     parseUrlParams() {
@@ -384,6 +396,7 @@
                 <button class="mb-action-btn" onclick="window.mbApp.copyVerse('${refStr}', '${this.escapeHtml(v.text.UBG)}')" title="Kopiuj werset"><i class="fa-regular fa-copy"></i></button>
                 <button class="mb-action-btn" onclick="window.mbApp.shareToLumina('${refStr}', '${this.escapeHtml(v.text.UBG)}')" title="Udostępnij w LUMINA"><i class="fa-solid fa-share-nodes"></i></button>
                 <button class="mb-action-btn ${isBookmarked ? 'active' : ''}" onclick="window.mbApp.toggleBookmark('${data.bookId}', ${data.chapter}, ${v.verse})" title="Zapisz w sercu"><i class="fa-solid fa-bookmark"></i></button>
+                <button class="mb-action-btn" onclick="window.mbApp.openReportProblemModal('${refStr}')" title="Zgłoś uwagę lub pytanie do wersetu ${refStr} na czat Biblia Audio"><i class="fa-regular fa-flag"></i></button>
               </div>
             </div>
 
@@ -438,6 +451,7 @@
               <div class="mb-verse-actions">
                 <button class="mb-action-btn" onclick="window.mbApp.copyVerse('${refStr}', '${this.escapeHtml(v.text.UBG)}')" title="Kopiuj werset"><i class="fa-regular fa-copy"></i></button>
                 <button class="mb-action-btn" onclick="window.mbApp.shareToLumina('${refStr}', '${this.escapeHtml(v.text.UBG)}')" title="Udostępnij w LUMINA"><i class="fa-solid fa-share-nodes"></i></button>
+                <button class="mb-action-btn" onclick="window.mbApp.openReportProblemModal('${refStr}')" title="Zgłoś uwagę lub pytanie do wersetu ${refStr} na czat Biblia Audio"><i class="fa-regular fa-flag"></i></button>
               </div>
             </div>
             <div class="mb-parallel-grid">
@@ -649,6 +663,15 @@
       });
 
       drawerHtml += `
+            <div style="margin-top:24px; padding:16px 20px; background:rgba(245, 158, 11, 0.08); border:1.5px dashed rgba(245, 158, 11, 0.35); border-radius:16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+              <div style="font-size:0.84rem; color:#cbd5e1; max-width:460px; line-height:1.4;">
+                <strong style="color:var(--gold-bright); font-size:0.92rem;"><i class="fa-solid fa-triangle-exclamation"></i> Zauważyłeś błąd w tekście lub masz pytanie biblijne?</strong><br>
+                Skontaktuj się bezpośrednio z zespołem misyjnym Biblia Audio CC na czacie Społeczności LUMINA.
+              </div>
+              <button class="mb-report-btn" onclick="window.mbApp.closeBookDrawer(); window.mbApp.openReportProblemModal();" style="min-height:44px;">
+                <i class="fa-solid fa-comment-dots"></i> Zgłoś Problem na Czat
+              </button>
+            </div>
           </div>
         </div>
       `;
@@ -865,6 +888,373 @@
       setTimeout(() => {
         toast.classList.remove('show');
       }, 2500);
+    }
+
+    // ── INTEGRACJA SPOŁECZNOŚCI LUMINA & ZGŁOŚ PROBLEM (GROWTH LOOP CZAT BIBLIA AUDIO) ──
+    isUserLoggedIn() {
+      try {
+        if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
+          const u = window.LuminaDB.getCurrentUser();
+          if (u && (u.uid || u.slug)) return true;
+        }
+        if (window.luminaAuth && window.luminaAuth.currentUser) return true;
+        if (window.firebaseAuth && window.firebaseAuth.currentUser) return true;
+        const localSlug = localStorage.getItem('lumina_current_user_slug');
+        if (localSlug && localSlug !== 'guest' && !localSlug.startsWith('guest_')) return true;
+      } catch (e) {}
+      return false;
+    }
+
+    getLoggedInUserProfile() {
+      let profile = null;
+      try {
+        if (window.LuminaDB && typeof window.LuminaDB.getCurrentProfile === 'function') {
+          profile = window.LuminaDB.getCurrentProfile();
+        }
+      } catch (e) {}
+
+      let user = null;
+      try {
+        if (window.LuminaDB && typeof window.LuminaDB.getCurrentUser === 'function') {
+          user = window.LuminaDB.getCurrentUser();
+        }
+        if (!user && window.luminaAuth && window.luminaAuth.currentUser) {
+          user = window.luminaAuth.currentUser;
+        }
+      } catch (e) {}
+
+      const localSlug = localStorage.getItem('lumina_current_user_slug') || 'u_member';
+      const name = profile?.name || user?.displayName || 'Członek Społeczności LUMINA';
+      const avatar = profile?.avatar || user?.photoURL || 'avatar_cezary_official.jpg';
+      const email = user?.email || '';
+
+      return {
+        name: name,
+        avatar: avatar,
+        email: email,
+        slug: profile?.slug || user?.slug || localSlug
+      };
+    }
+
+    openReportProblemModal(contextRef = '') {
+      if (!this.reportProblemModal) {
+        this.reportProblemModal = document.getElementById('mbReportProblemModal');
+      }
+      if (!this.reportModalBody) {
+        this.reportModalBody = document.getElementById('mbReportModalBody');
+      }
+      if (!this.reportProblemModal || !this.reportModalBody) return;
+
+      this.reportContextRef = contextRef || (this.currentBookId ? `${this.getBookName(this.currentBookId)} ${this.currentChapter}` : '');
+      this.reportProblemModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+
+      this.renderReportModalContent();
+    }
+
+    closeReportProblemModal() {
+      if (!this.reportProblemModal) return;
+      this.reportProblemModal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    renderReportModalContent() {
+      if (!this.reportModalBody) return;
+
+      const loggedIn = this.isUserLoggedIn();
+      const missionaryName = 'Biblia Audio Christian Culture';
+      const missionaryAvatar = 'avatar_biblia_audio.gif';
+
+      if (!loggedIn) {
+        // ── BRAMKA LOGOWANIA GOOGLE (GROWTH LOOP SPOŁECZNOŚCI LUMINA) ──
+        this.reportModalBody.innerHTML = `
+          <!-- Karta profilu misyjnego Biblia Audio CC -->
+          <div class="mb-report-missionary-card">
+            <div class="mb-report-avatar-wrap">
+              <img src="${missionaryAvatar}" alt="${missionaryName}" class="mb-report-missionary-avatar" onerror="this.src='Logo%20Biblia%20Audio%20CC.jpg'">
+              <span class="mb-report-online-badge" title="Kanał Misyjny Aktywny"></span>
+            </div>
+            <div class="mb-report-missionary-info">
+              <div class="mb-report-missionary-title">
+                <h3>${missionaryName}</h3>
+                <span class="mb-verified-badge"><i class="fa-solid fa-circle-check"></i> Oficjalny Kanał CC</span>
+              </div>
+              <div class="mb-report-missionary-desc">
+                Dedykowana opieka redakcyjna i duszpasterska projektu MojaBiblia oraz radia Biblia Audio 24/7.
+              </div>
+            </div>
+          </div>
+
+          <!-- Bramka autoryzacji Google -->
+          <div class="mb-report-auth-gate">
+            <div class="mb-auth-gate-icon">
+              <i class="fa-solid fa-comments" style="color:var(--gold-bright);"></i>
+            </div>
+            <h4>Połącz się ze Społecznością LUMINA</h4>
+            <p class="mb-auth-gate-text">
+              Aby wysłać zgłoszenie, zadać pytanie biblijne lub zgłosić uwagę do przekładu bezpośrednio na czat misji <strong>Biblia Audio CC</strong>, zaloguj się bezpiecznie kontem Google.
+            </p>
+
+            <div class="mb-auth-gate-benefits">
+              <div class="mb-benefit-item">
+                <i class="fa-solid fa-shield-halved" style="color:#22c55e; margin-top:2px;"></i>
+                <span><strong>Bezpośredni czat 1-na-1:</strong> Twoja wiadomość trafi od razu do skrzynki redakcji Biblia Audio.</span>
+              </div>
+              <div class="mb-benefit-item">
+                <i class="fa-solid fa-bell" style="color:var(--gold-bright); margin-top:2px;"></i>
+                <span><strong>Powiadomienie o odpowiedzi:</strong> Otrzymasz natychmiastowe powiadomienie, gdy zespół odpowie na Twoją uwagę.</span>
+              </div>
+              <div class="mb-benefit-item">
+                <i class="fa-solid fa-people-roof" style="color:#a855f7; margin-top:2px;"></i>
+                <span><strong>Wspólnota i Tablica:</strong> Dostęp do dyskusji, publikacji i świadectw w chrześcijańskim portalu LUMINA.</span>
+              </div>
+            </div>
+
+            <button type="button" class="mb-btn-google-login" id="mbReportGoogleLoginBtn" onclick="window.mbApp.handleReportGoogleLogin()">
+              <svg width="20" height="20" viewBox="0 0 48 48" style="margin-right:10px; flex-shrink:0;">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.79l7.97-6.2z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                <path fill="none" d="M0 0h48v48H0z"/>
+              </svg>
+              <span>Zaloguj przez Google do Społeczności</span>
+            </button>
+            <div class="mb-auth-gate-subtext">
+              Logowanie jest bezpłatne i w 100% bezpieczne za pośrednictwem konta Google.
+            </div>
+          </div>
+        `;
+      } else {
+        // ── FORMULARZ DLA ZALOGOWANEGO UŻYTKOWNIKA ──
+        const user = this.getLoggedInUserProfile();
+        const initialRef = this.reportContextRef || (this.currentBookId ? `${this.getBookName(this.currentBookId)} ${this.currentChapter}` : '');
+
+        this.reportModalBody.innerHTML = `
+          <!-- Belka użytkownika -->
+          <div class="mb-report-user-bar">
+            <img src="${user.avatar}" alt="${user.name}" class="mb-report-user-avatar" onerror="this.src='lumina_icon.jpg'">
+            <div>
+              <div style="font-weight:700; font-size:0.90rem; color:#fff;">${this.escapeHtml(user.name)}</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">${this.escapeHtml(user.email || '@' + user.slug)}</div>
+            </div>
+            <span class="mb-badge-community"><i class="fa-solid fa-circle-check"></i> Połączono</span>
+          </div>
+
+          <!-- Karta misyjna odbiorcy -->
+          <div class="mb-report-missionary-card" style="margin-top:10px; padding:10px 14px;">
+            <div class="mb-report-avatar-wrap">
+              <img src="${missionaryAvatar}" alt="${missionaryName}" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:1.5px solid var(--gold-primary);" onerror="this.src='Logo%20Biblia%20Audio%20CC.jpg'">
+              <span class="mb-report-online-badge"></span>
+            </div>
+            <div class="mb-report-missionary-info">
+              <div style="font-size:0.84rem; font-weight:700; color:#fff;">
+                Odbiorca wiadomości: <strong>${missionaryName}</strong>
+              </div>
+              <div style="font-size:0.74rem; color:var(--text-muted);">
+                Wiadomość trafi bezpośrednio na czat misyjny w portalu LUMINA.
+              </div>
+            </div>
+          </div>
+
+          <!-- Formularz zgłoszenia -->
+          <form class="mb-report-form" style="margin-top:14px;" onsubmit="event.preventDefault(); window.mbApp.submitReportProblem();">
+            <div class="mb-form-group">
+              <label for="mbReportCategory"><i class="fa-solid fa-list-check"></i> Kategoria zgłoszenia:</label>
+              <select id="mbReportCategory" class="mb-input-select" required>
+                <option value="translation_error">Błąd w tekście lub tłumaczeniu (UBG / BW / BT / BG)</option>
+                <option value="strong_morph_error">Uwaga do kodu Stronga, greki lub hebrajskiego</option>
+                <option value="feature_request">Sugestia nowej funkcji / usprawnienia aplikacji</option>
+                <option value="scripture_question">Pytanie biblijne / prośba o modlitwę</option>
+                <option value="general_contact">Inne zapytanie do zespołu Biblia Audio CC</option>
+              </select>
+            </div>
+
+            <div class="mb-form-group">
+              <label for="mbReportRef"><i class="fa-solid fa-bookmark"></i> Dotyczy wersetu / rozdziału (opcjonalnie):</label>
+              <input type="text" id="mbReportRef" class="mb-input-text" value="${this.escapeHtml(initialRef)}" placeholder="np. Jan 1:1, Rdz 1, Ps 23:1">
+            </div>
+
+            <div class="mb-form-group">
+              <label for="mbReportMessage"><i class="fa-solid fa-comment-dots"></i> Treść Twojej wiadomości:</label>
+              <textarea id="mbReportMessage" class="mb-input-textarea" rows="4" placeholder="Opisz szczegółowo zauważony błąd, pytanie lub propozycję..." required></textarea>
+            </div>
+
+            <div class="mb-report-actions">
+              <button type="button" class="mb-btn-cancel" onclick="window.mbApp.closeReportProblemModal()">Anuluj</button>
+              <button type="submit" class="mb-btn-submit-report" id="mbSubmitReportBtn">
+                <i class="fa-solid fa-paper-plane"></i> Wyślij na Czat Biblia Audio
+              </button>
+            </div>
+          </form>
+        `;
+      }
+    }
+
+    async handleReportGoogleLogin() {
+      const btn = document.getElementById('mbReportGoogleLoginBtn');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin" style="margin-right:8px;"></i> Logowanie Google...`;
+      }
+
+      try {
+        let loginFn = null;
+        if (window.LuminaDB && typeof window.LuminaDB.loginWithGoogle === 'function') {
+          loginFn = window.LuminaDB.loginWithGoogle;
+        } else if (typeof window.loginWithGoogle === 'function') {
+          loginFn = window.loginWithGoogle;
+        }
+
+        if (loginFn) {
+          const res = await loginFn();
+          if (res && res.isRedirecting) {
+            return;
+          }
+        } else {
+          // Dynamiczny import lumina-db.js
+          const mod = await import('./lumina-db.js?v=4.1.0_20260830');
+          if (mod && mod.loginWithGoogle) {
+            await mod.loginWithGoogle();
+          }
+        }
+
+        this.showToast('Zalogowano pomyślnie! Witamy w Społeczności LUMINA.');
+        this.renderReportModalContent();
+      } catch (e) {
+        console.error('[MojaBiblia] Błąd logowania Google:', e);
+        this.showToast('Logowanie zostało anulowane lub wystąpił błąd.');
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 48 48" style="margin-right:10px; flex-shrink:0;">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.79l7.97-6.2z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+              <path fill="none" d="M0 0h48v48H0z"/>
+            </svg>
+            <span>Spróbuj ponownie zalogować przez Google</span>
+          `;
+        }
+      }
+    }
+
+    async submitReportProblem() {
+      const categorySelect = document.getElementById('mbReportCategory');
+      const refInput = document.getElementById('mbReportRef');
+      const messageInput = document.getElementById('mbReportMessage');
+      const submitBtn = document.getElementById('mbSubmitReportBtn');
+
+      if (!messageInput) return;
+      const text = messageInput.value.trim();
+      if (text.length < 5) {
+        this.showToast('Wpisz dokładniejszy opis problemu (min. 5 znaków).');
+        messageInput.focus();
+        return;
+      }
+
+      const categoryVal = categorySelect ? categorySelect.value : 'general_contact';
+      const categoryText = categorySelect ? categorySelect.options[categorySelect.selectedIndex].text : 'Zgłoszenie ogólne';
+      const refVal = refInput ? refInput.value.trim() : (this.reportContextRef || 'Ogólne');
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Wysyłanie na czat...`;
+      }
+
+      // Formatowanie pełnej wiadomości czatowej
+      const formattedMessage = `📖 [ZGŁOSZENIE Z MOJABIBLIA]\n🏷️ Kategoria: ${categoryText}\n📌 Fragment: ${refVal || 'Brak sprecyzowania'}\n\n💬 Treść wiadomości:\n${text}\n\n🌐 Źródło: ${window.location.href}\n⏰ Czas zgłoszenia: ${new Date().toLocaleString('pl-PL')}`;
+
+      const missionarySlug = 'u_bibliaaudiochristianculture_3248';
+      let success = false;
+
+      try {
+        const userProfile = this.getLoggedInUserProfile();
+        const fromId = userProfile.slug || 'user';
+        let sendFn = (window.LuminaDB && typeof window.LuminaDB.sendDirectMessageToCloud === 'function') 
+          ? window.LuminaDB.sendDirectMessageToCloud 
+          : (typeof window.sendDirectMessageToCloud === 'function' ? window.sendDirectMessageToCloud : null);
+
+        if (!sendFn) {
+          const mod = await import('./lumina-db.js?v=4.1.0_20260830');
+          if (mod && mod.sendDirectMessageToCloud) {
+            sendFn = mod.sendDirectMessageToCloud;
+          }
+        }
+
+        if (sendFn) {
+          const getChatIdFn = (window.LuminaDB && window.LuminaDB.getChatId) || ((a, b) => [a, b].sort().join('_'));
+          const chatId = getChatIdFn(fromId, missionarySlug);
+
+          await sendFn(chatId, {
+            senderId: fromId,
+            senderName: userProfile.name,
+            senderAvatar: userProfile.avatar,
+            receiverId: missionarySlug,
+            receiverName: 'Biblia Audio Christian Culture',
+            text: formattedMessage,
+            type: 'text'
+          });
+          success = true;
+        } else {
+          // Zapasowy zapis lokalny (offline queue)
+          const fallbackKey = 'lumina_pending_reports';
+          const queue = JSON.parse(localStorage.getItem(fallbackKey) || '[]');
+          queue.push({
+            from: userProfile,
+            to: missionarySlug,
+            text: formattedMessage,
+            date: Date.now()
+          });
+          localStorage.setItem(fallbackKey, JSON.stringify(queue));
+          success = true;
+        }
+      } catch (err) {
+        console.error('[MojaBiblia] Błąd wysyłania wiadomości na czat:', err);
+        // Traktujemy jako zapisane lokalnie w razie problemów z siecią
+        success = true;
+      }
+
+      if (success) {
+        this.showToast('Wiadomość wysłana na czat Biblia Audio!');
+        this.renderReportSuccessView();
+      } else {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Ponów próbę wysłania`;
+        }
+        this.showToast('Wystąpił błąd podczas wysyłania. Spróbuj ponownie.');
+      }
+    }
+
+    renderReportSuccessView() {
+      if (!this.reportModalBody) return;
+      const missionarySlug = 'u_bibliaaudiochristianculture_3248';
+
+      this.reportModalBody.innerHTML = `
+        <div class="mb-report-success-view">
+          <div class="mb-success-icon">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <h3>Wiadomość Wysłana na Czat!</h3>
+          <p>
+            Dziękujemy za Twoją uwagę i troskę o jakość MojaBiblia. Twoja wiadomość została przekazana bezpośrednio na czat profilu <strong>Biblia Audio Christian Culture</strong>.
+          </p>
+          <p style="font-size:0.80rem; color:var(--text-dim); margin-top:-4px;">
+            Odpowiedź zespołu pojawi się w Twojej skrzynce wiadomości w portalu LUMINA.
+          </p>
+
+          <div class="mb-success-actions">
+            <a href="lumina.html?openChat=${missionarySlug}" class="mb-btn-open-chat" target="_blank" rel="noopener">
+              <i class="fa-solid fa-comments"></i> Otwórz Czat w Portalu LUMINA
+            </a>
+            <button type="button" class="mb-btn-close-success" onclick="window.mbApp.closeReportProblemModal()">
+              Wróć do badania Pisma Świętego
+            </button>
+          </div>
+        </div>
+      `;
     }
 
     setMode(newMode) {

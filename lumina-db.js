@@ -5799,6 +5799,9 @@ window.LuminaDB.getHeuristicLinkMetadata = getHeuristicLinkMetadata;
 window.LuminaDB.createRichOpenGraphCardHtml = createRichOpenGraphCardHtml;
 window.LuminaDB.fetchLinkOpenGraphMetadata = fetchLinkOpenGraphMetadata;
 window.LuminaDB.hydrateOpenGraphCards = hydrateOpenGraphCards;
+window.LuminaDB.sendDirectMessageToCloud = sendDirectMessageToCloud;
+window.LuminaDB.getChatId = getChatId;
+window.sendDirectMessageToCloud = sendDirectMessageToCloud;
 
 export function isProfileNew(p) {
     if (!p) return false;
