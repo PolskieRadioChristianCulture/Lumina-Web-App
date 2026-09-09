@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Y4EFTVBPE3');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>TV Epafraz 24/7 — Transmisja na Żywo | Christian Culture TV</title>
+
+    <!-- Facebook & Open Graph Video Metadata -->
+    <meta property="og:type" content="video.other">
+    <meta property="og:site_name" content="Telewizja Christian Culture 24/7">
+    <meta property="og:title" content="📺 TV Epafraz 24/7 — Transmisja na Żywo | CC TV">
+    <meta property="og:description" content="24 wyselekcjonowane serie biblijne: Podcast Apokalipsa Palla, nauczania, uwielbienie i filmy 24/7 w Christian Culture TV.">
+    <meta property="og:url" content="https://polskieradio.cc/tv-epafraz">
+    <meta property="og:image" content="https://polskieradio.cc/tv24_cc.png">
+    <meta property="og:image:secure_url" content="https://polskieradio.cc/tv24_cc.png">
+    <meta property="og:video" content="https://polskieradio.cc/tv-epafraz">
+    <meta property="og:video:secure_url" content="https://polskieradio.cc/tv-epafraz">
+    <meta property="og:video:type" content="text/html">
+    <meta property="og:video:width" content="1280">
+    <meta property="og:video:height" content="720">
+
+    <!-- Twitter / X Player Card -->
+    <meta name="twitter:card" content="player">
+    <meta name="twitter:title" content="📺 TV Epafraz 24/7 — CC TV">
+    <meta name="twitter:description" content="24/7 Transmisja ciągła: Podcast Apokalipsa, wykłady, muzyka chwały i filmy chrześcijańskie.">
+    <meta name="twitter:image" content="https://polskieradio.cc/tv24_cc.png">
+    <meta name="twitter:player" content="https://polskieradio.cc/tv-epafraz">
+    <meta name="twitter:player:width" content="1280">
+    <meta name="twitter:player:height" content="720">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #ffd700;
+            --gold-dark: #AA7C11;
+            --bg-dark: #040711;
+            --text-light: #ffffff;
+            --glass-bg: rgba(8, 12, 24, 0.78);
+            --glass-border: rgba(212, 175, 55, 0.35);
+            --glass-shadow: rgba(0, 0, 0, 0.7);
+            --red-live: #dc143c;
+            --cyan-accent: #38bdf8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            user-select: none;
+        }
+
+        #app-container {
+            width: 1920px;
+            height: 1080px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        /* --- VIDEO FRAME CONTAINER --- */
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: #000;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* --- UNMUTE / START OVERLAY --- */
+        #startOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: opacity 0.4s ease;
+        }
+
+        .start-btn-card {
+            background: var(--glass-bg);
+            border: 2px solid var(--gold-primary);
+            padding: 35px 55px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 16px 50px rgba(0,0,0,0.9), 0 0 35px rgba(212, 175, 55, 0.35);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .start-btn-card:hover {
+            transform: scale(1.04);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.95), 0 0 50px rgba(212, 175, 55, 0.6);
+        }
+
+        .start-btn-card i {
+            font-size: 4rem;
+            color: var(--gold-primary);
+            margin-bottom: 18px;
+            display: block;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.7);
+        }
+
+        .start-btn-card h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        .start-btn-card p {
+            color: var(--gold-light);
+            font-weight: 600;
+            font-size: 1.15rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- TOP HEADER BAR --- */
+        .top-header-bar {
+            position: absolute;
+            top: 30px;
+            left: 50px;
+            right: 50px;
+            height: 76px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 20;
+            pointer-events: none;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        .header-left-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 10px 26px;
+            border-radius: 50px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 10px 30px var(--glass-shadow);
+            pointer-events: auto;
+        }
+
+        .brand-logo-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 1.3rem;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        }
+
+        .brand-title-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-main-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        .brand-sub-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: var(--gold-light);
+            text-transform: uppercase;
+        }
+
+        .live-status-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(220, 20, 60, 0.22);
+            border: 1.5px solid var(--red-live);
+            padding: 5px 14px;
+            border-radius: 20px;
+            box-shadow: 0 0 14px rgba(220, 20, 60, 0.4);
+            margin-left: 6px;
+        }
+
+        .pulse-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--red-live);
+            box-shadow: 0 0 10px var(--red-live);
+            animation: livePulse 1.6s infinite;
+        }
+
+        @keyframes livePulse {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.35); opacity: 1; box-shadow: 0 0 14px var(--red-live); }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+
+        .live-text {
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            color: #fff;
+        }
+
+        .header-center-clock {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 8px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 10px 30px var(--glass-shadow);
+            pointer-events: auto;
+        }
+
+        .clock-time {
+            font-size: 1.65rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #fff;
+            line-height: 1.1;
+        }
+
+        .clock-date {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--gold-light);
+            text-transform: uppercase;
+        }
+
+        .header-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            pointer-events: auto;
+        }
+
+        .action-header-btn {
+            background: var(--glass-bg);
+            border: 1.5px solid var(--gold-primary);
+            color: #fff;
+            border-radius: 30px;
+            padding: 9px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            letter-spacing: 1px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 8px 24px var(--glass-shadow);
+            transition: all 0.25s ease;
+        }
+
+        .action-header-btn:hover {
+            background: rgba(212, 175, 55, 0.25);
+            border-color: #ffd700;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(212, 175, 55, 0.4);
+        }
+
+        .action-header-btn i {
+            color: var(--gold-primary);
+            font-size: 1rem;
+        }
+
+        /* --- EPISODE & SERIES OVERLAY BADGE --- */
+        .episode-badge-box {
+            position: absolute;
+            top: 120px;
+            left: 50px;
+            max-width: 620px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-left: 5px solid var(--gold-primary);
+            padding: 16px 24px;
+            border-radius: 16px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 12px 35px var(--glass-shadow);
+            z-index: 20;
+            pointer-events: auto;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        .series-tag-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .series-pill {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.3) 0%, rgba(212, 175, 55, 0.1) 100%);
+            border: 1px solid var(--gold-primary);
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            color: #ffd700;
+            text-transform: uppercase;
+        }
+
+        .series-counter {
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #38bdf8;
+            text-transform: uppercase;
+        }
+
+        .episode-main-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.35;
+            margin-bottom: 6px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .episode-sub-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .episode-sub-info i {
+            color: var(--gold-primary);
+        }
+
+        /* --- QUICK CONTROLS BAR (FLOATING GLASS) --- */
+        .quick-controls-bar {
+            position: absolute;
+            bottom: 104px;
+            right: 50px;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 8px 18px;
+            border-radius: 40px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 10px 30px var(--glass-shadow);
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        .quick-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border-radius: 20px;
+            padding: 7px 14px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s ease;
+        }
+
+        .quick-btn:hover {
+            background: rgba(212, 175, 55, 0.3);
+            border-color: var(--gold-primary);
+            color: #ffd700;
+            transform: scale(1.04);
+        }
+
+        .quick-btn-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+        }
+
+        .quick-btn-gold {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            color: #000;
+            border: none;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .quick-btn-gold:hover {
+            background: linear-gradient(135deg, #ffd700, #d4af37);
+            color: #000;
+            box-shadow: 0 0 22px rgba(212, 175, 55, 0.8);
+        }
+
+        /* --- BOTTOM TICKER: PORTAL LUMINA (CHRISTIAN CULTURE) --- */
+        .lumina-master-ticker {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 88px;
+            z-index: 50;
+            background: #040711;
+            border-top: 3px solid var(--gold-primary);
+            box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.98), 0 0 30px rgba(212, 175, 55, 0.35);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            user-select: none;
+            box-sizing: border-box;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        .lumina-ticker-brand {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 0 24px 0 26px;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.28) 0%, rgba(10, 15, 30, 0.98) 85%, rgba(10, 15, 30, 0) 100%);
+            border-right: 2px solid rgba(212, 175, 55, 0.5);
+            flex-shrink: 0;
+            z-index: 10;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lumina-ticker-brand:hover {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.4) 0%, rgba(14, 22, 42, 0.98) 85%, rgba(14, 22, 42, 0) 100%);
+        }
+
+        .lumina-brand-icon-box {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #101626 0%, #1c2438 100%);
+            border: 2px solid rgba(212, 175, 55, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .lumina-brand-icon-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .lumina-brand-texts {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .lumina-brand-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.55rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #ffd700;
+            display: block;
+            text-shadow: 0 2px 14px rgba(212, 175, 55, 0.7);
+        }
+
+        .lumina-brand-tag {
+            font-size: 0.85rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 3px;
+        }
+
+        .lumina-brand-tag .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #38bdf8;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #38bdf8;
+            animation: luminaDotPulse 1.5s infinite;
+        }
+
+        @keyframes luminaDotPulse {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #38bdf8; }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+
+        .lumina-ticker-track-wrap {
+            flex: 1;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 1.5%, rgba(0,0,0,1) 98.5%, transparent 100%);
+            -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 1.5%, rgba(0,0,0,1) 98.5%, transparent 100%);
+        }
+
+        .lumina-ticker-content {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            animation: luminaTickerScroll 160s linear infinite;
+            font-size: 1.65rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+        }
+
+        .lumina-ticker-content:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes luminaTickerScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .lumina-ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            padding: 0 40px;
+        }
+
+        .lumina-ticker-item strong {
+            color: #ffd700;
+            font-weight: 900;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .lumina-ticker-item .badge-news {
+            background: rgba(56, 189, 248, 0.25);
+            border: 2px solid #38bdf8;
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: 900;
+            padding: 5px 15px;
+            border-radius: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+        }
+
+        .lumina-ticker-item .badge-gold {
+            background: rgba(212, 175, 55, 0.25);
+            border: 2px solid #ffd700;
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: 900;
+            padding: 5px 15px;
+            border-radius: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
+        }
+
+        .lumina-ticker-item .badge-pink {
+            background: rgba(236, 72, 153, 0.25);
+            border: 2px solid #f472b6;
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: 900;
+            padding: 5px 15px;
+            border-radius: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            box-shadow: 0 0 12px rgba(236, 72, 153, 0.35);
+        }
+
+        .lumina-ticker-item .separator {
+            color: var(--gold-primary);
+            font-size: 1.2rem;
+            margin-left: 20px;
+            opacity: 0.8;
+        }
+
+        /* --- SERIES MODAL DIALOG --- */
+        #seriesModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(4, 7, 17, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 20000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            user-select: auto;
+        }
+
+        .series-modal-header {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 18px;
+        }
+
+        .series-modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: #ffd700;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .series-modal-close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .series-modal-close-btn:hover {
+            background: #dc143c;
+            border-color: #dc143c;
+            transform: scale(1.08);
+        }
+
+        .series-grid {
+            width: 100%;
+            max-width: 1400px;
+            max-height: 76vh;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            padding-right: 10px;
+        }
+
+        .series-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+        .series-grid::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        .series-grid::-webkit-scrollbar-thumb {
+            background: var(--gold-primary);
+            border-radius: 4px;
+        }
+
+        .series-card {
+            background: rgba(14, 20, 38, 0.85);
+            border: 1.5px solid rgba(212, 175, 55, 0.25);
+            border-radius: 16px;
+            padding: 18px 20px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .series-card:hover {
+            transform: translateY(-4px);
+            border-color: #ffd700;
+            background: rgba(22, 32, 60, 0.95);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .series-card.active {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, rgba(30, 42, 75, 0.95) 0%, rgba(14, 20, 38, 0.95) 100%);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+        }
+
+        .series-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .series-card-index {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #38bdf8;
+            letter-spacing: 1px;
+        }
+
+        .series-card-badge {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold-primary);
+            color: #ffd700;
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 6px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .series-card-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .series-card-desc {
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.4;
+        }
+
+        .series-card-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 10px;
+            margin-top: 4px;
+        }
+
+        .series-card-cat {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .series-card-cat i {
+            color: var(--gold-primary);
+        }
+
+        .series-card-play-tag {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--gold-light);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* --- NOTIFICATION TOAST --- */
+        #toastNotification {
+            position: absolute;
+            top: 120px;
+            right: 50px;
+            background: rgba(14, 22, 42, 0.95);
+            border: 2px solid var(--gold-primary);
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 14px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.85), 0 0 20px rgba(212, 175, 55, 0.4);
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 9999;
+            backdrop-filter: blur(12px);
+            animation: slideInToast 0.4s ease;
+        }
+
+        @keyframes slideInToast {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* HIDE OPERATOR/TICKER WHEN EMBEDDED IN MCR OR IF SPECIFIED */
+        body.inside-iframe .lumina-master-ticker,
+        html.inside-iframe .lumina-master-ticker {
+            display: none !important;
+        }
+    </style>
+    <script>
+        if (window.self !== window.top || window.location.search.includes('in_mcr=1')) {
+            document.documentElement.classList.add('inside-iframe');
+            document.addEventListener('DOMContentLoaded', () => {
+                if (document.body) document.body.classList.add('inside-iframe');
+            });
+        }
+    </script>
+</head>
+<body>
+
+    <div id="app-container">
+
+        <!-- VIDEO FRAME BACKGROUND -->
+        <div class="video-container">
+            <iframe id="yt-player" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <!-- START / UNMUTE OVERLAY -->
+        <div id="startOverlay" onclick="enableAudio()">
+            <div class="start-btn-card">
+                <i class="fa-solid fa-play"></i>
+                <h2>TV EPAFRAZ 24/7</h2>
+                <p>Kliknij w dowolnym miejscu, aby odblokować dźwięk i transmisję ciągłą</p>
+            </div>
+        </div>
+
+        <!-- TOP HEADER BAR -->
+        <div class="top-header-bar">
+            <div class="header-left-brand">
+                <div class="brand-logo-icon">
+                    <i class="fa-solid fa-tv"></i>
+                </div>
+                <div class="brand-title-group">
+                    <span class="brand-main-title">TV EPAFRAZ 24/7</span>
+                    <span class="brand-sub-title">CHRISTIAN CULTURE TELEWIZJA</span>
+                </div>
+                <div class="live-status-pill">
+                    <div class="pulse-dot"></div>
+                    <span class="live-text">EMISJA CIĄGŁA 24/7</span>
+                </div>
+            </div>
+
+            <div class="header-center-clock">
+                <span class="clock-time" id="timeDisplay">00:00:00</span>
+                <span class="clock-date" id="dateDisplay">ŁADOWANIE...</span>
+            </div>
+
+            <div class="header-right-actions">
+                <button class="action-header-btn" onclick="openSeriesModal()" title="Zobacz wszystkie 24 serie">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>RAMÓWKA 24 PLAYLIST</span>
+                </button>
+                <button class="action-header-btn" onclick="openChromecastModal()" title="Prześlij na telewizor Smart TV">
+                    <i class="fa-brands fa-chromecast"></i>
+                    <span>PRZEŚLIJ NA TV</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- EPISODE & SERIES OVERLAY BADGE -->
+        <div class="episode-badge-box">
+            <div class="series-tag-row">
+                <span class="series-pill" id="badgeSeriesTag">SERIA 1 Z 24</span>
+                <span class="series-counter" id="badgeSeriesCategory">PODCAST & NAUCZANIE</span>
+            </div>
+            <div class="episode-main-title" id="badgeVideoTitle">Apokalipsa - Palla (Podcast)</div>
+            <div class="episode-sub-info">
+                <span><i class="fa-solid fa-layer-group"></i> <span id="badgePlaylistTitle">Apokalipsa - Palla</span></span>
+                <span>•</span>
+                <span><i class="fa-solid fa-film"></i> <span id="badgeTrackCounter">Odcinek 1 w serii</span></span>
+                <span>•</span>
+                <span><i class="fa-solid fa-repeat"></i> Auto-kolejka 24/7</span>
+            </div>
+        </div>
+
+        <!-- QUICK CONTROLS BAR (AUTO-FADES ON IDLE) -->
+        <div class="quick-controls-bar">
+            <button class="quick-btn" onclick="prevPlaylist()" title="Przejdź do poprzedniej playlisty">
+                <i class="fa-solid fa-backward-step"></i> Poprzednia Seria
+            </button>
+            <button class="quick-btn quick-btn-circle" onclick="prevVideo()" title="Poprzedni odcinek">
+                <i class="fa-solid fa-backward"></i>
+            </button>
+            <button class="quick-btn quick-btn-circle quick-btn-gold" id="playPauseBtn" onclick="togglePlayPause()" title="Odtwórz / Pauza">
+                <i class="fa-solid fa-pause"></i>
+            </button>
+            <button class="quick-btn quick-btn-circle" onclick="nextVideo()" title="Następny odcinek">
+                <i class="fa-solid fa-forward"></i>
+            </button>
+            <button class="quick-btn" onclick="nextPlaylist()" title="Przejdź do następnej playlisty">
+                Następna Seria <i class="fa-solid fa-forward-step"></i>
+            </button>
+            <button class="quick-btn" onclick="openSeriesModal()" title="Otwórz pełną listę 24 serii">
+                <i class="fa-solid fa-grid-2"></i> Wybierz Serię
+            </button>
+        </div>
+
+        <!-- TOAST NOTIFICATION -->
+        <div id="toastNotification">
+            <i class="fa-solid fa-circle-info" style="color: var(--gold-primary); font-size: 1.2rem;"></i>
+            <span id="toastMessage">Powiadomienie</span>
+        </div>
+
+        <!-- ── PORTAL LUMINA MASTER BOTTOM TICKER (CHRISTIAN CULTURE) ── -->
+        <div class="lumina-master-ticker">
+            <!-- BRAND BADGE -->
+            <a href="https://polskieradio.cc/lumina" target="_blank" class="lumina-ticker-brand" title="Odwiedź Portal LUMINA">
+                <div class="lumina-brand-icon-box">
+                    <img src="lumina-icon-192.png" alt="LUMINA Icon" onerror="this.src='tv24_cc.png'">
+                </div>
+                <div class="lumina-brand-texts">
+                    <div class="lumina-brand-title">LUMINA</div>
+                    <div class="lumina-brand-tag"><span class="pulse-dot"></span> PORTAL CC • SPOŁECZNOŚĆ</div>
+                </div>
+            </a>
+
+            <!-- TICKER TRACK WRAPPER -->
+            <div class="lumina-ticker-track-wrap">
+                <div class="lumina-ticker-content">
+                    <!-- SET 1 -->
+                    <div class="lumina-ticker-item">
+                        <span class="badge-gold"><i class="fa-solid fa-sparkles"></i> NOWOŚĆ</span>
+                        <span><strong>PORTAL LUMINA:</strong> Pierwsza polska chrześcijańska platforma relacji i wartości — bezpieczna, wolna od hejtu i komercji • Wejdź na <strong>polskieradio.cc/lumina</strong></span>
+                        <span class="separator">✦</span>
+                    </div>
+                    <div class="lumina-ticker-item">
+                        <span class="badge-news"><i class="fa-solid fa-newspaper"></i> TABLICA SPOŁECZNOŚCI</span>
+                        <span>Codzienne rozważania Słowa Bożego, autentyczne świadectwa nawróceń, intencje modlitewne i budujące wpisy wierzących z całego kraju • <strong>polskieradio.cc/tablica</strong></span>
+                        <span class="separator">✦</span>
+                    </div>
+                    <div class="lumina-ticker-item">
+                        <span class="badge-pink"><i class="fa-solid fa-heart"></i> LUMINA CONNECT</span>
+                        <span>Nowy wymiar chrześcijańskich relacji opartych na fundamencie Chrystusa — poznaj przyjaciół i współmałżonka o tych samych wartościach.</span>
+                        <span class="separator">✦</span>
+                    </div>
+                    <div class="lumina-ticker-item">
+                        <span class="badge-gold"><i class="fa-solid fa-shield-halved"></i> 100% BEZPIECZEŃSTWA</span>
+                        <span>Weryfikacja tożsamości profili przez sztuczną inteligencję (Vision AI) oraz numer SMS • Zero fałszywych kont, czysta ewangeliczna atmosfera.</span>
+                        <span class="separator">✦</span>
+                    </div>
+                    <div class="lumina-ticker-item">
+                        <span class="badge-news"><i class="fa-solid fa-mobile-screen"></i> APLIKACJA PWA</span>
+                        <span>Zainstaluj Portal LUMINA na smartfonie Android & iOS jednym kliknięciem bez sklepu aplikacji — korzystaj jak z natywnej aplikacji!</span>
+                        <span class="separator">✦</span>
+                    </div>
+                    <div class="lumina-ticker-item">
+                        <span class="badge-gold"><i class="fa-solid fa-tv"></i> TV EPAFRAZ 24/7</span>
+                        <span>Oglądasz kanał ciągły 24/7: 24 wyselekcjonowane serie biblijne, podcast Apokalipsa Palla, wykłady i pieśni chwały w nieustannej pętli emisyjnej.</span>
+                        <span class="separator">✦</span>
+                    </div>
+                    <div class="lumina-ticker-item">
+                        <span class="badge-pink"><i class="fa-solid fa-users"></i> SPOŁECZNOŚĆ CC</span>
+                        <span>Dołącz do tysięcy członków społeczności Christian Culture • Utwórz bezpłatny profil na <strong>polskieradio.cc/lumina</strong></span>
+                        <span class="separator">✦</span>
+                    </div>
+
+                    <!-- SET 2 (SEAMLESS LOOP DUPLICATION) -->
+                    <div class="lumina-ticker-item">
+                        <span class="badge-gold"><i class="fa-solid fa-sparkles"></i> NOWOŚĆ</span>
+                        <span><strong>PORTAL LUMINA:</strong> Pierwsza polska chrześcijańska platforma relacji i wartości — bezpieczna, wolna od hejtu i komercji • Wejdź na <strong>polskieradio.cc/lumina</strong></span>
+                        <span class="separator">✦</span>
+                    </div>
+                    <div class="lumina-ticker-item">
+                        <span class="badge-news"><i class="fa-solid fa-newspaper"></i> TABLICA SPOŁECZNOŚCI</span>
+                        <span>Codzienne rozważania Słowa Bożego, autentyczne świadectwa nawróceń, intencje modlitewne i budujące wpisy wierzących z całego kraju • <strong>polskieradio.cc/tablica</strong></span>
+                        <span class="separator">✦</span>
+                    </div>
+                    <div class="lumina-ticker-item">
+                        <span class="badge-pink"><i class="fa-solid fa-heart"></i> LUMINA CONNECT</span>
+                        <span>Nowy wymiar chrześcijańskich relacji opartych na fundamencie Chrystusa — poznaj przyjaciół i współmałżonka o tych samych wartościach.</span>
+                        <span class="separator">✦</span>
+                    </div>
+                    <div class="lumina-ticker-item">
+                        <span class="badge-gold"><i class="fa-solid fa-shield-halved"></i> 100% BEZPIECZEŃSTWA</span>
+                        <span>Weryfikacja tożsamości profili przez sztuczną inteligencję (Vision AI) oraz numer SMS • Zero fałszywych kont, czysta ewangeliczna atmosfera.</span>
+                        <span class="separator">✦</span>
+                    </div>
+                    <div class="lumina-ticker-item">
+                        <span class="badge-news"><i class="fa-solid fa-mobile-screen"></i> APLIKACJA PWA</span>
+                        <span>Zainstaluj Portal LUMINA na smartfonie Android & iOS jednym kliknięciem bez sklepu aplikacji — korzystaj jak z natywnej aplikacji!</span>
+                        <span class="separator">✦</span>
+                    </div>
+                    <div class="lumina-ticker-item">
+                        <span class="badge-gold"><i class="fa-solid fa-tv"></i> TV EPAFRAZ 24/7</span>
+                        <span>Oglądasz kanał ciągły 24/7: 24 wyselekcjonowane serie biblijne, podcast Apokalipsa Palla, wykłady i pieśni chwały w nieustannej pętli emisyjnej.</span>
+                        <span class="separator">✦</span>
+                    </div>
+                    <div class="lumina-ticker-item">
+                        <span class="badge-pink"><i class="fa-solid fa-users"></i> SPOŁECZNOŚĆ CC</span>
+                        <span>Dołącz do tysięcy członków społeczności Christian Culture • Utwórz bezpłatny profil na <strong>polskieradio.cc/lumina</strong></span>
+                        <span class="separator">✦</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SERIES DIRECTORY MODAL -->
+    <div id="seriesModal" onclick="if(event.target===this) closeSeriesModal()">
+        <div class="series-modal-header">
+            <div class="series-modal-title">
+                <i class="fa-solid fa-layer-group"></i> RAMÓWKA TV EPAFRAZ 24/7 — 24 SERIE
+            </div>
+            <button class="series-modal-close-btn" onclick="closeSeriesModal()" title="Zamknij (Esc)">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="series-grid" id="seriesGridContainer">
+            <!-- Dynamically populated by JS -->
+        </div>
+    </div>
+
+    <!-- CHROMECAST / TV CAST MODAL -->
+    <div id="chromecastModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(4,7,17,0.92); backdrop-filter: blur(20px); z-index: 21000; display: none; align-items: center; justify-content: center; padding: 20px;" onclick="if(event.target===this) closeChromecastModal()">
+        <div style="background: rgba(14,20,38,0.95); border: 2px solid var(--gold-primary); border-radius: 24px; padding: 40px; max-width: 600px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.95); text-align: center;">
+            <i class="fa-brands fa-chromecast" style="font-size: 3.5rem; color: var(--gold-primary); margin-bottom: 20px;"></i>
+            <h2 style="font-family: 'Cinzel', serif; font-size: 1.8rem; margin-bottom: 12px; color: #fff;">PRZEŚLIJ NA TELEWIZOR</h2>
+            <p style="color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 25px; font-size: 1.05rem;">
+                Aby oglądać <strong>TV Epafraz 24/7</strong> na dużym ekranie TV:<br>
+                1. Kliknij prawym przyciskiem myszy w przeglądarce Chrome/Edge i wybierz <strong>„Prześlij...”</strong> (Cast).<br>
+                2. Na telefonie użyj funkcji <strong>Smart View / Klonowanie ekranu / AirPlay</strong>.<br>
+                3. Możesz też otworzyć bezpośredni adres w przeglądarce TV: <strong>https://polskieradio.cc/tv-epafraz</strong>
+            </p>
+            <button onclick="closeChromecastModal()" style="background: var(--gold-primary); color: #000; border: none; padding: 12px 30px; border-radius: 30px; font-weight: 800; font-size: 1rem; cursor: pointer;">
+                ROZUMIEM
+            </button>
+        </div>
+    </div>
+
+    <!-- YOUTUBE IFRAME API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script>
+        // ── 1. Viewport Auto-Scaling ──
+        function resizeViewport() {
+            const container = document.getElementById("app-container");
+            if (!container) return;
+            const targetW = 1920;
+            const targetH = 1080;
+            
+            const w = window.innerWidth || document.documentElement.clientWidth || 0;
+            const h = window.innerHeight || document.documentElement.clientHeight || 0;
+            
+            if (w <= 0 || h <= 0) {
+                container.style.transform = "scale(0.29)";
+                container.style.left = "0px";
+                container.style.top = "0px";
+                return;
+            }
+            
+            const scale = Math.min(w / targetW, h / targetH);
+            container.style.transform = "scale(" + scale + ")";
+            
+            const leftOffset = Math.max(0, (w - (targetW * scale)) / 2);
+            const topOffset = Math.max(0, (h - (targetH * scale)) / 2);
+            container.style.left = leftOffset + "px";
+            container.style.top = topOffset + "px";
+        }
+        window.addEventListener("resize", resizeViewport);
+        window.addEventListener("load", resizeViewport);
+        document.addEventListener("DOMContentLoaded", resizeViewport);
+        setTimeout(resizeViewport, 100);
+        setTimeout(resizeViewport, 500);
+        setTimeout(resizeViewport, 1500);
+
+        // ── 2. Real-time Clock ──
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            const days = ['NIEDZIELA', 'PONIEDZIAŁEK', 'WTOREK', 'ŚRODA', 'CZWARTEK', 'PIĄTEK', 'SOBOTA'];
+            const months = ['STYCZNIA', 'LUTYGO', 'MARCA', 'KWIETNIA', 'MAJA', 'CZERWCA', 'LIPCA', 'SIERPNIA', 'WRZEŚNIA', 'PAŹDZIERNIKA', 'LISTOPADA', 'GRUDNIA'];
+            
+            const dayName = days[now.getDay()];
+            const dayNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const yearNum = now.getFullYear();
+            const dateStr = `${dayName}, ${dayNum} ${monthName} ${yearNum}`;
+
+            const elTime = document.getElementById('timeDisplay');
+            const elDate = document.getElementById('dateDisplay');
+            if (elTime) elTime.textContent = timeStr;
+            if (elDate) elDate.textContent = dateStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // ── 3. The 24 Epafraz Playlists (Apokalipsa - Palla is #1) ──
+        const EPAFRAZ_PLAYLISTS = [
+          {
+            "id": "PLs22p9rsTpNywYD5OBPw-IShdwOYBFg30",
+            "title": "Apokalipsa - Palla (Podcast)",
+            "category": "PODCAST & NAUCZANIE",
+            "badge": "PODCAST #1",
+            "icon": "fa-microphone-lines",
+            "desc": "Głębokie studium profetyczne Księgi Objawienia — podcast z analizą werset po wersecie."
+          },
+          {
+            "id": "PLs22p9rsTpNxApFRhLqFhXnhP6_vgobm_",
+            "title": "Pieśni Uwielbienia",
+            "category": "UWIELBIENIE & MUZYKA",
+            "badge": "UWIELBIENIE",
+            "icon": "fa-music",
+            "desc": "Pieśni chwały, modlitewne uwielbienie i pieśni serca dla Pana."
+          },
+          {
+            "id": "PLs22p9rsTpNxLp2QFTV2UpoTsGJQ6DqxI",
+            "title": "Filmy Chrześcijańskie",
+            "category": "FILM & KINO",
+            "badge": "KINO WIARY",
+            "icon": "fa-film",
+            "desc": "Inspirujące chrześcijańskie filmy fabularne i dokumentalne niosące wiarę i nadzieję."
+          },
+          {
+            "id": "PLs22p9rsTpNzzSlb9n19kESUfjKSjum6q",
+            "title": "Ujawnione Tajemnice - Proroctwa Czasów Końca",
+            "category": "PROROCTWA",
+            "badge": "CZASY KOŃCA",
+            "icon": "fa-scroll",
+            "desc": "Biblijne spojrzenie na wydarzenia ostateczne i proroctwa spełniające się na naszych oczach."
+          },
+          {
+            "id": "PLs22p9rsTpNxLPnO1Te0S000PfKwNJWWg",
+            "title": "Bóg? Czy On istnieje?",
+            "category": "APOLOGETYKA",
+            "badge": "APOLOGETYKA",
+            "icon": "fa-compass",
+            "desc": "Rzetelne dowody, filozofia i nauka w poszukiwaniu Stwórcy wszechświata."
+          },
+          {
+            "id": "PLs22p9rsTpNyWAW0JUX8r7HkdRifUUQJX",
+            "title": "Pragnienie Wieków - Życie Jezusa",
+            "category": "EWANGELIA",
+            "badge": "ŻYCIE JEZUSA",
+            "icon": "fa-cross",
+            "desc": "Głęboka opowieść o życiu, miłości, ofierze i zmartwychwstaniu Jezusa Chrystusa."
+          },
+          {
+            "id": "PLs22p9rsTpNwThy1YVxOw_6UTmX2Fdu51",
+            "title": "Kazania Słowa Bożego",
+            "category": "KAZANIA",
+            "badge": "SŁOWO BOŻE",
+            "icon": "fa-bible",
+            "desc": "Mocne, biblijne kazania i zwiastowanie prawdy Pisma Świętego."
+          },
+          {
+            "id": "PLs22p9rsTpNzFfIjZCnqKBgED6SzxsEVR",
+            "title": "Ucieczka do Boga",
+            "category": "DUCHOWOŚĆ",
+            "badge": "SCHRONIENIE",
+            "icon": "fa-shield-halved",
+            "desc": "Odnowa duchowa, ratunek w kryzysie i powrót do bliskiej relacji z Bogiem."
+          },
+          {
+            "id": "PLs22p9rsTpNz600v4Ixv56Y12qH3fpkS_",
+            "title": "Na Straży Ognia",
+            "category": "MISJA",
+            "badge": "NA STRAŻY",
+            "icon": "fa-fire",
+            "desc": "Wierność fundamentom wiary i zachowanie czystości ewangelicznego poselstwa."
+          },
+          {
+            "id": "PLs22p9rsTpNzaVfWyM4wlQbNycZcdfqus",
+            "title": "Księga Daniela - Kosowski",
+            "category": "STUDIUM BIBLIJNE",
+            "badge": "KSIĘGA DANIELA",
+            "icon": "fa-book-open",
+            "desc": "Kompleksowa analiza Księgi Daniela i jej profetycznych wizji dla współczesnych."
+          },
+          {
+            "id": "PLs22p9rsTpNzNFxY0pPcGferVrDd8orjY",
+            "title": "Świadectwa - Testimony",
+            "category": "ŚWIADECTWA WIARY",
+            "badge": "ŚWIADECTWA",
+            "icon": "fa-users-line",
+            "desc": "Poruszające historie żywych ludzi, których życie odmienił Jezus Chrystus."
+          },
+          {
+            "id": "PLs22p9rsTpNzwTHjKA13uIvbGn6Lxd8lN",
+            "title": "Michał Lorenc",
+            "category": "MUZYKA",
+            "badge": "MUZYKA DUSZY",
+            "icon": "fa-headphones",
+            "desc": "Niezwykłe kompozycje i utwory Michała Lorenca dotykające głębi duszy."
+          },
+          {
+            "id": "PLs22p9rsTpNymh0s8oktBt8_63bsHdc9U",
+            "title": "Apokalipsa - Dunkel - Epafraz",
+            "category": "APOKALIPSA",
+            "badge": "APOKALIPSA DUNKEL",
+            "icon": "fa-bolt",
+            "desc": "Seria wykładów i analiz profetycznych Dunkela na temat Księgi Objawienia."
+          },
+          {
+            "id": "PLs22p9rsTpNxOARxaA2b7guq7z6snD2yL",
+            "title": "Apokalipsa ~ Kosowski",
+            "category": "APOKALIPSA",
+            "badge": "APOKALIPSA KOSOWSKI",
+            "icon": "fa-landmark",
+            "desc": "Wnikliwe studium rozdziałów Apokalipsy prowadzone przez pastora Kosowskiego."
+          },
+          {
+            "id": "PLs22p9rsTpNygQCJSgt3ZbCIRUkGwCa9I",
+            "title": "AudioBooki Chrześcijańskie",
+            "category": "AUDIOBOOKI",
+            "badge": "AUDIOBOOKI",
+            "icon": "fa-book-bookmark",
+            "desc": "Wybitne dzieła chrześcijańskiej literatury w wersji do słuchania."
+          },
+          {
+            "id": "PLs22p9rsTpNx75LY7Q_vvoF84joJo7dTj",
+            "title": "Kreacjonizm",
+            "category": "NAUKA & WIARA",
+            "badge": "KREACJONIZM",
+            "icon": "fa-earth-europe",
+            "desc": "Naukowe dowody na inteligentny projekt stworzenia kontra teoria przypadku."
+          },
+          {
+            "id": "PLs22p9rsTpNwj0XBYVBvstuSUZmpWuZEG",
+            "title": "Mądry Film - Epafraz",
+            "category": "FILM DOKUMENTALNY",
+            "badge": "DOKUMENT",
+            "icon": "fa-video",
+            "desc": "Wartościowe materiały wideo skłaniające do refleksji i głębszych przemyśleń."
+          },
+          {
+            "id": "PLs22p9rsTpNx3W3yXeYuTze-ilRC-RnrE",
+            "title": "Praise The Lord",
+            "category": "UWIELBIENIE",
+            "badge": "PRAISE",
+            "icon": "fa-hands-praying",
+            "desc": "Zagraniczne i międzynarodowe pieśni uwielbienia i chwały."
+          },
+          {
+            "id": "PLs22p9rsTpNxDV7hEgCZk5PZJ3LXz2eSo",
+            "title": "Biblia - Słowo Boże",
+            "category": "PISMO ŚWIĘTE",
+            "badge": "BIBLIA",
+            "icon": "fa-feather",
+            "desc": "Czyste Słowo Boże, czytania biblijne i rozważania wersetów Pisma."
+          },
+          {
+            "id": "PLs22p9rsTpNzZHTwP-40xP6hvas0YnIZs",
+            "title": "Prayer - Modlitwa - Pavel Goia",
+            "category": "MODLITWA",
+            "badge": "MOC MODLITWY",
+            "icon": "fa-heart",
+            "desc": "Niezwykłe doświadczenia i nauczania o mocy wytrwałej modlitwy z Pavlem Goią."
+          },
+          {
+            "id": "PLs22p9rsTpNxu9DhKK-_dqtrbWK59zfkf",
+            "title": "Biblia dla Dzieci NT",
+            "category": "DLA DZIECI",
+            "badge": "DLA DZIECI NT",
+            "icon": "fa-child",
+            "desc": "Historie Nowego Testamentu przedstawione w przystępny sposób dla najmłodszych."
+          },
+          {
+            "id": "PLs22p9rsTpNzHMjnP11mNLurSJBgqrizX",
+            "title": "Biblia dla Dzieci ST",
+            "category": "DLA DZIECI",
+            "badge": "DLA DZIECI ST",
+            "icon": "fa-children",
+            "desc": "Opowieści Starego Testamentu: stworzenie, patriarchowie, prorocy i bohaterowie wiary."
+          },
+          {
+            "id": "PLs22p9rsTpNw3VYiBN_3a0aUbUIKKR43l",
+            "title": "Poszukiwania - Prawdy, Nadziei, Nieśmiertelności",
+            "category": "STUDIUM",
+            "badge": "POSZUKIWANIA",
+            "icon": "fa-magnifying-glass",
+            "desc": "Seminarium poszukiwania prawdy i odpowiedzi na najważniejsze pytania egzystencjalne."
+          },
+          {
+            "id": "PLs22p9rsTpNz8yPlFL3IFngC6ghSmnI4S",
+            "title": "Nelson - Seminarium Nadchodzącego Tysiąclecia",
+            "category": "SEMINARIUM",
+            "badge": "SEMINARIUM NELSON",
+            "icon": "fa-hourglass-half",
+            "desc": "Klasyczne seminarium profetyczne o przyszłości świata i Królestwie Bożym."
+          }
+        ];
+
+        // Determine starting playlist index (URL param or localStorage or 0)
+        function getInitialPlaylistIndex() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('series')) {
+                const s = parseInt(urlParams.get('series'));
+                if (!isNaN(s) && s >= 1 && s <= EPAFRAZ_PLAYLISTS.length) {
+                    return s - 1;
+                }
+            }
+            if (urlParams.has('p')) {
+                const p = parseInt(urlParams.get('p'));
+                if (!isNaN(p) && p >= 0 && p < EPAFRAZ_PLAYLISTS.length) {
+                    return p;
+                }
+            }
+            const saved = localStorage.getItem('epafraz_playlist_idx');
+            if (saved !== null) {
+                const parsed = parseInt(saved);
+                if (!isNaN(parsed) && parsed >= 0 && parsed < EPAFRAZ_PLAYLISTS.length) {
+                    return parsed;
+                }
+            }
+            return 0; // Default #1: Apokalipsa - Palla (Podcast)
+        }
+
+        let currentPlaylistIndex = getInitialPlaylistIndex();
+        let currentVideoIndex = 0;
+        let player = null;
+        let isPreloadMuted = window.location.search.includes('muted=1');
+        let consecutiveErrors = 0;
+
+        // Populate Series Modal Grid
+        function renderSeriesGrid() {
+            const grid = document.getElementById('seriesGridContainer');
+            if (!grid) return;
+            grid.innerHTML = EPAFRAZ_PLAYLISTS.map((item, idx) => {
+                const isActive = idx === currentPlaylistIndex;
+                return `
+                    <div class="series-card ${isActive ? 'active' : ''}" onclick="selectSeries(${idx})">
+                        <div class="series-card-top">
+                            <span class="series-card-index">SERIA #${idx + 1} z ${EPAFRAZ_PLAYLISTS.length}</span>
+                            <span class="series-card-badge">${item.badge}</span>
+                        </div>
+                        <div class="series-card-title">${item.title}</div>
+                        <div class="series-card-desc">${item.desc}</div>
+                        <div class="series-card-bottom">
+                            <span class="series-card-cat"><i class="fa-solid ${item.icon}"></i> ${item.category}</span>
+                            <span class="series-card-play-tag">
+                                ${isActive ? '<i class="fa-solid fa-tower-broadcast"></i> TERAZ GRA' : '<i class="fa-solid fa-play"></i> ODTWÓRZ'}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openSeriesModal() {
+            renderSeriesGrid();
+            const modal = document.getElementById('seriesModal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function closeSeriesModal() {
+            const modal = document.getElementById('seriesModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function openChromecastModal() {
+            const modal = document.getElementById('chromecastModal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function closeChromecastModal() {
+            const modal = document.getElementById('chromecastModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastNotification');
+            const msgEl = document.getElementById('toastMessage');
+            if (!toast || !msgEl) return;
+            msgEl.textContent = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 5000);
+        }
+
+        // ── 4. YouTube Iframe Player Initialization ──
+        function onYouTubeIframeAPIReady() {
+            const initialPlaylist = EPAFRAZ_PLAYLISTS[currentPlaylistIndex];
+            player = new YT.Player('yt-player', {
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 0,
+                    'rel': 0,
+                    'modestbranding': 1,
+                    'enablejsapi': 1,
+                    'playsinline': 1,
+                    'listType': 'playlist',
+                    'list': initialPlaylist.id
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange,
+                    'onError': onPlayerError
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            console.log("TV Epafraz Player Ready. Starting playlist #" + (currentPlaylistIndex + 1) + ": " + EPAFRAZ_PLAYLISTS[currentPlaylistIndex].title);
+            if (isPreloadMuted) {
+                try { event.target.mute(); } catch(e) {}
+            }
+            updateOverlayBadge();
+            renderSeriesGrid();
+
+            // Unmute attempt
+            if (!isPreloadMuted) {
+                [300, 800, 1500, 3000].forEach(ms => setTimeout(enableAudio, ms));
+            }
+
+            resetAutoFadeTimer();
+        }
+
+        function loadPlaylistByIndex(index, videoIndex = 0) {
+            if (index < 0) index = EPAFRAZ_PLAYLISTS.length - 1;
+            if (index >= EPAFRAZ_PLAYLISTS.length) index = 0;
+
+            currentPlaylistIndex = index;
+            currentVideoIndex = videoIndex;
+            consecutiveErrors = 0;
+
+            localStorage.setItem('epafraz_playlist_idx', currentPlaylistIndex);
+            const series = EPAFRAZ_PLAYLISTS[currentPlaylistIndex];
+
+            console.log(`Ładowanie Serii #${currentPlaylistIndex + 1}/${EPAFRAZ_PLAYLISTS.length}: ${series.title} (film #${videoIndex + 1})`);
+
+            if (player && typeof player.loadPlaylist === 'function') {
+                try {
+                    player.loadPlaylist({
+                        list: series.id,
+                        listType: 'playlist',
+                        index: videoIndex
+                    });
+                } catch(err) {
+                    console.error("Błąd podczas loadPlaylist:", err);
+                }
+            }
+
+            updateOverlayBadge();
+            renderSeriesGrid();
+            showToast(`Rozpoczynamy Serię #${currentPlaylistIndex + 1}: ${series.title}`);
+        }
+
+        function selectSeries(index) {
+            closeSeriesModal();
+            loadPlaylistByIndex(index, 0);
+        }
+
+        function nextPlaylist() {
+            const nextIdx = (currentPlaylistIndex + 1) % EPAFRAZ_PLAYLISTS.length;
+            loadPlaylistByIndex(nextIdx, 0);
+        }
+
+        function prevPlaylist() {
+            const prevIdx = (currentPlaylistIndex - 1 + EPAFRAZ_PLAYLISTS.length) % EPAFRAZ_PLAYLISTS.length;
+            loadPlaylistByIndex(prevIdx, 0);
+        }
+
+        function nextVideo() {
+            if (player && typeof player.nextVideo === 'function') {
+                player.nextVideo();
+            }
+        }
+
+        function prevVideo() {
+            if (player && typeof player.previousVideo === 'function') {
+                player.previousVideo();
+            }
+        }
+
+        function togglePlayPause() {
+            if (!player || typeof player.getPlayerState !== 'function') return;
+            const st = player.getPlayerState();
+            const btn = document.getElementById('playPauseBtn');
+            if (st === YT.PlayerState.PLAYING) {
+                player.pauseVideo();
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            } else {
+                player.playVideo();
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            }
+        }
+
+        function updateOverlayBadge() {
+            const series = EPAFRAZ_PLAYLISTS[currentPlaylistIndex];
+            const elSeriesTag = document.getElementById('badgeSeriesTag');
+            const elCategory = document.getElementById('badgeSeriesCategory');
+            const elPlaylistTitle = document.getElementById('badgePlaylistTitle');
+            const elVideoTitle = document.getElementById('badgeVideoTitle');
+            const elTrackCounter = document.getElementById('badgeTrackCounter');
+
+            if (elSeriesTag) elSeriesTag.textContent = `SERIA ${currentPlaylistIndex + 1} Z ${EPAFRAZ_PLAYLISTS.length}`;
+            if (elCategory) elCategory.textContent = series.category;
+            if (elPlaylistTitle) elPlaylistTitle.textContent = series.title;
+
+            // Fetch live video title if available
+            try {
+                if (player && typeof player.getVideoData === 'function') {
+                    const videoData = player.getVideoData();
+                    if (videoData && videoData.title && videoData.title.trim().length > 0) {
+                        if (elVideoTitle) elVideoTitle.textContent = videoData.title;
+                    } else {
+                        if (elVideoTitle) elVideoTitle.textContent = series.title;
+                    }
+                }
+                if (player && typeof player.getPlaylistIndex === 'function') {
+                    const idx = player.getPlaylistIndex();
+                    if (idx >= 0) {
+                        currentVideoIndex = idx;
+                        const playlist = (typeof player.getPlaylist === 'function') ? player.getPlaylist() : null;
+                        const total = (playlist && playlist.length) ? playlist.length : '?';
+                        if (elTrackCounter) elTrackCounter.textContent = `Odcinek ${idx + 1} z ${total} w serii`;
+                    }
+                }
+            } catch(e) {}
+        }
+
+        // ── 5. State Handling & End of Playlist Detection ──
+        function onPlayerStateChange(event) {
+            const btn = document.getElementById('playPauseBtn');
+            if (event.data === YT.PlayerState.PLAYING) {
+                consecutiveErrors = 0;
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                updateOverlayBadge();
+                setTimeout(updateOverlayBadge, 1500);
+            } else if (event.data === YT.PlayerState.PAUSED) {
+                if (btn) btn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            } else if (event.data === YT.PlayerState.ENDED) {
+                console.log("Wideo zakończone. Badanie czy cała playlista dobiegła końca...");
+                checkIfPlaylistFinishedAndAdvance();
+            }
+        }
+
+        function checkIfPlaylistFinishedAndAdvance() {
+            try {
+                if (player && typeof player.getPlaylist === 'function' && typeof player.getPlaylistIndex === 'function') {
+                    const playlist = player.getPlaylist();
+                    const curIdx = player.getPlaylistIndex();
+                    console.log(`Status playlisty: indeks ${curIdx} / długość ${playlist ? playlist.length : 'nieznana'}`);
+                    
+                    // Jeśli dotarliśmy do ostatniego filmu w playliście (lub jest brak kolejnych):
+                    if (playlist && Array.isArray(playlist) && curIdx >= playlist.length - 1) {
+                        console.log(`Seria #${currentPlaylistIndex + 1} zakończona w całości! Przechodzimy automatycznie do kolejnej serii...`);
+                        showToast(`Ukończono Serię #${currentPlaylistIndex + 1}. Ładowanie kolejnej serii...`);
+                        setTimeout(() => {
+                            nextPlaylist();
+                        }, 1200);
+                        return;
+                    }
+                }
+            } catch(err) {
+                console.error("Błąd sprawdzania zakończenia playlisty:", err);
+            }
+
+            // Standardowe przejście do następnego filmu w obrębie tej samej playlisty
+            setTimeout(() => {
+                try {
+                    if (player && typeof player.getPlayerState === 'function') {
+                        const st = player.getPlayerState();
+                        if (st !== YT.PlayerState.PLAYING && st !== YT.PlayerState.BUFFERING) {
+                            if (typeof player.nextVideo === 'function') player.nextVideo();
+                            setTimeout(() => {
+                                if (player && typeof player.playVideo === 'function') player.playVideo();
+                            }, 1000);
+                        }
+                    }
+                } catch(e) {}
+            }, 1000);
+        }
+
+        // ── 6. Error Auto-Recovery ──
+        function onPlayerError(event) {
+            consecutiveErrors++;
+            console.warn(`Błąd odtwarzacza YouTube (kod: ${event ? event.data : 'nieznany'}). Próba pominięcia (#${consecutiveErrors})...`);
+            
+            // Jeśli kilka filmów z rzędu rzuca błąd, przeskocz całą playlistę
+            if (consecutiveErrors >= 3) {
+                console.warn("Wykryto serię błędów w tej playliście. Przełączanie na kolejną serię...");
+                showToast("Pominięto niedostępne materiały — przejście do kolejnej serii.");
+                setTimeout(() => {
+                    nextPlaylist();
+                }, 1500);
+                return;
+            }
+
+            // Pojedynczy błąd wideo -> przeskocz do następnego filmu
+            setTimeout(() => {
+                try {
+                    if (player && typeof player.nextVideo === 'function') {
+                        player.nextVideo();
+                    }
+                } catch(e) {}
+            }, 1500);
+        }
+
+        // ── 7. 24/7 Watchdog Heartbeat ──
+        setInterval(() => {
+            try {
+                if (player && typeof player.getPlayerState === 'function') {
+                    const st = player.getPlayerState();
+                    if (st === YT.PlayerState.ENDED) {
+                        console.log("Watchdog: Stan ENDED wykryty przez watchdog. Przejście dalej...");
+                        checkIfPlaylistFinishedAndAdvance();
+                    }
+                }
+            } catch(e) {}
+        }, 6000);
+
+        // Periodically update title while playing
+        setInterval(() => {
+            try {
+                if (player && typeof player.getPlayerState === 'function' && player.getPlayerState() === YT.PlayerState.PLAYING) {
+                    updateOverlayBadge();
+                }
+            } catch(e) {}
+        }, 10000);
+
+        // ── 8. Audio Unmute Functionality ──
+        function enableAudio() {
+            const overlay = document.getElementById("startOverlay");
+            if (overlay) overlay.style.display = "none";
+
+            try {
+                if (player && typeof player.unMute === 'function') {
+                    player.unMute();
+                    player.setVolume(100);
+                    if (typeof player.getPlayerState === 'function' && player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                        player.playVideo();
+                    }
+                }
+            } catch(e) {}
+
+            try {
+                const iframe = document.querySelector("#yt-player iframe") || document.getElementById("yt-player");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[100]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                }
+            } catch(e) {}
+        }
+
+        // ── 9. Auto-Fade Overlays on Inactivity ──
+        let autoFadeTimer = null;
+        function resetAutoFadeTimer() {
+            showOverlays();
+            if (autoFadeTimer) clearTimeout(autoFadeTimer);
+            autoFadeTimer = setTimeout(hideOverlays, 25000); // 25s
+        }
+
+        function hideOverlays() {
+            const modal = document.getElementById('seriesModal');
+            if (modal && modal.style.display === 'flex') return; // Do not hide when modal is open
+
+            const header = document.querySelector('.top-header-bar');
+            const badge = document.querySelector('.episode-badge-box');
+            const controls = document.querySelector('.quick-controls-bar');
+            
+            if (header) header.style.opacity = '0';
+            if (badge) badge.style.opacity = '0';
+            if (controls) controls.style.opacity = '0';
+        }
+
+        function showOverlays() {
+            const header = document.querySelector('.top-header-bar');
+            const badge = document.querySelector('.episode-badge-box');
+            const controls = document.querySelector('.quick-controls-bar');
+
+            if (header) header.style.opacity = '1';
+            if (badge) badge.style.opacity = '1';
+            if (controls) controls.style.opacity = '1';
+        }
+
+        ['mousemove', 'touchstart', 'click', 'keydown'].forEach(evt => {
+            window.addEventListener(evt, resetAutoFadeTimer);
+        });
+
+        // ── 10. Keyboard Shortcuts ──
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSeriesModal();
+                closeChromecastModal();
+            } else if (e.key === ' ' || e.code === 'Space') {
+                e.preventDefault();
+                togglePlayPause();
+            } else if (e.key === 'n' && e.shiftKey) {
+                nextPlaylist();
+            } else if (e.key === 'p' && e.shiftKey) {
+                prevPlaylist();
+            } else if (e.key === 'n' || e.key === 'ArrowRight') {
+                nextVideo();
+            } else if (e.key === 'p' || e.key === 'ArrowLeft') {
+                prevVideo();
+            } else if (e.key === 'r' || e.key === 'R') {
+                openSeriesModal();
+            }
+        });
+    </script>
+</body>
+</html>

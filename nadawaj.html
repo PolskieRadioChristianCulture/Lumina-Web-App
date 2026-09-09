@@ -635,6 +635,39 @@
                         </div>
                     </div>
 
+                    <!-- Card: TV Epafraz 24/7 (Ciągła Emisja 24 Playlist YouTube) -->
+                    <div class="broadcast-card" style="border-left: 4px solid var(--gold-primary, #d4af37);">
+                        <a href="tv-epafraz-live.html" target="_blank" rel="noopener" class="card-img-wrapper" style="position: relative;" title="Oglądaj na żywo: TV Epafraz 24/7 (16:9)">
+                            <picture>
+                                <source srcset="tv_epafraz_thumb.webp" type="image/webp">
+                                <img src="tv_epafraz_thumb.png" alt="TV Epafraz 24/7 — Transmisja na Żywo">
+                            </picture>
+                            <div style="position: absolute; top: 12px; left: 12px; background: rgba(0, 0, 0, 0.85); border: 1.5px solid var(--gold-primary, #d4af37); padding: 5px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; color: #ffd700; display: flex; align-items: center; gap: 7px; backdrop-filter: blur(8px); z-index: 3;">
+                                <span style="width: 9px; height: 9px; background: #dc143c; border-radius: 50%; box-shadow: 0 0 10px #dc143c; animation: broadcast-glow 1.6s infinite ease-in-out;"></span>
+                                <span>24 SERIE • AUTO-LOOP 24/7</span>
+                            </div>
+                            <div class="card-live-indicator">
+                                <i class="fa-solid fa-play" style="color: var(--gold-primary, #d4af37);"></i> OGLĄDAJ
+                            </div>
+                            <div class="card-play-overlay">
+                                <div class="card-play-btn-circle"><i class="fa-solid fa-play"></i></div>
+                                <span class="card-play-text">OGLĄDAJ NA ŻYWO</span>
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <div>
+                                <span class="card-badge" style="background: rgba(212, 175, 55, 0.2); color: var(--gold-light, #ffd700); border: 1px solid var(--gold-primary);">📺 YouTube 24/7 • Podcast & Pismo</span>
+                                <h4 class="card-title"><a href="tv-epafraz-live.html" target="_blank" rel="noopener">TV Epafraz 24/7 (16:9)</a></h4>
+                                <p class="card-desc">Całodobowy kanał biblijny oparty na 24 wyselekcjonowanych seriach: Podcast Apokalipsa Palla, nauczania, proroctwa czasów końca, uwielbienie i filmy. Płynne automatyczne przejścia między playlistami 24/7/365.</p>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-obs" onclick="copyAndOpenOBS('tv-epafraz-live.html')" style="background: linear-gradient(135deg, rgba(212,175,55,0.35), rgba(212,175,55,0.15)); border-color: var(--gold-primary, #d4af37); color: #fff; font-weight: 800;"><i class="fa-solid fa-play"></i> Uruchom w OBS</button>
+                                <button class="btn-icon-square" onclick="openChromecastModal('tv-epafraz-live.html')" title="Prześlij na TV (Chromecast)"><img src="chromecast.png" alt="" style="height: 18px; width: auto;"></button>
+                                <button class="btn-icon-square" onclick="openEmbedModal('tv-epafraz-live.html')" title="Osadź na stronie"><i class="fa-solid fa-code"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Card 3: Apokalipsa: Księga Nadziei -->
                     <div class="broadcast-card">
                         <a href="apokalipsa-ksiega-nadziei-live.html" target="_blank" rel="noopener" class="card-img-wrapper" title="Oglądaj na żywo: Apokalipsa: Księga Nadziei (16:9)">
