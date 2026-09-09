@@ -1076,236 +1076,254 @@
     <script>
         // Fallback default shorts in case fetch is unavailable
         const FALLBACK_SHORTS = [
-            {
-                id: "live_cctv24_worship",
-                title: "🔴 NA ŻYWO — Radio Christian Culture • CCTV24 Worship",
-                author: "Polskie Radio Christian Culture",
-                authorSlug: "radiocc",
-                authorAvatar: "logo_christian_culture_small.png",
-                authorBadge: "📡 Radio CC LIVE",
-                videoType: "live_iframe",
-                videoSrc: "cctv24-worship-live.html?muted=1&mute=1&in_mcr=1",
-                poster: "tlo_tv_dzj.jpg",
-                verseRef: "Psalm 22, 4",
-                verseBook: "PSA",
-                verseChapter: 22,
-                verseUrl: "/mojabiblia?book=PSA&ch=22&mode=reader",
-                audioTitle: "Uwielbienie NA ŻYWO • Polskie Radio Christian Culture",
-                description: "Słuchaj Radia Christian Culture NA ŻYWO! Czyste uwielbienie, Słowo Boże i muzyka chrześcijańska przez całą dobę. 📡🕊️",
-                amenCount: 1024,
-                sharesCount: 512
-            },
-            {
-                id: "live_cctv24",
-                title: "🔴 NA ŻYWO — CCTV24 Worship • Telewizja Chrześcijańska",
-                author: "CCTV24 Christian Culture",
-                authorSlug: "radiocc",
-                authorAvatar: "logo_christian_culture_small.png",
-                authorBadge: "📺 CCTV24 LIVE",
-                videoType: "live_iframe",
-                videoSrc: "cctv24.html?muted=1&mute=1&in_mcr=1",
-                poster: "tlo_tv_dzj.jpg",
-                verseRef: "Ew. Jana 4, 24",
-                verseBook: "JHN",
-                verseChapter: 4,
-                verseUrl: "/mojabiblia?book=JHN&ch=4&mode=reader",
-                audioTitle: "CCTV24 NA ŻYWO • Christian Culture Television",
-                description: "Oglądaj CCTV24 Worship NA ŻYWO! Transmisje, uwielbianie i chrześcijańskie programy przez całą dobę. 📺✝️",
-                amenCount: 756,
-                sharesCount: 389
-            },
-            {
-                id: "live_sniadaniowa",
-                title: "🔴 NA ŻYWO — Śniadaniowa • Poranny Program Chrześcijański",
-                author: "Śniadaniowa CC",
-                authorSlug: "radiocc",
-                authorAvatar: "logo_christian_culture_small.png",
-                authorBadge: "☀️ Śniadaniowa LIVE",
-                videoType: "live_iframe",
-                videoSrc: "snadaniowa-live.html?muted=1&mute=1&in_mcr=1",
-                poster: "tlo_tv_dzj.jpg",
-                verseRef: "Lamentacje 3, 22-23",
-                verseBook: "LAM",
-                verseChapter: 3,
-                verseUrl: "/mojabiblia?book=LAM&ch=3&mode=reader",
-                audioTitle: "Poranny Program NA ŻYWO • Śniadaniowa CC",
-                description: "\"Jego miłosierdzia nie ustają, jego litości nie kończą się. Każdego ranka są nowe.\" Zacznij dzień z Bogiem! ☀️🙏",
-                amenCount: 634,
-                sharesCount: 201
-            },
-            {
-                id: "short_psalm1",
-                title: "Błogosławiony człowiek, który rozmyśla nad Słowem Bożym 📖🌿",
-                author: "Zbyszek Gieroń",
-                authorSlug: "zbyszekgieron",
-                authorAvatar: "avatar_zbyszek_gieron.jpg",
-                authorBadge: "🕊️ Misja & Wiara",
-                videoType: "mp4",
-                videoSrc: "reklama_sklep_alleluja.mp4",
-                poster: "post_zbyszek_psalm1.jpg",
-                verseRef: "Psalm 1, 1-2",
-                verseBook: "PSA",
-                verseChapter: 1,
-                verseUrl: "/mojabiblia?book=PSA&ch=1&mode=reader",
-                audioTitle: "Ciche Uwielbienie • Studio Dobrego Słowa",
-                description: "„Lecz ma upodobanie w prawie Pana i nad Jego prawem rozmyśla dniem i nocą.” Prawdziwe szczęście zaczyna się w Bożej obecności. 🙏✨",
-                amenCount: 148,
-                sharesCount: 37
-            },
-
-            {
-                id: "short_swiadectwo_grzegorz",
-                title: "Niewiarygodna przemiana życia! Jezus uwolnił mnie od nałogu ✝️⚡",
-                author: "Świadectwa Wiary CC",
-                authorSlug: "radiocc",
-                authorAvatar: "avatar_cezary_official.jpg",
-                authorBadge: "📺 CCTV24 Live",
-                videoType: "youtube",
-                videoSrc: "66dmc_Wf-Ig",
-                poster: "tlo_tv_dzj.jpg",
-                verseRef: "Ew. Jana 8, 36",
-                verseBook: "JHN",
-                verseChapter: 8,
-                verseUrl: "/mojabiblia?book=JHN&ch=8&mode=reader",
-                audioTitle: "Moc Świadectwa • Radio Christian Culture",
-                description: "„Jeśli więc Syn was wyzwoli, będziecie prawdziwie wolni.” Obejrzyj potężne świadectwo Bożej łaski i uzdrowienia. 🕊️🔥",
-                amenCount: 312,
-                sharesCount: 89
-            },
-            {
-                id: "short_modlitwa_jola",
-                title: "Biblijny Czas Modlitwy • Przełam każdą troskę przed Bogiem 🌸🙏",
-                author: "Jola Wójcik",
-                authorSlug: "jolawojcik",
-                authorAvatar: "avatar_jolawojcik.jpg",
-                authorBadge: "🕊️ Pasmo Modlitwy",
-                videoType: "youtube",
-                videoSrc: "EWY-J2gSqwo",
-                poster: "avatar_jolawojcik.jpg",
-                verseRef: "List do Filipian 4, 6-7",
-                verseBook: "PHP",
-                verseChapter: 4,
-                verseUrl: "/mojabiblia?book=PHP&ch=4&mode=reader",
-                audioTitle: "Pasmo Modlitwy Wstawienniczej • Polskie Radio CC",
-                description: "„O nic się nie martwcie, lecz we wszystkim w modlitwie powierzcie swoje prośby Bogu.” Dołącz do wspólnej modlitwy! 🕊️✨",
-                amenCount: 245,
-                sharesCount: 64
-            },
-            {
-                id: "short_alleluja_wear",
-                title: "Noś swoją wiarę z godnością i odwagą! Kolekcja Alleluja 👑🕊️",
-                author: "Sklep Christian Culture",
-                authorSlug: "radiocc",
-                authorAvatar: "logo_christian_culture_small.png",
-                authorBadge: "🛒 Sklep Misyjny",
-                videoType: "mp4",
-                videoSrc: "reklama_sklep_alleluja.mp4",
-                poster: "reklama_sklep_alleluja_poster.jpg",
-                verseRef: "List do Rzymian 1, 16",
-                verseBook: "ROM",
-                verseChapter: 1,
-                verseUrl: "/mojabiblia?book=ROM&ch=1&mode=reader",
-                audioTitle: "Alleluja • Pieśń Zwycięstwa CC",
-                description: "„Nie wstydzę się bowiem ewangelii Chrystusa, ponieważ jest ona mocą Bożą ku zbawieniu.” Oficjalna kolekcja odzieży i gadżetów Christian Culture. ✨👕",
-                amenCount: 189,
-                sharesCount: 42
-            },
-            {
-                id: "short_swiadectwo_robert",
-                title: "Z więzienia do nowego życia z Bogiem – Świadectwo Roberta ⛓️➡️🕊️",
-                author: "Świadectwa Wiary CC",
-                authorSlug: "radiocc",
-                authorAvatar: "avatar_robert.jpg",
-                authorBadge: "✨ Świadectwo",
-                videoType: "youtube",
-                videoSrc: "90h-jZq_tUo",
-                poster: "tlo_tv_dzj.jpg",
-                verseRef: "2 Koryntian 5, 17",
-                verseBook: "2CO",
-                verseChapter: 5,
-                verseUrl: "/mojabiblia?book=2CO&ch=5&mode=reader",
-                audioTitle: "Nowe Stworzenie • Muzyka Uwielbienia",
-                description: "„Jeśli więc ktoś jest w Chrystusie, nowym jest stworzeniem. To, co dawne, minęło, oto wszystko stało się nowe!” 📖🌿",
-                amenCount: 421,
-                sharesCount: 115
-            },
-            {
-                id: "short_slowo_zycia_jan",
-                title: "Na początku było Słowo, a Słowo było u Boga! 📖✨",
-                author: "Cezary Rogowski",
-                authorSlug: "cezaryrgowski",
-                authorAvatar: "avatar_cezary_official.jpg",
-                authorBadge: "Założyciel CC ✨",
-                videoType: "youtube",
-                videoSrc: "tGmHYArka0k",
-                poster: "tlo_profilowe_cezary.jpg",
-                verseRef: "Ew. Jana 1, 1-5",
-                verseBook: "JHN",
-                verseChapter: 1,
-                verseUrl: "/mojabiblia?book=JHN&ch=1&mode=reader",
-                audioTitle: "Święte Słowo • Biblia Audio CC",
-                description: "„A światłość świeci w ciemności, a ciemność jej nie ogarnęła.” Poznaj głębię oryginalnego tekstu greckiego w MojejBiblii. 💡🕊️",
-                amenCount: 567,
-                sharesCount: 178
-            },
-            {
-                id: "short_tiktok_worship",
-                title: "Młodzi dla Jezusa! Potężne uwielbienie w Duchu i Prawdzie 🔥🕊️",
-                author: "Pokolenie Wiary",
-                authorSlug: "radiocc",
-                authorAvatar: "avatar_cezary_official.jpg",
-                authorBadge: "🎵 TikTok Wiara",
-                videoType: "tiktok",
-                videoSrc: "7291234567890123456",
-                poster: "tlo_tv_dzj.jpg",
-                verseRef: "1 Tymoteusza 4, 12",
-                verseBook: "1TI",
-                verseChapter: 4,
-                verseUrl: "https://polskieradio.cc/mojabiblia?book=1TI&ch=4&mode=reader",
-                audioTitle: "Ogień Ducha Świętego • TikTok Sound",
-                description: "„Niech nikt nie lekceważy twojej młodości, lecz bądź wzorem dla wierzących.” Czyste uwielbienie bez świeckiego hałasu! 🕊️✨",
-                amenCount: 892,
-                sharesCount: 245
-            },
-            {
-                id: "short_instagram_verse",
-                title: "Nie lękaj się, bo Ja jestem z tobą! Bóg walczy o ciebie każdego dnia 🛡️⚔️",
-                author: "Słowo Życia Insta",
-                authorSlug: "studiodobregoslowa",
-                authorAvatar: "avatar_cezary_official.jpg",
-                authorBadge: "📸 Instagram Reel",
-                videoType: "instagram",
-                videoSrc: "C3x9AbCDefG",
-                poster: "tlo_tv_dzj.jpg",
-                verseRef: "Księga Izajasza 41, 10",
-                verseBook: "ISA",
-                verseChapter: 41,
-                verseUrl: "https://polskieradio.cc/mojabiblia?book=ISA&ch=41&mode=reader",
-                audioTitle: "Spokój Duszy • Muzyka Uwielbienia",
-                description: "„Nie bój się, bo Ja jestem z tobą; nie lękaj się, bo Ja jestem twoim Bogiem.” Odpocznij dziś w Bożych obietnicach. 🌿📖",
-                amenCount: 630,
-                sharesCount: 190
-            },
-            {
-                id: "short_facebook_prayer",
-                title: "Wieczorne błogosławieństwo i modlitwa o pokój w Twoim domu 🏡🕊️",
-                author: "Rodzina Christian Culture",
-                authorSlug: "radiocc",
-                authorAvatar: "avatar_cezary_official.jpg",
-                authorBadge: "📘 Facebook Reel",
-                videoType: "facebook",
-                videoSrc: "https://www.facebook.com/reel/10158912345678901",
-                poster: "tlo_tv_dzj.jpg",
-                verseRef: "Księga Liczb 6, 24-26",
-                verseBook: "NUM",
-                verseChapter: 6,
-                verseUrl: "https://polskieradio.cc/mojabiblia?book=NUM&ch=6&mode=reader",
-                audioTitle: "Błogosławieństwo Aarona • Chór CC",
-                description: "„Niech ci błogosławi Pan i niech cię strzeże; niech rozjaśni Pan swoje oblicze nad tobą i będzie ci miłościw.” Niech Boży pokój napełni Twoje serce. 🙏✨",
-                amenCount: 754,
-                sharesCount: 310
-            }
-        ];
+          {
+                    "id": "live_cctv24_worship",
+                    "title": "🔴 NA ŻYWO — Radio Christian Culture • CCTV24 Worship",
+                    "author": "Polskie Radio Christian Culture",
+                    "authorSlug": "radiocc",
+                    "authorAvatar": "logo_christian_culture_small.png",
+                    "authorBadge": "📡 Radio CC LIVE",
+                    "videoType": "live_iframe",
+                    "videoSrc": "cctv24-worship-live.html?muted=1&mute=1&in_mcr=1&autoplay=1",
+                    "poster": "tlo_tv_dzj.jpg",
+                    "verseRef": "Psalm 22, 4",
+                    "verseBook": "PSA",
+                    "verseChapter": 22,
+                    "verseUrl": "https://polskieradio.cc/mojabiblia?book=PSA&ch=22&mode=reader",
+                    "audioTitle": "Uwielbienie NA ŻYWO • Polskie Radio Christian Culture",
+                    "description": "Słuchaj Radia Christian Culture NA ŻYWO! Czyste uwielbienie, Słowo Boże i muzyka chrześcijańska przez całą dobę. 📡🕊️",
+                    "amenCount": 1024,
+                    "sharesCount": 512
+          },
+          {
+                    "id": "live_cctv24",
+                    "title": "🔴 NA ŻYWO — CCTV24 Worship • Telewizja Chrześcijańska",
+                    "author": "CCTV24 Christian Culture",
+                    "authorSlug": "radiocc",
+                    "authorAvatar": "logo_christian_culture_small.png",
+                    "authorBadge": "📺 CCTV24 LIVE",
+                    "videoType": "live_iframe",
+                    "videoSrc": "cctv24.html?muted=1&mute=1&in_mcr=1&autoplay=1",
+                    "poster": "tlo_tv_dzj.jpg",
+                    "verseRef": "Ew. Jana 4, 24",
+                    "verseBook": "JHN",
+                    "verseChapter": 4,
+                    "verseUrl": "https://polskieradio.cc/mojabiblia?book=JHN&ch=4&mode=reader",
+                    "audioTitle": "CCTV24 NA ŻYWO • Christian Culture Television",
+                    "description": "Oglądaj CCTV24 Worship NA ŻYWO! Transmisje, uwielbianie i chrześcijańskie programy przez całą dobę. 📺✝️",
+                    "amenCount": 756,
+                    "sharesCount": 389
+          },
+          {
+                    "id": "live_sniadaniowa",
+                    "title": "🔴 NA ŻYWO — Śniadaniowa • Poranny Program Chrześcijański",
+                    "author": "Śniadaniowa CC",
+                    "authorSlug": "radiocc",
+                    "authorAvatar": "logo_christian_culture_small.png",
+                    "authorBadge": "☀️ Śniadaniowa LIVE",
+                    "videoType": "live_iframe",
+                    "videoSrc": "snadaniowa-live-worship.html?muted=1&mute=1&in_mcr=1&autoplay=1",
+                    "poster": "tlo_tv_dzj.jpg",
+                    "verseRef": "Lamentacje 3, 22-23",
+                    "verseBook": "LAM",
+                    "verseChapter": 3,
+                    "verseUrl": "https://polskieradio.cc/mojabiblia?book=LAM&ch=3&mode=reader",
+                    "audioTitle": "Poranny Program NA ŻYWO • Śniadaniowa CC",
+                    "description": "Jego miłosierdzia nie ustają, jego litości nie kończą się. Każdego ranka są nowe. Zacznij dzień z Bogiem! ☀️🙏",
+                    "amenCount": 634,
+                    "sharesCount": 201
+          },
+          {
+                    "id": "short_czesc_dobrze",
+                    "title": "Cześć! Dobrze, że jesteś ❤️ Witamy w Christian Culture",
+                    "author": "Christian Culture",
+                    "authorSlug": "radiocc",
+                    "authorAvatar": "logo_christian_culture_small.png",
+                    "authorBadge": "✨ Oficjalne",
+                    "videoType": "mp4",
+                    "videoSrc": "czesc_dobrze_ze_jestes.mp4",
+                    "poster": "tlo_tv_dzj.jpg",
+                    "verseRef": "1 Tesaloniczan 5, 11",
+                    "verseBook": "1TH",
+                    "verseChapter": 5,
+                    "verseUrl": "https://polskieradio.cc/mojabiblia?book=1TH&ch=5&mode=reader",
+                    "audioTitle": "Dobrze, że jesteś • Muzyka CC",
+                    "description": "Dlatego zachęcajcie się wzajemnie i budujcie jeden drugiego, jak to i czynicie. Dziękujemy, że jesteś z nami! 🕊️❤️",
+                    "amenCount": 890,
+                    "sharesCount": 340
+          },
+          {
+                    "id": "short_psalm1",
+                    "title": "Błogosławiony człowiek, który rozmyśla nad Słowem Bożym 📖🌿",
+                    "author": "Zbyszek Gieroń",
+                    "authorSlug": "zbyszekgieron",
+                    "authorAvatar": "avatar_zbyszek_gieron.jpg",
+                    "authorBadge": "🕊️ Misja & Wiara",
+                    "videoType": "mp4",
+                    "videoSrc": "reklama_sklep_alleluja.mp4",
+                    "poster": "post_zbyszek_psalm1.jpg",
+                    "verseRef": "Psalm 1, 1-2",
+                    "verseBook": "PSA",
+                    "verseChapter": 1,
+                    "verseUrl": "https://polskieradio.cc/mojabiblia?book=PSA&ch=1&mode=reader",
+                    "audioTitle": "Ciche Uwielbienie • Studio Dobrego Słowa",
+                    "description": "Lecz ma upodobanie w prawie Pana i nad Jego prawem rozmyśla dniem i nocą. Prawdziwe szczęście zaczyna się w Bożej obecności. 🙏✨",
+                    "amenCount": 148,
+                    "sharesCount": 37
+          },
+          {
+                    "id": "short_swiadectwo_grzegorz",
+                    "title": "Niewiarygodna przemiana życia! Jezus uwolnił mnie od nałogu ✝️⚡",
+                    "author": "Świadectwa Wiary CC",
+                    "authorSlug": "radiocc",
+                    "authorAvatar": "avatar_cezary_official.jpg",
+                    "authorBadge": "📺 CCTV24 Live",
+                    "videoType": "youtube",
+                    "videoSrc": "66dmc_Wf-Ig",
+                    "poster": "tlo_tv_dzj.jpg",
+                    "verseRef": "Ew. Jana 8, 36",
+                    "verseBook": "JHN",
+                    "verseChapter": 8,
+                    "verseUrl": "https://polskieradio.cc/mojabiblia?book=JHN&ch=8&mode=reader",
+                    "audioTitle": "Moc Świadectwa • Radio Christian Culture",
+                    "description": "Jeśli więc Syn was wyzwoli, będziecie prawdziwie wolni. Obejrzyj potężne świadectwo Bożej łaski i uzdrowienia. 🕊️🔥",
+                    "amenCount": 312,
+                    "sharesCount": 89
+          },
+          {
+                    "id": "short_cezary_profil",
+                    "title": "Męska tożsamość i odwaga w Bożej obecności ⚔️👑",
+                    "author": "Cezary Rogowski",
+                    "authorSlug": "cezaryrgowski",
+                    "authorAvatar": "avatar_cezary_official.jpg",
+                    "authorBadge": "Założyciel CC ✨",
+                    "videoType": "mp4",
+                    "videoSrc": "cezary_rogowski_profile_video.mp4",
+                    "poster": "tlo_profilowe_cezary.jpg",
+                    "verseRef": "Księga Jozuego 1, 9",
+                    "verseBook": "JOS",
+                    "verseChapter": 1,
+                    "verseUrl": "https://polskieradio.cc/mojabiblia?book=JOS&ch=1&mode=reader",
+                    "audioTitle": "Moc i Odwaga • Studio Dobrego Słowa",
+                    "description": "Bądź mężny i mężnego serca; nie bój się ani się nie lękaj, gdyż Pan, twój Bóg, jest z tobą wszędzie, dokądkolwiek pójdziesz. 🛡️✝️",
+                    "amenCount": 712,
+                    "sharesCount": 228
+          },
+          {
+                    "id": "short_modlitwa_jola",
+                    "title": "Biblijny Czas Modlitwy • Przełam każdą troskę przed Bogiem 🌸🙏",
+                    "author": "Jola Wójcik",
+                    "authorSlug": "jolawojcik",
+                    "authorAvatar": "avatar_jolawojcik.jpg",
+                    "authorBadge": "🕊️ Pasmo Modlitwy",
+                    "videoType": "youtube",
+                    "videoSrc": "EWY-J2gSqwo",
+                    "poster": "avatar_jolawojcik.jpg",
+                    "verseRef": "List do Filipian 4, 6-7",
+                    "verseBook": "PHP",
+                    "verseChapter": 4,
+                    "verseUrl": "https://polskieradio.cc/mojabiblia?book=PHP&ch=4&mode=reader",
+                    "audioTitle": "Pasmo Modlitwy Wstawienniczej • Polskie Radio CC",
+                    "description": "O nic się nie martwcie, lecz we wszystkim w modlitwie powierzcie swoje prośby Bogu. Dołącz do wspólnej modlitwy! 🕊️✨",
+                    "amenCount": 245,
+                    "sharesCount": 64
+          },
+          {
+                    "id": "short_alleluja_wear",
+                    "title": "Noś swoją wiarę z godnością i odwagą! Kolekcja Alleluja 👑🕊️",
+                    "author": "Sklep Christian Culture",
+                    "authorSlug": "radiocc",
+                    "authorAvatar": "logo_christian_culture_small.png",
+                    "authorBadge": "🛒 Sklep Misyjny",
+                    "videoType": "mp4",
+                    "videoSrc": "reklama_sklep_alleluja.mp4",
+                    "poster": "reklama_sklep_alleluja_poster.jpg",
+                    "verseRef": "List do Rzymian 1, 16",
+                    "verseBook": "ROM",
+                    "verseChapter": 1,
+                    "verseUrl": "https://polskieradio.cc/mojabiblia?book=ROM&ch=1&mode=reader",
+                    "audioTitle": "Alleluja • Pieśń Zwycięstwa CC",
+                    "description": "Nie wstydzę się bowiem ewangelii Chrystusa, ponieważ jest ona mocą Bożą ku zbawieniu. Oficjalna kolekcja odzieży i gadżetów Christian Culture. ✨👕",
+                    "amenCount": 189,
+                    "sharesCount": 42
+          },
+          {
+                    "id": "short_wioletta_profil",
+                    "title": "Piękno serca i pokój, który przewyższa wszelki umysł 🌸🕊️",
+                    "author": "Wioletta Rogowska",
+                    "authorSlug": "wiolettarogowska",
+                    "authorAvatar": "avatar_wioletta.jpg",
+                    "authorBadge": "LUMINA Kobiety 🌸",
+                    "videoType": "mp4",
+                    "videoSrc": "wioletta_profile_video.mp4",
+                    "poster": "tlo_tv_dzj.jpg",
+                    "verseRef": "1 Piotra 3, 3-4",
+                    "verseBook": "1PE",
+                    "verseChapter": 3,
+                    "verseUrl": "https://polskieradio.cc/mojabiblia?book=1PE&ch=3&mode=reader",
+                    "audioTitle": "Czyste Serce • Pasmo Kobiet CC",
+                    "description": "Niech waszą ozdobą nie będzie to, co zewnętrzne, lecz ukryty wewnętrzny człowiek w niezniszczalnym klejnocie łagodnego i spokojnego ducha. 🌿✨",
+                    "amenCount": 840,
+                    "sharesCount": 295
+          },
+          {
+                    "id": "short_swiadectwo_robert",
+                    "title": "Z więzienia do nowego życia z Bogiem – Świadectwo Roberta ⛓️➡️🕊️",
+                    "author": "Świadectwa Wiary CC",
+                    "authorSlug": "radiocc",
+                    "authorAvatar": "avatar_robert.jpg",
+                    "authorBadge": "✨ Świadectwo",
+                    "videoType": "youtube",
+                    "videoSrc": "90h-jZq_tUo",
+                    "poster": "tlo_tv_dzj.jpg",
+                    "verseRef": "2 Koryntian 5, 17",
+                    "verseBook": "2CO",
+                    "verseChapter": 5,
+                    "verseUrl": "https://polskieradio.cc/mojabiblia?book=2CO&ch=5&mode=reader",
+                    "audioTitle": "Nowe Stworzenie • Muzyka Uwielbienia",
+                    "description": "Jeśli więc ktoś jest w Chrystusie, nowym jest stworzeniem. To, co dawne, minęło, oto wszystko stało się nowe! 📖🌿",
+                    "amenCount": 421,
+                    "sharesCount": 115
+          },
+          {
+                    "id": "short_slowo_zycia_jan",
+                    "title": "Na początku było Słowo, a Słowo było u Boga! 📖✨",
+                    "author": "Cezary Rogowski",
+                    "authorSlug": "cezaryrgowski",
+                    "authorAvatar": "avatar_cezary_official.jpg",
+                    "authorBadge": "Założyciel CC ✨",
+                    "videoType": "youtube",
+                    "videoSrc": "tGmHYArka0k",
+                    "poster": "tlo_profilowe_cezary.jpg",
+                    "verseRef": "Ew. Jana 1, 1-5",
+                    "verseBook": "JHN",
+                    "verseChapter": 1,
+                    "verseUrl": "https://polskieradio.cc/mojabiblia?book=JHN&ch=1&mode=reader",
+                    "audioTitle": "Święte Słowo • Biblia Audio CC",
+                    "description": "A światłość świeci w ciemności, a ciemność jej nie ogarnęła. Poznaj głębię oryginalnego tekstu greckiego w MojejBiblii. 💡🕊️",
+                    "amenCount": 567,
+                    "sharesCount": 178
+          },
+          {
+                    "id": "short_kino_vod",
+                    "title": "Chrześcijańskie Kino Fabularne i Poruszające Produkcje 🎬🍿",
+                    "author": "Kino VOD Christian Culture",
+                    "authorSlug": "radiocc",
+                    "authorAvatar": "logo_christian_culture_small.png",
+                    "authorBadge": "🎬 Kino VOD",
+                    "videoType": "mp4",
+                    "videoSrc": "vod_hity_kina.mp4",
+                    "poster": "tlo_tv_dzj.jpg",
+                    "verseRef": "Filipian 4, 8",
+                    "verseBook": "PHP",
+                    "verseChapter": 4,
+                    "verseUrl": "https://polskieradio.cc/mojabiblia?book=PHP&ch=4&mode=reader",
+                    "audioTitle": "Zwiastun Kinowy • Christian Culture Cinema",
+                    "description": "Oglądaj najlepsze filmy chrześcijańskie, poruszające świadectwa i epickie dramaty biblijne w Polskie Radio VOD. 🕊️🍿",
+                    "amenCount": 965,
+                    "sharesCount": 410
+          }
+];
 
         let shortsData = [];
         let isGlobalMuted = false;
@@ -1648,181 +1666,281 @@
             showShortsToast('✨ Twoja Rolka Wiary została opublikowana!');
         };
 
-        // ── Render Slides ──
+        // ── Engine Sterowania i Filtracji Rolek Wiary ──
+        let cleanShortsBase = [];
+        let loopCounter = 0;
+        let isLoopAppending = false;
+
+        // Filtr dopuszczonych do odtwarzania (eliminuje błędy platform zewnętrznych)
+        function isPlayableShort(item) {
+            if (!item || !item.videoSrc) return false;
+            const platform = (item.videoType || '').toLowerCase();
+            // Eliminujemy niedziałające atrapy TikToka, Instagrama i Facebooka
+            if (platform === 'tiktok' || platform === 'instagram' || platform === 'facebook') {
+                return false;
+            }
+            return true;
+        }
+
+        // ── Autoplay Kanałów Nadawczych (CCTV24, Śniadaniowa, Live) ──
+        window.triggerLiveChannelAutoplay = function(iframe, shouldPlay = true) {
+            if (!iframe) return;
+            try {
+                const idoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+                if (idoc) {
+                    // 1. Likwidacja nakładki "URUCHOM STUDIO"
+                    const overlay = idoc.getElementById('startOverlay');
+                    if (overlay) {
+                        overlay.classList.add('hidden');
+                        overlay.style.setProperty('display', 'none', 'important');
+                        overlay.style.setProperty('opacity', '0', 'important');
+                        overlay.style.setProperty('pointer-events', 'none', 'important');
+                    }
+                    if (!idoc.getElementById('hideOverlayShortsStyle')) {
+                        const s = idoc.createElement('style');
+                        s.id = 'hideOverlayShortsStyle';
+                        s.textContent = '#startOverlay { display: none !important; opacity: 0 !important; pointer-events: none !important; visibility: hidden !important; }';
+                        idoc.head.appendChild(s);
+                    }
+
+                    // 2. Wywołanie initStream
+                    if (shouldPlay && typeof iframe.contentWindow.initStream === 'function') {
+                        iframe.contentWindow.initStream();
+                    }
+
+                    // 3. Sterowanie dźwiękiem
+                    const audio = idoc.querySelector('audio') || idoc.getElementById('stream-audio') || idoc.getElementById('worshipAudioPlayer');
+                    if (audio) {
+                        if (shouldPlay) {
+                            audio.muted = isGlobalMuted;
+                            audio.volume = 1.0;
+                            audio.play().catch(() => {
+                                audio.muted = true;
+                                audio.play().catch(() => {});
+                            });
+                        } else {
+                            audio.muted = true;
+                        }
+                    }
+                }
+            } catch(e) {}
+
+            // PostMessage dla pełnej kompatybilności
+            try {
+                if (shouldPlay) {
+                    iframe.contentWindow.postMessage({ type: isGlobalMuted ? 'MUTE_AUDIO' : 'UNMUTE_AUDIO', func: isGlobalMuted ? 'mute' : 'unMute' }, '*');
+                    iframe.contentWindow.postMessage({ type: 'AUTOPLAY', func: 'play' }, '*');
+                } else {
+                    iframe.contentWindow.postMessage({ type: 'MUTE_AUDIO', func: 'mute' }, '*');
+                }
+            } catch(e) {}
+        };
+
+        // ── Tworzenie pojedynczego slajdu rolki ──
+        function createSlideElement(item, index) {
+            const isAmen = localStorage.getItem('lumina_amen_' + item.id) === '1';
+            const amenDisplay = isAmen ? item.amenCount + 1 : item.amenCount;
+
+            const slide = document.createElement('div');
+            slide.className = 'short-slide';
+            slide.id = item.id;
+            slide.setAttribute('data-index', index);
+
+            let mediaHtml = '';
+            const platform = item.videoType || 'mp4';
+            let platformBadgeHtml = '';
+
+            if (platform === 'mp4') {
+                mediaHtml = `
+                    <video playsinline loop preload="metadata" muted poster="${item.poster || 'tlo_tv_dzj.jpg'}" onerror="this.closest('.short-slide').remove()">
+                        <source src="${item.videoSrc}" type="video/mp4">
+                    </video>
+                `;
+                platformBadgeHtml = `<span class="platform-pill mp4"><i class="fa-solid fa-play"></i> CC Video</span>`;
+            } else if (platform === 'youtube') {
+                mediaHtml = `
+                    <iframe src="https://www.youtube.com/embed/${item.videoSrc}?enablejsapi=1&autoplay=0&mute=0&controls=0&playsinline=1&loop=1&playlist=${item.videoSrc}&rel=0&modestbranding=1" 
+                            title="${escapeHtml(item.title)}" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen
+                            onerror="this.closest('.short-slide').remove()">
+                    </iframe>
+                `;
+                platformBadgeHtml = `<span class="platform-pill yt"><i class="fa-brands fa-youtube"></i> Shorts</span>`;
+            } else if (platform === 'live_iframe') {
+                mediaHtml = `
+                    <iframe src="${item.videoSrc}" 
+                            class="live-channel-iframe"
+                            title="${escapeHtml(item.title)}" 
+                            allow="autoplay; fullscreen; picture-in-picture" 
+                            allowfullscreen
+                            onload="triggerLiveChannelAutoplay(this, ${index === activeSlideIndex})"
+                            onerror="this.closest('.short-slide').remove()"
+                            style="border:0; width:100%; height:100%; object-fit:cover;">
+                    </iframe>
+                    <div style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; border: 3px solid rgba(239,68,68,0.6); border-radius:inherit; z-index:30;"></div>
+                `;
+                platformBadgeHtml = `<span class="platform-pill live"><i class="fa-solid fa-circle" style="animation:livePulse 1s infinite;"></i> NA ŻYWO</span>`;
+            }
+
+            slide.innerHTML = `
+                <div class="video-container">
+                    ${mediaHtml}
+                </div>
+
+                <div class="tap-detector" onclick="handleSlideTap(this.closest('.short-slide'))"></div>
+                <div class="play-indicator-overlay"><i class="fa-solid fa-play"></i></div>
+                <div class="slide-gradient-overlay"></div>
+
+                <!-- Right Action Sidebar -->
+                <div class="action-sidebar">
+                    <!-- Author Avatar -->
+                    <div class="avatar-action-wrapper" onclick="window.location.href='/lumina/${item.authorSlug}'" title="Otwórz profil: ${escapeHtml(item.author)}">
+                        <img src="${item.authorAvatar}" alt="${escapeHtml(item.author)}" class="avatar-circle-img" onerror="this.src='lumina_icon.jpg'">
+                        <div class="avatar-plus-icon"><i class="fa-solid fa-plus"></i></div>
+                    </div>
+
+                    <!-- Amen Button -->
+                    <div class="action-btn-wrapper">
+                        <button type="button" 
+                                class="action-circle-btn ${isAmen ? 'amen-active' : ''}" 
+                                onclick="toggleAmen('${item.id}', this, 'amenCount_${item.id}')" 
+                                title="Powiedz Amen! (Polubienie)"
+                                aria-label="Amen">
+                            <i class="fa-solid fa-hands-praying"></i>
+                        </button>
+                        <span class="action-label" id="amenCount_${item.id}" data-count="${amenDisplay}">${amenDisplay}</span>
+                    </div>
+
+                    <!-- WhatsApp Share -->
+                    <div class="action-btn-wrapper">
+                        <button type="button" 
+                                class="action-circle-btn whatsapp-btn" 
+                                onclick="shareShort('${item.id}')" 
+                                title="Udostępnij na WhatsApp"
+                                aria-label="Udostępnij">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </button>
+                        <span class="action-label">${item.sharesCount}</span>
+                    </div>
+
+                    <!-- Read Bible Verse -->
+                    <div class="action-btn-wrapper">
+                        <a href="${item.verseUrl}" 
+                           class="action-circle-btn bible-btn" 
+                           title="Przeczytaj werset w MojejBiblii"
+                           aria-label="Pismo Święte">
+                            <i class="fa-solid fa-book-bible"></i>
+                        </a>
+                        <span class="action-label">Biblia</span>
+                    </div>
+
+                    <!-- Desktop Nav Arrows -->
+                    <div class="sidebar-nav-arrows" aria-label="Nawigacja rolek">
+                        <button type="button" class="sidebar-arrow-btn" onclick="scrollToSlide(${index} - 1)" title="Poprzednia rolka (↑)" aria-label="Poprzednia">
+                            <i class="fa-solid fa-chevron-up"></i>
+                        </button>
+                        <span class="sidebar-arrow-label">↑ ↓</span>
+                        <button type="button" class="sidebar-arrow-btn" onclick="scrollToSlide(${index} + 1)" title="Następna rolka (↓)" aria-label="Następna">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bottom Info Overlay -->
+                <div class="slide-info-box">
+                    <div class="author-tag-row">
+                        <a href="/lumina/${item.authorSlug}" class="author-name">
+                            <span>@${escapeHtml(item.author)}</span>
+                            <i class="fa-solid fa-circle-check" style="color:var(--gold); font-size:0.85rem;"></i>
+                        </a>
+                        <span class="author-badge">${escapeHtml(item.authorBadge || 'Społeczność')}</span>
+                        ${platformBadgeHtml}
+                    </div>
+
+                    <div class="short-title-text" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
+
+                    <a href="${item.verseUrl}" class="verse-pill-btn" title="Kliknij, aby otworzyć rozdział w MojejBiblii">
+                        <i class="fa-solid fa-bookmark"></i>
+                        <span>${escapeHtml(item.verseRef)}</span>
+                        <i class="fa-solid fa-arrow-right" style="font-size:0.65rem;"></i>
+                    </a>
+
+                    <div class="sound-ticker-row">
+                        <i class="fa-solid fa-music"></i>
+                        <div class="sound-text-marquee">${escapeHtml(item.audioTitle || 'Christian Culture Worship')}</div>
+                    </div>
+                </div>
+
+                <!-- Spinning Vinyl -->
+                <div class="vinyl-disc" title="Dźwięk: ${escapeHtml(item.audioTitle || 'CC Music')}"></div>
+            `;
+
+            return slide;
+        }
+
+        // ── Render Slides (Inicjalizacja) ──
         function renderSlides(items) {
             const container = document.getElementById('shortsContainer');
             if (!container) return;
             container.innerHTML = '';
 
-            items.forEach((item, index) => {
-                const isAmen = localStorage.getItem('lumina_amen_' + item.id) === '1';
-                const amenDisplay = isAmen ? item.amenCount + 1 : item.amenCount;
+            // Filtracja: wyłącznie działające, zweryfikowane materiały
+            cleanShortsBase = (items || []).filter(isPlayableShort);
+            if (!cleanShortsBase.length) {
+                cleanShortsBase = FALLBACK_SHORTS.filter(isPlayableShort);
+            }
 
-                const slide = document.createElement('div');
-                slide.className = 'short-slide';
-                slide.id = item.id;
-                slide.setAttribute('data-index', index);
-
-                let mediaHtml = '';
-                const platform = item.videoType || 'mp4';
-                let platformBadgeHtml = '';
-
-                if (platform === 'mp4') {
-                    mediaHtml = `
-                        <video playsinline loop preload="metadata" muted poster="${item.poster || 'tlo_tv_dzj.jpg'}">
-                            <source src="${item.videoSrc}" type="video/mp4">
-                        </video>
-                    `;
-                    platformBadgeHtml = `<span class="platform-pill mp4"><i class="fa-solid fa-play"></i> CC Video</span>`;
-                } else if (platform === 'youtube') {
-                    mediaHtml = `
-                        <iframe src="https://www.youtube.com/embed/${item.videoSrc}?autoplay=0&mute=0&controls=0&playsinline=1&loop=1&playlist=${item.videoSrc}&rel=0&modestbranding=1" 
-                                title="${item.title}" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                allowfullscreen>
-                        </iframe>
-                    `;
-                    platformBadgeHtml = `<span class="platform-pill yt"><i class="fa-brands fa-youtube"></i> Shorts</span>`;
-                } else if (platform === 'tiktok') {
-                    mediaHtml = `
-                        <iframe src="https://www.tiktok.com/embed/v2/${item.videoSrc}" 
-                                title="${item.title}" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                allowfullscreen>
-                        </iframe>
-                    `;
-                    platformBadgeHtml = `<span class="platform-pill tiktok"><i class="fa-brands fa-tiktok"></i> TikTok</span>`;
-                } else if (platform === 'instagram') {
-                    mediaHtml = `
-                        <iframe src="https://www.instagram.com/reel/${item.videoSrc}/embed/" 
-                                title="${item.title}" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                allowfullscreen>
-                        </iframe>
-                    `;
-                    platformBadgeHtml = `<span class="platform-pill instagram"><i class="fa-brands fa-instagram"></i> Reels</span>`;
-                } else if (platform === 'facebook') {
-                    mediaHtml = `
-                        <iframe src="https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(item.videoSrc)}&show_text=false&autoplay=false&t=0" 
-                                title="${item.title}" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                allowfullscreen>
-                        </iframe>
-                    `;
-                    platformBadgeHtml = `<span class="platform-pill facebook"><i class="fa-brands fa-facebook"></i> Facebook</span>`;
-                } else if (platform === 'live_iframe') {
-                    mediaHtml = `
-                        <iframe src="${item.videoSrc}" 
-                                title="${item.title}" 
-                                allow="autoplay; fullscreen; picture-in-picture" 
-                                allowfullscreen
-                                style="border:0; width:100%; height:100%; object-fit:cover;">
-                        </iframe>
-                        <div style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; border: 3px solid rgba(239,68,68,0.6); border-radius:inherit; z-index:30;"></div>
-                    `;
-                    platformBadgeHtml = `<span class="platform-pill live"><i class="fa-solid fa-circle" style="animation:livePulse 1s infinite;"></i> NA ŻYWO</span>`;
-                }
-
-                slide.innerHTML = `
-                    <div class="video-container">
-                        ${mediaHtml}
-                    </div>
-
-                    <div class="tap-detector" onclick="handleSlideTap(this.closest('.short-slide'))"></div>
-                    <div class="play-indicator-overlay"><i class="fa-solid fa-play"></i></div>
-                    <div class="slide-gradient-overlay"></div>
-
-                    <!-- Right Action Sidebar -->
-                    <div class="action-sidebar">
-                        <!-- Author Avatar -->
-                        <div class="avatar-action-wrapper" onclick="window.location.href='/lumina/${item.authorSlug}'" title="Otwórz profil: ${item.author}">
-                            <img src="${item.authorAvatar}" alt="${item.author}" class="avatar-circle-img" onerror="this.src='lumina_icon.jpg'">
-                            <div class="avatar-plus-icon"><i class="fa-solid fa-plus"></i></div>
-                        </div>
-
-                        <!-- Amen Button -->
-                        <div class="action-btn-wrapper">
-                            <button type="button" 
-                                    class="action-circle-btn ${isAmen ? 'amen-active' : ''}" 
-                                    onclick="toggleAmen('${item.id}', this, 'amenCount_${item.id}')" 
-                                    title="Powiedz Amen! (Polubienie)"
-                                    aria-label="Amen">
-                                <i class="fa-solid fa-hands-praying"></i>
-                            </button>
-                            <span class="action-label" id="amenCount_${item.id}" data-count="${amenDisplay}">${amenDisplay}</span>
-                        </div>
-
-                        <!-- WhatsApp Share -->
-                        <div class="action-btn-wrapper">
-                            <button type="button" 
-                                    class="action-circle-btn whatsapp-btn" 
-                                    onclick="shareShort('${item.id}')" 
-                                    title="Udostępnij na WhatsApp"
-                                    aria-label="Udostępnij">
-                                <i class="fa-brands fa-whatsapp"></i>
-                            </button>
-                            <span class="action-label">${item.sharesCount}</span>
-                        </div>
-
-                        <!-- Read Bible Verse -->
-                        <div class="action-btn-wrapper">
-                            <a href="${item.verseUrl}" 
-                               class="action-circle-btn bible-btn" 
-                               title="Przeczytaj werset w MojejBiblii"
-                               aria-label="Pismo Święte">
-                                <i class="fa-solid fa-book-bible"></i>
-                            </a>
-                            <span class="action-label">Biblia</span>
-                        </div>
-
-                        <!-- Desktop Nav Arrows (pod Biblią, tylko desktop) -->
-                        <div class="sidebar-nav-arrows" aria-label="Nawigacja rolek">
-                            <button type="button" class="sidebar-arrow-btn" onclick="scrollToSlide(${index} - 1)" title="Poprzednia rolka (↑)" aria-label="Poprzednia">
-                                <i class="fa-solid fa-chevron-up"></i>
-                            </button>
-                            <span class="sidebar-arrow-label">↑ ↓</span>
-                            <button type="button" class="sidebar-arrow-btn" onclick="scrollToSlide(${index} + 1)" title="Następna rolka (↓)" aria-label="Następna">
-                                <i class="fa-solid fa-chevron-down"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Bottom Info Overlay -->
-                    <div class="slide-info-box">
-                        <div class="author-tag-row">
-                            <a href="/lumina/${item.authorSlug}" class="author-name">
-                                <span>@${escapeHtml(item.author)}</span>
-                                <i class="fa-solid fa-circle-check" style="color:var(--gold); font-size:0.85rem;"></i>
-                            </a>
-                            <span class="author-badge">${escapeHtml(item.authorBadge || 'Społeczność')}</span>
-                            ${platformBadgeHtml}
-                        </div>
-
-                        <div class="short-title-text" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</div>
-
-                        <a href="${item.verseUrl}" class="verse-pill-btn" title="Kliknij, aby otworzyć rozdział w MojejBiblii">
-                            <i class="fa-solid fa-bookmark"></i>
-                            <span>${escapeHtml(item.verseRef)}</span>
-                            <i class="fa-solid fa-arrow-right" style="font-size:0.65rem;"></i>
-                        </a>
-
-                        <div class="sound-ticker-row">
-                            <i class="fa-solid fa-music"></i>
-                            <div class="sound-text-marquee">${escapeHtml(item.audioTitle || 'Christian Culture Worship')}</div>
-                        </div>
-                    </div>
-
-                    <!-- Spinning Vinyl -->
-                    <div class="vinyl-disc" title="Dźwięk: ${item.audioTitle || 'CC Music'}"></div>
-                `;
-
+            cleanShortsBase.forEach((item, index) => {
+                const slide = createSlideElement(item, index);
                 container.appendChild(slide);
             });
 
             setupIntersectionObserver();
+            setupInfiniteScroll();
         }
 
-        // ── Auto-Play on Scroll Snap ──
+        // ── Pętla Nieskończonego Przewijania (Infinite Loop) ──
+        function appendInfiniteShortsLoop() {
+            if (isLoopAppending || !cleanShortsBase.length) return;
+            isLoopAppending = true;
+            loopCounter++;
+
+            const container = document.getElementById('shortsContainer');
+            if (!container) { isLoopAppending = false; return; }
+
+            const startIndex = container.querySelectorAll('.short-slide').length;
+
+            cleanShortsBase.forEach((item, idx) => {
+                const slideIndex = startIndex + idx;
+                const loopedItem = {
+                    ...item,
+                    id: `${item.id}_loop_${loopCounter}_${idx}`
+                };
+                const slide = createSlideElement(loopedItem, slideIndex);
+                container.appendChild(slide);
+                if (observer) observer.observe(slide);
+            });
+
+            setTimeout(() => {
+                isLoopAppending = false;
+            }, 150);
+        }
+
+        function setupInfiniteScroll() {
+            const container = document.getElementById('shortsContainer');
+            if (!container || container._hasInfiniteScroll) return;
+            container._hasInfiniteScroll = true;
+
+            container.addEventListener('scroll', () => {
+                // Gdy użytkownik zbliża się na 2.5 ekranu do końca, doładuj kolejną pętlę
+                if (container.scrollTop + container.clientHeight >= container.scrollHeight - (container.clientHeight * 2.5)) {
+                    appendInfiniteShortsLoop();
+                }
+            }, { passive: true });
+        }
+
+        // ── Auto-Play na Przewijaniu i Zmianie Slajdu ──
         function setupIntersectionObserver() {
             if (observer) observer.disconnect();
 
@@ -1840,13 +1958,16 @@
 
                     if (entry.isIntersecting) {
                         activeSlideIndex = index;
+                        const allSlides = document.querySelectorAll('.short-slide');
+                        if (activeSlideIndex >= allSlides.length - 3) {
+                            appendInfiniteShortsLoop();
+                        }
                         updateProgress();
 
-                        // Play HTML5 Video — dźwięk włączony, fallback do muted jeśli browser policy blokuje
+                        // 1. HTML5 Video
                         if (video) {
                             video.muted = isGlobalMuted;
                             video.play().catch(() => {
-                                // Autoplay z dźwiękiem zablokowane — uruchamiamy wyciszone
                                 video.muted = true;
                                 isGlobalMuted = true;
                                 const icon = document.getElementById('globalMuteIcon');
@@ -1859,26 +1980,32 @@
                             video.ontimeupdate = updateVideoProgress;
                         }
 
-                        // Activate YouTube Iframe Autoplay
-                        if (iframe) {
+                        // 2. Kanał Live (CCTV24, Śniadaniowa)
+                        if (iframe && iframe.classList.contains('live-channel-iframe')) {
+                            triggerLiveChannelAutoplay(iframe, true);
+                        } else if (iframe) {
+                            // YouTube Shorts Autoplay
                             const currentSrc = iframe.getAttribute('src');
                             if (currentSrc && !currentSrc.includes('autoplay=1')) {
                                 iframe.setAttribute('src', currentSrc.replace('autoplay=0', 'autoplay=1'));
                             }
+                            try {
+                                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                            } catch(e) {}
                         }
                     } else {
-                        // Pause HTML5 Video
+                        // Pauza po opuszczeniu ekranu
                         if (video) {
                             video.pause();
                             video.currentTime = 0;
                         }
 
-                        // Pause YouTube Iframe
-                        if (iframe) {
-                            const currentSrc = iframe.getAttribute('src');
-                            if (currentSrc && currentSrc.includes('autoplay=1')) {
-                                iframe.setAttribute('src', currentSrc.replace('autoplay=1', 'autoplay=0'));
-                            }
+                        if (iframe && iframe.classList.contains('live-channel-iframe')) {
+                            triggerLiveChannelAutoplay(iframe, false);
+                        } else if (iframe) {
+                            try {
+                                iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                            } catch(e) {}
                         }
                     }
                 });
@@ -1887,12 +2014,71 @@
             document.querySelectorAll('.short-slide').forEach(slide => observer.observe(slide));
         }
 
-        // ── Sidebar Arrow Navigation ──
+        // ── Kliknięcie / Tap w rolkę ──
+        window.handleSlideTap = function(slideEl) {
+            const video = slideEl.querySelector('video');
+            const iframe = slideEl.querySelector('iframe.live-channel-iframe');
+            const indicator = slideEl.querySelector('.play-indicator-overlay');
+
+            if (iframe) {
+                triggerLiveChannelAutoplay(iframe, true);
+                if (indicator) {
+                    indicator.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    indicator.classList.add('show');
+                    setTimeout(() => indicator.classList.remove('show'), 500);
+                }
+                return;
+            }
+
+            if (video) {
+                if (video.paused) {
+                    video.play();
+                    if (indicator) {
+                        indicator.innerHTML = '<i class="fa-solid fa-play"></i>';
+                        indicator.classList.add('show');
+                        setTimeout(() => indicator.classList.remove('show'), 500);
+                    }
+                } else {
+                    video.pause();
+                    if (indicator) {
+                        indicator.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                        indicator.classList.add('show');
+                        setTimeout(() => indicator.classList.remove('show'), 500);
+                    }
+                }
+            }
+        };
+
+        // ── Wyciszenie Globalne ──
+        window.toggleGlobalMute = function() {
+            isGlobalMuted = !isGlobalMuted;
+            const icon = document.getElementById('globalMuteIcon');
+            if (icon) {
+                icon.className = isGlobalMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
+                icon.style.color = isGlobalMuted ? '#fff' : '#facc15';
+            }
+
+            document.querySelectorAll('.short-slide video').forEach(v => {
+                v.muted = isGlobalMuted;
+            });
+
+            document.querySelectorAll('.short-slide iframe.live-channel-iframe').forEach(ifr => {
+                triggerLiveChannelAutoplay(ifr, !isGlobalMuted);
+            });
+
+            showShortsToast(isGlobalMuted ? '🔇 Wyciszono dźwięk' : '🔊 Dźwięk włączony');
+        };
+
+        // ── Nawigacja Strzałkami ──
         window.scrollToSlide = function(targetIndex) {
             const items = document.querySelectorAll('.short-slide');
-            const idx = Math.max(0, Math.min(items.length - 1, targetIndex));
-            if (items[idx]) {
-                items[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (targetIndex >= items.length - 2) {
+                appendInfiniteShortsLoop();
+            }
+            const updatedItems = document.querySelectorAll('.short-slide');
+            const idx = Math.max(0, Math.min(updatedItems.length - 1, targetIndex));
+            if (updatedItems[idx]) {
+                updatedItems[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         };
 
@@ -1905,13 +2091,13 @@
         }
 
         function updateProgress() {
-            const total = shortsData.length || 1;
+            const total = document.querySelectorAll('.short-slide').length || cleanShortsBase.length || 1;
             const pct = ((activeSlideIndex + 1) / total) * 100;
             const bar = document.getElementById('shortsProgressFill');
             if (bar) bar.style.width = pct + '%';
         }
 
-        // ── Keyboard Arrows Support ──
+        // ── Obsługa Klawiatury ──
         window.addEventListener('keydown', (e) => {
             const container = document.getElementById('shortsContainer');
             if (!container) return;
@@ -1919,6 +2105,10 @@
             const slideHeight = container.clientHeight;
             if (e.key === 'ArrowDown' || e.key === 'j') {
                 e.preventDefault();
+                const items = container.querySelectorAll('.short-slide');
+                if (activeSlideIndex >= items.length - 2) {
+                    appendInfiniteShortsLoop();
+                }
                 container.scrollBy({ top: slideHeight, behavior: 'smooth' });
             } else if (e.key === 'ArrowUp' || e.key === 'k') {
                 e.preventDefault();
@@ -1932,7 +2122,7 @@
             }
         });
 
-        // ── Load Data ──
+        // ── Ładowanie Danych Feedu ──
         async function loadShortsFeed() {
             try {
                 const res = await fetch('data/shorts/shorts_feed.json?v=' + Date.now());
@@ -1945,7 +2135,7 @@
                 shortsData = FALLBACK_SHORTS;
             }
 
-            // Merge locally published shorts from user
+            // Integracja własnych opublikowanych rolek
             try {
                 const storedCustom = JSON.parse(localStorage.getItem('lumina_custom_shorts') || '[]');
                 if (Array.isArray(storedCustom) && storedCustom.length > 0) {
@@ -1955,7 +2145,6 @@
 
             renderSlides(shortsData);
 
-            // If URL hash contains specific short ID, jump to it
             if (window.location.hash) {
                 const targetId = window.location.hash.substring(1);
                 setTimeout(() => {
