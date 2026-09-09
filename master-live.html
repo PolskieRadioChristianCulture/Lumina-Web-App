@@ -743,6 +743,10 @@
             "cctv24-worship.html": {
                 title: "NOCNE CZUWANIE & WORSHIP 24/7",
                 desc: "Nocny strumień muzyczny i czuwanie modlitewne Christian Culture"
+            },
+            "tv-epafraz-live.html": {
+                title: "TV EPAFRAZ — GŁÓWNE PASMO BIBLIJNE",
+                desc: "Podcast Apokalipsa Palla, nauczania, proroctwa czasów końca i filmy chrześcijańskie"
             }
         };
 
@@ -794,6 +798,7 @@
 
             if (hour >= 0 && hour < 6) return "nocne-czuwanie-live.html";
             if (hour >= 6 && hour < 10) return "zapolske-live.html";
+            if (hour >= 13 && hour < 15) return "tv-epafraz-live.html";
             if (hour >= 16 && hour < 18) return "spiewajmy-panu-live.html";
             if (hour >= 18 && hour < 20) {
                 const dayOfWeek = now.getDay();
@@ -876,6 +881,19 @@
             } else {
                 if (hour !== 10) ksiegaNadzieiDoneHours[10] = false;
                 if (hour !== 22) ksiegaNadzieiDoneHours[22] = false;
+            }
+
+            // 3b) Trigger "TV Epafraz — Główne Pasmo Biblijne" (13:00 - 15:00 daily 2-hour block)
+            if (hour >= 13 && hour < 15) {
+                isSpecialSlotActive = true;
+                if (currentUrl !== "tv-epafraz-live.html") {
+                    switchChannel("tv-epafraz-live.html");
+                }
+                return;
+            } else {
+                if (isSpecialSlotActive && currentUrl === "tv-epafraz-live.html") {
+                    isSpecialSlotActive = false;
+                }
             }
 
             // 4) Trigger "Codzienne Uwielbienie" (16:00 - 18:00 daily 2-hour music block)
