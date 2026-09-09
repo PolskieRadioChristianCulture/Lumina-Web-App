@@ -25,7 +25,8 @@
             desc: 'Miejsce modlitwy, wzajemnego wsparcia i budowania dla kobiet szukających Bożej mądrości w codzienności, małżeństwie i macierzyństwie.',
             leader: 'Wioletta Rogowska',
             membersCount: 142,
-            topics: ['🌸 Modlitwa za rodzinę', '🕊️ Świadectwo wiary', '☕ Spotkanie kobiet', '📖 Werset dnia']
+            topics: ['🌸 Modlitwa za rodzinę', '🕊️ Świadectwo wiary', '☕ Spotkanie kobiet', '📖 Werset dnia'],
+            genderRestriction: 'kobieta'
         },
         {
             id: 'group_cc_men',
@@ -38,7 +39,8 @@
             desc: 'Męska odpowiedzialność, mężowie, ojcowie i liderzy w Chrystusie. Wzajemne umacnianie w prawości, odwadze i braterskiej modlitwie.',
             leader: 'Cezary Rogowski',
             membersCount: 128,
-            topics: ['🛡️ Męska odpowiedzialność', '⚔️ Walka duchowa', '💼 Praca & prawość', '🙏 Męski krąg modlitwy']
+            topics: ['🛡️ Męska odpowiedzialność', '⚔️ Walka duchowa', '💼 Praca & prawość', '🙏 Męski krąg modlitwy'],
+            genderRestriction: 'mezczyzna'
         },
         {
             id: 'group_singles',
@@ -166,9 +168,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <span style="background: linear-gradient(135deg, rgba(236,72,153,0.2), rgba(139,92,246,0.2)); border: 1px solid rgba(236,72,153,0.4); color: #f472b6; font-size: 0.72rem; font-weight: 800; padding: 4px 10px; border-radius: 10px; white-space: nowrap; flex-shrink: 0;">
-                                    Wejdź 💬
-                                </span>
+                                <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+                                    ${g.genderRestriction ? `
+                                        <span title="${g.genderRestriction === 'kobieta' ? 'Tylko kobiety' : 'Tylko mężczyźni'}"
+                                              style="font-size:0.68rem;font-weight:800;padding:3px 8px;border-radius:8px;
+                                                     background:${g.genderRestriction === 'kobieta' ? 'rgba(236,72,153,0.18)' : 'rgba(56,189,248,0.18)'};
+                                                     border:1px solid ${g.genderRestriction === 'kobieta' ? '#ec4899' : '#38bdf8'};
+                                                     color:${g.genderRestriction === 'kobieta' ? '#f472b6' : '#7dd3fc'};">
+                                            ${g.genderRestriction === 'kobieta' ? '🌸 Tylko kobiety' : '🛡️ Tylko mężczyźni'}
+                                        </span>
+                                    ` : ''}
+                                    <span style="background: linear-gradient(135deg, rgba(236,72,153,0.2), rgba(139,92,246,0.2)); border: 1px solid rgba(236,72,153,0.4); color: #f472b6; font-size: 0.72rem; font-weight: 800; padding: 4px 10px; border-radius: 10px; white-space: nowrap;">
+                                        Wejdź 💬
+                                    </span>
+                                </div>
                             </div>
                             
                             <p style="font-size: 0.76rem; color: #cbd5e1; line-height: 1.4; margin: 0;">
@@ -185,9 +198,74 @@
         `;
     }
 
+    // ── GENDER ACCESS GATE ──
+    function checkGenderAccess(group) {
+        if (!group.genderRestriction) return true; // no restriction
+
+        const myProfile = window.LuminaDB?.getCurrentProfile?.();
+        const myUser   = window.LuminaDB?.getCurrentUser?.();
+        const myGender = (
+            myProfile?.gender ||
+            myProfile?.plec  ||
+            myUser?.gender   ||
+            myUser?.plec     ||
+            localStorage.getItem('lumina_user_gender') ||
+            ''
+        ).toLowerCase().trim();
+
+        // Accepted values: 'kobieta' / 'mezczyzna' (also 'woman'/'man' aliases)
+        const normalise = g => {
+            if (['kobieta','woman','female','k','f'].includes(g)) return 'kobieta';
+            if (['mezczyzna','mężczyzna','man','male','m'].includes(g)) return 'mezczyzna';
+            return g;
+        };
+
+        return normalise(myGender) === group.genderRestriction;
+    }
+
+    function showGenderBlockModal(group) {
+        const isWomenRoom = group.genderRestriction === 'kobieta';
+        const icon  = isWomenRoom ? '🌸' : '🛡️';
+        const color = isWomenRoom ? '#ec4899' : '#38bdf8';
+        const forWhom = isWomenRoom
+            ? 'Ta przestrzeń jest przeznaczona wyłącznie dla kobiet wierzących.'
+            : 'Ta przestrzeń jest przeznaczona wyłącznie dla mężczyzn wierzących.';
+        const subtitle = isWomenRoom
+            ? 'Szanujemy prywatność i bezpieczeństwo sióstr w wierze.'
+            : 'Szanujemy prywatność i bezpieczeństwo braci w wierze.';
+
+        // Remove previous if any
+        const prev = document.getElementById('luminaGenderGateModal');
+        if (prev) prev.remove();
+
+        const m = document.createElement('div');
+        m.id = 'luminaGenderGateModal';
+        m.style.cssText = 'position:fixed;inset:0;z-index:9999999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.88);backdrop-filter:blur(14px);padding:20px;';
+        m.innerHTML = `
+            <div style="max-width:380px;width:100%;background:#070e24;border:1.5px solid ${color}55;border-radius:24px;padding:28px 24px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.9);">
+                <div style="font-size:3rem;margin-bottom:12px;">${icon}</div>
+                <div style="font-size:1.1rem;font-weight:900;color:#fff;font-family:'Outfit',sans-serif;margin-bottom:8px;">${group.name}</div>
+                <div style="font-size:0.88rem;color:${color};font-weight:700;margin-bottom:10px;">${forWhom}</div>
+                <div style="font-size:0.78rem;color:#94a3b8;line-height:1.5;margin-bottom:20px;">${subtitle}<br>Dziękujemy za zrozumienie i szacunek dla tej przestrzeni.</div>
+                <button onclick="document.getElementById('luminaGenderGateModal').remove()" style="padding:12px 28px;border-radius:14px;background:linear-gradient(135deg,${color},#8b5cf6);border:none;color:#fff;font-weight:800;font-family:inherit;font-size:0.9rem;cursor:pointer;width:100%;">
+                    Rozumiem 🕊️
+                </button>
+            </div>
+        `;
+        document.body.appendChild(m);
+        m.addEventListener('click', e => { if (e.target === m) m.remove(); });
+    }
+
     // ── OPEN SPECIFIC GROUP CHAT ROOM ──
     window.openGroupChatRoom = function(groupId, prefillTopic) {
         const group = LUMINA_THEMATIC_GROUPS.find(g => g.id === groupId) || LUMINA_THEMATIC_GROUPS[0];
+
+        // ── GENDER GATE ──
+        if (!checkGenderAccess(group)) {
+            showGenderBlockModal(group);
+            return;
+        }
+
         activeGroupSession = group;
 
         const groupsListView = document.getElementById('messengerGroupsListView');
