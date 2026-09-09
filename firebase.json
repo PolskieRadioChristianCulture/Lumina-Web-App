@@ -56,6 +56,18 @@
       ],
       "rewrites": [
         {
+          "source": "/rolki",
+          "destination": "/lumina-shorts.html"
+        },
+        {
+          "source": "/shorts",
+          "destination": "/lumina-shorts.html"
+        },
+        {
+          "source": "/lumina-shorts",
+          "destination": "/lumina-shorts.html"
+        },
+        {
           "source": "/mojabiblia",
           "destination": "/mojabiblia.html"
         },
@@ -633,6 +645,18 @@
       },
       "cleanUrls": true,
       "rewrites": [
+        {
+          "source": "/rolki",
+          "destination": "/lumina-shorts.html"
+        },
+        {
+          "source": "/shorts",
+          "destination": "/lumina-shorts.html"
+        },
+        {
+          "source": "/lumina-shorts",
+          "destination": "/lumina-shorts.html"
+        },
         {
           "source": "/vod",
           "destination": "/vod.html"
