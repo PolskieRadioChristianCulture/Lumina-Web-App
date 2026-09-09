@@ -1893,6 +1893,7 @@
 
             cleanShortsBase.forEach((item, index) => {
                 const slide = createSlideElement(item, index);
+                if (index === 0) slide.classList.add('active');
                 container.appendChild(slide);
             });
 
@@ -1958,6 +1959,8 @@
 
                     if (entry.isIntersecting) {
                         activeSlideIndex = index;
+                        document.querySelectorAll('.short-slide').forEach(s => s.classList.remove('active'));
+                        slide.classList.add('active');
                         const allSlides = document.querySelectorAll('.short-slide');
                         if (activeSlideIndex >= allSlides.length - 3) {
                             appendInfiniteShortsLoop();
