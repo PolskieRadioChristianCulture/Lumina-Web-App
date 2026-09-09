@@ -5097,52 +5097,54 @@
 
             <!-- ══════════ EXPLAINABLE AI MATCH BREAKDOWN ══════════ -->
             <div id="mMatchBreakdownBox" style="background:rgba(15,23,42,0.85);border:1px solid rgba(168,85,247,0.3);border-radius:14px;padding:14px;margin-bottom:16px;">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="toggleMatchBreakdownDetails()">
                     <div style="display:flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:800;color:#facc15;">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
                         <span>Dopasowanie LUMINA:</span>
                         <span id="mMatchScoreValue" style="color:#fff;background:linear-gradient(135deg,#ec4899,#8b5cf6);padding:2px 8px;border-radius:10px;font-size:0.78rem;">96%</span>
                     </div>
-                    <button type="button" onclick="toggleMatchBreakdownDetails()" style="background:none;border:none;color:#38bdf8;font-size:0.75rem;font-weight:700;cursor:pointer;padding:2px 4px;">
+                    <button type="button" onclick="event.stopPropagation();toggleMatchBreakdownDetails();" style="background:none;border:none;color:#38bdf8;font-size:0.75rem;font-weight:700;cursor:pointer;padding:4px 6px;min-height:36px;display:inline-flex;align-items:center;">
                         <span id="mMatchToggleText">Szczegóły ▼</span>
                     </button>
                 </div>
 
-                <!-- Expanded Breakdown Bars (Default visible) -->
-                <div id="mMatchBarsContainer" style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
-                    <div>
-                        <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#cbd5e1;margin-bottom:2px;">
-                            <span>✝️ Wiara & Duchowość</span>
-                            <span id="mBarFaithVal" style="font-weight:700;color:#38bdf8;">100%</span>
+                <!-- Collapsible Details: Bars + Common Note (DOMYŚLNIE SCHOWANE DLA KAŻDEGO) -->
+                <div id="mMatchDetailsContent" style="display:none;flex-direction:column;gap:10px;margin-top:10px;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;">
+                    <div id="mMatchBarsContainer" style="display:flex;flex-direction:column;gap:8px;">
+                        <div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#cbd5e1;margin-bottom:2px;">
+                                <span>✝️ Wiara & Duchowość</span>
+                                <span id="mBarFaithVal" style="font-weight:700;color:#38bdf8;">100%</span>
+                            </div>
+                            <div style="height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
+                                <div id="mBarFaith" style="width:100%;height:100%;background:linear-gradient(90deg,#38bdf8,#0ea5e9);border-radius:4px;"></div>
+                            </div>
                         </div>
-                        <div style="height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
-                            <div id="mBarFaith" style="width:100%;height:100%;background:linear-gradient(90deg,#38bdf8,#0ea5e9);border-radius:4px;"></div>
+                        <div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#cbd5e1;margin-bottom:2px;">
+                                <span>🎯 Cel w Społeczności</span>
+                                <span id="mBarGoalVal" style="font-weight:700;color:#ec4899;">95%</span>
+                            </div>
+                            <div style="height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
+                                <div id="mBarGoal" style="width:95%;height:100%;background:linear-gradient(90deg,#f472b6,#ec4899);border-radius:4px;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#cbd5e1;margin-bottom:2px;">
+                                <span>🌿 Wartości & Styl Życia</span>
+                                <span id="mBarValuesVal" style="font-weight:700;color:#a855f7;">92%</span>
+                            </div>
+                            <div style="height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
+                                <div id="mBarValues" style="width:92%;height:100%;background:linear-gradient(90deg,#c084fc,#a855f7);border-radius:4px;"></div>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#cbd5e1;margin-bottom:2px;">
-                            <span>🎯 Cel w Społeczności</span>
-                            <span id="mBarGoalVal" style="font-weight:700;color:#ec4899;">95%</span>
-                        </div>
-                        <div style="height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
-                            <div id="mBarGoal" style="width:95%;height:100%;background:linear-gradient(90deg,#f472b6,#ec4899);border-radius:4px;"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#cbd5e1;margin-bottom:2px;">
-                            <span>🌿 Wartości & Styl Życia</span>
-                            <span id="mBarValuesVal" style="font-weight:700;color:#a855f7;">92%</span>
-                        </div>
-                        <div style="height:5px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
-                            <div id="mBarValues" style="width:92%;height:100%;background:linear-gradient(90deg,#c084fc,#a855f7);border-radius:4px;"></div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Co Was Łączy Note -->
-                <div id="mMatchCommonNote" style="margin-top:10px;padding:8px 10px;background:rgba(236,72,153,0.1);border:1px dashed rgba(236,72,153,0.3);border-radius:8px;font-size:0.75rem;color:#f9a8d4;line-height:1.4;">
-                    <i class="fa-solid fa-heart" style="color:#ec4899;margin-right:4px;"></i>
-                    <span id="mMatchCommonText">Oboje stawiacie Chrystusa w centrum relacji i cenicie Pismo Święte.</span>
+                    <!-- Co Was Łączy Note -->
+                    <div id="mMatchCommonNote" style="padding:8px 10px;background:rgba(236,72,153,0.1);border:1px dashed rgba(236,72,153,0.3);border-radius:8px;font-size:0.75rem;color:#f9a8d4;line-height:1.4;">
+                        <i class="fa-solid fa-heart" style="color:#ec4899;margin-right:4px;"></i>
+                        <span id="mMatchCommonText">Oboje stawiacie Chrystusa w centrum relacji i cenicie Pismo Święte.</span>
+                    </div>
                 </div>
             </div>
 
@@ -7729,37 +7731,59 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             }
 
             // Fill Explainable Match Breakdown
-            const rawScore = parseInt(scoreLabel, 10) || 94;
-            const faithScore = 100;
-            const goalScore = Math.min(100, Math.max(80, rawScore - 2));
-            const valuesScore = Math.min(100, Math.max(78, rawScore - 4));
+            const mMatchBox = document.getElementById('mMatchBreakdownBox');
+            const mDetailsContent = document.getElementById('mMatchDetailsContent');
+            const mBarsCont = document.getElementById('mMatchBarsContainer');
+            const mNote = document.getElementById('mMatchCommonNote');
+            const mToggleText = document.getElementById('mMatchToggleText');
 
-            const mScoreVal = document.getElementById('mMatchScoreValue');
-            if (mScoreVal) mScoreVal.textContent = (scoreLabel && !scoreLabel.includes('profilu')) ? scoreLabel : '95%';
+            // ZAWSZE i STANDARDOWO schowane szczegóły dopasowania dla każdego profilu (chowanie jako standard)
+            if (mDetailsContent) {
+                mDetailsContent.style.display = 'none';
+            } else {
+                if (mBarsCont) mBarsCont.style.display = 'none';
+                if (mNote) mNote.style.display = 'none';
+            }
+            if (mToggleText) mToggleText.textContent = 'Szczegóły ▼';
 
-            const mBarFaith = document.getElementById('mBarFaith');
-            const mBarFaithVal = document.getElementById('mBarFaithVal');
-            if (mBarFaith) mBarFaith.style.width = faithScore + '%';
-            if (mBarFaithVal) mBarFaithVal.textContent = faithScore + '%';
+            // Ukryj cały boks dopasowania dla profili misyjnych, własnego profilu lub 0%
+            if (isMission || scoreLabel === 'Twój profil' || scoreLabel === '0%') {
+                if (mMatchBox) mMatchBox.style.display = 'none';
+            } else {
+                if (mMatchBox) mMatchBox.style.display = 'block';
 
-            const mBarGoal = document.getElementById('mBarGoal');
-            const mBarGoalVal = document.getElementById('mBarGoalVal');
-            if (mBarGoal) mBarGoal.style.width = goalScore + '%';
-            if (mBarGoalVal) mBarGoalVal.textContent = goalScore + '%';
+                const rawScore = parseInt(scoreLabel, 10) || 94;
+                const faithScore = 100;
+                const goalScore = Math.min(100, Math.max(80, rawScore - 2));
+                const valuesScore = Math.min(100, Math.max(78, rawScore - 4));
 
-            const mBarValues = document.getElementById('mBarValues');
-            const mBarValuesVal = document.getElementById('mBarValuesVal');
-            if (mBarValues) mBarValues.style.width = valuesScore + '%';
-            if (mBarValuesVal) mBarValuesVal.textContent = valuesScore + '%';
+                const mScoreVal = document.getElementById('mMatchScoreValue');
+                if (mScoreVal) mScoreVal.textContent = (scoreLabel && !scoreLabel.includes('profilu')) ? scoreLabel : '95%';
 
-            const mCommonText = document.getElementById('mMatchCommonText');
-            if (mCommonText) {
-                if (p.tags && p.tags.length > 0) {
-                    mCommonText.textContent = `Oboje cenicie: ${p.tags.slice(0, 3).join(', ')} oraz budowanie relacji zakorzenionych w Chrystusie.`;
-                } else if (p.verse) {
-                    mCommonText.textContent = `Wspólny fundament wiary i zamiłowanie do Słowa Bożego (${p.verse.slice(0, 45)}...).`;
-                } else {
-                    mCommonText.textContent = 'Oboje stawiacie Chrystusa w centrum relacji, cenicie Pismo Święte i szukacie głębszych rozmów.';
+                const mBarFaith = document.getElementById('mBarFaith');
+                const mBarFaithVal = document.getElementById('mBarFaithVal');
+                if (mBarFaith) mBarFaith.style.width = faithScore + '%';
+                if (mBarFaithVal) mBarFaithVal.textContent = faithScore + '%';
+
+                const mBarGoal = document.getElementById('mBarGoal');
+                const mBarGoalVal = document.getElementById('mBarGoalVal');
+                if (mBarGoal) mBarGoal.style.width = goalScore + '%';
+                if (mBarGoalVal) mBarGoalVal.textContent = goalScore + '%';
+
+                const mBarValues = document.getElementById('mBarValues');
+                const mBarValuesVal = document.getElementById('mBarValuesVal');
+                if (mBarValues) mBarValues.style.width = valuesScore + '%';
+                if (mBarValuesVal) mBarValuesVal.textContent = valuesScore + '%';
+
+                const mCommonText = document.getElementById('mMatchCommonText');
+                if (mCommonText) {
+                    if (p.tags && p.tags.length > 0) {
+                        mCommonText.textContent = `Oboje cenicie: ${p.tags.slice(0, 3).join(', ')} oraz budowanie relacji zakorzenionych w Chrystusie.`;
+                    } else if (p.verse) {
+                        mCommonText.textContent = `Wspólny fundament wiary i zamiłowanie do Słowa Bożego (${p.verse.slice(0, 45)}...).`;
+                    } else {
+                        mCommonText.textContent = 'Oboje stawiacie Chrystusa w centrum relacji, cenicie Pismo Święte i szukacie głębszych rozmów.';
+                    }
                 }
             }
 
@@ -7768,12 +7792,24 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         };
 
         window.toggleMatchBreakdownDetails = function() {
-            const container = document.getElementById('mMatchBarsContainer');
+            const content = document.getElementById('mMatchDetailsContent');
+            const bars = document.getElementById('mMatchBarsContainer');
+            const note = document.getElementById('mMatchCommonNote');
             const toggleText = document.getElementById('mMatchToggleText');
-            if (!container) return;
-            const isHidden = container.style.display === 'none';
-            container.style.display = isHidden ? 'flex' : 'none';
-            if (toggleText) toggleText.textContent = isHidden ? 'Zwiń ▲' : 'Szczegóły ▼';
+
+            const target = content || bars;
+            if (!target) return;
+
+            const isCurrentlyHidden = (target.style.display === 'none' || window.getComputedStyle(target).display === 'none');
+            if (isCurrentlyHidden) {
+                target.style.display = 'flex';
+                if (!content && note) note.style.display = 'block';
+                if (toggleText) toggleText.textContent = 'Zwiń ▲';
+            } else {
+                target.style.display = 'none';
+                if (!content && note) note.style.display = 'none';
+                if (toggleText) toggleText.textContent = 'Szczegóły ▼';
+            }
         };
 
         // Legacy wrapper for backwards-compatibility
