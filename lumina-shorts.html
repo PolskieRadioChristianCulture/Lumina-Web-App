@@ -549,6 +549,17 @@
             pointer-events: auto;
         }
 
+        /* Dyskretne kadrowanie YouTube Shorts — ukrywa natywne przyciski YouTube (Udostępnij, Dźwięk itp.) */
+        .video-container iframe.youtube-shorts-iframe {
+            width: 114%;
+            height: 104%;
+            max-width: none;
+            transform: scale(1.06) translate(-2%, 0);
+            transform-origin: center center;
+            border: none;
+            pointer-events: auto;
+        }
+
         /* Tap overlay to play/pause */
         .tap-detector {
             position: absolute;
@@ -1755,6 +1766,7 @@
         function createSlideElement(item, index) {
             const isAmen = localStorage.getItem('lumina_amen_' + item.id) === '1';
             const amenDisplay = isAmen ? item.amenCount + 1 : item.amenCount;
+            const platform = item.videoType || 'mp4';
 
             const slide = document.createElement('div');
             slide.className = 'short-slide';
@@ -1764,7 +1776,6 @@
             slide.setAttribute('data-platform', platform);
 
             let mediaHtml = '';
-            const platform = item.videoType || 'mp4';
             let platformBadgeHtml = '';
 
             if (platform === 'mp4') {
@@ -1777,6 +1788,7 @@
             } else if (platform === 'youtube') {
                 mediaHtml = `
                     <iframe src="https://www.youtube.com/embed/${item.videoSrc}?enablejsapi=1&autoplay=0&mute=0&controls=0&playsinline=1&loop=1&playlist=${item.videoSrc}&rel=0&modestbranding=1" 
+                            class="youtube-shorts-iframe"
                             title="${escapeHtml(item.title)}" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                             allowfullscreen
