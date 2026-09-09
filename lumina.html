@@ -3008,12 +3008,18 @@
         ══════════════════════════════════════════════════════════════════════ */
         .qna-section {
             position: relative;
-            padding: 70px 20px 80px 20px;
-            background: radial-gradient(circle at 50% 10%, rgba(250, 204, 21, 0.08) 0%, rgba(9, 14, 30, 0.98) 75%);
-            border-top: 1px solid rgba(250, 204, 21, 0.2);
+            padding: 30px 20px;
+            background: radial-gradient(circle at 50% 50%, rgba(250, 204, 21, 0.05) 0%, rgba(9, 14, 30, 0.98) 80%);
+            border-top: 1px solid rgba(250, 204, 21, 0.18);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            margin: 40px 0 0 0;
+            margin: 24px 0 0 0;
             z-index: 10;
+            transition: padding 0.35s ease, margin 0.35s ease;
+        }
+
+        .qna-section.qna-expanded {
+            padding: 60px 20px 80px 20px;
+            margin: 36px 0 0 0;
         }
 
         .qna-container {
@@ -3023,7 +3029,101 @@
 
         .qna-header-box {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 0;
+            transition: margin-bottom 0.35s ease;
+        }
+
+        .qna-section.qna-expanded .qna-header-box {
+            margin-bottom: 25px;
+        }
+
+        /* Przycisk toggle Baza Wiedzy & Pomoc */
+        .qna-tag-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.18), rgba(236, 72, 153, 0.15));
+            border: 1.5px solid rgba(250, 204, 21, 0.55);
+            color: #facc15;
+            font-family: inherit;
+            font-size: 0.84rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            min-height: 44px;
+            padding: 8px 24px;
+            border-radius: 30px;
+            margin: 0 auto;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            touch-action: manipulation;
+        }
+
+        .qna-tag-btn:hover {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.28), rgba(236, 72, 153, 0.25));
+            border-color: #facc15;
+            box-shadow: 0 6px 24px rgba(250, 204, 21, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .qna-tag-btn:active {
+            transform: translateY(0);
+        }
+
+        .qna-tag-btn.active {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.32), rgba(168, 85, 247, 0.25));
+            border-color: #facc15;
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
+        }
+
+        .qna-toggle-chevron {
+            font-size: 0.84rem;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .qna-tag-btn.active .qna-toggle-chevron {
+            transform: rotate(180deg);
+        }
+
+        .qna-content-wrapper {
+            animation: qnaFadeIn 0.35s ease forwards;
+        }
+
+        @keyframes qnaFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .qna-collapse-bottom-btn {
+            background: rgba(250, 204, 21, 0.12);
+            border: 1px solid rgba(250, 204, 21, 0.4);
+            color: #facc15;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 10px 24px;
+            border-radius: 24px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 44px;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+
+        .qna-collapse-bottom-btn:hover {
+            background: rgba(250, 204, 21, 0.22);
+            border-color: #facc15;
+            box-shadow: 0 4px 15px rgba(250, 204, 21, 0.25);
+            transform: translateY(-2px);
         }
 
         .qna-tag {
@@ -4230,6 +4330,46 @@
                     </div>
                 </div>
 
+                <!-- 11d. Robert Łukasz Pio (Członek Społeczności LUMINA • Kraków) -->
+                <div class="profile-card" id="card_profile_u_robertukaszpio_5668" data-profile-slug="u_robertukaszpio_5668" onclick="openCommunityProfile('u_robertukaszpio_5668')" data-category="mezczyzna spolecznosc" style="cursor:pointer;">
+                    <div class="card-photo" style="position:relative;">
+                        <div class="card-new-badge">
+                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> SPOŁECZNOŚĆ
+                        </div>
+                        <img src="avatar_robert.jpg" onerror="this.src='lumina_icon.jpg'" alt="Robert Łukasz Pio" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="btn-carousel-follow-pulse" onclick="handleCarouselFollowClick(event, this, 'u_robertukaszpio_5668', 'Robert Łukasz Pio', 'avatar_robert.jpg')">
+                            <i class="fa-solid fa-bell"></i> OBSERWUJ
+                        </button>
+                        <button class="card-heart" onclick="toggleLike(event,this,'u_robertukaszpio_5668','Robert Łukasz Pio','avatar_robert.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #0ea5e9, #6366f1);">98%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Robert Łukasz Pio, 41</div>
+                        <div class="card-city">📍 Kraków • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ Społeczność</span></div>
+                        <div class="card-desc">"Szczęść Boże! Cieszę się, że mogę być częścią chrześcijańskiej społeczności LUMINA."</div>
+                    </div>
+                </div>
+
+                <!-- 11e. Zyta Grzesik (Członkini Społeczności LUMINA • Warszawa) -->
+                <div class="profile-card" id="card_profile_u_zytagrzesik_7502" data-profile-slug="u_zytagrzesik_7502" onclick="openCommunityProfile('u_zytagrzesik_7502')" data-category="kobieta spolecznosc" style="cursor:pointer;">
+                    <div class="card-photo" style="position:relative;">
+                        <div class="card-new-badge">
+                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#fde047; font-size:0.65rem;"></i> SPOŁECZNOŚĆ
+                        </div>
+                        <img src="lumina_icon.jpg" alt="Zyta Grzesik" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+                        <button class="btn-carousel-follow-pulse" onclick="handleCarouselFollowClick(event, this, 'u_zytagrzesik_7502', 'Zyta Grzesik', 'lumina_icon.jpg')">
+                            <i class="fa-solid fa-bell"></i> OBSERWUJ
+                        </button>
+                        <button class="card-heart" onclick="toggleLike(event,this,'u_zytagrzesik_7502','Zyta Grzesik','lumina_icon.jpg')"><i class="fa-solid fa-heart"></i></button>
+                        <div class="card-match" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">100%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">Zyta Grzesik, 48</div>
+                        <div class="card-city">📍 Warszawa • <span style="color:#10b981;font-weight:800;font-size:0.72rem;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.35);padding:2px 7px;border-radius:8px;">✨ Społeczność</span></div>
+                        <div class="card-desc">"Szukam wartościowej relacji opartej na wierze, zaufaniu i wzajemnym szacunku w Chrystusie."</div>
+                    </div>
+                </div>
+
                 <!-- 12. Magdalena (Kobieta) -->
                 <div class="profile-card" id="card_profile_magdalena" data-profile-slug="magdalena" onclick="openCommunityProfile('magdalena')" data-category="kobieta">
                     <div class="card-photo" style="position:relative;">
@@ -4468,15 +4608,30 @@
     <section class="qna-section" id="qna-section" aria-label="Pytania i Odpowiedzi LUMINA">
         <div class="qna-container">
             <div class="qna-header-box">
-                <span class="qna-tag"><i class="fa-solid fa-circle-question"></i> Baza Wiedzy & Pomoc</span>
-                <h2 class="qna-title">Pytania i Odpowiedzi (Q&A)</h2>
-                <div class="gold-divider centered" style="width:60px; height:3px; background:#facc15; margin:10px auto; border-radius:2px;"></div>
-                <p class="qna-subtitle">
-                    Poznaj najważniejsze informacje o portalu LUMINA, bezpiecznych relacjach chrześcijańskich, Tablicy Społeczności i ekosystemie Christian Culture.
-                </p>
+                <button type="button" 
+                        class="qna-tag-btn" 
+                        id="qnaToggleBtn" 
+                        onclick="toggleQnaSection()" 
+                        aria-expanded="false" 
+                        aria-controls="qnaContentWrapper" 
+                        title="Kliknij, aby rozwinąć lub zwinąć Bazę Wiedzy i Pomoc (Pytania i Odpowiedzi Q&A)">
+                    <i class="fa-solid fa-circle-question"></i> 
+                    <span>Baza Wiedzy & Pomoc</span>
+                    <i class="fa-solid fa-chevron-down qna-toggle-chevron" id="qnaToggleChevron"></i>
+                </button>
             </div>
 
-            <div class="qna-accordion">
+            <!-- Zwinięta zawartość Q&A (domyślnie ukryta pod przyciskiem) -->
+            <div id="qnaContentWrapper" class="qna-content-wrapper" style="display: none;">
+                <div style="text-align: center; margin-top: 24px; margin-bottom: 25px;">
+                    <h2 class="qna-title">Pytania i Odpowiedzi (Q&A)</h2>
+                    <div class="gold-divider centered" style="width:60px; height:3px; background:#facc15; margin:10px auto; border-radius:2px;"></div>
+                    <p class="qna-subtitle" style="margin:0 auto;">
+                        Poznaj najważniejsze informacje o portalu LUMINA, bezpiecznych relacjach chrześcijańskich, Tablicy Społeczności i ekosystemie Christian Culture.
+                    </p>
+                </div>
+
+                <div class="qna-accordion">
                 <!-- Q1: Czym jest LUMINA -->
                 <details class="qna-item" open>
                     <summary class="qna-summary">
@@ -4609,6 +4764,14 @@
                         <p>Możesz dołączyć do grona Mecenasów i Patronów na platformie <a href="https://patronite.pl/osobowoscplus" target="_blank" rel="noopener noreferrer" style="color:#facc15; font-weight:700; text-decoration:underline;">Patronite • Osobowość Plus</a>, wspierając budowę niezależnych, czystych mediów chrześcijańskich.</p>
                     </div>
                 </details>
+            </div>
+
+                <!-- Przycisk zwiń na dole sekcji -->
+                <div style="text-align: center; margin-top: 32px;">
+                    <button type="button" onclick="toggleQnaSection(false)" class="qna-collapse-bottom-btn" title="Zwiń Bazę Wiedzy & Pomoc">
+                        <i class="fa-solid fa-chevron-up"></i> Zwiń Bazę Wiedzy & Pomoc
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -6290,7 +6453,15 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
         // ── Get 100% Live Profile by Slug or UID ──
         window.getLiveProfile = function(slug) {
             if (!slug) return null;
-            const base = (window.LUMINA_BASE_PROFILES && window.LUMINA_BASE_PROFILES[slug]) ? window.LUMINA_BASE_PROFILES[slug] : {};
+            let base = (window.LUMINA_BASE_PROFILES && window.LUMINA_BASE_PROFILES[slug]) ? window.LUMINA_BASE_PROFILES[slug] : {};
+            if (typeof window.getLuminaProfile === 'function') {
+                const pDb = window.getLuminaProfile(slug);
+                if (pDb && pDb.name) base = Object.assign({}, pDb, base);
+            } else if (window.PROFILES_DB) {
+                const clean = slug.toLowerCase().replace(/^u_/, '');
+                const pDb = window.PROFILES_DB[clean] || window.PROFILES_DB[slug];
+                if (pDb && pDb.name) base = Object.assign({}, pDb, base);
+            }
             let live = Object.assign({
                 slug: slug,
                 name: slug,
@@ -6477,7 +6648,9 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     'studiodobregoslowa', 'osobowoscplus', 'noemi', 'dawid', 'weronika', 'tomek', 'anna', 'piotr', 'julia', 'magdalena',
                     'lumina', 'christianculture', 'christian_culture', 'portal_lumina', 'portallumina', 'radiochristianculture',
                     'u_urszula_7685', 'urszula', 'ula', 'u_ula',
-                    'zbyszekgieron', 'zofiadudek', 'u_yciezywymbogiem_4231', 'pawelmurawski', 'pawel', 'nhjyeuo4nxm8fifejphmi9rtqv12'
+                    'zbyszekgieron', 'zofiadudek', 'u_yciezywymbogiem_4231', 'pawelmurawski', 'pawel', 'nhjyeuo4nxm8fifejphmi9rtqv12',
+                    'u_robertukaszpio_5668', 'robertukaszpio', 'robert',
+                    'u_zytagrzesik_7502', 'zytagrzesik', 'zyta'
                 ]);
                 const renderedKeys = new Set(exactSystemSlugs);
                 const renderedNames = new Set([
@@ -6485,7 +6658,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     'telewizja cctv', 'christian culture tv', 'cc men', 'cc women', 'studio dobrego słowa', 'osobowość plus', 
                     'noemi', 'dawid', 'weronika', 'tomasz', 'tomek', 'anna', 'piotr', 'julia', 'magdalena',
                     'lumina', 'portal lumina', 'radio christian culture', 'misja christian culture',
-                    'urszula', 'ula', 'urszula k.', 'zbyszek gieroń', 'zofia dudek', 'paweł murawski', 'pawel murawski'
+                    'urszula', 'ula', 'urszula k.', 'zbyszek gieroń', 'zofia dudek', 'paweł murawski', 'pawel murawski',
+                    'robert łukasz pio', 'robert lukasz pio', 'zyta grzesik'
                 ]);
 
                 // Helper to build a single community card
@@ -6609,16 +6783,20 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     }
                 } catch(e) {}
 
-                // 2. Add all unique Firestore community profiles
+                // 2. Add all unique community profiles from PROFILES_DB, DEFAULT_COMMUNITY_PROFILES, and Cloud Firestore
+                const dbProfilesList = (typeof window.PROFILES_DB === 'object' && window.PROFILES_DB) 
+                    ? Object.values(window.PROFILES_DB) 
+                    : [];
+                const defaultProfilesList = (typeof DEFAULT_COMMUNITY_PROFILES !== 'undefined' && Array.isArray(DEFAULT_COMMUNITY_PROFILES))
+                    ? DEFAULT_COMMUNITY_PROFILES
+                    : [];
                 const candidatesPool = [
+                    ...dbProfilesList,
+                    ...defaultProfilesList,
                     ...(Array.isArray(window._cachedLiveProfiles) ? window._cachedLiveProfiles : []),
                     ...Object.values(window._cloudProfilesMap || {})
                 ];
                 candidatesPool.forEach(p => {
-                    // Żelazna Doktryna LUMINA (@L + @Joma): Nie polecamy profilom męskim mężczyzn a kobiecym kobiet
-                    if (typeof window.isProfileRecommendedForUser === 'function' && !window.isProfileRecommendedForUser(p)) {
-                        return; // Pomijamy profil tej samej płci w polecanych na karuzeli
-                    }
                     cloudCardsHtml += buildCommunityCard(p, false);
                 });
             } catch(err) {
@@ -9338,10 +9516,15 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
             { slug: 'jolawojcik', name: 'Jola Wójcik', job: 'Biblijny Czas Modlitwy • Polskie Radio CC 🕊️🌸', city: 'Polska', avatar: 'avatar_jolawojcik.jpg', badge: '🕊️ Pasmo Modlitwy', isMission: true },
             { slug: 'studiodobregoslowa', name: 'Studio Dobrego Słowa', job: 'Oficjalny Kanał Audio & Wideo 🎙️', city: 'Polska', avatar: 'studiodobregoslowa_avatar.jpg', badge: '🎙️ Studio CC', isMission: true },
             { slug: 'osobowoscplus', name: 'Osobowość Plus', job: 'Formacja Chrześcijańska & Psychologia 🕊️', city: 'Polska', avatar: 'logo_osobowosc_plus.jpg', badge: '🕊️ Formacja', isMission: true },
-            { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'u_robertukaszpio_5668', name: 'Robert Łukasz Pio', job: 'Członek Społeczności LUMINA ✨', city: 'Kraków, Polska', avatar: 'avatar_robert.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'u_zytagrzesik_7502', name: 'Zyta Grzesik', job: 'Członkini Społeczności LUMINA 🌸', city: 'Warszawa, Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'zbyszekgieron', name: 'Zbyszek Gieroń', job: 'Profil Misyjny • Świadectwo & Wiara 🕊️', city: 'Polska', avatar: 'avatar_zbyszek_gieron.jpg', badge: '🕊️ Misja & Wiara', isMission: true },
+            { slug: 'zofiadudek', name: 'Zofia Dudek', job: 'Kobiety Christian Culture • Modlitwa 🌸', city: 'Polska', avatar: 'avatar_zofia_dudek.jpg', badge: '🌸 Kobiety CC', isMission: false },
             { slug: 'u_yciezywymbogiem_4231', name: 'Paweł Murawski', job: 'Członek Społeczności LUMINA ✨', city: 'Żywiec, Polska', avatar: 'avatar_pawel_murawski.jpg', badge: '✨ Społeczność', isMission: false },
             { slug: 'u_urszula_7685', name: 'Urszula', job: 'Członkini Społeczności LUMINA 🕊️', city: 'Kraków, Polska', avatar: 'avatar_urszula.jpg', badge: '✨ Społeczność', isMission: false },
-            { slug: 'u_anna_3421', name: 'Anna', job: 'Kobiety Christian Culture 🌸', city: 'Kraków, Polska', avatar: 'lumina_icon.jpg', badge: '✨ Społeczność', isMission: false },
+            { slug: 'magdalena', name: 'Magdalena', job: 'Społeczność LUMINA 🌸', city: 'Poznań, Polska', avatar: 'avatar_magdalena.webp', badge: '✨ Społeczność', isMission: false },
+            { slug: 'tomek', name: 'Tomasz', job: 'Społeczność LUMINA ✨', city: 'Gdańsk, Polska', avatar: 'avatar_widget_tomek.webp', badge: '✨ Społeczność', isMission: false },
+            { slug: 'u_anna_3421', name: 'Anna', job: 'Kobiety Christian Culture 🌸', city: 'Warszawa, Polska', avatar: 'avatar_widget_ania.webp', badge: '✨ Społeczność', isMission: false },
             { slug: 'lumina', name: 'Portal LUMINA', job: 'Chrześcijańska Platforma Społecznościowa ✨', city: 'Polska', avatar: 'lumina_logo_portal.jpg', badge: '👑 Oficjalny Portal', isMission: true }
         ];
 
@@ -10159,6 +10342,41 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
     </div>
 
     <script>
+        // ── Q&A / Baza Wiedzy & Pomoc Accordion Toggle ──
+        window.toggleQnaSection = function(forceState) {
+            var wrapper = document.getElementById('qnaContentWrapper');
+            var btn = document.getElementById('qnaToggleBtn');
+            var section = document.getElementById('qna-section');
+            if (!wrapper || !btn) return;
+
+            var isCurrentlyOpen = (wrapper.style.display !== 'none');
+            var shouldOpen = (typeof forceState === 'boolean') ? forceState : !isCurrentlyOpen;
+
+            if (shouldOpen) {
+                wrapper.style.display = 'block';
+                btn.setAttribute('aria-expanded', 'true');
+                btn.classList.add('active');
+                if (section) section.classList.add('qna-expanded');
+                btn.setAttribute('title', 'Kliknij, aby zwinąć Bazę Wiedzy i Pomoc (Pytania i Odpowiedzi)');
+            } else {
+                wrapper.style.display = 'none';
+                btn.setAttribute('aria-expanded', 'false');
+                btn.classList.remove('active');
+                if (section) section.classList.remove('qna-expanded');
+                btn.setAttribute('title', 'Kliknij, aby rozwinąć Bazę Wiedzy i Pomoc (Pytania i Odpowiedzi Q&A)');
+                if (typeof forceState === 'boolean' && forceState === false && section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        };
+
+        // Automatyczne rozwinięcie jeśli adres URL zawiera kotwicę #qna-section lub #faq
+        if (window.location.hash === '#qna-section' || window.location.hash === '#faq') {
+            window.addEventListener('DOMContentLoaded', function() {
+                window.toggleQnaSection(true);
+            });
+        }
+
         // Synchronous global functions for Online Users Modal
         var defaultCommunityOnlineList = [
             { name: 'Cezary Rogowski', slug: 'cezaryrgowski', avatar: 'avatar_cezary_official.jpg', job: 'Założyciel Christian Culture ✨', city: 'Ostrowiec Świętokrzyski' },
