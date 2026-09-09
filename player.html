@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="pl" class="dark">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y4EFTVBPE3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Y4EFTVBPE3');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolskieRadio.cc - Biblijna Platforma Medialna | Odtwarzacz Audio</title>
+    <meta name="description" content="Nowoczesny odtwarzacz audio w stylu Spotify dla PolskieRadio.cc. Słuchaj na żywo Radia Biblia, audycji, muzyki worship oraz playlist i podcastów Osobowość PLUS, Christian Culture TV i Polskie Radio CC jako czyste strumienie audio.">
+    <meta name="theme-color" content="#070a12">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="canonical" href="https://polskieradio.cc/player">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            premium: '#d4af37'
+                        },
+                        player: {
+                            bg: '#070a12',
+                            panel: '#0d1322',
+                            card: '#111827',
+                            border: 'rgba(255, 255, 255, 0.08)'
+                        }
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --gold-accent: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.35);
+        }
+
+        body {
+            background-color: #070a12;
+            color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(7, 10, 18, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.25);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(212, 175, 55, 0.5);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #b45309 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-button-gradient {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.35);
+        }
+        .gold-button-gradient:hover {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            box-shadow: 0 6px 25px rgba(245, 158, 11, 0.5);
+        }
+
+        /* Equalizer waveform animation */
+        .eq-bar {
+            width: 3px;
+            background: #f59e0b;
+            border-radius: 2px;
+            transition: height 0.15s ease;
+            height: 4px;
+        }
+        .playing .eq-bar {
+            animation: bounce 1.1s ease-in-out infinite alternate;
+        }
+        @keyframes bounce {
+            0% { height: 4px; opacity: 0.4; }
+            50% { height: 22px; opacity: 1; }
+            100% { height: 8px; opacity: 0.7; }
+        }
+        .eq-bar:nth-child(2) { animation-delay: 0.15s; }
+        .eq-bar:nth-child(3) { animation-delay: 0.35s; }
+        .eq-bar:nth-child(4) { animation-delay: 0.5s; }
+        .eq-bar:nth-child(5) { animation-delay: 0.25s; }
+        .eq-bar:nth-child(6) { animation-delay: 0.65s; }
+        .eq-bar:nth-child(7) { animation-delay: 0.4s; }
+        .eq-bar:nth-child(8) { animation-delay: 0.8s; }
+        .eq-bar:nth-child(9) { animation-delay: 0.2s; }
+        .eq-bar:nth-child(10) { animation-delay: 0.55s; }
+        .eq-bar:nth-child(11) { animation-delay: 0.3s; }
+        .eq-bar:nth-child(12) { animation-delay: 0.7s; }
+
+        /* Sliders */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 9999px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #f59e0b;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.8);
+            transition: transform 0.1s;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+        }
+
+        /* Glass Cards */
+        .glass-panel {
+            background: rgba(13, 19, 34, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .glass-card-hover {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card-hover:hover {
+            transform: translateY(-4px);
+            border-color: rgba(245, 158, 11, 0.4);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.15);
+        }
+
+        /* Hidden YouTube Audio Worker */
+        #yt-audio-worker {
+            position: fixed;
+            top: -9999px;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -100;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col bg-[#070a12] text-slate-200">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         1. GÓRNY PASEK NAWIGACYJNY (TOP BAR)
+         ═══════════════════════════════════════════════════════════════ -->
+    <header class="h-16 flex-shrink-0 border-b border-white/5 bg-[#090e1a]/95 backdrop-blur-md px-4 md:px-6 flex items-center justify-between z-30">
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+            <a href="/" class="flex items-center gap-2.5 group transition-transform duration-200 hover:scale-[1.02]">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 via-amber-600 to-amber-800 p-[1px] shadow-lg shadow-amber-500/20">
+                    <div class="w-full h-full bg-[#0b0f19] rounded-[11px] flex items-center justify-center">
+                        <span class="font-cinzel font-black text-lg gold-gradient-text tracking-tighter">CC</span>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-cinzel font-black text-base md:text-lg tracking-tight text-white flex items-center gap-1">
+                        PolskieRadio<span class="text-amber-400 font-sans">.cc</span>
+                    </span>
+                    <span class="text-[9px] uppercase tracking-widest text-gray-400 font-semibold leading-none">
+                        Biblijna Platforma Medialna
+                    </span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="hidden md:flex items-center flex-1 max-w-md mx-6">
+            <div class="relative w-full">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                <input type="text" id="searchInput" placeholder="Szukaj wykładów, playlist, stacji, wersetów..." 
+                    class="w-full h-9 pl-9 pr-4 text-xs rounded-full bg-[#121828] border border-white/10 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 transition">
+            </div>
+        </div>
+
+        <!-- Top Category Tabs -->
+        <nav class="hidden lg:flex items-center gap-1 xl:gap-2">
+            <button onclick="filterByTag('Wszystkie')" class="nav-tab active relative px-3 py-1.5 rounded-lg text-xs font-semibold text-white flex items-center gap-2 transition hover:text-amber-300">
+                <span class="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_#f59e0b]"></span>
+                <span>Wszystkie</span>
+            </button>
+            <button onclick="scrollToSection('channels-section')" class="nav-tab px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 flex items-center gap-2 transition hover:text-white">
+                <i class="fa-solid fa-tower-broadcast text-[11px] text-amber-400"></i>
+                <span>Radio Live</span>
+            </button>
+            <button onclick="scrollToSection('sec-osobowosc')" class="nav-tab px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 flex items-center gap-2 transition hover:text-white">
+                <i class="fa-solid fa-graduation-cap text-[11px] text-blue-400"></i>
+                <span>Osobowość PLUS</span>
+            </button>
+            <button onclick="scrollToSection('sec-cctv')" class="nav-tab px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 flex items-center gap-2 transition hover:text-white">
+                <i class="fa-solid fa-tv text-[11px] text-teal-400"></i>
+                <span>Christian Culture TV</span>
+            </button>
+            <button onclick="scrollToSection('sec-radiocc')" class="nav-tab px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 flex items-center gap-2 transition hover:text-white">
+                <i class="fa-solid fa-radio text-[11px] text-red-400"></i>
+                <span>Polskie Radio CC</span>
+            </button>
+            <a href="/mojabiblia" class="nav-tab px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 flex items-center gap-2 transition hover:text-white">
+                <i class="fa-solid fa-book-bible text-[11px] text-gold-400"></i>
+                <span>Biblia</span>
+            </a>
+        </nav>
+
+        <!-- Right User Actions -->
+        <div class="flex items-center gap-3">
+            <button onclick="toggleTheme()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-amber-300 flex items-center justify-center transition text-xs" title="Przełącz motyw">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <a href="/lumina" class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-amber-300 p-[1px] shadow-sm flex-shrink-0" title="Profil LUMINA">
+                <div class="w-full h-full rounded-full bg-[#101626] flex items-center justify-center text-amber-300 text-xs">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         2. GŁÓWNY KONTENER (3-KOLUMNOWY DASHBOARD SPOTIFY)
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="flex-1 flex overflow-hidden relative">
+
+        <!-- ─────────────────────────────────────────────────────────────
+             LEWY PANEL BOCZNY (SIDEBAR: MENU & KANAŁY RADIOWE)
+             ───────────────────────────────────────────────────────────── -->
+        <aside class="hidden md:flex flex-col w-60 xl:w-64 border-r border-white/5 bg-[#090d18] p-4 justify-between flex-shrink-0 overflow-y-auto">
+            <div class="space-y-6">
+                <!-- Główne menu -->
+                <div class="space-y-1">
+                    <button onclick="scrollToSection('top-hero')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition bg-gradient-to-r from-amber-500/20 to-transparent text-amber-300 border-l-2 border-amber-400">
+                        <i class="fa-solid fa-house text-sm text-amber-400"></i>
+                        <span>Główna</span>
+                    </button>
+                    <button onclick="scrollToSection('channels-section')" class="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition">
+                        <i class="fa-solid fa-tower-broadcast text-sm text-gray-400"></i>
+                        <span>Stacje Live</span>
+                    </button>
+                    <button onclick="scrollToSection('sec-osobowosc')" class="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition">
+                        <i class="fa-solid fa-graduation-cap text-sm text-blue-400"></i>
+                        <span>Osobowość PLUS</span>
+                    </button>
+                    <button onclick="scrollToSection('sec-cctv')" class="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition">
+                        <i class="fa-solid fa-tv text-sm text-teal-400"></i>
+                        <span>Christian Culture TV</span>
+                    </button>
+                    <button onclick="scrollToSection('sec-radiocc')" class="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition">
+                        <i class="fa-solid fa-radio text-sm text-red-400"></i>
+                        <span>Polskie Radio CC</span>
+                    </button>
+                    <button onclick="showPlaylistModal()" class="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition">
+                        <i class="fa-solid fa-heart text-sm text-gray-400"></i>
+                        <span>Moje playlisty</span>
+                    </button>
+                    <a href="/mojabiblia" class="w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-white/5 transition">
+                        <i class="fa-solid fa-book-bible text-sm text-amber-400"></i>
+                        <span>Moja Biblia Interlinearna</span>
+                    </a>
+                </div>
+
+                <!-- Sekcja: KANAŁY RADIOWE LIVE -->
+                <div>
+                    <div class="px-3 mb-2 flex items-center justify-between text-[10px] font-bold text-gray-400 uppercase tracking-wider font-cinzel">
+                        <span>Kanały Live 24/7</span>
+                        <i class="fa-solid fa-signal text-amber-500/70"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <!-- Radio Biblia -->
+                        <div onclick="playStation('biblia')" id="side-item-biblia" class="channel-side-item group flex items-center gap-3 p-2 rounded-xl cursor-pointer transition bg-white/5 border border-amber-500/30">
+                            <div class="w-9 h-9 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 flex-shrink-0 group-hover:scale-105 transition">
+                                <i class="fa-solid fa-bible text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-white truncate">Radio Biblia</span>
+                                    <span class="text-[9px] font-bold text-emerald-400 flex items-center gap-1">• LIVE</span>
+                                </div>
+                                <p class="text-[10px] text-gray-400 truncate">Biblia czytana 24/7</p>
+                            </div>
+                        </div>
+
+                        <!-- Radio Christian Culture -->
+                        <div onclick="playStation('cc')" id="side-item-cc" class="channel-side-item group flex items-center gap-3 p-2 rounded-xl cursor-pointer transition hover:bg-white/5 border border-transparent hover:border-white/10">
+                            <div class="w-9 h-9 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 flex-shrink-0 group-hover:scale-105 transition">
+                                <i class="fa-solid fa-cross text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-gray-200 group-hover:text-white truncate">Radio CC</span>
+                                    <span class="text-[9px] font-bold text-emerald-400">• LIVE</span>
+                                </div>
+                                <p class="text-[10px] text-gray-400 truncate">Kultura · Edukacja · Inspiracja</p>
+                            </div>
+                        </div>
+
+                        <!-- Radio Wykłady (Osobowość PLUS) -->
+                        <div onclick="playStation('wyklady')" id="side-item-wyklady" class="channel-side-item group flex items-center gap-3 p-2 rounded-xl cursor-pointer transition hover:bg-white/5 border border-transparent hover:border-white/10">
+                            <div class="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 flex-shrink-0 group-hover:scale-105 transition">
+                                <i class="fa-solid fa-graduation-cap text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <span class="text-xs font-bold text-gray-200 group-hover:text-white truncate block">Radio Wykłady</span>
+                                <p class="text-[10px] text-gray-400 truncate">Biblia · Historia · Proroctwa</p>
+                            </div>
+                        </div>
+
+                        <!-- Radio Muzyka (Polskie Radio CC Worship) -->
+                        <div onclick="playStation('muzyka')" id="side-item-muzyka" class="channel-side-item group flex items-center gap-3 p-2 rounded-xl cursor-pointer transition hover:bg-white/5 border border-transparent hover:border-white/10">
+                            <div class="w-9 h-9 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 flex-shrink-0 group-hover:scale-105 transition">
+                                <i class="fa-solid fa-music text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <span class="text-xs font-bold text-gray-200 group-hover:text-white truncate block">Radio Muzyka</span>
+                                <p class="text-[10px] text-gray-400 truncate">Worship · Uwielbienie · Gospel</p>
+                            </div>
+                        </div>
+
+                        <!-- Radio Słowo (Christian Culture TV) -->
+                        <div onclick="playStation('slowo')" id="side-item-slowo" class="channel-side-item group flex items-center gap-3 p-2 rounded-xl cursor-pointer transition hover:bg-white/5 border border-transparent hover:border-white/10">
+                            <div class="w-9 h-9 rounded-lg bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 flex-shrink-0 group-hover:scale-105 transition">
+                                <i class="fa-solid fa-comment-dots text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <span class="text-xs font-bold text-gray-200 group-hover:text-white truncate block">Radio Słowo</span>
+                                <p class="text-[10px] text-gray-400 truncate">Komentarze · Rozmowy · Tematy</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dolna karta z wersetem biblijnym (Ps 119:105) -->
+            <div class="mt-4 p-3 rounded-2xl relative overflow-hidden border border-amber-500/30 shadow-lg">
+                <img src="/images/player/sidebar-verse-bg.jpg" alt="Biblia Werset" class="absolute inset-0 w-full h-full object-cover brightness-50">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+                <div class="relative z-10 text-left">
+                    <i class="fa-solid fa-quote-left text-amber-400 text-xs mb-1 block opacity-75"></i>
+                    <p class="text-[11px] text-gray-200 italic font-medium leading-snug">
+                        „Słowo Twoje jest lampą dla moich stóp i światłem na mojej ścieżce.”
+                    </p>
+                    <span class="text-[10px] text-amber-300 font-bold font-cinzel mt-1 block tracking-wider">Ps 119:105</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ─────────────────────────────────────────────────────────────
+             CENTRUM: GŁÓWNY PANEL TREŚCI (HERO + KANAŁY + PLAYLISTY YT)
+             ───────────────────────────────────────────────────────────── -->
+        <main class="flex-1 overflow-y-auto px-4 md:px-8 py-6 space-y-9" id="main-scroll-container">
+
+            <!-- 1. HERO FEATURED PLAYER CARD (GŁÓWNY BANER Z ODTWARZACZEM) -->
+            <section id="top-hero" class="relative rounded-3xl overflow-hidden border border-amber-500/30 shadow-2xl bg-[#090d18] min-h-[220px] md:min-h-[260px] flex flex-col justify-end p-6 md:p-8">
+                <!-- Czysty obraz po prawej stronie -->
+                <div class="absolute right-0 top-0 bottom-0 w-full md:w-1/2 overflow-hidden pointer-events-none">
+                    <img id="hero-banner-img" src="/images/player/hero-pure-art.jpg" alt="Hero Art" class="w-full h-full object-cover object-center md:object-right brightness-95 transition-opacity duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#090d18] via-[#090d18]/60 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#090d18] via-transparent to-transparent"></div>
+                </div>
+
+                <!-- Treść banera -->
+                <div class="relative z-10 max-w-xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-amber-400/40 text-[11px] font-bold text-amber-300 mb-3 shadow-md">
+                        <span id="hero-badge-channel">RADIO BIBLIA</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span id="hero-badge-status" class="text-emerald-400">LIVE</span>
+                    </div>
+
+                    <h1 id="hero-title" class="text-2xl md:text-4xl font-extrabold text-white tracking-tight leading-tight mb-2">
+                        Biblia czytana <span class="gold-gradient-text">24 godziny</span> na dobę, 7 dni w tygodniu.
+                    </h1>
+
+                    <p id="hero-subtitle" class="text-xs md:text-sm text-gray-300 font-medium mb-6 line-clamp-2">
+                        Doświadczaj żywego Słowa Bożego bez przerw, w doskonałej jakości studyjnej lektora.
+                    </p>
+
+                    <!-- Pasek sterowania w Hero -->
+                    <div class="flex flex-wrap items-center gap-4 pt-1">
+                        <button onclick="togglePlay()" id="hero-play-btn" class="gold-button-gradient px-6 py-3 rounded-full text-xs md:text-sm font-bold text-gray-950 flex items-center gap-2.5 transition active:scale-95 cursor-pointer">
+                            <i id="hero-play-icon" class="fa-solid fa-play"></i>
+                            <span id="hero-play-label">Odtwarzaj</span>
+                        </button>
+
+                        <!-- Animowane fale audio (Equalizer) -->
+                        <div id="hero-waveform" class="flex items-end gap-1 h-6 px-3 py-1 bg-black/50 backdrop-blur-md rounded-xl border border-white/10">
+                            <span class="eq-bar"></span>
+                            <span class="eq-bar"></span>
+                            <span class="eq-bar"></span>
+                            <span class="eq-bar"></span>
+                            <span class="eq-bar"></span>
+                            <span class="eq-bar"></span>
+                            <span class="eq-bar"></span>
+                            <span class="eq-bar"></span>
+                            <span class="eq-bar"></span>
+                            <span class="eq-bar"></span>
+                            <span class="eq-bar"></span>
+                            <span class="eq-bar"></span>
+                        </div>
+
+                        <!-- Ticker bieżącego wersetu / utworu -->
+                        <div class="flex items-center gap-2 text-xs font-semibold text-amber-200/90 bg-black/40 px-3 py-1.5 rounded-lg border border-amber-500/20">
+                            <span id="hero-track-ticker" class="truncate max-w-[200px] md:max-w-[280px]">J 1:1 Na początku było Słowo...</span>
+                            <span id="hero-time-ticker" class="text-gray-400 font-mono text-[11px]">- 23:17</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. PIGUŁKI FILTRÓW TREŚCI -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 max-w-full text-xs">
+                <button onclick="filterByTag('Wszystkie')" class="filter-pill active px-4 py-2 rounded-full bg-amber-500 text-gray-950 font-bold shadow-md transition whitespace-nowrap">Wszystkie</button>
+                <button onclick="filterByTag('Live')" class="filter-pill px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 font-semibold border border-white/10 transition whitespace-nowrap flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>Stacje Live</button>
+                <button onclick="filterByTag('Osobowość PLUS')" class="filter-pill px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 font-semibold border border-white/10 transition whitespace-nowrap text-blue-300">Osobowość PLUS</button>
+                <button onclick="filterByTag('Christian Culture TV')" class="filter-pill px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 font-semibold border border-white/10 transition whitespace-nowrap text-teal-300">Christian Culture TV</button>
+                <button onclick="filterByTag('Polskie Radio CC')" class="filter-pill px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 font-semibold border border-white/10 transition whitespace-nowrap text-red-300">Polskie Radio CC</button>
+                <button onclick="filterByTag('Wykłady')" class="filter-pill px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 font-semibold border border-white/10 transition whitespace-nowrap">Wykłady & Nauka</button>
+                <button onclick="filterByTag('Worship')" class="filter-pill px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 font-semibold border border-white/10 transition whitespace-nowrap">Worship & Muzyka</button>
+                <button onclick="filterByTag('Biblia')" class="filter-pill px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 font-semibold border border-white/10 transition whitespace-nowrap">Pismo Święte</button>
+            </div>
+
+            <!-- 3. SEKCJA: GŁÓWNE KANAŁY RADIOWE (LIVE) -->
+            <section id="channels-section" class="space-y-4 filter-section" data-section-tags="Live Wszystkie">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-cinzel font-bold text-white tracking-wide flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399] animate-pulse"></span>
+                        <span>Stacje Radiowe na Żywo</span>
+                    </h2>
+                    <span class="text-xs text-gray-400 font-mono">5 strumieni 24/7</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+                    <!-- Radio Biblia -->
+                    <div onclick="playStation('biblia')" class="channel-card group glass-panel rounded-2xl overflow-hidden cursor-pointer glass-card-hover border border-white/5 hover:border-amber-500/40 relative flex flex-col justify-between p-3.5 aspect-[4/5] bg-gradient-to-b from-[#141b2d] to-[#0a0f1d]" data-category="Biblia Live">
+                        <div class="absolute inset-x-0 bottom-0 h-1/2 overflow-hidden pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500">
+                            <img src="/images/player/art-chan-biblia.jpg" alt="Biblia" class="w-full h-full object-cover object-center">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1d] via-[#0a0f1d]/40 to-transparent"></div>
+                        </div>
+                        <div class="relative z-10 flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-500/30 backdrop-blur-md flex items-center justify-center text-amber-300 text-xs">
+                                <i class="fa-solid fa-bible"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[9px] font-bold">• LIVE</span>
+                        </div>
+                        <div class="relative z-10">
+                            <h3 class="font-bold text-sm text-white group-hover:text-amber-300 transition">Radio Biblia</h3>
+                            <p class="text-[10px] text-gray-300 mt-0.5 line-clamp-1">Biblia czytana 24/7</p>
+                            <div class="mt-2.5 flex items-center justify-between">
+                                <span class="text-[9px] font-medium text-amber-300/80">ZenoFM Live</span>
+                                <div class="w-8 h-8 rounded-full gold-button-gradient flex items-center justify-center text-gray-950 text-xs shadow-lg group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Radio Christian Culture -->
+                    <div onclick="playStation('cc')" class="channel-card group glass-panel rounded-2xl overflow-hidden cursor-pointer glass-card-hover border border-white/5 hover:border-amber-500/40 relative flex flex-col justify-between p-3.5 aspect-[4/5] bg-gradient-to-b from-[#141b2d] to-[#0a0f1d]" data-category="Live Tematy">
+                        <div class="absolute inset-x-0 bottom-0 h-1/2 overflow-hidden pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500">
+                            <img src="/images/player/art-chan-cc.jpg" alt="Christian Culture" class="w-full h-full object-cover object-center">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1d] via-[#0a0f1d]/40 to-transparent"></div>
+                        </div>
+                        <div class="relative z-10 flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-500/30 backdrop-blur-md flex items-center justify-center text-amber-300 text-xs">
+                                <i class="fa-solid fa-globe"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[9px] font-bold">• LIVE</span>
+                        </div>
+                        <div class="relative z-10">
+                            <h3 class="font-bold text-sm text-white group-hover:text-amber-300 transition leading-snug">Radio CC</h3>
+                            <p class="text-[10px] text-gray-300 mt-0.5 line-clamp-1">Kultura · Edukacja · Inspiracja</p>
+                            <div class="mt-2.5 flex items-center justify-between">
+                                <span class="text-[9px] font-medium text-amber-300/80">Sygnał Główny</span>
+                                <div class="w-8 h-8 rounded-full gold-button-gradient flex items-center justify-center text-gray-950 text-xs shadow-lg group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Radio Wykłady (Osobowość PLUS) -->
+                    <div onclick="playStation('wyklady')" class="channel-card group glass-panel rounded-2xl overflow-hidden cursor-pointer glass-card-hover border border-white/5 hover:border-amber-500/40 relative flex flex-col justify-between p-3.5 aspect-[4/5] bg-gradient-to-b from-[#141b2d] to-[#0a0f1d]" data-category="Wykłady Osobowość PLUS">
+                        <div class="absolute inset-x-0 bottom-0 h-1/2 overflow-hidden pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500">
+                            <img src="/images/player/art-chan-wyklady.jpg" alt="Wykłady" class="w-full h-full object-cover object-center">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1d] via-[#0a0f1d]/40 to-transparent"></div>
+                        </div>
+                        <div class="relative z-10 flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-blue-500/30 backdrop-blur-md flex items-center justify-center text-blue-300 text-xs">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full bg-blue-500/30 text-blue-300 border border-blue-500/40 text-[9px] font-bold">Osobowość+</span>
+                        </div>
+                        <div class="relative z-10">
+                            <h3 class="font-bold text-sm text-white group-hover:text-amber-300 transition">Radio Wykłady</h3>
+                            <p class="text-[10px] text-gray-300 mt-0.5 line-clamp-1">Biblia · Historia · Proroctwa</p>
+                            <div class="mt-2.5 flex items-center justify-between">
+                                <span class="text-[9px] font-medium text-blue-300/80">Audio Stream</span>
+                                <div class="w-8 h-8 rounded-full gold-button-gradient flex items-center justify-center text-gray-950 text-xs shadow-lg group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Radio Muzyka (Worship CC) -->
+                    <div onclick="playStation('muzyka')" class="channel-card group glass-panel rounded-2xl overflow-hidden cursor-pointer glass-card-hover border border-white/5 hover:border-amber-500/40 relative flex flex-col justify-between p-3.5 aspect-[4/5] bg-gradient-to-b from-[#141b2d] to-[#0a0f1d]" data-category="Worship Muzyka Polskie Radio CC">
+                        <div class="absolute inset-x-0 bottom-0 h-1/2 overflow-hidden pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500">
+                            <img src="/images/player/art-chan-muzyka.jpg" alt="Muzyka" class="w-full h-full object-cover object-center">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1d] via-[#0a0f1d]/40 to-transparent"></div>
+                        </div>
+                        <div class="relative z-10 flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-red-500/30 backdrop-blur-md flex items-center justify-center text-red-300 text-xs">
+                                <i class="fa-solid fa-music"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full bg-red-500/30 text-red-300 border border-red-500/40 text-[9px] font-bold">Worship</span>
+                        </div>
+                        <div class="relative z-10">
+                            <h3 class="font-bold text-sm text-white group-hover:text-amber-300 transition">Radio Muzyka</h3>
+                            <p class="text-[10px] text-gray-300 mt-0.5 line-clamp-1">Worship · Uwielbienie · Gospel</p>
+                            <div class="mt-2.5 flex items-center justify-between">
+                                <span class="text-[9px] font-medium text-red-300/80">24/7 Strumień</span>
+                                <div class="w-8 h-8 rounded-full gold-button-gradient flex items-center justify-center text-gray-950 text-xs shadow-lg group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Radio Słowo (Christian Culture TV) -->
+                    <div onclick="playStation('slowo')" class="channel-card group glass-panel rounded-2xl overflow-hidden cursor-pointer glass-card-hover border border-white/5 hover:border-amber-500/40 relative flex flex-col justify-between p-3.5 aspect-[4/5] bg-gradient-to-b from-[#141b2d] to-[#0a0f1d]" data-category="Christian Culture TV Rozmowy">
+                        <div class="absolute inset-x-0 bottom-0 h-1/2 overflow-hidden pointer-events-none opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500">
+                            <img src="/images/player/art-chan-slowo.jpg" alt="Słowo" class="w-full h-full object-cover object-center">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1d] via-[#0a0f1d]/40 to-transparent"></div>
+                        </div>
+                        <div class="relative z-10 flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-teal-500/30 backdrop-blur-md flex items-center justify-center text-teal-300 text-xs">
+                                <i class="fa-solid fa-comment-dots"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full bg-teal-500/30 text-teal-300 border border-teal-500/40 text-[9px] font-bold">Studio DS</span>
+                        </div>
+                        <div class="relative z-10">
+                            <h3 class="font-bold text-sm text-white group-hover:text-amber-300 transition">Radio Słowo</h3>
+                            <p class="text-[10px] text-gray-300 mt-0.5 line-clamp-1">Komentarze · Rozmowy · Tematy</p>
+                            <div class="mt-2.5 flex items-center justify-between">
+                                <span class="text-[9px] font-medium text-teal-300/80">Audycje CC</span>
+                                <div class="w-8 h-8 rounded-full gold-button-gradient flex items-center justify-center text-gray-950 text-xs shadow-lg group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. SEKCJA: OSOBOWOŚĆ PLUS (PLAYLISTY YOUTUBE JAKO STRUMIEŃ AUDIO) -->
+            <section id="sec-osobowosc" class="space-y-4 filter-section" data-section-tags="Osobowość PLUS Wykłady Wszystkie">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-cinzel font-bold text-white tracking-wide flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_10px_#3b82f6]"></span>
+                            <span>Osobowość PLUS – Playlisty Audio</span>
+                        </h2>
+                        <p class="text-xs text-gray-400 mt-0.5">Wykłady prof. Waltera Veitha, apologetyka, proroctwa i rozwój osobisty</p>
+                    </div>
+                    <a href="https://www.youtube.com/@osobowo%C5%9B%C4%87PLUS/playlists" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 transition">
+                        <span>Kanał YouTube</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                </div>
+
+                <!-- Siatka playlist Osobowość PLUS -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3.5" id="grid-osobowosc">
+                    <!-- Dynamicznie generowane w JS lub poniżej -->
+                </div>
+            </section>
+
+            <!-- 5. SEKCJA: CHRISTIAN CULTURE TV (PLAYLISTY YOUTUBE JAKO STRUMIEŃ AUDIO) -->
+            <section id="sec-cctv" class="space-y-4 filter-section" data-section-tags="Christian Culture TV Worship Wszystkie">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-cinzel font-bold text-white tracking-wide flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-teal-400 shadow-[0_0_10px_#2dd4bf]"></span>
+                            <span>Christian Culture TV – Strumienie Uwielbienia</span>
+                        </h2>
+                        <p class="text-xs text-gray-400 mt-0.5">Duchowa Muzyka Worship 24/7, Szkoła Biblijna, Bez Słów i programy inspiracyjne</p>
+                    </div>
+                    <a href="https://www.youtube.com/@ChristianCultureTV/playlists" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-teal-400 hover:text-teal-300 flex items-center gap-1.5 transition">
+                        <span>Kanał YouTube</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                </div>
+
+                <!-- Siatka playlist CC TV -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3.5" id="grid-cctv">
+                    <!-- Dynamicznie generowane w JS -->
+                </div>
+            </section>
+
+            <!-- 6. SEKCJA: POLSKIE RADIO CC (PLAYLISTY YOUTUBE JAKO STRUMIEŃ AUDIO) -->
+            <section id="sec-radiocc" class="space-y-4 filter-section" data-section-tags="Polskie Radio CC Biblia Worship Wszystkie">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-cinzel font-bold text-white tracking-wide flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-400 shadow-[0_0_10px_#f87171]"></span>
+                            <span>Polskie Radio CC – Słowo, Muzyka i Kazania</span>
+                        </h2>
+                        <p class="text-xs text-gray-400 mt-0.5">What's Up Prof, Biblia Audio, Kazania, Premiery muzyczne i rozważania</p>
+                    </div>
+                    <a href="https://www.youtube.com/@RadioChristianCulture/playlists" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-red-400 hover:text-red-300 flex items-center gap-1.5 transition">
+                        <span>Kanał YouTube</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                </div>
+
+                <!-- Siatka playlist Polskie Radio CC -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3.5" id="grid-radiocc">
+                    <!-- Dynamicznie generowane w JS -->
+                </div>
+            </section>
+
+        </main>
+
+        <!-- ─────────────────────────────────────────────────────────────
+             PRAWY PANEL: NOW PLAYING & QUEUE (ODTWARZACZ SPOTIFY + KOLEJKA)
+             ───────────────────────────────────────────────────────────── -->
+        <aside class="hidden xl:flex flex-col w-80 border-l border-white/5 bg-[#090d18] p-5 justify-between flex-shrink-0 overflow-y-auto">
+            <div class="space-y-5">
+                <!-- Mini Header -->
+                <div class="flex items-center justify-between text-xs pb-1 border-b border-white/5">
+                    <span class="font-cinzel font-black gold-gradient-text tracking-wider">CC ODTWARZACZ</span>
+                    <span id="stream-engine-badge" class="text-[10px] font-bold text-emerald-400 flex items-center gap-1">• STRUMIEŃ AUDIO</span>
+                </div>
+
+                <!-- Okładka Albumu -->
+                <div class="w-full aspect-[16/10] rounded-2xl overflow-hidden border border-amber-500/30 shadow-xl relative group">
+                    <img id="player-cover-art" src="/images/player/hero-pure-art.jpg" alt="Okładka utworu" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+                        <div class="min-w-0 pr-2">
+                            <h3 id="player-title" class="text-sm font-bold text-white truncate">Radio Biblia</h3>
+                            <p id="player-artist" class="text-[10px] text-gray-300 truncate">Biblia czytana 24/7</p>
+                        </div>
+                        <span id="player-live-badge" class="px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-400 border border-emerald-500/40 text-[9px] font-bold flex-shrink-0">LIVE</span>
+                    </div>
+                </div>
+
+                <!-- Animowany Waveform w prawym panelu -->
+                <div id="side-waveform" class="flex items-center justify-center gap-1.5 h-6 px-4 bg-black/40 rounded-xl border border-white/5">
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                </div>
+
+                <!-- Kontrolki Odtwarzacza (Spotify Style) -->
+                <div class="space-y-3 text-center">
+                    <!-- Przyciski nawigacji: Poprzedni | -15s | Play/Pause | +15s | Następny -->
+                    <div class="flex items-center justify-center gap-4">
+                        <button onclick="prevTrack()" class="text-gray-400 hover:text-amber-300 transition active:scale-95 text-base" title="Poprzedni utwór">
+                            <i class="fa-solid fa-backward-step"></i>
+                        </button>
+
+                        <button onclick="skipSeconds(-15)" class="text-gray-400 hover:text-white transition active:scale-95 text-xs" title="Cofnij 15 sekund">
+                            <span class="text-[9px] font-bold block -mb-1">15</span>
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+
+                        <button onclick="togglePlay()" id="player-main-play-btn" class="w-12 h-12 rounded-full gold-button-gradient flex items-center justify-center text-gray-950 text-base font-black shadow-xl hover:scale-105 active:scale-95 transition cursor-pointer">
+                            <i id="player-main-play-icon" class="fa-solid fa-play ml-0.5"></i>
+                        </button>
+
+                        <button onclick="skipSeconds(15)" class="text-gray-400 hover:text-white transition active:scale-95 text-xs" title="Przewiń 15 sekund">
+                            <span class="text-[9px] font-bold block -mb-1">15</span>
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </button>
+
+                        <button onclick="nextTrack()" class="text-gray-400 hover:text-amber-300 transition active:scale-95 text-base" title="Następny utwór">
+                            <i class="fa-solid fa-forward-step"></i>
+                        </button>
+                    </div>
+
+                    <!-- Pasek postępu Seek Bar -->
+                    <div class="space-y-1">
+                        <input type="range" id="seek-bar" min="0" max="100" value="0" class="w-full cursor-pointer" oninput="onSeek(this.value)">
+                        <div class="flex items-center justify-between text-[10px] text-gray-400 font-mono">
+                            <span id="current-time">00:00</span>
+                            <span id="total-duration">LIVE</span>
+                        </div>
+                    </div>
+
+                    <!-- Suwak Głośności -->
+                    <div class="flex items-center gap-2.5 px-2">
+                        <button onclick="toggleMute()" class="text-gray-400 hover:text-amber-400 transition text-xs">
+                            <i id="volume-icon" class="fa-solid fa-volume-high"></i>
+                        </button>
+                        <input type="range" id="volume-bar" min="0" max="100" value="80" class="w-full cursor-pointer" oninput="onVolumeChange(this.value)">
+                    </div>
+                </div>
+
+                <!-- Sekcja: Teraz odtwarzane -->
+                <div class="pt-2 border-t border-white/5 space-y-2">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 font-cinzel block">Teraz odtwarzane</span>
+                    <div class="flex items-center gap-3 p-2 rounded-xl bg-white/5 border border-white/5">
+                        <div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-black">
+                            <img id="now-playing-thumb" src="/images/player/art-chan-biblia.jpg" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 id="now-playing-verse" class="text-xs font-bold text-white truncate">Radio Biblia</h4>
+                            <p id="now-playing-desc" class="text-[10px] text-gray-400 truncate">Biblia czytana 24/7</p>
+                        </div>
+                        <span id="now-playing-time" class="text-[10px] font-mono text-amber-400 font-semibold">LIVE</span>
+                    </div>
+                </div>
+
+                <!-- Kolejka utworów (Queue) -->
+                <div class="pt-2 border-t border-white/5 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 font-cinzel">Następne w kolejce</span>
+                        <button onclick="shuffleQueue()" class="text-[10px] text-gray-400 hover:text-amber-400 transition flex items-center gap-1">
+                            <i class="fa-solid fa-shuffle"></i>
+                            <span>Losowo</span>
+                        </button>
+                    </div>
+
+                    <div class="space-y-1 max-h-48 overflow-y-auto pr-1" id="queue-container">
+                        <!-- Generowane w JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Przyciski dolne -->
+            <div class="pt-3 border-t border-white/5 flex items-center gap-2">
+                <button onclick="addToPlaylist()" class="flex-1 py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-white flex items-center justify-center gap-2 transition active:scale-95">
+                    <i class="fa-solid fa-plus text-amber-400"></i>
+                    <span>Zapisz w bibliotece</span>
+                </button>
+                <button onclick="openMoreOptions()" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-400 hover:text-white flex items-center justify-center transition active:scale-95" title="Udostępnij">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </button>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         3. MOBILNY DOLNY PASEK ODTWARZACZA (DLA SMARTFONÓW)
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="md:hidden flex-shrink-0 bg-[#0d1322] border-t border-white/10 p-3 flex items-center justify-between z-40">
+        <div class="flex items-center gap-3 min-w-0 flex-1 mr-2">
+            <img id="mobile-thumb" src="/images/player/art-chan-biblia.jpg" class="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-amber-500/30">
+            <div class="min-w-0">
+                <span id="mobile-title" class="text-xs font-bold text-white truncate block">Radio Biblia</span>
+                <p id="mobile-desc" class="text-[10px] text-gray-400 truncate">Biblia czytana 24/7</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button onclick="prevTrack()" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-300 text-xs active:scale-95">
+                <i class="fa-solid fa-backward-step"></i>
+            </button>
+            <button onclick="togglePlay()" class="w-10 h-10 rounded-full gold-button-gradient flex items-center justify-center text-gray-950 text-sm shadow-md active:scale-95">
+                <i id="mobile-play-icon" class="fa-solid fa-play"></i>
+            </button>
+            <button onclick="nextTrack()" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-300 text-xs active:scale-95">
+                <i class="fa-solid fa-forward-step"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         4. SILNIK AUDIO (HTML5 DLA TRANSMISJI LIVE + YOUTUBE AUDIO WORKER)
+         ═══════════════════════════════════════════════════════════════ -->
+    <audio id="native-audio" preload="none"></audio>
+    <div id="yt-audio-worker"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         5. SKRYPT LOGIKI ODTWARZACZA & BAZA PLAYLIST
+         ═══════════════════════════════════════════════════════════════ -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script>
+        // ── BAZA KANAŁÓW RADIOWYCH LIVE (ZenoFM) ──
+        const LIVE_STATIONS = {
+            biblia: {
+                id: 'biblia',
+                title: 'Radio Biblia',
+                subtitle: 'Biblia czytana 24/7',
+                type: 'live',
+                streamUrl: 'https://stream.zeno.fm/imo45hqnshyuv',
+                badge: 'LIVE',
+                heroBadge: 'RADIO BIBLIA',
+                cover: '/images/player/art-chan-biblia.jpg',
+                heroImg: '/images/player/hero-pure-art.jpg',
+                headline: 'Biblia czytana <span class="gold-gradient-text">24 godziny</span> na dobę, 7 dni w tygodniu.',
+                desc: 'Doświadczaj żywego Słowa Bożego bez przerw, w doskonałej jakości studyjnej lektora.',
+                ticker: 'J 1:1 Na początku było Słowo...',
+                timeText: 'LIVE STREAM'
+            },
+            cc: {
+                id: 'cc',
+                title: 'Radio Christian Culture',
+                subtitle: 'Kultura · Edukacja · Inspiracja',
+                type: 'live',
+                streamUrl: 'https://stream.zeno.fm/vz96pvl3pnktv',
+                badge: 'LIVE',
+                heroBadge: 'CHRISTIAN CULTURE',
+                cover: '/images/player/art-chan-cc.jpg',
+                heroImg: '/images/player/hero-pure-art.jpg',
+                headline: 'Główny nurt: <span class="gold-gradient-text">Christian Culture Network</span>.',
+                desc: 'Transmisja radiowa na żywo łącząca muzykę, rozważania Słowa Bożego i programy autorskie.',
+                ticker: 'Radio Christian Culture - Sygnał Ogólnopolski 24/7',
+                timeText: 'LIVE STREAM'
+            },
+            wyklady: {
+                id: 'wyklady',
+                title: 'Radio Wykłady',
+                subtitle: 'Biblia · Historia · Proroctwa',
+                type: 'youtube_playlist',
+                channelName: 'Osobowość PLUS',
+                playlistId: 'PLKOxPWmme0G0',
+                badge: 'Osobowość+',
+                heroBadge: 'OSOBOWOŚĆ PLUS',
+                cover: '/images/player/art-chan-wyklady.jpg',
+                heroImg: '/images/player/art-walter-veith.jpg',
+                headline: 'Wykłady i psychologia: <span class="gold-gradient-text">Osobowość PLUS</span>.',
+                desc: 'Unikalne wykłady prof. Waltera Veitha, apologetyka, biblistyka i rozwój osobisty oparty na Piśmie Świętym.',
+                ticker: 'Walter Veith - Wykłady na czas końca',
+                timeText: 'STRUMIEŃ AUDIO'
+            },
+            muzyka: {
+                id: 'muzyka',
+                title: 'Radio Muzyka',
+                subtitle: 'Worship · Uwielbienie · Gospel',
+                type: 'youtube_playlist',
+                channelName: 'Polskie Radio CC',
+                playlistId: 'PL2hyFNkHB21aWs336brvfXgHizPc6y0Z0',
+                badge: 'Worship',
+                heroBadge: 'RADIO MUZYKA',
+                cover: '/images/player/art-chan-muzyka.jpg',
+                heroImg: '/images/player/art-worship.jpg',
+                headline: 'Muzyka chwały: <span class="gold-gradient-text">Instrumental Worship</span> & Gospel.',
+                desc: 'Dźwięki modlitwy, pokoju i wyciszenia do pracy, modlitwy i odpoczynku w Bożej obecności.',
+                ticker: 'Spiritual Worship Music — Uwielbienie 24/7',
+                timeText: 'STRUMIEŃ AUDIO'
+            },
+            slowo: {
+                id: 'slowo',
+                title: 'Radio Słowo',
+                subtitle: 'Komentarze · Rozmowy · Tematy',
+                type: 'youtube_playlist',
+                channelName: 'Christian Culture TV',
+                playlistId: 'PL2hyFNkHB21b9DNCiEfWXc47fKEUxjgi7',
+                badge: 'Studio DS',
+                heroBadge: 'CHRISTIAN CULTURE TV',
+                cover: '/images/player/art-chan-slowo.jpg',
+                heroImg: '/images/player/art-dna.jpg',
+                headline: 'Rozmowy i inspiracje: <span class="gold-gradient-text">Christian Culture TV</span>.',
+                desc: 'Szkoła biblijna, komentarze do aktualnych wydarzeń i świadectwa wiary.',
+                ticker: 'Szkoła Biblijna Christian Culture TV',
+                timeText: 'STRUMIEŃ AUDIO'
+            }
+        };
+
+        // ── BAZA PRAWDZIWYCH PLAYLIST YOUTUBE Z KANAŁÓW CC ──
+        const PLAYLISTS_DATA = {
+    "osobowoscPlus": [
+        {
+            "id": "PLKOxPWmme0G0",
+            "title": "Prof. Walter Veith | WYKŁADY NA CZAS KOŃCA",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/4tcJRicwtfs/hqdefault.jpg"
+        },
+        {
+            "id": "PLYRHtjlr-aFw",
+            "title": "Zjednoczeni Za Polskę",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/_YsWLCJMrjs/hqdefault.jpg"
+        },
+        {
+            "id": "PLGBAOJCGyM6g",
+            "title": "Biblia Śpiewana | Christian Culture",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/Myol_972HtY/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc-zXD3H-jrr71qbl9jqkT25",
+            "title": "The Complete New Testament | 24 Hours Audio Bible Podcast — Christian Cultur",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/mga9D1rEEAA/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc_NZedkCUTlrUZhZAtqodU1",
+            "title": "Mega Hit 2026",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/aOQcX7OAAq4/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc-Lv2wBcWcozZqO9G3OMoPk",
+            "title": "Wielki Tydzień",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/y6abK9DvQeY/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc9YPtd_ZfvimMDHXi58BAWs",
+            "title": "Biblia Audio Christian Culture",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/mga9D1rEEAA/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc9ja43XpiOixIZnbx_Wx9qq",
+            "title": "Dzień Kobiet - Składanka Wszechczasów",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/9PNl8vlMMro/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc-c0ARWMymF0kgUEREfhX0r",
+            "title": "Sylwester | Nowy Rok",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/nLAuNs49ymM/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc-qVb-nH-N7FMMtPApF9ARo",
+            "title": "Najpiękniejsze Kolędy Biblijne – 2025 ✝️🎶",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/yF84Vx6EYew/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc_xEu2YVfyW7Rc2fRQP8hwD",
+            "title": "Audiobook z Wiarą – Głos, Który Budzi Serce",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/lgxpSPYkW8s/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc-1hFF835sW8LsIUaV0wr9y",
+            "title": "Mystic Arena | Cezary Rogowski",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/VDJFb8VvfSA/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc8Si8Zs6A4P2n0tIiEJcazH",
+            "title": "Miracles Every Day | Daily Reflections on Faith, Hope & Life Transformation with God",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/DIltrkqugxc/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc8fJtjgvCpFgBS1WdTucM9y",
+            "title": "Newsy, Wydarzenia, Eventy – Christian Culture 🌍✨",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/ORN54Q_HiuU/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc9SQasHT781_gy73CH6zveG",
+            "title": "Christian Culture Network",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/Q0t6MCq3R-I/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc9K8jU_6GT0apk33xtl2-UW",
+            "title": "Judasz: Mroczne Tajemnice Życia",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/mga9D1rEEAA/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc85axgCj_4Bi--38USH5dx_",
+            "title": "Acoustic Worship | Christian Culture Music",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/ORN54Q_HiuU/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc-KMJJIXKPenJ6nbECn8bxQ",
+            "title": "Motywacja Chrześcijańska na Każdy Dzień | Codzienna Wiara i Siła | Christian Daily Inspiration ✝️🔥",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/ux5ru4OSOaU/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc_1wtMqM5pVVcwEMXCdvoQD",
+            "title": "Christian Culture - Polish Christian Hits (English Versions)",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/ORN54Q_HiuU/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc-SeQFymraN5yFMvWODVet2",
+            "title": "CC Praise & Worship | Pieśni Uwielbienia i Chwały",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/ORN54Q_HiuU/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc-e4oBMypj0wgkT_HUkE1J7",
+            "title": "Cytaty Godne Zapamiętania – Duchowa Mądrość na Każdy Dzień",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/Qb_E9nGHRsE/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc_abB-OsddpUptuVwq2VLRb",
+            "title": "Życie z Pasją 🔴",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/og827v74Wuk/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc877GhklLAKqap4HMmKDdDf",
+            "title": "Śpiewajmy Panu 🎶",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/BepcJjTScyM/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc88CAfm3MJPChDDJo2cLZ1W",
+            "title": "Bible Voice Viral",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/rI6Rtmxp5uc/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc8H_bhVMNEOLu0mciyHI944",
+            "title": "APOKALIPSA | Christian Culture Network",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/og827v74Wuk/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc-KJxuPRxtggir2fL9JiOOE",
+            "title": "Nowości na 2026",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/ORN54Q_HiuU/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc_a0qzu2oR9I0mPFUU4Mv17",
+            "title": "Global Worship Mission – The Best of TOP TEN | Christian Culture 2025",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/ORN54Q_HiuU/hqdefault.jpg"
+        },
+        {
+            "id": "PLQBdxcl9HBc9yYFKl8MUrFPO4KI2jI3Cx",
+            "title": "Lato z Jezusem | PLAYLISTA PEŁNA ŻYCIA",
+            "author": "Osobowość +",
+            "thumbnail": "https://i.ytimg.com/vi/wKfdQrKwYtw/hqdefault.jpg"
+        }
+    ],
+    "christianCultureTV": [
+        {
+            "id": "PL2hyFNkHB21YlhKWGMHlBpFpR9yPyozYh",
+            "title": "Bez Słów | Muzyka Instrumentalna",
+            "author": "Christian Culture TV",
+            "thumbnail": "https://i.ytimg.com/vi/gs2Y-aWhyJc/hqdefault.jpg"
+        },
+        {
+            "id": "PL2hyFNkHB21arNqOVXryU_FTg05DfmSXR",
+            "title": "Biblia Audio Christian Culture",
+            "author": "Christian Culture TV",
+            "thumbnail": "https://i.ytimg.com/vi/Gv_M7-H_QHs/hqdefault.jpg"
+        },
+        {
+            "id": "PL2hyFNkHB21b9DNCiEfWXc47fKEUxjgi7",
+            "title": "Szkoła Biblijna Christian Culture",
+            "author": "Christian Culture TV",
+            "thumbnail": "https://i.ytimg.com/vi/J5RzbPqHTJw/hqdefault.jpg"
+        },
+        {
+            "id": "PL2hyFNkHB21aWs336brvfXgHizPc6y0Z0",
+            "title": "Duchowa Muzyka | Spiritual Worship Music📺 Kanał: Christian Culture TV – Uwielbienie 24/7",
+            "author": "Christian Culture TV",
+            "thumbnail": "https://i.ytimg.com/vi/eDQDTEqNrvw/hqdefault.jpg"
+        },
+        {
+            "id": "PL2hyFNkHB21Y8XlfAuVb49HozXGQZiQaV",
+            "title": "Cuda z Christian Culture TV",
+            "author": "Christian Culture TV",
+            "thumbnail": "https://i.ytimg.com/vi/Gv_M7-H_QHs/hqdefault.jpg"
+        },
+        {
+            "id": "PL2hyFNkHB21alF_QiVDgiOhL6NQ7L410d",
+            "title": "Motywacja przez wiarę",
+            "author": "Christian Culture TV",
+            "thumbnail": "https://i.ytimg.com/vi/cHKfa_WCZ_g/hqdefault.jpg"
+        },
+        {
+            "id": "PL2hyFNkHB21ZSlhfWBVn7iTErlNoAYjhT",
+            "title": "Na Żywo",
+            "author": "Christian Culture TV",
+            "thumbnail": "https://i.ytimg.com/vi/Jl_LI53abZ0/hqdefault.jpg"
+        },
+        {
+            "id": "PL2hyFNkHB21Z2jdOcX0RR9aeWqPoUHWtr",
+            "title": "Oglądaj i Słuchaj",
+            "author": "Christian Culture TV",
+            "thumbnail": "https://i.ytimg.com/vi/4glon4dP5uE/hqdefault.jpg"
+        },
+        {
+            "id": "PL2hyFNkHB21bDU11v6lbBNL8WE4qLhoRM",
+            "title": "Osobowość +",
+            "author": "Christian Culture TV",
+            "thumbnail": "https://i.ytimg.com/vi/hv2rDFYZWxI/hqdefault.jpg"
+        }
+    ],
+    "radioChristianCulture": [
+        {
+            "id": "PLfPaWNyhwvAs",
+            "title": "Walter Veith & Martin Smith – What's Up Prof",
+            "author": "Polskie Radio CHRISTIAN CULTURE",
+            "thumbnail": "https://i.ytimg.com/vi/jXNjFpqL8jM/hqdefault.jpg"
+        },
+        {
+            "id": "PLH9Lwib0n84x904kOTQFy9sHRIhhgz1E2",
+            "title": "Biblia Audio Christian Culture",
+            "author": "Polskie Radio CHRISTIAN CULTURE",
+            "thumbnail": "https://i.ytimg.com/vi/-We-tu7wFsQ/hqdefault.jpg"
+        },
+        {
+            "id": "PLH9Lwib0n84w4FXFVGDZRycKdpcCq94MT",
+            "title": "Kazania",
+            "author": "Polskie Radio CHRISTIAN CULTURE",
+            "thumbnail": "https://i.ytimg.com/vi/SgQgBSZxiBw/hqdefault.jpg"
+        },
+        {
+            "id": "PLH9Lwib0n84xCS0GhHKrp4Es9xn0UuOaX",
+            "title": "PREMIERA",
+            "author": "Polskie Radio CHRISTIAN CULTURE",
+            "thumbnail": "https://i.ytimg.com/vi/mLSFwQMoX2Y/hqdefault.jpg"
+        },
+        {
+            "id": "PLH9Lwib0n84xU_jyqLMap8NEEdXzIS8-X",
+            "title": "Na Żywo",
+            "author": "Polskie Radio CHRISTIAN CULTURE",
+            "thumbnail": "https://i.ytimg.com/vi/f8R7wohm2ws/hqdefault.jpg"
+        },
+        {
+            "id": "PLH9Lwib0n84zR9a8kwjMmnrbhTuSCsGL6",
+            "title": "Radio Christian Culture - polecamy!",
+            "author": "Polskie Radio CHRISTIAN CULTURE",
+            "thumbnail": "https://i.ytimg.com/vi/mLSFwQMoX2Y/hqdefault.jpg"
+        }
+    ]
+};
+
+        // Kolejka odtwarzania
+        let currentQueue = [
+            { title: 'J 1:2 On był na początku u Boga', artist: 'Radio Biblia', duration: '23:45' },
+            { title: 'J 1:3 Wszystko przez Niego powstało', artist: 'Radio Biblia', duration: '24:12' },
+            { title: 'J 1:4 W Nim było życie', artist: 'Radio Biblia', duration: '22:37' },
+            { title: 'J 1:5 A światłość świeci w ciemności', artist: 'Radio Biblia', duration: '21:08' },
+            { title: 'J 1:6 Pojawił się człowiek posłany od Boga', artist: 'Radio Biblia', duration: '20:15' }
+        ];
+
+        // Stan odtwarzacza
+        let currentItem = LIVE_STATIONS.biblia;
+        let isPlaying = false;
+        let isMuted = false;
+        let currentVolume = 0.8;
+        let activeEngine = 'native'; // 'native' lub 'youtube'
+        let ytPlayer = null;
+        let ytReady = false;
+        let progressTimer = null;
+
+        const nativeAudio = document.getElementById('native-audio');
+
+        // ── GENEROWANIE KART PLAYLIST NA STRONIE ──
+        function renderAllPlaylists() {
+            // 1. Osobowość PLUS
+            const gridOsobowosc = document.getElementById('grid-osobowosc');
+            if (gridOsobowosc && PLAYLISTS_DATA.osobowoscPlus) {
+                gridOsobowosc.innerHTML = PLAYLISTS_DATA.osobowoscPlus.map((p, idx) => createPlaylistCard(p, 'Osobowość PLUS', 'bg-blue-500/30 text-blue-300 border-blue-500/40', 'Wykłady Osobowość PLUS')).join('');
+            }
+
+            // 2. Christian Culture TV
+            const gridCCTV = document.getElementById('grid-cctv');
+            if (gridCCTV && PLAYLISTS_DATA.christianCultureTV) {
+                gridCCTV.innerHTML = PLAYLISTS_DATA.christianCultureTV.map((p, idx) => createPlaylistCard(p, 'Christian Culture TV', 'bg-teal-500/30 text-teal-300 border-teal-500/40', 'Christian Culture TV Worship')).join('');
+            }
+
+            // 3. Polskie Radio CC
+            const gridRadioCC = document.getElementById('grid-radiocc');
+            if (gridRadioCC && PLAYLISTS_DATA.radioChristianCulture) {
+                gridRadioCC.innerHTML = PLAYLISTS_DATA.radioChristianCulture.map((p, idx) => createPlaylistCard(p, 'Polskie Radio CC', 'bg-red-500/30 text-red-300 border-red-500/40', 'Polskie Radio CC Biblia Worship')).join('');
+            }
+        }
+
+        function createPlaylistCard(p, channelName, badgeClasses, categories) {
+            const cleanTitle = escapeHtml(p.title);
+            const thumb = p.thumbnail || '/images/player/hero-pure-art.jpg';
+            return `
+                <div onclick="playYouTubePlaylist('${p.id}', '${cleanTitle}', '${channelName}', '${thumb}')" 
+                     class="playlist-card group glass-panel rounded-2xl overflow-hidden cursor-pointer glass-card-hover border border-white/5 hover:border-amber-500/40 p-3 flex flex-col justify-between aspect-[4/5] relative bg-[#0d1322]"
+                     data-category="${categories}" data-title="${cleanTitle.toLowerCase()}">
+                    
+                    <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-2.5 bg-black shadow-md">
+                        <img src="${thumb}" alt="${cleanTitle}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0d1322] via-transparent to-transparent opacity-60"></div>
+                        <div class="absolute top-2 right-2">
+                            <span class="px-2 py-0.5 rounded-full text-[8.5px] font-bold border backdrop-blur-md ${badgeClasses}">
+                                Playlist
+                            </span>
+                        </div>
+                        <div class="absolute bottom-2 right-2 w-8 h-8 rounded-full gold-button-gradient flex items-center justify-center text-gray-950 text-xs shadow-lg opacity-0 group-hover:opacity-100 group-hover:scale-105 transition">
+                            <i class="fa-solid fa-play ml-0.5"></i>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 flex flex-col justify-between">
+                        <h4 class="text-xs font-bold text-white group-hover:text-amber-300 transition line-clamp-2 leading-snug">
+                            ${cleanTitle}
+                        </h4>
+                        <div class="mt-2 flex items-center justify-between text-[9px] text-gray-400">
+                            <span class="truncate max-w-[80%]">${channelName}</span>
+                            <i class="fa-brands fa-youtube text-red-400"></i>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function escapeHtml(str) {
+            return (str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+
+        // ── INICJALIZACJA YOUTUBE PLAYER API ──
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('yt-audio-worker', {
+                height: '1',
+                width: '1',
+                playerVars: {
+                    autoplay: 0,
+                    controls: 0,
+                    disablekb: 1,
+                    fs: 0,
+                    modestbranding: 1,
+                    rel: 0
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            ytReady = true;
+            ytPlayer.setVolume(currentVolume * 100);
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                setPlaybackState(true);
+                syncTrackInfoFromYT();
+            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+                if (activeEngine === 'youtube') setPlaybackState(false);
+            }
+        }
+
+        function syncTrackInfoFromYT() {
+            if (activeEngine === 'youtube' && ytReady && ytPlayer && ytPlayer.getVideoData) {
+                const data = ytPlayer.getVideoData();
+                if (data && data.title) {
+                    document.getElementById('player-title').textContent = data.title;
+                    document.getElementById('hero-track-ticker').textContent = data.title;
+                    document.getElementById('now-playing-verse').textContent = data.title;
+                    document.getElementById('mobile-title').textContent = data.title;
+                    
+                    if (data.video_id) {
+                        const thumb = 'https://i.ytimg.com/vi/' + data.video_id + '/hqdefault.jpg';
+                        document.getElementById('player-cover-art').src = thumb;
+                        document.getElementById('now-playing-thumb').src = thumb;
+                        document.getElementById('mobile-thumb').src = thumb;
+                    }
+                }
+            }
+        }
+
+        // ── KONTROLA ODTWARZANIA ──
+        function playStation(stationKey) {
+            const st = LIVE_STATIONS[stationKey];
+            if (!st) return;
+
+            currentItem = st;
+            updateHeroAndPlayerUI(st.title, st.subtitle, st.badge, st.heroBadge, st.cover, st.heroImg, st.headline, st.desc, st.ticker, st.timeText);
+
+            // Podświetlenie w bocznym menu
+            document.querySelectorAll('.channel-side-item').forEach(el => {
+                el.classList.remove('bg-white/5', 'border-amber-500/30');
+                el.classList.add('border-transparent');
+            });
+            const activeSide = document.getElementById(`side-item-${stationKey}`);
+            if (activeSide) {
+                activeSide.classList.add('bg-white/5', 'border-amber-500/30');
+                activeSide.classList.remove('border-transparent');
+            }
+
+            if (st.type === 'live') {
+                switchEngine('native');
+                nativeAudio.src = st.streamUrl + '?t=' + Date.now();
+                nativeAudio.play().then(() => setPlaybackState(true)).catch(err => {
+                    console.log("Autoplay policy:", err);
+                    setPlaybackState(false);
+                });
+            } else if (st.type === 'youtube_playlist') {
+                switchEngine('youtube');
+                if (ytReady && ytPlayer) {
+                    ytPlayer.loadPlaylist({
+                        list: st.playlistId,
+                        listType: 'playlist',
+                        index: 0,
+                        startSeconds: 0
+                    });
+                    ytPlayer.playVideo();
+                    setPlaybackState(true);
+                }
+            }
+        }
+
+        function playYouTubePlaylist(playlistId, title, channelName, thumb) {
+            currentItem = {
+                id: playlistId,
+                title: title,
+                subtitle: channelName,
+                type: 'youtube_playlist',
+                cover: thumb
+            };
+
+            updateHeroAndPlayerUI(
+                title, 
+                channelName, 
+                'AUDIO STREAM', 
+                channelName.toUpperCase(), 
+                thumb, 
+                thumb, 
+                `<span class="gold-gradient-text">${escapeHtml(title)}</span>`, 
+                `Odtwarzanie playlisty jako czysty strumień audio z kanału ${channelName}.`, 
+                title, 
+                'STRUMIEŃ AUDIO'
+            );
+
+            switchEngine('youtube');
+            if (ytReady && ytPlayer) {
+                ytPlayer.loadPlaylist({
+                    list: playlistId,
+                    listType: 'playlist',
+                    index: 0,
+                    startSeconds: 0
+                });
+                ytPlayer.playVideo();
+                setPlaybackState(true);
+            }
+
+            // Przewiń płynnie do Hero
+            scrollToSection('top-hero');
+        }
+
+        function updateHeroAndPlayerUI(title, subtitle, badge, heroBadge, cover, heroImg, headline, desc, ticker, timeText) {
+            // Hero
+            document.getElementById('hero-badge-channel').textContent = heroBadge;
+            document.getElementById('hero-badge-status').textContent = badge;
+            document.getElementById('hero-title').innerHTML = headline;
+            document.getElementById('hero-subtitle').textContent = desc;
+            document.getElementById('hero-track-ticker').textContent = ticker;
+            document.getElementById('hero-time-ticker').textContent = timeText;
+            if (heroImg) document.getElementById('hero-banner-img').src = heroImg;
+
+            // Player Sidebar
+            document.getElementById('player-title').textContent = title;
+            document.getElementById('player-artist').textContent = subtitle;
+            document.getElementById('player-live-badge').textContent = badge;
+            document.getElementById('player-cover-art').src = cover;
+            document.getElementById('now-playing-verse').textContent = title;
+            document.getElementById('now-playing-desc').textContent = subtitle;
+            document.getElementById('now-playing-thumb').src = cover;
+            document.getElementById('now-playing-time').textContent = badge;
+            document.getElementById('total-duration').textContent = (badge === 'LIVE') ? 'LIVE' : '00:00';
+
+            // Mobile Bar
+            document.getElementById('mobile-title').textContent = title;
+            document.getElementById('mobile-desc').textContent = subtitle;
+            document.getElementById('mobile-thumb').src = cover;
+        }
+
+        function switchEngine(newEngine) {
+            if (activeEngine === 'native' && newEngine === 'youtube') {
+                nativeAudio.pause();
+                nativeAudio.src = '';
+                document.getElementById('stream-engine-badge').textContent = '• YOUTUBE AUDIO';
+            } else if (activeEngine === 'youtube' && newEngine === 'native') {
+                if (ytReady && ytPlayer && ytPlayer.pauseVideo) {
+                    ytPlayer.pauseVideo();
+                }
+                document.getElementById('stream-engine-badge').textContent = '• STRUMIEŃ LIVE';
+            }
+            activeEngine = newEngine;
+        }
+
+        function togglePlay() {
+            if (isPlaying) {
+                pauseCurrent();
+            } else {
+                resumeCurrent();
+            }
+        }
+
+        function pauseCurrent() {
+            if (activeEngine === 'native') {
+                nativeAudio.pause();
+            } else if (activeEngine === 'youtube' && ytReady && ytPlayer) {
+                ytPlayer.pauseVideo();
+            }
+            setPlaybackState(false);
+        }
+
+        function resumeCurrent() {
+            if (activeEngine === 'native') {
+                if (!nativeAudio.src || nativeAudio.src === '') {
+                    playStation('biblia');
+                } else {
+                    nativeAudio.play().then(() => setPlaybackState(true)).catch(e => console.log(e));
+                }
+            } else if (activeEngine === 'youtube' && ytReady && ytPlayer) {
+                ytPlayer.playVideo();
+                setPlaybackState(true);
+            }
+        }
+
+        function nextTrack() {
+            if (activeEngine === 'youtube' && ytReady && ytPlayer && ytPlayer.nextVideo) {
+                ytPlayer.nextVideo();
+            } else if (activeEngine === 'native') {
+                // Przełącz na kolejną stację radiową
+                const keys = Object.keys(LIVE_STATIONS);
+                const curIdx = keys.indexOf(currentItem.id);
+                const nextKey = keys[(curIdx + 1) % keys.length];
+                playStation(nextKey);
+            }
+        }
+
+        function prevTrack() {
+            if (activeEngine === 'youtube' && ytReady && ytPlayer && ytPlayer.previousVideo) {
+                ytPlayer.previousVideo();
+            } else if (activeEngine === 'native') {
+                const keys = Object.keys(LIVE_STATIONS);
+                const curIdx = keys.indexOf(currentItem.id);
+                const prevKey = keys[(curIdx - 1 + keys.length) % keys.length];
+                playStation(prevKey);
+            }
+        }
+
+        function setPlaybackState(playing) {
+            isPlaying = playing;
+
+            const heroIcon = document.getElementById('hero-play-icon');
+            const heroLabel = document.getElementById('hero-play-label');
+            const playerIcon = document.getElementById('player-main-play-icon');
+            const mobileIcon = document.getElementById('mobile-play-icon');
+
+            if (playing) {
+                if (heroIcon) heroIcon.className = 'fa-solid fa-pause';
+                if (heroLabel) heroLabel.textContent = 'Zatrzymaj';
+                if (playerIcon) playerIcon.className = 'fa-solid fa-pause';
+                if (mobileIcon) mobileIcon.className = 'fa-solid fa-pause';
+
+                document.getElementById('hero-waveform')?.classList.add('playing');
+                document.getElementById('side-waveform')?.classList.add('playing');
+                startProgressTracker();
+            } else {
+                if (heroIcon) heroIcon.className = 'fa-solid fa-play';
+                if (heroLabel) heroLabel.textContent = 'Odtwarzaj';
+                if (playerIcon) playerIcon.className = 'fa-solid fa-play ml-0.5';
+                if (mobileIcon) mobileIcon.className = 'fa-solid fa-play';
+
+                document.getElementById('hero-waveform')?.classList.remove('playing');
+                document.getElementById('side-waveform')?.classList.remove('playing');
+                stopProgressTracker();
+            }
+        }
+
+        // ── REGULACJA GŁOŚNOŚCI & SKIPPENIE ──
+        function onVolumeChange(val) {
+            currentVolume = val / 100;
+            nativeAudio.volume = currentVolume;
+            if (ytReady && ytPlayer && ytPlayer.setVolume) {
+                ytPlayer.setVolume(val);
+            }
+            updateVolumeIcon(val);
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            nativeAudio.muted = isMuted;
+            if (ytReady && ytPlayer) {
+                if (isMuted) ytPlayer.mute(); else ytPlayer.unMute();
+            }
+            updateVolumeIcon(isMuted ? 0 : currentVolume * 100);
+        }
+
+        function updateVolumeIcon(val) {
+            const icon = document.getElementById('volume-icon');
+            if (!icon) return;
+            if (val == 0 || isMuted) {
+                icon.className = 'fa-solid fa-volume-xmark text-red-400';
+            } else if (val < 50) {
+                icon.className = 'fa-solid fa-volume-low text-amber-400';
+            } else {
+                icon.className = 'fa-solid fa-volume-high text-amber-400';
+            }
+        }
+
+        function skipSeconds(sec) {
+            if (activeEngine === 'native') {
+                nativeAudio.currentTime += sec;
+            } else if (activeEngine === 'youtube' && ytReady && ytPlayer) {
+                const cur = ytPlayer.getCurrentTime() || 0;
+                ytPlayer.seekTo(Math.max(0, cur + sec), true);
+            }
+        }
+
+        function onSeek(percent) {
+            if (activeEngine === 'youtube' && ytReady && ytPlayer) {
+                const dur = ytPlayer.getDuration() || 0;
+                if (dur > 0) {
+                    ytPlayer.seekTo((percent / 100) * dur, true);
+                }
+            }
+        }
+
+        function startProgressTracker() {
+            stopProgressTracker();
+            progressTimer = setInterval(() => {
+                if (activeEngine === 'youtube' && ytReady && ytPlayer && ytPlayer.getCurrentTime) {
+                    const cur = ytPlayer.getCurrentTime() || 0;
+                    const dur = ytPlayer.getDuration() || 0;
+                    if (dur > 0) {
+                        document.getElementById('seek-bar').value = (cur / dur) * 100;
+                        document.getElementById('current-time').textContent = formatTime(cur);
+                        document.getElementById('total-duration').textContent = formatTime(dur);
+                        document.getElementById('hero-time-ticker').textContent = `- ${formatTime(dur - cur)}`;
+                    }
+                } else if (activeEngine === 'native') {
+                    document.getElementById('current-time').textContent = formatTime(nativeAudio.currentTime || 0);
+                }
+            }, 500);
+        }
+
+        function stopProgressTracker() {
+            if (progressTimer) clearInterval(progressTimer);
+        }
+
+        function formatTime(seconds) {
+            const s = Math.floor(seconds);
+            const m = Math.floor(s / 60);
+            const remS = s % 60;
+            return `${m.toString().padStart(2, '0')}:${remS.toString().padStart(2, '0')}`;
+        }
+
+        // ── KOLEJKA UTWORÓW ──
+        function renderQueue() {
+            const container = document.getElementById('queue-container');
+            if (!container) return;
+            let html = '';
+            currentQueue.forEach((t, i) => {
+                html += `
+                    <div onclick="playQueueTrack(${i})" class="queue-item flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-white/5 cursor-pointer transition group">
+                        <span class="text-[11px] font-mono text-gray-500 group-hover:text-amber-400 w-4 text-center">${i + 1}</span>
+                        <div class="w-7 h-7 rounded-lg overflow-hidden flex-shrink-0 bg-black">
+                            <img src="/images/player/art-chan-biblia.jpg" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <span class="text-xs font-semibold text-gray-200 group-hover:text-white truncate block">${t.title}</span>
+                            <p class="text-[9px] text-gray-400 truncate">${t.artist}</p>
+                        </div>
+                        <span class="text-[10px] font-mono text-gray-500">${t.duration}</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function playQueueTrack(idx) {
+            const track = currentQueue[idx];
+            if (!track) return;
+            document.getElementById('now-playing-verse').textContent = track.title;
+            document.getElementById('now-playing-desc').textContent = track.artist;
+            document.getElementById('now-playing-time').textContent = track.duration;
+            document.getElementById('hero-track-ticker').textContent = track.title;
+            playStation('biblia');
+        }
+
+        function shuffleQueue() {
+            currentQueue.sort(() => Math.random() - 0.5);
+            renderQueue();
+        }
+
+        // ── WYSZUKIWANIE & FILTROWANIE ──
+        document.getElementById('searchInput')?.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            document.querySelectorAll('.channel-card, .playlist-card').forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+        });
+
+        function filterByTag(tag) {
+            document.querySelectorAll('.filter-pill').forEach(btn => {
+                if (btn.textContent.trim().includes(tag)) {
+                    btn.classList.add('bg-amber-500', 'text-gray-950', 'font-bold');
+                    btn.classList.remove('bg-white/5', 'text-gray-300');
+                } else {
+                    btn.classList.remove('bg-amber-500', 'text-gray-950', 'font-bold');
+                    btn.classList.add('bg-white/5', 'text-gray-300');
+                }
+            });
+
+            if (tag === 'Wszystkie') {
+                document.querySelectorAll('.filter-section').forEach(sec => sec.style.display = 'block');
+                document.querySelectorAll('.channel-card, .playlist-card').forEach(card => card.style.display = 'flex');
+                return;
+            }
+
+            document.querySelectorAll('.channel-card, .playlist-card').forEach(card => {
+                const cat = card.getAttribute('data-category') || '';
+                if (cat.includes(tag)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function scrollToSection(id) {
+            const target = document.getElementById(id);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function showPlaylistModal() {
+            alert("Moje Playlisty: Zaloguj się w portalu LUMINA, aby tworzyć i synchronizować własne playlisty chrześcijańskie!");
+        }
+
+        function addToPlaylist() {
+            alert("Dodano bieżący utwór do Twojej biblioteki w pamięci podręcznej!");
+        }
+
+        function openMoreOptions() {
+            navigator.clipboard.writeText(window.location.href);
+            alert("Skopiowano bezpośredni link do odtwarzacza PolskieRadio.cc do schowka! ✨");
+        }
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // Skróty klawiszowe (Space = Play/Pause, M = Mute, Strzałki = Skip)
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            if (e.code === 'Space') {
+                e.preventDefault();
+                togglePlay();
+            } else if (e.code === 'KeyM') {
+                toggleMute();
+            } else if (e.code === 'ArrowRight') {
+                skipSeconds(15);
+            } else if (e.code === 'ArrowLeft') {
+                skipSeconds(-15);
+            }
+        });
+
+        // Start aplikacji
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAllPlaylists();
+            renderQueue();
+            updateHeroAndPlayerUI(
+                LIVE_STATIONS.biblia.title,
+                LIVE_STATIONS.biblia.subtitle,
+                LIVE_STATIONS.biblia.badge,
+                LIVE_STATIONS.biblia.heroBadge,
+                LIVE_STATIONS.biblia.cover,
+                LIVE_STATIONS.biblia.heroImg,
+                LIVE_STATIONS.biblia.headline,
+                LIVE_STATIONS.biblia.desc,
+                LIVE_STATIONS.biblia.ticker,
+                LIVE_STATIONS.biblia.timeText
+            );
+            onVolumeChange(80);
+        });
+    </script>
+</body>
+</html>
