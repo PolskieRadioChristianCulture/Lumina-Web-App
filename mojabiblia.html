@@ -415,9 +415,12 @@
       border-bottom: 1px solid var(--border-subtle);
       padding: 10px 16px;
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      position: relative;
+      z-index: 10;
     }
 
     .mb-nav-primary-row {
@@ -1945,53 +1948,70 @@
       font-weight: 600;
       font-size: 0.85rem;
       cursor: pointer;
+    }
+
     /* ══════════ WERSJA PREMIUM NA URZĄDZENIA MOBILNE (SMARTFONY & TABLETY) ══════════ */
     @media (max-width: 768px) {
       /* 1. Header */
       .mb-header {
-        padding: 8px 12px;
+        padding: 6px 10px;
         gap: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
       .mb-brand {
-        gap: 8px;
-        min-height: 40px;
+        gap: 6px;
+        min-height: 38px;
+        flex-shrink: 0;
       }
       .mb-brand-logo {
-        width: 34px;
-        height: 34px;
-        font-size: 0.95rem;
-        border-radius: 9px;
+        width: 32px;
+        height: 32px;
+        font-size: 0.90rem;
+        border-radius: 8px;
       }
       .mb-brand-text h1 {
-        font-size: 1.02rem;
-        letter-spacing: 0.4px;
+        font-size: 0.96rem;
+        letter-spacing: 0.3px;
       }
       .mb-brand-text span {
-        font-size: 0.62rem;
-        letter-spacing: 1px;
+        font-size: 0.58rem;
+        letter-spacing: 0.8px;
       }
       .mb-header-actions {
-        gap: 6px;
+        gap: 5px;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
       }
       .mb-audio-pill {
-        height: 38px;
+        height: 36px;
         padding: 0 10px;
-        font-size: 0.78rem;
+        font-size: 0.76rem;
         gap: 6px;
-        border-radius: 19px;
+        border-radius: 18px;
+        white-space: nowrap !important;
+        flex-shrink: 0;
       }
       .mb-audio-pill .mb-audio-full-label {
         display: none !important;
       }
       .mb-audio-pill .mb-audio-short-label {
         display: inline !important;
+        white-space: nowrap !important;
       }
       .mb-nav-link-btn {
-        height: 38px;
-        min-width: 38px;
-        padding: 0 8px;
+        height: 36px;
+        min-width: 36px;
+        width: 36px;
+        padding: 0;
         border-radius: 10px;
         font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
       }
       .mb-report-btn.header-report {
         display: none !important; /* Dostępne przez pływający FAB na dole ekranu */
@@ -2000,7 +2020,7 @@
       /* 2. Pasek Nawigacyjny i Selektory (Compact Scripture Bar) */
       .mb-toolbar {
         padding: 8px 10px;
-        gap: 6px;
+        gap: 8px;
         flex-direction: column;
         align-items: stretch;
       }
@@ -2008,37 +2028,54 @@
         width: 100%;
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 4px;
       }
       .mb-nav-arrow-btn {
-        width: 38px;
+        width: 36px;
         height: 42px;
         border-radius: 10px;
         font-size: 0.9rem;
+        flex-shrink: 0;
       }
       .mb-drawer-toggle-btn {
+        width: 38px;
         height: 42px;
         min-height: 42px;
-        padding: 0 10px;
-        font-size: 0.80rem;
+        padding: 0;
         border-radius: 10px;
-        gap: 5px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .mb-drawer-toggle-btn span {
+        display: none;
       }
       .mb-selects-inline {
         flex: 1;
         display: flex;
-        gap: 5px;
+        gap: 4px;
         min-width: 0;
       }
       .mb-select {
         height: 42px;
-        font-size: 0.84rem;
+        font-size: 0.82rem;
         border-radius: 10px;
-        padding: 0 8px;
+        padding: 0 6px;
+      }
+      .mb-book-select {
+        flex: 1;
+        min-width: 0;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
       .mb-chapter-select {
-        min-width: 82px;
-        max-width: 95px;
+        width: 72px;
+        min-width: 68px;
+        max-width: 78px;
+        flex-shrink: 0;
+        padding: 0 2px 0 4px;
       }
       .mb-nav-secondary-row {
         width: 100%;
@@ -2053,35 +2090,41 @@
         padding: 2px;
         gap: 2px;
         border-radius: 12px;
+        min-width: 0;
       }
       .mb-mode-btn {
         flex: 1;
-        height: 36px;
-        padding: 0 6px;
+        height: 38px;
+        padding: 0 4px;
         font-size: 0.78rem;
         gap: 4px;
         justify-content: center;
         border-radius: 9px;
+        white-space: nowrap;
+        min-width: 0;
       }
       .mb-tools-bar {
         display: inline-flex;
         align-items: center;
         gap: 4px;
+        flex-shrink: 0;
       }
       .mb-rev-toggle-btn {
-        height: 36px;
-        min-height: 36px;
-        padding: 0 9px;
-        font-size: 0.75rem;
+        height: 38px;
+        min-height: 38px;
+        padding: 0 8px;
+        font-size: 0.74rem;
         border-radius: 9px;
         gap: 4px;
+        white-space: nowrap;
       }
       .mb-font-controls {
         gap: 3px;
+        display: inline-flex;
       }
       .mb-icon-btn {
         width: 36px;
-        height: 36px;
+        height: 38px;
         border-radius: 9px;
         font-size: 0.85rem;
       }
