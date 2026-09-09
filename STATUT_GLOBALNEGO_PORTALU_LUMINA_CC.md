@@ -37,7 +37,12 @@ graph TD
 ```
 
 ### 1. Filar I: Relacje, Rodzina i Małżeństwo (Lumina Connect)
-- Główny cel to **trwałe, święte małżeństwo** lub **wartościowa przyjaźń**.
+- Główny cel to **trwałe, święte małżeństwo kobiety i mężczyzny w Chrystusie** lub **wartościowa przyjaźń**.
+- **Żelazna Doktryna Rekomendacji i Dopasowania Płciowego (@L + @Joma):**
+  - **Zakaz polecania tej samej płci:** Portal LUMINA nie poleca profilom męskim mężczyzn, a profilom kobiecym kobiet.
+  - **Dopasowanie zerowe:** Wskaźnik dopasowania matrymonialnego między osobami tej samej płci wynosi ZAWSZE i BEZWZGLĘDNIE 0% (`0%`).
+  - **Brak parowania randkowego:** Wzajemne polubienia profili tej samej płci nigdy nie tworzą dopasowania randkowego (`isMatch: false`).
+  - **Konta misyjne i redakcyjne:** Oficjalne kanały misyjne (np. CCTV, Radio CC, CC Men, CC Women, Studio Dobrego Słowa) są otwarte i polecane dla wszystkich.
 - Wyjaśnialny algorytm dopasowania (Explainable AI Match): Wiara 100%, Cel 95%, Wartości 92%, Lokalizacja 90% + sekcja „Co Was łączy”.
 - Dyskretne, bezstresowe narzędzia kontaktu: `[👋 Poznajmy się]`, `[☕ Kawa]`, `[🕊️ Modlitwa]`.
 

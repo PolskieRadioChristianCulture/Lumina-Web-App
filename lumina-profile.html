@@ -3225,7 +3225,7 @@
                         <div class="head-user-tagline">
                             <span id="userAgeCityEl"><i class="fa-solid fa-location-dot"></i> Polska</span>
                             <span id="userDenomEl"><i class="fa-solid fa-cross"></i> Chrześcijanin</span>
-                            <span id="userMatchEl" style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: 98%</span>
+                            <span id="userMatchEl" style="color: #facc15; font-weight: 800; display: none;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: --</span>
                             <span id="visibilityBadge" class="badge-visibility-pub"><i class="fa-solid fa-globe"></i> Profil Publiczny</span> 
                             <span class="stat-tag-chip" id="statLikesChip" style="background:rgba(236,72,153,0.14); border:1px solid rgba(236,72,153,0.35); color:#f472b6; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-heart"></i> <span id="statLikesCount">120</span> Polubień</span>
                             <span class="stat-tag-chip" id="statFollowersChip" style="background:rgba(59,130,246,0.14); border:1px solid rgba(59,130,246,0.35); color:#93c5fd; padding:3px 10px; border-radius:14px; font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-users"></i> <span id="statFollowersCount">310</span> Obserwujących</span>
@@ -5515,9 +5515,18 @@
                 const computedMatch = (typeof window.calculateProfileMatchScore === 'function') 
                     ? window.calculateProfileMatchScore(data) 
                     : (window.LuminaDB?.calculateProfileMatchScore ? window.LuminaDB.calculateProfileMatchScore(data) : null);
-                if (computedMatch && computedMatch !== 'Wymaga profilu' && computedMatch !== '0%') {
+                if (computedMatch && computedMatch !== 'Wymaga profilu') {
                     document.getElementById('userMatchEl').style.display = 'inline-flex';
-                    document.getElementById('userMatchEl').innerHTML = `<i class="fa-solid fa-heart-pulse"></i> Dopasowanie: ${computedMatch}`;
+                    if (computedMatch === '0%') {
+                        document.getElementById('userMatchEl').innerHTML = `<i class="fa-solid fa-heart-crack"></i> Dopasowanie: 0%`;
+                        document.getElementById('userMatchEl').style.color = '#9ca3af';
+                    } else if (computedMatch === 'Twój profil') {
+                        document.getElementById('userMatchEl').innerHTML = `<i class="fa-solid fa-user-check"></i> Twój profil`;
+                        document.getElementById('userMatchEl').style.color = '#34d399';
+                    } else {
+                        document.getElementById('userMatchEl').innerHTML = `<i class="fa-solid fa-heart-pulse"></i> Dopasowanie: ${computedMatch}`;
+                        document.getElementById('userMatchEl').style.color = '#facc15';
+                    }
                 } else {
                     document.getElementById('userMatchEl').style.display = 'none';
                 }

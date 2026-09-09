@@ -3455,6 +3455,15 @@ export async function recordProfileLike(targetIdOrSlug, targetData = {}, type = 
 
     let isMatch = false;
 
+    // ── ŻELAZNA DOKTRYNA LUMINA (@L + @Joma) ──
+    // Nie dopuszczamy dopasowań matrymonialnych między osobami tej samej płci.
+    const myProfileForLike = currentProfileState || (function() {
+        try { return JSON.parse(localStorage.getItem('lumina_my_profile') || 'null'); } catch(e) { return null; }
+    })();
+    const myGender = detectProfileGender(myProfileForLike || currentUserState);
+    const targetGender = detectProfileGender(targetData || { slug: targetIdOrSlug, id: targetIdOrSlug });
+    const isSameGender = (myGender === targetGender && myGender !== 'unknown');
+
     if (db) {
         try {
             // Save our like in Firestore
@@ -3469,33 +3478,35 @@ export async function recordProfileLike(targetIdOrSlug, targetData = {}, type = 
                 timestamp: serverTimestamp()
             });
 
-            // Check if reciprocal like exists
-            const recipSnap = await getDoc(doc(db, 'lumina_likes', reciprocalLikeDocId));
-            if (recipSnap.exists()) {
-                isMatch = true;
-                const matchId = [fromId, targetIdOrSlug].sort().join('_');
-                await setDoc(doc(db, 'lumina_matches', matchId), {
-                    users: [fromId, targetIdOrSlug],
-                    userProfiles: {
-                        [fromId]: {
-                            name: currentProfileState?.name || user?.displayName || 'Użytkownik',
-                            avatar: currentProfileState?.avatar || user?.photoURL || 'lumina_icon.jpg'
+            // Check if reciprocal like exists — TYLKO dla osób przeciwnej płci
+            if (!isSameGender) {
+                const recipSnap = await getDoc(doc(db, 'lumina_likes', reciprocalLikeDocId));
+                if (recipSnap.exists()) {
+                    isMatch = true;
+                    const matchId = [fromId, targetIdOrSlug].sort().join('_');
+                    await setDoc(doc(db, 'lumina_matches', matchId), {
+                        users: [fromId, targetIdOrSlug],
+                        userProfiles: {
+                            [fromId]: {
+                                name: currentProfileState?.name || user?.displayName || 'Użytkownik',
+                                avatar: currentProfileState?.avatar || user?.photoURL || 'lumina_icon.jpg'
+                            },
+                            [targetIdOrSlug]: {
+                                name: targetData.name || targetIdOrSlug,
+                                avatar: targetData.avatar || 'lumina_icon.jpg'
+                            }
                         },
-                        [targetIdOrSlug]: {
-                            name: targetData.name || targetIdOrSlug,
-                            avatar: targetData.avatar || 'lumina_icon.jpg'
-                        }
-                    },
-                    createdAt: serverTimestamp()
-                }, { merge: true });
+                        createdAt: serverTimestamp()
+                    }, { merge: true });
+                }
             }
         } catch(err) {
             console.warn('Lumina Match Engine notice:', err.message);
         }
     }
 
-    // Demo / interactive simulation match trigger for key profiles
-    if (!isMatch && (targetIdOrSlug === 'noemi' || targetIdOrSlug === 'tomek' || targetIdOrSlug === 'weronika' || Math.random() < 0.35)) {
+    // Demo / interactive simulation match trigger for key profiles — BEZWZGLĘDNIE tylko dla osób przeciwnej płci
+    if (!isMatch && !isSameGender && (targetIdOrSlug === 'noemi' || targetIdOrSlug === 'tomek' || targetIdOrSlug === 'weronika' || Math.random() < 0.35)) {
         isMatch = true;
     }
 
@@ -5188,23 +5199,57 @@ export function detectProfileGender(p) {
     if (!p) return 'unknown';
     const g = (p.gender || '').toLowerCase().trim();
     if (g === 'kobieta' || g === 'female' || g === 'woman' || g === 'dziewczyna') return 'female';
-    if (g === 'mezczyzna' || g === 'mężczyzna' || g === 'male' || g === 'man' || g === 'facet') return 'male';
+    if (g === 'mezczyzna' || g === 'mężczyzna' || g === 'male' || g === 'man' || g === 'facet' || g === 'chłopak' || g === 'chlopak') return 'male';
 
     const denom = (p.denom || '').toLowerCase();
     if (denom.includes('chrześcijanka') || denom.includes('kobieta')) return 'female';
-    if (denom.includes('chrześcijanin') || denom.includes('mężczyzna')) return 'male';
+    if (denom.includes('chrześcijanin') || denom.includes('mężczyzna') || denom.includes('mezczyzna')) return 'male';
 
     const status = (p.status || '').toLowerCase();
-    if (status.includes('panna') || status.includes('mężatka') || status.includes('rozwiedziona') || status.includes('wdowa')) return 'female';
-    if (status.includes('kawaler') || status.includes('żonaty') || status.includes('rozwiedziony') || status.includes('wdowiec')) return 'male';
+    if (status.includes('panna') || status.includes('mężatka') || status.includes('mezatka') || status.includes('rozwiedziona') || status.includes('wdowa')) return 'female';
+    if (status.includes('kawaler') || status.includes('żonaty') || status.includes('zonaty') || status.includes('rozwiedziony') || status.includes('wdowiec')) return 'male';
 
     const slug = (p.slug || p.id || '').toLowerCase();
-    if (slug.includes('wioletta') || slug.includes('magdalena') || slug.includes('dorota') || slug.includes('urszula') || slug.includes('anna') || slug.includes('noemi') || slug.includes('weronika') || slug.includes('dominika') || slug.includes('sylwia') || slug.includes('bernardeta') || slug.includes('ccwomen') || slug.includes('jola')) return 'female';
-    if (slug.includes('cezary') || slug.includes('andrzej') || slug.includes('robert') || slug.includes('lukasz') || slug.includes('tomek') || slug.includes('dawid') || slug.includes('rafal') || slug.includes('ccmen')) return 'male';
+    if (slug.includes('wioletta') || slug.includes('magdalena') || slug.includes('dorota') || slug.includes('urszula') || slug.includes('anna') || slug.includes('noemi') || slug.includes('weronika') || slug.includes('dominika') || slug.includes('sylwia') || slug.includes('bernardeta') || slug.includes('ccwomen') || slug.includes('jola') || slug.includes('julia') || slug.includes('zofiadudek') || slug.includes('kasia') || slug.includes('maria') || slug.includes('ewa') || slug.includes('agata') || slug.includes('paulina') || slug.includes('monika') || slug.includes('karolina') || slug.includes('natalia') || slug.includes('patrycja') || slug.includes('aleksandra') || slug.includes('olga') || slug.includes('martyna')) return 'female';
+    if (slug.includes('cezary') || slug.includes('andrzej') || slug.includes('robert') || slug.includes('lukasz') || slug.includes('tomek') || slug.includes('tomasz') || slug.includes('dawid') || slug.includes('rafal') || slug.includes('ccmen') || slug.includes('piotr') || slug.includes('pawel') || slug.includes('pawelmurawski') || slug.includes('zbyszek') || slug.includes('zbyszekgieron') || slug.includes('krzysztof') || slug.includes('marcin') || slug.includes('michal') || slug.includes('mateusz') || slug.includes('jan') || slug.includes('adam') || slug.includes('marek') || slug.includes('grzegorz') || slug.includes('bartosz')) return 'male';
 
     const name = (p.name || p.displayName || '').toLowerCase().trim();
-    if (name.endsWith('a') && !name.startsWith('kuba') && !name.startsWith('barnaba')) return 'female';
+    const firstName = name.split(/\s+/)[0] || name;
+    const maleNameExceptions = ['kuba', 'jakub', 'barnaba', 'kosma', 'bonawentura', 'jarema', 'zawisza'];
+    if (maleNameExceptions.includes(firstName)) return 'male';
+    if (firstName.endsWith('a')) return 'female';
     return 'male';
+}
+
+// ── ŻELAZNA DOKTRYNA LUMINA (@L + @Joma) ──
+// Nie polecamy profilom męskim mężczyzn a kobiecym kobiet.
+export function isProfileRecommendedForUser(targetProfile, currentProfile) {
+    if (!targetProfile) return false;
+    
+    // Kanały misyjne i oficjalne konta są zawsze dozwolone w polecanych
+    if (targetProfile.isMissionAccount || targetProfile.isMission || 
+        ['radiocc','cctv','ccmen','ccwomen','studiodobregoslowa','osobowoscplus','lumina','bibliaaudio'].includes((targetProfile.slug || '').toLowerCase())) {
+        return true;
+    }
+
+    const myProfile = currentProfile || (typeof window.LuminaDB?.getCurrentProfile === 'function' ? window.LuminaDB.getCurrentProfile() : null) || (function() {
+        try { return JSON.parse(localStorage.getItem('lumina_my_profile') || 'null'); } catch(e) { return null; }
+    })();
+
+    if (!myProfile) return true; // Dla gości bez określonej płci pokazujemy domyślną mieszankę
+
+    const myGender = detectProfileGender(myProfile);
+    const targetGender = detectProfileGender(targetProfile);
+
+    // Bezwzględna reguła: nie polecamy męskim mężczyzn, a kobiecym kobiet
+    if (myGender === 'male' && targetGender === 'male') {
+        return false;
+    }
+    if (myGender === 'female' && targetGender === 'female') {
+        return false;
+    }
+
+    return true;
 }
 
 export function calculateProfileMatchScore(targetProfile, currentProfile) {
@@ -5214,30 +5259,36 @@ export function calculateProfileMatchScore(targetProfile, currentProfile) {
     if (targetProfile.isMissionAccount || targetProfile.isMission || targetProfile.isFounder ||
         targetProfile.slug === 'radiocc' || targetProfile.slug === 'studiodobregoslowa' || 
         targetProfile.slug === 'osobowoscplus' || targetProfile.slug === 'ccwomen' ||
-        targetProfile.slug === 'jolawojcik' || targetProfile.slug === 'andrzejthiel' ||
-        targetProfile.slug === 'cezaryrgowski' || targetProfile.slug === 'cezaryrogowski' ||
-        targetProfile.slug === 'wiolettarogowska') {
+        targetProfile.slug === 'ccmen' || targetProfile.slug === 'cctv' ||
+        targetProfile.slug === 'bibliaaudio' || targetProfile.slug === 'lumina') {
         return null;
     }
 
-    const myProfile = currentProfile || (typeof window.LuminaDB?.getCurrentProfile === 'function' ? window.LuminaDB.getCurrentProfile() : null);
-    if (!myProfile || !myProfile.name || myProfile.slug === 'guest') {
-        return null; // Dla gości/niezalogowanych nie wyświetlamy
+    const myProfile = currentProfile || (typeof window.LuminaDB?.getCurrentProfile === 'function' ? window.LuminaDB.getCurrentProfile() : null) || (function() {
+        try { return JSON.parse(localStorage.getItem('lumina_my_profile') || 'null'); } catch(e) { return null; }
+    })();
+
+    if (!myProfile || !myProfile.name || myProfile.slug === 'guest' || myProfile.slug === 'gosc') {
+        return null; // Dla gości/niezalogowanych bez profilu
     }
 
     // Jeśli przeglądamy własny profil
-    if (myProfile.slug === targetProfile.slug || (myProfile.uid && myProfile.uid === targetProfile.uid)) {
+    const isSameUser = (myProfile.slug && targetProfile.slug && myProfile.slug === targetProfile.slug) ||
+                       (myProfile.uid && targetProfile.uid && myProfile.uid === targetProfile.uid) ||
+                       (myProfile.id && targetProfile.id && myProfile.id === targetProfile.id) ||
+                       (myProfile.name && targetProfile.name && myProfile.name.toLowerCase().trim() === targetProfile.name.toLowerCase().trim());
+    if (isSameUser) {
         return 'Twój profil';
     }
 
-    // ── PANCERNA REGUŁA DOPASOWANIA PŁCI: ──
-    // Profile męskie NIE MOGĄ mieć dopasowań z profilami męskimi,
-    // a profile kobiece NIE MOGĄ mieć dopasowań z profilami kobiecymi.
+    // ── ŻELAZNA DOKTRYNA LUMINA (@L + @Joma) — DOPASOWANIE TEJ SAMEJ PŁCI = 0%: ──
+    // Nie polecamy profilom męskim mężczyzn a kobiecym kobiet.
+    // Dopasowanie tych samych płci musi być ZAWSZE i BEZWZGLĘDNIE zerowe (0%).
     const myGender = detectProfileGender(myProfile);
     const targetGender = detectProfileGender(targetProfile);
 
     if (myGender === targetGender && myGender !== 'unknown') {
-        return null; // Ta sama płeć (męski-męski lub kobiecy-kobiecy) -> brak dopasowania
+        return '0%'; // Bezwzględna zasada: tej samej płci ZAWSZE 0%
     }
 
     let score = 55; // Baza wyjściowa dla par o przeciwnej płci
@@ -5284,6 +5335,12 @@ export function calculateProfileMatchScore(targetProfile, currentProfile) {
 }
 
 window.calculateProfileMatchScore = calculateProfileMatchScore;
+window.detectProfileGender = detectProfileGender;
+window.isProfileRecommendedForUser = isProfileRecommendedForUser;
+window.LuminaDB = window.LuminaDB || {};
+window.LuminaDB.calculateProfileMatchScore = calculateProfileMatchScore;
+window.LuminaDB.detectProfileGender = detectProfileGender;
+window.LuminaDB.isProfileRecommendedForUser = isProfileRecommendedForUser;
 
 // ══════════════════════════════════════════════════════════════════════════
 // STANDARD FORMATOWANIA ROZWAŻAŃ: DOBRZE, ŻE JESTEŚ • CHRISTIAN CULTURE PREMIUM

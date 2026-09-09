@@ -810,7 +810,7 @@
                     <div class="head-user-tagline">
                         <span><i class="fa-solid fa-cross"></i> Chrześcijanka</span>
                         <span><i class="fa-solid fa-location-dot"></i> Polska</span>
-                        <span style="color: #facc15; font-weight: 800;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: 97%</span>
+                        <span id="userMatchEl" style="color: #facc15; font-weight: 800; display: none;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: --</span>
                         <span class="stat-tag-chip" style="background:rgba(168,85,247,0.15); border:1px solid rgba(168,85,247,0.35); color:#d8b4fe;">
                             <i class="fa-solid fa-hands-praying"></i> Biblijny Czas Modlitwy
                         </span>
@@ -1518,6 +1518,40 @@
             removeJolaPostVideo();
             showToast('Twój wpis został opublikowany na profilu! ✨✨');
         }
+
+        // Dynamiczne dopasowanie profilu z uwzględnieniem Żelaznej Doktryny LUMINA (@L + @Joma)
+        function updateJolaMatchScore() {
+            const el = document.getElementById('userMatchEl');
+            if (!el) return;
+            const jolaProfile = {
+                name: 'Jola Wójcik',
+                gender: 'kobieta',
+                denom: 'Chrześcijanka',
+                status: 'Panna',
+                slug: 'jolawojcik'
+            };
+            const score = (typeof window.calculateProfileMatchScore === 'function')
+                ? window.calculateProfileMatchScore(jolaProfile)
+                : (window.LuminaDB?.calculateProfileMatchScore ? window.LuminaDB.calculateProfileMatchScore(jolaProfile) : null);
+
+            if (score && score !== 'Wymaga profilu') {
+                el.style.display = 'inline-flex';
+                if (score === '0%') {
+                    el.innerHTML = '<i class="fa-solid fa-heart-crack"></i> Dopasowanie: 0%';
+                    el.style.color = '#9ca3af';
+                } else if (score === 'Twój profil') {
+                    el.innerHTML = '<i class="fa-solid fa-user-check"></i> Twój profil';
+                    el.style.color = '#34d399';
+                } else {
+                    el.innerHTML = `<i class="fa-solid fa-heart-pulse"></i> Dopasowanie: ${score}`;
+                    el.style.color = '#facc15';
+                }
+            } else {
+                el.style.display = 'none';
+            }
+        }
+        window.addEventListener('DOMContentLoaded', updateJolaMatchScore);
+        setTimeout(updateJolaMatchScore, 800);
     </script>
 </body>
 </html>

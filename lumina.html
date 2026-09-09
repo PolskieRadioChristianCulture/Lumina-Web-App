@@ -6574,8 +6574,8 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     return `
                         <div class="profile-card cloud-registered-user-card" id="card_profile_${pKey}" data-profile-slug="${pKey}" data-category="${p.gender || 'spolecznosc'} spolecznosc" onclick="openCommunityProfile('${pKey}')">
                             <div class="card-photo" style="position:relative;">
-                                ${(liveScore && liveScore !== 'Wymaga profilu' && liveScore !== '0%') ? `
-                                    <div class="card-match" style="background: ${isLocalUser || liveScore === 'Twój profil' ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #ec4899, #8b5cf6)'};">${liveScore}</div>
+                                ${(liveScore && liveScore !== 'Wymaga profilu') ? `
+                                    <div class="card-match" style="background: ${isLocalUser || liveScore === 'Twój profil' ? 'linear-gradient(135deg, #10b981, #059669)' : (liveScore === '0%' ? 'linear-gradient(135deg, #6b7280, #4b5563)' : 'linear-gradient(135deg, #ec4899, #8b5cf6)')};">${liveScore}</div>
                                 ` : ''}
                                 ${(!isLocalUser && localStorage.getItem('lumina_following_' + pKey) !== '1') ? `
                                     <button type="button" class="btn-carousel-follow-pulse" onclick="handleCarouselFollowClick(event, this, '${pKey}', '${userName}', '${userAvatar}')">
@@ -6622,6 +6622,10 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     ...Object.values(window._cloudProfilesMap || {})
                 ];
                 candidatesPool.forEach(p => {
+                    // Żelazna Doktryna LUMINA (@L + @Joma): Nie polecamy profilom męskim mężczyzn a kobiecym kobiet
+                    if (typeof window.isProfileRecommendedForUser === 'function' && !window.isProfileRecommendedForUser(p)) {
+                        return; // Pomijamy profil tej samej płci w polecanych na karuzeli
+                    }
                     cloudCardsHtml += buildCommunityCard(p, false);
                 });
             } catch(err) {
@@ -6653,6 +6657,19 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                 const p = window.getLiveProfile(slug);
                 if (!p) return;
 
+                // Żelazna Doktryna LUMINA (@L + @Joma): Nie polecamy profilom męskim mężczyzn a kobiecym kobiet w karuzeli
+                const isRec = (typeof window.isProfileRecommendedForUser === 'function')
+                    ? window.isProfileRecommendedForUser(p)
+                    : (window.LuminaDB?.isProfileRecommendedForUser ? window.LuminaDB.isProfileRecommendedForUser(p) : true);
+                if (!isRec) {
+                    card.style.display = 'none';
+                    card.setAttribute('data-hidden-same-gender', 'true');
+                    return;
+                } else if (card.getAttribute('data-hidden-same-gender') === 'true') {
+                    card.style.display = '';
+                    card.removeAttribute('data-hidden-same-gender');
+                }
+
                 const img = card.querySelector('.card-photo img');
                 if (slug === 'u_urszula_7685' || slug === 'urszula' || (p.name && p.name.includes('Urszula'))) {
                     p.avatar = 'avatar_urszula.jpg';
@@ -6674,11 +6691,15 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
                     const liveScore = (typeof window.calculateProfileMatchScore === 'function') 
                         ? window.calculateProfileMatchScore(p) 
                         : (window.LuminaDB?.calculateProfileMatchScore ? window.LuminaDB.calculateProfileMatchScore(p) : null);
-                    if (liveScore && liveScore !== 'Wymaga profilu' && liveScore !== '0%') {
+                    if (liveScore && liveScore !== 'Wymaga profilu') {
                         matchBadge.style.display = 'block';
                         matchBadge.textContent = liveScore;
                         if (liveScore === 'Twój profil') {
                             matchBadge.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                        } else if (liveScore === '0%') {
+                            matchBadge.style.background = 'linear-gradient(135deg, #6b7280, #4b5563)';
+                        } else {
+                            matchBadge.style.background = 'linear-gradient(135deg, #ec4899, #8b5cf6)';
                         }
                     } else {
                         matchBadge.style.display = 'none';
@@ -7165,7 +7186,11 @@ Słowo Ewangelii pokazuje postawę Jezusa, który z całkowitym spokojem i król
 
             const mLoc = document.getElementById('mLoc');
             if (mLoc) {
-                const matchPart = (scoreLabel && scoreLabel !== 'Wymaga profilu' && scoreLabel !== '0%') ? `  •  Dopasowanie: ${scoreLabel}` : '';
+                const matchPart = (scoreLabel && scoreLabel !== 'Wymaga profilu') 
+                    ? (scoreLabel === '0%' 
+                        ? `  •  <span style="color:#9ca3af;font-weight:700;"><i class="fa-solid fa-heart-crack"></i> Dopasowanie: 0%</span>` 
+                        : `  •  <span style="color:#ec4899;font-weight:700;"><i class="fa-solid fa-heart-pulse"></i> Dopasowanie: ${scoreLabel}</span>`) 
+                    : '';
                 mLoc.innerHTML = `📍 ${p.city || 'Polska'}${matchPart}  •  <span style="color:#c084fc;font-weight:700;">${badgeLabel}</span>`;
             }
 
